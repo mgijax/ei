@@ -52,10 +52,10 @@ are generated from the MGI databases and installed in their appropriate places f
 
 <H4>Development of Reports</H4>
 <OL>
-<LI>Development report source is stored in the directory <CODE>/home/lec/mgd/sybase/mgi_dev/reports</CODE>.
+<LI>Development report source is stored in the subdirectory <CODE>reports</CODE>.
 	<UL>
 	<P>
-	<LI>New reports must be added to <CODE>/home/lec/mgd/sybase/mgi_dev/utilities/nightly_reports</CODE>,
+	<LI>New reports must be added to <CODE>utilities/nightly_reports</CODE>,
 	    the shell script which generates the reports.  Public reports are added to the list
 	    of <CODE>PUBLIC_RPTS</CODE> defined in the shell script.  Internal reports are added 
 	    to the list of <CODE>INTERNAL_RPTS</CODE> defined in the shell script.  If a new report
@@ -63,7 +63,7 @@ are generated from the MGI databases and installed in their appropriate places f
 	    report process.
 	<P>
 	<LI>New reports must be added to the <CODE>INSTALLFILE</CODE> list defined in the
-	    application configuration file <CODE>/home/lec/mgd/sybase/mgi_dev/mgd/uxb.conf</CODE>.
+	    application configuration file <CODE>mgd/uxb.conf</CODE>.
 	    During the installation of the application, all files defined in the 
 	    <CODE>INSTALLFILE</CODE> list are copied to the installation directory of the
 	    application.
