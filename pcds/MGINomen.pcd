@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 17 12:09:24 2003";
+      lastWritten = "Tue Dec 30 09:37:15 2003";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -422,19 +422,10 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    NSequence2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
-                                                    SWISSPROT2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -511,6 +502,14 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENCluster = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -745,19 +744,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NSequence2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    SWISSPROT2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;

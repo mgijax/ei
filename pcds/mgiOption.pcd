@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Dec 19 15:30:47 2003";
+      lastWritten = "Tue Dec 30 09:37:10 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -118,14 +118,6 @@ Module: mgiOption
                         defaultValue = 9;
                     }
                     {
-                      NSequence2 = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Secondary Nucleotide Sequence ";
-                      Group: User
-                        defaultValue = 9;
-                        preferred = False;
-                    }
-                    {
                       SWISSPROT = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "SWISS-PROT";
@@ -133,27 +125,11 @@ Module: mgiOption
                         defaultValue = 13;
                     }
                     {
-                      SWISSPROT2 = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Secondary SWISS-PROT";
-                      Group: User
-                        defaultValue = 13;
-                        preferred = False;
-                    }
-                    {
                       TrEMBL = AccToggle : mgiOption;
                       Group: Widget
                         labelString = TrEMBL;
                       Group: User
                         defaultValue = 41;
-                    }
-                    {
-                      TrEMBL2 = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Secondary TrEMBL";
-                      Group: User
-                        defaultValue = 41;
-                        preferred = False;
                     }
                     {
                       PDB = AccToggle : mgiOption;

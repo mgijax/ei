@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 17 13:07:25 2003";
+      lastWritten = "Tue Dec 30 09:37:20 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -819,19 +819,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle;
                                                   }
                                                   {
-                                                    NSequence2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
-                                                    SWISSPROT2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -1312,19 +1303,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle;
                                                   }
                                                   {
-                                                    NSequence2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
-                                                    SWISSPROT2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -2735,19 +2717,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NSequence2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    SWISSPROT2 = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;

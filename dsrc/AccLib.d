@@ -209,9 +209,9 @@ rules:
 	  orderBy : string;
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
-	    orderBy := " order by _LogicalDB_key, prefixPart desc, numericPart";
+	    orderBy := " order by preferred desc, _LogicalDB_key, prefixPart desc, numericPart";
 	  else
-	    orderBy := " order by _LogicalDB_key, prefixPart, numericPart";
+	    orderBy := " order by preferred desc, _LogicalDB_key, prefixPart, numericPart";
 	  end if;
 
           cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
@@ -244,8 +244,7 @@ rules:
               while (i <= source.subMenuId.num_children) do
                 if (logicalDBkey = source.subMenuId.child(i).defaultValue) then
                   if (((integer) logicalDBkey = 1 and 
-			prefix = source.subMenuId.child(i).labelString and
-			preferred = (string) source.subMenuId.child(i).preferred) or 
+			prefix = source.subMenuId.child(i).labelString) or
 			(integer) logicalDBkey > 1) then
                     source.menuHistory := source.subMenuId.child(i);
 		    break;
@@ -279,6 +278,14 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 8));
+	      end if;
+
+	      if (table.is_defined("accStatus") != nil) then
+		if (preferred = "1") then
+	          (void) mgi_tblSetCell(table, row, table.accStatus, "Primary");
+		else
+	          (void) mgi_tblSetCell(table, row, table.accStatus, "Secondary");
+		end if;
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);

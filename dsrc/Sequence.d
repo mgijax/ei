@@ -743,7 +743,6 @@ rules:
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentKey;
 	  LoadAcc.tableID := SEQ_SEQUENCE;
-	  LoadAcc.sortColumn := accTable.accID;
 	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  
