@@ -209,9 +209,9 @@ rules:
 	  orderBy : string;
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
-	    orderBy := " order by preferred desc, _LogicalDB_key, prefixPart desc, numericPart";
+	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart desc, numericPart";
 	  else
-	    orderBy := " order by preferred desc, _LogicalDB_key, prefixPart, numericPart";
+	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart, numericPart";
 	  end if;
 
           cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
