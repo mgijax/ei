@@ -478,6 +478,7 @@ Gene Name, J# (internal filing number), First Author, Other Names.
 				self.emailFile.write(string.ljust('', 21))
 
 			self.otherNames(r['_Nomen_key'], self.emailFile)
+			self.emailFile.write(self.CRT)
 
 	def createBroadcastFile(self, updateDB = 0):
 		'''
