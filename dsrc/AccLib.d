@@ -137,6 +137,7 @@ rules:
 	  top : widget := InitAcc.table.top;
 	  table : widget := InitAcc.table;
 	  source : widget := table.parent.child_by_class("XmRowColumn");
+	  showMGI : boolean := table.showMGI;
 
 	  -- Clear Table
           ClearTable.table := table;
@@ -151,7 +152,7 @@ rules:
 	  --   Set LogicalDB and Name values using Accession ID type values
 
           while (i <= source.subMenuId.num_children) do
-	    if ((InitAcc.showMGI and source.subMenuId.child(i).labelString = "MGI:") or 
+	    if ((showMGI and source.subMenuId.child(i).labelString = "MGI:") or 
 		source.subMenuId.child(i).managed) then
 	      (void) mgi_tblSetCell(table, row, table.logicalKey, source.subMenuId.child(i).defaultValue);
 	      (void) mgi_tblSetCell(table, row, table.accName, source.subMenuId.child(i).labelString);

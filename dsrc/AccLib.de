@@ -13,8 +13,7 @@ AddAccRow [table : widget;];		 -- Accession Table
 
 -- Initialize Accession Table
 InitAcc [table : widget;  	         -- Accession Table
-         clearCells : boolean := true;   -- Clear Cells flag
-	 showMGI : boolean := true;];	-- Display MGI Accession prefix
+         clearCells : boolean := true;]; -- Clear Cells flag
 
 -- Load Accession Numbers into mgiAccessionTable->Table
 LoadAcc [table : widget;		-- Accession Table
