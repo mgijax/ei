@@ -1,8 +1,8 @@
 Module: MGD
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Aug 21 13:10:14 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Tue Oct 15 09:24:35 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -7999,7 +7999,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftOffset = 2;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_form;
-                                    topOffset = 5;
+                                    topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
@@ -8031,14 +8031,13 @@ Shift<Key>Tab: prev-tab-group()
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftOffset = 10;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = Offset;
-                                    topWidget = ChromosomeMenu;
-                                    topOffset = 5;
+                                    topWidget = MarkerTypeMenu;
+                                    topOffset = 20;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -8057,17 +8056,18 @@ Shift<Key>Tab: prev-tab-group()
                                   Cyto = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
+                                    leftWidget = ChromosomeMenu;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = Symbol;
+                                    topWidget = ChromosomeMenu;
+                                    topOffset = "-5";
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "Cytogenetic\nBand";
+                                          labelString = "Cytogenetic Band";
                                       }
                                       {
                                         text = text;
@@ -8079,14 +8079,14 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Current = Table : mgiTable;
                                   Group: Constraint
-                                    leftAttachment = attach_form;
+                                    leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = MarkerTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 5;
                                     topOffset = 5;
+                                    leftWidget = MarkerTypeMenu;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -8138,13 +8138,12 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Symbol;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Symbol;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightOffset = 2;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -8156,30 +8155,6 @@ Shift<Key>Tab: prev-tab-group()
                                           columns = 60;
                                         Group: User
                                           required = True;
-                                      }
-                                }
-                                {
-                                  Notes = Notes : mgiDataTypes;
-                                  Group: Widget
-                                    xrtGearOrientation = horizontal;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
-                                    rightAttachment = attach_form;
-                                    rightOffset = 2;
-                                    topAttachment = attach_widget;
-                                    topWidget = Name;
-                                    topOffset = 2;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = scrolledText;
-                                        Group: Widget
-                                          columns = 60;
-                                          rows = 2;
                                       }
                                 }
                                 {
@@ -9165,11 +9140,31 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_opposite_widget;
                                     topAttachment = attach_widget;
+                                    topWidget = markerDescription;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                    rightWidget = markerDescription;
+                                }
+                                {
+                                  markerDescription = mgiNote : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    topAttachment = attach_widget;
                                     topWidget = InheritanceModeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
                                     rightWidget = InheritanceModeMenu;
+                                      {
+                                        Note = Notes : mgiDataTypes;
+                                      }
+                                      {
+                                        NotePush = NotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Marker Detail Clip";
+                                      }
                                 }
                           }
                     }

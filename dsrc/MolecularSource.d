@@ -68,7 +68,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
           -- Set Row Count
           SetRowCount.source_widget := top;

@@ -97,7 +97,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  -- Initialize
 	  send(Init, 0);

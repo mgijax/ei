@@ -45,7 +45,7 @@ set path = ($DBUTILITIESPATH/bin $path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/lo
 setenv PYTHONPATH /usr/local/mgi/lib/python
 
 # Debug mode
-setenv EIDEBUG	0
+setenv EIDEBUG	1
 
 # User log
 setenv USERLOG	$HOME/.ei-log

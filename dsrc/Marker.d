@@ -5,7 +5,7 @@
 --
 -- TopLevelShell:		Marker
 -- Database Tables Affected:	MRK_Alias, MRK_Current, MRK_History
---				MRK_Marker, MRK_Notes, MRK_Offset, MRK_Other, MRK_Reference
+--				MRK_Marker, MRK_Offset, MRK_Other, MRK_Reference
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -13,6 +13,9 @@
 -- Non-Mouse Markers can only be edited using the Homology module.
 --
 -- History
+--
+-- 10/01/2002
+--	- TR 3516; move Marker Notes to Allele Module
 --
 -- 06/04/2002
 --	- TR 3750; set OtherReference->Table.xrtTblNumRows
@@ -205,7 +208,7 @@ rules:
 	  -- Prevent multiple instances of the Marker form
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  -- Initialize
 	  send(Init, 0);
@@ -360,12 +363,6 @@ rules:
 		 EVENT_ASSIGNED + "," +
 		 NOTSPECIFIED + "," +
 		 mgi_DBprstr(top->Name->text.value) + "\n";
-
-	  ModifyNotes.source_widget := top->Notes;
-	  ModifyNotes.tableID := MRK_NOTES;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->Notes.sql;
 
 	  send(ModifyOffset, 0);
 	  send(ModifyAlias, 0);
@@ -1002,12 +999,6 @@ rules:
 	    set := set + "cytogeneticOffset = " + mgi_DBprstr(top->Cyto->text.value) + ",";
 	  end if;
 
-	  ModifyNotes.source_widget := top->Notes;
-	  ModifyNotes.tableID := MRK_NOTES;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->Notes.sql;
-
 	  send(ModifyHistory, 0);
 	  send(ModifyAlias, 0);
 	  send(ModifyCurrent, 0);
@@ -1471,7 +1462,6 @@ rules:
 	  from_citation : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
-	  from_notes    : boolean := false;
 	  from_other    : boolean := false;
 	  from_offset   : boolean := false;
 	  from_reference: boolean := false;
@@ -1540,11 +1530,6 @@ rules:
           if (value.length > 0) then
 	    where := where + "\nand moff.offset = " + value;
 	    from_offset := true;
-	  end if;
-	    
-          if (top->Notes->text.value.length > 0) then
-	    where := where + "\nand mt.note like " + mgi_DBprstr(top->Notes->text.value);
-	    from_notes := true;
 	  end if;
 	    
           value := mgi_tblGetCell(top->Current->Table, 0, top->Current->Table.markerKey);
@@ -1657,11 +1642,6 @@ rules:
 	    where := where + "\nand m._Marker_key = moff._Marker_key";
 	  end if;
 
-	  if (from_notes) then
-	    from := from + ",MRK_Notes mt";
-	    where := where + "\nand m._Marker_key = mt._Marker_key";
-	  end if;
-
 	  if (from_current) then
 	    from := from + ",MRK_Current_View mu";
 	    where := where + "\nand m._Marker_key = mu._Marker_key";
@@ -1753,7 +1733,6 @@ rules:
           (void) busy_cursor(top);
 
 	  hasAlleles := false;
-	  top->Notes->text.value := "";
 
 	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
@@ -1761,9 +1740,6 @@ rules:
 	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
 		 "cytogeneticOffset, creation_date, modification_date " +
 		 "from MRK_Marker where _Marker_key = " + currentRecordKey + "\n" +
-	         "select rtrim(note) from MRK_Notes " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum\n" +
 	         "select source, str(offset,10,2) from MRK_Offset " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by source\n" +
@@ -1823,14 +1799,12 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
 	      elsif (results = 2) then
-		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
-	      elsif (results = 3) then
 		table := top->Offset->Table;
 		source := mgi_getstr(dbproc, 1);
                 (void) mgi_tblSetCell(table, (integer) source, table.sourceKey, source);
                 (void) mgi_tblSetCell(table, (integer) source, table.offset, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 4) then
+	      elsif (results = 3) then
 		table := top->History->Table;
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
@@ -1858,7 +1832,7 @@ rules:
           	  send(SetOptions, 0);
 		end if;
 
-	      elsif (results = 5) then
+	      elsif (results = 4) then
 	        table := top->History->Table;
 
 		-- Some _Refs_keys are still NULL, so they won't return a J:
@@ -1880,26 +1854,26 @@ rules:
 	          (void) mgi_tblSetCell(table, seqRow, table.jnum, mgi_getstr(dbproc, 3));
 	          (void) mgi_tblSetCell(table, seqRow, table.jnum + 1, mgi_getstr(dbproc, 4));
 		end if;
-	      elsif (results = 6) then
+	      elsif (results = 5) then
 		table := top->Current->Table;
                 (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 7) then
+	      elsif (results = 6) then
 		table := top->Alias->Table;
                 (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 8) then
+	      elsif (results = 7) then
 		table := top->Allele->Table;
                 (void) mgi_tblSetCell(table, row, table.alleleKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.alleleSymbol, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.alleleName, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		hasAlleles := true;
-	      elsif (results = 9) then
+	      elsif (results = 8) then
 		table := top->OtherReference->Table;
                 (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 2));
