@@ -897,6 +897,7 @@ rules:
 
 	      elsif (results = 4) then
 		table := top->MolecularMutation->Table;
+		(void) mgi_tblSetCell(table, row, table.mutationCurrentKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mutationKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mutation, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
