@@ -107,7 +107,7 @@ devents:
 	MolecularSourceExit : global [];	-- defined in MolecularSource.d
 
 	Modify :local [];
-	ModifyMarker :local [];
+	ModifyMarker :local [processSolo : boolean := false;];
 	ModifyReference :local [];
 	ModifyReferenceAlias :local [];
 	ModifyReferenceRFLV :local [];
@@ -701,6 +701,7 @@ rules:
 	  -- all transactions.
 	  --
 
+	  ModifyMarker.processSolo := true;
 	  send(ModifyMarker, 0);
 
           if (cmd.length > 0 or set.length > 0) then 
@@ -771,11 +772,15 @@ rules:
             row := row + 1;
           end while;
 
-	  if (modifyCmd.length > 0) then
-            ModifySQL.cmd := modifyCmd;
-	    ModifySQL.list := top->QueryList;
-	    ModifySQL.reselect := false;
-            send(ModifySQL, 0);
+	  if (ModifyMarker.processSolo) then
+	    if (modifyCmd.length > 0) then
+              ModifySQL.cmd := modifyCmd;
+	      ModifySQL.list := top->QueryList;
+	      ModifySQL.reselect := false;
+              send(ModifySQL, 0);
+	    end if;
+	  else
+	     cmd := cmd + modifyCmd;
 	  end if;
 
         end
