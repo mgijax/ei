@@ -1528,6 +1528,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_ALLELE_MUTATION:
     case ALL_MOLECULAR_NOTE:
     case ALL_NOTE:
+    case ALL_SYNONYM:
 	selectKey = 0;
 	break;
     default:
