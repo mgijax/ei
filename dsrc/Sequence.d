@@ -678,8 +678,6 @@ rules:
 	        DisplayMolecularAge.source_widget := sourceTable;
 	        DisplayMolecularAge.row := nonRawRow;
 	        DisplayMolecularAge.age := mgi_getstr(dbproc, 13);
-	        DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 14);
-	        DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 15);
 	        send(DisplayMolecularAge, 0);
 
 		nonRawRow := nonRawRow + 1;

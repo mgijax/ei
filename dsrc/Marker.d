@@ -1527,7 +1527,6 @@ rules:
 	PrepareSearch does
 	  from_alias    : boolean := false;
 	  from_allele   : boolean := false;
-	  from_citation : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
 	  from_other    : boolean := false;
@@ -1740,10 +1739,6 @@ rules:
 	  if (from_reference) then
 	    from := from + ",MRK_Reference_View mr";
 	    where := where + "\nand m._Marker_key = mr._Marker_key";
-	  end if;
-
-	  if (from_citation) then
-	    from := from + ",BIB_View b";
 	  end if;
 
 	end does;

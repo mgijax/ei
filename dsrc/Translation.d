@@ -351,8 +351,8 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value   := mgi_getstr(dbproc, 1);
-	      top->Name->text.value := mgi_getstr(dbproc, 3);
-	      top->Compression->text.value := mgi_getstr(dbproc, 4);
+	      top->Name->text.value := mgi_getstr(dbproc, 4);
+	      top->Compression->text.value := mgi_getstr(dbproc, 5);
               SetOption.source_widget := top->MGITypeMenu;
               SetOption.value := mgi_getstr(dbproc, 2);
               send(SetOption, 0);

@@ -279,6 +279,11 @@ locals:
 
 	lanes : string_list;            -- String List of Gel Lanes
 
+	-- these values are set in MGI_resetMinMax
+
+	ageMin : string := "NULL";
+	ageMax : string := "NULL";
+
 rules:
 
 --
@@ -801,18 +806,10 @@ rules:
 	      keyColumn := table.hybridizationKey;
 	    end if;
 
-	    -- For Age Prefix, copy Age Key, Age Min and Age Max columns
+	    -- For Age Prefix, copy Age Key column
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, row, table.ageKey, mgi_tblGetCell(table, row - 1, table.ageKey));
-	      mgi_tblSetCell(table, row, table.ageMin, mgi_tblGetCell(table, row - 1, table.ageMin));
-	      mgi_tblSetCell(table, row, table.ageMax, mgi_tblGetCell(table, row - 1, table.ageMax));
-
-	    -- For Age Range, copy Age Min and Age Max columns
-
-	    elsif (column = table.ageRange) then
-	      mgi_tblSetCell(table, row, table.ageMin, mgi_tblGetCell(table, row - 1, table.ageMin));
-	      mgi_tblSetCell(table, row, table.ageMax, mgi_tblGetCell(table, row - 1, table.ageMax));
 
 	    -- Else, copy key column
 
@@ -877,18 +874,10 @@ rules:
 	      keyColumn := table.sexKey;
 	    end if;
 
-	    -- For Age Prefix, copy Age Key, Age Min and Age Max columns
+	    -- For Age Prefix, copy Age Key columns
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, row, table.ageKey, mgi_tblGetCell(table, row - 1, table.ageKey));
-	      mgi_tblSetCell(table, row, table.ageMin, mgi_tblGetCell(table, row - 1, table.ageMin));
-	      mgi_tblSetCell(table, row, table.ageMax, mgi_tblGetCell(table, row - 1, table.ageMax));
-
-	    -- For Age Range, copy Age Min and Age Max columns
-
-	    elsif (column = table.ageRange) then
-	      mgi_tblSetCell(table, row, table.ageMin, mgi_tblGetCell(table, row - 1, table.ageMin));
-	      mgi_tblSetCell(table, row, table.ageMax, mgi_tblGetCell(table, row - 1, table.ageMax));
 
 	    -- Else, copy key column
 
@@ -946,19 +935,11 @@ rules:
 	      keyColumn := table.sexKey;
 	    end if;
 
-	    -- For Age Prefix, copy Age Key, Age Min and Age Max columns
+	    -- For Age Prefix, copy Age Key columns
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, i, table.ageKey, mgi_tblGetCell(table, row, table.ageKey));
 	      mgi_tblSetCell(table, i, table.ageRange, mgi_tblGetCell(table, row - 1, table.ageRange));
-	      mgi_tblSetCell(table, i, table.ageMin, mgi_tblGetCell(table, row, table.ageMin));
-	      mgi_tblSetCell(table, i, table.ageMax, mgi_tblGetCell(table, row, table.ageMax));
-
-	    -- For Age Range, copy Age Min and Age Max columns
-
-	    elsif (column = table.ageRange) then
-	      mgi_tblSetCell(table, i, table.ageMin, mgi_tblGetCell(table, row, table.ageMin));
-	      mgi_tblSetCell(table, i, table.ageMax, mgi_tblGetCell(table, row, table.ageMax));
 
 	    -- Else, copy key column
 
@@ -1370,8 +1351,6 @@ rules:
 	  genotypeKey : string;
 	  ageKey : string;
 	  ageRange : string;
-	  ageMin : string;
-	  ageMax : string;
 	  ageNote : string;
 	  sexKey : string;
 	  fixationKey : string;
@@ -1406,8 +1385,6 @@ rules:
             newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
 	    genotypeKey := mgi_tblGetCell(table, row, table.genotypeKey);
 	    ageKey := mgi_tblGetCell(table, row, table.ageKey);
-	    ageMin := mgi_tblGetCell(table, row, table.ageMin);
-	    ageMax := mgi_tblGetCell(table, row, table.ageMax);
 	    ageRange := mgi_tblGetCell(table, row, table.ageRange);
 	    ageNote := mgi_tblGetCell(table, row, table.ageNote);
 	    sexKey := mgi_tblGetCell(table, row, table.sexKey);
@@ -1424,8 +1401,6 @@ rules:
 
 	    if (ageKey.length = 0) then
 	      ageKey := top->CVSpecimen->AgeMenu.defaultOption.defaultValue;
-	      ageMin := "NULL";
-	      ageMax := "NULL";
 	      ageRange := "";
 	    end if;
 
@@ -1475,7 +1450,8 @@ rules:
 		     ageMax + "," +
 		     mgi_DBprstr(ageNote) + "," +
 		     mgi_DBprstr(hybridizationKey) + "," +
-		     mgi_DBprstr(specimenNote) + ")\n";
+		     mgi_DBprstr(specimenNote) + ")\n" +
+		     "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_SPECIMEN) + ", @" + keyName + "\n";
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1494,11 +1470,10 @@ rules:
                           "specimenLabel = " + mgi_DBprstr(label) + "," +
                           "sex = " + mgi_DBprstr(sexKey) + "," +
                           "age = " + mgi_DBprstr(ageKey) + "," +
-                          "ageMin = " + ageMin + "," +
-                          "ageMax = " + ageMax + "," +
                           "ageNote = " + mgi_DBprstr(ageNote) + "," +
                           "hybridization = " + mgi_DBprstr(hybridizationKey) + "," +
-                          "specimenNote = " + mgi_DBprstr(specimenNote);
+                          "specimenNote = " + mgi_DBprstr(specimenNote) +
+		          "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_SPECIMEN) + "," + key + "\n";
                 cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
 	      end if;
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
@@ -1530,8 +1505,6 @@ rules:
 	  rnaKey : string;
 	  ageKey : string;
 	  ageRange : string;
-	  ageMin : string;
-	  ageMax : string;
 	  sexKey : string;
 	  sampleAmt : string;
 	  keyName : string := "gelLaneKey";
@@ -1563,8 +1536,6 @@ rules:
             controlKey := mgi_tblGetCell(table, row, table.controlKey);
             rnaKey := mgi_tblGetCell(table, row, table.rnaKey);
 	    ageKey := mgi_tblGetCell(table, row, table.ageKey);
-	    ageMin := mgi_tblGetCell(table, row, table.ageMin);
-	    ageMax := mgi_tblGetCell(table, row, table.ageMax);
 	    ageRange := mgi_tblGetCell(table, row, table.ageRange);
 	    sexKey := mgi_tblGetCell(table, row, table.sexKey);
 	    sampleAmt := mgi_tblGetCell(table, row, table.sampleAmt);
@@ -1583,8 +1554,6 @@ rules:
 
 	    if (ageKey.length = 0) then
 	      ageKey := top->CVGel->AgeMenu.defaultOption.defaultValue;
-	      ageMin := "NULL";
-	      ageMax := "NULL";
 	      ageRange := "";
 	    end if;
 
@@ -1632,7 +1601,8 @@ rules:
 		     ageMin + "," +
 		     ageMax + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + ")\n";
+	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + ")\n" +
+		     "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_GELLANE) + ", @" + keyName + "\n";
 
               -- Process Gel Lane Structures
 
@@ -1661,10 +1631,9 @@ rules:
 		          "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
                           "sex = " + mgi_DBprstr(sexKey) + "," +
                           "age = " + mgi_DBprstr(ageKey) + "," +
-                          "ageMin = " + ageMin + "," +
-                          "ageMax = " + ageMax + "," +
 	    	          "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
+	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) +
+		          "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_GELLANE) + "," + key + "\n";
                 cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
 
                 -- Process Gel Lane Structures
@@ -2466,8 +2435,6 @@ rules:
 	        DisplayMolecularAge.source_widget := table;
 	        DisplayMolecularAge.row := row;
 	        DisplayMolecularAge.age := mgi_getstr(dbproc, 9);
-	        DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 10);
-	        DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 11);
 	        send(DisplayMolecularAge, 0);
 	      
 	        row := row + 1;
@@ -2567,8 +2534,6 @@ rules:
 	        DisplayMolecularAge.source_widget := table;
 	        DisplayMolecularAge.row := row;
 	        DisplayMolecularAge.age := mgi_getstr(dbproc, 10);
-	        DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 11);
-	        DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 12);
 	        send(DisplayMolecularAge, 0);
 
 	        row := row + 1;

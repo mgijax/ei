@@ -111,7 +111,7 @@ rules:
 	  k : integer;
 
 	  if (tableID = MGI_NOTETYPE_MRKGO_VIEW or tableID = MGI_NOTETYPE_NOMEN_VIEW or tableID = MGI_NOTETYPE_SOURCE_VIEW
-	      or tableID = MGI_NOTETYPE_SEQUENCE_VIEW) then
+	      or tableID = MGI_NOTETYPE_SEQUENCE_VIEW or tableID = MGI_NOTETYPE_VOCEVIDENCE_VIEW) then
 	    cmd := "select _NoteType_key, noteType, private = -1, _MGIType_key from " + mgi_DBtable(tableID) +
 		  "\norder by _NoteType_key";
 	  else
@@ -144,7 +144,7 @@ rules:
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
 	        if (tableID = MGI_NOTETYPE_MRKGO_VIEW or tableID = MGI_NOTETYPE_NOMEN_VIEW or tableID = MGI_NOTETYPE_SOURCE_VIEW
-		    or tableID = MGI_NOTETYPE_SEQUENCE_VIEW) then
+		    or tableID = MGI_NOTETYPE_SEQUENCE_VIEW or tableID = MGI_NOTETYPE_VOCEVIDENCE_VIEW) then
 		  x->Note.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
 		end if;
 		x.unbatch;
@@ -179,7 +179,7 @@ rules:
 	  send(ClearSetNoteForm, 0);
 
 	  if (tableID = MGI_NOTE_MRKGO_VIEW or tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW
-	      or tableID = MGI_NOTE_SEQUENCE_VIEW) then
+	      or tableID = MGI_NOTE_SEQUENCE_VIEW or tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
             cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
 	  	  " from " + mgi_DBtable(tableID) +
 		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
@@ -201,7 +201,7 @@ rules:
 	      note := mgi_getstr(dbproc, 2);
 
 	      if (tableID = MGI_NOTE_MRKGO_VIEW or tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW
-		  or tableID = MGI_NOTE_SEQUENCE_VIEW) then
+		  or tableID = MGI_NOTE_SEQUENCE_VIEW or tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
 	        noteKey := mgi_getstr(dbproc, 4);
 	      end if;
 
