@@ -12,6 +12,7 @@
 --
 -- lec  06/13/2001
 --	- TR 2592; added StagingNotNormalized
+--	- TR 2556; added ClearIndex to set starting column
 --
 -- lec  01/18/1999
 --	- TR 278; warn user if no Stage info selected during add/modify of record.
@@ -42,6 +43,10 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
+
+	ClearIndex :local [clearKeys : boolean := true;
+			   reset : boolean := false;];
+
 	Delete :local [];
 	Exit :local [];
 	Modify :local [];
@@ -90,10 +95,27 @@ rules:
 
 	  -- Clear form
 
-	  Clear.source_widget := top;
-	  send(Clear, 0);
+	  send(ClearIndex, 0);
  
 	  (void) reset_cursor(mgi);
+	end does;
+
+--
+-- ClearIndex
+-- 
+-- Local Clear
+--
+
+	ClearIndex does
+
+	  Clear.source_widget := top;
+	  Clear.clearLists := 3;
+	  Clear.clearKeys := ClearIndex.clearKeys;
+	  Clear.reset := ClearIndex.reset;
+	  send(Clear, 0);
+
+	  -- set column to DPC 8.5
+	  top->Stage->Table.xrtTblLeftColumn := 17;
 	end does;
 
 --
@@ -141,9 +163,8 @@ rules:
             SetReportSelect.tableID := GXD_ANTIGEN;
             send(SetReportSelect, 0);
  
-            Clear.source_widget := top;
-            Clear.clearKeys := false;
-            send(Clear, 0);
+            ClearIndex.clearKeys := false;
+            send(ClearIndex, 0);
           end if;
  
           (void) reset_cursor(top);
@@ -164,9 +185,8 @@ rules:
           send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-            Clear.source_widget := top;
-            Clear.clearKeys := false;
-            send(Clear, 0);
+            ClearIndex.clearKeys := false;
+            send(ClearIndex, 0);
           end if;
  
           (void) reset_cursor(top);
@@ -441,9 +461,8 @@ rules:
 	  (void) dbclose(dbproc);
  
           top->QueryList->List.row := Select.item_position;
-	  Clear.source_widget := top;
-          Clear.reset := true;
-          send(Clear, 0);
+          ClearIndex.reset := true;
+          send(ClearIndex, 0);
 
 	  SetXCellsToFlash.source_widget := top->Stage->Table;
 	  send(SetXCellsToFlash, 0);
