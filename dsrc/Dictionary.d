@@ -639,35 +639,6 @@ rules:
             if (stages_query != "") then
                  where := where + "\nand t.stage in (" + stages_query + ")";
             end if;
-
-            if (top->printStopMenu.menuHistory.searchValue != "%") then
-              where := where + "\nand printStop = " + 
-		top->printStopMenu.menuHistory.searchValue;
-            end if;
-
-            -- structure Notes
-
---            if (top->structureNotes->text.value.length > 0) then
---                 where := where + "\nand s.structureNote like " + 
---			mgi_DBprstr(top->structureNotes->text.value);
---            end if;
-
-            -- aliases fields are not searchable
-	    -- no pulldown menu fields are searchable
-
---            if (top->MGIAddedMenu.menuHistory.searchValue != "%") then
---              if (top->MGIAddedMenu.menuHistory.searchValue = YES) then
---                where := where + "\nand edinburghKey != NULL";
---	      else
---                where := where + "\nand edinburghKey = NULL";
---	      end if;
---            end if;
-
---            if (top->MGIAddedAliasMenu.menuHistory.searchValue != "%") then
---              where := where + "\nand mgiAdded = " + 
---		top->MGIAddedAliasMenu.menuHistory.searchValue;
---            end if;
-
         end does;
 
 --
