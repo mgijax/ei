@@ -618,7 +618,7 @@ rules:
 
 	  if (from_user2) then
 	    from := from + "," + mgi_DBtable(MGI_USER) + " u2";
-	    where := where + "\nand e._Created_key = u2._User_key";
+	    where := where + "\nand e._CreatedBy_key = u2._User_key";
 	  end if;
 
 	  if (from_notes) then
