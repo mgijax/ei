@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr  4 15:00:00 2000";
+      lastWritten = "Wed Apr  5 09:35:21 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -5764,6 +5764,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     labelString = Nomenclature;
                                     activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
+                                    traversalOn = False;
                                 }
                                 {
                                   separator = XmSeparator;

@@ -2,8 +2,8 @@ Module: mgiControl
 {
       autoCuil = False;
       dDialogFile = "mgiControl_dlg.d";
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Sep 14 09:52:58 1999";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Wed Apr  5 09:02:28 2000";
         {
           Control = XmFrame;
           Group: Control
@@ -168,6 +168,14 @@ Module: mgiControl
                         topWidget = RecordCount;
                         bottomAttachment = attach_none;
                         resizable = true;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              traversalOn = False;
+                          }
                     }
                     {
                       ModifiedDate = ModifiedDate : mgiDataTypes;
@@ -179,6 +187,14 @@ Module: mgiControl
                         topWidget = CreationDate;
                         bottomAttachment = attach_form;
                         resizable = true;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              traversalOn = False;
+                          }
                     }
               }
         }

@@ -2,8 +2,8 @@ Module: mgiMenu
 {
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Sep 14 09:52:59 1999";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Wed Apr  5 08:57:07 2000";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
@@ -207,52 +207,10 @@ Module: mgiMenu
               }
         }
         {
-          GXDModules = MenuCascade;
-          Group: Widget
-            labelString = Modules;
-          Group: Control
-            vip_x = 135;
-            vip_y = 250;
-              Popups:
-              {
-                ModulesPulldown = MenuPulldown : mgiMenu;
-                    {
-                      Antigen = MenuPush : mgiMenu;
-                      Group: Widget
-                        activateCallback = "D:Antigen";
-                        labelString = Antigens;
-                    }
-                    {
-                      Antibody = MenuPush : mgiMenu;
-                      Group: Widget
-                        activateCallback = "D:Antibody";
-                        labelString = Antibodies;
-                    }
-                    {
-                      Image = MenuPush : mgiMenu;
-                      Group: Widget
-                        activateCallback = "D:Image";
-                        labelString = Images;
-                    }
-                    {
-                      Assay = MenuPush : mgiMenu;
-                      Group: Widget
-                        activateCallback = "D:Assay";
-                        labelString = Assays;
-                    }
-                    {
-                      IndexStage = MenuPush : mgiMenu;
-                      Group: Widget
-                        activateCallback = "D:IndexStage";
-                        labelString = "GXD Index/Stages";
-                    }
-              }
-        }
-        {
           Edit = MenuCascade;
           Group: Control
             vip_x = 135;
-            vip_y = 305;
+            vip_y = 250;
               Popups:
               {
                 EditPulldown = MenuPulldown : mgiMenu;
@@ -261,63 +219,18 @@ Module: mgiMenu
         {
           Help = MenuCascade;
           Group: Control
-            vip_x = 45;
-            vip_y = 360;
+            vip_x = 135;
+            vip_y = 305;
               Popups:
               {
                 HelpPulldown = MenuPulldown : mgiMenu;
               }
         }
         {
-          MGDModules = MenuCascade;
-          Group: Widget
-            labelString = Modules;
+          Utilities = MenuCascade;
           Group: Control
             vip_x = 45;
             vip_y = 305;
-              Popups:
-              {
-                ModulesPulldown = MenuPulldown : mgiMenu;
-                    {
-                      Reference = MenuPush : mgiMenu;
-                      Group: Widget
-                        activateCallback = "D:Reference";
-                        labelString = References;
-                    }
-                    {
-                      Marker = MenuPush : mgiMenu;
-                      Group: Widget
-                        labelString = Markers;
-                        activateCallback = "D:Marker";
-                    }
-                    {
-                      MolecularSegment = MenuPush : mgiMenu;
-                      Group: Widget
-                        labelString = "Molecular Segments";
-                    }
-                    {
-                      Homology = MenuPush : mgiMenu;
-                      Group: Widget
-                        labelString = Homology;
-                        activateCallback = "D:Homology";
-                    }
-                    {
-                      MLDP = MenuPush : mgiMenu;
-                      Group: Widget
-                        labelString = Mapping;
-                    }
-                    {
-                      MLC = MenuPush : mgiMenu;
-                      Group: Widget
-                        labelString = MLC;
-                    }
-              }
-        }
-        {
-          Utilities = MenuCascade;
-          Group: Control
-            vip_x = 129;
-            vip_y = 359;
               Popups:
               {
                 UtilitiesPulldown = MenuPulldown : mgiMenu;
