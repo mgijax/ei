@@ -27,26 +27,40 @@ for more information.
 <OL>
 <LI>EC, cross reference to Enzyme Commission number at ExPASy
 <LI>Sequence, cross reference to GenBank, EMBL, DDBJ (nucleotide sequences)
-<LI>RIKEN Cluster, cross reference to RIKEN cluster ID
+<LI>see Editing form for a complete list.
 </OL>
 
 <H4>Data Verifications</H4>
 <OL>
 <LI>Event (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
-	<UL>
-	<LI>The event <I>withdrawal</I> is not valid during an add or modification.  However, 
-	    this value is used for historical data and entries exist which use this assignment
-	    value.
-	</UL>
 <P>
 <LI>Status (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<BR><I>last updated:  ljm 01/09/2004</I><BR><BR>
 	<UL>
-	<LI>TaintReady; the symbol has not been approved by the Mouse Nomenclature Committee
-	<LI>Deleted; the symbol has been removed from the Nomenclature process
-	<LI>Reserved; the symbol has been reserved for the Author and is not to be publicized
-	<LI>Approved; the symbol has been approved by the Mouse Nomenclature Committee
-	    and is ready to broadcast to MGD
-	<LI>Broadcast; the symbol has been transferred to MGD
+	<LI>Broadcast - Official; the symbol has been approved by Mouse Genomic Nomenclature Committee (MGNC) and/or
+	    the HUGO Gene Nomenclature Committee (HGNC) and transferred to MGD as an "official" symbol.
+	<P>
+	<LI>Broadcast - Interim; the symbol has not been approved by MGNC or HGNC at the time it was transferred to MGD.
+	    Symbol is temporary and awaiting further review until an official symbol is assigned.  This allows data
+	    to be associated with the symbol and entered into MGI in a timely fashion.
+	<P>
+	<LI>In Progess; the symbol is awaiting additional work by curator or confirmation from HGNC, authors
+	    or community experts.
+	<P>
+	<LI>Reserved; the symbol has been approved by MGNC and is to be kept confidential/private until publication
+	    of the paper or author/MGNC/HGNC requests that it be released.
+	<P>
+	<LI>Approved; the symbol is a <B>locus</B> that was "reserved" or "in progress" and is
+	    now in MGI as either the same symbol or a different symbol. The symbol should never
+	    be broadcast to MGI since it already exists in MGI.
+	    cannot be broadcast.
+	<P>
+	<LI>Deleted; the symbol is no longer needed for inclusion in MGI.  The data associated with the symbol
+	    is needed for possible future use.  Generally this is a reserved symbol, though it may have been a symbol
+	    in MGI that has been deleted in MGI.
+	<P>
+	<LI>Unreviewed; a BC###### symbol that was entered into Nomen via the LocusLink/MGC processing.  The data
+	    associated with this symbol have not been reviewed by a curator.
 	</UL>
 <P>
 <LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
@@ -68,8 +82,6 @@ for more information.
 	    values.
 	</UL>
 <P>
-<LI>Gene Family (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Controlled Vocabulary Lists</A>)
-<P>
 <LI>Dates (see <A HREF="MEI.html#dataVerDate">Data Verifications section on Dates</A>)
 	<UL>
 	<LI>Broadcast Date
@@ -79,12 +91,6 @@ for more information.
     <P>
     Modifying this value will set the "Is Review Article?" flag in the MGD Master Bib record
     of the reference.
-<P>
-<LI>Broadcast? (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
-    <P>
-    If <I>Yes</I>, then the reference will be loaded into MGD during a broadcast.  If <I>No</I>,
-    then the reference will not be loaded into MGD during a broadcast.  The <I>Primary</I> reference
-    is <I>always</I> broadcast to MGD.
 <P>
 </OL>
 <P>
@@ -105,12 +111,9 @@ for more information.
 	<LI>Event
 	<LI>Status
 	<LI>Human Symbol
-	<LI>Broadcast By
-	<LI>Broadcast Date
 	<LI>MGI Accession ID
 	<LI>Other Names
 	<LI>Other Name References
-	<LI>Gene Family
 	<LI>References
 	<LI>Nomenclature Notes
 	<LI>Editor's Notes
@@ -122,11 +125,10 @@ for more information.
 <H4>Defaults</H4>
 <OL>
 <LI>Event; default is <I>assigned</I>
-<LI>Status; default is <I>TaintReady</I>
+<LI>Status; default is <I>In Progress</I>
 <LI>Submitted by; default is current user
 <LI>Broadcast by; default is current user when user broadcasts symbol
 <LI>Broadcast Date = today when user broadcasts symbol
-<LI>Reference Broadcast? = <I>Yes</I>.  The primary reference is always broadcast.
 </OL>
 
 <H4>Duplicates</H4>
@@ -142,13 +144,10 @@ for more information.
 for definitions of Tier 3 and Tier 4 users and more details on each type of Broadcast.)
 <P>
 Tier 3 users can only broadcast symbols which they have submitted and which
-have a status of <I>TaintReady</I>.  Tier 4 users may broadcast any symbol <B>except</B>
-a symbol with a status of <I>Broadcast</I> or <I>Deleted</I>.
+have a status of <I>In Progress</I>.  Tier 4 users may broadcast any symbol <B>except</B>
+a symbol with a status of <I>Broadcast</I>, <I>Approved</I> or <I>Deleted</I>.
 <P>
-For a <I>batch</I> broadcast, if any errors are detected during the broadcast, the
-entire batch fails and no symbols will be broadcast.
-<P>
-For the <I>add and broadcast</I>, if any errors are detected during the broadcast,
+For the <I>add and broadcast</I> options, if any errors are detected during the broadcast,
 the symbol will still be added to Nomen.
 <P>
 When a broadcast to MGD is successful, the <I>Status</I>, <I>Broadcast by</I>,
@@ -156,12 +155,10 @@ When a broadcast to MGD is successful, the <I>Status</I>, <I>Broadcast by</I>,
 user can edit these fields manually.
 <P>
 <OL>
-<LI><I>Add and Broadcast to MGD</I> - add symbol to Nomen and broadcast to MGD in one step
-<LI><I>Broadcast by Symbol to MGD</I> - broadcast one symbol to MGD
-<LI><I>Broadcast by Batch to MGD</I> - broadcast all <I>Approved</I> symbols to MGD (Tier 4 only)
-<LI><I>Broadcast by Reference to MGD</I> - broadcast all <I>TaintReady</I> (if Tier 3) or
-	<I>Approved</I> (if Tier 4) symbols which contain the specified <I>primary reference</I>
-	to MGD
+<LI><I>Add and Broadcast Official to MGD</I> - add symbol to Nomen and broadcast to MGD as <I>Official</I> in one step
+<LI><I>Add and Broadcast Interim to MGD</I> - add symbol to Nomen and broadcast to MGD as <I>Interim</I> in one step
+<LI><I>Broadcast Official Symbol to MGD</I> - broadcast one symbol to MGD and status as <I>Official</I>
+<LI><I>Broadcast Interim Symbol to MGD</I> - broadcast one symbol to MGD and status as <I>Interim</I>
 </OL>
 
 <H4>Miscellaneous</H4>
@@ -184,14 +181,6 @@ user can edit these fields manually.
     <B>not</B> duplicated.
 <P>
 </OL>
-
-<!--<H4>Triggers/Views/Stored Procedures for Marker tables (<I>MRK_</I>)</H4>
-<OL>
-<LI>Triggers (dbschema/triggers/nomen):  <I>NOMEN.tr</I>, <I>NOMEN.drop</I>
-<LI>Views (dbschema/views/nomen):  <I>NOMEN.view</I>
-<LI>Stored Procedures (dbschema/procedures/nomen):  <I>NOMEN.pr</I>
-</OL>
--->
 
 <H3>RELATED DOCUMENTS</H3>
 <OL>

@@ -25,9 +25,9 @@ markers.
 
 <H4>Accession Numbers</H4>
 <OL>
-<LI>GDB, The Human Genome Database
-<LI>RATMAP, the Rat Genome Database
 <LI>LocusLink
+<LI>RATMAP, the Rat Genome Database
+<LI>GDB, The Human Genome Database
 <LI>Sequence, cross reference to GenBank, EMBL, DDBJ (nucleotide sequences)
 </OL>
 
@@ -70,13 +70,18 @@ A Non-Mouse Marker cannot be deleted if it is referenced by a:
 </OL>
 
 <H4>Miscellaneous</H4>
-None
-
-<H4>Triggers/Views/Stored Procedures for Marker tables (<I>MRK_</I>)</H4>
 <OL>
-<LI>Triggers (dbschema/triggers):  <I>MRK.tr</I>, <I>MRK.drop</I>
-<LI>Views (dbschema/views):  <I>MRK.view</I>
-<LI>Stored Procedures (dbschema/procedures):  <I>MRK.pr, MRKXfer.pr</I>
+<LI>If a human gene is being processed and no LocusLink ID has been designated,
+	then the following reminder message is displayed:
+		<PRE>
+		Note:  You did not provide an Accession ID for LocusLink.
+		</PRE>
+	Note that the edit is still allowed.
+</OL>
+
+<H4>Tracking Records</H4>
+<OL>
+<LI>TR 4741 - reminder to add LL number to human genes
 </OL>
 
 <H4>Related Documents</H4>

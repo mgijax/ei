@@ -32,6 +32,7 @@ the Master Bibliography at regular intervals.
 <LI>MGI:, system-generated
 <LI>J:, system-generated or user-specified
 <LI>Medline UI, cross reference to The National Library of Medicine
+<LI>PubMed ID, cross reference to PubMed
 </OL>
 
 <H4>Data Verifications</H4>
@@ -122,38 +123,41 @@ the Master Bibliography at regular intervals.
 A Reference cannot be deleted if it is referenced by any of the following objects:
 <OL>
 <LI>Marker
+<LI>Allele
 <LI>Experiment
 <LI>Molecular Probe & Segment
 <LI>Homology
 <LI>MLC entry
+<LI>Nomenclature
 <LI>Expression Assay
-<LI>Allele
+<LI>Annotation (GO, MP, PhenSlim)
 </OL>
 
 <H4>Reference Data Sets </H4>
 Each Reference can be assigned to one or more data sets in MGD:
 <OL>
-<LI>Probes (<I>Molecular Probes & Segments</I>)
+<LI>Probes/Seq (<I>Molecular Probes & Segments</I>)
 <LI>Mapping
-<LI>MLC/Alleles (<I>Phenotype</I>)
+<LI>MLC/Allele (<I>Phenotype</I>)
 <LI>Homology
 <LI>Expression (<I>GXD</I>)
+<LI>GO
+<LI>Nomen
 <LI>Tumor
 <LI>SCC	(<I>Strain Characteristics Catalogue</I>)
 <LI>Matrix (<I>Biochemical Alleles</I>)
 <LI>Chromosome Committee
-<LI>Nomenclature
 </OL>
 <P>
-For data sets 1-5, one of the following statuses is determined automatically by the system:
+For data sets 1-7, one of the following statuses is determined automatically by the system:
 <OL>
 <LI>Used
 <LI>Not Used
 </OL>
 <P>
-The user may also elect to status data sets 1-5 as <I>Never Used</I>.
+The user may also elect to status data sets 1-7 as <I>Never Used</I>.
 <P>
-The only status option for data sets 5-10 is <I>Never Used</I> since there is no way for the system to
+The only status option for data sets 8-11 is <I>Never Used</I> since there is no way for the system to
 determine a <I>Used/Not Used</I> status for these data sets.  (However, if any of these data sets were incorporated
 into MGD, then this behavior could be changed to automatically determine their status.)
 <P>
@@ -187,13 +191,6 @@ the NLM process.
 <P>
 <LI>The last assigned J: is always displayed under the <I>Last J#</I> label in the right-hand panel of the form.
 <P>
-</OL>
-
-<H4>Triggers/Views/Stored Procedures for Reference tables (<I>BIB_</I>)</H4>
-<OL>
-<LI>Triggers (dbschema/triggers):  <I>BIB.tr</I>, <I>BIB.drop</I>
-<LI>Views (dbschema/views):  <I>BIB.view</I>
-<LI>Stored Procedures (dbschema/procedures):  <I>BIB.pr</I>
 </OL>
 
 <H4>Related Documents</H4>

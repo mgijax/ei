@@ -18,21 +18,6 @@ users with the ability to embed valid Markers and References within the text its
 simple markup mechanism.  When rendered on the Web, these embedded Markers and References
 are hypertext-linked to a Marker detail and Reference list, respectively.
 <P>
-There are two sets of MLC tables:
-	<UL>
-	<LI>Production tables
-	<LI>Edit tables
-	</UL>
-<P>
-The MLC edit form modifies records in the Edit tables only.  These records are not moved over to
-Production until the user specifically requests a transfer.  Therefore, at any given time, 
-the status of an MLC record in Production may differ from the status of an MLC record viewed
-in the editorial interface.
-<P>
-The one table which does not have a corresponding Edit table is the <I>MLC Classes</I> table.
-In this case, modifications to MLC Class information is immediately propagated to Production,
-while the rest of the modifications will be held in the Edit tables until explicitly propagated to Production.
-<P>
 Images for MLC records are scanned and stored in a Web installation documents directory.  A separate
 index file is maintained for cross-referencing MLC symbols to their appropriate MLC images.  This mechanism
 needs to be redesigned because:
@@ -234,23 +219,6 @@ All errors must be fixed before the user can successfully modify the MLC record.
 <P>
 </OL>
 
-<H4>Transferring to Production</H4>
-<I>After</I> Adding or Modifying an MLC edit record, the record can be 
-transferred to Production by selecting <I>Utilities->Submit Data to 
-Production</I>. This will immediately transfer the <I>currently 
-selected</I> MLC record to the Production database:
-<PRE>
-	You are about to transfer the current record to the 
-	MLC Production Database.  If you have deleted the current
-	record, then this same delete will occur on Production.
-	Select "Yes" to confirm, "No" to cancel.
-</PRE>
-<P>
-A deleted record must be re-selected before selecting <I>Utilities->Submit 
-Data to Production</I>. Until the delete is submitted to Production, the 
-record you have deleted in the Edit tables will persist in the Production 
-tables and will be visible via the Production web interface. 
-
 <H4>Classes</H4>
 MLC Class modifications <B>are</B> transferred to Production <B>immediately</B> upon modification of the record.
 
@@ -294,13 +262,6 @@ MLC Class modifications <B>are</B> transferred to Production <B>immediately</B> 
     If the user answers <I>Yes</I>, then the changes are not commited and the form exits.
     If the user answers <I>No</I>, then the user is returned to the form and the current record.
 <P>
-</OL>
-
-<H4>Triggers/Views/Stored Procedures for MLC tables (<I>MLC_, MRK_Classes</I>)</H4>
-<OL>
-<LI>Triggers (dbschema/triggers):  none
-<LI>Views (dbschema/views):  <I>MLC.view</I>
-<LI>Stored Procedures (dbschema/procedures):  <I>MLC.pr</I>
 </OL>
 
 <H3>RELATED DOCUMENTS</H3>

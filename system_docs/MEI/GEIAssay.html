@@ -39,6 +39,7 @@ label to it so that it can be detected, e.g. by autoradiography.
 <LI><A HREF="assayinsituprobe.gif">InSitu Probe Prep Assay GIF Image</A>
 <LI><A HREF="assaygelantibody.gif">Gel Antibody Prep Assay GIF Image</A>
 <LI><A HREF="assaygelprobe.gif">Gel Probe Prep Assay GIF Image</A>
+<LI><A HREF="assayknockin.gif">Knock-In GIF Image</A>
 <LI><A HREF="genotype.gif">Genotype GIF Image</A>
 <LI><A HREF="insituresults.gif">InSitu Results GIF Image</A>
 </OL>
@@ -73,6 +74,10 @@ label to it so that it can be detected, e.g. by autoradiography.
 <LI>Antibody Prep Secondary Antibody (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 <P>
 <LI>Antibody Prep Labelled with (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Reporter Gene (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Knock In Type (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 <P>
 <LI>Genotype Strain (see <A HREF="MEI.html#dataVerStrain">Data Verifications section on Strain</A>)
 <P>
@@ -109,7 +114,7 @@ label to it so that it can be detected, e.g. by autoradiography.
 	<LI>Type
 	<LI>J Number
 	<LI>Marker
-	<LI>Probe Preparation
+	<LI>Probe Preparation (optional for <I>In situ reporter (knock in)</I>)
 		<OL>
 		<LI>Type
 		<LI>Hybridization
@@ -117,9 +122,8 @@ label to it so that it can be detected, e.g. by autoradiography.
 		<LI>Label Coverage
 		<LI>Visualized with
 		<LI>Probe Accession ID
-		<LI>Probe Holder (no longer required, TR 2547)
 		</OL>
-	<LI>Antibody Preparation
+	<LI>Antibody Preparation (optional for <I>In situ reporter (knock in)</I>)
 		<OL>
 		<LI>Secondary Antibody
 		<LI>Labelled with
@@ -200,9 +204,15 @@ label to it so that it can be detected, e.g. by autoradiography.
 	    Pattern will default to <I>Not Applicable</I>.
 	</OL>
 <P>
+<LI>Blot Assays
+	<OL>
+	<LI>If the Control != No, then Genotype = <I>MGI:2166309</I>, RNA = <I>Not Applicable</I>,
+		Age = <I>Not Applicable</I>, Sex = <I>Not Appicable</I>.
+	</OL>
+<P>
 <LI>Genotypes
 	<OL>
-	<LI>If no Genotype value is entered, then the Genotype will default to <I>Not Specified</I>.
+	<LI>If no Genotype value is entered, then the Genotype will default to <I>MGI:2166310</I>.
 	</OL>
 </OL>
  
@@ -210,16 +220,13 @@ label to it so that it can be detected, e.g. by autoradiography.
   
 There are no restrictions on deleting an Assay record.
 
-<H4>Miscellaneous</H4>
-   
-<A HREF="GEIExpressionCache.html">GXD Expression Cache</A>
-
 <H4>Adds/Modifications</H4>
 <OL>	
 <LI>Add basic Assay information (Reference, Assay Type, Marker, Notes)
     and Antibody/Probe Preparation and, optionally, Specimen or Gel Lane/Row information.
     This information must be defined before Specimen Results or Gel Band information can
     be entered.
+<P>
 <LI>Any modification to an Assay record (Specimen, Specimen Results, Gel Lane, Gel Row, Gel Band,
     Antibody Prep, Probe Prep) will update the modification date of the master Assay record.
 </OL>
@@ -229,12 +236,15 @@ There are no restrictions on deleting an Assay record.
 <LI>During the add of a Probe Prep record, a corresponding Probe Reference record for the
     J#/Probe pair will automatically be added to the Molecular Probes & Segments portion 
     of the database.
-<LI>The user is no longer (as of TR 2547) required to enter the <I>Probe Holder</I> information, but he/she may opt to enter it using the following rules:
-	<UL>
-	<LI>Person who gave the Probe or
-	<LI>Corresponding Author or
-	<LI>First Author
-	</UL>
+<P>
+<LI>If the Assay = <I>In situ reporter (knock in )</I>, then the Probe does <B>not</B>
+	have to be associated with the Marker being assayed.
+</OL>
+
+<H4>Antibody Preps</H4>
+<OL>
+<LI>If the Assay = <I>In situ reporter (knock in )</I>, then the Antibody does <B>not</B>
+	have to be associated with the Marker being assayed.
 </OL>
 
 <H4>Genotypes</H4>
@@ -242,12 +252,6 @@ There are no restrictions on deleting an Assay record.
 <LI>To edit Genotypes, click the <I>Edit->Genotypes</I> button from the main menu bar.
     See <A HREF="GEIGenotype.html">GXD EDITING INTERFACE: Design and Requirements - Genotypes</A> 
     for more information on using this form.
-<P>
-<LI>When copying the Genotype information from one row to another, the system is actually
-using the same Genotype defintion for both rows.  So, any modification to that Genotype
-definition affects all rows which have copied that Genotype column.  If the user is
-building a new Genotype defintion for the same Strain, then the user should <B>not</B>
-perform a row copy.  The user must bring up the Genotype form and define a new Genotype.
 <P>
 <LI>Genotypes Clipboard
 <OL>
@@ -392,6 +396,8 @@ perform a row copy.  The user must bring up the Genotype form and define a new G
     To copy a column from the previous row, tab through the current row/column.  If a value
     exists in that column in the previous row, then the previous row's value is copied to 
     the current row.
+<LI>If the Gel Lane Control != No, then default the Gel Band Strength of the first Gel Row
+	to <I>Not Applicable</I>.
 <LI>When entering Gel Band Strength or Gel Band Notes, the user must specifically select
     the appropriate Lane column in the Gel Row table.  If the interface cannot determine
     a Lane for the Strength or Note, then an error message will be displayed.
@@ -403,6 +409,36 @@ perform a row copy.  The user must bring up the Genotype form and define a new G
 	    but in this case Gel Bands can only be added for those Gel
 	    Lanes which have been defined prior to the add.
 	</OL>
+</OL>
+
+<H4>Miscellaneous</H4>
+   
+<OL>
+<LI><A HREF="GEIExpressionCache.html">GXD Expression Cache</A>
+<P>
+<LI><I>Copy Column</I><BR>
+	Copies the currently selected cell value to the same column in all rows.
+<P>
+<LI><I>Duplicate Partial (TR 4603)</I><BR>
+	For In Situs, duplicates Assay and Gel Specimen data (does not include Specimen Results)
+	of the currently selected Assay record.<BR>
+	For Blots, duplicates Assay and Gel Lane data (does not include Gel Row/Band)
+	of the currently selected Assay record.<BR>
+<P>
+<LI><I>Duplicate All</I> (TR 4603)<BR>
+	Duplicates all data of the currently selected Assay record.
+<P>
+<LI><I>Add Assay Structures To AD Clipboard (TR 4669)</I><BR>
+	Adds Structures annotated to the currently selected Assay record to the AD Clipboard.
+<P>
+</OL>
+
+<H4>Tracking Records</H4>
+<OL>
+<LI>TR 4603 - expanding the GXD duplication feature
+<LI>TR 4610 - GXD-assay EI "insert row" button
+<LI>TR 4669 - copying structures from GXD assay to AD clipboard
+<LI>TR 3710 - Add 'knock in' as new assay type
 </OL>
 
 </BODY>
