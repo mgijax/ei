@@ -1,7 +1,7 @@
 
 !
 ! VIP init file
-! written: Thu Aug 24 10:28:10 2000
+! written: Tue Aug 29 11:31:16 2000
 !
 
 session_information {
@@ -109,7 +109,7 @@ pcds
 
   load "/home/lec/ei/ei/pcds/MGIMenu.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 120
 
