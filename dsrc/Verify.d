@@ -333,7 +333,7 @@ rules:
 
 		-- XmOptionMenu or Verify
 
-		elsif (editForm.child(i).class_name = "XmRowColumn") then
+		elsif (editForm.child(i).class_name = "XmRowColumn" and editForm.child(i).num_children > 0) then
 
 		  caption := editForm.child(i).name;
 
@@ -403,7 +403,7 @@ rules:
 		-- Use XmRowColumn for XmOptionMenu
 		--
 
-		elsif (editForm.child(i).class_name = "XmRowColumn") then
+		elsif (editForm.child(i).class_name = "XmRowColumn" and editForm.child(i).num_children > 0) then
 		  if (editForm.child(i).required and 
 		      editForm.child(i).menuHistory.searchValue = "%") then
 	            top.allowEdit := false;
