@@ -1394,7 +1394,17 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
-	      results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+
+	      if (tableID = STRAIN) then
+		if (mgi_getstr(dbproc, 3) = NO) then
+	          results.insert(mgi_getstr(dbproc, 2) + ",Non-Standard", results.count + 1);
+		else
+	          results.insert(mgi_getstr(dbproc, 2) + ",Standard", results.count + 1);
+		end if;
+	      else
+	        results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+	      end if;
+
 	      std.insert(mgi_getstr(dbproc, 3), std.count + 1);
 
 	      if (tableID = STRAIN) then
@@ -1454,7 +1464,7 @@ rules:
 	  if (selectedItem >= 0) then
 
 	    -- If private item selected
-	    if (private.count > 0) then
+	    if (verify.verifyPrivate and private.count > 0) then
 	      if (private[selectedItem] = "1") then
                 StatusReport.source_widget := root;
 	        StatusReport.message := "This value is designated as 'private' and cannot be used.\n\n";

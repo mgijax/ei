@@ -76,7 +76,6 @@ devents:
         -- Process Strain Merge Events
         StrainMergeInit :local [];
         StrainMerge :local [];
-        StrainMergeSet :local [];
 
 	PrepareSearch :local [];
 	Search :local [];
@@ -927,34 +926,16 @@ rules:
         StrainMergeInit does
           dialog : widget := top->StrainMergeDialog;
 
-	  dialog->Merge1.set := true;
-	  dialog->Old.sensitive := false;
-	  dialog->Old->Verify->text.value := "";
-	  dialog->Old->StrainID->text.value := "";
+--	  dialog->Merge1.set := true;
+--	  dialog->Old.sensitive := false;
+--	  dialog->Old->Verify->text.value := "";
+--	  dialog->Old->StrainID->text.value := "";
 
 	  -- Default Merge value to currently selected record
 
-	  dialog->New->Verify->text.value := top->Name->text.value;
-	  dialog->New->StrainID->text.value := currentRecordKey;
+--	  dialog->New->Verify->text.value := top->Name->text.value;
+--	  dialog->New->StrainID->text.value := currentRecordKey;
 	  dialog.managed := true;
-	end does;
-
---
--- StrainMergeSet
---
--- Activated from:  dialog->Merge1/Merge2/Merge3, valueChangedCallback
---
--- Sensitize the Old Strain text field based on which Merge was chosen
---
- 
-        StrainMergeSet does
-          dialog : widget := top->StrainMergeDialog;
-
-	  if (dialog->Merge1.set or dialog->Merge2.set) then
-	    dialog->Old.sensitive := false;
-	  else
-	    dialog->Old.sensitive := true;
-	  end if;
 	end does;
 
 --

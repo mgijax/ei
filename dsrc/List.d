@@ -427,6 +427,8 @@ rules:
 	  textWidget : widget;
 	  keyWidget : widget;
 
+	  list_w.row := SelectLookupListItem.item_position;
+
 	  -- If no target specified or no item selected, return
 
 	  if (targetWidget = nil or list_w.selectedItemCount = 0) then
@@ -496,7 +498,6 @@ rules:
                             (string) SelectLookupListItem.selected_items.count);
               (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, keys);
 	    else
-
 	      item := list_w.selectedItems[0];
 
 	      if (item->substr(1, cbPrefix.length) = cbPrefix) then
