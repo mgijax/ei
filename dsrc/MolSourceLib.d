@@ -274,10 +274,10 @@ rules:
 		if (sourceForm->Library.managed) then
                   sourceForm->Library->text.value := mgi_getstr(dbproc, 2);
 		  table := top->Control->ModificationHistory->Table;
-		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
-		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 15));
-		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
-		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 16));
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
 		end if;
 
 		if (sourceForm->mgiCitation.managed) then
@@ -287,13 +287,13 @@ rules:
 		end if;
 
 	        if (DisplayMolecularSource.master) then
-		  top->CreationDate->text.value := mgi_getstr(dbproc, 15);
-		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 16);
+		  top->CreationDate->text.value := mgi_getstr(dbproc, 16);
+		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 17);
                 end if;
 
-                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);
+                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 19);
                 sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 6);
-                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 20);
+                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 21);
                 sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 7);
                 sourceForm->CellLine->text.value := mgi_getstr(dbproc, 12);
                 sourceForm->Description->text.value := mgi_getstr(dbproc, 3);
