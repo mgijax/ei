@@ -367,7 +367,12 @@ rules:
 	  -- Insert for Primers
 
 	  else
-	    cmd := cmd + "NULL,-2,-2," +
+            SetOption.source_widget := top->MolDetailForm->VectorTypeMenu;
+            SetOption.value := "Not Applicable";
+            send(SetOption, 0);
+
+	    cmd := cmd + "NULL,-2," +
+			 top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
                          top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
