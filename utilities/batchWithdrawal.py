@@ -142,6 +142,7 @@ if server is None or \
 # Initialize DBMS parameters
 password = string.strip(open(passwordFile, 'r').readline())
 db.set_sqlLogin(user, password, server, database)
+db.useOneConnection(1)
 
 # Log all SQL commands
 db.set_sqlLogFunction(db.sqlLogAll)
@@ -222,3 +223,4 @@ for line in inputFile.readlines():
 
 		os.system(cmd)
 
+db.useOneConnection(0)

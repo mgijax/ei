@@ -186,7 +186,7 @@ for r in results:
 		         mgi_utils.prvalue(r['cluster_evidence']) + DELIM + \
 		         mgi_utils.prvalue(r['nonmgi_mgiid']) + DELIM + \
 		         mgi_utils.prvalue(r['nonmgi_rep']) + DELIM + \
-		         mgi_utils.prvalue(r['approved_symbol']) + DELIM
+		         mgi_utils.prvalue(r['approved_symbol']) + DELIM)
 
 		printIt = mgi_utils.prvalue(r['approved_name'])
 		if len(printIt) > 0:

@@ -212,6 +212,7 @@ if eventKey not in [WITHDRAWAL, MERGED, ALLELEOF, SPLIT, DELETED]:
 
 # Initialize DBMS parameters
 db.set_sqlLogin(user, password, server, database)
+db.useOneConnection(1)
 
 # Log all SQL commands
 db.set_sqlLogFunction(db.sqlLogAll)
@@ -267,3 +268,4 @@ except db.error:
 	diagFile.close()
 	error('The withdrawal procedure could not be processed.\n' + db.sql_message)
 
+db.useOneConnection(0)
