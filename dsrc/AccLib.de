@@ -36,6 +36,9 @@ SearchAcc [table : widget;		-- Accession Table
 -- Initialize Source Menu History based on Logical DB of current Row
 SetAccSourceMenu [];
 
+-- Verify Accession number in Accession Table; if duplicate, issue warning
+VerifyAcc [];
+
 -- Verify Accession number add in mgiAccessionTable->Table
 VerifyAccAdd [];
 
