@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- jsb 06/21/2001
+--	- removed updateModDate; unnecessary
+--
 -- jsb 05/02/2001
 --	- revised code in Modify so that we can modify basic info without
 --	  also changing the notes (bug introduced recently)
@@ -179,8 +182,6 @@ locals:
 
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
-
-	updateModDate : boolean;	-- Flag whether to update modification date
 
 rules:
 
@@ -480,8 +481,6 @@ rules:
 	  table : widget := top->Reference->Table;
 	  error : boolean := false;
 
-	  updateModDate := true;
-
 	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
@@ -607,13 +606,11 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
 
-	  -- Moved up before the "send" below because we test 'updateModDate'
-	  if (updateModDate and (cmd.length > 0 or set.length > 0)) then
+	  send(ModifyNomenNotes, 0);
+
+	  if (cmd.length > 0 or set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(MRK_NOMEN, currentNomenKey, set);
 	  end if;
-
-	  -- Do this last because it may set updateModDate to false
-	  send(ModifyNomenNotes, 0);
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -677,14 +674,6 @@ rules:
  
 	ModifyNomenNotes does
 	  notew: widget;
-
-	  -- If notes are the only thing being updated, don't update
-	  -- the modification date of the master table
-	  -- else triggers will block the entire transaction
-
-	  if (cmd.length = 0) then
-	    updateModDate := false;
-	  end if;
 
 	  notes.open;
 	  while (notes.more) do
