@@ -52,7 +52,7 @@ Module: MGIMenu
                                 {
                                   MGDPROD = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/prod/runapp mgd\")";
+                                    activateCallback = "D:ForkIt(app = \"runapp mgd\", path = \"prod\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "MGD Production";
@@ -60,7 +60,7 @@ Module: MGIMenu
                                 {
                                   GXDPROD = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/prod/runapp gxd\")";
+                                    activateCallback = "D:ForkIt(app = \"runapp gxd\", path = \"prod\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "GXD Production";
@@ -71,7 +71,7 @@ Module: MGIMenu
                                 {
                                   MGDDEV = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/dev/runapp mgd\")";
+                                    activateCallback = "D:ForkIt(app = \"runapp mgd\", path = \"dev\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "MGD Development";
@@ -79,7 +79,7 @@ Module: MGIMenu
                                 {
                                   GXDDEV = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/dev/runapp gxd\")";
+                                    activateCallback = "D:ForkIt(app = \"runapp gxd\", path = \"dev\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "GXD Development";
