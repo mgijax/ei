@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Dec 17 12:35:27 2004";
+      lastWritten = "Thu Jan 13 10:05:06 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -847,9 +847,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1437,9 +1434,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WashU = AccToggle;
-                                                  }
-                                                  {
-                                                    LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
@@ -2876,9 +2870,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2933,13 +2924,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
