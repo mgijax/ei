@@ -1633,7 +1633,7 @@ rules:
 
               -- Process Gel Lane Structures
 
-              ModifyStructure.source_widget := top;
+              ModifyStructure.source_widget := table;
               ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
               ModifyStructure.key := "@" + keyName;
               ModifyStructure.row := row;
@@ -1666,7 +1666,7 @@ rules:
 
                 -- Process Gel Lane Structures
   
-                ModifyStructure.source_widget := top;
+                ModifyStructure.source_widget := table;
                 ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
                 ModifyStructure.key := key;
                 ModifyStructure.row := row;
