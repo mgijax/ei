@@ -1,3 +1,10 @@
+TAG: ei-2-5-8
+DATE: 09/12/2000
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) TR 1937; nlm.py fix to strip out numerics from author names
+
 TAG: ei-2-5-7
 DATE: 09/06/2000
 STAFF: lec
