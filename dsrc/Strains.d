@@ -433,6 +433,13 @@ rules:
           note2 := mgi_tblGetCell(table, row, table.note2);
           note3 := mgi_tblGetCell(table, row, table.note3);
  
+	  if (not allow_only_digits(reference)) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Reference column only accepts numerical value.";
+            send(StatusReport);
+            return;
+	  end if;
+
 	  if (ModifyStrainNote.add) then
 	      cmd := cmd + mgi_DBinsert(MLP_NOTES, NOKEY) + 
 		     currentRecordKey + "," + 
@@ -535,6 +542,42 @@ rules:
 	      where := where + "\nand st.strainType like " + mgi_DBprstr(value);
 	      from_types := true;
 	    end if;
+	  end if;
+
+	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.andor);
+	  if (value.length > 0) then
+	    where := where + "\nand n.andor like " + mgi_DBprstr(value);
+	    from_notes := true;
+	  end if;
+
+	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.reference);
+	  if (value.length > 0) then
+	    where := where + "\nand n.reference = " + mgi_DBprkey(value);
+	    from_notes := true;
+	  end if;
+
+	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.dataset);
+	  if (value.length > 0) then
+	    where := where + "\nand n.dataset like " + mgi_DBprstr(value);
+	    from_notes := true;
+	  end if;
+
+	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.note1);
+	  if (value.length > 0) then
+	    where := where + "\nand n.note1 like " + mgi_DBprstr(value);
+	    from_notes := true;
+	  end if;
+
+	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.note2);
+	  if (value.length > 0) then
+	    where := where + "\nand n.note2 like " + mgi_DBprstr(value);
+	    from_notes := true;
+	  end if;
+
+	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.note3);
+	  if (value.length > 0) then
+	    where := where + "\nand n.note3 like " + mgi_DBprstr(value);
+	    from_notes := true;
 	  end if;
 
 	  if (from_notes) then
