@@ -128,10 +128,12 @@ reportType = sys.argv[1]
 format = sys.argv[2]
 
 if reportType == "dynamic":
+	name = "Bibliographic"
 	title = 'Bibliographic References'
 	cmd = sys.argv[3]
 
 elif reportType == "dup":
+	name = "DupRef"
 	title = 'Duplicate References excluding Mouse News Letter & Guidi'
 	cmd = 'select _Refs_key from BIB_All_View ' + \
 	'where (jnum < 5001 or jnum > 11810) and journal != "Mouse News Lett" ' + \
@@ -139,12 +141,13 @@ elif reportType == "dup":
 	'order by _primary, journal, year'
 
 elif reportType == "dupall":
+	name = "DupRefAll"
 	title = 'All Duplicate References'
 	cmd = 'select _Refs_key from BIB_All_View ' + \
 	'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
 	'order by _primary, journal, year'
 
-fp = reportlib.init(sys.argv[0], title, os.environ['EIREPORTDIR'])
+fp = reportlib.init(name, title, os.environ['EIREPORTDIR'])
 process_ref(fp, cmd, format)
 reportlib.finish_nonps(fp)
 
