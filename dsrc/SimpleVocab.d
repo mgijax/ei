@@ -28,6 +28,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];		-- Initialize form
 	Add :local [];					-- Add record
+	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
 	Exit :local [];					-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
@@ -70,6 +71,9 @@ rules:
 	  -- Create the widget hierarchy in memory
 	  top := create widget("SimpleVocabModule", nil, mgi);
 
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
+
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
           ab : widget := mgi->mgiModules->(top.activateButtonName);
@@ -83,6 +87,25 @@ rules:
 	  send(Init, 0);
 
 	  (void) reset_cursor(mgi);
+	end does;
+
+--
+-- BuildDynamicComponents
+--
+-- Activated from:  devent SimpleVoc
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+	  -- Dynamically create Menus
+
+	  InitOptionMenu.option := top->ACCLogicalMenu;
+	  send(InitOptionMenu, 0);
+
 	end does;
 
 --
@@ -139,7 +162,9 @@ rules:
  
           cmd := mgi_setDBkey(VOC_VOCAB, NEWKEY, KEYNAME) +
                  mgi_DBinsert(VOC_VOCAB, KEYNAME) +
-		 top->mgiCitation->ObjectID->text.value + ",1," +
+		 top->mgiCitation->ObjectID->text.value + "," +
+		 top->ACCLogicalMenu->menuHistory.defaultValue + "," +
+		 top->ACCPrivate->menuHistory.defaultValue + ",1," +
 		 mgi_DBprstr(top->Name->text.value) + ")\n";
 
 	  send(ModifyTerm, 0);
@@ -511,19 +536,25 @@ rules:
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Name->text.value         := mgi_getstr(dbproc, 4);
+	        top->Name->text.value         := mgi_getstr(dbproc, 6);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
-	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 7);
-	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 9);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 5);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
+	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 9);
+	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 11);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 7);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 8);
+                SetOption.source_widget := top->ACCLogicalMenu;
+                SetOption.value := mgi_getstr(dbproc, 3);
+                send(SetOption, 0);
+                SetOption.source_widget := top->ACCPrivateMenu;
+                SetOption.value := mgi_getstr(dbproc, 5);
+                send(SetOption, 0);
 	      elsif (results = 2) then
 		table := top->Term->Table;
 		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(table, row, table.abbreviation, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
