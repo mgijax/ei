@@ -1358,7 +1358,7 @@ rules:
                   cmd := cmd + mgi_DBincKey(keyName);
                 end if;
 
-		if (deleteAuto) then
+		if (deleteAuto and refsCurrentKey.length > 0) then
 		   cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
 		          "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
 		end if;
