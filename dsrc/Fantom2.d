@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 03/27/2002	lec
+--	- added PasteDoneCuration
+--
 -- 03/20/2002	lec
 --	- fixed "not" search
 --
@@ -38,10 +41,11 @@ devents:
 	ClearFantom2 :local [reset : boolean := false;];-- Local Clear 
 	CopyColumn :local [];				-- Copies Select Column to all Rows
 	CopyGBAtoFinal :local [];			-- Copies GBA MGI ID fields to Final
-	CopyToNote :local [];			-- Copies Option to Nomen Note
+	CopyToNote :local [];				-- Copies Option to Nomen Note
 	Exit :local [];					-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
+	PasteDoneCuration :local [];            	-- Paste "done" in Curation Cells
 	PasteValue :local [value : string;];            -- Paste value in current cell
 	PrepareSearch :local [doCount : boolean := false;];-- Construct SQL search clause
 	SearchCount :local [];				-- Return Count only
@@ -1175,6 +1179,54 @@ rules:
 	    top->NoteDialog->Note->text.value := 
 		value + CopyToNote.source_widget.defaultValue;
 	  end if;
+	end does;
+
+--
+-- PasteDoneCuration
+--
+-- Paste the "done" into Cluster Analysis, Gene Name Curation, CDS/GO curation
+-- where the cell value = 'zilch'
+-- for ALL non-empty rows in table
+--
+--
+
+        PasteDoneCuration does
+	  i : integer := 0;
+	  modifiedRow : boolean;
+
+	  while (i < mgi_tblNumRows(fantom)) do
+
+	    -- break when empty row is found
+            if (mgi_tblGetCell(fantom, i, fantom.editMode) = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+
+	    modifiedRow := false;
+
+	    if (mgi_tblGetCell(fantom, i, fantom.clusterAnal) = "zilch") then
+	      (void) mgi_tblSetCell(fantom, i, fantom.clusterAnal, "done");
+	      modifiedRow := true;
+	    end if;
+
+	    if (mgi_tblGetCell(fantom, i, fantom.geneNameCuration) = "zilch") then
+	      (void) mgi_tblSetCell(fantom, i, fantom.geneNameCuration, "done");
+	      modifiedRow := true;
+	    end if;
+
+	    if (mgi_tblGetCell(fantom, i, fantom.cdsGOCuration) = "zilch") then
+	      (void) mgi_tblSetCell(fantom, i, fantom.cdsGOCuration, "done");
+	      modifiedRow := true;
+	    end if;
+
+	    if (modifiedRow) then
+	      CommitTableCellEdit.source_widget := fantom;
+	      CommitTableCellEdit.row := i;
+	      CommitTableCellEdit.value_changed := true;
+	      send(CommitTableCellEdit, 0);
+	    end if;
+
+	    i := i + 1;
+	  end while;
 	end does;
 
 --
