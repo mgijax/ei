@@ -31,4 +31,4 @@ PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:/usr/ucb:/usr/local/bin
 
 umask 022
 
-exec $APP >> $USERLOG
+exec $APP >> $USERLOG 2>&1
