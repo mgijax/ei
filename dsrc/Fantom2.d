@@ -681,7 +681,6 @@ rules:
  	    send(PrepareSearch, 0);
 	  end if;
 
-          send(ClearFantom2, 0);
 	  cmd := select + from + where + orderBy;
 	  (void) mgi_writeLog(cmd + "\n");
           dbproc : opaque := mgi_dbopen();
@@ -777,7 +776,6 @@ rules:
  	    send(PrepareSearch, 0);
 	  end if;
 
-          send(ClearFantom2, 0);
 	  cmd := select + from + where + orderBy;
 	  (void) mgi_writeLog(cmd + "\n");
 
