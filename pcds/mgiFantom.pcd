@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Feb 26 09:11:54 2002";
+      lastWritten = "Tue Feb 26 14:08:37 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -644,6 +644,12 @@ Module: mgiFantom
                                     labelString = "NOT search";
                                 }
                                 {
+                                  zilch = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:PasteZilch,\nD:GoHome";
+                                    labelString = "Paste \"Zilch\" in Cell";
+                                }
+                                {
                                   copyGBAtoFinal = push : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Copy RA MGI ID\nto Final MGI ID";
@@ -807,7 +813,7 @@ Module: mgiFantom
               {
                 sortMenuPulldown : OptionPulldown = OptionPulldown : mgiOption;
                     {
-                      column5 = ColumnToggle : mgiFantom;
+                      column6 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Riken Seq ID";
                       Group: User
@@ -815,7 +821,7 @@ Module: mgiFantom
                         columnValue = 6;
                     }
                     {
-                      column6 = ColumnToggle : mgiFantom;
+                      column7 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Riken Clone ID";
                       Group: User
@@ -823,7 +829,7 @@ Module: mgiFantom
                         columnValue = 7;
                     }
                     {
-                      column7 = ColumnToggle : mgiFantom;
+                      column8 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "GenBank ID";
                       Group: User
@@ -831,7 +837,7 @@ Module: mgiFantom
                         columnValue = 8;
                     }
                     {
-                      column8 = ColumnToggle : mgiFantom;
+                      column9 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "GBA MGI ID";
                       Group: User
@@ -839,7 +845,7 @@ Module: mgiFantom
                         columnValue = 9;
                     }
                     {
-                      column9 = ColumnToggle : mgiFantom;
+                      column10 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "GBA Symbol";
                       Group: User
@@ -847,7 +853,7 @@ Module: mgiFantom
                         columnValue = 10;
                     }
                     {
-                      column10 = ColumnToggle : mgiFantom;
+                      column11 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Seq Length";
                       Group: User
@@ -855,7 +861,7 @@ Module: mgiFantom
                         columnValue = 11;
                     }
                     {
-                      column11 = ColumnToggle : mgiFantom;
+                      column12 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Seq Note";
                       Group: User
@@ -863,7 +869,7 @@ Module: mgiFantom
                         columnValue = 12;
                     }
                     {
-                      column12 = ColumnToggle : mgiFantom;
+                      column13 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Seq Quality";
                       Group: User
@@ -871,7 +877,7 @@ Module: mgiFantom
                         columnValue = 13;
                     }
                     {
-                      column13 = ColumnToggle : mgiFantom;
+                      column14 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Locus ID";
                       Group: User
@@ -879,7 +885,7 @@ Module: mgiFantom
                         columnValue = 14;
                     }
                     {
-                      column14 = ColumnToggle : mgiFantom;
+                      column15 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "TIGER TC";
                       Group: User
@@ -887,7 +893,7 @@ Module: mgiFantom
                         columnValue = 15;
                     }
                     {
-                      column15 = ColumnToggle : mgiFantom;
+                      column16 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Unigene ID";
                       Group: User
@@ -895,7 +901,7 @@ Module: mgiFantom
                         columnValue = 16;
                     }
                     {
-                      column16 = ColumnToggle : mgiFantom;
+                      column17 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Riken Cluster ID";
                       Group: User
@@ -903,7 +909,7 @@ Module: mgiFantom
                         columnValue = 17;
                     }
                     {
-                      column17 = ColumnToggle : mgiFantom;
+                      column18 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Locus Status";
                       Group: User
@@ -911,7 +917,7 @@ Module: mgiFantom
                         columnValue = 18;
                     }
                     {
-                      column18 = ColumnToggle : mgiFantom;
+                      column19 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "MGI Status";
                       Group: User
@@ -919,7 +925,7 @@ Module: mgiFantom
                         columnValue = 19;
                     }
                     {
-                      column19 = ColumnToggle : mgiFantom;
+                      column20 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "MGI #";
                       Group: User
@@ -927,7 +933,7 @@ Module: mgiFantom
                         columnValue = 20;
                     }
                     {
-                      column20 = ColumnToggle : mgiFantom;
+                      column21 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "BLAST Hit";
                       Group: User
@@ -935,7 +941,7 @@ Module: mgiFantom
                         columnValue = 21;
                     }
                     {
-                      column21 = ColumnToggle : mgiFantom;
+                      column22 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "BLAST Expect";
                       Group: User
@@ -943,7 +949,7 @@ Module: mgiFantom
                         columnValue = 22;
                     }
                     {
-                      column22 = ColumnToggle : mgiFantom;
+                      column23 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Auto Annotation";
                       Group: User
@@ -951,7 +957,7 @@ Module: mgiFantom
                         columnValue = 23;
                     }
                     {
-                      column23 = ColumnToggle : mgiFantom;
+                      column24 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Info Annotation";
                       Group: User
@@ -959,7 +965,7 @@ Module: mgiFantom
                         columnValue = 24;
                     }
                     {
-                      column24 = ColumnToggle : mgiFantom;
+                      column25 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Cat ID";
                       Group: User
@@ -967,7 +973,7 @@ Module: mgiFantom
                         columnValue = 25;
                     }
                     {
-                      column25 = ColumnToggle : mgiFantom;
+                      column26 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Final MGI ID";
                       Group: User
@@ -975,7 +981,7 @@ Module: mgiFantom
                         columnValue = 26;
                     }
                     {
-                      column26 = ColumnToggle : mgiFantom;
+                      column27 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Final Symbol 1";
                       Group: User
@@ -983,7 +989,7 @@ Module: mgiFantom
                         columnValue = 27;
                     }
                     {
-                      column27 = ColumnToggle : mgiFantom;
+                      column28 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Final Name 1";
                       Group: User
@@ -991,7 +997,7 @@ Module: mgiFantom
                         columnValue = 28;
                     }
                     {
-                      column28 = ColumnToggle : mgiFantom;
+                      column29 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Final Symbol 2";
                       Group: User
@@ -999,12 +1005,19 @@ Module: mgiFantom
                         columnValue = 29;
                     }
                     {
-                      column29 = ColumnToggle : mgiFantom;
+                      column30 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Final Name 2";
                       Group: User
                         dbField = final_name2;
                         columnValue = 30;
+                    }
+                    {
+                      column5 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Row #";
+                      Group: User
+                        columnValue = 5;
                     }
                     {
                       nocolumn = ColumnToggle : mgiFantom;
