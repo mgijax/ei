@@ -925,6 +925,7 @@ rules:
 	             "\nor m.proposedName like " + mgi_DBprstr(top->SymbolName->text.value) +
 	             "\nor m.approvedSymbol like " + mgi_DBprstr(top->SymbolName->text.value) +
 	             "\nor m.approvedName like " + mgi_DBprstr(top->SymbolName->text.value);
+	    printSelect := printSelect + "\nApproved Symbol/Proposed Symbol/Approved Name/ProposedName = \n" + top->SymbolName->text.value;
 	    from_editornotes := false;
 	    from_coordnotes := false;
 	    from_other := false;
