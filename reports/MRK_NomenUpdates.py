@@ -105,24 +105,3 @@ fp.write('\n(%d rows affected)\n' % (rows))
 reportlib.trailer(fp, isHTML = 1)
 reportlib.finish_nonps(fp)	# non-postscript file
 
-#
-# Send mail
-#
-
-#RECEPIENT="mgi-list"
-FROM="webmaster.informatics.jax.org"
-RECEPIENT="lec@informatics.jax.org"
-
-msg = 'From: %s\n' % (FROM) + \
-      'To:  %s\n' % (RECEPIENT) + \
-      'Subject:  MGI Nomenclature Updates\n\n' + \
-      '%d nomenclature changes processed.\n\n' % (rows) + \
-      'For details, see:\n' + \
-      '\tftp://ftp.informatics.jax.org/pub/informatics/reports/Nomenclature-current.html\n\n' + \
-      'For archives of previous changes, see:\n' + \
-      '\tftp://ftp.informatics.jax.org/pub/informatics/reports/archive/nomen\n\n'
-
-fd = os.popen('%s -t' % ('/usr/lib/sendmail'), 'w')
-fd.write(msg)
-fd.close()
-
