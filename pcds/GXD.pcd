@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 11 10:20:47 2001";
+      lastWritten = "Wed Jul 11 10:50:52 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -468,6 +468,8 @@ Module: GXD
                                               text = text;
                                               Group: Widget
                                                 valueChangedCallback = "D:SetModify\nD:DisplayMolecularSource";
+                                              Group: User
+                                                required = True;
                                             }
                                       }
                                       {
@@ -483,6 +485,8 @@ Module: GXD
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyMGIAcc() DisplayAntigenSource()";
+                                              Group: User
+                                                required = True;
                                             }
                                       }
                                       {
@@ -496,6 +500,8 @@ Shift<Key>Tab: prev-tab-group()
                                               text = text;
                                               Group: Widget
                                                 columns = 40;
+                                              Group: User
+                                                required = True;
                                             }
                                       }
                                 }
