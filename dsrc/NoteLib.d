@@ -41,7 +41,7 @@ devents:
 rules:
 
 --
--- ClearNoteForm
+-- ClearSetNoteForm
 --
 -- if clearNote is True
 -- 	Clears Note value
@@ -51,9 +51,9 @@ rules:
 -- Sets Note Display Color
 --
 
-	ClearNoteForm does
-	  notew : widget := ClearNoteForm.notew;
-	  clearNote : boolean := ClearNoteForm.clearNote;
+	ClearSetNoteForm does
+	  notew : widget := ClearSetNoteForm.notew;
+	  clearNote : boolean := ClearSetNoteForm.clearNote;
 
 	  i : integer := 1;
 	  while (i <= notew.numChildren) do
@@ -129,8 +129,8 @@ rules:
 	  note : string;
 	  i : integer;
 
-	  ClearNoteForm.notew := notew;
-	  send(ClearNoteForm, 0);
+	  ClearSetNoteForm.notew := notew;
+	  send(ClearSetNoteForm, 0);
 
           cmd : string := "select _NoteType_key, note, sequenceNum" +
 	  	" from " + mgi_DBtable(tableID) +
@@ -190,9 +190,9 @@ rules:
 
 	  -- Set Notes Display
 
-	  ClearNoteForm.notew := notew;
-	  ClearNoteForm.clearNote := false;
-	  send(ClearNoteForm, 0);
+	  ClearSetNoteForm.notew := notew;
+	  ClearSetNoteForm.clearNote := false;
+	  send(ClearSetNoteForm, 0);
 	end does;
 
 --
@@ -220,7 +220,7 @@ rules:
 
 	    if (textw->Note->text.required and textw->Note->text.value.length = 0) then
               StatusReport.source_widget := notew.top;
-              StatusReport.message := textw->Note.noteType + " Notes are Required.\n";
+              StatusReport.message := textw->Note.noteType + " Notes are Required.";
               send(StatusReport, 0);
 	      notew.top.allowEdit := false;
 	      return;
@@ -233,6 +233,70 @@ rules:
 	    notew.sql := notew.sql + textw->Note.sql;
 	    i := i + 1;
 	  end while;
+	end does;
+
+--
+-- SearchNoteForm
+--
+--	Formulates 'from' and 'where' clause for searching
+--	mgiNoteForm.
+--
+--	Searches for any text in all Note fields if noteTypeKey < 0.
+--	To search for a specifc noteType, set SearchNoteForm.noteTypeKey
+--	to the appropriate value.
+--
+--	'notew.sqlFrom' and 'notew.sqlWhere' are initialized
+--	and are to be used by the calling module to help formulate
+--	the appropriate SQL query based on user input into the
+--	editing form.  
+--
+--	An example:
+--
+--	notew.sqlFrom = ,ALL_Note_View note
+--	notew.sqlWhere = and note.note like '%blah%'
+--                       and a._Allele_key = note._Allele_key
+--
+
+        SearchNoteForm does
+	  notew : widget := SearchNoteForm.notew;
+	  noteTypeKey : integer := SearchNoteForm.noteTypeKey;
+	  tableID : integer := SearchNoteForm.tableID;
+	  join : string := SearchNoteForm.join;
+	  tableTag : string := SearchNoteForm.tableTag;
+	  textw : widget;
+ 
+	  notew.sqlFrom := "";
+	  notew.sqlWhere := "";
+
+	  i : integer := 1;
+	  while (i <= notew.numChildren) do
+	    textw := notew.child(i);
+
+	    if (textw->text.value.length > 0) then
+	      if ((noteTypeKey > 0 and noteTypeKey = textw->Note.noteTypeKey) or
+		   noteTypeKey < 0) then
+
+	        notew.sqlWhere := notew.sqlWhere + "\nand " +
+			  tableTag + ".note like " + mgi_DBprstr(textw->text.value);
+
+	        if (noteTypeKey > 0) then
+		  notew.sqlWhere := notew.sqlWhere + "\nand " +
+			  tableTag + "._NoteType_key = " + (string) noteTypeKey;
+		end if;
+	      end if;
+	    end if;
+
+	    i := i + 1;
+	  end while;
+
+	  if (notew.sqlWhere.length > 0) then
+	    notew.sqlFrom :=  "," + mgi_DBtable(tableID) + " " + tableTag;
+	  end if;
+
+	  if (notew.sqlWhere.length > 0) then
+	    notew.sqlWhere := notew.sqlWhere + "\nand " + tableTag + "." + 
+		mgi_DBkey(tableID) + " = " + join;
+	  end if;
 	end does;
 
 --

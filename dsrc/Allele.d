@@ -722,6 +722,19 @@ rules:
 	  from := from + top->Reference->Table.sqlFrom;
 	  where := where + top->Reference->Table.sqlWhere;
 
+	  -- To search each note type individually...
+	  i : integer := 1;
+	  while (i <= top->mgiNoteForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := ALL_NOTE_VIEW;
+            SearchNoteForm.join := "a." + mgi_DBkey(ALL_ALLELE);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+	    i := i + 1;
+	  end while;
+
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "a";
 	  send(QueryModificationHistory, 0);
