@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 16 12:31:27 2001";
+      lastWritten = "Wed Mar 14 10:54:23 2001";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -567,8 +567,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
