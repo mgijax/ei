@@ -41,8 +41,8 @@
 #	The NLM input file contains records in the following format:
 #	(a record ID, list of export tags and data)
 #
-#	UI  - Medline unique identifier
 #	PMID- PubMed unique identifier
+#	UI  - Medline unique identifier
 #	AU  - list of authors in format (NAME II; NAME II; ...)
 #	TI  - title of article
 #	TA  - journal
@@ -85,6 +85,9 @@
 #        	_primary PAU	primary author
 #
 # History
+#
+#	lec	-9/17/2003
+#	- TR 5148; format changed PMID is listed before UI
 #
 #	lec	03/27/2001
 #	- pmiKey should be pmidKey
@@ -554,7 +557,7 @@ def doUpdate(rec, rectags):
 
 		# Update/Add Medline UI
 
-        	if rec['UI'] != '"0"':
+        	if rec.has_key('UI'):
 			if uiKey is not None:
           			cmd.append('exec ACC_update %s,%s' % (uiKey, rec['UI']))
 			else:	
@@ -630,7 +633,7 @@ def doAdd(rec, rectags):
 		cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
 			% (rec['PMID'], PUBMEDKEY, MGITYPE))
 
-	if rec['UI'] != '"0"':
+	if rec.has_key('UI'):
         	cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
 			% (rec['UI'], MEDLINEKEY, MGITYPE))
  
@@ -749,9 +752,9 @@ def processFile():
 
 	while line:
 
-		# Find start of new record by looking for line containing 'UI  -'
+		# Find start of new record by looking for line containing 'PMID  -'
 
-		if regex.match('UI  -', line) > 0:
+		if regex.match('PMID-', line) > 0 or regex.match('PMID  -', line) > 0:
 			if newRec:	# Found new record, process current one
 				processRec(rec, rectags)
 				rec = {}	# re-set the dictionary
