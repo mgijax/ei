@@ -18,6 +18,8 @@
 --
 -- lec 03/20/2001
 --	- TR 1939; VerifyAllele; status must be approved to be valid
+--	- VerifyNomenMarker; created
+--	- VerifyMarker; added allowNomen parameter
 --
 -- lec 12/19/2000
 --	- TR 2128; VerifyChromosome; raise case
@@ -2163,6 +2165,18 @@ rules:
 		"' is not cross-referenced to this " + accLabel + "\n\n";
             send(StatusReport);
 	  end if;
+	end does;
+
+--
+-- VerifyNomenMarker
+--
+-- Call VerifyMarker() (a translation) with allowNomen = true
+--
+
+	VerifyNomenMarker does
+	  VerifyMarker.source_widget := VerifyNomenMarker.source_widget;
+	  VerifyMarker.allowNomen := true;
+	  send(VerifyMarker, 0);
 	end does;
 
 --

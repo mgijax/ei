@@ -45,6 +45,8 @@ VerifyMarkerChromosome :translation [allowMismatch : boolean := true;];
 
 VerifyMarkerInTable :translation [];
 
+VerifyNomenMarker : translation [];
+
 VerifyProbeHolder :translation [];
 
 VerifyReference :translation [];
