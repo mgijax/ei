@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Mar 14 09:07:53 2001";
+      lastWritten = "Wed Mar 14 09:23:00 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -6745,8 +6745,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
                                                     Group: User
                                                       private = True;
                                                   }
