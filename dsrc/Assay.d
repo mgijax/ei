@@ -1605,7 +1605,7 @@ rules:
 		     ageMax + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
 	    	     mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + ")\n" +
-		     "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_GELLANE) + ", @" + keyName + "\n";
+		     "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_GELLANE) + "', @" + keyName + "\n";
 
               -- Process Gel Lane Structures
 
@@ -1635,9 +1635,9 @@ rules:
                           "sex = " + mgi_DBprstr(sexKey) + "," +
                           "age = " + mgi_DBprstr(ageKey) + "," +
 	    	          "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) +
-		          "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_GELLANE) + "," + key + "\n";
-                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
+	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
+                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update) +
+		          "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_GELLANE) + "'," + key + "\n";
 
                 -- Process Gel Lane Structures
   
