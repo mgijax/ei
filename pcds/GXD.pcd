@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 17 15:09:10 2004";
+      lastWritten = "Mon Jun 28 08:11:39 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -820,10 +820,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     J = AccToggle;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
+                                                    PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PubMed = AccToggle : mgiOption;
+                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -1312,10 +1312,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     J = AccToggle;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
+                                                    PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PubMed = AccToggle : mgiOption;
+                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -2737,10 +2737,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     J = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Medline = AccToggle : mgiOption;
+                                                    PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PubMed = AccToggle : mgiOption;
+                                                    Medline = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;

@@ -27,9 +27,6 @@ ModifyOptionChild [pulldown : widget;		-- Option Pulldown
 		   key : string;		-- Key value
 		   labelString : string;];	-- Label
 
--- Initialize DataSets
-InitDataSets [source_widget : widget;];
-
 -- Initialize ComboBox Menu
 InitComboMenu [option : widget;];		-- Combo Menu
 

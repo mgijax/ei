@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 17 10:37:35 2004";
+      lastWritten = "Mon Jun 28 11:13:43 2004";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -518,9 +518,6 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 2340;
               {
                 DataSetsForm = XmForm;
-                Group: Widget
-                  rubberPositioning = False;
-                  resizePolicy = resize_any;
                     {
                       RefDBSStatus = RefDBSStatus : mgiTable;
                       Group: Constraint
@@ -583,12 +580,13 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             ChoiceBox = XmRowColumn;
                                 {
-                                  Equals = toggle : mgiDataTypes;
+                                  AND = toggle : mgiDataTypes;
                                 }
                                 {
-                                  Contains = toggle : mgiDataTypes;
+                                  OR = toggle : mgiDataTypes;
                                   Group: Widget
-                                    labelString = "Contains (default)";
+                                    labelString = "OR (default)";
+                                    set = True;
                                 }
                           }
                     }

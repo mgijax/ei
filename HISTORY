@@ -1,3 +1,14 @@
+TAG: ?
+DATE: 06/18/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) TR 5810, 5523, 5702 (IMG_Image, PRB_Probe, PRB_Reference)
+3) TR 5750/Allele Types (new sort)
+4) GXD EI; added ADClipboardAddAll to AD EI
+5) Genotype EI: TR 5907
+
 TAG: ei-11-0-64
 TAG: ei-11-0-63
 TAG: ei-11-0-62

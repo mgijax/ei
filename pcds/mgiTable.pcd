@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 12:46:06 2004";
+      lastWritten = "Mon Jun 28 10:06:23 2004";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -388,16 +388,17 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  xrtTblNumColumns = 5;
-                  xrtTblColumnLabels = "Mode,Selected,Used,Not Used,Never Used";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1 8)(all 2 4)(all 3 8)(all 4 10)";
-                  xrtTblSelectCallback = "D:VerifyDBSStatus";
+                  xrtTblNumColumns = 8;
+                  xrtTblColumnLabels = "Mode,DS Key,Prod,Assoc Key,Selected,Used,Not Used,Never Used";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 4 8)(all 5 4)(all 6 8)(all 7 10)";
+                  xrtTblSelectCallback = "D:VerifyDataSetsStatus";
                   xrtTblSelectedBackground = None;
                   xrtTblSelectedForeground = None;
                   xrtTblSelectionPolicy = select_single;
-                  xrtTblEditableSeries = "(all all False)(all 1 True)(all 4 True)";
+                  xrtTblEditableSeries = "(all all False)(all 4 True)(all 7 True)";
                   xrtTblTraversableSeries = "(all all False)";
-                  userDefinedAttributes = "selected:Int(Int)=\"1\"\nused:Int(Int)=\"2\"\nnotUsed:Int(Int)=\"3\"\nneverUsed:Int(Int)=\"4\"\ndataSets:String(String)\ntableIDs:String(String)\nbeginX:Int\nendX:Int\n";
+                  userDefinedAttributes = "selected:Int(Int)=\"4\"\nused:Int(Int)=\"5\"\nnotUsed:Int(Int)=\"6\"\nneverUsed:Int(Int)=\"7\"\nexistsProc:Int(Int)=\"2\"\nbeginX:Int(Int)\nendX:Int(Int)\ndataSetKey:Int(Int)=\"1\"\nassocKey:Int(Int)=\"3\"\n";
+                  xrtTblPixelWidthSeries = "(all 0-3 0)";
               }
               {
                 AddRow = TablePush;
@@ -418,15 +419,16 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  xrtTblNumColumns = 3;
-                  xrtTblColumnLabels = "Mode,Selected,Never Used";
-                  xrtTblCharWidthSeries = "(all label 20)(all 0 1)(all 1 8)(all 2 10)";
+                  xrtTblNumColumns = 5;
+                  xrtTblColumnLabels = "Mode,Key,Key,Selected,Never Used";
+                  xrtTblCharWidthSeries = "(all label 20)(all 0 1)(all 3 8)(all 4 10)";
                   xrtTblSelectCallback = "D:SetCellToX";
                   xrtTblSelectedBackground = None;
                   xrtTblSelectedForeground = None;
                   xrtTblSelectionPolicy = select_single;
                   xrtTblTraversableSeries = "(all all False)";
-                  userDefinedAttributes = "selected:Int(Int)=\"1\"\nneverUsed:Int(Int)=\"2\"\ndataSets:String(String)\nbeginX:Int=\"1\"\nendX:Int=\"2\"\n";
+                  userDefinedAttributes = "selected:Int(Int)=\"3\"\nneverUsed:Int(Int)=\"4\"\nexistsProc:String(String)\nbeginX:Int(Int)=\"3\"\nendX:Int(Int)=\"4\"\ndataSetKey:Int(Int)=\"1\"\nassocKey:Int(Int)=\"2\"\n";
+                  xrtTblPixelWidthSeries = "(all 0-2 0)";
               }
               {
                 AddRow = TablePush;

@@ -598,6 +598,9 @@ char *mgi_DBkey(int table)
     case BIB_NOTES:
             strcpy(buf, "_Refs_key");
 	    break;
+    case BIB_DATASET_ASSOC:
+	    strcpy(buf, "_Assoc_key");
+	    break;
     case BIB_REVIEW_STATUS:
             strcpy(buf, "_ReviewStatus_key");
 	    break;
@@ -1212,6 +1215,9 @@ char *mgi_DBtable(int table)
 	    break;
     case BIB_REVIEW_STATUS:
             strcpy(buf, "BIB_ReviewStatus");
+	    break;
+    case BIB_DATASET_ASSOC:
+            strcpy(buf, "BIB_DataSet_Assoc");
 	    break;
     case CROSS:
             strcpy(buf, "CRS_Cross");
@@ -2001,6 +2007,10 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (%s, book_au, book_title, place, publisher, series_ed)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case BIB_DATASET_ASSOC:
+	    sprintf(buf, "insert %s (%s, _Refs_key, _DataSet_key, isNeverUsed, _CreatedBy_key, _ModifiedBy_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case BIB_NOTES:
     case MLD_NOTES:
     case MLD_EXPT_NOTES:
@@ -2497,6 +2507,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
 		mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
       case ALL_ALLELE:
+      case BIB_REFS:
+      case BIB_DATASET_ASSOC:
       case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:
@@ -2544,6 +2556,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
     switch (table)
     {
       case ALL_ALLELE:
+      case BIB_REFS:
+      case BIB_DATASET_ASSOC:
       case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:

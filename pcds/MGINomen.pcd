@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 12:46:08 2004";
+      lastWritten = "Mon Jun 28 08:11:35 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -413,10 +413,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     J = AccToggle;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
+                                                    PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PubMed = AccToggle : mgiOption;
+                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -705,10 +705,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     J = AccToggle;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
+                                                    PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    PubMed = AccToggle : mgiOption;
+                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
