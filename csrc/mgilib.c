@@ -2498,6 +2498,9 @@ char *mgi_DBrefstatus(int key, int table)
     case GXD_INDEX:
 	sprintf(cmd, "exec BIB_GXD_Exists %d", key);
 	break;
+    case GO_DATAEVIDENCE:
+	sprintf(cmd, "exec BIB_GO_Exists %d", key);
+	break;
   }
 
   return(mgi_sql1(cmd));
