@@ -6,7 +6,6 @@ MGI: Reversing a Marker Withdrawal
 </HEADER>
 
 <BODY>
-<!--#include file="include.html"-->
 
 <H2>MGI: Reversing a Marker Withdrawal</H2>
 
@@ -72,7 +71,7 @@ The Broadcast program processes all Marker withdrawals, both those initiated fro
 Nomenclature database and those initiated from the Marker Editing form.  The Broadcast
 process outputs several files to the Broadcast archive directory:
     <PRE>
-    <A HREF="http://titan/~lec/mgireport/BROADCAST/">titan:/export/mgd/mgireport/BROADCAST</A>
+    <A HREF="http://titan/~lec/mgireport/BROADCAST/">titan:/usr/local/mgi/ei/mgd/mgireport/BROADCAST</A>
     </PRE>
 <P>
 If the files cannot be found in the archive directory, then check the directory:
@@ -127,7 +126,7 @@ the state of the Markers prior to the withdrawal:
 <LI>If the withdrawal occurred <B>today</B>, then the public database can be used to determine
     the original state of the Markers prior to its withdrawal.  You can run the report:
 	<PRE>
-	titan:/export/mgd/MRK_Broadcast.sql MGD_PUBLIC $db _Marker_key symbol
+	titan:/usr/local/mgi/ei/mgd/MRK_Broadcast.sql MGD_PUBLIC $db _Marker_key symbol
 	</PRE>
     using the appropriate public database (pub_1 or pub_2), <I>MRK_Marker._Marker_key</I> 
     and <I>MRK_Marker.symbol</I> values.  The output files will appear in your <I>~/mgireport</I>
@@ -138,7 +137,7 @@ the state of the Markers prior to the withdrawal:
     that the pub_1 and pub_2 public databases are alternately loaded from Production on
     a daily basis).  You can run the report:
 	<PRE>
-	titan:/export/mgd/MRK_Broadcast.sql MGD_PUBLIC $db _Marker_key symbol
+	titan:/usr/local/mgi/ei/mgd/MRK_Broadcast.sql MGD_PUBLIC $db _Marker_key symbol
 	</PRE>
     using the appropriate public database (pub_1 or pub_2), <I>MRK_Marker._Marker_key</I> 
     and <I>MRK_Marker.symbol</I> values.  The output files will appear in your <I>~/mgireport</I>

@@ -5,7 +5,6 @@ MGI EDITING INTERFACE: Design and Requirements
 </HEADER>
 
 <BODY>
-<!--#include file="include.html"-->
 
 <H2>MGI EDITING INTERFACE: Design and Requirements</H2>
 
@@ -49,7 +48,7 @@ These interfaces are independent applications which share template components an
 <LI><A HREF="#triggers">Triggers</A>
 <LI><A HREF="#views">Views</A>
 <LI><A HREF="#procedures">Stored Procedures</A>
-<LI><A HREF="../MEITEST/MEITest.html">Test Plan</A>
+<LI><A HREF="../testing/MEITest.html">Test Plan</A>
 <LI><A HREF="MEIRelease.html">Release Process</A>
 <LI><A HREF="MEIPermission.html">Editing Scope and Table Permissions</A>
 </OL>
@@ -620,10 +619,10 @@ To run the Production Applications from a Solaris Workstation:
 	<LI><CODE>setenv DISPLAY &lt;your hostname&gt;:0</CODE>
 	<LI><TABLE BORDER=1>
 	    <TR ALIGN=left><TH>Application<TH>Script
-	    <TR><TD>MGD<TD><CODE>/export/mgd/runmgd&</CODE>
-	    <TR><TD>GXD<TD><CODE>/export/gxd/rungxd&</CODE>
-	    <TR><TD>MGI Admin<TD><CODE>/export/mgiadmin/runmgiadmin&</CODE>
-	    <TR><TD>Nomenclature<TD><CODE>/export/nomen/runnomen&</CODE>
+	    <TR><TD>MGD<TD><CODE>/usr/local/mgi/ei/mgd/runmgd&</CODE>
+	    <TR><TD>GXD<TD><CODE>/usr/local/mgi/ei/gxd/rungxd&</CODE>
+	    <TR><TD>MGI Admin<TD><CODE>/usr/local/mgi/ei/mgiadmin/runmgiadmin&</CODE>
+	    <TR><TD>Nomenclature<TD><CODE>/usr/local/mgi/ei/nomen/runnomen&</CODE>
 	    </TABLE>
 	<LI>At the application login screen, type in your SYBASE login and password.
 	</OL>
@@ -649,14 +648,14 @@ All Development applications can be run from a either a Solaris Workstation or a
 To run the Development Applications from a Solaris Workstation:
 	<OL>
 	<LI><CODE>xhost +</CODE>
-	<LI><CODE>rsh argus</CODE>
+	<LI><CODE>rsh kelso</CODE>
 	<LI><CODE>setenv DISPLAY &lt;your hostname&gt;:0</CODE>
 	<LI><TABLE BORDER=1>
 	    <TR ALIGN=left><TH>Application<TH>Script
-	    <TR><TD>MGD<TD><CODE>/export/mgd/runmgd-dev&</CODE>
-	    <TR><TD>GXD<TD><CODE>/export/gxd/rungxd-dev&</CODE>
-	    <TR><TD>MGI Admin<TD><CODE>/export/mgiadmin/runmgiadmin-dev&</CODE>
-	    <TR><TD>Nomenclature<TD><CODE>/export/nomen/runnomen-dev&</CODE>
+	    <TR><TD>MGD<TD><CODE>/usr/local/mgi/ei/mgd/runmgd-dev&</CODE>
+	    <TR><TD>GXD<TD><CODE>/usr/local/mgi/ei/gxd/rungxd-dev&</CODE>
+	    <TR><TD>MGI Admin<TD><CODE>/usr/local/mgi/ei/mgiadmin/runmgiadmin-dev&</CODE>
+	    <TR><TD>Nomenclature<TD><CODE>/usr/local/mgi/ei/nomen/runnomen-dev&</CODE>
 	    </TABLE>
 	<LI>At the application login screen, type in your SYBASE login and password.
 	</OL>

@@ -6,7 +6,6 @@ MGI: Marker Broadcast
 </HEADER>
 
 <BODY>
-<!--#include file="include.html"-->
 
 <H2>MGI: Marker Broadcast</H2>
 
@@ -270,7 +269,7 @@ Nomenclature withdrawal events can also be processed directly from the Marker Ed
 
 The broadcast process outputs several files.  These files are output into
 the user's <CODE>$HOME/mgireport</CODE> directory and are also archived at 
-<CODE>titan:/export/mgd/mgireport/BROADCAST</CODE>.
+<CODE>titan:/usr/local/mgi/ei/mgd/mgireport/BROADCAST</CODE>.
 
 <OL>
 <LI><I>&lt;broadcastfile&gt;.diagnostics</I>
@@ -316,13 +315,13 @@ the user's <CODE>$HOME/mgireport</CODE> directory and are also archived at
 <H4>Source Code</H4>
 The broadcast source programs are:
 <OL>
-<LI>Production:  <CODE>titan:/export/mgd/broadcast.py</CODE>
+<LI>Production:  <CODE>titan:/usr/local/mgi/ei/mgd/broadcast.py</CODE>
     <BR>
     Development:  <CODE>/home/lec/mgd/sybase/mgi_dev/broadcast.py</CODE>
     <P>
     This is the main program.
 <P>
-<LI>Production:  <CODE>titan:/export/mgd/symbolchg.py</CODE>
+<LI>Production:  <CODE>titan:/usr/local/mgi/ei/mgd/symbolchg.py</CODE>
     <BR>
     Development:  <CODE>/home/lec/mgd/sybase/mgi_dev/symbolchg.py</CODE>
     <P>

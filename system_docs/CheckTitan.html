@@ -6,7 +6,6 @@ Check Titan Processes
 </HEADER>
 
 <BODY>
-<!--#include file="include.html"-->
 
 <H2>
 Check Titan Processes
@@ -22,14 +21,14 @@ signal is not sent to the <I>titan</I> server process so that it can be killed.
 Perform a <CODE>ps -ef | grep run</CODE> command on titan to get a listing of all currently
 running editorial interface processes:
 <PRE>
-     plg  5832   287  0   Mar 13 ?        0:00 csh -c setenv DISPLAY 192.233.41.12:0.0 && /export/mgd/runmgd
-     neb  6587   287  0 08:23:16 ?        0:00 csh -c setenv DISPLAY 192.233.41.7:0.0 && /export/mgd/runmgd
-     cml  6220   287  0 07:54:36 ?        0:00 csh -c setenv DISPLAY 192.233.41.66:0.0 && /export/mgd/runmgd
-     djr  6686   287  0 08:31:02 ?        0:00 csh -c setenv DISPLAY 192.233.41.6:0.0 && /export/mgd/runmgd
-     rmb  6851   287  0 08:45:11 ?        0:00 csh -c setenv DISPLAY 192.233.41.137:0.0 && /export/mgd/runmgd
-     jeo  6914   287  0 08:51:30 ?        0:00 csh -c setenv DISPLAY 192.233.41.4:0.0 && /export/mgd/runmgd
+     plg  5832   287  0   Mar 13 ?        0:00 csh -c setenv DISPLAY 192.233.41.12:0.0; /usr/local/mgi/ei/mgd/runmgd
+     neb  6587   287  0 08:23:16 ?        0:00 csh -c setenv DISPLAY 192.233.41.7:0.0;  /usr/local/mgi/ei/mgd/runmgd 
+     cml  6220   287  0 07:54:36 ?        0:00 csh -c setenv DISPLAY 192.233.41.66:0.0; /usr/local/mgi/ei/mgd/runmgd 
+     djr  6686   287  0 08:31:02 ?        0:00 csh -c setenv DISPLAY 192.233.41.6:0.0; /usr/local/mgi/ei/mgd/runmgd
+     rmb  6851   287  0 08:45:11 ?        0:00 csh -c setenv DISPLAY 192.233.41.137:0.0; /usr/local/mgi/ei/mgd/runmgd 
+     jeo  6914   287  0 08:51:30 ?        0:00 csh -c setenv DISPLAY 192.233.41.4:0.0; /usr/local/mgi/ei/mgd/runmgd 
      lec  7063 10672  0 09:04:28 pts/3    0:00 grep run
-     dab  6241   287  0 07:57:14 ?        0:00 csh -c setenv DISPLAY 192.233.41.86:0.0 && /export/gxd/rungxd
+     dab  6241   287  0 07:57:14 ?        0:00 csh -c setenv DISPLAY 192.233.41.86:0.0; /usr/local/mgi/ei/gxd/rungxd
 </PRE>
 
 If any of the STIME columns (5th column) contains a date value which is less than today's date,
@@ -37,7 +36,7 @@ then that process needs to be killed:
 <PRE>
 	titan> su
 	titan> ps -ef | grep plg
-     		plg  5832   287  0   Mar 13 ?        0:00 csh -c setenv DISPLAY 192.233.41.12:0.0 && /export/mgd/runmgd
+     		plg  5832   287  0   Mar 13 ?        0:00 csh -c setenv DISPLAY 192.233.41.12:0.0; /usr/local/mgi/ei/mgd/runmgd
      		lec  7122 10672  0 09:09:07 pts/3    0:00 grep plg
      		plg  5833  5832  0   Mar 13 ?        0:21 mgd
 	titan> kill 5882

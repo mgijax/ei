@@ -6,7 +6,6 @@ MGI: Nightly Reports
 </HEADER>
 
 <BODY>
-<!--#include file="include.html"-->
 
 <H2>MGI: Nightly Reports</H2>
 
@@ -17,11 +16,11 @@ are generated from the MGI databases and installed in their appropriate places f
 
 <H4>Reports</H4>
 <OL>
-<LI>The script is <CODE>titan:/export/mgd/nightly_reports</CODE>, a shell script which
+<LI>The script is <CODE>titan:/usr/local/mgi/ei/mgd/nightly_reports</CODE>, a shell script which
     executes files with extension <CODE>.sql</CODE> or <CODE>.py</CODE> residing in 
-    <CODE>titan:/export/mgd</CODE>.
+    <CODE>titan:/usr/local/mgi/ei/mgd</CODE>.
 <P>
-<LI>Report source for all MGI applications (MGD, GXD) resides in <CODE>titan:/export/mgd</CODE>.
+<LI>Report source for all MGI applications (MGD, GXD) resides in <CODE>titan:/usr/local/mgi/ei/mgd</CODE>.
 <P>
 <LI>This script is executed from the DBA's production load script <CODE>$SYBASE/admin/utilities/load_pub</CODE>
     which is run Monday-Friday via user <CODE>sybase's</CODE> cron on <CODE>titan</CODE>.
@@ -43,7 +42,7 @@ are generated from the MGI databases and installed in their appropriate places f
 <LI>Public reports are reports which are available to anyone.  They are available from:
 	<UL>
 	<LI><A HREF="ftp://ftp.informatics.jax.org/pub/informatics/reports/index.html">Informatics FTP Server</A>
-	<LI><CODE>titan:/export/mgd/mgireport</CODE>
+	<LI><CODE>titan:/usr/local/mgi/ei/mgd/mgireport</CODE>
 	<LI><CODE>hobbes:/export/ftp/pub/informatics/reports</CODE>
 	</UL>
    <P>
@@ -70,7 +69,7 @@ are generated from the MGI databases and installed in their appropriate places f
 	    application.
 	<P>
 	<LI>After installing the application, the report source resides in 
-	    <CODE>titan:/export/mgd</CODE> along with the rest of the MGD application.
+	    <CODE>titan:/usr/local/mgi/ei/mgd</CODE> along with the rest of the MGD application.
 	<P>
 	<LI>Internal reports are added to the <CODE>http://kelso:4444/qcr.html</CODE>, Quality
 	    Control Reports page in the appropriate section.

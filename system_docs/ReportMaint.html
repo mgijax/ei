@@ -6,25 +6,24 @@ Report Maintenance
 </HEADER>
 
 <BODY>
-<!--#include file="include.html"-->
 
 <H2>
 Report Maintenance
 </H2>
 
 Reports are generated Monday-Friday by a DBA cron (see John Gilbert) using the 
-<CODE>titan:/export/mgd/nightly_reports</CODE> script.  
+<CODE>nightly_reports</CODE> script.  
 See <A HREF="MEI/MEIReports.html">MGI: Nightly Reports</A> document for more information.
 <P>
-Within <CODE>titan:/export/mgd/nightly_reports</CODE> are the definitions of the public
-($PUBLIC_RPTS) and private ($INTERNAL_RPTS) reports.
+<CODE>titan:/usr/local/mgi/ei/mgd/nightly_reports</CODE> takes arguments
+that configure where public and private (qc) reports are to be placed.  
 <P>
 To check the internal Quality Control Reports (private):
 <OL>
-<LI>Go the the <CODE>~lec/public_html/mgireport</CODE> directory and list the files
+<LI>Go to the <CODE>mgireport</CODE> directory that nightly_reports has been
+configured to use and list the files
     sorting by time:
     <PRE>
-    > cd ~lec/public_html/mgireport
     > ls -lt
     -rw-rw-r--   1 lec      progs      47205 Mar 26 22:22 NOMEN_NoPrimaryRef.sql.rpt
     -rw-rw-r--   1 lec      progs      66756 Mar 26 22:22 NOMEN_Homology.sql.rpt
@@ -99,9 +98,9 @@ To check the internal Quality Control Reports (private):
 
 To check the public reports:
 <OL>
-<LI>Go the the <CODE>titan:/export/mgd/mgireport</CODE> directory and list the files
-    sorting by time (a copy of all of the *.rpt files should also exist in the
-    <CODE>hobbes:/export/ftp/pub/informatics/reports</CODE> directory):
+<LI>Go to the public report directory that nightly_reports has been
+configured to use and list the files
+    sorting by time:
     <PRE>
     drwxrwxr-x   2 lec      progs      12288 Mar 28 00:00 HOMOLOGY
     -rw-rw-r--   1 sybase   sybase     25634 Mar 26 22:00 PRB_TissueMouse.sql.rpt
@@ -148,7 +147,7 @@ If any reports do not have a current time stamp, then they can be generated manu
 <OL>
 <LI>Go to the Production installation directory and run the reports against the Production database:
     <PRE>
-    titan> cd /export/mgd
+    titan> cd /usr/local/mgi/ei/mgd 
     titan> setenv DSQUERY MGD
     titan> setenv MGD mgd
     titan> report.sql $DSQUERY $MGD
@@ -163,7 +162,8 @@ If any reports do not have a current time stamp, then they can be generated manu
     </PRE>
 <P>
 <LI>The output files will be placed in your $HOME/mgireport directory.  Copy the output reports
-    for public reports to <CODE>hobbes:/export/ftp/pub/informatics/reports</CODE>:
+    for public reports to <CODE>/pub/informatics/reports</CODE> directory on the
+ftp site:
     <PRE>
     titan> chmod 664 $HOME/mgireport/*.rpt
     titan> rcp $HOME/mgireport/*.rpt hobbes:/export/ftp/pub/informatics/reports

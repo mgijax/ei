@@ -6,7 +6,6 @@ MGI EDITING INTERFACE - Overview
 </HEADER>
 
 <BODY>
-<!--#include file="include.html"-->
 
 <H2>
 MGI EDITING INTERFACE - Overview
@@ -31,8 +30,8 @@ appropriate documentation manuals.
 <LI><A HREF="#config">Configuration</A>
 <LI><A HREF="#installsource">Install a copy of Production or Development Source</A>
 <LI><A HREF="#applconfig">Application Configuration Files</A>
-<LI><A HREF="#buildDev">Build/Install a Development copy of an MGI Application</A>
-<LI><A HREF="#buildProd">Build/Install a Production copy of an MGI Application</A>
+<LI><A HREF="#buildInter">Build/Install an Interpreted copy of an MGI Application</A>
+<LI><A HREF="#buildComp">Build/Install a Compiled copy of an MGI Application</A>
 <LI><A HREF="#runMGI">Run an installed MGI Application</A>
 <LI><A HREF="#debug">Debug an installed MGI Application</A>
 <LI><A HREF="#exodus">Configuring eXodus Client</A>
@@ -60,16 +59,9 @@ appropriate documentation manuals.
     The term <I>MGI Admin</I> is used to refer to the administrative-specific components
     for any of the databases such as table comments.
 <P>
-<LI><CODE>$source_directory</CODE>
-	<P>
-	For the purposes of this document, a development directory of the MGI GUI source is located in:
-		<CODE>/home/lec/mgd/sybase/mgi_dev</CODE>
-<P>
 <LI><CODE>$application</CODE>
 	<P>
-	For the purposes of this document, a development subdirectory of the configuration file and 
-	build area for an MGI application is:
-		<CODE>/home/lec/mgd/sybase/mgi_dev/$application</CODE>
+	For the purposes of this document, a development subdirectory of the configuration file and build area for an MGI application. 
 	<P>
 	Currently defined applications:
 		<OL>
@@ -475,40 +467,10 @@ The current set of AIM files for the MGI Application:
 
 <HR>
 <A NAME="config"><H4>Configuration</H4></A>
-The SCCS source for all versions of GUI applications is located under the root directory:
-	<PRE>
-	/export/src/mgd/gui
-	</PRE>
+The CVS source for all versions of GUI applications is available
+through the CVS module alias "ei". 
 <P>
-There is always a symbolic link to the current production source root directory:
-	<PRE>
-	/export/src/mgd/gui/mgi_prod -> mgi_3
-	</PRE>
-<P>
-There is always a symbolic link to the current development source root directory:
-	<PRE>
-	/export/src/mgd/gui/mgi_dev -> mgi_4
-	</PRE>
-<P>
-After a version of the source is released into Production and you determine that the
-release is "stable", freeze the current Production source.  Make sure all source is
-checked back into SCCS before preparing a new Development copy of the source.
-	<PRE>
-	lec@argus> ls -l
-	drwxr-xr-x  14 lec      progs        512 Apr  9 09:48 mgi_3
-	drwxr-xr-x  14 lec      progs        512 Apr 13 07:59 mgi_4
-	lrwxrwxrwx   1 lec      progs          5 Apr 13 07:59 mgi_dev -> mgi_4
-	lrwxrwxrwx   1 lec      progs          5 Apr 13 07:58 mgi_prod -> mgi_3
-	lec@argus> cd /export/src/mgd/gui
-	lec@argus> rm mgi_prod
-	lec@argus> rm mgi_dev
-	lec@argus> ln -s mgi_4 mgi_prod
-	lec@argus> cp -r mgi_4 mgi_5		# create new copy of source for development
-	lec@argus> ln -s mgi_5 mgi_dev
-	</PRE>
-<P>
-The source root directory is sub-divided into several subdirectories.  The root and each subdirectory 
-contains an SCCS directory.
+The source root directory is sub-divided into several subdirectories.  
 <P>
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Sub-Directory<TH>Description
@@ -550,50 +512,18 @@ done for <I>gxd</I>, <I>mgd</I>, <I>nomen</I>, <I>mgiadmin</I>.
 <A NAME="installsource"><H4>Install a copy of Production or Development Source</A></H4>
 To install a Production or Development copy of the GUI application source:
 <OL>
-<LI>Prepare a working directory for yourself:
-	<PRE>/home/lec/mgd/sybase</PRE>
+<LI>Prepare a working directory for yourself.
 <P>
-<LI>Change to this directory:
-	<PRE>cd /home/lec/mgd/sybase</PRE>
+<LI>Change to this directory.
 <P>
-<LI>Retrieve the admin scripts from the GUI source directory:
-	<PRE>sccs -d /export/src/mgd/gui get SCCS</PRE>
-    <P>
-    This will retrieve several files:
-	<TABLE BORDER=1>
-	<TR ALIGN=left><TH>File<TH>Description
-	<TR><TD>checkIn
-    	<TD>Script to check files in one directory at a time or all at once
-	<TR><TD>checkOut
-    	<TD>Script to check files out one directory at a time or all at once
-	<TR><TD>createDir
-    	<TD>Script to install a production or development copy of the source files locally
-	<TR><TD>createTar
-    	<TD>Script to create a tar file of production or development source
-	</TABLE>
-<P>
-<LI>Run <CODE>createDir</CODE> with the appropriate arguments (refer to the source file for more documentation):
-    <P>
-    To install a production copy of the source files:
-	<PRE>createDir prod &lt;directory&gt;</PRE>
-    <P>
-    To install a development copy of the source files:
-	<PRE>createDir dev &lt;directory&gt;</PRE>
-    <P>
-    After running <CODE>createDir</CODE>, the appropriate sub-directories and SCCS links will be installed
-    in the <CODE>&lt;directory&gt;</CODE> specified. 
-    <P>
-    A TeleUSE session initialization file called <CODE>.viprc</CODE> will also be created for each
-    application directory (<I>gxd</I>, <I>mgd</I>, etc.).  This file is discussed later on in more detail,
-    but it does contain hard-coded paths to your specific installation directory.  This path will be
-    set to your specific installation path by <CODE>createDir</CODE>.
+<LI>Checkout the source
+	<PRE>cvs checkout ei</PRE>
 <P>
 <LI>The appropriate SYBASE and TeleUSE environment also needs to be configured:
 	<PRE>
         OPENWINHOME=/usr/openwin
         XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
         PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
-        
         DSQUERY=MGD
         MGD=mgd
         
@@ -608,14 +538,8 @@ To install a Production or Development copy of the GUI application source:
         PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$TeleUSE/XRT/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
 	</PRE>
 <P>
-<LI>Refer to <A HREF="#applconfig">Application Configuration Files</A> for information on building the
-    installed applications.
+<LI>Refer to <A HREF="#applconfig">Application Configuration Files</A> for information on building the installed applications.
 <P>
-<LI>Once you install a Production or Development copy, you can use basic SCCS commands to edit the
-    source files.  Once a Production copy is live (i.e. being used by the users), then only bug fixes
-    should be applied to a Production source.  All subsequent development work should be done using
-    the Development source.  The Production source should remain consistent with what the users are using
-    on the installed Production copy (<CODE>titan:/export</CODE>).
 </OL>
 
 <HR>
@@ -645,7 +569,7 @@ These files are located in <CODE>$source_directory/$application</CODE>:
 <TR><TD>run$application-dev
 	<TD>Script to run the Development copy of the application.  Contains environment
 	    assignments for DSQUERY, MGD, SYBASE, TeleUSE, etc.
-	    This script must be edited to use the correct APP, INSTALLDIR, DSQUERY, MGD values
+	    This script must be edited to use the correct APP, DSQUERY, MGD values
 	    for your development installation.
 <TR><TD>X Resource File (MGD.in, GXD.in, MGIADMIN.in, NOMEN.in)
 	<TD>Resource files which defines copy/paste function keys for Mac users,
@@ -662,13 +586,17 @@ These files are located in <CODE>$source_directory/$application</CODE>:
 <P>
 
 <HR>
-<A NAME="buildDev"><H4>Build a Development copy of an MGI Application</H4></A>
+<A NAME="buildInter"><H4>Build an Interpreted copy of an MGI Application</H4></A>
 Development copies of an MGI application contain interpreted D code.  Interpreted D code
 allows the debugger to be used.
 <OL>
-<LI>Go to the application directory: <CODE>cd $source_directory/$application</CODE>
+<LI>Ensure that the EIINSTALLDIR variable in your environment is set to
+    the directory that holds the  mgd, gxd, nomen, and mgiadmin directories
+   (e.g., '/usr/local/mgi/ei'). 
 <P>
-<LI>Compile the application: <CODE>buildapp dev</CODE>
+<LI>Go to the application directory
+<P>
+<LI>Compile the application: <CODE>buildapp</CODE>
 <P>
 <LI>Verify that the INSTALLFILE configuration variable is defined in <CODE>uxb.conf</CODE>:
 	<PRE>
@@ -684,22 +612,26 @@ allows the debugger to be used.
 	etc.
 	</PRE>
 <P>
-<LI>Install the application in the destination directory: <CODE>installapp dev</CODE>
+<LI>Install the application in the destination directory: <CODE>installapp</CODE>
 <P>
 <LI>Run the application from the destination directory: <CODE>cd DESTDIR;$application</CODE>
     <BR>
     OR
     <BR>
-    Run the application using the <CODE>run$application-dev</CODE> script: <CODE>DESTIDR/run$application-dev</CODE>
+    Run the application using the <CODE>run$application-dev</CODE> script: <CODE>DESTDIR/run$application-dev</CODE>
 </OL>
 
 <HR>
-<A NAME="buildProd"><H4>Build a Production copy of an MGI Application</H4></A>
+<A NAME="buildComp"><H4>Build a Compiled copy of an MGI Application</H4></A>
 Production copies of an MGI application translate D code into C code which is then compiled.
 <OL>
+<LI>Ensure that the EIINSTALLDIR variable in your environment is set to
+    the directory that holds the  mgd, gxd, nomen, and mgiadmin directories
+   (e.g., '/usr/local/mgi/ei'). 
+<P>
 <LI>Go to the application directory: <CODE>cd $source_directory/$application</CODE>
 <P>
-<LI>Compile the application: <CODE>buildapp prod</CODE>
+<LI>Compile the application: <CODE>buildapp compiled</CODE>
 <P>
 <LI>Verify that the INSTALLFILE configuration variable is defined in <CODE>uxb.conf</CODE>:
 	<PRE>
@@ -715,7 +647,7 @@ Production copies of an MGI application translate D code into C code which is th
 	etc.
 	</PRE>
 <P>
-<LI>Install the application in the destination directory: <CODE>installapp prod</CODE>
+<LI>Install the application in the destination directory: <CODE>installapp compiled</CODE>
 <P>
 <LI>Run the application from the destination directory: <CODE>cd DESTDIR;$application</CODE>
     <BR>
@@ -729,10 +661,11 @@ Production copies of an MGI application translate D code into C code which is th
 <CODE>DESTDIR/run$application</CODE>
 
 <HR>
-<A NAME="debug"><H4>Debug an installed Development MGI Application</H4></A>
-Development installations can be easily debugged using the TeleUSE <CODE>dbug</CODE> tool.
-Production installations cannot use this tool to step through D code since the D code is converted
-to C and compiled.
+<A NAME="debug"><H4>Debug an installed Interpreted MGI Application</H4></A>
+Interpreted MGI EI installations can be easily debugged using the 
+TeleUSE <CODE>dbug</CODE> tool.  Production installations cannot use 
+this tool to step through D code since the D code is converted to C and 
+compiled.
 <P>
 To debug a development installation:
 <OL>
@@ -742,10 +675,10 @@ To debug a development installation:
 	</PRE>
 <P>
 <LI>Open the application you wish to debug by selecting the destination directory 
-    (the -destdir defined in <CODE>installapp</CODE>) and the application executable
+    and the application executable
     (the EXECUTABLE defined in <CODE>uxb.conf</CODE>):
 	<PRE>
-	File->Open->/home/lec/mgd/sybase/mgi_dev/mgd/test/mgd
+	File->Open->(installation directory)
 	</PRE>
 <P>
 <LI>The debugger will start execution at the INITIALLY event of the application.  Refer to
@@ -755,31 +688,29 @@ To debug a development installation:
 <HR>
 <A NAME="exodus"><H4>Configuring eXodus Client</H4></A>
 An eXodus client is needed in order to run an editing interface from a MacIntosh.  See
-Paul Trepanier for help in installing eXodus on a MacIntosh.
+a system administrator for help in installing eXodus on a MacIntosh.
 <P>
 Refer to <A HREF="MEI/MEI.html#runningProd">Running the Production Applications</A>
 and <A HREF="MEI/MEI.html#runningDev">Running the Development Applications</A>
 for more information.
 <P>
-Once eXodus has been successfully installed on the MacIntosh, Paul will provide a standard
+Once eXodus has been successfully installed on the MacIntosh, a system administrator will provide a standard
 <CODE>eXodus Connections</CODE> menu from the Apple Menu on the Mac.  This menu should include:
 <P>
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Title<TH>Command
 <TR><TD>GXD
-    <TD>setenv DISPLAY $$M$$ && /export/gxd/rungxd
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/gxd/rungxd
 <TR><TD>GXD Development
-    <TD>setenv DISPLAY $$M$$ && /export/mgd/rungxd-dev
-<TR><TD>GXD Test
-    <TD>setenv DISPLAY $$M$$ && /export/gxd/rungxd-test
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/gxd/rungxd-dev
 <TR><TD>MGD
-    <TD>setenv DISPLAY $$M$$ && /export/mgd/runmgd
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runmgd
 <TR><TD>MGD Development
-    <TD>setenv DISPLAY $$M$$ && /export/mgd/runmgd-dev
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runmgd-dev
 <TR><TD>Nomenclature
-    <TD>setenv DISPLAY $$M$$ && /export/nomen/runnomen
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runnomen
 <TR><TD>Nomenclature Development
-    <TD>setenv DISPLAY $$M$$ && /export/nomen/runnomen-dev
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runnomen-dev
 </TABLE>
 <P>
 To add or modify an eXodus client, choose the 
