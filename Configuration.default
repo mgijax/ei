@@ -17,7 +17,7 @@ setenv EIINSTALLDIR /usr/local/mgi/ei/?
 setenv EIBUILDDIR /usr/local/mgi/ei/ei_build/?
 
 # data directory
-setenv EIDATADIR /usr/local/mgi/ei_data
+setenv EIDATADIR /usr/local/mgi/ei/ei_data
 
 # system doc directory
 setenv EISYSTEMDOCDIR $EIINSTALLDIR/system_docs
