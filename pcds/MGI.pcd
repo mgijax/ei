@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Mar 20 12:24:22 2001";
+      lastWritten = "Tue Mar 20 15:15:40 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -997,7 +997,7 @@ Module: MGI
                                     vip_x = 80;
                                     vip_y = 4100;
                                   Group: User
-                                    defaultOption = SearchAll;
+                                    defaultOption = Yes;
                                       Popups:
                                       {
                                         YesNoPulldown : OptionPulldown = OptionPulldown;
@@ -1040,7 +1040,7 @@ Module: MGI
                                     vip_x = 80;
                                     vip_y = 4100;
                                   Group: User
-                                    defaultOption = SearchAll;
+                                    defaultOption = No;
                                       Popups:
                                       {
                                         YesNoPulldown : OptionPulldown = OptionPulldown;
