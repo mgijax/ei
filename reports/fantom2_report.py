@@ -197,9 +197,24 @@ def full_report():
 	fp = open_file("fantom2_full")
 
 	fantomKey = -1
+	nnote = ''
+	rnote = ''
+	cnote = ''
+
 	results = db.sql(sqlCmd, 'auto')
+
 	for r in results:
 		if r['_Fantom2_key'] != fantomKey:
+
+			if fantomKey != -1:
+				fp.write(mgi_utils.prvalue(nnote) + TAB + \
+				         mgi_utils.prvalue(rnote) + TAB + \
+				         mgi_utils.prvalue(cnote) + CRT)
+
+				nnote = ''
+				rnote = ''
+				cnote = ''
+
 			fp.write(mgi_utils.prvalue(r['riken_seqid']) + TAB + \
 			 	mgi_utils.prvalue(r['riken_cloneid']) + TAB + \
         	         	mgi_utils.prvalue(r['genbank_id']) + TAB + \
@@ -231,10 +246,31 @@ def full_report():
         	         	mgi_utils.prvalue(r['createdBy']) + TAB + \
         	         	mgi_utils.prvalue(r['modifiedBy']) + TAB + \
         	         	mgi_utils.prvalue(r['cDate']) + TAB + \
-        	         	mgi_utils.prvalue(r['mDate']) + CRT)
+        	         	mgi_utils.prvalue(r['mDate']) + TAB)
+
+			if r['noteType'] == 'N' and r['note'] != None:
+				nnote = regsub.gsub('\n', '\\n', r['note'])
+
+			if r['noteType'] == 'R' and r['note'] != None:
+				rnote = regsub.gsub('\n', '\\n', r['note'])
+
+			if r['noteType'] == 'C' and r['note'] != None:
+				cnote = regsub.gsub('\n', '\\n', r['note'])
+		else:
+			if r['noteType'] == 'N' and r['note'] != None:
+				nnote = nnote + regsub.gsub('\n', '\\n', r['note'])
+			
+			if r['noteType'] == 'R' and r['note'] != None:
+				rnote = rnote + regsub.gsub('\n', '\\n', r['note'])
+
+			if r['noteType'] == 'C' and r['note'] != None:
+				cnote = cnote + regsub.gsub('\n', '\\n', r['note'])
 
 		fantomKey = r['_Fantom2_key']
 
+	fp.write(mgi_utils.prvalue(nnote) + TAB + \
+	         mgi_utils.prvalue(rnote) + TAB + \
+	         mgi_utils.prvalue(cnote) + CRT)
 #
 # Main
 #
