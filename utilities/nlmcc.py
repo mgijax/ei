@@ -664,7 +664,7 @@ def noMatch(rec, rectags, msg = None):
 
 	# If CC update or Journal does NOT exist in TJL library, write to UNSEEN
 
-	if mode == 'cc' or not NLMseen.has_key(rec['JI']):
+	if msg == None and (mode == 'cc' or not NLMseen.has_key(rec['JI'])):
 		printRec(outFile, rec, rectags)
 
 	# If NLM update and Journal does exist in TJL library, write to No Match Found
@@ -821,41 +821,37 @@ def processRec(rec, rectags):
 	#
 	'''
 
-	# If no PD field, skip this record
-	if not rec.has_key('PD'):
-		noMatch(rec, rectags, 'Record missing Publication Date (PD) Field')
-		return
+	# If no PD (pub date), then use PY (year)
+	if not rec.has_key('PD') and rec.has_key('PY'):
+		rec['PD'] = rec['PY']
 
 	# Journal tags different for NLM and CC
 	if mode in ('nlm', 'addnlm'):
 		rec['JI'] = rec['TA']
 
+	# For CC records only...
 	if mode in ('cc', 'addcc'):
-		rec['PG'] = rec['BP'] + '-' + rec['EP']
+		# Construct PG from BP and EP
+		if rec.has_key('BP') and rec.has_key('EP'):
+			rec['PG'] = rec['BP'] + '-' + rec['EP']
 
 		# If Year is not in Date string, then add it
-		if string.find(rec['PD'], rec['PY']) == -1:
+		if rec.has_key('PD') and string.find(rec['PD'], rec['PY']) == -1:
 			rec['PD'] = rec['PY'] + ' ' + rec['PD']
 
-	# If no AU field, skip this record
-	if not rec.has_key('AU'):
-		noMatch(rec, rectags, 'Record missing Author (AU) Field')
-		return
+		# If PT field != "J", skip
+		if rec.has_key('PT') and rec['PT'] != "J":
+			noMatch(rec, rectags, 'Record is not a Journal Article')
+			return
+		elif not rec.has_key('PT'):
+			noMatch(rec, rectags, 'Record missing (PT) Field')
+			return
 
-	# If no VL field, skip this record
-	if not rec.has_key('VL'):
-		noMatch(rec, rectags, 'Record missing Volume (VL) Field')
-		return
-
-	# If CC and no JI field, skip this record
-	if mode in ('cc', 'addcc') and not rec.has_key('JI'):
-		noMatch(rec, rectags, 'Record missing Journal (JI) Field')
-		return
-
-	# If CC and PT field != 'J', skip this record
-	if mode in ('cc', 'addcc') and rec['PT'] != 'J':
-		noMatch(rec, rectags, 'Record is not a Journal Article')
-		return
+	# If record missing any required field, skip
+	for t in ('AU', 'TI', 'JI', 'PD', 'PY', 'PG', 'VL', 'IS'):
+		if not rec.has_key(t):
+			noMatch(rec, rectags, 'Record missing (%s) Field' % (t))
+			return
 
 	# Eliminate commas in author list
 	rec['AU'] = regsub.gsub(',', '', rec['AU'])
