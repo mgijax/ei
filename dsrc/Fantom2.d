@@ -719,6 +719,7 @@ rules:
 	    where := where1;
           end if;
 
+	  top->ReportDialog.select := select + from + where + orderBy;
 	end does;
 
 --

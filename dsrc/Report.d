@@ -53,6 +53,7 @@ rules:
      -- Retrieve program and parameters for selected Report
 
      commands : string_list;
+     newcommands : string_list := create string_list();
      commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
 
      if (commands[1] = "nlm.py") then      -- NLM program
@@ -91,6 +92,16 @@ rules:
          dialog->Output.value := "NLM ADD\n";
        end if;
  
+     elsif (strstr(commands[1], "fantom2_report.py") != nil) then      -- Fantom Report
+
+       newcommands.insert(commands[1], newcommands.count + 1);
+       newcommands.insert("-T" + commands[2], newcommands.count + 1);
+       newcommands.insert("-U" + global_login, newcommands.count + 1);
+       newcommands.insert("-P" + global_passwd_file, newcommands.count + 1);
+       newcommands.insert("-C" + mgi_DBprstr(select), newcommands.count + 1);
+       commands.reset;
+       commands := newcommands;
+
      -- Other Python scripts are not user-dependent and can execute using the public login
      -- These programs rely on the last search the User performed from within the form
 
