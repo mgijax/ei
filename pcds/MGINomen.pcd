@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Wed Aug 11 14:14:34 1999";
+      lastWritten = "Wed Aug 18 13:35:19 1999";
         {
           MGINomen = Application : MGI;
           Group: Control
@@ -754,10 +754,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = XmToggleButton;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    GDB = XmToggleButton : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
+                                                    RATMAP = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }
@@ -946,10 +946,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = XmToggleButton;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    GDB = XmToggleButton : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
+                                                    RATMAP = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }
@@ -1002,9 +1002,9 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               List = XmScrolledList;
                                               Group: Widget
-                                                items = "Nomenclature Search Results";
+                                                items = "Nomenclature Search Results\nFull Nomenclature Record";
                                               Group: User
-                                                keys = "NomenSearch.py";
+                                                keys = "NomenSearch.py\nNomen.py";
                                             }
                                       }
                                       {
