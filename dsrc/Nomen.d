@@ -1144,10 +1144,14 @@ rules:
 	        top->ApprovedSymbol->text.value := mgi_getstr(dbproc, 8);
 	        top->ApprovedName->text.value   := mgi_getstr(dbproc, 9);
 	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 11);
-	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
-	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
+	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 13);
+	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 14);
+	        top->CreationDate->text.value   := mgi_getstr(dbproc, 15);
+	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 16);
+--	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
+--	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
+--	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
+--	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
 
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
