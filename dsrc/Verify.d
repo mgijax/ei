@@ -319,7 +319,7 @@ rules:
 	          end if;
 
 	          if (child != nil) then
-	            if (child.required and child.value.length = 0) then
+	            if (child.required and child.value.length = 0 and child.is_defined("defaultValue") != nil) then
 		      -- If Child is required and has a default, use it
 		      if (child.defaultValue.length = 0) then
 	                top.allowEdit := false;
@@ -356,7 +356,7 @@ rules:
 	              end if;
 
 	              if (child != nil) then
-	                if (child.required and child.value.length = 0) then
+	                if (child.required and child.value.length = 0 and child.is_defined("defaultValue") != nil) then
 		          -- If Child is required and has a default, use it
 		          if (child.defaultValue.length = 0) then
 	                    top.allowEdit := false;
