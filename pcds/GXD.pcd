@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep  9 14:01:41 2004";
+      lastWritten = "Thu Sep  9 14:18:34 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1241,11 +1241,11 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = "Dev Dyn";
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = DevBiolNote;
+                                    leftWidget = NatureNote;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = DevBiolNote;
+                                    topWidget = NatureNote;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                   Group: User
