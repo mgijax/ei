@@ -186,7 +186,7 @@ rules:
 	    end if;
 
 	    destroy mgi;
-	    top.managed := true;
+	    top.show;
 	    (void) mgi_writeLog(get_time() + "Logged in to Application.\n\n");
 	  end if;
 
