@@ -184,7 +184,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize
 	  send(InitMLCED);                    

@@ -98,7 +98,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  SetRowCount.source_widget := top;
 	  SetRowCount.tableID := IMG_IMAGE;

@@ -34,7 +34,7 @@ rules:
 	INITIALLY does
 	  top := create widget("MGIMenu", nil, nil);
 	  subprocs := create list(nil);
-	  top.show;
+	  top.managed := true;
 	end does;
 
 	ForkIt does

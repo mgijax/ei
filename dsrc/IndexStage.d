@@ -93,7 +93,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Set Row Count
 

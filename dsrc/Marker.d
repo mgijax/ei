@@ -205,7 +205,7 @@ rules:
 	  -- Prevent multiple instances of the Marker form
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize
 	  send(Init, 0);

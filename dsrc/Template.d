@@ -87,7 +87,7 @@ rules:
 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize Global variables, Clear form, etc.
 	  send(Init, 0);

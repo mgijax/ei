@@ -129,7 +129,7 @@ rules:
 	  -- So, de-sensitize buttons which invoke this initialization event
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize
 	  send(Init, 0);
