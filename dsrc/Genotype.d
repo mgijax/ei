@@ -120,9 +120,6 @@ rules:
 	  InitOptionMenu.option := top->AlleleCompoundMenu;
 	  send(InitOptionMenu, 0);
 
-          LoadList.list := top->ESCellLineList;
-	  send(LoadList, 0);
-
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;

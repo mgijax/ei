@@ -2074,7 +2074,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ALLELEPAIR:
-            sprintf(buf, "insert %s (%s, _Genotype_key, sequenceNum, _Allele_key_1, _Allele_key_2, _Marker_key, isUnknown)", 
+            sprintf(buf, "insert %s (%s, _Genotype_key, _Allele_key_1, _Allele_key_2, _Marker_key, _PairState_key, _Compound_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ISRESULT:

@@ -727,6 +727,16 @@ rules:
 	    from_user2 := true;
 	  end if;
 
+	  SearchNoteTypeTable.table := top->Note->Table;
+	  SearchNoteTypeTable.tableID := MGI_NOTE_VOCEVIDENCE_VIEW;
+          SearchNoteTypeTable.join := "e._AnnotEvidence_key";
+	  send(SearchNoteTypeTable, 0);
+	  if (top->Note->Table.sqlFrom.length > 0) then
+	    from := from + top->Note->Table.sqlFrom;
+	    where := where + top->Note->Table.sqlWhere;
+	    from_evidence := true;
+          end if;
+
 	  -- Modification date
 
 	  top->Annotation->Table.sqlCmd := "";

@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar  8 14:05:47 2005";
+      lastWritten = "Wed Mar  9 11:47:38 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -776,7 +776,6 @@ Module: mgiTable
                   topAttachment = attach_form;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftOffset = 5;
                   topOffset = 5;
                   rightOffset = 5;
                 Group: User

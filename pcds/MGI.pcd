@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar  4 15:17:57 2005";
+      lastWritten = "Wed Mar  9 15:09:50 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1627,6 +1627,7 @@ Module: MGI
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 1;
+                                          xrtTblNumRows = 2;
                                       }
                                       {
                                         Add = TablePush;
@@ -1660,9 +1661,6 @@ Module: MGI
                                         Group: Widget
                                           activateCallback = "D:GenotypeClipboardAdd";
                                       }
-                                }
-                                {
-                                  ESCellLineList = ESCellLineList : mgiLookup;
                                 }
                           }
                     }
