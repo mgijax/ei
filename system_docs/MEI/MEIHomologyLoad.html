@@ -19,46 +19,23 @@ for their Marker objects.
 <P>
 SSDBs are also used to maintain MGD nomenclature and mapping information for non-mouse markers.
 <P>
-Currently, MGD stores Accession numbers for the following Species/SSDBs:
-<P>
-<TABLE BORDER=1>
-<TR ALIGN=left><TH>Species<TH>SSDB<TH>Accession # Format
-<TR><TD>Human
-    <TD>GDB, The Human Genome Database
-    <TD><I>GDB:#####</I>
-<TR><TD>Rat
-    <TD>RATMAP, the Rat Genome Databse
-    <TD><I>#####</I>
-</TABLE>
-
-<P>
 The Marker information and Accession numbers for the non-mouse Markers must be updated
 on a regular basis to reflect the SSDB changes in nomenclature, mapping position, etc.
 
 <H4>Getting the Data Dumps</H4>
 
 The species-specific Accession numbers are loaded into MGD by an automated process 
-which uses data dumps provided by the SSDBs.  In addition to Accession number dumps,
-GDB provides a dump of symbols and citations which we use to generate a 
-<A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/HMD_Potentials.rpt">report</A> of
-potential mouse/human homologies.
+which uses data dumps provided by the SSDBs.
 <P>
 
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>SSDB<TH>Data File<TH>Contact<TH>Frequency of Data Load
-<TR><TD>GDB
-    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/GeneByAlpha.tab">GeneByAlpha.tab</A>
-	<BR>Data file is automatically extracted from the FTP site <CODE>syb.hsc.gdb.org</CODE>
+<TR><TD>LocusLink
+    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/LL.out">LL.out</A>
+	<BR>Data file is automatically extracted from the FTP site <CODE>ftp.ncbi.nlm.nih.gov</CODE>
 	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
-    <TD>Connie Talbot <BR>(cct@gdb.org)
-    <TD>Daily (GDB file is only updated once a week)
-
-<TR><TD>GDB
-    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/Gene.medlineid.tab">Gene.medlineid.tab</A>
-	<BR>Data file is automatically extracted from the FTP site <CODE>syb.hsc.gdb.org</CODE>
-	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
-    <TD>Connie Talbot <BR>(cct@gdb.org)
-    <TD>Daily (GDB file is only updated once a month)
+    <TD>Donna Maglott <BR>(maglott@ncbi.nlm.nih.gov)
+    <TD>Daily
 
 <TR><TD>RATMAP
     <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/RatURL.txt">RatURL.txt</A>
@@ -67,95 +44,98 @@ potential mouse/human homologies.
     <TD>Fredrik Stahl <BR>(Fredrik.Stahl@gen.gu.se)
     <TD>Daily (TR 555; RATMAP file is only updated once a month)
 
+<TR><TD>GDB
+    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/Gene.medlineid.tab">Gene.medlineid.tab</A>
+	<BR>Data file is automatically extracted from the FTP site <CODE>syb.hsc.gdb.org</CODE>
+	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
+    <TD>Connie Talbot <BR>(cct@gdb.org)
+    <TD>Daily (GDB file is only updated once a month)
+
 </TABLE>
 
-<H4>Processing the Data</H4>
-Each non-mouse Marker record in MGD may need to be updated from the information supplied by
-the SSDB data dump.
-<P>
-For each Marker record in MGD of the designated species:
+<H4>LocusLink</H4>
+
+We are currently using LocusLink to update MGD human symbols, mapping and accession information.
+We are only loading the GDB ID from the LocusLink file.
+
 <OL>
-<LI>Try and find the MGD Marker in the input file by Foreign Acc ID <B>OR</B>
+<LI>All MGD Human symbols which do not contain a GDB ID are updated with the correct
+    GDB ID based on a symbol match between MGD and the LocusLink symbol (official or interim).
 <P>
-<LI>Try and find the MGD Marker in the input file by Symbol <B>OR</B>
+<LI>All MGD Human symbols are updated from the LocusLink file based on a GDB ID match
+    between MGD and LocusLink. The fields which are updated are:
+	<UL>
+	<LI>symbol
+	<LI>name
+	<LI>chromosome
+	<LI>offset
+	</UL>
 <P>
-<LI>Try and find the MGD Marker in the input file by Alias <B>OR</B>
+<LI>We output the following:
+	<UL>
+	<LI>MGD Human Symbols updated today (LL.found.sql.rpt)
+	<LI>MGD Human Symbols w/out a match in LocusLink (LL.notfound.sql.rpt)
+	</UL>
 <P>
-<LI>Try and find the asterisked MGD Marker in the input file.
-    <BR>Asterisked markers are markers with unapproved nomenclature.
-    <BR>Report the potential match but DO NOT UPDATE THE MGD MARKER.  
-    <BR>Asterisked symbols in MGD must be updated manually.
-<P>
-<LI>If the MGD Marker cannot be found in the input file, it is reported as <I>not found</I>.
-</OL>
-
-Once the input file record for the MGD Marker is located, for GDB only!:
-<OL>
-<LI>If the <I>Source</I> Symbol has undergone a Nomenclature change and the
-    <I>New</I> symbol exists in MGD, then the two homology classes must be <I>Merged</I>:
-    <UL>
-    <LI>Update Homology _Class_key from old symbol to new symbol
-    <LI>Update Homology _Marker_key from old symbol to new symbol
-    <LI>Delete old symbol from MRK_Marker
-    </UL>
-    <BR>
-    If the new symbol does <I>not</I> exist in MGD, then the symbol for the
-    MGD record is simply updated to the new symbol.
-<P>
-<LI>For GDB, update Symbol, Acc ID, Chromosome, Offset if MGD values differ from <I>Source</I>.
-    For RATMAP, update Acc ID, Chromosome, Offset if MGD values differ from <I>Source</I>.
-<P>
-<LI>If no Accession ID currently exists for the MGD symbol, then add it.
-</OL>
-
-<H4>Output Reports </H4>
-
-Output from the Homology load can be accessed from 
-the <A HREF="http://kelso:4444/qcr.html#homology">QCR page, Homology section</A>.
-<P>
-<UL>
-<LI><I>Homology Updates from GDB, RATMAP, BOVMAP, etc.</I> will display a file listing
-    of all of the output files for the homology load process.  Files names contain the
-    SSDB name, database server and date on which the homology load was processed.
-    <P>
-    <TABLE BORDER=1>
-    <TR ALIGN=left><TH>File<TH>Reports...
-    <TR><TD>&lt;SSDB&gt;.MGD.found.&lt;date&gt;
-	<TD>Details of the updates processed in MGD.
-    <TR><TD>&lt;SSDB&gt;.MGD.notfound.&lt;date&gt;
-	<TD>MGD entries not found in the SSDB by either Accession Number or Symbol and any SSDB
-	    matches to asterisked symbols in MGD (potential matches).
-    <TR><TD>RATMAP.MGD.genbank.&lt;date&gt;
-	<TD>Rat Symbols and GenBank IDs extracted from the RATMAP input file.
-    </TABLE>
-<P>
-<LI><I>MGD Entries with Potential Human Homologies</I> will provide a listing of 
-    Mouse Symbols which match GDB symbols but with no Human Homology defined in MGD.
-<P>
-<LI><I>GDB Input File</I> will display the GDB data dump file.
-<P>
-<LI><I>RATMAP Input File</I> will display the RATMAP data dump file.
-<P>
-<LI><I>MGD Entries with Potential Human Homologies</I> will display MGD records
-    which match citations and human symbols in the <CODE>Gene.medlineid.tab</CODE> file.
-    This is used by Deb Reed to pick up any potential mouse/human homologies which
-    are not in MGD but for which citations exist reporting them.
-<P>
-</UL>
-
-<H4>Executing the Load</H4>
-
-The program <CODE>titan:$SYBASE/admin/utilities/GDB/loadHomology.sh</CODE> is executed from the user
-<CODE>sybase</CODE> cron or from the Production load script (see John Gilbert):
-
+<LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
 	<PRE>
-	$SYBASE/admin/utilities/GDB/loadHomology.sh MGD mgd GDB
-	$SYBASE/admin/utilities/GDB/loadHomology.sh MGD mgd RATMAP
+	$SYBASE/admin/utilities/LocusLink/LLupdate.sh MGD mgd -l
 	</PRE>
+</OL>
+
+<H4>RATMAP</H4>
+
+We are currently using RATMAP to update MGD rat mapping and accession information.
+We are not updating MGD Rat symbols from RATMAP.
+
+<OL>
+<LI>All MGD Rat symbols which do not contain a RATMAP ID are updated with the correct
+    RATMAP ID based on a symbol match between MGD and the RATMAP symbol.
 <P>
-The program <CODE>titan:$SYBASE/admin/utilities/GDB/HMD_Potentials.py</CODE> is executed 
-from <CODE>titan:$SYBASE/admin/utilities/GDB/loadHomology.sh</CODE>.  This generates
-a report of potential mouse/human homologies from the GDB download file <CODE>Gene.medlineid.tab</CODE>.
+<LI>All MGD Rat symbols are updated from the RATMAP file based on a RATMAP ID match
+    between MGD and RATMAP. The fields which are updated are:
+	<UL>
+	<LI>chromosome
+	<LI>offset
+	</UL>
+<P>
+<LI>We output the following:
+	<UL>
+	<LI>MGD Rat Symbols updated today (RATMAP.found.sql.rpt)
+	<LI>MGD Rat Symbols w/out a match in RATMAP (RATMAP.notfound.sql.rpt)
+	<LI>Conflicts between MGD Rat Symbols and RATMAP Symbols (RATMAP.conflicts.sql.rpt)
+	<LI>RATMAP Symbols and GenBankIDs (RATMAP.genbankIDs.sql.rpt)
+	</UL>
+<P>
+<LI>In addition, we retrieve the following files from the RATMAP ftp site:
+	<UL>
+	<LI>RATMAP Homolog file (RATMAP.Homolog.txt)
+	</UL>
+<P>
+<LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
+	<PRE>
+	$SYBASE/admin/utilities/RATMAP/RATMAPupdate.sh MGD mgd -l
+	</PRE>
+</OL>
+
+<H4>GDB</H4>
+
+We are currently using GDB to create a report of potential human homologies based
+on matching GDB citations with MGD citations by symbol for which no human/mouse
+ortholog exists in MGD.
+
+<OL>
+<P>
+<LI>We output the following:
+	<UL>
+	<LI>MGD Entries with Potential Human Homologies (HMD_Potentials.rpt)
+	</UL>
+<P>
+<LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
+	<PRE>
+	$SYBASE/admin/utilities/GDB/GDBreport.sh MGD mgd
+	</PRE>
+</OL>
 
 <HR>
 
