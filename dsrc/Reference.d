@@ -127,7 +127,7 @@ rules:
  
 	  -- Only one instance of this module can be instantiated at a time
 	  -- So, de-sensitize buttons which invoke this initialization event
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
 

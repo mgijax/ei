@@ -94,6 +94,8 @@ devents:
 	Exit :local [];
 	Init :local [];
 
+	MolecularSourceExit : global [];	-- defined in MolecularSource.d
+
 	Modify :local [];
 	ModifyMarker :local [];
 	ModifyReference :local [];
@@ -160,7 +162,7 @@ rules:
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
 
@@ -1762,6 +1764,11 @@ rules:
 --
 
 	Exit does
+
+	  if (mgi->MolecularSourceModule != nil) then
+	    send(MolecularSourceExit, 0);
+	  end if;
+
 	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;

@@ -103,7 +103,7 @@ rules:
 
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
-          ab := mgi->FantomModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 
 	  -- Create windows for all widgets in the widget hierarchy

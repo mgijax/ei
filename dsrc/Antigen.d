@@ -84,7 +84,7 @@ rules:
           InitOptionMenu.option := top->SourceForm->ProbeSpeciesMenu;
           send(InitOptionMenu, 0);
 
-	  ab := mgi->mgiModules->(top.activateButtonName);
+	  ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
 

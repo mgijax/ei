@@ -35,7 +35,7 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [];
 	Delete :local [];
-	Exit :local [];
+	MolecularSourceExit :global [];
 	Modify :local [];
 	PrepareSearch :local [];
 	Search :local [];
@@ -66,7 +66,7 @@ rules:
           InitOptionMenu.option := top->ProbeSpeciesMenu;
           send(InitOptionMenu, 0);
 
-          ab := mgi->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
 
@@ -237,16 +237,7 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
 
-	Exit does
-
-	   -- exiting using window manager causes problems, so check first
-
-	  if (Exit.source_name = "Exit") then
-	    if (mgi->MolecularSource != nil) then
-              mgi->MolecularSource.sensitive := true;
-	    end if;
-	  end if;
-
+	MolecularSourceExit does
 	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;

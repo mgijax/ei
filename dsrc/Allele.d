@@ -104,7 +104,7 @@ rules:
 	  send(BuildDynamicComponents, 0);
 
 	  -- Prevent multiple instances of the Allele form
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
 

@@ -48,7 +48,10 @@ devents:
 	Init :local [];
 	Add :local [];
 	Delete :local [];
-	Exit :local [];
+
+	GenotypeExit :global [];
+	VocAnnotExit :global [];	-- defined in VocAnnot.d
+
 	Modify :local [];
 
 	ModifyAllelePair :local [];
@@ -933,7 +936,12 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
 
-	Exit does
+	GenotypeExit does
+
+	  if (mgi->VocAnnotModule != nil) then
+	    send(VocAnnotExit, 0);
+	  end if;
+
 	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;

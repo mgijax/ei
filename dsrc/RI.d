@@ -64,7 +64,7 @@ rules:
 
 	  top := create widget("RISetModule", nil, mgi);
 
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
 
