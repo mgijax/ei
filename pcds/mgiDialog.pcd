@@ -331,7 +331,7 @@ Module: mgiDialog
         {
           NLMDialog = ReportDialog : mgiDialog;
           Group: Widget
-            dialogTitle = "NLM/Current Contents Update";
+            dialogTitle = "NLM Update";
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
@@ -359,18 +359,6 @@ Module: mgiDialog
                         activateCallback = "D:ReportGenerate(nlmMode = 2)";
                         labelString = "Add\nNLM";
                     }
-                    {
-                      CurrentContents = XmPushButton;
-                      Group: Widget
-                        activateCallback = "D:ReportGenerate(nlmMode = 3)";
-                        labelString = "Update\nCurrent\nContents";
-                    }
-                    {
-                      AddCurrentContents = XmPushButton;
-                      Group: Widget
-                        activateCallback = "D:ReportGenerate(nlmMode = 4)";
-                        labelString = "Add\nCurrent\nContents";
-                    }
               }
               {
                 Lookup = XmFrame;
@@ -384,9 +372,9 @@ Module: mgiDialog
                                 {
                                   List = list;
                                   Group: Widget
-                                    items = "NLM/Current Contents Updates/Adds";
+                                    items = "NLM Updates/Adds";
                                   Group: User
-                                    keys = "nlmcc.py";
+                                    keys = "nlm.py";
                                 }
                           }
                           {

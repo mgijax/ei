@@ -74,15 +74,12 @@ rules:
          return;
         end if;
 
-     elsif (program = "nlmcc.py") then      -- NLM program
+     elsif (program = "nlm.py") then      -- NLM program
 
        -- NLM Mode = 1 is the NLM Update
        -- NLM Mode = 2 is the NLM Add and requires a starting J#
-       -- NLM Mode = 3 is the Current Contents Update
-       -- NLM Mode = 4 is the CC Add and requires a starting J#
 
-       if ((ReportGenerate.nlmMode = 2 or
-            ReportGenerate.nlmMode = 4) and
+       if (ReportGenerate.nlmMode = 2 and
            (dialog->Jnum->text.value.length = 0 or
            (integer) dialog->Jnum->text.value <= (integer) top->NextJnum->text.value)) then
          StatusReport.source_widget := top;
@@ -99,14 +96,9 @@ rules:
          commands.insert("--mode=nlm", commands.count + 1);
        elsif (ReportGenerate.nlmMode = 2) then
          commands.insert("--mode=addnlm", commands.count + 1);
-       elsif (ReportGenerate.nlmMode = 3) then
-         commands.insert("--mode=cc", commands.count + 1);
-       elsif (ReportGenerate.nlmMode = 4) then
-         commands.insert("--mode=addcc", commands.count + 1);
        end if;
  
-       if (ReportGenerate.nlmMode = 2 or
-           ReportGenerate.nlmMode = 4) then
+       if (ReportGenerate.nlmMode = 2) then
          commands.insert("-j" + dialog->Jnum->text.value, commands.count + 1);
        end if;
  
@@ -116,10 +108,6 @@ rules:
          dialog->Output.value := "NLM UPDATE\n";
        elsif (ReportGenerate.nlmMode = 2) then
          dialog->Output.value := "NLM ADD\n";
-       elsif (ReportGenerate.nlmMode = 3) then
-         dialog->Output.value := "CURRENT CONTENTS UPDATE\n";
-       elsif (ReportGenerate.nlmMode = 4) then
-         dialog->Output.value := "CURRENT CONTENTS ADD\n";
        end if;
  
      -- Other Python scripts are not user-dependent and can execute using the public login

@@ -6371,7 +6371,7 @@ Shift<Key>Tab: prev-tab-group()
                             NLM = MenuCascade : mgiMenu;
                             Group: Widget
                               activateCallback = "C: TuManage(find = NLMDialog)";
-                              labelString = "NLM/Current Contents";
+                              labelString = "NLM";
                           }
                     }
                     {
