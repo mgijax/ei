@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec	02/04/2003
+--	- TR 4298; added Allele
+--
 -- lec	02/03/2003
 --	- TR 4378; added Super Standard
 --
@@ -370,20 +373,23 @@ rules:
 --
 -- ModifyMarker
 --
--- Activated from: devent Modify
+-- Processes Marker table for inserts/updates/deletes
+-- Appends to global cmd string
 --
--- Construct insert/update/delete for Strain Marker symbols
--- Appends to global "cmd" string
---
-
-	ModifyMarker does
+ 
+        ModifyMarker does
           table : widget := top->Marker->Table;
           row : integer := 0;
           editMode : string;
-          key : string;
-          newKey : string;
-	  set : string := "";
+	  key : string;
+	  keyName : string;
+          markerKey : string;
+          alleleKey : string;
+	  set : string;
+	  keyDeclared : boolean := false;
  
+	  keyName := "strainmarker" + KEYNAME;
+
           -- Process while non-empty rows are found
  
           while (row < mgi_tblNumRows(table)) do
@@ -393,21 +399,41 @@ rules:
               break;
             end if;
  
-            key := mgi_tblGetCell(table, row, table.markerCurrentKey);
-            newKey := mgi_tblGetCell(table, row, table.markerKey);
+            key := mgi_tblGetCell(table, row, table.primaryKey);
+            markerKey := mgi_tblGetCell(table, row, table.markerKey);
+            alleleKey := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
  
+	    if (alleleKey.length = 0) then
+	      alleleKey := "NULL";
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(PRB_STRAIN_MARKER, NOKEY) + currentRecordKey + "," + newKey + ")\n";
+
+	      if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(PRB_STRAIN_MARKER, NEWKEY, keyName);
+		keyDeclared := true;
+	      else
+		cmd := cmd + mgi_DBincKey(keyName);
+	      end if;
+
+              cmd := cmd +
+                     mgi_DBinsert(PRB_STRAIN_MARKER, keyName) +
+		     currentRecordKey + "," +
+		     markerKey + "," +
+		     alleleKey + ")\n";
+
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Marker_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(PRB_STRAIN_MARKER, currentRecordKey, set) + "and _Marker_key = " + key + "\n";
+	      set := "_Marker_key = " + markerKey + "," +
+                     "_Allele_key = " + alleleKey;
+              cmd := cmd + mgi_DBupdate(PRB_STRAIN_MARKER, key, set);
+ 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(PRB_STRAIN_MARKER, currentRecordKey) + "and _Marker_key = " + key + "\n";
+              cmd := cmd + mgi_DBdelete(PRB_STRAIN_MARKER, key);
             end if;
  
             row := row + 1;
           end while;
-	end does;
+        end does;
 
 --
 -- ModifySynonym
@@ -625,12 +651,12 @@ rules:
 
 	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
             where := where + "\nand exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key " +
+		"where s._Strain_key = a._Object_key" + 
 		" and a._AnnotType_key = " + annotTypeKey + 
 		" and a._Term_key = " + superStandardKey + ") ";
 	  elsif (top->SuperStandardMenu.menuHistory.searchValue = NO) then
             where := where + "\nand not exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key " +
+		"where s._Strain_key = a._Object_key" + 
 		" and a._AnnotType_key = " + annotTypeKey + 
 		" and a._Term_key = " + superStandardKey + ") ";
           end if;
@@ -648,6 +674,19 @@ rules:
             value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.markerSymbol);
             if (value.length > 0) then
 	      where := where + "\nand sm.symbol like " + mgi_DBprstr(value);
+	      from_marker := true;
+	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.alleleKey);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand sm._Allele_key = " + value;
+	    from_marker := true;
+	  else
+            value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.alleleSymbol[1]);
+            if (value.length > 0) then
+	      where := where + "\nand sm.alleleSymbol like " + mgi_DBprstr(value);
 	      from_marker := true;
 	    end if;
 	  end if;
@@ -824,7 +863,7 @@ rules:
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + 
-		 " order by sequenceNum\n" +
+		 " order by symbol, sequenceNum\n" +
 		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_SYNONYM) +
@@ -869,10 +908,13 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
 		table := top->Marker->Table;
-                (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.primaryKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 10));
+
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 4) then
 		table := top->StrainType->Table;
