@@ -1768,6 +1768,7 @@ rules:
 	  from_gel : boolean := false;
 	  table : widget;
 	  value : string;
+	  value2 : string;
 
 	  from := "from " + mgi_DBtable(GXD_ASSAY) + "_View" + " g";
 	  where := "";
@@ -1884,11 +1885,88 @@ rules:
 	      where := where + " and ig._Genotype_key = " + value;
 	      from_specimen := true;
 	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.embeddingKey);
+	    if (value.length > 0) then
+	      where := where + " and ig._Embedding_key = " + value;
+	      from_specimen := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.fixationKey);
+	    if (value.length > 0) then
+	      where := where + " and ig._Fixation_key = " + value;
+	      from_specimen := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.specimenLabel);
+	    if (value.length > 0) then
+	      where := where + " and ig.specimenLabel like " + mgi_DBprstr(value);
+	      from_specimen := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.hybridizationKey);
+	    if (value.length > 0) then
+	      where := where + " and ig.hybridization like " + mgi_DBprstr(value);
+	      from_specimen := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.sex);
+	    if (value.length > 0) then
+	      where := where + " and ig.sex like " + mgi_DBprstr(value);
+	      from_specimen := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.ageKey);
+	    value2 := mgi_tblGetCell(table, 0, table.ageRange);
+	    if (value.length > 0 or value2.length > 0) then
+	      value := value + " " + value2;
+	      where := where + " and ig.age like " + mgi_DBprstr(value);
+	      from_specimen := true;
+	    end if;
 	  elsif (assayDetailForm.name = "GelForm") then
 	    table := top->GelForm->GelLane->Table;
+
 	    value := mgi_tblGetCell(table, 0, table.genotypeKey);
 	    if (value.length > 0) then
 	      where := where + " and gg._Genotype_key = " + value;
+	      from_gel := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.rnaKey);
+	    if (value.length > 0 and value != "NULL") then
+	      where := where + " and gg._GelRNAType_key = " + value;
+	      from_gel := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.controlKey);
+	    if (value.length > 0 and value != "NULL") then
+	      where := where + " and gg._GelControl_key = " + value;
+	      from_gel := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.label);
+	    if (value.length > 0) then
+	      where := where + " and gg.laneLabel like " + mgi_DBprstr(value);
+	      from_gel := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.sampleAmt);
+	    if (value.length > 0) then
+	      where := where + " and gg.sampleAmount like " + mgi_DBprstr(value);
+	      from_gel := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.sex);
+	    if (value.length > 0) then
+	      where := where + " and gg.sex like " + mgi_DBprstr(value);
+	      from_gel := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.ageKey);
+	    value2 := mgi_tblGetCell(table, 0, table.ageRange);
+	    if (value.length > 0 or value2.length > 0) then
+	      value := value + " " + value2;
+	      where := where + " and gg.age like " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
 	  end if;
