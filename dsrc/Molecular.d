@@ -579,16 +579,16 @@ rules:
 	  -- Modify Non-Primer Molecular Segment
 
           if (detailForm = top->MolDetailForm) then
-            if (top->MolDetailForm->VectorTypeMenu.menuHistory.modified) then
-	      set := set + "_Vector_key = " + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + ",";
+            if (detailForm->VectorTypeMenu.menuHistory.modified) then
+	      set := set + "_Vector_key = " + detailForm->VectorTypeMenu.menuHistory.defaultValue + ",";
 	    end if;
   
-	    if (top->MolDetailForm->InsertSize->text.modified) then
-              set := set + "insertSize = " + mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + ",";
+	    if (detailForm->InsertSize->text.modified) then
+              set := set + "insertSize = " + mgi_DBprstr(detailForm->InsertSize->text.value) + ",";
 	    end if;
 
-	    if (top->MolDetailForm->InsertSite->text.modified) then
-              set := set + "insertSite = " + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + ",";
+	    if (detailForm->InsertSite->text.modified) then
+              set := set + "insertSite = " + mgi_DBprstr(detailForm->InsertSite->text.value) + ",";
 	    end if;
 
             if (top->MolMasterForm->SegmentTypeMenu.menuHistory.modified) then
@@ -597,14 +597,14 @@ rules:
 
 	    -- If Parent Clone has been modified, then Source info must be reviewed
 
-	    if (top->MolDetailForm->ParentClone->ObjectID->text.modified) then
+	    if (detailForm->ParentClone->ObjectID->text.modified) then
 
 	      -- New Parent Clone value
 
-	      if (top->MolDetailForm->ParentClone->ObjectID->text.value.length > 0 and
-	          top->MolDetailForm->ParentClone->ObjectID->text.value != "NULL") then
-                set := set + "derivedFrom = " + top->MolDetailForm->ParentClone->ObjectID->text.value + ",";
-	        set := set + "_Source_key = " + top->MolDetailForm->SourceForm->SourceID->text.value + ",";
+	      if (detailForm->ParentClone->ObjectID->text.value.length > 0 and
+	          detailForm->ParentClone->ObjectID->text.value != "NULL") then
+                set := set + "derivedFrom = " + detailForm->ParentClone->ObjectID->text.value + ",";
+	        set := set + "_Source_key = " + detailForm->SourceForm->SourceID->text.value + ",";
 
 	      -- No Parent Clone value given
 	      --  1.  create new Source record for Molecular Segment
@@ -615,11 +615,11 @@ rules:
                 AddMolecularSource.source_widget := detailForm;
                 AddMolecularSource.keyLabel := sourceKeyName;
                 send(AddMolecularSource, 0);
-	        if (top->MolDetailForm->SourceForm.sql.length = 0) then
+	        if (detailForm->SourceForm.sql.length = 0) then
 	          (void) reset_cursor(top);
 	          return;
 	        end if;
-                cmd := cmd + top->MolDetailForm->SourceForm.sql;
+                cmd := cmd + detailForm->SourceForm.sql;
 	        set := set + "derivedFrom = NULL,";
 	        set := set + "_Source_key = @" + sourceKeyName + ",";
 	      end if;
@@ -627,15 +627,21 @@ rules:
 	    -- Parent Clone has not been modified, so process any Source modifications
 
             else
-              -- ModifyProbeSource will set top->MolDetailForm->SourceForm.sql appropriately
-              -- Append this value to the 'cmd' string
-              ModifyProbeSource.source_widget := detailForm;
-	      ModifyProbeSource.probeKey := currentMasterKey;
-              send(ModifyProbeSource, 0);
-              cmd := cmd + top->MolDetailForm->SourceForm.sql;
+	      if (detailForm->SourceForm->Library->text.value.length = 0) then
+                -- ModifyProbeSource will set top->MolDetailForm->SourceForm.sql appropriately
+                -- Append this value to the 'cmd' string
+                ModifyProbeSource.source_widget := detailForm;
+	        ModifyProbeSource.probeKey := currentMasterKey;
+                send(ModifyProbeSource, 0);
+	      else
+                ModifyMolecularSource.source_widget := detailForm;
+                send(ModifyMolecularSource, 0);
+	      end if;
 
-	      if (top->MolDetailForm->SourceForm->SourceID->text.modified) then
-	        set := set + "_Source_key = " + top->MolDetailForm->SourceForm->SourceID->text.value + ",";
+              cmd := cmd + detailForm->SourceForm.sql;
+
+	      if (detailForm->SourceForm->SourceID->text.modified) then
+	        set := set + "_Source_key = " + detailForm->SourceForm->SourceID->text.value + ",";
 	      end if;
 	    end if;
 
@@ -1407,7 +1413,7 @@ rules:
 	    currentReferenceKey := "";
 
 	    -- Re-set Library Source Key if Anonymous source
-	    if (top->MolDetailForm->SourceForm->Library->text.value = "") then
+	    if (top->MolDetailForm->SourceForm->Library->text.value.length = 0) then
 	      top->MolDetailForm->SourceForm->SourceID->text.value := "-1";
             end if;
 
