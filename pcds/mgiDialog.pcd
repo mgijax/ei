@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 25 14:29:11 2000";
+      lastWritten = "Fri Apr 28 11:53:26 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1694,9 +1694,7 @@ Module: mgiDialog
                     }
               }
               {
-                hasAlleles = toggle : mgiDataTypes;
-                Group: Widget
-                  labelString = "This Marker has alleles";
+                ChromosomeMenu = ChromosomeMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = currentMarker;
@@ -1709,6 +1707,20 @@ Module: mgiDialog
                   topOffset = 10;
               }
               {
+                hasAlleles = toggle : mgiDataTypes;
+                Group: Widget
+                  labelString = "The Marker being withdrawn has alleles.";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = currentMarker;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = currentMarker;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
                 MarkerEventMenu = MarkerEventMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
@@ -1717,8 +1729,8 @@ Module: mgiDialog
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = currentMarker;
-                  topWidget = currentMarker;
+                  leftWidget = hasAlleles;
+                  topWidget = hasAlleles;
                     Popups:
                     {
                       MarkerEventPulldown = OptionPulldown;
@@ -1811,6 +1823,13 @@ Shift<Key>Tab: prev-tab-group()";
                             label = XmLabel;
                             Group: Widget
                               labelString = "New Symbol";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMarker() VerifyMarkerChromosome()";
                           }
                     }
               }
@@ -1924,6 +1943,10 @@ Shift<Key>Tab: prev-tab-group()";
                 Output = scrolledText : mgiDataTypes;
                 Group: Widget
                   managed = False;
+              }
+              Popups:
+              {
+                StatusDialog = StatusDialog : mgiDialog;
               }
         }
         {

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Apr 27 10:19:26 2000";
+      lastWritten = "Fri Apr 28 12:05:35 2000";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8051,7 +8051,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerChromosome,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerChromosome (allowMismatch = false),\nD:CommitTableCellEdit";
                                           xrtTblNumColumns = 4;
                                           xrtTblColumnLabels = "Mode,Current key,Marker key,Alias";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
