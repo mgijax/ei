@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec	01/32/2002
+--	- detect changes to Strain Name and record previous and new strain name in ei log file
+--
 -- lec	10/31/2001
 --	- TR 2541; ResetModificationFlags
 --
@@ -102,6 +105,8 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
+	origStrainName : string;	-- original strain name
+
 	tables : list;
 
 	clearLists : integer;
@@ -289,6 +294,9 @@ rules:
 
           if (top->Name->text.modified) then
             set := set + "strain = " + mgi_DBprstr(top->Name->text.value) + ",";
+	    (void) mgi_writeLog("\n" + get_time() + "STRAIN NAME MODIFIED:" +
+		"\tOriginal Strain Name: " + origStrainName +
+		"\tNew Strain Name: " + top->Name->text.value + "\n\n");
           end if;
 
           if (top->StandardMenu.menuHistory.modified and
@@ -758,6 +766,7 @@ rules:
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->Name->text.value := mgi_getstr(dbproc, 8);
+		origStrainName := top->Name->text.value;
                 top->CreationDate->text.value := mgi_getstr(dbproc, 5);
                 top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 		top->mlpSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
