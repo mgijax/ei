@@ -244,14 +244,6 @@ rules:
 --
 
         Add does
-	  -- TR 846; temporary restriction; can be removed after TR 554 is implemented
-	  if (origSeqType = "EST" or top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue = "EST") then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Cannot add EST records.";
-	    send(StatusReport);
-	    return;
-	  end if;
-
 	  if (top->Control->References.set) then
 	    send(AddReference, 0);
 	    return;
@@ -451,14 +443,6 @@ rules:
 --
 
         Delete does
-	  -- TR 846; temporary restriction; can be removed after TR 554 is implemented
-	  if (origSeqType = "EST" or top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue = "EST") then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Cannot delete EST records.";
-	    send(StatusReport);
-	    return;
-	  end if;
-
           (void) busy_cursor(top);
 
 	  -- Delete master Molecular Segment
@@ -513,14 +497,6 @@ rules:
 --
 
 	Modify does
-	  -- TR 846; temporary restriction; can be removed after TR 554 is implemented
-	  if (origSeqType = "EST" or top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue = "EST") then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Cannot modify EST records.";
-	    send(StatusReport);
-	    return;
-	  end if;
-
 	  if (top->Control->References.set) then
 	    send(ModifyReference, 0);
 	    return;
