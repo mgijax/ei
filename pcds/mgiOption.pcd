@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 21 13:55:25 1999";
+      lastWritten = "Tue Feb 15 09:43:46 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -2553,8 +2553,6 @@ Module: mgiOption
               Popups:
               {
                 MarkerStatusPulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  sql = "select * from nomen..MRK_Status order by _Marker_Status_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2573,8 +2571,6 @@ Module: mgiOption
               Popups:
               {
                 MarkerEventPulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  sql = "select * from nomen..MRK_Event order by _Marker_Event_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2607,8 +2603,6 @@ Module: mgiOption
               Popups:
               {
                 NomenUserPulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  sql = "select * from nomen..MRK_Nomen_User_View order by status, name";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 21 13:49:05 1999";
+      lastWritten = "Tue Feb 15 09:42:39 2000";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -253,8 +253,6 @@ Module: mgiLookup
           Group: Control
             vip_x = 60;
             vip_y = 635;
-          Group: User
-            cmd = "select * from nomen..MRK_GeneFamily order by name";
               {
                 Label = LookupLabel;
                 Group: Widget
