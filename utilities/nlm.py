@@ -622,6 +622,7 @@ def doAdd(rec, rectags):
 		rec['DP'], rec['YR'], rec['PG'], rec['AB']))
  
 	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
+
 	if rec.has_key('PMID'):
 		cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
 			% (rec['PMID'], PUBMEDKEY, MGITYPE))
