@@ -617,7 +617,6 @@ rules:
             from := "\nfrom GXD_Structure s, GXD_StructureName sn, GXD_TheilerStage t ";
             where := "\nwhere s._Stage_key = t._Stage_key " + 
                      "\nand s._Structure_key = sn._Structure_key";
-            stages_query : string := "";
 
             -- structure name
 
@@ -628,38 +627,40 @@ rules:
 
             -- structure Notes
 
-            if (top->structureNotes->text.value.length > 0) then
-                 where := where + "\nand s.structureNote like " + 
-			mgi_DBprstr(top->structureNotes->text.value);
-            end if;
-
-            -- aliases fields are not searchable
+--            if (top->structureNotes->text.value.length > 0) then
+--                 where := where + "\nand s.structureNote like " + 
+--			mgi_DBprstr(top->structureNotes->text.value);
+--            end if;
 
             -- Stages text field
             
+            stages_query : string := "";
             stages_query := parseStages(top->stagesText->text.value);
 
             if (stages_query != "") then
                  where := where + "\nand t.stage in (" + stages_query + ")";
             end if;
 
-            if (top->MGIAddedMenu.menuHistory.searchValue != "%") then
-              if (top->MGIAddedMenu.menuHistory.searchValue = YES) then
-                where := where + "\nand edinburghKey != NULL";
-	      else
-                where := where + "\nand edinburghKey = NULL";
-	      end if;
-            end if;
+            -- aliases fields are not searchable
+	    -- no pulldown menu fields are searchable
 
-            if (top->MGIAddedAliasMenu.menuHistory.searchValue != "%") then
-              where := where + "\nand mgiAdded = " + 
-		top->MGIAddedAliasMenu.menuHistory.searchValue;
-            end if;
+--            if (top->MGIAddedMenu.menuHistory.searchValue != "%") then
+--              if (top->MGIAddedMenu.menuHistory.searchValue = YES) then
+--                where := where + "\nand edinburghKey != NULL";
+--	      else
+--                where := where + "\nand edinburghKey = NULL";
+--	      end if;
+--            end if;
 
-            if (top->printStopMenu.menuHistory.searchValue != "%") then
-              where := where + "\nand printStop = " + 
-		top->printStopMenu.menuHistory.searchValue;
-            end if;
+--            if (top->MGIAddedAliasMenu.menuHistory.searchValue != "%") then
+--              where := where + "\nand mgiAdded = " + 
+--		top->MGIAddedAliasMenu.menuHistory.searchValue;
+--            end if;
+
+--            if (top->printStopMenu.menuHistory.searchValue != "%") then
+--              where := where + "\nand printStop = " + 
+--		top->printStopMenu.menuHistory.searchValue;
+--            end if;
 
         end does;
 
@@ -753,10 +754,11 @@ rules:
         top->ID->text.value := current_structurekey; 
         top->stagesText->text.value := (string) current_stagenum;
 
-	-- set current record in selection list (if this event came from a C module;
-	-- i.e. the user selects the record from the tree)
+	-- if the user selects the record from the tree, then
+	-- set the current record in the selection list (if it exists)
 
 	if (top->QueryList->List.itemCount > 0) then
+	  (void) XmListDeselectAllItems(top->QueryList->List);
 	  row := top->QueryList->List.keys.find(current_structurekey);
 	  if (row > 0) then
 	    (void) XmListSelectPos(top->QueryList->List, row, false);
@@ -848,21 +850,20 @@ rules:
        item : string;
        key : string;
 
-       /* only add if there is a current structure */
+       -- only add if there is a current structure
        if (current_structure = nil) then
-          return;
+         return;
        end if;
 
-       if (structure_getStructureKey(current_structure) = -1) then
-           -- we don't allow users to add nodes that don't have structure keys;
-	   -- a la Stage(s) nodes.
-           return;
+       key := (string) structure_getStructureKey(current_structure);
+
+       -- cannot add Stage Nodes; must have a structure key
+       if (key = "-1") then
+         return;
        end if;
 
        item := format_stagenum(structure_getStage(current_structure)) +
 		(string) structure_getPrintName(current_structure);
-
-       key := (string) structure_getStructureKey(current_structure);
 
        ClipboardAdd.clipboard := clipboard;
        ClipboardAdd.item := item;

@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep 13 12:28:01 2001";
+      lastWritten = "Tue Sep 18 07:41:52 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -88,6 +88,7 @@ Module: gxdDictionary
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
+                              height = 650;
                             Group: User
                               homeWidget = structureText;
                                 {
@@ -266,6 +267,7 @@ Module: gxdDictionary
                                   treeDisplay = treeDisplay : gxdDictionary;
                                   Group: Widget
                                     highlightColor = Firebrick;
+                                    xrtGearSelectionCallback = "C:nodeSelectionCB";
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
@@ -557,6 +559,8 @@ Module: gxdDictionary
               }
               {
                 List = list : mgiDataTypes;
+                Group: Widget
+                  visibleItemCount = 15;
               }
               {
                 Add = TablePush : mgiTable;
