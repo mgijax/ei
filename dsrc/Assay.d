@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  11/04/2002
+--	- TR 4222
+--
 -- lec  10/24/2002
 --      - TR 4187; use Gel Lane Labels in Gel Row table row labels
 --
@@ -1361,9 +1364,6 @@ rules:
 
 	    if (ageRange.length > 0) then
 	      ageKey := ageKey + " " + ageRange;
-	    else
-	      ageMin := "NULL";
-	      ageMax := "NULL";
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -1509,9 +1509,6 @@ rules:
 
 	    if (ageRange.length > 0) then
 	      ageKey := ageKey + " " + ageRange;
-	    else
-	      ageMin := "NULL";
-	      ageMax := "NULL";
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
