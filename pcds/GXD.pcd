@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 23 14:46:49 2001";
+      lastWritten = "Tue Aug 28 15:08:35 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2761,6 +2761,7 @@ Shift<Key>Tab: prev-tab-group()
           GenotypeModule = Module : MGI;
           Group: Widget
             iconName = "D:CreateMGIModule(name = \"Genotype\")";
+            title = GenotypeModule;
           Group: Control
             vip_x = 60;
             vip_y = 360;
@@ -2771,6 +2772,21 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:GenotypeSearch,\nD:GoHome";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2781,18 +2797,39 @@ Shift<Key>Tab: prev-tab-group()
                               resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
-                                }
-                                {
-                                  Strain = Strain : mgiDataTypes;
+                                  Group: Widget
+                                    managed = True;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_form;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                }
+                                {
+                                  Strain = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                     rightOffset = 5;
+                                    leftWidget = ID;
+                                    topWidget = ID;
+                                    topOffset = 5;
                                 }
                                 {
                                   AllelePair = TableLabel : mgiTable;
@@ -2849,6 +2886,14 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                                {
+                                  Search = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:GenotypeSearch,\nD:GoHome";
+                                }
+                          }
                     }
                     {
                       Lookup = Lookup : mgiLookup;
