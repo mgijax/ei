@@ -1,3 +1,12 @@
+TAG: ei-8-1-2
+TAG: 
+DATE: 01/02/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 4272; annotate Mammalian Phenotype
+2) List.d:SelectLookupListItem;de-selection should be processed
+
 TAG: ei-8-1-1
 DATE: 12/31/2002
 STAFF: lec
