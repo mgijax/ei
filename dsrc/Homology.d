@@ -347,7 +347,7 @@ rules:
 	  editMode : string;
 	  table : widget;
 	  homologyModified : boolean := false;
-	  numAssays : integer;
+	  numAssays : integer := 0;
 	  invalidAssay : boolean := false;
 
 	  -- Determine if any Assay row contains less than 2 Species selected
@@ -366,7 +366,7 @@ rules:
 		j := j + 1;
 	      end while;
 	    end if;
-	    if (numAssays < 2) then
+	    if (editMode != TBL_ROW_EMPTY and editMode != TBL_ROW_DELETE and numAssays < 2) then
 	      invalidAssay := true;
 	    end if;
 	    i := i + 1;
