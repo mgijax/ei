@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Feb 14 14:26:16 2002";
+      lastWritten = "Thu Mar  7 10:55:08 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control

@@ -2,11 +2,11 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Mar  6 12:56:53 2002";
+      lastWritten = "Tue Mar 12 11:53:17 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
-            vip_x = 45;
+            vip_x = 55;
             vip_y = 140;
           Group: User
             activateButtonName = Fantom2;
@@ -51,6 +51,20 @@ Module: mgiFantom
                                       }
                                 }
                           }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = False;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -91,17 +105,17 @@ Module: mgiFantom
                                         Group: Widget
                                           xrtTblNumRows = 70000;
                                           xrtTblVisibleRows = 50;
-                                          xrtTblNumColumns = 40;
-                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID, RA Symbol,Seq Length,Seq Note,Seq Qual,Locus ID,UniGene ID,TIGR TC,R Cluster,Locus Status,MGI Status,MGI #,BLAST Hit,BLAST Expect,Auto Annot,Info Annot,Final Cluster,Cat ID,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Notes,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
+                                          xrtTblNumColumns = 42;
+                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID,RA Symbol,Seq Length,Locus ID,UniGene ID,TIGR TC,R Cluster,Locus Status,RIKEN #,MGI Status,MGI #,BLAST Group ID,BLAST MGI:IDs,CDS Cat #,Seq Qual,Seq Note,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Notes,Cluster Anal,Gene Name Cur,CDS/GO Cur,Final Cluster ID,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
                                           width = 1000;
                                           height = 800;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3-4 1)(all 5-6 5)(all 7-8 10)(all 9-10 15)(all 11 10)(all 12 15)(all 13-19 10)(all 20 5)(all 21-22 20)(all 23-24 25)(all 25 15)(all 27 20)(all 28-30 25)(all 31 50)(all 32 6)(all 33 25)(all 34-35 25)(all 36-39 10)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3-4 1)(all 5-6 5)(all 7-8 10)(all 9-10 15)(all 11 10)(all 12-19 10)(all 20-21 20)(all 22 8)(all 23-24 15)(all 25-29 25)(all 30 6)(all 31 25) (all 32-34 15)(all 35 10)(all 36-37 25)(all 38-41 10)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           xrtTblTraversableSeries = "(all 0-5 False)";
                                           xrtTblEditableSeries = "(all 0-5 False)";
-                                          xrtTblFrozenColumns = 10;
-                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"12\"\nseqQuality:Int(Int)=\"13\"\nlocusID:Int(Int)=\"14\"\ntigerID:Int(Int)=\"16\"\nunigeneID:Int(Int)=\"15\"\nclusterID:Int(Int)=\"17\"\nlocusStatus:Int(Int)=\"18\"\nmgiStatus:Int(Int)=\"19\"\nmgiNumber:Int(Int)=\"20\"\nblastHit:Int(Int)=\"21\"\nblastExpect:Int(Int)=\"22\"\nautoAnnot:Int(Int)=\"23\"\ninfoAnnot:Int(Int)=\"24\"\ncatID:Int(Int)=\"26\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"27\"\nfinalSymbol1:Int(Int)=\"28\"\nfinalName1:Int(Int)=\"29\"\nfinalSymbol2:Int(Int)=\"30\"\nfinalName2:Int(Int)=\"31\"\nnomenEvent:Int(Int)=\"32\"\nnomenNote:Int(Int)=\"33\"\nrikenNote:Int(Int)=\"34\"\ncuratorNote:Int(Int)=\"35\"\ncreatedBy:Int(Int)=\"36\"\ncreatedDate:Int(Int)=\"37\"\nmodifiedBy:Int(Int)=\"38\"\nmodifiedDate:Int(Int)=\"39\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int(Int)=\"4\"\nfinalCluster:Int(Int)=\"25\"\n";
+                                          xrtTblFrozenColumns = 11;
+                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"24\"\nseqQuality:Int(Int)=\"23\"\nlocusID:Int(Int)=\"12\"\ntigerID:Int(Int)=\"14\"\nunigeneID:Int(Int)=\"13\"\nclusterID:Int(Int)=\"15\"\nlocusStatus:Int(Int)=\"16\"\nmgiStatus:Int(Int)=\"18\"\nmgiNumber:Int(Int)=\"19\"\nblastGroupID:Int(Int)=\"20\"\nblastMGIIDs:Int(Int)=\"21\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"25\"\nfinalSymbol1:Int(Int)=\"26\"\nfinalName1:Int(Int)=\"27\"\nfinalSymbol2:Int(Int)=\"28\"\nfinalName2:Int(Int)=\"29\"\nnomenEvent:Int(Int)=\"30\"\nnomenNote:Int(Int)=\"31\"\nrikenNote:Int(Int)=\"36\"\ncuratorNote:Int(Int)=\"37\"\ncreatedBy:Int(Int)=\"38\"\ncreatedDate:Int(Int)=\"39\"\nmodifiedBy:Int(Int)=\"40\"\nmodifiedDate:Int(Int)=\"41\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int(Int)=\"4\"\nfinalCluster:Int(Int)=\"35\"\nrikenNumber:Int(Int)=\"17\"\ncds:Int(Int)=\"22\"\nclusterAnal:Int(Int)=\"32\"\ngeneNameCuration:Int(Int)=\"33\"\ncdsGOCuration:Int(Int)=\"34\"\n";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblValidateCellCallback = "D:VerifyFinalMGIID,\nD:CommitTableCellEdit";
                                           xrtTblJumpScroll = jump_none;
@@ -246,7 +260,7 @@ Module: mgiFantom
                                         SeqNotePulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 12;
+                                          tableOption = 24;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -258,22 +272,6 @@ Module: mgiFantom
                                               Group: User
                                                 defaultValue = Representative;
                                                 searchValue = Representative;
-                                            }
-                                            {
-                                              F = OptionToggle : mgiOption;
-                                              Group: Widget
-                                                labelString = "5' truncated";
-                                              Group: User
-                                                defaultValue = "5' truncated";
-                                                searchValue = "5' truncated";
-                                            }
-                                            {
-                                              T = OptionToggle : mgiOption;
-                                              Group: Widget
-                                                labelString = "3' truncated";
-                                              Group: User
-                                                defaultValue = "3' truncated";
-                                                searchValue = "3' truncated";
                                             }
                                             {
                                               zilch = OptionToggle : mgiOption;
@@ -297,7 +295,7 @@ Module: mgiFantom
                                         SeqQualityPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 13;
+                                          tableOption = 23;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -356,7 +354,7 @@ Module: mgiFantom
                                         LocusStatusPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 18;
+                                          tableOption = 16;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -423,7 +421,7 @@ Module: mgiFantom
                                         MGIStatusPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 19;
+                                          tableOption = 18;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -479,69 +477,58 @@ Module: mgiFantom
                                       }
                                 }
                                 {
-                                  CatIDMenu = OptionMenu : mgiOption;
+                                  CDSMenu = OptionMenu : mgiOption;
                                   Group: Widget
-                                    subMenuId = CatIDPulldown;
-                                    labelString = "Category \nIdentifier";
-                                  Group: User
-                                    defaultOption = zilch;
+                                    subMenuId = CDSMenuPulldown;
+                                    labelString = "CDS Category";
                                       Popups:
                                       {
-                                        CatIDPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        CDSMenuPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
-                                          tableForm = Fantom;
-                                          tableOption = 26;
-                                          tableOptionKey = "-1";
+                                          tableOption = 22;
+                                          tableForm = Table;
                                             {
                                               SearchAll = SearchAll : mgiOption;
                                             }
                                             {
-                                              A1 = OptionToggle : mgiOption;
+                                              Cat1 = OptionToggle : mgiOption;
                                               Group: Widget
-                                                labelString = A1;
+                                                labelString = 1;
                                               Group: User
-                                                defaultValue = A1;
-                                                searchValue = A1;
+                                                defaultValue = 1;
+                                                searchValue = 1;
                                             }
                                             {
-                                              A2 = OptionToggle : mgiOption;
+                                              Cat2 = OptionToggle : mgiOption;
                                               Group: Widget
-                                                labelString = A2;
+                                                labelString = 2;
                                               Group: User
-                                                defaultValue = A2;
-                                                searchValue = A2;
+                                                searchValue = 2;
+                                                defaultValue = 2;
                                             }
                                             {
-                                              A3 = OptionToggle : mgiOption;
+                                              Cat3 = OptionToggle : mgiOption;
                                               Group: Widget
-                                                labelString = A3;
+                                                labelString = 3;
                                               Group: User
-                                                defaultValue = A3;
-                                                searchValue = A3;
+                                                defaultValue = 3;
+                                                searchValue = 3;
                                             }
                                             {
-                                              A4 = OptionToggle : mgiOption;
+                                              Cat4 = OptionToggle : mgiOption;
                                               Group: Widget
-                                                labelString = A4;
+                                                labelString = 4;
                                               Group: User
-                                                defaultValue = A4;
-                                                searchValue = A4;
+                                                defaultValue = 4;
+                                                searchValue = 4;
                                             }
                                             {
-                                              A5 = OptionToggle : mgiOption;
+                                              Cat5 = OptionToggle : mgiOption;
                                               Group: Widget
-                                                labelString = A5;
+                                                labelString = 5;
                                               Group: User
-                                                defaultValue = A5;
-                                                searchValue = A5;
-                                            }
-                                            {
-                                              zilch = OptionToggle : mgiOption;
-                                              Group: Widget
-                                                labelString = zilch;
-                                              Group: User
-                                                searchValue = zilch;
-                                                defaultValue = zilch;
+                                                searchValue = 5;
+                                                defaultValue = 5;
                                             }
                                       }
                                 }
@@ -557,7 +544,7 @@ Module: mgiFantom
                                         NomenEventPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 32;
+                                          tableOption = 30;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -599,35 +586,61 @@ Module: mgiFantom
                                       }
                                 }
                                 {
-                                  AutoAnnot = NotePushShort : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Auto Pipelne Result";
-                                  Group: User
-                                    targetColumn = 23;
-                                    targetWidget = Fantom;
-                                }
-                                {
-                                  InfoAnnot = NotePushShort : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Info Pipeline Result";
-                                  Group: User
-                                    targetColumn = 24;
-                                    targetWidget = Fantom;
-                                }
-                                {
                                   NomenNote = NotePush : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Nomen Notes";
                                   Group: User
                                     targetWidget = Fantom;
-                                    targetColumn = 33;
+                                    targetColumn = 31;
+                                }
+                                {
+                                  NomenNoteMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = NomenNotePulldown;
+                                    labelString = "Nomen Notes";
+                                      Popups:
+                                      {
+                                        NomenNotePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              NomenNoteToggle = NoteToggle : mgiFantom;
+                                              Group: Widget
+                                                labelString = "Probable Ortholog";
+                                              Group: User
+                                                defaultValue = "Probable Ortholog";
+                                            }
+                                            {
+                                              NomenNoteToggle1 = NoteToggle : mgiFantom;
+                                              Group: Widget
+                                                labelString = "Possible Ortholog";
+                                              Group: User
+                                                defaultValue = "Possible Ortholog";
+                                            }
+                                            {
+                                              NomenNoteToggle2 = NoteToggle : mgiFantom;
+                                              Group: Widget
+                                                labelString = "Probable Paralog";
+                                              Group: User
+                                                defaultValue = "Probable Paralog";
+                                            }
+                                            {
+                                              NomenNoteToggle3 = NoteToggle : mgiFantom;
+                                              Group: Widget
+                                                labelString = "Proposed Symbol/Name";
+                                              Group: User
+                                                defaultValue = "Proposed Symbol:|Probposed Name:|";
+                                                placeBefore = False;
+                                            }
+                                      }
                                 }
                                 {
                                   RIKENNote = NotePush : mgiDataTypes;
                                   Group: Widget
                                     labelString = "RIKEN Notes";
                                   Group: User
-                                    targetColumn = 34;
+                                    targetColumn = 36;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -635,8 +648,28 @@ Module: mgiFantom
                                   Group: Widget
                                     labelString = "Curator Notes";
                                   Group: User
-                                    targetColumn = 35;
+                                    targetColumn = 37;
                                     targetWidget = Fantom;
+                                }
+                                {
+                                  CuratorNoteMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = CuratorNotePulldown;
+                                    labelString = "Curator Notes";
+                                      Popups:
+                                      {
+                                        CuratorNotePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              CuratorNoteToggle = NoteToggle : mgiFantom;
+                                              Group: Widget
+                                                labelString = "Better RefSeq";
+                                              Group: User
+                                                defaultValue = "Better RefSeq";
+                                            }
+                                      }
                                 }
                                 {
                                   notSearch = toggle : mgiDataTypes;
@@ -646,8 +679,14 @@ Module: mgiFantom
                                 {
                                   zilch = push : mgiDataTypes;
                                   Group: Widget
-                                    activateCallback = "D:PasteZilch,\nD:GoHome";
+                                    activateCallback = "D:PasteValue(value = \"zilch\"),\nD:GoHome";
                                     labelString = "Paste \"Zilch\" in Cell";
+                                }
+                                {
+                                  done = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:PasteValue(value = \"done\"),\nD:GoHome";
+                                    labelString = "Paste \"Done\" in Cell";
                                 }
                                 {
                                   copyGBAtoFinal = push : mgiDataTypes;
@@ -706,7 +745,7 @@ Module: mgiFantom
         {
           FANTOM = Application : MGI;
           Group: Control
-            vip_x = 45;
+            vip_x = 55;
             vip_y = 85;
               {
                 FantomForm = XmForm;
@@ -761,7 +800,7 @@ Module: mgiFantom
           sortOptions = XmRowColumn;
           Group: Control
             vipComment = "";
-            vip_x = 45;
+            vip_x = 55;
             vip_y = 30;
               {
                 sortMenu1 = sortMenu : mgiFantom;
@@ -813,7 +852,7 @@ Module: mgiFantom
           Group: Widget
             subMenuId = sortMenuPulldown;
           Group: Control
-            vip_x = 135;
+            vip_x = 170;
             vip_y = 30;
               Popups:
               {
@@ -869,162 +908,186 @@ Module: mgiFantom
                     {
                       column12 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Seq Note";
+                        labelString = "Locus ID";
                       Group: User
-                        dbField = seq_note;
+                        dbField = riken_locusid;
                         columnValue = 12;
                     }
                     {
                       column13 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Seq Quality";
+                        labelString = "Unigene ID";
                       Group: User
-                        dbField = seq_quality;
+                        dbField = unigene_id;
                         columnValue = 13;
                     }
                     {
                       column14 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Locus ID";
+                        labelString = "TIGER TC";
                       Group: User
-                        dbField = riken_locusid;
+                        dbField = tiger_tc;
                         columnValue = 14;
                     }
                     {
                       column15 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Unigene ID";
+                        labelString = "Riken Cluster ID";
                       Group: User
-                        dbField = unigene_id;
+                        dbField = riken_cluster;
                         columnValue = 15;
                     }
                     {
                       column16 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "TIGER TC";
+                        labelString = "Locus Status";
                       Group: User
-                        dbField = tiger_tc;
+                        dbField = riken_locusStatus;
                         columnValue = 16;
                     }
                     {
                       column17 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Riken Cluster ID";
+                        labelString = "RIKEN #";
                       Group: User
-                        dbField = riken_cluster;
+                        dbField = riken_numberCode;
                         columnValue = 17;
                     }
                     {
                       column18 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Locus Status";
+                        labelString = "MGI Status";
                       Group: User
-                        dbField = riken_locusStatus;
+                        dbField = mgi_statusCode;
                         columnValue = 18;
                     }
                     {
                       column19 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "MGI Status";
+                        labelString = "MGI #";
                       Group: User
-                        dbField = mgi_statusCode;
+                        dbField = mgi_numberCode;
                         columnValue = 19;
                     }
                     {
                       column20 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "MGI #";
+                        labelString = "BLAST Group ID";
                       Group: User
-                        dbField = mgi_numberCode;
+                        dbField = blast_groupID;
                         columnValue = 20;
                     }
                     {
                       column21 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "BLAST Hit";
+                        labelString = "BLAST MGI:IDs";
                       Group: User
-                        dbField = blast_hit;
+                        dbField = blast_mgiIDs;
                         columnValue = 21;
                     }
                     {
                       column22 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "BLAST Expect";
+                        labelString = "CDS Cat#";
                       Group: User
-                        dbField = blast_expect;
+                        dbField = cds_category;
                         columnValue = 22;
                     }
                     {
                       column23 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Auto Annotation";
+                        labelString = "Seq Quality";
                       Group: User
-                        dbField = auto_annot;
+                        dbField = seq_quality;
                         columnValue = 23;
                     }
                     {
                       column24 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Info Annotation";
+                        labelString = "Seq Note";
                       Group: User
-                        dbField = info_annot;
+                        dbField = seq_note;
                         columnValue = 24;
                     }
                     {
                       column25 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Cluster";
+                        labelString = "Final MGI ID";
                       Group: User
-                        dbField = final_cluster;
+                        dbField = final_mgiID;
                         columnValue = 25;
                     }
                     {
                       column26 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Cat ID";
+                        labelString = "Final Symbol 1";
                       Group: User
-                        dbField = cat_id;
+                        dbField = final_symbol1;
                         columnValue = 26;
                     }
                     {
                       column27 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final MGI ID";
+                        labelString = "Final Name 1";
                       Group: User
-                        dbField = final_mgiID;
+                        dbField = final_name1;
                         columnValue = 27;
                     }
                     {
                       column28 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Symbol 1";
+                        labelString = "Final Symbol 2";
                       Group: User
-                        dbField = final_symbol1;
+                        dbField = final_symbol2;
                         columnValue = 28;
                     }
                     {
                       column29 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Name 1";
+                        labelString = "Final Name 2";
                       Group: User
-                        dbField = final_name1;
+                        dbField = final_name2;
                         columnValue = 29;
                     }
                     {
                       column30 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Symbol 2";
+                        labelString = "Nomen Event";
                       Group: User
-                        dbField = final_symbol2;
+                        dbField = nomen_event;
                         columnValue = 30;
                     }
                     {
-                      column31 = ColumnToggle : mgiFantom;
+                      column32 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Name 2";
+                        labelString = "Cluster Anal";
                       Group: User
-                        dbField = final_name2;
-                        columnValue = 31;
+                        dbField = cluster_analysis;
+                        columnValue = 32;
+                    }
+                    {
+                      column33 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Gene Name Curation";
+                      Group: User
+                        dbField = gene_name_curation;
+                        columnValue = 33;
+                    }
+                    {
+                      column34 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "CDS/GO Curation";
+                      Group: User
+                        dbField = cds_go_curation;
+                        columnValue = 34;
+                    }
+                    {
+                      column35 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Final Cluster";
+                      Group: User
+                        dbField = final_cluster;
+                        columnValue = 35;
                     }
                     {
                       column5 = ColumnToggle : mgiFantom;
@@ -1047,15 +1110,15 @@ Module: mgiFantom
           Group: Widget
             userDefinedAttributes = "dbField:String\ncolumnValue:Int\n";
           Group: Control
-            vip_x = 135;
+            vip_x = 170;
             vip_y = 85;
         }
         {
           colorBox = XmFrame;
           Group: Control
             vipComment = "";
-            vip_x = 123;
-            vip_y = 151;
+            vip_x = 55;
+            vip_y = 195;
               {
                 form = XmForm;
                 Group: Widget
@@ -1117,6 +1180,15 @@ Module: mgiFantom
                         resizable = true;
                     }
               }
+        }
+        {
+          NoteToggle = OptionToggle : mgiOption;
+          Group: Widget
+            valueChangedCallback = "D:CopyToNote,\nD:SetModify";
+            userDefinedAttributes = "placeBefore:Boolean=\"True\"\n";
+          Group: Control
+            vip_x = 170;
+            vip_y = 140;
         }
 }
 

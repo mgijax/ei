@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 22 12:54:03 2002";
+      lastWritten = "Thu Mar  7 13:41:00 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1282,7 +1282,7 @@ Module: mgiOption
             vip_x = 80;
             vip_y = 1295;
           Group: User
-            defaultOption = mouse;
+            defaultValue = 4;
               Popups:
               {
                 AntibodySpeciesPulldown : OptionPulldown = OptionPulldown;
