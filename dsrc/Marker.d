@@ -290,6 +290,7 @@ rules:
 	  tables.append(top->Offset->Table);
 	  tables.append(top->OtherReference->Table);
 	  tables.append(top->AccessionReference->Table);
+	  tables.append(top->Control->ModificationHistory->Table);
 
 	  -- Global Accession number Tables
 
@@ -1493,15 +1494,10 @@ rules:
 	    where := where + accRefTable.sqlWhere;
 	  end if;
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "m";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "m";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "a";
+	  send(QueryModificationHistory, 0);
+          where := where + top->ModificationHistory->Table.sqlCmd;
  
           if (top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Type_key = " + top->MarkerTypeMenu.menuHistory.searchValue;
@@ -1741,7 +1737,7 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, creation_date, modification_date " +
+		 "cytogeneticOffset, createdBy, creation_date, modifiedBy, modification_date " +
 		 "from MRK_Marker where _Marker_key = " + currentRecordKey + "\n" +
 	         "select source, str(offset,10,2) from MRK_Offset " +
 		 "where _Marker_key = " + currentRecordKey +
@@ -1787,12 +1783,15 @@ rules:
 	    row := 0;
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
+		table := top->Control->ModificationHistory->Table;
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 4);
 	        top->Name->text.value         := mgi_getstr(dbproc, 5);
 	        top->Cyto->text.value         := mgi_getstr(dbproc, 7);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 8);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
                 send(SetOption, 0);
