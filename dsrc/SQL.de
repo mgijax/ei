@@ -27,7 +27,7 @@ ExecSQL [cmd : string;				-- Execute an SQL command
 ModifySQL [source_widget : widget;		-- Execute a Modification
 	   cmd : string;
 	   list : widget;
-	   transaction : boolean := false;
+	   transaction : boolean := true;
 	   reselect : boolean := true;];
 
 Query [source_widget : widget;			-- Query Database Allowing Interruption
