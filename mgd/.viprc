@@ -1,110 +1,110 @@
 
 !
 ! VIP init file
-! written: Tue Jan  5 07:58:37 1999
+! written: Tue Aug 31 09:34:48 1999
 !
 
 session_information {
-  x       = 446
-  y       = 226
-  width   = 814
-  height  = 750
-  display = ":0.0"
+  x       = 426
+  y       = 160
+  width   = 831
+  height  = 819
+  display = "argus:0.0"
 }
 
 pcds
 {
   load "/opt/teleuseXRT/lib/pcds/xm.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 228
 
   load "/opt/teleuseXRT/lib/pcds/xrt.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 209
 
   load "/home/lec/ei/ei/pcds/MGI.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 121
     vsb_pos     = 72
 
   load "/home/lec/ei/ei/pcds/GXD.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 396
 
   load "/home/lec/ei/ei/pcds/MGD.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 836
 
   load "/home/lec/ei/ei/pcds/mgiDialog.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 561
     vsb_pos     = 1430
 
   load "/home/lec/ei/ei/pcds/mgiLookup.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 231
 
   load "/home/lec/ei/ei/pcds/mgiOption.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 3861
 
   load "/home/lec/ei/ei/pcds/mgiControl.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 121
 
   load "/home/lec/ei/ei/pcds/mgiMenu.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 396
 
   load "/home/lec/ei/ei/pcds/mgiTable.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 176
     vsb_pos     = 74
 
   load "/home/lec/ei/ei/pcds/mgiDataTypes.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 1166
 
   load "/home/lec/ei/ei/pcds/gxdDictionary.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 671
 
   load "/home/lec/ei/ei/pcds/MGIAdmin.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 66
     vsb_pos     = 55
 
   load "/home/lec/ei/ei/pcds/MGINomen.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 120
 
