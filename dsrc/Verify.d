@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 04/25/2002
+--	- TR3627 (VerifyStrains); fix insert of new Strain
+--
 -- lec 04/17/2002
 --	- TR 3402; VerifyNonGeneMarker; for GXD Assay/Index, display
 --	  a warning message if the Marker TYpe is not "Gene"
@@ -3016,10 +3019,11 @@ rules:
               -- If user verifies it is okay to add the item...
  
               if (top->VerifyItemAdd.doAdd) then
-	      	ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
-			       mgi_DBinsert(STRAIN, KEYNAME) + 
-			       mgi_DBprstr(s) + ",0,0)\n" +
-			       mgi_DBinsert(MLP_STRAIN, KEYNAME) + "-1,NULL,NULL)\n";
+                ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
+                               mgi_DBinsert(STRAIN, KEYNAME) +
+                               mgi_DBprstr(s) + ",0,0,0)\n" +
+                               mgi_DBinsert(MLP_STRAIN, NOKEY) + "@" + KEYNAME + ",-1,NULL,NULL)\n" +
+                               mgi_DBinsert(MLP_EXTRA, NOKEY) + "@" + KEYNAME + ",NULL,NULL,NULL,NULL)\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
                 strainKeys := strainKeys + 
