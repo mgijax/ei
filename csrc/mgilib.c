@@ -14,6 +14,11 @@
  *
  * History:
  *
+ * lec 08/04/1999
+ *  - TR 518; removed reference to MRK_NOMEN.ECNumber
+ *  - mgi_DBtype; added def for MRK_Nomen & MRK_NOMEN_ACC_REFERENCE
+ *  - mgi_DBaccTable; added def for MRK_Nomen & MRK_NOMEN_ACC_REFERENCE
+ *
  * lec 02/10/99
  *  - TR 322; MLC_HISTORY_EDIT and MLC_HISTORY are obsolete
  *
@@ -722,6 +727,10 @@ char *mgi_DBtype(int table)
     case IMG_IMAGE:
             strcpy(buf, "Image");
 	    break;
+    case MRK_NOMEN:
+    case MRK_NOMEN_ACC_REFERENCE:
+            strcpy(buf, "Nomenclature");
+            break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -784,6 +793,12 @@ char *mgi_DBaccTable(int table)
             break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image_Acc_View");
+            break;
+    case MRK_NOMEN:
+	    sprintf(buf, "%s..MRK_Nomen_AccNoRef_View", getenv("NOMEN"));
+            break;
+    case MRK_NOMEN_ACC_REFERENCE:
+	    sprintf(buf, "%s..MRK_Nomen_AccRef_View", getenv("NOMEN"));
             break;
     default:
             sprintf(buf, "Invalid Table: %d", table);
@@ -1163,49 +1178,49 @@ char *mgi_DBtable(int table)
             strcpy(buf, "MGI_Columns");
 	    break;
     case MRK_NOMEN:
-            strcpy(buf, "nomen..MRK_Nomen");
+	    sprintf(buf, "%s..MRK_Nomen", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_VIEW:
-            strcpy(buf, "nomen..MRK_Nomen_View");
+	    sprintf(buf, "%s..MRK_Nomen_View", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_GENEFAMILY:
-            strcpy(buf, "nomen..MRK_Nomen_GeneFamily");
+	    sprintf(buf, "%s..MRK_Nomen_GeneFamily", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_NOTES:
-            strcpy(buf, "nomen..MRK_Nomen_Notes");
+	    sprintf(buf, "%s..MRK_Nomen_Notes", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_COORDNOTES:
-            strcpy(buf, "nomen..MRK_Nomen_CoordNotes_View");
+	    sprintf(buf, "%s..MRK_Nomen_CoordNotes_View", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_EDITORNOTES:
-            strcpy(buf, "nomen..MRK_Nomen_EditorNotes_View");
+	    sprintf(buf, "%s..MRK_Nomen_EditorNotes_View", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_OTHER:
-            strcpy(buf, "nomen..MRK_Nomen_Other");
+	    sprintf(buf, "%s..MRK_Nomen_Other", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_REFERENCE:
-            strcpy(buf, "nomen..MRK_Nomen_Reference");
+	    sprintf(buf, "%s..MRK_Nomen_Reference", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_REFERENCE_VIEW:
-            strcpy(buf, "nomen..MRK_Nomen_Reference_View");
+	    sprintf(buf, "%s..MRK_Nomen_Reference_View", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_MARKER_VIEW:
-            strcpy(buf, "nomen..MRK_Nomen_Marker_View");
+	    sprintf(buf, "%s..MRK_Nomen_Marker_View", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_HOMOLOGY_VIEW:
-            strcpy(buf, "nomen..MRK_Nomen_Homology_View");
+	    sprintf(buf, "%s..MRK_Nomen_Homology_View", getenv("NOMEN"));
 	    break;
     case MRK_GENEFAMILY:
-            strcpy(buf, "nomen..MRK_GeneFamily");
+	    sprintf(buf, "%s..MRK_GeneFamily", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_GENEFAMILY_VIEW:
-            strcpy(buf, "nomen..MRK_Nomen_GeneFamily_View");
+	    sprintf(buf, "%s..MRK_Nomen_GeneFamily_View", getenv("NOMEN"));
 	    break;
     case MRK_EVENT:
-            strcpy(buf, "nomen..MRK_Event");
+	    sprintf(buf, "%s..MRK_Event", getenv("NOMEN"));
 	    break;
     case MRK_STATUS:
-            strcpy(buf, "nomen..MRK_Status");
+	    sprintf(buf, "%s..MRK_Status", getenv("NOMEN"));
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1670,7 +1685,7 @@ mgi_DBtable(table));
             sprintf(buf, "insert %s (_Table_id, _Column_id, description, example)", mgi_DBtable(table));
 	    break;
     case MRK_NOMEN:
-            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Suid_key, proposedSymbol, proposedName, approvedSymbol, approvedName, chromosome, humanSymbol, ECNumber, statusNote, broadcast_date)",
+            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Suid_key, proposedSymbol, proposedName, approvedSymbol, approvedName, chromosome, humanSymbol, statusNote, broadcast_date)",
 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
