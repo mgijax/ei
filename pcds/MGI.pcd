@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 17 11:23:36 2002";
+      lastWritten = "Wed Jun 26 08:53:23 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1189,12 +1189,6 @@ Module: MGI
                                       }
                                       {
                                         AccessionID = CharText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                            }
                                       }
                                       {
                                         AccessionName = CharSText : mgiDataTypes;
@@ -1207,7 +1201,7 @@ Module: MGI
                                               text = scrolledText : mgiDataTypes;
                                               Group: Widget
                                                 columns = 75;
-						scrollHorizontal = True;
+                                                scrollHorizontal = True;
                                             }
                                       }
                                 }
@@ -1416,6 +1410,38 @@ Module: MGI
                                           targetWidget = Annotation;
                                           targetText = 12;
                                           targetAccID = 10;
+                                      }
+                                }
+                          }
+                    }
+                    Popups:
+                    {
+                      StatusDialog = StatusDialog : mgiDialog;
+                    }
+                    {
+                      DeleteDialog = DeleteDialog : mgiDialog;
+                    }
+                    {
+                      ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                              Group: Widget
+                                                items = "Potential GO References";
+                                              Group: User
+                                                keys = "GORefs.py";
+                                            }
                                       }
                                 }
                           }
