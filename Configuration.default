@@ -50,6 +50,9 @@ setenv EIDEBUG	1
 # User log
 setenv USERLOG	$HOME/.ei-log
 
+# User password file
+setenv EIPASSWORDFILE  $HOME/.mgi_password
+
 # EI Applications
 setenv EIAPPS	"mgd gxd mgiadmin mgi fantom"
 

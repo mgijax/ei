@@ -37,7 +37,6 @@ extern char *global_server;
 extern char *global_radar;
 
 #define TEXTBUFSIZ      200000
-#define PASSWDFILE	".mgi_password"
 #define ROWLIMIT 	"2000"
 #define NOROWLIMIT 	"0"
 
