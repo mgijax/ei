@@ -269,7 +269,7 @@ rules:
  
 	  -- Clear the form
 
-	  clearLists := 3;
+	  clearLists := 7;
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
 	  send(Clear, 0);
