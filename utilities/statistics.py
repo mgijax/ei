@@ -53,7 +53,7 @@ import regsub
 import string
 import math
 import getopt
-import mgdlib
+import db
 
 def error(msg):
 	'''
@@ -125,12 +125,12 @@ def init():
         except:
                 showUsage()
  
-	server = mgdlib.get_sqlServer()
-	database = mgdlib.get_sqlDatabase()
+	server = db.get_sqlServer()
+	database = db.get_sqlDatabase()
 	user = None
 	password = None
 
-        # Set mgdlib.server, database, user, passwords depending on options
+        # Set db.server, database, user, passwords depending on options
         # specified by user.  If user does not specifiy, then defaults are
         # used.
  
@@ -159,7 +159,7 @@ def init():
 		DEBUG = 1
 
 	# Initialize DBMS parameters
-	mgdlib.set_sqlLogin(user, password, server, database)
+	db.set_sqlLogin(user, password, server, database)
 
 	# Append to $HOME/.mgd_stats_log
 	home = os.environ['HOME']
@@ -170,11 +170,11 @@ def init():
                 error('Could not open file %s/.stats_log' % home)
  
 	# Initialize logging file descriptor
-	mgdlib.set_sqlLogFD(diagFile)
+	db.set_sqlLogFD(diagFile)
 
 	# If debugging, log all SQL
 	if DEBUG == 1:
-		mgdlib.set_sqlLogFunction(mgdlib.sqlLogAll)
+		db.set_sqlLogFunction(db.sqlLogAll)
 
 def removeStats():
 	'''
@@ -189,7 +189,7 @@ def removeStats():
 	'''
 
 	cmd = 'delete from MLD_Statistics where _Expt_Key = %d' % exptKey
-	mgdlib.sql(cmd, 'auto')
+	db.sql(cmd, 'auto')
 
 def checkStatistics():
 	'''
@@ -206,7 +206,7 @@ def checkStatistics():
 	'''
 
 	cmd = 'select count(*) from MLD_Statistics where _Expt_key = %d' % exptKey
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	# Only printing those that disagree
 
@@ -311,7 +311,7 @@ def calc2Point():
               'from MLD_MC2point m, MLD_Matrix x, CRS_Cross c ' + \
               'where m._Expt_key = %d and m._Expt_key = x._Expt_key ' % exptKey + \
               'and x._Cross_key = c._Cross_key and (c.type = "1" or c.type like "1[12]")'
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	for result in results:
 		insertStats(result['_Marker_key_1'],\
@@ -344,7 +344,7 @@ def append2Point(marker1, marker2, recomb, total):
 	      'and x._Cross_key = c._Cross_key ' + \
 	      'and (c.type = "1" or c.type like "1[12]")' + \
 	      'and _Marker_key_1 = %d and _Marker_key_2 = %d' % (marker1, marker2)
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	for result in results:
 		recomb = recomb + result['numRecombinants']
@@ -394,7 +394,7 @@ def insertStats(marker1, marker2, recomb, total):
 		cmd = '%s values(%d,%d,%d,%d,%d,%d,%f,%f)' \
               	      % (INSERTSTATS, exptKey, sequenceNum, marker1, \
 			 marker2, recomb, total, pcntrecomb, stnderr)
-		mgdlib.sql(cmd, None)
+		db.sql(cmd, None)
 
 	sequenceNum = sequenceNum + 1
 
@@ -432,7 +432,7 @@ def processCross():
 	      ' and m.alleleline not like "parental%"' + \
 	      ' and m.alleleLine not like "recomb%"' + \
 	      ' order by m.sequenceNum'
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	for result in results:
 		recombinants.append(result['offspringNmbr'])
@@ -450,7 +450,7 @@ def processCross():
 	cmd = 'select _Marker_key from MLD_Expt_Marker ' + \
 	      'where _Expt_key = %d and matrixData = 1 ' % exptKey + \
 	      'order by sequenceNum'
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	for result in results:
 		loci.append(result['_Marker_key'])
@@ -547,7 +547,7 @@ def processRI():
               'where e._Expt_key = %d ' % exptKey + \
 	      'and e.chromosome != "UN" and e._Expt_key = m._Expt_key ' + \
               'order by sequenceNum'
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	for result in results:
 		loci.append(result['_Marker_key'])
@@ -665,7 +665,7 @@ def catchUp():
 		         (select s._Expt_key from MLD_Statistics s where m._Expt_key = s._Expt_key)
 		         order by _Expt_key
 		      '''
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	for result in results:
 		exptKey = result['_Expt_key']
