@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May 28 11:01:42 2004";
+      lastWritten = "Fri May 28 11:04:38 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2917,37 +2917,6 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               CVMenu = CVMenu;
-                                                  {
-                                                    AgeMenu = AgeMenu : mgiOption;
-                                                  }
-                                                  {
-                                                    SexMenu = SexMenu : mgiOption;
-                                                  }
-                                                  {
-                                                    FixationMenu = FixationMenu : mgiOption;
-                                                  }
-                                                  {
-                                                    EmbeddingMenu = EmbeddingMenu : mgiOption;
-                                                  }
-                                                  {
-                                                    HybridizationMenu = HybridizationMenu : mgiOption;
-                                                  Popups:
-                                                  {
-                                                    HybridizationPulldown = OptionPulldown : mgiOption;
-                                                  {
-                                                    whole = OptionToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    sectionWhole = OptionToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NotSpecified = NotSpecified : mgiOption;
-                                                  }
-                                                  {
-                                                    NotApplicable = NotApplicable : mgiOption;
-                                                  }
-                                                  }
-                                                  }
                                             }
                                             {
                                               ADClipboard = ADClipboard : mgiLookup;
