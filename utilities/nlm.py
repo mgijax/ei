@@ -85,6 +85,10 @@
 #
 # History
 #
+#	lec	04/27/2000
+#	- replaced mgdlib w/ db
+#	- not using accessionlib since it import wi_utils...
+#
 #	lec	03/23/2000
 #	- TR 1445; remove "[In Process Citation]" string from NLM title
 #
@@ -129,8 +133,7 @@ import regsub
 import string
 import os
 import getopt
-import mgdlib
-import accessionlib
+import db
 
 def error(msg):
 	'''
@@ -223,8 +226,8 @@ def init():
 
         inputFile = None
 	nextJnum = None
-	server = mgdlib.get_sqlServer()
-	database = mgdlib.get_sqlDatabase()
+	server = db.get_sqlServer()
+	database = db.get_sqlDatabase()
  
         for arg in args:
                 inputFile = arg
@@ -255,10 +258,10 @@ def init():
 		showUsage()
 
         # Initialize DBMS parameters
-	mgdlib.set_sqlLogin(user, password, server, database)
+	db.set_sqlLogin(user, password, server, database)
  
         # Log all SQL commands
-	mgdlib.set_sqlLogFunction(mgdlib.sqlLogAll)
+	db.set_sqlLogFunction(db.sqlLogAll)
  
 	try:
 		nlmFile = open(inputFile, 'r')
@@ -271,7 +274,7 @@ def init():
 		error('Could not open file %s.diagnostics' % inputFile)
 
 	# Initialize the logging file descriptor
-	mgdlib.set_sqlLogFD(diagFile)
+	db.set_sqlLogFD(diagFile)
 
 	try:
 		dupsFile = open(inputFile + '.duplicates', 'w')
@@ -404,7 +407,7 @@ def isDuplicate(rec, rectags, maxCount):
 	      ' and year = ' + rec['YR'] + \
 	      ' and vol = "' + rec['VI'] + '"' + \
 	      ' and (pgs = "' + pgs + '" or pgs like "' + pgs + '-%")'
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 
 	# If duplicate is found, report it and skip
 
@@ -434,7 +437,7 @@ def isSubmission(rec, rectags):
 	       'or authors2 like "%s" ' % rec['AU2'] + \
 	       'or substring(title,1,25) = "%s") ' % rec['TISHORT']
 
-	submission = mgdlib.sql(cmd, 'auto')
+	submission = db.sql(cmd, 'auto')
 
 	# If a Submission reference is found, report it and skip
 
@@ -500,7 +503,16 @@ def doUpdate(rec, rectags):
 		jnum = result['jnum']
 
 	# Get UI Accession key(s)
-	uiKey = accessionlib.get_Accession_key(refKey, "Reference", "Medline")
+
+	accCmd = 'select _Accession_key from ACC_Accession ' + \
+		'where _MGIType_key = 1 ' + \
+		'and _Object_key = %d ' % (refKey) + \
+		'and _LogicalDB_key = %d' % (MEDLINE)
+
+	uiKey = None
+	accResults = db.sql(accCmd, 'auto')
+	for a in accResults:
+		uiKey = a['_Accession_key']
 
 	# Update existing entry if ui, title or abstract is NULL
  
@@ -546,7 +558,7 @@ def doUpdate(rec, rectags):
 				     	% (refKey, rec['UI'], MEDLINE, MGITYPE))
  
 		cmd.append('commit transaction')
-		mgdlib.sql(cmd, None)
+		db.sql(cmd, None)
 
 def doAdd(rec, rectags):
 	'''
@@ -605,7 +617,7 @@ def doAdd(rec, rectags):
 			% (rec['UI'], MEDLINE, MGITYPE))
  
 	cmd.append('commit transaction')
-	mgdlib.sql(cmd, [None] * len(cmd))
+	db.sql(cmd, [None] * len(cmd))
         nextJnum = nextJnum + 1;	# Increment next J#
 
 def processRec(rec, rectags):
@@ -771,7 +783,7 @@ def processFile():
 
 # Fields present in NLM/Current Contents text files
 
-MEDLINE = accessionlib.get_LogicalDB_key('Medline')
+MEDLINE = 7
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
 
