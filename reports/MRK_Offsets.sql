@@ -16,8 +16,7 @@ print ""
 
 select m._Marker_key, m.symbol, o.offset
 from MRK_Marker m, MRK_Offset o
-where m._Marker_Type_key = 1
-and m._Marker_key = o._Marker_key
+where m._Marker_key = o._Marker_key
 and o.source = 0
 and o.offset >= 0
 and not exists (select a.* from MRK_Alias a where m._Marker_key = a._Marker_key)
