@@ -15,6 +15,9 @@
 --
 -- History
 --
+-- 11/18/1999
+--	- new symbol cannot equal original symbol on withdrawal
+--
 -- 10/05/1999
 --	- TR 375; changes to MRK_Other
 --
@@ -445,6 +448,19 @@ rules:
 	    end if;
 
 	    row := row + 1;
+	  end while;
+
+	  -- New symbol cannot equal withdrawn symbol
+
+	  new_symbols.rewind;
+	  while (new_symbols.more) do
+	    if (new_symbols.next = top->Symbol->text.value) then
+              StatusReport.source_widget := top;
+	      StatusReport.message := "New Symbol cannot equal Withdrawn Symbol.  Try again.";
+	      send(StatusReport);
+	      (void) reset_cursor(dialog);
+	      return;
+	    end if;
 	  end while;
 
 	  allele_of : boolean := dialog->Mode->AlleleOf.set;
