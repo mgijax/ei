@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Dec 10 14:55:36 1999";
+      lastWritten = "Thu Jan 20 14:33:50 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -340,8 +340,8 @@ Module: MGD
         {
           Cross = Module : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 250;
+            vip_x = 60;
+            vip_y = 305;
           Group: User
             homeWidget = Name;
               {
@@ -1849,7 +1849,7 @@ Module: MGD
         {
           MolecularSegment = Module1 : MGI;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 305;
           Group: User
             homeWidget = Name;
@@ -2230,7 +2230,7 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 415;
               {
                 ID = ID;
@@ -2398,8 +2398,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 180;
-            vip_y = 415;
+            vip_x = 60;
+            vip_y = 470;
               {
                 Marker = Table : mgiTable;
                 Group: Constraint
@@ -2467,8 +2467,8 @@ Module: MGD
             width = 600;
             managed = False;
           Group: Control
-            vip_x = 180;
-            vip_y = 470;
+            vip_x = 60;
+            vip_y = 525;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -2732,7 +2732,7 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 525;
               {
                 Sequence1 = CharText : mgiDataTypes;
@@ -2844,7 +2844,7 @@ Module: MGD
         {
           MolecularSource = Module : MGI;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 360;
           Group: User
             editForms = "ControlForm\nEditForm\nSourceForm";
@@ -2912,8 +2912,8 @@ Module: MGD
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 180;
-            vip_y = 525;
+            vip_x = 60;
+            vip_y = 580;
               {
                 ID = ID;
               }
@@ -2937,7 +2937,7 @@ Module: MGD
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 580;
               {
                 ID = ID;
@@ -2973,7 +2973,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 635;
               {
                 ID = ID;
@@ -3049,8 +3049,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 580;
+            vip_x = 60;
+            vip_y = 635;
               {
                 ID = ID;
               }
@@ -3318,8 +3318,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 635;
+            vip_x = 60;
+            vip_y = 690;
               {
                 ID = ID;
               }
@@ -3570,7 +3570,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 690;
               {
                 ID = ID;
@@ -3744,8 +3744,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 690;
+            vip_x = 60;
+            vip_y = 745;
               {
                 ID = ID;
               }
@@ -4114,7 +4114,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 745;
               {
                 ID = ID;
@@ -4266,7 +4266,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 750;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 800;
           Group: User
             homeWidget = Jnum;
@@ -4361,8 +4361,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 750;
           Group: Control
-            vip_x = 180;
-            vip_y = 745;
+            vip_x = 60;
+            vip_y = 800;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -4631,8 +4631,8 @@ Module: MGD
         {
           MLDP = Module1 : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 305;
+            vip_x = 60;
+            vip_y = 360;
           Group: User
             homeWidget = Jnum;
             editForms = "ControlForm\nExptMasterForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\nExptPhysicalForm";
@@ -5071,8 +5071,8 @@ Module: MGD
           Group: Widget
             destroyCallback = "D:ExitMLCED";
           Group: Control
-            vip_x = 180;
-            vip_y = 360;
+            vip_x = 60;
+            vip_y = 415;
           Group: User
             homeWidget = Marker;
               {
@@ -5823,6 +5823,12 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  Nomen = XmPushButton;
+                                  Group: Widget
+                                    labelString = Nomenclature;
+                                    activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
+                                }
+                                {
                                   separator = XmSeparator;
                                   Group: Widget
                                     separatorType = shadow_etched_out;
@@ -5873,14 +5879,6 @@ Shift<Key>Tab: prev-tab-group()
                                     separatorType = shadow_etched_out;
                                     shadowThickness = 5;
                                 }
-                                {
-                                  Nomen = XmPushButton;
-                                  Group: Widget
-                                    labelString = Nomen;
-                                    activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
-                                    traversalOn = False;
-                                    managed = False;
-                                }
                           }
                     }
               }
@@ -5907,7 +5905,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           MarkerNonMouse = Module : MGI;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 250;
           Group: User
             homeWidget = Symbol;
@@ -6371,7 +6369,7 @@ Shift<Key>Tab: prev-tab-group()
                             NLM = MenuCascade : mgiMenu;
                             Group: Widget
                               activateCallback = "C: TuManage(find = NLMDialog)";
-                              labelString = "NLM";
+                              labelString = NLM;
                           }
                     }
                     {
@@ -6960,6 +6958,39 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NLMDialog = NLMDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList;
+                                      }
+                                      {
+                                        PrinterList = LookupList;
+                                      }
+                                      {
+                                        PrintOrient = Choice : mgiDataTypes;
+                                            {
+                                              PrintOrientBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                      {
+                                        PrintColumn = Choice : mgiDataTypes;
+                                            {
+                                              PrintColumnBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                }
+                          }
                     }
               }
         }
@@ -6970,7 +7001,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 470;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
@@ -7837,6 +7868,12 @@ Shift<Key>Tab: prev-tab-group()
                       MRKTransferDialog = MRKTransferDialog : mgiDialog;
                     }
               }
+        }
+        {
+          Nomen = Nomen : MGINomen;
+          Group: Control
+            vip_x = 60;
+            vip_y = 250;
         }
 }
 
