@@ -32,6 +32,7 @@ ModifySQL [source_widget : widget;		-- Execute a Modification
 
 ModifyNotes [source_widget : widget;		-- Modify/Add Notes
 	     tableID : integer;
+	     noteType : string;
 	     key : string;];
 
 Query [source_widget : widget;			-- Query Database Allowing Interruption
@@ -48,6 +49,9 @@ QueryNoInterrupt [source_widget : widget;	-- Query Database w/out Interruption
 
 QueryEnd [];					-- Things to do after Query event completes
 
-QueryDate [source_widget : widget;		-- Construct where clause from Date template
+QueryDate [source_widget : widget;		-- Construct where clause from Date or ModificationHistory templates
+	   row : integer := 0;
+	   column : integer := 0;
+	   fieldName : string := "";
 	   tag : string := "";];
 

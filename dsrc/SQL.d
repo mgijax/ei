@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec 03/08/2001-3/15/2001
+--	- TR 2217/1939; ModifyNotes
+--
 -- lec 08/11/99
 --	- TR 812; added printSelect to Query event
 --
@@ -295,20 +298,37 @@ rules:
 	  noteWidget : widget := ModifyNotes.source_widget;
           note : string := noteWidget->text.value;
 	  tableID : integer := ModifyNotes.tableID;
-	  noteType : string := "";
+	  noteType : string := ModifyNotes.noteType;
+	  private : string := "";
 	  key : string := ModifyNotes.key;
           i : integer := 1;
+	  cmd : string;
  
-	  if (tableID = MRK_NOMEN_COORDNOTES) then
-	    noteType := "C";
-	  elsif (tableID = MRK_NOMEN_EDITORNOTES) then
-	    noteType := "E";
+	  if (noteType.length > 0) then
+	    if (tableID = ALL_NOTE) then
+	      cmd := "select private from " + mgi_DBtable(ALL_NOTETYPE) +
+		" where " + mgi_DBkey(ALL_NOTETYPE) + " = " + mgi_DBprkey(noteType);
+	      private := mgi_sql1(cmd);
+	      noteType := mgi_DBprkey(noteType) + "," + mgi_DBprkey(private);
+	    else
+	      noteType := mgi_DBprstr(noteType);
+	    end if;
 	  end if;
 
 	  noteWidget.sql := "";
 
 	  if (noteWidget->text.modified) then
             noteWidget.sql := mgi_DBdelete(tableID, key);
+
+	    if (noteType.length > 0) then
+	      if (tableID = MRK_NOMEN_NOTES) then
+	        noteWidget.sql := noteWidget.sql + 
+			" and noteType = " + noteType + "\n";
+	      elsif (tableID = ALL_NOTE) then
+	        noteWidget.sql := noteWidget.sql + 
+			" and " +  mgi_DBkey(ALL_NOTETYPE) + " = " + noteType + "\n";
+	      end if;
+	    end if;
 	  else
 	    return;
 	  end if;
@@ -321,11 +341,11 @@ rules:
  
           while (note.length > 255) do
 	    if (noteType.length > 0) then
-	      noteWidget.sql := noteWidget.sql + 
-		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
-		   (string) i + "," + 
-		   mgi_DBprstr(noteType) + "," +
-                   mgi_DBprstr(note->substr(1, 255)) + ")\n";
+	        noteWidget.sql := noteWidget.sql + 
+		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		     (string) i + "," + 
+		     noteType + "," +
+                     mgi_DBprstr(note->substr(1, 255)) + ")\n";
             else
 	      noteWidget.sql := noteWidget.sql + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
@@ -341,7 +361,7 @@ rules:
               noteWidget.sql := noteWidget.sql + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
-		   mgi_DBprstr(noteType) + "," +
+		   noteType + "," +
                    mgi_DBprstr(note) + ")\n";
             else
               noteWidget.sql := noteWidget.sql + 
@@ -482,8 +502,9 @@ rules:
  -- QueryDate
  --
  -- Constructs an sql where statement for querying dates
- -- Assumes use of Date template
- -- Places sql "where" clause in Date.sql UDA
+ -- Assumes use of Date template or ModificationHistory->Table
+ -- Places sql "where" clause in Date.sql UDA or in
+ --	ModificationHistory->Table.sqlCmd
  --
  -- Will correctly process:
  --
@@ -495,9 +516,23 @@ rules:
 
 	QueryDate does
 	  dateW : widget := QueryDate.source_widget;
+	  row : integer := QueryDate.row;
+	  column : integer := QueryDate.column;
 	  tag : string := QueryDate.tag;
-	  value : string := dateW->text.value;
+	  value : string;
 	  where : string := "";
+	  fieldName : string;
+	  isTable : boolean;
+
+	  isTable := mgi_tblIsTable(dateW);
+
+	  if (not isTable) then
+	    value := dateW->text.value;
+	    fieldName := dateW.fieldName;
+	  else
+	    value := mgi_tblGetCell(dateW, row, column);
+	    fieldName := QueryDate.fieldName;
+	  end if;
 
 	  if (tag.length > 0) then
 	    tag := tag + ".";
@@ -505,7 +540,7 @@ rules:
 
 	  if (value.length > 0) then
 	    where := "\nand convert(datetime, convert(char(10), " +
-		tag + dateW.fieldName + ", 1)) ";
+		tag + fieldName + ", 1)) ";
 
 	    if (strstr(value, ">=") != nil or
 	        strstr(value, "<=") != nil ) then
@@ -522,7 +557,11 @@ rules:
 	    end if;
 	  end if;
 
-	  dateW.sql := where;
+	  if (not isTable) then
+	    dateW.sql := where;
+	  else
+	    dateW.sqlCmd := where;
+	  end if;
 
 	end does;
 
