@@ -415,6 +415,8 @@ rules:
 	  else
 	    value := top->mgiAccession->AccessionName->text.value;
 	    if (value.length > 0) then
+	      where := where + "\nand v._LogicalDB_key = 1";
+	      where := where + "\nand v.preferred = 1";
 	      where := where + "\nand v.description like " + mgi_DBprstr(value);
 	    end if;
 	  end if;
