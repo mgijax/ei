@@ -457,6 +457,10 @@ def processCross():
 
 	columns = len(results)
 
+	if columns == 0:
+		printMsg(diagFile, 'Experiment %d has Number of Columns = 0\n' % exptKey)
+		return
+
 	# Translate haplotypes
 	comparematrix = parseDatalines(datalines, columns)
 
