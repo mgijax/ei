@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 01/09/2001
+--	- added ModifySQL.transaction := true in Modify event
+--
 -- lec 09/25/2000
 --	- TR 1966
 --
@@ -604,6 +607,7 @@ rules:
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.transaction := true;
 	  send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
