@@ -12,7 +12,7 @@
 -- History
 --
 -- 01/24/2003 lec
---	- SAO; new
+--	- SAO; new; aka Bad Name/Good Name list
 --
 
 dmodule Translation is

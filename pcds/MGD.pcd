@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 31 08:07:43 2002";
+      lastWritten = "Fri Jan 24 15:25:03 2003";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -6719,6 +6719,13 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     labelString = "RI Sets";
                                     activateCallback = "D:CreateMGIModule(name = \"RISet\")";
+                                    traversalOn = False;
+                                }
+                                {
+                                  Translation = XmPushButton;
+                                  Group: Widget
+                                    labelString = Translations;
+                                    activateCallback = "D:CreateMGIModule(name = \"Translation\")";
                                     traversalOn = False;
                                 }
                                 {

@@ -623,6 +623,10 @@ char *mgi_DBkey(int table)
     case MGI_NOTE_NOMEN_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
+    case MGI_ORGANISM:
+    case MGI_ORGANISMTYPE:
+            strcpy(buf, "_Organism_key");
+	    break;
     case MGI_REFERENCE_ASSOC:
             strcpy(buf, "_Assoc_key");
 	    break;
@@ -632,9 +636,11 @@ char *mgi_DBkey(int table)
     case MGI_REFERENCE_NOMEN_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
-    case MGI_ORGANISM:
-    case MGI_ORGANISMTYPE:
-            strcpy(buf, "_Organism_key");
+    case MGI_TRANSLATION:
+            strcpy(buf, "_Translation_key");
+	    break;
+    case MGI_TRANSLATIONTYPE:
+            strcpy(buf, "_TranslationType_key");
 	    break;
     case MLD_ASSAY:
             strcpy(buf, "_Assay_Type_key");
@@ -1230,6 +1236,12 @@ char *mgi_DBtable(int table)
     case MGI_NOTETYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_NoteType_Nomen_View");
 	    break;
+    case MGI_ORGANISM:
+            strcpy(buf, "MGI_Organism");
+	    break;
+    case MGI_ORGANISMTYPE:
+            strcpy(buf, "MGI_Organism_MGIType");
+	    break;
     case MGI_REFERENCE_ASSOC:
 	    strcpy(buf, "MGI_Reference_Assoc");
 	    break;
@@ -1242,11 +1254,14 @@ char *mgi_DBtable(int table)
     case MGI_REFTYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_RefType_Nomen_View");
 	    break;
-    case MGI_ORGANISM:
-            strcpy(buf, "MGI_Organism");
+    case MGI_TRANSLATION:
+            strcpy(buf, "MGI_Translation");
 	    break;
-    case MGI_ORGANISMTYPE:
-            strcpy(buf, "MGI_Organism_MGIType");
+    case MGI_TRANSLATIONTYPE:
+            strcpy(buf, "MGI_TranslationType");
+	    break;
+    case MGI_TRANSLATIONSTRAIN_VIEW:
+            strcpy(buf, "MGI_TranslationStrain_View");
 	    break;
     case MLC_LOCK_EDIT:
             strcpy(buf, "MLC_Lock_edit");
@@ -1693,8 +1708,8 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_FANTOM2CACHE:
     case MGI_NOTE:
     case MGI_NOTECHUNK:
-    case MGI_REFERENCE_ASSOC:
     case MGI_ORGANISMTYPE:
+    case MGI_REFERENCE_ASSOC:
     case MLC_LOCK_EDIT:
     case MLC_MARKER_EDIT:
     case MLC_REFERENCE_EDIT:
@@ -1763,7 +1778,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE:
-            sprintf(buf, "insert %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _CellLine_key, _Allele_Status_key, symbol, name, nomenSymbol, createdBy, modifiedBy, approvedBy, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _CellLine_key, _Allele_Status_key, symbol, name, nomenSymbol, approvedBy, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE_MUTATION:
             sprintf(buf, "insert %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -1846,7 +1861,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_GENOTYPE:
-            sprintf(buf, "insert %s (%s, _Strain_key, isConditional, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Strain_key, isConditional)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_SPECIMEN:
             sprintf(buf, "insert %s (%s, _Assay_key, _Embedding_key, _Fixation_key, _Genotype_key, sequenceNum, specimenLabel, sex, age, ageMin, ageMax, ageNote, hybridization, specimenNote)", 
@@ -1936,7 +1951,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (table_name, description)", mgi_DBtable(table));
 	    break;
     case MGI_FANTOM2:
-            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupID, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, cluster_evidence, load_mgiid, nonmgi_rep, approved_symbol, approved_name, chromosome, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupID, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, cluster_evidence, load_mgiid, nonmgi_rep, approved_symbol, approved_name, chromosome)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_FANTOM2NOTES:
             sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
@@ -1953,17 +1968,23 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTETYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case MGI_ORGANISM:
+            sprintf(buf, "insert %s (%s, commonName, latinName)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_ORGANISMTYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case MGI_REFERENCE_ASSOC:
             sprintf(buf, "insert %s (%s, _Refs_key, _Object_key, _MGIType_key, _RefAssocType_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_REFASSOCTYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, assocType, allowOnlyOne)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MGI_ORGANISM:
-            sprintf(buf, "insert %s (%s, commonName, latinName)", mgi_DBtable(table), mgi_DBkey(table));
+    case MGI_TRANSLATION:
+            sprintf(buf, "insert %s (%s, _TranslationType_key, _Object_key, badName, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MGI_ORGANISMTYPE:
-            sprintf(buf, "insert %s (%s, _MGIType_key)", mgi_DBtable(table), mgi_DBkey(table));
+    case MGI_TRANSLATIONTYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key, translationType, compressionChars, regularExpression)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_LOCK_EDIT:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
@@ -1978,7 +1999,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_TEXT_EDIT:
-	    sprintf(buf, "insert %s (%s, mode, description, userID, creation_date)",
+	    sprintf(buf, "insert %s (%s, mode, description, creation_date)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_CONCORDANCE:
@@ -2189,7 +2210,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_EVIDENCE:
-            sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy, notes)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, notes)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
@@ -2285,19 +2306,30 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case MGI_FANTOM2:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
-      case MGI_REFASSOCTYPE:
-      case MGI_REFERENCE_ASSOC:
       case MGI_ORGANISM:
       case MGI_ORGANISMTYPE:
+      case MGI_REFASSOCTYPE:
+      case MGI_REFERENCE_ASSOC:
+      case MGI_TRANSLATION:
+      case MGI_TRANSLATIONTYPE:
       case MRK_MARKER:
       case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
+      case PRB_ALIAS:
+      case PRB_ALLELE:
+      case PRB_ALLELE_STRAIN:
+      case PRB_MARKER:
+      case PRB_PROBE:
+      case PRB_REFERENCE:
+      case PRB_RFLV:
       case PRB_SOURCE:
       case VOC_EVIDENCE:
+      case VOC_TERM:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
@@ -2315,17 +2347,30 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case MGI_FANTOM2:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
-      case MGI_REFASSOCTYPE:
-      case MGI_REFERENCE_ASSOC:
       case MGI_ORGANISM:
       case MGI_ORGANISMTYPE:
+      case MGI_REFASSOCTYPE:
+      case MGI_REFERENCE_ASSOC:
+      case MGI_TRANSLATION:
+      case MGI_TRANSLATIONTYPE:
+      case MRK_MARKER:
       case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
+      case PRB_ALIAS:
+      case PRB_ALLELE:
+      case PRB_ALLELE_STRAIN:
+      case PRB_MARKER:
+      case PRB_PROBE:
+      case PRB_REFERENCE:
+      case PRB_RFLV:
+      case PRB_SOURCE:
       case VOC_EVIDENCE:
+      case VOC_TERM:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);
 	      break;
