@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec 12 10:37:13 2002";
+      lastWritten = "Wed Jan 29 09:56:54 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -2119,6 +2119,215 @@ Module: MGI
                                           tableForm = Term;
                                           tableOption = 9;
                                           tableOptionKey = 4;
+                                      }
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          TranslationModule = Module : MGI;
+          Group: Widget
+            width = 1000;
+            height = 825;
+            closeWindowCallback = "D:VocAnnotExit";
+          Group: Control
+            vip_x = 70;
+            vip_y = 635;
+          Group: User
+            activateButtonName = BGName;
+              {
+                MainForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:VocAnnotExit";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                }
+                                {
+                                  TranslationTypeMenu = TranslationTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Translation = OrderedTable : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = TranslationTypeMenu;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = TranslationTypeMenu;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 7;
+                                          xrtTblNumRows = 1000;
+                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,Object Key,Bad Name,Good Name";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 5-6 50)";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-4 0)";
+                                          xrtTblEditableSeries = "(all 0-4 False)";
+                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          xrtTblVisibleRows = 25;
+                                          userDefinedAttributes = "transKey:Int=\"3\"\nobjectKey:Int=\"4\"\nbadName:Int=\"5\"\ngoodName:Int=\"6\"\n";
+                                        Group: User
+                                          saveEditableSeries = "(all 0-4 False)";
+                                          saveTraversableSeries = "(all 0-4 False)";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                }
+                                {
+                                  Modify = ControlPush;
+                                  Group: Widget
+                                    labelString = Save;
+                                }
+                                {
+                                  Add = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                  Group: Widget
+                                    managed = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    rightWidget = Modify;
+                                    topAttachment = attach_widget;
+                                    topWidget = Modify;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Edit;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = Control;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: Widget
+                                          visibleItemCount = 5;
+                                      }
+                                }
+                          }
+                    }
+                    Popups:
+                    {
+                      StatusDialog = StatusDialog : mgiDialog;
+                    }
+                    {
+                      DeleteDialog = DeleteDialog : mgiDialog;
+                    }
+                    {
+                      ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                              Group: Widget
+                                                items = "Potential GO References";
+                                              Group: User
+                                                keys = "GORefs.py";
+                                            }
                                       }
                                 }
                           }
