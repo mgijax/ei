@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 17 08:32:29 2003";
+      lastWritten = "Tue Jul  8 09:30:58 2003";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -22,6 +22,7 @@ Module: mgiTable
             xrtTblFontListSeries = "(all all fixed)";
             xrtTblXmStringGetMode = get_xmstring;
             xrtTblXmStringSetMode = set_xmstring;
+            xrtTblPreviewScrolling = preview_both;
           Group: Control
             vip_x = 65;
             vip_y = 85;

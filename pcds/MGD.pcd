@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul  7 10:04:43 2003";
+      lastWritten = "Thu Jul 10 09:47:14 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -2577,6 +2577,8 @@ Module: MGD
               }
               {
                 OldSegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                Group: Widget
+                  subMenuId = OldSegmentTypePulldown;
                 Group: Constraint
                   leftAttachment = attach_form;
                   leftOffset = 5;
@@ -2585,6 +2587,10 @@ Module: MGD
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
+                    Popups:
+                    {
+                      OldSegmentTypePulldown : SegmentTypePulldown = OptionPulldown;
+                    }
               }
               {
                 Name = CharText : mgiDataTypes;
@@ -8212,9 +8218,13 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                      Group: User
+                        required = False;
                     }
                     {
                       VectorTypeMenu = VectorTypeMenu : mgiOption;
+                      Group: User
+                        required = False;
                     }
                     {
                       ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;

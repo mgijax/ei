@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Nov  5 10:44:37 2002";
+      lastWritten = "Tue Jul  8 09:30:16 2003";
         {
           Fantom2 = Module : MGI;
           Group: Control
