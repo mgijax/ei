@@ -118,6 +118,9 @@
 #
 # Version	SE	Date
 #
+# 	lec	08/16/1999
+#	- TR 518; add Acc #s for New symbols
+#
 # 3.01   gld   06/25/1999
 #   - WTS TR#718; removed hardcoded paths to "/export/mgd"
 #
@@ -408,7 +411,7 @@ class Broadcast:
 
 				marker = Marker(r['chromosome'], symbol, 'x', \
 		                		r['_Marker_Type_key'], \
-		                		r['name'], None, None, None, \
+		                		r['name'], None, None, None, None, \
 						r['_Marker_key'], r['offset'], \
 						r['cytogeneticOffset'])
 				marker.setEC()
@@ -445,6 +448,9 @@ class Broadcast:
 			elif len(tokens) == 8:
 				[chr, symbol, mode, type, name, jnum, proposedSymbol, other] = string.split(line, '\t')
 				m = Marker(chr, symbol, mode, type, name, jnum, proposedSymbol, other)
+			elif len(tokens) == 9:
+				[chr, symbol, mode, type, name, jnum, proposedSymbol, other, accession] = string.split(line, '\t')
+				m = Marker(chr, symbol, mode, type, name, jnum, proposedSymbol, other, accession)
 			else:
 				msg = '\nError Reading line...# of Tokens %d\n%s\n' % (len(tokens), line)
 				self.printMsg(self.diagFile, msg)
@@ -632,7 +638,8 @@ class Broadcast:
 		for o in self.others.keys():
 			marker = self.others[o]
 			msg = '\n\n%s\t%s\t%s\t%s\t%s\n' \
-		      		% (marker.getSymbol(), marker.getType(), marker.getChr(), marker.getName(), marker.jnum)
+		      		% (marker.getSymbol(), marker.getType(), marker.getChr(), marker.getName(), marker.getJnum())
+			msg = msg + '\t%s\n' % (marker.printAccessionIds())
 			self.printMsg(self.statsFile, msg)
 
 			# Inform user if no Marker Type specified
@@ -763,7 +770,7 @@ class Marker:
 	#
 	'''
 
-        def __init__(self, chr, symbol, mode, type, name, jnum, proposedSymbol = None, other = None, key = None, offset = None, cyto = None):
+        def __init__(self, chr, symbol, mode, type, name, jnum, proposedSymbol = None, other = None, accession = None, key = None, offset = None, cyto = None):
 		'''
 		# requires: chr (string)
 		#           symbol (string)
@@ -773,6 +780,7 @@ class Marker:
 		#	    jnum (string), format 'J:####'
 		#           proposedSymbol (string)
 		#	    other (string), format 'Name|Name|Name|'
+		#	    accession (string), format 'Acc ID&Ref key&Log DB key|'
 		#	    key (integer), unique DB identifier
 		#	    offset (integer)
 		#	    cyto (string), cytogenetic offset
@@ -829,6 +837,13 @@ class Marker:
 			self.otherNames = string.split(other, '|')
 		except:
 			self.otherNames = []
+
+		# Split up the Accession IDs by delimiter
+
+		try:
+			self.accessionIds = string.split(accession, '|')
+		except:
+			self.accessionIds = []
 
 	def setKey(self, key):
 		'''
@@ -1273,6 +1288,37 @@ class Marker:
 
 		return self.otherNames
 
+	def getAccessionIds(self):
+		'''
+		# requires:
+		#
+		# effects:
+		# Returns the accession ids of the Marker
+		#
+		'''
+
+		return self.accessionIds
+
+	def printAccessionIds(self):
+		'''
+		# requires:
+		#
+		# effects:
+		# Returns a string of Accession Id info suitable for printing
+		#
+		'''
+
+		astr = ''
+		for acc in self.getAccessionIds():
+			[accId, jnum, logicalDBKey] = string.split(acc, '&')
+
+			if len(astr) == 0:
+				astr = "Accession Ids:  "
+
+			astr = astr + accId + ' (' + jnum + '), '
+
+		return astr
+
 	def getNewSymbols(self):
 		'''
 		# requires:
@@ -1636,6 +1682,13 @@ class Marker:
 			for other in others:
 				cmd.append(other)
 
+		# Insert Accession Numbers, if they exist
+
+		if len(self.getAccessionIds()) > 0:
+			accIds = self.insertAccessionId()
+			for acc in accIds:
+				cmd.append(acc)
+
 		# Execute command
 
 		cmd.append('commit transaction')
@@ -1679,6 +1732,40 @@ class Marker:
 
 			cmd.append('%s values(@nextOkey,%d,"%s")' \
 				% (INSERTOTHER, self.getKey(), otherName))
+
+		if len(cmd) > 1:
+			return cmd
+		else:
+			return []
+
+	def insertAccessionId(self):
+		'''
+		# requires:
+		#
+		# effects:
+		# Formats insert statements for Accession Ids
+		#
+		# returns:
+		# List of insert commands or [] if no Accession Ids are to be added
+		#
+		'''
+
+		cmd = []
+
+		#
+		# exec ACC_insert object key, accID, logicalDB, mgiType, refKey
+		#
+
+		for acc in self.getAccessionIds():
+			[accId, jnum, logicalDBKey] = string.split(acc, '&')
+
+			if len(jnum) == 0:
+				refKey = -1
+			else:
+				refKey = accessionlib.get_Object_key(jnum, REFERENCE)
+
+			cmd.append('exec ACC_insert %d, "%s", %s, "%s", %s' \
+				% (self.getKey(), accId, logicalDBKey, MARKER, refKey))
 
 		if len(cmd) > 1:
 			return cmd
