@@ -34,5 +34,6 @@ endsw
 mkdir $EIINSTALLDIR/$APP >& /dev/null
 
 cd $APP
+source Configuration
 uxb $OPTIONS -destdir $EIINSTALLDIR/$APP install
 cd ..

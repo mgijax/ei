@@ -30,4 +30,5 @@ endsw
 #
 
 cd $APP
+source Configuration
 uxb $OPTIONS
