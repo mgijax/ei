@@ -22,8 +22,7 @@ MGD=mgd
 STRAINS=strains
 NOMEN=nomen
 
-# report output dir is $HOME/$REPORTDIR
-REPORTDIR=mgireport
+REPORTDIR=$HOME/mgireport
 
 umask 022
 
