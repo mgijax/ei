@@ -118,6 +118,9 @@
 #
 # Version	SE	Date
 #
+# 	lec	10/05/1999
+#	- TR 375; MRK_Other new attribute _Refs_key
+#
 # 	lec	08/16/1999
 #	- TR 518; add Acc #s for New symbols
 #
@@ -207,7 +210,7 @@ EC = 'EC'			# EC Accession Type
 INSERTCURRENT = 'insert MRK_Current (_Current_key, _Marker_key)'
 INSERTMARKER = 'insert MRK_Marker (_Marker_key, _Species_key, _Marker_Type_key, symbol, name, chromosome, cytogeneticOffset)'
 INSERTOFFSET = 'insert MRK_Offset (_Marker_key, source, offset)'
-INSERTOTHER = 'insert MRK_Other (_Other_key, _Marker_key, name)'
+INSERTOTHER = 'insert MRK_Other (_Other_key, _Marker_key, _Refs_key, name)'
 
 class Broadcast:
 	'''
@@ -1730,7 +1733,7 @@ class Marker:
 			else:
 				cmd.append(select)
 
-			cmd.append('%s values(@nextOkey,%d,"%s")' \
+			cmd.append('%s values(@nextOkey,%d,NULL,"%s")' \
 				% (INSERTOTHER, self.getKey(), otherName))
 
 		if len(cmd) > 1:

@@ -55,6 +55,9 @@
 #
 # History
 #
+#	lec	10/05/99
+#	- INSERTBIB; new attribute isReviewArticle
+#
 #	lec	11/12/98
 #	- processSO; parse for format journal:pp-pps
 #
@@ -718,7 +721,7 @@ def doAdd(rec):
 		'%s values(@nextRef,%d,"ART",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NULL,"Y",%s)' \
 		% (INSERTBIB, REVIEWSTATUS, rec['AU'], rec['AU2'], rec['PAU'], \
 		rec['TI'], rec['TI2'], rec['TA'], rec['VOL'], rec['ISSUE'], \
-		rec['DATE'], rec['YEAR'], rec['PG'], rec['AB']))
+		rec['DATE'], rec['YEAR'], rec['PG'], 0, rec['AB']))
  
 	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
 
@@ -880,7 +883,7 @@ MEDLINE = accessionlib.get_LogicalDB_key('Medline')
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
 
-INSERTBIB = 'insert BIB_Refs (_Refs_key, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, dbs, NLMstatus, abstract)\n'
+INSERTBIB = 'insert BIB_Refs (_Refs_key, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, dbs, NLMstatus, isReviewArticle, abstract)\n'
 
 NLMseen = {}	# nlm.journals.seen - Journals in TJL library
 NLMsyn = {}	# cc.journals - NLM Journal Abbrevs and CC synonyms

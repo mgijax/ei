@@ -1366,7 +1366,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_REFS:
-	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, dbs, NLMstatus, abstract)",
+	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, dbs, NLMstatus, isReviewArticle, abstract)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_BOOKS:
@@ -1503,7 +1503,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_OTHER:
-	    sprintf(buf, "insert %s (%s, _Marker_key, name)",
+	    sprintf(buf, "insert %s (%s, _Marker_key, name, _Refs_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_REFERENCE:
