@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Sep 17 10:42:46 2004";
+      lastWritten = "Mon Sep 20 11:54:49 2004";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -203,7 +203,7 @@ Module: mgiDialog
                                 {
                                   List = list;
                                   Group: Widget
-                                    items = "jaguar\nzinger\nmgmgrand\nmeadow\ninforback\ndiva\nwizard\nmario\nbentley\ntucker\npackard\nlotus\ndelorean\nlancia";
+                                    items = "beetle\nbentley\nboxster\nimperial\njaguar\nlexus\npackard\ntucker\ncarnen\nlangwell\nadorn";
                                 }
                           }
                           {
