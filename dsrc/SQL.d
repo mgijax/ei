@@ -351,7 +351,6 @@ rules:
 	  -- Use a Work Procedure to enable User to interrupt the Query 
 
 	  (void) mgi_execute_search(dialog, queryList, Query.select, Query.table, rowcount);
-	  (void) mgi_writeLog("QUERY END:  " + get_time() + "\n");
 
 	  -- Anything to be done after the search has completed must be done in
 	  -- QueryEnd, since the main X event handler will get control back as

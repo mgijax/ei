@@ -303,6 +303,8 @@ int mgi_process_sql(Widget dialog)
 
   if (ret == DBRESULT)
   {
+    (void) mgi_writeLog("QUERY END:");
+    (void) mgi_writeLog(get_time());
     dbsqlok(search_proc);
     dbresults(search_proc);
     results_work_id = XtAppAddWorkProc(tu_global_app_context, (XtWorkProc) mgi_process_results, (XtPointer) dialog);
