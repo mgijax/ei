@@ -338,6 +338,7 @@ char *mgi_DBrecordCount(int table)
 	    break;
     case MLP_STRAINTYPE:
     case MLP_SPECIES:
+    case MLP_STRAIN:
             sprintf(cmd, "select count(*) from %s", mgi_DBtable(table));
 	    break;
     default:

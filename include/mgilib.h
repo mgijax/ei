@@ -44,6 +44,9 @@ extern char *global_version;
 #define	SEQKEYNAME	"seqKey"
 #define ROLLBACK 	"if @@error != 0\nbegin\nrollback transaction\nend\n"
 
+#define	NOTSPECIFIED	"-1"
+#define NOTAPPLICABLE	"-2"
+
 /* Table Definitions must be unique */
 
 /* MGD Tables */
