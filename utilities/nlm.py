@@ -85,6 +85,9 @@
 #
 # History
 #
+#	lec	03/23/2000
+#	- TR 1445; remove "[In Process Citation]" string from NLM title
+#
 #	lec	01/06/2000
 #	- TR 1227; no more Current Contents; no more nlm.journals.seen;
 #	  no more cc.journals
@@ -679,9 +682,12 @@ def processRec(rec, rectags):
 
 	# Replace double quotes w/ single quotes in Abstract, Title
 	# for SQL adds/updates
+	# Remove [In Process Citation] from title
 	for i in ('TI', 'AB'):
 		if rec.has_key(i):
 			newValue = regsub.gsub('"', '\'', rec[i])
+			rec[i] = newValue
+			newValue = regsub.gsub(' \[In Process Citation\]', '', rec[i])
 			rec[i] = newValue
 
 	# Short title for Submission matches
