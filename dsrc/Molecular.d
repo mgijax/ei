@@ -800,6 +800,10 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + table.sqlCmd;
  
+	  if (table.sqlCmd.length > 0) then
+	     cmd + cmd + "\nexec MRK_reloadSequence " + currentMasterKey;
+	  end if;
+
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->ReferenceList;
           send(ModifySQL, 0);

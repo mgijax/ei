@@ -292,6 +292,8 @@ rules:
 --
 
 	PrepareSearch does
+	  value : string := "";
+	  from_cloneset : boolean := false;
 
           -- Use Molecular Source library
 
@@ -311,6 +313,17 @@ rules:
           send(SearchAcc, 0);
 	  from := from + accTable.sqlFrom;
 	  where := where + accTable.sqlWhere;
+
+	  value := mgi_tblGetCell(top->CloneLibrarySet->Table, 0, top->CloneLibrarySet->Table.memberKey);
+	  if (value.length > 0) then
+	    where := "\nand csm._SetMember_key = " + value;
+	    from_cloneset := true;
+	  end if;
+
+	  if (from_cloneset) then
+	    from := ", MGI_Set_CloneLibrary_View csv, MGI_SetMember csm ";
+	    where := "\nand cvs._Set_key = csm._Set_key";
+	  end if;
 
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);

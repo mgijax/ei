@@ -348,6 +348,10 @@ rules:
 
 	  from_acc : boolean := false;
 	  from_source : boolean := false;
+	  from_strain : boolean := false;
+	  from_tissue : boolean := false;
+	  from_gender : boolean := false;
+	  from_cellline : boolean := false;
 	  from_object : boolean := false;
 	  value : string;
 	  value2 : string;

@@ -1099,9 +1099,11 @@ rules:
 	       set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set) +
 		   "\nexec MRK_reloadLabel " + currentRecordKey +
-		   "\nexec MRK_reloadReference " + currentRecordKey;
+		   "\nexec MRK_reloadReference " + currentRecordKey +
+		   "\nexec MRK_reloadSequence " + currentRecordKey;
 	  elsif (cmd = accRefTable.sqlCmd) then
-	    cmd := cmd + "\nexec MRK_reloadReference " + currentRecordKey;
+	    cmd := cmd + "\nexec MRK_reloadReference " + currentRecordKey +
+		   "\nexec MRK_reloadSequence " + currentRecordKey;
 	  end if;
 
 	  ModifySQL.cmd := cmd;
