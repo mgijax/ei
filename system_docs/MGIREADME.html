@@ -52,11 +52,9 @@ appropriate documentation manuals.
 <LI>The prefix <I>MGI</I> is used to refer to the entire Mouse Genome Informatics (MGI)
     editorial interface system. 
     <P>
-    The term <I>MGD</I> is used to refer to the MGD database-specific components.
+    The term <I>MGD</I> is used to refer to the MGD and Nomen database-specific components.
     <P>
     The term <I>GXD</I> is used to refer to the GXD database-specific components.
-    <P>
-    The term <I>NOMEN</I> is used to refer to the Nomenclature database-specific components.
     <P>
     The term <I>MGI Admin</I> is used to refer to the administrative-specific components
     for any of the databases such as table comments.
@@ -68,16 +66,14 @@ appropriate documentation manuals.
 	Currently defined applications:
 		<OL>
 		<LI><I>mgd</I>
-			<BR>Editing interface for the MGD database, excluding GXD tables.
+			<BR>Editing interface for the MGD and Nomen database, excluding GXD tables.
 		<P>
 		<LI><I>gxd</I>
-			<BR>Editing interface for the GXD tables.
+			<BR>Editing interface for the GXD tables and Nomen database.
 		<P>
 		<LI><I>mgiadmin</I>
 			<BR>Editing interface for the administrative tables.
 		<P>
-		<LI><I>nomen</I>
-			<BR>Editing interface for the Nomenclature tables.
 		</OL>
 </OL>
 
@@ -217,9 +213,9 @@ The current set of PCDS for the MGI GUI:
 <TR><TD>GXD.pcd
 	<TD>defines GXD application interfaces such as Assay, Antibody.
 <TR><TD>MGIAdmin.pcd
-	<TD>defines the MGI Administrative interface. (<I>new</I>)
+	<TD>defines the MGI Administrative interface.
 <TR><TD>MGINomen.pcd
-	<TD>defines the Nomenclature application interfaces. (<I>new</I>)
+	<TD>defines the Nomenclature application interfaces.
 <TR><TD>MGD.pcd
 	<TD>defines MGD application interfaces such as Reference, Marker.
 <TR><TD>mgiDialog.pcd
@@ -307,72 +303,74 @@ The current set of Library Dialog Components for the MGI GUI:
 The current set of Form Components for the MGD Application:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Source file<TH>Corresponding PCD component
+<TR><TD>Allele.d
+	<TD>MGD.pcd:AlleleModule
 <TR><TD>Cross.d
-	<TD>MGD.pcd:Cross
+	<TD>MGD.pcd:CrossModule
 <TR><TD>Homology.d
-	<TD>MGD.pcd:Homology
+	<TD>MGD.pcd:HomologyModule
 <TR><TD>MarkerNonMouse.d
-	<TD>MGD.pcd:MarkerNonMouse
-<TR><TD>Lookups.d
-	<TD>MGI.pcd:Lookups
+	<TD>MGD.pcd:MarkerNonMouseModule
+<TR><TD>ControlledVocab.d
+	<TD>MGI.pcd:ControlledVocabModule
 <TR><TD>MGD.d
 	<TD>MGD.pcd:MGD
 <TR><TD>MLCED.d
-	<TD>MGD.pcd:MLC
+	<TD>MGD.pcd:MLCModule
 <TR><TD>MLDP.d
-	<TD>MGD.pcd:MLDP
+	<TD>MGD.pcd:MLDPModule
 <TR><TD>Marker.d
-	<TD>MGD.pcd:Marker
+	<TD>MGD.pcd:MarkerModule
 <TR><TD>Molecular.d
-	<TD>MGD.pcd:MolecularSegment
+	<TD>MGD.pcd:MolecularSegmentModule
 <TR><TD>MolecularSource.d
-	<TD>MGD.pcd:MolecularSource
+	<TD>MGD.pcd:MolecularSourceModule
 <TR><TD>RI.d
-	<TD>MGD.pcd:RISet
+	<TD>MGD.pcd:RISetModule
 <TR><TD>Reference.d
-	<TD>MGD.pcd:Reference
+	<TD>MGD.pcd:ReferenceModule
 <TR><TD>Species.d
-	<TD>MGD.pcd:Species
+	<TD>MGD.pcd:SpeciesModule
 <TR><TD>Strains.d
-	<TD>MGD.pcd:Strains
+	<TD>MGD.pcd:StrainModule
 <TR><TD>Tissues.d
-	<TD>MGD.pcd:Tissues
+	<TD>MGD.pcd:TissueModule
 </TABLE>
 <P>
 The current set of Form Components for the GXD Application:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Source file<TH>Corresponding PCD component
 <TR><TD>Antibody.d
-	<TD>GXD.pcd:Antibody
+	<TD>GXD.pcd:AntibodyModule
 <TR><TD>Antigen.d
-	<TD>GXD.pcd:Antigen
+	<TD>GXD.pcd:AntigenModule
 <TR><TD>Assay.d
-	<TD>GXD.pcd:Assay
+	<TD>GXD.pcd:AssayModule
 <TR><TD>Dictionary.d
-	<TD>gxdDictionary.pcd:Dictionary
+	<TD>gxdDictionary.pcd:DictionaryModule
 <TR><TD>GXD.d
 	<TD>GXD.pcd:GXD
 <TR><TD>Genotype.d
 	<TD>mgiDialog.pcd:GenotypeDialog
 <TR><TD>Image.d
-	<TD>GXD.pcd:Image
+	<TD>GXD.pcd:ImageModule
 <TR><TD>InSituResult.d
 	<TD>mgiDialog.pcd:InSituResultDialog
 <TR><TD>IndexStage.d
-	<TD>GXD.pcd:IndexStage
-<TR><TD>Lookups.d
-	<TD>MGI.pcd:Lookups
+	<TD>GXD.pcd:IndexStageModule
+<TR><TD>ControlledVocab.d
+	<TD>MGI.pcd:ControlledVocab
 </TABLE>
 <P>
 The current set of Form Components for the MGI Admin Application:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Source file<TH>Corresponding PCD component
 <TR><TD>ActualLogical.d
-	<TD>MGIAdmin.pcd:ActualLogical
+	<TD>MGIAdmin.pcd:ActualLogicalModule
 <TR><TD>MGIAdmin.d
 	<TD>MGIAdmin.pcd:MGIAdmin
 <TR><TD>MGDTables.d
-	<TD>GXD.pcd:MGDTables
+	<TD>MGIAdmin.pcd:TablesColumnsModule
 </TABLE>
 <P>
 The current set of Form Components for the Nomen Application:
@@ -413,6 +411,8 @@ The current set of C Source files for the MGI Application:
 	<TD>Hash Routines for GXD Anatomical Dictionary
 <TR><TD>mgilib.c
 	<TD>General routines for construction of SQL statements for MGI database tables
+<TR><TD>mlced_nomen.c
+	<TD>MLC routines for converting MLC text to proper nomenclature
 <TR><TD>mlced_scan.c
 	<TD>Text scanning routines for MLC Text
 <TR><TD>mlced_util.c
@@ -442,6 +442,10 @@ The current set of C Include files for the MGI Application:
 	<TD>General routines for construction SQL statements for MGI database tables
 <TR><TD>mlced.h
 	<TD>MLC routines
+<TR><TD>mlced_nomen.h
+	<TD>MLC routines for converting MLC text to proper nomenclature
+<TR><TD>mlced_scan.h
+	<TD>Text scanning routines for MLC Text
 <TR><TD>stagetrees.h
 	<TD>Routines for the stage tree management withing the GXD Anatomical Dictionary interface.
 <TR><TD>syblib.h
@@ -462,6 +466,8 @@ The current set of AIM files for the MGI Application:
 	<TD>General routines for construction SQL statements for MGI database tables
 <TR><TD>mlced.aim
 	<TD>MLC utility routines
+<TR><TD>mlced_nomen.aim
+	<TD>MLC routines for converting MLC text to proper nomenclature
 <TR><TD>mlced_scan.aim
 	<TD>Text scanning routines for MLC Text
 <TR><TD>sybase.aim
@@ -495,7 +501,7 @@ The source root directory is sub-divided into several subdirectories.
 <TR><TD>pcds
     <TD><A HREF="#pcds">Presentation Components</A>
 <TR><TD>reports
-    <TD>Report source files (see <A HREF="MEI/MEIReports.html">MGI Nightly Reports</A>)
+    <TD>EI report source files
 <TR><TD>utilities
     <TD>Utility source files (see <A HREF="MEI/MEIUtilities.html">MGI Editorial Utilities</A>)
 <TR><TD>gxd
@@ -507,13 +513,10 @@ The source root directory is sub-divided into several subdirectories.
 <TR><TD>mgiadmin
     <TD><CODE>$application</CODE> directory for the MGI Admin application.
 	This is where the <A HREF="#applconfig">application configuration files</A> reside.
-<TR><TD>nomen
-    <TD><CODE>$application</CODE> directory for the Nomenclature application.
-	This is where the <A HREF="#applconfig">application configuration files</A> reside.
 </TABLE>
 <P>
 Additional application subdirectories should be created under the root directory, as has been
-done for <I>gxd</I>, <I>mgd</I>, <I>nomen</I>, <I>mgiadmin</I>.
+done for <I>gxd</I>, <I>mgd</I>, <I>mgiadmin</I>.
 <P>
 
 <HR>
@@ -617,7 +620,7 @@ These files are located in <CODE>$source_directory/$application</CODE>:
 	    assignments for DSQUERY, MGD, SYBASE, TeleUSE, etc.
 	    This script must be edited to use the correct APP, DSQUERY, MGD values
 	    for your development installation.
-<TR><TD>X Resource File (MGD.in, GXD.in, MGIADMIN.in, NOMEN.in)
+<TR><TD>X Resource File (MGD.in, GXD.in, MGIADMIN.in)
 	<TD>Resource files which defines copy/paste function keys for Mac users,
 	    global font, background, etc.
 <TR><TD>.viprc
@@ -644,7 +647,7 @@ Development copies of an MGI application contain interpreted D code.  Interprete
 allows the debugger to be used.
 <OL>
 <LI>Ensure that the EIINSTALLDIR variable in your environment is set to
-    the directory that holds the  mgd, gxd, nomen, and mgiadmin directories
+    the directory that holds the  mgd, gxd, and mgiadmin directories
    (e.g., '/usr/local/mgi/ei'). 
 <P>
 <LI>Go to the application directory
@@ -667,7 +670,7 @@ allows the debugger to be used.
 Production copies of an MGI application translate D code into C code which is then compiled.
 <OL>
 <LI>Ensure that the EIINSTALLDIR variable in your environment is set to
-    the directory that holds the  mgd, gxd, nomen, and mgiadmin directories
+    the directory that holds the  mgd, gxd, and mgiadmin directories
    (e.g., '/usr/local/mgi/ei'). 
 <P>
 <LI>Go to the application directory: <CODE>cd $source_directory/$application</CODE>
@@ -736,10 +739,6 @@ Once eXodus has been successfully installed on the MacIntosh, a system administr
     <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runmgd
 <TR><TD>MGD Development
     <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runmgd-dev
-<TR><TD>Nomenclature
-    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/nomen/runnomen
-<TR><TD>Nomenclature Development
-    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/nomen/runnomen-dev
 </TABLE>
 <P>
 To add or modify an eXodus client, choose the 
@@ -776,10 +775,12 @@ given D module:
 -- after this rule has finished.
 --
 -- The "top" widget is a parameter to the INITIALLY rule in the D module instance.
+-- The "launchedFrom" widget is a parameter to the INITIALLY rule in the D module instance.
 --
  
         CreateMGIModule does
-          (void) create dmodule(CreateMGIModule.name, top);
+	  launched : :widget := top;
+          (void) create dmodule(CreateMGIModule.name, top, launched);
         end does;
 	</PRE>
 
@@ -794,7 +795,8 @@ the D module to be instantiated (<I>CreateMGIModule.name</I>).  Therefore, withi
 an <I>INITIALLY</I> event must be declared and defined:
 	<PRE>
 	devents:
-		INITIALLY [parent : widget;];
+		INITIALLY [parent : widget;
+			   launchedFrom : widget;];
 
 	locals:
 		mgi : widget;
@@ -815,7 +817,8 @@ an <I>INITIALLY</I> event must be declared and defined:
           top := create widget("Marker", nil, mgi);
  
           -- Prevent multiple instances of the Marker form
-          mgi->mgiModules->Marker.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
           top.show;
  
           (void) reset_cursor(mgi);
