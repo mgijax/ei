@@ -110,7 +110,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  send(Init, 0);
 
@@ -204,8 +204,8 @@ rules:
 		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ")\n";
 
 	  send(ModifyAllelePair, 0);
-	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
---	               "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
+	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
+	               "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
 
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
