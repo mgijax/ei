@@ -591,6 +591,7 @@ def doAdd(rec, rectags):
 	# Check for Submission
 
 	if isSubmission(rec, rectags):
+
 		return 0
 
 	# Check for Duplicates;
@@ -621,6 +622,9 @@ def doAdd(rec, rectags):
 		rec['DP'], rec['YR'], rec['PG'], rec['AB']))
  
 	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
+	if rec.has_key('PMID'):
+		cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
+			% (rec['PMID'], PUBMEDKEY, MGITYPE))
 
 	if rec['UI'] != '"0"':
         	cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
