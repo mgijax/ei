@@ -37,7 +37,8 @@ print ""
 print "GO"
 print ""
 
-select * from GO_MarkerGO where _Marker_key = KEY
+select * from VOC_Annot where _Object_key = KEY
+and _AnnotType_key = 1000
 go
 
 print ""
