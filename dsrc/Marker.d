@@ -109,16 +109,18 @@ devents:
 	Init :local [];
 
 	-- Process Marker Withdrawal Events
-	MarkerWithdrawalDone : local [];
+	MarkerWithdrawalCancel : local [];
 	MarkerWithdrawalInit :local [];
 	MarkerWithdrawal :local [];
-	MarkerWithdrawalEnd :local [source_widget : widget;];
+	MarkerWithdrawalEnd :local [source_widget : widget;
+				    status : integer;];
 	SetMarkerWithdrawalFields :exported [];
 
 	-- Process Breakpoint Split Events
 	MarkerBreakpointSplitInit :local [];
 	MarkerBreakpointSplit :local [];
-	MarkerBreakpointSplitEnd :local [source_widget : widget;];
+	MarkerBreakpointSplitEnd :local [source_widget : widget;
+				         status : integer;];
 
 	Modify :local [];
 	ModifyAlias :local [];
@@ -404,14 +406,14 @@ rules:
 	end does;
 
 --
--- MarkerWithdrawalDone
+-- MarkerWithdrawalCancel
 --
 -- Activated from:  widget top->WithdrawalDialog->Cancel
 --
 -- Re-select record and unmanage dialog
 --
 
-	MarkerWithdrawalDone does
+	MarkerWithdrawalCancel does
 	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	  top->WithdrawalDialog.managed := false;
 	end does;
@@ -461,9 +463,12 @@ rules:
 	  dialog->mgiCitation->ObjectID->text.value := "";
 	  dialog->mgiCitation->Jnum->text.value := "";
 	  dialog->mgiCitation->Citation->text.value := "";
+	  dialog->Output.value := "";
 
+	  dialog->nonVerified.managed := true;
 	  dialog->nonVerified.sensitive := true;
-	  dialog->mgiMarker.sensitive := false;
+	  dialog->Name.sensitive := true;
+	  dialog->mgiMarker.managed := false;
 	  dialog->NewMarker.sensitive := false;
 	  dialog.managed := true;
 	end does;
@@ -480,20 +485,28 @@ rules:
 	  event : string := dialog->MarkerEventMenu.menuHistory.defaultValue;
 
 	  if (event = EVENT_WITHDRAWAL) then
+	    dialog->nonVerified.managed := true;
 	    dialog->nonVerified.sensitive := true;
-	    dialog->mgiMarker.sensitive := false;
+	    dialog->Name.sensitive := true;
+	    dialog->mgiMarker.managed := false;
 	    dialog->NewMarker.sensitive := false;
 	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
-	    dialog->nonVerified.sensitive := false;
-	    dialog->mgiMarker.sensitive := true;
+	    dialog->nonVerified.managed := false;
+	    dialog->nonVerified.sensitive := true;
+	    dialog->Name.sensitive := false;
+	    dialog->mgiMarker.managed := true;
 	    dialog->NewMarker.sensitive := false;
 	  elsif (event = EVENT_SPLIT) then
+	    dialog->nonVerified.managed := true;
 	    dialog->nonVerified.sensitive := false;
-	    dialog->mgiMarker.sensitive := false;
+	    dialog->Name.sensitive := false;
+	    dialog->mgiMarker.managed := false;
 	    dialog->NewMarker.sensitive := true;
 	  elsif (event = EVENT_DELETED) then
-	    dialog->nonVerified.sensitive := false;
-	    dialog->mgiMarker.sensitive := false;
+	    dialog->nonVerified.managed := false;
+	    dialog->nonVerified.sensitive := true;
+	    dialog->Name.sensitive := false;
+	    dialog->mgiMarker.managed := false;
 	    dialog->NewMarker.sensitive := false;
 	  end if;
 	end does;
@@ -594,8 +607,8 @@ rules:
 	  cmds.insert("--refKey=" + dialog->mgiCitation->ObjectID->text.value, cmds.count + 1);
 
 	  if (event = EVENT_WITHDRAWAL) then
-	    cmds.insert("--newName=" + dialog->Name->text.value, cmds.count + 1);
-	    cmds.insert("--newSymbols=" + dialog->nonVerified->Marker->text.value, cmds.count + 1);
+	    cmds.insert("--newName=" + mgi_DBprstr(dialog->Name->text.value), cmds.count + 1);
+	    cmds.insert("--newSymbols=" + mgi_DBprstr(dialog->nonVerified->Marker->text.value), cmds.count + 1);
 	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
 	    cmds.insert("--newKey=" + dialog->mgiMarker->ObjectID->text.value, cmds.count + 1);
 	  elsif (event = EVENT_SPLIT) then
@@ -608,7 +621,7 @@ rules:
 	      end if;
 	      row := row + 1;
 	    end while;
-	    cmds.insert("--newSymbols=" + buf, cmds.count + 1);
+	    cmds.insert("--newSymbols=" + mgi_DBprstr(buf), cmds.count + 1);
 	  end if;
 
 	  -- Write cmds to user log
@@ -621,9 +634,9 @@ rules:
 	  (void) mgi_writeLog(buf);
 
           MarkerWithdrawalEnd.source_widget := dialog;
---          proc_id : opaque := 
---	   tu_fork_process2(cmds[1], cmds, nil, nil, MarkerWithdrawalEnd);
---	  tu_fork_free(proc_id);
+	  proc_id : opaque;
+          proc_id := tu_fork_process(cmds[1], cmds, dialog->Output, MarkerWithdrawalEnd);
+	  tu_fork_free(proc_id);
 	end does;
 
 --
@@ -633,13 +646,16 @@ rules:
 --
  
 	MarkerWithdrawalEnd does
-	  table : widget := top->WithdrawalDialog->NewMarker->Table;
+	  dialog : widget := top->WithdrawalDialog;
+	  table : widget := dialog->NewMarker->Table;
+	  event : string := dialog->MarkerEventMenu.menuHistory.defaultValue;
 
 	  if (MarkerWithdrawalEnd.status != 0) then
             StatusReport.source_widget := top;
-	    StatusReport.message := "The Withdrawal Process terminated with an error.\n" +
-		"Please contact a Software Engineer to help diagnose the problem.\n";
+	    StatusReport.message := dialog->Output.value;
 	    send(StatusReport);
+	    (void) reset_cursor(dialog);
+	    return;
 	  end if;
 
 	  -- Query for records
@@ -647,8 +663,18 @@ rules:
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
 	  from := from + ",MRK_Current_View mu";
 	  where := "where m._Species_key = " + MOUSE;
-	  where := where + "\nand mu.current_symbol = '" + 
-		mgi_tblGetCell(table, 0, table.markerSymbol) + "'";
+	  where := where + "\nand mu.current_symbol =";
+
+	  if (event = EVENT_WITHDRAWAL) then
+	    where := where + mgi_DBprstr(dialog->nonVerified->Marker->text.value);
+	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
+	    where := where + mgi_DBprstr(dialog->mgiMarker->Marker->text.value);
+	  elsif (event = EVENT_SPLIT) then
+	    where := where + mgi_DBprstr(mgi_tblGetCell(table, 0, table.markerSymbol));
+	  elsif (event = EVENT_DELETED) then
+	    where := where + mgi_DBprstr(dialog->currentMarker->Marker->text.value);
+	  end if;
+
 	  where := where + "\nand m._Marker_key = mu._Marker_key";
 
 	  QueryNoInterrupt.source_widget := top;
@@ -657,7 +683,12 @@ rules:
 	  QueryNoInterrupt.table := MRK_MARKER;
 	  send(QueryNoInterrupt, 0);
 
-	  (void) reset_cursor(top->WithdrawalDialog);
+	  (void) reset_cursor(dialog);
+	  dialog.managed := false;
+
+          StatusReport.source_widget := top;
+	  StatusReport.message := "The Withdrawal process was successful.";
+	  send(StatusReport);
 	end does;
 
 --
@@ -672,8 +703,8 @@ rules:
 	  dialog : widget := top->MRKBreakpointSplitDialog;
 
           dialog->Output.value := "";
-	  dialog->currentMarker->ObjectID->text.value := "";
-	  dialog->currentMarker->Marker->text.value := "";
+	  dialog->mgiMarker->ObjectID->text.value := "";
+	  dialog->mgiMarker->Marker->text.value := "";
 	  dialog->Band->text.value := "";
 	  dialog->ProximalSymbol->text.value := "";
 	  dialog->DistalSymbol->text.value := "";
@@ -693,8 +724,8 @@ rules:
 	MarkerBreakpointSplit does
 	  dialog : widget := top->MRKBreakpointSplitDialog;
 
-	  if (dialog->currentMarker->ObjectID->text.value.length = 0 or
-	      dialog->currentMarker->ObjectID->text.value = "NULL") then
+	  if (dialog->mgiMarker->ObjectID->text.value.length = 0 or
+	      dialog->mgiMarker->ObjectID->text.value = "NULL") then
             StatusReport.source_widget := top;
 	    StatusReport.message := "Marker Symbol required";
 	    send(StatusReport);
@@ -709,13 +740,13 @@ rules:
           cmds.insert("breakpointSplit.py", cmds.count + 1);
           cmds.insert("-U" + global_login, cmds.count + 1);
           cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-          cmds.insert("-o" + mgi_DBprstr(dialog->currentMarker->Marker->text.value), cmds.count + 1);
+          cmds.insert("-o" + mgi_DBprstr(dialog->mgiMarker->Marker->text.value), cmds.count + 1);
 
 	  if (dialog->DistalBand->text.value.length > 0) then
             cmds.insert("--db=" + dialog->DistalBand->text.value, cmds.count + 1);
 	  end if;
 
-          cmds.insert("--ok=" + dialog->currentMarker->ObjectID->text.value, cmds.count + 1);
+          cmds.insert("--ok=" + dialog->mgiMarker->ObjectID->text.value, cmds.count + 1);
  
           -- Print cmds to Output
  
@@ -730,10 +761,9 @@ rules:
           -- Execute the BreakpointSplit, MarkerBreakpointSplitEnd event will be called after child finishes
  
           MarkerBreakpointSplitEnd.source_widget := dialog;
-          proc_id : opaque := 
-	   tu_fork_process2(cmds[1], cmds, dialog->Output, dialog->Output, MarkerBreakpointSplitEnd);
-	   tu_fork_free(proc_id);
-
+	  proc_id : opaque;
+          proc_id := tu_fork_process(cmds[1], cmds, dialog->Output, MarkerBreakpointSplitEnd);
+	  tu_fork_free(proc_id);
 	end does;
 
 --
@@ -745,9 +775,21 @@ rules:
         MarkerBreakpointSplitEnd does
           dialog : widget := MarkerBreakpointSplitEnd.source_widget;
  
-          oFile : string := getenv("ARCHIVEDIR") + "/" + 
-                            "/EVENT_SPLITS/breakpointSplit." + 
-			    dialog->currentMarker->Marker->text.value;
+	  if (MarkerBreakpointSplitEnd.status != 0) then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "The Breakpoint Split process terminated with an error.\n" +
+		"Please contact a Software Engineer to help diagnose the problem.\n";
+	    send(StatusReport);
+	    (void) reset_cursor(dialog);
+	    return;
+	  end if;
+
+          StatusReport.source_widget := top;
+	  StatusReport.message := "The Withdrawal process was successful.";
+	  send(StatusReport);
+
+          oFile : string := getenv("EIARCHIVEDIR") + "/breakpointSplit." + 
+			    dialog->mgiMarker->Marker->text.value;
 
           -- Print some diagnostics for the User and to the User log
  
