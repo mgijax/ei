@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec  10/14/1999
+--	- TR 204
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -46,6 +49,7 @@ dmodule Strains is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <tables.h>
 
 devents:
 
@@ -55,6 +59,9 @@ devents:
 	Exit :local [];
 	Init :local [];
 	Modify :local [];
+
+	ModifyMarker :local [];
+	ModifyType :local [];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -71,7 +78,9 @@ devents:
 locals:
 	mgi : widget;
 	top : widget;
+	accTable : widget;
 
+	cmd : string;
 	from : string;
 	where : string;
 
@@ -79,6 +88,8 @@ locals:
                                         -- Initialized in Select[] and Add[] events
  
 	tables : list;
+
+	clearLists : integer;
 
 rules:
 
@@ -112,8 +123,14 @@ rules:
         Init does
 	  tables := create list("widget");
 
+	  tables.append(top->StrainType->Table);
+	  tables.append(top->Marker->Table);
 	  tables.append(top->References->Table);
 	  tables.append(top->DataSets->Table);
+
+	  -- Global Accession number Tables
+
+	  accTable := top->mgiAccessionTable->Table;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -121,9 +138,10 @@ rules:
           send(SetRowCount, 0);
  
           -- Clear form
+	  clearLists := 3;
           Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
           send(Clear, 0);
-
 	end does;
 
 --
@@ -144,10 +162,33 @@ rules:
  
           currentRecordKey := "@" + KEYNAME;
  
-          cmd : string := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
-                          mgi_DBinsert(STRAIN, KEYNAME) +
-                          mgi_DBprstr(top->Name->text.value) + "," +
-		          top->StandardMenu.menuHistory.defaultValue + ")\n";
+          cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
+                 mgi_DBinsert(STRAIN, KEYNAME) +
+                 mgi_DBprstr(top->Name->text.value) + "," +
+		 top->StandardMenu.menuHistory.defaultValue + "," +
+		 top->NeedsReviewMenu.menuHistory.defaultValue + ")\n";
+
+	  cmd := cmd + mgi_DBinsert(MLP_STRAIN, KEYNAME) + "," +
+		 top->mgiSpecies->ObjectID->text.value + "," +
+		 mgi_DBprstr(top->User1->text.value) + "," +
+		 mgi_DBprstr(top->User2->text.value) + ")\n";
+
+	  send(ModifyMarker, 0);
+	  send(ModifyType, 0);
+
+	  ModifyNotes.source_widget := top->Notes;
+	  ModifyNotes.tableID := MLP_NOTES;
+	  ModifyNotes.key := currentRecordKey;
+	  send(ModifyNotes, 0);
+	  cmd := cmd + top->Notes.sql;
+
+	  --  Process Accession numbers
+
+          ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := STRAIN;
+          send(ProcessAcc, 0);
+          cmd := cmd + accTable.sqlCmd;
 
 	  AddSQL.tableID := STRAIN;
           AddSQL.cmd := cmd;
@@ -159,6 +200,7 @@ rules:
 	  if (top->QueryList->List.sqlSuccessful) then
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
+	    Clear.clearLists := clearLists;
             send(Clear, 0);
 	  end if;
 
@@ -175,7 +217,7 @@ rules:
 
           (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := STRAIN;
+	  DeleteSQL.tableID := MLP_STRAIN;
           DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
@@ -183,6 +225,7 @@ rules:
 	  if (top->QueryList->List.row = 0) then
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
+	    Clear.clearLists := clearLists;
             send(Clear, 0);
 	  end if;
 
@@ -216,7 +259,47 @@ rules:
             set := set + "standard = "  + top->StandardMenu.menuHistory.defaultValue + ",";
           end if;
  
-          ModifySQL.cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
+          if (top->NeedsReviewMenu.menuHistory.modified and
+              top->NeedsReviewMenu.menuHistory.searchValue != "%") then
+            set := set + "needsReview = "  + top->NeedsReviewMenu.menuHistory.defaultValue + ",";
+          end if;
+ 
+          cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
+
+	  set := "";
+
+	  if (top->mgiSpecies->Species->text.modified) then
+	    set := set + "_Species_key = " + top->mgiSpecies->Species->ObjectID->text.value + ",";
+	  end if;
+
+	  if (top->User1->text.modified) then
+	    set := set + "userDefined1 = " + mgi_DBprstr(top->User1->text.value) + ",";
+	  end if;
+
+	  if (top->User2->text.modified) then
+	    set := set + "userDefined2 = " + mgi_DBprstr(top->User2->text.value) + ",";
+	  end if;
+
+          cmd := cmd + mgi_DBupdate(MLP_STRAIN, currentRecordKey, set);
+
+	  send(ModifyMarker, 0);
+	  send(ModifyType, 0);
+
+	  ModifyNotes.source_widget := top->Notes;
+	  ModifyNotes.tableID := MLP_NOTES;
+	  ModifyNotes.key := currentRecordKey;
+	  send(ModifyNotes, 0);
+	  cmd := cmd + top->Notes.sql;
+
+	  --  Process Accession numbers
+
+          ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := STRAIN;
+          send(ProcessAcc, 0);
+          cmd := cmd + accTable.sqlCmd;
+
+          ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
@@ -224,13 +307,101 @@ rules:
 	end does;
 
 --
+-- ModifyMarker
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Strain Marker symbols
+-- Appends to global "cmd" string
+--
+
+	ModifyMarker does
+          table : widget := top->Marker->Table;
+          row : integer := 0;
+          editMode : string;
+          key : string;
+          newKey : string;
+	  set : string := "";
+ 
+          -- Process while non-empty rows are found
+ 
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+ 
+            key := mgi_tblGetCell(table, row, table.markerCurrentKey);
+            newKey := mgi_tblGetCell(table, row, table.markerKey);
+ 
+            if (editMode = TBL_ROW_ADD) then
+              cmd := cmd + mgi_DBinsert(PRB_STRAIN_MARKER, NOKEY) + currentRecordKey + "," + newKey + ")\n";
+            elsif (editMode = TBL_ROW_MODIFY) then
+              set := "_Marker_key = " + newKey;
+              cmd := cmd + mgi_DBupdate(PRB_STRAIN_MARKER, currentRecordKey, set) + "and _Marker_key = " + key + "\n";
+            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+               cmd := cmd + mgi_DBdelete(PRB_STRAIN_MARKER, currentRecordKey) + "and _Marker_key = " + key + "\n";
+            end if;
+ 
+            row := row + 1;
+          end while;
+	end does;
+
+--
+-- ModifyType
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Strain Types
+-- Appends to global "cmd" string
+--
+ 
+	ModifyType does
+	  table : widget := top->StrainType->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  newKey : string;
+	  set : string := "";
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.strainTypeCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.strainTypeKey);
+
+	    if (editMode = TBL_ROW_ADD) then
+	      cmd := cmd + mgi_DBinsert(MLP_STRAINTYPES, NOKEY) + 
+		     currentRecordKey + "," + newKey + ")\n";
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_StrainType_key = " + newKey;
+	      cmd := cmd + 
+		     mgi_DBupdate(MLP_STRAINTYPES, currentRecordKey, set) + 
+		     "and _StrainType_key = " + key + "\n";
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(MLP_STRAINTYPES, currentRecordKey) + 
+		     "and _StrainType_key = " + key + "\n";
+	    end if;
+ 
+	    row := row + 1;
+	  end while;
+	end does;
+ 
+--
 -- PrepareSearch
 --
 -- Construct select statement based on values entered by user
 --
 
 	PrepareSearch does
-	  from := "from " + mgi_DBtable(STRAIN) + " ";
+	  from := "from " + mgi_DBtable(STRAIN) + " s";
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -241,12 +412,22 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
+          SearchAcc.table := accTable;
+          SearchAcc.objectKey := "s." + mgi_DBkey(STRAIN);
+	  SearchAcc.tableID := STRAIN;
+          send(SearchAcc, 0);
+
+	  if (accTable.sqlFrom.length > 0) then
+	    from := from + accTable.sqlFrom;
+	    where := where + "\nand " + accTable.sqlWhere;
+	  end if;
+
           if (top->Name->text.value.length > 0) then
-            where := where + "\nand strain like " + mgi_DBprstr(top->Name->text.value);
+            where := where + "\nand s.strain like " + mgi_DBprstr(top->Name->text.value);
           end if;
 
           if (top->StandardMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand standard = " + top->StandardMenu.menuHistory.searchValue;
+            where := where + "\nand s.standard = " + top->StandardMenu.menuHistory.searchValue;
           end if;
  
           if (where.length > 0) then
@@ -298,14 +479,19 @@ rules:
 
           (void) busy_cursor(top);
 
+	  InitAcc.table := accTable;
+	  send(InitAcc, 0);
+	  
           tables.open;
           while (tables.more) do
             ClearTable.table := tables.next;
             send(ClearTable, 0);
           end while;
           tables.close;
+
 	  top->References->Records.labelString := "0 Records";
 	  top->DataSets->Records.labelString := "0 Records";
+	  top->Notes->text.value := "";
  
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
@@ -316,27 +502,71 @@ rules:
           end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
+	  results : integer := 1;
+	  row : integer;
+	  table : widget;
 
-	  cmd : string := "select * from " + mgi_DBtable(STRAIN) + 
-		          " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n";
+	  cmd := "select * from " + mgi_DBtable(STRAIN) + 
+		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n";
+--		 "select * from " + mgi_DBtable(MLP_STRAIN_VIEW) +
+--		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
+--	         "select note from " + mgi_DBtable(MLP_NOTES) +
+--		 "where " + mgi_DBkey(MLP_NOTES) + " = " + currentRecordKey +
+--		 " order by sequenceNum\n" +
+--		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
+--		 " where " + mgi_DBkey(PRB_STRAIN) + " = " + currentRecordKey + "\n" +
+--		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
+--		 " where " + mgi_DBkey(MLP_STRAINTYPES) + " = " + currentRecordKey + "\n" +
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->ID->text.value           := mgi_getstr(dbproc, 1);
-              top->Name->text.value         := mgi_getstr(dbproc, 2);
-              top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-              top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-              SetOption.source_widget := top->StandardMenu;
-              SetOption.value := mgi_getstr(dbproc, 3);
-              send(SetOption, 0);
+	      if (results = 1) then
+	        top->ID->text.value           := mgi_getstr(dbproc, 1);
+                top->Name->text.value         := mgi_getstr(dbproc, 2);
+--                top->CreationDate->text.value := mgi_getstr(dbproc, 5);
+--                top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
+                SetOption.source_widget := top->StandardMenu;
+                SetOption.value := mgi_getstr(dbproc, 3);
+                send(SetOption, 0);
+                SetOption.source_widget := top->NeedsReviewMenu;
+                SetOption.value := mgi_getstr(dbproc, 4);
+ --               send(SetOption, 0);
+	      elsif (results = 2) then
+		top->mgiSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
+		top->mgiSpecies->Species->text.value := mgi_getstr(dbproc, 7);
+		top->User1->text.value := mgi_getstr(dbproc, 3);
+		top->User2->text.value := mgi_getstr(dbproc, 4);
+	      elsif (results = 3) then
+		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+	      elsif (results = 4) then
+		table := top->Marker->Table;
+                (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      elsif (results = 5) then
+		table := top->StrainTypes->Table;
+                (void) mgi_tblSetCell(table, row, table.strainTypeCurrentKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.strainTypeKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.strainType, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      end if;
+	      row := row + 1;
             end while;
+	    results := results + 1;
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  LoadAcc.table := accTable;
+	  LoadAcc.objectKey := currentRecordKey;
+	  LoadAcc.tableID := STRAIN;
+	  send(LoadAcc, 0);
 
           top->QueryList->List.row := Select.item_position;
 
@@ -371,7 +601,6 @@ rules:
             return;
           end if;
 
-	  cmd : string;
           row : integer := 0;
  
 	  if (SelectReferences.doCount) then
@@ -428,7 +657,6 @@ rules:
             return;
           end if;
 
-	  cmd : string;
           row : integer := 0;
  
 	  if (SelectDataSets.doCount) then
@@ -526,8 +754,6 @@ rules:
           end if;
  
           (void) busy_cursor(dialog);
-
-	  cmd : string;
 
           if (dialog->Merge1.set) then
 	    cmd := "\nexec PRB_mergeStandardStrain " + 

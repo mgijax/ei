@@ -216,6 +216,9 @@ extern char *global_version;
 #define MLP_SPECIES		703
 #define MLP_NOTES		704
 #define PRB_STRAIN_MARKER	705
+#define MLP_STRAIN_VIEW		706
+#define PRB_STRAIN_MARKER_VIEW	707
+#define MLP_STRAINTYPES_VIEW	708
 
 /* End of Table Definitions */
 

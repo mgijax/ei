@@ -1244,8 +1244,14 @@ char *mgi_DBtable(int table)
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
 	    break;
+    case PRB_STRAIN_MARKER_VIEW:
+	    sprintf(buf, "PRB_Strain_Marker_View");
+	    break;
     case MLP_STRAIN:
 	    sprintf(buf, "%s..MLP_Strain", getenv("STRAINS"));
+	    break;
+    case MLP_STRAIN_VIEW:
+	    sprintf(buf, "%s..MLP_Strain_View", getenv("STRAINS"));
 	    break;
     case MLP_SPECIES:
 	    sprintf(buf, "%s..MLP_Species", getenv("STRAINS"));
@@ -1258,6 +1264,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MLP_STRAINTYPES:
 	    sprintf(buf, "%s..MLP_StrainTypes", getenv("STRAINS"));
+	    break;
+    case MLP_STRAINTYPES_VIEW:
+	    sprintf(buf, "%s..MLP_StrainTypes_View", getenv("STRAINS"));
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1384,7 +1393,9 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOMEN_OTHER:
     case MRK_NOMEN_REFERENCE:
     case MLP_STRAIN:
-    case MLP_SPECIES:
+    case MLP_STRAINTYPES:
+    case MLP_NOTES:
+    case PRB_STRAIN_MARKER:
     case MGI_TABLES:
     case MGI_COLUMNS:
 	selectKey = 0;
@@ -1716,7 +1727,7 @@ mgi_DBtable(table));
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case STRAIN:
-            sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
+            sprintf(buf, "insert %s (%s, %s, standard, needsReview)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case TISSUE:
             sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
