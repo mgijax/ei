@@ -1006,6 +1006,9 @@ char *mgi_DBaccTable(int table)
     case PRB_REFERENCE:
             strcpy(buf, "PRB_AccRef_View");
             break;
+    case PRB_SOURCE_MASTER:
+	    strcpy(buf, "PRB_Source_Acc_View");
+	    break;
     case STRAIN:
     case MLP_STRAIN:
 	    sprintf(buf, "PRB_Strain_Acc_View");
