@@ -1,0 +1,15 @@
+#!/bin/csh
+
+#
+# Sets up appropriate ENV variables for running MEI
+#
+# All SQL transactions logged to USERLOG.
+#
+
+setenv EIAPP $1
+
+cd `dirname $0`
+
+source Configuration
+
+exec $EIINSTALLDIR/$EIAPP/$EIAPP >>& $USERLOG
