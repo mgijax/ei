@@ -765,6 +765,10 @@ char *mgi_DBkey(int table)
     case VOC_ANNOTTYPE:
 	    strcpy(buf, "_AnnotType_key");
 	    break;
+    case VOC_ANNOT:
+    case VOC_EVIDENCE:
+	    strcpy(buf, "_Annot_key");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -1482,6 +1486,18 @@ char *mgi_DBtable(int table)
     case VOC_ANNOTTYPE:
             strcpy(buf, "VOC_AnnotType");
 	    break;
+    case VOC_ANNOT:
+            strcpy(buf, "VOC_Annot");
+	    break;
+    case VOC_ANNOT_VIEW:
+            strcpy(buf, "VOC_Annot_View");
+	    break;
+    case VOC_EVIDENCE:
+            strcpy(buf, "VOC_Evidence");
+	    break;
+    case VOC_EVIDENCE_VIEW:
+            strcpy(buf, "VOC_Evidence_View");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -1490,6 +1506,68 @@ char *mgi_DBtable(int table)
   return(buf);
 }
 
+/*
+   Determine the name of the Summary table/view for a given table ID.
+
+   requires:
+	table (int), the table ID from mgilib.h
+
+   returns:
+	a string which contains the name of the Summary table/view.
+
+   example:
+	buf = mgi_DBsumTable(BIB_REFS)
+
+	buf contains:
+		BIB_Summary_View
+*/
+ 
+char *mgi_DBsumTable(int table)
+{
+  static char buf[BUFSIZ];
+ 
+  memset(buf, '\0', sizeof(buf));
+ 
+  switch (table)
+  {
+    case ALL_ALLELE:
+            strcpy(buf, "ALL_Summary_View");
+            break;
+    case BIB_REFS:
+            strcpy(buf, "BIB_Summary_All_View");
+            break;
+    case GXD_ANTIGEN:
+            strcpy(buf, "GXD_Antigen_Summary_View");
+            break;
+    case GXD_ANTIBODY:
+            strcpy(buf, "GXD_Antibody_Summary_View");
+            break;
+    case GXD_ASSAY:
+            strcpy(buf, "GXD_Assay_Summary_View");
+            break;
+    case IMG_IMAGE:
+            strcpy(buf, "IMG_Image_Summary_View");
+            break;
+    case MLD_EXPTS:
+            strcpy(buf, "MLD_Summary_View");
+            break;
+    case MRK_MARKER:
+            strcpy(buf, "MRK_Summary_View");
+            break;
+    case PRB_PROBE:
+            strcpy(buf, "PRB_Summary_View");
+            break;
+    case STRAIN:
+	    sprintf(buf, "PRB_Strain_Summary_View");
+            break;
+    default:
+            sprintf(buf, "Invalid Table: %d", table);
+            break;
+  }
+ 
+  return(buf);
+}
+ 
 /*
    Determine the insert statement for a given table ID,
    if the given table ID has one primary key.
@@ -1621,6 +1699,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_REFERENCE:
     case ALL_SYNONYM:
     case VOC_TEXT:
+    case VOC_EVIDENCE:
 	selectKey = 0;
 	break;
     default:
@@ -2026,10 +2105,10 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Allele_key, _Refs_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_VOCAB:
-            sprintf(buf, "insert %s (%s, _Refs_key, isSimple, name)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Refs_key, _LogicalDB_key, isSimple, isPrivate, name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_TERM:
-            sprintf(buf, "insert %s (%s, _Vocab_key, term, abbreviation, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Vocab_key, term, abbreviation, sequenceNum, isObsolete)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_TEXT:
             sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2039,6 +2118,12 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case VOC_ANNOTTYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, _Vocab_key, _EvidenceVocab_key, name)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case VOC_ANNOT:
+            sprintf(buf, "insert %s (%s, _AnnotType_key, _Obejct_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case VOC_EVIDENCE:
+            sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy, notes)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */

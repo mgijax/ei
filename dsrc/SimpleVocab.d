@@ -39,6 +39,9 @@ devents:
 	Search :local [];				-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
 	SelectSynonym :local [];			-- Select Synonym Records for specific Term
+	SetOptions :local [source_widget : widget;	-- Set Option Pulldown Toggle
+			   row : integer;
+			   reason : integer;];
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
@@ -556,6 +559,8 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(table, row, table.abbreviation, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.obsoleteKey, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, row, table.isObsolete, mgi_getstr(dbproc, 11));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      elsif (results = 3) then
@@ -580,6 +585,13 @@ rules:
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  -- Set Option Menu for row 0
+
+	  SetOptions.source_widget := table;
+	  SetOptions.row := 0;
+	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+	  send(SetOptions, 0);
 
 	  send(SelectSynonym, 0);
 
@@ -636,6 +648,30 @@ rules:
 	  (void) dbclose(dbproc);
 
 	end does;
+
+--
+-- SetOptions
+--
+-- Each time a row is entered, set the option menus based on the values
+-- in the appropriate column.
+--
+-- EnterCellCallback for table.
+--
+ 
+        SetOptions does
+          table : widget := SetOptions.source_widget;
+          row : integer := SetOptions.row;
+	  reason : integer := SetOptions.reason;
+ 
+	  if (reason != TBL_REASON_ENTER_CELL_END) then
+	    return;
+	  end if;
+
+          SetOption.source_widget := top->YesNoMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.obsoleteKey);
+          send(SetOption, 0);
+
+        end does;
 
 --
 -- Exit
