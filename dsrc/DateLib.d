@@ -13,30 +13,25 @@
 
 dmodule DateLib is
 
-#include <mgilib.h>
-#include <syblib.h>
-
 locals:
-	queryList : widget;
-	newID : string;
 
 rules:
 
- --
- -- QueryDate
- --
- -- Constructs an sql where statement for querying dates
- -- Assumes use of Date template or ModificationHistory->Table
- -- Places sql "where" clause in Date.sql UDA or in
- --	ModificationHistory->Table.sqlCmd
- --
- -- Will correctly process:
- --
- --	> 9/9/1995
- --	>= 9/9/1995
- --	< 9/9/1995
- --	<= 9/9/1995
- --
+--
+-- QueryDate
+--
+-- Constructs an sql where statement for querying dates
+-- Assumes use of Date template or ModificationHistory->Table
+-- Places sql "where" clause in Date.sql UDA or in
+--	ModificationHistory->Table.sqlCmd
+--
+-- Will correctly process:
+--
+--	> 9/9/1995
+--	>= 9/9/1995
+--	< 9/9/1995
+--	<= 9/9/1995
+--
 
 	QueryDate does
 	  dateW : widget := QueryDate.source_widget;
@@ -87,6 +82,65 @@ rules:
 	    dateW.sqlCmd := where;
 	  end if;
 
+	end does;
+
+--
+-- QueryModificationHistory
+--
+-- Constructs a where clause from the ModificationHistory template
+-- Stores the clause in the table.sqlCmd UDA
+--
+
+	QueryModificationHistory does
+	  table : widget := QueryModificationHistory.table;
+	  tag : string := QueryModificationHistory.tag;
+	  where : string;
+	  value : string;
+
+          QueryDate.source_widget := table;
+	  QueryDate.row := table.createdBy;
+	  QueryDate.column := table.byDate;
+          QueryDate.tag := tag;
+          QueryDate.fieldName := table.createdFieldName;
+          send(QueryDate, 0);
+          where := where + table.sqlCmd;
+ 
+          QueryDate.source_widget := table;
+	  QueryDate.row := table.modifiedBy;
+	  QueryDate.column := table.byDate;
+          QueryDate.tag := tag;
+          QueryDate.fieldName := table.modifiedFieldName;
+          send(QueryDate, 0);
+          where := where + table.sqlCmd;
+ 
+	  if (table.is_defined("approvedBy") != nil) then
+            QueryDate.source_widget := table;
+	    QueryDate.row := table.approvedBy;
+	    QueryDate.column := table.byDate;
+            QueryDate.tag := tag;
+            QueryDate.fieldName := table.approvedFieldName;
+            send(QueryDate, 0);
+            where := where + table.sqlCmd;
+	  end if;
+
+	  value := mgi_tblGetCell(table, table.createdBy, table.byUser);
+	  if (value.length > 0) then
+	    where := where + "\nand " + tag + ".createdBy like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(table, table.modifiedBy, table.byUser);
+	  if (value.length > 0) then
+	    where := where + "\nand " + tag + ".modifiedBy like " + mgi_DBprstr(value);
+	  end if;
+
+	  if (table.is_defined("approvedBy") != nil) then
+	    value := mgi_tblGetCell(table, table.approvedBy, table.byUser);
+	    if (value.length > 0) then
+	      where := where + "\nand " + tag + ".approvedBy like " + mgi_DBprstr(value);
+	    end if;
+	  end if;
+
+	  table.sqlCmd := where;
 	end does;
 
 end dmodule;
