@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 13 10:05:06 2005";
+      lastWritten = "Thu Jan 20 13:18:01 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -988,7 +988,7 @@ Shift<Key>Tab: prev-tab-group()
                       Table = mgiTable;
                       Group: Widget
                         userDefinedAttributes = "genotypeKey:Int(Int)=\"4\"\ngenotype:Int(Int)=\"13\"\nageKey:Int(Int)=\"5\"\nagePrefix:Int(Int)=\"14\"\nageRange:Int(Int)=\"15\"\nsexKey:Int(Int)=\"8\"\nsex:Int(Int)=\"17\"\nfixationKey:Int(Int)=\"9\"\nfixation:Int(Int)=\"18\"\nembeddingKey:Int(Int)=\"10\"\nembedding:Int(Int)=\"19\"\nhybridizationKey:Int(Int)=\"11\"\nhybridization:Int(Int)=\"20\"\nageMin:Int(Int)=\"6\"\nageMax:Int(Int)=\"7\"\nageNote:Int(Int)=\"16\"\nspecimenNote:Int(Int)=\"22\"\nspecimenKey:Int(Int)=\"3\"\nresults:Int(Int)=\"21\"\nspecimenLabel:Int(Int)=\"12\"\n";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 12 16)(all 13 15)(all 16 10)(all 17 8)(all 18 10)(all 19 11)(all 20 15)(all 21 3)(all 22 50)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 12 16)(all 13 15)(all 14 15)(all 16 10)(all 17 8)(all 18 10)(all 19 11)(all 20 15)(all 21 3)(all 22 50)";
                         xrtTblColumnLabels = "Mode,Current Order,#,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,R,Notes";
                         xrtTblEditableSeries = "(all 0-2 False)(all 14-22 False) (all 15 True)(all 16 True)(all 22 True)";
                         xrtTblEnterCellCallback = "D:GenotypeClipboardSetItems,\nD:SetOptions";
@@ -1595,7 +1595,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblVisibleRows = 15;
                         userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\nclipboard:String=\"CVGel\"\n";
                         xrtTblTraversableSeries = "(all 0-11 False)";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 6)(all 16 10)(all 17 8)(all 19 9)(all 20 10)(all 21 6)(all 22 50)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 6)(all 16 10)(all 17 8)(all 18 15)(all 19 9)(all 20 10)(all 21 6)(all 22 50)";
                         xrtTblAllowCellResize = resize_horizontal;
                         xrtTblDisplayHorizScrollBar = dispsb_always;
                         xrtTblMaxLengthSeries = "(all 20 255)(all 22 255)";

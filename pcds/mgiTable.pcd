@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 13 10:05:01 2005";
+      lastWritten = "Tue Jan  4 14:27:58 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -455,7 +455,7 @@ Module: mgiTable
                   xrtTblEditableSeries = "(all 0 False) (all 5 False)";
                   xrtTblPixelWidthSeries = "(all 0-4 0)";
                   xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
-                  userDefinedAttributes = "refsCurrentKey:Int=\"3\"\nrefsKey:Int=\"4\"\njnum:Int=\"7\"\ncitation:Int=\"8\"\n";
+                  userDefinedAttributes = "refsCurrentKey:Int(Int)=\"3\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\n";
                   xrtTblVisibleRows = 5;
                   xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                 Group: User
@@ -632,16 +632,19 @@ Module: mgiTable
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
-                  xrtTblColumnLabels = "Mode,Key,Type key,Ref key,Type,Synonym,J#,Citation";
+                  xrtTblColumnLabels = "Mode,Key,Type key,Ref key,Type,Synonym,J#,Citation,Modified By,Date";
                   xrtTblPixelWidthSeries = "(all 0-3 0)";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 60)(all 6 10)(all 7 30)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
                   xrtTblEditableSeries = "(all 0-4 False)";
                   xrtTblTraversableSeries = "(all 0-4 False)";
-                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int=\"3\"\njnum:Int=\"6\"\ncitation:Int=\"7\"\n";
-                  xrtTblNumColumns = 8;
+                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int(Int)=\"3\"\njnum:Int(Int)=\"6\"\ncitation:Int(Int)=\"7\"\nmodifiedBy:Int=\"8\"\nmodifiedDate:Int=\"9\"\n";
+                  xrtTblNumColumns = 10;
                   xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                   xrtTblMaxLengthSeries = "(all 5 255)";
                   xrtTblVisibleRows = 3;
+                  xrtTblDisplayHorizScrollBar = dispsb_as_needed;
+                Group: User
+                  requiredColumns = "3\n5";
               }
               {
                 AddRow = TablePush : mgiTable;

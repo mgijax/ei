@@ -1451,7 +1451,6 @@ CHANGES:
    xrtTblXmStringGetMode = get_xmstring;
    xrtTblXmStringSetMode = set_xmstring;
 
-=======
 TAG: ei-sao-11
 DATE: 02/02/2004
 STAFF: lec

@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  12/23/2004
+--	- TR 6438; don't clear newly added item after add
+--
 -- lec	07/25/2003
 --	- JSAM
 --
@@ -261,9 +264,6 @@ rules:
 	    SetReportSelect.source_widget := top;
 	    SetReportSelect.tableID := GXD_ANTIBODY;
 	    send(SetReportSelect, 0);
-
-            ClearAntibody.clearKeys := false;
-            send(ClearAntibody, 0);
 	  end if;
 
           (void) reset_cursor(top);

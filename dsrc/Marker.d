@@ -5,7 +5,7 @@
 --
 -- TopLevelShell:		Marker
 -- Database Tables Affected:	MRK_Alias, MRK_Current, MRK_History
---				MRK_Marker, MRK_Offset, MRK_Other, MRK_Reference
+--				MRK_Marker, MRK_Offset, MRK_Reference, MGI_Synonym
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -140,6 +140,9 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [];
 	BuildDynamicComponents :local [];
+        ClearMarker :local [clearKeys : boolean := true;
+                            clearLists : integer := 7;
+                            reset : boolean := false;];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -162,7 +165,7 @@ devents:
 	ModifyCurrent :local [];
 	ModifyHistory :local [];
 	ModifyOffset :local [];
-	ModifyOtherReference :local [];
+	ModifyReference :local [];
 
 	PrepareSearch :local [];
 
@@ -187,13 +190,10 @@ locals:
 
 	currentChr : string;		-- current Chromosome of selected record
 	currentName : string;		-- current Name of selected record
-	hasAlleles : boolean;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	clearLists : integer;	-- Clear List value for Clear event
-
 rules:
 
 --
@@ -257,6 +257,12 @@ rules:
 	  InitOptionMenu.option := top->WithdrawalDialog->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
+          -- Initialize Synonym table
+
+          InitSynTypeTable.table := top->Synonym->Table;
+          InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
+          send(InitSynTypeTable, 0);
+
           top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := 
             "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
             " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
@@ -286,9 +292,9 @@ rules:
 	  tables.append(top->History->Table);
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
-	  tables.append(top->Allele->Table);
 	  tables.append(top->Offset->Table);
-	  tables.append(top->OtherReference->Table);
+	  tables.append(top->Synonym->Table);
+	  tables.append(top->Reference->Table);
 	  tables.append(top->AccessionReference->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 
@@ -303,11 +309,7 @@ rules:
           send(SetRowCount, 0);
  
 	  -- Clear the form
-
-	  clearLists := 7;
-	  Clear.source_widget := top;
-	  Clear.clearLists := clearLists;
-	  send(Clear, 0);
+	  send(ClearMarker, 0);
 	end does;
 
 --
@@ -322,90 +324,36 @@ rules:
 --
 
 	Add does
-	  table : widget := top->History->Table;
-	  refsKey : string := mgi_tblGetCell(table, 0, table.refsKey);
+	end does;
 
-	  if (not top.allowEdit) then
-	    return;
+--
+-- ClearMarker
+-- 
+-- Local Clear
+--
+
+	ClearMarker does
+
+	  if (not ClearMarker.reset) then
+	    top->MarkerStatusMenu.background := "Wheat";
+            top->MarkerStatusPulldown.background := "Wheat";
+            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
+            top->MarkerStatusMenu.menuHistory.background := "Wheat";
 	  end if;
 
-	  -- J# Required during add of Marker
+          Clear.source_widget := top;
+	  Clear.clearLists := ClearMarker.clearLists;
+	  Clear.clearKeys := ClearMarker.clearKeys;
+	  Clear.reset := ClearMarker.reset;
+	  send(Clear, 0);
 
-	  if (refsKey = "") then
-            StatusReport.source_widget := top;
-	    StatusReport.message := "J# required during add of Marker";
-	    send(StatusReport);
-	    top.allowEdit := false;
-	    return;
+	  -- Initialize Synonym table
+
+	  if (not ClearMarker.reset) then
+	    InitSynTypeTable.table := top->Synonym->Table;
+	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
+	    send(InitSynTypeTable, 0);
 	  end if;
-
-	  (void) busy_cursor(top);
-
-          -- If adding, then @KEYNAME must be used in all Modify events
- 
-          currentRecordKey := "@" + KEYNAME;
- 
-	  -- Insert master Marker Record
-	  -- Always inserted w/ status = APPROVED
-
-          cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
-                 mgi_DBinsert(MRK_MARKER, KEYNAME) +
-		 MOUSE + "," +
-                 top->MarkerTypeMenu.menuHistory.defaultValue + "," +
-                 STATUS_APPROVED + "," +
-	         mgi_DBprstr(top->Symbol->text.value) + "," +
-	         mgi_DBprstr(top->Name->text.value) + "," +
-                 mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
-	         mgi_DBprstr(top->Cyto->text.value) + ")\n";
-
-	  -- Insert History Record for EVENT_ASSIGNED event
-
-	  cmd := cmd + "execute MRK_insertHistory " + 
-		 currentRecordKey + "," + 
-		 currentRecordKey + "," + 
-		 refsKey + "," + 
-		 EVENT_ASSIGNED + "," +
-		 NOTSPECIFIED + "," +
-		 mgi_DBprstr(top->Name->text.value) + "\n";
-
-	  send(ModifyOffset, 0);
-	  send(ModifyAlias, 0);
-	  send(ModifyCurrent, 0);
-	  send(ModifyOtherReference, 0);
-
-	  --  Process Accession numbers
-
-          ProcessAcc.table := accTable;
-          ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := MRK_MARKER;
-          send(ProcessAcc, 0);
-          cmd := cmd + accTable.sqlCmd;
-
-          ProcessAcc.table := accRefTable;
-          ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := MRK_ACC_REFERENCE;
-          send(ProcessAcc, 0);
-          cmd := cmd + accRefTable.sqlCmd;
-
-	  -- Execute the add
-
-	  AddSQL.tableID := MRK_MARKER;
-          AddSQL.cmd := cmd;
-          AddSQL.list := top->QueryList;
-          AddSQL.item := top->Symbol->text.value;
-          AddSQL.key := top->ID->text;
-          send(AddSQL, 0);
-
-	  -- If add was sucessful, re-initialize the form
-
-	  if (top->QueryList->List.sqlSuccessful) then
-	    Clear.source_widget := top;
-	    Clear.clearLists := clearLists;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
-	  end if;
-
-	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -426,10 +374,8 @@ rules:
 	  send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-	    Clear.source_widget := top;
-	    Clear.clearLists := clearLists;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
+	    ClearMarker.clearKeys := false;
+	    send(ClearMarker, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -585,7 +531,13 @@ rules:
 	  send(SetOption, 0);
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
-	  dialog->hasAlleles.set := hasAlleles;
+	  alleleCount : string;
+	  alleleCount := mgi_sql1("select count(*) from ALL_Allele where _Marker_key = " + currentRecordKey);
+	  if ((integer) alleleCount > 0) then
+	    dialog->hasAlleles.set := true;
+          else
+	    dialog->hasAlleles.set := false;
+	  end if;
 	  dialog->addAsSynonym.set := true;
 
 	  dialog->nonVerified->ObjectID->text.value := "";
@@ -946,7 +898,17 @@ rules:
 	  send(ModifyAlias, 0);
 	  send(ModifyCurrent, 0);
 	  send(ModifyOffset, 0);
-	  send(ModifyOtherReference, 0);
+	  send(ModifyReference, 0);
+
+          --  Process Synonyms
+
+          ProcessSynTypeTable.table := top->Synonym->Table;
+          ProcessSynTypeTable.tableID := MGI_SYNONYM;
+          ProcessSynTypeTable.objectKey := currentRecordKey;
+          send(ProcessSynTypeTable, 0);
+          cmd := cmd + top->Synonym->Table.sqlCmd;
+
+          --  Process Accession IDs
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
@@ -1274,39 +1236,25 @@ rules:
 	end does;
 
 --
--- ModifyOtherReference
+-- ModifyReference
 --
 -- Activated from: devent Modify
---
--- Construct insert/update/delete for Marker Other Names
 --
 -- Construct insert/update/delete for Marker References
 -- Only add/modify/delete non-auto (auto = 0) records; that is, those that are
 -- entered using this interface.
 --
--- For the OtherReference table:
---
--- If Other Name & Reference, then data belongs in MRK_OTHER table.
--- If Other Name & No Reference, then data belongs in MRK_OTHER table w/ _Refs_key = NULL.
--- If No Other Name & Reference, then data belongs in MRK_Reference table.
---
 -- Auto references (auto = 1) are loaded during a nightly process and should not
 -- be edited via this event.
 --
 
-	ModifyOtherReference does
-          table : widget := top->OtherReference->Table;
+	ModifyReference does
+          table : widget := top->Reference->Table;
           row : integer := 0;
           editMode : string;
-          otherKey : string;
-          name : string;
 	  refsKey : string;
 	  refsCurrentKey : string;
           set : string := "";
-	  keyName : string := "otherKey";
-	  keysDeclared : boolean := false;
-	  processOther : boolean := false;
-	  deleteAuto : boolean := false;
  
           -- Process while non-empty rows are found
  
@@ -1317,89 +1265,33 @@ rules:
               break;
             end if;
  
-	    processOther := false;
-	    deleteAuto := false;
-            otherKey := mgi_tblGetCell(table, row, table.otherKey);
-            name := mgi_tblGetCell(table, row, table.otherName);
             refsKey := mgi_tblGetCell(table, row, table.refsKey);
             refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
  
-	    -- If Other Name Key is given, then process using Other Name rules
-	    if (otherKey.length > 0) then
-	      processOther := true;
-	    -- Else if Other Name is given, then user is adding a new Other Name rec
-	    elsif (name.length > 0 and refsKey.length = 0) then
-	      processOther := true;
-	      editMode := TBL_ROW_ADD;
-	    elsif (name.length > 0 and refsKey.length > 0) then
-	      processOther := true;
-	      deleteAuto := true;
-	      editMode := TBL_ROW_ADD;
-	    end if;
-
-	    if (refsKey.length = 0) then
-	      refsKey := "NULL";
-	    end if;
-
             if (editMode = TBL_ROW_ADD) then
-	      
-	      if (processOther) then
-                if (not keysDeclared) then
-                  cmd := cmd + mgi_setDBkey(MRK_OTHER, NEWKEY, keyName);
-                  keysDeclared := true;
-                else
-                  cmd := cmd + mgi_DBincKey(keyName);
-                end if;
+              cmd := cmd + 
+		     mgi_DBinsert(MRK_REFERENCE, NOKEY) + 
+		     currentRecordKey + "," + 
+		     refsKey + ",0)\n";
 
-		if (deleteAuto and refsCurrentKey.length > 0) then
-		   cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
-		          "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
-		end if;
+	      -- update Review value for row
 
-                cmd := cmd +
-                       mgi_DBinsert(MRK_OTHER, keyName) +
-		       currentRecordKey + "," +
-		       mgi_DBprstr(name) + "," +
-		       refsKey + ")\n";
-	      else
-                cmd := cmd + 
-		       mgi_DBinsert(MRK_REFERENCE, NOKEY) + 
-		       currentRecordKey + "," + 
-		       refsKey + ",0)\n";
-	      end if;
-
-	      -- update Review? value for row
-
-	      if (refsKey != "NULL") then
-	        set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-                cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
-	      end if;
+	      set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+              cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
 
             elsif (editMode = TBL_ROW_MODIFY) then
-	      if (processOther) then
-                set := "name = " + mgi_DBprstr(name) + 
-		       ",_Refs_key = " + refsKey;
-                cmd := cmd + mgi_DBupdate(MRK_OTHER, otherKey, set);
-	      else
-                set := "_Refs_key = " + refsKey;
-                cmd := cmd + mgi_DBupdate(MRK_REFERENCE, currentRecordKey, set) + 
-                       "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
-	      end if;
+              set := "_Refs_key = " + refsKey;
+              cmd := cmd + mgi_DBupdate(MRK_REFERENCE, currentRecordKey, set) + 
+                     "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
 
-	      -- update Review? value for row
+	      -- update Review value for row
 
-	      if (refsKey != "NULL") then
-	        set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-                cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
-	      end if;
+	      set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+              cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
 
             elsif (editMode = TBL_ROW_DELETE) then
-	       if (processOther and otherKey.length > 0) then
-                 cmd := cmd + mgi_DBdelete(MRK_OTHER, otherKey);
-               elsif (not processOther and refsCurrentKey.length > 0) then
-		 cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
-		        "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
-	       end if;
+	      cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
+		     "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
             end if;
  
             row := row + 1;
@@ -1416,10 +1308,8 @@ rules:
 
 	PrepareSearch does
 	  from_alias    : boolean := false;
-	  from_allele   : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
-	  from_other    : boolean := false;
 	  from_offset   : boolean := false;
 	  from_reference: boolean := false;
 
@@ -1453,6 +1343,13 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
  
+          SearchSynTypeTable.table := top->Synonym->Table;
+          SearchSynTypeTable.tableID := MGI_SYNONYM_MUSMARKER_VIEW;
+          SearchSynTypeTable.join := "m." + mgi_DBkey(MRK_MARKER);
+          send(SearchSynTypeTable, 0);
+          from := from + top->Synonym->Table.sqlFrom;
+          where := where + top->Synonym->Table.sqlWhere;
+
           if (top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Type_key = " + top->MarkerTypeMenu.menuHistory.searchValue;
           end if;
@@ -1559,38 +1456,19 @@ rules:
 	    from_alias := true;
 	  end if;
 
-          value := mgi_tblGetCell(top->Allele->Table, 0, top->Allele->Table.alleleSymbol);
-          if (value.length > 0) then
-	    where := where + "\nand ml.symbol like " + mgi_DBprstr(value);
-	    from_allele := true;
-	  end if;
-
-          value := mgi_tblGetCell(top->Allele->Table, 0, top->Allele->Table.alleleName);
-          if (value.length > 0) then
-	    where := where + "\nand ml.name like " + mgi_DBprstr(value);
-	    from_allele := true;
-	  end if;
-
-          value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.otherName);
-          if (value.length > 0) then
-	    where := where + "\nand mo.name like " + mgi_DBprstr(value);
-	    from_other := true;
-	  end if;
-
-          value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.refsKey);
-
+          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
 	    where := where + "\nand mr._Refs_key = " + value;
 	    from_reference := true;
 	  else
-            value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.citation);
+            value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.citation);
             if (value.length > 0) then
 	      where := where + "\nand mr.short_citation like " + mgi_DBprstr(value);
 	      from_reference := true;
 	    end if;
 	  end if;
 
-          value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.reviewKey);
+          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.reviewKey);
           if (value.length > 0) then
 	    where := where + "\nand mr.isReviewArticle = " + value;
 	    from_reference := true;
@@ -1609,16 +1487,6 @@ rules:
 	  if (from_alias) then
 	    from := from + ",MRK_Alias_View ma";
 	    where := where + "\nand m._Marker_key = ma._Marker_key";
-	  end if;
-
-	  if (from_allele) then
-	    from := from + ",ALL_Allele ml";
-	    where := where + "\nand m._Marker_key = ml._Marker_key";
-	  end if;
-
-	  if (from_other) then
-	    from := from + ",MRK_Other mo";
-	    where := where + "\nand m._Marker_key = mo._Marker_key";
 	  end if;
 
 	  if (from_history) then
@@ -1678,6 +1546,10 @@ rules:
 	  end while;
 	  tables.close;
 
+          InitSynTypeTable.table := top->Synonym->Table;
+          InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
+          send(InitSynTypeTable, 0);
+
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -1686,8 +1558,6 @@ rules:
           end if;
 
           (void) busy_cursor(top);
-
-	  hasAlleles := false;
 
 	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
@@ -1710,25 +1580,13 @@ rules:
 		 "where _Marker_key = " + currentRecordKey + "\n" +
 	         "select _Alias_key, alias from MRK_Alias_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
-	         "select _Allele_key, symbol, name from " + mgi_DBtable(ALL_ALLELE) +
-		 " where _Marker_key = " + currentRecordKey +
-		 " order by symbol\n" +
-	         "select _Other_key, name, _Refs_key, jnum = null, short_citation = null, isReviewArticle = 0 " +
-		 "from MRK_Other " +
-		 "where _Marker_key = " + currentRecordKey + "and _Refs_key = null\n" +
-		 "union\n" +
-	         "select _Other_key, name, _Refs_key, jnum, short_citation, isReviewArticle " +
-		 "from MRK_Other_View " +
-		 "where _Marker_key = " + currentRecordKey + "\n" +
-		 "union\n" +
-	         "select _Other_key = null, name = null, _Refs_key, jnum, short_citation, isReviewArticle " +
+	         "select _Refs_key, jnum, short_citation, isReviewArticle " +
 		 "from MRK_Reference_View " +
 		 "where _Marker_key = " + currentRecordKey + " and auto = 0 " +
-		 "order by name, short_citation\n";
+		 "order by short_citation\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
-	  otherRefRow : integer := 0;
 	  source : string;
 	  seqRow : integer := 0;
 	  seqNum1, seqNum2 : string;
@@ -1829,31 +1687,17 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 7) then
-		table := top->Allele->Table;
-                (void) mgi_tblSetCell(table, row, table.alleleKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.alleleSymbol, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.alleleName, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		hasAlleles := true;
-	      elsif (results = 8) then
-		table := top->OtherReference->Table;
-                (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 6));
+		table := top->Reference->Table;
+                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 4));
 
-		if (mgi_tblGetCell(table, row, table.refsKey) != "") then
-		  if (mgi_getstr(dbproc, 6) = "1") then
-                    (void) mgi_tblSetCell(table, row, table.review, "Yes");
-		  else
-                    (void) mgi_tblSetCell(table, row, table.review, "No");
-		  end if;
+		if (mgi_getstr(dbproc, 4) = "1") then
+                  (void) mgi_tblSetCell(table, row, table.review, "Yes");
 		else
-                  (void) mgi_tblSetCell(table, row, table.reviewKey, "");
-                  (void) mgi_tblSetCell(table, row, table.review, "");
+                  (void) mgi_tblSetCell(table, row, table.review, "No");
 		end if;
 
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -1866,8 +1710,6 @@ rules:
           	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
           	  send(SetOptions, 0);
 		end if;
-
-		otherRefRow := otherRefRow + 1;
 	      end if;
 	      row := row + 1;
 	    end while;
@@ -1875,12 +1717,6 @@ rules:
 	  end while;
 
 	  (void) dbclose(dbproc);
-
-	  if (otherRefRow > 5) then
-	    top->OtherReference->Table.xrtTblNumRows := otherRefRow + 1;
-	  else
-	    top->OtherReference->Table.xrtTblNumRows := 6;
-	  end if;
 
 	  -- Initialize Offset rows which do not exist
 	  row := 0;
@@ -1903,6 +1739,11 @@ rules:
 	    LoadAcc.reportError := false;
 	  end if;
 
+          LoadSynTypeTable.table := top->Synonym->Table;
+          LoadSynTypeTable.tableID := MGI_SYNONYM_MUSMARKER_VIEW;
+          LoadSynTypeTable.objectKey := currentRecordKey;
+          send(LoadSynTypeTable, 0);
+
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := MRK_MARKER;
@@ -1915,10 +1756,8 @@ rules:
           send(LoadAcc, 0);
  
 	  top->QueryList->List.row := Select.item_position;
-	  Clear.source_widget := top;
-	  Clear.clearLists := clearLists;
-	  Clear.reset := true;
-	  send(Clear, 0);
+	  ClearMarker.reset := true;
+	  send(ClearMarker, 0);
 
 	  (void) reset_cursor(top);
 	end does;
