@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 14 09:45:11 2005";
+      lastWritten = "Tue Feb 22 08:35:56 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2794,7 +2794,6 @@ Module: mgiOption
           StrainGenoQualMenu = OptionMenu;
           Group: Widget
             subMenuId = StrainGenoQualPulldown;
-            labelString = "Strain/Genotype Qualifier";
           Group: Control
             vip_x = 80;
             vip_y = 5695;
@@ -2803,9 +2802,6 @@ Module: mgiOption
                 StrainGenoQualPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
                   sql = "select _Term_key, term from VOC_Term_StrainGenoQual_View order by sequenceNum";
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
               }
         }
         {

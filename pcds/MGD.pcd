@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 14 09:51:27 2005";
+      lastWritten = "Tue Feb 22 08:48:35 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9442,15 +9442,17 @@ Shift<Key>Tab: prev-tab-group()
                                   Reference = ReferenceTypeTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Synonym;
+                                    leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Synonym;
+                                    topWidget = ReferenceMGI;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblBackgroundSeries = "(all all Wheat) (label all Yellow)(all label Yellow)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -9473,6 +9475,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Genotype = Table : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Reference;
@@ -9480,20 +9485,57 @@ Shift<Key>Tab: prev-tab-group()
                                     topAttachment = attach_widget;
                                     topWidget = Reference;
                                     topOffset = 5;
-                                    bottomAttachment = attach_none;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 3;
                                           xrtTblNumColumns = 7;
-                                          xrtTblColumnLabels = "Mode,Key,G Key,Q Key,MGI ID,Genotype,Qualifier";
+                                          xrtTblColumnLabels = "Mode,Key,G Key,Q Key,Qualifier,MGI ID,Genotype";
                                           xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 50)(all 6 15)";
-                                          userDefinedAttributes = "strainGenotypeKey:Int(Int)=\"1\"\ngenotypeKey:Int(Int)=\"2\"\nqualifierKey:Int(Int)=\"3\"\ngenotype:Int(Int)=\"4\"\ngenotypeName:Int(Int)=\"5\"\nqualifier:Int(Int)=\"6\"\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 15)(all 6 50)";
+                                          userDefinedAttributes = "strainGenotypeKey:Int(Int)=\"1\"\ngenotypeKey:Int(Int)=\"2\"\nqualifierKey:Int(Int)=\"3\"\ngenotype:Int(Int)=\"5\"\ngenotypeName:Int(Int)=\"6\"\nqualifier:Int(Int)=\"4\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyGenotype\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0 False)(all 5 False)";
-                                          xrtTblEditableSeries = "(all 0 False)(all 5 False)";
+                                          xrtTblTraversableSeries = "(all 0 False)(all 6 False)";
+                                          xrtTblEditableSeries = "(all 0 False)(all 6 False)";
+                                          xrtTblBackgroundSeries = "(all all Wheat) (label all Yellow)(all label Yellow)";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = StrainGenoQualMenu;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = StrainGenoQualMenu;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        StrainGenoQualMenu = StrainGenoQualMenu : mgiOption;
+                                        Group: Constraint
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                            Popups:
+                                            {
+                                              StrainGenoQualPulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = Genotype;
+                                                tableOption = 4;
+                                                tableOptionKey = 3;
+                                            }
                                       }
                                 }
                                 {
@@ -9502,12 +9544,11 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    bottomAttachment = attach_form;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = Genotype;
+                                    topWidget = Synonym;
                                     topOffset = 5;
                                     leftWidget = Name;
-                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -9543,9 +9584,8 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = ReferenceMGI;
-                                    bottomAttachment = attach_form;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
-                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -9568,10 +9608,10 @@ Shift<Key>Tab: prev-tab-group()
                                     orientation = vertical;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = DataSets;
+                                    leftWidget = Synonym;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = DataSets;
+                                    topWidget = Synonym;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
@@ -9900,17 +9940,6 @@ Shift<Key>Tab: prev-tab-group()
                                           targetWidget = StrainType;
                                           targetKey = 2;
                                           targetText = 3;
-                                      }
-                                }
-                                {
-                                  StrainGenoQualMenu = StrainGenoQualMenu : mgiOption;
-                                      Popups:
-                                      {
-                                        StrainGenoQualPulldown = OptionPulldown : mgiOption;
-                                        Group: User
-                                          tableForm = Genotype;
-                                          tableOption = 6;
-                                          tableOptionKey = 3;
                                       }
                                 }
                           }

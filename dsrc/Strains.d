@@ -159,6 +159,10 @@ rules:
 	  InitRefTypeTable.tableID := MGI_REFTYPE_STRAIN_VIEW;
 	  send(InitRefTypeTable, 0);
 
+	  -- Strain/Genotype Qualifier Menu
+	  InitOptionMenu.option := top->StrainGenoQualMenu;
+	  send(InitOptionMenu, 0);
+
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
@@ -197,10 +201,6 @@ rules:
 
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
-
-	  -- Strain/Genotype Qualifier Menu
-	  InitOptionMenu.option := top->StrainGenoQualMenu;
-	  send(InitOptionMenu, 0);
 
 	  -- Initialize Notes form
 
