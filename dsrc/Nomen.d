@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 03/27/2001
+--	- Added "reset" to ClearNomen; always call ClearNomen
+--
 -- lec 03/15/2001
 --	- Added ModifyNomenNotes; changed to be consistent with Allele Note
 --	  processing; changes to SQL.d/SQL.de
@@ -119,7 +122,8 @@ devents:
 	Exit :local [];
 	Init :local [];
 
-	ClearNomen :local [clearKeys : boolean := true;];
+	ClearNomen :local [clearKeys : boolean := true;
+			   reset : boolean := false;];
 
 	-- Process Broadcast Events
 	Broadcast :local [type : integer;];
@@ -298,14 +302,18 @@ rules:
 --
 
 	ClearNomen does
-	  top->MarkerStatusMenu.background := "Wheat";
-          top->MarkerStatusPulldown.background := "Wheat";
-          top->MarkerStatusPulldown->SearchAll.background := "Wheat";
-          top->MarkerStatusMenu.menuHistory.background := "Wheat";
+
+	  if (not ClearNomen.reset) then
+	    top->MarkerStatusMenu.background := "Wheat";
+            top->MarkerStatusPulldown.background := "Wheat";
+            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
+            top->MarkerStatusMenu.menuHistory.background := "Wheat";
+	  end if;
 
 	  Clear.source_widget := top;
 	  Clear.clearLists := 3;
 	  Clear.clearKeys := ClearNomen.clearKeys;
+	  Clear.reset := ClearNomen.reset;
 	  send(Clear, 0);
 
 	  notes.open;
@@ -445,9 +453,8 @@ rules:
 	  send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-	    Clear.source_widget := top;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
+	    ClearNomen.clearKeys := false;
+	    send(ClearNomen, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -1315,13 +1322,6 @@ rules:
 	  end while;
 	  (void) dbclose(dbproc);
 
-	  notes.open;
-	  while (notes.more) do
-	    SetNotesDisplay.note := notes.next;
-	    send(SetNotesDisplay, 0);
-	  end while;
-	  notes.close;
-
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentNomenKey;
           LoadAcc.tableID := MRK_NOMEN;
@@ -1335,9 +1335,8 @@ rules:
           send(LoadAcc, 0);
 
 	  top->QueryList->List.row := Select.item_position;
-	  Clear.source_widget := top;
-	  Clear.reset := true;
-	  send(Clear, 0);
+	  ClearNomen.reset := true;
+	  send(ClearNomen, 0);
 
 	  (void) reset_cursor(top);
 	end does;
