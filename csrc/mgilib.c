@@ -164,10 +164,10 @@ char *mgi_DBprstr(char *value)
 
    example:
 
-	buf = mgi_DBprstr("1000")
+	buf = mgi_DBprkey("1000")
 	the value of buf is: 1000
 
-	buf = mgi_DBprstr("")
+	buf = mgi_DBprkey("")
 	the value of buf is: NULL
 */
 
@@ -340,10 +340,6 @@ char *mgi_DBrecordCount(int table)
 
   switch (table)
   {
-    case GBASE:
-    case GBASEEDIT:
-            sprintf(cmd, "select count(*) from Gbase_Matrix..%s", mgi_DBtable(table));
-	    break;
     case MRK_NOMEN:
     case MRK_GENEFAMILY:
     case MRK_NOMENSTATUS:
@@ -1061,12 +1057,6 @@ char *mgi_DBtable(int table)
 	    break;
     case TISSUE:
             strcpy(buf, "PRB_Tissue");
-	    break;
-    case GBASE:
-            strcpy(buf, "generef");
-	    break;
-    case GBASEEDIT:
-            strcpy(buf, "generef_subset");
 	    break;
     case MLC_LOCK_EDIT:
             strcpy(buf, "MLC_Lock_edit");

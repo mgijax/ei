@@ -121,9 +121,6 @@ extern char *global_version;
 
 #define MLC_MARKER_EDIT_VIEW	181
 
-#define GBASE			190
-#define GBASEEDIT		191
-
 /* GXD Tables */
 
 #define GXD_ANTIGEN		200
