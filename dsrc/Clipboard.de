@@ -1,0 +1,18 @@
+--
+-- Name    : Clipboard.de
+-- Creator : lec
+-- Date	   : 07/26/2001
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for Clipboard.d.
+--
+
+AddToClipboard [source_widget : widget;];
+
+CopyClipboard [source_widget : widget;];
+
+ClearClipboard [source_widget : widget;];
+
+DeleteFromClipboard [source_widget : widget;];
+
