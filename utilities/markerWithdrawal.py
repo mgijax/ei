@@ -14,9 +14,15 @@
 # --eventReasonKey = event reason key of the nomenclature event
 # --oldKey = marker key of the symbol being withdrawn
 # --refKey = reference key of the nomenclature event
-# --newName = name of the new symbol (withdrawn)
+# --newName = name of the new symbol (withdrawn) in quotes (ex. "new name")
 # --newKey = marker key of the new symbol (allele of, merged)
-# --newSymbols = list of comma-separated new symbols (withdrawn, split)
+# --newSymbols = list of comma-separated new symbols (withdrawn, split) in quotes
+#	(ex. "new-1,new-2")
+#
+# History
+#
+# 04/17/2000 lec
+#	- TR 1291
 #
 '''
 
@@ -114,7 +120,7 @@ DELETED = 6
 NOTSPECIFIED = -1
 
 try:
-	optlist, args = getopt.getopt(sys.argv[1:], 'SDU:P:', ['eventKey=', 'eventReasonKey', 'oldKey=', 'refKey=', 'newName=', 'newKey=', 'newSymbols='])
+	optlist, args = getopt.getopt(sys.argv[1:], 'SDU:P:', ['eventKey=', 'eventReasonKey=', 'oldKey=', 'refKey=', 'newName=', 'newKey=', 'newSymbols='])
 except:
 	showUsage()
 
@@ -212,7 +218,7 @@ elif eventKey == SPLIT:
 if eventKey == WITHDRAWAL:
 	newSymbolsList = string.split(newSymbols, ',')
 	newSymbol = newSymbolsList[0]
-	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,"%s","%s"' \
+	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s' \
 		% (oldKey, refKey, eventReasonKey, newSymbol, newName)
 elif eventKey == MERGED:
 	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d' \
@@ -221,7 +227,7 @@ elif eventKey == ALLELEOF:
 	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d' \
 		% (oldKey, newKey, refKey, eventReasonKey)
 elif eventKey == SPLIT:
-	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,"%s"' \
+	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
 		% (oldKey, refKey, eventReasonKey, newSymbols)
 elif eventKey == DELETED:
 	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d' \
@@ -229,10 +235,9 @@ elif eventKey == DELETED:
 
 try:
 	db.sql(cmd, None)
+	diagFile.close()
 
 except db.error:
 	diagFile.close()
-	error('The withdrawal procedure could not be processed.')
-
-diagFile.close()
+	error('The withdrawal procedure could not be processed.\nReview the diagnostic file %s.' % (diagFileName))
 
