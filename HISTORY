@@ -4,6 +4,19 @@ STAFF: lec
 RELEASE: A
 CHANGES: MGI 2.?/TR 1223
 
+TAG: ei-1-4-8-patch-3
+DATE: 01/27/2000
+STAFF: lec
+RELEASE: A
+CHANGES:  Remove chromosome RE
+
+TAG: ei-1-4-8-patch-2
+DATE: 01/27/2000
+STAFF: lec
+RELEASE: A
+CHANGES:  TR 1227; nlm program update; can eliminate then nlmccdata CVS 
+installation also bug fix to broadcast.py (was adding blank other names)
+
 TAG: ei-1-4-8-patch-1
 DATE: 01/13/2000
 STAFF: lec
