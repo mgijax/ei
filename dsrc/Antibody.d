@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	07/25/2003
+--	- JSAM
+--
 -- lec	08/15/2002
 --	- TR 1463 SAO; _AntibodySpecies_key replaced with _Organism_key
 --
@@ -293,7 +296,7 @@ rules:
 --
 -- Modifies current record
 -- Calls ModifyAlias[] and ModifyMarker[] to process Alias/Marker tables
--- Calls ModifyMolecularSource[] to process Molecular Source info
+-- Calls ModifyAntigenSource[] to process Molecular Source info
 -- Calls ProcessAcc[] to process Accession numbers
 --
 
@@ -354,10 +357,11 @@ rules:
 	    cmd := mgi_DBupdate(GXD_ANTIBODY, currentRecordKey, set);
 	  end if;
 
-          -- ModifyMolecularSource will set top->SourceForm.sql appropriately
+          -- ModifyAntigenSource will set top->SourceForm.sql appropriately
           -- Append this value to the 'cmd' string
-          ModifyMolecularSource.source_widget := top;
-          send(ModifyMolecularSource, 0);
+          ModifyAntigenSource.source_widget := top;
+          ModifyAntigenSource.antigenKey := top->AntigenAccession->ObjectID->text.value;
+          send(ModifyAntigenSource, 0);
           cmd := cmd + top->SourceForm.sql;
  
 	  send(ModifyAlias, 0);
