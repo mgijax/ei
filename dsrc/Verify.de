@@ -15,8 +15,6 @@ VerifyAge :translation [source_widget : widget;
 
 VerifyAllele :translation [verifyAdd : boolean := false;];
 
-VerifyAlleleAdd [];
-
 VerifyAntibodyType [];
 
 VerifyChromosome :translation [];

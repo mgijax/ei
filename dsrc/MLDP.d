@@ -2872,7 +2872,7 @@ rules:
 	  end if;
 
 	  if (from_allele) then
-	    from := from + "," + mgi_DBtable(MRK_ALLELE) + " a";
+	    from := from + "," + mgi_DBtable(ALL_ALLELE) + " a";
 	    where := where + " and eg._Allele_key = a._Allele_key";
 	  end if;
 
