@@ -670,6 +670,7 @@ rules:
 	      else
 	  	table := top->AllelePair->Table;
 	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
+	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 10));
