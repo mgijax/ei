@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Oct  4 07:46:51 1999";
+      lastWritten = "Mon Oct 18 09:53:54 1999";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -99,7 +99,7 @@ Module: mgiTable
                   xrtTblPixelWidthSeries = "(all 0-2 0)";
                   xrtTblTraversableSeries = "(all 0 False) (all 3 False)";
                   xrtTblVisibleRows = 2;
-                  userDefinedAttributes = "logicalKey:Int(Int)=\"1\"\naccKey:Int(Int)=\"2\"\naccName:Int(Int)=\"3\"\naccID:Int(Int)=\"4\"\n";
+                  userDefinedAttributes = "logicalKey:Int(Int)=\"1\"\naccKey:Int(Int)=\"2\"\naccName:Int(Int)=\"3\"\naccID:Int(Int)=\"4\"\nshowMGI:Boolean=\"True\"\n";
                   xrtTblEnterCellCallback = "D:SetAccSourceMenu";
               }
               {

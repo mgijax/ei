@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 14:24:25 1999";
+      lastWritten = "Thu Oct 21 13:49:05 1999";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -277,12 +277,17 @@ Module: mgiLookup
           Group: Control
             vip_x = 60;
             vip_y = 690;
-          Group: User
-            cmd = "select * from MLP_StrainType order by strainType";
               {
                 Label = LookupLabel;
                 Group: Widget
                   labelString = "Strain Types";
+                Group: User
+                  defaultLabel = "Strain Types";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
         }
 }

@@ -132,6 +132,16 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 
+	  top->SpeciesList.cmd := "select * from " + mgi_DBtable(MLP_SPECIES) + 
+		" order by " + mgi_DBcvname(MLP_SPECIES);
+          LoadList.list := top->SpeciesList;
+	  send(LoadList, 0);
+
+	  top->StrainTypeList.cmd := "select * from " + mgi_DBtable(MLP_STRAINTYPE) + 
+		" order by " + mgi_DBcvname(MLP_STRAINTYPE);
+          LoadList.list := top->StrainTypeList;
+	  send(LoadList, 0);
+
           -- Set Row Count
           SetRowCount.source_widget := top;
           SetRowCount.tableID := STRAIN;
@@ -401,13 +411,12 @@ rules:
 --
 
 	PrepareSearch does
-	  from_mlp : boolean := false;
 	  from_notes : boolean := false;
 	  from_marker : boolean := false;
 	  from_types : boolean := false;
 	  value : string;
 
-	  from := "from " + mgi_DBtable(STRAIN) + " s";
+	  from := "from " + mgi_DBtable(MLP_STRAIN_VIEW) + " s";
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -441,18 +450,15 @@ rules:
           end if;
  
 	  if (top->mgiSpecies->Species->text.value.length > 0) then
-	    where := where + "\nand m.species like " + mgi_DBprstr(top->mgiSpecies->Species->text.value);
-	    from_mlp := true;
+	    where := where + "\nand s.species like " + mgi_DBprstr(top->mgiSpecies->Species->text.value);
 	  end if;
 
 	  if (top->User1->text.value.length > 0) then
-	    where := where + "\nand m.userDefined1 like " + mgi_DBprstr(top->User1->text.value);
-	    from_mlp := true;
+	    where := where + "\nand s.userDefined1 like " + mgi_DBprstr(top->User1->text.value);
 	  end if;
 
 	  if (top->User2->text.value.length > 0) then
-	    where := where + "\nand m.userDefined2 like " + mgi_DBprstr(top->User2->text.value);
-	    from_mlp := true;
+	    where := where + "\nand s.userDefined2 like " + mgi_DBprstr(top->User2->text.value);
 	  end if;
 
 	  if (top->Notes->text.value.length > 0) then
@@ -486,11 +492,6 @@ rules:
 	    end if;
 	  end if;
 
-	  if (from_mlp) then
-	    from := from + "," + mgi_DBtable(MLP_STRAIN_VIEW) + " m";
-	    where := where + "\nand s._Strain_key = m._Strain_key";
-	  end if;
-
 	  if (from_notes) then
 	    from := from + "," + mgi_DBtable(MLP_NOTES) + " n";
 	    where := where + "\nand s._Strain_key = n._Strain_key";
@@ -521,7 +522,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by strain\n";
+	  Query.select := "select distinct s._Strain_key, s.strain\n" + from + "\n" + where + "\norder by s.strain\n";
 	  Query.table := STRAIN;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
@@ -582,17 +583,15 @@ rules:
 	  row : integer;
 	  table : widget;
 
-	  cmd := "select * from " + mgi_DBtable(STRAIN) + 
-		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n";
---		 "select * from " + mgi_DBtable(MLP_STRAIN_VIEW) +
---		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
---	         "select note from " + mgi_DBtable(MLP_NOTES) +
---		 "where " + mgi_DBkey(MLP_NOTES) + " = " + currentRecordKey +
---		 " order by sequenceNum\n" +
---		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
---		 " where " + mgi_DBkey(PRB_STRAIN) + " = " + currentRecordKey + "\n" +
---		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
---		 " where " + mgi_DBkey(MLP_STRAINTYPES) + " = " + currentRecordKey + "\n" +
+	  cmd := "select * from " + mgi_DBtable(MLP_STRAIN_VIEW) +
+		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
+	         "select note from " + mgi_DBtable(MLP_NOTES) +
+		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey +
+		 " order by sequenceNum\n" +
+		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
+		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
+		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
+		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -602,31 +601,30 @@ rules:
 	    row := 0;
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
-	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-                top->Name->text.value         := mgi_getstr(dbproc, 2);
---                top->CreationDate->text.value := mgi_getstr(dbproc, 5);
---                top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
-                SetOption.source_widget := top->StandardMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
-                SetOption.source_widget := top->NeedsReviewMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
- --               send(SetOption, 0);
-	      elsif (results = 2) then
+	        top->ID->text.value := mgi_getstr(dbproc, 1);
+                top->Name->text.value := mgi_getstr(dbproc, 8);
+                top->CreationDate->text.value := mgi_getstr(dbproc, 5);
+                top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 		top->mgiSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
 		top->mgiSpecies->Species->text.value := mgi_getstr(dbproc, 7);
 		top->User1->text.value := mgi_getstr(dbproc, 3);
 		top->User2->text.value := mgi_getstr(dbproc, 4);
-	      elsif (results = 3) then
+                SetOption.source_widget := top->StandardMenu;
+                SetOption.value := mgi_getstr(dbproc, 9);
+                send(SetOption, 0);
+                SetOption.source_widget := top->NeedsReviewMenu;
+                SetOption.value := mgi_getstr(dbproc, 10);
+                send(SetOption, 0);
+	      elsif (results = 2) then
 		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
-	      elsif (results = 4) then
+	      elsif (results = 3) then
 		table := top->Marker->Table;
                 (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 5) then
-		table := top->StrainTypes->Table;
+	      elsif (results = 4) then
+		table := top->StrainType->Table;
                 (void) mgi_tblSetCell(table, row, table.strainTypeCurrentKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.strainTypeKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.strainType, mgi_getstr(dbproc, 5));

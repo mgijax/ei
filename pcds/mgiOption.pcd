@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 14:32:41 1999";
+      lastWritten = "Thu Oct 21 13:55:25 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -1234,11 +1234,15 @@ Module: mgiOption
                       StrainType = LookupToggle : mgiOption;
                       Group: Widget
                         labelString = "Strain Type";
+                      Group: User
+                        dbTable = 701;
                     }
                     {
                       StrainSpecies = LookupToggle : mgiOption;
                       Group: Widget
                         labelString = "Strain Species";
+                      Group: User
+                        dbTable = 703;
                     }
                     {
                       separator = XmSeparator;

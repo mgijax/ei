@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Oct 18 09:04:18 1999";
+      lastWritten = "Thu Oct 21 14:35:19 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -812,6 +812,28 @@ Module: MGD
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        ObjectID = ID;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = True;
+                                            }
+                                      }
+                                      {
+                                        Species = CharText;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = True;
+                                            }
+                                      }
                                 }
                                 {
                                   StandardMenu = StandardMenu : mgiOption;
@@ -1110,6 +1132,8 @@ Module: MGD
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
+                                        Group: User
+                                          showMGI = False;
                                       }
                                       {
                                         Add = TablePush;
@@ -1209,8 +1233,6 @@ Module: MGD
                                 }
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
-                                  Group: User
-                                    cmd = "select * from MLD_Species order by species";
                                       {
                                         Label = LookupLabel;
                                       }
@@ -1219,6 +1241,7 @@ Module: MGD
                                         Group: User
                                           targetText = Species;
                                           targetKey = ObjectID;
+                                          targetWidget = mgiSpecies;
                                       }
                                 }
                                 {
@@ -1230,7 +1253,7 @@ Module: MGD
                                         List = list;
                                         Group: User
                                           targetWidget = StrainType;
-                                          targetKey = 2;
+                                          targetKey = 1;
                                           targetText = 3;
                                       }
                                 }
@@ -6174,6 +6197,8 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 3;
+                                        Group: User
+                                          showMGI = False;
                                       }
                                       {
                                         Add = TablePush;

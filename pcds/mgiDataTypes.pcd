@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 28 11:46:45 1999";
+      lastWritten = "Mon Oct 18 11:13:49 1999";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -169,7 +169,6 @@ Shift<Key>Tab: prev-tab-group()
                   inTabGroup = False;
                   traversalOn = False;
                   managed = False;
-                  userDefinedAttributes = "recordLock:Boolean=\"false\"\n";
               }
         }
         {
