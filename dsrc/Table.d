@@ -293,15 +293,10 @@ rules:
         CommitTableCellEdit does
 	  table : widget := CommitTableCellEdit.source_widget;
 	  row : integer := CommitTableCellEdit.row;
-	  column : integer := CommitTableCellEdit.column;
 	  currentEditMode : string := mgi_tblGetCell(table, row, table.editMode);
 	  newEditMode : string;
 
 	  if (CommitTableCellEdit.reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
-	    return;
-	  end if;
-
-	  if (not mgi_tblIsCellEditable(table, row, column)) then
 	    return;
 	  end if;
 
