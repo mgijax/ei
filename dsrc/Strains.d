@@ -121,7 +121,7 @@ locals:
 	origStrainName : string;	-- original strain name
 	superStandardKey : string;
 	annotKey : string;
-	annotTypeKey : string := "1003";
+	annotTypeKey : string := "1004";
 
 	tables : list;
 
