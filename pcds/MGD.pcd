@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Oct 25 14:12:35 1999";
+      lastWritten = "Tue Oct 26 08:09:20 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -982,7 +982,7 @@ Module: MGD
                                           xrtTblNumColumns = 7;
                                           xrtTblNumRows = 1;
                                           xrtTblVisibleRows = 1;
-                                          xrtTblColumnLabels = "Mode,B,C,D,E,F,G";
+                                          xrtTblColumnLabels = "Mode,And/Or,Reference,Dataset,Note 1,Note 2,Note 3";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 10)(all 3 10)(all 4 30)(all 5 15)(all 6 10)";
                                           userDefinedAttributes = "andor:Int=\"1\"\nreference:Int=\"2\"\ndataset:Int=\"3\"\nnote1:Int=\"4\"\nnote2:Int=\"5\"\nnote3:Int=\"6\"\n";
                                             {
