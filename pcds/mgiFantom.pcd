@@ -630,7 +630,7 @@ Module: mgiFantom
                                               Group: Widget
                                                 labelString = "Proposed Symbol/Name";
                                               Group: User
-                                                defaultValue = "Proposed Symbol:|Probposed Name:|";
+                                                defaultValue = "Proposed Symbol:|Proposed Name:|";
                                                 placeBefore = False;
                                             }
                                       }
