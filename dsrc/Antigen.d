@@ -342,13 +342,14 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.antibody);
           if (value.length > 0) then
-            where := where + " and a.antibodyName like " + mgi_DBprstr(value);
+            where := where + " and (a.antibodyName like " + mgi_DBprstr(value) +
+		" or al.alias like " + mgi_DBprstr(value) + ")";
             from_antibody := true;
 	  end if;
 
 	  if (from_antibody) then
-	    from := from + ", " + mgi_DBtable(GXD_ANTIBODY) + " a";
-	    where := where + " and g._Antigen_key = a._Antigen_key";
+	    from := from + ", " + mgi_DBtable(GXD_ANTIBODY) + " a," + mgi_DBtable(GXD_ANTIBODYALIAS) + " al";
+	    where := where + " and g._Antigen_key = a._Antigen_key and a._Antibody_key = al._Antibody_key";
 	  end if;
 
           if (where.length > 0) then
