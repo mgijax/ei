@@ -214,8 +214,14 @@ rules:
 --
 
 	PrepareSearch does
-	  from := "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " ";
-	  where := "";
+	  table : widget := top->Annotation->Table;
+	  dbView : string := 
+		mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + 
+			top->VocAnnotTypeMenu.mgiTypeKey);
+	  value : string;
+
+	  from := "from " + mgi_DBtable(VOC_EVIDENCE_VIEW) + " e, " + dbView + " v";
+	  where := "where e._Object_key = v._Object_key";
 
           QueryDate.source_widget := top->CreationDate;
           send(QueryDate, 0);
@@ -225,9 +231,51 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
-          if (where.length > 0) then
-            where := "where" + where->substr(5, where.length);
-          end if;
+	  if (top->mgiAccession->ObjectID->text.value.lenth > 0) then
+	    where := where + "\nand e._Object_key = " + top->mgiAccession->ObjectID->text.value;
+	  end if;
+
+	  value := mgi_tblGetCell(table, 0, table.termKey);
+	  if (value.length > 0) then
+	    where := where + "\nand e._Term_key = " + value;
+	  else
+	    value := mgi_tblGetCell(table, 0, table.term);
+	    if (value.length > 0) then
+	      where := where + "\nand e.term like " + mgi_DBprstr(value);
+	    end if;
+	  end if;
+
+	  value := mgi_tblGetCell(table, 0, table.notKey);
+	  if (value.length > 0) then
+	    where := where + "\nand e.isNot = " + value;
+	  end if;
+
+	  value := mgi_tblGetCell(table, 0, table.evidenceKey);
+	  if (value.length > 0) then
+	    where := where + "\nand e._EvidenceTerm_key = " + value;
+	  end if;
+
+	  value := mgi_tblGetCell(table, 0, table.refsKey);
+	  if (value.length > 0) then
+	    where := where + "\nand e._Refs_key = " + value;
+	  end if;
+
+	  value := mgi_tblGetCell(table, 0, table.inferredFrom);
+	  if (value.length > 0) then
+	    where := where + "\nand e.inferredFrom like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(table, 0, table.modified);
+	  if (value.length > 0) then
+	    where := where + "\nand e.modifiedBy like " + mgi_DBprstr(value);
+	  end if;
+
+	  -- Modification date
+
+	  value := mgi_tblGetCell(table, 0, table.notes);
+	  if (value.length > 0) then
+	    where := where + "\nand e.notes like " + mgi_DBprstr(value);
+	  end if;
 	end does;
 
 --
@@ -240,12 +288,13 @@ rules:
 --
 
 	Search does
+
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct _AnnotType_key, objectName\n" + 
-	  	from + "\n" + where + "\norder by objectName\n";
-	  Query.table := VOC_ANNOT_VIEW;
+	  Query.select := "select distinct e._Object_key, v.description\n" + 
+	  	from + "\n" + where + "\norder by description\n";
+	  Query.table := VOC_EVIDENCE_VIEW;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
 	end does;
