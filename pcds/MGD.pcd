@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Jan 10 14:05:34 2002";
+      lastWritten = "Thu Feb  7 15:17:05 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1280,7 +1280,7 @@ Module: MGD
                                       {
                                         AccSourceMenu = AccSourceMenu : mgiOption;
                                         Group: User
-                                          defaultOption = JAXMice;
+                                          defaultOption = JRS;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -1360,7 +1360,7 @@ Module: MGD
                                                     RATMAP = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    JAXMice = AccToggle : mgiOption;
+                                                    JRS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -2955,7 +2955,7 @@ Module: MGD
                                   RATMAP = AccToggle : mgiOption;
                                 }
                                 {
-                                  JAXMice = AccToggle : mgiOption;
+                                  JRS = AccToggle : mgiOption;
                                 }
                                 {
                                   RIKENCluster = AccToggle : mgiOption;
@@ -4795,6 +4795,22 @@ Module: MGD
                         saveTraversableSeries = "(all 0-3 False)";
                         saveEditableSeries = "(all 0-3 False)";
                     }
+              }
+              {
+                DisplayMarker = toggle : mgiDataTypes;
+                Group: Widget
+                  labelString = "Only display the marker \nbeing queried.";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = mgiCitation;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = mgiCitation;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: Control
+                  vipComment = "XmToggleButtonGadget sets nontransitory state data within an application. Usually this gadget consists of an indicator (square or diamond) with either text or a pixmap to its right. The indicator implies a selected or unselected state. Normally, mouse button 1 is used to arm and activate the XmToggleButtonGadget.";
               }
         }
         {
@@ -8383,7 +8399,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     RATMAP = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    JAXMice = AccToggle : mgiOption;
+                                                    JRS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RIKENCluster = AccToggle : mgiOption;

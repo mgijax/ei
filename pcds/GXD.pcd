@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Jan  4 10:18:06 2002";
+      lastWritten = "Thu Feb  7 10:36:31 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1674,6 +1674,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblCreateWidgetCallback = "D:CreateTableMenuWidget(menu = \"FieldTypeCombo\")";
                                           xrtTblEditableSeries = "(all 0 False) (all 3 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
+                                          xrtTblValidateCellCallback = "D:CopyImagePane,\nD:CommitTableCellEdit";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget

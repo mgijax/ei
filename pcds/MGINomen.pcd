@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Jan  3 08:36:02 2002";
+      lastWritten = "Thu Feb  7 10:36:41 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -617,7 +617,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     RATMAP = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    JAXMice = AccToggle : mgiOption;
+                                                    JRS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RIKENCluster = AccToggle : mgiOption;

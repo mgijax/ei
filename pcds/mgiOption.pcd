@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Jan 22 09:29:59 2002";
+      lastWritten = "Thu Feb  7 10:36:21 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -257,9 +257,9 @@ Module: mgiOption
                         defaultValue = 4;
                     }
                     {
-                      JAXMice = AccToggle : mgiOption;
+                      JRS = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "JAX Mice Registry";
+                        labelString = "JAX Registry";
                       Group: User
                         private = True;
                         defaultValue = 22;
@@ -1706,6 +1706,7 @@ Module: mgiOption
                       NotSpecified = NotSpecified : mgiOption;
                       Group: Widget
                         background = Wheat;
+                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
                       Group: User
                         form = MolDetailForm;
                     }
