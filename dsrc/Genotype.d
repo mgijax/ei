@@ -111,7 +111,6 @@ rules:
 	  -- if an Assay record has been selected, then select
 	  -- the Genotype records for the Assay
 	  SearchGenotype.assayKey := mgi->AssayModule->EditForm->ID->text.value;
-	  SearchGenotype.selectGenotypeRecord := false;
 	  send(SearchGenotype, 0);
 	end does;
 
