@@ -777,7 +777,7 @@ rules:
 		 "and hm._Marker_key = m._Marker_key " +
 		 "and m._Organism_key != 1 " +
 		 "and hm._Marker_key = a._Object_key " +
-		 "and a._LogicalDB_key = 24 " +
+		 "and a._LogicalDB_key = 55 " +
 		 " order by a._Organism_key\n";
 
 	  dbproc : opaque := mgi_dbopen();
