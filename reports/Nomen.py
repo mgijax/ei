@@ -17,6 +17,9 @@
 #
 # History:
 #
+# lec	04/19/2001
+#	- mgiAccID is no longer a field in MRK_Nomen; fix query
+#
 # lec	08/18/1999
 #	- created
 #
@@ -54,11 +57,14 @@ for r in results:
 		reportName = 'Nomen.%s.rpt' % r['symbol']
 		fp = reportlib.init(reportName, 'Nomenclature Record', os.environ['EIREPORTDIR'])
 
-	dcmd = 'select *, ' + \
-	       'bdate = convert(char(25), broadcast_date), ' + \
-	       'cdate = convert(char(25), creation_date), ' + \
-	       'mdate = convert(char(25), modification_date) ' + \
-	       nomenFrom + 'MRK_Nomen_View where _Nomen_key = %d' % (r['_Nomen_key'])
+	dcmd = 'select n.*, a.accID, ' + \
+	       'bdate = convert(char(25), n.broadcast_date), ' + \
+	       'cdate = convert(char(25), n.creation_date), ' + \
+	       'mdate = convert(char(25), n.modification_date) ' + \
+	       nomenFrom + 'MRK_Nomen_View n, ACC_Accession a ' + \
+	       'where n._Nomen_key = %d ' % (r['_Nomen_key']) + \
+	       'and n._Nomen_key = a._Object_key ' + \
+	       'and a.prefixPart = "MGI:" '
 	details = db.sql(dcmd, 'auto')
 
 	for d in details:
@@ -76,7 +82,7 @@ for r in results:
 		fp.write("Broadcast Date    :  " + mgi_utils.prvalue(d['bdate']) + CRT)
 		fp.write("Modification Date :  " + mgi_utils.prvalue(d['mdate']) + CRT)
 		fp.write("Human Symbol      :  " + mgi_utils.prvalue(d['humanSymbol']) + CRT)
-		fp.write("MGI Accession ID  :  " + mgi_utils.prvalue(d['mgiAccID']) + 2*CRT)
+		fp.write("MGI Accession ID  :  " + mgi_utils.prvalue(d['accID']) + 2*CRT)
 
 		#
 		# Other Names
