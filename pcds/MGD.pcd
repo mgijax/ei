@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 29 10:12:35 2004";
+      lastWritten = "Wed Aug  4 14:25:54 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1927,98 +1927,6 @@ Module: MGD
                                   separator1 = XmSeparator;
                                 }
                                 {
-                                  MolMarkerForm = MolMarkerForm;
-                                      {
-                                        Marker = ReferenceTable : mgiTable;
-                                      }
-                                      {
-                                        MolNote = Notes : mgiDataTypes;
-                                      }
-                                      {
-                                        MolSegNoteMenu = NoteMenu : mgiOption;
-                                            Popups:
-                                            {
-                                              MolSegNotePulldown : NotePulldown = OptionPulldown : mgiOption;
-                                                  {
-                                                    KFMemorial = AppendNotePush : mgiDataTypes;
-                                                    Group: User
-                                                      noteWidget = MolNote;
-                                                      note = "This clone is derived from a gene that produces alternate transcripts.";
-                                                  }
-                                                  {
-                                                    Riboprobe = AppendNotePush : mgiDataTypes;
-                                                    Group: User
-                                                      note = "This clone was used to generate a riboprobe.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    Chimeric = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Chimeric;
-                                                    Group: User
-                                                      note = "Chimeric:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence appears to be artifactually chimeric.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    Same5 = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "5'-overlap same strand";
-                                                    Group: User
-                                                      note = "5'-overlap same strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that initiates at a site within a linked upstream gene, where the upstream gene is transcribed in the same direction.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    Same3 = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "3'-overlap same strand";
-                                                    Group: User
-                                                      note = "3'-overlap same strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that extends (reads-through) into a linked downstream gene, where the downstream gene is transcribed in the same direction.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    Opposite5 = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "5'-overlap opposite strand";
-                                                    Group: User
-                                                      note = "5'-overlap opposite strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that initiates at a site within a linked upstream gene, where the upstream gene is transcribed in the opposite direction.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    Opposite3 = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "3'-overlap opposite strand";
-                                                    Group: User
-                                                      note = "3'-overlap opposite strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that extends (reads-through) into a linked downstream gene, where the downstream gene is transcribed in the opposite direction.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    Intron = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "Intron-Containing";
-                                                    Group: User
-                                                      note = "Intron-Containing:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This cDNA sequence appears to contain intronic sequence as a consequence of incomplete transcript processing.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    FrameShift = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "Frame-Shift";
-                                                    Group: User
-                                                      note = "Frame-Shift:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. Conceptual translation of this sequence reveals frame shift errors in the presumed coding region, which may be due to unreliable sequence data.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                                  {
-                                                    Undetermined = AppendNotePush : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "Undetermined Problem Sequence";
-                                                    Group: User
-                                                      note = "Undetermined:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. The artifact may have been introduced during the cloning process, or may be due to unreliable sequence data.";
-                                                      noteWidget = MolNote;
-                                                  }
-                                            }
-                                      }
-                                }
-                                {
                                   SegmentTypeMenu = SegmentTypeMenu;
                                 }
                                 {
@@ -2528,98 +2436,9 @@ Module: MGD
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
                   topWidget = separator1;
+                  topOffset = 5;
                   bottomAttachment = attach_form;
                   resizable = true;
-                  topOffset = 5;
-                    {
-                      Marker = ReferenceTable : mgiTable;
-                    }
-                    {
-                      MolNote = Notes : mgiDataTypes;
-                    }
-                    {
-                      MolSegNoteMenu = NoteMenu : mgiOption;
-                          Popups:
-                          {
-                            MolSegNotePulldown : NotePulldown = OptionPulldown : mgiOption;
-                                {
-                                  KFMemorial = AppendNotePush : mgiDataTypes;
-                                  Group: User
-                                    noteWidget = MolNote;
-                                    note = "This clone is derived from a gene that produces alternate transcripts.";
-                                }
-                                {
-                                  Riboprobe = AppendNotePush : mgiDataTypes;
-                                  Group: User
-                                    note = "This clone was used to generate a riboprobe.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  Chimeric = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = Chimeric;
-                                  Group: User
-                                    note = "Chimeric:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence appears to be artifactually chimeric.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  Same5 = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "5'-overlap same strand";
-                                  Group: User
-                                    note = "5'-overlap same strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that initiates at a site within a linked upstream gene, where the upstream gene is transcribed in the same direction.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  Same3 = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "3'-overlap same strand";
-                                  Group: User
-                                    note = "3'-overlap same strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that extends (reads-through) into a linked downstream gene, where the downstream gene is transcribed in the same direction.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  Opposite5 = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "5'-overlap opposite strand";
-                                  Group: User
-                                    note = "5'-overlap opposite strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that initiates at a site within a linked upstream gene, where the upstream gene is transcribed in the opposite direction.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  Opposite3 = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "3'-overlap opposite strand";
-                                  Group: User
-                                    note = "3'-overlap opposite strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that extends (reads-through) into a linked downstream gene, where the downstream gene is transcribed in the opposite direction.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  Intron = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Intron-Containing";
-                                  Group: User
-                                    note = "Intron-Containing:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This cDNA sequence appears to contain intronic sequence as a consequence of incomplete transcript processing.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  FrameShift = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Frame-Shift";
-                                  Group: User
-                                    note = "Frame-Shift:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. Conceptual translation of this sequence reveals frame shift errors in the presumed coding region, which may be due to unreliable sequence data.";
-                                    noteWidget = MolNote;
-                                }
-                                {
-                                  Undetermined = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Undetermined Problem Sequence";
-                                  Group: User
-                                    note = "Undetermined:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. The artifact may have been introduced during the cloning process, or may be due to unreliable sequence data.";
-                                    noteWidget = MolNote;
-                                }
-                          }
-                    }
               }
         }
         {
@@ -2705,12 +2524,6 @@ Module: MGD
                             Group: User
                               noteWidget = MolNote;
                               note = "This clone is derived from a gene that produces alternate transcripts.";
-                          }
-                          {
-                            Riboprobe = AppendNotePush : mgiDataTypes;
-                            Group: User
-                              note = "This clone was used to generate a riboprobe.";
-                              noteWidget = MolNote;
                           }
                           {
                             Chimeric = AppendNotePush : mgiDataTypes;
