@@ -151,11 +151,7 @@ def init():
 	# Log all SQL commands
 	mgdlib.set_sqlLogFunction(mgdlib.sqlLogAll)
 
-	if DEBUG:
-		exportDir = os.environ['HOME'] + '/mgireport/splits';
-	else:
-		exportDir = os.environ['INSTALL_ROOT'] + '/' + os.environ['APP'] + \
-                    '/mgireport/SPLITS';
+	exportDir = os.environ['EIBREAKSPLITDIR']
 
 	try:
 		outputfile = os.path.splitext(sys.argv[0])
