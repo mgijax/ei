@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 12 08:11:03 2003";
+      lastWritten = "Thu Mar 13 10:13:29 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -963,9 +963,9 @@ Module: mgiOption
                         defaultValue = "whole mount";
                     }
                     {
-                      sections = OptionToggle : mgiOption;
+                      section = OptionToggle : mgiOption;
                       Group: Widget
-                        labelString = sections;
+                        labelString = section;
                       Group: User
                         searchValue = sections;
                         defaultValue = sections;
