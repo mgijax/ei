@@ -179,7 +179,7 @@ def riken_report():
 			 	mgi_utils.prvalue(r['final_symbol1']) + TAB + \
 			 	mgi_utils.prvalue(r['final_name1']) + TAB + \
 			 	mgi_utils.prvalue(r['final_symbol2']) + TAB + \
-			 	mgi_utils.prvalue(r['final_name2']) + CRT)
+			 	mgi_utils.prvalue(r['final_name2']) + TAB)
 
 			if r['noteType'] == 'R' and r['note'] != None:
 				note = regsub.gsub('\n', '\\n', r['note'])
