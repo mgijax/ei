@@ -1,0 +1,18 @@
+
+# 
+# Makefile to XRT authorize the new executable
+# every time it is re-made.
+# See uxb.conf
+# 
+
+all:	xrt_auth
+
+xrt_auth: mgi
+	$$XRTHOME/bin/xrt_auth mgi
+	@echo xrt authentication done
+
+clean::
+
+delete::
+
+install::
