@@ -86,11 +86,6 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  -- Clear Table
---          ClearTable.table := table;
---          ClearTable.clearCells := InitRefTypeTable.clearCells;
---          send(ClearTable, 0);
-
 	  cmd := "select _RefsType_key, referenceType from " + 
 		mgi_DBtable(tableID) + 
 		"\nwhere _RefsType_key > 0" +
