@@ -13,7 +13,7 @@ VerifyEdit [mode : integer := 0;];
 VerifyAge :translation [source_widget : widget;
                         ageMenu : string := "";];
 
-VerifyAllele :translation [verifyAdd : boolean := false;];
+VerifyAlleleMarker :translation [verifyAdd : boolean := false;];
 
 VerifyAntibodyType [];
 
