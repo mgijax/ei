@@ -55,7 +55,6 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
-	BuildDynamicComponents :local [];		-- Build Dynamic widget components
 	Delete :local [];				-- Delete record
 	VocAnnotExit :global [];			-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
@@ -112,9 +111,6 @@ rules:
 	  -- Create the widget hierarchy in memory
 	  top := create widget("VocAnnotModule", ab.name, mgi);
 
-          -- Build Dynamic GUI Components
-          send(BuildDynamicComponents, 0);
- 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
 	  top.show;
@@ -131,25 +127,6 @@ rules:
 	  (void) reset_cursor(mgi);
 	end does;
 
---
--- BuildDynamicComponents
--- (optional)
---
--- Activated from:  devent INITIALLY
---
--- For initializing dynamic GUI components prior to managing the top form.
---
--- Initialize dynamic option menus
--- Initialize lookup lists
---
- 
-        BuildDynamicComponents does
-
-	  InitOptionMenu.option := top->VocAnnotTypeMenu;
-	  send(InitOptionMenu, 0);
-
-        end does;
- 
 --
 -- Init
 --
