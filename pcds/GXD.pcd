@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 28 10:56:34 2004";
+      lastWritten = "Wed Apr 28 11:12:56 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -980,6 +980,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblTraverseCellCallback = "D:DetectISResultModification";
                         xrtTblAllowCellResize = resize_all;
                         xrtTblDisplayHorizScrollBar = dispsb_always;
+                        xrtTblFrozenColumns = 13;
                       Group: User
                         saveEditableSeries = "(all 0-2 False)(all 14-22 False)(all 15 True)(all 16 True)(all 22 True)";
                         saveTraversableSeries = "(all 0-11 False)";
@@ -1487,7 +1488,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       Table = mgiTable;
                       Group: Widget
-                        xrtTblColumnLabels = "Mode,Current Order,Gel Lane Key,Control Key,Genotype key,Structure Key,RNA Key,Age Key,Age Min,Age Max,Sex Key,Lane,Label,Control,Genotype,Structures,Sample Amt,RNA,Age,Age Range,Age Note,Sex,Notes";
+                        xrtTblColumnLabels = "Mode,Current Order,Gel Lane Key,Control Key,Genotype key,Structure Key,RNA Key,Age Key,Age Min,Age Max,Sex Key,Lane,Label,Control,Genotype,Struct,Sample Amt,RNA,Age,Age Range,Age Note,Sex,Notes";
                         xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblNumColumns = 23;
                         xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)(all 20 True)(all 22 True)";
@@ -1497,10 +1498,11 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblVisibleRows = 15;
                         userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\nclipboard:String=\"CVGel\"\n";
                         xrtTblTraversableSeries = "(all 0-11 False)";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 10)(all 17 8)(all 19 9)(all 20 10)(all 21 6)(all 22 50)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 6)(all 17 8)(all 19 9)(all 20 10)(all 21 6)(all 22 50)";
                         xrtTblAllowCellResize = resize_all;
                         xrtTblDisplayHorizScrollBar = dispsb_always;
                         xrtTblMaxLengthSeries = "(all 20 255)(all 22 255)";
+                        xrtTblFrozenColumns = 13;
                       Group: User
                         seqNum = 11;
                         saveEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)(all 20 True)(all 22 True)";
