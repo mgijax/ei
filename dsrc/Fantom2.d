@@ -1112,17 +1112,14 @@ rules:
         CopyToNote does
 	  value : string;
 
-	  -- only process if setting to true
-	  if (CopyToNote.set = 1) then
-	    value := top->NoteDialog->Note->text.value;
+	  value := top->NoteDialog->Note->text.value;
 
-	    if (CopyToNote.source_widget.placeBefore) then
-	      top->NoteDialog->Note->text.value := 
-		CopyToNote.source_widget.defaultValue + value;
-	    else
-	      top->NoteDialog->Note->text.value := 
+	  if (CopyToNote.source_widget.placeBefore) then
+	    top->NoteDialog->Note->text.value := 
+	        CopyToNote.source_widget.defaultValue + value;
+	  else
+	    top->NoteDialog->Note->text.value := 
 		value + CopyToNote.source_widget.defaultValue;
-	    end if;
 	  end if;
 	end does;
 
