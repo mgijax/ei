@@ -253,6 +253,11 @@ rules:
 --	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
 --	  end if;
 
+          if (top->ACCLogicalMenu.menuHistory.modified and
+	      top->ACCLogicalMenu.menuHistory.searchValue != "%") then
+            set := set + "_LogicalDB_key = " + top->ACCLogicalMenu.menuHistory.defaultValue + ",";
+          end if;
+
 	  if (top->mgiCitation->ObjectID->text.modified) then
 	    set := set + "_Refs_key = " + top->mgiCitation->ObjectID->text.value + ",";
 	  end if;
