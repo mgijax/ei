@@ -1,3 +1,9 @@
+TAG: ei-2-0-15
+DATE: 04/25/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.4/TR 1356; missing MRK_SnapShot.sql in uxb.conf; changes to Modules
+
 TAG: ei-2-0-14
 DATE: 04/24/2000
 STAFF: lec
