@@ -4147,10 +4147,10 @@ rules:
 	    return;
 	  end if;
 
-          -- If Marker Chr = Reserved or Unknown, then Marker Chr will be modified to Expt value
+          -- If Marker Chr = Unknown, then Marker Chr will be modified to Expt value
 	  -- when record is modified by MLD_EXPT_MARKER update trigger
 
-          if (markerChr = "RE" or markerChr = "UN") then
+          if (markerChr = "UN") then
             StatusReport.source_widget := top;
             StatusReport.message := "Symbol '" + markerSymbol + "'\n\n" +
                                     "Chromosome will be modified from '" + markerChr + "' to '" + exptChr + "'";

@@ -148,7 +148,6 @@ locals:
 	new_symbols : string_list;    -- Hold list of new symbols used in Withdrawal process
 	hasAlleles : boolean;         -- Flags if Symbol has Alleles (used in Withdrawal process)
 
-	was_reserved : boolean;       -- Flags if Symbol's original Chrom = RE
 	original_chromosome : string; -- Holds original Chr of Symbol
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
@@ -243,7 +242,6 @@ rules:
 	  accTable := top->mgiAccessionTable->Table;
 	  accRefTable := top->AccessionReference->Table;
 
-	  was_reserved := false;
 	  hasAlleles := false;
 
           -- Set Row Count
@@ -785,10 +783,8 @@ rules:
 --
 -- Activated from:  widget top->ChromosomeMenu->ChromToggle
 --
--- If Chromosome = "RE", then Offset = -999
 -- If Chromosome = "UN", then Offset = -999
 -- If Chromosome = "W", then manage the Withdrawal dialog
--- If Chromosome was RE and is now assigned, then Offset = -1
 -- If Chromosome was known and changed to another know, then Offsets = -1
 --
 
@@ -841,26 +837,18 @@ rules:
 	     top->WithdrawalDialog.managed := true;
 	     return;
 
-	  -- If Chromosome = "RE" or "UN", then offset = -999
+	  -- If Chromosome = "UN", then offset = -999
 
-	  elsif (top->ChromosomeMenu.menuHistory.defaultValue = "RE" or
-	         top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
+	  elsif (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
 	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-999.00");
-
-	  -- If Chromosome was "RE", offset = -1
-
-	  elsif (was_reserved) then
-	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-1.00");
 
 	  -- Changing from one known chromosome to another, change MGD and CC Offsets to -1
 
 	  elsif (top->QueryList->List.selectedItemCount != 0 and
 		 original_chromosome != "W" and 
 		 original_chromosome != "UN" and
-		 original_chromosome != "RE" and
 		 top->ChromosomeMenu.menuHistory.defaultValue != "W" and
-		 top->ChromosomeMenu.menuHistory.defaultValue != "UN" and
-		 top->ChromosomeMenu.menuHistory.defaultValue != "RE") then
+		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
 
 	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
               StatusReport.source_widget := top;
@@ -1259,8 +1247,7 @@ rules:
 
 	    if ((editMode= TBL_ROW_EMPTY or editMode = TBL_ROW_ADD) and 
 		 row = 0 and offset.length = 0) then
-	      if (top->ChromosomeMenu.menuHistory.defaultValue = "RE" or
-                  top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
+	      if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
 	        offset := "-999.0";
 	      else
 	        offset := "-1.0";
@@ -1721,7 +1708,6 @@ rules:
 	  end while;
 	  tables.close;
 
-	  was_reserved := false;
 	  hasAlleles := false;
 
           if (top->QueryList->List.selectedItemCount = 0) then
@@ -1907,12 +1893,6 @@ rules:
 	  end while;
 
 	  original_chromosome := top->ChromosomeMenu.menuHistory.defaultValue;
-
-	  if (original_chromosome = "RE") then
-	    was_reserved := true;
-	  else
-	    was_reserved := false;
-	  end if;
 
 	  if (original_chromosome = "W") then
 	    LoadAcc.reportError := false;
