@@ -616,6 +616,9 @@ char *mgi_DBkey(int table)
     case MGI_NOTE_NOMEN_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
+    case MGI_REFASSOCTYPE:
+            strcpy(buf, "_RefAssocType_key");
+	    break;
     case MGI_SPECIES:
     case MGI_SPECIESTYPE:
             strcpy(buf, "_Species_key");
@@ -1207,6 +1210,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_NOTETYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_NoteType_Nomen_View");
+	    break;
+    case MGI_REFASSOCTYPE:
+	    strcpy(buf, "MGI_RefAssocType");
 	    break;
     case MGI_REFERENCE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_Reference_Nomen_View");
@@ -1915,6 +1921,9 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTETYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case MGI_REFASSOCTYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key, assocType, allowOnlyOne)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case MGI_SPECIES:
             sprintf(buf, "insert %s (%s, commonName, latinName)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2542,6 +2551,12 @@ char *mgi_DBcvname(int table)
 	    break;
     case HMD_ASSAY:
             strcpy(buf, "assay");
+	    break;
+    case MGI_NOTETYPE:
+            strcpy(buf, "noteType");
+	    break;
+    case MGI_REFASSOCTYPE:
+            strcpy(buf, "assocType");
 	    break;
     case MLD_ASSAY:
             strcpy(buf, "description");

@@ -20,6 +20,9 @@
 --
 -- History
 --
+-- lec 05/24/2002
+--	- TR 1463; new handling for Note Type, Ref Assoc Types
+--
 -- jsb 3/16/2001
 --	- TR 2217; new handling for ES Cell Lines, Reference Types, Note Types
 --
@@ -81,6 +84,9 @@ rules:
 
 	  top := create widget("ControlledVocabModule", nil, mgi);
 
+          InitOptionMenu.option := top->MGITypeMenu;
+	  send(InitOptionMenu, 0);
+
           ab : widget := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
@@ -140,30 +146,31 @@ rules:
 
           (void) busy_cursor(top);
 
-	  cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) + tableInsert +
-                 mgi_DBprstr(top->Name->text.value);
+	  cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) + tableInsert;
+
+	  if (tableID = MGI_NOTETYPE) then
+	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
+		   mgi_DBprstr(top->Name->text.value) + "," +
+		   top->PrivateMenu.menuHistory.defaultValue;
+	  elsif (tableID = MGI_REFASSOCTYPE) then
+	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
+		   mgi_DBprstr(top->Name->text.value) + "," +
+	           top->AllowOnlyOneMenu.menuHistory.defaultValue;
+	  else
+	    cmd := cmd + mgi_DBprstr(top->Name->text.value);
+	  end if;
  
 	  if (tableID = GXD_ASSAYTYPE) then
             cmd := cmd + "," + top->RNAAssayMenu.menuHistory.defaultValue;
             cmd := cmd + "," + top->GelAssayMenu.menuHistory.defaultValue;
-	  end if;
-
-	  if (tableID = HMD_ASSAY) then
+	  elsif (tableID = HMD_ASSAY) then
 	    cmd := cmd + "," + mgi_DBprstr(top->AssayAbbrev->text.value);
-	  end if;
-
-	  if (tableID = ALL_CELLLINE) then
-	    cmd := cmd + "," + top->EditForm->Strain->StrainID->text.value;
-	  end if;
-
-	  if (tableID = ALL_NOTETYPE) then
-	    cmd := cmd + "," + 
-	      top->EditForm->Private.menuHistory.defaultValue;
-	  end if;
-
-	  if (tableID = ALL_REFERENCETYPE) then
-	    cmd := cmd + "," + 
-	      top->EditForm->AllowOnlyOne.menuHistory.defaultValue;
+	  elsif (tableID = ALL_CELLLINE) then
+	    cmd := cmd + "," + top->Strain->StrainID->text.value;
+	  elsif (tableID = ALL_NOTETYPE) then
+	    cmd := cmd + "," + top->PrivateMenu.menuHistory.defaultValue;
+	  elsif (tableID = ALL_REFERENCETYPE) then
+	    cmd := cmd + "," + top->AllowOnlyOneMenu.menuHistory.defaultValue;
 	  end if;
 
 	  cmd := cmd + ")\n";
@@ -266,33 +273,38 @@ rules:
                 top->GelAssayMenu.menuHistory.searchValue != "%") then
               set := set + "isGelAssay = "  + top->GelAssayMenu.menuHistory.defaultValue + ",";
             end if;
-	  elsif (tableID = HMD_ASSAY) then
+	  end if;
+
+	  if (tableID = HMD_ASSAY) then
 	    if (top->AssayAbbrev->text.modified) then
 	      set := set + "abbrev = " + mgi_DBprstr(top->AssayAbbrev->text.value) + ",";
 	    end if;
 	  end if;
 
 	  if (tableID = ALL_CELLLINE) then
-	    if (top->EditForm->Strain->StrainID->text.modified) then
-	      set := set + "_Strain_key = " +
-	        mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
+	    if (top->Strain->StrainID->text.modified) then
+	      set := set + "_Strain_key = " + mgi_DBprkey(top->Strain->StrainID->text.value) + ",";
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_NOTETYPE) then
-	    if (top->EditForm->Private.menuHistory.modified and
-		top->EditForm->Private.menuHistory.searchValue != "%") then
-	      set:= set + "private = " +
-		top->EditForm->Private.menuHistory.defaultValue + ",";
+	  if (tableID = ALL_NOTETYPE or tableID = MGI_NOTETYPE) then
+	    if (top->PrivateMenu.menuHistory.modified and
+		top->PrivateMenu.menuHistory.searchValue != "%") then
+	      set:= set + "private = " + top->PrivateMenu.menuHistory.defaultValue + ",";
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_REFERENCETYPE) then
-	    if (top->EditForm->AllowOnlyOne.menuHistory.modified and
-		top->EditForm->AllowOnlyOne.menuHistory.searchValue != "%")
+	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+	    if (top->MGITypeMenu.menuHistory.modified) then
+	      set := set + "_MGIType_key = " + top->MGITypeMenu.menuHistory.defaultValue;
+	    end if;
+	  end if;
+
+	  if (tableID = ALL_REFERENCETYPE or tableID = MGI_REFASSOCTYPE) then
+	    if (top->AllowOnlyOneMenu.menuHistory.modified and
+		top->AllowOnlyOneMenu.menuHistory.searchValue != "%")
 		then
-	      set:= set + "allowOnlyOne = " +
-		top->EditForm->AllowOnlyOne.menuHistory.defaultValue + ",";
+	      set:= set + "allowOnlyOne = " + top->AllowOnlyOneMenu.menuHistory.defaultValue + ",";
 	    end if;
 	  end if;
 
@@ -346,29 +358,30 @@ rules:
 	  end if;
 
 	  if (tableID = ALL_CELLLINE) then
-	    if (top->EditForm->Strain->StrainID->text.value.length > 0) then
+	    if (top->Strain->StrainID->text.value.length > 0) then
 	      -- we have a strain key
-	      where := where + "\nand _Strain_key = " +
-		top->EditForm->Strain->StrainID->text.value;
-	    elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
+	      where := where + "\nand _Strain_key = " + top->Strain->StrainID->text.value;
+	    elsif (top->Strain->Verify->text.value.length > 0) then
 	      -- we have no strain key, but we do have a text strain
-	      where := where + "\nand cellLineStrain like " +
-		mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
+	      where := where + "\nand cellLineStrain like " + mgi_DBprstr(top->Strain->Verify->text.value);
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_NOTETYPE) then
-	    if (top->EditForm->Private.menuHistory.searchValue != "%") then
-	      where := where + "\nand private = " +
-		top->EditForm->Private.menuHistory.defaultValue;
+	  if (tableID = ALL_NOTETYPE or tableID = MGI_NOTETYPE) then
+	    if (top->PrivateMenu.menuHistory.searchValue != "%") then
+	      where := where + "\nand private = " + top->PrivateMenu.menuHistory.defaultValue;
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_REFERENCETYPE) then
-	    if (top->EditForm->AllowOnlyOne.menuHistory.searchValue != "%")
-	    then
-	      where := where + "\nand allowOnlyOne = " + 
-		top->EditForm->AllowOnlyOne.menuHistory.defaultValue;
+	  if (tableID = ALL_REFERENCETYPE or tableID = MGI_REFASSOCTYPE) then
+	    if (top->AllowOnlyOneMenu.menuHistory.searchValue != "%") then
+	      where := where + "\nand allowOnlyOne = " + top->AllowOnlyOneMenu.menuHistory.defaultValue;
+	    end if;
+	  end if;
+
+	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+	    if (top->MGITypeMenu.menuHistory.searchValue != "%") then
+	      where := where + "\nand _MGIType_key = " + top->MGITypeMenu.menuHistory.searchValue;
 	    end if;
 	  end if;
 
@@ -384,10 +397,21 @@ rules:
 --
 
 	Search does
+	  qry : string;
+
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct * " + from + " " + where + "\norder by " + tableName;
+
+	  if (tableID = MGI_NOTETYPE) then
+	    qry := "select _NoteType_key, noteType, _MGIType_key, private, creation_date, modification_date";
+	  elsif (tableID = MGI_REFASSOCTYPE) then
+	    qry := "select _RefAssocType_key, assoctype, _MGIType_key, allowOnlyOne, creation_date, modification_date";
+	  else
+	    qry := "select distinct *";
+	  end if;
+
+	  Query.select := qry + " " + from + " " + where + "\norder by " + tableName;
 	  Query.table := 0;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
@@ -412,14 +436,22 @@ rules:
 
 	  key : string := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from ";
+	  if (tableID = MGI_NOTETYPE) then
+	    cmd := "select _NoteType_key, noteType, _MGIType_key, private, creation_date, modification_date";
+	  elsif (tableID = MGI_REFASSOCTYPE) then
+	    cmd := "select _RefAssocType_key, assoctype, _MGIType_key, allowOnlyOne, creation_date, modification_date";
+	  else
+	    cmd := "select *";
+	  end if;
+
+	  cmd := cmd + " from ";
+
 	  if (tableID = ALL_CELLLINE) then
 	    cmd := cmd + mgi_DBtable(ALL_CELLLINE_VIEW);
 	  else
 	    cmd := cmd + table;
 	  end if;
-	  cmd := cmd + " where " + tableKey + " = " + key + " order by " +
-	    tableName;
+	  cmd := cmd + " where " + tableKey + " = " + key + " order by " + tableName;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -428,7 +460,7 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value   := mgi_getstr(dbproc, 1);
-              top->Name->text.value := mgi_getstr(dbproc, 2);
+	      top->Name->text.value := mgi_getstr(dbproc, 2);
 
 	      if (tableID = GXD_ASSAYTYPE) then
                 SetOption.source_widget := top->RNAAssayMenu;
@@ -444,27 +476,44 @@ rules:
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      elsif (tableID = ALL_CELLLINE) then
-	        top->EditForm->Strain->StrainID->text.value := mgi_getstr(
+	        top->Strain->StrainID->text.value := mgi_getstr(
 		  dbproc, 3);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-	        top->EditForm->Strain->Verify->text.value := mgi_getstr(
+	        top->Strain->Verify->text.value := mgi_getstr(
 		  dbproc, 6);
 	      elsif (tableID = ALL_NOTETYPE) then
-                SetOption.source_widget := top->Private;
+                SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      elsif (tableID = ALL_REFERENCETYPE) then
-                SetOption.source_widget := top->AllowOnlyOne;
+                SetOption.source_widget := top->AllowOnlyOneMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+	      elsif (tableID = MGI_NOTETYPE) then
+                SetOption.source_widget := top->PrivateMenu;
+                SetOption.value := mgi_getstr(dbproc, 4);
+                send(SetOption, 0);
+	      elsif (tableID = MGI_REFASSOCTYPE) then
+                SetOption.source_widget := top->AllowOnlyOneMenu;
+                SetOption.value := mgi_getstr(dbproc, 4);
+                send(SetOption, 0);
 	      else
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
+	      end if;
+
+	      if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+                SetOption.source_widget := top->MGITypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 3);
+		SetOption.setDefault := true;
+                send(SetOption, 0);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 5);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 	      end if;
 
             end while;
@@ -526,20 +575,28 @@ rules:
 	    top->EditForm->Strain->Verify.sensitive := false;
 	  end if;
 
-	  if (tableID = ALL_NOTETYPE) then
-	    top->Private.sensitive := true;
-	    top->Private.required := true;
+	  if (tableID = ALL_NOTETYPE or tableID = MGI_NOTETYPE) then
+	    top->PrivateMenu.sensitive := true;
+	    top->PrivateMenu.required := true;
 	  else
-	    top->Private.sensitive := false;
-	    top->Private.required := false;
+	    top->PrivateMenu.sensitive := false;
+	    top->PrivateMenu.required := false;
 	  end if;
 
-	  if (tableID = ALL_REFERENCETYPE) then
-	    top->AllowOnlyOne.sensitive := true;
-	    top->AllowOnlyOne.required := true;
+	  if (tableID = ALL_REFERENCETYPE or tableID = MGI_REFASSOCTYPE) then
+	    top->AllowOnlyOneMenu.sensitive := true;
+	    top->AllowOnlyOneMenu.required := true;
 	  else
-	    top->AllowOnlyOne.sensitive := false;
-	    top->AllowOnlyOne.required := false;
+	    top->AllowOnlyOneMenu.sensitive := false;
+	    top->AllowOnlyOneMenu.required := false;
+	  end if;
+
+	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+	    top->MGITypeMenu.sensitive := true;
+	    top->MGITypeMenu.required := true;
+	  else
+	    top->MGITypeMenu.sensitive := false;
+	    top->MGITypeMenu.required := false;
 	  end if;
 
           -- Set Row Count
