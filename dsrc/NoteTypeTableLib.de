@@ -1,0 +1,35 @@
+--
+-- Name    : NoteTypeTableLib.de
+-- Creator : lec
+-- Date	   : 03/07/2005
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for NoteTypeTableLib.d.
+--
+
+-- Add Row to Note Type Table
+AddNoteTypeRow [table : widget;];	 -- Note Type Table
+
+-- Initialize Note Type Table
+InitNoteTypeTable [table : widget;       -- Note Type Table
+	 tableID : integer;
+         clearCells : boolean := true;]; -- Clear Cells flag
+
+-- Load Note Type Table
+LoadNoteTypeTable [table : widget;       -- Note Type Table
+            tableID : integer;           -- ID of table
+            objectKey : string;          -- Unique identifier of Object
+	    labelString: string;];	 -- Label String for Note Label
+
+-- Process Note Type Table; Sets table.sqlcmd 
+ProcessNoteTypeTable [table : widget;    -- Note Type Table
+            tableID : integer := 0;      -- ID of table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Search Note Type Table
+SearchNoteTypeTable [table : widget;     -- Note Type Table
+            tableID : integer;           -- ID of table
+            tableTag : string := "nt";   -- Table Alias Tag for Query
+            join : string;];             -- Join command
+
