@@ -5,9 +5,6 @@
  * API for nomenclature-specific processing
  * within the MLC editing interface. 
  *
- * function prototype documentation for exported functions are in the 
- * header file for this module.
- * 
  */
 
 #include <mlced_nomen.h>
@@ -19,7 +16,7 @@
 /*
  * mlced_dbDescToEI
  *
- * Translate given 'txt' string by replacing
+ * Translate given 'txt' string for marker 'key' by replacing
  * '\L(x)' (where x is the numeric tag) with the appropriate
  * '\L(symbol)' mapping. 
  *

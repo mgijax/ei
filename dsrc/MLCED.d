@@ -17,14 +17,14 @@
 -- Dependencies:
 --
 --    C:
---    mgilib.c mlced_scan.c mlced_util.c syblib.c utilities.c 
+--    mgilib.c mlced_scan.c mlced_util.c syblib.c utilities.c mlced_nomen.c
 --
 --    D:
 --      Verify.d Lib.d Report.d Table.d
 --
 --  AIM:
 --      mgi.aim, mlced.aim, mlced_scan.aim, sybase.aim, 
---      tables.aim, utilities.aim
+--      tables.aim, utilities.aim, mlced_nomen.aim
 --
 -- Future modifications:
 --
@@ -34,6 +34,9 @@
 --      the length of functions in this module.
 --
 -- History
+--
+-- lec  04/17/2000
+--	- TR 1177; MLC text needs to be translated
 --
 -- gld  06/09/1999
 --      changed C API to use XrtLists, rather than C lists.
@@ -88,6 +91,7 @@ dmodule MLCED is
 #include <syblib.h>
 #include <tables.h>
 #include <mlced_scan.h>
+#include <mlced_nomen.h>
 
 devents:
 
@@ -117,8 +121,8 @@ devents:
 	-- Locus text events
 	SelectText :local [type : string; item : string;];
 	SearchReplaceText :local [type : string;
-						find_string : string; 
-						replace_string : string;];
+				  find_string : string; 
+				  replace_string : string;];
 	HighlightRefs :local [type : string;];
 	SaveLocusText :local [];
 	UpdateLocusText :local [value : string;];
@@ -145,11 +149,10 @@ locals:
 	currentMarkerKey : string;  -- Currently selected Marker key
 
 	debug : boolean := false;   -- mode of operation. if (debug) then SQL->stdout.
-					-- and no database mods are made.
+				    -- and no database mods are made.
 
 	savedlocustext : string;    -- undo buffer (simpleminded :)
-	lockon  : boolean := false; -- Flags whether current Marker is 
-								-- checked in or not
+	lockon  : boolean := false; -- Flags whether current Marker is checked in or not
 
 rules:
 
@@ -160,29 +163,30 @@ rules:
 --  sets the busy cursor and sensitive resources for the widget caller.
 --
 	INITIALLY does
-		mgi := INITIALLY.parent;
+	  mgi := INITIALLY.parent;
 
-		(void) busy_cursor(mgi);
+	  (void) busy_cursor(mgi);
 
-		top := create widget("MLC", nil, mgi);
+	  top := create widget("MLC", nil, mgi);
 
-		(void) cleanup_handler(top); -- protection against unwanted sigs
+	  (void) cleanup_handler(top); -- protection against unwanted sigs
 
-		-- Initialize the classification list
-		LoadList.list := top->ClassList;
-		send(LoadList, 0);
+	  -- Initialize the classification list
+	  LoadList.list := top->ClassList;
+	  send(LoadList, 0);
 
-		-- Initialize Chromosome list
-		InitOptionMenu.option := top->ChromosomeMenu;
-		send(InitOptionMenu, 0);
+	  -- Initialize Chromosome list
+	  InitOptionMenu.option := top->ChromosomeMenu;
+	  send(InitOptionMenu, 0);
 
-		mgi->mgiModules->MLC.sensitive := false;
-		top.show;
+	  mgi->mgiModules->MLC.sensitive := false;
+	  top.show;
 
-		-- Initialize
-		send(InitMLCED);                    
+	  -- Initialize
+	  send(InitMLCED);                    
  
-		(void) reset_cursor(mgi);
+	  (void) reset_cursor(mgi);
+
 	end does;
 
 --
@@ -194,38 +198,39 @@ rules:
 --
  
 	InitMLCED does
-		tables := create list("widget");
+	  tables := create list("widget");
  
-		tables.append(top->Class->Table);
-		tables.append(top->Reference->Table);
+	  tables.append(top->Class->Table);
+	  tables.append(top->Reference->Table);
 
-		top->EditForm->UndoReplace.sensitive := false;
+	  top->EditForm->UndoReplace.sensitive := false;
 
-		-- Set Row Count
-		SetRowCount.source_widget := top;
-		SetRowCount.tableID := MLC_TEXT_EDIT;
-		send(SetRowCount, 0);
+	  -- Set Row Count
+	  SetRowCount.source_widget := top;
+	  SetRowCount.tableID := MLC_TEXT_EDIT;
+	  send(SetRowCount, 0);
  
-		-- Clear the form
+	  -- Clear the form
  
-		Clear.source_widget := top;
-		send(Clear, 0);
+	  Clear.source_widget := top;
+	  send(Clear, 0);
 	end
 
 --
 -- Checkin
 --
--- If current Marker has a lock, then remove the lock and re-set 
--- the currentMarkerKey
+-- If current Marker has a lock, then remove the lock and re-set the currentMarkerKey
 --
 	Checkin does
-		if (lockon) then
-			(void) mgi_writeLog("RELEASING LOCK ON SYMBOL WITH KEY: " + 
-								currentMarkerKey + "\n");
-			(void) release_mlc_lock(currentMarkerKey);
-			currentMarkerKey := "";
-		end if; 
-		lockon := false;
+
+	  if (lockon) then
+	    (void) mgi_writeLog("RELEASING LOCK ON SYMBOL WITH KEY: " + currentMarkerKey + "\n");
+	    (void) release_mlc_lock(currentMarkerKey);
+	    currentMarkerKey := "";
+	  end if; 
+
+	  lockon := false;
+
 	end does;
 
 --
@@ -236,10 +241,10 @@ rules:
 -- and the current symbol data. 
 --
 	CheckSQLrc does
-		if (top->QueryList->List.sqlSuccessful) then
-			ClearMLCED.clearKeys := false;
-			send(ClearMLCED,0);
-		end if;
+	  if (top->QueryList->List.sqlSuccessful) then
+	    ClearMLCED.clearKeys := false;
+	    send(ClearMLCED,0);
+	  end if;
 	end does;
 
 -- 
@@ -252,13 +257,13 @@ rules:
 --
 
 	VerifyMLCEDClear does
-		if (top->Description->text.modified or
-			top->Reference->Table.modified or
-			top->Class->Table.modified) then
-			top->ClearDialog.managed := true;
-		else
-			send(ClearMLCED, 0);
-		end if;
+	  if (top->Description->text.modified or
+              top->Reference->Table.modified or
+              top->Class->Table.modified) then
+            top->ClearDialog.managed := true;
+	  else
+	    send(ClearMLCED, 0);
+	  end if;
 	end does;
 
 --
@@ -268,13 +273,13 @@ rules:
 --
 
 	ClearMLCED does
-		send(Checkin,0);  -- checkin current symbol, if exists
-		Clear.source_widget := top;
-		Clear.clearKeys := ClearMLCED.clearKeys;
-		send(Clear, 0);
-		send(ClearMatchCount, 0);
-		top->SearchStr.value := "";
-		top->ReplaceStr.value := "";
+	  send(Checkin,0);  -- checkin current symbol, if exists
+	  Clear.source_widget := top;
+	  Clear.clearKeys := ClearMLCED.clearKeys;
+	  send(Clear, 0);
+	  send(ClearMatchCount, 0);
+	  top->SearchStr.value := "";
+	  top->ReplaceStr.value := "";
 	end does;
 
 --
@@ -282,7 +287,7 @@ rules:
 --
 
 	ClearMatchCount does
-		top->Reference->Count->text.value := "";
+	  top->Reference->Count->text.value := "";
 	end does;
 
 --
@@ -293,22 +298,21 @@ rules:
 --
 
 	Delete does
-		(void) busy_cursor(top);
+	  (void) busy_cursor(top);
 
-		DeleteSQL.tableID := MLC_TEXT_EDIT_ALL;
-		DeleteSQL.key := currentMarkerKey;
-		DeleteSQL.list := top->QueryList;
+	  DeleteSQL.tableID := MLC_TEXT_EDIT_ALL;
+	  DeleteSQL.key := currentMarkerKey;
+	  DeleteSQL.list := top->QueryList;
 
-		if ( debug ) then 
-			(void)mgi_writeLog("MLCED DELETE DEBUG: \n" + 
-				mgi_DBdelete(MLC_TEXT_EDIT, currentMarkerKey) + "\n");
-		else
-			 send(DeleteSQL, 0);
-		end if;
+	  if (debug) then 
+	    (void) mgi_writeLog("MLCED DELETE DEBUG: \n" + 
+	      mgi_DBdelete(MLC_TEXT_EDIT, currentMarkerKey) + "\n");
+	  else
+	    send(DeleteSQL, 0);
+	  end if;
 
-		send(CheckSQLrc, 0);
- 
-		(void) reset_cursor(top);
+	  send(CheckSQLrc, 0);
+	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -505,8 +509,8 @@ rules:
 		ModifySQL.list := top->QueryList;
 		ModifySQL.reselect := false;
 
-		if ( debug ) then 
-			(void)mgi_writeLog("MLCED ADD/MODIFY DEBUG: \n" + cmd + "\n");
+		if (debug) then 
+			(void) mgi_writeLog("MLCED ADD/MODIFY DEBUG: \n" + cmd + "\n");
 		else
 			 send(ModifySQL, 0);
 		end if;
@@ -527,40 +531,40 @@ rules:
 --
  
 	ModifyReference does
-		table : widget := top->Reference->Table;
-		row : integer := 0;
-		editMode : string;
-		newKey : string;
-		seqNum : string;
+	  table : widget := top->Reference->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  newKey : string;
+	  seqNum : string;
  
-		-- Re-set sequence numbers (Ref #)
-		send(UnSelectRefsTable, 0);
+	  -- Re-set sequence numbers (Ref #)
+	  send(UnSelectRefsTable, 0);
 
-		-- Delete all current References for Marker
-		cmd := cmd + mgi_DBdelete(MLC_REFERENCE_EDIT, currentMarkerKey);
+	  -- Delete all current References for Marker
+	  cmd := cmd + mgi_DBdelete(MLC_REFERENCE_EDIT, currentMarkerKey);
 
-		-- Add any new/modified References
-		-- Ignore any rows tagged for deletion
+	  -- Add any new/modified References
+	  -- Ignore any rows tagged for deletion
 
-		while (row < mgi_tblNumRows(table)) do
-			editMode := mgi_tblGetCell(table, row, table.editMode);
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
  
-			if (editMode = TBL_ROW_EMPTY) then
-				break;
-			end if;
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
  
-			if (editMode != TBL_ROW_DELETE) then
-				newKey := mgi_tblGetCell(table, row, table.refsKey);
-				seqNum := mgi_tblGetCell(table, row, table.seqNum);
- 
-				cmd := cmd + mgi_DBinsert(MLC_REFERENCE_EDIT, NOKEY) + 
-						currentMarkerKey + "," + 
-						newKey + "," +
-						seqNum + ")\n";
-			end if;
+	    if (editMode != TBL_ROW_DELETE) then
+	      newKey := mgi_tblGetCell(table, row, table.refsKey);
+	      seqNum := mgi_tblGetCell(table, row, table.seqNum);
 
-			row := row + 1;
-		end while;
+	      cmd := cmd + mgi_DBinsert(MLC_REFERENCE_EDIT, NOKEY) + 
+		     currentMarkerKey + "," + 
+		     newKey + "," +
+		     seqNum + ")\n";
+    	    end if;
+
+	    row := row + 1;
+	  end while;
 	end does;
  
 --
@@ -573,40 +577,41 @@ rules:
 --
  
 	ModifyClass does
-		table : widget := top->Class->Table;
-		row : integer := 0;
-		editMode : string;
-		key : string;
-		newKey : string;
-		set : string := "";
+	  table : widget := top->Class->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  newKey : string;
+	  set : string := "";
  
-		-- Process while non-empty rows are found
+	  -- Process while non-empty rows are found
  
-		while (row < mgi_tblNumRows(table)) do
-			editMode := mgi_tblGetCell(table, row, table.editMode);
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
  
-			if (editMode = TBL_ROW_EMPTY) then
-				break;
-			end if;
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
  
-			key := mgi_tblGetCell(table, row, table.classCurrentKey);
-			newKey := mgi_tblGetCell(table, row, table.classKey);
+	    key := mgi_tblGetCell(table, row, table.classCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.classKey);
  
-			if (editMode = TBL_ROW_ADD) then
-				cmd := cmd + mgi_DBinsert(MRK_CLASSES, NOKEY) + 
-						newKey + "," + currentMarkerKey + ")\n";
-			elsif (editMode = TBL_ROW_MODIFY) then
-				set := "_Class_key = " + newKey;
-				cmd := cmd + 
-						mgi_DBupdate(MRK_CLASSES, currentMarkerKey, set) + 
-						"and _Class_key = " + key + "\n";
-			elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-				cmd := cmd + mgi_DBdelete(MRK_CLASSES, currentMarkerKey) + 
-						"and _Class_key = " + key + "\n";
-			end if;
- 
-			row := row + 1;
-		end while;
+	    if (editMode = TBL_ROW_ADD) then
+	      cmd := cmd + mgi_DBinsert(MRK_CLASSES, NOKEY) + 
+	             newKey + "," + currentMarkerKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Class_key = " + newKey;
+	      cmd := cmd + mgi_DBupdate(MRK_CLASSES, currentMarkerKey, set) + 
+	             "and _Class_key = " + key + "\n";
+
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(MRK_CLASSES, currentMarkerKey) + 
+	             "and _Class_key = " + key + "\n";
+	    end if;
+
+	    row := row + 1;
+	  end while;
 	end does;
  
 --
@@ -629,20 +634,22 @@ rules:
 		set : string;
 		i, itemcnt : integer;
 	
+		/* get a list of tags - with no duplicates! */
+		locustaglist := getlocustaglist(locustxt.value, locustxt.value.length);
+
 		-- Always re-insert the text so that the modification date and userID
 		-- gets updated.  Save the original creation date, if one exists.
 
 		-- delete Text entry in MLC_Text_edit for this marker key
 		cmd := cmd + mgi_DBdelete(MLC_TEXT_EDIT, currentMarkerKey);
 
-		-- note: mgi_DBprstr escape all of the "s in the text using 
-				-- "mgi_escape_quotes"
+		-- note: mgi_DBprstr escape all of the "s in the text using "mgi_escape_quotes"
 		-- insert the new text
 
 		cmd := cmd + mgi_DBinsert(MLC_TEXT_EDIT, NOKEY) + 
 				currentMarkerKey + ", " + 
 				mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + "," +
-				mgi_DBprstr(locustxt.value) + "," +
+				mgi_DBprstr(mlced_eiDescToDB(locustxt.value, locustaglist)) + "," +
 				mgi_DBprstr(global_login) + ",";
 
 		-- If a Creation date exists, then save it for the new Text record
@@ -653,9 +660,6 @@ rules:
 		else
 			cmd := cmd + "getdate())\n";
 		end if;
-
-		/* get a list of tags - with no duplicates! */
-		locustaglist := getlocustaglist(locustxt.value, locustxt.value.length);
 
 		cmd := cmd + mgi_DBdelete(MLC_MARKER_EDIT, currentMarkerKey);
 
@@ -680,9 +684,7 @@ rules:
 				
 			mk2 := getIdbySymbol(ltag.tagstr,true); 
 			cmd := cmd + mgi_DBinsert(MLC_MARKER_EDIT, NOKEY) +
-				currentMarkerKey + "," +
-				mgi_DBprstr(ltag.tagstr) + ", " + 
-				mk2 + ")\n";     
+				currentMarkerKey + "," + (string) (i + 1) + ", " + mk2 + ")\n";     
 			i := i + 1;
 		end while;
 		TagList_destroy(locustaglist);
@@ -702,98 +704,84 @@ rules:
 --
  
 	PrepareSearch does
-		fromText : boolean := false;
-		fromRef : boolean := false;
-		fromClass : boolean := false;
-		value : string;
+	  fromText : boolean := false;
+	  fromRef : boolean := false;
+	  fromClass : boolean := false;
+	  value : string;
 
-		from  := " from " + mgi_DBtable(MRK_MARKER) + " m";
-		where := " where m._Species_key = " + MOUSE;
+	  from  := " from " + mgi_DBtable(MRK_MARKER) + " m";
+	  where := " where m._Species_key = " + MOUSE;
 
-		if (top->mgiMarker->Marker->text.value.length > 0) then
-			where := where + "\nand m.symbol like " + 
-					mgi_DBprstr(top->mgiMarker->Marker->text.value);
-		end if;
+	  if (top->mgiMarker->Marker->text.value.length > 0) then
+	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
+	  end if;
 
-		if (top->Name->text.value.length > 0) then
-			where := where + "\nand m.name like " + 
-					mgi_DBprstr(top->Name->text.value);
-		end if;
+	  if (top->Name->text.value.length > 0) then
+	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
+	  end if;
 
-		if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
-			where := where + "\nand m.chromosome = " + 
-					mgi_DBprstr(top->ChromosomeMenu.menuHistory.searchValue);
-		end if;
+	  if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand m.chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.searchValue);
+	  end if;
 					 
-		QueryDate.source_widget := top->CreationDate;
-		QueryDate.tag := "x";
-		send(QueryDate, 0);
-		where := where + top->CreationDate.sql;
+	  QueryDate.source_widget := top->CreationDate;
+	  QueryDate.tag := "x";
+	  send(QueryDate, 0);
+	  where := where + top->CreationDate.sql;
 
-		QueryDate.source_widget := top->ModifiedDate;
-		QueryDate.tag := "x";
-		send(QueryDate, 0);
-		where := where + top->ModifiedDate.sql;
+	  QueryDate.source_widget := top->ModifiedDate;
+	  QueryDate.tag := "x";
+	  send(QueryDate, 0);
+	  where := where + top->ModifiedDate.sql;
 
-		if (top->CreationDate.sql.length > 0 or 
-			top->ModifiedDate.sql.length > 0) then
-			fromText := true;
-		end if;
+          if (top->CreationDate.sql.length > 0 or top->ModifiedDate.sql.length > 0) then
+            fromText := true;
+          end if;
 
-		if (top->ModifiedBy->text.value.length > 0) then
-			where := where + "\nand x.userID like " + 
-					mgi_DBprstr(top->ModifiedBy->text.value);
-			fromText := true;
-		end if;
+	  if (top->ModifiedBy->text.value.length > 0) then
+	    where := where + "\nand x.userID like " + mgi_DBprstr(top->ModifiedBy->text.value);
+	    fromText := true;
+	  end if;
 
-		if (top->MLCModeMenu.menuHistory.searchValue != "%") then
-			where := where + "\nand x.mode = " + 
-					mgi_DBprstr(top->MLCModeMenu.menuHistory.searchValue);
-			fromText := true;
-		end if;
+	  if (top->MLCModeMenu.menuHistory.searchValue != "%") then
+	    where := where + "\nand x.mode = " + mgi_DBprstr(top->MLCModeMenu.menuHistory.searchValue);
+	    fromText := true;
+	  end if;
 
-		value := mgi_tblGetCell(top->Class->Table, 0, 
-				top->Class->Table.classKey);
+	  value := mgi_tblGetCell(top->Class->Table, 0, top->Class->Table.classKey);
+	  if (value.length > 0) then
+	    where := where + "\nand c._Class_key = " + value;
+	    fromClass := true;
+	  else
+	    value := mgi_tblGetCell(top->Class->Table, 0, top->Class->Table.className);
+	    if (value.length > 0) then
+	      where := where + "\nand c.name like " + mgi_DBprstr(value);
+	      fromClass := true;
+	    end if;
+	  end if;
  
-		if (value.length > 0) then
-			where := where + "\nand c._Class_key = " + value;
-			fromClass := true;
-		else
-			value := mgi_tblGetCell(top->Class->Table, 0, 
-                       top->Class->Table.className);
-			if (value.length > 0) then
-				where := where + "\nand c.name like " + mgi_DBprstr(value);
-					fromClass := true;
-			end if;
-		end if;
+	  value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
+	  if (value.length > 0) then
+	    where := where + "\nand r._Refs_key = " + value;
+	    fromRef := true;
+	  end if;
  
-		value := mgi_tblGetCell(top->Reference->Table, 0, 
-				top->Reference->Table.refsKey);
- 
-		if (value.length > 0) then
-				where := where + "\nand r._Refs_key = " + value;
-				fromRef := true;
-		end if;
- 
-		if (fromText) then
-			from := from + "," + mgi_DBtable(MLC_TEXT_EDIT) + " x";
-			where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = x." + 
-					mgi_DBkey(MRK_MARKER); 
-		end if;
+	  if (fromText) then
+	    from := from + "," + mgi_DBtable(MLC_TEXT_EDIT) + " x";
+	    where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = x." + mgi_DBkey(MRK_MARKER); 
+	  end if;
 
-		if (fromClass) then
-			from := from + "," + mgi_DBtable(MRK_CLASSES) + " c";
-			where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = c." + 
-					mgi_DBkey(MRK_MARKER);
-		end if;
+	  if (fromClass) then
+	    from := from + "," + mgi_DBtable(MRK_CLASSES) + " c";
+	    where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = c." + mgi_DBkey(MRK_MARKER);
+	  end if;
 
-		if (fromRef) then
-			from := from + "," + mgi_DBtable(MLC_REFERENCE_EDIT) + " r";
-			where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = r." + 
-					mgi_DBkey(MRK_MARKER); 
-		end if;
+	  if (fromRef) then
+	    from := from + "," + mgi_DBtable(MLC_REFERENCE_EDIT) + " r";
+	    where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = r." + mgi_DBkey(MRK_MARKER); 
+	  end if;
 
-		where := where + "\n";
+	  where := where + "\n";
 	end does;
 
 --
@@ -804,29 +792,29 @@ rules:
  
 	Search does
 
-		if (lockon) then 
-			if (top->Description->text.modified or
-						top->Reference->Table.modified or
-						top->Class->Table.modified) then
-				StatusReport.source_widget := top;
-				StatusReport.message := "You have made changes to the" +
-                        "data\nassociated with the current symbol.\n"  +
-						"Commit changes or Clear before\n" +
-						"selecting a new symbol to edit.";
-				send(StatusReport);
-				return;
-			end if;
-			send(Checkin,0);
-		end if;
+	  if (lockon) then 
+	    if (top->Description->text.modified or
+	        top->Reference->Table.modified or
+	        top->Class->Table.modified) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "You have made changes to the" +
+	                              "data\nassociated with the current symbol.\n"  +
+	                              "Commit changes or Clear before\n" +
+	                              "selecting a new symbol to edit.";
+	      send(StatusReport);
+	      return;
+	    end if;
+	    send(Checkin,0);
+	  end if;
 
-		(void) busy_cursor(top);
-		send(PrepareSearch, 0);
-		Query.source_widget := top;
-		Query.select := "select distinct m._Marker_key, m.symbol\n" + 
-				from + where + "order by m.symbol\n";
-		Query.table := MLC_TEXT_EDIT;
-		send(Query, 0);
-		(void) reset_cursor(top);
+	  (void) busy_cursor(top);
+	  send(PrepareSearch, 0);
+	  Query.source_widget := top;
+	  Query.select := "select distinct m._Marker_key, m.symbol\n" + 
+	                  from + where + "order by m.symbol\n";
+	  Query.table := MLC_TEXT_EDIT;
+	  send(Query, 0);
+	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -834,175 +822,167 @@ rules:
 --
 
 	Select does
-		MLCexists : boolean := false;
+	  MLCexists : boolean := false;
 
 	--
 	-- If lockon is set, then a record is active, and needs to be
 	-- either saved and checked in, or thrown away and checked in. 
 	--
 
-		if (lockon) then 
-			if (top->Description->text.modified or
-					top->Reference->Table.modified or
-					top->Class->Table.modified) then
-				StatusReport.source_widget := top;
-				StatusReport.message := "You have made changes to the data\n" +
-					"associated with the current symbol.\n"  +
-					"Commit changes or Clear before\n" +
-					"selecting a new symbol to edit.";
-				send(StatusReport);
+	  if (lockon) then 
+	    if (top->Description->text.modified or
+                top->Reference->Table.modified or
+                top->Class->Table.modified) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "You have made changes to the data\n" +
+	                              "associated with the current symbol.\n"  +
+	                              "Commit changes or Clear before\n" +
+	                              "selecting a new symbol to edit.";
+	      send(StatusReport);
 
-				-- Re-select "current" record
-				(void)XmListSelectPos(top->QueryList->List,
-									  top->QueryList->List.row,
-									  false);
-				return;
-			end if;
-			send(Checkin,0);
-		end if;
+	      -- Re-select "current" record
+	      (void)XmListSelectPos(top->QueryList->List, top->QueryList->List.row, false);
+	      return;
+	    end if;
 
-		-- If no new item selected, return
+	    send(Checkin,0);
 
-		if (top->QueryList->List.selectedItemCount = 0) then
-			top->QueryList->List.row := 0;
-			top->mgiMarker->ObjectID->text.value := "";
-			send(Checkin,0);
-			return;
-		end if;
+	  end if;
 
-		(void) busy_cursor(top);
+          -- If no new item selected, return
 
-		-- Set global currentMarkerKey variable
-		-- Set Report dialog select to current marker key
+	  if (top->QueryList->List.selectedItemCount = 0) then
+	    top->QueryList->List.row := 0;
+	    top->mgiMarker->ObjectID->text.value := "";
+	    send(Checkin,0);
+	    return;
+	  end if;
 
-		currentMarkerKey := top->QueryList->List.keys[Select.item_position];
-		top->ReportDialog.select := currentMarkerKey;
+	  (void) busy_cursor(top);
 
-		-- Try to obtain a record lock
-		-- If unsuccessful, de-select record, clear the form,
-		-- re-set the currentMarkerKey global variable, return
+	  -- Set global currentMarkerKey variable
+	  -- Set Report dialog select to current marker key
 
-		lockon := obtain_mlc_lock(currentMarkerKey);
+	  currentMarkerKey := top->QueryList->List.keys[Select.item_position];
+	  top->ReportDialog.select := currentMarkerKey;
 
-		if (not lockon) then 
-			(void)mgi_writeLog("Couldn't obtain MLC lock\n");
-			StatusReport.source_widget := top;
-			StatusReport.message := "The MLC Record you have chosen is\n" +
-						"currently being edited by another user,\n"  +
-						"or you do not have the appropriate permissions\n" +
-						"to edit the MLC entries";
-			send(StatusReport);
-			(void)XmListDeselectPos(top->QueryList->List, Select.item_position);
-			currentMarkerKey := "";
-			(void) reset_cursor(top);
-			return;
-		end if;
+	  -- Try to obtain a record lock
+	  -- If unsuccessful, de-select record, clear the form,
+	  -- re-set the currentMarkerKey global variable, return
 
-		tables.open;
-		while (tables.more) do
-			ClearTable.table := tables.next;
-			send(ClearTable, 0);
-		end while;
-		tables.close;
+	  lockon := obtain_mlc_lock(currentMarkerKey);
+
+	  if (not lockon) then 
+	    (void) mgi_writeLog("Couldn't obtain MLC lock\n");
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "The MLC Record you have chosen is\n" +
+				    "currently being edited by another user,\n"  +
+				    "or you do not have the appropriate permissions\n" +
+				    "to edit the MLC entries";
+	    send(StatusReport);
+	    (void) XmListDeselectPos(top->QueryList->List, Select.item_position);
+	    currentMarkerKey := "";
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
+	  tables.open;
+	  while (tables.more) do
+	    ClearTable.table := tables.next;
+	    send(ClearTable, 0);
+	  end while;
+	  tables.close;
  
-	  	top->Description->text.value := "";
+	  top->Description->text.value := "";
 
-		cmd := "select _Marker_key, symbol, name, chromosome " +
-			"from MRK_Marker where _Marker_key = " + currentMarkerKey + "\n" +
-			"select _Class_key, name from MRK_Classes_View where _Marker_key = " + currentMarkerKey + 
-			" order by name\n" +
-			"select b._Refs_key, r.tag, b.jnum, b.short_citation " +
-			" from MLC_Reference_edit r, BIB_View b " +
-			" where r._Marker_key = " + currentMarkerKey + 
-			" and r._Refs_key = b._Refs_key " + 
-			" order by r.tag\n" +
-			"select mode, description, creation_date, modification_date, userID " +
-		 "from MLC_Text_edit where _Marker_key = " + currentMarkerKey + "\n";
+	  cmd := "select _Marker_key, symbol, name, chromosome " +
+		 "from MRK_Marker where _Marker_key = " + currentMarkerKey + "\n" +
+		 "select _Class_key, name from MRK_Classes_View where _Marker_key = " + currentMarkerKey + 
+		 " order by name\n" +
+		 "select b._Refs_key, r.tag, b.jnum, b.short_citation " +
+		 "from MLC_Reference_edit r, BIB_View b " +
+		 "where r._Marker_key = " + currentMarkerKey + 
+		 " and r._Refs_key = b._Refs_key " + 
+		 "order by r.tag\n" +
+		 "select mode, description, creation_date, modification_date, userID " +
+	         "from MLC_Text_edit where _Marker_key = " + currentMarkerKey + "\n";
 
-		table : widget;
-		results : integer := 1;
-		row : integer := 0;
+	  table : widget;
+	  results : integer := 1;
+	  row : integer := 0;
 
-		(void) mgi_writeLog(cmd);
+	  (void) mgi_writeLog(cmd);
 
-		dbproc : opaque := mgi_dbopen();
-		set_textlimit(dbproc, 500000);
-		(void) dbcmd(dbproc, cmd);
-		(void) dbsqlexec(dbproc);
+	  dbproc : opaque := mgi_dbopen();
+	  set_textlimit(dbproc, 500000);
+	  (void) dbcmd(dbproc, cmd);
+	  (void) dbsqlexec(dbproc);
 
-		while (dbresults(dbproc) != NO_MORE_RESULTS) do
-		row := 0;
-		while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		if (results = 1) then
-			-- Note: mgiMarker->ObjectID->text will contain _Marker_key 
-			-- for displayed record until a new record is selected for display
-			top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 1);
-			top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 2);
-			top->Name->text.value              := mgi_getstr(dbproc, 3);
-			SetOption.source_widget := top->ChromosomeMenu;
-			SetOption.value := mgi_getstr(dbproc, 4);
-			send(SetOption, 0);
-		elsif (results = 2) then
-			table := top->Class->Table;
-			(void) mgi_tblSetCell(table, row, table.classCurrentKey, 
-					mgi_getstr(dbproc, 1));
-			(void) mgi_tblSetCell(table, row, table.classKey, 
-					mgi_getstr(dbproc, 1));
-			(void) mgi_tblSetCell(table, row, table.className, 
-					mgi_getstr(dbproc, 2));
-			(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		elsif (results = 3) then
-			table := top->Reference->Table;
-			(void) mgi_tblSetCell(table, row, table.currentSeqNum, 
-					mgi_getstr(dbproc, 2));
-			(void) mgi_tblSetCell(table, row, table.seqNum, 
-					mgi_getstr(dbproc, 2));
-			(void) mgi_tblSetCell(table, row, table.refsCurrentKey, 
-					mgi_getstr(dbproc, 1));
-			(void) mgi_tblSetCell(table, row, table.refsKey, 
-					mgi_getstr(dbproc, 1));
-			(void) mgi_tblSetCell(table, row, table.jnum, 
-					mgi_getstr(dbproc, 3));
-			(void) mgi_tblSetCell(table, row, table.citation, 
-					mgi_getstr(dbproc, 4));
-			(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		elsif (results = 4) then
-			SetOption.source_widget := top->MLCModeMenu;
-			SetOption.value := mgi_getstr(dbproc, 1);
-			SetOption.setDefault := true;
-			send(SetOption, 0);
-			top->Description->text.value  := mlced_gettext(dbproc,2); 
-			top->CreationDate->text.value := mgi_getstr(dbproc, 3);
-			top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
-			top->ModifiedBy->text.value   := mgi_getstr(dbproc, 5);
-			MLCexists := true;
-		end if;
+	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      if (results = 1) then
+		-- Note: mgiMarker->ObjectID->text will contain _Marker_key 
+		-- for displayed record until a new record is selected for display
+		top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 1);
+		top->mgiMarker->Marker->text.value   := mgi_getstr(dbproc, 2);
+		top->Name->text.value                := mgi_getstr(dbproc, 3);
+		SetOption.source_widget := top->ChromosomeMenu;
+		SetOption.value := mgi_getstr(dbproc, 4);
+		send(SetOption, 0);
+	      elsif (results = 2) then
+		table := top->Class->Table;
+		(void) mgi_tblSetCell(table, row, table.classCurrentKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.classKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.className, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      elsif (results = 3) then
+		table := top->Reference->Table;
+		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      elsif (results = 4) then
+		SetOption.source_widget := top->MLCModeMenu;
+		SetOption.value := mgi_getstr(dbproc, 1);
+		SetOption.setDefault := true;
+		send(SetOption, 0);
+		top->Description->text.value  := mlced_dbDescToEI(mgi_getstr(dbproc, 2), (integer) currentMarkerKey);
+--		top->Description->text.value  := mgi_getstr(dbproc, 2);
+		top->CreationDate->text.value := mgi_getstr(dbproc, 3);
+		top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
+		top->ModifiedBy->text.value   := mgi_getstr(dbproc, 5);
+		MLCexists := true;
+	      end if;
 			
-		row := row + 1;
-		end while;
-		results := results + 1;
-		end while;
+	      row := row + 1;
+	    end while;
+	    results := results + 1;
+	  end while;
 
-	 	(void) dbclose(dbproc);
+ 	  (void) dbclose(dbproc);
 
-		top->QueryList->List.row := Select.item_position;
-		Clear.source_widget := top;
-		Clear.reset := true;
-		send(Clear, 0);
+	  top->QueryList->List.row := Select.item_position;
+	  Clear.source_widget := top;
+	  Clear.reset := true;
+	  send(Clear, 0);
 
-		if (not MLCexists) then
-			StatusReport.source_widget := top;
-			StatusReport.message := "Symbol does not have an MLC entry.";
-			send(StatusReport);
-		elsif (top->Description->text.value.length = 0) then
-			StatusReport.source_widget := top;
-			StatusReport.message := "Symbol has BLANK MLC description.\n" +
-				"Either insert some text or DELETE the MLC entry.\n" +
-				"Blank text will cause a display error in the WI.";
-			send(StatusReport);
-		end if;
+	  if (not MLCexists) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Symbol does not have an MLC entry.";
+	    send(StatusReport);
+	  elsif (top->Description->text.value.length = 0) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Symbol has BLANK MLC description.\n" +
+		                    "Either insert some text or DELETE the MLC entry.\n" +
+		                    "Blank text will cause a display error in the WI.";
+	    send(StatusReport);
+	  end if;
 
-		(void) reset_cursor(top);
+	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -1295,8 +1275,8 @@ rules:
 -- we can tag as modified each time
 
 	UpdateLocusText does
-		top->Description->text.modified := true;
-		top->Description->text.value := UpdateLocusText.value;
+	  top->Description->text.modified := true;
+	  top->Description->text.value := UpdateLocusText.value;
 	end does;
 
 
@@ -1307,15 +1287,15 @@ rules:
 -- during the "HighlightRefs" operation
 -- 
 	UnSelectRefsTable does
-		table : widget := top->EditForm->Reference->Table;
-		row : integer := 0;
+	  table : widget := top->EditForm->Reference->Table;
+	  row : integer := 0;
 
-		while (row < mgi_tblNumRows(table)) do
-			if (mgi_tblGetCell(table, row, table.seqNum) = "*") then
-				mgi_tblSetCell(table, row, table.seqNum, (string) (row + 1));
-			end if;
-			row := row + 1;
-		end while;
+	  while (row < mgi_tblNumRows(table)) do
+	    if (mgi_tblGetCell(table, row, table.seqNum) = "*") then
+	      mgi_tblSetCell(table, row, table.seqNum, (string) (row + 1));
+	    end if;
+	    row := row + 1;
+	  end while;
 	end does;
 
 --
@@ -1439,56 +1419,58 @@ rules:
 -- If type = "Other", then highlight all text defined by SelectText.item
 --
 	SelectText does
-		type : string := SelectText.type;
-		chr,find_string : string;
-		pos,lastpos,fstrlen,endpos : integer;
-		locustext : widget := top->Description->text;
+	  type : string := SelectText.type;
+	  chr,find_string : string;
+	  pos,lastpos,fstrlen,endpos : integer;
+	  locustext : widget := top->Description->text;
 
-		if (type = "L") then
-			find_string := "\\L";
-		elsif (type = "LStar") then
-			find_string := "\\L*";
-		elsif (type = "R") then
-			find_string := "\\R";
-		elsif (type = "None") then
-			XmTextSetHighlight(locustext, 0, XmTextGetLastPosition(locustext), 0);    
-			return;
-		elsif (type = "Other") then
-			find_string := SelectText.item;
+	  if (type = "L") then
+	    find_string := "\\L";
+	  elsif (type = "LStar") then
+	    find_string := "\\L*";
+	  elsif (type = "R") then
+	    find_string := "\\R";
+	  elsif (type = "None") then
+	    XmTextSetHighlight(locustext, 0, XmTextGetLastPosition(locustext), 0);    
+	    return;
+	  elsif (type = "Other") then
+	    find_string := SelectText.item;
+	  end if;
+
+	  if (type != "Other") then -- clear highlights
+	    XmTextSetHighlight(locustext, 0, XmTextGetLastPosition(locustext), 0);    
+	  end if;
+
+	  pos := XmTextGetTopCharacter(locustext);
+	  lastpos := pos;
+
+	  while (pos >= lastpos and pos != XmTextGetLastPosition(locustext)) do
+	    fstrlen := strlen(find_string);
+
+	    if (lastpos = pos) then
+	      pos :=strpos(locustext.value,find_string,pos);
+	    else
+	      lastpos := pos;
+	      pos := strpos(locustext.value,find_string,pos+1);
+	    end if;
+
+	    if (pos > 0) then
+		if (pos+fstrlen >= locustext.value.length) then
+		  endpos := XmTextGetLastPosition(locustext)-1; 
+		else
+		  endpos := pos + fstrlen;
 		end if;
 
-		if (type != "Other") then -- clear highlights
-			XmTextSetHighlight(locustext, 0, XmTextGetLastPosition(locustext), 0);    
+		-- examine character beyond find_string
+		chr := locustext.value->substr(endpos+1,endpos+1);
+		if (find_string != "\\L" or chr != "*") then 
+		  if (endpos = locustext.value.length-1) then
+		    endpos := endpos + 1;  -- highlight to end of text
+		  end if;
+		  XmTextSetHighlight(locustext, pos, endpos, 1);    
 		end if;
-
-		pos := XmTextGetTopCharacter(locustext);
-		lastpos := pos;
-		while(pos >= lastpos and pos != XmTextGetLastPosition(locustext)) do
-			fstrlen := strlen(find_string);
-			if (lastpos = pos) then
-				pos :=strpos(locustext.value,find_string,pos);
-			else
-				lastpos := pos;
-				pos := strpos(locustext.value,find_string,pos+1);
-			end if;
-
-			if (pos > 0) then
-				if (pos+fstrlen >= locustext.value.length) then
-					endpos := XmTextGetLastPosition(locustext)-1; 
-				else
-					endpos := pos + fstrlen;
-				end if;
-
-				-- examine character beyond find_string
-				chr := locustext.value->substr(endpos+1,endpos+1);
-				if (find_string != "\\L" or chr != "*") then 
-					if (endpos = locustext.value.length-1) then
-						endpos := endpos + 1;  -- highlight to end of text
-					end if;
-					XmTextSetHighlight(locustext, pos, endpos, 1);    
-				end if;
-			end if;
-		end while;
+	    end if;
+	  end while;
 	end does;
 
 --
@@ -1500,8 +1482,8 @@ rules:
 --
 
 	SaveLocusText does
-		savedlocustext := top->Description->text.value; 
-		top->EditForm->UndoReplace.sensitive := true; 
+	  savedlocustext := top->Description->text.value; 
+	  top->EditForm->UndoReplace.sensitive := true; 
 	end does;
 
 --
@@ -1515,25 +1497,25 @@ rules:
 -- The Import dialog uses the mgiMarker template to validate the Marker symbol
 --
 	Import does
-		newtext : string;
+	  newtext : string;
 
-		-- If no Marker, then return
+	  -- If no Marker, then return
 
-		if (top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value.length = 0) then
-			StatusReport.source_widget := top;
-			StatusReport.message := "No Symbol Specified for Import.";
-			send(StatusReport);
-			return;
-		end if;
+	  if (top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value.length = 0) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "No Symbol Specified for Import.";
+	    send(StatusReport);
+	    return;
+	  end if;
 
-		cmd := "select description from " + mgi_DBtable(MLC_TEXT_EDIT) +
-			" where " + mgi_DBkey(MLC_TEXT_EDIT) + " = " +
-			top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value;
-		newtext := mgi_sql1(cmd);
+	  cmd := "select description from " + mgi_DBtable(MLC_TEXT_EDIT) +
+		 " where " + mgi_DBkey(MLC_TEXT_EDIT) + " = " +
+		 top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value;
+	  newtext := mgi_sql1(cmd);
 
-		-- Append the text
-		top->Description->text.value := top->Description->text.value + "\n\n" + newtext; 
-		top->Description->text.modified := true;
+	  -- Append the text
+	  top->Description->text.value := top->Description->text.value + "\n\n" + newtext; 
+	  top->Description->text.modified := true;
 	end does;
 
 --
@@ -1545,16 +1527,17 @@ rules:
 --
 --
 	Submit does
-		if (currentMarkerKey.length != 0) then 
-		(void) busy_cursor(top);
-			ExecSQL.cmd := "exec MLC_transfer " + currentMarkerKey;
-			send(ExecSQL, 0);
-		(void) reset_cursor(top);
-		else
-			StatusReport.source_widget := top;
-			StatusReport.message := "No current record to submit.";
-			send(StatusReport);
-		end if;
+
+	  if (currentMarkerKey.length != 0) then 
+	    (void) busy_cursor(top);
+	    ExecSQL.cmd := "exec MLC_transfer " + currentMarkerKey;
+	    send(ExecSQL, 0);
+	    (void) reset_cursor(top);
+	  else
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "No current record to submit.";
+	    send(StatusReport);
+	  end if;
 	end does;
 
 ---
@@ -1606,11 +1589,11 @@ rules:
 --
  
 	UnlockInit does
-		dialog : widget := top->MLCUnlockDialog;
+	  dialog : widget := top->MLCUnlockDialog;
  
-		dialog->mgiMarker->ObjectID->text.value := "";
-		dialog->mgiMarker->Marker->text.value := "";
-		dialog.managed := true;
+	  dialog->mgiMarker->ObjectID->text.value := "";
+	  dialog->mgiMarker->Marker->text.value := "";
+	  dialog.managed := true;
 	end does;
 
 --
@@ -1620,24 +1603,22 @@ rules:
 --
 
 	Unlock does
-		dialog : widget := top->MLCUnlockDialog;
-		markerKey : string := dialog->mgiMarker->ObjectID->text.value;
+	  dialog : widget := top->MLCUnlockDialog;
+	  markerKey : string := dialog->mgiMarker->ObjectID->text.value;
 
-		if (markerKey = "" or markerKey = "NULL") then
-			StatusReport.source_widget := top;
-			StatusReport.message := "No Symbol to unlock.  " +
-                                    "TAB after entering the Marker Symbol.";
-			send(StatusReport);
-			return;
-		end if;
+	  if (markerKey = "" or markerKey = "NULL") then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "No Symbol to unlock.  TAB after entering the Marker Symbol.";
+	    send(StatusReport);
+	    return;
+	  end if;
 
-		(void) busy_cursor(top);
-		(void) mgi_writeLog("RELEASING LOCK ON SYMBOL WITH KEY: " +  
-							markerKey + "\n");
-		(void) release_mlc_lock(markerKey);
-		(void) reset_cursor(top);
+	  (void) busy_cursor(top);
+	  (void) mgi_writeLog("RELEASING LOCK ON SYMBOL WITH KEY: " +  markerKey + "\n");
+	  (void) release_mlc_lock(markerKey);
+	  (void) reset_cursor(top);
 
-		dialog.managed := false;
+	  dialog.managed := false;
 	end does;
 
 --
@@ -1652,20 +1633,19 @@ rules:
 
 	VerifyMLCMarker does
 
-		VerifyMarker.source_widget := VerifyMLCMarker.source_widget;
-		VerifyMarker.allowWithdrawn := true;
-		send(VerifyMarker, 0);
+	  VerifyMarker.source_widget := VerifyMLCMarker.source_widget;
+	  VerifyMarker.allowWithdrawn := true;
+	  send(VerifyMarker, 0);
 
-		if (not lockon and top->mgiMarker->ObjectID->text.value.length > 0) then
-			send(Search, 0);
-			if (currentMarkerKey.length != 0) then
-				StatusReport.source_widget := top;
-				StatusReport.message := "Symbol\n\n" + 
-							top->mgiMarker->Marker->text.value + 
-							"\n\ndoes not have an MLC entry.\n";
-				send(StatusReport);
-			end if;
-		end if;
+	  if (not lockon and top->mgiMarker->ObjectID->text.value.length > 0) then
+	    send(Search, 0);
+	    if (currentMarkerKey.length != 0) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "Symbol\n\n" + top->mgiMarker->Marker->text.value + 
+				      "\n\ndoes not have an MLC entry.\n";
+	      send(StatusReport);
+	    end if;
+	  end if;
 
 	end does;
 
@@ -1677,9 +1657,9 @@ rules:
 -- if "integrated" then real Lib.d Exit routine is called 
 --
 	UncondExit does
-		destroy self;    -- will queue FINALLY
-		ExitWindow.source_widget := top; 
-		send(ExitWindow,0);
+	  destroy self;    -- will queue FINALLY
+	  ExitWindow.source_widget := top; 
+	  send(ExitWindow,0);
 	end does;
 
 -- 
@@ -1692,13 +1672,13 @@ rules:
 -- to confirm.   
 --
 	ExitMLCED does
-		if (top->Description->text.modified or
-			top->Reference->Table.modified or
-			top->Class->Table.modified) then
-			top->ExitDialog.managed := true;    
-		else
-			send(UncondExit,0);
-		end if;
+	  if (top->Description->text.modified or
+	      top->Reference->Table.modified or
+	      top->Class->Table.modified) then
+	    top->ExitDialog.managed := true;    
+	  else
+	    send(UncondExit,0);
+	  end if;
 	end does;
 
 --
@@ -1708,7 +1688,7 @@ rules:
 -- 
 
 	FINALLY does
-		send(Checkin,0);
+	  send(Checkin,0);
 	end does;
 
 end dmodule;
