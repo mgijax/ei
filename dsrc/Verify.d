@@ -1207,6 +1207,7 @@ rules:
 	  row : integer := VerifyGenotype.row;
 	  column : integer := VerifyGenotype.column;
 	  reason : integer := VerifyGenotype.reason;
+	  genotypeID : string := "";
 	  genotypeKey : string := "";
 	  genotypeName : string := "";
 
@@ -1234,19 +1235,25 @@ rules:
 	  (void) busy_cursor(top);
 
 	  dbproc : opaque := mgi_dbopen();
-	  cmd : string := "select _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype));
+	  cmd : string := "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
+		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n" +
+	        "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
+		"where mgiID = " + mgi_DBprstr("MGI:" + mgi_tblGetCell(table, row, table.genotype)) + "\n";
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      genotypeKey := mgi_getstr(dbproc, 1);
-	      genotypeName := mgi_getstr(dbproc, 2);
+	      if (mgi_getstr(dbproc, 1) != "") then
+	        genotypeID := mgi_getstr(dbproc, 1);
+	        genotypeKey := mgi_getstr(dbproc, 2);
+	        genotypeName := mgi_getstr(dbproc, 3);
+	      end if;
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
 
 	  if (genotypeKey.length > 0) then
+	    (void) mgi_tblSetCell(table, row, table.genotype, genotypeID);
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, genotypeKey);
 	    if (table.is_defined("genotypeName") != nil) then
 	      (void) mgi_tblSetCell(table, row, table.genotypeName, genotypeName);
