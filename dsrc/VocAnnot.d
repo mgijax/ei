@@ -522,7 +522,6 @@ rules:
 	  tables.open;
 	  while (tables.more) do
 	    ClearTable.table := tables.next;
-	    ClearTable.resetBackground := true;
 	    send(ClearTable, 0);
 	  end while;
 	  tables.close;
@@ -539,7 +538,7 @@ rules:
 
 	  -- Different Sorts for different Annotation Types
 	  if (annotTable.annotVocab = "GO") then
-	    orderBy := "e.sequenceNum, e.modification_date\n";
+	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
 	  elsif (annotTable.annotVocab = "PhenoSlim") then
 	    orderBy := "a.sequenceNum, e.modification_date\n";
 	  end if;
@@ -686,8 +685,12 @@ rules:
 --
 
 	SetAnnotTypeDefaults does
-	  evidenceKey : integer := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 
+          -- Clear form
+          Clear.source_widget := top;
+          send(Clear, 0);
+
+	  evidenceKey : integer := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;

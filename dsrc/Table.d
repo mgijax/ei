@@ -14,9 +14,6 @@
 --
 -- History:
 --
--- lec	01/18/2002
---	- ClearTable; added resetBackground parameter
---
 -- lec	08/29/2001
 --	- DuplicateSeqNumInTable; if dialog, set top accordingly
 --
@@ -292,7 +289,7 @@ rules:
 	  (void) mgi_tblStopFlashAll(table);
 
 	  -- Restore Background
-	  if (ClearTable.resetBackground) then
+	  if (ClearTable.clearCells) then
 	    table.xrtTblBackgroundSeries := table.saveBackgroundSeries;
 	  end if;
 	end does;

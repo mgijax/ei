@@ -92,7 +92,7 @@ rules:
 	  (void) busy_cursor(top);
 
 	  isNOGO : string;
-	  select : string := "exec BIB_isNOGO" + value;
+	  select : string := "exec BIB_isNOGO " + value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
