@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- lec 08/21/2001
+--	- TR 2860; added add'l functionality to AppendNote to handle
+--	  notes with dialogs.
+--
 -- lec 07/11/2001
 --	- TR 2711; added AppendNote
 --
@@ -600,6 +604,7 @@ rules:
 	  top : widget := AppendNote.source_widget.top;
 	  sourceWidget : widget := AppendNote.source_widget;
 	  noteWidget : widget := top->(sourceWidget.noteWidget);
+	  dialogWidget : widget;
 	  oldValue : string := "";
 	  newValue : string := "";
 
@@ -611,6 +616,13 @@ rules:
 
 	  if (newValue.length <= noteWidget->text.maxLength) then
 	    noteWidget->text.value := newValue;
+	  end if;
+
+	  if (noteWidget->NotePush != nil) then
+	    dialogWidget := top->(noteWidget->NotePush.dialogName);
+	    if (dialogWidget.managed) then
+	      dialogWidget->Note->text.value := noteWidget->text.value;
+	    end if;
 	  end if;
 	end does;
 
