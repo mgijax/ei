@@ -14,6 +14,9 @@
 --
 -- History:
 --
+-- lec	08/29/2001
+--	- DuplicateSeqNumInTable; if dialog, set top accordingly
+--
 -- lec	08/16/2001
 --	-- ClearTable; traverse to cell 0,0
 --
@@ -557,6 +560,10 @@ rules:
           row : integer := 0;
           newSeqNum : string;
           seqNums : string_list := create string_list();
+
+	  if (top.class_name = "XmDialogShell") then
+	    top := top.parent;
+	  end if;
 
           while (row < mgi_tblNumRows(table)) do
             newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
