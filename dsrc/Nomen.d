@@ -602,7 +602,6 @@ rules:
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
-	  ModifySQL.transaction := true;
 	  send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);

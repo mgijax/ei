@@ -371,7 +371,6 @@ rules:
           ModifySQL.source_widget := top;
           ModifySQL.cmd := cmd;
           ModifySQL.list := nil;
-	  ModifySQL.transaction := true;
           send(ModifySQL, 0);
  
 	  send(Select, 0);

@@ -46,6 +46,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget;
+	ab : widget;
 	accTable : widget;
 	accRefTable : widget;
 
@@ -82,7 +83,7 @@ rules:
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
-          ab : widget := mgi->(top.activateButtonName);
+          ab := mgi->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -522,7 +523,7 @@ rules:
 --
 
 	Exit does
-	  mgi->MarkerNonMouse.sensitive := true;
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

@@ -789,7 +789,6 @@ rules:
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
-	  ModifySQL.transaction := true;
           send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
@@ -865,7 +864,6 @@ rules:
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->ExperimentList;
-	  ModifySQL.transaction := true;
           send(ModifySQL, 0);
 
 	  -- Re-generate Statistics for Cross or RI Experiment
