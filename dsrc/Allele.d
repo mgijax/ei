@@ -201,9 +201,7 @@ rules:
 
 	  -- List of all Table widgets used in form
 
-	  tables.append(top->Reference->Table);
 	  tables.append(top->MolecularMutation->Table);
-	  tables.append(top->Synonym->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 
 	  -- Global Accession number Tables
@@ -973,16 +971,16 @@ rules:
 	  InitAcc.table := accTable;
           send(InitAcc, 0);
  
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
+	  send(InitRefTypeTable, 0);
+
 	  tables.open;
 	  while (tables.more) do
 	    ClearTable.table := tables.next;
 	    send(ClearTable, 0);
 	  end while;
 	  tables.close;
-
-	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
-	  send(InitRefTypeTable, 0);
 
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";

@@ -51,6 +51,8 @@ SetCellToX [source_widget : widget;		-- Set Table Cell Value to X
 
 SetXCellsToFlash [source_widget : widget;];	-- Set all X Cells to Flash
 
+SetTableRow [source_widget : widget;];		-- Set Table.row = current Table row
+
 TraverseToTableCell [table : widget;		-- Traverse To Cell
 		     row : integer := 0;
 		     column : integer := 0;];

@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar  7 15:03:49 2005";
+      lastWritten = "Tue Mar  8 14:05:47 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -12,7 +12,7 @@ Module: mgiTable
             xrtTblBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)";
             xrtTblVisibleRows = 5;
             xrtTblMarginHeight = 4;
-            userDefinedAttributes = "requiredColumns:StringTable(StringTable)\nrequired:Boolean(Boolean)=\"False\"\nsqlCmd:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\neditMode:Int(Int)=\"0\"\naddSeqNum:Boolean(Boolean)=\"False\"\nduplicateSeqNum:Boolean(Boolean)=\"False\"\nsaveBackgroundSeries:String(String)=\"(all all Wheat) (label all Thistle)(all label Thistle)\"\nmodified:Boolean(Boolean)=\"False\"\nsaveEditableSeries:String(String)\nsaveTraversableSeries:String(String)\n";
+            userDefinedAttributes = "requiredColumns:StringTable(StringTable)\nrequired:Boolean(Boolean)=\"False\"\nsqlCmd:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\neditMode:Int(Int)=\"0\"\naddSeqNum:Boolean(Boolean)=\"False\"\nduplicateSeqNum:Boolean(Boolean)=\"False\"\nsaveBackgroundSeries:String(String)=\"(all all Wheat) (label all Thistle)(all label Thistle)\"\nmodified:Boolean(Boolean)=\"False\"\nsaveEditableSeries:String(String)\nsaveTraversableSeries:String(String)\nrow:Int=\"0\"\n";
             xrtTblEditableSeries = "(all 0 False)";
             xrtTblTraversableSeries = "(all 0 False)";
             xrtTblPixelWidthSeries = "(all 0 0)";
@@ -763,25 +763,25 @@ Module: mgiTable
                 Group: Widget
                   xrtTblColumnLabels = "Mode,Key,Type key,Current Order,#,Type,Note";
                   xrtTblNumColumns = 7;
-                  xrtTblPixelWidthSeries = "(all 0-3 0)";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 255)";
-                  xrtTblDisplayHorizScrollBar = dispsb_always;
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 125)";
                   width = 800;
                   xrtTblFrozenColumns = 6;
-                  xrtTblEditableSeries = "(all 0-4 False)";
-                  xrtTblTraversableSeries = "(all 0-4 False)";
-                  userDefinedAttributes = "noteTypeKey:Int(Int)=\"2\"\nnoteType:Int(Int)=\"5\"\nnote:Int(Int)=\"6\"\nmgiTypeKey:Int(Int)\nnoteKey:Int=\"1\"\n";
+                  xrtTblEditableSeries = "(all 0-5 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)";
+                  userDefinedAttributes = "noteTypeKey:Int(Int)=\"2\"\nnoteType:Int(Int)=\"5\"\nnote:Int(Int)=\"6\"\nmgiTypeKey:Int(Int)\nnoteKey:Int(Int)=\"1\"\nnotesLoaded:Boolean(Boolean)=\"False\"\n";
                 Group: Constraint
                   leftAttachment = attach_form;
-                  rightAttachment = attach_none;
+                  rightAttachment = attach_form;
                   topAttachment = attach_form;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
                   topOffset = 5;
+                  rightOffset = 5;
                 Group: User
-                  saveEditableSeries = "(all 0-4 False)";
-                  saveTraversableSeries = "(all 0-4 False)";
+                  saveEditableSeries = "(all 0-5 False)";
+                  saveTraversableSeries = "(all 0-5 False)";
                   currentSeqNum = 3;
                   seqNum = 4;
                     {
@@ -810,9 +810,13 @@ Module: mgiTable
               }
               {
                 InsertRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
               }
               {
                 EditOrder = toggle : mgiDataTypes;
+                Group: Widget
+                  managed = False;
               }
               {
                 NoteTypeMenu = NoteTypeMenu : mgiOption;
@@ -828,16 +832,17 @@ Module: mgiTable
               }
               {
                 NotePush = NotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Edit Notes";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_none;
-                  bottomAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = Table;
-                  bottomWidget = Table;
-                  rightOffset = 5;
+                  leftWidget = DeleteRow;
                   leftOffset = 5;
+                  topWidget = DeleteRow;
                 Group: User
                   targetColumn = 6;
                   targetWidget = NoteTable;

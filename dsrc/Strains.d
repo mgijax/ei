@@ -182,10 +182,7 @@ rules:
 	  tables := create list("widget");
 
 	  tables.append(top->StrainType->Table);
-	  tables.append(top->Marker->Table);
-	  tables.append(top->Synonym->Table);
 	  tables.append(top->Genotype->Table);
-	  tables.append(top->Reference->Table);
 	  tables.append(top->ReferenceMGI->Table);
 	  tables.append(top->DataSets->Table);
 

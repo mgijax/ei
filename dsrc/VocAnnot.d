@@ -852,7 +852,7 @@ rules:
 
 	    if (mgi_tblGetCell(annotTable, i, annotTable.dag) != 
 		mgi_tblGetCell(annotTable, i-1, annotTable.dag)) then
-	      if (newColor = "Wheat") then
+	      if (newColor = BACKGROUNDNORMAL) then
 		newColor := BACKGROUNDALT1;
 	      else
 		newColor := BACKGROUNDNORMAL;

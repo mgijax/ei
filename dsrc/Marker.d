@@ -293,8 +293,6 @@ rules:
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
 	  tables.append(top->Offset->Table);
-	  tables.append(top->Synonym->Table);
-	  tables.append(top->Reference->Table);
 	  tables.append(top->AccessionReference->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 
@@ -1538,16 +1536,16 @@ rules:
 	  InitAcc.table := accRefTable;
           send(InitAcc, 0);
  
+          InitSynTypeTable.table := top->Synonym->Table;
+          InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
+          send(InitSynTypeTable, 0);
+
 	  tables.open;
 	  while (tables.more) do
 	    ClearTable.table := tables.next;
 	    send(ClearTable, 0);
 	  end while;
 	  tables.close;
-
-          InitSynTypeTable.table := top->Synonym->Table;
-          InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
-          send(InitSynTypeTable, 0);
 
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";

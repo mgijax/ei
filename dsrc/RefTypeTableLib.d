@@ -93,6 +93,9 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
+
 	  if (tableID = MGI_REFTYPE_ALLELE_VIEW or 
 	      tableID = MGI_REFTYPE_NOMEN_VIEW or 
 	      tableID = MGI_REFTYPE_SEQUENCE_VIEW or 
@@ -158,6 +161,9 @@ rules:
 	  tableID : integer := LoadRefTypeTable.tableID;
 	  objectKey : string := LoadRefTypeTable.objectKey;
 	  cmd : string;
+
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
 	  if (tableID = MGI_REFERENCE_ALLELE_VIEW or 
 	      tableID = MGI_REFERENCE_NOMEN_VIEW or 

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar  7 15:47:05 2005";
+      lastWritten = "Tue Mar  8 14:05:08 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11178,7 +11178,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 80;
             vip_y = 965;
           Group: User
-            activateButtonName = VocAnnot;
+            activateButtonName = MPVocAnnot;
             homeWidget = mgiAccession;
               {
                 MainForm = XmForm;
@@ -11196,6 +11196,31 @@ Shift<Key>Tab: prev-tab-group()
                                         Exit = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:MPVocAnnotExit";
+                                      }
+                                }
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                           }
@@ -11324,11 +11349,11 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-12 10)(all 13 15)(all 14 45)(all 15 3)(all 17 10)(all 18 3)(all 21-22 15)(all 19 11)(all 20 10)(all 22 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
                                           userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\neditor:Int(Int)=\"19\"\nmodifiedDate:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"21\"\ncreatedDate:Int(Int)=\"22\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\n";
-                                          xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-12 False)(all 14-15 False)(all 17 False)";
-                                          xrtTblEnterCellCallback = "D:SetOptions";
+                                          xrtTblEnterCellCallback = "D:LoadMPNotes,\nD:SetOptions,\nD:SetTableRow";
                                           xrtTblAllowCellResize = resize_all;
-                                          width = 950;
+                                          width = 960;
                                         Group: User
                                           requiredColumns = "3\n6\n8";
                                       }
@@ -11364,18 +11389,37 @@ Shift<Key>Tab: prev-tab-group()
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                       }
+                                      {
+                                        Save = ControlPush : mgiControl;
+                                        Group: Widget
+                                          labelString = "Save Annotations";
+                                          activateCallback = "D:Modify";
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          rightWidget = Table;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
                                 }
                                 {
                                   Note = NoteTable : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Annotation;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = Annotation;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
                                       {
                                         Table = XtXrtTable;
                                       }
@@ -11402,8 +11446,36 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         NotePush = NotePush : mgiDataTypes;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = DeleteRow;
+                                          leftOffset = 5;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          topWidget = Table;
+                                          topOffset = 5;
                                         Group: User
                                           targetWidget = Note;
+                                      }
+                                      {
+                                        frame = XmFrame;
+                                      }
+                                      {
+                                        Save = ControlPush : mgiControl;
+                                        Group: Widget
+                                          labelString = "Save Notes";
+                                          activateCallback = "D:ModifyMPNotes";
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          rightWidget = Table;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                       }
                                 }
                                 {
@@ -11427,21 +11499,20 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 8;
                                           xrtTblColumnLabels = "Mode,Key,Key,Current Order,#,Header,Approved By,Approved Date";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 3-4 3)(all 6-7 15)(all 5 50)";
-                                          xrtTblEditableSeries = "(all 0-4 False)";
+                                          xrtTblEditableSeries = "(all 0-3 False)(all 5-7 False)";
                                           xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
-                                          userDefinedAttributes = "annotHeaderKey:Int=\"1\"\nheaderTerm:Int=\"5\"\napprovedBy:Int=\"6\"\napprovedDate:Int=\"7\"\n";
+                                          xrtTblTraversableSeries = "(all 0-3 False)(all 5-7 False)";
+                                          userDefinedAttributes = "annotHeaderKey:Int(Int)=\"1\"\nheaderTerm:Int(Int)=\"5\"\napprovedBy:Int(Int)=\"6\"\napprovedDate:Int(Int)=\"7\"\nheaderTermKey:Int=\"2\"\n";
                                         Group: User
-                                          saveEditableSeries = "(all 0-4 False)";
-                                          saveTraversableSeries = "(all 0-4 False)";
                                           currentSeqNum = 3;
                                           seqNum = 4;
+                                          saveEditableSeries = "(all 0-3 False)(all 5-7 False)";
+                                          saveTraversableSeries = "(all 0-3 False)(all 5-7 False)";
                                       }
                                       {
                                         AddRow = TablePush;
                                         Group: Widget
-                                          activateCallback = "D:SaveHeader";
-                                          labelString = Save;
+                                          managed = False;
                                       }
                                       {
                                         DeleteRow = TablePush;
@@ -11455,6 +11526,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         EditOrder = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          managed = False;
                                         Group: Constraint
                                           leftAttachment = attach_widget;
                                           leftWidget = AddRow;
@@ -11464,6 +11537,21 @@ Shift<Key>Tab: prev-tab-group()
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                           leftOffset = 5;
+                                      }
+                                      {
+                                        Save = ControlPush : mgiControl;
+                                        Group: Widget
+                                          activateCallback = "D:ModifyHeader";
+                                          labelString = "Save Header Order";
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          topAttachment = attach_widget;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          rightWidget = Table;
                                       }
                                 }
                           }
@@ -11484,7 +11572,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Modify = ControlPush;
                                   Group: Widget
-                                    labelString = Save;
+                                    managed = False;
                                 }
                                 {
                                   Add = ControlPush;

@@ -256,6 +256,10 @@ rules:
 		row := row + 1;
 	      end while;
 	    end if;
+
+	    if (table.is_defined("notesLoaded") != nil) then
+	      table.notesLoaded := false;
+	    end if;
 	  else
 	    -- Re-set Table Row edit mode to No Change
 	    row := 0;
@@ -298,6 +302,9 @@ rules:
 
 	  -- Re-set the table modification flag
 	  table.modified := false;
+
+	  -- Re-set the table row
+	  table.row := 0;
 
 	  -- Stop all Flashing
 	  (void) mgi_tblStopFlashAll(table);
@@ -718,6 +725,22 @@ rules:
 	    row := row + 1;
 	  end while;
         end does;
+
+--
+-- SetTableRow
+--
+-- Sets table.row to the current table row
+--
+
+	SetTableRow does
+          table :widget := SetTableRow.source_widget;
+
+          if (SetTableRow.reason != TBL_REASON_ENTER_CELL_END) then
+            return;
+          end if;
+               
+	  table.row := mgi_tblGetCurrentRow(table);
+	end does;
 
 --
 -- TraverseToTableCell

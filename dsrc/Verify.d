@@ -1235,10 +1235,13 @@ rules:
 	  (void) busy_cursor(top);
 
 	  dbproc : opaque := mgi_dbopen();
+
 	  cmd : string := "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n" +
-	        "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr("MGI:" + mgi_tblGetCell(table, row, table.genotype)) + "\n";
+		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n";
+
+--	        "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
+--		"where mgiID = " + mgi_DBprstr("MGI:" + mgi_tblGetCell(table, row, table.genotype)) + "\n";
+
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -3487,7 +3490,9 @@ rules:
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      if (sourceWidget.is_defined("dag") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      end if;
 	    end if;
 	    return;
 	  end if;
@@ -3549,7 +3554,9 @@ rules:
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termAccID, termAcc);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, termKey);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, term);
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, dag);
+	      if (sourceWidget.is_defined("dag") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, dag);
+	      end if;
 
 	      -- TR 4262
 	      if (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554") then
@@ -3565,7 +3572,9 @@ rules:
 	      VerifyVocabTermAccID.doit := (integer) false;
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      if (sourceWidget.is_defined("dag") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      end if;
 	    end if;
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Term Accession ID";

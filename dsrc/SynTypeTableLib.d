@@ -86,6 +86,9 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
+
 	  cmd := "select _SynonymType_key, _MGIType_key, synonymType, allowOnlyOne from " + mgi_DBtable(tableID) + 
 		  "\norder by allowOnlyOne desc, _SynonymType_key";
 
@@ -129,6 +132,9 @@ rules:
 	  tableID : integer := LoadSynTypeTable.tableID;
 	  objectKey : string := LoadSynTypeTable.objectKey;
 	  cmd : string;
+
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
           cmd := "select _Synonym_key, _SynonymType_key, synonymType, synonym, allowOnlyOne, modification_date, modifiedBy";
 
