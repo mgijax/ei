@@ -2779,7 +2779,7 @@ Module: mgiOption
               {
                 InheritanceModePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from ALL_Inheritance_mode where _Mode_key > -2 order by mode";
+                  sql = "select * from ALL_Inheritance_mode where _Mode_key > 0 order by mode";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
