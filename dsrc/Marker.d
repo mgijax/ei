@@ -113,6 +113,7 @@ devents:
 	MarkerWithdrawalInit :local [];
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;];
+	SetMarkerWithdrawalFields :exported [];
 
 	-- Process Breakpoint Split Events
 	MarkerBreakpointSplitInit :local [];
@@ -444,7 +445,7 @@ rules:
 	  ClearTable.table := dialog->NewMarker->Table;
 	  send(ClearTable, 0);
 
-	  dialog->mgiMarker->Marker->text.value := top->Symbol->text.value;
+	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
 
 	  if (mgi_tblGetCell(top->Allele->Table, 0, top->Allele->Table.alleleKey) != "") then
 	    dialog->hasAlleles.set := true;
@@ -452,11 +453,49 @@ rules:
 	    dialog->hasAlleles.set := false;
 	  end if;
 
+	  dialog->nonVerified->ObjectID->text.value := "";
+	  dialog->nonVerified->Marker->text.value := "";
+	  dialog->mgiMarker->ObjectID->text.value := "";
+	  dialog->mgiMarker->Marker->text.value := "";
 	  dialog->Name->text.value := top->Name->text.value;
 	  dialog->mgiCitation->ObjectID->text.value := "";
 	  dialog->mgiCitation->Jnum->text.value := "";
 	  dialog->mgiCitation->Citation->text.value := "";
+
+	  dialog->nonVerified.sensitive := true;
+	  dialog->mgiMarker.sensitive := false;
+	  dialog->NewMarker.sensitive := false;
 	  dialog.managed := true;
+	end does;
+
+--
+-- SetMarkerWithdrawalFields
+--
+-- Activated from:  Marker Event toggle in Withdrawal Dialog
+-- Sensitize appropriate New Symbol field based on Event selected.
+--
+
+	SetMarkerWithdrawalFields does
+	  dialog : widget := top->WithdrawalDialog;
+	  event : string := dialog->MarkerEventMenu.menuHistory.defaultValue;
+
+	  if (event = EVENT_WITHDRAWAL) then
+	    dialog->nonVerified.sensitive := true;
+	    dialog->mgiMarker.sensitive := false;
+	    dialog->NewMarker.sensitive := false;
+	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
+	    dialog->nonVerified.sensitive := false;
+	    dialog->mgiMarker.sensitive := true;
+	    dialog->NewMarker.sensitive := false;
+	  elsif (event = EVENT_SPLIT) then
+	    dialog->nonVerified.sensitive := false;
+	    dialog->mgiMarker.sensitive := false;
+	    dialog->NewMarker.sensitive := true;
+	  elsif (event = EVENT_DELETED) then
+	    dialog->nonVerified.sensitive := false;
+	    dialog->mgiMarker.sensitive := false;
+	    dialog->NewMarker.sensitive := false;
+	  end if;
 	end does;
 
 --
@@ -471,7 +510,9 @@ rules:
 	  symbol : string;
 	  event : string;
 	  eventReason : string;
+	  ok : boolean := true;
 	  buf : string;
+	  row : integer;
 
 	  if (dialog->MarkerEventMenu.menuHistory.defaultValue = "%") then
 	    SetOption.source_widget := top->MarkerEventMenu;
@@ -488,7 +529,18 @@ rules:
 	  event := dialog->MarkerEventMenu.menuHistory.defaultValue;
 	  eventReason := dialog->MarkerEventReasonMenu.menuHistory.defaultValue;
 
-	  if (event != EVENT_DELETED and mgi_tblGetCell(table, 0, table.markerSymbol) = "") then
+	  if (event = EVENT_WITHDRAWAL and 
+	      dialog->nonVerified->Marker->text.value.length = 0) then
+	    ok := false;
+	  elsif ((event = EVENT_MERGE or event = EVENT_ALLELEOF) and
+	       (dialog->mgiMarker->ObjectID->text.value.length = 0 or
+	        dialog->mgiMarker->ObjectID->text.value = "NULL")) then
+	    ok := false;
+	  elsif (event = EVENT_SPLIT and mgi_tblGetCell(table, 0, table.markerSymbol) = "") then
+	    ok := false;
+	  end if;
+
+	  if (not ok) then
             StatusReport.source_widget := top;
 	    StatusReport.message := "New symbol(s) required";
 	    send(StatusReport);
@@ -503,35 +555,32 @@ rules:
 	    return;
 	  end if;
 
+	  ok := true;
+	  if (event = EVENT_WITHDRAWAL and
+	      dialog->nonVerified->Marker->text.value = dialog->currentMarker->Marker->text.value) then
+	    ok := false;
+	  elsif ((event = EVENT_MERGE or event = EVENT_ALLELEOF) and
+	      dialog->mgiMarker->Marker->text.value = dialog->currentMarker->Marker->text.value) then
+	    ok := false;
+	  elsif (event = EVENT_SPLIT) then
+	    row := 0;
+	    while (row < mgi_tblNumRows(table)) do
+	      symbol := mgi_tblGetCell(table, row, table.markerSymbol);
+	      if (symbol = dialog->currentMarker->Marker->text.value) then
+		ok := false;
+	      end if;
+	      row := row + 1;
+	    end while;
+	  end if;
+
+	  if (not ok) then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "New Symbol cannot equal Withdrawn Symbol.  Try again.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
 	  (void) busy_cursor(dialog);
-
-	  -- Insert new symbols into string list
-
-	  new_symbols : string_list := create string_list();
-	  row : integer := 0;
-
-	  while (row < mgi_tblNumRows(table)) do
-	    symbol := mgi_tblGetCell(table, row, table.markerSymbol);
-
-	    if (symbol.length > 0) then
-	      new_symbols.insert(symbol, new_symbols.count + 1);
-	    end if;
-
-	    row := row + 1;
-	  end while;
-
-	  -- New symbol should not equal withdrawn symbol
-
-	  new_symbols.rewind;
-	  while (new_symbols.more) do
-	    if (new_symbols.next = top->Symbol->text.value) then
-              StatusReport.source_widget := top;
-	      StatusReport.message := "New Symbol cannot equal Withdrawn Symbol.  Try again.";
-	      send(StatusReport);
-	      (void) reset_cursor(dialog);
-	      return;
-	    end if;
-	  end while;
 
 	  -- Execute Python Wrapper
 
@@ -546,16 +595,18 @@ rules:
 
 	  if (event = EVENT_WITHDRAWAL) then
 	    cmds.insert("--newName=" + dialog->Name->text.value, cmds.count + 1);
-	    cmds.insert("--newSymbols=" + mgi_tblGetCell(table, 0, table.markerSymbol), cmds.count + 1);
+	    cmds.insert("--newSymbols=" + dialog->nonVerified->Marker->text.value, cmds.count + 1);
 	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
-	    cmds.insert("--newKey=" + mgi_tblGetCell(table, 0, table.markerKey), cmds.count + 1);
-	  end if;
-
-	  if (event = EVENT_SPLIT) then
+	    cmds.insert("--newKey=" + dialog->mgiMarker->ObjectID->text.value, cmds.count + 1);
+	  elsif (event = EVENT_SPLIT) then
+	    row := 0;
 	    buf := "";
-	    new_symbols.rewind;
-	    while (new_symbols.more) do
-	      buf := new_symbols.next + ",";
+	    while (row < mgi_tblNumRows(table)) do
+	      symbol := mgi_tblGetCell(table, row, table.markerSymbol);
+	      if (symbol.length > 0) then
+	        buf := buf + symbol + ",";
+	      end if;
+	      row := row + 1;
 	    end while;
 	    cmds.insert("--newSymbols=" + buf, cmds.count + 1);
 	  end if;
@@ -570,9 +621,9 @@ rules:
 	  (void) mgi_writeLog(buf);
 
           MarkerWithdrawalEnd.source_widget := dialog;
-          proc_id : opaque := 
-	   tu_fork_process2(cmds[1], cmds, nil, nil, MarkerWithdrawalEnd);
-	  tu_fork_free(proc_id);
+--          proc_id : opaque := 
+--	   tu_fork_process2(cmds[1], cmds, nil, nil, MarkerWithdrawalEnd);
+--	  tu_fork_free(proc_id);
 	end does;
 
 --
@@ -621,8 +672,8 @@ rules:
 	  dialog : widget := top->MRKBreakpointSplitDialog;
 
           dialog->Output.value := "";
-	  dialog->mgiMarker->ObjectID->text.value := "";
-	  dialog->mgiMarker->Marker->text.value := "";
+	  dialog->currentMarker->ObjectID->text.value := "";
+	  dialog->currentMarker->Marker->text.value := "";
 	  dialog->Band->text.value := "";
 	  dialog->ProximalSymbol->text.value := "";
 	  dialog->DistalSymbol->text.value := "";
@@ -642,8 +693,8 @@ rules:
 	MarkerBreakpointSplit does
 	  dialog : widget := top->MRKBreakpointSplitDialog;
 
-	  if (dialog->mgiMarker->ObjectID->text.value.length = 0 or
-	      dialog->mgiMarker->ObjectID->text.value = "NULL") then
+	  if (dialog->currentMarker->ObjectID->text.value.length = 0 or
+	      dialog->currentMarker->ObjectID->text.value = "NULL") then
             StatusReport.source_widget := top;
 	    StatusReport.message := "Marker Symbol required";
 	    send(StatusReport);
@@ -658,13 +709,13 @@ rules:
           cmds.insert("breakpointSplit.py", cmds.count + 1);
           cmds.insert("-U" + global_login, cmds.count + 1);
           cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-          cmds.insert("-o" + mgi_DBprstr(dialog->mgiMarker->Marker->text.value), cmds.count + 1);
+          cmds.insert("-o" + mgi_DBprstr(dialog->currentMarker->Marker->text.value), cmds.count + 1);
 
 	  if (dialog->DistalBand->text.value.length > 0) then
             cmds.insert("--db=" + dialog->DistalBand->text.value, cmds.count + 1);
 	  end if;
 
-          cmds.insert("--ok=" + dialog->mgiMarker->ObjectID->text.value, cmds.count + 1);
+          cmds.insert("--ok=" + dialog->currentMarker->ObjectID->text.value, cmds.count + 1);
  
           -- Print cmds to Output
  
@@ -696,7 +747,7 @@ rules:
  
           oFile : string := getenv("ARCHIVEDIR") + "/" + 
                             "/EVENT_SPLITS/breakpointSplit." + 
-			    dialog->mgiMarker->Marker->text.value;
+			    dialog->currentMarker->Marker->text.value;
 
           -- Print some diagnostics for the User and to the User log
  
