@@ -1422,6 +1422,12 @@ rules:
 
 	  broadcastType := Broadcast.type;
 
+	  -- Set value of currentNomenKey (because a Clear will not reset this value)
+
+	  if (top->QueryList->List.selectedItemCount = 0) then
+	    currentNomenKey := "";
+	  end if;
+
 	  -- For Add, allow (D:Verify) to test for required fields, etc.
 	  -- If the Add verifications pass, continue
 

@@ -4,7 +4,7 @@
 --
 -- TopLevelShell:		ControlledVocab
 -- Database Tables Affected:	All Controlled Vocabulary tables defined
---				in LookupMenu template.
+--				in ControlledVocabMenu template.
 --
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
@@ -48,7 +48,7 @@ devents:
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [item_position : integer;];
-	SelectLookup :local [source_widget : widget;];
+	SelectControlledVocab :local [source_widget : widget;];
 
 locals:
 	mgi : widget;
@@ -88,7 +88,7 @@ rules:
 --
 -- Init
 --
--- Initialize first Lookup table and prepare form
+-- Initialize first ControlledVocab table and prepare form
 -- for this first table
 --
 
@@ -98,18 +98,18 @@ rules:
 	  i : integer := 1;
 	  child : widget;
 
-	  while (i <= top->LookupMenu.subMenuId.num_children) do
-	    child := top->LookupMenu.subMenuId.child(i);
+	  while (i <= top->ControlledVocabMenu.subMenuId.num_children) do
+	    child := top->ControlledVocabMenu.subMenuId.child(i);
 	    if (child.managed) then
-	      top->LookupMenu.menuHistory := child;
+	      top->ControlledVocabMenu.menuHistory := child;
 	      break;
 	    end if;
 	    i := i + 1;
 	  end while;
 
 	  -- Initialize form for first child
-	  SelectLookup.source_widget := child;
-	  send(SelectLookup, 0);
+	  SelectControlledVocab.source_widget := child;
+	  send(SelectControlledVocab, 0);
 	end does;
 
 --
@@ -126,7 +126,7 @@ rules:
 	  -- Do not allow insertions of certain records
 	  -- Generally, the Not Specified and Not Applicable records cannot be inserted
 
-	  if (not top->LookupMenu.menuHistory.allowModifications) then
+	  if (not top->ControlledVocabMenu.menuHistory.allowModifications) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot add this record.";
             send(StatusReport);
@@ -160,7 +160,7 @@ rules:
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
             send(Clear, 0);
-	    top->LookupMenu.menuHistory.set := true;
+	    top->ControlledVocabMenu.menuHistory.set := true;
 	  end if;
 
           (void) reset_cursor(top);
@@ -180,7 +180,7 @@ rules:
 	  -- Do not allow record deletions for some records
 	  -- Generally, Not Specified and Not Applicable records cannot be deleted
 	  
-	  if (not top->LookupMenu.menuHistory.allowModifications or (integer) key < 0) then
+	  if (not top->ControlledVocabMenu.menuHistory.allowModifications or (integer) key < 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot delete this record.";
             send(StatusReport);
@@ -197,7 +197,7 @@ rules:
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
             send(Clear, 0);
-	    top->LookupMenu.menuHistory.set := true;
+	    top->ControlledVocabMenu.menuHistory.set := true;
 	  end if;
 
           (void) reset_cursor(top);
@@ -221,7 +221,7 @@ rules:
 	  -- Do not allow modifications of certain records
 	  -- Generally, the Not Specified and Not Applicable records cannot be modified
 
-	  if (not top->LookupMenu.menuHistory.allowModifications or (integer) key < 0) then
+	  if (not top->ControlledVocabMenu.menuHistory.allowModifications or (integer) key < 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot modify this record.";
             send(StatusReport);
@@ -378,23 +378,23 @@ rules:
 	  Clear.source_widget := top;
           Clear.reset := true;
           send(Clear, 0);
-	  top->LookupMenu.menuHistory.set := true;
+	  top->ControlledVocabMenu.menuHistory.set := true;
 
 	  (void) reset_cursor(top);
 	end does;
 
 --
--- SelectLookup
+-- SelectControlledVocab
 --
--- Prepares form for selected Lookup table
+-- Prepares form for selected ControlledVocab table
 -- Initialize global variabes for selected table
 --
--- Activated from:  LookupMenu->LookupToggle
+-- Activated from:  ControlledVocabMenu->ControlledVocabToggle
 --
 
-	SelectLookup does
+	SelectControlledVocab does
 
-	  tableID := SelectLookup.source_widget.dbTable;
+	  tableID := SelectControlledVocab.source_widget.dbTable;
 
 	  table := mgi_DBtable(tableID);
 	  tableKey := mgi_DBkey(tableID);
@@ -429,7 +429,7 @@ rules:
 	  Clear.source_widget := top;
 	  send(Clear, 0);
  
-	  SelectLookup.source_widget.set := true;
+	  SelectControlledVocab.source_widget.set := true;
 	end does;
 
 --
