@@ -151,6 +151,7 @@ import os
 import getopt
 import db
 import accessionlib
+import loadlib
 
 def error(msg):
 	'''
@@ -234,6 +235,7 @@ def init():
  
 	global nlmFile, diagFile, dupsFile, nomatchFile, submissionFile, outFile
 	global mode, nextJnum
+	global userKey
  
         try:
                 optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:j:', ['mode='])
@@ -316,6 +318,8 @@ def init():
 
 		if nextJnum is None:
 			showUsage()
+
+	userKey = loadlib.verifyUser(user, 0, diagFile)
 
 def finish():
 	'''
@@ -614,10 +618,10 @@ def doAdd(rec, rectags):
 	# Make sure 'declare' is prepended to Transact SQL command
 	cmd.append('declare @nextRef int\n' + \
 		'select @nextRef = max(_Refs_key) + 1 from BIB_Refs\n' + \
-		'%s values(@nextRef,%d,"ART",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NULL,"Y",0,%s)' \
+		'%s values(@nextRef,%d,"ART",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,"Y",0,%s,%s,%s)' \
 		% (INSERTBIB, REVIEWSTATUS, rec['AU'], rec['AU2'], rec['PAU'], \
 		rec['TI'], rec['TI2'], rec['TA'], rec['VI'], rec['IP'], \
-		rec['DP'], rec['YR'], rec['PG'], rec['AB']))
+		rec['DP'], rec['YR'], rec['PG'], rec['AB'], userKey, userKey))
  
 	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
 
@@ -798,7 +802,7 @@ PUBMEDKEY = 29
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
 
-INSERTBIB = 'insert BIB_Refs (_Refs_key, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, dbs, NLMstatus, isReviewArticle, abstract)\n'
+INSERTBIB = 'insert BIB_Refs (_Refs_key, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)\n'
 
 init()
 processFile()
