@@ -2918,9 +2918,6 @@ char *mgi_DBcvname(int table)
     case GXD_PATTERN:
             strcpy(buf, "pattern");
 	    break;
-    case GXD_FIELDTYPE:
-            strcpy(buf, "fieldType");
-	    break;
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "antibodyType");
 	    break;
