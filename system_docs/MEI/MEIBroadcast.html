@@ -89,7 +89,26 @@ Nomenclature Committee can trace the evolution of the symbol as nomenclature eve
 	    This will aid in backing out the withdrawal if it was withdrawn in error.
 	    See the <I>Output from the Broadcast</I> section for more information about this file.
 	<P>
-	<LI>All Marker detail information is moved to the new symbol:
+	<LI>If the withdrawal is <B>simple</B> (i.e. the new symbol does not exist):
+		<UL>
+		<LI>The new symbol is assigned to the original MGI Accession number.
+		<LI>The old symbol is assigned a new MGI Accession number.
+		<LI>All data is associated with the new symbol.
+		</UL>
+	<P>
+	<LI>If the withdrawal is a split:
+		<UL>
+		<LI>The new symbols are created and assigned MGI Accession numbers.
+		<LI>The history of the old symbol is copied to each of the new symbols.
+		<LI>The accession numbers of the old symbol are copied to each of the
+		    new symbols <B>except</B> the preferred MGI Accession number.
+		<LI>The other names, other references (MLC indexing), mapping, homology,
+		    GXD, molecular segment and phenotype data stay with the other symbol.
+		    These data must be manually moved to one of the new symbols.
+		</UL>
+	<P>
+	<LI>For all other types of withdrawals, all Marker detail information is moved to 
+	    the new symbol:
 		<UL>
 	    	<LI>Accession numbers; the new symbol MGI: accession number is the
 		    preferred accession number and all others are secondary.
