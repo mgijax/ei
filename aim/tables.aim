@@ -17,7 +17,7 @@ CALLS
 
 	-- Note: I've added the '&' to transfer ownership of the allocated
 	-- memory in the return string to D. This was a memory leak prior - gld.
-	 mgi_tblGetCell("Widget", "int", "int")			:& "char *";
+	 mgi_tblGetCell("Widget", "int", "int")			: & "char *";
 
 	 mgi_tblGetCurrentColumn("Widget")			: "int";
 	 mgi_tblGetCurrentRow("Widget")				: "int";
