@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 08:26:31 1999";
+      lastWritten = "Thu Oct 14 10:54:54 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -6642,24 +6642,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NLMDialog = NLMDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        Output = XmScrolledText;
-                                      }
-                                }
-                          }
                     }
               }
         }

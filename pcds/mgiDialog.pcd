@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 08:26:27 1999";
+      lastWritten = "Thu Oct 14 10:48:27 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -185,9 +185,12 @@ Module: mgiDialog
                                         Portrait = toggle : mgiDataTypes;
                                         Group: Widget
                                           set = True;
+                                          labelString = Portrait;
                                       }
                                       {
                                         Landscape = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = Landscape;
                                       }
                                 }
                           }
@@ -198,8 +201,8 @@ Module: mgiDialog
                                       {
                                         OneColumn = toggle : mgiDataTypes;
                                         Group: Widget
-                                          labelString = "1 column";
                                           set = True;
+                                          labelString = "1 column";
                                       }
                                       {
                                         TwoColumn = toggle : mgiDataTypes;
@@ -377,27 +380,6 @@ Module: mgiDialog
                                     items = "NLM/CC Updates";
                                   Group: User
                                     keys = "nlm.py";
-                                }
-                          }
-                          {
-                            PrinterList = LookupList;
-                          }
-                          {
-                            PrintOrient = Choice : mgiDataTypes;
-                                {
-                                  PrintOrientBox = XmRowColumn;
-                                }
-                                {
-                                  ChoiceBox = XmRowColumn;
-                                }
-                          }
-                          {
-                            PrintColumn = Choice : mgiDataTypes;
-                                {
-                                  PrintColumnBox = XmRowColumn;
-                                }
-                                {
-                                  ChoiceBox = XmRowColumn;
                                 }
                           }
                     }

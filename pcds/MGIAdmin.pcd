@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 08:26:37 1999";
+      lastWritten = "Thu Oct 14 10:48:36 1999";
         {
           MGIAdmin = Application : MGI;
           Group: Control
