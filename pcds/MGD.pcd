@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan  4 14:28:02 2005";
+      lastWritten = "Tue Jan 18 15:17:27 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11339,7 +11339,7 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          MarkerModule = Module : MGI;
+          MarkerSave = Module : MGI;
           Group: Control
             vip_x = 80;
             vip_y = 360;
@@ -12259,7 +12259,7 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          Marker1 = Module : MGI;
+          MarkerModule = Module : MGI;
           Group: Control
             vip_x = 167;
             vip_y = 341;
@@ -12397,12 +12397,12 @@ Shift<Key>Tab: prev-tab-group()
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftOffset = 10;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Offset;
+                                    leftWidget = Alias;
                                     topWidget = ChromosomeMenu;
                                     topOffset = 15;
                                       {
@@ -12520,7 +12520,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 60;
+                                          columns = 50;
                                         Group: User
                                           required = True;
                                       }
@@ -12561,14 +12561,14 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Alias = Table : mgiTable;
                                   Group: Constraint
-                                    leftAttachment = attach_form;
+                                    leftAttachment = attach_widget;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = History;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Offset;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 2;
+                                    leftWidget = Offset;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -12580,43 +12580,9 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblMaxLengthSeries = "(all 3 25)";
                                           xrtTblTraversableSeries = "(all 0-2 False)";
                                           userDefinedAttributes = "markerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"3\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int=\"1\"\n";
-                                          xrtTblVisibleRows = 2;
+                                          xrtTblVisibleRows = 3;
                                           xrtTblEditableSeries = "(all 0-2 False)";
-                                      }
-                                }
-                                {
-                                  Allele = Table : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Alias;
-                                    leftOffset = 10;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = History;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblNumColumns = 4;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 25)(all 3 60)";
-                                          xrtTblMaxLengthSeries = "(all 2 50)(all 3 255)";
-                                          xrtTblEditableSeries = "(all 0-1 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)";
-                                          xrtTblColumnLabels = "Mode,Key,Allele Symbol,Allele Name";
-                                          userDefinedAttributes = "alleleKey:Int=\"1\"\nalleleSymbol:Int=\"2\"\nalleleName:Int=\"3\"\n";
-                                          xrtTblVisibleRows = 2;
-                                          xrtTblTraversableSeries = "(all 0-1 False)";
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
+                                          xrtTblNumRows = 3;
                                       }
                                 }
                                 {
@@ -12627,7 +12593,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_form;
                                     rightOffset = 2;
                                     topAttachment = attach_widget;
-                                    topWidget = Alias;
+                                    topWidget = History;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;

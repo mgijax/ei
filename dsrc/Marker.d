@@ -190,7 +190,6 @@ locals:
 
 	currentChr : string;		-- current Chromosome of selected record
 	currentName : string;		-- current Name of selected record
-	hasAlleles : boolean;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -293,7 +292,6 @@ rules:
 	  tables.append(top->History->Table);
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
-	  tables.append(top->Allele->Table);
 	  tables.append(top->Offset->Table);
 	  tables.append(top->Synonym->Table);
 	  tables.append(top->Reference->Table);
@@ -533,7 +531,13 @@ rules:
 	  send(SetOption, 0);
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
-	  dialog->hasAlleles.set := hasAlleles;
+	  alleleCount : string;
+	  alleleCount := mgi_sql1("select count(*) from ALL_Allele where _Marker_key = " + currentRecordKey);
+	  if ((integer) alleleCount > 0) then
+	    dialog->hasAlleles.set := true;
+          else
+	    dialog->hasAlleles.set := false;
+	  end if;
 	  dialog->addAsSynonym.set := true;
 
 	  dialog->nonVerified->ObjectID->text.value := "";
@@ -1304,7 +1308,6 @@ rules:
 
 	PrepareSearch does
 	  from_alias    : boolean := false;
-	  from_allele   : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
 	  from_offset   : boolean := false;
@@ -1453,18 +1456,6 @@ rules:
 	    from_alias := true;
 	  end if;
 
-          value := mgi_tblGetCell(top->Allele->Table, 0, top->Allele->Table.alleleSymbol);
-          if (value.length > 0) then
-	    where := where + "\nand ml.symbol like " + mgi_DBprstr(value);
-	    from_allele := true;
-	  end if;
-
-          value := mgi_tblGetCell(top->Allele->Table, 0, top->Allele->Table.alleleName);
-          if (value.length > 0) then
-	    where := where + "\nand ml.name like " + mgi_DBprstr(value);
-	    from_allele := true;
-	  end if;
-
           value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
           if (value.length > 0) then
 	    where := where + "\nand mr._Refs_key = " + value;
@@ -1496,11 +1487,6 @@ rules:
 	  if (from_alias) then
 	    from := from + ",MRK_Alias_View ma";
 	    where := where + "\nand m._Marker_key = ma._Marker_key";
-	  end if;
-
-	  if (from_allele) then
-	    from := from + ",ALL_Allele ml";
-	    where := where + "\nand m._Marker_key = ml._Marker_key";
 	  end if;
 
 	  if (from_history) then
@@ -1573,8 +1559,6 @@ rules:
 
           (void) busy_cursor(top);
 
-	  hasAlleles := false;
-
 	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
@@ -1596,9 +1580,6 @@ rules:
 		 "where _Marker_key = " + currentRecordKey + "\n" +
 	         "select _Alias_key, alias from MRK_Alias_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
-	         "select _Allele_key, symbol, name from " + mgi_DBtable(ALL_ALLELE) +
-		 " where _Marker_key = " + currentRecordKey +
-		 " order by symbol\n" +
 	         "select _Refs_key, jnum, short_citation, isReviewArticle " +
 		 "from MRK_Reference_View " +
 		 "where _Marker_key = " + currentRecordKey + " and auto = 0 " +
@@ -1706,13 +1687,6 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 7) then
-		table := top->Allele->Table;
-                (void) mgi_tblSetCell(table, row, table.alleleKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.alleleSymbol, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.alleleName, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		hasAlleles := true;
-	      elsif (results = 8) then
 		table := top->Reference->Table;
                 (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
