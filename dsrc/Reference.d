@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- lec 10/05/1999
+--	- TR 375; new attribute isReviewArticle for BIB_Refs
+--
 -- lec 04/02/1999
 --	- TR 462; fixed problem with translations; replaced top->Date with
 --	  template top->mgiDate
@@ -252,6 +255,7 @@ rules:
             cmd := cmd + mgi_DBprstr(top->NLMStatusMenu.menuHistory.defaultValue) + ",";
           end if;
  
+	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + mgi_DBprstr(top->Abstract->text.value) + ")\n";
 
 	  -- System will assign the J: unless it is overridden by the user
@@ -398,7 +402,8 @@ rules:
             set := set + "_ReviewStatus_key = "  + reviewStatus + ",";
           end if;
  
-	  if (top->RefTypeMenu.menuHistory.modified) then
+	  if (top->RefTypeMenu.menuHistory.modified and
+              top->RefTypeMenu.menuHistory.searchValue != "%") then
 	    set := set + "r.refType = " + mgi_DBprstr(top->RefTypeMenu.menuHistory.defaultValue) + ",";
 	  end if;
 
@@ -407,6 +412,11 @@ rules:
             set := set + "NLMstatus = "  + mgi_DBprstr(top->NLMStatusMenu.menuHistory.defaultValue) + ",";
           end if;
  
+	  if (top->IsReviewMenu.menuHistory.modified and
+              top->IsReviewMenu.menuHistory.searchValue != "%") then
+	    set := set + "r.isReviewArticle = " + top->IsReviewMenu.menuHistory.defaultValue + ",";
+	  end if;
+
 	  if (top->Authors->text.modified) then
 	    if (top->Authors->text.value.length <= 255) then
 	      set := set + "authors = " + mgi_DBprstr(top->Authors->text.value) + ",authors2 = NULL,";
@@ -574,6 +584,10 @@ rules:
  
           if (top->NLMStatusMenu.menuHistory.searchValue != "%") then
             where := where + "\nand r.NLMstatus = " + mgi_DBprstr(top->NLMStatusMenu.menuHistory.searchValue);
+          end if;
+ 
+          if (top->IsReviewMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand r.isReviewArticle = " + top->IsReviewMenu.menuHistory.searchValue;
           end if;
  
 	  if (top->Authors->text.value.length > 0) then
@@ -783,8 +797,8 @@ rules:
 	        top->Page->text.value      := mgi_getstr(dbproc, 14);
 	        top->DBS->text.value 	   := mgi_getstr(dbproc, 15);
 	        top->Abstract->text.value  := mgi_getstr(dbproc, 17);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 18);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 19);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 19);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 20);
 
                 SetOption.source_widget := top->ReviewStatusMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -796,6 +810,10 @@ rules:
 
                 SetOption.source_widget := top->NLMStatusMenu;
                 SetOption.value := mgi_getstr(dbproc, 16);
+                send(SetOption, 0);
+ 
+                SetOption.source_widget := top->IsReviewMenu;
+                SetOption.value := mgi_getstr(dbproc, 18);
                 send(SetOption, 0);
  
 	        top->BookForm->Editors->text.value   := "";
