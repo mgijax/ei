@@ -746,8 +746,7 @@ rules:
 	  (void) dbclose(dbproc);
 
 	  -- Sort by DAG
-	  if (annotTable.annotVocab = "GO" or 
-	      annotTable.annotVocab = "Mammalian Phenotype") then
+	  if (annotTable.annotVocab = "GO") then
 	    (void) mgi_tblSort(annotTable, annotTable.dag);
 	  end if;
 
