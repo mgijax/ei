@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 01/02/2003 lec
+--	- TR 4272; annotation for Mammalian Phenotype
+--
 -- 10/10/2002 lec
 --	- TR 4159; collapsing of _Annot_key not occuring properly if
 --	  user does not select the NOT value
@@ -279,7 +282,6 @@ rules:
 	  keyDeclared : boolean := false;
 	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
-	  position : integer;
  
           if (not top.allowEdit) then
             return;
@@ -324,12 +326,6 @@ rules:
 	      notKey := NO;
 	      -- set it in the table because we need to check it later on...
 	      mgi_tblSetCell(annotTable, row, annotTable.notKey, notKey);
-	    end if;
-
-	    -- Default Evidence Code for PhenoSlim is "TAS"
-	    if ((evidenceKey = "NULL" or evidenceKey.length = 0) and annotTable.annotVocab = "PhenoSlim") then
-	      position := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
-	      evidenceKey := top->EvidenceCodeList->List.keys[position];
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -597,7 +593,8 @@ rules:
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
 	  -- Different Sorts for different Annotation Types
-	  if (annotTable.annotVocab = "GO") then
+	  if (annotTable.annotVocab = "GO" or
+	      annotTable.annotVocab = "Mammalian Phenotype") then
 	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
 	  elsif (annotTable.annotVocab = "PhenoSlim") then
 	    orderBy := "a.sequenceNum, e.modification_date\n";
@@ -688,8 +685,9 @@ rules:
  
 	  (void) dbclose(dbproc);
 
-	  -- Sort by DAG for GO Annotations
-	  if (annotTable.annotVocab = "GO") then
+	  -- Sort by DAG
+	  if (annotTable.annotVocab = "GO" or 
+	      annotTable.annotVocab = "Mammalian Phenotype") then
 	    (void) mgi_tblSort(annotTable, annotTable.dag);
 	  end if;
 
@@ -838,7 +836,8 @@ rules:
             LoadList.list := top->PhenoSlimList;
 	    send(LoadList, 0);
 	    top->Reference.managed := false;
-	  elsif (annotTable.annotVocab = "GO") then
+	  elsif (annotTable.annotVocab = "GO" or
+		 annotTable.annotVocab = "Mammalian Phenotype") then
 	    top->PhenoSlimList.managed := false;
 	    top->Reference.managed := true;
 	  end if;
