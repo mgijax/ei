@@ -996,6 +996,8 @@ rules:
 	    value := top->Chromosome->text.value;
 	  end if;
 
+	  (void) busy_cursor(top);
+
 	  if (isTable) then
             speciesKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.speciesKey);
 	  else
@@ -1024,6 +1026,7 @@ rules:
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
 
+	  (void) reset_cursor(top);
 	end does;
 
 --
