@@ -218,7 +218,7 @@ def printRec(fd, rec, rectags, msg = None):
 
 	for t in rectags:
 		if mode in ('nlm', 'addnlm'):
-			str = t + ' -'
+			str = t + '  -'
 		else:
 			str = t
 
