@@ -56,8 +56,6 @@ int mgi_dbinit(char *user, char *pwd)
   static char passwdfile[TEXTBUFSIZ];
   static char reportdir[TEXTBUFSIZ];
 
-  int mgi_err_handler();
-  int mgi_msg_handler();
   FILE *pf;
 
   DBPROCESS *dbproc;

@@ -2673,13 +2673,13 @@ char *mgi_DBdelete(int table, char *key)
 		mgi_DBtable(table), tokens[0], tokens[1]);
 	      break;
       case MLC_TEXT_ALL:
-	      sprintf(buf, "delete from %s where %s = %s\n 
-			    delete from MRK_Classes where %s = %s\n 
-			    delete from MLC_Marker where %s = %s 
-			    delete from MLC_Reference where %s = %s\n",
-			mgi_DBtable(table), mgi_DBkey(table), key,
-			mgi_DBkey(table), key,
-			mgi_DBkey(table), key,
+	      sprintf(buf, "delete from %s where %s = %s\n  \
+			    delete from MRK_Classes where %s = %s\n  \
+			    delete from MLC_Marker where %s = %s  \
+			    delete from MLC_Reference where %s = %s\n", \
+			mgi_DBtable(table), mgi_DBkey(table), key, \
+			mgi_DBkey(table), key, \
+			mgi_DBkey(table), key, \
 			mgi_DBkey(table), key);
 	      break;
       case MGI_COLUMNS:
