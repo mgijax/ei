@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Oct  5 14:06:57 1999";
+      lastWritten = "Tue Oct 12 13:27:07 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -7171,6 +7171,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblTraversableSeries = "(all 0-4 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nmarkerName:Int(Int)=\"6\"\neventDate:Int(Int)=\"7\"\njnum:Int(Int)=\"8\"\ncitation:Int(Int)=\"9\"\nevent:Int(Int)=\"10\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int=\"7\"\n";
+                                          xrtTblVisibleRows = 4;
                                         Group: User
                                           saveTraversableSeries = "(all 0-4 False)";
                                           saveEditableSeries = "(all 0-4 False)";
@@ -7244,7 +7245,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 5;
+                                          xrtTblVisibleRows = 4;
                                           xrtTblNumColumns = 9;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 30)(all 6 10)(all 7 60)";
                                           xrtTblColumnLabels = "Mode,Other Key,Current Key,New Key,Review Key,Other Name,J#,Citation,Review?";
@@ -7252,7 +7253,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumRows = 6;
                                           xrtTblEditableSeries = "(all 0-4 False)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
-                                          userDefinedAttributes = "reviewKey:Int(Int)=\"4\"\nreview:Int(Int)=\"8\"\notherName:Int(Int)=\"5\"\n";
+                                          userDefinedAttributes = "reviewKey:Int(Int)=\"4\"\nreview:Int(Int)=\"8\"\notherName:Int(Int)=\"5\"\notherKey:Int=\"1\"\n";
                                         Group: User
                                           jnum = 6;
                                           citation = 7;
@@ -7274,6 +7275,8 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomOffset = 5;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 4;
                                       }
                                       {
                                         Add = TablePush;
@@ -7425,7 +7428,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list;
                                         Group: Widget
-                                          visibleItemCount = 30;
+                                          visibleItemCount = 25;
                                       }
                                 }
                                 {
