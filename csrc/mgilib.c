@@ -1638,15 +1638,6 @@ char *mgi_DBtable(int table)
     case NOM_TRANSFERSYMBOL:
 	    strcpy(buf, "NOM_transferToMGD");
 	    break;
-    case NOM_TRANSFERBATCH:
-	    strcpy(buf, "NOM_transferAllToMGD");
-	    break;
-    case NOM_TRANSFERREFEDITOR:
-	    strcpy(buf, "NOM_transferEditorRefToMGD");
-	    break;
-    case NOM_TRANSFERREFCOORD:
-	    strcpy(buf, "NOM_transferCoordRefToMGD");
-	    break;
     case PRB_ALIAS:
             strcpy(buf, "PRB_Alias");
 	    break;
