@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 25 11:15:40 2000";
+      lastWritten = "Thu Aug 24 10:27:56 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -11,8 +11,8 @@ Module: MGI
           Group: Widget
             userDefinedAttributes = "recordModified:Boolean(Boolean)=\"False\"\n";
           Group: Control
-            vip_x = 200;
-            vip_y = 30;
+            vip_x = 70;
+            vip_y = 140;
               {
                 Login = XmFrame;
                     {
@@ -200,7 +200,7 @@ Module: MGI
             destroyCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
-            vip_x = 40;
+            vip_x = 70;
             vip_y = 30;
             vipComment = "TopLevelShell is used for normal top-level windows such as any additional top-level widgets an application needs.";
           Group: User
@@ -369,8 +369,8 @@ Module: MGI
             userDefinedAttributes = "homeWidget:StringTable(StringTable)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
             focusCallback = "D:StatusReportFront";
           Group: Control
-            vip_x = 120;
-            vip_y = 85;
+            vip_x = 70;
+            vip_y = 250;
               {
                 ID = ID : mgiDataTypes;
               }
@@ -382,8 +382,8 @@ Module: MGI
             destroyCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
-            vip_x = 120;
-            vip_y = 30;
+            vip_x = 70;
+            vip_y = 85;
             vipComment = "TopLevelShell is used for normal top-level windows such as any additional top-level widgets an application needs.";
               {
                 MainForm = XmForm;
@@ -546,8 +546,8 @@ Module: MGI
             resizePolicy = resize_any;
             userDefinedAttributes = "sqlFrom:String\nsqlWhere:String\n";
           Group: Control
-            vip_x = 200;
-            vip_y = 85;
+            vip_x = 70;
+            vip_y = 305;
           Group: User
             homeWidget = Library;
               {
@@ -783,8 +783,8 @@ Module: MGI
           Group: Widget
             title = "MGI Controlled Vocabulary";
           Group: Control
-            vip_x = 200;
-            vip_y = 140;
+            vip_x = 70;
+            vip_y = 470;
           Group: User
             homeWidget = Name;
             activateButtonName = ControlledVocab;
@@ -1058,8 +1058,8 @@ Module: MGI
             destroyCallback = "D:ExitApplication";
             userDefinedAttributes = "initDialog:StringTable\ndbInfo:String(String)\n";
           Group: Control
-            vip_x = 40;
-            vip_y = 85;
+            vip_x = 70;
+            vip_y = 195;
               Popups:
               {
                 StatusDialog = StatusDialog : mgiDialog;
@@ -1071,8 +1071,8 @@ Module: MGI
         {
           MGI = Application : MGI;
           Group: Control
-            vip_x = 120;
-            vip_y = 140;
+            vip_x = 70;
+            vip_y = 415;
           Group: User
             initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
               {
@@ -1291,8 +1291,8 @@ Module: MGI
             userDefinedAttributes = "homeWidget:StringTable(StringTable)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
             focusCallback = "D:StatusReportFront";
           Group: Control
-            vip_x = 40;
-            vip_y = 140;
+            vip_x = 70;
+            vip_y = 360;
         }
 }
 
