@@ -185,11 +185,16 @@ rules:
           table : widget := ProcessNoteTypeTable.table;
 	  objectKey : string := ProcessNoteTypeTable.objectKey;
 
+	  -- needed if using the default Note Type feature
+
+	  tableID : integer := ProcessNoteTypeTable.tableID;
+
 	  cmd : string;
           row : integer := 0;
 	  i : integer := 1;
           editMode : string;
           key : string;
+	  defaultNoteTypeKey : string;
 	  noteTypeKey : string;
 	  note : string;
 	  mgiType : string;
@@ -199,15 +204,25 @@ rules:
  
           -- Process 
  
+	  if (table.useDefaultNoteType) then
+	    defaultNoteTypeKey := mgi_sql1("select _NoteType_key from " + mgi_DBtable(tableID) +
+		" where noteType = " + mgi_DBprstr(table.defaultNoteType));
+	  end if;
+
           while (row < mgi_tblNumRows(table)) do
 
+	    i := 1;
             editMode := mgi_tblGetCell(table, row, table.editMode);
             key := mgi_tblGetCell(table, row, table.noteKey);
-	    noteTypeKey := mgi_tblGetCell(table, row, table.noteTypeKey);
 	    note := mgi_tblGetCell(table, row, table.note);
 	    mgiType := (string) table.mgiTypeKey;
-	    i := 1;
  
+	    if (table.useDefaultNoteType) then
+	      noteTypeKey := defaultNoteTypeKey;
+	    else
+	      noteTypeKey := mgi_tblGetCell(table, row, table.noteTypeKey);
+	    end if;
+
             if (editMode = TBL_ROW_ADD or editMode = TBL_ROW_MODIFY) then
 
 	      -- if modifying, then delete existing notes first

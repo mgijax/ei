@@ -147,7 +147,6 @@ rules:
 --
 
 	BuildDynamicComponents does
-	  -- Dynamically create Menus
 
 	  -- Initialize Note Type table
 
@@ -194,8 +193,7 @@ rules:
           send(SetRowCount, 0);
  
           -- Clear form
-          Clear.source_widget := top;
-          send(Clear, 0);
+          send(ClearMP, 0);
 
 	  -- If launched from the Genotype Module...
 	  if (genotype != nil and ab.is_defined("annotTypeKey") != nil) then
@@ -244,13 +242,17 @@ rules:
 
 	ClearMP does
 
-	  if (not ClearMP.reset) then
-	    noteTable->label.labelString := "Notes";
-	  end if;
-
 	  Clear.source_widget := top;
 	  Clear.reset := ClearMP.reset;
 	  send(Clear, 0);
+
+	  if (not ClearMP.reset) then
+	    noteTable->label.labelString := "Notes";
+--	    InitNoteTypeTable.table := top->Note->Table;
+--	    InitNoteTypeTable.tableID := MGI_NOTETYPE_VOCEVIDENCE_VIEW;
+--	    send(InitNoteTypeTable, 0);
+	  end if;
+
 	end does;
 
 --
@@ -574,6 +576,7 @@ rules:
 
           ProcessNoteTypeTable.table := noteTable;
           ProcessNoteTypeTable.objectKey := annotEvidenceKey;
+	  ProcessNoteTypeTable.tableID := MGI_NOTETYPE_VOCEVIDENCE_VIEW;
           send(ProcessNoteTypeTable, 0);
 
           ModifySQL.cmd := noteTable.sqlCmd;

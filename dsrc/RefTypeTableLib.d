@@ -197,7 +197,7 @@ rules:
           table : widget := ProcessRefTypeTable.table;
 	  
 	  -- temporary id for table that has only one
-	  -- referenc type (like Markers) that the user doesn't even see
+	  -- reference type (like Markers) that the user doesn't even see
 
 	  tableID : integer := ProcessRefTypeTable.tableID;
 
@@ -207,6 +207,7 @@ rules:
           editMode : string;
           assocKey : string;
           refsKey : string;
+	  defaultRefsTypeKey : string;
 	  refsTypeKey : string;
 	  mgiTypeKey : string;
 	  isReviewArticle : string;
@@ -217,7 +218,8 @@ rules:
 	  reftableID : integer := MGI_REFERENCE_ASSOC;
 
 	  if (table.useDefaultRefType) then
-	    refsTypeKey := mgi_sql1("select _RefAssocType_key from " + mgi_DBtable(tableID));
+	    defaultRefsTypeKey := mgi_sql1("select _RefAssocType_key from " + mgi_DBtable(tableID) +
+		" where assocType = " + mgi_DBprstr(table.defaultRefType));
 	  end if;
 
           -- Process 
@@ -230,9 +232,12 @@ rules:
 	    mgiTypeKey := (string) table.mgiTypeKey;
             isReviewArticle := mgi_tblGetCell(table, row, table.reviewKey);
  
-	    if (not table.useDefaultRefType) then
+	    if (table.useDefaultRefType) then
+	      refsTypeKey := defaultRefsTypeKey;
+	    else
 	      refsTypeKey := mgi_tblGetCell(table, row, table.refsTypeKey);
 	    end if;
+
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keyDefined) then

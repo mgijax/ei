@@ -97,6 +97,12 @@ locals:
 
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
 
+	pendingStatusKey : string;
+	defaultInheritanceKey : string;
+	defaultESCellLineKey : string;
+	defaultStrainKey : string;
+	defaultMutantESCellLineKey : string;
+
 rules:
 
 --
@@ -215,6 +221,20 @@ rules:
 	  -- Clear
 	  send(ClearAllele, 0);
 
+	  pendingStatusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
+
+	  defaultInheritanceKey := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
+		"where term = " + mgi_DBprstr(top->InheritanceModeMenu.defaultValue));
+
+	  defaultESCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 0 " +
+		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
+
+	  defaultStrainKey := mgi_sql1("select _Strain_key from ALL_CellLine where isMutant = 0 " +
+		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
+
+	  defaultMutantESCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 1 " +
+		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiMutantESCellLine->CellLine->text.defaultValue));
+
 	end does;
 
 --
@@ -317,7 +337,7 @@ rules:
 	  -- if allele is transgenic (reporter) then status is "in progress"
 
           if (top->AlleleTypeMenu.menuHistory.labelString = TRANSGENIC_REPORTER) then
-	    statusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
+	    statusKey := pendingStatusKey;
 	    approvalLoginDate := "NULL,NULL)\n";
           elsif (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
@@ -328,25 +348,21 @@ rules:
 	  end if;
 
 	  if (top->InheritanceModeMenu.menuHistory.defaultValue = "%") then
-	    inheritanceKey := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
-		"where term = " + mgi_DBprstr(top->InheritanceModeMenu.defaultValue));
+	    inheritanceKey := defaultInheritanceKey;
 	  else
 	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
 	  end if;
 
 	  if (top->EditForm->mgiParentalESCellLine->ObjectID->text.value.length = 0) then
-	    esCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 0 " +
-		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
-	    strainKey := mgi_sql1("select _Strain_key from ALL_CellLine where isMutant = 0 " +
-		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
+	    esCellLineKey := defaultESCellLineKey;
+	    strainKey := defaultStrainKey;
 	  else
 	    esCellLineKey := top->EditForm->mgiParentalESCellLine->ObjectID->text.value;
 	    strainKey := top->EditForm->mgiParentalESCellLine->StrainID->text.value;
 	  end if;
 
 	  if (top->EditForm->mgiMutantESCellLine->ObjectID->text.value.length = 0) then
-	    mutantesCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 1 " +
-		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiMutantESCellLine->CellLine->text.defaultValue));
+	    mutantesCellLineKey := defaultMutantESCellLineKey;
 	  else
 	    mutantesCellLineKey := top->EditForm->mgiMutantESCellLine->ObjectID->text.value;
 	  end if;
@@ -646,7 +662,7 @@ rules:
 	  -- if allele is transgenic (reporter) then status is "in progress"
 
           if (top->AlleleTypeMenu.menuHistory.labelString = TRANSGENIC_REPORTER) then
-	    statusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
+	    statusKey := pendingStatusKey;
             set := set + "_Allele_Status_key = "  + statusKey + ",";
 	    set := set + "_ApprovedBy_key = null,approval_date = null,";
           elsif (top->AlleleStatusMenu.menuHistory.modified and
