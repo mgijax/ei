@@ -41,6 +41,9 @@ else:
 
 nomenFrom = 'from ' + nomen + '..'
 
+if len(sys.argv) == 1:
+	sys.exit(1)
+
 cmd = sys.argv[1]
 
 results = db.sql(cmd, 'auto')

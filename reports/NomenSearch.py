@@ -43,6 +43,9 @@ def printHeader():
 	fp.write(string.ljust('------', 20))
 	fp.write(2*CRT)
 
+if len(sys.argv) == 1:
+	sys.exit(1)
+
 cmd = sys.argv[1]
 printSelect = sys.argv[2]
 results = db.sql(cmd, 'auto')
@@ -58,6 +61,7 @@ for r in results:
 	fp.write(CRT)
 	records = records + 1
 
-fp.write(2*CRT + '(' + `records` + ' rows affected)' + CRT)
-reportlib.finish_nonps(fp)
+if fp is not None:
+	fp.write(2*CRT + '(' + `records` + ' rows affected)' + CRT)
+	reportlib.finish_nonps(fp)
 
