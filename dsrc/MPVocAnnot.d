@@ -49,7 +49,8 @@ devents:
 
 	MPClipboardAdd :local [];
 	MPClipboardAddAll :local [];
-	MPClipboardCopy :local [];
+	MPClipboardCopyAnnotation :local [];
+	MPClipboardCopyNote :local [];
 
 	MPTraverse :local [];
 
@@ -1246,12 +1247,12 @@ rules:
 	end does;
 
 --
--- MPClipboardCopy
+-- MPClipboardCopyAnnotation
 --
 -- Takes the entries in the clipboard and appends the annotations to the annotTable.
 --
 
-	MPClipboardCopy does
+	MPClipboardCopyAnnotation does
 	  i : integer := 0;
 	  row : integer := 0;
 	  editMode : string;
@@ -1294,6 +1295,7 @@ rules:
  
             while (dbresults(dbproc) != NO_MORE_RESULTS) do
               while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.clipAnnotEvidenceKey, key);
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termSeqNum, mgi_getstr(dbproc, 3));
@@ -1319,9 +1321,41 @@ rules:
             i := i + 1;
           end while;
 
-	(void) dbclose(dbproc);
+	  (void) dbclose(dbproc);
+	  (void) reset_cursor(top);
 
-	(void) reset_cursor(top);
+	end does;
+
+--
+-- MPClipboardCopyNote
+--
+-- Takes the clipboard annotation evidence key in the current row of the annotation table
+-- and loads the notes for that annotation into the note table.
+--
+-- Sets the editMode of each Note to "add".
+--
+
+	MPClipboardCopyNote does
+	  i : integer := 0;
+	  annotRow : integer := 0;
+	  clipAnnotEvidenceKey : string;
+	  
+	  (void) busy_cursor(top);
+
+	  annotRow := mgi_tblGetCurrentRow(annotTable);
+	  clipAnnotEvidenceKey := mgi_tblGetCell(annotTable, annotRow, annotTable.clipAnnotEvidenceKey);
+
+	  if (clipAnnotEvidenceKey.length > 0) then
+            LoadNoteTypeTable.table := noteTable;
+	    LoadNoteTypeTable.tableID := MGI_NOTE_VOCEVIDENCE_VIEW;
+            LoadNoteTypeTable.objectKey := clipAnnotEvidenceKey;
+	    LoadNoteTypeTable.labelString :=  mgi_tblGetCell(annotTable, annotRow, annotTable.termAccID) + ", " + 
+				   mgi_tblGetCell(annotTable, annotRow, annotTable.jnum);
+	    LoadNoteTypeTable.editMode := TBL_ROW_ADD;
+            send(LoadNoteTypeTable, 0);
+	  end if;
+
+	  (void) reset_cursor(top);
 
 	end does;
 

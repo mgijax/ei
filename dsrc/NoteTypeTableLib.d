@@ -132,6 +132,7 @@ rules:
 	  tableID : integer := LoadNoteTypeTable.tableID;
 	  objectKey : string := LoadNoteTypeTable.objectKey;
 	  labelString : string := LoadNoteTypeTable.labelString;
+	  editMode : string := LoadNoteTypeTable.editMode;
 	  cmd : string;
 	  note : string;
 	  noteKey : string := "";
@@ -141,6 +142,10 @@ rules:
 	  send(ClearTable, 0);
 
 	  table->label.labelString := labelString;
+
+	  if (editMode.length = 0) then
+	    editMode := TBL_ROW_NOCHG;
+	  end if;
 
           cmd := "select n._Note_key, n._NoteType_key, n.noteType, nc.note, nc.sequenceNum " +
 	  	 " from " + mgi_DBtable(tableID) + " n, " + mgi_DBtable(MGI_NOTECHUNK) + " nc " +
@@ -168,7 +173,8 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.noteTypeKey,  mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.noteType, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.note, note);
-	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
+	      (void) mgi_tblSetCell(table, row, table.editMode, editMode);
 
 	      prevNoteKey := noteKey;
               row := row + 1;

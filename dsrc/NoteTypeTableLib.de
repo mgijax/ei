@@ -20,7 +20,8 @@ InitNoteTypeTable [table : widget;       -- Note Type Table
 LoadNoteTypeTable [table : widget;       -- Note Type Table
             tableID : integer;           -- ID of table
             objectKey : string;          -- Unique identifier of Object
-	    labelString: string;];	 -- Label String for Note Label
+	    labelString: string; 	 -- Label String for Note Label
+	    editMode : string;];	 -- Edit Mode for each row entry
 
 -- Process Note Type Table; Sets table.sqlcmd 
 ProcessNoteTypeTable [table : widget;    -- Note Type Table

@@ -90,6 +90,7 @@ locals:
 	cmd : string;
 	from : string;
 	where : string;
+	union : string;
 
 	tables : list;
 
@@ -871,6 +872,7 @@ rules:
 
 	PrepareSearch does
 	  from_marker     : boolean := false;
+	  from_nomen	  : boolean := false;
 	  from_mutation   : boolean := false;
 	  from_notes      : boolean := false;
 	  from_strain     : boolean := false;
@@ -881,6 +883,7 @@ rules:
 
 	  from := " from " + mgi_DBtable(ALL_ALLELE) + " a";
 	  where := "";
+	  union := "";
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "a." + mgi_DBkey(ALL_ALLELE);
@@ -930,9 +933,9 @@ rules:
 	    where := where + "\nand a._Marker_key = " + top->mgiMarker->ObjectID->text.value;
 	    from_marker := true;
 	  elsif (top->mgiMarker->Marker->text.value.length > 0) then
-	    where := where + "\nand (mk.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) +
-		"\nor a.nomenSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) + ")";
+	    where := where + "\nand mk.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
 	    from_marker := true;
+	    from_nomen := true;
 	  end if;
 
           if (top->Symbol->text.value.length > 0) then
@@ -1001,7 +1004,14 @@ rules:
       
 	  if (from_marker) then
 	    from := from + "," + mgi_DBtable(MRK_MARKER) + " mk";
-	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " *= mk." + mgi_DBkey(MRK_MARKER);
+	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = mk." + mgi_DBkey(MRK_MARKER);
+	  end if;
+
+	  if (from_nomen) then
+	    union := "\nunion" +
+	  	"\nselect distinct a._Allele_key, a.symbol" +
+		"\nfrom ALL_Allele a" +
+		"\nwhere a.nomenSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
 	  end if;
 
 	  if (from_cellline1) then
@@ -1049,7 +1059,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct a._Allele_key, a.symbol\n" + from + "\n" + 
-			  where + "\norder by a.symbol\n";
+			  where + union + "\norder by a.symbol\n";
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);

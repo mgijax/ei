@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 24 08:32:05 2005";
+      lastWritten = "Thu Mar 24 12:55:22 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11239,20 +11239,20 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 10;
-                                          xrtTblNumColumns = 20;
-                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Evidence key,Evidence SeqNum,Note key,Term Acc ID,Vocabulary Term,NOT,J:,Citation,Evi,Modified By,Date,Created By,Date";
-                                          xrtTblPixelWidthSeries = "(all 0-9 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 40)(all 12 3)(all 14 10)(all 15 3)(all 16 15)(all 18 15)(all 17 10)(all 19 10)";
+                                          xrtTblNumColumns = 21;
+                                          xrtTblColumnLabels = "Mode,Clipboard key,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Evidence key,Evidence SeqNum,Note key,Term Acc ID,Vocabulary Term,NOT,J:,Citation,Evi,Modified By,Date,Created By,Date";
+                                          xrtTblPixelWidthSeries = "(all 0-10 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-10 10)(all 11 15)(all 12 40)(all 13 3)(all 15 10)(all 16 3)(all 17 15)(all 19 15)(all 18 10)(all 20 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\nterm:Int(Int)=\"11\"\nnotCode:Int(Int)=\"12\"\njnum:Int(Int)=\"13\"\ncitation:Int(Int)=\"14\"\nevidence:Int(Int)=\"15\"\neditor:Int(Int)=\"16\"\nmodifiedDate:Int(Int)=\"17\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"8\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"18\"\ncreatedDate:Int(Int)=\"19\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\n";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"3\"\ntermKey:Int(Int)=\"4\"\nnotKey:Int(Int)=\"6\"\nrefsKey:Int(Int)=\"7\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\neditor:Int(Int)=\"17\"\nmodifiedDate:Int(Int)=\"18\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ntermSeqNum:Int(Int)=\"5\"\nevidenceSeqNum:Int(Int)=\"9\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"19\"\ncreatedDate:Int(Int)=\"20\"\nannotEvidenceKey:Int(Int)=\"2\"\nmgiTypeKey:Int(Int)=\"25\"\nclipAnnotEvidenceKey:Int=\"1\"\n";
                                           xrtTblValidateCellCallback = "D:CopyAnnotation,\nD:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0-9 False)(all 11-12 False)(all 14 False)";
+                                          xrtTblTraversableSeries = "(all 0-10 False)(all 12-13 False)(all 15 False)";
                                           xrtTblEnterCellCallback = "D:LoadMPNotes,\nD:SetOptions,\nD:SetTableRow";
                                           width = 960;
                                           xrtTblTraverseCellCallback = "D:MPTraverse";
                                         Group: User
-                                          requiredColumns = "3\n6\n7";
-                                          saveTraversableSeries = "(all 0-9 False)(all 11-12 False)(all 14 False)";
+                                          requiredColumns = "3\n7\n8";
+                                          saveTraversableSeries = "(all 0-10 False)(all 12-13 False)(all 15 False)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -11560,8 +11560,8 @@ Shift<Key>Tab: prev-tab-group()
                                         NotPulldown : YesNoPulldown = OptionPulldown;
                                         Group: User
                                           tableForm = Annotation;
-                                          tableOption = 12;
-                                          tableOptionKey = 5;
+                                          tableOption = 13;
+                                          tableOptionKey = 6;
                                       }
                                 }
                                 {
@@ -11573,8 +11573,8 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetWidget = Annotation;
-                                          targetKey = 7;
-                                          targetText = 15;
+                                          targetKey = 8;
+                                          targetText = 16;
                                       }
                                 }
                                 {
@@ -11605,9 +11605,14 @@ Shift<Key>Tab: prev-tab-group()
                                         Sort = TablePush : mgiTable;
                                       }
                                       {
-                                        Copy = TablePush : mgiTable;
+                                        CopyAnnot = TablePush : mgiTable;
                                         Group: Widget
-                                          activateCallback = "D:MPClipboardCopy";
+                                          activateCallback = "D:MPClipboardCopyAnnotation";
+                                      }
+                                      {
+                                        CopyNote = TablePush : mgiTable;
+                                        Group: Widget
+                                          activateCallback = "D:MPClipboardCopyNote";
                                       }
                                 }
                                 {
@@ -11622,10 +11627,10 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           visibleItemCount = 10;
                                         Group: User
-                                          targetKey = 3;
+                                          targetKey = 4;
                                           targetWidget = Annotation;
-                                          targetText = 11;
-                                          targetAccID = 10;
+                                          targetText = 12;
+                                          targetAccID = 11;
                                       }
                                 }
                           }
