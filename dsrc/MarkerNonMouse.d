@@ -190,7 +190,9 @@ rules:
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Chromosome->text.value) + "," +
-	         mgi_DBprstr(top->Cyto->text.value) + ")\n";
+	         mgi_DBprstr(top->Cyto->text.value) + "," +
+		 global_loginKey + "," +
+		 global_loginKey + ")\n";
 
 	  ModifyNotes.source_widget := top->Notes;
 	  ModifyNotes.tableID := MRK_NOTES;
@@ -522,7 +524,7 @@ rules:
 --
 
         SetLocusLink does
-	  if (top->mgiSpecies->ObjectID->text.value = HUMAN) then
+	  if (top->mgiOrganism->ObjectID->text.value = HUMAN) then
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := true;
 	  else
 	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := false;
