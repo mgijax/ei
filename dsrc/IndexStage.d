@@ -10,6 +10,8 @@
 --
 -- History
 --
+-- lec  03/13/2002
+--	- TR 4601
 --
 -- lec  08/07/2001
 --	- ; add Duplicate function
@@ -261,11 +263,11 @@ rules:
             set := set + "comments = " + mgi_DBprstr(top->Note->text.value) + ",";
           end if;
  
-	  if (set.length > 0) then
-	    cmd := mgi_DBupdate(GXD_INDEX, currentRecordKey, set);
-	  end if;
-
 	  send(ModifyStage, 0);
+
+	  if (set.length > 0 or cmd.length > 0) then
+	    cmd := mgi_DBupdate(GXD_INDEX, currentRecordKey, set) + cmd;
+	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
