@@ -155,14 +155,18 @@ extern char *global_version;
 
 #define ALL_ALLELE		230
 #define ALL_ALLELE_MUTATION	231
-#define ALL_MOLECULAR_NOTE 	232
 #define ALL_NOTE		233
 #define ALL_SYNONYM		234
 #define ALL_ALLELE_VIEW		235
 #define ALL_SYNONYM_VIEW	236
 #define ALL_MUTATION_VIEW	237
-#define ALL_REFS_VIEW		238
-#define ALL_MOLREFS_VIEW	239
+#define ALL_REFERENCE		238
+#define ALL_REFERENCE_VIEW	239
+#define ALL_NOTE_GENERAL_VIEW	243
+#define ALL_NOTE_MOLECULAR_VIEW	244
+#define ALL_NOTE_PROMOTER_VIEW	245
+#define ALL_CELLLINE_VIEW	246
+#define ALL_NOTE_NOMENCLATURE_VIEW	247
 
 /* MGI Controlled Vocabulary Tables */
 
@@ -201,6 +205,10 @@ extern char *global_version;
 #define ALL_INHERITANCE_MODE	333
 #define ALL_MOLECULAR_MUTATION	334
 #define GXD_ANTIBODYSPECIES	335
+#define ALL_CELLLINE		336
+#define ALL_STATUS		337
+#define ALL_NOTETYPE		338
+#define ALL_REFERENCETYPE	339
 
 /* Accession Tables */
 
@@ -283,6 +291,13 @@ extern char *global_version;
 #define STATUS_RESERVED		"3"
 #define STATUS_NAPPROVED	"4"
 #define STATUS_BROADCAST	"5"
+
+/* Allele Nomen */
+
+#define ALL_STATUS_PENDING	"1"
+#define ALL_STATUS_DELETED	"2"
+#define ALL_STATUS_RESERVED	"3"
+#define ALL_STATUS_APPROVED	"4"
 
 /* This CV term requires Notes */
 

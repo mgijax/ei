@@ -14,6 +14,10 @@
  *
  * History:
  *
+ * lec 03/04/2001-03/19/2001
+ *	- TR 2217; Allele Enhancements
+ *	- TR 1939; Allele Nomenclature
+ *
  * lec 09/25/2000
  *	- TR 1966; Nomen
  *
@@ -343,8 +347,6 @@ char *mgi_DBrecordCount(int table)
     case MRK_NOMEN:
     case MRK_GENEFAMILY:
     case MRK_NOMENSTATUS:
-            sprintf(cmd, "select count(*) from %s", mgi_DBtable(table));
-	    break;
     case MLP_STRAINTYPE:
     case MLP_SPECIES:
     case MLP_STRAIN:
@@ -718,17 +720,33 @@ char *mgi_DBkey(int table)
 	    break;
     case ALL_ALLELE:
     case ALL_ALLELE_MUTATION:
-    case ALL_MOLECULAR_NOTE:
     case ALL_NOTE:
+    case ALL_REFERENCE:
     case ALL_ALLELE_VIEW:
-    case ALL_REFS_VIEW:
-    case ALL_MOLREFS_VIEW:
+    case ALL_REFERENCE_VIEW:
+    case ALL_NOTE_GENERAL_VIEW:
+    case ALL_NOTE_MOLECULAR_VIEW:
+    case ALL_NOTE_PROMOTER_VIEW:
+    case ALL_NOTE_NOMENCLATURE_VIEW:
     case ALL_MUTATION_VIEW:
     case ALL_SYNONYM_VIEW:
             strcpy(buf, "_Allele_key");
 	    break;
     case ALL_SYNONYM:
             strcpy(buf, "_Synonym_key");
+	    break;
+    case ALL_CELLLINE:
+    case ALL_CELLLINE_VIEW:
+            strcpy(buf, "_CellLine_key");
+	    break;
+    case ALL_NOTETYPE:
+            strcpy(buf, "_NoteType_key");
+	    break;
+    case ALL_REFERENCETYPE:
+            strcpy(buf, "_RefsType_key");
+	    break;
+    case ALL_STATUS:
+            strcpy(buf, "_Allele_Status_key");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1357,14 +1375,26 @@ char *mgi_DBtable(int table)
     case ALL_ALLELE:
             strcpy(buf, "ALL_Allele");
 	    break;
+    case ALL_CELLLINE:
+            strcpy(buf, "ALL_CellLine");
+	    break;
     case ALL_ALLELE_MUTATION:
             strcpy(buf, "ALL_Allele_Mutation");
 	    break;
-    case ALL_MOLECULAR_NOTE:
-            strcpy(buf, "ALL_Molecular_Note");
-	    break;
     case ALL_NOTE:
             strcpy(buf, "ALL_Note");
+	    break;
+    case ALL_NOTETYPE:
+            strcpy(buf, "ALL_NoteType");
+	    break;
+    case ALL_REFERENCE:
+            strcpy(buf, "ALL_Reference");
+	    break;
+    case ALL_REFERENCETYPE:
+            strcpy(buf, "ALL_ReferenceType");
+	    break;
+    case ALL_STATUS:
+            strcpy(buf, "ALL_Status");
 	    break;
     case ALL_SYNONYM:
             strcpy(buf, "ALL_Synonym");
@@ -1372,17 +1402,29 @@ char *mgi_DBtable(int table)
     case ALL_ALLELE_VIEW:
             strcpy(buf, "ALL_Allele_View");
 	    break;
-    case ALL_REFS_VIEW:
-            strcpy(buf, "ALL_Allele_Refs_View");
-	    break;
-    case ALL_MOLREFS_VIEW:
-            strcpy(buf, "ALL_Allele_MolRefs_View");
+    case ALL_CELLLINE_VIEW:
+            strcpy(buf, "ALL_CellLine_View");
 	    break;
     case ALL_MUTATION_VIEW:
             strcpy(buf, "ALL_Allele_Mutation_View");
 	    break;
     case ALL_SYNONYM_VIEW:
             strcpy(buf, "ALL_Synonym_View");
+	    break;
+    case ALL_NOTE_GENERAL_VIEW:
+            strcpy(buf, "ALL_Note_General_View");
+	    break;
+    case ALL_NOTE_MOLECULAR_VIEW:
+            strcpy(buf, "ALL_Note_Molecular_View");
+	    break;
+    case ALL_NOTE_PROMOTER_VIEW:
+            strcpy(buf, "ALL_Note_Promoter_View");
+	    break;
+    case ALL_NOTE_NOMENCLATURE_VIEW:
+            strcpy(buf, "ALL_Note_Nomenclature_View");
+	    break;
+    case ALL_REFERENCE_VIEW:
+            strcpy(buf, "ALL_Reference_View");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1516,8 +1558,12 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_TABLES:
     case MGI_COLUMNS:
     case ALL_ALLELE_MUTATION:
-    case ALL_MOLECULAR_NOTE:
     case ALL_NOTE:
+    case ALL_NOTE_GENERAL_VIEW:
+    case ALL_NOTE_MOLECULAR_VIEW:
+    case ALL_NOTE_PROMOTER_VIEW:
+    case ALL_NOTE_NOMENCLATURE_VIEW:
+    case ALL_REFERENCE:
     case ALL_SYNONYM:
 	selectKey = 0;
 	break;
@@ -1870,12 +1916,6 @@ mgi_DBtable(table));
     case MRK_NOMEN_NOTES:
             sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MRK_NOMEN_COORDNOTES:
-            sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MRK_NOMEN_EDITORNOTES:
-            sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case MRK_NOMEN_OTHER:
             sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -1901,16 +1941,27 @@ mgi_DBtable(table));
             sprintf(buf, "insert %s (%s, _Marker_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE:
-            sprintf(buf, "insert %s (%s, _Marker_key, _Refs_key, _Allele_Type_key, _Strain_key, _Mode_key, _Molecular_Refs_key, symbol, name, userID, reviewed)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Marker_key,  _Allele_Type_key, _Strain_key, _Mode_key, _CellLine_key, _Allele_Status_key, symbol, name, createdBy, modifiedBy, approvedBy, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE_MUTATION:
             sprintf(buf, "insert %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case ALL_MOLECULAR_NOTE:
-            sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
+    case ALL_CELLLINE:
+    case ALL_CELLLINE_VIEW:
+            sprintf(buf, "insert %s (%s, %s, _Strain_key)", 
+		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case ALL_NOTE:
-            sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, sequenceNum, _NoteType_key, private, note)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_NOTETYPE:
+            sprintf(buf, "insert %s (%s, _NoteType_key, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_REFERENCE:
+            sprintf(buf, "insert %s (%s, _Refs_key, _RefsType_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_REFERENCETYPE:
+            sprintf(buf, "insert %s (%s, _RefsType_key, referenceType, allowOnlyOne)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_SYNONYM:
             sprintf(buf, "insert %s (%s, _Allele_key, _Refs_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2364,6 +2415,19 @@ char *mgi_DBcvname(int table)
 	    break;
     case ALL_MOLECULAR_MUTATION:
             strcpy(buf, "mutation");
+	    break;
+    case ALL_CELLLINE:
+    case ALL_CELLLINE_VIEW:
+            strcpy(buf, "cellLine");
+	    break;
+    case ALL_NOTETYPE:
+            strcpy(buf, "noteType");
+	    break;
+    case ALL_REFERENCETYPE:
+            strcpy(buf, "referenceType");
+	    break;
+    case ALL_STATUS:
+            strcpy(buf, "status");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
