@@ -475,6 +475,7 @@ rules:
           LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := MRK_MARKER;
 	  LoadAcc.reportError := false;
+	  LoadAcc.showMGI := false;
           send(LoadAcc, 0);
  
           LoadAcc.table := accRefTable;
