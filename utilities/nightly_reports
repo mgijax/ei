@@ -127,7 +127,9 @@ HMD_References2.sql \
 HMD_References3.sql \
 HMD_References4.sql \
 HMD_References6.sql \
-HMD_Single.sql \
+HMD_SingleClasses.sql \
+HMD_SingleMarker.sql \
+HMD_SingleReferences.sql \
 HMD_SpeciesCount.py \
 HMD_Unreviewed.sql \
 MLC_Allele.sql \
