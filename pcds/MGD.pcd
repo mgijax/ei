@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 12 09:50:45 2000";
+      lastWritten = "Wed Jul 12 11:24:07 2000";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1862,7 +1862,7 @@ Module: MGD
                                           xrtTblTraversableSeries = "(all 0-4 False)";
                                           xrtTblNumRows = 11;
                                           userDefinedAttributes = "markerKey:Int(Int)=\"1\"\nmarkerSymbol:Int(Int)=\"6\"\nmarkerChr:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"9\"\nmarkerColumns:Int(Int)=\"1\"\naccKey:Int(Int)=\"2\"\naccID:Int(Int)=\"10\"\nspeciesKey:Int(Int)=\"3\"\nspecies:Int(Int)=\"5\"\nmarkerCyto:Int(Int)=\"8\"\nseqNum:Int(Int)=\"4\"\n";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker(verifyOtherSpecies = true),\nD:VerifyChromosome,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker(verifyOtherSpecies = true),\nD:WarnOfIllegalEdits,\nD:CommitTableCellEdit";
                                           xrtTblVisibleRows = 10;
                                         Group: User
                                           addSeqNum = True;
