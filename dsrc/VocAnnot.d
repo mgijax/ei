@@ -11,6 +11,10 @@
 --
 -- History
 --
+-- 10/10/2002 lec
+--	- TR 4159; collapsing of _Annot_key not occuring properly if
+--	  user does not select the NOT value
+--
 -- 06/26/2002 lec
 --	- TR 3772; set ReportDialog.select to query the currently selected record
 --
@@ -318,6 +322,8 @@ rules:
  
 	    if (notKey = "NULL" or notKey.length = 0) then
 	      notKey := NO;
+	      -- set it in the table because we need to check it later on...
+	      mgi_tblSetCell(annotTable, row, annotTable.notKey, notKey);
 	    end if;
 
 	    -- Default Evidence Code for PhenoSlim is "TAS"
@@ -398,12 +404,12 @@ rules:
 
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, annotKey, set) + 
 		" and _EvidenceTerm_key = " + currentEvidenceKey +
-		" and _Refs_key = " + currentRefsKey;
+		" and _Refs_key = " + currentRefsKey + "\n";
 
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, annotKey) + 
 		" and _EvidenceTerm_key = " + currentEvidenceKey +
-		" and _Refs_key = " + currentRefsKey;
+		" and _Refs_key = " + currentRefsKey + "\n";
             end if;
  
             row := row + 1;
