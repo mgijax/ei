@@ -183,6 +183,7 @@ rules:
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->Annotation->Table);
+	  tables.append(top->Note->Table);
 	  tables.append(top->Header->Table);
 
           -- Set Row Count
