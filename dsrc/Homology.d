@@ -31,6 +31,9 @@
 --
 -- History
 --
+-- lec 11/15/1999
+--	- TR 1075; added restriction on entering single homologies
+--
 -- lec  01/27/1999
 --	- added defaults to Marker table upon clear/select
 --
