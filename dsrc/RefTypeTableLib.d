@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec  02/02/2004
+--	- fix ProcessRefTypeTable
+--
 -- lec	12/17/2003
 --	- TR 5327; nomen merge
 --
@@ -313,12 +316,14 @@ rules:
 	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Refs_key = " + newKey + "," +
-		     "_RefsType_key = " + newRefsType;
 
 	      if (tableID = MGI_REFERENCE_ASSOC) then
+                set := "_Refs_key = " + newKey + "," +
+		       "_RefAssocType_key = " + newRefsType;
                 cmd := cmd + mgi_DBupdate(tableID, assocKey, set);
 	      else
+                set := "_Refs_key = " + newKey + "," +
+		       "_RefsType_key = " + newRefsType;
                 cmd := cmd + mgi_DBupdate(tableID, objectKey, set) + 
                        "and _Refs_key = " + key + 
 		       " and _RefsType_key = " + refsType + "\n";
