@@ -30,15 +30,8 @@ For more information regarding the Nomenclature database and the Broadcast proce
 <H4>Accession Numbers</H4>
 <OL>
 <LI>MGI:, system-generated
-<LI>EC, cross reference to Enzyme Commission number at ExPASy
-<LI>SWISS-PROT, cross reference to SWISS-PROT
-<LI>Nucleotide Sequence, cross reference to GenBank, EMBL, DDBJ
-<LI>LocusLink, cross reference to LocusLink
-<LI>RefSeq, cross reference to RefSeq
-<LI>RIKEN Cluster, cross reference to RIKEN
-<LI>InterPro, cross reference to InterPro domain
-<LI>UniGene, cross reference to UniGene at NCBI.
 <LI>MGD-MRK, old-style MGI Marker Accession Numbers; retained for backwards compatibility
+<LI>see Editing form for a complete list.
 </OL>
 
 <H4>Data Verifications</H4>
@@ -204,22 +197,15 @@ To do so:
 	<LI>Marker History
 	</UL>
 <P>
-<LI>Editing of UniGene accession numbers added during the electronic UniGene load is restricted.  These 
-    electronically loaded accession numbers are distinguished by the reference J:57747.
-    If the user attempts to edit the Accession numbers of a marker record from the UniGene load, 
+<LI>Editing of certain types of accession numbers added during the electronic data loads is restricted.  These 
+    electronically loaded accession numbers are distinguished by load references.
+    If the user attempts to edit the Accession numbers of a marker record from a data load, 
     the following error message will appear:
 	<PRE>
-	Accession ID is referenced by J:57747, UniGene Database Download.
+	Accession ID is referenced by J:#####, "some" Database Download.
 	Cannot edit.
 	</PRE>
 <P>
-</OL>
-
-<H4>Triggers/Views/Stored Procedures for Marker tables (<I>MRK_</I>)</H4>
-<OL>
-<LI>Triggers (dbschema/triggers):  <I>MRK.tr</I>, <I>MRK.drop</I>
-<LI>Views (dbschema/views):  <I>MRK.view</I>
-<LI>Stored Procedures (dbschema/procedures):  <I>MRK.pr, MRKXfer.pr</I>
 </OL>
 
 <H4>Related Documents</H4>

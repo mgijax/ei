@@ -42,6 +42,7 @@ None
 	<OL>
 	<LI>Marker
 	<LI>J Number
+	<LI>Priority
 	</OL>
 <P>
 <LI>Not Required
@@ -71,7 +72,27 @@ There are no restrictions on deleting a GXD Index record.
 	No Stages have been selected for this record.
 	</PRE>
     will be displayed.
+<P>
+<LI>To add a new Assay type to the GXD Index:
+	<UL>
+	<LI>Add the new Assay type to the "GXD Assay Type" vocabulary in the Simple Vocabulary module.
+	<LI>Re-launch the GXD Index module.
+	</UL>
+<P>
+<LI>The <I>Priority</I> value for a given Index record is propagated to all Index records that
+	use the same J Number.
+<P>
+<LI>The <I>Coded?</I> value is determined by searching for the J Number in the GXD Assay module.
+    If the J Number is found in the GXD Assay module, then <I>Coded?</I> = <I>Yes</I> else <I>No</I>.
+<P>
 </OL>
    
+<H4>Tracking Records</H4>
+<OL>
+<LI>TR 2459 - Revise GXD Index Tables
+<LI>TR 3710 - Add 'knock in' as new assay type
+<LI>TR 3711 - Assigning coding priorities to papers in the GXD Index
+</OL>
+
 </BODY>
 </HTML>

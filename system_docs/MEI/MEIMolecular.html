@@ -40,18 +40,15 @@ Molecular Segments have <I>relationships</I> with Markers:
 	<LI><B>E</B>, a Marker <B>encodes</B> a probe if it hybridizes 100% to the probe
 	<LI><B>H</B>, a Marker <B>hybridizes</B> to a probe
 	<LI><B>M</B>, designation for <B>MIT</B> primers
-	<LI><B>P</B>, a <B>putative</B> association derived from dbEST GenBank IDs
+	<LI><B>P</B>, a <B>putative</B> association derived from UniGene
 	</UL>
 <P>
 Each Molecular Segment may have a list of References which may contain RFLP information, including
 nucleotide (GenBank) accession numbers.
 <P>
-Molecular Segments are loaded from external sources as well as manual input.  These updates occur
-on a regular basis (quarterly, monthly, etc.):
-	<UL>
-	<LI>MIT primers
-	<LI>I.M.A.G.E. clones
-	</UL>
+
+<!--Molecular Segments are loaded from external sources as well as manual input.  These updates occur ->
+<!--on a regular basis (quarterly, monthly, etc.): ->
 
 <H4>Editing Form</H4>
 <OL>
@@ -64,10 +61,7 @@ on a regular basis (quarterly, monthly, etc.):
 <H4>Accession Numbers</H4>
 <OL>
 <LI>MGI:, system-generated
-<LI>WashU, cross reference to WashU
-<LI>I.M.A.G.E., cross reference to I.M.A.G.E. consortium
-<LI>Sequence, cross reference to GenBank, EMBL, DDBJ (nucleotide sequences)
-<LI>ATCC, cross reference to American Type Culture Collection
+<LI>see editing form for a complete list
 </OL>
 
 <H4>Data Verifications</H4>
@@ -100,7 +94,6 @@ on a regular basis (quarterly, monthly, etc.):
 <LI>Parent Clone Accession ID (see <A HREF="MEI.html#dataVerAcc">Data Verifications section on Accession Numbers</A>)
 <P>
 <LI>Library (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Controlled Vocabulary Lists</A>)
-    <P>dbEST EST libraries are downloaded during the dbEST EST load
 <P>
 <LI>Species (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 <P>
@@ -111,11 +104,6 @@ on a regular basis (quarterly, monthly, etc.):
 <LI>Age (see <A HREF="MEI.html#dataVerAge">Data Verifications section on Age</A>)
 <P>
 <LI>Sex (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
-	<UL>
-	<LI>Female
-	<LI>Male
-	<LI>Pooled
-	</UL>
 <P>
 </OL>
 
@@ -209,12 +197,22 @@ To access this form, choose
 	<UL>
 	<LI>must be <I>H</I> (hybridizes) for Probes of non-mouse source.
 	    This includes <I>Not Specified</I> and <I>Not Applicable</I> sources.
-	<LI>can only be <I>P</I> during an EST bulk load.
+	<LI>can only be <I>P</I> during the UniGene putative load.
 	<LI>can be updated to another relationship from <I>P</I>
 	</UL>
 <P>
 <LI>The <I>KFMemorial</I> button places the following text in the <I>Notes</I> field:
 	<PRE>This clone is derived from a gene that produces alternate transcripts.</PRE>
+<P>
+<LI>The <I>Riboprobe</I> button places the following text in the <I>Notes</I> field:
+	<PRE>This clone was used to generate a riboprobe.</PRE>
+<P>
+<LI>The <I>Problem Sequence</I> button places the following text in the <I>Notes</I> field:
+	<PRE>
+	MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. 
+	The artifact may have been introduced during the cloning process, 
+	or may be due to unreliable sequence data.
+	</PRE>
 <P>
 <LI>Strains in the RFLV table on the Reference form must be entered in the following format:
 	<PRE> Strain1, Strain2, Strain3</PRE>
@@ -227,39 +225,6 @@ To access this form, choose
 <LI>The deletion of a master Molecular Segment record will delete the Molecular Segment and all
     of its References.
 <P>
-<LI>Editing of WashU clone records added from the electronic dbEST load is restricted.  These 
-    electronically loaded records are distinguished by the reference J:57656.  Users may
-    add new Accession numbers to any WashU clone record, but they may not edit Accession numbers,
-    clone name or source information for any WashU clone which is referenced by J:57656.
-    <P>
-    <UL>
-    <LI>If the user attempts to edit the Accession numbers of a WashU clone record from the dbEST load, 
-        the following error message will appear:
-	<PRE>
-	Accession ID is referenced by J:57656, WashU-HHMI Database Download.
-	Cannot edit.
-	</PRE>
-    <LI>If the user attempts to edit the Source information of a WashU clone record from the dbEST load, 
-        the following error message will appear:
-	<PRE>
-	Molecular Segment is referenced by J:57656, WashU-HHMI Database Download.
-	Cannot modify the Source information.
-	</PRE>
-    <LI>If the user attempts to edit the name of a WashU clone record from the dbEST load, 
-        the following error message will appear:
-	<PRE>
-	Molecular Segment is referenced by J:57656, WashU-HHMI Database Download.
-	Cannot modify the name.
-	</PRE>
-    </UL>
-<P>
-</OL>
-
-<H4>Triggers/Views/Stored Procedures for Molecular Segment tables (<I>PRB_</I>)</H4>
-<OL>
-<LI>Triggers (dbschema/triggers):  <I>PRB.tr</I>, <I>PRB.drop</I>
-<LI>Views (dbschema/views):  <I>PRB.view</I>
-<LI>Stored Procedures (dbschema/procedures):  <I>PRB.pr</I>
 </OL>
 
 <H3>RELATED DOCUMENTS</H3>
