@@ -147,7 +147,7 @@ class Broadcast:
 		# For broadcast, include all Approved symbols
 
 		self.broadcastCmd = 'select n._Nomen_key, n.approvedSymbol, n.approvedName, n.chromosome, n.event, ' + \
-      			'n.markerType, n.proposedSymbol, r.jnumID ' + \
+      			'n._Marker_Type_key, n.proposedSymbol, r.jnumID ' + \
       			'from MRK_Nomen_View n, MRK_Nomen_Reference_View r ' + \
       			'where n.status = "Approved" ' + \
       			'and n._Nomen_key = r._Nomen_key ' + \
@@ -157,7 +157,7 @@ class Broadcast:
 		# For email, exclude '-pending' symbols
 
 		self.emailCmd = 'select n._Nomen_key, n.approvedSymbol, n.approvedName, n.chromosome, n.event, ' + \
-      			'n.markerType, r.jnumID, r.firstAuthor ' + \
+      			'n._Marker_Type_key, r.jnumID, r.firstAuthor ' + \
       			'from MRK_Nomen_View n, MRK_Nomen_Reference_View r ' + \
       			'where n.status = "Approved" ' + \
 			'and n.approvedSymbol not like "%-pending" ' + \
@@ -467,7 +467,7 @@ Gene Name, J# (internal filing number), First Author, Other Names.
 		for r in results:
 			self.emailFile.write(string.ljust(r['chromosome'], 5))
 			self.emailFile.write(string.ljust(r['approvedSymbol'], 26))
-			self.emailFile.write(string.ljust(r['event'][0] + ' ' + r['markerType'][0], 5)) 
+			self.emailFile.write(string.ljust(r['event'][0] + ' ' + str(r['_Marker_Type_key']), 5)) 
 			self.emailFile.write(string.ljust(r['approvedName'][:50], 51)) 
 
 			if r['jnumID'] is not None:
@@ -505,7 +505,7 @@ Gene Name, J# (internal filing number), First Author, Other Names.
 			self.broadcastFile.write(r['chromosome'] + self.TAB)
 			self.broadcastFile.write(r['approvedSymbol'] + self.TAB)
 			self.broadcastFile.write(r['event'][0] + self.TAB)
-			self.broadcastFile.write(r['markerType'][0] + self.TAB)
+			self.broadcastFile.write(mgdlib.prvalue(r['_Marker_Type_key']) + self.TAB)
 			self.broadcastFile.write(r['approvedName'] + self.TAB)
 			self.broadcastFile.write(mgdlib.prvalue(r['jnumID']) + self.TAB)
 			self.broadcastFile.write(r['proposedSymbol'] + self.TAB)

@@ -15,6 +15,10 @@
 --
 -- History
 --
+-- 12/09/1999
+--	- use markerType key value instead of name so that any new
+--	  marker types added will automatically work w/ the broadcast
+--
 -- 11/18/1999
 --	- new symbol cannot equal original symbol on withdrawal
 --
@@ -477,13 +481,7 @@ rules:
 
 	  -- Set Marker Type
 
-	  if (top->MarkerTypeMenu.menuHistory.defaultValue = "1") then
-	    markerType := "G";
-	  elsif (top->MarkerTypeMenu.menuHistory.defaultValue = "2") then
-	    markerType := "D";
-	  elsif (top->MarkerTypeMenu.menuHistory.defaultValue = "6") then
-	    markerType := "Q";
-	  end if;
+	  markerType := top->MarkerTypeMenu.menuHistory.defaultValue;
 
 	  -- Write Withdrawal line
 

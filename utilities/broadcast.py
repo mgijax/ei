@@ -118,6 +118,9 @@
 #
 # Version	SE	Date
 #
+# 	lec	12/09/1999
+#	- TR 623; new marker types; replace use of first letter w/ marker key
+#
 # 	lec	10/05/1999
 #	- TR 375; MRK_Other new attribute _Refs_key
 #
@@ -827,6 +830,10 @@ class Marker:
 			self.typeKey = 3	# Chromosomal Aberration
 		elif self.type == 'Q':
 			self.typeKey = 6	# QTL
+		elif self.type == 'P':
+			self.typeKey = 7	# Pseudogene
+		elif self.type == 'B':
+			self.typeKey = 8	# BAC/YAC end
 		else:
 			self.typeKey = 1	# Gene (default)
 
