@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 08/13/2002
+--	- TR 3988; changed "dialogName" to "mgiDialogName"
+--
 -- lec 05/24/2002
 --	- TR 1463; added processing for MGI_NOTE/MGI_NOTECHUNK
 --	  in InitNoteForm and ModifyNotes
@@ -444,10 +447,10 @@ rules:
 	  -- Unmanage, then re-manage later so that dialog is popped back up to the front.
 	  -- However, if not committing changes, unmanage and return.
 
-	  if (push.is_defined("dialogName") = nil) then
+	  if (push.is_defined("mgiDialogName") = nil) then
 	    dialog := top->NoteDialog;
 	  else
-	    dialog := top->(push.dialogName);
+	    dialog := top->(push.mgiDialogName);
 	  end if;
 
 	  if (dialog = nil) then
@@ -774,7 +777,7 @@ rules:
 	  end if;
 
 	  if (noteWidget->NotePush != nil) then
-	    dialogWidget := top->(noteWidget->NotePush.dialogName);
+	    dialogWidget := top->(noteWidget->NotePush.mgiDialogName);
 	    if (dialogWidget.managed) then
 	      dialogWidget->Note->text.value := 
 		dialogWidget->Note->text.value + sourceWidget.note;

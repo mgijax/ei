@@ -1447,6 +1447,38 @@ Module: MGI
                                 }
                           }
                     }
+                    Popups:
+                    {
+                      StatusDialog = StatusDialog : mgiDialog;
+                    }
+                    {
+                      DeleteDialog = DeleteDialog : mgiDialog;
+                    }
+                    {
+                      ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                              Group: Widget
+                                                items = "Potential GO References";
+                                              Group: User
+                                                keys = "GORefs.py";
+                                            }
+                                      }
+                                }
+                          }
+                    }
               }
         }
         {

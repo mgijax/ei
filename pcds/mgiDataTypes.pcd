@@ -362,7 +362,7 @@ Shift<Key>Tab: prev-tab-group()
           NotePush = XmPushButton;
           Group: Widget
             activateCallback = "D:NoteInit";
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ndialogName:String=\"NoteDialog\"\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\nmgiDialogName:String=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
             background = Wheat;
@@ -505,7 +505,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           TableDialogPush = XmPushButton;
           Group: Widget
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntableColumn:Int(Int)\ntableKeyColumn:Int(Int)=\"-1\"\ndialogName:String\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntableColumn:Int(Int)\ntableKeyColumn:Int(Int)=\"-1\"\nmgiDialogName:String\n";
             activateCallback = "D:VerifyEdit(mode = 1)";
           Group: Control
             vip_x = 60;
@@ -921,7 +921,7 @@ Shift<Key>Tab: prev-tab-group()
           NotePushShort = XmPushButton;
           Group: Widget
             activateCallback = "D:NoteInit(shortNote = true)";
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ndialogName:String=\"NoteDialog\"\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\nmgiDialogName:String=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
             background = Wheat;
