@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 16 10:26:29 2004";
+      lastWritten = "Mon Aug 23 11:25:54 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2832,6 +2832,15 @@ Module: MGD
                                   ORNL = AccToggle : mgiOption;
                                 }
                                 {
+                                  NMICE = AccToggle : mgiOption;
+                                }
+                                {
+                                  CARD = AccToggle : mgiOption;
+                                }
+                                {
+                                  BCBC = AccToggle : mgiOption;
+                                }
+                                {
                                   IMAGELibrary = AccToggle : mgiOption;
                                 }
                                 {
@@ -3437,6 +3446,15 @@ Module: MGD
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BCBC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -5397,9 +5415,33 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -10584,6 +10626,21 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    NMICE = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    CARD = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    BCBC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 29 10:12:08 2004";
+      lastWritten = "Mon Aug 23 11:24:30 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -409,6 +409,21 @@ Module: mgiOption
                       ORNL = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 40;
+                    }
+                    {
+                      NMICE = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 56;
+                    }
+                    {
+                      CARD = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 57;
+                    }
+                    {
+                      BCBC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 58;
                     }
                     {
                       IMAGELibrary = AccToggle : mgiOption;
