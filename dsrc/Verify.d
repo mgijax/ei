@@ -1236,9 +1236,7 @@ rules:
 
 	  dbproc : opaque := mgi_dbopen();
 	  cmd : string := "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n" +
-	        "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr("MGI:" + mgi_tblGetCell(table, row, table.genotype)) + "\n";
+		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n";
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
