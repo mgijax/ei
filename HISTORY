@@ -1,3 +1,11 @@
+TAG: ei-2-8-0
+DATE: 11/03/2000
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) TR 2060; added RIKEN Clone Logical Acc to Molecular Segment Form
+2) TR 2060; added RIKEN Cluster Logical Acc to Molecular Segment Form
+
 TAG: ei-2-7-0
 DATE: 10/24/2000
 STAFF: lec
