@@ -24,6 +24,7 @@ devents:
 		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];
+	ClearMP :local [reset : boolean := false;];	-- Clear form
 	CopyAnnotation :local [];			-- Copy Annotation values from previous row
 	Delete :local [];				-- Delete record
 	MPVocAnnotExit :local [];			-- Destroys D module instance & cleans up
@@ -230,6 +231,23 @@ rules:
 	    send(SetAnnotTypeDefaults, 0);
 	  end if;
 
+	end does;
+
+--
+-- ClearMP
+-- 
+-- Local Clear
+--
+
+	ClearMP does
+
+	  if (not ClearMP.reset) then
+	    noteTable->label.labelString := "Notes";
+	  end if;
+
+	  Clear.source_widget := top;
+	  Clear.reset := ClearMP.reset;
+	  send(Clear, 0);
 	end does;
 
 --
@@ -990,9 +1008,8 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
-	  Clear.source_widget := top;
-          Clear.reset := true;
-          send(Clear, 0);
+          ClearMP.reset := true;
+          send(ClearMP, 0);
 
 	  -- Initialize Option Menus for row 0
 
@@ -1018,8 +1035,7 @@ rules:
 	  (void) busy_cursor(mgi);
 
           -- Clear form
-          Clear.source_widget := top;
-          send(Clear, 0);
+          send(ClearMP, 0);
 
 	  evidenceKey : integer := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
