@@ -336,16 +336,18 @@ rules:
             i := i + 1;
           end while;
  
-	  if (noteType.length > 0) then
-            noteWidget.sql := noteWidget.sql + 
-		 mgi_DBinsert(tableID, NOKEY) + key + "," + 
-		 (string) i + "," + 
-		 mgi_DBprstr(noteType) + "," +
-                 mgi_DBprstr(note) + ")\n";
-          else
-            noteWidget.sql := noteWidget.sql + 
-		 mgi_DBinsert(tableID, NOKEY) + key + "," + (string) i + "," + 
-                 mgi_DBprstr(note) + ")\n";
+	  if (mgi_DBprstr(note) != "NULL") then
+	    if (noteType.length > 0) then
+              noteWidget.sql := noteWidget.sql + 
+		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		   (string) i + "," + 
+		   mgi_DBprstr(noteType) + "," +
+                   mgi_DBprstr(note) + ")\n";
+            else
+              noteWidget.sql := noteWidget.sql + 
+		   mgi_DBinsert(tableID, NOKEY) + key + "," + (string) i + "," + 
+                   mgi_DBprstr(note) + ")\n";
+	    end if;
 	  end if;
         end does;
  

@@ -467,6 +467,7 @@ rules:
 	Modify does
 	  updateModDate : boolean := true;
 	  table : widget := top->Reference->Table;
+	  error : boolean := false;
 
 	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
@@ -474,11 +475,11 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "Primary Reference Required.";
             send(StatusReport);
-            return;
+            error := true;
 	  end if;
 
 	  if (not top.allowEdit) then
-	    return;
+	    error := true;
 	  end if;
 
           if (top->ChromosomeMenu.menuHistory.modified and
@@ -487,7 +488,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "This Chromosome value is no longer valid.\n";
             send(StatusReport);
-	    return;
+	    error := true;
 	  end if;
 
 	  if (not (global_login = "ljm" or global_login = "djr" or 
@@ -497,7 +498,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to modify the Status field.\n";
             send(StatusReport);
-	    return;
+	    error := true;
 	  end if;
 
           if (top->MarkerStatusMenu.menuHistory.modified and
@@ -505,15 +506,15 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "You cannot modify status to Broadcast.\n";
             send(StatusReport);
-	    return;
+	    error := true;
 	  end if;
 
           if (top->SubmittedByMenu.menuHistory.modified and
 	      top->SubmittedByMenu.menuHistory.searchValue != "%") then
             StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Submittted By field.\n";
+            StatusReport.message := "You do not have permission to modify the Submitted By field.\n";
             send(StatusReport);
-	    return;
+	    error := true;
           end if;
 
           if (top->BroadcastByMenu.menuHistory.modified and
@@ -521,20 +522,25 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to modify the Broadcast By field.\n";
             send(StatusReport);
-	    return;
+	    error := true;
           end if;
 
 	  if (top->BroadcastDate->text.modified) then
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to modify the Broadcast Date field.\n";
             send(StatusReport);
-	    return;
+	    error := true;
 	  end if;
 
 	  if (top->AccessionID->text.modified) then
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to modify the MGI Accession ID field.\n";
             send(StatusReport);
+	    error := true;
+	  end if;
+
+	  if (error) then
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
