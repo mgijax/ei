@@ -412,7 +412,7 @@ xrtlist getmatchrefs(char *txt, xrtlist refnumslist, int mode)
 							char *tok;
 
 							tagtxt[j] = '\0';  /* null-terminate */
-							tlen = 4+strlen(tagtxt); /* "\R{}" */ 
+							tlen = 4+strlen(tagtxt); /* "\R()" */ 
 							off = tp-txt-tlen; 
 							off = off < 0? 0 : off;
 
@@ -737,12 +737,12 @@ char *getfixnew(char *row)
 	p = strtok(NULL," "); 
 	p = strtok(NULL," ");  /* need third piece and beyond... */
 	buf[0]='\0';
-	if(p) sprintf(buf,"\\L%c%s%c",OMARKUPCHAR,p,CMARKUPCHAR); /* copy piece we want */ 
+	if(p) sprintf(buf,"\\L%c%s%c", OMARKUPCHAR, p, CMARKUPCHAR); /* copy piece we want */ 
 	p = strtok(NULL," ");  /* need third piece and beyond... */
 	if(p) strcat(buf,", "); /* more than one */
 	while (p) {
 		char pbuf[40]; 
-		sprintf(pbuf,"\\L{%s}, ",p);
+		sprintf(pbuf,"\\L%c%s%c, ", OMARKUPCHAR, p, CMARKUPCHAR);
 		strcat(buf,pbuf);
 		p = strtok(NULL," ");  /* need third piece and beyond... */
 	}
