@@ -20,6 +20,7 @@ USERLOG=$HOME/.nomen_dev-log
 DSQUERY=MGD_DEV
 MGD=mgd_release
 NOMEN=nomen_dev
+STRAINS=strains_dev
 
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
