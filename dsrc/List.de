@@ -13,7 +13,8 @@ ClearList [source_widget : widget;		-- Clear LookupList
 
 CopySelectionItem [];                           -- Copy Selected Item to Widget w/ Focus
 
-DeleteList [list : widget;];			-- Delete item from LookupList
+DeleteList [list : widget;  			-- Delete item from LookupList
+            resetRow : boolean := true;];
 
 FindSelectionItem [];                           -- Find Selection Item in Selection List
 
@@ -32,7 +33,7 @@ ManageSelectionList [dialog : string;];		-- Manage Selection List Dialog
 UnManageSelectionList [dialog : widget;         -- UnManage Selection List Dialog
                        top : widget;];
 	       
-SelectListItem [];			        -- Copy Selected List Item to Selection Text
+SelectListItem [deselect : boolean := true;];   -- Copy Selected List Item to Selection Text
 
 SelectLookupListItem [source_widget : widget;   -- LookupList Callback for Single Selection
 		      item_position : integer;  -- Copies Selected Item/Key to appropriate widget

@@ -167,7 +167,10 @@ rules:
 	  list_w.keys := tmp;
 
 	  label_w.labelString := (string) list_w.itemCount + " " + label_w.defaultLabel;
-	  list_w.row := 0;
+
+	  if (DeleteList.resetRow) then
+	    list_w.row := 0;
+	  end if;
 	end does;
 
 --
@@ -360,7 +363,7 @@ rules:
 --
 --	Callback for SelectDialog List
 --	Copies selected item and key into appropriate text fields in Dialog
---	De-selects the item after copying
+--	De-selects the item after copying (by default)
 --
 
 	SelectListItem does
@@ -376,7 +379,10 @@ rules:
 	  text.value := list_w.items[SelectListItem.item_position];
 	  key.value := list_w.keys[SelectListItem.item_position];
 	  list_w.row := SelectListItem.item_position;
-	  (void) XmListDeselectAllItems(list_w);
+
+	  if (SelectListItem.deselect) then
+	    (void) XmListDeselectAllItems(list_w);
+	  end if;
 	end does;
 
 --
