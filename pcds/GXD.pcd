@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 29 11:32:05 2004";
+      lastWritten = "Fri Apr 30 14:03:22 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1169,6 +1169,14 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     topWidget = separator1;
+                                      {
+                                        Specimen = OrderedTableLabel : mgiTable;
+                                            {
+                                              Table = mgiTable;
+                                              Group: Widget
+                                                width = 1000;
+                                            }
+                                      }
                                 }
                                 {
                                   GelForm = GelForm : GXD;
@@ -1703,9 +1711,8 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblVisibleRows = 20;
                         xrtTblTraverseCellCallback = "D:DetectISResultModification";
                         xrtTblDisplayHorizScrollBar = dispsb_always;
-                        xrtTblFrozenColumns = 13;
                         xrtTblAllowCellResize = resize_horizontal;
-                        xrtTblMinCellVisibility = 0;
+                        xrtTblFrozenColumns = 13;
                       Group: User
                         saveEditableSeries = "(all 0-2 False)(all 14-22 False)(all 15 True)(all 16 True)(all 22 True)";
                         saveTraversableSeries = "(all 0-11 False)";
@@ -2225,10 +2232,9 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblTraversableSeries = "(all 0-11 False)";
                         xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 6)(all 16 3)(all 17 8)(all 19 9)(all 20 10)(all 21 6)(all 22 50)";
                         xrtTblDisplayHorizScrollBar = dispsb_always;
-                        xrtTblFrozenColumns = 13;
                         xrtTblMaxLengthSeries = "(all 20 255)(all 22 255)";
                         xrtTblAllowCellResize = resize_horizontal;
-                        xrtTblMinCellVisibility = 0;
+                        xrtTblFrozenColumns = 13;
                       Group: User
                         seqNum = 11;
                         saveEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)(all 20 True)(all 22 True)";

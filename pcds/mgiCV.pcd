@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Apr 30 11:16:41 2004";
+      lastWritten = "Fri Apr 30 13:59:18 2004";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -380,8 +380,6 @@ Module: mgiCV
                             Group: Widget
                               activateCallback = "D:VerifyEdit(mode = 1),\nD:InSituResultInit";
                               labelString = Results;
-                              inTabGroup = False;
-                              traversalOn = False;
                             Group: User
                               targetWidget = Specimen;
                               tableColumn = 21;
