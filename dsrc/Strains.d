@@ -60,7 +60,7 @@
 --	- convert to XRT/API
 --
 -- lec	06/10/98
---	- SelectReferenceMGI uses 'exec PRB_getStrainReferenceMGI'
+--	- SelectReferenceMGI uses 'exec PRB_getStrainReference'
 --	- SelectDataSets uses 'exec PRB_getStrainProbes'
 --
 -- lec	06/09/98
@@ -923,9 +923,9 @@ rules:
           row : integer := 0;
  
 	  if (SelectReferenceMGI.doCount) then
-	    cmd := "execute PRB_getStrainReferenceMGI " + currentRecordKey + ",1\n";
+	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + ",1\n";
 	  else
-	    cmd := "execute PRB_getStrainReferenceMGI " + currentRecordKey + "\n";
+	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + "\n";
 	  end if;
 
           dbproc : opaque := mgi_dbopen();
