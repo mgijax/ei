@@ -84,6 +84,7 @@ rules:
 	      notew.child(i)->Note->text.value := "";
 	      notew.child(i)->Note->text.modified := false;
 	      notew.child(i)->Note->text.required := false;
+	      notew.child(i)->Note.noteKey := -1;
 	    end if;
 	    SetNotesDisplay.note := notew.child(i)->Note;
 	    send(SetNotesDisplay, 0);
