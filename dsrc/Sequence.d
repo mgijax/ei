@@ -557,6 +557,8 @@ rules:
 	    from_object := true;
 	  end if;
 
+	  -- install Acc ID query
+
 	  -- References
 
 	  if (from_source) then
