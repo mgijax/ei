@@ -291,6 +291,8 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  send(InitDataSets, 0);
+
           -- If adding, then @KEYNAME must be used in all Modify events
  
           currentRecordKey := "@" + KEYNAME;

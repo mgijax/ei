@@ -1894,6 +1894,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_SYNONYM:
     case BIB_BOOKS:
     case BIB_NOTES:
+    case BIB_DATASET_ASSOC:
     case GXD_ANTIBODYMARKER:
     case GXD_ANTIBODYALIAS:
     case GXD_ASSAYNOTE:
@@ -2020,7 +2021,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Allele_key, _Refs_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_REFS:
-	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract)",
+	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_BOOKS:
