@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 26 13:47:40 2003";
+      lastWritten = "Tue Apr 22 07:54:14 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -356,6 +356,13 @@ Module: mgiOption
                         labelString = "IMAGE Library";
                       Group: User
                         defaultValue = 43;
+                    }
+                    {
+                      dbESTLibrary = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "dbEST Library";
+                      Group: User
+                        defaultValue = 18;
                     }
               }
         }
