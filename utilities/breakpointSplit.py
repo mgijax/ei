@@ -358,7 +358,7 @@ ORIGMARKERKEY = None
 PROXIMALMARKER = None
 DISTALMARKER = None
 DISTALBAND = None
-MAILLIST = 'ljm@jax.org, jcg@jax.org, dbradt@jax.org'
+MAILLIST = 'ljm@jax.org, dbradt@jax.org'
 
 init()
 getKeys()
