@@ -2251,16 +2251,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_NOTE:
-      case MGI_NOTECHUNK:
-      case MGI_NOTETYPE:
-      case MGI_REFASSOCTYPE:
-      case MGI_REFERENCE_ASSOC:
-      case MGI_SPECIES:
-      case MGI_SPECIESTYPE:
-      case NOM_GENEFAMILY:
-      case NOM_MARKER:
-      case NOM_SYNONYM:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
@@ -2279,16 +2269,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_NOTE:
-      case MGI_NOTECHUNK:
-      case MGI_NOTETYPE:
-      case MGI_REFASSOCTYPE:
-      case MGI_REFERENCE_ASSOC:
-      case MGI_SPECIES:
-      case MGI_SPECIESTYPE:
-      case NOM_GENEFAMILY:
-      case NOM_MARKER:
-      case NOM_SYNONYM:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);
