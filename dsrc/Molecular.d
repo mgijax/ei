@@ -681,7 +681,7 @@ rules:
 	  -- process Notes solo too
 
           if (top->MolMarkerForm->MolNote.sql.length > 0) then
-            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql;
+            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql + "\nexec PRB_reloadSequence " + currentMasterKey;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;
             send(ModifySQL, 0);
@@ -689,6 +689,7 @@ rules:
 
           if (cmd.length > 0 or set.length > 0) then 
             cmd := cmd + mgi_DBupdate(PRB_PROBE, currentMasterKey, set);
+	    cmd := cmd + "\nexec PRB_reloadSequence " + currentMasterKey;
             ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;
@@ -817,11 +818,6 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + table.sqlCmd;
  
-	  if (table.sqlCmd.length > 0) then
-	     cmd := cmd + "\nexec PRB_reloadSequence " + currentMasterKey;
-	  end if;
-
-          ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->ReferenceList;
           send(ModifySQL, 0);
 
