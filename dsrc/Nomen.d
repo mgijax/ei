@@ -514,7 +514,8 @@ rules:
 	  end if;
 
 	  if (not (global_login = "ljm" or global_login = "lmm" or 
-		   global_login = "rjc" or global_login = "cml" or global_login = "tier4") and
+		   global_login = "rjc" or global_login = "cml" or 
+		   global_login = "bobs" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
