@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 28 13:07:50 2002";
+      lastWritten = "Mon Jun  3 13:06:42 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -15,6 +15,36 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:Clear (clearLists = 3)";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -191,6 +221,8 @@ Module: MGD
                                 }
                                 {
                                   Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Clear (clearLists = 3)";
                                 }
                                 {
                                   Modify = ControlPush;
@@ -247,6 +279,8 @@ Module: MGD
                                       }
                                       {
                                         AccSourceMenu = AccSourceMenu : mgiOption;
+                                        Group: User
+                                          defaultOption = Taxon;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
