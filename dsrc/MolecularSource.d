@@ -257,6 +257,8 @@ rules:
             return;
           end if;
 
+          (void) busy_cursor(top);
+
 	  top->SourceForm->SourceID->text.value := top->QueryList->List.keys[Select.item_position];
 	  DisplayMolecularSource.source_widget := top;
 	  DisplayMolecularSource.key := top->SourceForm->SourceID->text.value;
@@ -275,6 +277,8 @@ rules:
 	  Clear.clearLists := clearLists;
           Clear.reset := true;
           send(Clear, 0);
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

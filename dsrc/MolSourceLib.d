@@ -63,6 +63,7 @@ rules:
         AddMolecularSource does
 	  top : widget := AddMolecularSource.source_widget->SourceForm;
 	  keyLabel : string := AddMolecularSource.keyLabel;
+	  isCuratorEdited : string := "1";
  
 	  add : string := "";
 	  age : string := "";
@@ -84,7 +85,8 @@ rules:
                  top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
                  top->Tissue->TissueID->text.value + "," +
-                 top->GenderMenu.menuHistory.defaultValue + ",";
+                 top->GenderMenu.menuHistory.defaultValue + "," +
+                 top->CellLine->CellLineID->text.value + ",";
 
 	  -- Construct Age value
 
@@ -117,7 +119,7 @@ rules:
             add := add + mgi_DBprstr(age) + "," +
                          top->AgeMin->text.value + "," +
                          top->AgeMax->text.value + "," +
-            	         mgi_DBprstr(top->CellLine->text.value) + "," +
+            	         isCuratorEdited + "," +
 			 global_loginKey + "," + global_loginKey + ")\n";
  
 	    top.sql := add;
@@ -237,8 +239,6 @@ rules:
           key : string;
 	  keyModified : boolean;
  
-          (void) busy_cursor(top);
- 
 	  -- Save the ID
 	  key := sourceForm->SourceID->text.value;
 	  keyModified := sourceForm->SourceID->text.modified;
@@ -252,7 +252,6 @@ rules:
 	  sourceForm->SourceID->text.value := key;
 
 	  if (key.length = 0) then
-            (void) reset_cursor(top);
 	    return;
 	  end if;
 
@@ -274,10 +273,6 @@ rules:
 		if (sourceForm->Library.managed) then
                   sourceForm->Library->text.value := mgi_getstr(dbproc, 2);
 		  table := top->Control->ModificationHistory->Table;
-		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
-		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
-		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
-		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
 		end if;
 
 		if (sourceForm->mgiCitation.managed) then
@@ -287,15 +282,18 @@ rules:
 		end if;
 
 	        if (DisplayMolecularSource.master) then
-		  top->CreationDate->text.value := mgi_getstr(dbproc, 16);
-		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 17);
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 25));
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 26));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
                 end if;
 
                 sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 19);
                 sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 6);
                 sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 21);
                 sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 7);
-                sourceForm->CellLine->text.value := mgi_getstr(dbproc, 12);
+                sourceForm->CellLine->Verify->text.value := mgi_getstr(dbproc, 24);
+                sourceForm->CellLine->CellLineID->text.value := mgi_getstr(dbproc, 9);
                 sourceForm->Description->text.value := mgi_getstr(dbproc, 3);
  
                 SetOption.source_widget := sourceForm->ProbeOrganismMenu;
@@ -307,9 +305,9 @@ rules:
                 send(SetOption, 0);
 
 		DisplayMolecularAge.source_widget := sourceForm->Age->text;
-		DisplayMolecularAge.age := mgi_getstr(dbproc, 9);
-		DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 10);
-		DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 11);
+		DisplayMolecularAge.age := mgi_getstr(dbproc, 10);
+		DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 11);
+		DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 12);
 		send(DisplayMolecularAge, 0);
 
 	      elsif (results = 2) then
@@ -349,7 +347,6 @@ rules:
 
 	  sourceForm->SourceID->text.modified := keyModified;
 
-          (void) reset_cursor(top);
         end does;
 
 --
@@ -384,6 +381,7 @@ rules:
 	  top : widget := ModifyMolecularSource.source_widget->SourceForm;
           set : string := "";
 	  age : string := "";
+	  isCuratorEdited : string := "0";
 
 	  top.sql := "";
  
@@ -396,6 +394,7 @@ rules:
 	  if (top->Library.managed) then
 	    if (top->Library->text.modified) then
               set := set + "name = " + mgi_DBprstr(top->Library->text.value) + ",";
+	      isCuratorEdited := "1";
 	    end if;
 	  end if;
 
@@ -407,30 +406,36 @@ rules:
 
           if (top->ProbeOrganismMenu.menuHistory.modified) then
             set := set + "_Organism_key = " + top->ProbeOrganismMenu.menuHistory.defaultValue + ",";
+	    isCuratorEdited := "1";
           end if;
  
           if (top->Strain->StrainID->text.modified) then
             set := set + "_Strain_key = " + top->Strain->StrainID->text.value + ",";
+	    isCuratorEdited := "1";
           end if;
  
           if (top->Tissue->TissueID->text.modified) then
             set := set + "_Tissue_key = " + top->Tissue->TissueID->text.value + ",";
+	    isCuratorEdited := "1";
           end if;
  
           if (top->GenderMenu.menuHistory.modified) then
             set := set + "_Gender_key = " + top->GenderMenu.menuHistory.defaultValue + ",";
+	    isCuratorEdited := "1";
           end if;
  
+          if (top->CellLine->CellLineID->text.modified) then
+            set := set + "_CellLine_key = " + top->CellLine->CellLineID->text.value + ",";
+	    isCuratorEdited := "1";
+          end if;
+
           if (top->Description->text.modified) then
             set := set + "description = " + mgi_DBprstr(top->Description->text.value) + ",";
           end if;
  
-          if (top->CellLine->text.modified) then
-            set := set + "cellLine = " + mgi_DBprstr(top->CellLine->text.value) + ",";
-          end if;
- 
           if (top->AgeMenu.menuHistory.modified or top->Age->text.modified) then
 	    age := top->AgeMenu.menuHistory.defaultValue;
+	    isCuratorEdited := "1";
 
             if (top->Age->text.value.length > 0) then
               age := age + " " + top->Age->text.value;
@@ -455,6 +460,10 @@ rules:
 	    ProcessNoteForm.objectKey := top->SourceID->text.value;
 	    send(ProcessNoteForm, 0);
 	    top.sql := top.sql + top->mgiNoteForm.sql;
+	  end if;
+
+	  if (set.length > 0) then
+	    set := set + "isCuratorEdited = " + isCuratorEdited + ",";
 	  end if;
 
           if (top.sql.length > 0 or set.length > 0) then
@@ -558,6 +567,10 @@ rules:
             where := where + " and s._Gender_key = " + top->GenderMenu.menuHistory.defaultValue;
           end if;
 
+          if (top->CellLine->CellLineID->text.value.length > 0) then
+            where := where + " and s._CellLine_key = " + top->CellLine->CellLineID->text.value;
+          end if;
+ 
           if (top->AgeMenu.menuHistory.searchValue != "%") then
             where := where + " and s.age like \"" + top->AgeMenu.menuHistory.defaultValue;
 
@@ -568,10 +581,6 @@ rules:
             end if;
           elsif (top->AgeMenu.menuHistory.searchValue = "%" and top->Age->text.value.length > 0) then
             where := where + " and s.age like \"%" + top->Age->text.value + "\"";
-          end if;
- 
-          if (top->CellLine->text.value.length > 0) then
-            where := where + " and s.cellLine like " + mgi_DBprstr(top->CellLine->text.value);
           end if;
  
           if (top->Description->text.value.length > 0) then

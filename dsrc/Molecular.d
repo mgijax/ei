@@ -1365,6 +1365,8 @@ rules:
 
 	Select does
 
+          (void) busy_cursor(top);
+
           InitAcc.table := accTable;
           send(InitAcc, 0);
 
@@ -1408,10 +1410,9 @@ rules:
 	      top->MolDetailForm->SourceForm->SourceID->text.value := "-1";
             end if;
 
+	    (void) reset_cursor(top);
 	    return;
           end if;
-
-          (void) busy_cursor(top);
 
           table : widget := top->MolMarkerForm->Marker->Table;
 	  currentMasterKey := top->QueryList->List.keys[Select.item_position];
@@ -1585,8 +1586,8 @@ rules:
                 top->MolReferenceForm->Holder->text.value := mgi_getstr(dbproc, 7);
                 top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 9));
                 top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 8));
-		ref_createdBy := mgi_getstr(dbproc, 10);
-		ref_modifiedBy := mgi_getstr(dbproc, 11);
+		ref_createdBy := mgi_getstr(dbproc, 16);
+		ref_modifiedBy := mgi_getstr(dbproc, 17);
 		ref_creation_date := mgi_getstr(dbproc, 12);
 		ref_modification_date := mgi_getstr(dbproc, 13);
               elsif (results = 2) then
@@ -1807,7 +1808,7 @@ rules:
  
         DisplayParentSource does
  
-          (void) busy_cursor(top);
+--          (void) busy_cursor(top);
  
           if (top->ParentClone->ObjectID->text.value.length = 0) then
             top->SourceForm->SourceID->text.value := "";
@@ -1821,7 +1822,7 @@ rules:
           DisplayMolecularSource.source_widget := top;
           send(DisplayMolecularSource, 0);
  
-          (void) reset_cursor(top);
+ --         (void) reset_cursor(top);
         end does;
  
 --
