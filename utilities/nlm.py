@@ -85,6 +85,9 @@
 #
 # History
 #
+#	lec	02/16/2001
+#	- TR 2290; new PMID in file
+#
 #	lec	09/12/2000
 #	- TR 1937; numerics showing up in Author names
 #
@@ -511,7 +514,7 @@ def doUpdate(rec, rectags):
 
 	# Get UI Accession key(s)
 
-	uiKey = accessionlib.get_Accession_key(refKey, 'Reference', str(MEDLINE))
+	uiKey = accessionlib.get_Accession_key(refKey, 'Reference', MEDLINESTR)
 
 	# Update existing entry if ui, title or abstract is NULL
  
@@ -554,7 +557,7 @@ def doUpdate(rec, rectags):
           				cmd.append('exec ACC_update %s,%s' % (uiKey, rec['UI']))
 			else:	
           			cmd.append('exec ACC_insert %d,%s,%d,%s' \
-				     	% (refKey, rec['UI'], MEDLINE, MGITYPE))
+				     	% (refKey, rec['UI'], MEDLINEKEY, MGITYPE))
  
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
@@ -613,7 +616,7 @@ def doAdd(rec, rectags):
 
 	if rec['UI'] != '"0"':
         	cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
-			% (rec['UI'], MEDLINE, MGITYPE))
+			% (rec['UI'], MEDLINEKEY, MGITYPE))
  
 	cmd.append('commit transaction')
 	db.sql(cmd, [None] * len(cmd))
@@ -740,8 +743,9 @@ def processFile():
 			newRec = 1
 
 		# Line contains a label in format 'AU - '
-		if regex.match('..  - ', line) > 0:
-			[field, value] = string.split(line, ' - ', 1)
+		if regex.match('^[A-Z]*[ ]*- ', line) > 0:
+
+			[field, value] = string.split(line, '- ', 1)
 			field = string.strip(field)
 			value = string.strip(value)
 
@@ -782,7 +786,8 @@ def processFile():
 
 # Fields present in NLM/Current Contents text files
 
-MEDLINE = 7
+MEDLINESTR = 'MEDLINE'
+MEDLINEKEY = 7
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
 
