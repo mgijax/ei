@@ -25,6 +25,7 @@ import sys
 import getopt
 import string
 import regsub
+import os
 import db
 import mgi_utils
 
