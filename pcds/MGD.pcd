@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Nov  3 13:29:32 2000";
+      lastWritten = "Wed Dec 13 13:38:30 2000";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1976,6 +1976,12 @@ Module: MGD
                                   Group: User
                                     targetWidget = Assay;
                                     targetColumn = 4;
+                                }
+                                {
+                                  J58000Push = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:NoteJ58000";
+                                    labelString = "J:58000 Note";
                                 }
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
