@@ -2,14 +2,15 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr 24 15:24:50 2000";
+      lastWritten = "Tue Apr 25 11:09:33 2000";
         {
-          Species = Module : MGI;
+          SpeciesModule = Module : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 140;
+            vip_x = 80;
+            vip_y = 305;
           Group: User
             homeWidget = Latin;
+            activateButtonName = Species;
               {
                 MainForm = XmForm;
                     {
@@ -213,14 +214,15 @@ Module: MGD
               }
         }
         {
-          RISet = Module : MGI;
+          RISetModule = Module : MGI;
           Group: Widget
             title = "RI Sets";
           Group: Control
-            vip_x = 60;
-            vip_y = 85;
+            vip_x = 80;
+            vip_y = 140;
           Group: User
             homeWidget = Designation;
+            activateButtonName = RISet;
               {
                 MainForm = XmForm;
                     {
@@ -424,12 +426,13 @@ Module: MGD
               }
         }
         {
-          Cross = Module : MGI;
+          CrossModule = Module : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 305;
+            vip_x = 80;
+            vip_y = 635;
           Group: User
             homeWidget = Name;
+            activateButtonName = Cross;
               {
                 MainForm = XmForm;
                     {
@@ -826,12 +829,13 @@ Module: MGD
               }
         }
         {
-          Strains = Module : MGI;
+          StrainModule = Module : MGI;
           Group: Control
-            vip_x = 60;
-            vip_y = 140;
+            vip_x = 80;
+            vip_y = 250;
           Group: User
             homeWidget = Name;
+            activateButtonName = Strains;
               {
                 MainForm = XmForm;
                     {
@@ -1461,12 +1465,13 @@ Module: MGD
               }
         }
         {
-          Tissues = Module : MGI;
+          TissueModule = Module : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 85;
+            vip_x = 80;
+            vip_y = 195;
           Group: User
             homeWidget = Name;
+            activateButtonName = Tissues;
               {
                 MainForm = XmForm;
                     {
@@ -1705,12 +1710,13 @@ Module: MGD
               }
         }
         {
-          Homology = Module : MGI;
+          HomologyModule = Module : MGI;
           Group: Control
-            vip_x = 60;
-            vip_y = 195;
+            vip_x = 80;
+            vip_y = 360;
           Group: User
             homeWidget = Jnum;
+            activateButtonName = Homology;
               {
                 MainForm = XmForm;
                     {
@@ -2072,14 +2078,15 @@ Module: MGD
               }
         }
         {
-          MolecularSegment = Module1 : MGI;
+          MolecularSegmentModule = Module1 : MGI;
           Group: Control
-            vip_x = 60;
-            vip_y = 360;
+            vip_x = 80;
+            vip_y = 690;
           Group: User
             homeWidget = Name;
             editForms = "ControlForm\nMolMasterForm\nMolDetailForm\nMolMarkerForm\nMolPrimerForm\nSourceForm\nMolReferenceForm";
             clearForms = "ControlForm\nMolMasterForm\nMolDetailForm\nMolMarkerForm\nMolPrimerForm\nSourceForm\nMolReferenceForm";
+            activateButtonName = MolecularSegment;
               {
                 MainForm = XmForm;
                     {
@@ -2492,8 +2499,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 60;
-            vip_y = 470;
+            vip_x = 80;
+            vip_y = 910;
               {
                 ID = ID;
               }
@@ -2660,8 +2667,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 180;
-            vip_y = 470;
+            vip_x = 80;
+            vip_y = 965;
               {
                 Marker = Table : mgiTable;
                 Group: Constraint
@@ -2729,8 +2736,8 @@ Module: MGD
             width = 600;
             managed = False;
           Group: Control
-            vip_x = 180;
-            vip_y = 525;
+            vip_x = 80;
+            vip_y = 1075;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -2994,8 +3001,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 60;
-            vip_y = 580;
+            vip_x = 80;
+            vip_y = 1130;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3104,14 +3111,15 @@ Module: MGD
               }
         }
         {
-          MolecularSource = Module : MGI;
+          MolecularSourceModule = Module : MGI;
           Group: Control
-            vip_x = 60;
-            vip_y = 415;
+            vip_x = 80;
+            vip_y = 800;
           Group: User
             editForms = "ControlForm\nEditForm\nSourceForm";
             clearForms = "ControlForm\nEditForm\nSourceForm";
             homeWidget = Library;
+            activateButtonName = MolecularSource;
               {
                 MainForm = XmForm;
                     {
@@ -3233,8 +3241,8 @@ Module: MGD
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 180;
-            vip_y = 580;
+            vip_x = 80;
+            vip_y = 1185;
               {
                 ID = ID;
               }
@@ -3258,8 +3266,8 @@ Module: MGD
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 635;
+            vip_x = 80;
+            vip_y = 1240;
               {
                 ID = ID;
               }
@@ -3294,8 +3302,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
-            vip_y = 690;
+            vip_x = 80;
+            vip_y = 1350;
               {
                 ID = ID;
               }
@@ -3370,8 +3378,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 635;
+            vip_x = 80;
+            vip_y = 1295;
               {
                 ID = ID;
               }
@@ -3639,8 +3647,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 690;
+            vip_x = 80;
+            vip_y = 1405;
               {
                 ID = ID;
               }
@@ -3891,8 +3899,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
-            vip_y = 745;
+            vip_x = 80;
+            vip_y = 1460;
               {
                 ID = ID;
               }
@@ -4065,8 +4073,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 745;
+            vip_x = 80;
+            vip_y = 1515;
               {
                 ID = ID;
               }
@@ -4435,8 +4443,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
-            vip_y = 800;
+            vip_x = 80;
+            vip_y = 1570;
               {
                 ID = ID;
               }
@@ -4587,8 +4595,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 750;
           Group: Control
-            vip_x = 60;
-            vip_y = 855;
+            vip_x = 80;
+            vip_y = 1680;
           Group: User
             homeWidget = Jnum;
               {
@@ -4682,8 +4690,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 750;
           Group: Control
-            vip_x = 180;
-            vip_y = 800;
+            vip_x = 80;
+            vip_y = 1625;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -4950,14 +4958,15 @@ Module: MGD
               }
         }
         {
-          MLDP = Module1 : MGI;
+          MappingModule = Module1 : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 360;
+            vip_x = 80;
+            vip_y = 745;
           Group: User
             homeWidget = Jnum;
             editForms = "ControlForm\nExptMasterForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\nExptPhysicalForm";
             clearForms = "ControlForm\nExptMasterForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\nExptPhysicalForm";
+            activateButtonName = MLDP;
               {
                 MainForm = XmForm;
                     {
@@ -5425,14 +5434,15 @@ Module: MGD
               }
         }
         {
-          MLC = Module : MGI;
+          MLCModule = Module : MGI;
           Group: Widget
             destroyCallback = "D:ExitMLCED";
           Group: Control
-            vip_x = 180;
-            vip_y = 415;
+            vip_x = 80;
+            vip_y = 855;
           Group: User
             homeWidget = Marker;
+            activateButtonName = MLC;
               {
                 MainForm = XmForm;
                     {
@@ -6124,7 +6134,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           MGD = Application : MGI;
           Group: Control
-            vip_x = 60;
+            vip_x = 80;
             vip_y = 30;
           Group: User
             initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
@@ -6295,12 +6305,13 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          MarkerNonMouse = Module : MGI;
+          MarkerNonMouseModule = Module : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 250;
+            vip_x = 80;
+            vip_y = 525;
           Group: User
             homeWidget = Symbol;
+            activateButtonName = MarkerNonMouse;
               {
                 MainForm = XmForm;
                     {
@@ -6725,16 +6736,17 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          Reference = Module : MGI;
+          ReferenceModule = Module : MGI;
           Group: Widget
             title = "Master Bibliography";
           Group: Control
-            vip_x = 180;
-            vip_y = 30;
+            vip_x = 80;
+            vip_y = 85;
           Group: User
             homeWidget = Authors;
             clearForms = "ControlForm\nEditForm\nDataSetsForm\nBookForm";
             editForms = "ControlForm\nEditForm\nDataSetsForm\nBookForm";
+            activateButtonName = Reference;
               {
                 MainForm = XmForm;
                 Group: Widget
@@ -7473,8 +7485,8 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 60;
-            vip_y = 525;
+            vip_x = 80;
+            vip_y = 1020;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -7709,12 +7721,13 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          Marker = Module : MGI;
+          MarkerModule = Module : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 195;
+            vip_x = 80;
+            vip_y = 415;
           Group: User
             homeWidget = Symbol;
+            activateButtonName = Marker;
               {
                 MainForm = XmForm;
                 Group: Widget
@@ -8448,10 +8461,10 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          Nomen = Nomen : MGINomen;
+          NomenModule = NomenModule : MGINomen;
           Group: Control
-            vip_x = 60;
-            vip_y = 250;
+            vip_x = 80;
+            vip_y = 470;
               {
                 MainForm = XmForm;
                     Popups:
@@ -8516,12 +8529,13 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          Allele = Module : MGI;
+          AlleleModule = Module : MGI;
           Group: Control
-            vip_x = 60;
-            vip_y = 305;
+            vip_x = 80;
+            vip_y = 580;
           Group: User
             homeWidget = Marker;
+            activateButtonName = Allele;
               {
                 MainForm = XmForm;
                     {

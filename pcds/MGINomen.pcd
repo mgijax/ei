@@ -2,14 +2,15 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 19 08:55:05 2000";
+      lastWritten = "Tue Apr 25 11:03:22 2000";
         {
-          Nomen = Module : MGI;
+          NomenModule = Module : MGI;
           Group: Control
-            vip_x = 25;
+            vip_x = 45;
             vip_y = 30;
           Group: User
             homeWidget = SymbolName;
+            activateButtonName = Nomen;
               {
                 MainForm = XmForm;
                 Group: Widget

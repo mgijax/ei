@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 19 08:55:16 2000";
+      lastWritten = "Tue Apr 25 11:15:40 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -196,12 +196,13 @@ Module: MGI
         {
           Module = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean=\"False\"\n";
+            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\n";
             destroyCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
             vip_x = 40;
             vip_y = 30;
+            vipComment = "TopLevelShell is used for normal top-level windows such as any additional top-level widgets an application needs.";
           Group: User
             homeWidget = mgiAccessionTable;
               {
@@ -377,12 +378,13 @@ Module: MGI
         {
           Module1 = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean=\"False\"\n";
+            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String\n";
             destroyCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
             vip_x = 120;
             vip_y = 30;
+            vipComment = "TopLevelShell is used for normal top-level windows such as any additional top-level widgets an application needs.";
               {
                 MainForm = XmForm;
                     {
@@ -777,7 +779,7 @@ Module: MGI
               }
         }
         {
-          ControlledVocab = Module;
+          ControlledVocabModule = Module;
           Group: Widget
             title = "MGI Controlled Vocabulary";
           Group: Control
@@ -785,6 +787,7 @@ Module: MGI
             vip_y = 140;
           Group: User
             homeWidget = Name;
+            activateButtonName = ControlledVocab;
               {
                 MainForm = XmForm;
                     {

@@ -2,9 +2,9 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 19 08:55:07 2000";
+      lastWritten = "Tue Apr 25 11:09:53 2000";
         {
-          Dictionary = Module : MGI;
+          DictionaryModule = Module : MGI;
           Group: Widget
             title = "Anatomical Dictionary";
             destroyCallback = "D:DictionaryExit";
@@ -13,6 +13,7 @@ Module: gxdDictionary
             vip_y = 30;
           Group: User
             homeWidget = structureText;
+            activateButtonName = Dictionary;
               {
                 MainForm = XmForm;
                 Group: Widget

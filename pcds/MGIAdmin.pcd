@@ -2,11 +2,11 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 19 08:55:06 2000";
+      lastWritten = "Tue Apr 25 11:10:13 2000";
         {
           MGIAdmin = Application : MGI;
           Group: Control
-            vip_x = 40;
+            vip_x = 70;
             vip_y = 30;
               {
                 MGIForm = XmForm;
@@ -67,14 +67,15 @@ Module: MGIAdmin
               }
         }
         {
-          ActualLogical = Module : MGI;
+          ActualLogicalModule = Module : MGI;
           Group: Widget
             title = "Actual/Logical Databases";
           Group: Control
-            vip_x = 125;
-            vip_y = 30;
+            vip_x = 70;
+            vip_y = 85;
           Group: User
             homeWidget = Name;
+            activateButtonName = ActualLogical;
               {
                 MainForm = XmForm;
                     {
@@ -340,12 +341,13 @@ Module: MGIAdmin
               }
         }
         {
-          TablesColumns = Module : MGI;
+          TablesColumnsModule = Module : MGI;
           Group: Control
-            vip_x = 40;
-            vip_y = 85;
+            vip_x = 70;
+            vip_y = 140;
           Group: User
             homeWidget = Name;
+            activateButtonName = TablesColumns;
               {
                 MainForm = XmForm;
                     {
