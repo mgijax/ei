@@ -1,14 +1,14 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGD EDITING INTERFACE: Design and Requirements - Strains 
+MGI EDITING INTERFACE: Design and Requirements - Strains 
 </TITLE>
 </HEADER>
 
 <BODY BGCOLOR="#FFFFFF">
 
 <H2>
-MGD EDITING INTERFACE: Design and Requirements - Strains 
+MGI EDITING INTERFACE: Design and Requirements - Strains 
 </H2>
 <BR>
 
@@ -43,11 +43,18 @@ The master list of Strains contains all of the strains referenced by:
 <P>
 <LI>Strain Type (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Controlled Vocabulary Lists</A>)
 <P>
+<LI>Private? (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
 <LI>Standard? (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<P>
+<LI>Super Standard? (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 <P>
 <LI>Needs Review? (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 <P>
-<LI>Gene Symbols (see <A HREF="MEI.html#dataVerMarker">Data Verifications section on Markers</A>)
+<LI>Marker Symbols (see <A HREF="MEI.html#dataVerMarker">Data Verifications section on Markers</A>)
+<P>
+<LI>Allele Symbols (see <A HREF="MEI.html#dataVerAllele">Data Verifications section on Alleles</A>)
+<P>
 </OL>
 
 <H4>Fields</H4>
@@ -56,14 +63,18 @@ The master list of Strains contains all of the strains referenced by:
 	<OL>
 	<LI>Strain 
 	<LI>Species
+	<LI>Private?
 	<LI>Standard?
+	<LI>Super Standard?
 	<LI>Needs Review?
 	<LI>Strain Type
-	<LI>Gene Symbol
+	<LI>Marker Symbol
 	</OL>
 <P>
 <LI>Not Required
 	<OL>
+	<LI>Allele Symbol
+	<LI>Synonyms
 	<LI>Notes
 	<LI>Accession Numbers
 	</OL>
@@ -137,8 +148,6 @@ The target Strain will always end up with the JAX Mice Registry number.
 
 <H4>Miscellaneous</H4>
 <OL>
-<LI>Only one JAX Mice Registry number is allowed per Strain.
-<P>
 </OL>
 
 <H3>RELATED DOCUMENTS</H3>
