@@ -1,3 +1,10 @@
+TAG: ei-5-1-0
+DATE: 07/25/2001
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) implemented seq# editing for GXD Specimen and InSitu Results
+
 TAG: ei-5-0-14
 DATE: 07/19/2001
 STAFF: lec
