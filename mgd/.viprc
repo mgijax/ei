@@ -1,7 +1,7 @@
 
 !
 ! VIP init file
-! written: Wed Jan  9 09:00:48 2002
+! written: Mon Feb 25 10:07:01 2002
 !
 
 session_information {
@@ -119,6 +119,12 @@ pcds
     opened      = false
     show_names  = false
     height      = 231
+
+  load "/home/lec/ei/ei/pcds/mgiFantom.pcd"
+    floating    = false
+    opened      = false
+    show_names  = false
+    height      = 176
 
 }
 
