@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul  7 09:55:56 2003";
+      lastWritten = "Tue Jul 15 07:51:03 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -155,9 +155,13 @@ Module: GXD
                                       }
                                       {
                                         SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                                        Group: User
+                                          required = False;
                                       }
                                       {
                                         VectorTypeMenu = VectorTypeMenu : mgiOption;
+                                        Group: User
+                                          required = False;
                                       }
                                       {
                                         ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
