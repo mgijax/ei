@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	10/11/2004
+--	- TR 6108; Copy Column for In Situs
+--
 -- lec	10/31/2003
 --	- TR 5270; Reporter Gene
 --
@@ -201,6 +204,7 @@ devents:
 		    select: boolean := false;];
 	BuildDynamicComponents :local [];
 	CopySpecimen :local [];
+	CopySpecimenColumn :local [];
 	CopyGelLane :local [];
 	CopyGelLaneColumn :local [];
 	CopyGelRow :local [];
@@ -821,6 +825,72 @@ rules:
 	    CommitTableCellEdit.value_changed := true;
 	    send(CommitTableCellEdit, 0);
 	  end if;
+	end does;
+
+--
+-- CopySpecimenColumn
+--
+--	Copy the current Specimen column value to all rows
+--
+
+	CopySpecimenColumn does
+	  table : widget := CopySpecimenColumn.source_widget.parent.child_by_class(TABLE_CLASS);
+	  editMode : string;
+	  i : integer := 0;
+	  row : integer := 0;
+	  column : integer;
+	  keyColumn : integer;
+	  value : string;
+
+          row := mgi_tblGetCurrentRow(table);
+          column := mgi_tblGetCurrentColumn(table);
+	  value := mgi_tblGetCell(table, row, column);
+
+	  i := 0;
+          while (i < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, i, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+
+	    mgi_tblSetCell(table, i, column, value);
+
+	    -- Copy the Key Column, if applicable
+
+	    keyColumn := -1;
+
+	    if (column = table.genotype) then
+	      keyColumn := table.genotypeKey;
+	    elsif (column = table.sex) then
+	      keyColumn := table.sexKey;
+	    elsif (column = table.fixation) then
+	      keyColumn := table.fixationKey;
+	    elsif (column = table.embedding) then
+	      keyColumn := table.embeddingKey;
+	    elsif (column = table.hybridization) then
+	      keyColumn := table.hybridizationKey;
+	    end if;
+
+	    -- For Age Prefix, copy Age Key columns
+
+	    if (column = table.agePrefix) then
+	      mgi_tblSetCell(table, i, table.ageKey, mgi_tblGetCell(table, row, table.ageKey));
+	      mgi_tblSetCell(table, i, table.ageRange, mgi_tblGetCell(table, row - 1, table.ageRange));
+
+	    -- Else, copy key column
+
+	    elsif (keyColumn > -1) then
+	      mgi_tblSetCell(table, i, keyColumn, mgi_tblGetCell(table, row, keyColumn));
+	    end if;
+
+	    CommitTableCellEdit.source_widget := table;
+	    CommitTableCellEdit.row := i;
+	    CommitTableCellEdit.value_changed := true;
+	    send(CommitTableCellEdit, 0);
+
+	    i := i + 1;
+	  end while;
 	end does;
 
 --
