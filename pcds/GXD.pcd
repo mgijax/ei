@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon May 17 15:28:58 2004";
+      lastWritten = "Fri May 28 11:01:42 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2936,9 +2936,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     HybridizationPulldown = OptionPulldown : mgiOption;
                                                   {
                                                     whole = OptionToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    section = OptionToggle : mgiOption;
                                                   }
                                                   {
                                                     sectionWhole = OptionToggle : mgiOption;
