@@ -1066,7 +1066,7 @@ rules:
 		-- Determine which data set this is....
 		if (mgi_tblGetCell(nonstatusTable, row, nonstatusTable.dataSetKey) = mgi_getstr(dbproc, 2)) then
 	          (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.assocKey, mgi_getstr(dbproc, 1));
-		  if (mgi_getstr(dbproc, 2) = YES) then
+		  if (mgi_getstr(dbproc, 3) = YES) then
 	            (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.neverUsed, "X");
 	            (void) mgi_tblSetCell(nonstatusTable, row, nonstatusTable.selected, "X");
 		  else
