@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Wed Aug 11 14:46:13 1999";
+      lastWritten = "Mon Aug 16 07:11:07 1999";
         {
           Reference = Module : MGI;
           Group: Widget
@@ -8512,6 +8512,8 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Sequence = XmToggleButton;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     SequencePID = XmToggleButton;
