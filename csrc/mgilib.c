@@ -2503,6 +2503,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
 		mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
       case ALL_ALLELE:
+      case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
