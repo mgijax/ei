@@ -1365,7 +1365,7 @@ rules:
 	    currentReferenceKey := "";
 
 	    -- Re-set Library Source Key if Anonymous source
-	    if (top->MolDetailForm->SourceForm->Library->text.value = "Anonymous") then
+	    if (top->MolDetailForm->SourceForm->Library->text.value = "") then
 	      top->MolDetailForm->SourceForm->SourceID->text.value := "-1";
             end if;
 
