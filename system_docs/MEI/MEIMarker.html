@@ -74,7 +74,6 @@ Nomenclature database and the Broadcast process, refer to:
 	<LI>UN (<I>unknown</I>)
 	<LI>MT (<I>mitochondrial</I>)
 	<LI>W (<I>withdrawn</I>)
-	<LI>RE (<I>reserved; reserved symbols are no longer entered into MGD, but some may still exist</I>)
 	</UL>
 <P>
 <LI>History Dates (see <A HREF="MEI.html#dataVerDate">Data Verifications section on Dates</A>)
@@ -117,9 +116,7 @@ Nomenclature database and the Broadcast process, refer to:
 <LI>Current Symbol; default is <I>Symbol</I>
 <LI>Offset (on add)
 	<UL>
-	<LI>If no MGD Offset is entered and chromosome = <I>RE</I>, then default is <I>-999.0</I>
-	<LI>If no MGD Offset is entered and chromosome = <I>UN</I>, then default is <I>-1.0</I>
-	<LI>If no MGD Offset is entered and chromosome != <I>RE</I>, then default is <I>-1.0</I>
+	<LI>If no MGD Offset is entered, then default is <I>-1.0</I>
 	</UL>
 <LI>History (on add); default History event is <I>Assigned</I>
 </OL>
@@ -167,10 +164,8 @@ records into one Marker Allele Symbol record.
 <H4>Modifying Chromosome Values</H4>
 When modifications are made to the Chromosome value of the Marker, certain rules apply:
 <OL>
-<LI>If the Chromosome is being changed to <I>RE</I>, then set the Offset to <I>-999.0</I>.
 <LI>If the Chromosome is being changed to <I>UN</I>, then set the Offset to <I>-999.0</I>.
 <LI>If the Chromosome is being changed to <I>W</I>, then manage the Withdrawal dialog.
-<LI>If the Chromosome was <I>RE</I> and is now assigned, then set the Offset to <I>-1.0</I>.
 <LI>If the Chromosome was known and is changed to another known, then set the MGD and CC Offsets to <I>-1.0</I>.
     However, if the Marker is an Anchor Locus, then the Anchor record must be deleted before the
     Chromosome value can be modified.
