@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Oct 12 13:27:07 1999";
+      lastWritten = "Tue Oct 12 14:55:06 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -6096,6 +6096,8 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = RefTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    defaultOption = YesNLM;
                                 }
                                 {
                                   ReviewStatusMenu = ReviewStatusMenu : mgiOption;
@@ -6123,6 +6125,8 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = ReviewStatusMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    defaultOption = No;
                                       Popups:
                                       {
                                         IsReviewPulldown : YesNoPulldown = OptionPulldown;
@@ -6237,6 +6241,8 @@ Shift<Key>Tab: prev-tab-group()
                                               text = text;
                                               Group: Widget
                                                 columns = 15;
+                                              Group: User
+                                                required = True;
                                             }
                                       }
                                 }
