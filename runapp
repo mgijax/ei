@@ -6,10 +6,11 @@
 # All SQL transactions logged to USERLOG.
 #
 
-setenv EIAPP $1
+setenv EIAPP	$1
 
 cd `dirname $0`
-source Configuration
-cd $EIAPP
 
-exec $EIINSTALLDIR/$EIAPP/$EIAPP >>& $USERLOG
+source Configuration
+
+cd $EIINSTALLDIR/$EIAPP
+exec $EIAPP >>& $USERLOG
