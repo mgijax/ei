@@ -1741,7 +1741,7 @@ rules:
 	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
 		 "cytogeneticOffset, creation_date, modification_date " +
 		 "from MRK_Marker where _Marker_key = " + currentRecordKey + "\n" +
-	         "select note from MRK_Notes " +
+	         "select rtrim(note) from MRK_Notes " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum\n" +
 	         "select source, str(offset,10,2) from MRK_Offset " +

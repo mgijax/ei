@@ -466,7 +466,7 @@ rules:
 	  cmd := "select _Marker_key, _Species_key, symbol, name, chromosome, " +
 		 "cytogeneticOffset, species, creation_date, modification_date " +
 		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
-	         "select note from MRK_Notes " +
+	         "select rtrim(note) from MRK_Notes " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum\n";
 

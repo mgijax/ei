@@ -3072,7 +3072,7 @@ rules:
 	  top->ExptMasterForm->Notes->text.value := "";
 
 	  cmd := "select * from MLD_Marker_View where _Refs_key = " + currentRefKey + " order by sequenceNum\n" +
-		 "select note from MLD_Notes where _Refs_key = " + currentRefKey + " order by sequenceNum\n";
+		 "select rtrim(note) from MLD_Notes where _Refs_key = " + currentRefKey + " order by sequenceNum\n";
 	  results : integer := 1;
 	  row : integer;
 
@@ -3165,7 +3165,7 @@ rules:
  
           cmd := "select _Expt_key, exptType, chromosome, creation_date, modification_date " +
                  "from MLD_Expt_View where _Expt_key = " + currentExptKey + "\n" +
-                 "select note from MLD_Expt_Notes where _Expt_key = " + currentExptKey + 
+                 "select rtrim(note) from MLD_Expt_Notes where _Expt_key = " + currentExptKey + 
 		 " order by sequenceNum\n" +
                  "select sequenceNum, _Marker_key, symbol, _Allele_key, _Assay_Type_key, " +
                  "allele, assay, description, matrixData " +

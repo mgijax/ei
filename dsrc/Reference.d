@@ -774,7 +774,7 @@ rules:
 
 	  cmd := "select * from BIB_Refs where _Refs_key = " + currentRecordKey + "\n" +
 	         "select * from BIB_Books where _Refs_key = " + currentRecordKey + "\n" +
-	         "select note from BIB_Notes where _Refs_key = " + currentRecordKey + " order by sequenceNum";
+	         "select rtrim(note) from BIB_Notes where _Refs_key = " + currentRecordKey + " order by sequenceNum";
 
 	  top->Notes->text.value := "";
 

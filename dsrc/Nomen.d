@@ -1196,10 +1196,10 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(MRK_NOMEN_VIEW) + 
 		 " where _Nomen_key = " + currentNomenKey + "\n" +
-	         "select note from " + mgi_DBtable(MRK_NOMEN_EDITORNOTES) +
+	         "select rtrim(note) from " + mgi_DBtable(MRK_NOMEN_EDITORNOTES) +
 		 " where _Nomen_key = " + currentNomenKey +
 		 " order by sequenceNum\n" +
-	         "select note from " + mgi_DBtable(MRK_NOMEN_COORDNOTES) +
+	         "select rtrim(note) from " + mgi_DBtable(MRK_NOMEN_COORDNOTES) +
 		 " where _Nomen_key = " + currentNomenKey +
 		 " order by sequenceNum\n" +
 	         "select * from " + mgi_DBtable(MRK_NOMEN_OTHER) +

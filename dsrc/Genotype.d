@@ -566,7 +566,7 @@ rules:
 	Exit does
 
 	  if (mgi->AssayModule != nil) then
-	    ab.sensitive := false;
+	    ab.sensitive := true;
 	  end if;
 
 	  destroy self;

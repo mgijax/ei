@@ -1486,7 +1486,7 @@ rules:
           currentReferenceKey := top->ReferenceList->List.keys[SelectReference.item_position];
  
           cmd := "select * from PRB_Reference_View where _Reference_key = " + currentReferenceKey + "\n" +
-                 "select note from PRB_Ref_Notes where _Reference_key = " + currentReferenceKey +
+                 "select rtrim(note) from PRB_Ref_Notes where _Reference_key = " + currentReferenceKey +
 			" order by sequenceNum\n" +
 		 "select _Alias_key, alias from PRB_Alias where _Reference_key = " + currentReferenceKey + "\n" +
 		 "select * from PRB_RFLV_View where _Reference_key = " + currentReferenceKey +
