@@ -159,6 +159,9 @@ Nomenclature Committee can trace the evolution of the symbol as nomenclature eve
 	<LI>Add the <I>Symbol</I> to the master Marker table.
 	<LI>A new <I>Assigned</I> History line is added to the new symbol to document 
 	    this nomenclature event.
+	<LI>If Accession numbers exist for the symbol, then add the Accession numbers
+	    to the master Accession table.  If the Accession number contains a Reference,
+	    add the reference to the Accession Reference table.
 	<LI>If the <I>Symbol</I> already exists in MGD, then abort the <I>Add</I>.
 	</UL>
 <P>
@@ -185,6 +188,8 @@ broadcast file:
 <LI><I>Proposed Symbol</I>, the Nomen proposed symbol.  This field is only relevant within the scope
     of the Broadcast process if the proposed symbol has the suffix <I>-pending</I>.
 <LI><I>Other Names</I>, a list of synonyms for the symbol in the format <I>Name|Name|Name|...</I>
+<LI><I>Accession Numbers</I>, a list of Accession Numbers, Reference and Logical DB for the symbol 
+       in the format <I>Accession Id&J:12345&Logical DB Id|Accession Id&J:12345&Logical DB Id|...</I>
 </UL>
 
 <P>
