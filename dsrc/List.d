@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	02/20/2002
+--	TR 3380; SelectLookupListItem; traverse to next cell
+--
 -- lec	01/10/2002
 --	InsertList; added allowDups parameter
 --
@@ -504,6 +507,7 @@ rules:
 	  -- These variables are only relevant for Tables
 	  table : widget;
 	  row : integer := -1;
+	  column : integer := -1;
 	  key : string;
 	  accID : string;
 
@@ -589,9 +593,11 @@ rules:
               (void) mgi_tblSetCell(table, row, (integer) list_w.targetText,
                             (string) SelectLookupListItem.selected_items.count);
               (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, keys);
+	      column := (integer) list_w.targetText;
 
 	      if ((integer) list_w.targetAccID > 0) then
                 (void) mgi_tblSetCell(table, row, (integer) list_w.targetAccID, accIDs);
+		column := (integer) list_w.targetAccID;
 	      end if;
 	    else
 	      item := list_w.selectedItems[0];
@@ -606,6 +612,7 @@ rules:
 
 	      if ((integer) list_w.targetText >= 0) then
 	        (void) mgi_tblSetCell(table, row, (integer) list_w.targetText, item);
+		column := (integer) list_w.targetText;
 	      end if;
 
 	      -- If table key column specified, copy the key
@@ -620,6 +627,7 @@ rules:
 	      if ((integer) list_w.targetAccID >= 0) then
 	        accID := list_w.accIDs[SelectLookupListItem.item_position];
 	        (void) mgi_tblSetCell(table, row, (integer) list_w.targetAccID, accID);
+		column := (integer) list_w.targetAccID;
 	      end if;
 	    end if;
 
@@ -630,11 +638,12 @@ rules:
             send(CommitTableCellEdit, 0);
 
 	    -- Scroll to table row
-	    if (scrollToRow) then
+--	    if (scrollToRow) then
 	      TraverseToTableCell.table := table;
 	      TraverseToTableCell.row := row;
+	      TraverseToTableCell.column := column + 1;
 	      send(TraverseToTableCell, 0);
-	    end if;
+--	    end if;
 
 	  -- Non-table text widget
 
