@@ -1923,6 +1923,19 @@ rules:
 	      where := where + " and ig.age like " + mgi_DBprstr(value);
 	      from_specimen := true;
 	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.ageNote);
+	    if (value.length > 0) then
+	      where := where + " and ig.ageNote like " + mgi_DBprstr(value);
+	      from_specimen := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.specimenNote);
+	    if (value.length > 0) then
+	      where := where + " and ig.specimenNote like " + mgi_DBprstr(value);
+	      from_specimen := true;
+	    end if;
+
 	  elsif (assayDetailForm.name = "GelForm") then
 	    table := top->GelForm->GelLane->Table;
 
@@ -1969,6 +1982,19 @@ rules:
 	      where := where + " and gg.age like " + mgi_DBprstr(value);
 	      from_gel := true;
 	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.ageNote);
+	    if (value.length > 0) then
+	      where := where + " and gg.ageNote like " + mgi_DBprstr(value);
+	      from_gel := true;
+	    end if;
+
+	    value := mgi_tblGetCell(table, 0, table.laneNote);
+	    if (value.length > 0) then
+	      where := where + " and gg.laneNote like " + mgi_DBprstr(value);
+	      from_gel := true;
+	    end if;
+
 	  end if;
 
 	  if (from_note) then
