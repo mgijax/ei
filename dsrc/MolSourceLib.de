@@ -24,14 +24,17 @@ DisplayMolecularSource [source_widget : widget;		-- Display Molecular Source inf
 
 InitMolecularSource [source_widget : widget;];		-- Initialie Mol Source form
 
-ModifyMolecularSource [source_widget : widget;   	-- Construct SQL for updating Mol Source record
-                       row : integer := -1;];
+ModifyMolecularSource [source_widget : widget;]; 	-- Construct SQL for updating Mol Source record
 
 ModifyAntigenSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
                      antigenKey : string;];             -- Antigen with which to associate the Mol Source record
 
 ModifyProbeSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
                    probeKey : string;];                 -- Probe with which to associate the Mol Source record
+
+ModifySequenceSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
+		      row : integer;                    -- Table row
+                      sequenceKey : string;];           -- Sequence with which to associate the Mol Source record
 
 SelectMolecularSource [source_widget : widget;  	-- Construct SQL for querying Mol Source record
                        alias : string;          	-- Join table alias

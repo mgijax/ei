@@ -2573,6 +2573,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_REFERENCE:
       case PRB_RFLV:
       case PRB_SOURCE:
+      case SEQ_SEQUENCE:
       case VOC_EVIDENCE:
       case VOC_TERM:
               sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 

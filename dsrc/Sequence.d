@@ -35,7 +35,7 @@ devents:
 	Init :local [];
 
 	Modify :local [];
-	ModifySequenceSource :local [];
+	ModifySource :local [];
 
 	PrepareSearch :local [];
 
@@ -277,7 +277,7 @@ rules:
           end if;
 
 	  -- Source
-	  send(ModifySequenceSource, 0);
+	  send(ModifySource, 0);
 
 	  -- Notes
 
@@ -307,7 +307,7 @@ rules:
 	end does;
 
 --
--- ModifySequenceSource
+-- ModifySource
 --
 -- Activated from: devent Modify
 --
@@ -315,7 +315,7 @@ rules:
 --
 
 
-	ModifySequenceSource does
+	ModifySource does
           row : integer := 0;
           editMode : string;
           key : string;
@@ -332,9 +332,10 @@ rules:
             key := mgi_tblGetCell(sourceTable, row, sourceTable.sourceKey);
  
             if (editMode = TBL_ROW_MODIFY) then
-	      ModifyMolecularSource.source_widget := sourceTable;
-	      ModifyMolecularSource.row := row;
-	      send(ModifyMolecularSource, 0);
+	      ModifySequenceSource.source_widget := sourceTable;
+	      ModifySequenceSource.row := row;
+	      ModifySequenceSource.sequenceKey := currentKey;
+	      send(ModifySequenceSource, 0);
 	      cmd := cmd + sourceTable.sqlCmd;
             end if;
  

@@ -630,15 +630,16 @@ rules:
 	    -- Parent Clone has not been modified, so process any Source modifications
 
             else
+	      -- can only modify Anonymous Source
 	      if (detailForm->SourceForm->Library->text.value.length = 0) then
                 -- ModifyProbeSource will set top->MolDetailForm->SourceForm.sql appropriately
                 -- Append this value to the 'cmd' string
                 ModifyProbeSource.source_widget := detailForm;
 	        ModifyProbeSource.probeKey := currentMasterKey;
                 send(ModifyProbeSource, 0);
-	      else
-                ModifyMolecularSource.source_widget := detailForm;
-                send(ModifyMolecularSource, 0);
+--	      else
+--                ModifyMolecularSource.source_widget := detailForm;
+--                send(ModifyMolecularSource, 0);
 	      end if;
 
               cmd := cmd + detailForm->SourceForm.sql;
