@@ -46,7 +46,7 @@ Module: GXD
                                       {
                                         Clear = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:Clear(clearLists = 3)\nD:InitAcc";
+                                          activateCallback = "D:Clear(clearLists = 3)";
                                       }
                                 }
                           }
@@ -196,7 +196,7 @@ Module: GXD
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:Clear(clearLists = 3)\nD:InitAcc";
+                                    activateCallback = "D:Clear(clearLists = 3)";
                                 }
                           }
                     }
