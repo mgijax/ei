@@ -1,3 +1,10 @@
+TAG: ei-2-8-4
+DATE: 11/09/2000
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) mgilib.c = ALL_SYNONYM should NOT select its key
+
 TAG: ei-2-8-3
 DATE: 11/09/2000
 STAFF: lec
