@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Mar 12 11:53:17 2002";
+      lastWritten = "Wed Mar 13 08:15:39 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -530,6 +530,9 @@ Module: mgiFantom
                                                 searchValue = 5;
                                                 defaultValue = 5;
                                             }
+                                            {
+                                              NotSpecified = NotSpecified : mgiOption;
+                                            }
                                       }
                                 }
                                 {
@@ -594,48 +597,6 @@ Module: mgiFantom
                                     targetColumn = 31;
                                 }
                                 {
-                                  NomenNoteMenu = OptionMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = NomenNotePulldown;
-                                    labelString = "Nomen Notes";
-                                      Popups:
-                                      {
-                                        NomenNotePulldown : OptionPulldown = OptionPulldown : mgiOption;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              NomenNoteToggle = NoteToggle : mgiFantom;
-                                              Group: Widget
-                                                labelString = "Probable Ortholog";
-                                              Group: User
-                                                defaultValue = "Probable Ortholog";
-                                            }
-                                            {
-                                              NomenNoteToggle1 = NoteToggle : mgiFantom;
-                                              Group: Widget
-                                                labelString = "Possible Ortholog";
-                                              Group: User
-                                                defaultValue = "Possible Ortholog";
-                                            }
-                                            {
-                                              NomenNoteToggle2 = NoteToggle : mgiFantom;
-                                              Group: Widget
-                                                labelString = "Probable Paralog";
-                                              Group: User
-                                                defaultValue = "Probable Paralog";
-                                            }
-                                            {
-                                              NomenNoteToggle3 = NoteToggle : mgiFantom;
-                                              Group: Widget
-                                                labelString = "Proposed Symbol/Name";
-                                              Group: User
-                                                defaultValue = "Proposed Symbol:|Proposed Name:|";
-                                                placeBefore = False;
-                                            }
-                                      }
-                                }
-                                {
                                   RIKENNote = NotePush : mgiDataTypes;
                                   Group: Widget
                                     labelString = "RIKEN Notes";
@@ -650,26 +611,6 @@ Module: mgiFantom
                                   Group: User
                                     targetColumn = 37;
                                     targetWidget = Fantom;
-                                }
-                                {
-                                  CuratorNoteMenu = OptionMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = CuratorNotePulldown;
-                                    labelString = "Curator Notes";
-                                      Popups:
-                                      {
-                                        CuratorNotePulldown : OptionPulldown = OptionPulldown : mgiOption;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              CuratorNoteToggle = NoteToggle : mgiFantom;
-                                              Group: Widget
-                                                labelString = "Better RefSeq";
-                                              Group: User
-                                                defaultValue = "Better RefSeq";
-                                            }
-                                      }
                                 }
                                 {
                                   notSearch = toggle : mgiDataTypes;
@@ -738,6 +679,57 @@ Module: mgiFantom
                                             }
                                       }
                                 }
+                          }
+                    }
+                    {
+                      SearchDialog = SearchDialog : mgiDialog;
+                    }
+                    {
+                      WhichItem = WhichItem : mgiDialog;
+                    }
+                    {
+                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                    }
+                    {
+                      WorkingDialog = WorkingDialog : mgiDialog;
+                    }
+                    {
+                      NoteDialog = NoteDialog : mgiDialog;
+                      Group: Widget
+                        rubberPositioning = False;
+                        resizePolicy = resize_any;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            Note = Notes : mgiDataTypes;
+                          }
+                          {
+                            separator = XmSeparator;
+                            Group: Constraint
+                              leftAttachment = attach_form;
+                              rightAttachment = attach_form;
+                              topAttachment = attach_widget;
+                              topWidget = Note;
+                              bottomAttachment = attach_none;
+                              resizable = true;
+                              topOffset = 5;
+                          }
+                          {
+                            Buttons = Buttons : mgiDialog;
+                          }
+                          {
+                            NotePushForm = NotePushForm : mgiFantom;
+                            Group: Constraint
+                              leftAttachment = attach_widget;
+                              leftWidget = Note;
+                              leftOffset = 5;
+                              rightAttachment = attach_form;
+                              topAttachment = attach_opposite_widget;
+                              topWidget = Note;
+                              bottomAttachment = attach_none;
+                              resizable = true;
+                              rightOffset = 5;
                           }
                     }
               }
@@ -852,7 +844,7 @@ Module: mgiFantom
           Group: Widget
             subMenuId = sortMenuPulldown;
           Group: Control
-            vip_x = 170;
+            vip_x = 160;
             vip_y = 30;
               Popups:
               {
@@ -1110,7 +1102,7 @@ Module: mgiFantom
           Group: Widget
             userDefinedAttributes = "dbField:String\ncolumnValue:Int\n";
           Group: Control
-            vip_x = 170;
+            vip_x = 160;
             vip_y = 85;
         }
         {
@@ -1118,7 +1110,7 @@ Module: mgiFantom
           Group: Control
             vipComment = "";
             vip_x = 55;
-            vip_y = 195;
+            vip_y = 250;
               {
                 form = XmForm;
                 Group: Widget
@@ -1187,8 +1179,67 @@ Module: mgiFantom
             valueChangedCallback = "D:CopyToNote,\nD:SetModify";
             userDefinedAttributes = "placeBefore:Boolean=\"True\"\n";
           Group: Control
-            vip_x = 170;
+            vip_x = 160;
             vip_y = 140;
+        }
+        {
+          FantomNotePush = push : mgiDataTypes;
+          Group: Widget
+            userDefinedAttributes = "placeBefore:Boolean(Boolean)=\"True\"\ndefaultValue:String\n";
+            activateCallback = "D:CopyToNote";
+          Group: Control
+            vip_x = 160;
+            vip_y = 195;
+        }
+        {
+          NotePushForm = XmRowColumn;
+          Group: Control
+            vip_x = 55;
+            vip_y = 195;
+            vipComment = "";
+              {
+                Intial = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "|Sp|LL:|Seqid:|GS:|GN:|";
+                Group: User
+                  defaultValue = "|Sp|LL:|Seqid:|GS:|GN:|";
+              }
+              {
+                ProbOrtholog = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Probable Ortholog";
+                Group: User
+                  defaultValue = "Probable Ortholog";
+              }
+              {
+                PosOrtholog = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Possible Ortholog";
+                Group: User
+                  defaultValue = "Possible Ortholog";
+              }
+              {
+                ProbParalog = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Probable Paralog";
+                Group: User
+                  defaultValue = "Probable Paralog";
+              }
+              {
+                SymbolName = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Symbol/Name";
+                Group: User
+                  defaultValue = "Proposed Symbol:|Proposed Name:|";
+                  placeBefore = False;
+              }
+              {
+                BetterRefSeq = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Better RefSeq";
+                Group: User
+                  defaultValue = "Better RefSeq";
+              }
         }
 }
 
