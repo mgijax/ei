@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 04/23/2001
+--	- TR 2515; added 'cml' as Tier4
+--
 -- lec 03/27/2001
 --	- Added "reset" to ClearNomen; always call ClearNomen
 --
@@ -498,7 +501,7 @@ rules:
 	  end if;
 
 	  if (not (global_login = "ljm" or global_login = "lmm" or 
-		   global_login = "tier4") and
+		   global_login = "cml" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
