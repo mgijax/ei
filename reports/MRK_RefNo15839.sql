@@ -37,20 +37,11 @@ group by _Marker_key
 having count(*) = 1
 go
  
-/* Chromosome != RE */
-
-select distinct s._Marker_key, s._Refs_key
-into #markers2
-from #single s, MRK_Marker m
-where s._Marker_key = m._Marker_key
-and m.chromosome != 'RE'
-go
-
 /* History Incomplete */
 
 select distinct r._Marker_key, r._Refs_key
 into #markers3
-from #markers2 r, MRK_History h
+from #single r, MRK_History h
 where r._Marker_key = h._Marker_key
 and (h._Refs_key is null
 or h.name is null

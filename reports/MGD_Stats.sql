@@ -70,7 +70,6 @@ select count(*) from MRK_Marker
 where _Species_key = 1 
 and chromosome != 'W'
 and chromosome != 'UN'
-and chromosome != 'RE'
 go
 
 print ""
@@ -80,7 +79,6 @@ where _Species_key = 1
 and _Marker_Type_key = 1
 and chromosome != 'W'
 and chromosome != 'UN'
-and chromosome != 'RE'
 go
 
 select distinct h1 = m1._Marker_key, h2 = m2._Marker_key
