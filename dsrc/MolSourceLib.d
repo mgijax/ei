@@ -136,7 +136,8 @@ rules:
           add := add + mgi_DBprstr(age) + "," +
             	       isCuratorEdited + "," +
 		       global_loginKey + "," + global_loginKey + ")\n" +
-		       "exec MGI_resetAgeMinMax " + mgi_DBtable(PRB_SOURCE) + ", @" + keyLabel + "\n";
+		       "exec MGI_resetAgeMinMax " + mgi_DBtable(PRB_SOURCE) + ", @" + keyLabel + "\n" +
+		       "select @" + keyLabel + "\n";
  
 	  top.sql := add;
  
