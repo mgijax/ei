@@ -56,6 +56,7 @@ ModifyNotes [source_widget : widget;         -- Notes widget
 	     row : integer;                  -- Note Row (if Notes Widget is a table)
 	     column : integer;               -- Note Column (if Notes Widget is a table)
 	     allowBlank : boolean := false;  -- Allow Blank Note?
+	     keyDeclared : boolean := false; -- Has Primary Key Already Been Declared?
 	     noteType : string := "";];      -- Note Type (if Notes Widget is a table)
 
 -- Set background display for Note Push Button

@@ -226,6 +226,8 @@ rules:
 	        childnote->Note->text.modified := false;
 		if (noteKey.length > 0) then
 	          childnote->Note.noteKey := (integer) noteKey;
+		else
+	          childnote->Note.noteKey := -1;
 		end if;
 	      else
                 StatusReport.source_widget := notew.top;
@@ -260,6 +262,7 @@ rules:
 	  tableID : integer := ProcessNoteForm.tableID;
 	  objectKey : string := ProcessNoteForm.objectKey;
 	  textw : widget;
+	  keyDeclared : boolean := false;
 
 	  notew.sql := "";
 
@@ -278,8 +281,14 @@ rules:
 	    ModifyNotes.source_widget := textw->Note;
 	    ModifyNotes.tableID := tableID;
 	    ModifyNotes.key := objectKey;
+	    ModifyNotes.keyDeclared := keyDeclared;
 	    send(ModifyNotes, 0);
-	    notew.sql := notew.sql + textw->Note.sql;
+
+	    if (textw->Note.sql.length > 0) then
+	      notew.sql := notew.sql + textw->Note.sql;
+	      keyDeclared := true;
+	    end if;
+
 	    i := i + 1;
 	  end while;
 	end does;
@@ -530,6 +539,7 @@ rules:
 	  key : string := ModifyNotes.key;
 	  row : integer := ModifyNotes.row;
 	  column : integer := ModifyNotes.column;
+	  keyDeclared : boolean := ModifyNotes.keyDeclared;
           note : string;
 	  noteType : string;
 	  mgiType : string;
@@ -538,6 +548,8 @@ rules:
 	  isModified : boolean;
           i : integer := 1;
 	  cmd : string := "";
+	  deleteCmd : string := "";
+	  masterCmd : string := "";
  
 	  isTable := mgi_tblIsTable(noteWidget);
 
@@ -566,26 +578,29 @@ rules:
 	    noteType := mgi_DBprstr(noteWidget.noteType);
 	  end if;
 
-	  if (noteWidget.mgiTypeKey > 0) then
-	    mgiType := (string) noteWidget.mgiTypeKey;
+	  if (noteWidget.is_defined("mgiTypeKey") != nil) then
+	    if (noteWidget.mgiTypeKey > 0) then
+	      mgiType := (string) noteWidget.mgiTypeKey;
+	    end if;
 	  end if;
 
-	  if (noteWidget.noteKey > 0) then
-	    noteKey := (string) noteWidget.noteKey;
+	  if (noteWidget.is_defined("noteKey") != nil) then
+	    if (noteWidget.noteKey > 0) then
+	      noteKey := (string) noteWidget.noteKey;
+              deleteCmd := mgi_DBdelete(tableID, noteKey);
+	    end if;
 	  end if;
 
-	  if (tableID = MGI_NOTE) then
-            cmd := mgi_DBdelete(tableID, noteKey);
-	  else
-            cmd := mgi_DBdelete(tableID, key);
+	  if (tableID != MGI_NOTE) then
+            deleteCmd := mgi_DBdelete(tableID, key);
 
 	    if (isTable and noteType.length > 0) then
-	      cmd := cmd + " and noteType = " + mgi_DBprstr(noteType) + "\n";
+	      deleteCmd := deleteCmd + " and noteType = " + mgi_DBprstr(noteType) + "\n";
 	    elsif (noteWidget.is_defined("noteTypeKey") != nil) then
 	      if (noteWidget.noteTypeKey > 0) then
-	          cmd := cmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
+	          deleteCmd := deleteCmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
 	      elsif (noteWidget.noteType.length > 0) then
-	        cmd := cmd + " and noteType = " + noteType + "\n";
+	        deleteCmd := deleteCmd + " and noteType = " + noteType + "\n";
 	      end if;
 	    end if;
 	  end if;
@@ -593,8 +608,13 @@ rules:
 	  -- for MGI_Note, first add a record for the MGI_Note object
 
 	  if (tableID = MGI_NOTE) then
-	    cmd := cmd + 
-		   mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
+	    if (not keyDeclared) then
+	      masterCmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME);
+	    else
+	      masterCmd := mgi_DBincKey(KEYNAME);
+	    end if;
+
+	    masterCmd := masterCmd +
 	           mgi_DBinsert(tableID, KEYNAME) +
 		   key + "," +
 		   mgiType + "," +
@@ -631,6 +651,8 @@ rules:
             i := i + 1;
           end while;
  
+	  -- Process the last remaining chunk of note
+
 	  if (mgi_DBprstr(note) != "NULL" or ModifyNotes.allowBlank) then
 	    if (tableID = MGI_NOTE) then
 	      cmd := cmd +
@@ -668,6 +690,15 @@ rules:
 		   (string) i + "," + 
                    mgi_DBprstr(note) + ")\n";
 	    end if;
+	  end if;
+
+	  -- if notes are being added, then include 'masterCmd'
+	  -- else just include the 'deleteCmd'
+
+	  if (cmd.length > 0) then
+	    cmd := deleteCmd + masterCmd + cmd;
+	  else
+	    cmd := deleteCmd + cmd;
 	  end if;
 
 	  if (isTable) then
