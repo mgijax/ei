@@ -521,33 +521,36 @@ rules:
 	        while (ageList.more) do
 		  ageStr := ageList.next;
 
-	          -- Determine if a range of values
-                  rageList := mgi_splitfields(ageStr, "-");
+		  if (ageStr[1] != ' ') then
 
-		  -- Is a range
-		  if (rageList.count = 2) then
-		    tempMin := (real) rageList[1];
-		    tempMax := (real) rageList[2];
+	            -- Determine if a range of values
+                    rageList := mgi_splitfields(ageStr, "-");
 
-		  -- Not a range
-		  else
-		    tempMin := (real) ageStr;
-		    tempMax := tempMin;
-		  end if;
+		    -- Is a range
+		    if (rageList.count = 2) then
+		      tempMin := (real) rageList[1];
+		      tempMax := (real) rageList[2];
 
-		  -- Initialize using first list elements
-		  if firstOfList then
-		    setMin := tempMin;
-		    setMax := tempMax;
-		    firstOfList := false;
-
-		  -- Compare subsequent elements to find Min and Max
-		  else
-		    if (tempMin < setMin) then
-		      setMin := tempMin;
+		    -- Not a range
+		    else
+		      tempMin := (real) ageStr;
+		      tempMax := tempMin;
 		    end if;
-		    if (tempMax > setMax) then
+
+		    -- Initialize using first list elements
+		    if firstOfList then
+		      setMin := tempMin;
 		      setMax := tempMax;
+		      firstOfList := false;
+
+		    -- Compare subsequent elements to find Min and Max
+		    else
+		      if (tempMin < setMin) then
+		        setMin := tempMin;
+		      end if;
+		      if (tempMax > setMax) then
+		        setMax := tempMax;
+		      end if;
 		    end if;
 		  end if;
 	        end while;
