@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 03/28/2001
+--	- MRK_reloadLabel is called from MRK_Marker_Update trigger
+--
 -- 12/18/2000
 --	- TR 2068; added NoteJ58000
 --
@@ -303,8 +306,7 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accRefTable.sqlCmd and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set) +
-	           "\nexec MRK_reloadLabel " + currentRecordKey;
+	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set);
 	  end if;
 
 	  ModifySQL.cmd := cmd;
