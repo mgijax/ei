@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb 18 10:19:27 2003";
+      lastWritten = "Wed Feb 19 09:39:12 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -211,7 +211,7 @@ Module: GXD
                                         Group: Widget
                                           xrtTblNumColumns = 3;
                                           xrtTblColumnLabels = "Mode,Acc ID,Antibody";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 30)(all 2 75)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 30)(all 2 50)";
                                           userDefinedAttributes = "antibody:Int(Int)=\"2\"\naccID:Int=\"1\"\n";
                                       }
                                       {
