@@ -981,6 +981,9 @@ char *mgi_DBtype(int table)
     case ALL_ALLELE:
             strcpy(buf, "Allele");
             break;
+    case ALL_CELLLINE:
+            strcpy(buf, "ES Cell Line");
+            break;
     case BIB_REFS:
             strcpy(buf, "Reference");
 	    break;
@@ -1060,6 +1063,9 @@ char *mgi_DBaccTable(int table)
   {
     case ALL_ALLELE:
             strcpy(buf, "ALL_Acc_View");
+            break;
+    case ALL_CELLLINE:
+            strcpy(buf, "ALL_CellLine_Acc_View");
             break;
     case BIB_REFS:
             strcpy(buf, "BIB_Summary_All_View");

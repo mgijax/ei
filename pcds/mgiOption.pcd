@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar  4 15:54:27 2005";
+      lastWritten = "Mon Mar 21 12:52:51 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -456,6 +456,18 @@ Module: mgiOption
                         labelString = "dbEST Library";
                       Group: User
                         defaultValue = 18;
+                    }
+                    {
+                      IGTC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 66;
+                    }
+                    {
+                      Lexicon = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Lexicon Genetics";
+                      Group: User
+                        defaultValue = 67;
                     }
               }
         }
