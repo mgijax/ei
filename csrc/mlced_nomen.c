@@ -36,7 +36,7 @@ char *mlced_dbDescToEI(char *txt, int key)
   strcpy(chgTxt, txt);
 
   /* select tag/symbol pairs from the MLC Marker table for the given key */
-  sprintf(cmd, "select tag, tagSymbol from %s where _Marker_key = %d", mgi_DBtable(MLC_MARKER_EDIT_VIEW), key);
+  sprintf(cmd, "select tag, tagSymbol from %s where _Marker_key = %d", mgi_DBtable(MLC_MARKER_VIEW), key);
 
   dbcmd(dbproc, cmd);
   dbsqlexec(dbproc);
@@ -91,7 +91,7 @@ char *mlced_eiDescToDB(char *txt, xrtlist list)
    * then replace '\L(Acy1)' with '\L(1)'.
    *
    * The list will be used in the same way during the creation of
-   * the MLC_Marker_edit table (see MLCED.d/ModifyText)
+   * the MLC_Marker table (see MLCED.d/ModifyText)
    */
 
   while (i < numitems)

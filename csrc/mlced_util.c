@@ -118,7 +118,7 @@ char *symidtext;
     int foundit = 0;
  
  
-    sprintf(cmd, "select _Marker_key from MLC_Text_edit where _Marker_key = 
+    sprintf(cmd, "select _Marker_key from MLC_Text where _Marker_key = 
 				 %s", symidtext);
  
     dbcmd(dbproc, cmd);

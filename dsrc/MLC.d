@@ -210,7 +210,7 @@ rules:
 
 	  -- Set Row Count
 	  SetRowCount.source_widget := top;
-	  SetRowCount.tableID := MLC_TEXT_EDIT;
+	  SetRowCount.tableID := MLC_TEXT;
 	  send(SetRowCount, 0);
  
 	  -- Clear the form
@@ -295,19 +295,19 @@ rules:
 -- Delete
 --
 -- Response to the "Delete" button.
--- Deletes the all MLC marker record from MLC_TEXT_EDIT_ALL.
+-- Deletes the all MLC marker record from MLC_TEXT_ALL.
 --
 
 	Delete does
 	  (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := MLC_TEXT_EDIT_ALL;
+	  DeleteSQL.tableID := MLC_TEXT_ALL;
 	  DeleteSQL.key := currentMarkerKey;
 	  DeleteSQL.list := top->QueryList;
 
 	  if (debug) then 
 	    (void) mgi_writeLog("MLC DELETE DEBUG: \n" + 
-	      mgi_DBdelete(MLC_TEXT_EDIT, currentMarkerKey) + "\n");
+	      mgi_DBdelete(MLC_TEXT, currentMarkerKey) + "\n");
 	  else
 	    send(DeleteSQL, 0);
 	  end if;
@@ -527,7 +527,7 @@ rules:
 	  send(UnSelectRefsTable, 0);
 
 	  -- Delete all current References for Marker
-	  cmd := cmd + mgi_DBdelete(MLC_REFERENCE_EDIT, currentMarkerKey);
+	  cmd := cmd + mgi_DBdelete(MLC_REFERENCE, currentMarkerKey);
 
 	  -- Add any new/modified References
 	  -- Ignore any rows tagged for deletion
@@ -543,7 +543,7 @@ rules:
 	      newKey := mgi_tblGetCell(table, row, table.refsKey);
 	      seqNum := mgi_tblGetCell(table, row, table.seqNum);
 
-	      cmd := cmd + mgi_DBinsert(MLC_REFERENCE_EDIT, NOKEY) + 
+	      cmd := cmd + mgi_DBinsert(MLC_REFERENCE, NOKEY) + 
 		     currentMarkerKey + "," + 
 		     newKey + "," +
 		     seqNum + ")\n";
@@ -610,7 +610,7 @@ rules:
 -- 
 -- Checks to see if "Mode" has been modified, and if so, updates it
 --
--- Affects: MLC_TEXT_EDIT, MLC_MARKER_EDIT
+-- Affects: MLC_TEXT, MLC_MARKER
 -- 
 	ModifyText does
 	  ltag : Tag;
@@ -626,13 +626,13 @@ rules:
 	  -- Always re-insert the text so that the modification date and userID
 	  -- gets updated.  Use the original creation date, if one exists.
 
-	  -- delete Text entry in MLC_Text_edit for this marker key
-	  cmd := cmd + mgi_DBdelete(MLC_TEXT_EDIT, currentMarkerKey);
+	  -- delete Text entry in MLC_Text for this marker key
+	  cmd := cmd + mgi_DBdelete(MLC_TEXT, currentMarkerKey);
 
 	  -- note: mgi_DBprstr escape all of the "s in the text using "mgi_escape_quotes"
 	  -- insert the new text
 
-	  cmd := cmd + mgi_DBinsert(MLC_TEXT_EDIT, NOKEY) + 
+	  cmd := cmd + mgi_DBinsert(MLC_TEXT, NOKEY) + 
 			currentMarkerKey + ", " + 
 			mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + "," +
 			mgi_DBprstr(mlced_eiDescToDB(locustxt.value, locustaglist)) + ",";
@@ -646,7 +646,7 @@ rules:
 		  cmd := cmd + "getdate())\n";
 	  end if;
 
-	  cmd := cmd + mgi_DBdelete(MLC_MARKER_EDIT, currentMarkerKey);
+	  cmd := cmd + mgi_DBdelete(MLC_MARKER, currentMarkerKey);
 
 	  i := 0;
 	  itemcnt := XrtGearListGetItemCount(locustaglist);
@@ -667,7 +667,7 @@ rules:
 				
 	    ltag := TagList_getitem(locustaglist, i);
 	    mk2 := getIdbySymbol(ltag.tagstr,true); 
-	    cmd := cmd + mgi_DBinsert(MLC_MARKER_EDIT, NOKEY) +
+	    cmd := cmd + mgi_DBinsert(MLC_MARKER, NOKEY) +
 		   currentMarkerKey + "," + (string) (i + 1) + ", " + mk2 + ")\n";     
 	    i := i + 1;
 	  end while;
@@ -676,7 +676,7 @@ rules:
 	  if (top->MLCModeMenu.menuHistory.modified and
 	      top->MLCModeMenu.menuHistory.searchValue != "%") then
 	    set := set + "mode = " + mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + ",";
-	    cmd := cmd + mgi_DBupdate(MLC_TEXT_EDIT, currentMarkerKey, set);
+	    cmd := cmd + mgi_DBupdate(MLC_TEXT, currentMarkerKey, set);
 	  end if;
 	end does;
 
@@ -751,7 +751,7 @@ rules:
 	  end if;
  
 	  if (fromText) then
-	    from := from + "," + mgi_DBtable(MLC_TEXT_EDIT) + " x";
+	    from := from + "," + mgi_DBtable(MLC_TEXT) + " x";
 	    where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = x." + mgi_DBkey(MRK_MARKER); 
 	  end if;
 
@@ -761,7 +761,7 @@ rules:
 	  end if;
 
 	  if (fromRef) then
-	    from := from + "," + mgi_DBtable(MLC_REFERENCE_EDIT) + " r";
+	    from := from + "," + mgi_DBtable(MLC_REFERENCE) + " r";
 	    where := where + "\nand m." + mgi_DBkey(MRK_MARKER) + " = r." + mgi_DBkey(MRK_MARKER); 
 	  end if;
 
@@ -795,7 +795,7 @@ rules:
 	  Query.source_widget := top;
 	  Query.select := "select distinct m._Marker_key, m.symbol\n" + 
 	                  from + where + "order by m.symbol\n";
-	  Query.table := MLC_TEXT_EDIT;
+	  Query.table := MLC_TEXT;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -883,11 +883,11 @@ rules:
 		 " from MRK_Classes_View where _Marker_key = " + currentMarkerKey + 
 		 " order by name\n" +
 		 "select b._Refs_key, r.tag, b.jnum, b.short_citation " +
-		 "from MLC_Reference_edit r, BIB_View b " +
+		 "from MLC_Reference r, BIB_View b " +
 		 "where r._Marker_key = " + currentMarkerKey + " and r._Refs_key = b._Refs_key " + 
 		 "order by r.tag\n" +
 		 "select mode, description, creation_date, modification_date, userID " +
-	         "from MLC_Text_edit where _Marker_key = " + currentMarkerKey + "\n";
+	         "from MLC_Text where _Marker_key = " + currentMarkerKey + "\n";
 
 	  table : widget;
 	  results : integer := 1;
@@ -1459,8 +1459,8 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select description from " + mgi_DBtable(MLC_TEXT_EDIT) +
-		 " where " + mgi_DBkey(MLC_TEXT_EDIT) + " = " +
+	  cmd := "select description from " + mgi_DBtable(MLC_TEXT) +
+		 " where " + mgi_DBkey(MLC_TEXT) + " = " +
 		 top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value;
 	  newtext := mgi_sql1(cmd);
 

@@ -335,7 +335,7 @@ rules:
 	  -- Table IDs for establishing status of Reference
 	  tableID.insert((string) PRB_REFERENCE, tableID.count + 1);
 	  tableID.insert((string) MLD_MARKER, tableID.count + 1);
-	  tableID.insert((string) MLC_REFERENCE_EDIT, tableID.count + 1);
+	  tableID.insert((string) MLC_REFERENCE, tableID.count + 1);
 	  tableID.insert((string) HMD_HOMOLOGY, tableID.count + 1);
 	  tableID.insert((string) GXD_INDEX, tableID.count + 1);
 	  tableID.insert((string) GO_DATAEVIDENCE, tableID.count + 1);

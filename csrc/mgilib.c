@@ -767,11 +767,11 @@ char *mgi_DBkey(int table)
     case MRK_NOTES:
     case MRK_OFFSET:
     case MRK_REFERENCE:
-    case MLC_LOCK_EDIT:
-    case MLC_MARKER_EDIT:
-    case MLC_REFERENCE_EDIT:
-    case MLC_TEXT_EDIT:
-    case MLC_TEXT_EDIT_ALL:
+    case MLC_LOCK:
+    case MLC_MARKER:
+    case MLC_REFERENCE:
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
             strcpy(buf, "_Marker_key");
 	    break;
     case MRK_OTHER:
@@ -1354,21 +1354,21 @@ char *mgi_DBtable(int table)
     case MGI_USER:
 	    strcpy(buf, "MGI_User");
 	    break;
-    case MLC_LOCK_EDIT:
+    case MLC_LOCK:
             strcpy(buf, "MLC_Lock_edit");
 	    break;
-    case MLC_MARKER_EDIT:
-            strcpy(buf, "MLC_Marker_edit");
+    case MLC_MARKER:
+            strcpy(buf, "MLC_Marker");
 	    break;
-    case MLC_MARKER_EDIT_VIEW:
-            strcpy(buf, "MLC_Marker_edit_View");
+    case MLC_MARKER_VIEW:
+            strcpy(buf, "MLC_Marker_View");
 	    break;
-    case MLC_REFERENCE_EDIT:
-            strcpy(buf, "MLC_Reference_edit");
+    case MLC_REFERENCE:
+            strcpy(buf, "MLC_Reference");
 	    break;
-    case MLC_TEXT_EDIT:
-    case MLC_TEXT_EDIT_ALL:
-            strcpy(buf, "MLC_Text_edit");
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
+            strcpy(buf, "MLC_Text");
 	    break;
     case MLD_ASSAY:
             strcpy(buf, "MLD_Assay_Types");
@@ -1801,11 +1801,11 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTECHUNK:
     case MGI_ORGANISMTYPE:
     case MGI_REFERENCE_ASSOC:
-    case MLC_LOCK_EDIT:
-    case MLC_MARKER_EDIT:
-    case MLC_REFERENCE_EDIT:
-    case MLC_TEXT_EDIT:
-    case MLC_TEXT_EDIT_ALL:
+    case MLC_LOCK:
+    case MLC_MARKER:
+    case MLC_REFERENCE:
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
     case MLD_CONCORDANCE:
     case MLD_DISTANCE:
     case MLD_EXPT_MARKER:
@@ -2080,19 +2080,19 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_USER:
 	    sprintf(buf, "insert %s (%s, _UserType_key, _UserStatus_key, login, fullName, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLC_LOCK_EDIT:
+    case MLC_LOCK:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLC_MARKER_EDIT:
+    case MLC_MARKER:
 	    sprintf(buf, "insert %s (%s, tag, _Marker_key_2)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLC_REFERENCE_EDIT:
+    case MLC_REFERENCE:
 	    sprintf(buf, "insert %s (%s, _Refs_key, tag)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLC_TEXT_EDIT:
+    case MLC_TEXT:
 	    sprintf(buf, "insert %s (%s, mode, description, creation_date)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2532,11 +2532,11 @@ char *mgi_DBdelete(int table, char *key)
               sprintf(buf, "delete from %s where _Class_key = %s and _Refs_key = %s\n", 
 		mgi_DBtable(table), tokens[0], tokens[1]);
 	      break;
-      case MLC_TEXT_EDIT_ALL:
+      case MLC_TEXT_ALL:
 	      sprintf(buf, "delete from %s where %s = %s\n 
 			    delete from MRK_Classes where %s = %s\n 
-			    delete from MLC_Marker_edit where %s = %s 
-			    delete from MLC_Reference_edit where %s = %s\n",
+			    delete from MLC_Marker where %s = %s 
+			    delete from MLC_Reference where %s = %s\n",
 			mgi_DBtable(table), mgi_DBkey(table), key,
 			mgi_DBkey(table), key,
 			mgi_DBkey(table), key,
@@ -2894,7 +2894,7 @@ char *mgi_DBrefstatus(int key, int table)
     case HMD_HOMOLOGY:
 	sprintf(cmd, "exec BIB_HMD_Exists %d", key);
 	break;
-    case MLC_REFERENCE_EDIT:
+    case MLC_REFERENCE:
 	sprintf(cmd, "exec BIB_MLC_Exists %d", key);
 	break;
     case MLD_MARKER:
