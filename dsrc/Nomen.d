@@ -1463,7 +1463,6 @@ rules:
 		  mgi_DBtable(MRK_NOMEN) + " n," +
 		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r " +
 		  " where n._Marker_Status_key = " + STATUS_PENDING +
-		  " and n._Suid_key = u.suid" +
 		  " and n.submittedBy = user_name()" +
 		  " and n._Nomen_key = r._Nomen_key" +
 		  " and r.isPrimary = 1" +
