@@ -1,17 +1,16 @@
 <HTML><HEAD>
-<TITLE>MGI Editorial Interface Bug Tracking - MGI 2.2 - April, 1999 - present</TITLE>
+<TITLE>MGI Editorial Interface Bug Tracking</TITLE>
 </HEAD>
 <BODY>
 
 <CENTER>
-<H1>MGI Editoral Interface Bug Tracking - MGI 2.2 - April 1999</H1>
+<H1>MGI Editoral Interface Bug Tracking</H1>
 <H4>Click RELOAD on your browser to make sure you are looking at the latest version.</H4>
 </CENTER> <HR NOSHADE>
 
 <OL>
 <LI>Refer to the <A HREF="MEI.html">MGD Requirements</A> for specific information 
     on the behavior of the MGI interface.
-<LI>Send mail to <A HREF="mailto:lec@informatics.jax.org">Lori</A> to report a bug in the MGI interface.
 </OL>
 <HR NOSHADE>
 
@@ -30,136 +29,6 @@
 <H4>Production</H4>
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Bug<TH>Date<TH>Status<TH>Contact<TH>Notes
-
-<TR bgcolor="#00FF00">
-	<TD>Marker Sequence Accession numbers not being transferred during a Marker Transfer.
-	<TD>03/31/1999; djr
-	<TD>Fixed
-	<TD>Lori
-	<TD>Consulted w/ Steve.  Marker Accession numbers need to be added to the Marker Transfer,
-	    but as MANUAL updates.  Do not automate these updates.  Add this info to TR 130.
-
-<TR bgcolor="#00FF00">
-	<TD>Marker form too long.
-	<TD>03/31/1999; djr
-	<TD>Fixed
-	<TD>Lori
-	<TD>Make Alias, Allele, Other, J# tables only 2 rows each.
-
-<TR bgcolor="#00FF00">
-	<TD>After entering a Sequence or SWISS-PROT Accession ID for a Marker,
-	    if another Marker exists with the same Accession ID, alert the user.
-	<TD>03/31/1999; djr
-	<TD>Fixed
-	<TD>Lori
-	<TD><CODE>The Accession ID 'SXXXXX' is associated with another Marker.</CODE>
-
-<TR bgcolor="#00FF00">
-	<TD>In MLC form, message:
-	    <BR><CODE>Server user id 86 is not a valid user in database 'sybsystemprocs'</CODE>
-	<TD>04/01/1999; apd
-	<TD>Fixed
-	<TD>Lori
-	<TD>Contacted John Gilbert; see John for the gory details...
-
-<TR bgcolor="#CC9999">
-	<TD>Creation dates for MLC Text records are not consistent with dates embedded
-	    in MLC Text note (see symbol <I>p</I>).
-	<TD>04/01/1999; apd
-	<TD>No bug
-	<TD>Lori
-	<TD>The MLC editing form now accesses the MLC Text record to obtain the creation and
-	    modification dates to display (previously, it used the Marker record).  Pre-MGI 2.2
-	    during the MLC Text record modification, the implementation did not retain the
-	    original creation date value.  The MGI 2.2 implementation conserves the original
-	    creation date value.  The MLC Editors may wish to address the creation date issue
-	    post-MGI 2.2.
-	    <A HREF="http://titan/wts/cgi/tr.detail.cgi?TR_Nr=322">See TR 322</A>.
-
-<TR bgcolor="#00FF00">
-	<TD><CODE>EXECUTE permission denied on object MLC_transfer, database mgd_release...</CODE>
-	<TD>04/01/1999; apd
-	<TD>Fixed
-	<TD>Lori
-	<TD>Stored Procedure script to create MLC_transfer has insufficient permissions calls.
-	    Also noticed that permissions on MLC_Text differ in Production and Development.
-	    Contacted John Gilbert.
-
-<TR bgcolor="#FFFFFF">
-	<TD>Add the Marker Transfer utility (read-only) to the MLC Utilities menu so that
-	    MLC editors can review the implications of a Marker Transfer prior to sending
-	    the request to Deb.
-	<TD>04/01/1999; djr, rmb
-	<TD>Modification request
-	<TD>Lori
-	<TD>Since this read-only abililty already exists off of the GXD Assay form,
-	    adding it to the MLC Utility menu is trivial.  
-	    <A HREF="http://titan/wts/cgi/tr.detail.cgi?TR_Nr=476">See TR 476</A>.
-
-<TR bgcolor="#FFFFFF">
-	<TD>Cannot modify Experiment Type of "TEXT" to any of the new TEXT experiment types.
-	<TD>04/07/1999; plg
-	<TD>Modification request
-	<TD>Lori
-	<TD>The EI denies a modification to the Experiment Type of a Mapping record.
-	    However, data cleanup post-MGI 2.2 (TR 327) requires changes to records.
-	    Lori will do these manually, but will such modifications be necessary in the
-	    future?
-
-<TR bgcolor="#00FF00">
-	<TD><I>MRK_SwissProt_Sequence.py</I> report not installed on Production.
-	<TD>04/08/1999; lec
-	<TD>Fixed
-	<TD>Lori
-	<TD>Report missing from configuration file <CODE>uxb.prod</CODE>.
-
-<TR bgcolor="#00FF00">
-	<TD><I>PRB_AltTranscript.py</I> report will not execute.
-	<TD>04/08/1999; lec
-	<TD>Fixed
-	<TD>Lori
-	<TD>The modified <CODE>reportlib.py</CODE> was not installed on titan.
-	    Glenn installed it this morning...
-
-<TR bgcolor="#00FF00">
-	<TD>Cron which ran reports last night had some error...most reports only
-	    contained a header and footer...but no data.
-	<TD>04/08/1999; lec
-	<TD>Fixed
-	<TD>Lori
-	<TD>&nbsp;
-
-<TR bgcolor="#00FF00">
-	<TD>Small errors in two header files found while trying to build
-	    applications on Solaris 2.6 (ceegee).
-	<TD>04/08/1999; lec
-	<TD>Fixed
-	<TD>Lori
-	<TD><I>mlced_scan.h</I> and <I>mlced.h</I> had minor declaration errors.
-	    See SCCS info for specifics.
-
-<TR bgcolor="#FFFFFF">
-	<TD>Add Printer options for printing landscape/portrait, 1 column/2 column.
-	<TD>04/08/1999; mgm
-	<TD>Modification request
-	<TD>Lori
-	<TD><A HREF="http://titan/wts/cgi/tr.detail.cgi?TR_Nr=516">See TR 516</A>.
-	    <A HREF="http://titan/wts/cgi/tr.detail.cgi?TR_Nr=521">See TR 521</A>.
-
-<TR bgcolor="#00FF00">
-	<TD><A HREF="http://titan/wts/cgi/tr.detail.cgi?TR_Nr=522">See TR 522</A>.
-	<TD>04/12/1999; lec
-	<TD>Fixed
-	<TD>Lori
-	<TD>The ExptDetailForm should be set to "unmanaged" in the MLDP top-level shell.
-
-<TR bgcolor="00FFF00">
-	<TD>Messages regarding Sequence #'s/Markers popping up even when no Sequence #
-	    has been entered.  Too many messages.
-	<TD>04/13/1999; neb
-	<TD>Fixed
-	<TD>Lori
-	<TD>PRB_Marker_Insert trigger needed adjusting.
 
 </TABLE>
 
