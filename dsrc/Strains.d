@@ -228,6 +228,7 @@ rules:
 	  send(ModifySynonym, 0);
 	  send(ModifyType, 0);
 	  send(ModifyStrainExtra, 0);
+	  annotKey := NO;
 	  send(ModifySuperStandard, 0);
 
           ModifyNotes.source_widget := top->Notes;
