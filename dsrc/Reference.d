@@ -649,7 +649,7 @@ rules:
 	  table : widget;
 	  row : integer;
 
-	  from := "from BIB_All_View r";
+	  from := "from BIB_All2_View r";
 	  where := "";
 
 	  send(InitDataSets, 0);
@@ -861,7 +861,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from BIB_All_View where _Refs_key = " + currentRecordKey + "\n" +
+	  cmd := "select * from BIB_All2_View where _Refs_key = " + currentRecordKey + "\n" +
 	         "select * from BIB_Books where _Refs_key = " + currentRecordKey + "\n" +
 	         "select rtrim(note) from BIB_Notes where _Refs_key = " + currentRecordKey + " order by sequenceNum";
 

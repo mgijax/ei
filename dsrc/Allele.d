@@ -789,6 +789,7 @@ rules:
 --
 
 	PrepareSearch does
+	  from_marker     : boolean := false;
 	  from_mutation   : boolean := false;
 	  from_notes      : boolean := false;
 	  from_strain     : boolean := false;
@@ -797,8 +798,8 @@ rules:
 
 	  value : string;
 
-	  from := " from " + mgi_DBtable(ALL_ALLELE) + " a," + mgi_DBtable(MRK_MARKER) + " mk";
-	  where := "where a." + mgi_DBkey(MRK_MARKER) + " *= mk." + mgi_DBkey(MRK_MARKER);
+	  from := " from " + mgi_DBtable(ALL_ALLELE) + " a";
+	  where := "";
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "a." + mgi_DBkey(ALL_ALLELE);
@@ -846,9 +847,11 @@ rules:
 	  value := top->mgiMarker->ObjectID->text.value;
 	  if (value.length > 0 and value != "NULL" and value != "-1") then
 	    where := where + "\nand a._Marker_key = " + top->mgiMarker->ObjectID->text.value;
+	    from_marker := true;
 	  elsif (top->mgiMarker->Marker->text.value.length > 0) then
 	    where := where + "\nand (mk.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) +
 		"\nor a.nomenSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) + ")";
+	    from_marker := true;
 	  end if;
 
           if (top->Symbol->text.value.length > 0) then
@@ -907,8 +910,14 @@ rules:
           if (top->markerDescription->Note->text.value.length > 0) then
             where := where + "\nand mn.note like " + mgi_DBprstr(top->markerDescription->Note->text.value);
             from_notes := true;
+	    from_marker := true;
           end if;
       
+	  if (from_marker) then
+	    from := from + "," + mgi_DBtable(MRK_MARKER) + " mk";
+	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = mk." + mgi_DBkey(MRK_MARKER);
+	  end if;
+
 	  if (from_cellline1) then
 	    from := from + "," + mgi_DBtable(ALL_CELLLINE) + " c1";
 	    where := where + "\nand a." + mgi_DBkey(ALL_CELLLINE) + " = c1." + mgi_DBkey(ALL_CELLLINE);
@@ -933,6 +942,11 @@ rules:
 	    from := from + "," + mgi_DBtable(STRAIN) + " s";
 	    where := where + "\nand a." + mgi_DBkey(STRAIN) + " = s." + mgi_DBkey(STRAIN);
 	  end if;
+
+	  if (where.length > 0) then
+	    where := "where" + where->substr(5, where.length);
+	  end if;
+
 	end does;
 
 --
@@ -949,7 +963,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct a._Allele_key, a.symbol\n" + from + "\n" + 
-			  where + "\norder by mk.symbol, a.symbol\n";
+			  where + "\norder by a.symbol\n";
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);
@@ -1000,7 +1014,9 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE_VIEW) +
+--	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE_VIEW) +
+--		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
+	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 	         "select _Mutation_key, mutation from " + mgi_DBtable(ALL_MUTATION_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
@@ -1026,12 +1042,13 @@ rules:
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 9);
 	        top->Name->text.value         := mgi_getstr(dbproc, 10);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 30));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 31));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 18));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 32));
 		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 16));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 18));
+
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 26));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 27));
 
 		-- If the Marker key is null, then use the Nomen Symbol field
 		if (mgi_getstr(dbproc, 2) = "") then
@@ -1046,9 +1063,9 @@ rules:
 		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 20);
 
 		top->ESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 7);
-		top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 24);
+		top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 22);
 		top->MutantESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 8);
-		top->MutantESCellLine->Verify->text.value := mgi_getstr(dbproc, 26);
+		top->MutantESCellLine->Verify->text.value := mgi_getstr(dbproc, 24);
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
