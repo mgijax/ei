@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 02/27/2003
+--	- add ModificationHistory table
+--
 -- 08/15/2002
 --	- TR 1463; Species replaced with Organism
 --
@@ -251,6 +254,7 @@ rules:
 	    return;
 	  end if;
 
+	  table : widget;
 	  results : integer := 1;
           cmd :string := "select * from PRB_Source_View where _Source_key = " + key + "\n" +
 			 "select jnum, short_citation from PRB_SourceRef_View " +
@@ -267,6 +271,11 @@ rules:
 
 		if (sourceForm->Library.managed) then
                   sourceForm->Library->text.value := mgi_getstr(dbproc, 2);
+		  table := top->Control->ModificationHistory->Table;
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 15));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 16));
 		end if;
 
 		if (sourceForm->mgiCitation.managed) then
@@ -464,12 +473,19 @@ rules:
 	    end if;
 	  end if;
 
+	  if (top->Library.managed) then
+	    QueryModificationHistory.table := top.top->ControlForm->ModificationHistory->Table;
+	    QueryModificationHistory.tag := "s";
+	    send(QueryModificationHistory, 0);
+            where := where + top.top->ControlForm->ModificationHistory->Table.sqlCmd;
+	  end if;
+
 	  if (top->Library->text.value.length > 0) then
 	    where := where + " and s.name like " + mgi_DBprstr(top->Library->text.value);
 	  end if;
 
 	  if (top->mgiCitation->ObjectID->text.value.length > 0 and top->mgiCitation->ObjectID->text.value != "NULL") then
-	    where := where + " and _Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value);
+	    where := where + " and s._Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value);
 	  end if;
 
           if (top->ProbeOrganismMenu.menuHistory.searchValue != "%") then
