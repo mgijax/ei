@@ -5,13 +5,35 @@
 # (note: In the following documentation, symbol[<k>] means "the symbol 
 #        associated with marker key <k>")
 #
-# usage: symbolchg.py <oldkey> <newkey> <userid> <Broadcast>
+# usage: symbolchg.py <oldkey> <newkey> <withdrawal type> <userid> <Broadcast>
 #
 #        <oldkey> : The integer marker key of the symbol undergoing a
 #                   nomenclature change.
 #
 #        <newkey> : The integer marker key of the symbol that symbol[<oldkey>]
 #                   is becoming. 
+#
+#	 <withdrawal type>: A string representing the type of
+#			withdrawal being processed.  If a simple withdrawal
+#			is being processed, then after the symbols are found,
+#			set oldkey = newkey.  A simple withdrawal will
+#			set symbol[<oldkey>] = symbol[<newkey>] and
+#			symbol[<newkey>] = symbol[<oldkey>] so that the
+#			original key is used for the new symbol.
+#
+#			ex.  A (1000) -> B.  New key 4000 gets created for B.
+#			Symbol[1000] = 'B' and symbol[4000] = 'A' so
+#			that we don't have to change key 1000 to 4000 anywhere
+#			in the system.  Therefore, the old symbol A is now with
+#			key 4000 and the new symbol B is now with key 1000.
+#			When calling this program, new key = 1000 (for symbol A)
+#			and oldkey = 4000 (for symbol B), but we don't want
+#			to change MLC_Marker._Marker_key_2 from 1000 to 4000,
+#			so set oldkey = newkey.
+#
+#			valid values for 'withdrawal type' are:
+#			'simple' - when A->B and B does not exist
+#			'complex'- splits, merges, allele ofs...(anything not simple)
 #
 #        <userid> : The system userid of the user running this script.
 #
@@ -76,6 +98,11 @@
 #       Exits with a 0 status if successful,  >= 1 otherwise.
 #
 # History:
+#
+# 2.3  lec 01/20/2000
+#	- TR 1295; reimplemented simple withdrawal logic so needed to add a
+#	  withdrawal type parameter to this program.  During a simple withdrawal
+#	  the value of MLC_Marker._Marker_key_2 will not change.
 #
 # 2.2  lec 03/08/1999
 #	- get_alter_textcmd; retain original dates and user id during re-add of MLC_Text
@@ -461,20 +488,21 @@ def getargs(argv):
 	# requires:	argv is of type [] and holds the program name at index 0 and 
 	#           its arguments at indexes 1..n.
 	#
-	# effects:	returns oldkey (integer), newkey (integer), userid (string), 
-	#           and broadcast (string) or generates usage error if 
+	# effects:	returns oldkey (integer), newkey (integer), withdrawal type (string),
+	#	    userid (string), and broadcast (string) or generates usage error if 
 	#           incorrect number of command-line arguments are given.
 	'''
-	if len(argv) >= 5: 
+	if len(argv) >= 6: 
 		oldkey = argv[1]
 		newkey = argv[2]
-		userid = argv[3]
-		broadcast = argv[4]
+		withtype = argv[3]
+		userid = argv[4]
+		broadcast = argv[5]
 	else:
 		error('Usage: ' + argv[0] + \
-              '<oldkey> <newkey> <userid> <broadcast_filename>')
+              '<oldkey> <newkey> <withdrawal type> <userid> <broadcast_filename>')
 
-	return (string.atoi(oldkey),string.atoi(newkey),userid,broadcast)
+	return (string.atoi(oldkey),string.atoi(newkey),withtype,userid,broadcast)
 
 
 
@@ -539,7 +567,7 @@ def sql(cmd, parser = None, debug=0):
 ##################################
 
 
-oldkey, newkey, userid, broadcast = getargs(sys.argv)
+oldkey, newkey, withtype, userid, broadcast = getargs(sys.argv)
 
 # open logfiles
 
@@ -566,6 +594,13 @@ setuidpasswd(userid)
 # determine the symbol associated with each key
 
 oldsym, newsym = getsymbols(oldkey,newkey)
+
+# if this is a simple withdrawal, then set oldkey = newkey
+# so that updates to MLC_Marker._Marker_key_2 don't affect the key
+# (i.e. it will just update the value to itself
+
+if withtype == 'simple':
+	oldkey = newkey
 
 s = '\n' + oldsym + ' --> ' + newsym
 log_stat(s)

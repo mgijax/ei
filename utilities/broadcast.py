@@ -55,33 +55,36 @@
 # 	i.   withdrawal (withdrawn, allele of)
 # 	ii.  split (withdrawn, = symbol1, symbol2, ...)
 # 	iii. withdrawal with no new symbol (withdrawn)
-# 	iv.  straightforward withdrawal (withdrawn, = symbol)
+# 	iv.  simple, straightforward withdrawal (withdrawn, = symbol)
 #
-#     e.  If a Split, delete all Current symbols for old symbol (from MRK_Current)
-#     f.  For each new symbol:
+#     e.  If a simple withdrawal, call Marker.simpleWithdrawal()
+#     f.  Else, call Marker.complexWithdrawal()
 #
-# 	i.   Get some information about the new symbol (getNewSymbol)
-# 	ii.  If the new symbol does not exist, create it (Marker.insert)
-# 	iii. Verify Chr, Offsets, Cytogenetic Offsets, EC#s of new/old symbols (verifyValues)
-# 	iv.  If > 1 new symbol, insert all new symbols as current symbols for old symbols
-# 	v.   Copy History Table of old symbol to new symbol
-# 	vi.  Insert old name and old symbol into History of new symbol 
-# 	vii. Update/Insert Offsets for New Symbol
+#       i.  If a Split, delete all Current symbols for old symbol (from MRK_Current)
+#       ii. For each new symbol:
 #
-#     g.  Insert old name and old symbol into History of old symbol if no new symbol
-#     h.  If everything is OK, process withdrawal (Marker.updateW)
+# 		i.   Get some information about the new symbol (getNewSymbol)
+# 		ii.  If the new symbol does not exist, create it (Marker.insert)
+# 		iii. Verify Chr, Offsets, Cytogenetic Offsets, EC#s of new/old symbols (verifyValues)
+# 		iv.  If > 1 new symbol, insert all new symbols as current symbols for old symbols
+# 		v.   Copy History Table of old symbol to new symbol
+# 		vi.  Insert old name and old symbol into History of new symbol 
+# 		vii. Update/Insert Offsets for New Symbol
 #
-# 	i.   Update MLC Text (MLCupdate)
-# 	ii.  Update Chromosome (W), Name (withdrawn...), Offset (-999) of old symbol
-# 	iii. If non-split and new symbol assigned:
-# 		. Convert Alleles of Old Symbol (execute MRK_convertAllele)
-#  		. Propagate change to rest of database (execute MRK_updateKeys)
-# 		. Update Current Symbol of Old Symbol (execute MRK_updateCurrent)
-# 		. Add New Allele if 'allele of' and symbol doesn't have alleles
-# 		  (execute MRK_insertAllele)
-# 	iv.  Execute History commands
-# 	v.   Remove old History (since it's been copied to the new symbol(s))
-# 	vi.  Remove old offsets if > 1 new symbol (since it's been copied to the new symbols)
+#       iii.Insert old name and old symbol into History of old symbol if no new symbol
+#       iv. If everything is OK, process withdrawal (Marker.complexWithdrawal)
+#
+# 		i.   Update MLC Text (MLCupdate)
+# 		ii.  Update Chromosome (W), Name (withdrawn...), Offset (-999) of old symbol
+# 		iii. If non-split and new symbol assigned:
+# 			. Convert Alleles of Old Symbol (execute MRK_convertAllele)
+#  			. Propagate change to rest of database (execute MRK_updateKeys)
+# 			. Update Current Symbol of Old Symbol (execute MRK_updateCurrent)
+# 			. Add New Allele if 'allele of' and symbol doesn't have alleles
+# 		  	(execute MRK_insertAllele)
+# 		iv.  Execute History commands
+# 		v.   Remove old History (since it's been copied to the new symbol(s))
+# 		vi.  Remove old offsets if > 1 new symbol (since it's been copied to the new symbols)
 #
 # 2.  Event = N
 #
@@ -117,6 +120,11 @@
 # History:
 #
 # Version	SE	Date
+#
+# 	lec	01/19/2000
+#	- TR 1295; re-implement logic for simple withdrawals
+#	note that 88% of withdrawals are "simple".  see TR
+#	for definition of simple withdrawal
 #
 # 	lec	12/09/1999
 #	- TR 623; new marker types; replace use of first letter w/ marker key
@@ -369,6 +377,17 @@ class Broadcast:
 		'''
 		self.others[marker.getSymbol()] = marker
 
+	def deleteOther(self, marker):
+		'''
+		# requires:  marker, an object of class Marker
+		#
+		# effects:
+		# Deletes marker symbol from dictionary of other marker symbols
+		#
+		'''
+		if self.others.has_key(marker.getSymbol()):
+			del self.others[marker.getSymbol()]
+
 	def getNewSymbol(self, symbol):
 		'''
 		# requires: symbol (string)
@@ -488,8 +507,6 @@ class Broadcast:
 		self.printMsg(self.statsFile, 'WITHDRAWALS')
 
 		for w in self.withdrawals.keys():
-			cmd = []	# Accumulation of SQL commands
-			history = []	# Accumulation of History commands
 
 			# Get Withdrawn Marker object
 
@@ -546,87 +563,117 @@ class Broadcast:
 
 			marker.setSplit(newsymbols)
 
-			# If > 1 new symbols (split), remove all current symbols
+			# If simple withdrawal, process it now
+			# If not a split, "allele of" or merge...
 
-			if marker.getSplit():
-				cmd.append('delete from MRK_Current where _Marker_key = %s' % marker.getKey())
+			if not marker.getSplit() and not marker.getAlleleOf() and len(newsymbols) == 1:
+				new = self.getNewSymbol(newsymbols[0])
 
-			new = None		# Not every symbol has a "new" symbol
-			ok = 1			# Will flag whether to process withdrawal
-
-			# For each new symbol, try to retrieve the new symbol from within
-			# the Broadcast or within the database
-
-			for n in newsymbols:
-				ok = 1
-				new = self.getNewSymbol(n)
-
-				# If new symbol doesn't exist in Broadcast file, skip it
-				# New symbol MUST exist in Broadcast if it is not in MGD
-
-				if new is None:
-					ok = 0
-					break
-
-				# Flag that this is a split so that during the insert
-				# the new MGI Acc# is NOT deleted
-
-				new.setSplit(newsymbols)
-
-				# Symbol found in the Broadcast, but not in MGD, so add it
-
+				# And if symbol is not found in MGD, then it's "simple"
 				if new.getKey() is None:
-					new.insert(self, marker)
+					marker.simpleWithdrawal(new, self)
+					continue
 
-				# Else, verify Chromosomes, Offsets, EC numbers
-	
-				else:
-					self.printMsg(self.statsFile, '\tSymbol %s Already Exists\n' % new.getSymbol())
-					# Take Snapshot of new Marker
+			# Otherwise, it's complex...
 
-					new.snapSymbol(self)
+			self.processComplexWithdrawal(marker, newsymbols)
 
-					ok, updateChr = marker.verifyValues(new, self)
+	def processComplexWithdrawal(self, marker, newsymbols):
+		'''
+		# requires: marker, the marker object being withdrawn
+		#	newsymbols, list of new symbols
+		#
+		# effects:
+		# Process comples (split, merge, allele of) withdrawals
+		#
+		# returns:
+		#
+		'''
 
-					if updateChr:
-						cmd.append('''update MRK_Marker 
-						      	set chromosome = "%s" where _Marker_key = %d
-						   	''' % (marker.getChr(), new.getKey()))
+		cmd = []	# Accumulation of SQL commands
+		history = []	# Accumulation of History commands
 
-				# If > 1 new symbol, insert all new symbols as current for old symbols
-				# Copy existing Accession number to new symbol and make non-preferred
+		# If > 1 new symbols (split), remove all current symbols
 
-				if marker.getSplit():
-					cmd.append('%s values(%d,%d)' % (INSERTCURRENT, new.key, marker.getKey()))
-  					cmd.append('execute MRK_copyAcc %d,%d' % (marker.getKey(), new.getKey()))
+		if marker.getSplit():
+			cmd.append('delete from MRK_Current where _Marker_key = %s' % marker.getKey())
 
-				# Copy History Table of old symbol to new symbol
+		new = None		# Not every symbol has a "new" symbol
+		ok = 1			# Will flag whether to process withdrawal
 
-				history.append('execute MRK_copyHistory %d,%d' % (marker.getKey(), new.getKey()))
+		# For each new symbol, try to retrieve the new symbol from within
+		# the Broadcast or within the database
 
-				# Insert old name and old symbol into History of new symbol 
+		for n in newsymbols:
+			ok = 1
+			new = self.getNewSymbol(n)
 
-        			history.append('execute MRK_insertHistory %d,%d,%d,"%s","%s"' \
-				% (marker.getKey(), new.getKey(), marker.getRefKey(), marker.getOrigName(), marker.getName()))
- 
-				# Update/Insert Offsets for New Symbol
- 
-        			cmd.append('execute MRK_updateOffset %d,%d' % (marker.getKey(), new.getKey()))
-
-			# End for n newsymbols
- 
-			# Insert original name and symbol into History of old symbol if no new symbol
+			# If new symbol doesn't exist in Broadcast file, skip it
+			# New symbol MUST exist in Broadcast if it is not in MGD
 
 			if new is None:
-        			history.append('execute MRK_insertHistory %s,%s,%s,"%s","Withdrawn"' \
-				% (marker.getKey(), marker.getKey(), marker.getRefKey(), marker.getOrigName()))
+				ok = 0
+				break
 
-			# If everything is OK, process withdrawal
+			# Flag that this is a split so that during the insert
+			# the new MGI Acc# is NOT deleted
 
-			if ok:
-				marker.updateW(new, cmd, history, self)
+			new.setSplit(newsymbols)
+
+			# Symbol found in the Broadcast, but not in MGD, so add it
+
+			if new.getKey() is None:
+				new.insert(self, marker)
+
+			# Else, verify Chromosomes, Offsets, EC numbers
+	
 			else:
-				self.printMsg(self.statsFile, '\tSymbol %s NOT Withdrawn\n' % marker.getSymbol())
+				self.printMsg(self.statsFile, '\tSymbol %s Already Exists\n' % new.getSymbol())
+				# Take Snapshot of new Marker
+
+				new.snapSymbol(self)
+
+				ok, updateChr = marker.verifyValues(new, self)
+
+				if updateChr:
+					cmd.append('''update MRK_Marker 
+					      	set chromosome = "%s" where _Marker_key = %d
+					   	''' % (marker.getChr(), new.getKey()))
+
+			# If > 1 new symbol, insert all new symbols as current for old symbols
+			# Copy existing Accession number to new symbol and make non-preferred
+
+			if marker.getSplit():
+				cmd.append('%s values(%d,%d)' % (INSERTCURRENT, new.key, marker.getKey()))
+  				cmd.append('execute MRK_copyAcc %d,%d' % (marker.getKey(), new.getKey()))
+
+			# Copy History Table of old symbol to new symbol
+
+			history.append('execute MRK_copyHistory %d,%d' % (marker.getKey(), new.getKey()))
+
+			# Insert old name and old symbol into History of new symbol 
+
+        		history.append('execute MRK_insertHistory %d,%d,%d,"%s","%s"' \
+			% (marker.getKey(), new.getKey(), marker.getRefKey(), marker.getOrigName(), marker.getName()))
+ 
+			# Update/Insert Offsets for New Symbol
+ 
+        		cmd.append('execute MRK_updateOffset %d,%d' % (marker.getKey(), new.getKey()))
+
+		# End for n newsymbols
+ 
+		# Insert original name and symbol into History of old symbol if no new symbol
+
+		if new is None:
+        		history.append('execute MRK_insertHistory %s,%s,%s,"%s","Withdrawn"' \
+			% (marker.getKey(), marker.getKey(), marker.getRefKey(), marker.getOrigName()))
+
+		# If everything is OK, process withdrawal
+
+		if ok:
+			marker.complexWithdrawal(new, cmd, history, self)
+		else:
+			self.printMsg(self.statsFile, '\tSymbol %s NOT Withdrawn\n' % marker.getSymbol())
 
 	def processOthers(self):
 		'''
@@ -710,9 +757,20 @@ class Broadcast:
 		#
 		'''
 
-		self.broadcastFile.close()
-		self.diagFile.close()
-		self.statsFile.close()
+		try:	
+			self.broadcastFile.close()
+		except:
+			pass
+
+		try:
+			self.diagFile.close()
+		except:
+			pass
+
+		try:	
+			self.statsFile.close()
+		except:
+			pass
 
 		# Copy files to archive directory
 		# Remove lock file
@@ -1520,9 +1578,11 @@ class Marker:
 		os.system(args)
 		broadcast.printMsg(broadcast.statsFile, '\tBroadcast Report Generated: %s\n' % self.getSymbol())
 
-	def MLCupdate(self, new, broadcast):
+	def MLCupdate(self, fromKey, toKey, withdrawaltype, broadcast):
 		'''
-		# requires: new, the new marker (Marker object)
+		# requires: fromKey, the key of the symbol undergoing the nomen change
+		#           toKey, the key of the symbol that symbol['fromKey'] is becoming
+		#	    withdrawaltype, the type of withdrawal (simple or complex)
 		#           broadcast, an object of class Broadcast
 		#
 		# effects:
@@ -1534,7 +1594,8 @@ class Marker:
 
 		if not self.getSplit():
 			prog = 'symbolchg.py'
-			args = '%s %s %s %s %s' % (prog, `self.getKey()`, `new.getKey()`, mgdlib.get_sqlUser(), broadcast.inputFile)
+			args = '%s %s %s %s %s %s' % (prog, `fromKey`, `toKey`, withdrawaltype, mgdlib.get_sqlUser(), broadcast.inputFile)
+			broadcast.printMsg(broadcast.diagFile, '\n%s\n' % (args))
 
 			try:
 				os.system(args)
@@ -1837,7 +1898,7 @@ class Marker:
 		cmd.append('commit transaction')
 		mgdlib.sql(cmd, None)
  
-	def updateW(self, new, cmd, history, broadcast):
+	def complexWithdrawal(self, new, cmd, history, broadcast):
 		'''
 		# requires:  new, the new DB record (Marker)
 		#	     cmd, a list of commands to process (list)
@@ -1853,7 +1914,8 @@ class Marker:
 		#
 		'''
 
-		self.MLCupdate(new, broadcast)	# Update MLC Text
+		# Update MLC Text
+		self.MLCupdate(self.getKey(), new.getKey(), "complex", broadcast)
 
 		# Update Symbol during Withdrawal processing
 
@@ -1916,7 +1978,45 @@ class Marker:
 		if self.getHasAllele():
 			broadcast.printMsg(broadcast.statsFile, '\tSymbol has Alleles\n')
 
-		broadcast.printMsg(broadcast.statsFile, '\tSymbol Withdrawn\n')
+		broadcast.printMsg(broadcast.statsFile, '\tSymbol Withdrawn (complex)\n')
+
+	def simpleWithdrawal(self, new, broadcast):
+		'''
+		# requires:  new, the new DB record (Marker)
+		#            broadcast, an object of class Broadcast
+		#
+		# effects:
+		# 
+		# Processes updates for Simple Withdrawal processing
+		# The stored procedure does everything except the MLC updates
+		# 
+		# returns:
+		#
+		'''
+
+		cmd = 'exec MRK_simpleWithdrawal %d, "%s", "%s", "%s", "%s"' \
+			% (self.getKey(), self.getSymbol(), new.getSymbol(), new.getName(), self.getJnum())
+		mgdlib.sql(cmd, None)
+
+		# now get the new key of the old symbol....for symbolchg.py
+		cmd = 'select _Marker_key, symbol from MRK_Marker ' + \
+			'where _Species_key = 1 and symbol = "%s"' % (self.getSymbol())
+		results = mgdlib.sql(cmd, 'auto')
+		newKey = ''
+		for r in results:
+			if r['symbol'] == self.getSymbol():
+				newKey = r['_Marker_key']
+
+		if newKey != '':
+			# Update MLC Text
+			self.MLCupdate(newKey, self.getKey(), "simple", broadcast)
+
+			broadcast.printMsg(broadcast.statsFile, '\tSymbol Withdrawn (simple)\n')
+
+			# remove new marker from list of others to process
+			broadcast.deleteOther(new)
+		else:
+			broadcast.printMsg(broadcast.statsFile, '\tErrors encountered.  Symbol Not Withdrawn\n')
 
 #
 # Main Routine
