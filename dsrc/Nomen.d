@@ -486,7 +486,8 @@ rules:
 	    return;
 	  end if;
 
-	  if (not (global_login = "ljm" or global_login = "djr" or global_login = "rmb") and
+	  if (not (global_login = "ljm" or global_login = "djr" or 
+		   global_login = "rmb" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
