@@ -4,13 +4,13 @@
 -- Strains.d 09/23/98
 --
 -- TopLevelShell:		Strains
--- Database Tables Affected:	PRB_Strain
+-- Database Tables Affected:	PRB_Strain, strains..MLP_Strain, 
+--				strains..MLP_Notes, strain..MLP_StrainTypes
 -- Cross Reference Tables:	MLD_FISH, MLD_InSitu, CRS_Cross, PRB_Source, PRB_Allele_Strain
 -- Actions Allowed:		Add, Modify, Delete
 --
--- Module to process edits for Master Strain table.
+-- Module to process edits for Master Strain tables.
 -- Includes dialog to process merges of Strains.
---
 --
 -- History
 --
@@ -833,13 +833,14 @@ rules:
           (void) busy_cursor(dialog);
 
           if (dialog->Merge1.set) then
-	    cmd := "\nexec PRB_mergeStandardStrain " + 
+	    cmd := "\nexec " + mgi_DBtable(STRAIN_MERGE1) + " " +
 		mgi_DBprstr(dialog->New->Verify->text.value);
           elsif (dialog->Merge2.set) then
-	    cmd := "\nexec PRB_mergeStandardStrain " + 
+	    cmd := "\nexec " + mgi_DBtable(STRAIN_MERGE1) + " " +
 		mgi_DBprstr(dialog->New->Verify->text.value) + ",1,0";
 	  else
-	    cmd := "exec PRB_mergeStrain " + dialog->Old->StrainID->text.value + "," +
+	    cmd := "exec " + mgi_DBtable(STRAIN_MERGE2) +  " " +
+		   dialog->Old->StrainID->text.value + "," +
 	           dialog->New->StrainID->text.value + "\n";
 	  end if;
 	  
