@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- lec 05/24/2002
+--	- TR 1463; added processing for MGI_NOTE/MGI_NOTECHUNK
+--	  in InitNoteForm and ModifyNotes
+--
 -- lec 09/11/2001
 --	- TR 2860; moved AppendNote buttons to Age Notes
 --
@@ -97,9 +101,14 @@ rules:
 	  label : string;
 	  k : integer;
 
-	  cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
-		"\nwhere _NoteType_key > 0 " +
-		"\norder by _NoteType_key";
+	  if (tableID = MGI_NOTETYPE_NOMEN_VIEW) then
+	    cmd := "select _NoteType_key, noteType, private, _MGIType_key from " + mgi_DBtable(tableID) +
+		  "\norder by _NoteType_key";
+	  else
+	    cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
+		  "\nwhere _NoteType_key > 0 " +
+		  "\norder by _NoteType_key";
+	  end if;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -124,6 +133,9 @@ rules:
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
+	        if (tableID = MGI_NOTETYPE_NOMEN_VIEW) then
+		  x->Note.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
+		end if;
 		x.unbatch;
 		x->NotePush.labelString := label + " Notes";
 	    end while;
@@ -504,6 +516,7 @@ rules:
 	  column : integer := ModifyNotes.column;
           note : string;
 	  noteType : string;
+	  mgiType : string;
 	  isTable : boolean;
 	  isModified : boolean;
           i : integer := 1;
@@ -536,22 +549,50 @@ rules:
 	    noteType := mgi_DBprstr(noteWidget.noteType);
 	  end if;
 
-          cmd := mgi_DBdelete(tableID, key);
+	  if (noteWidget.mgiTypeKey > 0) then
+	    mgiType := (string) noteWidget.mgiTypeKey;
+	  end if;
 
-	  if (isTable and noteType.length > 0) then
-	    cmd := cmd + " and noteType = " + mgi_DBprstr(noteType) + "\n";
-	  elsif (noteWidget.is_defined("noteTypeKey") != nil) then
-	    if (noteWidget.noteTypeKey > 0) then
-	        cmd := cmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
-	    elsif (noteWidget.noteType.length > 0) then
-	      cmd := cmd + " and noteType = " + noteType + "\n";
+	  -- for MGI_Note, delete using _Object_key and _MGIType_key
+
+	  if (tableID = MGI_NOTE) then
+	    cmd := mgi_DBdelete(tableID, "") + 
+		"_Object_key = " + key +
+		" and _MGIType_key = " + mgiType + "\n";
+	  else
+            cmd := mgi_DBdelete(tableID, key);
+
+	    if (isTable and noteType.length > 0) then
+	      cmd := cmd + " and noteType = " + mgi_DBprstr(noteType) + "\n";
+	    elsif (noteWidget.is_defined("noteTypeKey") != nil) then
+	      if (noteWidget.noteTypeKey > 0) then
+	          cmd := cmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
+	      elsif (noteWidget.noteType.length > 0) then
+	        cmd := cmd + " and noteType = " + noteType + "\n";
+	      end if;
 	    end if;
+	  end if;
+
+	  -- for MGI_Note, first add a record for the MGI_Note object
+
+	  if (tableID = MGI_NOTE) then
+	    cmd := cmd + 
+		   mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
+	           mgi_DBinsert(tableID, KEYNAME) +
+		   key + "," +
+		   mgiType + "," +
+		   noteType + ")\n";
 	  end if;
 
           -- Break notes up into segments of 255
  
           while (note.length > 255) do
-	    if (isTable and noteType.length > 0) then
+	    if (tableID = MGI_NOTE) then
+	      cmd := cmd +
+		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + KEYNAME + "," +
+		     (string) i + "," + 
+                     mgi_DBprstr(note->substr(1, 255)) + ")\n";
+	    elsif (isTable and noteType.length > 0) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
@@ -574,7 +615,12 @@ rules:
           end while;
  
 	  if (mgi_DBprstr(note) != "NULL" or ModifyNotes.allowBlank) then
-	    if (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
+	    if (tableID = MGI_NOTE) then
+	      cmd := cmd +
+		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + KEYNAME + "," +
+		     (string) i + "," + 
+                     mgi_DBprstr(note) + ")\n";
+	    elsif (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
@@ -601,7 +647,8 @@ rules:
                    mgi_DBprstr(note) + ")\n";
             else
               cmd := cmd + 
-		   mgi_DBinsert(tableID, NOKEY) + key + "," + (string) i + "," + 
+		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		   (string) i + "," + 
                    mgi_DBprstr(note) + ")\n";
 	    end if;
 	  end if;

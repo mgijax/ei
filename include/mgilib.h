@@ -198,9 +198,8 @@ extern char *global_version;
 #define STRAIN     		322
 #define TISSUE     		323
 #define BIB_REVIEW_STATUS	324
-#define MRK_GENEFAMILY		326
 #define MRK_EVENT		327
-#define MRK_NOMENSTATUS		328
+#define NOM_STATUS		328
 #define GXD_GELCONTROL		329
 #define MRK_EVENTREASON		330
 #define MRK_STATUS		331
@@ -212,8 +211,6 @@ extern char *global_version;
 #define ALL_NOTETYPE		338
 #define ALL_REFERENCETYPE	339
 #define RISET_VIEW		341
-#define MGI_SPECIES   		342
-#define MGI_SPECIESTYPE		343
 
 /* Accession Tables */
 
@@ -226,23 +223,28 @@ extern char *global_version;
 
 /* Nomen Tables */
 
-#define MRK_NOMEN			500
-#define MRK_NOMEN_VIEW			501
-#define MRK_NOMEN_GENEFAMILY		503
-#define MRK_NOMEN_NOTES			504
-#define MRK_NOMEN_OTHER			505
-#define MRK_NOMEN_REFERENCE		506
-#define MRK_NOMEN_REFERENCE_VIEW	507
-#define MRK_NOMEN_GENEFAMILY_VIEW	511
-#define MRK_NOMEN_COORDNOTES		512
-#define MRK_NOMEN_EDITORNOTES		513
-#define MRK_NOMEN_ACC_REFERENCE		514
-#define MRK_NOMEN_OTHER_VIEW		516
+#define NOM_MARKER			500
+#define NOM_MARKER_VIEW			501
+#define NOM_GENEFAMILY      		502
+#define NOM_SYNONYM     		503
+#define NOM_GENEFAMILY_VIEW      	504
+#define NOM_ACC_REFERENCE		505
+#define NOM_SYNONYM_VIEW     		506
 
-/* MGI Admin Tables */
+/* MGI Tables */
 
 #define MGI_TABLES			600
 #define MGI_COLUMNS			601
+#define MGI_NOTE			602
+#define MGI_NOTECHUNK			603
+#define MGI_NOTETYPE			604
+#define MGI_REFERENCE_ASSOC		605
+#define MGI_REFASSOCTYPE		606
+#define MGI_REFERENCE_NOMEN_VIEW	607
+#define MGI_SPECIES			608
+#define MGI_SPECIESTYPE			609
+#define MGI_NOTE_NOMEN_VIEW		610
+#define MGI_NOTETYPE_NOMEN_VIEW		611
 
 /* Strains Tables */
 

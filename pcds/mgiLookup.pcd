@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 17 11:29:46 2002";
+      lastWritten = "Thu May 16 10:29:53 2002";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -196,7 +196,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 250;
           Group: User
-            cmd = "select _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key <= 2 order by _Species_key\nselect _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key > 2 order by name\n";
+            cmd = "select _Species_key, species from MGI_Species_Marker_View order by species\n";
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -518,6 +518,26 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   visibleItemCount = 10;
+              }
+        }
+        {
+          SpeciesMGITypeList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1295;
+          Group: User
+            cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,16,17) order by name";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "Species MGI Types";
+                Group: User
+                  defaultLabel = "Species MGI Types";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
         }
 }

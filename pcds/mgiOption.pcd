@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 17 10:58:42 2002";
+      lastWritten = "Tue May 21 14:38:45 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -294,6 +294,13 @@ Module: mgiOption
                         labelString = InterPro;
                       Group: User
                         defaultValue = 28;
+                    }
+                    {
+                      Taxon = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = Taxonomy;
+                      Group: User
+                        defaultValue = 32;
                     }
               }
         }
@@ -1287,7 +1294,7 @@ Module: mgiOption
               {
                 AntibodySpeciesPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from GXD_AntibodySpecies order by antibodySpecies";
+                  sql = "select * from MGI_Species_Antibody_View order by commonName";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2196,7 +2203,7 @@ Module: mgiOption
               {
                 ProbeSpeciesPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from PRB_Species order by species";
+                  sql = "select * from MGI_Species_Probe_View order by commonName";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2384,6 +2391,42 @@ Module: mgiOption
                 ACCLogicalPulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select _LogicalDB_key, name from ACC_LogicalDB\norder by name";
+              }
+        }
+        {
+          CurationStateMenu = OptionMenu;
+          Group: Widget
+            subMenuId = CurationStatePulldown;
+            labelString = "Curation State";
+          Group: Control
+            vip_x = 80;
+            vip_y = 4650;
+              Popups:
+              {
+                CurationStatePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term_CurationState_View order by _Term_key";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          GXDIndexPriorityMenu = OptionMenu;
+          Group: Widget
+            subMenuId = GXDIndexPriorityPulldown;
+            labelString = Priority;
+          Group: Control
+            vip_x = 80;
+            vip_y = 4595;
+              Popups:
+              {
+                GXDIndexPriorityPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term_GXDIndexPriority_View order by _Term_key";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
               }
         }
 }

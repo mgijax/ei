@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 17 14:00:55 2002";
+      lastWritten = "Fri May 24 08:41:52 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -76,6 +76,36 @@ Module: MGD
                                       }
                                 }
                                 {
+                                  SpeciesType = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Common;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 75;
+                                  Group: Control
+                                    vipComment = "";
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 4;
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 3 30)";
+                                          xrtTblTraversableSeries = "(all 0-2 False)";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblColumnLabels = "Mode,Key,Key,MGI Type";
+                                          userDefinedAttributes = "currentTypeKey:Int=\"1\"\ntypeKey:Int=\"2\"\ntypeName:Int=\"3\"\n";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "MGI Types for Which \nThis Species is Valid";
+                                            }
+                                      }
+                                }
+                                {
                                   Chromosome = OrderedTableLabel : mgiTable;
                                   Group: Widget
                                     rubberPositioning = False;
@@ -85,7 +115,7 @@ Module: MGD
                                     leftOffset = 10;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Common;
+                                    topWidget = SpeciesType;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -128,8 +158,8 @@ Module: MGD
                                     leftWidget = Chromosome;
                                     leftOffset = 10;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Common;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Chromosome;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -148,6 +178,190 @@ Module: MGD
                                               Group: Widget
                                                 labelString = "Anchors for Web Mini-Map\n(Mouse only)";
                                             }
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                      }
+                                      {
+                                        Add = TablePush;
+                                      }
+                                      {
+                                        Delete = TablePush;
+                                      }
+                                      {
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              AccSourcePulldown = OptionPulldown;
+                                                  {
+                                                    MGI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    J = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Medline = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NSequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ATCC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MRK = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CREX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HYEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    INEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    FSEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TEXT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TXEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PMEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    E = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENCluster = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    InterPro = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Taxon = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                            }
+                                      }
+                                }
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                }
+                                {
+                                  SpeciesMGITypeList = SpeciesMGITypeList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = 2;
+                                          targetText = 3;
+                                          targetWidget = SpeciesType;
                                       }
                                 }
                           }
@@ -2023,7 +2237,7 @@ Module: MGD
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
                                   Group: User
-                                    cmd = "select _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key not in (1,2,40) order by name\n";
+                                    cmd = "select _Species_key, species from MGI_Species_Homology_View where _Species_key not in (1,2,40) order by species\n";
                                       {
                                         Label = LookupLabel;
                                       }
@@ -6520,9 +6734,6 @@ Shift<Key>Tab: prev-tab-group()
                                               text = text;
                                               Group: Widget
                                                 columns = 75;
-                                                translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: SetDefault()";
                                               Group: User
                                                 required = True;
                                             }
@@ -6827,7 +7038,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
                                   Group: User
-                                    cmd = "select _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key = 2 order by _Species_key\nselect _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key > 2 order by name\n";
+                                    cmd = "select _Species_key, species from MGI_Species_Marker_View where _Species_key = 2 order by species\nselect _Species_key, species from MGI_Species_Marker_View where _Species_key > 2 order by species\n";
                                       {
                                         Label = LookupLabel;
                                       }

@@ -252,7 +252,7 @@ rules:
 	    if (table.addSeqNum) then
 	      row := 0;
 	      while (row < mgi_tblNumRows(table)) do
-		mgi_tblSetCell(table, row, table.seqNum, (string)((integer) row + 1));
+		mgi_tblSetCell(table, row, table.seqNum, (string)(row + 1));
 		row := row + 1;
 	      end while;
 	    end if;

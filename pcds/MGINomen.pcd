@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Feb  7 10:36:41 2002";
+      lastWritten = "Fri May 24 08:41:46 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -150,16 +150,29 @@ Module: MGINomen
                                       }
                                 }
                                 {
-                                  Symbol = CharText : mgiDataTypes;
+                                  CurationStateMenu = CurationStateMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MarkerEventMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = MarkerEventMenu;
-                                    topOffset = 5;
+                                    topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  Symbol = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = CurationStateMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = CurationStateMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    topOffset = "-5";
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -181,7 +194,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Name = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Symbol;
+                                    leftWidget = CurationStateMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Symbol;
@@ -225,74 +238,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  SubmittedBy = ModifiedBy : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = HumanSymbol;
-                                    leftOffset = 10;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = HumanSymbol;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Submitted By";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 20;
-                                      }
-                                }
-                                {
-                                  BroadcastBy = ModifiedBy : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Name;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Broadcast By";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 20;
-                                      }
-                                }
-                                {
-                                  BroadcastDate = mgiDate : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = BroadcastBy;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = BroadcastBy;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 5;
-                                  Group: User
-                                    fieldName = broadcast_date;
-                                      {
-                                        Date = Date;
-                                        Group: User
-                                          fieldName = broadcast_date;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Broadcast Date";
-                                            }
-                                      }
-                                }
-                                {
                                   StatusNotes = SingleNote : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -317,56 +262,21 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  EditorNote = mgiNote : mgiDataTypes;
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Widget
+                                    orientation = horizontal;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
+                                    leftWidget = StatusNotes;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = StatusNotes;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
                                     topOffset = 2;
-                                    leftWidget = StatusNotes;
-                                    bottomOffset = 5;
-                                      {
-                                        Note = Notes;
-                                        Group: User
-                                          tableID = 513;
-                                          noteType = E;
-                                      }
-                                      {
-                                        NotePush = NotePush;
-                                        Group: Widget
-                                          labelString = "Editor's Notes";
-                                        Group: User
-                                          targetWidget = EditorNote;
-                                      }
-                                }
-                                {
-                                  CoordNote = mgiNote : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = EditorNote;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = EditorNote;
-                                    leftOffset = 5;
-                                      {
-                                        Note = Notes;
-                                        Group: User
-                                          noteType = C;
-                                          tableID = 512;
-                                      }
-                                      {
-                                        NotePush = NotePush;
-                                        Group: Widget
-                                          labelString = "Nomenclature Coordinator Notes";
-                                      }
                                 }
                                 {
-                                  OtherReference = ReferenceTable : mgiTable;
+                                  SynonymReference = ReferenceTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_form;
@@ -388,7 +298,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumRows = 6;
                                           xrtTblEditableSeries = "(all 0-3 False)";
                                           xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          userDefinedAttributes = "otherName:Int(Int)=\"4\"\notherKey:Int(Int)=\"1\"\n";
+                                          userDefinedAttributes = "synonym:Int(Int)=\"4\"\nsynKey:Int(Int)=\"1\"\n";
                                           xrtTblRowLabels = "Author,Other,Other,Other,Other,Other";
                                           xrtTblTraversableSeries = "(all 0-3 False)";
                                         Group: User
@@ -405,7 +315,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = SymbolName;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = BroadcastBy;
+                                    topWidget = Name;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -510,10 +420,10 @@ Shift<Key>Tab: prev-tab-group()
                                   AccessionReference = AccessionReference : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = OtherReference;
+                                    leftWidget = SynonymReference;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = OtherReference;
+                                    topWidget = SynonymReference;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -684,9 +594,13 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CreationDate;
@@ -695,6 +609,18 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = CreationDate;
                                     bottomAttachment = attach_form;
                                     resizable = true;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 3;
+                                          xrtTblRowLabels = "Created,Modified,Broadcast";
+                                          userDefinedAttributes = "broadcastBy:Int=\"2\"\nbroadcastFieldName:String=\"broadcast_date\"\n";
+                                      }
                                 }
                           }
                     }

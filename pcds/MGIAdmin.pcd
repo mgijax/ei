@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jan  2 09:09:12 2002";
+      lastWritten = "Wed May 15 15:25:18 2002";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -273,7 +273,7 @@ Module: MGIAdmin
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
                                   Group: User
-                                    cmd = "select _Species_key, name from MRK_Species where _Species_key <= 2 order by _Species_key\nselect _Species_key, name from MRK_Species where _Species_key > 2 order by name\n";
+                                    cmd = "select _Species_key, species from MGI_Species_Marker_View where _Species_key <=  2 order by species\nselect _Species_key, species from MGI_Species_Marker_View where _Species_key > 2 order by species";
                                       {
                                         Label = LookupLabel;
                                       }

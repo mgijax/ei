@@ -127,6 +127,16 @@ rules:
             where := where + table.sqlCmd;
 	  end if;
 
+	  if (table.is_defined("broadcastBy") != nil) then
+            QueryDate.source_widget := table;
+	    QueryDate.row := table.broadcastBy;
+	    QueryDate.column := table.byDate;
+            QueryDate.tag := tag;
+            QueryDate.fieldName := table.broadcastFieldName;
+            send(QueryDate, 0);
+            where := where + table.sqlCmd;
+	  end if;
+
 	  value := mgi_tblGetCell(table, table.createdBy, table.byUser);
 	  if (value.length > 0) then
 	    where := where + "\nand " + tag + ".createdBy like " + mgi_DBprstr(value);

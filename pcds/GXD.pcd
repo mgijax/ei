@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 17 09:58:57 2002";
+      lastWritten = "Thu May 23 10:00:38 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -2159,13 +2159,15 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   mgiMarker = mgiMarker : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_form;
+                                    leftAttachment = attach_opposite_widget;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_form;
+                                    topAttachment = attach_widget;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftWidget = GXDIndexPriorityMenu;
+                                    topWidget = GXDIndexPriorityMenu;
                                       {
                                         ObjectID = ID;
                                       }
@@ -2182,6 +2184,17 @@ Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyMarker() VerifyNonGeneMarker()";
                                             }
                                       }
+                                }
+                                {
+                                  GXDIndexPriorityMenu = GXDIndexPriorityMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
                                 }
                                 {
                                   mgiCitation = mgiCitation : mgiDataTypes;
@@ -2234,24 +2247,16 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblNumRows = 11;
-                                          xrtTblVisibleRows = 11;
                                           xrtTblNumColumns = 43;
                                           xrtTblCharWidthSeries = "(all label 10) (all 0 1)(all 1-42 4)";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          xrtTblRowLabels = "Prot-sxn,RNA-sxn,Prot-WM,RNA-WM,Northern,Western,RT-PCR,cDNA,RNase prot,S1 nuc,Primer ex";
                                           xrtTblVisibleColumns = 19;
-                                          xrtTblColumnLabels = "Mode,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15,15.5,16,16.5,17,17.5,18,18.5,19,19.5,20,E,A";
                                           xrtTblEditableSeries = "(all all False)";
                                           xrtTblSelectionPolicy = select_single;
                                           xrtTblSelectCallback = "D:SetCellToX";
                                           xrtTblSelectedBackground = None;
                                           xrtTblSelectedForeground = None;
-                                          userDefinedAttributes = "beginX:Int=\"1\"\nendX:Int=\"42\"\n";
-                                          xrtTblBackgroundSeries = "(0-2 all Wheat) (3-5 all Gray) (6-8 all Wheat) (9-10 all Gray)(label all Thistle) (all label Thistle)";
-                                          xrtTblLeftColumn = 14;
-                                        Group: User
-                                          saveBackgroundSeries = "(0-2 all Wheat) (3-5 all Gray) (6-8 all Wheat) (9-10 all Gray)(label all Thistle) (all label Thistle)";
+                                          userDefinedAttributes = "beginX:Int(Int)=\"1\"\nendX:Int(Int)=\"0\"\n";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -2352,6 +2357,21 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
                                 }
                           }
                     }
@@ -2531,6 +2551,13 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = "Controlled Vocab";
                                     traversalOn = False;
                                 }
+                                {
+                                  SimpleVocab = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"SimpleVocab\")";
+                                    labelString = "Simple Vocabulary";
+                                    traversalOn = False;
+                                }
                           }
                     }
               }
@@ -2546,127 +2573,6 @@ Shift<Key>Tab: prev-tab-group()
               }
               {
                 TissueDialog = TissueDialog : mgiDialog;
-              }
-        }
-        {
-          NomenModule = NomenModule : MGINomen;
-          Group: Control
-            vip_x = 60;
-            vip_y = 305;
-              {
-                MainForm = XmForm;
-                    {
-                      MainMenu = MainMenu;
-                    }
-                    {
-                      Edit = XmFrame;
-                    }
-                    {
-                      Control = Control;
-                    }
-                    {
-                      BroadcastToMenu = XmFrame;
-                    }
-                    {
-                      CVNomen = CVNomen : mgiCV;
-                          {
-                            ReviewMenu = YesNoMenu : mgiOption;
-                                Popups:
-                                {
-                                  ReviewPulldown = OptionPulldown : mgiOption;
-                                }
-                                {
-                                  YesNoPulldown = OptionPulldown;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                      }
-                                      {
-                                        Yes = Yes : mgiOption;
-                                      }
-                                      {
-                                        No = No : mgiOption;
-                                      }
-                                }
-                          }
-                          {
-                            BroadcastMenu = YesNoMenu : mgiOption;
-                                Popups:
-                                {
-                                  BroadcastPulldown = OptionPulldown : mgiOption;
-                                }
-                                {
-                                  YesNoPulldown = OptionPulldown;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                      }
-                                      {
-                                        Yes = Yes : mgiOption;
-                                      }
-                                      {
-                                        No = No : mgiOption;
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
               }
         }
         {
