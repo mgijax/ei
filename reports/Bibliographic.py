@@ -12,7 +12,6 @@
 #
 #     reportType =:
 #	dynamic => uses argument as SQL command
-#	dup => all duplicates excluding Mouse News Letter & Guidi's
 #	dupall => all duplicates
 #
 #     format =:
@@ -120,14 +119,6 @@ if reportType == "dynamic":
 	name = "Bibliographic"
 	title = 'Bibliographic References'
 	cmd = sys.argv[3]
-
-elif reportType == "dup":
-	name = "DupRef"
-	title = 'Duplicate References excluding Mouse News Letter & Guidi'
-	cmd = 'select _Refs_key from BIB_All_View ' + \
-	'where (jnum < 5001 or jnum > 11810) and journal != "Mouse News Lett" ' + \
-	'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
-	'order by _primary, journal, year'
 
 elif reportType == "dupall":
 	name = "DupRefAll"

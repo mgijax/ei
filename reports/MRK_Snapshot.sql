@@ -37,8 +37,7 @@ print ""
 print "GO"
 print ""
 
-select * from VOC_Annot where _Object_key = KEY
-and _AnnotType_key = 1000
+select * from VOC_Annot where _Object_key = KEY and _AnnotType_key = 1000
 go
 
 print ""
@@ -70,10 +69,10 @@ select * from MRK_Offset where _Marker_key = KEY
 go
 
 print ""
-print "Marker Other"
+print "Marker Synonym"
 print ""
 
-select * from MRK_Other where _Marker_key = KEY
+select * from MGI_Synonym where _MGIType_key = 2 and _Object_key = KEY
 go
 
 print ""
