@@ -4,7 +4,7 @@
 -- Marker.d 12/15/98
 --
 -- TopLevelShell:		Marker
--- Database Tables Affected:	MRK_Alias, MRK_Allele, MRK_Current, MRK_History
+-- Database Tables Affected:	MRK_Alias, MRK_Current, MRK_History
 --				MRK_Marker, MRK_Name, MRK_Notes, MRK_Offset, MRK_Other
 --				MRK_Reference, MRK_Symbol
 -- Cross Reference Tables:	
@@ -1503,7 +1503,7 @@ rules:
 	  end if;
 
 	  if (from_allele) then
-	    from := from + ",MRK_Allele ml";
+	    from := from + ",ALL_Allele ml";
 	    where := where + "\nand m._Marker_key = ml._Marker_key";
 	  end if;
 
@@ -1606,8 +1606,8 @@ rules:
 		 "where _Marker_key = " + currentRecordKey + "\n" +
 	         "select _Alias_key, alias from MRK_Alias_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
-	         "select * from MRK_Allele " +
-		 "where _Marker_key = " + currentRecordKey +
+	         "select _Allele_key, symbol, name from " + mgi_DBtable(ALL_ALLELE) +
+		 " where _Marker_key = " + currentRecordKey +
 		 " order by symbol\n" +
 	         "select _Other_key, name, _Refs_key, jnum = null, short_citation = null, isReviewArticle = 0 " +
 		 "from MRK_Other " +
@@ -1724,8 +1724,8 @@ rules:
 	      elsif (results = 8) then
 		table := top->Allele->Table;
                 (void) mgi_tblSetCell(table, row, table.alleleKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.alleleSymbol, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.alleleName, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.alleleSymbol, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.alleleName, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 9) then
 		table := top->OtherReference->Table;
