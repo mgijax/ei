@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 22 08:14:12 2005";
+      lastWritten = "Tue Mar 22 09:05:14 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11224,13 +11224,14 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 20;
                                           xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Evidence key,Evidence SeqNum,Note key,Term Acc ID,Vocabulary Term,NOT,J:,Citation,Evi,Modified By,Date,Created By,Date";
                                           xrtTblPixelWidthSeries = "(all 0-9 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 45)(all 12 3)(all 14 10)(all 15 3)(all 16 15)(all 18 15)(all 17 10)(all 19 10)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 40)(all 12 3)(all 14 10)(all 15 3)(all 16 15)(all 18 15)(all 17 10)(all 19 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
                                           userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\nterm:Int(Int)=\"11\"\nnotCode:Int(Int)=\"12\"\njnum:Int(Int)=\"13\"\ncitation:Int(Int)=\"14\"\nevidence:Int(Int)=\"15\"\neditor:Int(Int)=\"16\"\nmodifiedDate:Int(Int)=\"17\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"8\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"18\"\ncreatedDate:Int(Int)=\"19\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\n";
                                           xrtTblValidateCellCallback = "D:CopyAnnotation,\nD:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-9 False)(all 11-12 False)(all 14 False)";
                                           xrtTblEnterCellCallback = "D:LoadMPNotes,\nD:SetOptions,\nD:SetTableRow";
                                           width = 960;
+                                          xrtTblTraverseCellCallback = "D:MPTraverse";
                                         Group: User
                                           requiredColumns = "3\n6\n7";
                                           saveTraversableSeries = "(all 0-9 False)(all 11-12 False)(all 14 False)";

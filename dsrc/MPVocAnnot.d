@@ -48,6 +48,8 @@ devents:
 	MPClipboardAddAll :local [];
 	MPClipboardCopy :local [];
 
+	MPTraverse :local [];
+
 locals:
 	mgi : widget;			-- Top-level shell of Application
 	top : widget;			-- Top-level shell of Module
@@ -1139,6 +1141,31 @@ rules:
 	    CommitTableCellEdit.row := row;
 	    CommitTableCellEdit.value_changed := true;
 	    send(CommitTableCellEdit, 0);
+	  end if;
+
+	end does;
+
+--
+-- MPTraverse
+--
+--  Skips over the Modified By/Modification Date/Created By/Creation Date columns
+--  These cells need to be traversable in order to enter search criteria,
+--  but we want to skip them while curating.
+--
+--
+
+	MPTraverse does;
+	  table : widget := MPTraverse.source_widget;
+	  row : integer := MPTraverse.row;
+	  column : integer := MPTraverse.column;
+	  reason : integer := MPTraverse.reason;
+
+	  if (column = annotTable.evidence) then
+	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
+	      row := -1;
+	    end if;
+	    MPTraverse.next_row := row + 1;
+	    MPTraverse.next_column := annotTable.termAccID;
 	  end if;
 
 	end does;
