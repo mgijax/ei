@@ -100,7 +100,7 @@ for r in results[1]:
 	fp.write('%-16s\n' % (r['author']))
 	rows = rows + 1
 
-fp.write('\n(%d rows affected.)\n' % (rows))
+fp.write('\n(%d rows affected)\n' % (rows))
 
 reportlib.trailer(fp, isHTML = 1)
 reportlib.finish_nonps(fp)	# non-postscript file
