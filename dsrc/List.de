@@ -27,10 +27,11 @@ InsertAccID [list : widget;			-- Insert accID into LookupList
 InsertList [list : widget;			-- Insert item into LookupList
             item : string;
             key : string;
-	    accID : string;];
+	    accID : string;
+	    allowDups : boolean := false;];
 
 LoadList [list : widget;  			-- Load Lookup List; Allow Duplicate entries?
-	  allowDups : boolean := true;];
+	  allowDups : boolean := false;];
 
 ManageSelectionList [dialog : string;];		-- Manage Selection List Dialog
 	       

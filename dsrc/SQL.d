@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec 01/10/2002
+--	- QueryNoInterrupt; use LoadList
+--
 -- lec 09/18/2001
 --	- QueryNoInterrupt; added "selectItem"
 --
@@ -374,8 +377,6 @@ rules:
 --
 
         QueryNoInterrupt does
-          results : xm_string_list := create xm_string_list();
-          keys : string_list := create string_list();
           list_w : widget;
 
           if (QueryNoInterrupt.list_w = nil) then
@@ -391,39 +392,17 @@ rules:
 
 	  (void) mgi_writeLog(get_time() + "QUERY:" + QueryNoInterrupt.select + "\n");
 
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcancel(dbproc);
-          (void) dbcmd(dbproc, QueryNoInterrupt.select);
-          (void) dbsqlexec(dbproc);
+	  list_w.cmd := QueryNoInterrupt.select;
+	  LoadList.list := list_w;
+	  send(LoadList, 0);
 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-              results.insert(mgi_citation(dbproc, QueryNoInterrupt.table), results.count + 1);
-              keys.insert(mgi_key(dbproc, QueryNoInterrupt.table), keys.count + 1);
-            end while;
-          end while;
- 
-	  (void) dbclose(dbproc);
-
-	  -- Load returned items into List and select first value in list
-
-          if (results.count > 0) then
-
-            -- If keys doesn't exist already, create it
- 
-            if (list_w->List.keys = nil) then
-              list_w->List.keys := create string_list();
-            end if;
- 
-            list_w->List.keys := keys;
- 
-            (void) XmListAddItems(list_w->List, results, results.count, 0);
+	  if (list_w->List.itemCount > 0) then
             list_w->List.row := 1;
-            list_w->Label.labelString := (string) list_w->List.itemCount + " " + list_w->Label.defaultLabel;
+
 	    if (QueryNoInterrupt.selectItem) then
               (void) XmListSelectPos(list_w->List, list_w->List.row, true);
 	    end if;
-          end if;
+	  end if;
         end does;
  
  --

@@ -1034,10 +1034,8 @@ rules:
 
 	  if (assayDetailForm.name = "InSituForm") then
             ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
-            ClipboardLoad.allowDups := true;
             send(ClipboardLoad, 0);
 	  elsif (assayDetailForm.name = "GelForm") then
-            ClipboardLoad.allowDups := true;
             ClipboardLoad.source_widget := top->CVGel->GenotypeGelClipboard->Label;
             send(ClipboardLoad, 0);
 	  end if;

@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	01/10/2002
+--	InsertList; added allowDups parameter
+--
 -- lec	01/04/2002
 --	SelectLookupListItem; check for targetText
 --
@@ -277,16 +280,31 @@ rules:
         InsertList does
 	  list_w : widget := InsertList.list->List;
 	  label_w : widget := InsertList.list->Label;
+	  item : string := InsertList.item;
+	  key : string := InsertList.key;
+	  accID : string := InsertList.accID;
+	  allowDups : boolean := InsertList.allowDups;
+	  dupFound : boolean := false;
 
-	  (void) XmListAddItem(list_w, xm_xmstring(InsertList.item), 0);
-	  InsertKey.list := list_w;
-	  InsertKey.key := InsertList.key;
-	  send(InsertKey, 0);
-	  InsertAccID.list := list_w;
-	  InsertAccID.accID := InsertList.accID;
-	  send(InsertAccID, 0);
-	  label_w.labelString := (string) list_w.itemCount + " " + label_w.defaultLabel;
-	  list_w.row := list_w.itemCount;
+	  if (not allowDups) then
+	    if (list_w.keys = nil) then
+	      dupFound := false;
+	    elsif (list_w.keys.find(key) != -1) then
+	      dupFound := true;
+	    end if;
+	  end if;
+
+	  if ((not allowDups and not dupFound) or allowDups) then
+	    (void) XmListAddItem(list_w, xm_xmstring(item), 0);
+	    InsertKey.list := list_w;
+	    InsertKey.key := key;
+	    send(InsertKey, 0);
+	    InsertAccID.list := list_w;
+	    InsertAccID.accID := accID;
+	    send(InsertAccID, 0);
+	    label_w.labelString := (string) list_w.itemCount + " " + label_w.defaultLabel;
+	    list_w.row := list_w.itemCount;
+	  end if;
 	end does;
 
 --
