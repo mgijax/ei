@@ -1,7 +1,7 @@
 --
 -- Name    : VocAnnot.d
 -- Creator : 
--- VocAnnot.d 02/20/2002
+-- VocAnnot.d 01/02/2002
 --
 -- TopLevelShell:		VocAnnotModule
 -- Database Tables Affected:	Voc_Annot, VOC_Evidence
@@ -11,8 +11,8 @@
 --
 -- History
 --
--- lec	02/02/2002
---	- created
+-- lec	01/02/2002
+--	- created; TR 2867, TR 2239
 --
 
 dmodule VocAnnot is
@@ -525,6 +525,7 @@ rules:
 	  tables.open;
 	  while (tables.more) do
 	    ClearTable.table := tables.next;
+	    ClearTable.resetBackground := true;
 	    send(ClearTable, 0);
 	  end while;
 	  tables.close;
@@ -626,6 +627,42 @@ rules:
 	    (void) mgi_tblSort(annotTable, annotTable.dag);
 	  end if;
 
+	  -- Reset Background
+
+	  newBackground : string := annotTable.saveBackgroundSeries;
+
+	  -- Stripe rows by DAG; alternate; 
+	  -- that is, every other new DAG will change the color
+	  newDAG : integer := 1;
+	  i := 1;
+	  while (i < mgi_tblNumRows(annotTable)) do
+	    if (mgi_tblGetCell(annotTable, i, annotTable.dag) != 
+		mgi_tblGetCell(annotTable, i-1, annotTable.dag)) then
+	      if (newDAG mod 2 != 0) then
+	        newBackground := newBackground + "(" + (string) i + " all Thistle)";
+	      end if;
+	      newDAG := newDAG + 1;
+	    end if;
+	    i := i + 1;
+	  end while;
+
+	  -- Set all "unknown" term rows to red
+	  value : string;
+	  i := 0;
+	  while (i < mgi_tblNumRows(annotTable)) do
+	    value := mgi_tblGetCell(annotTable, i, annotTable.term);
+	    if (value.length >= 7) then
+	      if (value->substr(value.length - 6, value.length) = "unknown") then
+		newBackground := newBackground + "(" + (string) i + " all Red)";
+	      end if;
+	    end if;
+	    i := i + 1;
+	  end while;
+
+	  annotTable.xrtTblBackgroundSeries := newBackground;
+
+	  -- End Reset Background
+
           top->QueryList->List.row := Select.item_position;
 
 	  Clear.source_widget := top;
@@ -672,8 +709,10 @@ rules:
 	    top->PhenoSlimList.managed := true;
             LoadList.list := top->PhenoSlimList;
 	    send(LoadList, 0);
-	  else
+	    top->Reference.managed := false;
+	  elsif (annotTable.annotVocab = "GO") then
 	    top->PhenoSlimList.managed := false;
+	    top->Reference.managed := true;
 	  end if;
 
 	end does;

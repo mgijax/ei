@@ -1,7 +1,7 @@
 --
 -- Name    : VocAnnotType.d
 -- Creator : 
--- VocAnnotType.d 02/02/2002
+-- VocAnnotType.d 01/02/2002
 --
 -- TopLevelShell:		VocAnnotTypeModule
 -- Database Tables Affected:	VOC_AnnotType
@@ -13,7 +13,7 @@
 --
 -- History
 --
--- lec	02/02/2002
+-- lec	01/02/2002
 --	- created
 --
 
