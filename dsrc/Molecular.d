@@ -547,7 +547,7 @@ rules:
           end if; 
 
 	  if (origSegmentType = "primer" and 
-	      top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue != "primer") then
+	      top->MolMasterForm->SegmentTypeMenu.menuHistory.labelString != "primer") then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot change Primer to Molecular Segment.";
 	    send(StatusReport);
@@ -555,7 +555,7 @@ rules:
 	  end if;
 
 	  if (origSegmentType != "primer" and 
-	      top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue = "primer") then
+	      top->MolMasterForm->SegmentTypeMenu.menuHistory.labelString = "primer") then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot change Molecular Segment to Primer.";
 	    send(StatusReport);
