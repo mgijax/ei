@@ -218,6 +218,7 @@ rules:
 	  clearLists := 3;
           Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
+	  Clear.reset := true;
           send(Clear, 0);
 	end does;
 
@@ -620,14 +621,14 @@ rules:
 
 	  SearchRefTypeTable.table := top->Reference->Table;
 	  SearchRefTypeTable.tableID := MGI_REFERENCE_STRAIN_VIEW;
-          SearchRefTypeTable.join := "m." + mgi_DBkey(NOM_MARKER);
+          SearchRefTypeTable.join := "s." + mgi_DBkey(STRAIN);
 	  send(SearchRefTypeTable, 0);
 	  from := from + top->Reference->Table.sqlFrom;
 	  where := where + top->Reference->Table.sqlWhere;
 
 	  SearchNoteForm.notew := top->mgiNoteForm;
 	  SearchNoteForm.tableID := MGI_NOTE_STRAIN_VIEW;
-          SearchNoteForm.join := "n." + mgi_DBkey(STRAIN);
+          SearchNoteForm.join := "s." + mgi_DBkey(STRAIN);
 	  send(SearchNoteForm, 0);
 	  from := from + top->mgiNoteForm.sqlFrom;
 	  where := where + top->mgiNoteForm.sqlWhere;
@@ -765,14 +766,6 @@ rules:
             send(ClearTable, 0);
           end while;
           tables.close;
-
---	  InitStrainAlleleTypeTable.table := top->Marker->Table;
---	  InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
---	  send(InitStrainAlleleTypeTable, 0);
-
---	  InitSynTypeTable.table := top->Synonym->Table;
---	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
---	  send(InitSynTypeTable, 0);
 
 	  top->ReferenceMGI->Records.labelString := "0 Records";
 	  top->DataSets->Records.labelString := "0 Records";

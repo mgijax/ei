@@ -28,86 +28,6 @@ dmodule SynTypeTableLib is
 rules:
 
 --
--- AddSynTypeRow
---
---	Adds Row to SynonymType Table
---	Sets appropriate synTypeKey value
---	based on most recent SynonymTypeMenu selection.
---
-
-        AddSynTypeRow does
-	  table : widget := AddSynTypeRow.table;
-
-	  if (table = nil) then
-	    table := AddSynTypeRow.source_widget.parent.child_by_class(TABLE_CLASS);
-	  end if;
-
-	  source : widget := table.parent.child_by_class("XmRowColumn");
-	  synTypeKey : string;
-
-	  source := source.menuHistory;
-
-	  -- Traverse thru table and find first empty row
-	  row : integer := 0;
-	  while (row < mgi_tblNumRows(table)) do
-	    synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
-	    if (synTypeKey.length = 0) then
-	      break;
-	    end if;
-	    row := row + 1;
-	  end while;
-
-	  -- Set SynType, Label for row
-
-	  (void) mgi_tblSetCell(table, row, table.synTypeKey, source.defaultValue);
-	  (void) mgi_tblSetCell(table, row, table.synType, source.labelString);
-	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
-
-          -- Traverse to new table row
-
-          TraverseToTableCell.table := table;
-          TraverseToTableCell.row := row;
-          TraverseToTableCell.column := 0;
-          send(TraverseToTableCell, 0);
-
-	end
-
---
--- EditSynType
---
---	Edits Synonym Type of current row based on most recent SynonymTypeMenu selection.
---
-
-        EditSynType does
-	  table : widget := EditSynType.table;
-	  row : integer;
-
-	  if (table = nil) then
-	    table := EditSynType.source_widget.parent.child_by_class(TABLE_CLASS);
-	  end if;
-
-	  source : widget := table.parent.child_by_class("XmRowColumn");
-
-	  source := source.menuHistory;
-	  row := mgi_tblGetCurrentRow(table);
-
-	  -- Set SynType, Label for row
-
-	  -- don't touch synKey
-	  (void) mgi_tblSetCell(table, row, table.synTypeKey, source.defaultValue);
-	  (void) mgi_tblSetCell(table, row, table.synType, source.labelString);
-	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_MODIFY);
-
-          -- Traverse to new table row
-
-          TraverseToTableCell.table := table;
-          TraverseToTableCell.row := row;
-          TraverseToTableCell.column := 0;
-          send(TraverseToTableCell, 0);
-
-	end
-
---
 -- InitSynTypeTable
 --
 --	Initializes SynonymType Table
@@ -174,7 +94,7 @@ rules:
 
 	  cmd := cmd + " from " + mgi_DBtable(tableID) +
 		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by  allowOnlyOne desc, _Synonym_key";
+		 " order by  allowOnlyOne desc, _SynonymType_key";
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
