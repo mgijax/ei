@@ -12,6 +12,8 @@
 --
 -- History
 --
+-- lec 09/18/2003
+--	- TR 4579
 --
 -- lec 04/29/2003
 --	- TR 4756; tab to next cell after committing note
@@ -599,7 +601,11 @@ rules:
 	  -- Else if the noteWidget has a valid noteType (string), use it
 
 	  if (isTable) then
-	    noteType := ModifyNotes.noteType;
+	    if (noteWidget.is_defined("mgiTypeKey") != nil) then
+	      noteType := (string) noteWidget.noteTypeKey;
+	    else
+	      noteType := ModifyNotes.noteType;
+	    end if;
 	  elsif (noteWidget.noteTypeKey > 0) then
 	    noteType := (string) noteWidget.noteTypeKey;
 	    if (noteWidget.private >= 0) then
@@ -616,8 +622,13 @@ rules:
 	  end if;
 
 	  if (noteWidget.is_defined("noteKey") != nil) then
-	    if (noteWidget.noteKey > 0) then
+	    if (isTable) then
+	      noteKey := mgi_tblGetCell(noteWidget, row, noteWidget.noteKey);
+	    elsif (noteWidget.noteKey > 0) then
 	      noteKey := (string) noteWidget.noteKey;
+	    end if;
+
+	    if (noteKey.length > 0) then
               deleteCmd := mgi_DBdelete(tableID, noteKey);
 	    end if;
 	  end if;
