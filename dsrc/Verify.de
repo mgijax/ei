@@ -54,6 +54,8 @@ VerifyNomenMarker : translation [];
 
 VerifyReference :translation [];
 
+VerifyGOReference [];
+
 VerifySpecies :translation [];
 
 VerifySpeciesMLP :translation [];

@@ -94,6 +94,9 @@ rules:
 
 	  top := create widget("GenotypeModule", nil, mgi);
 
+          LoadList.list := top->ESCellLineList;
+	  send(LoadList, 0);
+
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;

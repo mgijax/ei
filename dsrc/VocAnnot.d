@@ -453,9 +453,21 @@ rules:
 	    from_evidence := true;
 	  end if;
 
-	  value := mgi_tblGetCell(annotTable, 0, annotTable.modified);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.editor);
 	  if (value.length > 0) then
 	    where := where + "\nand e.modifiedBy like " + mgi_DBprstr(value);
+	    from_evidence := true;
+	  end if;
+
+	  top->Annotation->Table.sqlCmd := "";
+          QueryDate.source_widget := top->Annotation->Table;
+	  QueryDate.row := 0;
+	  QueryDate.column := annotTable.modifiedDate;
+	  QueryDate.fieldName := "modification_date";
+	  QueryDate.tag := "e";
+          send(QueryDate, 0);
+	  if (annotTable.sqlCmd.length > 0) then
+	    where := where + annotTable.sqlCmd;
 	    from_evidence := true;
 	  end if;
 
@@ -474,6 +486,7 @@ rules:
 	  if (from_annot) then
 	    from := from + "," + mgi_DBtable(VOC_ANNOT) + " a";
 	    where := where + "\nand v._Object_key = a._Object_key";
+	    where := where + "\nand a._AnnotType_key = " + annotTypeKey;
 	  end if;
 
 	  if (from_evidence) then
