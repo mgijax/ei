@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 03/26/2001
+--	- markerWithdrawal.py; added -S and -D parameters
+--
 -- 03/21/2001
 --	- TR 2237; changed sort for MRK_Reference/Other Names
 --
@@ -609,6 +612,8 @@ rules:
 
 	  cmds : string_list := create string_list();
 	  cmds.insert("markerWithdrawal.py", cmds.count + 1);
+	  cmds.insert("-S" + getenv("DSQUERY"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("--eventKey=" + event, cmds.count + 1);
