@@ -1789,7 +1789,7 @@ rules:
             SetOption.value := mgi_tblGetCell(table, row, table.eventReasonKey);
             send(SetOption, 0);
 	  else
-            SetOption.source_widget := top->CVMarker->ReviewMenu;
+            SetOption.source_widget := top->ReviewMenu;
             SetOption.value := mgi_tblGetCell(table, row, table.reviewKey);
             send(SetOption, 0);
 	  end if;
