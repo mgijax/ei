@@ -142,12 +142,13 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("MolecularSegment", nil, mgi);
+	  top := create widget("MolecularSegmentModule", nil, mgi);
 
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
-          mgi->mgiModules->MolecularSegment.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

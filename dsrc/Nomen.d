@@ -162,14 +162,15 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Nomen", nil, mgi);
+	  top := create widget("NomenModule", nil, mgi);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
 	  -- Prevent multiple instances of the Nomen form
 
-          mgi->mgiModules->Nomen.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

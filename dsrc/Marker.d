@@ -174,13 +174,14 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Marker", nil, mgi);
+	  top := create widget("MarkerModule", nil, mgi);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
 	  -- Prevent multiple instances of the Marker form
-          mgi->mgiModules->Marker.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

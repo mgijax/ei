@@ -81,7 +81,8 @@ rules:
  
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
-          mgi->mgiModules->Template.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen

@@ -63,12 +63,13 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("ActualLogical", nil, mgi);
+	  top := create widget("ActualLogicalModule", nil, mgi);
 
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
-          mgi->mgiModules->ActualLogical.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);

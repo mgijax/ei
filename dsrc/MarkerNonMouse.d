@@ -71,13 +71,13 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("MarkerNonMouse", nil, mgi);
-
-	  mgi->MarkerNonMouse.sensitive := false;
+	  top := create widget("MarkerNonMouseModule", nil, mgi);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

@@ -83,7 +83,7 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("TablesColumns", nil, mgi);
+	  top := create widget("TablesColumnsModule", nil, mgi);
 
 	  -- Save current global values
 	  orig_server := global_server;
@@ -94,7 +94,8 @@ rules:
  
 	  -- Prevent multiple instances of the form
 
-          mgi->mgiModules->TablesColumns.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

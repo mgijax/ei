@@ -162,7 +162,7 @@ rules:
 
           (void) busy_cursor(mgi);
 
-          top := create widget("Dictionary", nil, mgi);
+          top := create widget("DictionaryModule", nil, mgi);
 
           -- prevent problems with users using MWM to close windows, rather
           -- than "File..Exit"
@@ -170,7 +170,8 @@ rules:
 
           send(Init, 0);
 
-          mgi->mgiModules->Dictionary.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
           top.show;
 
           -- clear the clipboard prior to use

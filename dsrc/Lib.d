@@ -379,12 +379,12 @@ rules:
 	    -- An activation may take place from the main menu (mgiModules)
 	    -- or from within another form under mgi->Edit
 
-	    module := mgi->mgiModules->(top.name);
+	    module := mgi->mgiModules->(top.activateButtonName);
 	    if (module != nil) then
 	      module.sensitive := true;
 	    end if;
 
-	    module := mgi->EditPulldown->(top.name);
+	    module := mgi->EditPulldown->(top.activateButtonName);
 	    if (module != nil) then
 	      module.sensitive := true;
 	    end if;

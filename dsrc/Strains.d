@@ -106,9 +106,10 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Strains", nil, mgi);
+	  top := create widget("StrainModule", nil, mgi);
 
-          mgi->mgiModules->Strains.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);

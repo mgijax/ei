@@ -58,9 +58,10 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("RISet", nil, mgi);
+	  top := create widget("RISetModule", nil, mgi);
 
-          mgi->mgiModules->RISet.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);

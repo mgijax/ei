@@ -138,12 +138,13 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Homology", nil, mgi);
+	  top := create widget("HomologyModule", nil, mgi);
 
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
-	  mgi->mgiModules->Homology.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

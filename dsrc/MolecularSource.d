@@ -57,9 +57,10 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("MolecularSource", nil, mgi);
+	  top := create widget("MolecularSourceModule", nil, mgi);
 
-          mgi->MolecularSource.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
           -- Set Row Count

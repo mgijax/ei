@@ -191,12 +191,13 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("MLDP", nil, mgi);
+	  top := create widget("MappingModule", nil, mgi);
 
           -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
-          mgi->mgiModules->MLDP.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);

@@ -169,7 +169,7 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("MLC", nil, mgi);
+	  top := create widget("MLCModule", nil, mgi);
 
 	  (void) cleanup_handler(top); -- protection against unwanted sigs
 
@@ -181,7 +181,8 @@ rules:
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
-	  mgi->mgiModules->MLC.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

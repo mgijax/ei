@@ -66,10 +66,10 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Species", nil, mgi);
+	  top := create widget("SpeciesModule", nil, mgi);
 
-          mgi->Species.sensitive := false;
-          mgi->mgiModules->Species.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);

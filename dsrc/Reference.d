@@ -119,14 +119,15 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Reference", nil, mgi);
+	  top := create widget("ReferenceModule", nil, mgi);
 
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
 	  -- Only one instance of this module can be instantiated at a time
 	  -- So, de-sensitize buttons which invoke this initialization event
-          mgi->mgiModules->Reference.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize

@@ -80,9 +80,10 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Tissues", nil, mgi);
+	  top := create widget("TissueModule", nil, mgi);
 
-          mgi->mgiModules->Tissues.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);

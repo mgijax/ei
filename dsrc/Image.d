@@ -81,11 +81,12 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Image", nil, mgi);
+	  top := create widget("ImageModule", nil, mgi);
 
 	  send(Init, 0);
 
-          mgi->mgiModules->Image.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  SetRowCount.source_widget := top;

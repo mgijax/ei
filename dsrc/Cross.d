@@ -58,9 +58,10 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Cross", nil, mgi);
+	  top := create widget("CrossModule", nil, mgi);
 
-          mgi->mgiModules->Cross.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  send(Init, 0);

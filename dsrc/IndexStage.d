@@ -72,9 +72,10 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("IndexStage", nil, mgi);
+	  top := create widget("IndexStageModule", nil, mgi);
 
-          mgi->mgiModules->IndexStage.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Set Row Count

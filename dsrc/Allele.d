@@ -89,13 +89,14 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Allele", nil, mgi);
+	  top := create widget("AlleleModule", nil, mgi);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
 	  -- Prevent multiple instances of the Allele form
-          mgi->mgiModules->Allele.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize
@@ -280,7 +281,11 @@ rules:
 
 	  (void) reset_cursor(top);
 
-	  if (launchedFrom != nil) then
+	  -- if module was not created from main menu, then destroy it
+	  -- it was launched from within another application for the
+	  -- purpose of adding a non-existent allele record
+
+	  if (launchedFrom != mgi) then
 	    send(Exit, 0);
 	  end if;
 	end does;

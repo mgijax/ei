@@ -78,11 +78,12 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("Antibody", nil, mgi);
+	  top := create widget("AntibodyModule", nil, mgi);
 
 	  send(Init, 0);
 
-          mgi->mgiModules->Antibody.sensitive := false;
+          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab.sensitive := false;
 	  top.show;
 
 	  top->AntigenAccession.tableID := GXD_ANTIGEN;

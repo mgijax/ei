@@ -112,9 +112,6 @@ dmodule Verify is
 
 devents:
 
-locals:
-	allelemod : dmodule:exported;	-- For VerifyAllele which may create a D module instance
-				        -- of "Allele"
 
 rules:
 
@@ -634,6 +631,7 @@ rules:
 	  value : string;
 	  verifyAdd : boolean := VerifyAllele.verifyAdd;
 	  isTable : boolean;
+	  alleletop : widget;
 
 	  -- Relevant for Tables only
 	  row : integer := 0;
@@ -804,20 +802,15 @@ rules:
 		  -- If "Allele" Module is not already instantiated, create it
 
 		  if (root.parent->mgiModules->Allele.sensitive = true) then
-		    allelemod := create dmodule("Allele", root.parent, top);
+		    (void) create dmodule("AlleleModule", root.parent, top);
 		  end if;
 
-		  -- If "Allele" Module was created by this event, then bring it
-		  -- to the front, clear the form and initialize the fields.
-
-		  if (allelemod != nil) then
-		    allelemod.top.front;
-		    send(allelemod.ClearAllele, 0);
-		    allelemod.top->mgiMarker->ObjectID->text.value := markerKey;
-		    allelemod.top->mgiMarker->Marker->text.value := markerSymbol;
-		    allelemod.top->Symbol->text.value := value;
-		    (void) XmProcessTraversal(allelemod.top->Name->text, XmTRAVERSE_CURRENT);
-		  end if;
+		  alleletop := root.parent->AlleleModule;
+		  alleletop.front;
+		  alleletop->mgiMarker->ObjectID->text.value := markerKey;
+		  alleletop->mgiMarker->Marker->text.value := markerSymbol;
+		  alleletop->Symbol->text.value := value;
+		  (void) XmProcessTraversal(alleletop->Name->text, XmTRAVERSE_CURRENT);
 
 		  if (isTable) then
 	            (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
