@@ -224,7 +224,6 @@ rules:
 
 	  send(ModifyAllelePair, 0);
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	               "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n" +
 	               "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 
 	  AddSQL.tableID := GXD_GENOTYPE;
@@ -232,6 +231,7 @@ rules:
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
+	  AddSQL.transaction := false;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
@@ -322,12 +322,12 @@ rules:
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
 	           "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n" +
 	           "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.transaction := false;
           send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
@@ -447,6 +447,10 @@ rules:
               localCmd := localCmd + mgi_DBdelete(GXD_ALLELEPAIR, key);
             end if;
  
+	    if (not reordering) then
+	      localCmd := localCmd + "exec GXD_processGenotypeOrder " + key + "\n";
+	    end if;
+
             row := row + 1;
           end while;
 

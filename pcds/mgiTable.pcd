@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  9 11:47:38 2005";
+      lastWritten = "Fri Mar 11 12:18:20 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -530,8 +530,8 @@ Module: mgiTable
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 60)";
                   xrtTblMaxLengthSeries = "(all 9 255)";
                   xrtTblPixelWidthSeries = "(all 0-6 0)(all 10 0)";
-                  xrtTblEditableSeries = "(all 0-7 False)(all 10 False)";
-                  xrtTblTraversableSeries = "(all 0-7 False)(all 10 False)";
+                  xrtTblEditableSeries = "(all 0-7 False)(all 9-10 False)";
+                  xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)";
                 Group: User
                   citation = 9;
                   jnum = 8;
@@ -539,6 +539,8 @@ Module: mgiTable
                   refsCurrentKey = 2;
                   requiredColumns = "3\n5";
                   refsType = 7;
+                  saveEditableSeries = "(all 0-7 False)(all 9-10 False)";
+                  saveTraversableSeries = "(all 0-7 False)(all 9-10 False)";
               }
               {
                 AddRow = TablePush : mgiTable;

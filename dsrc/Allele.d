@@ -335,6 +335,7 @@ rules:
 	  if (top->markerDescription->Note->text.value.length > 0) then
 	    top->markerDescription->Note->text.modified := true;
 	  end if;
+
 	  send(ModifyAlleleNotes, 0);
 
 	  if (not top.allowEdit) then
@@ -368,11 +369,14 @@ rules:
 
 	  -- Execute the add
 
+	  cmd := cmd + "exec ALL_reloadLabel " + currentRecordKey + "\n";
+
 	  AddSQL.tableID := ALL_ALLELE;
           AddSQL.cmd := cmd;
           AddSQL.list := top->QueryList;
           AddSQL.item := top->Symbol->text.value;
           AddSQL.key := top->ID->text;
+	  AddSQL.transaction := false;
           send(AddSQL, 0);
 
 	  -- If add was sucessful, re-initialize the form
@@ -659,10 +663,10 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := "exec ALL_reloadLabel " + currentRecordKey;
+	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n";
 
 	    if (top->mgiMarker->ObjectID->text.value != "") then
-		cmd := cmd + "\nexec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value;
+		cmd := cmd + "exec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value + "\n";
 	    end if;
 
 	    ModifySQL.cmd := cmd;
@@ -697,8 +701,7 @@ rules:
 
 	  -- Set required field for General Notes
 
-	  if (top->InheritanceModeMenu.menuHistory.labelString = OTHERNOTES or
-	      top->AlleleTypeMenu.menuHistory.labelString = OTHERNOTES) then
+	  if (top->InheritanceModeMenu.menuHistory.labelString = OTHERNOTES) then
 	    SetNotesRequired.required := true;
 	  else
 	    SetNotesRequired.required := false;
