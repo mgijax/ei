@@ -1,8 +1,7 @@
-copy the Configuration.default file to Configuration
-edit appropriately
-
 cvs export -r ei-tag -d ei-tag ei
 cd ei
+cp Configuration.default Configuration
+edit Configuration file appropriately
 
 To build an application:
 
