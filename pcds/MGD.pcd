@@ -6757,6 +6757,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     SWISSPROT = AccToggle;
                                                     Group: Widget
                                                       managed = True;
+						    Group: User
+						      private = True;
                                                   }
                                             }
                                       }
