@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 06/05/2002 lec
+--	- TR 3677; display all allele pairs for Genotype object
+--
 -- 05/30/2002 lec
 --      - TR 3677; modifedBy will be set in mgi_DBupdate()
 --
@@ -561,7 +564,8 @@ rules:
 	    orderBy := "a.sequenceNum, e.modification_date\n";
 	  end if;
 
-	  cmd : string := "select _Object_key, accID, description from " + dbView + 
+	  cmd : string := "select _Object_key, accID, description, short_description " +
+			  "from " + dbView + 
 			  " where _Object_key = " + currentRecordKey + 
 			  " and prefixPart = 'MGI:' and preferred = 1 " + 
 			  " order by description\n" +
@@ -596,6 +600,9 @@ rules:
 	          top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
 	          top->mgiAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
 		  objectLoaded := true;
+		else
+	          top->mgiAccession->AccessionName->text.value := 
+		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 		end if;
 	      elsif (results = 2) then
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 7));
@@ -835,4 +842,4 @@ rules:
           send(ExitWindow, 0);
         end does;
  
-end dmodule;
+
