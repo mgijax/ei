@@ -5,6 +5,13 @@ RELEASE: A
 CHANGES:
 1) TR 3802 - Look & Feel
 
+TAG: ei-7-0-36
+DATE: 08/26/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) replaced "destroyCallback" with "closeWindowCallback"
+
 TAG: ei-7-0-35
 DATE: 08/23/2002
 STAFF: lec
