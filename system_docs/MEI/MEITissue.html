@@ -1,0 +1,101 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGD EDITING INTERFACE: Design and Requirements - Tissues
+</TITLE>
+</HEADER>
+
+<BODY>
+
+<H2>
+MGD EDITING INTERFACE: Design and Requirements - Tissues
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+The master list of Tissues contains all of the tissues referenced by:
+	<UL>
+	<LI>Molecular Segment Libraries (Source)
+	</UL>
+<P>
+
+<H4>Editing Form</H4>
+<OL>
+<LI><A HREF="tissue.gif">Tissue GIF image</A>
+<LI><A HREF="tissuemerge.gif">Tissue Merge GIF image</A>
+</OL>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Standard? (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+</OL>
+
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Tissue
+	<LI>Standard?
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+None
+<OL>
+</OL>
+
+<H4>Deletions</H4>
+A Tissue cannot be deleted if it is referenced by a:
+<OL>
+<LI>Molecular Segment Library (Source)
+</OL>
+
+<H4>Merge</H4>
+The <A HREF="tissuemerge.gif">Tissue</A> form supports three types of merges:
+	<OL>
+	<LI>Merge Non-standard Tissue into Standard Tissue
+	    <P>
+	    Merges all records tagged as Non-standard for the given Tissue 
+	    into the corresponding Standard record.
+	    If more than one Standard record is found, then the merge cannot
+	    be processed.
+	<P>
+	<LI>Merge Standard Tissues into Non-standard Tissue
+	    <P>
+	    Merges all records tagged as Standard for the given Tissue 
+	    into the corresponding Non-standard record.
+	    If more than one Non-standard record is found, then the merge cannot
+	    be processed.
+	<P>
+	<LI>Merge old Tissue into new Tissue
+	    <P>
+	    Merges two distinct Tissue records into the New Tissue
+	    and deletes the Old Tissue.
+	    Propagates changes out to all cross-references to the Old Tissue:
+	    <P>
+		<OL>
+		<LI>Molecular Segment Library (Source)
+		</OL>
+	</OL>
+
+<H4>Retrieving Other Tissue Information</H4>
+<OL>
+<LI>To retrieve all <I>Data Sets</I> which cross-reference the current Tissue, click
+    on <I>Retrieve Info</I> in the <I>Data Sets</I> table.  This will list the <I>MGI:</I>
+    Accession Number for each Molecular Segment or GXD Antigen which uses the current Tissue.
+</OL>
+
+<H4>Triggers/Views/Stored Procedures for Tissues tables (<I>PRB_</I>)</H4>
+<OL>
+<LI>Triggers ($SYBASE/admin/triggers):  <I>PRB.tr</I>, <I>PRB.drop</I>
+<LI>Views ($SYBASE/admin/views):  <I>PRB.view</I>
+<LI>Stored Procedures ($SYBASE/admin/procedures):  <I>PRB.pr</I>
+</OL>
+
+<H3>RELATED DOCUMENTS</H3>
+<OL>
+<LI><A HREF="MEI.html#dataVerTissue">Data Verifications section on Tissues</A>
+</OL>
+
+</BODY>
+</HTML>
