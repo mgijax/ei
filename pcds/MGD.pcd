@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 29 08:17:39 2004";
+      lastWritten = "Thu Dec  2 13:26:52 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2461,11 +2461,12 @@ Module: MGD
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  bottomAttachment = attach_none;
+                  bottomAttachment = attach_form;
                   resizable = true;
-                  topWidget = Marker;
+                  topWidget = MolSegNoteMenu;
                   topOffset = 5;
                   leftOffset = 5;
+                  bottomOffset = 2;
                     {
                       label = XmLabel;
                     }
@@ -2482,14 +2483,13 @@ Module: MGD
                   subMenuId = MolSegNotePulldown;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = MolNote;
+                  leftWidget = Marker;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = MolNote;
+                  topWidget = Marker;
                   topOffset = 5;
-                  bottomAttachment = attach_form;
+                  bottomAttachment = attach_none;
                   resizable = true;
-                  bottomOffset = 5;
                     Popups:
                     {
                       MolSegNotePulldown : NotePulldown = OptionPulldown : mgiOption;
