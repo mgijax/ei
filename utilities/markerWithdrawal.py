@@ -245,7 +245,7 @@ elif eventKey == SPLIT:
 if eventKey == WITHDRAWAL:
 	newSymbolsList = string.split(newSymbols, ',')
 	newSymbol = newSymbolsList[0]
-	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,"%s","%s",%d' \
+	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
 		% (oldKey, refKey, eventReasonKey, newSymbol, newName, addAsSynonym)
 elif eventKey == MERGED:
 	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d' \
@@ -254,7 +254,7 @@ elif eventKey == ALLELEOF:
 	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d' \
 		% (oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
 elif eventKey == SPLIT:
-	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,"%s"' \
+	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
 		% (oldKey, refKey, eventReasonKey, newSymbols)
 elif eventKey == DELETED:
 	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d' \
