@@ -107,22 +107,22 @@ for r in results:
 		mDate = r['mDate']
 
 		fp.write('X' + DELIM + \
-	         	`fantomKey` + DELIM)
+	         	mgi_utils.prvalue(fantomKey) + DELIM)
 
 		printIt = mgi_utils.prvalue(r['gba_name'])
 		if len(printIt) > 0:
 			printIt = regsub.gsub(',', '\,', r['gba_name'])
 		fp.write(printIt + DELIM + \
-	         	`r['fantom1_clone']` + DELIM + \
-	         	`r['fantom2_clone']` + DELIM)
+	         	mgi_utils.prvalue(r['fantom1_clone']) + DELIM + \
+	         	mgi_utils.prvalue(r['fantom2_clone']) + DELIM)
 
-		fp.write(`row` + DELIM + \
-		        `r['riken_seqid']` + DELIM + \
+		fp.write(mgi_utils.prvalue(row) + DELIM + \
+		        mgi_utils.prvalue(r['riken_seqid']) + DELIM + \
 	         	mgi_utils.prvalue(r['riken_cloneid']) + DELIM + \
 	         	mgi_utils.prvalue(r['genbank_id']) + DELIM + \
 	         	mgi_utils.prvalue(r['gba_mgiID']) + DELIM +
 	         	mgi_utils.prvalue(r['gba_symbol']) + DELIM +
-	         	`r['seq_length']` + DELIM + \
+	         	mgi_utils.prvalue(r['seq_length']) + DELIM + \
 	         	mgi_utils.prvalue(r['seq_note']) + DELIM + \
 	         	mgi_utils.prvalue(r['seq_quality']) + DELIM + \
 	         	mgi_utils.prvalue(r['riken_locusid']) + DELIM + \
@@ -145,7 +145,8 @@ for r in results:
 			printIt = regsub.gsub(',', '\,', r['info_annot'])
 		fp.write(printIt + DELIM)
 
-		fp.write(mgi_utils.prvalue(r['cat_id']) + DELIM + \
+		fp.write(mgi_utils.prvalue(r['final_cluster']) + DELIM + \
+		        mgi_utils.prvalue(r['cat_id']) + DELIM + \
 	         	mgi_utils.prvalue(r['final_mgiID']) + DELIM + \
 	         	mgi_utils.prvalue(r['final_symbol1']) + DELIM)
 

@@ -44,7 +44,7 @@ def open_file(name):
 	fp = reportlib.init(name, printHeading = 0, outputdir = os.environ['EIREPORTDIR'])
 
 	i1 = string.find(sqlCmd, 'where')
-	i2 = string.find(sqlCmd, 'order')
+	i2 = string.find(sqlCmd, 'union')
 	fp.write('where ' + sqlCmd[i1 + 79:i2] + CRT*2)
 	return(fp)
 
@@ -198,6 +198,7 @@ def full_report():
         	         	mgi_utils.prvalue(r['blast_expect']) + TAB + \
         	         	mgi_utils.prvalue(r['auto_annot']) + TAB + \
         	         	mgi_utils.prvalue(r['info_annot']) + TAB + \
+        	         	mgi_utils.prvalue(r['final_cluster']) + TAB + \
         	         	mgi_utils.prvalue(r['cat_id']) + TAB + \
         	         	mgi_utils.prvalue(r['final_mgiID']) + TAB + \
         	         	mgi_utils.prvalue(r['final_symbol2']) + TAB + \
