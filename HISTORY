@@ -1,3 +1,9 @@
+TAG: ei-2-0-11
+DATE: 04/19/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.4/TR 1356; fixed bug in Marker.d
+
 TAG: ei-2-0-10
 DATE: 04/19/2000
 STAFF: lec
