@@ -54,7 +54,6 @@ CALLS
      mgi_adi_getADIStructure("int") : "ADI_Structure *";
      adi_clipboardInit("Widget", "Widget");
      adi_clipboardDestroy();
-     install_cleanup_handler("Widget");
 
      format_stagenum("int") : "char *";
 

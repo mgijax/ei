@@ -210,18 +210,6 @@ ADI_Structure *mgi_adi_getADIStructure(int index);
       returns: pointer to an ADI_Structure.
     */
 
-void install_cleanup_handler(Widget toplevel);
-   /* requires:
-         toplevel: The toplevel widget for the ADI.
-      effects:
-         Installs a callback that allows the user to use window manager
-         functions to close windows, rather than "File..Exit". Must be 
-         called during Dictionary module initialization. 
-      modifies: state of X server. 
-      returns: nothing.
-    */ 
-     
-
 #if defined(__cplusplus) || defined(c_plusplus)
        } 
 #endif

@@ -28,12 +28,6 @@ struct clipboardinfo
 static Atom wm_delete_window;  /* X variable needed for graceful shutdown */
 static struct clipboardinfo clipinfo = {NULL,NULL};
 
-static void FinalCleanupCB(Widget w, caddr_t client_data, caddr_t call_data);
-/* 
-   Response to MWM close event.  Shuts down ADI properly so that GEI
-   knows it is gone.
- */
-
 static void dictionary_error(char *msg)
 {
    fprintf(stderr,"Dictionary module error: %s\n", msg);
@@ -201,9 +195,7 @@ int adi_countClipboardItems()
    if (!clipinfo.clipboard)  /* user hasn't fired up the ADI yet */
       return -1;
 
-   XtVaGetValues(clipinfo.clipboard,
-                 XmNxrtTblNumRows, &rows,
-                 NULL);
+   rows = mgi_tblNumRows(clipinfo.clipboard);
 
    for (row=0;row<rows;row++)
    {
@@ -310,10 +302,7 @@ void adi_getClipboardItem(int index, DBINT *key,
    }
 
    /* get the number of rows in the clipboard */
-   XtVaGetValues(clipinfo.clipboard,
-                 XmNxrtTblNumRows, &rows,
-                 NULL);
-
+   rows = mgi_tblNumRows(clipinfo.clipboard);
 
    /* return the indexth element, but this means skipping deleted entries */
 
@@ -337,8 +326,7 @@ void adi_getClipboardItem(int index, DBINT *key,
    /* row is the valid row we are interested in */
 
    *key = atol(mgi_tblGetCell(clipinfo.clipboard,row, CLIPBOARD_SK_INDEX));
-   strncpy(name, mgi_tblGetCell(clipinfo.clipboard,row, 
-           CLIPBOARD_NAME_INDEX), PRINTNAMELEN);
+   strncpy(name, mgi_tblGetCell(clipinfo.clipboard,row, CLIPBOARD_NAME_INDEX), PRINTNAMELEN);
 }
 
 
@@ -394,24 +382,3 @@ char *format_stagenum(int stage)
    return buf;
 }
 
-
-void install_cleanup_handler(Widget toplevel) 
-{
-    wm_delete_window=XmInternAtom(XtDisplay(toplevel),"WM_DELETE_WINDOW", True);
-    XmAddWMProtocolCallback(toplevel,wm_delete_window,FinalCleanupCB,
-                            (XtPointer)NULL);
-}
-
- 
-static void FinalCleanupCB(Widget w, caddr_t client_data, caddr_t call_data)
-{
-    ux_devent_instance dei;
-    tu_status_t status;
- 
-    dei = ux_get_devent ("DictionaryExit", NULL, 0, &status);
-    if (status.all != tu_status_ok)
-         (void) fprintf(stderr, "Could not create DictionaryExit event.\n");
- 
-    ux_dispatch_event(dei);
-    ux_free_devent(dei);
-}
