@@ -5,6 +5,13 @@ RELEASE: A
 CHANGES:
 1) TR 3802 - Look & Feel
 
+TAG: ei-7-0-38
+DATE: 08/30/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) Neojunior (uxb.conf, Configuration.default, XRes.in)
+
 TAG: ei-7-0-37
 DATE: 08/29/2002
 STAFF: lec

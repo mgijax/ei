@@ -16,7 +16,7 @@ setenv EIINSTALLDIRPROD /usr/local/mgi/ei/prod
 setenv EIINSTALLDIRDEV /usr/local/mgi/ei/dev
 
 # build directory
-setenv EIBUILDDIR /usr/local/mgi/ei/ei_build/?
+setenv EIBUILDDIR /usr/local/mgi/ei/ei_build/ei
 
 # data directory
 setenv EIDATADIR /usr/local/mgi/ei/ei_data
@@ -25,7 +25,7 @@ setenv EIDATADIR /usr/local/mgi/ei/ei_data
 setenv EISYSTEMDOCDIR $EIINSTALLDIR/system_docs
 
 # SYBASE
-setenv SYBASE /opt/sybase
+setenv SYBASE /opt/sybase/12.5
 
 # DB Utilities
 setenv DBUTILITIESPATH /usr/local/mgi/dbutils/mgidbutilities
@@ -33,7 +33,10 @@ setenv DBUTILITIESPATH /usr/local/mgi/dbutils/mgidbutilities
 # TeleUSE
 setenv TeleUSE	/opt/teleuseXRT
 setenv XUSERFILESEARCHPATH	%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
-setenv LD_LIBRARY_PATH	$SYBASE/lib:$TeleUSE/lib:$TeleUSE/conf/lib:/usr/lib:/usr/ucblib
+setenv LD_LIBRARY_PATH	$SYBASE/ASE_12_5/lib:$SYBASE/OCS-12_5/lib:$TeleUSE/lib:$TeleUSE/conf/lib:/usr/lib:/usr/ucblib
+
+setenv OPENWINHOME	/usr/openwin
+setenv XKEYSYMDB        $OPENWINHOME/lib/XKeysymDB
 
 # PATH
 set path = ($DBUTILITIESPATH/bin $path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin)
@@ -48,7 +51,7 @@ setenv EIDEBUG	0
 setenv USERLOG	$HOME/.ei-log
 
 # EI Applications
-setenv EIAPPS	"mgd gxd fantom mgiadmin mgi"
+setenv EIAPPS	"mgd gxd mgiadmin mgi"
 
 # DB server name
 setenv DSQUERY MGD
