@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Feb  7 10:36:33 2002";
+      lastWritten = "Mon Feb 11 09:48:30 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -769,7 +769,7 @@ Module: MGI
             title = "MGI Controlled Vocabulary";
           Group: Control
             vip_x = 70;
-            vip_y = 470;
+            vip_y = 415;
           Group: User
             homeWidget = Name;
             activateButtonName = ControlledVocab;
@@ -1167,223 +1167,6 @@ Module: MGI
               }
         }
         {
-          MGI = Application : MGI;
-          Group: Control
-            vip_x = 70;
-            vip_y = 415;
-          Group: User
-            initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
-              {
-                MGDForm = XmForm;
-                    {
-                      MGDMenu = MenuBar : mgiMenu;
-                      Group: Constraint
-                        leftAttachment = attach_form;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_form;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                          {
-                            File = File : mgiMenu;
-                                Popups:
-                                {
-                                  FilePulldown = MenuPulldown;
-                                      {
-                                        Exit = MenuPush;
-                                        Group: Widget
-                                          activateCallback = "D:ExitApplication";
-                                      }
-                                }
-                          }
-                    }
-                    {
-                      MGDFrame = XmFrame;
-                      Group: Constraint
-                        leftAttachment = attach_opposite_widget;
-                        leftWidget = MGDMenu;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_widget;
-                        topWidget = MGDMenu;
-                        bottomAttachment = attach_form;
-                        resizable = true;
-                          {
-                            mgiModules = XmRowColumn;
-                            Group: Widget
-                              entryAlignment = alignment_center;
-                              spacing = 5;
-                                {
-                                  Reference = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Reference\")";
-                                    labelString = References;
-                                    traversalOn = False;
-                                }
-                                {
-                                  Marker = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Marker\")";
-                                    labelString = Markers;
-                                    traversalOn = False;
-                                }
-                                {
-                                  MolecularSegment = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
-                                    labelString = "Molecular Probes & Segments";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Homology = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Homology\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  MLDP = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MLDP\")";
-                                    labelString = Mapping;
-                                    traversalOn = False;
-                                }
-                                {
-                                  MLC = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MLCED\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  separator = XmSeparator;
-                                  Group: Widget
-                                    separatorType = shadow_etched_out;
-                                    shadowThickness = 5;
-                                }
-                                {
-                                  Antigen = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Antigen\")";
-                                    traversalOn = False;
-                                    labelString = Antigens;
-                                }
-                                {
-                                  Antibody = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Antibody\")";
-                                    traversalOn = False;
-                                    labelString = Antibodies;
-                                }
-                                {
-                                  Image = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Image\")";
-                                    traversalOn = False;
-                                    labelString = Images;
-                                }
-                                {
-                                  Assay = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Assay\")";
-                                    traversalOn = False;
-                                    labelString = Assays;
-                                }
-                                {
-                                  Dictionary = XmPushButton;
-                                  Group: Widget
-                                    labelString = "Anat. Dictionary";
-                                    activateCallback = "D:CreateMGIModule(name = \"Dictionary\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  IndexStage = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"IndexStage\")";
-                                    traversalOn = False;
-                                    labelString = "GXD Index/Stages";
-                                }
-                                {
-                                  separator1 = XmSeparator;
-                                  Group: Widget
-                                    separatorType = shadow_etched_out;
-                                    shadowThickness = 5;
-                                }
-                                {
-                                  Lookups = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Lookups\")";
-                                    labelString = Lookups;
-                                    traversalOn = False;
-                                }
-                                {
-                                  Species = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Species\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Strains = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Strains\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Tissues = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Tissues\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Cross = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Cross\")";
-                                    labelString = Crosses;
-                                    traversalOn = False;
-                                }
-                                {
-                                  RISet = XmPushButton;
-                                  Group: Widget
-                                    labelString = "RI Sets";
-                                    activateCallback = "D:CreateMGIModule(name = \"RISet\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  ActualLogical = XmPushButton;
-                                  Group: Widget
-                                    labelString = "Actual/Logical DBs";
-                                    activateCallback = "D:CreateMGIModule(name = \"ActualLogical\")";
-                                    traversalOn = False;
-                                    managed = True;
-                                }
-                                {
-                                  Nomen = XmPushButton;
-                                  Group: Widget
-                                    labelString = Nomen;
-                                    activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
-                                    traversalOn = False;
-                                    managed = False;
-                                }
-                          }
-                    }
-              }
-              Popups:
-              {
-                StatusDialog = StatusDialog;
-              }
-              {
-                WorkingDialog = WorkingDialog;
-              }
-              {
-                StrainDialog = StrainDialog : mgiDialog;
-              }
-              {
-                TissueDialog = TissueDialog : mgiDialog;
-              }
-              {
-                RIDialog = RIDialog : mgiDialog;
-              }
-              {
-                CrossDialog = CrossDialog : mgiDialog;
-              }
-        }
-        {
           SubEditForm = XmForm;
           Group: Widget
             userDefinedAttributes = "homeWidget:StringTable(StringTable)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
@@ -1399,7 +1182,7 @@ Module: MGI
             height = 825;
           Group: Control
             vip_x = 70;
-            vip_y = 635;
+            vip_y = 580;
           Group: User
             activateButtonName = VocAnnot;
             homeWidget = mgiAccession;
@@ -1689,7 +1472,7 @@ Module: MGI
           GenotypeModule = Module : MGI;
           Group: Control
             vip_x = 70;
-            vip_y = 525;
+            vip_y = 470;
           Group: User
             homeWidget = Verify;
             activateButtonName = GenotypePush;
@@ -2128,7 +1911,7 @@ Module: MGI
           SimpleVocabModule = Module;
           Group: Control
             vip_x = 70;
-            vip_y = 580;
+            vip_y = 525;
           Group: User
             activateButtonName = SimpleVocab;
             homeWidget = Name;

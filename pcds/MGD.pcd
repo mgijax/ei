@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Feb  7 15:17:05 2002";
+      lastWritten = "Mon Feb 11 09:45:47 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -6241,7 +6241,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 80;
             vip_y = 30;
           Group: User
-            initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
+            initDialog = "TissueDialog\nRIDialog\nCrossDialog";
               {
                 MGDForm = XmForm;
                     {

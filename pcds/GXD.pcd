@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Feb  7 10:36:31 2002";
+      lastWritten = "Mon Feb 11 09:45:27 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -2377,7 +2377,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 60;
             vip_y = 30;
           Group: User
-            initDialog = "StrainDialog\nTissueDialog";
+            initDialog = TissueDialog;
               {
                 GXDForm = XmForm;
                     {
