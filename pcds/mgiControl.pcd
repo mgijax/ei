@@ -3,7 +3,7 @@ Module: mgiControl
       autoCuil = False;
       dDialogFile = "mgiControl_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  5 09:56:47 2000";
+      lastWritten = "Mon Mar 12 11:34:09 2001";
         {
           Control = XmFrame;
           Group: Control
@@ -173,11 +173,26 @@ Module: mgiControl
                       ModifiedDate = ModifiedDate : mgiDataTypes;
                       Group: Constraint
                         leftAttachment = attach_opposite_widget;
-                        leftWidget = CreationDate;
-                        rightAttachment = attach_none;
+                        leftWidget = Search;
+                        rightAttachment = attach_form;
                         topAttachment = attach_widget;
                         topWidget = CreationDate;
                         bottomAttachment = attach_form;
+                        resizable = true;
+                        rightOffset = 5;
+                        bottomOffset = 5;
+                    }
+                    {
+                      ModificationHistory = ModificationHistory : mgiTable;
+                      Group: Widget
+                        managed = False;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = Search;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        topWidget = RecordCount;
+                        bottomAttachment = attach_none;
                         resizable = true;
                     }
               }

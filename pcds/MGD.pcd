@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Mar 14 09:23:00 2001";
+      lastWritten = "Fri Mar 16 12:54:52 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -6745,6 +6745,8 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
                                                     Group: User
                                                       private = True;
                                                   }
@@ -8722,7 +8724,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 80;
             vip_y = 580;
           Group: User
-            homeWidget = Marker;
+            homeWidget = Symbol;
             activateButtonName = Allele;
               {
                 MainForm = XmForm;
@@ -8814,6 +8816,19 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = mgiMarker;
+                                    leftOffset = 30;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = mgiMarker;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                }
+                                {
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -8843,12 +8858,13 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Symbol;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = Symbol;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -8863,9 +8879,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  label = label : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Original Reference";
+                                  Reference = ReferenceTypeTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
@@ -8875,61 +8889,23 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                }
-                                {
-                                  mgiCitation = mgiCitation : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = label;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = label;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
                                       {
-                                        ObjectID = ID : mgiDataTypes;
+                                        Table = mgiTable;
                                       }
                                       {
-                                        Jnum = Jnum : mgiDataTypes;
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                            Popups:
                                             {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
+                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                required = False;
+                                                sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 and allowOnlyOne = 0 order by _RefsType_key";
                                             }
-                                      }
-                                      {
-                                        Citation = Citation : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                required = False;
-                                            }
-                                      }
-                                }
-                                {
-                                  ReviewedMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = ReviewedPulldown;
-                                    labelString = "Nomenclature Reviewed?";
-                                  Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = mgiMarker;
-                                    topOffset = 5;
-                                    rightOffset = 10;
-                                      Popups:
-                                      {
-                                        ReviewedPulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
@@ -8937,14 +8913,15 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = MolecularMutation;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = MolecularMutation;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 25;
                                     topOffset = 20;
-                                    rightOffset = 5;
+                                  Group: User
+                                    defaultChild = 4;
                                 }
                                 {
                                   InheritanceModeMenu = InheritanceModeMenu : mgiOption;
@@ -8962,10 +8939,10 @@ Shift<Key>Tab: prev-tab-group()
                                   MolecularMutation = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation;
+                                    leftWidget = Reference;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = mgiCitation;
+                                    topWidget = Reference;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -8989,7 +8966,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Strain = Strain : mgiDataTypes;
+                                  ESCellLine = mgiObject : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MolecularMutation;
@@ -8999,55 +8976,43 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                }
-                                {
-                                  label1 = label : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Reference which characterizes allele at the molecular level";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Strain;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Strain;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  mgiCitation1 = mgiCitation : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = label1;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = label1;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
                                       {
                                         ObjectID = ID : mgiDataTypes;
                                       }
                                       {
-                                        Jnum = Jnum : mgiDataTypes;
+                                        CharText = CharText : mgiDataTypes;
                                             {
                                               label = XmLabel;
+                                              Group: Widget
+                                                labelString = "ES Cell Line";
                                             }
                                             {
-                                              text = text;
-                                              Group: User
-                                                required = False;
+                                              text = text : mgiDataTypes;
+                                              Group: Widget
+                                                columns = 35;
                                             }
                                       }
+                                }
+                                {
+                                  Strain = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = ESCellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = ESCellLine;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                       {
-                                        Citation = Citation : mgiDataTypes;
+                                        StrainID = ID;
+                                      }
+                                      {
+                                        Verify = CharText;
                                             {
                                               label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                required = False;
+                                              Group: Widget
+                                                labelString = "Strain of Origin";
                                             }
                                       }
                                 }
@@ -9066,6 +9031,9 @@ Shift<Key>Tab: prev-tab-group()
                                     vipComment = "XmPushButton issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButton differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButton.";
                                       {
                                         Note = Notes : mgiDataTypes;
+                                        Group: User
+                                          tableID = 244;
+                                          noteType = 2;
                                       }
                                       {
                                         NotePush = NotePush : mgiDataTypes;
@@ -9088,6 +9056,9 @@ Shift<Key>Tab: prev-tab-group()
                                     vipComment = "XmPushButton issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButton differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButton.";
                                       {
                                         Note = Notes : mgiDataTypes;
+                                        Group: User
+                                          tableID = 243;
+                                          noteType = 1;
                                       }
                                       {
                                         NotePush = NotePush : mgiDataTypes;
@@ -9096,13 +9067,57 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  PromoterNote = mgiNote : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleNote;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Note = Notes : mgiDataTypes;
+                                        Group: User
+                                          tableID = 245;
+                                          noteType = 3;
+                                      }
+                                      {
+                                        NotePush = NotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Promoter Notes";
+                                      }
+                                }
+                                {
+                                  NomenclatureNote = mgiNote : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = PromoterNote;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = PromoterNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Note = Notes : mgiDataTypes;
+                                        Group: User
+                                          tableID = 247;
+                                          noteType = 4;
+                                      }
+                                      {
+                                        NotePush = NotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Nomenclature Notes";
+                                      }
+                                }
+                                {
                                   Synonym = ReferenceTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation1;
+                                    leftWidget = Strain;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = mgiCitation1;
+                                    topWidget = Strain;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
@@ -9178,9 +9193,13 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CreationDate;
@@ -9191,15 +9210,17 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  ModifiedBy = ModifiedBy : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = ModifiedDate;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = ModifiedDate;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          userDefinedAttributes = "approvedBy:Int(Int)=\"2\"\napprovedFieldName:String(String)=\"approval_date\"\n";
+                                          xrtTblNumRows = 3;
+                                          xrtTblRowLabels = "Created,Modified,Approved";
+                                          xrtTblVisibleRows = 3;
+                                      }
                                 }
                           }
                     }
@@ -9243,6 +9264,19 @@ Shift<Key>Tab: prev-tab-group()
                                                 tableOption = 3;
                                                 tableOptionKey = 2;
                                             }
+                                      }
+                                }
+                                {
+                                  ESCellLineList = ESCellLineList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = CharText;
+                                          targetWidget = ESCellLine;
                                       }
                                 }
                           }

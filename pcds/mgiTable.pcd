@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 16 12:31:26 2001";
+      lastWritten = "Fri Mar 16 09:54:14 2001";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -21,8 +21,8 @@ Module: mgiTable
             xrtTblTrackCursor = False;
             xrtTblFontListSeries = "(all all fixed)";
           Group: Control
-            vip_x = 180;
-            vip_y = 30;
+            vip_x = 65;
+            vip_y = 85;
         }
         {
           TableLabel = XmForm;
@@ -31,8 +31,8 @@ Module: mgiTable
             resizePolicy = resize_any;
             nodeAccess = access_any;
           Group: Control
-            vip_x = 180;
-            vip_y = 85;
+            vip_x = 65;
+            vip_y = 195;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -88,8 +88,8 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 180;
-            vip_y = 140;
+            vip_x = 65;
+            vip_y = 305;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -145,8 +145,8 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 140;
+            vip_x = 65;
+            vip_y = 250;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -206,7 +206,7 @@ Module: mgiTable
           Group: Widget
             traversalOn = False;
           Group: Control
-            vip_x = 60;
+            vip_x = 65;
             vip_y = 30;
         }
         {
@@ -216,8 +216,8 @@ Module: mgiTable
             resizePolicy = resize_any;
             nodeAccess = access_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 85;
+            vip_x = 65;
+            vip_y = 140;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -265,8 +265,8 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 180;
-            vip_y = 195;
+            vip_x = 65;
+            vip_y = 415;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -318,8 +318,8 @@ Module: mgiTable
         {
           Statistics = OrderedTable;
           Group: Control
-            vip_x = 180;
-            vip_y = 250;
+            vip_x = 65;
+            vip_y = 525;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -342,8 +342,8 @@ Module: mgiTable
         {
           OrderedTableLabel = OrderedTable;
           Group: Control
-            vip_x = 60;
-            vip_y = 195;
+            vip_x = 65;
+            vip_y = 360;
               {
                 Table = mgiTable;
                     {
@@ -359,8 +359,8 @@ Module: mgiTable
         {
           ReferenceTable = Table : mgiTable;
           Group: Control
-            vip_x = 60;
-            vip_y = 250;
+            vip_x = 65;
+            vip_y = 470;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -378,8 +378,8 @@ Module: mgiTable
         {
           RefDBSStatus = Table;
           Group: Control
-            vip_x = 180;
-            vip_y = 305;
+            vip_x = 65;
+            vip_y = 635;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -408,8 +408,8 @@ Module: mgiTable
         {
           RefDBSNonStatus = Table;
           Group: Control
-            vip_x = 60;
-            vip_y = 305;
+            vip_x = 65;
+            vip_y = 580;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -437,8 +437,8 @@ Module: mgiTable
         {
           AccessionReference = mgiAccessionTable : mgiTable;
           Group: Control
-            vip_x = 60;
-            vip_y = 360;
+            vip_x = 65;
+            vip_y = 745;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -455,6 +455,85 @@ Module: mgiTable
                   accName = 5;
                   accID = 6;
                   requiredColumns = "4\n6";
+              }
+        }
+        {
+          ModificationHistory = Table;
+          Group: Control
+            vip_x = 65;
+            vip_y = 800;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 3;
+                  xrtTblColumnLabels = "Mode,By,Date";
+                  xrtTblVisibleRows = 2;
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1 15)(all 2 10)";
+                  xrtTblRowLabels = "Created,Modified";
+                  userDefinedAttributes = "createdBy:Int(Int)=\"0\"\nmodifiedBy:Int(Int)=\"1\"\nbyUser:Int(Int)=\"1\"\nbyDate:Int(Int)=\"2\"\ncreatedFieldName:String(String)=\"creation_date\"\nmodifiedFieldName:String(String)=\"modification_date\"\n";
+                  xrtTblNumRows = 3;
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+        }
+        {
+          ReferenceTypeTable = ReferenceTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 65;
+            vip_y = 690;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  userDefinedAttributes = "refsType:Int(Int)=\"3\"\nrefsName:Int(Int)=\"4\"\n";
+                  xrtTblNumColumns = 7;
+                  xrtTblColumnLabels = "Mode,Current Key,New Key,Type,Ref Type,J#,Citation";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-5 10)(all 6 60)";
+                  xrtTblMaxLengthSeries = "(all 6 255)";
+                  xrtTblPixelWidthSeries = "(all 0-3 0)";
+                  xrtTblEditableSeries = "(all 0-4 False)";
+                  xrtTblTraversableSeries = "(all 0-4 False)";
+                Group: User
+                  citation = 6;
+                  jnum = 5;
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddRefTypeRow";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = ReferenceTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = ReferenceTypeMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+              }
+              {
+                ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 2;
               }
         }
 }

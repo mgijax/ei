@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 16 12:31:34 2001";
+      lastWritten = "Fri Mar 16 09:48:48 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2440,6 +2440,68 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 305;
               {
                 MainForm = XmForm;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                }
+                                {
+                                  mgiMarker = mgiMarker : mgiDataTypes;
+                                }
+                                {
+                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
+                                }
+                                {
+                                  Symbol = CharText : mgiDataTypes;
+                                }
+                                {
+                                  Name = CharText : mgiDataTypes;
+                                }
+                                {
+                                  Reference = ReferenceTypeTable : mgiTable;
+                                }
+                                {
+                                  AlleleTypeMenu = AlleleTypeMenu : mgiOption;
+                                }
+                                {
+                                  InheritanceModeMenu = InheritanceModeMenu : mgiOption;
+                                }
+                                {
+                                  MolecularMutation = TableLabel : mgiTable;
+                                }
+                                {
+                                  ESCellLine = mgiObject : mgiDataTypes;
+                                }
+                                {
+                                  Strain = Strain : mgiDataTypes;
+                                }
+                                {
+                                  MolecularNote = mgiNote : mgiDataTypes;
+                                }
+                                {
+                                  AlleleNote = mgiNote : mgiDataTypes;
+                                }
+                                {
+                                  PromoterNote = mgiNote : mgiDataTypes;
+                                }
+                                {
+                                  NomenclatureNote = mgiNote : mgiDataTypes;
+                                      {
+                                        Note = Notes : mgiDataTypes;
+                                      }
+                                      {
+                                        NotePush = NotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Promoter Notes";
+                                      }
+                                }
+                          }
+                    }
                     Popups:
                     {
                       StatusDialog = StatusDialog : mgiDialog;

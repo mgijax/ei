@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Feb 15 09:42:39 2000";
+      lastWritten = "Fri Feb 23 14:33:02 2001";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -232,7 +232,7 @@ Module: mgiLookup
           MappingAssayList = LookupList;
           Group: Control
             vip_x = 60;
-            vip_y = 745;
+            vip_y = 800;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -274,7 +274,7 @@ Module: mgiLookup
           StrainTypeList = LookupList;
           Group: Control
             vip_x = 60;
-            vip_y = 690;
+            vip_y = 745;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -286,6 +286,26 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          ESCellLineList = LookupList;
+          Group: Control
+            vip_x = 60;
+            vip_y = 690;
+          Group: User
+            cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View order by cellLine";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "0 ES Cell Lines";
+                Group: User
+                  defaultLabel = "ES Cell Lines";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayESCellLine";
               }
         }
 }

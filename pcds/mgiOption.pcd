@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Mar  2 13:13:53 2001";
+      lastWritten = "Thu Mar 15 15:11:43 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1287,6 +1287,13 @@ Module: mgiOption
                         dbTable = 334;
                     }
                     {
+                      ESCellLine = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "ES Cell Line";
+                      Group: User
+                        dbTable = 336;
+                    }
+                    {
                       VectorType = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Vector Types";
@@ -2493,7 +2500,7 @@ Module: mgiOption
             labelString = Mode;
           Group: Control
             vip_x = 80;
-            vip_y = 4430;
+            vip_y = 4540;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -2795,6 +2802,38 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 1130;
+        }
+        {
+          AlleleStatusMenu = OptionMenu;
+          Group: Widget
+            subMenuId = AlleleStatusPulldown;
+            labelString = Status;
+          Group: Control
+            vip_x = 80;
+            vip_y = 4430;
+          Group: User
+            defaultChild = 4;
+              Popups:
+              {
+                AlleleStatusPulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select * from ALL_Status where _Allele_Status_key > 0 order by _Allele_Status_key";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          ReferenceTypeMenu = OptionMenu;
+          Group: Widget
+            subMenuId = ReferenceTypePulldown;
+          Group: Control
+            vip_x = 80;
+            vip_y = 4485;
+              Popups:
+              {
+                ReferenceTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
+              }
         }
 }
 

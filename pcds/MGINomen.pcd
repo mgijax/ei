@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Mar 14 10:54:23 2001";
+      lastWritten = "Thu Mar 15 11:25:26 2001";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -332,6 +332,9 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomOffset = 5;
                                       {
                                         Note = Notes;
+                                        Group: User
+                                          tableID = 513;
+                                          noteType = E;
                                       }
                                       {
                                         NotePush = NotePush;
@@ -354,6 +357,9 @@ Shift<Key>Tab: prev-tab-group()
                                     leftOffset = 5;
                                       {
                                         Note = Notes;
+                                        Group: User
+                                          noteType = C;
+                                          tableID = 512;
                                       }
                                       {
                                         NotePush = NotePush;
