@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- lec 03/27/2001
+--	- Added "AlleleStatusMenu" to SetOption
+--
 -- lec 03/15/2001
 --	- Added SetNotesDisplay
 --
@@ -751,7 +754,8 @@ rules:
 
 	      -- Set the colors BEFORE assigning top.menuHistory...
 
-	      if (top.name = "MarkerStatusMenu") then
+	      if (top.name = "MarkerStatusMenu" or
+		  top.name = "AlleleStatusMenu") then
 		top.background := "Wheat";
 		option.background := "Wheat";
 		option.child(i).background := "Wheat";
