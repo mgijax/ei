@@ -317,6 +317,14 @@ rules:
 		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
+
+	  if (top->VocAnnotTypeMenu.menuHistory.labelString->substr(1, 9) = "PhenoSlim") then
+	    top->PhenoSlimList.managed := true;
+            LoadList.list := top->PhenoSlimList;
+	    send(LoadList, 0);
+	  else
+	    top->PhenoSlimList.managed := false;
+	  end if;
 	end does;
 
 --
