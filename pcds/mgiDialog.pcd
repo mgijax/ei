@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 16 10:31:51 2000";
+      lastWritten = "Tue Jan 16 13:52:03 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -928,6 +928,8 @@ Module: mgiDialog
                               xrtTblCharWidthSeries = "(all 0 1)(all 7 10)(all 8-10 15)";
                               xrtTblEnterCellCallback = "D:SetStructure,\nD:SetImageResultOptions,\nD:SetImagePane";
                               xrtTblValidateCellCallback = "D:VerifyStrengthPattern,\nD:CopyInSituRow,\nD:CommitTableCellEdit";
+                            Group: User
+                              requiredColumns = "3\n8";
                                 {
                                   label = XtXrtLabel;
                                   Group: Widget

@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec  01/16/2001
+--      - TR 2194; StrengthMenu has no default (Modify event); added call to VerifyTable
+--
 -- lec	07/28/98
 --	replaced xrtTblNumRows with mgi_tblNumRows(table)
 --
@@ -256,6 +259,15 @@ rules:
 	  paneList : string_list;
 	  keysDeclared : boolean := false;
  
+          top.root.allowEdit := true;
+
+          VerifyTable.source_widget := table;
+          send(VerifyTable, 0);
+
+          if (not top.root.allowEdit) then
+            return;
+          end if;
+
           (void) busy_cursor(top);
  
           cmd := "";
@@ -275,10 +287,6 @@ rules:
             patternKey := mgi_tblGetCell(table, row, table.patternKey);
             resultNote := mgi_tblGetCell(table, row, table.notes);
 	    paneList := mgi_splitfields(mgi_tblGetCell(table, row, table.imagePaneKeys), ",");
- 
-            if (strengthKey.length = 0) then
-              strengthKey := top->CVInSituResult->StrengthMenu.defaultOption.defaultValue;
-            end if;
  
             if (patternKey.length = 0) then
               patternKey := top->CVInSituResult->PatternMenu.defaultOption.defaultValue;
