@@ -9,6 +9,9 @@
 --
 -- History
 --
+-- lec	01/04/2002
+--	- TR 2867/2239 - support for Acc IDs in List template
+--
 -- lec	07/26/2001
 --	- new
 --
@@ -31,6 +34,7 @@ rules:
        clipboard : widget := ClipboardAdd.clipboard;
        item : string := ClipboardAdd.item;
        key : string := ClipboardAdd.key;
+       accID : string := ClipboardAdd.accID;
 
        -- don't add duplicates; use keys to determine duplicates
 
@@ -43,6 +47,7 @@ rules:
        InsertList.list := clipboard;
        InsertList.item := item;
        InsertList.key := key;
+       InsertList.accID := accID;
        send(InsertList, 0);
    end does;
 
@@ -93,28 +98,36 @@ rules:
        sortList : xm_string_list;
        tempKeys : string_list;
        sortKeys : string_list;
+       tempAccIDs : string_list;
+       sortAccIDs : string_list;
        i : integer;
 
        tempList := create xm_string_list();
        sortList := create xm_string_list();
        tempKeys := create string_list();
        sortKeys := create string_list();
+       tempAccIDs := create string_list();
+       sortAccIDs := create string_list();
 
        tempList := clipboardList.items;
        tempKeys := clipboardList.keys;
+       tempAccIDs := clipboardList.accIDs;
        sortList := tempList;
        sortList.sort;
 
        tempList.rewind;
        tempKeys.rewind;
+       tempAccIDs.rewind;
        sortList.rewind;
 
        while (sortList.more) do
 	 i := tempList.find(sortList.next); 
 	 sortKeys.insert(tempKeys[i], sortKeys.count + 1);
+	 sortAccIDs.insert(tempAccIDs[i], sortAccIDs.count + 1);
        end while;
 
        clipboardList.keys := sortKeys;
+       clipboardList.accIDs := sortAccIDs;
        (void) XmListDeleteAllItems(clipboardList);
        (void) XmListAddItems(clipboardList, sortList, sortList.count, 0);
    end does;
@@ -189,6 +202,12 @@ rules:
             clipboard->List.keys := create string_list();
           end if;
  
+          -- If clipboard->List.accIDs doesn't exist already, create it
+ 
+          if (clipboard->List.accIDs = nil) then
+            clipboard->List.accIDs := create string_list();
+          end if;
+ 
           -- Append from the specified editing Clipboard
  
 	  if (clipboardModule = nil or editClipboard = nil) then
@@ -197,16 +216,19 @@ rules:
 
 	  sKeys : string_list := create string_list();
 	  sResults : xm_string_list := create xm_string_list();
+	  sAccIDs : string_list := create string_list();
 	  notify : boolean := false;
 
 	  -- Append new keys to current keys
 
 	  sKeys := clipboard->List.keys;
+	  sAccIDs := clipboard->List.accIDs;
 
 	  i : integer := 1;
 	  numItems : integer;
 	  cKey : string;
 	  cName : string;
+	  cAccID : string;
 
 	  if (editClipboard->List != nil) then
 	    numItems := editClipboard->List.itemCount;
@@ -214,10 +236,12 @@ rules:
 	    while (i <= numItems) do
 	      cKey := editClipboard->List.keys[i];
 	      cName := editClipboard->List.items[i];
+	      cAccID := editClipboard->List.accIDs[i];
 
 	      if (ClipboardLoad.allowDups or sKeys.find(cKey) < 0) then
 	        sKeys.insert(cKey, sKeys.count + 1);
 	        sResults.insert(cbPrefix + cName, sResults.count + 1);
+	        sAccIDs.insert(cAccID, sAccIDs.count + 1);
 	      end if;
 
 	      i := i + 1;
@@ -227,6 +251,7 @@ rules:
 
 	    if (sResults.count > 0) then
               clipboard->List.keys := sKeys;
+              clipboard->List.accIDs := sAccIDs;
 	      (void) XmListAddItems(clipboard->List, sResults, sResults.count, 0);
 	    end if;
 

@@ -9,7 +9,8 @@
 
 ClipboardAdd [clipboard : widget;
 	      item : string;
-	      key : string;];
+	      key : string;
+	      accID : string := "";];
 
 ClipboardClear [source_widget : widget;];
 

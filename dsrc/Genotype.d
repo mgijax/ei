@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec  01/04/2002
+--	- Genotype Clipboard
+--
 -- lec  12/19/2001
 --	- MGI 2.8/TR 2867/TR 2239
 --	  added Conditional, Allele State, Notes
@@ -46,6 +49,8 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
+
+	GenotypeClipboardAdd :local [];
 
 	VerifyAllelePairState :local [source_widget : widget;
 				      column : integer;
@@ -140,8 +145,10 @@ rules:
 	  -- if an Assay record has been selected, then select
 	  -- the Genotype records for the Assay
 	  if (mgi->AssayModule != nil) then
-	    SearchGenotype.assayKey := mgi->AssayModule->EditForm->ID->text.value;
-	    send(SearchGenotype, 0);
+	    if (mgi->AssayModule->EditForm->ID->text.value.length != 0) then
+	      SearchGenotype.assayKey := mgi->AssayModule->EditForm->ID->text.value;
+	      send(SearchGenotype, 0);
+	    end if;
 	  end if;
 	end does;
 
@@ -511,7 +518,6 @@ rules:
 	SearchGenotype does
 	  assayKey : string := SearchGenotype.assayKey;
 	  select : string;
-	  notExists : string;
 	  orderBy : string := "\norder by g._Genotype_key";
 
           (void) busy_cursor(top);
@@ -523,12 +529,8 @@ rules:
 
 	  send(PrepareSearch, 0);
 
-	  -- If no user-specified query, then use current Assay
-
-	  if (not manualSearch and assayKey.length = 0) then
-	    if (mgi->AssayModule != nil) then
-	      assayKey := mgi->AssayModule->ID->text.value;
-	    end if;
+	  if (not manualSearch and mgi->AssayModule != nil and assayKey.length = 0) then
+	    assayKey := mgi->AssayModule->ID->text.value;
 	  end if;
 
 	  -- If current Assay record...
@@ -549,16 +551,8 @@ rules:
 
 	  select := "select distinct g._Genotype_key, " +
 	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
-	     from + "\n" + where + "\nand ap.sequenceNum = 1";
-
-          notExists := "select distinct g._Genotype_key, " +
-		"'*' + g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
-	  	"from GXD_Genotype_View g, GXD_AllelePair_View ap \n" +
-	  	"where not exists (select 1 from GXD_Specimen s\n" +
-	  	"where g._Genotype_key = s._Genotype_key)\n" +
-	  	"and not exists (select 1 from GXD_GelLane s\n" +
-	  	"where g._Genotype_key = s._Genotype_key)\n" +
-		" and g._Genotype_key *= ap._Genotype_key\n";
+	     from + "\n" + where;
+--	     from + "\n" + where + "\nand ap.sequenceNum = 1";
 
 	  if (manualSearch) then
 	    Query.source_widget := top;
@@ -566,13 +560,7 @@ rules:
 	    Query.table := GXD_GENOTYPE_VIEW;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then
-	    QueryNoInterrupt.select := select + "\nunion\n" + notExists + orderBy;
-	    QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
-	    QueryNoInterrupt.selectItem := false;
-	    send(QueryNoInterrupt, 0);
-	  else
-	    QueryNoInterrupt.select := notExists + orderBy;
+	    QueryNoInterrupt.select := select + orderBy;
 	    QueryNoInterrupt.source_widget := top;
 	    QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
 	    QueryNoInterrupt.selectItem := false;
@@ -732,6 +720,35 @@ rules:
           SetOption.value := mgi_tblGetCell(table, row, table.alleleState);
           send(SetOption, 0);
         end does;
+
+--
+-- GenotypeClipboardAdd 
+--
+-- Adds the current genotype to the clipboard.
+--
+
+   GenotypeClipboardAdd does
+       clipboard : widget := top->GenotypeEditClipboard;
+       item : string;
+       key : string;
+       accID : string;
+
+       -- only add if there is a current genotype
+       if (top->QueryList->List.row = 0) then
+         return;
+       end if;
+
+       key := top->ID->text.value;
+       accID := mgi_tblGetCell(accTable, 0, accTable.accName) + 
+		mgi_tblGetCell(accTable, 0, accTable.accID);
+       item := top->QueryList->List.items[top->QueryList->List.row];
+
+       ClipboardAdd.clipboard := clipboard;
+       ClipboardAdd.item := item;
+       ClipboardAdd.key := key;
+       ClipboardAdd.accID := accID;
+       send(ClipboardAdd, 0);
+   end does;
 
 --
 -- VerifyAllelePairState

@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	01/04/2002
+--	SelectLookupListItem; check for targetText
+--
 -- lec	01/03/2002
 --	Added attributes "accIDs" and "targetAccID" to LookupList template
 --	Added InsertAccID event
@@ -492,9 +495,11 @@ rules:
 	  if (isTable) then
 	    table := targetWidget->Table;
 
-	    -- If no table column specified, return
+	    -- If no columns specified, return
 
-	    if ((integer) list_w.targetText < 0) then
+	    if ((integer) list_w.targetText < 0 and
+		(integer) list_w.targetKey < 0 and
+		(integer) list_w.targetAccID < 0) then
 	      return;
 	    end if;
 
@@ -562,8 +567,12 @@ rules:
 		  item := item->substr(cbPrefix.length + 1, item.length);
 	        end if;
 	      end if;
+	      
+	      -- If table text column specified, copy the text
 
-	      (void) mgi_tblSetCell(table, row, (integer) list_w.targetText, item);
+	      if ((integer) list_w.targetText >= 0) then
+	        (void) mgi_tblSetCell(table, row, (integer) list_w.targetText, item);
+	      end if;
 
 	      -- If table key column specified, copy the key
   
@@ -571,6 +580,8 @@ rules:
 	        key := list_w.keys[SelectLookupListItem.item_position];
 	        (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, key);
 	      end if;
+
+	      -- If table accID column specified, copy the accID
 
 	      if ((integer) list_w.targetAccID >= 0) then
 	        accID := list_w.accIDs[SelectLookupListItem.item_position];
@@ -594,9 +605,13 @@ rules:
 	  -- Non-table text widget
 
 	  else
-	    textWidget := targetWidget->(list_w.targetText);
-	    textWidget->text.value := list_w.selectedItems[0];
-	    textWidget->text.modified := true;
+	    -- If text widget is specified, copy the text
+
+	    if (list_w.targetText.length > 0) then
+	      textWidget := targetWidget->(list_w.targetText);
+	      textWidget->text.value := list_w.selectedItems[0];
+	      textWidget->text.modified := true;
+	    end if;
 
 	    -- If key widget is specified, copy the key
 

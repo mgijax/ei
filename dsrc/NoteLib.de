@@ -52,7 +52,9 @@ NoteInit [commit : boolean := true;
 -- ModifyNotes ; Sets source_widget.sql
 ModifyNotes [source_widget : widget;         -- Notes widget
              tableID : integer;              -- ID of table
-             key : string;];                 -- primary key of record to modify
+             key : string;                   -- primary key of record to modify
+	     row : integer;                  -- Note Row (if Notes Widget is a table)
+	     column : integer;];             -- Note Column (if Notes Widget is a table)
 
 -- Set background display for Note Push Button
 SetNotesDisplay [note : widget;];
