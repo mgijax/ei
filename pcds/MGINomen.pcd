@@ -696,6 +696,8 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EC = XmToggleButton;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     SWISSPROT = XmToggleButton;

@@ -2293,6 +2293,8 @@ Module: MGD
                                                   }
                                                   {
                                                     EC = AccToggle;
+						    Group: Widget
+						      managed = True;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
