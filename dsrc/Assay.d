@@ -410,6 +410,7 @@ rules:
 	  tables.append(top->InSituForm->Specimen->Table);
 	  tables.append(top->GelForm->GelLane->Table);
 	  tables.append(top->GelForm->GelRow->Table);
+	  tables.append(top->Control->ModificationHistory->Table);
 
 	  SetRowCount.source_widget := top;
 	  SetRowCount.tableID := GXD_ASSAY;
@@ -1847,15 +1848,10 @@ rules:
           from := from + accTable.sqlFrom;
           where := where + accTable.sqlWhere;
  
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "g";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "g";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "g";
+	  send(QueryModificationHistory, 0);
+          where := where + top->ModificationHistory->Table.sqlCmd;
  
           if (top->mgiCitation->ObjectID->text.value.length > 0 and
               top->mgiCitation->ObjectID->text.value != "NULL") then
@@ -2181,6 +2177,7 @@ rules:
 	  results : integer := 1;
 	  reporterGene : string;
 	  knockInPrep : string;
+	  table : widget := top->Control->ModificationHistory->Table;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2194,8 +2191,11 @@ rules:
                 top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 24);
                 top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 4);
                 top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 19);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 11);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 12);
+
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 26));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 12));
 
                 SetOption.source_widget := top->AssayTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
