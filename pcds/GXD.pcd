@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 28 15:08:35 2001";
+      lastWritten = "Wed Aug 29 10:37:58 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2772,21 +2772,6 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
-                          {
-                            File = File : mgiMenu;
-                          }
-                          {
-                            Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:GenotypeSearch,\nD:GoHome";
-                                      }
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2886,14 +2871,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       Control = Control : mgiControl;
-                          {
-                            ControlForm = XmForm;
-                                {
-                                  Search = ControlPush;
-                                  Group: Widget
-                                    activateCallback = "D:GenotypeSearch,\nD:GoHome";
-                                }
-                          }
                     }
                     {
                       Lookup = Lookup : mgiLookup;
