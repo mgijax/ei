@@ -314,15 +314,16 @@ rules:
 	  from := from + accTable.sqlFrom;
 	  where := where + accTable.sqlWhere;
 
-	  value := mgi_tblGetCell(top->CloneLibrarySet->Table, 0, top->CloneLibrarySet->Table.memberKey);
+	  value := mgi_tblGetCell(top->CloneLibrarySet->Table, 0, top->CloneLibrarySet->Table.setKey);
 	  if (value.length > 0) then
-	    where := "\nand csm._SetMember_key = " + value;
+	    where := where + "\nand csv._Set_key = " + value;
 	    from_cloneset := true;
 	  end if;
 
 	  if (from_cloneset) then
-	    from := ", MGI_Set_CloneLibrary_View csv, MGI_SetMember csm ";
-	    where := "\nand cvs._Set_key = csm._Set_key";
+	    from := from + ", MGI_Set_CloneLibrary_View csv, MGI_SetMember csm ";
+	    where := where + "\nand csv._Set_key = csm._Set_key" +
+		"\nand s._Source_key = csm._Object_key";
 	  end if;
 
           if (where.length > 0) then

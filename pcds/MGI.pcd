@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 25 08:01:44 2004";
+      lastWritten = "Mon Mar 29 12:17:04 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1980,17 +1980,20 @@ Module: MGI
                                 {
                                   MGITypeMenu = MGITypeMenu : mgiOption;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     topWidget = Name;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 10;
+                                    leftOffset = 20;
+                                    topOffset = 5;
                                 }
                                 {
                                   Compression = CharText : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = MGITypeMenu;
@@ -2016,10 +2019,10 @@ Module: MGI
                                   Translation = OrderedTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = MGITypeMenu;
+                                    leftWidget = Name;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = MGITypeMenu;
+                                    topWidget = Name;
                                     topOffset = 20;
                                     bottomAttachment = attach_none;
                                     resizable = true;
