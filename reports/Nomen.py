@@ -59,7 +59,6 @@ for r in results:
 
 	for d in details:
 
-		print str(d)
 		fp.write("Event             :  " + mgdlib.prvalue(d['event']) + CRT)
 		fp.write("Status            :  "+ mgdlib.prvalue(d['status']) + CRT)
 		fp.write("Marker Type       :  " + mgdlib.prvalue(d['markerType']) + CRT)
