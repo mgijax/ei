@@ -137,6 +137,7 @@ import string
 import os
 import getopt
 import db
+import accessionlib
 
 def error(msg):
 	'''
@@ -510,15 +511,7 @@ def doUpdate(rec, rectags):
 
 	# Get UI Accession key(s)
 
-	accCmd = 'select _Accession_key from ACC_Accession ' + \
-		'where _MGIType_key = 1 ' + \
-		'and _Object_key = %d ' % (refKey) + \
-		'and _LogicalDB_key = %d' % (MEDLINE)
-
-	uiKey = None
-	accResults = db.sql(accCmd, 'auto')
-	for a in accResults:
-		uiKey = a['_Accession_key']
+	uiKey = accessionlib.get_Accession_key(refKey, 'Reference', str(MEDLINE))
 
 	# Update existing entry if ui, title or abstract is NULL
  
