@@ -31,6 +31,9 @@
 --
 -- History
 --
+-- lec	02/14/2003
+--      - TR 1892; added "exec MRK_reloadLabel"
+--
 -- lec	11/05/2002
 --	- Renamed "Homology" to "Orthology"
 --
@@ -510,6 +513,7 @@ rules:
 
 			if (markerKey != "") then
 	                  cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_MARKER, homologyKeyName) + markerKey + ")\n";
+			  cmd := cmd + "\nexec MRK_reloadLabel " + markerKey + "\n";
 			end if;
 		      end if;
 		    end if;
