@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar  4 16:08:52 2005";
+      lastWritten = "Mon Mar  7 15:47:05 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -6612,6 +6612,13 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  MPVocAnnot = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
+                                    labelString = "MP Vocabulary Annotations";
+                                    traversalOn = False;
+                                }
+                                {
                                   separator = XmSeparator;
                                   Group: Widget
                                     separatorType = shadow_etched_out;
@@ -11162,11 +11169,11 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          MPAnnotModule = Module : MGI;
+          MPVocAnnotModule = Module : MGI;
           Group: Widget
             width = 1225;
-            height = 825;
-            closeWindowCallback = "D:VocAnnotExit";
+            height = 900;
+            closeWindowCallback = "D:MPVocAnnotExit";
           Group: Control
             vip_x = 80;
             vip_y = 965;
@@ -11188,7 +11195,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Exit = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:VocAnnotExit";
+                                          activateCallback = "D:MPVocAnnotExit";
                                       }
                                 }
                           }
@@ -11305,24 +11312,23 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblNumRows = 20;
-                                          xrtTblVisibleRows = 15;
-                                          xrtTblNumColumns = 25;
-                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Note key,DAG,Term Acc ID,Vocabulary Term,NOT,J:,Citation,Evi,Modified By,Date,General Notes,B-S Notes,Created By,Date";
+                                          xrtTblVisibleRows = 10;
+                                          xrtTblNumColumns = 23;
+                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Note key,DAG,Term Acc ID,Vocabulary Term,NOT,J:,Citation,Evi,Modified By,Date,Created By,Date";
                                           xrtTblPixelWidthSeries = "(all 0-12 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-12 10)(all 13 15)(all 14 25)(all 15 3)(all 17 10)(all 18 3)(all 21-22 15)(all 19 11)(all 20 10)(all 24 10)";
-                                          xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"13\"\ndag:Int(Int)=\"12\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\neditor:Int(Int)=\"19\"\nmodifiedDate:Int(Int)=\"20\"\nnotes:Int(Int)=\"21\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"23\"\ncreatedDate:Int(Int)=\"24\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int(Int)=\"11\"\nbsNotes:Int=\"22\"\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-12 10)(all 13 15)(all 14 45)(all 15 3)(all 17 10)(all 18 3)(all 21-22 15)(all 19 11)(all 20 10)(all 22 10)";
+                                          xrtTblDisplayHorizScrollBar = dispsb_never;
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\neditor:Int(Int)=\"19\"\nmodifiedDate:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"21\"\ncreatedDate:Int(Int)=\"22\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-12 False)(all 14-15 False)(all 17 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
-                                          xrtTblFrozenColumns = 12;
                                           xrtTblAllowCellResize = resize_all;
                                           width = 950;
-                                          xrtTblCellValues = "(X,1,1,1,1,1,1,1,1,1,1,1,1,MP:0005217,abnormal pancreatic beta cells morphology,No,90420,Ishihra H,EE,smb,7/9/2004,2,1,smb,7/9/2004)(X,1,1,1,1,1,1,1,1,1,1,1,1,MP:0005217,abnormal pancreatic beta cells morphology,No,81234,Jones A,EE,smb,7/9/2004,0,0,smb,7/9/2004)(X,1,1,1,1,1,1,1,1,1,1,1,1,MP:0005559,increased circulating glucose level,No,90420,Ishihra H,EE,smb,7/9/2004,0,0,smb,7/9/2004)(X,1,1,1,1,1,1,1,1,1,1,1,1,MP:0002710,increased glucagon secretion,No,90420,Ishihra H,EE,smb,7/9/2004,0,0,smb,7/9/2004)";
                                         Group: User
                                           requiredColumns = "3\n6\n8";
                                       }
@@ -11360,19 +11366,18 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  NoteTable = NoteTable : mgiTable;
+                                  Note = NoteTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Annotation;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Annotation;
                                     topOffset = 5;
-                                    bottomAttachment = attach_form;
-                                    bottomOffset = 5;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Table = mgiTable;
+                                        Table = XtXrtTable;
                                       }
                                       {
                                         AddRow = TablePush;
@@ -11391,17 +11396,74 @@ Shift<Key>Tab: prev-tab-group()
                                             Popups:
                                             {
                                               NoteTypePulldown = OptionPulldown : mgiOption;
-                                                  {
-                                                    OptionPush = OptionPush : mgiOption;
-                                                    Group: Widget
-                                                      labelString = General;
-                                                  }
-                                                  {
-                                                    OptionPush1 = OptionPush : mgiOption;
-                                                    Group: Widget
-                                                      labelString = "Background-Sensitivity";
-                                                  }
+                                              Group: User
+                                                sql = "select _NoteType_key, noteType from MGI_NoteType_VocEvidence_View order by _NoteType_key";
                                             }
+                                      }
+                                      {
+                                        NotePush = NotePush : mgiDataTypes;
+                                        Group: User
+                                          targetWidget = Note;
+                                      }
+                                }
+                                {
+                                  Header = OrderedTable : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Note;
+                                    topOffset = 15;
+                                    bottomAttachment = attach_form;
+                                    bottomOffset = 5;
+                                    resizable = true;
+                                    leftWidget = Note;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 8;
+                                          xrtTblColumnLabels = "Mode,Key,Key,Current Order,#,Header,Approved By,Approved Date";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 3-4 3)(all 6-7 15)(all 5 50)";
+                                          xrtTblEditableSeries = "(all 0-4 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          userDefinedAttributes = "annotHeaderKey:Int=\"1\"\nheaderTerm:Int=\"5\"\napprovedBy:Int=\"6\"\napprovedDate:Int=\"7\"\n";
+                                        Group: User
+                                          saveEditableSeries = "(all 0-4 False)";
+                                          saveTraversableSeries = "(all 0-4 False)";
+                                          currentSeqNum = 3;
+                                          seqNum = 4;
+                                      }
+                                      {
+                                        AddRow = TablePush;
+                                        Group: Widget
+                                          activateCallback = "D:SaveHeader";
+                                          labelString = Save;
+                                      }
+                                      {
+                                        DeleteRow = TablePush;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        InsertRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        EditOrder = toggle : mgiDataTypes;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = AddRow;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = AddRow;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          leftOffset = 5;
                                       }
                                 }
                           }
@@ -11513,14 +11575,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  NotePush = NotePush : mgiDataTypes;
-                                  Group: Widget
-                                    activateCallback = "D:NotePreInit,D:NoteInit";
-                                  Group: User
-                                    targetColumn = 22;
-                                    targetWidget = Annotation;
-                                }
-                                {
                                   EvidenceCodeList = EvidenceCodeList : mgiLookup;
                                       {
                                         Label = LookupLabel : mgiLookup;
@@ -11601,26 +11655,6 @@ Shift<Key>Tab: prev-tab-group()
                       NoteDialog = NoteDialog : mgiDialog;
                       Group: Widget
                         dialogStyle = dialog_primary_application_modal;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            Note = Notes : mgiDataTypes;
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = Buttons : mgiDialog;
-                                {
-                                  OK = DialogPush;
-                                }
-                                {
-                                  Cancel = DialogPush;
-                                  Group: Widget
-                                    activateCallback = "D:NotePreCancel,D:NoteCancel";
-                                }
-                          }
                     }
               }
         }

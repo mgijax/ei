@@ -298,6 +298,8 @@ extern char *global_version;
 #define VOC_EVIDENCE_VIEW	811
 #define VOC_VOCABDAG_VIEW	812
 #define DAG_NODE_VIEW		813
+#define VOC_ANNOTHEADER		814
+#define VOC_ANNOTHEADER_VIEW	815
 
 /* Fantom2 Tables */
 

@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar  4 16:08:15 2005";
+      lastWritten = "Mon Mar  7 15:03:49 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -766,26 +766,34 @@ Module: mgiTable
                   xrtTblPixelWidthSeries = "(all 0-3 0)";
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 255)";
                   xrtTblDisplayHorizScrollBar = dispsb_always;
-                  xrtTblCellValues = "(X,1000,1000,1,1,General,The number of beta cells decreases with age in homozygous mice probably as a result of)(X,1000,1000,2,2,General,This effect is more prominent on a 129/Sv x C57BL/6 x C57BL/6JF2 background than on a C57BL/6 background.)(X,1000,1000,1,1,Background-Sensitivity,This is a background sensitivity note.)";
                   width = 800;
                   xrtTblFrozenColumns = 6;
+                  xrtTblEditableSeries = "(all 0-4 False)";
+                  xrtTblTraversableSeries = "(all 0-4 False)";
+                  userDefinedAttributes = "noteTypeKey:Int(Int)=\"2\"\nnoteType:Int(Int)=\"5\"\nnote:Int(Int)=\"6\"\nmgiTypeKey:Int(Int)\nnoteKey:Int=\"1\"\n";
                 Group: Constraint
-                  leftAttachment = attach_widget;
+                  leftAttachment = attach_form;
                   rightAttachment = attach_none;
                   topAttachment = attach_form;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = frame;
                   leftOffset = 5;
                   topOffset = 5;
+                Group: User
+                  saveEditableSeries = "(all 0-4 False)";
+                  saveTraversableSeries = "(all 0-4 False)";
+                  currentSeqNum = 3;
+                  seqNum = 4;
                     {
                       label = XtXrtLabel;
                       Group: Widget
-                        labelString = "MP:0005217, J:90420 Notes";
+                        labelString = Notes;
                     }
               }
               {
                 AddRow = TablePush;
+                Group: Widget
+                  activateCallback = "D:AddNoteTypeRow";
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = NoteTypeMenu;
@@ -819,11 +827,28 @@ Module: mgiTable
                   resizable = true;
               }
               {
+                NotePush = NotePush : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_none;
+                  bottomAttachment = attach_opposite_widget;
+                  resizable = true;
+                  leftWidget = Table;
+                  bottomWidget = Table;
+                  rightOffset = 5;
+                  leftOffset = 5;
+                Group: User
+                  targetColumn = 6;
+                  targetWidget = NoteTable;
+              }
+              {
                 frame = XmFrame;
                 Group: Widget
                   shadowType = shadow_etched_in;
                   marginWidth = 2;
                   shadowThickness = 1;
+                  managed = False;
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;

@@ -931,6 +931,9 @@ char *mgi_DBkey(int table)
     case VOC_SYNONYM:
 	    strcpy(buf, "_Synonym_key");
 	    break;
+    case VOC_ANNOTHEADER:
+	    strcpy(buf, "_AnnotHeader_key");
+	    break;
     case VOC_ANNOTTYPE:
 	    strcpy(buf, "_AnnotType_key");
 	    break;
@@ -1406,6 +1409,9 @@ char *mgi_DBtable(int table)
     case MGI_NOTE_VOCEVIDENCE_VIEW:
 	    strcpy(buf, "MGI_Note_VocEvidence_View");
 	    break;
+    case MGI_NOTETYPE_VOCEVIDENCE_VIEW:
+	    strcpy(buf, "MGI_NoteType_VocEvidence_View");
+	    break;
     case MGI_ORGANISM:
             strcpy(buf, "MGI_Organism");
 	    break;
@@ -1742,6 +1748,12 @@ char *mgi_DBtable(int table)
 	    break;
     case VOC_TEXT_VIEW:
             strcpy(buf, "VOC_Text_View");
+	    break;
+    case VOC_ANNOTHEADER:
+            strcpy(buf, "VOC_AnnotHeader");
+	    break;
+    case VOC_ANNOTHEADER_VIEW:
+            strcpy(buf, "VOC_AnnotHeader_View");
 	    break;
     case VOC_ANNOTTYPE:
             strcpy(buf, "VOC_AnnotType");
