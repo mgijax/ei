@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Sep 14 08:36:36 1999";
+      lastWritten = "Tue Sep 14 09:52:43 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -414,6 +414,9 @@ Module: GXD
                                                   }
                                                   {
                                                     RATMAP = XmToggleButton;
+                                                  }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -1050,6 +1053,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RATMAP = XmToggleButton;
+                                                  }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -2265,6 +2271,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RATMAP = XmToggleButton;
+                                                  }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
                                                   }
                                             }
                                       }

@@ -2,8 +2,8 @@ Module: MGI
 {
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 31 14:20:48 1999";
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Tue Sep 14 09:52:41 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -46,30 +46,30 @@ Module: MGI
                               rightOffset = 5;
                                 Popups:
                                 {
-                                  LoginDBPulldown = OptionPulldown;
+                                  LoginDBPulldown = XmPulldownMenu;
                                       {
-                                        mgd = OptionToggle;
+                                        mgd = XmToggleButton;
                                       }
                                       {
-                                        mgd_new = OptionToggle;
+                                        mgd_new = XmToggleButton;
                                       }
                                       {
-                                        mgd_release = OptionToggle;
+                                        mgd_release = XmToggleButton;
                                       }
                                       {
-                                        mgi_release = OptionToggle;
+                                        mgi_release = XmToggleButton;
                                       }
                                       {
-                                        pub_1 = OptionToggle;
+                                        pub_1 = XmToggleButton;
                                       }
                                       {
-                                        pub_2 = OptionToggle;
+                                        pub_2 = XmToggleButton;
                                       }
                                       {
-                                        mgd_mirror = OptionToggle;
+                                        mgd_mirror = XmToggleButton;
                                       }
                                       {
-                                        nomen = OptionToggle;
+                                        nomen = XmToggleButton;
                                       }
                                       {
                                         mgd_freeze = OptionToggle;
@@ -108,7 +108,7 @@ Module: MGI
                                     labelString = User;
                                 }
                                 {
-                                  text = text;
+                                  text = XmTextField;
                                   Group: Widget
                                     columns = 10;
                                 }
@@ -131,7 +131,7 @@ Module: MGI
                                     labelString = Password;
                                 }
                                 {
-                                  text = text;
+                                  text = XmTextField;
                                   Group: Widget
                                     modifyVerifyCallback = "D:HidePassword";
                                 }
@@ -242,25 +242,25 @@ Module: MGI
                           {
                             ControlForm = XmForm;
                                 {
-                                  Search = ControlPush;
+                                  Search = XmPushButton;
                                 }
                                 {
-                                  Clear = ControlPush;
+                                  Clear = XmPushButton;
                                 }
                                 {
-                                  Modify = ControlPush;
+                                  Modify = XmPushButton;
                                 }
                                 {
-                                  Add = ControlPush;
+                                  Add = XmPushButton;
                                 }
                                 {
-                                  Delete = ControlPush;
+                                  Delete = XmPushButton;
                                 }
                                 {
-                                  Previous = ControlArrow;
+                                  Previous = XmArrowButton;
                                 }
                                 {
-                                  Next = ControlArrow;
+                                  Next = XmArrowButton;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -272,6 +272,15 @@ Module: MGI
                                           marginWidth = 0;
                                           shadowThickness = 3;
                                       }
+                                }
+                                {
+                                  RecordCount = XmXrtAligner;
+                                }
+                                {
+                                  CreationDate = XmXrtAligner;
+                                }
+                                {
+                                  ModifiedDate = XmXrtAligner;
                                 }
                           }
                     }
@@ -371,25 +380,25 @@ Module: MGI
                           {
                             ControlForm = XmForm;
                                 {
-                                  Search = ControlPush;
+                                  Search = XmPushButton;
                                 }
                                 {
-                                  Clear = ControlPush;
+                                  Clear = XmPushButton;
                                 }
                                 {
-                                  Modify = ControlPush;
+                                  Modify = XmPushButton;
                                 }
                                 {
-                                  Add = ControlPush;
+                                  Add = XmPushButton;
                                 }
                                 {
-                                  Delete = ControlPush;
+                                  Delete = XmPushButton;
                                 }
                                 {
-                                  Previous = ControlArrow;
+                                  Previous = XmArrowButton;
                                 }
                                 {
-                                  Next = ControlArrow;
+                                  Next = XmArrowButton;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -401,6 +410,15 @@ Module: MGI
                                           marginWidth = 0;
                                           shadowThickness = 3;
                                       }
+                                }
+                                {
+                                  RecordCount = XmXrtAligner;
+                                }
+                                {
+                                  CreationDate = XmXrtAligner;
+                                }
+                                {
+                                  ModifiedDate = XmXrtAligner;
                                 }
                           }
                     }
@@ -451,7 +469,7 @@ Module: MGI
           Group: User
             homeWidget = Library;
               {
-                SourceID : ID = ID : mgiDataTypes;
+                SourceID : ID = XmXrtAligner : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_none;
                   rightAttachment = attach_form;
@@ -478,7 +496,7 @@ Module: MGI
                         labelString = Library;
                     }
                     {
-                      text = text;
+                      text = XmTextField;
                       Group: Widget
                         columns = 75;
                     }
@@ -497,26 +515,26 @@ Module: MGI
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      ObjectID = ID;
+                      ObjectID = XmXrtAligner;
                     }
                     {
-                      Jnum = Jnum;
+                      Jnum = XmXrtAligner;
                           {
                             label = XmLabel;
                           }
                           {
-                            text = text;
+                            text = XmTextField;
                             Group: User
                               required = False;
                           }
                     }
                     {
-                      Citation = Citation;
+                      Citation = XmXrtAligner;
                           {
                             label = XmLabel;
                           }
                           {
-                            text = text;
+                            text = XmTextField;
                             Group: User
                               required = False;
                           }
@@ -544,7 +562,10 @@ Module: MGI
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      Verify = CharText;
+                      Verify = XmXrtAligner;
+                    }
+                    {
+                      StrainID = XmXrtAligner;
                     }
               }
               {
@@ -574,7 +595,7 @@ Module: MGI
                         labelString = "Tissue\nTreatment";
                     }
                     {
-                      text = text;
+                      text = XmTextField;
                       Group: Widget
                         columns = 50;
                         maxLength = 255;
@@ -596,7 +617,7 @@ Module: MGI
                         labelString = "Cell Line";
                     }
                     {
-                      text = text;
+                      text = XmTextField;
                       Group: Widget
                         columns = 50;
                         maxLength = 100;
@@ -631,7 +652,7 @@ Module: MGI
                         managed = False;
                     }
                     {
-                      text = text;
+                      text = XmTextField;
                       Group: Widget
                         columns = 20;
                         maxLength = 50;
@@ -690,17 +711,17 @@ Module: MGI
               {
                 MainForm = XmForm;
                     {
-                      MainMenu = MainMenu;
+                      MainMenu = XmMenuBar;
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = EditForm;
+                            EditForm = XmForm;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  ID = ID;
+                                  ID = XmXrtAligner;
                                 }
                                 {
                                   LookupMenu = LookupMenu : mgiOption;
@@ -714,75 +735,75 @@ Module: MGI
                                     resizable = true;
                                       Popups:
                                       {
-                                        LookupPulldown = OptionPulldown;
+                                        LookupPulldown = XmPulldownMenu;
                                             {
-                                              HomologyAssay = LookupToggle;
+                                              HomologyAssay = XmToggleButton;
                                             }
                                             {
-                                              MappingAssay = LookupToggle;
+                                              MappingAssay = XmToggleButton;
                                             }
                                             {
-                                              MLCClass = LookupToggle;
+                                              MLCClass = XmToggleButton;
                                             }
                                             {
-                                              MarkerType = LookupToggle;
+                                              MarkerType = XmToggleButton;
                                             }
                                             {
-                                              ReviewStatus = LookupToggle;
+                                              ReviewStatus = XmToggleButton;
                                             }
                                             {
-                                              VectorType = LookupToggle;
+                                              VectorType = XmToggleButton;
                                             }
                                             {
                                               separator = XmSeparator;
                                             }
                                             {
-                                              AntibodyClass = LookupToggle;
+                                              AntibodyClass = XmToggleButton;
                                             }
                                             {
-                                              AntibodyType = LookupToggle;
+                                              AntibodyType = XmToggleButton;
                                             }
                                             {
-                                              AssayType = LookupToggle;
+                                              AssayType = XmToggleButton;
                                             }
                                             {
-                                              ExpPattern = LookupToggle;
+                                              ExpPattern = XmToggleButton;
                                             }
                                             {
-                                              ExpStrength = LookupToggle;
+                                              ExpStrength = XmToggleButton;
                                             }
                                             {
-                                              GelRNAType = LookupToggle;
+                                              GelRNAType = XmToggleButton;
                                             }
                                             {
-                                              GelUnit = LookupToggle;
+                                              GelUnit = XmToggleButton;
                                             }
                                             {
-                                              GelControl = LookupToggle;
+                                              GelControl = XmToggleButton;
                                             }
                                             {
-                                              ImageFieldType = LookupToggle;
+                                              ImageFieldType = XmToggleButton;
                                             }
                                             {
-                                              Labels = LookupToggle;
+                                              Labels = XmToggleButton;
                                             }
                                             {
-                                              ProbeLabelCoverage = LookupToggle;
+                                              ProbeLabelCoverage = XmToggleButton;
                                             }
                                             {
-                                              ProbeSense = LookupToggle;
+                                              ProbeSense = XmToggleButton;
                                             }
                                             {
-                                              ProbeVisualization = LookupToggle;
+                                              ProbeVisualization = XmToggleButton;
                                             }
                                             {
-                                              Secondary = LookupToggle;
+                                              Secondary = XmToggleButton;
                                             }
                                             {
-                                              EmbeddingMethod = LookupToggle;
+                                              EmbeddingMethod = XmToggleButton;
                                             }
                                             {
-                                              FixationMethod = LookupToggle;
+                                              FixationMethod = XmToggleButton;
                                             }
                                             {
                                               separator1 = XmSeparator;
@@ -790,17 +811,17 @@ Module: MGI
                                                 managed = True;
                                             }
                                             {
-                                              GeneFamily = LookupToggle;
+                                              GeneFamily = XmToggleButton;
                                               Group: Widget
                                                 managed = True;
                                             }
                                             {
-                                              NomenEvent = LookupToggle;
+                                              NomenEvent = XmToggleButton;
                                               Group: Widget
                                                 managed = True;
                                             }
                                             {
-                                              NomenStatus = LookupToggle;
+                                              NomenStatus = XmToggleButton;
                                               Group: Widget
                                                 managed = True;
                                             }
@@ -823,7 +844,7 @@ Module: MGI
                                           labelString = Name;
                                       }
                                       {
-                                        text = text;
+                                        text = XmTextField;
                                         Group: Widget
                                           columns = 75;
                                         Group: User
@@ -855,6 +876,37 @@ Module: MGI
                                     resizable = true;
                                 }
                           }
+                    }
+                    {
+                      Control = XmFrame;
+                    }
+                    {
+                      Lookup = XmFrame;
+                    }
+                    Popups:
+                    {
+                      StatusDialog = XmWarningDialog;
+                    }
+                    {
+                      DeleteDialog = XmQuestionDialog;
+                    }
+                    {
+                      ReportDialog = XmFormDialog;
+                    }
+                    {
+                      SearchDialog = XmWorkingDialog;
+                    }
+                    {
+                      WhichItem = XmFormDialog;
+                    }
+                    {
+                      VerifyItemAdd = XmQuestionDialog;
+                    }
+                    {
+                      WorkingDialog = XmWorkingDialog;
+                    }
+                    {
+                      NoteDialog = XmFormDialog;
                     }
               }
         }
@@ -896,9 +948,9 @@ Module: MGI
                             File = File : mgiMenu;
                                 Popups:
                                 {
-                                  FilePulldown = MenuPulldown;
+                                  FilePulldown = XmPulldownMenu;
                                       {
-                                        Exit = MenuPush;
+                                        Exit = XmPushButton;
                                         Group: Widget
                                           activateCallback = "D:ExitApplication";
                                       }
@@ -1074,10 +1126,10 @@ Module: MGI
               }
               Popups:
               {
-                StatusDialog = StatusDialog;
+                StatusDialog = XmWarningDialog;
               }
               {
-                WorkingDialog = WorkingDialog;
+                WorkingDialog = XmWorkingDialog;
               }
               {
                 StrainDialog = StrainDialog : mgiDialog;

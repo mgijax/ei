@@ -1,8 +1,8 @@
 Module: gxdDictionary
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 31 14:21:16 1999";
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Tue Sep 14 09:53:05 1999";
         {
           Dictionary = Module : MGI;
           Group: Widget
@@ -19,64 +19,76 @@ Module: gxdDictionary
                   rubberPositioning = False;
                   resizePolicy = resize_any;
                     {
-                      MainMenu = MainMenu;
+                      MainMenu = XmMenuBar;
                           {
-                            File = File;
+                            File = XmCascadeButton;
                                 Popups:
                                 {
-                                  FilePulldown = MenuPulldown;
+                                  FilePulldown = XmPulldownMenu;
                                       {
-                                        Exit = MenuPush;
+                                        Exit = XmPushButton;
                                         Group: Widget
                                           activateCallback = "D:DictionaryExit";
                                       }
                                 }
                           }
                           {
-                            Commands = Commands;
+                            Commands = XmCascadeButton;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = XmPulldownMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = XmPushButton;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = XmPushButton;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = XmPushButton;
                                         Group: Widget
                                           activateCallback = "D:AddDialog,\nD:GoHome";
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = XmPushButton;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = XmPushButton;
                                         Group: Widget
                                           labelString = Clear;
                                           activateCallback = "D:DictionaryClear";
                                       }
                                       {
-                                        Clear_FormAndStages : Clear1 = MenuPush;
+                                        Clear_FormAndStages : Clear1 = XmPushButton;
                                         Group: Widget
                                           activateCallback = "D:DictionaryClearFormAndStages";
                                           labelString = "Clear Form/Stages";
                                           sensitive = True;
                                       }
+                                      {
+                                        Clear2 = XmPushButton;
+                                      }
+                                      {
+                                        separator2 = XmSeparator;
+                                      }
+                                      {
+                                        Previous = XmPushButton;
+                                      }
+                                      {
+                                        Next = XmPushButton;
+                                      }
                                 }
                           }
                           {
-                            Edit = Edit;
+                            Edit = XmCascadeButton;
                           }
                           {
-                            View = View;
+                            View = XmCascadeButton;
                                 Popups:
                                 {
-                                  ViewPulldown = MenuPulldown;
+                                  ViewPulldown = XmPulldownMenu;
                                       {
                                         Strains = MenuPush : mgiMenu;
                                         Group: Widget
@@ -87,13 +99,34 @@ Module: gxdDictionary
                                         Group: Widget
                                           managed = False;
                                       }
+                                      {
+                                        Strain = XmPushButton;
+                                      }
+                                      {
+                                        Tissue = XmPushButton;
+                                      }
+                                      {
+                                        Cross = XmPushButton;
+                                      }
+                                      {
+                                        RI = XmPushButton;
+                                      }
                                 }
+                          }
+                          {
+                            Reports = XmCascadeButton;
+                          }
+                          {
+                            Utilities = XmCascadeButton;
+                          }
+                          {
+                            Help = XmCascadeButton;
                           }
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = EditForm;
+                            EditForm = XmForm;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
@@ -101,7 +134,7 @@ Module: gxdDictionary
                             Group: User
                               homeWidget = structureText;
                                 {
-                                  ID = ID;
+                                  ID = XmXrtAligner;
                                 }
                                 {
                                   treeDisplay = treeDisplay : gxdDictionary;
@@ -127,24 +160,27 @@ Module: gxdDictionary
                                     bottomAttachment = attach_none;
                                     resizable = false;
                                       {
-                                        ID = ID;
+                                        ID = XmXrtAligner;
                                       }
                                       {
-                                        structureAndNote = structureAndNote;
+                                        structureAndNote = XmForm;
                                       }
                                       {
-                                        aliasTables = aliasTables;
+                                        aliasTables = XmForm;
                                       }
                                       {
-                                        stagesText = CharText;
+                                        stagesText = XmXrtAligner;
                                       }
                                       {
-                                        MGIAddedStructureOptions = MGIAddedOptions : gxdDictionary;
+                                        MGIAddedStructureOptions = XmOptionMenu : gxdDictionary;
                                       }
                                       {
-                                        printStopOptions = printStopOptions : gxdDictionary;
+                                        printStopOptions = XmOptionMenu : gxdDictionary;
                                         Group: Widget
                                           subMenuId = printStopOptionPulldown;
+                                      }
+                                      {
+                                        MGIAddedAliasOptions = XmOptionMenu;
                                       }
                                 }
                                 {
@@ -164,22 +200,22 @@ Module: gxdDictionary
                           }
                     }
                     {
-                      Control = Control;
+                      Control = XmFrame;
                           {
                             ControlForm = XmForm;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  Search = ControlPush;
+                                  Search = XmPushButton;
                                 }
                                 {
-                                  Clear = ControlPush;
+                                  Clear = XmPushButton;
                                   Group: Widget
                                     managed = False;
                                 }
                                 {
-                                  Modify = ControlPush;
+                                  Modify = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:Modify,\nD:GoHome";
                                   Group: Constraint
@@ -194,12 +230,12 @@ Module: gxdDictionary
                                     topOffset = "-1";
                                 }
                                 {
-                                  Add = ControlPush;
+                                  Add = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:AddDialog,\nD:GoHome";
                                 }
                                 {
-                                  Delete = ControlPush;
+                                  Delete = XmPushButton;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Add;
@@ -211,7 +247,7 @@ Module: gxdDictionary
                                     resizable = true;
                                 }
                                 {
-                                  Previous = ControlArrow;
+                                  Previous = XmArrowButton;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
@@ -223,7 +259,7 @@ Module: gxdDictionary
                                     topOffset = 2;
                                 }
                                 {
-                                  Next = ControlArrow;
+                                  Next = XmArrowButton;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = Previous;
@@ -259,20 +295,20 @@ Module: gxdDictionary
                                       }
                                 }
                                 {
-                                  RecordCount = RecordCount;
+                                  RecordCount = XmXrtAligner;
                                       {
                                         label = XmLabel;
                                         Group: Widget
                                           managed = False;
                                       }
                                       {
-                                        text = text;
+                                        text = XmTextField;
                                         Group: Widget
                                           managed = False;
                                       }
                                 }
                                 {
-                                  CreationDate = CreationDate : mgiDataTypes;
+                                  CreationDate = XmXrtAligner : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Previous;
@@ -282,10 +318,13 @@ Module: gxdDictionary
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
+                                {
+                                  ModifiedDate = XmXrtAligner;
+                                }
                           }
                     }
                     {
-                      Lookup = Lookup;
+                      Lookup = XmFrame;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Edit;
@@ -297,7 +336,7 @@ Module: gxdDictionary
                           {
                             panedWindow = XmPanedWindow;
                                 {
-                                  QueryList = QueryList;
+                                  QueryList = XmForm;
                                 }
                                 {
                                   structureClipboard = structureClipboard : gxdDictionary;
@@ -306,28 +345,28 @@ Module: gxdDictionary
                     }
                     Popups:
                     {
-                      StatusDialog = StatusDialog;
+                      StatusDialog = XmWarningDialog;
                     }
                     {
-                      DeleteDialog = DeleteDialog;
+                      DeleteDialog = XmQuestionDialog;
                     }
                     {
-                      ReportDialog = ReportDialog;
+                      ReportDialog = XmFormDialog;
                     }
                     {
-                      SearchDialog = SearchDialog;
+                      SearchDialog = XmWorkingDialog;
                     }
                     {
-                      WhichItem = WhichItem;
+                      WhichItem = XmFormDialog;
                     }
                     {
-                      VerifyItemAdd = VerifyItemAdd;
+                      VerifyItemAdd = XmQuestionDialog;
                     }
                     {
-                      WorkingDialog = WorkingDialog;
+                      WorkingDialog = XmWorkingDialog;
                     }
                     {
-                      NoteDialog = NoteDialog;
+                      NoteDialog = XmFormDialog;
                     }
                     {
                       AddDialog = AddDialog : gxdDictionary;
@@ -347,6 +386,9 @@ Module: gxdDictionary
                                   Group: Widget
                                     activateCallback = "D:AddCancel";
                                 }
+                          }
+                          {
+                            separator = XmSeparator;
                           }
                     }
               }
@@ -370,7 +412,7 @@ Module: gxdDictionary
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      Table = mgiTable;
+                      Table = XtXrtTable;
                       Group: Widget
                         xrtTblDisplayHorizScrollBar = dispsb_always;
                         xrtTblNumColumns = 2;
@@ -384,12 +426,12 @@ Module: gxdDictionary
                           }
                     }
                     {
-                      AddRow = TablePush;
+                      AddRow = XmPushButton;
                       Group: Widget
                         managed = False;
                     }
                     {
-                      DeleteRow = TablePush;
+                      DeleteRow = XmPushButton;
                       Group: Widget
                         managed = False;
                     }
@@ -460,7 +502,7 @@ Module: gxdDictionary
             vip_x = 60;
             vip_y = 250;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblVisibleRows = 3;
                   xrtTblVisibleColumns = 1;
@@ -470,6 +512,12 @@ Module: gxdDictionary
                   xrtTblPixelWidthSeries = "(all 0 0) (all 1 0)";
                   xrtTblTraversableSeries = "(all 0 False) (all 1 False)";
                   userDefinedAttributes = "structureNameKeyIndex:Int(Int)=\"1\"\nstructureIndex:Int(Int)=\"2\"\n";
+              }
+              {
+                AddRow = XmPushButton;
+              }
+              {
+                DeleteRow = XmPushButton;
               }
         }
         {
@@ -502,15 +550,18 @@ Module: gxdDictionary
                         bottomAttachment = attach_none;
                         resizable = true;
                           {
-                            structureText = CharText;
+                            structureText = XmXrtAligner;
                                 {
                                   label = XmLabel;
                                 }
                                 {
-                                  text = text;
+                                  text = XmTextField;
                                   Group: User
                                     required = True;
                                 }
+                          }
+                          {
+                            structureNotes = XmXrtAligner;
                           }
                     }
                     {
@@ -523,12 +574,18 @@ Module: gxdDictionary
                         resizable = true;
                         topWidget = structureAndNote;
                           {
-                            Table = mgiTable;
+                            Table = XtXrtTable;
                                 {
                                   label = XtXrtLabel;
                                   Group: Widget
                                     labelString = "MGI Aliases";
                                 }
+                          }
+                          {
+                            AddRow = XmPushButton;
+                          }
+                          {
+                            DeleteRow = XmPushButton;
                           }
                     }
                     {
@@ -546,17 +603,20 @@ Module: gxdDictionary
                         defaultOption = Yes;
                           Popups:
                           {
-                            printStopOptionPulldown = OptionPulldown;
+                            printStopOptionPulldown = XmPulldownMenu;
                                 {
-                                  SearchAll = SearchAll;
+                                  SearchAll = XmToggleButton;
                                   Group: Widget
                                     managed = False;
                                     set = False;
                                 }
                                 {
-                                  Yes = Yes;
+                                  Yes = XmToggleButton;
                                   Group: Widget
                                     set = True;
+                                }
+                                {
+                                  No = XmToggleButton;
                                 }
                           }
                     }
@@ -631,7 +691,7 @@ Module: gxdDictionary
                         labelString = "Structure:";
                     }
                     {
-                      text = text;
+                      text = XmTextField;
                       Group: Widget
                         columns = 50;
                     }
@@ -651,7 +711,7 @@ Module: gxdDictionary
                       label = XmLabel;
                     }
                     {
-                      text = scrolledText;
+                      text = XmScrolledText;
                       Group: Widget
                         columns = 50;
                         rows = 2;
@@ -677,12 +737,18 @@ Module: gxdDictionary
                   bottomAttachment = attach_form;
                   resizable = true;
                     {
-                      Table = mgiTable;
+                      Table = XtXrtTable;
                           {
                             label = XtXrtLabel;
                             Group: Widget
                               labelString = "MGI Aliases";
                           }
+                    }
+                    {
+                      AddRow = XmPushButton;
+                    }
+                    {
+                      DeleteRow = XmPushButton;
                     }
               }
               {
@@ -695,7 +761,7 @@ Module: gxdDictionary
                   bottomAttachment = attach_form;
                   resizable = true;
                     {
-                      Table = mgiTable;
+                      Table = XtXrtTable;
                       Group: Widget
                         xrtTblEditableSeries = "(all all False)";
                           {
@@ -705,12 +771,12 @@ Module: gxdDictionary
                           }
                     }
                     {
-                      AddRow = TablePush;
+                      AddRow = XmPushButton;
                       Group: Widget
                         managed = False;
                     }
                     {
-                      DeleteRow = TablePush;
+                      DeleteRow = XmPushButton;
                       Group: Widget
                         managed = False;
                     }
@@ -727,7 +793,7 @@ Module: gxdDictionary
             vip_x = 175;
             vip_y = 30;
               {
-                ID = ID;
+                ID = XmXrtAligner;
               }
               {
                 structureAndNote = structureAndNote : gxdDictionary;
@@ -738,15 +804,18 @@ Module: gxdDictionary
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      structureText = CharText;
+                      structureText = XmXrtAligner;
                           {
                             label = XmLabel;
                           }
                           {
-                            text = text;
+                            text = XmTextField;
                             Group: Widget
                               userDefinedAttributes = "structureNameKey:String\n";
                           }
+                    }
+                    {
+                      structureNotes = XmXrtAligner;
                     }
               }
               {
@@ -773,6 +842,9 @@ Module: gxdDictionary
                       Group: Widget
                         labelString = "Stage(s)";
                     }
+                    {
+                      text = XmTextField;
+                    }
               }
               {
                 MGIAddedStructureOptions = MGIAddedOptions : gxdDictionary;
@@ -789,7 +861,7 @@ Module: gxdDictionary
                   leftOffset = 5;
                     Popups:
                     {
-                      MGIAddedStructureOptionPulldown : MGIAddedOptionPulldown = OptionPulldown;
+                      MGIAddedStructureOptionPulldown : MGIAddedOptionPulldown = XmPulldownMenu;
                     }
               }
               {
@@ -821,7 +893,7 @@ Module: gxdDictionary
                   leftOffset = 5;
                     Popups:
                     {
-                      MGIAddedAliasOptionPulldown : MGIAddedOptionPulldown = OptionPulldown;
+                      MGIAddedAliasOptionPulldown : MGIAddedOptionPulldown = XmPulldownMenu;
                     }
               }
         }
@@ -837,7 +909,7 @@ Module: gxdDictionary
             defaultOption = SearchAll;
               Popups:
               {
-                MGIAddedOptionPulldown : OptionPulldown = OptionPulldown;
+                MGIAddedOptionPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                       Group: Widget
@@ -868,7 +940,7 @@ Module: gxdDictionary
             defaultOption = SearchAll;
               Popups:
               {
-                printStopOptionPulldown : OptionPulldown = OptionPulldown;
+                printStopOptionPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                       Group: Widget

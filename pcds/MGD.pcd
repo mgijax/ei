@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Thu Sep  2 10:04:34 1999";
+      lastWritten = "Tue Sep 14 09:52:46 1999";
         {
           Reference = Module : MGI;
           Group: Widget
@@ -670,6 +670,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RATMAP = XmToggleButton;
+                                                  }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -2712,6 +2715,9 @@ Module: MGD
                                                   {
                                                     RATMAP = XmToggleButton;
                                                   }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
+                                                  }
                                             }
                                       }
                                 }
@@ -2857,6 +2863,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RATMAP = XmToggleButton;
+                                                  }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -3005,7 +3014,6 @@ Module: MGD
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
                                           labelString = "Marker Information";
-                                          sensitive = False;
                                       }
                                 }
                           }
@@ -3738,6 +3746,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RATMAP = XmToggleButton;
+                                                  }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -4491,6 +4502,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   RATMAP = XmToggleButton;
+                                }
+                                {
+                                  JAXMice = AccToggle : mgiOption;
                                 }
                           }
                     }
@@ -7112,6 +7126,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     RATMAP = XmToggleButton;
                                                   }
+                                                  {
+                                                    JAXMice = XmToggleButton : mgiOption;
+                                                  }
                                             }
                                       }
                                 }
@@ -8457,6 +8474,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     RATMAP = XmToggleButton;
                                                   }
+                                                  {
+                                                    JAXMice = XmToggleButton : mgiOption;
+                                                  }
                                             }
                                       }
                                 }
@@ -8606,6 +8626,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RATMAP = XmToggleButton : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                  }
+                                                  {
+                                                    JAXMice = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }

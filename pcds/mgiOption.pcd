@@ -2,8 +2,8 @@ Module: mgiOption
 {
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 31 14:22:02 1999";
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Tue Sep 14 14:41:14 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -79,7 +79,7 @@ Module: mgiOption
             defaultOption = mouse;
               Popups:
               {
-                SpeciesPulldown : OptionPulldown = OptionPulldown;
+                SpeciesPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -271,7 +271,7 @@ Module: mgiOption
             defaultOption = J;
               Popups:
               {
-                AccSourcePulldown : OptionPulldown = OptionPulldown;
+                AccSourcePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       MGI = AccToggle : mgiOption;
                       Group: Widget
@@ -310,6 +310,9 @@ Module: mgiOption
                       dbEST = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 14;
+                        allowAdd = False;
+                        allowModify = False;
+                        allowDelete = False;
                     }
                     {
                       WashU = AccToggle : mgiOption;
@@ -439,6 +442,13 @@ Module: mgiOption
                       Group: User
                         defaultValue = 4;
                     }
+                    {
+                      JAXMice = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "JAX Mice Registry";
+                      Group: User
+                        private = True;
+                    }
               }
         }
         {
@@ -499,7 +509,7 @@ Module: mgiOption
             defaultOption = NotSpecified;
               Popups:
               {
-                SexPulldown : OptionPulldown = OptionPulldown;
+                SexPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -541,7 +551,7 @@ Module: mgiOption
             defaultOption = NotSpecified;
               Popups:
               {
-                AgePulldown : OptionPulldown = OptionPulldown;
+                AgePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -694,7 +704,7 @@ Module: mgiOption
             vip_y = 1680;
               Popups:
               {
-                LoginServerPulldown : OptionPulldown = OptionPulldown;
+                LoginServerPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       Production = ServerToggle : mgiOption;
                       Group: User
@@ -729,7 +739,7 @@ Module: mgiOption
             vip_y = 1570;
               Popups:
               {
-                LoginDBPulldown : OptionPulldown = OptionPulldown;
+                LoginDBPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       mgd = OptionToggle : mgiOption;
                       Group: User
@@ -791,7 +801,7 @@ Module: mgiOption
             vip_y = 1790;
               Popups:
               {
-                AntibodyClassPulldown : OptionPulldown = OptionPulldown;
+                AntibodyClassPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_AntibodyClass order by class";
                     {
@@ -809,7 +819,7 @@ Module: mgiOption
             vip_y = 1735;
               Popups:
               {
-                AntibodyTypePulldown : OptionPulldown = OptionPulldown;
+                AntibodyTypePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_AntibodyType order by antibodyType";
                   childTemplate = AntibodyTypeToggle;
@@ -830,7 +840,7 @@ Module: mgiOption
             defaultOption = NotSpecified;
               Popups:
               {
-                WesternPulldown : OptionPulldown = OptionPulldown;
+                WesternPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -857,7 +867,7 @@ Module: mgiOption
             defaultOption = NotSpecified;
               Popups:
               {
-                ImmunoPulldown : OptionPulldown = OptionPulldown;
+                ImmunoPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -900,7 +910,7 @@ Module: mgiOption
             vip_y = 1955;
               Popups:
               {
-                LabelPulldown : OptionPulldown = OptionPulldown;
+                LabelPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_Label order by label";
                     {
@@ -918,7 +928,7 @@ Module: mgiOption
             vip_y = 2065;
               Popups:
               {
-                VisualiazationPulldown : OptionPulldown = OptionPulldown;
+                VisualiazationPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_VisualizationMethod order by visualization";
                     {
@@ -936,7 +946,7 @@ Module: mgiOption
             vip_y = 2010;
               Popups:
               {
-                CoveragePulldown : OptionPulldown = OptionPulldown;
+                CoveragePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_LabelCoverage order by coverage";
                     {
@@ -954,7 +964,7 @@ Module: mgiOption
             vip_y = 1900;
               Popups:
               {
-                SensePulldown : OptionPulldown = OptionPulldown;
+                SensePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_ProbeSense order by sense";
                     {
@@ -972,7 +982,7 @@ Module: mgiOption
             vip_y = 1845;
               Popups:
               {
-                PrepTypePulldown : OptionPulldown = OptionPulldown;
+                PrepTypePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -1003,7 +1013,7 @@ Module: mgiOption
             vip_y = 2120;
               Popups:
               {
-                SecondaryPulldown : OptionPulldown = OptionPulldown;
+                SecondaryPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_Secondary order by secondary";
                     {
@@ -1021,7 +1031,7 @@ Module: mgiOption
             vip_y = 2175;
               Popups:
               {
-                AssayTypePulldown : OptionPulldown = OptionPulldown;
+                AssayTypePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_AssayType \nwhere _AssayType_key > 0\norder by assayType";
                   childTemplate = AssayTypeToggle;
@@ -1040,7 +1050,7 @@ Module: mgiOption
             vip_y = 2230;
               Popups:
               {
-                FixationPulldown : OptionPulldown = OptionPulldown;
+                FixationPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_FixationMethod order by fixation";
               }
@@ -1055,7 +1065,7 @@ Module: mgiOption
             vip_y = 2285;
               Popups:
               {
-                EmbeddingPulldown : OptionPulldown = OptionPulldown;
+                EmbeddingPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_EmbeddingMethod order by embeddingMethod";
               }
@@ -1072,7 +1082,7 @@ Module: mgiOption
             defaultOption = NotSpecified;
               Popups:
               {
-                HybridizationPulldown : OptionPulldown = OptionPulldown;
+                HybridizationPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       whole = OptionToggle : mgiOption;
                       Group: Widget
@@ -1117,7 +1127,7 @@ Module: mgiOption
             required = False;
               Popups:
               {
-                RNAAssayPulldown : OptionPulldown = OptionPulldown;
+                RNAAssayPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -1147,7 +1157,7 @@ Module: mgiOption
             required = False;
               Popups:
               {
-                GelAssayPulldown : OptionPulldown = OptionPulldown;
+                GelAssayPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -1177,7 +1187,7 @@ Module: mgiOption
             clear = False;
               Popups:
               {
-                LookupPulldown : OptionPulldown = OptionPulldown;
+                LookupPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       HomologyAssay = LookupToggle : mgiOption;
                       Group: Widget
@@ -1378,7 +1388,7 @@ Module: mgiOption
             defaultOption = mouse;
               Popups:
               {
-                AntibodySpeciesPulldown : OptionPulldown = OptionPulldown;
+                AntibodySpeciesPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -1468,7 +1478,7 @@ Module: mgiOption
             vip_y = 2780;
               Popups:
               {
-                FieldTypePulldown : OptionPulldown = OptionPulldown;
+                FieldTypePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from IMG_FieldType order by fieldType";
               }
@@ -1500,15 +1510,54 @@ Module: mgiOption
                 AgeMenu = AgeMenu : mgiOption;
                     Popups:
                     {
-                      AgePulldown = OptionPulldown;
+                      AgePulldown = XmPulldownMenu;
                       Group: User
                         tableForm = Specimen;
                         tableOption = 12;
                         tableOptionKey = 3;
                           {
-                            SearchAll = SearchAll;
+                            SearchAll = XmToggleButton;
                             Group: Widget
                               managed = False;
+                          }
+                          {
+                            embryonic = XmToggleButton;
+                          }
+                          {
+                            embryonicDay = XmToggleButton;
+                          }
+                          {
+                            perinatal = XmToggleButton;
+                          }
+                          {
+                            postnatal = XmToggleButton;
+                          }
+                          {
+                            postnatalDay = XmToggleButton;
+                          }
+                          {
+                            postnatalWeek = XmToggleButton;
+                          }
+                          {
+                            postnatalMonth = XmToggleButton;
+                          }
+                          {
+                            postnatalYear = XmToggleButton;
+                          }
+                          {
+                            postnatalAdult = XmToggleButton;
+                          }
+                          {
+                            postnatalImmature = XmToggleButton;
+                          }
+                          {
+                            postnatalNewborn = XmToggleButton;
+                          }
+                          {
+                            NotSpecified = XmToggleButton;
+                          }
+                          {
+                            NotApplicable = XmToggleButton;
                           }
                     }
               }
@@ -1516,15 +1565,30 @@ Module: mgiOption
                 SexMenu = SexMenu : mgiOption;
                     Popups:
                     {
-                      SexPulldown = OptionPulldown;
+                      SexPulldown = XmPulldownMenu;
                       Group: User
                         tableOption = 15;
                         tableOptionKey = 6;
                         tableForm = Specimen;
                           {
-                            SearchAll = SearchAll;
+                            SearchAll = XmToggleButton;
                             Group: Widget
                               managed = False;
+                          }
+                          {
+                            Female = XmToggleButton;
+                          }
+                          {
+                            Male = XmToggleButton;
+                          }
+                          {
+                            Pooled = XmToggleButton;
+                          }
+                          {
+                            NotSpecified = XmToggleButton;
+                          }
+                          {
+                            NotApplicable = XmToggleButton;
                           }
                     }
               }
@@ -1532,7 +1596,7 @@ Module: mgiOption
                 FixationMenu = FixationMenu : mgiOption;
                     Popups:
                     {
-                      FixationPulldown = OptionPulldown;
+                      FixationPulldown = XmPulldownMenu;
                       Group: User
                         tableOption = 16;
                         tableOptionKey = 7;
@@ -1543,7 +1607,7 @@ Module: mgiOption
                 EmbeddingMenu = EmbeddingMenu : mgiOption;
                     Popups:
                     {
-                      EmbeddingPulldown = OptionPulldown;
+                      EmbeddingPulldown = XmPulldownMenu;
                       Group: User
                         tableOption = 17;
                         tableOptionKey = 8;
@@ -1554,7 +1618,7 @@ Module: mgiOption
                 HybridizationMenu = HybridizationMenu : mgiOption;
                     Popups:
                     {
-                      HybridizationPulldown = OptionPulldown;
+                      HybridizationPulldown = XmPulldownMenu;
                       Group: User
                         tableOption = 18;
                         tableOptionKey = 9;
@@ -1597,7 +1661,7 @@ Module: mgiOption
                 FieldTypeMenu = FieldTypeMenu : mgiOption;
                     Popups:
                     {
-                      FieldTypePulldown = OptionPulldown;
+                      FieldTypePulldown = XmPulldownMenu;
                       Group: User
                         tableForm = ImagePane;
                         tableOptionKey = 2;
@@ -1615,7 +1679,7 @@ Module: mgiOption
             vip_y = 2505;
               Popups:
               {
-                StrengthPulldown : OptionPulldown = OptionPulldown;
+                StrengthPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_Strength order by strength";
               }
@@ -1630,7 +1694,7 @@ Module: mgiOption
             vip_y = 2615;
               Popups:
               {
-                PatternPulldown : OptionPulldown = OptionPulldown;
+                PatternPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_Pattern order by pattern";
               }
@@ -1644,7 +1708,7 @@ Module: mgiOption
                 StrengthMenu = StrengthMenu : mgiOption;
                     Popups:
                     {
-                      StrengthPulldown = OptionPulldown;
+                      StrengthPulldown = XmPulldownMenu;
                       Group: User
                         tableOption = 8;
                         tableOptionKey = 3;
@@ -1655,7 +1719,7 @@ Module: mgiOption
                 PatternMenu = PatternMenu : mgiOption;
                     Popups:
                     {
-                      PatternPulldown = OptionPulldown;
+                      PatternPulldown = XmPulldownMenu;
                       Group: User
                         tableForm = Results;
                         tableOption = 9;
@@ -1679,10 +1743,10 @@ Module: mgiOption
                 Group: User
                   cmd = "select distinct _Structure_key, dbName from GXD_GelLaneStructure_View where _Assay_key = ";
                     {
-                      Label = LookupLabel;
+                      Label = XmPushButton;
                     }
                     {
-                      List = list;
+                      List = XmScrolledList;
                       Group: User
                         targetWidget = GelLane;
                     }
@@ -1701,7 +1765,7 @@ Module: mgiOption
                 GelControlMenu = GelControlMenu : mgiOption;
                     Popups:
                     {
-                      GelControlPulldown = OptionPulldown;
+                      GelControlPulldown = XmPulldownMenu;
                       Group: User
                         tableForm = GelLane;
                         tableOption = 12;
@@ -1712,7 +1776,7 @@ Module: mgiOption
                 GelRNATypeMenu = GelRNATypeMenu : mgiOption;
                     Popups:
                     {
-                      GelRNATypePulldown = OptionPulldown;
+                      GelRNATypePulldown = XmPulldownMenu;
                       Group: User
                         tableForm = GelLane;
                         tableOptionKey = 5;
@@ -1723,15 +1787,54 @@ Module: mgiOption
                 AgeMenu = AgeMenu : mgiOption;
                     Popups:
                     {
-                      AgePulldown = OptionPulldown;
+                      AgePulldown = XmPulldownMenu;
                       Group: User
                         tableForm = GelLane;
                         tableOption = 17;
                         tableOptionKey = 6;
                           {
-                            SearchAll = SearchAll;
+                            SearchAll = XmToggleButton;
                             Group: Widget
                               managed = False;
+                          }
+                          {
+                            embryonic = XmToggleButton;
+                          }
+                          {
+                            embryonicDay = XmToggleButton;
+                          }
+                          {
+                            perinatal = XmToggleButton;
+                          }
+                          {
+                            postnatal = XmToggleButton;
+                          }
+                          {
+                            postnatalDay = XmToggleButton;
+                          }
+                          {
+                            postnatalWeek = XmToggleButton;
+                          }
+                          {
+                            postnatalMonth = XmToggleButton;
+                          }
+                          {
+                            postnatalYear = XmToggleButton;
+                          }
+                          {
+                            postnatalAdult = XmToggleButton;
+                          }
+                          {
+                            postnatalImmature = XmToggleButton;
+                          }
+                          {
+                            postnatalNewborn = XmToggleButton;
+                          }
+                          {
+                            NotSpecified = XmToggleButton;
+                          }
+                          {
+                            NotApplicable = XmToggleButton;
                           }
                     }
               }
@@ -1739,15 +1842,30 @@ Module: mgiOption
                 SexMenu = SexMenu : mgiOption;
                     Popups:
                     {
-                      SexPulldown = OptionPulldown;
+                      SexPulldown = XmPulldownMenu;
                       Group: User
                         tableForm = GelLane;
                         tableOptionKey = 9;
                         tableOption = 20;
                           {
-                            SearchAll = SearchAll;
+                            SearchAll = XmToggleButton;
                             Group: Widget
                               managed = False;
+                          }
+                          {
+                            Female = XmToggleButton;
+                          }
+                          {
+                            Male = XmToggleButton;
+                          }
+                          {
+                            Pooled = XmToggleButton;
+                          }
+                          {
+                            NotSpecified = XmToggleButton;
+                          }
+                          {
+                            NotApplicable = XmToggleButton;
                           }
                     }
               }
@@ -1755,7 +1873,7 @@ Module: mgiOption
                 GelUnitsMenu = GelUnitsMenu : mgiOption;
                     Popups:
                     {
-                      GelUnitsPulldown = OptionPulldown;
+                      GelUnitsPulldown = XmPulldownMenu;
                       Group: User
                         tableForm = GelRow;
                         tableOptionKey = 2;
@@ -1766,7 +1884,7 @@ Module: mgiOption
                 StrengthMenu = StrengthMenu : mgiOption;
                     Popups:
                     {
-                      StrengthPulldown = OptionPulldown;
+                      StrengthPulldown = XmPulldownMenu;
                       Group: User
                         tableForm = GelRow;
                         tableOption = "-1";
@@ -1824,7 +1942,7 @@ Module: mgiOption
             vip_y = 2725;
               Popups:
               {
-                GelRNATypePulldown : OptionPulldown = OptionPulldown;
+                GelRNATypePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_GelRNAType order by rnaType";
               }
@@ -1841,7 +1959,7 @@ Module: mgiOption
             defaultChild = 1;
               Popups:
               {
-                GelControlPulldown : OptionPulldown = OptionPulldown;
+                GelControlPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_GelControl order by _GelControl_key";
                   childTemplate = GelControlToggle;
@@ -1857,7 +1975,7 @@ Module: mgiOption
             vip_y = 2835;
               Popups:
               {
-                GelUnitsPulldown : OptionPulldown = OptionPulldown;
+                GelUnitsPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from GXD_GelUnits order by units";
               }
@@ -1882,7 +2000,7 @@ Module: mgiOption
             defaultOption = Article;
               Popups:
               {
-                RefTypePulldown : OptionPulldown = OptionPulldown;
+                RefTypePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   menuId = ReferenceMenu;
                     {
@@ -1916,7 +2034,7 @@ Module: mgiOption
             defaultOption = Yes;
               Popups:
               {
-                NLMStatusPulldown : OptionPulldown = OptionPulldown;
+                NLMStatusPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -1954,7 +2072,7 @@ Module: mgiOption
             defaultChild = 4;
               Popups:
               {
-                ReviewStatusPulldown : OptionPulldown = OptionPulldown;
+                ReviewStatusPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from BIB_ReviewStatus order by _ReviewStatus_key";
                     {
@@ -1973,7 +2091,7 @@ Module: mgiOption
             defaultOption = NotSpecified;
               Popups:
               {
-                CrossTypePulldown : OptionPulldown = OptionPulldown;
+                CrossTypePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2079,7 +2197,7 @@ Module: mgiOption
             defaultOption = No;
               Popups:
               {
-                StandardPulldown : OptionPulldown = OptionPulldown;
+                StandardPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2109,7 +2227,7 @@ Module: mgiOption
             vip_y = 3660;
               Popups:
               {
-                ChromosomePulldown : OptionPulldown = OptionPulldown;
+                ChromosomePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Species_key = 1\norder by sequenceNum\nselect \"MT\", label = \"MT\", sequenceNum = 100\nselect \"W\", label = \"W\", sequenceNum = 101\nselect \"RE\",label = \"RE\",sequenceNum = 102";
                   childTemplate = ChromToggle;
@@ -2128,7 +2246,7 @@ Module: mgiOption
             vip_y = 3440;
               Popups:
               {
-                MarkerTypePulldown : OptionPulldown = OptionPulldown;
+                MarkerTypePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from MRK_Types where _Marker_Type_key not in (4,5)";
                     {
@@ -2154,7 +2272,7 @@ Module: mgiOption
             vip_y = 3715;
               Popups:
               {
-                SeqTypePulldown : OptionPulldown = OptionPulldown;
+                SeqTypePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2205,15 +2323,6 @@ Module: mgiOption
                         form = MolDetailForm;
                     }
                     {
-                      EST = OptionToggle : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        searchValue = EST;
-                        defaultValue = EST;
-                        form = MolDetailForm;
-                    }
-                    {
                       primer = OptionToggle : mgiOption;
                       Group: Widget
                         valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
@@ -2241,7 +2350,7 @@ Module: mgiOption
             vip_y = 3605;
               Popups:
               {
-                VectorTypePulldown : OptionPulldown = OptionPulldown;
+                VectorTypePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from PRB_Vector_Types where _Vector_key > 0 order by vectorType\nselect * from PRB_Vector_Types where _Vector_key < 0 order by _Vector_key desc";
                     {
@@ -2261,7 +2370,7 @@ Module: mgiOption
             defaultOption = kb;
               Popups:
               {
-                PhysUnitsPulldown : OptionPulldown = OptionPulldown;
+                PhysUnitsPulldown : OptionPulldown = XmPulldownMenu;
                     {
                       kb = OptionToggle : mgiOption;
                       Group: User
@@ -2288,7 +2397,10 @@ Module: mgiOption
             defaultOption = Yes;
               Popups:
               {
-                YesNoPulldown : OptionPulldown = OptionPulldown;
+                YesNoPulldown : OptionPulldown = XmPulldownMenu;
+                    {
+                      SearchAll1 = SearchAll : mgiOption;
+                    }
                     {
                       Yes = Yes : mgiOption;
                       Group: User
@@ -2315,7 +2427,7 @@ Module: mgiOption
             defaultOption = A1;
               Popups:
               {
-                ArrangePulldown : OptionPulldown = OptionPulldown;
+                ArrangePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       A1 = OptionToggle : mgiOption;
                       Group: Widget
@@ -2358,7 +2470,7 @@ Module: mgiOption
             vip_y = 3935;
               Popups:
               {
-                ExptTypePulldown : OptionPulldown = OptionPulldown;
+                ExptTypePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2469,7 +2581,7 @@ Module: mgiOption
             defaultOption = NotSpecified;
               Popups:
               {
-                MLCModePulldown : OptionPulldown = OptionPulldown;
+                MLCModePulldown : OptionPulldown = XmPulldownMenu;
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2511,7 +2623,7 @@ Module: mgiOption
             defaultChild = 2;
               Popups:
               {
-                MarkerStatusPulldown : OptionPulldown = OptionPulldown;
+                MarkerStatusPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from nomen..MRK_Status order by _Marker_Status_key";
                     {
@@ -2531,7 +2643,7 @@ Module: mgiOption
             defaultChild = 1;
               Popups:
               {
-                MarkerEventPulldown : OptionPulldown = OptionPulldown;
+                MarkerEventPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from nomen..MRK_Event order by _Marker_Event_key";
                     {
@@ -2565,7 +2677,7 @@ Module: mgiOption
             vip_y = 3990;
               Popups:
               {
-                NomenUserPulldown : OptionPulldown = OptionPulldown;
+                NomenUserPulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   sql = "select * from nomen..MRK_Nomen_User_View order by status, name";
                     {
@@ -2583,7 +2695,7 @@ Module: mgiOption
             vip_y = 1515;
               Popups:
               {
-                DatabasePulldown : OptionPulldown = OptionPulldown;
+                DatabasePulldown : OptionPulldown = XmPulldownMenu;
                 Group: User
                   childTemplate = DBToggle;
                   sql = "select id = name, name from master..sysdatabases order by name";

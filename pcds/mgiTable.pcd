@@ -1,8 +1,8 @@
 Module: mgiTable
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 31 14:21:12 1999";
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Tue Sep 14 09:53:01 1999";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -91,7 +91,7 @@ Module: mgiTable
             vip_x = 180;
             vip_y = 140;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblCharWidthSeries = "(all 0 1) (all 3 15) (all 4 10)";
                   xrtTblEditableSeries = "(all 0 False) (all 3 False)";
@@ -103,7 +103,7 @@ Module: mgiTable
                   xrtTblEnterCellCallback = "D:SetAccSourceMenu";
               }
               {
-                Add : AddRow = TablePush;
+                Add : AddRow = XmPushButton;
                 Group: Widget
                   labelString = Add;
                   activateCallback = "D:VerifyAccAdd";
@@ -118,7 +118,7 @@ Module: mgiTable
                   resizable = true;
               }
               {
-                Delete : DeleteRow = TablePush;
+                Delete : DeleteRow = XmPushButton;
                 Group: Widget
                   labelString = Delete;
                   activateCallback = "D:VerifyAccDelete";
@@ -268,7 +268,7 @@ Module: mgiTable
             vip_x = 180;
             vip_y = 195;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblPixelWidthSeries = "(all 0-1 0)";
                   xrtTblEditableSeries = "(all 0-2 False)";
@@ -281,10 +281,10 @@ Module: mgiTable
                   addSeqNum = True;
               }
               {
-                AddRow = TablePush;
+                AddRow = XmPushButton;
               }
               {
-                DeleteRow = TablePush;
+                DeleteRow = XmPushButton;
               }
               {
                 InsertRow = TablePush : mgiTable;
@@ -321,7 +321,7 @@ Module: mgiTable
             vip_x = 180;
             vip_y = 250;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 4 3)(all 5-6 20)(all 7-10 6)";
                   xrtTblColumnLabels = "Mode,Current Order,Marker1 key,Marker 2 key,#,Marker 1,Marker 2,Recomb,Total,PcntRe,Stderr";
@@ -338,6 +338,18 @@ Module: mgiTable
                   saveTraversableSeries = "(all 0-4 False)";
                   saveEditableSeries = "(all 0-4 False)";
               }
+              {
+                AddRow = XmPushButton;
+              }
+              {
+                DeleteRow = XmPushButton;
+              }
+              {
+                InsertRow = XmPushButton;
+              }
+              {
+                EditOrder = XmToggleButton;
+              }
         }
         {
           OrderedTableLabel = OrderedTable;
@@ -345,7 +357,7 @@ Module: mgiTable
             vip_x = 60;
             vip_y = 195;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                     {
                       label = XtXrtLabel;
                       Group: Widget
@@ -355,6 +367,18 @@ Module: mgiTable
                         xrtTblLocation = location_top;
                     }
               }
+              {
+                AddRow = XmPushButton;
+              }
+              {
+                DeleteRow = XmPushButton;
+              }
+              {
+                InsertRow = XmPushButton;
+              }
+              {
+                EditOrder = XmToggleButton;
+              }
         }
         {
           ReferenceTable = Table : mgiTable;
@@ -362,7 +386,7 @@ Module: mgiTable
             vip_x = 60;
             vip_y = 250;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblMaxLengthSeries = "(all 4 255)";
                   xrtTblColumnLabels = "Mode,Current Key,New Key,J#,Citation";
@@ -374,6 +398,12 @@ Module: mgiTable
                   xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                   userDefinedAttributes = "refsCurrentKey:Int(Int)=\"1\"\nrefsKey:Int(Int)=\"2\"\njnum:Int(Int)=\"3\"\ncitation:Int(Int)=\"4\"\n";
               }
+              {
+                AddRow = XmPushButton;
+              }
+              {
+                DeleteRow = XmPushButton;
+              }
         }
         {
           RefDBSStatus = Table;
@@ -381,7 +411,7 @@ Module: mgiTable
             vip_x = 180;
             vip_y = 305;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblNumColumns = 5;
                   xrtTblColumnLabels = "Mode,Selected,Used,Not Used,Never Used";
@@ -395,12 +425,12 @@ Module: mgiTable
                   userDefinedAttributes = "selected:Int(Int)=\"1\"\nused:Int(Int)=\"2\"\nnotUsed:Int(Int)=\"3\"\nneverUsed:Int(Int)=\"4\"\ndataSets:String(String)\ntableIDs:String(String)\nbeginX:Int\nendX:Int\n";
               }
               {
-                AddRow = TablePush;
+                AddRow = XmPushButton;
                 Group: Widget
                   managed = False;
               }
               {
-                DeleteRow = TablePush;
+                DeleteRow = XmPushButton;
                 Group: Widget
                   managed = False;
               }
@@ -411,7 +441,7 @@ Module: mgiTable
             vip_x = 60;
             vip_y = 305;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblNumColumns = 3;
                   xrtTblColumnLabels = "Mode,Selected,Never Used";
@@ -424,12 +454,12 @@ Module: mgiTable
                   userDefinedAttributes = "selected:Int(Int)=\"1\"\nneverUsed:Int(Int)=\"2\"\ndataSets:String(String)\nbeginX:Int=\"1\"\nendX:Int=\"2\"\n";
               }
               {
-                AddRow = TablePush;
+                AddRow = XmPushButton;
                 Group: Widget
                   managed = False;
               }
               {
-                DeleteRow = TablePush;
+                DeleteRow = XmPushButton;
                 Group: Widget
                   managed = False;
               }
@@ -440,7 +470,7 @@ Module: mgiTable
             vip_x = 60;
             vip_y = 360;
               {
-                Table = mgiTable;
+                Table = XtXrtTable;
                 Group: Widget
                   xrtTblNumColumns = 9;
                   xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation";
@@ -457,7 +487,13 @@ Module: mgiTable
                   requiredColumns = "4\n6";
               }
               {
-                Add = TablePush;
+                Add = XmPushButton;
+              }
+              {
+                Delete = XmPushButton;
+              }
+              {
+                AccSourceMenu = XmOptionMenu;
               }
         }
 }

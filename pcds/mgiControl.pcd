@@ -2,8 +2,8 @@ Module: mgiControl
 {
       autoCuil = False;
       dDialogFile = "mgiControl_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 31 14:21:05 1999";
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Tue Sep 14 09:52:58 1999";
         {
           Control = XmFrame;
           Group: Control
