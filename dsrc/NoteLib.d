@@ -160,15 +160,24 @@ rules:
 	  childnote : widget := nil;
 	  notecontinuation : boolean := false;
 	  note : string;
+	  noteKey : string;
 	  i : integer;
+	  cmd : string;
 
 	  ClearSetNoteForm.notew := notew;
 	  send(ClearSetNoteForm, 0);
 
-          cmd : string := "select _NoteType_key, note, sequenceNum" +
-	  	" from " + mgi_DBtable(tableID) +
-		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by _NoteType_key, sequenceNum";
+	  if (tableID = MGI_NOTE_NOMEN_VIEW) then
+            cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
+	  	  " from " + mgi_DBtable(tableID) +
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		   " order by _NoteType_key, sequenceNum";
+	  else
+            cmd := "select _NoteType_key, note, sequenceNum" +
+	  	  " from " + mgi_DBtable(tableID) +
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		   " order by _NoteType_key, sequenceNum";
+	  end if;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -178,6 +187,10 @@ rules:
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
+
+	      if (tableID = MGI_NOTE_NOMEN_VIEW) then
+	        noteKey := mgi_getstr(dbproc, 4);
+	      end if;
 
 	      -- check if this a continuation of the same note type
 
@@ -211,6 +224,7 @@ rules:
 		  childnote->Note->text.value := childnote->Note->text.value + note;
 		end if;
 	        childnote->Note->text.modified := false;
+	        childnote->Note.noteKey := (integer) noteKey;
 	      else
                 StatusReport.source_widget := notew.top;
                 StatusReport.message := "Cannot determine Note Type\n";
@@ -517,6 +531,7 @@ rules:
           note : string;
 	  noteType : string;
 	  mgiType : string;
+	  noteKey : string;
 	  isTable : boolean;
 	  isModified : boolean;
           i : integer := 1;
@@ -553,12 +568,12 @@ rules:
 	    mgiType := (string) noteWidget.mgiTypeKey;
 	  end if;
 
-	  -- for MGI_Note, delete using _Object_key and _MGIType_key
+	  if (noteWidget.noteKey > 0) then
+	    noteKey := (string) noteWidget.noteKey;
+	  end if;
 
 	  if (tableID = MGI_NOTE) then
-	    cmd := mgi_DBdelete(tableID, "") + 
-		"_Object_key = " + key +
-		" and _MGIType_key = " + mgiType + "\n";
+            cmd := mgi_DBdelete(tableID, noteKey);
 	  else
             cmd := mgi_DBdelete(tableID, key);
 

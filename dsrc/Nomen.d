@@ -266,6 +266,12 @@ rules:
 	  LoadList.list := top->GeneFamilyList;
 	  send(LoadList, 0);
 
+	  -- Initialize Reference table
+
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
+	  send(InitRefTypeTable, 0);
+
 	  -- Initialize Notes form
 
 	  InitNoteForm.notew := top->mgiNoteForm;
@@ -335,6 +341,14 @@ rules:
 	  Clear.reset := ClearNomen.reset;
 	  send(Clear, 0);
 
+	  -- Initialize Reference table
+
+	  if (not ClearNomen.reset) then
+	    InitRefTypeTable.table := top->Reference->Table;
+	    InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
+	    send(InitRefTypeTable, 0);
+	  end if;
+
 	  -- Clear/Set Notes
 	  ClearSetNoteForm.notew := top->mgiNoteForm;
 	  if (ClearNomen.reset) then
@@ -368,15 +382,15 @@ rules:
 	    top->BroadcastDate->text.value := "";
 	  end if;
 
-	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED) and
-              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
-               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Primary Reference Required.";
-            send(StatusReport);
-	    top->QueryList->List.sqlSuccessful := false;
-            return;
-	  end if;
+--	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED) and
+--              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
+--               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
+--            StatusReport.source_widget := top;
+--            StatusReport.message := "Primary Reference Required.";
+--            send(StatusReport);
+--	    top->QueryList->List.sqlSuccessful := false;
+--           return;
+--	  end if;
 
 	  if (not top.allowEdit) then
 	    top->QueryList->List.sqlSuccessful := false;
@@ -488,14 +502,14 @@ rules:
 	  value : string;
 	  error : boolean := false;
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
-              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
-               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Primary Reference Required.";
-            send(StatusReport);
-            error := true;
-	  end if;
+--	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
+--              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
+--               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
+--            StatusReport.source_widget := top;
+--            StatusReport.message := "Primary Reference Required.";
+--            send(StatusReport);
+--            error := true;
+--	  end if;
 
 	  if (not top.allowEdit) then
 	    error := true;
@@ -783,7 +797,15 @@ rules:
 	  isReview : string;
 	  set : string := "";
  
-          -- Process while non-empty rows are found
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentNomenKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  -- Process updates to Review Status
  
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
@@ -792,51 +814,16 @@ rules:
               break;
             end if;
  
-            key := mgi_tblGetCell(table, row, table.refsCurrentKey);
-            newKey := mgi_tblGetCell(table, row, table.refsKey);
 	    isReview := mgi_tblGetCell(table, row, table.reviewKey);
-	    isBroadcast := mgi_tblGetCell(table, row, table.broadcastKey);
  
-	    if (row = 0) then
-	      isPrimary := "1";
-	    else
-	      isPrimary := "0";
-	    end if;
- 
-	    -- Primary reference is ALWAYS broadcast
-
-	    if (isPrimary = "1" or isBroadcast = "") then
-	      isBroadcast := "1";
-	    end if;
-
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MGI_REFERENCE_ASSOC, NOKEY) + 
-		     currentNomenKey + "," + 
-		     newKey + "," +
-		     isPrimary + "," +
-		     isBroadcast + ")\n";
-
               -- update Review? value for row
-
               set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
               cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Refs_key = " + newKey + "," +
-		     "broadcastToMGD = " + isBroadcast;
-              cmd := cmd + mgi_DBupdate(MGI_REFERENCE_ASSOC, currentNomenKey, set) + 
-                     "and _Refs_key = " + key + 
-		     " and isPrimary = " + isPrimary + "\n";
-
-              -- update Review? value for row
-
               set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
               cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
-
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MGI_REFERENCE_ASSOC, currentNomenKey) + 
-		      "and _Refs_key = " + key +
-		      " and isPrimary = " + isPrimary + "\n";
             end if;
  
             row := row + 1;
@@ -892,6 +879,13 @@ rules:
 	    printSelect := printSelect + "\nDate = " + top->ModificationHistory->Table.sqlCmd;
 	  end if;
  
+	  SearchRefTypeTable.table := top->Reference->Table;
+	  SearchRefTypeTable.tableID := MGI_REFERENCE_NOMEN_VIEW;
+          SearchRefTypeTable.join := "m." + mgi_DBkey(NOM_MARKER);
+	  send(SearchRefTypeTable, 0);
+	  from := from + top->Reference->Table.sqlFrom;
+	  where := where + top->Reference->Table.sqlWhere;
+
 	  -- To search each note type individually...
 	  -- remove noteTypeKey and just have one call to SearchNoteForm
 	  -- to search all note types
@@ -1136,6 +1130,10 @@ rules:
 	  end while;
 	  tables.close;
 
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
+	  send(InitRefTypeTable, 0);
+
           (void) busy_cursor(top);
 
 	  table : widget;
@@ -1149,10 +1147,6 @@ rules:
 	         "select * from " + mgi_DBtable(NOM_SYNONYM_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey + 
 		 " order by isAuthor desc, name\n" +
-	         "select isPrimary, _Refs_key, jnum, short_citation, isReviewArticle, broadcastToMGD from " +
-		  mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) +
-		 " where _Object_key = " + currentNomenKey +
-		 " order by isPrimary desc, short_citation\n" +
 	         "select _GeneFamily_key, term from " +
 		  mgi_DBtable(NOM_GENEFAMILY_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey +
@@ -1227,43 +1221,8 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 11));
                 (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
 	      elsif (results = 4) then
-		table := top->Reference->Table;
-
-		if (row = 0 and mgi_getstr(dbproc, 1) != "1") then
-		  row := row + 1;
-		end if;
-
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.broadcastKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-                if (mgi_getstr(dbproc, 5) = "1") then
-                  (void) mgi_tblSetCell(table, row, table.review, "Yes");
-                else
-                  (void) mgi_tblSetCell(table, row, table.review, "No");
-                end if;
-
-                if (mgi_getstr(dbproc, 6) = "1") then
-                  (void) mgi_tblSetCell(table, row, table.broadcast, "Yes");
-                else
-                  (void) mgi_tblSetCell(table, row, table.broadcast, "No");
-                end if;
-
-          	-- Initialize Option Menus for row 0
-
-		if (row = 0) then
-          	  SetOptions.source_widget := table;
-          	  SetOptions.row := 0;
-          	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
-          	  send(SetOptions, 0);
-		end if;
-
-	      elsif (results = 5) then
 		table := top->GeneFamily->Table;
                 (void) mgi_tblSetCell(table, row, table.familyCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.familyKey, mgi_getstr(dbproc, 1));
@@ -1276,6 +1235,11 @@ rules:
 	  end while;
 	  (void) dbclose(dbproc);
 
+          LoadRefTypeTable.table := top->Reference->Table;
+	  LoadRefTypeTable.tableID := MGI_REFERENCE_NOMEN_VIEW;
+          LoadRefTypeTable.objectKey := currentNomenKey;
+          send(LoadRefTypeTable, 0);
+ 
 	  LoadNoteForm.notew := top->mgiNoteForm;
 	  LoadNoteForm.tableID := MGI_NOTE_NOMEN_VIEW;
 	  LoadNoteForm.objectKey := currentNomenKey;

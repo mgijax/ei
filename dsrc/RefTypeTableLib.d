@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	05/24/2002
+--	- TR 1463; added processing for MGI_Reference_Assoc table
+--
 -- lec	03/12/2001
 --	new
 --
@@ -86,10 +89,16 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  cmd := "select _RefsType_key, referenceType from " + 
-		mgi_DBtable(tableID) + 
-		"\nwhere _RefsType_key > 0" +
-		"\norder by allowOnlyOne desc, _RefsType_key";
+	  if (tableID = MGI_REFTYPE_NOMEN_VIEW) then
+	    cmd := "select _RefAssocType_key, assocType from " + 
+		  mgi_DBtable(tableID) + 
+		  "\norder by allowOnlyOne desc, _RefAssocType_key";
+	  else
+	    cmd := "select _RefsType_key, referenceType from " + 
+		  mgi_DBtable(tableID) + 
+		  "\nwhere _RefsType_key > 0" +
+		  "\norder by allowOnlyOne desc, _RefsType_key";
+	  end if;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -134,11 +143,20 @@ rules:
 	  table : widget := LoadRefTypeTable.table;
 	  tableID : integer := LoadRefTypeTable.tableID;
 	  objectKey : string := LoadRefTypeTable.objectKey;
+	  cmd : string;
 
-          cmd : string := "select _Refs_key, _RefsType_key, referenceType, jnum, short_citation" +
-	  	" from " + mgi_DBtable(tableID) +
-		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by allowOnlyOne desc, _RefsType_key";
+	  if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
+            cmd := "select _Refs_key, _RefAssocType_key, assocType, " +
+		  "jnum, short_citation, _Assoc_key, _MGIType_key" +
+	  	  " from " + mgi_DBtable(tableID) +
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		   " order by allowOnlyOne desc, _RefAssocType_key";
+	  else
+            cmd := "select _Refs_key, _RefsType_key, referenceType, jnum, short_citation" +
+	  	  " from " + mgi_DBtable(tableID) +
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		   " order by allowOnlyOne desc, _RefsType_key";
+	  end if;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
@@ -159,6 +177,12 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.refsName, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
+
+	      if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
+	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 6));
+		table.mgiTypeKey := mgi_getstr(dbproc, 7);
+	      end if;
+
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;
             end while;
@@ -186,9 +210,11 @@ rules:
 	  cmd : string;
           row : integer := 0;
           editMode : string;
+          assocKey : string;
           key : string;
           newKey : string;
 	  refsType : string;
+	  mgiType : string;
 	  set : string := "";
  
           -- Process 
@@ -196,26 +222,46 @@ rules:
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
+            assocKey := mgi_tblGetCell(table, row, table.assocKey);
             key := mgi_tblGetCell(table, row, table.refsCurrentKey);
             newKey := mgi_tblGetCell(table, row, table.refsKey);
 	    refsType := mgi_tblGetCell(table, row, table.refsType);
+	    mgiType := table.mgiTypeKey;
  
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(tableID, NOKEY) + 
+	      if (tableID = MGI_REFERENCE_ASSOC) then
+		cmd := cmd + mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
+		       mgi_DBinsert(tableID, KEYNAME) +
+		       newKey + "," +
+		       objectKey + "," +
+		       mgiType + "," +
+		       refsType + ")\n";
+              else 
+		cmd := cmd + mgi_DBinsert(tableID, NOKEY) + 
 		     objectKey + "," + 
 		     newKey + "," +
 		     refsType + ")\n";
+	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_Refs_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(tableID, objectKey, set) + 
-                     "and _Refs_key = " + key + 
-		     " and _RefsType_key = " + refsType + "\n";
+
+	      if (tableID = MGI_REFERENCE_ASSOC) then
+                cmd := cmd + mgi_DBupdate(tableID, assocKey, set);
+	      else
+                cmd := cmd + mgi_DBupdate(tableID, objectKey, set) + 
+                       "and _Refs_key = " + key + 
+		       " and _RefsType_key = " + refsType + "\n";
+	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(tableID, objectKey) + 
+	      if (tableID = MGI_REFERENCE_ASSOC) then
+                cmd := cmd + mgi_DBdelete(tableID, assocKey);
+	      else
+                cmd := cmd + mgi_DBdelete(tableID, objectKey) + 
                      "and _Refs_key = " + key + 
 		     " and _RefsType_key = " + refsType + "\n";
+	      end if;
             end if;
  
             row := row + 1;
