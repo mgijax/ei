@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Feb 20 09:22:47 2004";
+      lastWritten = "Mon Feb 23 09:01:46 2004";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -447,7 +447,7 @@ Module: mgiTable
                 Group: Widget
                   xrtTblNumColumns = 9;
                   xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation";
-                  xrtTblCharWidthSeries = "(all 0 1) (all 5 15) (all 6 10)(all 7 10)(all 8 60)";
+                  xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 60)";
                   xrtTblEditableSeries = "(all 0 False) (all 5 False)";
                   xrtTblPixelWidthSeries = "(all 0-4 0)";
                   xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
