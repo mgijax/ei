@@ -2559,6 +2559,182 @@ rules:
 	end does;
 
 --
+-- VerifySpeciesMLP
+--
+--	Verify MLP Species entered in TextField or Table
+--
+--	If Text, assumes use of mlpSpecies template
+--	If Table, assumes table.speciesKey, table.species
+--
+--	Copy Unique Key into Appropriate widget/column
+--
+
+	VerifySpeciesMLP does
+	  sourceWidget : widget := VerifySpeciesMLP.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+	  whichItem : widget := top.root->WhichItem;	-- WhichItem widget
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+	  speciesKey : integer;
+	  speciesName : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  -- Processing for Table
+
+	  if (isTable) then
+	    row := VerifySpeciesMLP.row;
+	    column := VerifySpeciesMLP.column;
+	    reason := VerifySpeciesMLP.reason;
+	    value := VerifySpeciesMLP.value;
+	    speciesKey := sourceWidget.speciesKey;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+					   
+	    -- If not in the species column, return
+
+            if (column != sourceWidget.speciesName) then
+              return;
+            end if;
+
+	    speciesKey := sourceWidget.speciesKey;
+	    speciesName := sourceWidget.speciesName;
+
+	  -- Processing for Text
+
+	  else
+	    value := top->mlpSpecies->Species->text.value;
+	  end if;
+
+	  -- If no value entered, return
+
+	  if (value.length = 0) then
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
+	    else
+	      top->mlpSpecies->ObjectID->text.value := "NULL";
+              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    end if;
+	    return;
+	  end if;
+
+	  -- If a wildcard '%' appears in the species,
+	  --  Then set the Species key to empty and return
+
+	  if (strstr(value, "%") != nil) then
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
+	    else
+	      top->mlpSpecies->ObjectID->text.value := "NULL";
+              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  message : string := "";
+	  whichSpeciesRow : integer := 0;
+	  whichSpecies : string := "";
+	  whichName : string := "";
+
+	  keys : string_list := create string_list();
+	  results : xm_string_list := create xm_string_list();
+
+	  -- Clear Species Lookup List
+
+	  ClearList.source_widget := whichItem->ItemList;
+	  send(ClearList, 0);
+
+	  -- Search for Species in the database
+
+	  select : string := "select _Species_key, species " +
+			     "from " + mgi_DBtable(MLP_SPECIES) +
+			     " where species = " + mgi_DBprstr(value) + "\n";
+
+	  -- Insert results into string list for loading into Species selection list
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
+              results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+            end while;
+          end while;
+	  (void) dbclose(dbproc);
+
+	  -- Add items to Species List
+          -- If keys doesn't exist already, create it
+ 
+          if (whichItem->ItemList->List.keys = nil) then
+            whichItem->ItemList->List.keys := create string_list();
+          end if;
+ 
+          whichItem->ItemList->List.keys := keys;
+	  (void) XmListAddItems(whichItem->ItemList->List, results, results.count, 0);
+
+	  -- If results is empty, then species is invalid
+
+	  if (results.count = 0) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Species '" + value + "'\n\n" + "Invalid Species";
+            send(StatusReport);
+
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
+	      VerifySpeciesMLP.doit := (integer) false;
+	    else
+	      top->mlpSpecies->ObjectID->text.value := "NULL";
+	    end if;
+
+	    (void) reset_cursor(top);
+	    return;
+
+	  -- If more than one result is found, set Table widget and manage 'WhichItem' dialog
+
+          elsif (results.count > 1) then
+            whichItem.managed := true;
+
+	    -- Keep busy while user selects which species
+
+	    while (whichItem.managed = true) do
+		(void) keep_busy();
+	    end while;
+
+	    (void) XmUpdateDisplay(top);
+	    whichSpeciesRow := whichItem->ItemList->List.row;
+
+	  -- If only one result is found, then select first (& only) result from List
+
+          else
+            whichSpeciesRow := 0;
+          end if;
+ 
+	  whichSpecies := whichItem->ItemList->List.keys[whichSpeciesRow];
+	  whichName := results[whichSpeciesRow];
+
+	  if (isTable) then
+            (void) mgi_tblSetCell(sourceWidget, row, speciesKey, whichSpecies);
+            (void) mgi_tblSetCell(sourceWidget, row, speciesName, whichName);
+	  else
+	    top->mlpSpecies->ObjectID->text.value := whichSpecies;
+	    top->mlpSpecies->Species->text.value := whichName;
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
 -- VerifyStrains
 --
 --      Verify multiple Strains entered into Table Row

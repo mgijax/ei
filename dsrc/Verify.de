@@ -52,6 +52,8 @@ VerifyReference :translation [];
 
 VerifySpecies :translation [];
 
+VerifySpeciesMLP :translation [];
+
 VerifyStrains [];
 
 VerifyStrengthPattern [];

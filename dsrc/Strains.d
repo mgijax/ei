@@ -178,8 +178,8 @@ rules:
  
           currentRecordKey := "@" + KEYNAME;
  
-	  if (top->mgiSpecies->ObjectID->text.value.length = 0) then
-	    top->mgiSpecies->ObjectID->text.value := NOTSPECIFIED;
+	  if (top->mlpSpecies->ObjectID->text.value.length = 0) then
+	    top->mlpSpecies->ObjectID->text.value := NOTSPECIFIED;
 	  end if;
 
           cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
@@ -189,7 +189,7 @@ rules:
                  top->NeedsReviewMenu.menuHistory.defaultValue + ")\n";
  
           cmd := cmd + mgi_DBinsert(MLP_STRAIN, KEYNAME) +
-		 top->mgiSpecies->ObjectID->text.value + "," +
+		 top->mlpSpecies->ObjectID->text.value + "," +
 		 mgi_DBprstr(top->User1->text.value) + "," +
 		 mgi_DBprstr(top->User2->text.value) + ")\n";
 
@@ -284,8 +284,8 @@ rules:
 
 	  set := "";
 
-	  if (top->mgiSpecies->Species->text.modified) then
-	    set := set + "_Species_key = " + top->mgiSpecies->ObjectID->text.value + ",";
+	  if (top->mlpSpecies->Species->text.modified) then
+	    set := set + "_Species_key = " + top->mlpSpecies->ObjectID->text.value + ",";
 	  end if;
 
 	  if (top->User1->text.modified) then
@@ -498,8 +498,8 @@ rules:
             where := where + "\nand s.needsReview = " + top->NeedsReviewMenu.menuHistory.searchValue;
           end if;
  
-	  if (top->mgiSpecies->Species->text.value.length > 0) then
-	    where := where + "\nand s.species like " + mgi_DBprstr(top->mgiSpecies->Species->text.value);
+	  if (top->mlpSpecies->Species->text.value.length > 0) then
+	    where := where + "\nand s.species like " + mgi_DBprstr(top->mlpSpecies->Species->text.value);
 	  end if;
 
 	  if (top->User1->text.value.length > 0) then
@@ -647,8 +647,8 @@ rules:
                 top->Name->text.value := mgi_getstr(dbproc, 8);
                 top->CreationDate->text.value := mgi_getstr(dbproc, 5);
                 top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
-		top->mgiSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->mgiSpecies->Species->text.value := mgi_getstr(dbproc, 7);
+		top->mlpSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
+		top->mlpSpecies->Species->text.value := mgi_getstr(dbproc, 7);
 		top->User1->text.value := mgi_getstr(dbproc, 3);
 		top->User2->text.value := mgi_getstr(dbproc, 4);
                 SetOption.source_widget := top->StandardMenu;

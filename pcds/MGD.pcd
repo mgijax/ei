@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Oct 26 08:09:20 1999";
+      lastWritten = "Thu Oct 28 10:07:28 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -802,7 +802,7 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  mgiSpecies = mgiSpecies : mgiDataTypes;
+                                  mlpSpecies = mlpSpecies : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
@@ -817,10 +817,10 @@ Module: MGD
                                   StandardMenu = StandardMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiSpecies;
+                                    leftWidget = mlpSpecies;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = mgiSpecies;
+                                    topWidget = mlpSpecies;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -1240,7 +1240,7 @@ Module: MGD
                                         Group: User
                                           targetText = Species;
                                           targetKey = ObjectID;
-                                          targetWidget = mgiSpecies;
+                                          targetWidget = mlpSpecies;
                                       }
                                 }
                                 {
