@@ -98,7 +98,7 @@ rules:
 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
-	  top.managed := true;
+	  top.show;
 
 	  -- Initialize Global variables, Clear form, etc.
 	  send(Init, 0);
@@ -398,12 +398,12 @@ rules:
 
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, annotKey, set) + 
 		" and _EvidenceTerm_key = " + currentEvidenceKey +
-		" and _Refs_key = " + currentRefsKey;
+		" and _Refs_key = " + currentRefsKey + "\n";
 
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, annotKey) + 
 		" and _EvidenceTerm_key = " + currentEvidenceKey +
-		" and _Refs_key = " + currentRefsKey;
+		" and _Refs_key = " + currentRefsKey + "\n";
             end if;
  
             row := row + 1;
