@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 22 09:43:54 2001";
+      lastWritten = "Tue Mar 27 10:51:27 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8826,16 +8826,34 @@ Shift<Key>Tab: prev-tab-group()
                                   AlleleStatusMenu = AlleleStatusMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = mgiMarker;
+                                    leftWidget = Symbol;
                                     leftOffset = 30;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Symbol;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                  Group: User
+                                    defaultChild = 4;
+                                }
+                                {
+                                  messageText = messageText : mgiDataTypes;
+                                  Group: Widget
+                                    background = Yellow;
+                                    value = "All information associated with a \nRESERVED symbol is strictly CONFIDENTIAL";
+                                    columns = 40;
+                                    rows = 2;
+                                    editMode = multi_line_edit;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = mgiMarker;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 5;
-                                  Group: User
-                                    defaultChild = 5;
+                                    leftWidget = mgiMarker;
+                                    leftOffset = 20;
                                 }
                                 {
                                   Symbol = CharText : mgiDataTypes;
