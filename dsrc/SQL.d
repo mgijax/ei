@@ -248,7 +248,10 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "No Values Were Modified";
             send(StatusReport);
-            (void) XmListSelectPos(ModifySQL.list->List, ModifySQL.list->List.row, true);
+
+	    if (ModifySQL.list != nil) then
+              (void) XmListSelectPos(ModifySQL.list->List, ModifySQL.list->List.row, true);
+	    end if;
 	    return;
 	  end if;
 
