@@ -28,7 +28,8 @@ devents:
 	MPVocAnnotExit :local [];			-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	LoadHeader :local [];				-- Load Header Terms
-	LoadMPNotes :local [reason : integer;];		-- Load Notes
+	LoadMPNotes :local [reason : integer;  		-- Load Notes
+			    row : integer := -1;];
 	Modify :local [];				-- Modify Annotations
 	ModifyHeader :local [];				-- Modify Header Order
 	ModifyMPNotes :local [];			-- Modify Notes
@@ -610,14 +611,16 @@ rules:
 
 	LoadMPNotes does
 	  reason : integer := LoadMPNotes.reason;
-	  row : integer;
+	  row : integer := LoadMPNotes.row;
 	  annotEvidenceKey : string;
 
 	  if (reason != TBL_REASON_ENTER_CELL_END) then
 	    return;
 	  end if;
 
-	  row := mgi_tblGetCurrentRow(annotTable);
+	  if (row < 0) then
+	    row := mgi_tblGetCurrentRow(annotTable);
+	  end if;
 
 	  if (annotTable.row != row) then
 	    noteTable.notesLoaded := false;
@@ -630,6 +633,8 @@ rules:
 	  annotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
 
 	  if (annotEvidenceKey.length = 0) then
+	    ClearTable.table := noteTable;
+	    send(ClearTable, 0);
 	    return;
           end if;
 
@@ -977,6 +982,7 @@ rules:
 	  send(LoadHeader, 0);
 
 	  LoadMPNotes.reason := TBL_REASON_ENTER_CELL_END;
+	  LoadMPNotes.row := 0;
 	  send(LoadMPNotes, 0);
 
           top->QueryList->List.row := Select.item_position;
