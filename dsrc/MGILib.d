@@ -255,6 +255,32 @@ rules:
 	end does;
 
 --
+-- SetPermissions
+--
+--      Set Add/Modify/Delete button permissions based on EI module
+--
+ 
+        SetPermissions does
+	   top := SetPermissions.source_widget;
+	   cmd : string;
+	   permOK : integer;
+
+	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
+		
+	   permOK := (integer) mgi_sql1(cmd);
+
+	   if (permOK = 0) then
+	      top->Control->Add.sensitive := false;
+	      top->Control->Modify.sensitive := false;
+	      top->Control->Delete.sensitive := false;
+	      top->CommandsPulldown->Add.sensitive := false;
+	      top->CommandsPulldown->Modify.sensitive := false;
+	      top->CommandsPulldown->Delete.sensitive := false;
+	   end if;
+
+        end does;
+ 
+--
 -- SetServer
 --
 --      Set Database Information for Form banner
