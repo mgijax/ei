@@ -583,42 +583,44 @@ The system documentation is in the <CODE>cd $source_directory/system_docs</CODE>
 <HR>
 <A NAME="applconfig"><H4>Application Configuration Files</H4></A>
 There are several files which are necessary for the application to build successfully.
-These files are located in <CODE>$source_directory</CODE> and
-<CODE>$source_directory/$application</CODE>:
+These files are located in <CODE>$source_directory</CODE>:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Source file<TH>Description
-<TR><TD>../Configuration
+<TR><TD>Configuration
     <TD>Configuration file for the entire EI product.
-<TR><TD>../buildapp
+<TR><TD>buildapp
     <TD>Shell script to run <CODE>uxb</CODE> with the appropriate arguments in order to
 	build either a Production or Development copy of the application.
-<TR><TD>../installapp
+<TR><TD>installapp
     <TD>Shell script to run <CODE>uxb install</CODE> with the appropriate arguments in order to
 	install either a Production or Development copy of the application.
 	Defines the destination directory (<CODE>-destdir</CODE>) for the installed application.
-<TR><TD>../Makefile.xrt
+<TR><TD>runapp
+    <TD>Shell script to execute any <CODE>$application</CODE>.  Sources 
+	<CODE>../Configuration</CODE> file.
+<TR><TD>Makefile.xrt
 	<TD>XRT-authorize the executable
-<TR><TD>Configuration
-    <TD>Configuration file for the specific <CODE>$application</CODE>.  Sources
-	the global <CODE>$source_directory/Configuration</CODE> file and executes the
-	appropriate script to run the specific application.
+<TR><TD>X Resource File (../XRes.in)
+	<TD>Resource files which defines copy/paste function keys for Mac users,
+	    global font, background, etc.
+</TABLE>
+<P>
+
+These files are located in <CODE>$source_directory/$application</CODE>:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Description
 <TR><TD>uxb.conf
 	<TD>TeleUSE configuration file for building and/or installing the application.
 	    See <CODE>buildapp</CODE> and <CODE>installapp</CODE> below.
             For more information, refer to the Building the Application manual.
+<TR><TD>Configuration
+    <TD>Configuration file for the specific <CODE>$application</CODE>.  Sources
+	the global <CODE>$source_directory/Configuration</CODE> file and executes the
+	appropriate script to run the specific application.  Note that this file
+	only exists for the <CODE>mgi</CODE> application.
 <TR><TD>run$application
-	<TD>Script to run the Production copy of the application.  Contains environment
-	    assignments for DSQUERY, MGD, SYBASE, TeleUSE, etc.
-	    This script must be edited to use the correct APP, INSTALLDIR, DSQUERY, MGD values
-	    for your production installation.
-<TR><TD>run$application-dev
-	<TD>Script to run the Development copy of the application.  Contains environment
-	    assignments for DSQUERY, MGD, SYBASE, TeleUSE, etc.
-	    This script must be edited to use the correct APP, DSQUERY, MGD values
-	    for your development installation.
-<TR><TD>X Resource File (../XRes.in)
-	<TD>Resource files which defines copy/paste function keys for Mac users,
-	    global font, background, etc.
+	<TD>Script to run the specific application.  Note that this file
+	    only exists for the <CODE>mgi</CODE> application.
 <TR><TD>.viprc
         <TD>Not necessary for building the application, however this file is used by the 
 	    <A HREF="#pcds">TeleUSE Presentation Components</A> tool <CODE>vip</CODE> to store session 
