@@ -190,6 +190,7 @@ devents:
 	AppendToAgeNote :local [];
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
+		    clearForms : integer := 511;
 		    clearLists : integer := 3;
 		    reset : boolean := false;
 		    select: boolean := false;];
@@ -259,7 +260,7 @@ locals:
 	prepForms : list;               -- List of Prep Forms
 	tables : list;			-- List of Tables
 
-	clearAssay : integer := 511;	-- Value for Clear.clearForms
+	clearAssayGel : integer := 255; -- Value for Clear.clearForms excluding GelForm
 
 	currentAssay : string;      	-- Primary Key value of currently selected record
 				    	-- Set in Add[] and Select[]
@@ -373,7 +374,7 @@ rules:
 	AssayClear does
 
 	  Clear.source_widget := top;
-	  Clear.clearForms := clearAssay;
+	  Clear.clearForms := AssayClear.clearForms;
 	  Clear.clearLists := AssayClear.clearLists;
 	  Clear.clearKeys := AssayClear.clearKeys;
 	  Clear.reset := AssayClear.reset;
@@ -2374,11 +2375,15 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
-	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
+	  -- Don't clear the Gel form because it'll wipe out editMode flags on Gel Bands
 
---          AssayClear.reset := true;
---	  AssayClear.select := true;
---          send(AssayClear, 0);
+	  if (assayDetailForm.name = "GelForm") then
+	    AssayClear.clearForms := clearAssayGel;
+	  end if;
+
+          AssayClear.reset := true;
+	  AssayClear.select := true;
+          send(AssayClear, 0);
 
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);
@@ -2701,7 +2706,6 @@ rules:
 		",Mode,Lane key,Band key,Strength key," + (string) b + "; " + laneLabel + ",Note";
 	    newPixelWidthSeries := newPixelWidthSeries +
 		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
-	    newPixelWidthSeries := "";
 	    newCharWidthSeries := newCharWidthSeries +
 		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)";
 	    newTraverseSeries := newTraverseSeries + 
