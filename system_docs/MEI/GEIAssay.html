@@ -239,17 +239,60 @@ There are no restrictions on deleting an Assay record.
 
 <H4>Genotypes</H4>
 <OL>
+<LI>To edit Genotypes, click the <I>Edit->Genotypes</I> button from the main menu bar.
+    See <A HREF="GEIGenotype.html">GXD EDITING INTERFACE: Design and Requirements - Genotypes</A> 
+    for more information on using this form.
+<P>
 <LI>When copying the Genotype information from one row to another, the system is actually
 using the same Genotype defintion for both rows.  So, any modification to that Genotype
 definition affects all rows which have copied that Genotype column.  If the user is
 building a new Genotype defintion for the same Strain, then the user should <B>not</B>
-perform a row copy.  The user must bring up the Genotype dialog and define a new Genotype.
+perform a row copy.  The user must bring up the Genotype form and define a new Genotype.
 <P>
-<LI>Marker Alleles (see <A HREF="MEI.html#dataVerAllele">Data Verifications section on Marker Alleles</A>) 
-may be added during Genotype entry.  If an entered Allele does not exist, then the
-<A HREF="MEIAllele.html">Allele form</A> is launched so that the user can immediately
-add the new allele.  After the allele is successfully added using the Allele form, the
-Allele form is closed.
+<LI>Genotypes Clipboard
+<OL>
+<LI>The editor will build the Genotype Clipboard via the Genotype form.
+    Each session of the application has its own clipboard, that is
+    each editor has his/her private clipboard.
+<LI>When the Specimen or Gel Lane table is displayed:
+	<OL>
+	<LI>The system will automatically load the current contents of all Specimen
+	    or Gel Lane Genotypes into the side panel Genotypes list.
+	    These Genotypes will contain the <B>[DB]</B> prefix.
+	<LI>The system will automatically append the contents of the clipboard 
+	    into the side panel Genotypes list.  These Genotypes will contain
+	    the <B>[Clipboard]</B> prefix.
+	<LI>If a Genotype exists in both the <B>[DB]</B> and the <B>[Clipboard]</B>,
+	    then the Genotype will only be listed once and will contain the
+	    <B>[DB]</B> prefix.
+	</OL>
+<LI>To <B>reload</B> the Genotypes list, click on the list label.  This
+    will perform Step 2.  Reload the list if:
+	<OL>
+	<LI>You return to the Genotypes form and revise the Clipboard.
+	<LI>You return to the Genotypes form and modify any Genotypes.
+	</OL>
+<LI>When a particular Specimen or Gel Lane table row is selected:
+	<OL>
+	<LI>The appropriate <B>[DB]</B> entries are highlighted to inform the user
+	    which Genotype is currently assigned to the given Specimen or Gel Lane.
+	</OL>
+<LI>To assign a Genotype to a particular Specimen or Gel Lane:
+	<OL>
+	<LI>Select the Specimen or Gel Lane row you wish to edit.
+	<LI>The currently assigned Genotype will be highlighted in the Genotypes list.
+	<LI>Select the Genotype you wish to assign to the Specimen or Gel Lane.
+	    A selected Genotype will be highlighted and the text copied to the
+	    Genotype column in the Specimen or Gel Lane table.
+	</OL>
+<LI>To remove a Genotype from a particular Specimen or Gel Lane:
+	<OL>
+	<LI>Follow the rules for assigning a Genotype.  A Genotype is a required
+	    field for each Speciman or Gel Lane.
+	</OL>
+<LI>Modification of Genotype assignments can be peformed simultaneously
+    with other Specimen or Gel Lane modifications.
+</OL>
 <P>
 </OL>
 

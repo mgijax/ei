@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 23 09:47:46 2001";
+      lastWritten = "Thu Sep  6 10:53:54 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -569,9 +569,9 @@ Module: gxdDictionary
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "Anatomical Structures";
+                  labelString = "Anatomical Clipboard";
                 Group: User
-                  defaultLabel = "Anatomical Structures";
+                  defaultLabel = "Anatomical Clipboard";
               }
               {
                 List = list : mgiDataTypes;

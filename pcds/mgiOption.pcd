@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 30 10:52:21 2001";
+      lastWritten = "Thu Sep  6 11:05:00 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1527,104 +1527,111 @@ Module: mgiOption
             vip_y = 2945;
         }
         {
-          CVSpecimen = CVMenu;
+          CVSpecimen = XmFrame;
           Group: Control
             vip_x = 80;
             vip_y = 3330;
+            vipComment = "";
               {
-                GenotypeSpecimenClipboard = GenotypeSpecimenClipboard : mgiLookup;
-              }
-              {
-                AgeMenu = AgeMenu : mgiOption;
-                    Popups:
+                panedWindow = XmPanedWindow;
                     {
-                      AgePulldown = OptionPulldown;
-                      Group: User
-                        tableForm = Specimen;
-                        tableOption = 14;
-                        tableOptionKey = 5;
+                      GenotypeSpecimenClipboard = GenotypeSpecimenClipboard : mgiLookup;
+                    }
+                    {
+                      CVMenu = CVMenu : mgiOption;
                           {
-                            SearchAll = SearchAll;
+                            AgeMenu = AgeMenu : mgiOption;
+                                Popups:
+                                {
+                                  AgePulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = Specimen;
+                                    tableOption = 14;
+                                    tableOptionKey = 5;
+                                      {
+                                        SearchAll = SearchAll;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            SexMenu = SexMenu : mgiOption;
+                                Popups:
+                                {
+                                  SexPulldown = OptionPulldown;
+                                  Group: User
+                                    tableOption = 17;
+                                    tableOptionKey = 8;
+                                    tableForm = Specimen;
+                                      {
+                                        SearchAll = SearchAll;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            FixationMenu = FixationMenu : mgiOption;
+                                Popups:
+                                {
+                                  FixationPulldown = OptionPulldown;
+                                  Group: User
+                                    tableOption = 18;
+                                    tableOptionKey = 9;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            EmbeddingMenu = EmbeddingMenu : mgiOption;
+                                Popups:
+                                {
+                                  EmbeddingPulldown = OptionPulldown;
+                                  Group: User
+                                    tableOption = 19;
+                                    tableOptionKey = 10;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            HybridizationMenu = HybridizationMenu : mgiOption;
+                                Popups:
+                                {
+                                  HybridizationPulldown = OptionPulldown;
+                                  Group: User
+                                    tableOption = 20;
+                                    tableOptionKey = 11;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            AgeNote = NotePush : mgiDataTypes;
                             Group: Widget
-                              managed = False;
+                              labelString = "Age Notes";
+                            Group: User
+                              targetWidget = Specimen;
+                              targetColumn = 16;
+                          }
+                          {
+                            SpecimenNotes = NotePush : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Specimen Notes";
+                            Group: User
+                              targetWidget = Specimen;
+                              targetColumn = 22;
+                          }
+                          {
+                            ResultsPush = TableDialogPush : mgiDataTypes;
+                            Group: Widget
+                              activateCallback = "D:VerifyEdit(mode = 1),\nD:InSituResultInit";
+                              labelString = Results;
+                            Group: User
+                              targetWidget = Specimen;
+                              tableColumn = 21;
+                              tableKeyColumn = 3;
+                              dialogName = InSituResultsDialog;
                           }
                     }
-              }
-              {
-                SexMenu = SexMenu : mgiOption;
-                    Popups:
-                    {
-                      SexPulldown = OptionPulldown;
-                      Group: User
-                        tableOption = 17;
-                        tableOptionKey = 8;
-                        tableForm = Specimen;
-                          {
-                            SearchAll = SearchAll;
-                            Group: Widget
-                              managed = False;
-                          }
-                    }
-              }
-              {
-                FixationMenu = FixationMenu : mgiOption;
-                    Popups:
-                    {
-                      FixationPulldown = OptionPulldown;
-                      Group: User
-                        tableOption = 18;
-                        tableOptionKey = 9;
-                        tableForm = Specimen;
-                    }
-              }
-              {
-                EmbeddingMenu = EmbeddingMenu : mgiOption;
-                    Popups:
-                    {
-                      EmbeddingPulldown = OptionPulldown;
-                      Group: User
-                        tableOption = 19;
-                        tableOptionKey = 10;
-                        tableForm = Specimen;
-                    }
-              }
-              {
-                HybridizationMenu = HybridizationMenu : mgiOption;
-                    Popups:
-                    {
-                      HybridizationPulldown = OptionPulldown;
-                      Group: User
-                        tableOption = 20;
-                        tableOptionKey = 11;
-                        tableForm = Specimen;
-                    }
-              }
-              {
-                AgeNote = NotePush : mgiDataTypes;
-                Group: Widget
-                  labelString = "Age Notes";
-                Group: User
-                  targetWidget = Specimen;
-                  targetColumn = 16;
-              }
-              {
-                SpecimenNotes = NotePush : mgiDataTypes;
-                Group: Widget
-                  labelString = "Specimen Notes";
-                Group: User
-                  targetWidget = Specimen;
-                  targetColumn = 22;
-              }
-              {
-                ResultsPush = TableDialogPush : mgiDataTypes;
-                Group: Widget
-                  activateCallback = "D:VerifyEdit(mode = 1),\nD:InSituResultInit";
-                  labelString = Results;
-                Group: User
-                  targetWidget = Specimen;
-                  tableColumn = 21;
-                  tableKeyColumn = 3;
-                  dialogName = InSituResultsDialog;
               }
         }
         {
@@ -1710,153 +1717,160 @@ Module: mgiOption
               }
         }
         {
-          CVGel = CVMenu;
+          CVGel = XmFrame;
           Group: Control
             vip_x = 80;
             vip_y = 3165;
+            vipComment = "";
               {
-                ADClipboard = ADClipboard : mgiLookup;
-                Group: User
-                  cmd = "select distinct _Structure_key, dbName from GXD_GelLaneStructure_View where _Assay_key = ";
-                  orderBy = sequenceNum;
+                panedWindow = XmPanedWindow;
                     {
-                      Label = LookupLabel;
-                    }
-                    {
-                      List = list;
-                      Group: Widget
-                        visibleItemCount = 3;
+                      ADClipboard = ADClipboard : mgiLookup;
                       Group: User
-                        targetWidget = GelLane;
-                        targetKey = 4;
-                        targetText = 14;
-                    }
-              }
-              {
-                GenotypeGelClipboard = GenotypeGelClipboard : mgiLookup;
-                    {
-                      Label = LookupLabel : mgiLookup;
-                    }
-                    {
-                      List = list : mgiDataTypes;
-                      Group: Widget
-                        visibleItemCount = 3;
-                    }
-              }
-              {
-                GelControlMenu = GelControlMenu : mgiOption;
-                    Popups:
-                    {
-                      GelControlPulldown = OptionPulldown;
-                      Group: User
-                        tableForm = GelLane;
-                        tableOption = 12;
-                        tableOptionKey = 2;
-                    }
-              }
-              {
-                GelRNATypeMenu = GelRNATypeMenu : mgiOption;
-                    Popups:
-                    {
-                      GelRNATypePulldown = OptionPulldown;
-                      Group: User
-                        tableForm = GelLane;
-                        tableOptionKey = 5;
-                        tableOption = 16;
-                    }
-              }
-              {
-                AgeMenu = AgeMenu : mgiOption;
-                    Popups:
-                    {
-                      AgePulldown = OptionPulldown;
-                      Group: User
-                        tableForm = GelLane;
-                        tableOption = 17;
-                        tableOptionKey = 6;
+                        cmd = "select distinct _Structure_key, dbName from GXD_GelLaneStructure_View where _Assay_key = ";
+                        orderBy = sequenceNum;
                           {
-                            SearchAll = SearchAll;
+                            Label = LookupLabel;
+                          }
+                          {
+                            List = list;
                             Group: Widget
-                              managed = False;
+                              visibleItemCount = 3;
+                            Group: User
+                              targetWidget = GelLane;
+                              targetKey = 4;
+                              targetText = 14;
                           }
                     }
-              }
-              {
-                SexMenu = SexMenu : mgiOption;
-                    Popups:
                     {
-                      SexPulldown = OptionPulldown;
-                      Group: User
-                        tableForm = GelLane;
-                        tableOptionKey = 9;
-                        tableOption = 20;
+                      GenotypeGelClipboard = GenotypeGelClipboard : mgiLookup;
                           {
-                            SearchAll = SearchAll;
+                            Label = LookupLabel : mgiLookup;
+                          }
+                          {
+                            List = list : mgiDataTypes;
                             Group: Widget
-                              managed = False;
+                              visibleItemCount = 3;
                           }
                     }
-              }
-              {
-                GelUnitsMenu = GelUnitsMenu : mgiOption;
-                    Popups:
                     {
-                      GelUnitsPulldown = OptionPulldown;
-                      Group: User
-                        tableForm = GelRow;
-                        tableOptionKey = 2;
-                        tableOption = 5;
-                    }
-              }
-              {
-                StrengthMenu = StrengthMenu : mgiOption;
-                    Popups:
-                    {
-                      StrengthPulldown = OptionPulldown;
-                      Group: User
-                        tableForm = GelRow;
-                        tableOption = "-1";
-                        tableOptionKey = "-1";
-                    }
-              }
-              {
-                CVMenu = CVMenu : mgiOption;
-                Group: Widget
-                  packing = pack_column;
-                  adjustLast = False;
-                  orientation = horizontal;
-                  numColumns = 2;
-                    {
-                      AgeNote = NotePush : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Age Notes";
-                      Group: User
-                        targetWidget = GelLane;
-                        targetColumn = 19;
-                    }
-                    {
-                      LaneNote = NotePush : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Lane Notes";
-                      Group: User
-                        targetWidget = GelLane;
-                        targetColumn = 21;
-                    }
-                    {
-                      RowNote = NotePush : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Row Notes";
-                      Group: User
-                        targetWidget = GelRow;
-                        targetColumn = 6;
-                    }
-                    {
-                      BandNote = NotePush : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Band Notes";
-                      Group: User
-                        targetWidget = GelRow;
-                        targetColumn = "-1";
+                      CVMenu1 = CVMenu : mgiOption;
+                          {
+                            GelControlMenu = GelControlMenu : mgiOption;
+                                Popups:
+                                {
+                                  GelControlPulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOption = 12;
+                                    tableOptionKey = 2;
+                                }
+                          }
+                          {
+                            GelRNATypeMenu = GelRNATypeMenu : mgiOption;
+                                Popups:
+                                {
+                                  GelRNATypePulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOptionKey = 5;
+                                    tableOption = 16;
+                                }
+                          }
+                          {
+                            AgeMenu = AgeMenu : mgiOption;
+                                Popups:
+                                {
+                                  AgePulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOption = 17;
+                                    tableOptionKey = 6;
+                                      {
+                                        SearchAll = SearchAll;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            SexMenu = SexMenu : mgiOption;
+                                Popups:
+                                {
+                                  SexPulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOptionKey = 9;
+                                    tableOption = 20;
+                                      {
+                                        SearchAll = SearchAll;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            GelUnitsMenu = GelUnitsMenu : mgiOption;
+                                Popups:
+                                {
+                                  GelUnitsPulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = GelRow;
+                                    tableOptionKey = 2;
+                                    tableOption = 5;
+                                }
+                          }
+                          {
+                            StrengthMenu = StrengthMenu : mgiOption;
+                                Popups:
+                                {
+                                  StrengthPulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = GelRow;
+                                    tableOption = "-1";
+                                    tableOptionKey = "-1";
+                                }
+                          }
+                          {
+                            CVMenu = CVMenu : mgiOption;
+                            Group: Widget
+                              packing = pack_column;
+                              adjustLast = False;
+                              orientation = horizontal;
+                              numColumns = 2;
+                                {
+                                  AgeNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Age Notes";
+                                  Group: User
+                                    targetWidget = GelLane;
+                                    targetColumn = 19;
+                                }
+                                {
+                                  LaneNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Lane Notes";
+                                  Group: User
+                                    targetWidget = GelLane;
+                                    targetColumn = 21;
+                                }
+                                {
+                                  RowNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Row Notes";
+                                  Group: User
+                                    targetWidget = GelRow;
+                                    targetColumn = 6;
+                                }
+                                {
+                                  BandNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Band Notes";
+                                  Group: User
+                                    targetWidget = GelRow;
+                                    targetColumn = "-1";
+                                }
+                          }
                     }
               }
         }

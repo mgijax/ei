@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Sep  5 14:41:09 2001";
+      lastWritten = "Thu Sep  6 11:05:06 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2747,9 +2747,6 @@ Shift<Key>Tab: prev-tab-group()
         }
         {
           GenotypeModule = Module : MGI;
-          Group: Widget
-            iconName = "D:CreateMGIModule(name = \"Genotype\")";
-            title = GenotypeModule;
           Group: Control
             vip_x = 60;
             vip_y = 360;
@@ -2760,6 +2757,38 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2843,6 +2872,114 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  Search = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Modify = ControlPush;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Delete;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Delete;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Previous;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Previous;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 0;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Modify;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Modify;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Modify;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = RecordCount;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Modify;
+                                    rightAttachment = attach_form;
+                                    rightOffset = 5;
+                                    topAttachment = attach_widget;
+                                    topWidget = CreationDate;
+                                    bottomAttachment = attach_form;
+                                    bottomOffset = 5;
+                                    resizable = true;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Modify;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = RecordCount;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                          }
                     }
                     {
                       Lookup = Lookup : mgiLookup;
@@ -2850,6 +2987,13 @@ Shift<Key>Tab: prev-tab-group()
                             panedWindow = XmPanedWindow;
                                 {
                                   QueryList = QueryList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                        Group: Widget
+                                          labelString = "0 Available Assay Genotypes";
+                                        Group: User
+                                          defaultLabel = "Available Assay Genotypes";
+                                      }
                                 }
                                 {
                                   GenotypeEditClipboard = GenotypeEditClipboard : mgiLookup;

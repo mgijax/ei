@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 28 10:46:45 2001";
+      lastWritten = "Thu Sep  6 10:39:31 2001";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -414,9 +414,9 @@ Module: mgiLookup
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = Genotypes;
+                  labelString = "Genotype Clipboard";
                 Group: User
-                  defaultLabel = Genotypes;
+                  defaultLabel = "Genotype Clipboard";
               }
               {
                 List = list : mgiDataTypes;
@@ -427,6 +427,17 @@ Module: mgiLookup
                 Add = TablePush : mgiTable;
                 Group: Widget
                   activateCallback = "D:GenotypeClipboardAdd";
+              }
+              {
+                Delete = TablePush : mgiTable;
+              }
+              {
+                Clear = TablePush : mgiTable;
+              }
+              {
+                Sort = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
               }
         }
         {
