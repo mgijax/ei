@@ -1,3 +1,11 @@
+TAG: ei-7-0-25
+DATE: 06/04/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 3750/OtherReference-Table.xrtTblNumRows
+2) TR 3677; update GXD_Genotype.modifiedBy upon modification
+
 TAG: ei-7-0-24
 DATE: 05/28/2002
 STAFF: lec
