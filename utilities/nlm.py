@@ -620,8 +620,12 @@ def processRec(rec, rectags):
 	'''
 
 	# Get Year from DB (format 'YYYY Mon')
-	dList = string.split(rec['DP'], ' ', 1)
-	rec['YR'] = dList[0]
+	try:
+		dList = string.split(rec['DP'], ' ', 1)
+		rec['YR'] = dList[0]
+	except:
+		printRec(nomatchFile, rec, rectags, 'Record missing (DP) Field')
+		return
 
 	# Sometimes there is no IP field & the info is embedded in the VI field
 	# In this case, extract the IP info and re-assign VI
