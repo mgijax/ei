@@ -53,8 +53,13 @@ rules:
 --
 
 	CreateMGIModule does
-	  launchedFrom : widget := CreateMGIModule.source_widget;
-	  (void) create dmodule(CreateMGIModule.name, top, launchedFrom);
+	  launchedFrom : widget;
+	  launchedTop : widget;
+	  
+	  launchedFrom := CreateMGIModule.source_widget;
+	  launchedTop := launchedFrom.root;
+
+	  (void) create dmodule(CreateMGIModule.name, launchedTop, launchedFrom);
 	end does;
 
 --

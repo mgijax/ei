@@ -49,8 +49,7 @@ devents:
 	Add :local [];
 	Delete :local [];
 
-	GenotypeExit :global [];
-	VocAnnotExit :global [];	-- defined in VocAnnot.d
+	GenotypeExit :local [];
 
 	Modify :local [];
 
@@ -937,11 +936,6 @@ rules:
 --
 
 	GenotypeExit does
-
-	  if (mgi->VocAnnotModule != nil) then
-	    send(VocAnnotExit, 0);
-	  end if;
-
 	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;

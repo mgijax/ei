@@ -56,18 +56,17 @@ dmodule VocAnnot is
 devents:
 
 	INITIALLY [parent : widget;
-		   launchedFrom : widget;];			-- Initialize form
+		   launchedFrom : widget;];		-- Initialize form
 	Add :local [];					-- Add record
-	BuildDynamicComponents :local [];		-- Build Dynamic widget components
 	Delete :local [];				-- Delete record
-	VocAnnotExit :global [];			-- Destroys D module instance & cleans up
+	VocAnnotExit :local [];				-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
 	SelectGOReferences :local [];			-- Select GO References
-	SetAnnotTypeDefaults :exported [];		-- Set Defaults based on Annotation Type
+	SetAnnotTypeDefaults :local [];			-- Set Defaults based on Annotation Type
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
@@ -110,9 +109,6 @@ rules:
 	  -- Create the widget hierarchy in memory
 	  top := create widget("VocAnnotModule", nil, mgi);
 
-          -- Build Dynamic GUI Components
-          send(BuildDynamicComponents, 0);
- 
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
           ab := INITIALLY.launchedFrom;
@@ -135,25 +131,6 @@ rules:
 	end does;
 
 --
--- BuildDynamicComponents
--- (optional)
---
--- Activated from:  devent INITIALLY
---
--- For initializing dynamic GUI components prior to managing the top form.
---
--- Initialize dynamic option menus
--- Initialize lookup lists
---
- 
-        BuildDynamicComponents does
-
-	  InitOptionMenu.option := top->VocAnnotTypeMenu;
-	  send(InitOptionMenu, 0);
-
-        end does;
- 
---
 -- Init
 --
 -- Activated from:  devent INITIALLY
@@ -168,7 +145,7 @@ rules:
 
         Init does
 	  tables := create list("widget");
-	  genotype : widget := mgi->GenotypeModule;
+	  genotype : widget := ab.root->GenotypeModule;
 	  gclipboardList : widget;
 	  i : integer := 0;
 	  gKey : string;
@@ -189,11 +166,12 @@ rules:
           send(Clear, 0);
 
 	  -- If launched from the Genotype Module...
-	  if (genotype != nil) then
+
+	  if (genotype != nil and ab.is_defined("annotTypeKey") != nil) then
 
 	    -- select the appropriate Annotation Type
             SetOption.source_widget := top->VocAnnotTypeMenu;
-            SetOption.value := (string) genotype->VocAnnotation.annotTypeKey;
+            SetOption.value := (string) ab.annotTypeKey;
             send(SetOption, 0);
 	    send(SetAnnotTypeDefaults, 0);
 
