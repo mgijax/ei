@@ -108,6 +108,14 @@ rules:
 	    return;
 	  end if;
 
+	  if (verify.is_defined("verifyDialog") = nil) then
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Invalid field has been selected.\n\n" +
+	      "Choose the field where you wish the selected item to be placed.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
 	  -- If Verify template is not applicable to Dialog, return
 
 	  if (verify.verifyDialog != top.child_by_class("XmForm").name) then
