@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 29 15:25:59 2004";
+      lastWritten = "Thu Sep 30 11:57:34 2004";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -504,7 +504,7 @@ Module: mgiTable
                 Group: Widget
                   userDefinedAttributes = "refsType:Int(Int)=\"5\"\nrefsName:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:String(String)=\"-1\"\nrefsCurrentType:Int(Int)=\"4\"\norigRefsKey:Int=\"0\"\n";
                   xrtTblNumColumns = 9;
-                  xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Current Type,Type,Ref Type,J#,Citation";
+                  xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Current Type,Type,Type,J#,Citation";
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 60)";
                   xrtTblMaxLengthSeries = "(all 8 255)";
                   xrtTblPixelWidthSeries = "(all 0-5 0)";
@@ -641,6 +641,7 @@ Module: mgiTable
                   xrtTblNumColumns = 8;
                   xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                   xrtTblMaxLengthSeries = "(all 5 255)";
+                  xrtTblVisibleRows = 3;
               }
               {
                 AddRow = TablePush : mgiTable;

@@ -159,7 +159,6 @@ devents:
 
 	Modify :local [];
 	ModifyNomenNotes :local [];
-	ModifySynonym :local [];
 
 	PrepareSearch :local [];
 
@@ -273,6 +272,12 @@ rules:
 	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
 	  send(InitRefTypeTable, 0);
 
+	  -- Initialize Synonym table
+
+	  InitSynTypeTable.table := top->Synonym->Table;
+	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
+	  send(InitSynTypeTable, 0);
+
 	  -- Initialize Notes form
 
 	  InitNoteForm.notew := top->mgiNoteForm;
@@ -299,14 +304,14 @@ rules:
 
 	  -- List of all Table widgets used in form
 
-	  tables.append(top->SynonymReference->Table);
+	  tables.append(top->Synonym->Table);
 	  tables.append(top->Reference->Table);
 	  tables.append(top->AccessionReference->Table);
 	  tables.append(top->ModificationHistory->Table);
 
 	  -- List of all Table widgets used in Reset
 
-	  resettables.append(top->SynonymReference->Table);
+	  resettables.append(top->Synonym->Table);
 	  resettables.append(top->AccessionReference->Table);
 
 	  curationState := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = " + mgi_DBprstr(INTERNALCURATIONSTATE));
@@ -348,6 +353,9 @@ rules:
 	    InitRefTypeTable.table := top->Reference->Table;
 	    InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
 	    send(InitRefTypeTable, 0);
+	    InitSynTypeTable.table := top->Synonym->Table;
+	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
+	    send(InitSynTypeTable, 0);
 	  end if;
 	end does;
 
@@ -420,7 +428,6 @@ rules:
 		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyNomenNotes, 0);
-	  send(ModifySynonym, 0);
 
 	  --  Process References
 
@@ -429,6 +436,14 @@ rules:
 	  ProcessRefTypeTable.objectKey := currentNomenKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  --  Process Synonyms
+
+	  ProcessSynTypeTable.table := top->Synonym->Table;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
+	  ProcessSynTypeTable.objectKey := currentNomenKey;
+	  send(ProcessSynTypeTable, 0);
+          cmd := cmd + top->Synonym->Table.sqlCmd;
 
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
@@ -593,8 +608,6 @@ rules:
 	    set := set + "statusNote = " + mgi_DBprstr(top->StatusNotes->text.value) + ",";
 	  end if;
 
-	  send(ModifySynonym, 0);
-
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
@@ -602,6 +615,14 @@ rules:
 	  ProcessRefTypeTable.objectKey := currentNomenKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  --  Process Synonyms
+
+	  ProcessSynTypeTable.table := top->Synonym->Table;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
+	  ProcessSynTypeTable.objectKey := currentNomenKey;
+	  send(ProcessSynTypeTable, 0);
+          cmd := cmd + top->Synonym->Table.sqlCmd;
 
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
@@ -645,82 +666,6 @@ rules:
 	end does;
 
 --
--- ModifySynonym
---
--- Activated from: devent Add/Modify
---
--- Construct insert/update/delete for Nomen Synonym Names
---
--- The first row is always the Author's Name
---
-
-	ModifySynonym does
-          table : widget := top->SynonymReference->Table;
-          row : integer := 0;
-          editMode : string;
-          key : string;
-          name : string;
-	  refsKey : string;
-	  refsCurrentKey : string;
-	  isAuthor : string;
-          set : string := "";
-	  keyName : string := "synKey";
-	  keysDeclared : boolean := false;
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (row > 0 and editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            key := mgi_tblGetCell(table, row, table.synKey);
-            name := mgi_tblGetCell(table, row, table.synonym);
-	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
-	    refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
-
-	    if (row = 0) then
-	      isAuthor := "1";
-	    else
-	      isAuthor := "0";
-	    end if;
- 
-	    if (refsKey.length = 0) then
-	      refsKey := "NULL";
-	    end if;
-
-            if (editMode = TBL_ROW_ADD) then
-	      
-              if (not keysDeclared) then
-                cmd := cmd + mgi_setDBkey(NOM_SYNONYM, NEWKEY, keyName);
-                keysDeclared := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
-
-              cmd := cmd +
-                     mgi_DBinsert(NOM_SYNONYM, keyName) +
-		     currentNomenKey + "," +
-		     refsKey + "," +
-		     mgi_DBprstr(name) + "," +
-		     isAuthor + "," + 
-		     global_loginKey + "," + global_loginKey + ")\n";
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "name = " + mgi_DBprstr(name) +
-		     ",_Refs_key = " + refsKey;
-              cmd := cmd + mgi_DBupdate(NOM_SYNONYM, key, set);
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(NOM_SYNONYM, key);
-            end if;
- 
-            row := row + 1;
-	  end while;
-	end does;
-
---
 -- PrepareSearch
 --
 -- Activated from:  devent Search
@@ -729,12 +674,8 @@ rules:
 --
 
 	PrepareSearch does
-	  from_other       : boolean := false;
 
 	  printSelect := "";
-
-	  value : string;
-	  table : widget;
 	  i : integer;
 
 	  from := " from " + mgi_DBtable(NOM_MARKER) + " m";
@@ -774,6 +715,19 @@ rules:
 	  send(SearchRefTypeTable, 0);
 	  from := from + top->Reference->Table.sqlFrom;
 	  where := where + top->Reference->Table.sqlWhere;
+	  if (top->Reference->Table.sqlWhere.length > 0) then
+	    printSelect := printSelect + "\nReference = " + top->Reference->Table.sqlWhere;
+	  end if;
+
+	  SearchSynTypeTable.table := top->Synonym->Table;
+	  SearchSynTypeTable.tableID := MGI_SYNONYM_NOMEN_VIEW;
+          SearchSynTypeTable.join := "m." + mgi_DBkey(NOM_MARKER);
+	  send(SearchSynTypeTable, 0);
+	  from := from + top->Synonym->Table.sqlFrom;
+	  where := where + top->Synonym->Table.sqlWhere;
+	  if (top->Synonym->Table.sqlWhere.length > 0) then
+	    printSelect := printSelect + "\nSynonym = " + top->Synonym->Table.sqlWhere;
+	  end if;
 
 	  -- To search each note type individually...
 	  -- remove noteTypeKey and just have one call to SearchNoteForm
@@ -836,40 +790,14 @@ rules:
 	    printSelect := printSelect + "\nStatus Notes = " + top->StatusNotes->text.value;
 	  end if;
 	    
-	  -- Check both Author and Synonym Names
-	  table := top->SynonymReference->Table;
-	  i := 0;
-	  while (i <= 1) do
-            value := mgi_tblGetCell(table, i, table.synonym);
-            if (value.length > 0) then
-	      where := where + "\nand mo.name like " + mgi_DBprstr(value);
-	      printSelect := printSelect + "\nSynonym Name = " + value;
-	      from_other := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, i, table.refsKey);
-            if (value.length > 0 and value != "NULL") then
-	      where := where + "\nand mo._Refs_key = " + value;
-	      printSelect := printSelect + "\nSynonym Reference = J:" + mgi_tblGetCell(table, i, table.jnum);
-	      from_other := true;
-	    end if;
-	    i := i + 1;
-	  end while;
-
 	  -- If SymbolName filled in, then ignore all other search criteria
 
           if (top->SymbolName->text.value.length > 0) then
 	    where := "\nand (m.symbol like " + mgi_DBprstr(top->SymbolName->text.value) +
 	             "\nor m.name like " + mgi_DBprstr(top->SymbolName->text.value) + ")";
 	    printSelect := printSelect + "\nSymbol/Name = \n" + top->SymbolName->text.value;
-	    from_other := false;
 	  end if;
 	    
-	  if (from_other) then
-	    from := from + "," + mgi_DBtable(NOM_SYNONYM) + " mo";
-	    where := where + "\nand m._Nomen_key = mo._Nomen_key";
-	  end if;
-
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
           end if;
@@ -975,19 +903,17 @@ rules:
 	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
 	  send(InitRefTypeTable, 0);
 
+	  InitSynTypeTable.table := top->Synonym->Table;
+	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
+	  send(InitSynTypeTable, 0);
+
           (void) busy_cursor(top);
 
 	  table : widget;
 	  currentNomenKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from NOM_Marker_View " +
-		 " where _Nomen_key = " + currentNomenKey + "\n" +
-	         "select * from " + mgi_DBtable(NOM_SYNONYM) +
-		 " where _Nomen_key = " + currentNomenKey + 
-		 " order by isAuthor desc, name\n" +
-	         "select * from " + mgi_DBtable(NOM_SYNONYM_VIEW) +
-		 " where _Nomen_key = " + currentNomenKey + 
-		 " order by isAuthor desc, name\n";
+		 " where _Nomen_key = " + currentNomenKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1033,32 +959,8 @@ rules:
                 SetOption.source_widget := top->ChromosomeMenu;
                 SetOption.value := mgi_getstr(dbproc, 9);
                 send(SetOption, 0);
-
-	      elsif (results = 2) then
-		table := top->SynonymReference->Table;
-
-		if (row = 0 and mgi_getstr(dbproc, 5) != "1") then
-		  row := row + 1;
-		end if;
-
-                (void) mgi_tblSetCell(table, row, table.synKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.synonym, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
-		table := top->SynonymReference->Table;
-
-		if (row = 0 and mgi_getstr(dbproc, 5) != "1") then
-		  row := row + 1;
-		end if;
-
-                (void) mgi_tblSetCell(table, row, table.synKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.synonym, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 11));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      end if;
+
 	      row := row + 1;
 	    end while;
 	    results := results + 1;
@@ -1070,6 +972,11 @@ rules:
           LoadRefTypeTable.objectKey := currentNomenKey;
           send(LoadRefTypeTable, 0);
  
+          LoadSynTypeTable.table := top->Synonym->Table;
+	  LoadSynTypeTable.tableID := MGI_SYNONYM_NOMEN_VIEW;
+          LoadSynTypeTable.objectKey := currentNomenKey;
+          send(LoadSynTypeTable, 0);
+
 	  LoadNoteForm.notew := top->mgiNoteForm;
 	  LoadNoteForm.tableID := MGI_NOTE_NOMEN_VIEW;
 	  LoadNoteForm.objectKey := currentNomenKey;

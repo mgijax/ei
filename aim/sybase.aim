@@ -41,6 +41,7 @@ CALLS
 	 global_reportdir				 : "char *";
 	 global_database				 : "char *";
 	 global_server  				 : "char *";
+	 global_radar  				 	 : "char *";
 
          ------------------------------
          -- Sybase Binding to Dialog --

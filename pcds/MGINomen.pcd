@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 23 11:24:34 2004";
+      lastWritten = "Thu Sep 30 15:32:54 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -274,7 +274,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Current Type,Type key,Review key,Reference Type,J#,Citation,Review";
+                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Current Type,Type key,Review key,Type,J#,Citation,Review";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 25)(all 9 60)(all 10 7)";
                                           xrtTblNumColumns = 11;
                                           userDefinedAttributes = "reviewKey:Int(Int)=\"6\"\nreview:Int(Int)=\"10\"\n";
@@ -307,36 +307,36 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  SynonymReference = ReferenceTable : mgiTable;
+                                  Synonym = SynonymTypeTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
+                                    leftWidget = Reference;
                                     rightAttachment = attach_form;
+                                    rightOffset = 5;
                                     topAttachment = attach_widget;
                                     topWidget = Reference;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Reference;
-                                    topOffset = 5;
-                                    rightOffset = 2;
                                       {
-                                        Table = mgiTable;
+                                        Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 3;
-                                          xrtTblNumColumns = 7;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 30)(all 5 10)(all 6 60)(all label 6)";
-                                          xrtTblColumnLabels = "Mode,Other Key,Current Key,New Key,Synonym,J#,Citation";
-                                          xrtTblMaxLengthSeries = "(all 4 255)(all 6 255)";
-                                          xrtTblNumRows = 6;
-                                          xrtTblEditableSeries = "(all 0-3 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          userDefinedAttributes = "synonym:Int(Int)=\"4\"\nsynKey:Int(Int)=\"1\"\n";
-                                          xrtTblRowLabels = "Author,Other,Other,Other,Other,Other";
-                                          xrtTblTraversableSeries = "(all 0-3 False)";
-                                        Group: User
-                                          jnum = 5;
-                                          citation = 6;
-                                          refsCurrentKey = 2;
-                                          refsKey = 3;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 6)(all 5 50)(all 6 10)(all 7 30)";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        SynonymTypeMenu = SynonymTypeMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              SynonymTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Nomen_View order by _SynonymType_key";
+                                            }
                                       }
                                 }
                                 {
@@ -381,10 +381,10 @@ Shift<Key>Tab: prev-tab-group()
                                   AccessionReference = AccessionReference : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = SynonymReference;
+                                    leftWidget = Synonym;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = SynonymReference;
+                                    topWidget = Synonym;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;

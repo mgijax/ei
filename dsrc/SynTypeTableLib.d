@@ -167,10 +167,9 @@ rules:
 
           cmd := "select _Synonym_key, _SynonymType_key, synonymType, synonym";
 
---	  place holder for synonyms objects which have require refrences
---	  if (tableID = ) then
---	      cmd := " , _Refs_key, jnum, citation";
---        end if;
+	  if (tableID = MGI_SYNONYM_NOMEN_VIEW) then
+	      cmd := cmd + " , _Refs_key, jnum, short_citation";
+          end if;
 
 	  cmd := cmd + " from " + mgi_DBtable(tableID) +
 		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
@@ -189,11 +188,11 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.synType, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.synName, mgi_getstr(dbproc, 4));
 
---	      if (tableID = ) then
---	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 5));
---	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 6));
---	        (void) mgi_tblSetCell(table, row, table.citaiton, mgi_getstr(dbproc, 7));
---	      end if;
+	      if (tableID = MGI_SYNONYM_NOMEN_VIEW) then
+	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 7));
+	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
               row := row + 1;

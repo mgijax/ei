@@ -799,6 +799,7 @@ char *mgi_DBkey(int table)
     case MGI_SYNONYMTYPE:
             strcpy(buf, "_SynonymType_key");
 	    break;
+    case MGI_SYNONYM_NOMEN_VIEW:
     case MGI_SYNONYM_STRAIN_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
@@ -888,9 +889,6 @@ char *mgi_DBkey(int table)
 	    break;
     case NOM_MARKER:
             strcpy(buf, "_Nomen_key");
-	    break;
-    case NOM_SYNONYM:
-            strcpy(buf, "_Synonym_key");
 	    break;
     case PRB_ALIAS:
             strcpy(buf, "_Alias_key");
@@ -1479,8 +1477,14 @@ char *mgi_DBtable(int table)
     case MGI_SYNONYMTYPE:
 	    strcpy(buf, "MGI_SynonymType");
 	    break;
+    case MGI_SYNONYM_NOMEN_VIEW:
+	    strcpy(buf, "MGI_Synonym_Nomen_View");
+	    break;
     case MGI_SYNONYM_STRAIN_VIEW:
 	    strcpy(buf, "MGI_Synonym_Strain_View");
+	    break;
+    case MGI_SYNONYMTYPE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_SynonymType_Nomen_View");
 	    break;
     case MGI_SYNONYMTYPE_STRAIN_VIEW:
 	    strcpy(buf, "MGI_SynonymType_Strain_View");
@@ -1646,12 +1650,6 @@ char *mgi_DBtable(int table)
 	    break;
     case NOM_STATUS:
 	    strcpy(buf, "VOC_Term_NomenStatus_View");
-	    break;
-    case NOM_SYNONYM:
-	    strcpy(buf, "NOM_Synonym");
-	    break;
-    case NOM_SYNONYM_VIEW:
-	    strcpy(buf, "NOM_Synonym_View");
 	    break;
     case NOM_TRANSFERSYMBOL:
 	    strcpy(buf, "NOM_transferToMGD");
@@ -1957,7 +1955,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOTES:
     case MRK_OFFSET:
     case MRK_REFERENCE:
-    case NOM_SYNONYM:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
     case PRB_ALIAS:
@@ -2347,9 +2344,6 @@ char *mgi_DBinsert(int table, char *keyName)
 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case NOM_SYNONYM:
-            sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case PRB_ALIAS:
             sprintf(buf, "insert %s (%s, _Reference_key, alias, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
@@ -2533,7 +2527,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MRK_HISTORY:
       case MRK_MARKER:
       case NOM_MARKER:
-      case NOM_SYNONYM:
       case PRB_ALIAS:
       case PRB_ALLELE:
       case PRB_ALLELE_STRAIN:
@@ -2585,7 +2578,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MRK_HISTORY:
       case MRK_MARKER:
       case NOM_MARKER:
-      case NOM_SYNONYM:
       case PRB_ALIAS:
       case PRB_ALLELE:
       case PRB_ALLELE_STRAIN:

@@ -138,7 +138,7 @@ rules:
 
 	  top := create widget("StrainModule", nil, mgi);
 
-	  -- Initialize Reference table
+	  -- Initialize Synonym table
 
 	  InitSynTypeTable.table := top->Synonym->Table;
 	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
@@ -236,7 +236,7 @@ rules:
 	  send(ModifyType, 0);
 	  send(ModifySuperStandard, 0);
 
-	  --  Process References
+	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
 	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
@@ -357,7 +357,7 @@ rules:
 	  send(ModifyType, 0);
 	  send(ModifySuperStandard, 0);
 
-	  --  Process References
+	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
 	  ProcessSynTypeTable.tableID := MGI_SYNONYM;

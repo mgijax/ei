@@ -227,10 +227,8 @@ extern char *global_version;
 
 #define NOM_MARKER			500
 #define NOM_MARKER_VIEW			501
-#define NOM_SYNONYM     		502
-#define NOM_ACC_REFERENCE		503
-#define NOM_SYNONYM_VIEW     		504
-#define NOM_MARKER_VALID_VIEW		505
+#define NOM_ACC_REFERENCE		502
+#define NOM_MARKER_VALID_VIEW		503
 
 /* MGI Tables */
 
@@ -267,6 +265,8 @@ extern char *global_version;
 #define MGI_SYNONYMTYPE			630
 #define MGI_SYNONYM_STRAIN_VIEW		631
 #define MGI_SYNONYMTYPE_STRAIN_VIEW	632
+#define MGI_SYNONYM_NOMEN_VIEW		633
+#define MGI_SYNONYMTYPE_NOMEN_VIEW	634
 
 
 /* Strains Tables */
