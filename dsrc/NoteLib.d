@@ -178,7 +178,7 @@ rules:
 	  notew : widget := LoadNoteForm.notew;
 	  tableID : integer := LoadNoteForm.tableID;
 	  objectKey : string := LoadNoteForm.objectKey;
-	  noteTypeKey : integer;
+	  noteTypeKey : integer := LoadNoteForm.noteTypeKey;
 	  childnote : widget := nil;
 	  notecontinuation : boolean := false;
 	  note : string;
@@ -198,8 +198,13 @@ rules:
 	      tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
             cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
 	  	  " from " + mgi_DBtable(tableID) +
-		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		   " order by _NoteType_key, sequenceNum";
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey;
+
+            if (noteTypeKey > 0) then
+	      cmd := cmd + "and _NoteType_key = " + (string) noteTypeKey;
+	    end if;
+
+	    cmd := cmd + " order by _NoteType_key, sequenceNum";
 	  else
             cmd := "select _NoteType_key, note, sequenceNum" +
 	  	  " from " + mgi_DBtable(tableID) +

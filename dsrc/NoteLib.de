@@ -21,7 +21,8 @@ InitNoteForm [notew : widget;              -- mgiNoteForm widget
 -- Load NoteForm from tableID for given objectKey
 LoadNoteForm [notew : widget;              -- mgiNoteForm widget
 	      tableID : integer;           -- ID of table
-	      objectKey : string;];        -- primary key of object to load
+	      objectKey : string;          -- primary key of object to load
+	      noteTypeKey : integer := -1;];    -- note type to load (if -1, search all)
 
 -- Process NoteForm data from tableID for given objectKey
 ProcessNoteForm [notew : widget;              -- mgiNoteForm widget

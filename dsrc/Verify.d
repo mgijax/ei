@@ -549,13 +549,15 @@ rules:
 
 	        whichMarker := 1;
  
-                select := "select _Allele_key, _Marker_key, symbol, markerSymbol " +
-			  "from " + mgi_DBtable(ALL_ALLELE_VIEW) +
-                          " where symbol = " + mgi_DBprstr(value) +
-			  " and status = " + mgi_DBprstr(ALL_STATUS_APPROVED);
+                select := "select a._Allele_key, a._Marker_key, a.symbol, markerSymbol = m.symbol " +
+			  "from ALL_Allele a, MRK_Marker m, VOC_Term t " +
+                          " where a.symbol = " + mgi_DBprstr(value) +
+			  " and a._Marker_key = m._Marker_key " +
+			  " and a._Allele_Status_key = t._Term_key " +
+			  "and t.term = " + mgi_DBprstr(ALL_STATUS_APPROVED);
 
 	        if (markerKey.length > 0 and markerKey != "NULL") then
-                  select := select + " and _Marker_key = " + markerKey;
+                  select := select + " and a._Marker_key = " + markerKey;
 	        end if;
 
                 dbproc := mgi_dbopen();

@@ -227,7 +227,8 @@ rules:
 
 	  send(ModifyAllelePair, 0);
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	               "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
+	               "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n" +
+	               "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
@@ -324,7 +325,8 @@ rules:
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
 	           "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
+	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n" +
+	           "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 	  end if;
 
           ModifySQL.cmd := cmd;
@@ -533,7 +535,7 @@ rules:
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerChr);
           if (value.length > 0) then
-	      where := where + "\nand ap.chromosome like " + mgi_DBprstr(value);
+	      where := where + "\nand ap.chromosome = " + mgi_DBprstr(value);
 	      from_allele := true;
 	  end if;
 
@@ -735,7 +737,8 @@ rules:
 	         "select * from " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + 
 		 " where _Genotype_key = " + currentRecordKey + "\norder by sequenceNum\n" +
 		 "select note, sequenceNum from " + mgi_DBtable(MGI_NOTE_GENOTYPE_VIEW) +
-		 " where _Object_key = " + currentRecordKey + "\norder by sequenceNum\n";
+		 " where _Object_key = " + currentRecordKey + 
+		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
