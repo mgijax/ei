@@ -3466,7 +3466,6 @@ rules:
 	  row : integer;
 	  column : integer;
 	  reason : integer;
-	  pos : integer;
 
 	  isTable := mgi_tblIsTable(sourceWidget);
 
@@ -3493,17 +3492,8 @@ rules:
 
 	  if (value.length = 0) then
 	    if (isTable) then
-	      if (sourceWidget.annotVocab = "PhenoSlim" or
-		  sourceWidget.annotVocab = "Mammalian Phenotype") then
-		evidence := "EE";
-	        pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring(evidence));
-		evidenceKey := top->EvidenceCodeList->List.keys[pos];
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, evidenceKey);
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, evidence);
-	      else
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
-	      end if;
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
 	    end if;
 	    return;
 	  end if;

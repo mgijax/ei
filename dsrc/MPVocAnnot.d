@@ -24,6 +24,7 @@ devents:
 		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];
+	CopyAnnotation :local [];			-- Copy Annotation values from previous row
 	Delete :local [];				-- Delete record
 	MPVocAnnotExit :local [];			-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
@@ -41,6 +42,10 @@ devents:
 			   row : integer;
 			   reason : integer;];
 	SetMPPermissions :local [];
+
+	MPClipboardAdd :local [];
+	MPClipboardAddAll :local [];
+	MPClipboardCopy :local [];
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
@@ -63,6 +68,8 @@ locals:
 	annotTable : widget;		-- Annotation table
 	headerTable : widget;		-- Header table
 	noteTable : widget;		-- Notes table
+
+        annotclipboard : widget;	-- Annotation clipboard
 
 rules:
 
@@ -148,6 +155,7 @@ rules:
 	  annotTable := top->Annotation->Table;
 	  headerTable := top->Header->Table;
 	  noteTable := top->Note->Table;
+          annotclipboard := top->MPAnnotClipboard;
 
 	end does;
 
@@ -278,9 +286,7 @@ rules:
           termKey : string;
 	  notKey : string;
 	  refsKey : string;
-	  currentRefsKey : string;
           evidenceKey : string;
-          currentEvidenceKey : string;
           set : string := "";
 	  keyDeclared : boolean := false;
 	  keyName : string := "annotEvidenceKey";
@@ -325,10 +331,8 @@ rules:
             annotKey := mgi_tblGetCell(annotTable, row, annotTable.annotKey);
             termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
             notKey := mgi_tblGetCell(annotTable, row, annotTable.notKey);
-            currentRefsKey := mgi_tblGetCell(annotTable, row, annotTable.currentRefsKey);
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
             evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
-            currentEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.currentEvidenceKey);
  
 	    if (notKey = "NULL" or notKey.length = 0) then
 	      notKey := NO;
@@ -913,12 +917,10 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentEvidenceKey, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceSeqNum, mgi_getstr(dbproc, 17));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentRefsKey, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
@@ -1065,6 +1067,204 @@ rules:
           SetOption.value := mgi_tblGetCell(table, row, table.notKey);
           send(SetOption, 0);
         end does;
+
+--
+-- CopyAnnotation
+--
+--	Copy the previous row's values to the current row
+--	if current row value is blank and previous row value is not blank.
+--
+
+	CopyAnnotation does
+	  table : widget := CopyAnnotation.source_widget;
+	  row : integer := CopyAnnotation.row;
+	  column : integer := CopyAnnotation.column;
+	  reason : integer := CopyAnnotation.reason;
+	  pos : integer;
+
+          if (CopyAnnotation.reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
+            return;
+          end if;
+ 
+          if (mgi_tblGetCell(table, row, table.editMode) = TBL_ROW_DELETE) then
+            return;
+          end if;
+ 
+	  -- if in first row and evidence and evidence is blank, default to "EE"
+
+	  if (row = 0 and column = annotTable.evidence and mgi_tblGetCell(annotTable, row, annotTable.evidence) = "") then
+            pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("EE"));
+	    mgi_tblSetCell(annotTable, row, annotTable.evidence, "EE");
+	    mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, top->EvidenceCodeList->List.keys[pos]);
+	    return;
+	  end if;
+
+	  -- Only copy J: or Evidence Code
+
+	  if (row = 0 or (column != annotTable.jnum and column != annotTable.evidence)) then
+	    return;
+	  end if;
+
+	  if (mgi_tblGetCell(annotTable, row, column) = "" and
+	      mgi_tblGetCell(annotTable, row - 1, column) != "") then
+
+	    mgi_tblSetCell(annotTable, row, column, mgi_tblGetCell(annotTable, row - 1, column));
+
+	    if (column = annotTable.jnum) then
+	      mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_tblGetCell(annotTable, row - 1, annotTable.refsKey));
+	      mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_tblGetCell(annotTable, row - 1, annotTable.citation));
+	    elsif (column = annotTable.evidence) then
+	      mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_tblGetCell(annotTable, row - 1, annotTable.evidenceKey));
+	    end if;
+
+	    CommitTableCellEdit.source_widget := annotTable;
+	    CommitTableCellEdit.row := row;
+	    CommitTableCellEdit.value_changed := true;
+	    send(CommitTableCellEdit, 0);
+	  end if;
+
+	end does;
+
+--
+-- MPClipboardAdd 
+--
+-- Adds the current MP Annotation to the clipboard.
+--
+
+	MPClipboardAdd does
+          row : integer;
+          item : string;
+          key : string;
+
+          -- only add if there is a current MP Annotation
+
+          if (top->QueryList->List.row = 0) then
+            return;
+          end if;
+
+          row := mgi_tblGetCurrentRow(annotTable);
+
+	  if (row < 0) then
+	    return;
+	  end if;
+
+	  key := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
+
+	  if (key.length = 0) then
+	    return;
+	  end if;
+
+          item := mgi_tblGetCell(annotTable, row, annotTable.termAccID) + "," + 
+		mgi_tblGetCell(annotTable, row, annotTable.term);
+
+          ClipboardAdd.clipboard := annotclipboard;
+          ClipboardAdd.item := item;
+          ClipboardAdd.key := key;
+          send(ClipboardAdd, 0);
+	end does;
+
+--
+-- MPClipboardAddAll 
+--
+-- Adds the all MP Annotations to the clipboard.
+--
+
+	MPClipboardAddAll does
+          row : integer := 0;
+	  editMode : string;
+          item : string;
+          key : string;
+
+          while (row < mgi_tblNumRows(annotTable)) do
+
+            editMode := mgi_tblGetCell(annotTable, row, annotTable.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+
+	    key := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
+
+            item := mgi_tblGetCell(annotTable, row, annotTable.termAccID) + "," + 
+		  mgi_tblGetCell(annotTable, row, annotTable.term);
+
+            ClipboardAdd.clipboard := annotclipboard;
+            ClipboardAdd.item := item;
+            ClipboardAdd.key := key;
+            send(ClipboardAdd, 0);
+
+	    row := row + 1;
+	  end while; 
+	end does;
+
+--
+-- MPClipboardCopy
+--
+-- Takes the entries in the clipboard and appends the annotations to the annotTable.
+--
+
+	MPClipboardCopy does
+	  i : integer := 0;
+	  row : integer := 0;
+	  editMode : string;
+	  cmd : string;
+	  key : string;
+	  
+	  (void) busy_cursor(top);
+
+	  -- find next available row in table
+
+          while (row < mgi_tblNumRows(annotTable)) do
+            editMode := mgi_tblGetCell(annotTable, row, annotTable.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+
+	    row := row + 1;
+	  end while; 
+
+          dbproc : opaque := mgi_dbopen();
+
+          while (i < annotclipboard->List.items.count) do
+	    key := annotclipboard->List.keys[i];
+
+	    cmd := "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.*" +
+		   " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," + mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
+		   " where a._AnnotType_key = " + annotTypeKey +
+		   " and a._Annot_key = e._Annot_key " +
+		   " and e._AnnotEvidence_key = " + key;
+
+            (void) dbcmd(dbproc, cmd);
+            (void) dbsqlexec(dbproc);
+ 
+            while (dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.termSeqNum, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
+
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
+
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceSeqNum, mgi_getstr(dbproc, 17));
+
+		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_ADD);
+		row := row + 1;
+              end while;
+            end while;
+ 
+            i := i + 1;
+          end while;
+
+	(void) dbclose(dbproc);
+
+	(void) reset_cursor(top);
+
+	end does;
 
 --
 -- Exit
