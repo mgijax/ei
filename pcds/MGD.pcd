@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 18 15:17:27 2005";
+      lastWritten = "Mon Jan 31 12:55:18 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -5883,6 +5883,7 @@ Module: MGD
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab:  VerifyMLCMarker()";
+                                                columns = 30;
                                             }
                                       }
                                 }
@@ -5910,6 +5911,25 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = ChromosomeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  IsDeletedMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = IsDeletedPulldown;
+                                    labelString = "Deleted?";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = MLCModeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = MLCModeMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                      Popups:
+                                      {
+                                        IsDeletedPulldown : YesNoPulldown = OptionPulldown;
+                                      }
                                 }
                                 {
                                   Name = CharText : mgiDataTypes;
@@ -9263,7 +9283,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
-                                          xrtTblVisibleRows = 3;
+                                          xrtTblVisibleRows = 2;
                                       }
                                 }
                                 {
@@ -9373,14 +9393,47 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  References = DataSetForm : mgiTable;
+                                  Reference = ReferenceTypeTable : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Synonym;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Synonym;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = mgiTable;
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        EditRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Strain_View where allowOnlyOne = 0 order by _RefAssocType_key";
+                                            }
+                                      }
+                                }
+                                {
+                                  ReferenceMGI = DataSetForm : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = Synonym;
+                                    topWidget = Reference;
                                     topOffset = 5;
                                     leftWidget = Name;
                                       {
@@ -9393,6 +9446,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 3-4 15)";
                                           xrtTblValidateCellCallback = "D:VerifyReference\nD:CommitTableCellEdit";
+                                          xrtTblVisibleRows = 3;
                                         Group: User
                                           dataSet = 4;
                                           accID = 3;
@@ -9412,15 +9466,17 @@ Shift<Key>Tab: prev-tab-group()
                                   DataSets = DataSetForm : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = References;
+                                    leftWidget = ReferenceMGI;
                                     leftOffset = 20;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = References;
+                                    topWidget = ReferenceMGI;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 3;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -11341,8 +11397,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           MarkerSave = Module : MGI;
           Group: Control
-            vip_x = 80;
-            vip_y = 360;
+            vip_x = 164;
+            vip_y = 410;
           Group: User
             homeWidget = Symbol;
             activateButtonName = Marker;
@@ -12261,8 +12317,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           MarkerModule = Module : MGI;
           Group: Control
-            vip_x = 167;
-            vip_y = 341;
+            vip_x = 85;
+            vip_y = 361;
           Group: User
             homeWidget = Symbol;
             activateButtonName = Marker;

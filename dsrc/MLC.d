@@ -634,7 +634,8 @@ rules:
 	  cmd := cmd + mgi_DBinsert(MLC_TEXT, NOKEY) + 
 			currentMarkerKey + ", " + 
 			mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + "," +
-			mgi_DBprstr2(mlced_eiDescToDB(locustxt.value, locustaglist)) + ",";
+			mgi_DBprstr2(mlced_eiDescToDB(locustxt.value, locustaglist)) + "," +
+			top->IsDeletedMenu.menuHistory.defaultValue + ",";
 
 	  -- If a Creation date exists, then save it for the new Text record
 	  -- Else, use the current date
@@ -675,8 +676,17 @@ rules:
 	  if (top->MLCModeMenu.menuHistory.modified and
 	      top->MLCModeMenu.menuHistory.searchValue != "%") then
 	    set := set + "mode = " + mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + ",";
+	  end if;
+
+	  if (top->IsDeletedMenu.menuHistory.modified and
+	      top->IsDeletedMenu.menuHistory.searchValue != "%") then
+	    set := set + "isDeleted = " + top->IsDeletedMenu.menuHistory.defaultValue + ",";
+	  end if;
+
+	  if (set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(MLC_TEXT, currentMarkerKey, set);
 	  end if;
+
 	end does;
 
 --
@@ -728,6 +738,11 @@ rules:
 
 	  if (top->MLCModeMenu.menuHistory.searchValue != "%") then
 	    where := where + "\nand x.mode = " + mgi_DBprstr(top->MLCModeMenu.menuHistory.searchValue);
+	    fromText := true;
+	  end if;
+
+	  if (top->IsDeletedMenu.menuHistory.searchValue != "%") then
+	    where := where + "\nand x.isDeleted = " + top->IsDeletedMenu.menuHistory.searchValue;
 	    fromText := true;
 	  end if;
 
@@ -885,7 +900,7 @@ rules:
 		 "from MLC_Reference r, BIB_View b " +
 		 "where r._Marker_key = " + currentMarkerKey + " and r._Refs_key = b._Refs_key " + 
 		 "order by r.tag\n" +
-		 "select mode, description, creation_date, modification_date, userID " +
+		 "select mode, isDeleted, description, creation_date, modification_date, userID " +
 	         "from MLC_Text where _Marker_key = " + currentMarkerKey + "\n";
 
 	  table : widget;
@@ -924,17 +939,22 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 4) then
+
 		SetOption.source_widget := top->MLCModeMenu;
 		SetOption.value := mgi_getstr(dbproc, 1);
 		SetOption.setDefault := true;
 		send(SetOption, 0);
 
-		top->Description->text.value  
-			:= mlced_dbDescToEI(mgi_getstr(dbproc, 2), (integer) currentMarkerKey);
+		SetOption.source_widget := top->IsDeletedMenu;
+		SetOption.value := mgi_getstr(dbproc, 2);
+		send(SetOption, 0);
 
-		top->CreationDate->text.value := mgi_getstr(dbproc, 3);
-		top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
-		top->ModifiedBy->text.value   := mgi_getstr(dbproc, 5);
+		top->Description->text.value  
+			:= mlced_dbDescToEI(mgi_getstr(dbproc, 3), (integer) currentMarkerKey);
+
+		top->CreationDate->text.value := mgi_getstr(dbproc, 4);
+		top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+		top->ModifiedBy->text.value   := mgi_getstr(dbproc, 6);
 
 		MLCexists := true;
 	      end if;

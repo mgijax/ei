@@ -1463,11 +1463,17 @@ char *mgi_DBtable(int table)
     case MGI_REFERENCE_SEQUENCE_VIEW:
 	    strcpy(buf, "MGI_Reference_Sequence_View");
 	    break;
+    case MGI_REFERENCE_STRAIN_VIEW:
+	    strcpy(buf, "MGI_Reference_Strain_View");
+	    break;
     case MGI_REFTYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_RefType_Nomen_View");
 	    break;
     case MGI_REFTYPE_SEQUENCE_VIEW:
 	    strcpy(buf, "MGI_RefType_Sequence_View");
+	    break;
+    case MGI_REFTYPE_STRAIN_VIEW:
+	    strcpy(buf, "MGI_RefType_Strain_View");
 	    break;
     case MGI_SETMEMBER:
             strcpy(buf, "MGI_SetMember");
@@ -2232,7 +2238,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_TEXT:
-	    sprintf(buf, "insert %s (%s, mode, description, creation_date)",
+	    sprintf(buf, "insert %s (%s, mode, description, isDeleted, creation_date)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_CONCORDANCE:
