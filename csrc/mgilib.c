@@ -2550,6 +2550,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
     switch (table)
     {
       case ALL_ALLELE:
+      case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
