@@ -343,6 +343,7 @@ rules:
 	    end if;
 
             cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
+                         top->MolDetailForm->SeqTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL,NULL,";	-- primer1sequence, primer2sequence
 
             if (top->MolMasterForm->Region->text.value.length <= 255) then
@@ -354,7 +355,6 @@ rules:
 
 	    cmd := cmd + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + "," +
 	                 mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + "," +
-                         top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL," +	-- repeatUnit
 	                 "NULL,0,";	-- productSize, moreProduct
 
@@ -362,8 +362,9 @@ rules:
 
 	  else
 	    cmd := cmd + "NULL,-2,-2," +
-	           mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
-	           mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
+                         top->MolDetailForm->SeqTypeMenu.menuHistory.defaultValue + "," +
+	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
+	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
 
             if (top->MolMasterForm->Region->text.value.length <= 255) then
               cmd := cmd + mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",NULL,";
@@ -373,7 +374,6 @@ rules:
             end if;
 
 	    cmd := cmd + "NULL,NULL," +	-- insertSite, insertSize
-                   mgi_DBprstr(top->SeqTypePulldown->primer.defaultValue) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->Repeat->text.value) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + "," +
 	           (string)((integer) top->MolPrimerForm->More.set) + ",";

@@ -83,7 +83,8 @@ rules:
                  mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
                  top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
-                 top->Tissue->TissueID->text.value + ",";
+                 top->Tissue->TissueID->text.value + "," +
+                 top->GenderMenu.menuHistory.defaultValue + ",";
 
 	  -- Construct Age value
 
@@ -116,7 +117,6 @@ rules:
             add := add + mgi_DBprstr(age) + "," +
                          top->AgeMin->text.value + "," +
                          top->AgeMax->text.value + "," +
-                         mgi_DBprstr(top->GenderMenu.menuHistory.defaultValue) + "," +
             	         mgi_DBprstr(top->CellLine->text.value) + "," +
 			 global_loginKey + "," + global_loginKey + ")\n";
  
