@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Aug 26 13:34:32 2003";
+      lastWritten = "Wed Sep 17 10:45:06 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -9509,7 +9509,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 and allowOnlyOne = 0 order by _RefsType_key";
+                                                sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 and allowOnlyOne = 0 order by referenceType";
                                             }
                                       }
                                 }
