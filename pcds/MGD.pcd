@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  5 09:35:21 2000";
+      lastWritten = "Wed Apr  5 10:02:28 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -7222,7 +7222,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = MarkerTypeMenu;
-                                    leftOffset = 5;
+                                    leftOffset = 15;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = MarkerTypeMenu;
@@ -7234,7 +7234,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = MarkerStatusMenu;
-                                    leftOffset = 5;
+                                    leftOffset = 15;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = MarkerStatusMenu;
@@ -7245,14 +7245,14 @@ Shift<Key>Tab: prev-tab-group()
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftOffset = 5;
+                                    leftOffset = 10;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topOffset = "-5";
+                                    topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftWidget = Offset;
                                     topWidget = ChromosomeMenu;
-                                    leftWidget = ChromosomeMenu;
+                                    topOffset = 5;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -7271,18 +7271,17 @@ Shift<Key>Tab: prev-tab-group()
                                   Cyto = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = Offset;
-                                    leftOffset = 10;
+                                    leftWidget = Symbol;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topWidget = Symbol;
-                                    topOffset = 2;
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "Cytogenetic Band";
+                                          labelString = "Cytogenetic\nBand";
                                       }
                                       {
                                         text = text;
@@ -7297,10 +7296,11 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Symbol;
+                                    topWidget = MarkerTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
+                                    topOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -7323,8 +7323,8 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = Current;
                                     leftOffset = 10;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Symbol;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Current;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -7333,7 +7333,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 3;
                                           xrtTblNumRows = 3;
                                           xrtTblVisibleRows = 3;
-                                          xrtTblCharWidthSeries = "(all 0-1 1)(all 2 10)";
+                                          xrtTblCharWidthSeries = "(all 0-1 1)(all 2 10)(all label 3)";
                                           xrtTblEditableSeries = "(all 0-1 False)";
                                           xrtTblRowLabels = "MGD,CC,MIT";
                                           xrtTblPixelWidthSeries = "(all 0-1 0)";
@@ -7351,10 +7351,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Name = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Cyto;
+                                    leftWidget = Symbol;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = Cyto;
+                                    topWidget = Symbol;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -7367,7 +7367,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 75;
+                                          columns = 60;
                                         Group: User
                                           required = True;
                                       }
@@ -7392,7 +7392,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = scrolledText;
                                         Group: Widget
-                                          columns = 70;
+                                          columns = 60;
                                           rows = 2;
                                       }
                                 }

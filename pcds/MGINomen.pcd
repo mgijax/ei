@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  5 09:35:16 2000";
+      lastWritten = "Wed Apr  5 09:44:13 2000";
         {
           Nomen = Module : MGI;
           Group: Control
@@ -275,7 +275,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                   Group: User
                                     required = False;
-                                    defaultOption = NotApplicable;
+                                    defaultOption = NotSpecified;
                                       Popups:
                                       {
                                         BroadcastByPulldown : NomenUserPulldown = OptionPulldown;

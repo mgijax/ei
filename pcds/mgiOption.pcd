@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 30 11:26:10 2000";
+      lastWritten = "Wed Apr  5 09:47:49 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -2566,7 +2566,7 @@ Module: mgiOption
               {
                 MarkerEventPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from MRK_Event order by _Marker_Event_key";
+                  sql = "select * from MRK_Event  where _Marker_Event_key > -2 order by event";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2632,7 +2632,7 @@ Module: mgiOption
           MarkerEventReasonMenu = OptionMenu;
           Group: Widget
             subMenuId = MarkerEventReasonPulldown;
-            labelString = "Event Reason";
+            labelString = "Event\nReason";
           Group: Control
             vip_x = 80;
             vip_y = 3715;
@@ -2640,7 +2640,7 @@ Module: mgiOption
               {
                 MarkerEventReasonPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from MRK_EventReason where _Marker_EventReason_key >= -1 order by _Marker_EventReason_key";
+                  sql = "select * from MRK_EventReason where _Marker_EventReason_key > -2 order by eventReason";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
