@@ -801,7 +801,7 @@ rules:
 --
 
 	AppendNote does
-	  top : widget := AppendNote.source_widget.top;
+	  top : widget := AppendNote.source_widget.root;
 	  sourceWidget : widget := AppendNote.source_widget;
 	  noteWidget : widget := top->(sourceWidget.noteWidget);
 	  dialogWidget : widget;

@@ -314,6 +314,10 @@ rules:
 	  default : widget := nil;
 	  i : integer := 1;
 
+	  if (top.subMenuId.child(i).class_name = "XmPushButton") then
+	    return;
+	  end if;
+
 	  while (i <= top.subMenuId.num_children) do
 	    if (top.subMenuId.child(i).class_name != "XmCascadeButton") then
 	      top.subMenuId.child(i).set := false;
