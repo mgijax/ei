@@ -17,7 +17,7 @@ rules:
 
 	INITIALLY does
 	  global_application := "MGI";
-	  global_version := "v1.0";
+	  global_version := "CVS 1.2.3";
 	  send(InitApplication, 0);
 	end does;
 
