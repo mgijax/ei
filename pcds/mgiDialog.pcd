@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Nov  4 11:01:04 1999";
+      lastWritten = "Thu Nov  4 11:02:31 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1314,7 +1314,7 @@ Module: mgiDialog
           MRKTransferDialog = XmFormDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
-            dialogTitle = "Marker Transfer";
+            dialogTitle = "Marker Transfer Report";
             managed = False;
             fractionBase = 3;
             rubberPositioning = False;
