@@ -1,3 +1,9 @@
+TAG: ei-1-5-9
+DATE: 01/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.3.2/TR 1223; added add'l error checking to nlm.py
+
 TAG: ei-1-5-8
 DATE: 01/2000
 STAFF: lec
