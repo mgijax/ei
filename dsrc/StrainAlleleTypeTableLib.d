@@ -28,6 +28,51 @@ dmodule StrainAlleleTypeTableLib is
 rules:
 
 --
+-- AddStrainAlleleTypeRow
+--
+--	Adds Row to StrainAlleleType Table
+--	Sets appropriate qualifierKey value
+--	based on most recent StrainAlleleTypeMenu selection.
+--
+
+        AddStrainAlleleTypeRow does
+	  table : widget := AddStrainAlleleTypeRow.table;
+
+	  if (table = nil) then
+	    table := AddStrainAlleleTypeRow.source_widget.parent.child_by_class(TABLE_CLASS);
+	  end if;
+
+	  source : widget := table.parent.child_by_class("XmRowColumn");
+	  qualifierKey : string;
+
+	  source := source.menuHistory;
+
+	  -- Traverse thru table and find first empty row
+	  row : integer := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    qualifierKey := mgi_tblGetCell(table, row, table.qualifierKey);
+	    if (qualifierKey.length = 0) then
+	      break;
+	    end if;
+	    row := row + 1;
+	  end while;
+
+	  -- Set StrainAlleleType, Label for row
+
+	  (void) mgi_tblSetCell(table, row, table.qualifierKey, source.defaultValue);
+	  (void) mgi_tblSetCell(table, row, table.qualifier, source.labelString);
+	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+          -- Traverse to new table row
+
+          TraverseToTableCell.table := table;
+          TraverseToTableCell.row := row;
+          TraverseToTableCell.column := 0;
+          send(TraverseToTableCell, 0);
+
+	end
+
+--
 -- InitStrainAlleleTypeTable
 --
 --	Initializes StrainAlleleType Table
