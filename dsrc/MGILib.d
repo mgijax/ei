@@ -265,6 +265,11 @@ rules:
 
 	  -- Don't overwrite Status Dialog if already managed
 
+          if (status->StatusDialog = nil) then
+	    (void) mgi_writeLog(get_time() + "ERROR: Could not get StatusDialog for " + status.name + "\n");
+	    return;
+	  end if;
+
           if (not status->StatusDialog.managed) then
             status->StatusDialog.messageString := StatusReport.message;
             status->StatusDialog.managed := true;
