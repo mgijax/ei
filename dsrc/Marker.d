@@ -113,7 +113,7 @@ devents:
 	MarkerWithdrawalInit :local [];
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;];
-	SetWithdrawalFields :local [];
+	SetWithdrawalFields :exported [];
 
 	-- Process Marker Allele Events
 	MarkerAlleleMergeInit :local [];
@@ -421,6 +421,7 @@ rules:
 --
 
 	MarkerWithdrawalInit does
+	  dialog : widget := top->WithdrawalDialog;
 
 	  if (currentRecordKey.length = 0) then
             StatusReport.source_widget := top;
@@ -429,30 +430,42 @@ rules:
 	    return;
 	  end if;
 
-	  SetOption.source_widget := top->MarkerEventMenu;
+	  dialog->MarkerEventMenu.subMenuId.sql := 
+	    "select * from " + mgi_DBtable(MRK_EVENT) + 
+	    " where " + mgi_DBkey(MRK_EVENT) + " in (2,3,4,5,6) order by " + mgi_DBcvname(MRK_EVENT);
+	  InitOptionMenu.option := dialog->MarkerEventMenu;
+	  send(InitOptionMenu, 0);
+
+          dialog->MarkerEventReasonMenu.subMenuId.sql := 
+            "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
+            " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
+	  InitOptionMenu.option := dialog->MarkerEventReasonMenu;
+	  send(InitOptionMenu, 0);
+
+	  SetOption.source_widget := dialog->MarkerEventMenu;
 	  SetOption.value := EVENT_WITHDRAWAL;
 	  send(SetOption, 0);
 
-	  SetOption.source_widget := top->MarkerEventReasonMenu;
+	  SetOption.source_widget := dialog->MarkerEventReasonMenu;
 	  SetOption.value := NOTSPECIFIED;
 	  send(SetOption, 0);
 
-	  ClearTable.table := top->WithdrawalDialog->NewMarker->Table;
+	  ClearTable.table := dialog->NewMarker->Table;
 	  send(ClearTable, 0);
 
-	  top->WithdrawalDialog->mgiMarker->Marker->text.value := top->Symbol->text.value;
+	  dialog->mgiMarker->Marker->text.value := top->Symbol->text.value;
 
 	  if (mgi_tblGetCell(top->Allele->Table, 0, top->Allele->Table.alleleKey) != "") then
-	    top->WithdrawalDialog->hasAlleles.set := true;
+	    dialog->hasAlleles.set := true;
 	  else
-	    top->WithdrawalDialog->hasAlleles.set := false;
+	    dialog->hasAlleles.set := false;
 	  end if;
 
-	  top->WithdrawalDialog->Name->text.value := top->Name->text.value;
-	  top->WithdrawalDialog->mgiCitation->ObjectID->text.value := "";
-	  top->WithdrawalDialog->mgiCitation->Jnum->text.value := "";
-	  top->WithdrawalDialog->mgiCitation->Citation->text.value := "";
-	  top->WithdrawalDialog.managed := true;
+	  dialog->Name->text.value := top->Name->text.value;
+	  dialog->mgiCitation->ObjectID->text.value := "";
+	  dialog->mgiCitation->Jnum->text.value := "";
+	  dialog->mgiCitation->Citation->text.value := "";
+	  dialog.managed := true;
 	end does;
 
 --
@@ -465,47 +478,48 @@ rules:
 --
 
 	SetWithdrawalFields does
+	  dialog : widget := top->WithdrawalDialog;
 
-	--
-	-- Don't do anything if de-selecting
-	--
+	  --
+	  -- Don't do anything if de-selecting
+	  --
 
-	if (not top->WithdrawalDialog->MarkerEventMenu.menuHistory.set) then
-	  return;
-	end if;
+	  if (not dialog->MarkerEventMenu.menuHistory.set) then
+	    return;
+	  end if;
 
-	--
-	-- Set number of rows, number of visible rows and callbacks depending
-	-- on the event the user has selected
-	--
+	  --
+	  -- Set number of rows, number of visible rows and callbacks depending
+	  -- on the event the user has selected
+	  --
 
-	if (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_WITHDRAWAL) then
+	  if (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_WITHDRAWAL) then
 
-	  mgi_tblSetNumRows(top->WithdrawalDialog->NewMarker, 1);  
+	    mgi_tblSetNumRows(dialog->NewMarker, 1);  
 
-	elsif (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_MERGE or
-	       top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_ALLELEOF) then
+	  elsif (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_MERGE or
+	         dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_ALLELEOF) then
 
-	  mgi_tblSetNumRows(top->WithdrawalDialog->NewMarker, 1);  
-	  SetTableValidateCallback.table := top->WithdrawalDialog->NewMarker;
-	  SetTableValidateCallback.callback := "D:VerifyMarker,D:CommitTableCellEdit";
-	  send(SetTableValidateCallback, 0);
+	    mgi_tblSetNumRows(dialog->NewMarker, 1);  
+	    SetTableValidateCallback.table := dialog->NewMarker;
+	    SetTableValidateCallback.callback := "D:VerifyMarker,D:CommitTableCellEdit";
+	    send(SetTableValidateCallback, 0);
 
-	elsif (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_SPLIT) then
+	  elsif (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_SPLIT) then
 
-	  mgi_tblSetNumRows(top->WithdrawalDialog->NewMarker, 3);  
-	  SetTableValidateCallback.table := top->WithdrawalDialog->NewMarker;
-	  SetTableValidateCallback.callback := "D:CommitTableCellEdit";
-	  send(SetTableValidateCallback, 0);
+	    mgi_tblSetNumRows(dialog->NewMarker, 3);  
+	    SetTableValidateCallback.table := dialog->NewMarker;
+	    SetTableValidateCallback.callback := "D:CommitTableCellEdit";
+	    send(SetTableValidateCallback, 0);
 
-	elsif (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_DELETED) then
+	  elsif (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_DELETED) then
 
-	  mgi_tblSetNumRows(top->WithdrawalDialog->NewMarker, 0);  
-	  SetTableValidateCallback.table := top->WithdrawalDialog->NewMarker;
-	  SetTableValidateCallback.callback := "D:CommitTableCellEdit";
-	  send(SetTableValidateCallback, 0);
+	    mgi_tblSetNumRows(dialog->NewMarker, 0);  
+	    SetTableValidateCallback.table := dialog->NewMarker;
+	    SetTableValidateCallback.callback := "D:CommitTableCellEdit";
+	    send(SetTableValidateCallback, 0);
 
-	end if;
+	  end if;
 
 	end does;
 
