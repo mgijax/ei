@@ -818,6 +818,7 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + table.sqlCmd;
  
+	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->ReferenceList;
           send(ModifySQL, 0);
 
