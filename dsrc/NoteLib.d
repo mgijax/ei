@@ -595,6 +595,9 @@ rules:
 	  isModified : boolean;
           i : integer := 1;
 	  cmd : string := "";
+	  noteList : string_list;
+	  n : string := "";
+	  noteChunk : string := "";
 	  deleteCmd : string := "";
 	  masterCmd : string := "";
  
@@ -682,58 +685,69 @@ rules:
 	  end if;
 
           -- Break notes up into segments of 255
- 
-          while (note.length > 255) do
-	    if (tableID = MGI_NOTE) then
-	      cmd := cmd +
-		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + "," +
-		     (string) i + "," + 
-                     mgi_DBprnotestr(note->substr(1, 255)) + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
-	    elsif (isTable and noteType.length > 0) then
-	        cmd := cmd + 
-		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
-		     (string) i + "," + 
-		     mgi_DBprstr(noteType) + "," +
-                     mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
-	    elsif (noteType.length > 0) then
-	        cmd := cmd + 
-		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
-		     (string) i + "," + 
-		     noteType + "," +
-                     mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
-            else
-	      cmd := cmd + 
-		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
-		   (string) i + "," + 
-                   mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
-	    end if;
-            note := note->substr(256, note.length);
-            i := i + 1;
-          end while;
+	  -- but don't split up a word
+
+          noteList := mgi_splitfields(note, " ");
+	  noteList.rewind;
+
+	  while (noteList.more) do
+	      n := noteList.next;
+	      if ((noteChunk + " " + n).length > 255) then
+	          if (tableID = MGI_NOTE) then
+	              cmd := cmd +
+		     	mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + "," +
+		     	(string) i + "," + 
+                     	mgi_DBprnotestr(noteChunk) + "," +
+		     	global_loginKey + "," + global_loginKey + ")\n";
+	          elsif (isTable and noteType.length > 0) then
+	                cmd := cmd + 
+		     	mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		     	(string) i + "," + 
+		     	mgi_DBprstr(noteType) + "," +
+                     	mgi_DBprnotestr(noteChunk) + ")\n";
+	          elsif (noteType.length > 0) then
+	                cmd := cmd + 
+		     	mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		     	(string) i + "," + 
+		     	noteType + "," +
+                     	mgi_DBprnotestr(noteChunk) + ")\n";
+                  else
+	              cmd := cmd + 
+		   	mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		   	(string) i + "," + 
+                   	mgi_DBprnotestr(noteChunk) + ")\n";
+	          end if;
+		  noteChunk := n;
+                  i := i + 1;
+              elsif (noteChunk.length > 0) then
+		   noteChunk := noteChunk + " " + n;
+              else
+		   noteChunk := n;
+	      end if;
+	  end while;
  
 	  -- Process the last remaining chunk of note
 
-	  if (mgi_DBprnotestr(note) != "NULL" or ModifyNotes.allowBlank) then
+	  if (mgi_DBprnotestr(noteChunk) != "NULL" or ModifyNotes.allowBlank) then
 	    if (tableID = MGI_NOTE) then
 	      cmd := cmd +
 		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + "," +
 		     (string) i + "," + 
-                     mgi_DBprnotestr(note) + "," +
+                     mgi_DBprnotestr(noteChunk) + "," +
 		     global_loginKey + "," + global_loginKey + ")\n";
 	    elsif (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
 		     mgi_DBprstr(noteType) + "," +
-                     mgi_DBprnotestr(note) + ")\n";
+                     mgi_DBprnotestr(noteChunk) + ")\n";
 	    elsif (isTable and noteType.length > 0 and ModifyNotes.allowBlank) then
 		if (mgi_DBprnotestr(note) != "NULL") then
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		       (string) i + "," + 
 		       mgi_DBprstr(noteType) + "," +
-                       mgi_DBprnotestr(note) + ")\n";
+                       mgi_DBprnotestr(noteChunk) + ")\n";
 		else
 	          cmd := cmd + 
 		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
@@ -745,12 +759,12 @@ rules:
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
 		   noteType + "," +
-                   mgi_DBprnotestr(note) + ")\n";
+                   mgi_DBprnotestr(noteChunk) + ")\n";
             else
               cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
-                   mgi_DBprnotestr(note) + ")\n";
+                   mgi_DBprnotestr(noteChunk) + ")\n";
 	    end if;
 	  end if;
 

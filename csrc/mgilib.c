@@ -799,6 +799,7 @@ char *mgi_DBkey(int table)
     case MGI_SYNONYMTYPE:
             strcpy(buf, "_SynonymType_key");
 	    break;
+    case MGI_SYNONYM_MUSMARKER_VIEW:
     case MGI_SYNONYM_NOMEN_VIEW:
     case MGI_SYNONYM_STRAIN_VIEW:
             strcpy(buf, "_Object_key");
@@ -1477,11 +1478,17 @@ char *mgi_DBtable(int table)
     case MGI_SYNONYMTYPE:
 	    strcpy(buf, "MGI_SynonymType");
 	    break;
+    case MGI_SYNONYM_MUSMARKER_VIEW:
+	    strcpy(buf, "MGI_Synonym_MusMarker_View");
+	    break;
     case MGI_SYNONYM_NOMEN_VIEW:
 	    strcpy(buf, "MGI_Synonym_Nomen_View");
 	    break;
     case MGI_SYNONYM_STRAIN_VIEW:
 	    strcpy(buf, "MGI_Synonym_Strain_View");
+	    break;
+    case MGI_SYNONYMTYPE_MUSMARKER_VIEW:
+	    strcpy(buf, "MGI_SynonymType_MusMarker_View");
 	    break;
     case MGI_SYNONYMTYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_SynonymType_Nomen_View");
@@ -2201,7 +2208,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _SynonymType_key, _Refs_key, synonym, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_SYNONYMTYPE:
-            sprintf(buf, "insert %s (%s, _MGIType_key, synonymType, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _MGIType_key, _Organism_key, synonymType, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_TRANSLATION:
             sprintf(buf, "insert %s (%s, _TranslationType_key, _Object_key, badName, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
