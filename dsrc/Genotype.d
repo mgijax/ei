@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec  01/18/2002
+--	- add Seq# to Allele Pair table
+--
 -- lec  01/04/2002
 --	- Genotype Clipboard
 --
@@ -305,6 +308,8 @@ rules:
           table : widget := top->AllelePair->Table;
           row : integer := 0;
           editMode : string;
+          currentSeqNum : string;
+          newSeqNum : string;
           key : string;
 	  keyName : string;
           markerKey : string;
@@ -341,6 +346,8 @@ rules:
 	    end if;
 
             key := mgi_tblGetCell(table, row, table.pairKey);
+            currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
+            newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
             markerKey := mgi_tblGetCell(table, row, table.markerKey);
             alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
             alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
@@ -368,31 +375,39 @@ rules:
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
-                localCmd := localCmd +
-                       mgi_setDBkey(GXD_ALLELEPAIR, NEWKEY, keyName) +
-		       mgi_DBnextSeqKey(GXD_ALLELEPAIR, currentRecordKey, SEQKEYNAME);
+                localCmd := localCmd + mgi_setDBkey(GXD_ALLELEPAIR, NEWKEY, keyName);
 		keysDeclared := true;
 	      else
-		localCmd := localCmd + 
-		       mgi_DBincKey(keyName) +
-		       mgi_DBincKey(SEQKEYNAME);
+		localCmd := localCmd + mgi_DBincKey(keyName);
 	      end if;
 
               localCmd := localCmd +
                      mgi_DBinsert(GXD_ALLELEPAIR, keyName) +
 		     currentRecordKey + "," +
-		     "@" + SEQKEYNAME + "," +
+		     newSeqNum + "," +
 		     alleleKey1 + "," +
 		     alleleKey2 + "," +
 		     markerKey + "," +
 		     isUnknown + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Allele_key_1 = " + alleleKey1 + "," +
-                     "_Allele_key_2 = " + alleleKey2 + "," +
-                     "_Marker_key = " + markerKey + "," +
-		     "isUnknown = " + isUnknown;
-              localCmd := localCmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
+
+              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
+ 
+              if (currentSeqNum != newSeqNum) then
+		set := "sequenceNum = " + newSeqNum;
+                cmd := cmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
+
+              -- Else, a simple update
+ 
+              else
+                set := "_Allele_key_1 = " + alleleKey1 + "," +
+                       "_Allele_key_2 = " + alleleKey2 + "," +
+                       "_Marker_key = " + markerKey + "," +
+		       "isUnknown = " + isUnknown;
+                localCmd := localCmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
+	      end if;
+
             end if;
  
             if (editMode = TBL_ROW_DELETE and key.length > 0) then
@@ -403,6 +418,7 @@ rules:
           end while;
 
 	  cmd := cmd + localCmd;
+	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_ALLELEPAIR) + "'," + currentRecordKey + "\n";
         end does;
 
 --
