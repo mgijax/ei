@@ -434,14 +434,14 @@ rules:
 	      cmd := cmd + mgi_DBinsert(MLP_NOTES, NOKEY) + 
 		     currentRecordKey + "," + 
                      mgi_DBprstr(andor) + "," +
-                     reference + "," +
+                     mgi_DBprkey(reference) + "," +
                      mgi_DBprstr(dataset) + "," +
                      mgi_DBprstr(note1) + "," +
                      mgi_DBprstr(note2) + "," +
                      mgi_DBprstr(note3) + ")\n";
 	  else
             set := "andor = " + mgi_DBprstr(andor) +
-                   ",reference = " + reference +
+                   ",reference = " + mgi_DBprkey(reference) +
                    ",dataset = " + mgi_DBprstr(dataset) +
                    ",note1 = " + mgi_DBprstr(note1) +
                    ",note2 = " + mgi_DBprstr(note2) +
