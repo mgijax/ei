@@ -16,6 +16,7 @@
 --
 -- lec	04/17/2002
 --	- TR 3333;  added query by J:
+--	- TR 3587;  added chromosome to Symbol table
 --
 -- lec	01/32/2002
 --	- detect changes to Strain Name and record previous and new strain name in ei log file
@@ -765,7 +766,8 @@ rules:
 	         "select * from " + mgi_DBtable(MLP_EXTRA) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
-		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
+		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + 
+		 " order by sequenceNum\n" +
 		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_SYNONYM) +
@@ -809,6 +811,7 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 4) then
 		table := top->StrainType->Table;
