@@ -126,8 +126,8 @@ for r in results:
 	         	mgi_utils.prvalue(r['seq_note']) + DELIM + \
 	         	mgi_utils.prvalue(r['seq_quality']) + DELIM + \
 	         	mgi_utils.prvalue(r['riken_locusid']) + DELIM + \
-	         	mgi_utils.prvalue(r['tiger_tc']) + DELIM + \
 	         	mgi_utils.prvalue(r['unigene_id']) + DELIM + \
+	         	mgi_utils.prvalue(r['tiger_tc']) + DELIM + \
 	         	mgi_utils.prvalue(r['riken_cluster']) + DELIM + \
 	         	mgi_utils.prvalue(r['riken_locusStatus']) + DELIM + \
 	         	mgi_utils.prvalue(r['mgi_statusCode']) + DELIM + \
