@@ -1032,7 +1032,7 @@ rules:
 	    send(GONoteInit, 0);
 	  end if;
 
-	  if (column = annotTable.notes) then
+	  if (column = annotTable.notes or column = annotTable.editor) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
 	      AddTableRow.table := annotTable;
 	      send(AddTableRow, 0);
