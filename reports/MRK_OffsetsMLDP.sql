@@ -14,11 +14,11 @@ set nocount on
 go
 
 select distinct m.symbol, m.chromosome, mo.offset, e.exptType,
-modDate = convert(char(12), e.modification_date, 1), g._Refs_key
+modDate = convert(char(10), e.modification_date, 101), g._Refs_key
 into #markers
 from MRK_Marker m, MRK_Offset mo, MLD_Marker g, MLD_Expts e
 where m._Species_key = 1
-and m.chromosome != "W"
+and m._Marker_Status_key = 1
 and m._Marker_key = mo._Marker_key
 and mo.source = 0
 and mo.offset < 0
@@ -56,7 +56,7 @@ delete from #mgd where source > 0
 go
 
 select distinct m.symbol, m.chromosome, d.offset, e.exptType,
-modDate = convert(char(12), e.modification_date, 1), g._Refs_key
+modDate = convert(char(10), e.modification_date, 101), g._Refs_key
 into #markers
 from #mgd d, MRK_Marker m, MLD_Marker g, MLD_Expts e
 where d._Marker_key = m._Marker_key
@@ -103,7 +103,7 @@ and o2.offset < 0
 go
 
 select distinct m.symbol, m.chromosome, d.offset, e.exptType,
-modDate = convert(char(12), e.modification_date, 1), g._Refs_key
+modDate = convert(char(10), e.modification_date, 101), g._Refs_key
 into #markers
 from #mgd d, MRK_Marker m, MLD_Marker g, MLD_Expts e
 where d._Marker_key = m._Marker_key
