@@ -596,6 +596,9 @@ rules:
 	    return;
 	  end if;
 
+	  -- Raise case
+	  value := value.raise_case;
+
 	  -- Traverse thru table and find duplicate
 	  r : integer := 0;
 	  searchvalue : string;
@@ -614,7 +617,7 @@ rules:
 
 	  if (isDuplicate) then
             StatusReport.source_widget := table.top;
-            StatusReport.message := "Duplicate. This Accession Number is already associated with this Marker.\n\n" + value;
+            StatusReport.message := "Duplicate. This Accession Number is already associated with this Object.\n\n" + value;
             send(StatusReport);
 	  end if;
 

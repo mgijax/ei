@@ -80,7 +80,7 @@ rules:
 --
 -- BuildDynamicComponents
 --
--- Activated from:  devent Marker
+-- Activated from:  devent ActualLogical
 --
 -- For initializing dynamic GUI components prior to managing the top form.
 --
@@ -89,7 +89,7 @@ rules:
 --
  
         BuildDynamicComponents does
-          -- Load Marker Species List
+          -- Load Species List
  
 	   LoadList.list := top->SpeciesList;
 	   send(LoadList, 0);
