@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Apr 12 10:44:33 2004";
+      lastWritten = "Fri Apr 16 12:11:07 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11338,7 +11338,7 @@ Shift<Key>Tab: prev-tab-group()
                                     xrtTblVisibleRows = 4;
                                     xrtTblBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
                                     xrtTblEnterCellCallback = "D:SetOptions";
-                                    xrtTblValidateCellCallback = "D:VerifyStrains (ignoreRow = 0),\nD:VerifyTissue (ignoreRow = 0),\nD:CommitTableCellEdit";
+                                    xrtTblValidateCellCallback = "D:VerifyOrganism (ignoreRow = 0),\nD:VerifyStrains (ignoreRow = 0),\nD:VerifyTissue (ignoreRow = 0),\nD:VerifyCellLine (ignoreRow = 0),\nD:CommitTableCellEdit";
                                     xrtTblPixelWidthSeries = "(all 0-10 0)";
                                   Group: User
                                     saveBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
