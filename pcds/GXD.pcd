@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 28 09:45:57 2004";
+      lastWritten = "Wed Apr 28 10:56:34 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -950,7 +950,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             rubberPositioning = False;
             width = 900;
-            resizePolicy = resize_any;
+            resizePolicy = resize_none;
           Group: Control
             vip_x = 75;
             vip_y = 250;
@@ -1437,7 +1437,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             managed = False;
             rubberPositioning = False;
-            resizePolicy = resize_any;
+            resizePolicy = resize_none;
             width = 900;
           Group: Control
             vip_x = 75;
@@ -2193,6 +2193,8 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                 Group: Widget
                   height = 775;
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
                     {
                       MainMenu = MainMenu;
                           {
@@ -2264,6 +2266,14 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       Edit = XmFrame;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = MainMenu;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        topWidget = MainMenu;
+                        bottomAttachment = attach_form;
+                        resizable = true;
                           {
                             EditForm = EditForm : MGI;
                             Group: Widget
@@ -2559,6 +2569,14 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       Control = Control;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = MainMenu;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        leftWidget = Edit;
                           {
                             ControlForm = XmForm;
                             Group: Widget
@@ -2686,6 +2704,14 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       Lookup = Lookup;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        bottomAttachment = attach_form;
+                        resizable = true;
+                        topWidget = Control;
+                        leftWidget = Edit;
                           {
                             panedWindow = XmPanedWindow;
                                 {
