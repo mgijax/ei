@@ -34,6 +34,13 @@ select * from MRK_Classes_View where _Marker_key = KEY
 go
 
 print ""
+print "GO"
+print ""
+
+select * from GO_MarkerGO where _Marker_key = KEY
+go
+
+print ""
 print "Marker History"
 print ""
 
