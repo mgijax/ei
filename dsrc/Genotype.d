@@ -33,7 +33,7 @@ devents:
 
 	GenotypeCancel [source_widget : widget;];
 	GenotypeCommit [];
-	GenotypeInit [];
+	GenotypeInit [manage : boolean := true;];
 	Add :local [];
 	Modify :local [];
 	ModifyAllelePair :local [];
@@ -50,7 +50,7 @@ rules:
 --
 -- GenotypeInit
 --
--- When Genotype is acitivated by push button:
+-- When Genotype is activated by push button:
 --	Initialize Genotype Dialog targetWidget, targetColumn, targetKeyColumn
 --		attributes from push button
 --	Clear the form
@@ -60,19 +60,30 @@ rules:
 --
 
         GenotypeInit does
-	  push : widget := GenotypeInit.source_widget;
-	  root : widget := push.root;
+	  root : widget := GenotypeInit.source_widget.root;
+	  isTable : boolean;
+	  manage : boolean := GenotypeInit.manage;
 
 	  top := root->GenotypeDialog;
 
 	  -- Set the target widget, column, key column values
 
-	  top.targetWidget := push.targetWidget;
-	  top.targetColumn := push.tableColumn;
-	  top.targetKeyColumn := push.tableKeyColumn;
+	  isTable := mgi_tblIsTable(GenotypeInit.source_widget);
+
+	  if (isTable) then
+	    if (GenotypeInit.reason != TBL_REASON_ENTER_CELL_END) then
+	      return;
+	    end if;
+	    top.targetWidget := GenotypeInit.source_widget;
+	    top.targetColumn := top.targetWidget->Table.genotype;
+	    top.targetKeyColumn := top.targetWidget->Table.genotypeKey;
+	  else
+	    top.targetWidget := GenotypeInit.source_widget.targetWidget;
+	    top.targetColumn := GenotypeInit.source_widget.tableColumn;
+	    top.targetKeyColumn := GenotypeInit.source_widget.tableKeyColumn;
+	  end if;
 
 	  -- Clear the dialog form
-
           Clear.source_widget := top;
           Clear.clearLists := 0;
           send(Clear, 0);
@@ -124,7 +135,15 @@ rules:
           Clear.reset := true;
           send(Clear, 0);
 
-	  top.managed := true;
+	  top.batch;
+	  -- If already managed, unmanage, so that dialog will be moved to the front
+	  if (top.managed) then
+	    top.managed := false;
+	    manage := true;	-- continue to manage...
+	  end if;
+
+	  top.managed := manage;
+	  top.unbatch;
         end does;
 
 --
