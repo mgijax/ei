@@ -198,8 +198,11 @@ rules:
           LoadList.list := top->LibraryList;
           send(LoadList, 0);
 
-          -- Dynmcically create Vector Type Menu
+          -- Dynmcically create menus
  
+	  InitOptionMenu.option := top->SeqTypeMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->MolDetailForm->VectorTypeMenu;
 	  send(InitOptionMenu, 0);
 
@@ -348,7 +351,7 @@ rules:
 
 	    cmd := cmd + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + "," +
 	                 mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + "," +
-                         mgi_DBprstr(top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue) + "," +
+                         top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL," +	-- repeatUnit
 	                 "NULL,0";	-- productSize, moreProduct
 
@@ -585,7 +588,7 @@ rules:
 	    end if;
 
             if (top->MolMasterForm->SeqTypeMenu.menuHistory.modified) then
-	      set := set + "DNAtype = " + mgi_DBprstr(top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue) + ",";
+	      set := set + "_SegmentType_key = " + top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue + ",";
 	    end if;
 
 	    -- If Parent Clone has been modified, then Source info must be reviewed
@@ -1040,8 +1043,7 @@ rules:
 	  end if;
 
           if (top->MolMasterForm->SeqTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand p.DNAtype = " + 
-		mgi_DBprstr(top->MolMasterForm->SeqTypeMenu.menuHistory.searchValue);
+            where := where + "\nand p._SegmentType_key = " + top->MolMasterForm->SeqTypeMenu.menuHistory.searchValue;
           end if;
 
           if (top->MolMasterForm->Name->text.value.length > 0) then
@@ -1426,16 +1428,16 @@ rules:
 	      if (results = 1) then
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
-	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 8) + mgi_getstr(dbproc, 9);
+	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 9) + mgi_getstr(dbproc, 10);
 		prb_createdBy := mgi_getstr(dbproc, 16);
 		prb_modifiedBy := mgi_getstr(dbproc, 17);
 		prb_creation_date := mgi_getstr(dbproc, 18);
 		prb_modification_date := mgi_getstr(dbproc, 19);
 
-		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 10);
-	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 11);
-	        top->MolPrimerForm->Sequence1->text.value   := mgi_getstr(dbproc, 6);
-	        top->MolPrimerForm->Sequence2->text.value   := mgi_getstr(dbproc, 7);
+		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 11);
+	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 12);
+	        top->MolPrimerForm->Sequence1->text.value   := mgi_getstr(dbproc, 7);
+	        top->MolPrimerForm->Sequence2->text.value   := mgi_getstr(dbproc, 8);
 	        top->MolPrimerForm->Repeat->text.value      := mgi_getstr(dbproc, 13);
 	        top->MolPrimerForm->ProductSize->text.value := mgi_getstr(dbproc, 14);
 	        top->MolPrimerForm->More.set                := (boolean)((integer) mgi_getstr(dbproc, 15));
@@ -1444,10 +1446,10 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
-		origSeqType := mgi_getstr(dbproc, 12);
                 SetOption.source_widget := top->MolMasterForm->SeqTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 12);
+                SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
+		origSeqType := top->MolMasterForm->SeqTypeMenu.menuHistory.labelString;
 		ViewMolSegDetail.source_widget := top->MolMasterForm->SeqTypeMenu.menuHistory;
 		send(ViewMolSegDetail, 0);
 
@@ -1665,8 +1667,14 @@ rules:
 --
  
         ViewMolSegDetail does
-          NewForm : widget := top->(ViewMolSegDetail.source_widget.form);
+          NewForm : widget;
  
+	  if (origSeqType = "primer") then
+		NewForm := top->MolPrimerForm;
+	  else
+		NewForm := top->MolDetailForm;
+	  end if;
+
           if (not ViewMolSegDetail.source_widget.set) then
             return;
           end if;
