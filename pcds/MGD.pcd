@@ -6247,6 +6247,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     Sequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                             }
                                       }
