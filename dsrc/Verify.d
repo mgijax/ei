@@ -376,7 +376,7 @@ rules:
                   else  -- XmOptionMenu
 		    child := editForm.child(i);
 
-		    if (child.is_defined("required") != nil and child.is_defined("defaultValue") != nil) then
+		    if (child.is_defined("required") != nil and child.menuHistory.is_defined("defaultValue") != nil) then
 		      if (child.required and child.menuHistory.defaultValue = "%") then
 		        -- If Child is required and has a default, use it
 		        if (child.defaultOption = nil) then
