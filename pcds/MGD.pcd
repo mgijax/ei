@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb  3 14:43:41 2005";
+      lastWritten = "Fri Feb 11 12:59:45 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3512,6 +3512,8 @@ Module: MGD
           ExptTextForm = ExptForm : MGD;
           Group: Widget
             rubberPositioning = False;
+            height = 400;
+            width = 600;
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
@@ -3521,6 +3523,16 @@ Module: MGD
               }
               {
                 Notes = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  rightOffset = 2;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  topOffset = 0;
+                  bottomOffset = 2;
                     {
                       label = XmLabel;
                     }
@@ -3554,8 +3566,9 @@ Module: MGD
                   rightAttachment = attach_form;
                   rightOffset = 2;
                   topAttachment = attach_form;
-                  bottomAttachment = attach_none;
+                  bottomAttachment = attach_form;
                   resizable = true;
+                  bottomOffset = 2;
                     {
                       label = XmLabel;
                     }
@@ -5075,6 +5088,7 @@ Module: MGD
                   topWidget = ExptMarker;
                   bottomAttachment = attach_form;
                   resizable = true;
+                  bottomOffset = 5;
               }
               {
                 ExptInSituForm = ExptInSituForm : MGD;
@@ -5368,33 +5382,9 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -6624,6 +6614,13 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     labelString = Translations;
                                     activateCallback = "D:CreateMGIModule(name = \"Translation\")";
+                                    traversalOn = False;
+                                }
+                                {
+                                  UserRole = XmPushButton;
+                                  Group: Widget
+                                    labelString = "User Permissions";
+                                    activateCallback = "D:CreateMGIModule(name = \"UserRole\")";
                                     traversalOn = False;
                                 }
                                 {
@@ -9372,6 +9369,8 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           xrtTblVisibleRows = 3;
                                           xrtTblPixelWidthSeries = "(all 0-3 0)(all 6-9 0)";
+                                        Group: User
+                                          requiredColumns = 5;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;

@@ -66,6 +66,8 @@ VerifyTissue [ignoreRow : integer := -1;];
 
 VerifyTissueAge :translation [];
 
+VerifyUser [];
+
 VerifyVocabEvidenceCode [];
 
 VerifyVocabTermAccID [];

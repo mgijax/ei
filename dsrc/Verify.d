@@ -3215,6 +3215,87 @@ rules:
 	end does;
 
 --
+-- VerifyUser
+--
+--      Verify User entered into Table Row
+--	Assumes use of mgiTable template
+--	UDAS:  userLogin (integer), userKey (integer)
+--
+--	Stores the key for the user in the userKey UDA
+--	If a User entered cannot be validated, give the user the option
+--	to add the User.
+--
+--	If ignoreRow > -1, then don't valid that row.
+--
+ 
+        VerifyUser does
+	  top : widget := VerifyUser.source_widget.top;
+	  table : widget := VerifyUser.source_widget;
+	  row : integer := VerifyUser.row;
+	  column : integer := VerifyUser.column;
+	  reason : integer := VerifyUser.reason;
+	  value : string := VerifyUser.value;
+ 
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+          -- If not in the User column, do nothing
+ 
+          if (column != table.userLogin) then
+            return;
+          end if;
+ 
+          -- If no User entered, do nothing
+ 
+          if (value.length = 0) then
+            (void) mgi_tblSetCell(table, row, table.userKey, "");
+            return;
+          end if;
+ 
+          (void) busy_cursor(top);
+ 
+          keys : xm_string_list := create xm_string_list();
+          results : xm_string_list := create xm_string_list();
+          userKey : string := "";
+          cmd : string;
+          added : boolean := false;
+          i : integer;
+ 
+          -- Try to get key from the database
+          -- If the User does not exist, then add it
+ 
+          dbproc : opaque := mgi_dbopen();
+          cmd := "select _User_key, login from " + mgi_DBtable(MGI_USER) + " where login = " + mgi_DBprstr(value);
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
+              results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+            end while;
+          end while;
+          (void) dbclose(dbproc);
+ 
+          -- Set i to index of string for exact match
+          i := results.find(value);
+ 
+          if (i > 0) then     -- User found
+            userKey := keys[i];
+            (void) mgi_tblSetCell(table, row, table.userKey, userKey);
+	  else
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid User";
+            send(StatusReport);
+	    (void) mgi_tblSetCell(table, row, table.userKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.userLogin, "");
+            VerifyUser.doit := (integer) false;
+          end if;
+ 
+          (void) reset_cursor(top);
+	end does;
+
+--
 -- VerifyVocabEvidenceCode
 --
 --	Verify Evidence Code for Table

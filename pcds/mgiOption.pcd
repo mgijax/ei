@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb  3 13:30:50 2005";
+      lastWritten = "Fri Feb 11 14:10:00 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -75,7 +75,7 @@ Module: mgiOption
             subMenuId = AccSourcePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1735;
           Group: User
             defaultOption = J;
               Popups:
@@ -517,7 +517,7 @@ Module: mgiOption
             labelString = Gender;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1900;
           Group: User
             defaultValue = "Not Specified";
               Popups:
@@ -537,7 +537,7 @@ Module: mgiOption
             labelString = Age;
           Group: Control
             vip_x = 80;
-            vip_y = 2010;
+            vip_y = 2065;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -686,7 +686,7 @@ Module: mgiOption
             labelString = Server;
           Group: Control
             vip_x = 80;
-            vip_y = 2065;
+            vip_y = 2120;
               Popups:
               {
                 LoginServerPulldown : OptionPulldown = OptionPulldown;
@@ -726,7 +726,7 @@ Module: mgiOption
             labelString = Database;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 2010;
               Popups:
               {
                 LoginDBPulldown : OptionPulldown = OptionPulldown;
@@ -792,7 +792,7 @@ Module: mgiOption
             labelString = "Antibody\nClass";
           Group: Control
             vip_x = 80;
-            vip_y = 2175;
+            vip_y = 2230;
               Popups:
               {
                 AntibodyClassPulldown : OptionPulldown = OptionPulldown;
@@ -810,7 +810,7 @@ Module: mgiOption
             labelString = "Antibody\nType";
           Group: Control
             vip_x = 80;
-            vip_y = 2120;
+            vip_y = 2175;
               Popups:
               {
                 AntibodyTypePulldown : OptionPulldown = OptionPulldown;
@@ -829,7 +829,7 @@ Module: mgiOption
             labelString = "Recognizes Product in Western Blot";
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1680;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -856,7 +856,7 @@ Module: mgiOption
             labelString = "Recognizes Product in Immunoprecipitation";
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1790;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -901,7 +901,7 @@ Module: mgiOption
             labelString = "Labelled with";
           Group: Control
             vip_x = 80;
-            vip_y = 2340;
+            vip_y = 2395;
               Popups:
               {
                 LabelPulldown : OptionPulldown = OptionPulldown;
@@ -919,7 +919,7 @@ Module: mgiOption
             labelString = "Visualized with";
           Group: Control
             vip_x = 80;
-            vip_y = 2450;
+            vip_y = 2505;
               Popups:
               {
                 VisualiazationPulldown : OptionPulldown = OptionPulldown;
@@ -937,7 +937,7 @@ Module: mgiOption
             labelString = "Label Coverage";
           Group: Control
             vip_x = 80;
-            vip_y = 2395;
+            vip_y = 2450;
               Popups:
               {
                 CoveragePulldown : OptionPulldown = OptionPulldown;
@@ -955,7 +955,7 @@ Module: mgiOption
             labelString = Hybridization;
           Group: Control
             vip_x = 80;
-            vip_y = 2285;
+            vip_y = 2340;
               Popups:
               {
                 SensePulldown : OptionPulldown = OptionPulldown;
@@ -973,7 +973,7 @@ Module: mgiOption
             labelString = Type;
           Group: Control
             vip_x = 80;
-            vip_y = 2230;
+            vip_y = 2285;
               Popups:
               {
                 PrepTypePulldown : OptionPulldown = OptionPulldown;
@@ -1004,7 +1004,7 @@ Module: mgiOption
             labelString = "Secondary Antibody";
           Group: Control
             vip_x = 80;
-            vip_y = 2505;
+            vip_y = 2560;
               Popups:
               {
                 SecondaryPulldown : OptionPulldown = OptionPulldown;
@@ -1022,7 +1022,7 @@ Module: mgiOption
             labelString = "Assay Type";
           Group: Control
             vip_x = 80;
-            vip_y = 2560;
+            vip_y = 2615;
               Popups:
               {
                 AssayTypePulldown : OptionPulldown = OptionPulldown;
@@ -1041,7 +1041,7 @@ Module: mgiOption
             labelString = Fixation;
           Group: Control
             vip_x = 80;
-            vip_y = 2615;
+            vip_y = 2670;
               Popups:
               {
                 FixationPulldown : OptionPulldown = OptionPulldown;
@@ -1056,7 +1056,7 @@ Module: mgiOption
             labelString = Embedding;
           Group: Control
             vip_x = 80;
-            vip_y = 2670;
+            vip_y = 2725;
               Popups:
               {
                 EmbeddingPulldown : OptionPulldown = OptionPulldown;
@@ -1071,7 +1071,7 @@ Module: mgiOption
             labelString = Hybridization;
           Group: Control
             vip_x = 80;
-            vip_y = 2725;
+            vip_y = 2780;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -1116,7 +1116,7 @@ Module: mgiOption
             labelString = Detects;
           Group: Control
             vip_x = 80;
-            vip_y = 2780;
+            vip_y = 2835;
           Group: User
             required = False;
               Popups:
@@ -1146,7 +1146,7 @@ Module: mgiOption
             labelString = "Gel Assay";
           Group: Control
             vip_x = 80;
-            vip_y = 2835;
+            vip_y = 2890;
           Group: User
             required = False;
               Popups:
@@ -1176,7 +1176,7 @@ Module: mgiOption
             labelString = Table;
           Group: Control
             vip_x = 80;
-            vip_y = 2945;
+            vip_y = 3000;
           Group: User
             clear = False;
               Popups:
@@ -1405,7 +1405,7 @@ Module: mgiOption
             labelString = "Antibody\nRaised In";
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1570;
           Group: User
             defaultValue = 4;
               Popups:
@@ -1434,7 +1434,7 @@ Module: mgiOption
             labelString = Strength;
           Group: Control
             vip_x = 80;
-            vip_y = 2890;
+            vip_y = 2945;
               Popups:
               {
                 StrengthPulldown : OptionPulldown = OptionPulldown;
@@ -1449,7 +1449,7 @@ Module: mgiOption
             subMenuId = PatternPulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 3000;
+            vip_y = 3055;
               Popups:
               {
                 PatternPulldown : OptionPulldown = OptionPulldown;
@@ -1464,7 +1464,7 @@ Module: mgiOption
             labelString = "Gel RNA Type";
           Group: Control
             vip_x = 80;
-            vip_y = 3110;
+            vip_y = 3165;
               Popups:
               {
                 GelRNATypePulldown : OptionPulldown = OptionPulldown;
@@ -1479,7 +1479,7 @@ Module: mgiOption
             labelString = Control;
           Group: Control
             vip_x = 80;
-            vip_y = 3055;
+            vip_y = 3110;
           Group: User
             defaultChild = 1;
               Popups:
@@ -1497,7 +1497,7 @@ Module: mgiOption
             labelString = "Gel Units";
           Group: Control
             vip_x = 80;
-            vip_y = 3165;
+            vip_y = 3220;
               Popups:
               {
                 GelUnitsPulldown : OptionPulldown = OptionPulldown;
@@ -1520,7 +1520,7 @@ Module: mgiOption
             labelString = "In NLM?";
           Group: Control
             vip_x = 80;
-            vip_y = 3605;
+            vip_y = 3660;
           Group: User
             defaultOption = Yes;
               Popups:
@@ -1561,7 +1561,7 @@ Module: mgiOption
             labelString = "Review Status";
           Group: Control
             vip_x = 80;
-            vip_y = 3220;
+            vip_y = 3275;
           Group: User
             defaultChild = 4;
               Popups:
@@ -1580,7 +1580,7 @@ Module: mgiOption
             subMenuId = CrossTypePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 3275;
+            vip_y = 3330;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -1686,7 +1686,7 @@ Module: mgiOption
             labelString = "Standard?";
           Group: Control
             vip_x = 80;
-            vip_y = 3330;
+            vip_y = 3385;
           Group: User
             defaultOption = No;
               Popups:
@@ -1701,7 +1701,7 @@ Module: mgiOption
             labelString = Chromosome;
           Group: Control
             vip_x = 80;
-            vip_y = 3715;
+            vip_y = 3770;
           Group: User
             defaultChild = 24;
               Popups:
@@ -1722,7 +1722,7 @@ Module: mgiOption
             labelString = Type;
           Group: Control
             vip_x = 80;
-            vip_y = 3440;
+            vip_y = 3495;
           Group: User
             defaultChild = 2;
               Popups:
@@ -1750,7 +1750,7 @@ Module: mgiOption
             labelString = "Segment Type";
           Group: Control
             vip_x = 80;
-            vip_y = 3770;
+            vip_y = 3825;
           Group: User
             defaultValue = "Not Specified";
               Popups:
@@ -1771,7 +1771,7 @@ Module: mgiOption
             labelString = "Vector Type";
           Group: Control
             vip_x = 80;
-            vip_y = 3660;
+            vip_y = 3715;
           Group: User
             defaultValue = "Not Specified";
               Popups:
@@ -1791,7 +1791,7 @@ Module: mgiOption
             labelString = Units;
           Group: Control
             vip_x = 80;
-            vip_y = 3880;
+            vip_y = 3935;
           Group: User
             defaultOption = kb;
               Popups:
@@ -1817,7 +1817,7 @@ Module: mgiOption
             subMenuId = YesNoPulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1515;
           Group: User
             defaultOption = SearchAll;
               Popups:
@@ -1851,7 +1851,7 @@ Module: mgiOption
             labelString = Arrangement;
           Group: Control
             vip_x = 80;
-            vip_y = 3825;
+            vip_y = 3880;
           Group: User
             defaultOption = A1;
               Popups:
@@ -1896,7 +1896,7 @@ Module: mgiOption
             labelString = "Experiment Type";
           Group: Control
             vip_x = 80;
-            vip_y = 3990;
+            vip_y = 4045;
               Popups:
               {
                 ExptTypePulldown : OptionPulldown = OptionPulldown;
@@ -2014,7 +2014,7 @@ Module: mgiOption
             labelString = Mode;
           Group: Control
             vip_x = 80;
-            vip_y = 4430;
+            vip_y = 4485;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -2056,7 +2056,7 @@ Module: mgiOption
             labelString = Status;
           Group: Control
             vip_x = 80;
-            vip_y = 3385;
+            vip_y = 3440;
               Popups:
               {
                 MarkerStatusPulldown : OptionPulldown = OptionPulldown;
@@ -2074,7 +2074,7 @@ Module: mgiOption
             labelString = Event;
           Group: Control
             vip_x = 80;
-            vip_y = 3495;
+            vip_y = 3550;
           Group: User
             defaultChild = 1;
               Popups:
@@ -2110,7 +2110,7 @@ Module: mgiOption
             labelString = Database;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1955;
               Popups:
               {
                 DatabasePulldown : OptionPulldown = OptionPulldown;
@@ -2134,7 +2134,7 @@ Module: mgiOption
             labelString = "Event\nReason";
           Group: Control
             vip_x = 80;
-            vip_y = 3550;
+            vip_y = 3605;
               Popups:
               {
                 MarkerEventReasonPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2152,7 +2152,7 @@ Module: mgiOption
             labelString = "Allele Type";
           Group: Control
             vip_x = 80;
-            vip_y = 4100;
+            vip_y = 4155;
               Popups:
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2170,7 +2170,7 @@ Module: mgiOption
             labelString = "Inheritance Mode";
           Group: Control
             vip_x = 80;
-            vip_y = 4045;
+            vip_y = 4100;
           Group: User
             defaultValue = "-2";
               Popups:
@@ -2190,7 +2190,7 @@ Module: mgiOption
             labelString = "Molecular\nMutation";
           Group: Control
             vip_x = 80;
-            vip_y = 3935;
+            vip_y = 3990;
               Popups:
               {
                 MolecularMutationPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2213,7 +2213,7 @@ Module: mgiOption
             labelString = Status;
           Group: Control
             vip_x = 80;
-            vip_y = 4155;
+            vip_y = 4210;
               Popups:
               {
                 AlleleStatusPulldown : OptionPulldown = OptionPulldown;
@@ -2230,7 +2230,7 @@ Module: mgiOption
             subMenuId = ReferenceTypePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 4210;
+            vip_y = 4265;
               Popups:
               {
                 ReferenceTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2243,7 +2243,7 @@ Module: mgiOption
             labelString = Organism;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1625;
           Group: User
             defaultValue = "Not Specified";
               Popups:
@@ -2263,7 +2263,7 @@ Module: mgiOption
             labelString = "Allele Pair State";
           Group: Control
             vip_x = 80;
-            vip_y = 4485;
+            vip_y = 4540;
               Popups:
               {
                 AllelePairStatePulldown : OptionPulldown = OptionPulldown;
@@ -2303,7 +2303,7 @@ Module: mgiOption
             labelString = "MGI Type";
           Group: Control
             vip_x = 80;
-            vip_y = 4595;
+            vip_y = 4650;
               Popups:
               {
                 MGITypePulldown : OptionPulldown = OptionPulldown;
@@ -2321,7 +2321,7 @@ Module: mgiOption
             labelString = "Evidence Vocabulary";
           Group: Control
             vip_x = 80;
-            vip_y = 4705;
+            vip_y = 4760;
               Popups:
               {
                 EvidenceVocabPulldown : OptionPulldown = OptionPulldown;
@@ -2339,7 +2339,7 @@ Module: mgiOption
             labelString = Vocabulary;
           Group: Control
             vip_x = 80;
-            vip_y = 4650;
+            vip_y = 4705;
               Popups:
               {
                 VocabPulldown : OptionPulldown = OptionPulldown;
@@ -2357,7 +2357,7 @@ Module: mgiOption
             labelString = "Annotation Type";
           Group: Control
             vip_x = 80;
-            vip_y = 4870;
+            vip_y = 4925;
               Popups:
               {
                 VocAnnotTypePulldown : OptionPulldown = OptionPulldown;
@@ -2370,7 +2370,7 @@ Module: mgiOption
             labelString = Evidence;
           Group: Control
             vip_x = 80;
-            vip_y = 4760;
+            vip_y = 4815;
               Popups:
               {
                 EvidencePulldown : OptionPulldown = OptionPulldown;
@@ -2386,7 +2386,7 @@ Module: mgiOption
             labelString = Type;
           Group: Control
             vip_x = 80;
-            vip_y = 4815;
+            vip_y = 4870;
           Group: User
             defaultOption = Article;
               Popups:
@@ -2420,7 +2420,7 @@ Module: mgiOption
             labelString = "Accession ID Type";
           Group: Control
             vip_x = 80;
-            vip_y = 4540;
+            vip_y = 4595;
               Popups:
               {
                 ACCLogicalPulldown : OptionPulldown = OptionPulldown;
@@ -2435,7 +2435,7 @@ Module: mgiOption
             labelString = "Curation State";
           Group: Control
             vip_x = 80;
-            vip_y = 4980;
+            vip_y = 5035;
               Popups:
               {
                 CurationStatePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2453,7 +2453,7 @@ Module: mgiOption
             labelString = Priority;
           Group: Control
             vip_x = 80;
-            vip_y = 4925;
+            vip_y = 4980;
           Group: User
             required = False;
               Popups:
@@ -2473,7 +2473,7 @@ Module: mgiOption
             labelString = Sex;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1845;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -2515,7 +2515,7 @@ Module: mgiOption
             labelString = "Reporter \nGene";
           Group: Control
             vip_x = 80;
-            vip_y = 5090;
+            vip_y = 5145;
               Popups:
               {
                 GXDReporterGenePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2533,7 +2533,7 @@ Module: mgiOption
             labelString = "Detection\nMethod";
           Group: Control
             vip_x = 80;
-            vip_y = 5035;
+            vip_y = 5090;
           Group: User
             defaultOption = nucleotide;
               Popups:
@@ -2595,7 +2595,7 @@ Module: mgiOption
             labelString = "Clone Library Set";
           Group: Control
             vip_x = 80;
-            vip_y = 5145;
+            vip_y = 5200;
               Popups:
               {
                 CloneLibraryPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2618,7 +2618,7 @@ Module: mgiOption
             labelString = Type;
           Group: Control
             vip_x = 80;
-            vip_y = 5200;
+            vip_y = 5255;
               Popups:
               {
                 SequenceTypePulldown : OptionPulldown = OptionPulldown;
@@ -2636,7 +2636,7 @@ Module: mgiOption
             labelString = Status;
           Group: Control
             vip_x = 80;
-            vip_y = 5310;
+            vip_y = 5365;
               Popups:
               {
                 SequenceStatusPulldown : OptionPulldown = OptionPulldown;
@@ -2654,7 +2654,7 @@ Module: mgiOption
             labelString = Provider;
           Group: Control
             vip_x = 80;
-            vip_y = 5420;
+            vip_y = 5475;
               Popups:
               {
                 SequenceProviderPulldown : OptionPulldown = OptionPulldown;
@@ -2679,7 +2679,7 @@ Module: mgiOption
             labelString = Quality;
           Group: Control
             vip_x = 80;
-            vip_y = 5255;
+            vip_y = 5310;
               Popups:
               {
                 SequenceQualityPulldown : OptionPulldown = OptionPulldown;
@@ -2696,7 +2696,7 @@ Module: mgiOption
             subMenuId = NotePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 5365;
+            vip_y = 5420;
               Popups:
               {
                 NotePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2709,7 +2709,7 @@ Module: mgiOption
             labelString = "Translation Type";
           Group: Control
             vip_x = 80;
-            vip_y = 5530;
+            vip_y = 5585;
               Popups:
               {
                 TranslationTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2727,7 +2727,7 @@ Module: mgiOption
             valueChangedCallback = "D:SetMGIType,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1460;
         }
         {
           SortToggle = OptionToggle : mgiOption;
@@ -2744,7 +2744,7 @@ Module: mgiOption
             labelString = "Sort By";
           Group: Control
             vip_x = 80;
-            vip_y = 5475;
+            vip_y = 5530;
               Popups:
               {
                 SortMenuPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2758,7 +2758,7 @@ Module: mgiOption
             subMenuId = SynonymTypePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 4320;
+            vip_y = 4375;
               Popups:
               {
                 SynonymTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2770,7 +2770,7 @@ Module: mgiOption
             subMenuId = StrainAlleleTypePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 4375;
+            vip_y = 4430;
               Popups:
               {
                 StrainAlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2784,7 +2784,7 @@ Module: mgiOption
             subMenuId = NoteTypePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 4265;
+            vip_y = 4320;
               Popups:
               {
                 NoteTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2797,7 +2797,7 @@ Module: mgiOption
             labelString = "Qualifier Menu";
           Group: Control
             vip_x = 80;
-            vip_y = 5585;
+            vip_y = 5695;
               Popups:
               {
                 StrainGenoQualPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2807,6 +2807,31 @@ Module: mgiOption
                       SearchAll = SearchAll : mgiOption;
                     }
               }
+        }
+        {
+          UserRoleMenu = OptionMenu;
+          Group: Widget
+            subMenuId = UserRolePulldown;
+            labelString = "User Role";
+          Group: Control
+            vip_x = 80;
+            vip_y = 5640;
+              Popups:
+              {
+                UserRolePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term_UserRole_View order by sequenceNum";
+                  childTemplate = UserRoleToggle;
+              }
+        }
+        {
+          UserRoleToggle = OptionToggle;
+          Group: Widget
+            userDefinedAttributes = "allowAdd:Boolean(Boolean)=\"True\"\nallowModify:Boolean(Boolean)=\"True\"\nallowDelete:Boolean(Boolean)=\"True\"\npreferred:Boolean(Boolean)=\"True\"\nprivate:Boolean(Boolean)=\"False\"\nrequired:Boolean=\"False\"\n";
+            valueChangedCallback = "D:LoadRoleTasks,\nD:SetModify";
+          Group: Control
+            vip_x = 80;
+            vip_y = 1405;
         }
 }
 

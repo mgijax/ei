@@ -211,7 +211,6 @@ extern char *global_version;
 #define ALL_NOTETYPE		338
 #define ALL_REFERENCETYPE	339
 #define RISET_VIEW		341
-#define MGI_USER		342
 #define VOC_CELLLINE_VIEW	343
 
 /* Accession Tables */
@@ -271,6 +270,9 @@ extern char *global_version;
 #define MGI_SYNONYMTYPE_MUSMARKER_VIEW	636
 #define MGI_REFERENCE_STRAIN_VIEW	637
 #define MGI_REFTYPE_STRAIN_VIEW		638
+#define MGI_USER			639
+#define MGI_USERROLE			640
+#define MGI_USERROLE_VIEW		641
 
 
 /* Strains Tables */

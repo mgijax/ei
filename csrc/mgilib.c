@@ -814,6 +814,9 @@ char *mgi_DBkey(int table)
     case MGI_USER:
 	    strcpy(buf, "_User_key");
 	    break;
+    case MGI_USERROLE:
+	    strcpy(buf, "_UserRole_key");
+	    break;
     case MLD_ASSAY:
             strcpy(buf, "_Assay_Type_key");
 	    break;
@@ -1518,6 +1521,12 @@ char *mgi_DBtable(int table)
     case MGI_USER:
 	    strcpy(buf, "MGI_User");
 	    break;
+    case MGI_USERROLE:
+	    strcpy(buf, "MGI_UserRole");
+	    break;
+    case MGI_USERROLE_VIEW:
+	    strcpy(buf, "MGI_UserRole_View");
+	    break;
     case MLC_LOCK:
             strcpy(buf, "MLC_Lock");
 	    break;
@@ -1945,6 +1954,8 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_REFERENCE_ASSOC:
     case MGI_SETMEMBER:
     case MGI_SYNONYM:
+    case MGI_USER:
+    case MGI_USERROLE:
     case MLC_LOCK:
     case MLC_MARKER:
     case MLC_REFERENCE:
@@ -2232,6 +2243,9 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MGI_USER:
 	    sprintf(buf, "insert %s (%s, _UserType_key, _UserStatus_key, login, fullName, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_USERROLE:
+	    sprintf(buf, "insert %s (%s, _Role_key, _User_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_LOCK:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
@@ -2551,6 +2565,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_SYNONYMTYPE:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
+      case MGI_USERROLE:
       case MLD_MARKER:
       case MRK_CHROMOSOME:
       case MRK_HISTORY:
@@ -2607,6 +2622,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_SYNONYMTYPE:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
+      case MGI_USERROLE:
       case MRK_HISTORY:
       case MRK_MARKER:
       case NOM_MARKER:
