@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 15 15:11:43 2001";
+      lastWritten = "Tue Mar 20 11:10:15 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -770,7 +770,7 @@ Module: mgiOption
                     {
                       Junior = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = MGI_DEV_1151;
+                        defaultValue = MGI_DEV;
                     }
               }
         }
@@ -2811,8 +2811,6 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 4430;
-          Group: User
-            defaultChild = 4;
               Popups:
               {
                 AlleleStatusPulldown : OptionPulldown = OptionPulldown;

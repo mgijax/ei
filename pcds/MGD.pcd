@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Mar 16 12:54:52 2001";
+      lastWritten = "Tue Mar 20 11:11:37 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -6750,14 +6750,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: User
                                                       private = True;
                                                   }
-                                                  {
-                                                    SequencePID = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
                                             }
                                       }
                                 }
@@ -8724,7 +8716,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 80;
             vip_y = 580;
           Group: User
-            homeWidget = Symbol;
+            homeWidget = Marker;
             activateButtonName = Allele;
               {
                 MainForm = XmForm;
@@ -8756,7 +8748,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Clear = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:Clear (clearLists = 3)";
+                                          activateCallback = "D:ClearAllele";
                                       }
                                 }
                           }
@@ -8827,6 +8819,8 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
+                                  Group: User
+                                    defaultChild = 5;
                                 }
                                 {
                                   Symbol = CharText : mgiDataTypes;
@@ -8891,6 +8885,8 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          userDefinedAttributes = "origRefsKey:Int\n";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -8913,15 +8909,14 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = MolecularMutation;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = MolecularMutation;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 25;
                                     topOffset = 20;
-                                  Group: User
-                                    defaultChild = 4;
+                                    rightOffset = 5;
                                 }
                                 {
                                   InheritanceModeMenu = InheritanceModeMenu : mgiOption;
@@ -8978,6 +8973,15 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         ObjectID = ID : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                defaultValue = "-1";
+                                                required = True;
+                                            }
                                       }
                                       {
                                         CharText = CharText : mgiDataTypes;
@@ -9012,102 +9016,8 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               label = XmLabel;
                                               Group: Widget
-                                                labelString = "Strain of Origin";
+                                                labelString = "Strain of \nOrigin";
                                             }
-                                      }
-                                }
-                                {
-                                  MolecularNote = mgiNote : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = InheritanceModeMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = InheritanceModeMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: Control
-                                    vipComment = "XmPushButton issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButton differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButton.";
-                                      {
-                                        Note = Notes : mgiDataTypes;
-                                        Group: User
-                                          tableID = 244;
-                                          noteType = 2;
-                                      }
-                                      {
-                                        NotePush = NotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Molecular Notes";
-                                      }
-                                }
-                                {
-                                  AlleleNote = mgiNote : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = MolecularNote;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = MolecularNote;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: Control
-                                    vipComment = "XmPushButton issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButton differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButton.";
-                                      {
-                                        Note = Notes : mgiDataTypes;
-                                        Group: User
-                                          tableID = 243;
-                                          noteType = 1;
-                                      }
-                                      {
-                                        NotePush = NotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Allele Notes";
-                                      }
-                                }
-                                {
-                                  PromoterNote = mgiNote : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = AlleleNote;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleNote;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        Note = Notes : mgiDataTypes;
-                                        Group: User
-                                          tableID = 245;
-                                          noteType = 3;
-                                      }
-                                      {
-                                        NotePush = NotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Promoter Notes";
-                                      }
-                                }
-                                {
-                                  NomenclatureNote = mgiNote : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = PromoterNote;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = PromoterNote;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        Note = Notes : mgiDataTypes;
-                                        Group: User
-                                          tableID = 247;
-                                          noteType = 4;
-                                      }
-                                      {
-                                        NotePush = NotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Nomenclature Notes";
                                       }
                                 }
                                 {
@@ -9134,6 +9044,18 @@ Shift<Key>Tab: prev-tab-group()
                                           citation = 5;
                                           jnum = 4;
                                       }
+                                }
+                                {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    topAttachment = attach_widget;
+                                    topWidget = InheritanceModeMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                    rightWidget = InheritanceModeMenu;
                                 }
                           }
                     }

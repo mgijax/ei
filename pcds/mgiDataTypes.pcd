@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 15 11:23:07 2001";
+      lastWritten = "Tue Mar 20 10:18:02 2001";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -387,6 +387,7 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int\n";
             labelString = Notes;
             traversalOn = False;
+            background = Wheat;
           Group: Control
             vip_x = 50;
             vip_y = 1020;
@@ -400,7 +401,7 @@ Shift<Key>Tab: prev-tab-group()
                 Note = Notes : mgiDataTypes;
                 Group: Widget
                   managed = False;
-                  userDefinedAttributes = "tableID:Int(Int)\nnoteType:String(String)\n";
+                  userDefinedAttributes = "tableID:Int(Int)\nnoteType:String(String)\nnoteTypeKey:Int(Int)=\"-1\"\nprivate:Int(Int)\n";
               }
               {
                 NotePush = NotePush : mgiDataTypes;
@@ -809,8 +810,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiAllele = mgiObject;
           Group: Control
-            vip_x = 155;
-            vip_y = 1240;
+            vip_x = 50;
+            vip_y = 1295;
           Group: User
             tableID = 115;
               {
@@ -970,6 +971,16 @@ Shift<Key>Tab: prev-tab-group()
                   maxLength = 30;
                   columns = 10;
               }
+        }
+        {
+          mgiNoteForm = XmRowColumn;
+          Group: Widget
+            orientation = vertical;
+            userDefinedAttributes = "sql:String(String)\nsqlFrom:String\nsqlWhere:String\n";
+          Group: Control
+            vipComment = "";
+            vip_x = 155;
+            vip_y = 1240;
         }
 }
 
