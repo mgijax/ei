@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 23 12:28:58 2002";
+      lastWritten = "Wed Oct 23 12:39:26 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1309,9 +1309,6 @@ Module: MGD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1328,6 +1325,9 @@ Module: MGD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ATCC = AccToggle : mgiOption;
@@ -2405,9 +2405,6 @@ Module: MGD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -2430,6 +2427,9 @@ Module: MGD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -2895,9 +2895,6 @@ Module: MGD
                                   PubMed = AccToggle : mgiOption;
                                 }
                                 {
-                                  EC = AccToggle;
-                                }
-                                {
                                   NSequence = AccToggle;
                                   Group: Widget
                                     set = True;
@@ -2921,6 +2918,9 @@ Module: MGD
                                 }
                                 {
                                   UniGene = AccToggle : mgiOption;
+                                }
+                                {
+                                  EC = AccToggle;
                                 }
                                 {
                                   ATCC = AccToggle;
@@ -5410,9 +5410,6 @@ Module: MGD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -5429,6 +5426,9 @@ Module: MGD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -6747,9 +6747,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -6827,9 +6824,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -8347,11 +8341,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -8374,6 +8363,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -8557,11 +8551,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -8581,6 +8570,14 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MRK = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }

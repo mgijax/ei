@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 23 12:28:26 2002";
+      lastWritten = "Wed Oct 23 12:39:28 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -548,11 +548,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -573,6 +568,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     ATCC = AccToggle : mgiOption;
@@ -796,6 +796,24 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NSequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;

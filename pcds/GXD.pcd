@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 23 12:28:32 2002";
+      lastWritten = "Wed Oct 23 12:39:24 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -686,9 +686,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -705,6 +702,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -1833,9 +1833,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                   }
                                                   {
@@ -1852,6 +1849,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;

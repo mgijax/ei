@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 23 12:28:24 2002";
+      lastWritten = "Wed Oct 23 12:39:20 2002";
       copy = false;
       inCreateMenu = true;
         {
