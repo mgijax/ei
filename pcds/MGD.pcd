@@ -1252,7 +1252,7 @@ Module: MGD
                                         List = list;
                                         Group: User
                                           targetWidget = StrainType;
-                                          targetKey = 1;
+                                          targetKey = 2;
                                           targetText = 3;
                                       }
                                 }
