@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 29 10:12:14 2004";
+      lastWritten = "Thu Jul 29 10:45:00 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2489,7 +2489,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumRows = 20;
-                                          xrtTblVisibleRows = 9;
+                                          xrtTblVisibleRows = 8;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
