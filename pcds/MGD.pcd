@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 12 08:11:41 2003";
+      lastWritten = "Mon Mar  3 09:55:59 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -3476,7 +3476,7 @@ Module: MGD
                     {
                       text = scrolledText;
                       Group: Widget
-                        rows = 40;
+                        rows = 20;
                     }
               }
         }
@@ -3484,7 +3484,7 @@ Module: MGD
           ExptForm = EditForm : MGI;
           Group: Widget
             width = 600;
-            height = 700;
+            height = 800;
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
@@ -4644,6 +4644,11 @@ Module: MGD
                   bottomOffset = 2;
                   resizable = true;
                   topOffset = 2;
+                    {
+                      Table = mgiTable;
+                      Group: Widget
+                        xrtTblVisibleRows = 2;
+                    }
               }
         }
         {
@@ -4830,7 +4835,7 @@ Module: MGD
                       text = scrolledText;
                       Group: Widget
                         columns = 90;
-                        rows = 5;
+                        rows = 10;
                     }
               }
               {
@@ -4997,9 +5002,10 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-5 0)";
                         xrtTblTraversableSeries = "(all 0-6 False)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 2;
+                        xrtTblVisibleRows = 10;
                         xrtTblMaxLengthSeries = "(all 7 25)(all 8 20)(all 9 80)(all 10 255)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
+                        xrtTblNumRows = 15;
                       Group: User
                         seqNum = 6;
                         saveTraversableSeries = "(all 0-6 False)";
@@ -5265,7 +5271,7 @@ Module: MGD
                         width = 600;
                         rubberPositioning = False;
                         resizePolicy = resize_any;
-                        height = 750;
+                        height = 800;
                           {
                             ID = ID;
                           }
@@ -5310,33 +5316,9 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
