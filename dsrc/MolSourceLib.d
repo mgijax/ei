@@ -466,7 +466,8 @@ rules:
           end if;
  
           if (top->AgeMenu.menuHistory.searchValue != "%") then
-            where := where + " and s.age like " + mgi_DBprstr(top->AgeMenu.menuHistory.defaultValue);
+            where := where + " and s.age like \"" + top->AgeMenu.menuHistory.defaultValue;
+
             if (top->Age->text.value.length > 0) then
               where := where + " " + top->Age->text.value + "\"";
             else
