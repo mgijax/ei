@@ -20,6 +20,8 @@ USERLOG=$HOME/.mgiadmin_dev-log
 DSQUERY=MGD_DEV
 MGD=mgd_release
 
+umask 022
+
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
 XNLSPATH=$TeleUSE/X11R5/lib/nls

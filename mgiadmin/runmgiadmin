@@ -20,6 +20,8 @@ USERLOG=$HOME/.mgiadmin-log
 DSQUERY=MGD
 MGD=mgd
 
+umask 022
+
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
 XNLSPATH=$TeleUSE/X11R5/lib/nls

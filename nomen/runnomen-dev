@@ -21,6 +21,8 @@ DSQUERY=MGD_DEV
 MGD=mgd_release
 NOMEN=nomen_dev
 
+umask 022
+
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
 XNLSPATH=$TeleUSE/X11R5/lib/nls
