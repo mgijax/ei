@@ -248,6 +248,10 @@ rules:
                 top->GelAssayMenu.menuHistory.searchValue != "%") then
               set := set + "isGelAssay = "  + top->GelAssayMenu.menuHistory.defaultValue + ",";
             end if;
+	  elsif (tableID = HMD_ASSAY) then
+	    if (top->AssayAbbrev->text.modified) then
+	      set := set + "abbrev = " + mgi_DBprstr(top->AssayAbbrev->text.value) + ",";
+	    end if;
 	  end if;
 
           ModifySQL.cmd := mgi_DBupdate(tableID, key, set);
@@ -356,6 +360,8 @@ rules:
                 send(SetOption, 0);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 5);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
+	      elsif (tableID = HMD_ASSAY) then
+	        top->AssayAbbrev->text.value := mgi_getstr(dbproc, 3);
 	      else
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
