@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec 08/28/2001
+--	- QueryNoInterrupt; write SQL to log
+--
 -- lec 03/08/2001-3/19/2001
 --	- TR 2217/1939; ModifyNotes
 --	- moved ModifyNotes to NoteLib.d
@@ -374,6 +377,8 @@ rules:
 
           ClearList.source_widget := list_w;
           send(ClearList, 0);
+
+	  (void) mgi_writeLog(get_time() + "QUERY:" + QueryNoInterrupt.select + "\n");
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcancel(dbproc);
