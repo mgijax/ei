@@ -139,7 +139,7 @@ rules:
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
-          ProcessAcc.objectKey := KEYNAME;
+          ProcessAcc.objectKey := "@" + KEYNAME;
           ProcessAcc.tableID := PRB_SOURCE_MASTER;
           send(ProcessAcc, 0);
 
