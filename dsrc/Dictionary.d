@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec	06/23/2004
+--	- added ADClipboardAddAll
+--
 -- lec  09/13/2001
 --	- removed ResetCursor; not necessary
 --
@@ -74,6 +77,7 @@ devents:
         Select :local [];
 
         ADClipboardAdd :local [];
+        ADClipboardAddAll :local [];
 
         DictionaryClear:local [clearLists : integer := 1;
 			       clearStages : boolean := false;
@@ -627,13 +631,6 @@ rules:
 			mgi_DBprstr(top->structureText->text.value);
             end if;
 
-            -- structure Notes
-
---            if (top->structureNotes->text.value.length > 0) then
---                 where := where + "\nand s.structureNote like " + 
---			mgi_DBprstr(top->structureNotes->text.value);
---            end if;
-
             -- Stages text field
             
             stages_query : string := "";
@@ -642,6 +639,18 @@ rules:
             if (stages_query != "") then
                  where := where + "\nand t.stage in (" + stages_query + ")";
             end if;
+
+            if (top->printStopMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand printStop = " + 
+		top->printStopMenu.menuHistory.searchValue;
+            end if;
+
+            -- structure Notes
+
+--            if (top->structureNotes->text.value.length > 0) then
+--                 where := where + "\nand s.structureNote like " + 
+--			mgi_DBprstr(top->structureNotes->text.value);
+--            end if;
 
             -- aliases fields are not searchable
 	    -- no pulldown menu fields are searchable
@@ -658,11 +667,6 @@ rules:
 --              where := where + "\nand mgiAdded = " + 
 --		top->MGIAddedAliasMenu.menuHistory.searchValue;
 --            end if;
-
-            if (top->printStopMenu.menuHistory.searchValue != "%") then
-              where := where + "\nand printStop = " + 
-		top->printStopMenu.menuHistory.searchValue;
-            end if;
 
         end does;
 
@@ -871,6 +875,43 @@ rules:
        ClipboardAdd.item := item;
        ClipboardAdd.key := key;
        send(ClipboardAdd, 0);
+   end does;
+
+--
+-- ADClipboardAddAll
+--
+-- Adds all structures to the clipboard.
+--
+
+   ADClipboardAddAll does
+       item : string;
+       key : string;
+       structureKey : string;
+       structure : opaque;
+       i : integer := 1;
+
+       -- for each Structure in QueryList
+
+       while (i <= top->QueryList->List.keys.count) do;
+
+	 structureKey := top->QueryList->List.keys[i];
+         structure := stagetrees_select((integer) structureKey);
+         key := (string) structure_getStructureKey(structure);
+
+         -- cannot add Stage Nodes; must have a structure key
+
+         if (key != "-1") then
+           item := format_stagenum(structure_getStage(structure)) +
+		    (string) structure_getPrintName(structure);
+           ClipboardAdd.clipboard := clipboard;
+           ClipboardAdd.item := item;
+           ClipboardAdd.key := key;
+           send(ClipboardAdd, 0);
+         end if;
+
+	 i := i + 1;
+       end while;
+
    end does;
 
 --
