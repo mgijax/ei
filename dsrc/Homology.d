@@ -591,6 +591,7 @@ rules:
 	      insertMrk := mgi_setDBkey(MRK_MARKER, NEWKEY, markerKeyName + (string) maxMarker) +
 			   mgi_DBinsert(MRK_MARKER, markerKeyName + (string) maxMarker) +
 			   speciesKey + ",1," + 
+			   NOTAPPLICABLE + "," +
 			   mgi_DBprstr(marker) + "," + 
 			   mgi_DBprstr(name) + "," + 
 			   mgi_DBprstr(chrom) + "," + 
