@@ -1000,9 +1000,10 @@ rules:
 	  if ((integer) mgi_sql1(select + where) = 0) then
             StatusReport.source_widget := top;
 	    StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value +
-		"\n\nThis value will be added to Species/Chromosome lookup table\n" +
-		"when the current transaction is executed,\n" +
-		"unless it is relaced with a valid value.\n";
+		"\n\nThis value will be added to Species/Chromosome master table\n" +
+		"when the current transaction is executed.\n\n" +
+		"Replaced the invalid value with a valid value if you DO NOT want\n" +
+		"the invalid value added to the Species/Chromosome master table.\n";
             send(StatusReport);
 	  end if;
 	end does;
