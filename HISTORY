@@ -1,3 +1,10 @@
+TAG: ei-1-5-17
+DATE: 03/14/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.3.2/TR 1223; MRK_LocusLink.py; print offset w/ 2 decimal places
+
+TAG: ei-1-5-15
 TAG: ei-1-5-16
 DATE: 03/09/2000
 STAFF: lec
