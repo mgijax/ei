@@ -1,10 +1,16 @@
-TAG: ei-2-8-5
+TAG: ei-2-8-6
 DATE: 12/11/2000
 STAFF: lec
 RELEASE: A
 CHANGES: 
+1) Fixed MGI Menu (TR 2096)
+
+TAG: ei-2-8-5
+DATE: 11/30/2000
+STAFF: lec
+RELEASE: A
+CHANGES: 
 1) RIKEN Clusters are private (mgiOption.pcd)
-2) Fixed MGI Menu (TR 2096)
 
 TAG: ei-2-8-4
 DATE: 11/09/2000
