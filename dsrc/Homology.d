@@ -976,18 +976,12 @@ rules:
 	SplitKey does
 	  key : string := SplitKey.key;
 	  i : integer := 1;
+	  s : string_list;
 
-	  -- Split the composite based on the ':' character
+	  s := mgi_splitfields(key, ":");
+	  classKey := s[1];
+	  refKey := s[2];
 
-	  while (i <= key.length) do
-	    if (key[i] = ':') then
-	      break;
-	    end if;
-	    i := i + 1;
-	  end while;
-
-	  classKey := key->substr(1, i - 1);
-	  refKey := key->substr(i + 1, key.length);
 	  classRefWhere := " where _Class_key = " + classKey + 
 			   " and _Refs_key = " + refKey + "\n";
 	end
