@@ -6503,7 +6503,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 80;
             vip_y = 30;
           Group: User
-            initDialog = "TissueDialog\nRIDialog\nCrossDialog";
+            initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
               {
                 MGDForm = XmForm;
                     {
@@ -7194,7 +7194,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Clear = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:Clear(clearForms = 15, clearLists = 5)\nD:InitAcc";
+                                          activateCallback = "D:Clear(clearForms = 15, clearLists = 5)";
                                       }
                                 }
                           }
@@ -7697,7 +7697,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:Clear(clearForms = 15, clearLists = 5)\nD:InitAcc";
+                                    activateCallback = "D:Clear(clearForms = 15, clearLists = 5)";
                                 }
                           }
                     }

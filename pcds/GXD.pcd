@@ -2442,7 +2442,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 60;
             vip_y = 30;
           Group: User
-            initDialog = TissueDialog;
+            initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
               {
                 GXDForm = XmForm;
                     {
