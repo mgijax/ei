@@ -771,8 +771,7 @@ char *mgi_DBkey(int table)
 	    break;
     case MGI_FANTOM2:
     case MGI_FANTOM2NOTES:
-    case MGI_FANTOM2CACHEGBA:
-    case MGI_FANTOM2CACHEFINAL:
+    case MGI_FANTOM2CACHE:
 	    strcpy(buf, "_Fantom2_key");
 	    break;
     default:
@@ -1516,11 +1515,8 @@ char *mgi_DBtable(int table)
     case MGI_FANTOM2NOTES:
 	    strcpy(buf, "MGI_Fantom2Notes");
 	    break;
-    case MGI_FANTOM2CACHEGBA:
-	    strcpy(buf, "MGI_Fantom2CacheGBA");
-	    break;
-    case MGI_FANTOM2CACHEFINAL:
-	    strcpy(buf, "MGI_Fantom2CacheFinal");
+    case MGI_FANTOM2CACHE:
+	    strcpy(buf, "MGI_Fantom2Cache");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1726,8 +1722,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case VOC_TEXT:
     case VOC_EVIDENCE:
     case MGI_FANTOM2NOTES:
-    case MGI_FANTOM2CACHEGBA:
-    case MGI_FANTOM2CACHEFINAL:
+    case MGI_FANTOM2CACHE:
 	selectKey = 0;
 	break;
     default:
@@ -2154,16 +2149,13 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy, notes)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_FANTOM2:
-            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, genbank_id, genbank_id_inMGI, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, blast_hit, blast_expect, auto_annot, info_annot, cat_id, final_mgiID, final_symbol2, final_name2, nomen_event, nomen_detail, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, genbank_id, genbank_id_inMGI, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, blast_hit, blast_expect, auto_annot, info_annot, cat_id, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, nomen_detail, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_FANTOM2NOTES:
             sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MGI_FANTOM2CACHEGBA:
+    case MGI_FANTOM2CACHE:
             sprintf(buf, "insert %s (%s, gba_mgID, gba_symbol, gba_name)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_FANTOM2CACHEFINAL:
-            sprintf(buf, "insert %s (%s, final_symbol1, final_name1)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */

@@ -350,17 +350,15 @@ rules:
 		     mgi_DBprstr(infoAnnot) + "," +
 		     mgi_DBprstr(catID) + "," +
 		     mgi_DBprstr(finalMGIID) + "," +
+		     mgi_DBprstr(finalSymbol1) + "," +
+		     mgi_DBprstr(finalName1) + "," +
 		     mgi_DBprstr(finalSymbol2) + "," +
 		     mgi_DBprstr(finalName2) + "," +
 		     mgi_DBprstr(nomenEvent) + "," +
 		     mgi_DBprstr(global_login) + "," +
 		     mgi_DBprstr(global_login) + "," + ")\n";
 
-              cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHEFINAL, KEYNAME) +
-			mgi_DBprstr(finalSymbol1) + "," + 
-			mgi_DBprstr(finalName1) + ")\n";
-
-              cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHEGBA, KEYNAME) +
+              cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHE, KEYNAME) +
 			mgi_DBprstr(gbaMGIID) + "," + 
 			mgi_DBprstr(gbaSymbol) + "," + 
 			mgi_DBprstr(gbaName) + ")\n";
@@ -415,22 +413,19 @@ rules:
 		     "info_annot = " + mgi_DBprstr(infoAnnot) + "," +
 		     "cat_id = " + mgi_DBprstr(catID) + "," +
 		     "final_mgiID = " + mgi_DBprstr(finalMGIID) + "," +
+		     "final_symbol1 = " + mgi_DBprstr(finalSymbol1) + "," +
+		     "final_name1 = " + mgi_DBprstr(finalName1) + "," +
 		     "final_symbol2 = " + mgi_DBprstr(finalSymbol2) + "," +
 		     "final_name2 = " + mgi_DBprstr(finalName2) + "," +
 		     "nomen_event = " + mgi_DBprstr(nomenEvent) + "," +
 		     "modifiedBy = " + mgi_DBprstr(global_login);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
-	      -- Update Final Cache Table
-	      set := "final_symbol1 = " + mgi_DBprstr(finalSymbol1) + "," +
-		     "final_name1 = " + mgi_DBprstr(finalName1);
-              cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHEFINAL, key, set);
-
 	      -- Update GBA Cache Table
 	      set := "gba_mgiID = " + mgi_DBprstr(gbaMGIID) + "," +
 		     "gba_symbol = " + mgi_DBprstr(gbaSymbol) + "," +
 		     "gba_name = " + mgi_DBprstr(gbaName);
-              cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHEGBA, key, set);
+              cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHE, key, set);
 
 	      ModifyNotes.source_widget := fantom;
 	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
@@ -464,8 +459,7 @@ rules:
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(MGI_FANTOM2, key);
-               cmd := cmd + mgi_DBdelete(MGI_FANTOM2CACHEFINAL, key);
-               cmd := cmd + mgi_DBdelete(MGI_FANTOM2CACHEGBA, key);
+               cmd := cmd + mgi_DBdelete(MGI_FANTOM2CACHE, key);
                cmd := cmd + mgi_DBdelete(MGI_FANTOM2NOTES, key);
             end if;
  
@@ -491,18 +485,16 @@ rules:
 	PrepareSearch does
 	  value : string;
 	  row : integer := 0;
-	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " + 
-	       "and f._Fantom2_key = c2._Fantom2_key " +
+	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " +
 	       "and f._Fantom2_key = n._Fantom2_key";
 
 	  select := "select f.*, " +
-		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
+		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, " + 
 		"cDate = convert(char(10), f.creation_date, 101), " +
 		"mDate = convert(char(10), f.modification_date, 101), " +
 		"n.noteType, note = rtrim(n.note), n.sequenceNum ";
 	  from := "from " + mgi_DBtable(MGI_FANTOM2) + " f, " +
 		"MGI_Fantom2CacheGBA c1, " +
-		"MGI_Fantom2CacheFinal c2, " +
 		"MGI_Fantom2Notes n ";
 	  where := "";
 
@@ -590,14 +582,24 @@ rules:
 	    where := where + " and f.final_mgiID like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(fantom, row, fantom.finalName2);
+	  value := mgi_tblGetCell(fantom, row, fantom.finalSymbol1);
 	  if (value.length > 0) then
-	    where := where + " and f.final_name2 like " + mgi_DBprstr(value);
+	    where := where + " and f.final_symbol1 like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.finalName1);
+	  if (value.length > 0) then
+	    where := where + " and f.final_name1 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalSymbol2);
 	  if (value.length > 0) then
 	    where := where + " and f.final_symbol2 like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.finalName2);
+	  if (value.length > 0) then
+	    where := where + " and f.final_name2 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.autoAnnot);
@@ -643,16 +645,6 @@ rules:
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaName);
 	  if (value.length > 0) then
 	    where := where + " and c1.gba_name like " + mgi_DBprstr(value);
-	  end if;
-
-	  value := mgi_tblGetCell(fantom, row, fantom.finalSymbol1);
-	  if (value.length > 0) then
-	    where := where + " and c2.final_symbol1 like " + mgi_DBprstr(value);
-	  end if;
-
-	  value := mgi_tblGetCell(fantom, row, fantom.finalName1);
-	  if (value.length > 0) then
-	    where := where + " and c2.final_name1 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.createdBy);
@@ -774,20 +766,20 @@ rules:
 	        (void) mgi_tblSetCell(fantom, row, fantom.infoAnnot, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(fantom, row, fantom.catID, mgi_getstr(dbproc, 21));
 	        (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 23));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 24));
-	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 25));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 26));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 28));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 27));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 29));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol1, mgi_getstr(dbproc, 23));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalName1, mgi_getstr(dbproc, 24));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 25));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 26));
+	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 27));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 28));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 30));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 29));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 31));
 
 		-- data from cache tables
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, mgi_getstr(dbproc, 30));
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 31));
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 32));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol1, mgi_getstr(dbproc, 33));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalName1, mgi_getstr(dbproc, 34));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, mgi_getstr(dbproc, 32));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 33));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 34));
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.editMode, TBL_ROW_NOCHG);
 

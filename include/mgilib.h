@@ -281,8 +281,7 @@ extern char *global_version;
 
 #define MGI_FANTOM2		900
 #define MGI_FANTOM2NOTES	901
-#define MGI_FANTOM2CACHEGBA	902
-#define MGI_FANTOM2CACHEFINAL	903
+#define MGI_FANTOM2CACHE	902
 
 /* End of Table Definitions */
 
