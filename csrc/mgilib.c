@@ -1241,6 +1241,9 @@ char *mgi_DBtable(int table)
     case MRK_NOMEN_HOMOLOGY_VIEW:
 	    sprintf(buf, "%s..MRK_Nomen_Homology_View", getenv("NOMEN"));
 	    break;
+    case MRK_NOMEN_USER_VIEW:
+	    sprintf(buf, "%s..MRK_Nomen_User_View", getenv("NOMEN"));
+	    break;
     case MRK_GENEFAMILY:
 	    sprintf(buf, "%s..MRK_GeneFamily", getenv("NOMEN"));
 	    break;
