@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec 02/28/2003
+-	- JSAM; clearLists = 3; added mgiAccessionTable
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe  Menu
 --
@@ -51,6 +54,8 @@ locals:
 
 	accTable : widget;
 
+	clearLists : integer := 3;
+
 rules:
 
 --
@@ -81,6 +86,7 @@ rules:
           send(SetRowCount, 0);
  
 	  Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
 	  send(Clear, 0);
 
 	  (void) reset_cursor(mgi);
@@ -129,6 +135,7 @@ rules:
  
 	  if (top->QueryList->List.sqlSuccessful) then
 	    Clear.source_widget := top;
+	    Clear.clearLists := clearLists;
             Clear.clearKeys := false;
             send(Clear, 0);
 	  end if;
@@ -152,6 +159,7 @@ rules:
 
 	  if (top->QueryList->List.row = 0) then
 	    Clear.source_widget := top;
+	    Clear.clearLists := clearLists;
             Clear.clearKeys := false;
             send(Clear, 0);
 	  end if;
@@ -260,6 +268,7 @@ rules:
           send(LoadAcc, 0);
  
 	  Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
           Clear.reset := true;
           send(Clear, 0);
 	end does;
