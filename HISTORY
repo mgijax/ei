@@ -1,3 +1,10 @@
+TAG: ei-8-3-11
+DATE: 04/25/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) remove Anonymous library name code from Molecular.d MolSourceLib.d
+
 TAG: ei-8-3-10
 DATE: 04/24/2003
 STAFF: lec
