@@ -238,6 +238,7 @@ rules:
                  top->PrivateMenu.menuHistory.defaultValue + ")\n";
  
 	  send(ModifyType, 0);
+	  annotKey := NO;
 	  send(ModifySuperStandard, 0);
 
 	  --  Process Markers/Alleles
