@@ -185,7 +185,6 @@ extern char *global_version;
 #define GXD_EMBEDDINGMETHOD	308
 #define GXD_FIXATIONMETHOD	309
 #define GXD_PATTERN		310
-#define GXD_FIELDTYPE		311
 #define GXD_ANTIBODYTYPE	312
 #define GXD_GELRNATYPE		313
 #define GXD_GELUNITS		314

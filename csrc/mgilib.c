@@ -659,9 +659,6 @@ char *mgi_DBkey(int table)
     case GXD_PATTERN:
             strcpy(buf, "_Pattern_key");
 	    break;
-    case GXD_FIELDTYPE:
-            strcpy(buf, "_FieldType_key");
-	    break;
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "_AntibodyType_key");
 	    break;
