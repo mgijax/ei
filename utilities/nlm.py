@@ -86,6 +86,9 @@
 #
 # History
 #
+#	lec	03/27/2001
+#	- pmiKey should be pmidKey
+#
 #	lec	02/16/2001
 #	- TR 2290; new PMID in file
 #	- TR 2298; add PMID accession ID to Reference record
