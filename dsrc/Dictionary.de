@@ -12,9 +12,3 @@ SelectNode [structure_key : integer := -1;];
  -- Selects a structure node in response to a mouse click,
  -- a click in the results list, or a "Next/Previous" button press. 
 
-ResetCursor [];
- -- Resets the mgi cursor and top cursor to be non-busy.  Resets top
- -- only if application is active.
-
-DictionaryExit [];
- -- Causes ADI to shut down. 
