@@ -72,6 +72,8 @@ rules:
 
 	  top := create widget("MarkerNonMouse", nil, mgi);
 
+	  mgi->MarkerNonMouse.sensitive := false;
+
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
