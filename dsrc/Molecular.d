@@ -299,6 +299,7 @@ rules:
 --
 
         Add does
+
 	  if (top->Control->References.set) then
 	    send(AddReference, 0);
 	    return;
@@ -353,8 +354,8 @@ rules:
 	      cmd := cmd + detailForm->SourceForm->SourceID->text.value + ",";
 	    end if;
 
-            cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
-                         top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
+	    cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
+			 top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL,NULL,";	-- primer1sequence, primer2sequence
 
             if (top->MolMasterForm->Region->text.value.length <= 255) then

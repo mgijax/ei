@@ -157,6 +157,8 @@ rules:
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
 	           top->AllowOnlyOneMenu.menuHistory.defaultValue;
+	  elsif (tableID = ALL_TYPE) then
+	    cmd := cmd + "1";
 	  else
 	    cmd := cmd + mgi_DBprstr(top->Name->text.value);
 	  end if;
