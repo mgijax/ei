@@ -98,9 +98,9 @@ rules:
        if (ReportGenerate.nlmMode = 1) then
          commands.insert("--mode=nlm", commands.count + 1);
        elsif (ReportGenerate.nlmMode = 2) then
-         commands.insert("--mode=cc", commands.count + 1);
-       elsif (ReportGenerate.nlmMode = 3) then
          commands.insert("--mode=addnlm", commands.count + 1);
+       elsif (ReportGenerate.nlmMode = 3) then
+         commands.insert("--mode=cc", commands.count + 1);
        elsif (ReportGenerate.nlmMode = 4) then
          commands.insert("--mode=addcc", commands.count + 1);
        end if;
