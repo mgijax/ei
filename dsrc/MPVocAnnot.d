@@ -548,7 +548,7 @@ rules:
 			  newSeqNum + "," +
 			  global_loginKey + "," +
 			  global_loginKey + "," +
-			  global_loginKey + ")\n";
+			  global_loginKey + ",getdate())\n";
 
             row := row + 1;
           end while;
