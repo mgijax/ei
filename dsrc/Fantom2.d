@@ -468,7 +468,7 @@ rules:
 		     "mgi_statusCode = " + mgi_DBprstr(mgiStatus) + "," +
 		     "mgi_numberCode = " + mgi_DBprstr(mgiNumber) + "," +
 		     "riken_numberCode = " + mgi_DBprstr(rikenNumber) + "," +
-		     "cds_category = " + mgi_DBprstr(cds) + "," +
+		     "cds_category = " + cds + "," +
 		     "cluster_analysis = " + mgi_DBprstr(clusterAnal) + "," +
 		     "gene_name_curation = " + mgi_DBprstr(geneNameCuration) + "," +
 		     "cds_go_curation = " + mgi_DBprstr(cdsGOCuration) + "," +
