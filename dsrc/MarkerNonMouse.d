@@ -295,7 +295,8 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accRefTable.sqlCmd and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set);
+	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set) +
+	           "\nexec MRK_reloadLabel " + currentRecordKey;
 	  end if;
 
 	  ModifySQL.cmd := cmd;
