@@ -749,6 +749,7 @@ rules:
 
 	  (void) dbclose(dbproc);
 
+	  top->Reference->Rows.labelString := (string) row + " Rows";
 	end does;
 
 --

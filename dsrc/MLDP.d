@@ -3033,8 +3033,8 @@ rules:
           top->ExptDetailForm->ID->text.value := "";
           QueryNoInterrupt.source_widget := top;
           QueryNoInterrupt.list_w := top->ExperimentList;
-          QueryNoInterrupt.select := "select _Expt_key, exptType, tag, chromosome\n" +
-		"from MLD_Expts\n" +
+          QueryNoInterrupt.select := 
+		"select _Expt_key, exptLabel from MLD_Expt_View\n" +
 		"where _Refs_key = " + currentRefKey + 
 		"\norder by exptType, tag";
           QueryNoInterrupt.table := MLD_EXPTS;
