@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan  4 14:27:59 2005";
+      lastWritten = "Wed Feb 23 12:02:15 2005";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -274,10 +274,10 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Current Type,Type key,Review key,Type,J#,Citation,Review";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 25)(all 9 60)(all 10 7)";
-                                          xrtTblNumColumns = 11;
                                           userDefinedAttributes = "reviewKey:Int(Int)=\"6\"\nreview:Int(Int)=\"10\"\n";
+                                          xrtTblNumColumns = 11;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 60)";
+                                          xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Type key,Review key,Type,J#,Citation,Review?";
                                           xrtTblEditableSeries = "(all 0-7 False)";
                                           xrtTblMaxLengthSeries = "(all 9 255)";
                                           xrtTblPixelWidthSeries = "(all 0-6 0)";
@@ -286,6 +286,7 @@ Shift<Key>Tab: prev-tab-group()
                                           citation = 9;
                                           jnum = 8;
                                           refsName = 7;
+                                          refsType = 7;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -294,15 +295,13 @@ Shift<Key>Tab: prev-tab-group()
                                         DeleteRow = TablePush : mgiTable;
                                       }
                                       {
-                                        EditRow = TablePush : mgiTable;
-                                      }
-                                      {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Nomen_View where allowOnlyOne = 0 order by _RefAssocType_key";
+                                                tableOption = 7;
                                             }
                                       }
                                 }
@@ -330,9 +329,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        EditRow = TablePush : mgiTable;
                                       }
                                       {
                                         SynonymTypeMenu = SynonymTypeMenu : mgiOption;
@@ -693,6 +689,16 @@ Shift<Key>Tab: prev-tab-group()
                         topWidget = BroadcastToMenu;
                         bottomAttachment = attach_none;
                         resizable = true;
+                          {
+                            ReviewMenu = YesNoMenu : mgiOption;
+                                Popups:
+                                {
+                                  ReviewPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 10;
+                                    tableOptionKey = 6;
+                                }
+                          }
                     }
                     {
                       Lookup = Lookup;

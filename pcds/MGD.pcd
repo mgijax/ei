@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 10:33:07 2005";
+      lastWritten = "Wed Feb 23 12:15:31 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8651,6 +8651,9 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           userDefinedAttributes = "origRefsKey:Int\n";
+                                        Group: User
+                                          mgiTypeKey = 11;
+                                          origRefsKey = 0;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -8659,15 +8662,13 @@ Shift<Key>Tab: prev-tab-group()
                                         DeleteRow = TablePush : mgiTable;
                                       }
                                       {
-                                        EditRow = TablePush : mgiTable;
-                                      }
-                                      {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 and allowOnlyOne = 0 order by referenceType";
+                                                tableForm = Reference;
                                             }
                                       }
                                 }
@@ -9352,8 +9353,8 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 9;
                                           xrtTblColumnLabels = "Mode,Key,Key,Key,Key,Type,Chr,Marker,Allele";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 25)(all 6 3)(all 7 30)(all 8 30)";
-                                          xrtTblEditableSeries = "(all 0-4 False)";
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          xrtTblEditableSeries = "(all 0-5 False)";
+                                          xrtTblTraversableSeries = "(all 0-5 False)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           xrtTblVisibleRows = 3;
                                       }
@@ -9370,21 +9371,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        EditRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          activateCallback = "D:EditStrainAlleleType";
-                                          labelString = "Edit Type";
-                                          managed = False;
-                                        Group: Constraint
-                                          leftAttachment = attach_widget;
-                                          leftWidget = DeleteRow;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_opposite_widget;
-                                          topWidget = DeleteRow;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
                                       }
                                       {
                                         StrainAlleleTypeMenu = StrainAlleleTypeMenu : mgiOption;
@@ -9428,16 +9414,9 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          activateCallback = "D:AddTableRow";
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        EditRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         SynonymTypeMenu = SynonymTypeMenu : mgiOption;
@@ -9446,9 +9425,6 @@ Shift<Key>Tab: prev-tab-group()
                                               SynonymTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Strain_View order by _SynonymType_key";
-                                                tableForm = Synonym;
-                                                tableOption = 4;
-                                                tableOptionKey = 2;
                                             }
                                       }
                                 }
@@ -9465,6 +9441,8 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         Table = mgiTable;
+                                        Group: User
+                                          mgiTypeKey = 10;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -9475,9 +9453,6 @@ Shift<Key>Tab: prev-tab-group()
                                         DeleteRow = TablePush : mgiTable;
                                       }
                                       {
-                                        EditRow = TablePush : mgiTable;
-                                      }
-                                      {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                                             Popups:
                                             {
@@ -9485,8 +9460,6 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: User
                                                 sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Strain_View where allowOnlyOne = 0 order by _RefAssocType_key";
                                                 tableForm = Reference;
-                                                tableOption = 6;
-                                                tableOptionKey = 5;
                                             }
                                       }
                                 }
@@ -10796,15 +10769,13 @@ Shift<Key>Tab: prev-tab-group()
                                   DeleteRow = TablePush : mgiTable;
                                 }
                                 {
-                                  EditRow = TablePush : mgiTable;
-                                }
-                                {
                                   ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                                       Popups:
                                       {
                                         ReferenceTypePulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Sequence_View where allowOnlyOne = 0 order by assocType";
+                                          tableForm = Reference;
                                       }
                                 }
                           }
@@ -12059,9 +12030,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     DeleteRow = TablePush : mgiTable;
                                                   }
                                                   {
-                                                    EditRow = TablePush : mgiTable;
-                                                  }
-                                                  {
                                                     SynonymTypeMenu = SynonymTypeMenu : mgiOption;
                                                   Popups:
                                                   {
@@ -12794,9 +12762,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        EditRow = TablePush : mgiTable;
                                       }
                                       {
                                         SynonymTypeMenu = SynonymTypeMenu : mgiOption;

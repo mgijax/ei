@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan  4 14:27:58 2005";
+      lastWritten = "Wed Feb 23 12:02:00 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -502,9 +502,9 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  userDefinedAttributes = "refsType:Int(Int)=\"5\"\nrefsName:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:String(String)=\"-1\"\nrefsCurrentType:Int(Int)=\"4\"\norigRefsKey:Int=\"0\"\n";
+                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"5\"\nrefsCurrentTypeKey:Int(Int)=\"4\"\n";
                   xrtTblNumColumns = 9;
-                  xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Current Type,Type,Type,J#,Citation";
+                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Type key,Type,J#,Citation";
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 60)";
                   xrtTblMaxLengthSeries = "(all 8 255)";
                   xrtTblPixelWidthSeries = "(all 0-5 0)";
@@ -513,13 +513,12 @@ Module: mgiTable
                 Group: User
                   citation = 8;
                   jnum = 7;
-                  refsCurrentKey = 2;
                   refsKey = 3;
+                  refsCurrentKey = 2;
+                  requiredColumns = "3\n5";
               }
               {
                 AddRow = TablePush : mgiTable;
-                Group: Widget
-                  activateCallback = "D:AddRefTypeRow";
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = ReferenceTypeMenu;
@@ -533,21 +532,6 @@ Module: mgiTable
                 DeleteRow = TablePush : mgiTable;
               }
               {
-                EditRow = TablePush : mgiTable;
-                Group: Widget
-                  activateCallback = "D:EditRefType";
-                  labelString = "Edit Ref Type";
-                  managed = False;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = DeleteRow;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = DeleteRow;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
                 ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
@@ -558,6 +542,14 @@ Module: mgiTable
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 2;
+                    Popups:
+                    {
+                      ReferenceTypePulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 6;
+                        tableOptionKey = 5;
+                        tableForm = Reference;
+                    }
               }
         }
         {
@@ -648,8 +640,6 @@ Module: mgiTable
               }
               {
                 AddRow = TablePush : mgiTable;
-                Group: Widget
-                  activateCallback = "D:AddSynTypeRow";
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = SynonymTypeMenu;
@@ -665,20 +655,6 @@ Module: mgiTable
                 DeleteRow = TablePush : mgiTable;
               }
               {
-                EditRow = TablePush : mgiTable;
-                Group: Widget
-                  activateCallback = "D:EditSynType";
-                  labelString = "Edit Type";
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = DeleteRow;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = DeleteRow;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
                 SynonymTypeMenu = SynonymTypeMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
@@ -689,6 +665,14 @@ Module: mgiTable
                   resizable = true;
                   topWidget = Table;
                   topOffset = 2;
+                    Popups:
+                    {
+                      SynonymTypePulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 4;
+                        tableOptionKey = 2;
+                        tableForm = Synonym;
+                    }
               }
         }
         {
