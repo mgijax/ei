@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- 07/29/2004 lec
 --	TR 6036; SelectGOReferences;
 --	exclude *any* reference which has a GO annotation

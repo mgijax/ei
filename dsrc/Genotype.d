@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec	06/25/2004
 --	- TR 5907; search looks for either Allele 1 or Allele 2
 --
