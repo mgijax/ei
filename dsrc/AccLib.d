@@ -518,7 +518,6 @@ rules:
 
         SearchAcc does
 	  table : widget := SearchAcc.table;
-	  source : widget := table.parent.child_by_class("XmRowColumn");
 	  tableID : integer := SearchAcc.tableID;
 
           r : integer := 0;
@@ -572,7 +571,7 @@ rules:
 		end if;
 
 		if (accID.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand ac.accID = \"" + accID + "\"";
+	          table.sqlWhere := table.sqlWhere + "\nand ac.accID like \"" + accID + "\"";
 		end if;
 
 		if (refsKey.length > 0) then

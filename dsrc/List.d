@@ -112,6 +112,7 @@ rules:
 	  key : widget := top->SelectionKey->text;
 	  targetWidget : widget;
 	  targetKey : widget;
+	  itemPosition : integer;
 
 	  if (key.value.length = 0) then
 	    return;
@@ -125,6 +126,14 @@ rules:
 	      "Using the Mouse, choose the field where you wish\n" +
 	      "the selected item to be placed.";
 	    send(StatusReport);
+	    return;
+	  end if;
+
+	  if (mgi_tblIsTable(targetWidget.parent)) then
+	    itemPosition := XmListItemPos(top->ItemList->List, xm_xmstring(item.value));
+	    SelectLookupListItem.source_widget := top->ItemList->List;
+	    SelectLookupListItem.item_position := itemPosition;
+	    send(SelectLookupListItem, 0);
 	    return;
 	  end if;
 
@@ -479,9 +488,11 @@ rules:
 	  key.value := list_w.keys[SelectListItem.item_position];
 	  list_w.row := SelectListItem.item_position;
 
-	  if (SelectListItem.deselect) then
-	    (void) XmListDeselectAllItems(list_w);
-	  end if;
+	  -- turn off default of de-selecting item after copy
+
+--	  if (SelectListItem.deselect) then
+--	    (void) XmListDeselectAllItems(list_w);
+--	  end if;
 	end does;
 
 --

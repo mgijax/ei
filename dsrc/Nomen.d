@@ -193,6 +193,8 @@ locals:
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
 
+	curationState : string := "";	-- Default Curation State
+
 rules:
 
 --
@@ -261,8 +263,8 @@ rules:
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->CurationStateMenu;
-	  send(InitOptionMenu, 0);
+--	  InitOptionMenu.option := top->CurationStateMenu;
+--	  send(InitOptionMenu, 0);
 
 	  top->GeneFamilyList.cmd :=
 		"select _Term_key, term from " + mgi_DBtable(VOC_NOMGENEFAMILY) + " order by term";
@@ -312,6 +314,8 @@ rules:
 	  resettables.append(top->SynonymReference->Table);
 	  resettables.append(top->GeneFamily->Table);
 	  resettables.append(top->AccessionReference->Table);
+
+	  curationState := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = " + mgi_DBprstr(INTERNALCURATIONSTATE));
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -369,7 +373,8 @@ rules:
 	  -- Set Status to Pending if set to Broadcast...this can happen
 	  -- if they user is duplicating a broadcast record
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCAST) then
+	  if (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTOFF or
+	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT) then
             SetOption.source_widget := top->MarkerStatusMenu;
             SetOption.value := STATUS_PENDING;
             send(SetOption, 0);
@@ -415,7 +420,7 @@ rules:
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
                  NOTSPECIFIED + "," +
-                 top->CurationStateMenu.menuHistory.defaultValue + "," +
+                 curationState + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
@@ -539,7 +544,8 @@ rules:
 	  end if;
 
           if (top->MarkerStatusMenu.menuHistory.modified and
-	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCAST) then
+	      (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTOFF or
+	       top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT)) then
             StatusReport.source_widget := top;
             StatusReport.message := "You cannot modify status to Broadcast.\n";
             send(StatusReport);
@@ -589,10 +595,10 @@ rules:
             set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-          if (top->CurationStateMenu.menuHistory.modified and
-	      top->CurationStateMenu.menuHistory.searchValue != "%") then
-            set := set + "_CurationState_key = "  + top->CurationStateMenu.menuHistory.defaultValue + ",";
-          end if;
+--          if (top->CurationStateMenu.menuHistory.modified and
+--	      top->CurationStateMenu.menuHistory.searchValue != "%") then
+--            set := set + "_CurationState_key = "  + top->CurationStateMenu.menuHistory.defaultValue + ",";
+--          end if;
 
           if (top->ChromosomeMenu.menuHistory.modified and
 	      top->ChromosomeMenu.menuHistory.searchValue != "%") then
@@ -876,10 +882,10 @@ rules:
 	    printSelect := printSelect + "\nMarker Type = " + top->MarkerTypeMenu.menuHistory.labelString;
           end if;
 
-          if (top->CurationStateMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._CurationState_key = " + mgi_DBprstr(top->CurationStateMenu.menuHistory.searchValue);
-	    printSelect := printSelect + "\nMarker Curation State = " + top->CurationStateMenu.menuHistory.labelString;
-          end if;
+--          if (top->CurationStateMenu.menuHistory.searchValue != "%") then
+--            where := where + "\nand m._CurationState_key = " + mgi_DBprstr(top->CurationStateMenu.menuHistory.searchValue);
+--	    printSelect := printSelect + "\nMarker Curation State = " + top->CurationStateMenu.menuHistory.labelString;
+--          end if;
 
           if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m.chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.searchValue);
@@ -1108,9 +1114,9 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
-                SetOption.source_widget := top->CurationStateMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
-                send(SetOption, 0);
+--                SetOption.source_widget := top->CurationStateMenu;
+--                SetOption.value := mgi_getstr(dbproc, 6);
+--                send(SetOption, 0);
 
                 SetOption.source_widget := top->ChromosomeMenu;
                 SetOption.value := mgi_getstr(dbproc, 9);

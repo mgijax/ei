@@ -162,10 +162,14 @@ rules:
 	  accTable := top->AccessionReference->Table;
 	  modTable := top->Control->ModificationHistory->Table;
 	  sourceTable := top->SourceInfo->Table;
---	  mgi->TissueDialog->ItemList->List.singleSelectionCallback := "D:SelectLookupListItem";
---	  mgi->TissueDialog->ItemList->List.targetWidget := sourceTable;
---	  mgi->TissueDialog->ItemList->List.targetKey := "5";
---	  mgi->TissueDialog->ItemList->List.targetText := "13";
+
+	  mgi->StrainDialog->ItemList->List.targetWidget := sourceTable;
+	  mgi->StrainDialog->ItemList->List.targetKey := "4";
+	  mgi->StrainDialog->ItemList->List.targetText := "13";
+
+	  mgi->TissueDialog->ItemList->List.targetWidget := sourceTable;
+	  mgi->TissueDialog->ItemList->List.targetKey := "5";
+	  mgi->TissueDialog->ItemList->List.targetText := "14";
 
 	  -- List of all Table widgets used in form
 
