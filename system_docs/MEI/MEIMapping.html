@@ -21,6 +21,10 @@ Mapping allows entry of the following Experiment Types:
 	<LI>InSitu Hybridization (<I>InSitu</I>)
 	<LI>FISH
 	<LI>Text
+	<LI>Text - Physical Mapping
+	<LI>Text - Cytogenetic Localization
+	<LI>Text - Genetic Cross
+	<LI>Text - QTL
 	<LI>Physical Mapping (<I>Physical</I>)
 	</UL>
 <P>
@@ -75,6 +79,10 @@ Notes may be attached to the entire Reference or to each individual Experiment.
 	<LI>InSitu
 	<LI>FISH
 	<LI>Text
+	<LI>Text - Physical Mapping
+	<LI>Text - Cytogenetic Localization
+	<LI>Text - Genetic Cross
+	<LI>Text - QTL
 	<LI>Physical
 	</UL>
 <P>
@@ -195,7 +203,7 @@ depending on the Experiment Type selected and different fields will become avail
 		<OL>
 		<LI>Strain
 		</OL>
-	<LI>Text Experiment
+	<LI>Text Experiments
 		<OL>
 		<LI>Notes
 		</OL>
@@ -352,6 +360,28 @@ There are no restrictions on deleting an Experiment or all Experiments for a giv
 <LI>If the <I>Chromosome</I> value of an Experiment Marker is reserved or unknown, then its <I>Chromosome</I>
     value in the master Marker table will be updated to the <I>Experiment Chromosome</I> value when the
     record is modified.
+<P>
+<LI>The <I>Experiment Type</I> field <B>cannot</B> be modified for the following types:
+	<UL>
+	<LI>Cross
+	<LI>RI
+	<LI>Hybrid
+	<LI>InSitu
+	<LI>FISH
+	<LI>Physical
+	</UL>
+<P>
+<LI>The <I>Experiment Type</I> field <B>can</B> be modified for the following types.
+    That is, the user can change any Text experiment type to another Text experiment type.
+    However, the user cannot change a non-Text experiment type to Text or a Text experiment
+    type to a non-Text experiment type.
+	<UL>
+	<LI>Text
+	<LI>Text - Physical Mapping
+	<LI>Text - Cytogenetic Localization
+	<LI>Text - Genetic Cross
+	<LI>Text - QTL
+	</UL>
 </OL>
 
 <H4>Triggers/Views/Stored Procedures for Experiment tables (<I>MLD_</I>)</H4>
