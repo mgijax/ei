@@ -532,7 +532,6 @@ rules:
 		 "select assays = count(distinct a._Assay_key) from GXD_Index i, GXD_Assay a, GXD_Expression e " +
 		 "where i._Index_key = " + currentRecordKey + 
 		 " and i._Refs_key = a._Refs_key" +
-		 " and i._Marker_key = a._Marker_key" +
 		 " and a._Assay_key = e._Assay_key";
 
 	  table : widget;
