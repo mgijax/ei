@@ -312,9 +312,6 @@ extern char *global_version;
 /* Stored procedures */
 
 #define NOM_TRANSFERSYMBOL    2000
-#define NOM_TRANSFERBATCH     2001
-#define NOM_TRANSFERREFEDITOR 2002
-#define NOM_TRANSFERREFCOORD  2003
 
 #define	MOUSE		"1"
 #define HUMAN		"2"
