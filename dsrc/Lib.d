@@ -7,6 +7,11 @@
 --
 -- History
 --
+-- lec 10/24/2002
+--      - TR 4184; ExitWindow; check if top is realized (not managed).
+--        if window is iconified, then it is not currently managed
+--        and won't get destroyed.
+--
 -- lec 03/27/2001
 --	- Added "AlleleStatusMenu" to SetOption
 --
@@ -381,7 +386,7 @@ rules:
 	  dialog : widget;
 	  i : integer := 1;
 
-          if (top.mapped) then
+          if (top.realized) then
 
 	    -- Unmanage any dialogs which are still active
             while (i <= mgi.initDialog.count) do
