@@ -34,6 +34,7 @@ devents:
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
+	VerifyGoodName :local [];			-- Verify Good Name
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
@@ -49,6 +50,7 @@ locals:
 	tables : list;
 
 	transTable : widget;
+	dbView : string;		-- DB View Table (of ACC_MGIType._MGIType_key)
 
 rules:
 
@@ -175,16 +177,15 @@ rules:
 --
 
 	Modify does
-	  cmd : string;
+	  cmd : string := "";
+          set : string := "";
           row : integer := 0;
           editMode : string;
           transKey : string;
           objectKey : string;
 	  badName : string;
-	  goodName: string;
 	  currentSeqNum : string;
 	  newSeqNum : string;
-          set : string := "";
 	  keyDeclared : boolean := false;
 	  newTransKey : integer := 1;
  
@@ -203,6 +204,18 @@ rules:
  
 	  (void) busy_cursor(top);
 
+	  if (top->Name->text.modified) then
+	    set := set + "translationType = " + mgi_DBprstr(top->Name->text.value) + ",";
+	  end if;
+
+	  if (top->Compression->text.modified) then
+	    set := set + "compressionChars = " + mgi_DBprstr(top->Compression->text.value) + ",";
+	  end if;
+
+	  if (set.length > 0) then
+	    cmd := cmd + mgi_DBupdate(MGI_TRANSLATIONTYPE, currentRecordKey, set);
+	  end if;
+
           -- Process while non-empty rows are found
  
           while (row < mgi_tblNumRows(transTable)) do
@@ -217,31 +230,22 @@ rules:
             transKey := mgi_tblGetCell(transTable, row, transTable.transKey);
             objectKey := mgi_tblGetCell(transTable, row, transTable.objectKey);
             badName := mgi_tblGetCell(transTable, row, transTable.badName);
-            goodName := mgi_tblGetCell(transTable, row, transTable.goodName);
  
             if (editMode = TBL_ROW_ADD) then
 	      
-	      -- If we need a new Translation key...or if the Translation key
-	      -- was created during this transaction...
-
-	      if (transKey.length = 0 or (integer) transKey < 1000) then
-
-		-- if the key def was not already declared, declare it
-                if (not keyDeclared) then
-                  cmd := cmd + mgi_setDBkey(MGI_TRANSLATION, NEWKEY, KEYNAME);
-                  keyDeclared := true;
-
-		-- if the Translation key is blank, then it's a new Term
-                elsif (transKey.length = 0) then
-                  cmd := cmd + mgi_DBincKey(KEYNAME);
-                end if;
-	      end if;
+	      -- if the key def was not already declared, declare it
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(MGI_TRANSLATION, NEWKEY, KEYNAME);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(KEYNAME);
+              end if;
 
               cmd := cmd +
-                       mgi_DBinsert(MGI_TRANSLATION, transKey) +
+                       mgi_DBinsert(MGI_TRANSLATION, KEYNAME) +
 		       currentRecordKey + "," +
 		       objectKey + "," +
-		       badName + "," + 
+		       mgi_DBprstr(badName) + "," + 
 		       newSeqNum + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
@@ -334,10 +338,11 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd : string := "select * from " + mgi_DBtable(MGI_TRANSLATIONTYPE) +
+			  " where " + mgi_DBkey(MGI_TRANSLATIONTYPE) + " = " + currentRecordKey + "\n" + 
+			  "select _Translation_key, _Object_key, badName, goodName, sequenceNum, " + 
+			  "modifiedBy, modification_date " +
+			  "from " + mgi_DBtable(MGI_TRANSLATIONSTRAIN_VIEW) +
 			  " where " + mgi_DBkey(MGI_TRANSLATIONTYPE) + " = " + currentRecordKey +
-			  "select _Translation_key, _Object_key, badName, sequenceNum " +
-			  "from " + mgi_DBtable(MGI_TRANSLATION) +
-			  " where " + mgi_DBkey(MGI_TRANSLATION) + " = " + currentRecordKey +
 			  " order by sequenceNum\n";
 
 	  row : integer := 0;
@@ -351,6 +356,7 @@ rules:
 	      if (results = 1) then
 	        top->ID->text.value   := mgi_getstr(dbproc, 1);
 	        top->Name->text.value := mgi_getstr(dbproc, 3);
+	        top->Compression->text.value := mgi_getstr(dbproc, 4);
                 SetOption.source_widget := top->MGITypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
                 send(SetOption, 0);
@@ -358,9 +364,11 @@ rules:
 	        (void) mgi_tblSetCell(transTable, row, transTable.transKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(transTable, row, transTable.objectKey, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(transTable, row, transTable.badName, mgi_getstr(dbproc, 3));
---	        (void) mgi_tblSetCell(transTable, row, transTable.goodName, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(transTable, row, transTable.currentSeqNum, mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(transTable, row, transTable.seqNum, mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(transTable, row, transTable.goodName, mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(transTable, row, transTable.currentSeqNum, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(transTable, row, transTable.seqNum, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(transTable, row, transTable.modifiedBy, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(transTable, row, transTable.modifiedDate, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(transTable, row, transTable.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
 	      end if;
@@ -369,6 +377,9 @@ rules:
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + 
+			top->MGITypeMenu.menuHistory.defaultValue);
 
 	  -- Reset Background
 
@@ -403,6 +414,98 @@ rules:
 	  Clear.source_widget := top;
           Clear.reset := true;
           send(Clear, 0);
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyGoodName
+--
+--	Verify Good Name for Table
+--	Assumes table.objectKey, table.goodName are UDAs
+--	Copy Object Key into Appropriate widget/column
+--
+
+	VerifyGoodName does
+	  sourceWidget : widget := VerifyGoodName.source_widget;
+	  isTable : boolean;
+	  value : string;
+	  objectKey : string;
+	  goodName : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  if (isTable) then
+	    row := VerifyGoodName.row;
+	    column := VerifyGoodName.column;
+	    reason := VerifyGoodName.reason;
+	    value := VerifyGoodName.value;
+
+	    -- If not in the Evidence Code column, return
+
+	    if (column != sourceWidget.goodName) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  else
+	    return;
+	  end if;
+
+	  -- If the Good Name is null, return
+
+	  if (value.length = 0) then
+	    if (isTable) then
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.goodName, "");
+	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  select : string := "select _Object_key, description from " + dbView +
+		" where description = " + mgi_DBprstr(value);
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      objectKey := mgi_getstr(dbproc, 1);
+	      goodName  := mgi_getstr(dbproc, 2);
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  -- If Good Name is valid
+	  --   Copy the Keys into the Key fields
+	  --   Copy the Names into the Name fields
+	  -- Else
+	  --   Display an error message, set the key columns to null, disallow edit to the field
+
+	  if (objectKey.length > 0) then
+	    if (isTable) then
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, objectKey);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.goodName, goodName);
+	    end if;
+	  else
+	    if (isTable) then
+	      VerifyGoodName.doit := (integer) false;
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.goodName, "");
+	    end if;
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid Good Name";
+            send(StatusReport);
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
