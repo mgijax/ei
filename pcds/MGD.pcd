@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Wed Aug 11 14:14:11 1999";
+      lastWritten = "Wed Aug 11 14:46:13 1999";
         {
           Reference = Module : MGI;
           Group: Widget
@@ -666,10 +666,10 @@ Module: MGD
                                                     E = XmToggleButton;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    GDB = XmToggleButton : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
+                                                    RATMAP = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }
@@ -2675,10 +2675,10 @@ Module: MGD
                                                     E = XmToggleButton;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    GDB = XmToggleButton : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
+                                                    RATMAP = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }
@@ -2821,10 +2821,10 @@ Module: MGD
                                                     E = XmToggleButton;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    GDB = XmToggleButton : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
+                                                    RATMAP = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }
@@ -3701,10 +3701,10 @@ Module: MGD
                                                     E = XmToggleButton;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    GDB = XmToggleButton : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
+                                                    RATMAP = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }
@@ -4454,10 +4454,10 @@ Shift<Key>Tab: prev-tab-group()
                                   E = XmToggleButton;
                                 }
                                 {
-                                  GDB = AccToggle : mgiOption;
+                                  GDB = XmToggleButton : mgiOption;
                                 }
                                 {
-                                  RATMAP = AccToggle : mgiOption;
+                                  RATMAP = XmToggleButton : mgiOption;
                                 }
                           }
                     }
@@ -7068,10 +7068,10 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    GDB = XmToggleButton : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
+                                                    RATMAP = XmToggleButton : mgiOption;
                                                   }
                                             }
                                       }
@@ -8183,6 +8183,9 @@ Shift<Key>Tab: prev-tab-group()
                                               text = XmTextField;
                                               Group: Widget
                                                 columns = 75;
+                                                translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SetDefault()";
                                               Group: User
                                                 required = True;
                                             }
@@ -8234,6 +8237,9 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           columns = 8;
                                           maxLength = 8;
+                                          translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyChromosome()";
                                         Group: User
                                           required = True;
                                       }
@@ -8572,7 +8578,9 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = XmScrolledList;
                                         Group: User
-                                          targetWidget = Species;
+                                          targetWidget = mgiSpecies;
+                                          targetText = Species;
+                                          targetKey = ObjectID;
                                       }
                                 }
                           }

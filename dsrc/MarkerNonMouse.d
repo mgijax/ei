@@ -161,7 +161,7 @@ rules:
 
           cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MRK_MARKER, KEYNAME) +
-	         mgi_DBprstr(top->mgiSpecies->ObjectID->text.value) + "," +
+	         top->mgiSpecies->ObjectID->text.value + "," +
                  markerTypeKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
@@ -264,8 +264,7 @@ rules:
 	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
 	  end if;
 
-          if (top->Chromosome->text.modified and
-	      top->Chromosome->text.searchValue != "%") then
+          if (top->Chromosome->text.modified) then
             set := set + "chromosome = " + mgi_DBprstr(top->Chromosome->text.value) + ",";
           end if;
 
@@ -348,6 +347,10 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
+          if (top->mgiSpecies->ObjectID->text.value.length > 0) then
+	    where := where + "\nand m._Species_key = " + top->mgiSpecies->ObjectID->text.value;
+	  end if;
+
           if (top->Symbol->text.value.length > 0) then
 	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->Symbol->text.value);
 	  end if;

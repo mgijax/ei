@@ -951,6 +951,8 @@ rules:
 -- VerifyChromosome
 --
 -- Activated from:  Table ValidateCellCallback
+-- Activated from:  Chromosome->text translation
+--
 -- Checks if Chromosome value for Species exists in Marker Chromosome table.
 -- If not, then alerts user that value will be added to Marker Chromosome table
 -- when transaction is executed.
@@ -965,6 +967,8 @@ rules:
 	  value : string;
 	  speciesKey : string;
 	  isTable : boolean;
+	  select : string;
+	  where : string;
 
 	  -- Relevant for Tables only
 	  row : integer := 0;
@@ -989,23 +993,37 @@ rules:
 	      return;
 	    end if;
 	  else
-	    return;
+	    value := top->Chromosome->text.value;
 	  end if;
 
-          speciesKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.speciesKey);
-	  select : string := "select count(*) from MRK_Chromosome ";
-	  where : string := " where _Species_key = " + speciesKey +
-		" and chromosome = " + mgi_DBprstr(value) + "\n";
-
-	  if ((integer) mgi_sql1(select + where) = 0) then
-            StatusReport.source_widget := top;
-	    StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value +
-		"\n\nThis value will be added to Species/Chromosome master table\n" +
-		"when the current transaction is executed.\n\n" +
-		"Replaced the invalid value with a valid value if you DO NOT want\n" +
-		"the invalid value added to the Species/Chromosome master table.\n";
-            send(StatusReport);
+	  if (isTable) then
+            speciesKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.speciesKey);
+	  else
+	    speciesKey := top->mgiSpecies->ObjectID->text.value;
 	  end if;
+
+	  -- If no species entered, cannot verify value
+
+	  if (speciesKey.length > 0) then
+	    select := "select count(*) from MRK_Chromosome ";
+	    where := " where _Species_key = " + speciesKey +
+		  " and chromosome = " + mgi_DBprstr(value) + "\n";
+
+	    if ((integer) mgi_sql1(select + where) = 0) then
+              StatusReport.source_widget := top;
+	      StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value +
+		  "\n\nThis value will be added to Species/Chromosome master table\n" +
+		  "when the current transaction is executed.\n\n" +
+		  "Replace the invalid value with a valid value if you DO NOT want\n" +
+		  "the invalid value added to the Species/Chromosome master table.\n";
+              send(StatusReport);
+	    end if;
+	  end if;
+
+	  if (not isTable) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
 	end does;
 
 --
