@@ -54,8 +54,14 @@ rules:
 --
 
 	CreateMGIModule does
-	  launchedFrom : widget := CreateMGIModule.source_widget;
-	  (void) create dmodule(CreateMGIModule.name, top, launchedFrom);
+	  launchedFrom : widget;
+	  launchTop : widget;
+	  
+	  launchedFrom := CreateMGIModule.source_widget;
+	  launchTop := launchedFrom.top;
+
+	  -- if the parent is set properly, then when the parent dies, the child will die
+	  (void) create dmodule(CreateMGIModule.name, launchTop, launchedFrom);
 	end does;
 
 --

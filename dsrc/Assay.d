@@ -211,7 +211,6 @@ devents:
 	DetectISResultModification :local [];
 	DuplicateAssay :local [dupAll : integer := 1;];
 
-	GenotypeExit :global [];	-- defined in Genotype.d
 	Exit :local [];
 
 	Init :local [];
@@ -3083,11 +3082,6 @@ rules:
 --
 
 	Exit does
-
-	  if (mgi->GenotypeModule != nil) then
-	    send(GenotypeExit, 0);
-	  end if;
-
   	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;

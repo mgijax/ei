@@ -56,7 +56,7 @@ devents:
 		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
 	Delete :local [];				-- Delete record
-	VocAnnotExit :global [];			-- Destroys D module instance & cleans up
+	VocAnnotExit :local [];				-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
