@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 29 13:24:14 2000";
+      lastWritten = "Wed Sep  6 14:27:51 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -44,39 +44,6 @@ Module: MGI
                               leftWidget = LoginServer;
                               leftOffset = 4;
                               rightOffset = 5;
-                                Popups:
-                                {
-                                  LoginDBPulldown = OptionPulldown;
-                                      {
-                                        mgd = OptionToggle;
-                                      }
-                                      {
-                                        mgd_new = OptionToggle;
-                                      }
-                                      {
-                                        mgd_release = OptionToggle;
-                                      }
-                                      {
-                                        mgi_release = OptionToggle;
-                                      }
-                                      {
-                                        pub_1 = OptionToggle;
-                                      }
-                                      {
-                                        pub_2 = OptionToggle;
-                                      }
-                                      {
-                                        mgd_mirror = OptionToggle;
-                                      }
-                                      {
-                                        nomen = OptionToggle;
-                                      }
-                                      {
-                                        mgd_freeze = OptionToggle;
-                                        Group: User
-                                          defaultValue = mgd_freeze;
-                                      }
-                                }
                           }
                           {
                             separator = XmSeparator;

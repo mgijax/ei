@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep  5 09:18:10 2000";
+      lastWritten = "Wed Sep  6 14:27:49 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -746,25 +746,17 @@ Module: mgiOption
               Popups:
               {
                 LoginDBPulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select id = name, name from master..sysdatabases where name like 'mgd%'  order by name";
+                    {
+                      se = OptionToggle : mgiOption;
+                      Group: Widget
+                        labelString = "SE development";
+                    }
                     {
                       mgd = OptionToggle : mgiOption;
                       Group: User
                         defaultValue = mgd;
-                    }
-                    {
-                      mgd_new = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = mgd_new;
-                    }
-                    {
-                      mgd_release = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = mgd_release;
-                    }
-                    {
-                      mgi_release = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = mgi_release;
                     }
                     {
                       pub_1 = OptionToggle : mgiOption;
@@ -777,14 +769,9 @@ Module: mgiOption
                         defaultValue = pub_2;
                     }
                     {
-                      mgd_mirror = OptionToggle : mgiOption;
+                      mgd_release = OptionToggle : mgiOption;
                       Group: User
-                        defaultValue = mgd_mirror;
-                    }
-                    {
-                      nomen = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = nomen;
+                        defaultValue = mgd_release;
                     }
               }
         }
