@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 08/04/1999
+--	- TR 518; adding Accession/Reference table
+--
 -- lec 03/29/1999
 --	- ClearNomen; local clear to re-set Marker Status colors
 --
@@ -125,6 +128,9 @@ locals:
  
 	reserved : string;
 
+        accTable : widget;		-- Accession Table
+        accRefTable : widget;		-- Accession Reference Table
+
 rules:
 
 --
@@ -168,6 +174,10 @@ rules:
 --
 
 	BuildDynamicComponents does
+
+	  accTable := top->mgiAccessionTable->Table;
+          accRefTable := top->AccessionReference->Table;
+
 	  -- Dynamically create Marker Event, Status, Type and Chromosome Menus
 
 	  InitOptionMenu.option := top->MarkerEventMenu;
@@ -323,7 +333,6 @@ rules:
 	         mgi_DBprstr(top->ApprovedName->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
-	         mgi_DBprstr(top->ECNumber->text.value) + "," +
 	         mgi_DBprstr(top->StatusNotes->text.value) + "," +
 	         mgi_DBprstr(top->BroadcastDate->text.value) + ")\n";
 
@@ -342,6 +351,18 @@ rules:
 	  send(ModifyGeneFamily, 0);
 	  send(ModifyOther, 0);
 	  send(ModifyReference, 0);
+
+	  ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := currentNomenKey;
+          ProcessAcc.tableID := MRK_NOMEN;
+          send(ProcessAcc, 0);
+          cmd := cmd + accTable.sqlCmd;
+      
+          ProcessAcc.table := accRefTable;
+          ProcessAcc.objectKey := currentNomenKey;
+          ProcessAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+          send(ProcessAcc, 0);
+          cmd := cmd + accRefTable.sqlCmd;
 
 	  -- Execute the add
 
@@ -484,10 +505,6 @@ rules:
 	    set := set + "humanSymbol = " + mgi_DBprstr(top->HumanSymbol->text.value) + ",";
 	  end if;
 
-	  if (top->ECNumber->text.modified) then
-	    set := set + "ECnumber = " + mgi_DBprstr(top->ECNumber->text.value) + ",";
-	  end if;
-
 	  if (top->StatusNotes->text.modified) then
 	    set := set + "statusNote = " + mgi_DBprstr(top->StatusNotes->text.value) + ",";
 	  end if;
@@ -519,6 +536,18 @@ rules:
 	  send(ModifyGeneFamily, 0);
 	  send(ModifyOther, 0);
 	  send(ModifyReference, 0);
+
+	  ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := currentNomenKey;
+          ProcessAcc.tableID := MRK_NOMEN;
+          send(ProcessAcc, 0);
+          cmd := cmd + accTable.sqlCmd;
+      
+          ProcessAcc.table := accRefTable;
+          ProcessAcc.objectKey := currentNomenKey;
+          ProcessAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+          send(ProcessAcc, 0);
+          cmd := cmd + accRefTable.sqlCmd;
 
 	  if (updateModDate and (cmd.length > 0 or set.length > 0)) then
 	    cmd := cmd + mgi_DBupdate(MRK_NOMEN, currentNomenKey, set);
@@ -721,6 +750,27 @@ rules:
 	  from := " from " + mgi_DBtable(MRK_NOMEN) + " m";
 	  where := "";
 
+          -- Cannot search both Accession tables at once
+      
+          SearchAcc.table := accTable;
+          SearchAcc.objectKey := "m." + mgi_DBkey(MRK_NOMEN);
+          SearchAcc.tableID := MRK_NOMEN;
+          send(SearchAcc, 0);
+      
+          if (accTable.sqlFrom.length > 0) then
+            from := from + accTable.sqlFrom;
+            where := where + "\nand " + accTable.sqlWhere;
+          else
+            SearchAcc.table := accRefTable;
+            SearchAcc.objectKey := "m." + mgi_DBkey(MRK_NOMEN);
+            SearchAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+            send(SearchAcc, 0);
+            if (accRefTable.sqlFrom.length > 0) then
+              from := from + accRefTable.sqlFrom;
+              where := where + "\nand " + accRefTable.sqlWhere;
+            end if;
+          end if;
+
 	  QueryDate.source_widget := top->CreationDate;
 	  QueryDate.tag := "m";
 	  send(QueryDate, 0);
@@ -769,10 +819,6 @@ rules:
 	    
           if (top->HumanSymbol->text.value.length > 0) then
 	    where := where + "\nand m.humanSymbol like " + mgi_DBprstr(top->HumanSymbol->text.value);
-	  end if;
-	    
-          if (top->ECNumber->text.value.length > 0) then
-	    where := where + "\nand m.ECnumber like " + mgi_DBprstr(top->ECNumber->text.value);
 	  end if;
 	    
           if (top->StatusNotes->text.value.length > 0) then
@@ -1052,11 +1098,14 @@ rules:
 	        top->ApprovedSymbol->text.value := mgi_getstr(dbproc, 8);
 	        top->ApprovedName->text.value   := mgi_getstr(dbproc, 9);
 	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 11);
-	        top->ECNumber->text.value       := mgi_getstr(dbproc, 12);
 	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 13);
 	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 14);
 	        top->CreationDate->text.value   := mgi_getstr(dbproc, 15);
 	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 16);
+--	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
+--	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
+--	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
+--	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
 
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -1162,6 +1211,18 @@ rules:
 	  end while;
 
 	  (void) dbclose(dbproc);
+
+          LoadAcc.table := accTable;
+          LoadAcc.objectKey := currentNomenKey;
+          LoadAcc.tableID := MRK_NOMEN;
+          LoadAcc.reportError := false;
+          send(LoadAcc, 0);
+
+          LoadAcc.table := accRefTable;
+          LoadAcc.objectKey := currentNomenKey;
+          LoadAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+          LoadAcc.reportError := false;
+          send(LoadAcc, 0);
 
 	  top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;
@@ -1295,6 +1356,7 @@ rules:
           BroadcastEnd.source_widget := dialog;
           proc_id : opaque := 
             tu_fork_process2(cmds[1], cmds, dialog->Output, dialog->Output, BroadcastEnd);
+	  tu_fork_free(proc_id);
 	end does;
 
 --
