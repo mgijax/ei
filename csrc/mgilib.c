@@ -155,6 +155,7 @@ char *mgi_DBprstr(char *value)
   int allSpaces = 1;
   int i;
   char *s;
+  int foundLeadingSpace = 0;
 
   memset(buf, '\0', sizeof(buf));
   memset(newValue, '\0', sizeof(buf));
@@ -178,8 +179,14 @@ char *mgi_DBprstr(char *value)
     for (s = value; *s != '\0'; s++)
     {
       /* get rid of leading space */
-      if (i == 0 && isspace(*s))
+      if (isspace(*s))
+        if (i == 0 || foundLeadingSpace == 1)
+	{
 	  s++;
+	  foundLeadingSpace = 1;
+	}
+      else
+	foundLeadingSpace = 0;
 
       if (*s == '\n')
 	newValue[i++] = ' ';
@@ -2017,7 +2024,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Allele_key, _Refs_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_REFS:
-	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract)",
+	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_BOOKS:

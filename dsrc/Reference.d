@@ -327,7 +327,6 @@ rules:
 	  cmd := cmd + mgi_DBprstr(top->mgiDate->Date->text.value) + ",";
 	  cmd := cmd + mgi_year(top->mgiDate->Date->text.value) + ",";
 	  cmd := cmd + mgi_DBprstr(top->Page->text.value) + ",";
-	  cmd := cmd + mgi_DBprstr(top->DBS->text.value) + ",";
 
 	  -- Default Mouse Genome and Mouse News Letter to "Never"
 
@@ -340,7 +339,6 @@ rules:
  
 	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + mgi_DBprstr(top->Abstract->text.value) + ",";
-	  cmd := cmd + top->ReviewStatusMenu.menuHistory.defaultValue + ",";
 	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
 
 	  -- System will assign the J: unless it is overridden by the user
