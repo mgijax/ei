@@ -116,7 +116,7 @@ RECEPIENT="lec@informatics.jax.org"
 msg = 'From: %s\n' % (FROM) + \
       'To:  %s\n' % (RECEPIENT) + \
       'Subject:  MGI Nomenclature Updates\n\n' + \
-      '%s:  %d nomenclature changes processed.\n\n' % (currentDate, rows) + \
+      '%d nomenclature changes processed.\n\n' % (rows) + \
       'For details, see:\n' + \
       '\tftp://ftp.informatics.jax.org/pub/informatics/reports/Nomenclature-current.html\n\n' + \
       'For archives of previous changes, see:\n' + \
