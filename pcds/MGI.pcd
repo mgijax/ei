@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 10:48:28 1999";
+      lastWritten = "Wed Mar 22 08:41:41 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -295,6 +295,39 @@ Module: MGI
                     }
                     {
                       ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                      }
+                                      {
+                                        PrinterList = LookupList;
+                                      }
+                                      {
+                                        PrintOrient = Choice : mgiDataTypes;
+                                            {
+                                              PrintOrientBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                      {
+                                        PrintColumn = Choice : mgiDataTypes;
+                                            {
+                                              PrintColumnBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                }
+                          }
                     }
                     {
                       SearchDialog = SearchDialog : mgiDialog;
@@ -424,6 +457,39 @@ Module: MGI
                     }
                     {
                       ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                      }
+                                      {
+                                        PrinterList = LookupList;
+                                      }
+                                      {
+                                        PrintOrient = Choice : mgiDataTypes;
+                                            {
+                                              PrintOrientBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                      {
+                                        PrintColumn = Choice : mgiDataTypes;
+                                            {
+                                              PrintColumnBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                }
+                          }
                     }
                     {
                       SearchDialog = SearchDialog : mgiDialog;
@@ -728,6 +794,11 @@ Module: MGI
                                               MarkerType = LookupToggle;
                                             }
                                             {
+                                              EventReason = LookupToggle;
+                                              Group: Widget
+                                                managed = True;
+                                            }
+                                            {
                                               ReviewStatus = LookupToggle;
                                             }
                                             {
@@ -797,16 +868,6 @@ Module: MGI
                                             }
                                             {
                                               GeneFamily = LookupToggle;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              NomenEvent = LookupToggle;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              NomenStatus = LookupToggle;
                                               Group: Widget
                                                 managed = True;
                                             }

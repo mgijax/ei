@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Mar 15 07:32:43 2000";
+      lastWritten = "Fri Mar 24 15:08:18 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -1702,6 +1702,7 @@ Module: MGD
                                           userDefinedAttributes = "homologyKey:Int(Int)=\"1\"\nassayKey:Int(Int)=\"2\"\nassay:Int(Int)=\"3\"\nbeginX:Int(Int)=\"5\"\nendX:Int(Int)=\"34\"\nnotes:Int(Int)=\"4\"\n";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
                                           xrtTblVisibleRows = 10;
+                                          xrtTblAllowCellResize = resize_horizontal;
                                         Group: User
                                           required = True;
                                       }
@@ -5827,7 +5828,6 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     labelString = Nomenclature;
                                     activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
-                                    managed = False;
                                 }
                                 {
                                   separator = XmSeparator;
@@ -6958,40 +6958,7 @@ Shift<Key>Tab: prev-tab-group()
                       NoteDialog = NoteDialog;
                     }
                     {
-                      NLMDialog = NLMDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox = XmRowColumn;
-                                            }
-                                            {
-                                              ChoiceBox = XmRowColumn;
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox = XmRowColumn;
-                                            }
-                                            {
-                                              ChoiceBox = XmRowColumn;
-                                            }
-                                      }
-                                }
-                          }
+                      NLMDialog = NLMDialog;
                     }
               }
         }
@@ -7267,6 +7234,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Add = MenuPush;
+                                        Group: Widget
+                                          sensitive = False;
                                       }
                                       {
                                         Delete = MenuPush;
@@ -7295,6 +7264,12 @@ Shift<Key>Tab: prev-tab-group()
                                 Popups:
                                 {
                                   UtilitiesPulldown = MenuPulldown;
+                                      {
+                                        MarkerWithdrawal = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:MarkerWithdrawalInit";
+                                          labelString = "Marker Withdrawal";
+                                      }
                                       {
                                         AlleleMerge = MenuPush : mgiMenu;
                                         Group: Widget
@@ -7338,16 +7313,41 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  Symbol = CharText : mgiDataTypes;
+                                  MarkerStatusMenu = MarkerStatusMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = MarkerTypeMenu;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_form;
-                                    topOffset = 2;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = MarkerTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  ChromosomeMenu = ChromosomeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = MarkerStatusMenu;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = MarkerStatusMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Symbol = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topOffset = "-5";
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = ChromosomeMenu;
+                                    leftWidget = ChromosomeMenu;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -7363,37 +7363,25 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  ChromosomeMenu = ChromosomeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
-                                    leftOffset = 10;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = MarkerTypeMenu;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
                                   Cyto = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = ChromosomeMenu;
+                                    leftWidget = Symbol;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_form;
-                                    topOffset = 2;
+                                    topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    topWidget = Symbol;
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "Cytogenetic Band";
+                                          labelString = "Cytogenetic\nBand";
                                       }
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 20;
+                                          columns = 10;
                                           maxLength = 25;
                                       }
                                 }
@@ -7401,12 +7389,12 @@ Shift<Key>Tab: prev-tab-group()
                                   Current = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_form;
-                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Symbol;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -7518,20 +7506,21 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 4 3)(all 5 15)(all 6 30)(all 7-8 10)(all 9 30)(all 10 20)";
-                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,#,Symbol,Name,Date,J#,Citation,Event";
-                                          xrtTblEditableSeries = "(all 0-4 False)";
-                                          xrtTblMaxLengthSeries = "(all 1-4 10)(all 5 25)(all 6 255)(all 7-8 10)(all 9-11 255)";
-                                          xrtTblNumColumns = 11;
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11-13 20)";
+                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Event Reason";
+                                          xrtTblEditableSeries = "(all 0-6 False)";
+                                          xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 25)(all 8 255)(all 9-10 10)(all 11-13 255)";
+                                          xrtTblNumColumns = 14;
+                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                          xrtTblTraversableSeries = "(all 0-6 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nmarkerName:Int(Int)=\"6\"\neventDate:Int(Int)=\"7\"\njnum:Int(Int)=\"8\"\ncitation:Int(Int)=\"9\"\nevent:Int(Int)=\"10\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int=\"7\"\n";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int=\"4\"\neventReasonKey:Int=\"5\"\neventReason:Int=\"13\"\n";
                                           xrtTblVisibleRows = 4;
+                                          xrtTblAllowCellResize = resize_horizontal;
                                         Group: User
-                                          saveTraversableSeries = "(all 0-4 False)";
-                                          saveEditableSeries = "(all 0-4 False)";
-                                          seqNum = 4;
+                                          saveTraversableSeries = "(all 0-6 False)";
+                                          saveEditableSeries = "(all 0-6 False)";
+                                          seqNum = 6;
                                       }
                                 }
                                 {
@@ -7566,8 +7555,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_widget;
                                     leftWidget = Alias;
                                     leftOffset = 10;
-                                    rightAttachment = attach_form;
-                                    rightOffset = 2;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = History;
                                     bottomAttachment = attach_none;
@@ -7576,7 +7564,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumColumns = 4;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 25)(all 3 80)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 25)(all 3 60)";
                                           xrtTblMaxLengthSeries = "(all 2 50)(all 3 255)";
                                           xrtTblEditableSeries = "(all 0-1 False)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0)";
@@ -7702,6 +7690,14 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:Clear(clearLists = 3)";
                                 }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
+                                }
                           }
                     }
                     {
@@ -7777,6 +7773,31 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  CVMarker = CVMarker : mgiOption;
+                                      {
+                                        MarkerEventMenu = MarkerEventMenu : mgiOption;
+                                      }
+                                      {
+                                        MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
+                                      }
+                                      {
+                                        YesNoMenu = YesNoMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              YesNoPulldown = OptionPulldown;
+                                              Group: User
+                                                tableForm = OtherReference;
+                                                tableOptionKey = 4;
+                                                tableOption = 8;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  }
+                                            }
+                                      }
+                                }
+                                {
                                   QueryList = QueryList : mgiLookup;
                                       {
                                         Label = LookupLabel;
@@ -7784,27 +7805,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list;
                                         Group: Widget
-                                          visibleItemCount = 25;
-                                      }
-                                }
-                                {
-                                  YesNoMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    labelString = "Review?";
-                                  Group: User
-                                    defaultOption = No;
-                                      Popups:
-                                      {
-                                        YesNoPulldown = OptionPulldown;
-                                        Group: User
-                                          tableForm = OtherReference;
-                                          tableOptionKey = 4;
-                                          tableOption = 8;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                              Group: Widget
-                                                managed = False;
-                                            }
+                                          visibleItemCount = 20;
                                       }
                                 }
                           }

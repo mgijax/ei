@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Feb 10 12:51:00 2000";
+      lastWritten = "Thu Mar 23 09:55:39 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -1999,6 +1999,12 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = "GXD Index/Stages";
                                 }
                                 {
+                                  Nomen = XmPushButton;
+                                  Group: Widget
+                                    labelString = Nomenclature;
+                                    activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
+                                }
+                                {
                                   separator = XmSeparator;
                                 }
                                 {
@@ -2048,6 +2054,12 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
               }
+        }
+        {
+          Nomen = Nomen : MGINomen;
+          Group: Control
+            vip_x = 60;
+            vip_y = 305;
         }
 }
 

@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 10:48:35 1999";
+      lastWritten = "Wed Mar 15 14:17:43 2000";
         {
           Dictionary = Module : MGI;
           Group: Widget
