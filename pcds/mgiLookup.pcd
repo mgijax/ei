@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  2 08:45:53 2005";
+      lastWritten = "Wed Mar  2 10:26:40 2005";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -268,7 +268,7 @@ Module: mgiLookup
               }
         }
         {
-          HostESCellLineList = LookupList;
+          ESCellLineList = LookupList;
           Group: Control
             vip_x = 90;
             vip_y = 1020;
@@ -277,14 +277,14 @@ Module: mgiLookup
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "0 Host ES Cell Lines";
+                  labelString = "0 ES Cell Lines";
                 Group: User
-                  defaultLabel = "Host ES Cell Lines";
+                  defaultLabel = "ES Cell Lines";
               }
               {
                 List = list : mgiDataTypes;
                 Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayHostESCellLine";
+                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayESCellLine";
               }
         }
         {

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  2 08:35:15 2005";
+      lastWritten = "Wed Mar  2 10:27:40 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8742,7 +8742,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  HostESCellLine = mgiVerify : mgiDataTypes;
+                                  ESCellLine = mgiVerify : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MutantESCellLine;
@@ -8761,7 +8761,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               label = XmLabel;
                                               Group: Widget
-                                                labelString = "Host ES Cell Line";
+                                                labelString = "ES Cell Line";
                                             }
                                             {
                                               text = text;
@@ -8791,10 +8791,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Strain = Strain : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = HostESCellLine;
+                                    leftWidget = ESCellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = HostESCellLine;
+                                    topWidget = ESCellLine;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -9041,7 +9041,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  HostESCellLineList = HostESCellLineList : mgiLookup;
+                                  ESCellLineList = ESCellLineList : mgiLookup;
                                       {
                                         Label = LookupLabel : mgiLookup;
                                       }
@@ -9050,7 +9050,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           targetKey = VerifyID;
                                           targetText = Verify;
-                                          targetWidget = HostESCellLine;
+                                          targetWidget = ESCellLine;
                                       }
                                 }
                           }

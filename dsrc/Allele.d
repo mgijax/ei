@@ -61,7 +61,7 @@ devents:
 	AlleleMergeInit :local [];
 	AlleleMerge :local [];
 
-	DisplayHostESCellLine :translation [];
+	DisplayESCellLine :translation [];
 
 	Modify :local [];
 	ModifyAlleleNotes :local [];
@@ -160,7 +160,7 @@ rules:
           LoadList.list := top->MutantESCellLineList;
 	  send(LoadList, 0);
 
-          LoadList.list := top->HostESCellLineList;
+          LoadList.list := top->ESCellLineList;
 	  send(LoadList, 0);
 
 	  -- Initialize Reference table
@@ -306,7 +306,7 @@ rules:
                  top->InheritanceModeMenu.menuHistory.defaultValue + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  top->AlleleStatusMenu.menuHistory.defaultValue + "," +
-                 top->EditForm->HostESCellLine->VerifyID->text.value + "," +
+                 top->EditForm->ESCellLine->VerifyID->text.value + "," +
                  top->EditForm->MutantESCellLine->VerifyID->text.value + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
@@ -465,19 +465,19 @@ rules:
 	end does;
 
 --
--- DisplayHostESCellLine
+-- DisplayESCellLine
 --
--- Activated from:  widget top->HostESCellLineList->List.singleSelectionCallback
+-- Activated from:  widget top->ESCellLineList->List.singleSelectionCallback
 --
--- Display Host ES Cell Line information
+-- Display ES Cell Line information
 --
 
-	DisplayHostESCellLine does
+	DisplayESCellLine does
 
 	  cmd := "select cellLine, _Strain_key, cellLineStrain from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
-		" = " + top->EditForm->HostESCellLine->VerifyID->text.value;
+		" = " + top->EditForm->ESCellLine->VerifyID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -485,7 +485,7 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	         top->HostESCellLine->Verify->text.value := mgi_getstr(dbproc, 1);
+	         top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 1);
 		 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
 		 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 3);
 	    end while;
@@ -524,23 +524,23 @@ rules:
 	  end if;
 
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
-	      (top->HostESCellLine->VerifyID->text.modified or 
+	      (top->ESCellLine->VerifyID->text.modified or 
 	       top->MutantESCellLine->VerifyID->text.modified or 
 	       top->EditForm->Strain->StrainID->text.modified)) then
 
-	    top->VerifyHostESStrain.doModify := false;
-            top->VerifyHostESStrain.managed := true;
+	    top->VerifyESStrain.doModify := false;
+            top->VerifyESStrain.managed := true;
 	    top->VerifyMutantESStrain.doModify := false;
             top->VerifyMutantESStrain.managed := true;
  
             -- Keep busy while user verifies the modification is okay
  
-            while (top->VerifyHostESStrain.managed = true) do
+            while (top->VerifyESStrain.managed = true) do
               (void) keep_busy();
             end while;
  
 --            (void) XmUpdateDisplay(top);
-            if (not top->VerifyHostESStrain.doModify) then
+            if (not top->VerifyESStrain.doModify) then
 	      return;
 	    end if;
 	  end if;
@@ -583,8 +583,8 @@ rules:
 	    end if;
           end if;
 
-	  if (top->HostESCellLine->VerifyID->text.modified) then
-	    set := set + "_HostESCellLine_key = " + mgi_DBprkey(top->HostESCellLine->VerifyID->text.value) + ",";
+	  if (top->ESCellLine->VerifyID->text.modified) then
+	    set := set + "_ESCellLine_key = " + mgi_DBprkey(top->ESCellLine->VerifyID->text.value) + ",";
 	  end if;
 
 	  if (top->MutantESCellLine->VerifyID->text.modified) then
@@ -847,10 +847,10 @@ rules:
             where := where + "\nand a._Allele_Status_key = " + top->AlleleStatusMenu.menuHistory.searchValue;
           end if;
 
-          if (top->HostESCellLine->VerifyID->text.value.length > 0) then
-            where := where + "\nand a._HostESCellLine_key = " + top->HostESCellLine->VerifyID->text.value;
-          elsif (top->HostESCellLine->Verify->text.value.length > 0) then
-            where := where + "\nand c1.cellLine like " + mgi_DBprstr(top->HostESCellLine->Verify->text.value);
+          if (top->ESCellLine->VerifyID->text.value.length > 0) then
+            where := where + "\nand a._ESCellLine_key = " + top->ESCellLine->VerifyID->text.value;
+          elsif (top->ESCellLine->Verify->text.value.length > 0) then
+            where := where + "\nand c1.cellLine like " + mgi_DBprstr(top->ESCellLine->Verify->text.value);
 	    from_cellline1 := true;
           end if;
 
@@ -1021,8 +1021,8 @@ rules:
 		top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 20);
 
-		top->HostESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 7);
-		top->HostESCellLine->Verify->text.value := mgi_getstr(dbproc, 24);
+		top->ESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 7);
+		top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 24);
 		top->MutantESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 8);
 		top->MutantESCellLine->Verify->text.value := mgi_getstr(dbproc, 26);
 

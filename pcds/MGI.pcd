@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar  1 15:34:30 2005";
+      lastWritten = "Wed Mar  2 10:25:43 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1659,7 +1659,7 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  ESCellLineList = HostESCellLineList : mgiLookup;
+                                  ESCellLineList = ESCellLineList : mgiLookup;
                                 }
                           }
                     }
