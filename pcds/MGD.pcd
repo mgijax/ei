@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb 22 08:48:35 2005";
+      lastWritten = "Tue Feb 22 11:48:49 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9451,8 +9451,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblBackgroundSeries = "(all all Wheat) (label all Yellow)(all label Yellow)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -9500,7 +9498,6 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblValidateCellCallback = "D:VerifyGenotype\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0 False)(all 6 False)";
                                           xrtTblEditableSeries = "(all 0 False)(all 6 False)";
-                                          xrtTblBackgroundSeries = "(all all Wheat) (label all Yellow)(all label Yellow)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
