@@ -6550,7 +6550,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AccSourceMenu = AccSourceMenu;
                                         Group: User
-                                          defaultOption = Sequence;
+                                          defaultOption = NSequence;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
