@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 16 10:25:25 2000";
+      lastWritten = "Tue May 16 10:31:51 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -674,8 +674,8 @@ Module: mgiDialog
                     {
                       text = scrolledText;
                       Group: Widget
-                        columns = 125;
-                        userDefinedAttributes = "saveMaxNoteLength:Int=\"0\"\nshortMaxNoteLength:Int=\"255\"\n";
+                        columns = 75;
+                        userDefinedAttributes = "saveMaxNoteLength:Int(Int)=\"0\"\nshortMaxNoteLength:Int(Int)=\"255\"\nsaveRows:Int=\"0\"\n";
                         rows = 15;
                     }
               }

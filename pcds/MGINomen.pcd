@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 16 10:25:43 2000";
+      lastWritten = "Tue May 16 10:35:10 2000";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -876,7 +876,8 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   text = scrolledText;
                                   Group: Widget
-                                    rows = 50;
+                                    rows = 45;
+                                    columns = 125;
                                 }
                           }
                     }
