@@ -31,6 +31,9 @@
 --
 -- History
 --
+-- lec 02/14/2003
+--	- TR 1892; added "exec MRK_reloadLabel"
+--
 -- lec 07/11/2000
 --	- TR 1773; turn off editing of non-mouse markers; must use non-mouse marker info screen
 --
@@ -501,6 +504,7 @@ rules:
 
 			if (markerKey != "") then
 	                  cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_MARKER, homologyKeyName) + markerKey + ")\n";
+	  		  cmd := cmd + "\nexec MRK_reloadLabel " + markerKey;
 			end if;
 		      end if;
 		    end if;

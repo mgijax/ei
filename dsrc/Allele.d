@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 02/14/2003 lec
+--	- TR 1892; added "exec MRK_reloadLabel"
+--
 -- 10/08/2002 lec
 --	- TR 3516; added markerDescription
 --
@@ -560,7 +563,8 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
+	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set) +
+		"\nexec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value;
 	  end if;
 
 	  ModifySQL.cmd := cmd;
