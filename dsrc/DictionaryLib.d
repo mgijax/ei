@@ -74,6 +74,14 @@ rules:
 	    top := top.root;
 	  end if;
 
+	  -- First, cancel the edit to the target cell
+
+	  table : widget;
+	  if (top->StructureList->List.targetWidget != nil) then
+	    table := top->StructureList->List.targetWidget->Table;
+	    (void) XrtTblCancelEdit(table, true);
+	  end if;
+
           -- Get current record key
           key := top->ID->text.value;
  

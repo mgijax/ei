@@ -169,7 +169,6 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
-	UnselectInsituResults :local [];
 
 	-- Must be non-local so that DynamicLib.InitOptionMenu[] doesn't complain
 	ViewAssayDetail [source_widget : widget;];
@@ -2525,18 +2524,6 @@ rules:
 	  end if;
         end
 
-
--- UnselectInsituResults
---
--- Unselects any selected cell in InSitu results.  Did this per TR746.
--- (This is a kludge that should be generalized to a common library routine).
-
-        UnselectInsituResults does
-		    irtable : widget := top->InSituResultDialog->EditForm->Results->Table;
-			unmap : boolean := true;
-			(void) XrtTblCancelEdit(irtable, unmap);
-		end does;
- 
 --
 -- Exit
 --
