@@ -136,6 +136,7 @@ locals:
 	printSelect : string;
 
 	tables : list;
+	resettables : list;
 
         currentNomenKey : string;	-- Primary Key value of currently selected record
                                  	-- Initialized in Select[] and Add[] events
@@ -246,6 +247,7 @@ rules:
 
 	Init does
 	  tables := create list("widget");
+	  resettables := create list("widget");
 
 	  -- List of all Table widgets used in form
 
@@ -253,6 +255,12 @@ rules:
 	  tables.append(top->Reference->Table);
 	  tables.append(top->GeneFamily->Table);
 	  tables.append(top->AccessionReference->Table);
+
+	  -- List of all Table widgets used in Reset
+
+	  resettables.append(top->OtherReference->Table);
+	  resettables.append(top->GeneFamily->Table);
+	  resettables.append(top->AccessionReference->Table);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -1095,26 +1103,28 @@ rules:
           top->ID->text.value := "";
 	  currentNomenKey := "";
  
-          -- Reset all non-empty table rows to edit mode of Add
-          -- so that upon sending of Add event, the rows are added to the new record
- 
-	  tables.open;
-	  while (tables.more) do
-	    table := tables.next;
-	    row := 0;
-
-            while (row < mgi_tblNumRows(table)) do
-              editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-              if (editMode != TBL_ROW_EMPTY) then
-                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
-	      end if;
-
-              row := row + 1;
-            end while;
+          -- Clear all tables
+	  resettables.open;
+	  while (resettables.more) do
+	    ClearTable.table := resettables.next;
+	    send(ClearTable, 0);
 	  end while;
-	  tables.close;
+
+	  -- Re-set Reference records to add mode
+
+	  table := top->Reference->Table;
+	  row := 0;
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
  
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+
+            (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+            row := row + 1;
+          end while;
+
 	  -- Do not duplicate Editor or Coordinator notes
 	  top->EditorNote->Note->text.modified := false;
 	  top->CoordNote->Note->text.modified := false;
@@ -1537,6 +1547,7 @@ rules:
 
 	  -- Re-select item so that new values are displayed
 	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+	  (void) XmListSetBottomPos(top->QueryList->List, top->QueryList->List.row);
 
 	  -- Un-managed dialog
 	  top->BroadcastDialog.managed := false;
