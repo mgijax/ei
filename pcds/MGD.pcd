@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 11 14:14:45 2000";
+      lastWritten = "Tue Apr 18 13:44:10 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -7147,7 +7147,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Clear = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:Clear(clearLists = 3)";
+                                          activateCallback = "D:Clear(clearLists =7)";
                                       }
                                 }
                           }
@@ -7588,7 +7588,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:Clear(clearLists = 3)";
+                                    activateCallback = "D:Clear(clearLists = 7)";
                                 }
                                 {
                                   Modify = ControlPush;
