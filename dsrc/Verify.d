@@ -2165,9 +2165,36 @@ rules:
 	  -- Retrieve count of records from table where PK = Accessioned Object key
 	  -- and Marker key = Marker symbol key
 
-	  numRecs := mgi_sql1("select count(*) from " + mgi_DBtable(tableID) +
-		" where " + mgi_DBkey(tableID) + " = " + accID +
-		" and _Marker_key = " + markerID);
+	  message : string;
+	  
+	  if (mgi_DBtable(tableID) = "PRB_Marker") then
+	    message := "\nThe Marker '" + marker + "' either does not have a relationship with this " + accLabel + 
+		"\nor does not have the appropriate relationship (E,H,A) to this " + accLabel + ".\n";
+	  else
+	    message := "\nThe Marker '" + marker + "' is not cross-referenced to this " + accLabel + "\n";
+	  end if;
+
+	  if (mgi_DBtable(tableID) = "PRB_Marker") then
+	    numRecs := mgi_sql1("select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t " +
+		  " where pm._Probe_key = " + accID +
+		  " and pm._Marker_key = " + markerID +
+		  " and pm._Probe_key = p._Probe_key" +
+		  " and p._SegmentType_key = t._Term_key" +
+		  " and t.term != 'primer'" +
+		  " and pm.relationship in ('E', 'H') " +
+		  " union" +
+	          " select count(pm._Probe_key) from PRB_Marker pm, PRB_Probe p, VOC_Term t " +
+		  " where pm._Probe_key = " + accID +
+		  " and pm._Marker_key = " + markerID +
+		  " and pm._Probe_key = p._Probe_key" +
+		  " and p._SegmentType_key = t._Term_key" +
+		  " and t.term = 'primer'" +
+		  " and pm.relationship = 'A' ");
+	  else
+	    numRecs := mgi_sql1("select count(*) from " + mgi_DBtable(tableID) +
+		  " where " + mgi_DBkey(tableID) + " = " + accID +
+		  " and _Marker_key = " + markerID);
+	  end if;
 
 	  if ((integer) numRecs > 0) then
 	    found := true;
@@ -2177,8 +2204,7 @@ rules:
 
 	  if (not found) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "\nThe Marker '" + marker + 
-		"' is not cross-referenced to this " + accLabel + "\n\n";
+            StatusReport.message := message;
             send(StatusReport);
 	  end if;
 	end does;
