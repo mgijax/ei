@@ -74,6 +74,10 @@ def snapShot(markerKey):
 	# requires:
 	#	markerKey - the marker key of the symbol
 	#
+	# effects:
+	# generates a snapshot of the marker symbol using MRK_Snapshot.sql
+	# report is placed in the EIWITHDRAWALDIR directory 
+	#
 	'''
 
 	# Create a temp SQL file
@@ -102,7 +106,7 @@ def snapShot(markerKey):
 #
 
 # event keys
-SIMPLE = 2
+WITHDRAWAL = 2
 MERGED = 3
 ALLELEOF = 4
 SPLIT = 5
@@ -164,14 +168,14 @@ if user is None or \
 
 # required parameters based on eventKey
 
-if eventKey == SIMPLE and (newName is None or newSymbols is None):
+if eventKey == WITHDRAWAL and (newName is None or newSymbols is None):
 	showUsage()
 elif eventKey in [MERGED, ALLELEOF] and newKey is None:
 	showUsage()
 elif eventKey == SPLIT and newSymbols is None:
 	showUsage()
 
-if eventKey not in [SIMPLE, MERGED, ALLELEOF, SPLIT, DELETED]:
+if eventKey not in [WITHDRAWAL, MERGED, ALLELEOF, SPLIT, DELETED]:
 	error('Invalid Event key')
 
 # Initialize DBMS parameters
@@ -205,7 +209,7 @@ elif eventKey == SPLIT:
 
 # Execute appropriate stored procedure
 
-if eventKey == SIMPLE:
+if eventKey == WITHDRAWAL:
 	newSymbolsList = string.split(newSymbols, ',')
 	newSymbol = newSymbolsList[0]
 	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,"%s","%s"' \
