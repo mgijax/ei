@@ -253,6 +253,7 @@ extern char *global_version;
 #define STRAIN_MERGE1		709
 #define STRAIN_MERGE2		710
 #define MLP_EXTRA		711
+#define PRB_STRAIN_SYNONYM	712
 
 /* End of Table Definitions */
 

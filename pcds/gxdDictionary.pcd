@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 18 07:41:52 2001";
+      lastWritten = "Mon Oct 29 07:46:35 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -561,6 +561,7 @@ Module: gxdDictionary
                 List = list : mgiDataTypes;
                 Group: Widget
                   visibleItemCount = 15;
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
               {
                 Add = TablePush : mgiTable;

@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Sep 12 12:49:58 2001";
+      lastWritten = "Mon Oct 29 09:55:39 2001";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -658,6 +658,16 @@ Shift<Key>Tab: prev-tab-group()
               }
               {
                 RIID : VerifyID = ID;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = text;
+                      Group: Widget
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SelectRILookup()";
+                    }
               }
               {
                 Origin = CharText : mgiDataTypes;
@@ -916,7 +926,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       label = XmLabel;
                       Group: Widget
-                        labelString = Species;
+                        labelString = SubSpecies;
                     }
                     {
                       text = text : mgiDataTypes;
