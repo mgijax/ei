@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 12:02:00 2005";
+      lastWritten = "Wed Feb 23 13:56:49 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -104,12 +104,11 @@ Module: mgiTable
                   xrtTblVisibleRows = 2;
                   userDefinedAttributes = "logicalKey:Int(Int)=\"1\"\naccKey:Int(Int)=\"2\"\naccName:Int(Int)=\"3\"\naccID:Int(Int)=\"4\"\nshowMGI:Boolean=\"True\"\n";
                   xrtTblEnterCellCallback = "D:SetAccSourceMenu";
+                Group: User
+                  requiredColumns = "3\n4";
               }
               {
                 Add : AddRow = TablePush;
-                Group: Widget
-                  labelString = Add;
-                  activateCallback = "D:VerifyAccAdd";
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = AccSourceMenu;
@@ -122,9 +121,6 @@ Module: mgiTable
               }
               {
                 Delete : DeleteRow = TablePush;
-                Group: Widget
-                  labelString = Delete;
-                  activateCallback = "D:VerifyAccDelete";
                 Group: Constraint
                   leftWidget = Add;
                   topWidget = Add;
@@ -140,6 +136,14 @@ Module: mgiTable
                   leftWidget = Table;
                   topWidget = Table;
                   topOffset = 5;
+                    Popups:
+                    {
+                      AccSourcePulldown = OptionPulldown;
+                      Group: User
+                        tableOptionKey = 1;
+                        tableOption = 3;
+                        tableForm = mgiAccessionTable;
+                    }
               }
         }
         {
@@ -463,6 +467,23 @@ Module: mgiTable
                   accID = 6;
                   requiredColumns = "4\n6";
               }
+              {
+                Add = TablePush;
+              }
+              {
+                Delete = TablePush;
+              }
+              {
+                AccSourceMenu = AccSourceMenu : mgiOption;
+                    Popups:
+                    {
+                      AccSourcePulldown = OptionPulldown;
+                      Group: User
+                        tableForm = AccessionReference;
+                        tableOptionKey = 1;
+                        tableOption = 5;
+                    }
+              }
         }
         {
           ModificationHistory = Table;
@@ -527,6 +548,8 @@ Module: mgiTable
                   topWidget = ReferenceTypeMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 5;
+                  topOffset = 2;
               }
               {
                 DeleteRow = TablePush : mgiTable;
@@ -612,6 +635,21 @@ Module: mgiTable
                         xrtTblLocation = location_top;
                     }
               }
+              {
+                Add = TablePush;
+              }
+              {
+                Delete = TablePush;
+              }
+              {
+                AccSourceMenu = AccSourceMenu : mgiOption;
+                    Popups:
+                    {
+                      AccSourcePulldown = OptionPulldown;
+                      Group: User
+                        tableForm = Accession;
+                    }
+              }
         }
         {
           SynonymTypeTable = Table : mgiTable;
@@ -643,7 +681,7 @@ Module: mgiTable
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = SynonymTypeMenu;
-                  leftOffset = 2;
+                  leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
                   topWidget = SynonymTypeMenu;

@@ -8,9 +8,6 @@
 -- This is the companion D event declarations file for AccLib.d.
 --
 
--- Add Row to Accession Table
-AddAccRow [table : widget;];		 -- Accession Table
-
 -- Initialize Accession Table
 InitAcc [table : widget;  	         -- Accession Table
          clearCells : boolean := true;]; -- Clear Cells flag
@@ -38,12 +35,6 @@ SetAccSourceMenu [];
 
 -- Verify Accession number in Accession Table; if duplicate, issue warning
 VerifyAcc [];
-
--- Verify Accession number add in mgiAccessionTable->Table
-VerifyAccAdd [];
-
--- Verify Accession number deletion in mgiAccessionTable->Table
-VerifyAccDelete [];
 
 -- Verify MGI Accession number entered in text field
 VerifyMGIAcc : translation [];

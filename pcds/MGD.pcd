@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 12:15:31 2005";
+      lastWritten = "Wed Feb 23 13:59:19 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2647,6 +2647,8 @@ Module: MGD
                           Popups:
                           {
                             AccSourcePulldown = OptionPulldown;
+                            Group: User
+                              tableForm = AccRef;
                                 {
                                   MGI = AccToggle;
                                 }
