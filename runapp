@@ -1,4 +1,4 @@
-#!/bin/csh
+#!/bin/csh -f
 
 #
 # Sets up appropriate ENV variables for running MEI
