@@ -98,7 +98,7 @@ rules:
        newcommands.insert("-T" + commands[2], newcommands.count + 1);
        newcommands.insert("-U" + global_login, newcommands.count + 1);
        newcommands.insert("-P" + global_passwd_file, newcommands.count + 1);
-       newcommands.insert("-C" + mgi_DBprstr(select), newcommands.count + 1);
+       newcommands.insert("-C'" + select + "'", newcommands.count + 1);
        commands.reset;
        commands := newcommands;
 
