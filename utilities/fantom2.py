@@ -69,6 +69,7 @@ results = db.sql(sqlCmd, 'auto')
 
 row = 1
 fantomKey = -1
+gbaMGIID = -1
 createdBy = ''
 cDate = ''
 modifiedBy = ''
@@ -87,7 +88,7 @@ for r in results:
 		note = regsub.gsub(',', '\,', note)
 		note = regsub.gsub('\n', '\\n', note)
 
-	if r['_Fantom2_key'] != fantomKey:
+	if r['_Fantom2_key'] != fantomKey or r['gba_mgiID'] != gbaMGIID:
 
 		if fantomKey != -1:
 			fp.write(mgi_utils.prvalue(nomennote) + DELIM + \
@@ -99,6 +100,7 @@ for r in results:
 	         	         mDate + DELIM + CRT)
 		
 		fantomKey = r['_Fantom2_key']
+		gbaMGIID = r['gba_mgiID']
 		createdBy = r['createdBy']
 		cDate = r['cDate']
 		modifiedBy = r['modifiedBy']

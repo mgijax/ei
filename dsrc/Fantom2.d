@@ -494,8 +494,8 @@ rules:
 		"mDate = convert(char(10), f.modification_date, 101), " +
 		"n.noteType, note = rtrim(n.note), n.sequenceNum ";
 	  from := "from " + mgi_DBtable(MGI_FANTOM2) + " f, " +
-		"MGI_Fantom2CacheGBA c1, " +
-		"MGI_Fantom2Notes n ";
+		mgi_DBtable(MGI_FANTOM2CACHE) + " c1, " +
+		mgi_DBtable(MGI_FANTOM2NOTES) + " n ";
 	  where := "";
 
 	  -- Construct Order By
@@ -509,7 +509,7 @@ rules:
 	    orderBy := orderBy + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
 	  end if;
 
-	  orderBy := orderBy + ", f._Fantom2_key, n.noteType, n.sequenceNum";
+	  orderBy := orderBy + ", f._Fantom2_key, c1.gba_mgiID, n.noteType, n.sequenceNum";
 
 	  -- Build Where Clause
 
@@ -704,13 +704,14 @@ rules:
 
 	SearchLittle does
 	  cmd : string;
-	  row : integer;
+	  row : integer := -1;
 	  note : string;
 	  noteType : string;
 	  nomennote : string;
 	  rikennote : string;
 	  curatornote : string;
 	  fantomKey : string := "-1";
+	  gbaMGIID : string := "-1";
 
           (void) busy_cursor(top);
 
@@ -727,13 +728,12 @@ rules:
           send(ClearFantom2, 0);
 
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := -1;
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      noteType := mgi_getstr(dbproc, 37);
 	      note := mgi_getstr(dbproc, 38);
 
-	      if (mgi_getstr(dbproc, 1) != fantomKey) then
+	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 32) != gbaMGIID) then
 
 		if (fantomKey != "-1") then
 	          (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
@@ -743,6 +743,8 @@ rules:
 
 		row := row + 1;
 	        fantomKey := mgi_getstr(dbproc, 1);
+	        gbaMGIID := mgi_getstr(dbproc, 32);
+
 	        (void) mgi_tblSetCell(fantom, row, fantom.row, (string) (row + 1));
 	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, fantomKey);
 	        (void) mgi_tblSetCell(fantom, row, fantom.seqID, mgi_getstr(dbproc, 2));
@@ -777,7 +779,7 @@ rules:
 	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 31));
 
 		-- data from cache tables
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, mgi_getstr(dbproc, 32));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, gbaMGIID);
 	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 33));
 	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 34));
 
