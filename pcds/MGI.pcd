@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon May 24 10:56:41 2004";
+      lastWritten = "Thu Jun 17 11:11:59 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -337,7 +337,7 @@ Module: MGI
             focusCallback = "D:StatusReportFront";
           Group: Control
             vip_x = 70;
-            vip_y = 305;
+            vip_y = 250;
               {
                 ID = ID : mgiDataTypes;
               }
@@ -514,7 +514,7 @@ Module: MGI
             userDefinedAttributes = "sqlFrom:String\nsqlWhere:String\n";
           Group: Control
             vip_x = 70;
-            vip_y = 360;
+            vip_y = 305;
           Group: User
             homeWidget = Library;
               {
@@ -841,7 +841,7 @@ Module: MGI
             title = "MGI Controlled Vocabulary";
           Group: Control
             vip_x = 70;
-            vip_y = 470;
+            vip_y = 415;
           Group: User
             homeWidget = Name;
             activateButtonName = ControlledVocab;
@@ -1222,7 +1222,7 @@ Module: MGI
             focusCallback = "D:StatusReportFront";
           Group: Control
             vip_x = 70;
-            vip_y = 415;
+            vip_y = 360;
         }
         {
           GenotypeModule = Module : MGI;
@@ -1230,7 +1230,7 @@ Module: MGI
             closeWindowCallback = "D:GenotypeExit";
           Group: Control
             vip_x = 70;
-            vip_y = 525;
+            vip_y = 470;
           Group: User
             homeWidget = Verify;
             activateButtonName = GenotypePush;
@@ -1705,7 +1705,7 @@ Module: MGI
           SimpleVocabModule = Module;
           Group: Control
             vip_x = 70;
-            vip_y = 580;
+            vip_y = 525;
           Group: User
             activateButtonName = SimpleVocab;
             homeWidget = Name;
@@ -1922,10 +1922,10 @@ Module: MGI
           TranslationModule = Module : MGI;
           Group: Widget
             width = 1050;
-            height = 900;
+            height = 1000;
           Group: Control
             vip_x = 70;
-            vip_y = 690;
+            vip_y = 635;
           Group: User
             activateButtonName = Translation;
             homeWidget = Name;
@@ -1948,7 +1948,7 @@ Module: MGI
                                   ID = ID : mgiDataTypes;
                                 }
                                 {
-                                  Name = CharText : mgiDataTypes;
+                                  TranslationTypeMenu = TranslationTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -1957,31 +1957,61 @@ Module: MGI
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      Popups:
                                       {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Translation Type";
-                                      }
-                                      {
-                                        text = text : mgiDataTypes;
-                                        Group: Widget
-                                          columns = 50;
+                                        TranslationTypePulldown = OptionPulldown : mgiOption;
                                         Group: User
-                                          required = True;
+                                          childTemplate = MGITypeToggle;
                                       }
                                 }
                                 {
                                   MGITypeMenu = MGITypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = Name;
+                                    leftWidget = TranslationTypeMenu;
+                                    leftOffset = 20;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = Name;
+                                    topWidget = TranslationTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 20;
-                                    topOffset = 5;
+                                      Popups:
+                                      {
+                                        MGITypePulldown = OptionPulldown;
+                                        Group: User
+                                          childTemplate = MGITypeToggle;
+                                      }
+                                }
+                                {
+                                  SortMenu = SortMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = MGITypeMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      Popups:
+                                      {
+                                        SortMenuPulldown = OptionPulldown : mgiOption;
+                                            {
+                                              MGITerm = SortToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "MGI Term (good name)";
+                                                valueChangedCallback = "D:SortTable,\nD:SetModify";
+                                              Group: User
+                                                columnValue = 6;
+                                            }
+                                            {
+                                              NonMGITerm = SortToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Non-MGI Term (bad name)";
+                                                valueChangedCallback = "D:SortTable,\nD:SetModify";
+                                              Group: User
+                                                columnValue = 5;
+                                            }
+                                      }
                                 }
                                 {
                                   Compression = CharText : mgiDataTypes;
@@ -2012,14 +2042,15 @@ Module: MGI
                                   Translation = OrderedTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
+                                    leftWidget = TranslationTypeMenu;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = Name;
+                                    topWidget = FindTerm2;
                                     topOffset = 5;
-                                    bottomAttachment = attach_none;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
                                     rightOffset = 5;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -2027,7 +2058,7 @@ Module: MGI
                                           xrtTblNumRows = 1000;
                                           xrtTblColumnLabels = "Mode,Current Order,#,Key,Object Key,Non-MGI Term,MGI Term,Acc ID,Modified By,Modified Date";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 2 4)(all 5-6 50)(all 7 15)(all 8 11)";
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-4 0)";
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)(all 3-4 0)";
                                           xrtTblEditableSeries = "(all 0-4 False)";
                                           xrtTblTraversableSeries = "(all 0-4 False)";
                                           xrtTblVisibleRows = 30;
@@ -2036,6 +2067,72 @@ Module: MGI
                                         Group: User
                                           saveEditableSeries = "(all 0-4 False)";
                                           saveTraversableSeries = "(all 0-4 False)";
+                                      }
+                                      {
+                                        AddRow = TablePush;
+                                      }
+                                      {
+                                        DeleteRow = TablePush;
+                                      }
+                                      {
+                                        InsertRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        EditOrder = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                                {
+                                  FindTerm1 = push : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Find Non-MGI Term";
+                                    activateCallback = "D:FindTerm(column = 5),\nD:GoHome";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = TranslationTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = TranslationTypeMenu;
+                                    topOffset = 5;
+                                }
+                                {
+                                  FindTerm2 = push : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Find MGI Term";
+                                    activateCallback = "D:FindTerm (column = 6),\nD:GoHome";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = FindTerm1;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = FindTerm1;
+                                }
+                                {
+                                  Term = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = FindTerm1;
+                                    leftOffset = 10;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = FindTerm1;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 3;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = " ";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 100;
                                       }
                                 }
                           }
@@ -2174,7 +2271,7 @@ Module: MGI
             closeWindowCallback = "D:VocAnnotExit";
           Group: Control
             vip_x = 70;
-            vip_y = 635;
+            vip_y = 580;
           Group: User
             activateButtonName = VocAnnot;
             homeWidget = mgiAccession;
@@ -2640,23 +2737,6 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:NotePreCancel,D:NoteCancel";
                                 }
                           }
-                    }
-              }
-        }
-        {
-          Test = Application : MGI;
-          Group: Control
-            vip_x = 70;
-            vip_y = 250;
-              {
-                EditForm = XmRowColumn;
-                Group: Control
-                  vipComment = "";
-                    {
-                      xtXrtTable = XtXrtTable;
-                    }
-                    {
-                      pushButtonGadget = XmPushButtonGadget;
                     }
               }
         }
