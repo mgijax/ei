@@ -22,7 +22,8 @@ SetServer [];                           -- Set Database Information for Form Ban
 SetTitle [source_widget : widget;];     -- Set Form Title for Form Banner
   
 StatusReport [source_widget : widget;  	-- Display Status Report
-              message : string;];
+              message : string;
+	      appendMessage : integer := 0;];
 
 StatusReportFront [source_widget : widget;]; 	-- Set Status Report to front of stack
 
