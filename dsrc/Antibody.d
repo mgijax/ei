@@ -135,7 +135,7 @@ rules:
 	  options.append(top->AntibodySpeciesMenu);
 	  options.append(top->WesternMenu);
 	  options.append(top->ImmunoMenu);
-	  options.append(top->SourceForm->SpeciesMenu);
+	  options.append(top->SourceForm->ProbeSpeciesMenu);
 	  options.append(top->SourceForm->AgeMenu);
 	  options.append(top->SourceForm->SexMenu);
 
