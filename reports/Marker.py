@@ -26,7 +26,8 @@
 import sys
 import os
 import string
-import mgdlib
+import db
+import mgi_utils
 import reportlib
 
 CRT = reportlib.CRT
@@ -46,13 +47,13 @@ def printHeader():
 	fp.write(string.ljust('----', 30))
 	fp.write(2*CRT)
 
-results = mgdlib.sql(sys.argv[1], 'auto')
+results = db.sql(sys.argv[1], 'auto')
 
 for r in results:
 
 	command = 'select symbol, chromosome, name = substring(name, 1, 50), offset ' + \
 		  'from MRK_Mouse_View where _Marker_key = ' + `r['_Marker_key']`
-	markers = mgdlib.sql(command, 'auto')
+	markers = db.sql(command, 'auto')
 
 	for m in markers:
 		if fp is None:  
@@ -62,7 +63,7 @@ for r in results:
 
 		fp.write(string.ljust(m['symbol'], 20))
 		fp.write(string.ljust(m['chromosome'], 8))
-		fp.write(string.ljust(mgdlib.prvalue(m['offset']), 8))
+		fp.write(string.ljust(mgi_utils.prvalue(m['offset']), 8))
 		fp.write(string.ljust(m['name'], 30))
 		fp.write(CRT)
 

@@ -33,14 +33,14 @@ import sys
 import os
 import string
 import regsub
-import mgdlib
+import db
 import reportlib
 
 CRT = reportlib.CRT
 SP = reportlib.SPACE
 fp = None
 
-strains = mgdlib.sql(sys.argv[1], 'auto')
+strains = db.sql(sys.argv[1], 'auto')
 
 try:
 	retrieveProbes = sys.argv[2]
@@ -133,7 +133,7 @@ for s in strains:
 	lastCmd = lastCmd + 'order by _Probe_key'
 	cmds.append(lastCmd)
 
-	references = mgdlib.sql(cmds, 'auto')
+	references = db.sql(cmds, 'auto')
 	prevStrain = ''
 	prevProbe = ''
 

@@ -33,7 +33,8 @@
 import sys
 import os
 import string
-import mgdlib
+import db
+import mgi_utils
 import reportlib
 
 CRT = reportlib.CRT
@@ -41,14 +42,14 @@ TAB = reportlib.TAB
 
 def parse_homology(homology):
 	
-	fp.write(TAB + mgdlib.prvalue(homology['species']) + TAB + \
-		 mgdlib.prvalue(homology['symbol']) + TAB + \
-		 mgdlib.prvalue(homology['chromosome']))
-	fp.write(TAB + mgdlib.prvalue(homology['offset']))
-	fp.write(TAB + mgdlib.prvalue(homology['name']))
+	fp.write(TAB + mgi_utils.prvalue(homology['species']) + TAB + \
+		 mgi_utils.prvalue(homology['symbol']) + TAB + \
+		 mgi_utils.prvalue(homology['chromosome']))
+	fp.write(TAB + mgi_utils.prvalue(homology['offset']))
+	fp.write(TAB + mgi_utils.prvalue(homology['name']))
 
 	try:
-		fp.write(CRT + TAB + mgdlib.prvalue(homology['accID']))
+		fp.write(CRT + TAB + mgi_utils.prvalue(homology['accID']))
 	except:
 		pass
 
@@ -58,8 +59,8 @@ def parse_reference(reference):
 
 	[classKey, refKey] = string.splitfields(reference['classRef'], ':')
 
-	fp.write(2*CRT + mgdlib.prvalue(reference['short_citation']) + TAB + \
-		 mgdlib.prvalue(reference['jnum']) + CRT)
+	fp.write(2*CRT + mgi_utils.prvalue(reference['short_citation']) + TAB + \
+		 mgi_utils.prvalue(reference['jnum']) + CRT)
 
 	# Retrieve Mouse Markers 
 
@@ -71,7 +72,7 @@ def parse_reference(reference):
 	      and h._Homology_key = hm._Homology_key
 	      and hm._Marker_key = m._Marker_key order by _Species_key
 	      ''' % (classKey, refKey)
-	mgdlib.sql(cmd, parse_homology)
+	db.sql(cmd, parse_homology)
 
 	# Retrieve non-mouse Markers w/ Accession numbers (_Species_key = 2, 40)
 
@@ -83,7 +84,7 @@ def parse_reference(reference):
 	      and h._Homology_key = hm._Homology_key
 	      and hm._Marker_key = m._Marker_key order by _Species_key
 	      ''' % (classKey, refKey)
-	mgdlib.sql(cmd, parse_homology)
+	db.sql(cmd, parse_homology)
 
 	# Retrieve non-mouse Markers w/out Accession numbers (_Species_key not in (1,2,40)
 
@@ -98,13 +99,13 @@ def parse_reference(reference):
 	      and m._Species_key = s._Species_key
 	      order by m._Species_key
 	      ''' % (classKey, refKey)
-	mgdlib.sql(cmd, parse_homology)
+	db.sql(cmd, parse_homology)
 
 #
 # Main
 #
 
 fp = reportlib.init(sys.argv[0], 'Homology')
-mgdlib.sql(sys.argv[1], parse_reference)
+db.sql(sys.argv[1], parse_reference)
 reportlib.finish_ps(fp)
 

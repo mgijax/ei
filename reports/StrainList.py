@@ -26,13 +26,13 @@ import sys
 import os
 import string
 import regsub
-import mgdlib
+import db
 import reportlib
 
 CRT = reportlib.CRT
 fp = None
 
-strains = mgdlib.sql(sys.argv[1], 'auto')
+strains = db.sql(sys.argv[1], 'auto')
 
 for s in strains:
 

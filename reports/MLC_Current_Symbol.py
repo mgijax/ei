@@ -29,7 +29,7 @@
 #
 #	lec	01/13/97
 #	- added comment section
-#	- replaced tostr() witih mgdlib.prvalue()
+#	- replaced tostr() witih db.prvalue()
 #
 #	gld	01/31/96
 #	- written by gld
@@ -39,7 +39,8 @@
 import sys
 import os
 import string
-import mgdlib
+import db
+import mgi_utils
 import reportlib
 import regex
 import regsub
@@ -146,7 +147,7 @@ def parse_symbol_name_chr(t):
 	chrom = t['chromosome']
 
 	if fp is None:
-		reportName = symbol + '-' + mgdlib.date('%m%d%Y') + '-MLC'
+		reportName = symbol + '-' + mgi_utils.date('%m%d%Y') + '-MLC'
 		fp = reportlib.init(reportName, 'MLC Symbol Report')
 
 def parse_classes(t):
@@ -164,27 +165,27 @@ mk=sys.argv[1]
 
 cmd = 'select symbol, name, chromosome from MRK_Marker where ' + \
 		'_marker_key = ' + mk
-mgdlib.sql(cmd, parse_symbol_name_chr)
+db.sql(cmd, parse_symbol_name_chr)
 
 cmd = 'select name from MRK_Classes_View where _marker_key = ' + mk
-mgdlib.sql(cmd, parse_classes)
+db.sql(cmd, parse_classes)
 
 cmd = 'select b._Refs_key, r.tag, b.jnum, b.short_citation ' + \
         'from MLC_Reference_edit r, BIB_View b ' + \
         'where r._Marker_key = ' + mk + ' and r._Refs_key = b._Refs_key ' + \
 		'order by r.tag'
-mgdlib.sql(cmd, parse_references)
+db.sql(cmd, parse_references)
 
 cmd = 'select mode, description, modDate = convert(char(25), modification_date), userID ' + \
 	'from MLC_Text_edit where _marker_key = ' + mk
-mgdlib.sql(cmd, parse_mode_description)
+db.sql(cmd, parse_mode_description)
 
 indent=0 
 
 fp.write(string.ljust('Symbol:', 10) + symbol + CRT)
-fp.write(string.ljust('Chr:', 10) + mgdlib.prvalue(chrom) + CRT)
-fp.write(string.ljust('Name:', 10) + mgdlib.prvalue(name) + CRT)
-fp.write(string.ljust('Mode:', 10) + mgdlib.prvalue(mode) + 2*CRT)
+fp.write(string.ljust('Chr:', 10) + mgi_utils.prvalue(chrom) + CRT)
+fp.write(string.ljust('Name:', 10) + mgi_utils.prvalue(name) + CRT)
+fp.write(string.ljust('Mode:', 10) + mgi_utils.prvalue(mode) + 2*CRT)
 
 fp.write('Classifications' + CRT)
 fp.write(15*'-' + CRT)
@@ -221,7 +222,7 @@ while l != '':
 fp.write(fdesc)
 fp.write(2*CRT)
 
-fp.write('Modification date:  ' + mgdlib.prvalue(modification_date) + \
-	' by user ' + mgdlib.prvalue(userID))
+fp.write('Modification date:  ' + mgi_utils.prvalue(modification_date) + \
+	' by user ' + mgi_utils.prvalue(userID))
 
 reportlib.finish_nonps(fp)

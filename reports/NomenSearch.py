@@ -25,7 +25,7 @@
 import sys
 import os
 import string
-import mgdlib
+import db
 import reportlib
 
 CRT = reportlib.CRT
@@ -45,7 +45,7 @@ def printHeader():
 
 cmd = sys.argv[1]
 printSelect = sys.argv[2]
-results = mgdlib.sql(cmd, 'auto')
+results = db.sql(cmd, 'auto')
 
 for r in results:
 

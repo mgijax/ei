@@ -26,14 +26,14 @@ import sys
 import os
 import string
 import regsub
-import mgdlib
+import db
 import reportlib
 
 CRT = reportlib.CRT
 SP = reportlib.SPACE
 fp = None
 
-tissues = mgdlib.sql(sys.argv[1], 'auto')
+tissues = db.sql(sys.argv[1], 'auto')
 
 for s in tissues:
 
@@ -43,7 +43,7 @@ for s in tissues:
 		reportName = 'Tissue.%s.rpt' % reportName
 		fp = reportlib.init(reportName, 'Tissues')
 
-	results = mgdlib.sql('PRB_getTissueDataSets %s' % s['_Tissue_key'], 'auto')
+	results = db.sql('PRB_getTissueDataSets %s' % s['_Tissue_key'], 'auto')
 
 	prevTissue = ''
 
