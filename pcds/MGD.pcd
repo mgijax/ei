@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar  8 14:05:08 2005";
+      lastWritten = "Tue Mar  8 14:19:28 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11441,7 +11441,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               NoteTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _NoteType_key, noteType from MGI_NoteType_VocEvidence_View order by _NoteType_key";
+                                                sql = "select _NoteType_key, noteType from MGI_NoteType_VocEvidence_View order by noteType";
                                             }
                                       }
                                       {

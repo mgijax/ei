@@ -87,7 +87,7 @@ rules:
 	  row : integer := 0;
 
 	  cmd := "select _NoteType_key, _MGIType_key, noteType from " + mgi_DBtable(tableID) + 
-		  "\norder by _NoteType_key";
+		  "\norder by noteType";
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -143,7 +143,7 @@ rules:
 	  	 " from " + mgi_DBtable(tableID) + " n, " + mgi_DBtable(MGI_NOTECHUNK) + " nc " +
 		 " where n." + mgi_DBkey(tableID) + " = " + objectKey +
 		 " and n._Note_key = nc._Note_key " +
-		 " order by n._NoteType_key, nc.sequenceNum";
+		 " order by n.noteType, n._NoteType_key, nc.sequenceNum";
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
