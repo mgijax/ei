@@ -452,6 +452,9 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>Marker Event Reasons
 	<LI>Reference Review Status
 	<LI>Molecular Segment Vector Types
+	<LI>Allele ES Cell Lines
+	<LI>Allele Note Types
+	<LI>Allele Reference Types
         <LI>Antibody Types 
         <LI>Antibody Classes 
         <LI>Assay Types 
@@ -491,6 +494,7 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>Specimen Hybridization
 	<LI>Marker Events
 	<LI>Marker Status
+	<LI>Allele Status
 	</OL>
 <P>
 <A NAME="dataVerLookup"><LI>Controlled Vocabulary Lists</A>
@@ -508,6 +512,7 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>Mapping Assays*
 	<LI>Homology Assays*
 	<LI>Homology Species
+	<LI>Allele ES Cell Lines
 	</OL>
 	<P>
 	* signifies that this controlled vocabulary list can be modified using the Controlled Vocab form.
@@ -683,7 +688,7 @@ To run the Development MGD from a MacIntosh:
 
 <HR>
 <A NAME="triggers"><H4>Triggers</H4></A>
-<PRE>(kelso:$SYBASE/admin/triggers/mgd)</PRE>
+<PRE>(kelso:dbschema/triggers/mgd)</PRE>
 <OL>
 <LI><I>ACC.tr</I>, <I>ACC.drop</I>
 <BR>Contains trigger definitions for Accession tables.
@@ -709,13 +714,13 @@ To run the Development MGD from a MacIntosh:
 <BR>Contains trigger definitions for all other GXD tables.
 </OL>
 
-<PRE>(kelso:$SYBASE/admin/triggers/nomen)</PRE>
+<PRE>(kelso:dbschema/triggers/nomen)</PRE>
 <OL>
 <LI><I>NOMEN.tr</I>, <I>NOMEN.drop</I>
 <BR>Contains trigger definitions for Nomenclature tables.
 </OL>
 
-<PRE>(kelso:$SYBASE/admin/triggers/strains)</PRE>
+<PRE>(kelso:dbschema/triggers/strains)</PRE>
 <OL>
 <LI><I>MLP.tr</I>, <I>MLP.drop</I>
 <BR>Contains trigger definitions for Strains tables.
@@ -723,7 +728,7 @@ To run the Development MGD from a MacIntosh:
 
 <HR>
 <A NAME="views"><H4>Views</H4></A>
-<PRE>(kelso:$SYBASE/admin/views/mgd)</PRE>
+<PRE>(kelso:dbschema/views/mgd)</PRE>
 <OL>
 <LI><I>ACC.view</I>
 <BR>Contains view definitions for Accession tables.
@@ -749,13 +754,13 @@ To run the Development MGD from a MacIntosh:
 <BR>Contains summary view definitions for Web Accession number query form.
 </OL>
 
-<PRE>(kelso:$SYBASE/admin/views/nomen)</PRE>
+<PRE>(kelso:dbschema/views/nomen)</PRE>
 <OL>
 <LI><I>NOMEN.view</I>
 <BR>Contains view definitions for Nomenclature tables.
 </OL>
 
-<PRE>(kelso:$SYBASE/admin/views/strains)</PRE>
+<PRE>(kelso:dbschema/views/strains)</PRE>
 <OL>
 <LI><I>MLP.view</I>
 <BR>Contains view definitions for Strain tables.
@@ -763,7 +768,7 @@ To run the Development MGD from a MacIntosh:
 
 <HR>
 <A NAME="procedures"><H4>Stored Procedures</H4></A>
-<PRE>(kelso:$SYBASE/admin/procedures/mgd)</PRE>
+<PRE>(kelso:dbschema/procedures/mgd)</PRE>
 <OL>
 <LI><I>ACC.pr</I>
 <BR>Contains stored procedure definitions for Accession tables.
@@ -787,13 +792,13 @@ To run the Development MGD from a MacIntosh:
 <BR>Contains stored procedure definitions for GXD tables.
 </OL>
 
-<PRE>(kelso:$SYBASE/admin/procedures/nomen)</PRE>
+<PRE>(kelso:dbschema/procedures/nomen)</PRE>
 <OL>
 <LI><I>NOMEN.pr</I>
 <BR>Contains stored procedure definitions for Nomenclature tables.
 </OL>
 
-<PRE>(kelso:$SYBASE/admin/procedures/strains)</PRE>
+<PRE>(kelso:dbschema/procedures/strains)</PRE>
 <OL>
 <LI><I>MLP.pr</I> and <I>MISC.pr</I>
 <BR>Contains stored procedure definitions for Strains tables.

@@ -30,11 +30,7 @@ Refer to <A HREF="http://titan/wts_projects/1100/1177/requirements.pdf">TR 1177 
 <P>
 <LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
 <P>
-<LI>Nomenclature Reviewed (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
-	<UL>
-	<LI>This field can only be edited by Cathy Lutz.
-	</UL>
-
+<LI>Allele Status (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 <P>
 <LI>Allele Type (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 <P>
@@ -42,7 +38,9 @@ Refer to <A HREF="http://titan/wts_projects/1100/1177/requirements.pdf">TR 1177 
 <P>
 <LI>Molecular Mutation (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 <P>
-<LI>Strain (see <A HREF="MEI.html#dataVerStrain">Data Verifications section on Strain</A>)
+<LI>ES Cell Line (see <A HREF="MEI.html#dataVerLookup"><LI>Controlled Vocabulary Lists</A>)
+<P>
+<LI>Strain of Origin (see <A HREF="MEI.html#dataVerStrain">Data Verifications section on Strain</A>)
 <P>
 </OL>
 <P>
@@ -55,27 +53,29 @@ Refer to <A HREF="http://titan/wts_projects/1100/1177/requirements.pdf">TR 1177 
 	<LI>Allele Symbol
 	<LI>Allele Name
 	<LI>Original Reference
+	<LI>Allele Status
 	<LI>Allele Type
 	<LI>Inheritance Mode
-	<LI>Strain
+	<LI>ES Cell Line
+	<LI>Strain of Origin
 	</OL>
 <P>
 <LI>Not Required
 	<OL>
-	<LI>Nomenclature Reviewed
 	<LI>Molecular Mutation
-	<LI>Molecular Notes
-	<LI>Allele Notes
-	<LI>Other Reference
+	<LI>Notes
+	<LI>References other than Original
 	<LI>Synonyms
 	</OL>
 </UL>
 
 <H4>Defaults</H4>
 <OL>
+<LI>Allele Status; default is <I>Approved</I>
 <LI>Allele Type; default is <I>Not Specified</I>
 <LI>Inheritance Mode; default is <I>Not Specified</I>
-<LI>Strain; default is <I>Not Specified</I>
+<LI>ES Cell Line; default is <I>Not Specified</I>
+<LI>Strain of Origin; default is <I>Not Specified</I>
 </OL>
 
 <H4>Deletions</H4>
@@ -103,8 +103,12 @@ records into one Allele record.
 
 <H4>Miscellaneous</H4>
 <OL>
+<LI>If the Allele Status is <I>Approved</I>, then the Marker Symbol must be
+    an <I>Approved</I> symbol, else the Marker Symbol can be a NomenDB <I>Pending</I>,
+    <I>Reserved</I> or <I>Approved</I> symbol.
+<P>
 <LI>If the controlled vocabulary term <I>Other (see notes)</I> is selected from 
-    <I>Allele Type</I> or <I>Inheritance Mode</I>, then <I>Allele Notes</I> are required.
+    <I>Allele Type</I> or <I>Inheritance Mode</I>, then <I>General Notes</I> are required.
 <P>
 <LI>If the controlled vocabulary term <I>Other (see notes)</I> is selected from 
     <I>Molecular Mutation</I>, then <I>Molecular Notes</I> are required.
@@ -113,9 +117,9 @@ records into one Allele record.
 
 <H4>Triggers/Views/Stored Procedures for Allele tables (<I>ALL_</I>)</H4>
 <OL>
-<LI>Triggers ($SYBASE/admin/triggers):  <I>ALL.tr</I>, <I>ALL.drop</I>
-<LI>Views ($SYBASE/admin/views):  <I>ALL.view</I>
-<LI>Stored Procedures ($SYBASE/admin/procedures):  <I>ALL.pr</I>
+<LI>Triggers (dbschema/triggers):  <I>ALL.tr</I>, <I>ALL.drop</I>
+<LI>Views (dbschema/views):  <I>ALL.view</I>
+<LI>Stored Procedures (dbschema/procedures):  <I>ALL.pr</I>
 </OL>
 
 <H4>Related Documents</H4>
