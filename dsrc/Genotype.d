@@ -722,7 +722,7 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  top->Reference->Rows.labelString := (string) row + " Records";
+	  top->Reference->Records.labelString := (string) row + " Records";
 
 	  (void) reset_cursor(top);
 	end does;

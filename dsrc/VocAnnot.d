@@ -42,6 +42,7 @@ devents:
 locals:
 	mgi : widget;			-- Top-level shell of Application
 	top : widget;			-- Top-level shell of Module
+	ab : widget;			-- Activate Button from whichh this Module was launched
 
 	from : string;			-- global SQL from clause
 	where : string;			-- global SQL where clause
@@ -54,8 +55,9 @@ locals:
 	annotTypeKey : string;
 	annotType : string;
 	mgiTypeKey : string;
-	annotVocab : string;
 	dbView : string;
+
+	annotTable : widget;
 
 rules:
 
@@ -80,7 +82,7 @@ rules:
  
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 
 	  -- Create windows for all widgets in the widget hierarchy
@@ -127,11 +129,13 @@ rules:
 
         Init does
 	  tables := create list("widget");
+	  genotype : widget := mgi->GenotypeModule;
 
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->Annotation->Table);
 	  tables.append(top->Reference->Table);
+	  annotTable := top->Annotation->Table;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -142,9 +146,25 @@ rules:
           Clear.source_widget := top;
           send(Clear, 0);
 
-	  -- Set Defaults
-	  send(SetAnnotTypeDefaults, 0);
+	  -- If launched from the Genotype Module...
+	  if (genotype != nil) then
 
+	    -- select the appropriate Annotation Type
+            SetOption.source_widget := top->VocAnnotTypeMenu;
+            SetOption.value := (string) genotype->VocAnnotation.annotTypeKey;
+            send(SetOption, 0);
+	    send(SetAnnotTypeDefaults, 0);
+
+	    -- if a Genotype record is currently selected,
+	    -- then retrieve the annotation records for that Genotype
+	    if (genotype->ID->text.value.length != 0) then
+	      top->mgiAccession->ObjectID->text.value := genotype->EditForm->ID->text.value;
+	      send(Search, 0);
+	    end if;
+	  else
+	    -- Set Defaults
+	    send(SetAnnotTypeDefaults, 0);
+	  end if;
 	end does;
 
 --
@@ -208,7 +228,6 @@ rules:
 --
 
 	Modify does
-          table : widget := top->Annotation->Table;
 	  cmd : string;
           row : integer := 0;
           editMode : string;
@@ -239,7 +258,7 @@ rules:
 	  -- If the current row's Term is not equal to the previous row's Term,
 	  -- then we have a new _Annot_key.
 
-	  if (not mgi_tblSort(table, table.term)) then
+	  if (not mgi_tblSort(annotTable, annotTable.term)) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Could Not Sort Table.";
 	    send(StatusReport);
@@ -249,46 +268,45 @@ rules:
 
           -- Process while non-empty rows are found
  
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
+          while (row < mgi_tblNumRows(annotTable)) do
+            editMode := mgi_tblGetCell(annotTable, row, annotTable.editMode);
  
             if (editMode = TBL_ROW_EMPTY) then
               break;
             end if;
  
-            annotKey := mgi_tblGetCell(table, row, table.annotKey);
-            termKey := mgi_tblGetCell(table, row, table.termKey);
-            notKey := mgi_tblGetCell(table, row, table.notKey);
-            currentRefsKey := mgi_tblGetCell(table, row, table.currentRefsKey);
-            refsKey := mgi_tblGetCell(table, row, table.refsKey);
-            evidenceKey := mgi_tblGetCell(table, row, table.evidenceKey);
-            currentEvidenceKey := mgi_tblGetCell(table, row, table.currentEvidenceKey);
-            inferredFrom := mgi_tblGetCell(table, row, table.inferredFrom);
-            notes := mgi_tblGetCell(table, row, table.notes);
+            annotKey := mgi_tblGetCell(annotTable, row, annotTable.annotKey);
+            termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
+            notKey := mgi_tblGetCell(annotTable, row, annotTable.notKey);
+            currentRefsKey := mgi_tblGetCell(annotTable, row, annotTable.currentRefsKey);
+            refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
+            evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
+            currentEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.currentEvidenceKey);
+            inferredFrom := mgi_tblGetCell(annotTable, row, annotTable.inferredFrom);
+            notes := mgi_tblGetCell(annotTable, row, annotTable.notes);
  
-	    if (notKey.length = 0) then
+	    if (notKey = "NULL" or notKey.length = 0) then
 	      notKey := NO;
 	    end if;
 
 	    -- Default Evidence Code for PhenoSlim is "TAS"
-	    if (evidenceKey.length = 0 and annotVocab = "PhenoSlim") then
+	    if ((evidenceKey = "NULL" or evidenceKey.length = 0) and annotTable.annotVocab = "PhenoSlim") then
 	      position := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
---	      (void) XmListSelectPos(top->EvidenceCodeList->List, position, false);
 	      evidenceKey := top->EvidenceCodeList->List.keys[position];
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
 	      
-	      -- Since the table is sorted by Term, if the previous row's
+	      -- Since the annotTable is sorted by Term, if the previous row's
 	      -- Term is equal to the current row's Term, then use the same
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
 
 	      if (row > 0) then
-	        if (termKey = mgi_tblGetCell(table, row - 1, table.termKey) and
-	            notKey = mgi_tblGetCell(table, row - 1, table.notKey)) then
-		  annotKey := mgi_tblGetCell(table, row - 1, table.annotKey);
+	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
+	            notKey = mgi_tblGetCell(annotTable, row - 1, annotTable.notKey)) then
+		  annotKey := mgi_tblGetCell(annotTable, row - 1, annotTable.annotKey);
 		  dupAnnot := true;
 		end if;
 	      end if;
@@ -312,7 +330,7 @@ rules:
 		-- So that when we process the subsequent row with the same Term,
 		-- we don't create another new key.
 
-		(void) mgi_tblSetCell(table, row, table.annotKey, (string) newAnnotKey);
+		(void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, (string) newAnnotKey);
 		newAnnotKey := newAnnotKey + 1;
 		annotKey := KEYNAME;
 
@@ -375,7 +393,6 @@ rules:
 --
 
 	PrepareSearch does
-	  table : widget := top->Annotation->Table;
 	  value : string;
 	  from_annot : boolean := false;
 	  from_evidence : boolean := false;
@@ -406,19 +423,13 @@ rules:
 
 	  -- Annotations
 
-	  value := mgi_tblGetCell(table, 0, table.termKey);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.termKey);
 	  if (value.length > 0) then
 	    where := where + "\nand a._Term_key = " + value;
 	    from_annot := true;
-	  else
-	    value := mgi_tblGetCell(table, 0, table.term);
-	    if (value.length > 0) then
-	      where := where + "\nand a.term like " + mgi_DBprstr(value);
-	      from_annot := true;
-	    end if;
 	  end if;
 
-	  value := mgi_tblGetCell(table, 0, table.notKey);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.notKey);
 	  if (value.length > 0) then
 	    where := where + "\nand a.isNot = " + value;
 	    from_annot := true;
@@ -426,25 +437,25 @@ rules:
 
 	  -- Evidence
 
-	  value := mgi_tblGetCell(table, 0, table.evidenceKey);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.evidenceKey);
 	  if (value.length > 0) then
 	    where := where + "\nand e._EvidenceTerm_key = " + value;
 	    from_evidence := true;
 	  end if;
 
-	  value := mgi_tblGetCell(table, 0, table.refsKey);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.refsKey);
 	  if (value.length > 0) then
 	    where := where + "\nand e._Refs_key = " + value;
 	    from_evidence := true;
 	  end if;
 
-	  value := mgi_tblGetCell(table, 0, table.inferredFrom);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.inferredFrom);
 	  if (value.length > 0) then
 	    where := where + "\nand e.inferredFrom like " + mgi_DBprstr(value);
 	    from_evidence := true;
 	  end if;
 
-	  value := mgi_tblGetCell(table, 0, table.modified);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.modified);
 	  if (value.length > 0) then
 	    where := where + "\nand e.modifiedBy like " + mgi_DBprstr(value);
 	    from_evidence := true;
@@ -452,7 +463,7 @@ rules:
 
 	  -- Modification date
 
-	  value := mgi_tblGetCell(table, 0, table.notes);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.notes);
 	  if (value.length > 0) then
 	    where := where + "\nand e.notes like " + mgi_DBprstr(value);
 	    from_evidence := true;
@@ -463,12 +474,12 @@ rules:
 	  end if;
 
 	  if (from_annot) then
-	    from := from + "," + mgi_DBtable(VOC_ANNOT_VIEW) + " a";
+	    from := from + "," + mgi_DBtable(VOC_ANNOT) + " a";
 	    where := where + "\nand v._Object_key = a._Object_key";
 	  end if;
 
 	  if (from_evidence) then
-	    from := from + "," + mgi_DBtable(VOC_EVIDENCE_VIEW) + " e";
+	    from := from + "," + mgi_DBtable(VOC_EVIDENCE) + " e";
 	    where := where + "\nand a._Annot_key = e._Annot_key";
 	  end if;
 
@@ -528,9 +539,10 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  if (annotVocab = "GO") then
+	  -- Different Sorts for different Annotation Types
+	  if (annotTable.annotVocab = "GO") then
 	    orderBy := "e.sequenceNum, e.modification_date\n";
-	  elsif (annotVocab = "PhenoSlim") then
+	  elsif (annotTable.annotVocab = "PhenoSlim") then
 	    orderBy := "a.sequenceNum, e.modification_date\n";
 	  end if;
 
@@ -554,7 +566,6 @@ rules:
 	  row : integer := 0;
 	  i : integer;
 	  results : integer := 1;
-	  table : widget := top->Annotation->Table;
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -566,38 +577,38 @@ rules:
 	        top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
 	        top->mgiAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
 	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(table, row, table.annotKey, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 7));
 
-	        (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(table, row, table.termSeqNum, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.termSeqNum, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(table, row, table.notKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.notCode, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(table, row, table.evidenceKey, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(table, row, table.currentEvidenceKey, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(table, row, table.evidence, mgi_getstr(dbproc, 16));
-	        (void) mgi_tblSetCell(table, row, table.evidenceSeqNum, mgi_getstr(dbproc, 17));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentEvidenceKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceSeqNum, mgi_getstr(dbproc, 17));
 
-	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(table, row, table.currentRefsKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 20));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentRefsKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
-	        (void) mgi_tblSetCell(table, row, table.inferredFrom, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(table, row, table.editor, mgi_getstr(dbproc, 12));
-	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(table, row, table.notes, mgi_getstr(dbproc, 13));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 12));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 13));
 
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
                 annotKey := mgi_getstr(dbproc, 1);
 		i := 0;
-		while (i < mgi_tblNumRows(table)) do
-		  if (mgi_tblGetCell(table, i, table.annotKey) = annotKey) then
-	            (void) mgi_tblSetCell(table, i, table.dag, mgi_getstr(dbproc, 2));
+		while (i < mgi_tblNumRows(annotTable)) do
+		  if (mgi_tblGetCell(annotTable, i, annotTable.annotKey) = annotKey) then
+	            (void) mgi_tblSetCell(annotTable, i, annotTable.dag, mgi_getstr(dbproc, 2));
 		  end if;
 		  i := i + 1;
 		end while;
@@ -610,8 +621,9 @@ rules:
  
 	  (void) dbclose(dbproc);
 
-	  if (annotType->substr(1, 2) = "GO") then
-	    (void) mgi_tblSort(table, table.dag);
+	  -- Sort by DAG for GO Annotations
+	  if (annotTable.annotVocab = "GO") then
+	    (void) mgi_tblSort(annotTable, annotTable.dag);
 	  end if;
 
           top->QueryList->List.row := Select.item_position;
@@ -645,18 +657,18 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
-	  top->Annotation->Table.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
-	  top->Annotation->Table.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
+	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
+	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
+	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
 	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
 		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
-	  if (annotVocab = "PhenoSlim") then
+	  if (annotTable.annotVocab = "PhenoSlim") then
 	    top->PhenoSlimList.managed := true;
             LoadList.list := top->PhenoSlimList;
 	    send(LoadList, 0);
@@ -695,6 +707,7 @@ rules:
 --
  
         Exit does
+	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;
           send(ExitWindow, 0);
