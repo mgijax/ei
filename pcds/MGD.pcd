@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  5 10:19:39 2003";
+      lastWritten = "Thu Dec  4 12:48:08 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -9937,6 +9937,21 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NoteDialog = NoteDialog : mgiDialog;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            Note = Notes : mgiDataTypes;
+                                {
+                                  label = XmLabel;
+                                }
+                                {
+                                  text = scrolledText;
+                                  Group: Widget
+                                    rows = 50;
+                                    columns = 100;
+                                }
+                          }
                     }
                     {
                       AlleleMergeDialog = AlleleMergeDialog : mgiDialog;
