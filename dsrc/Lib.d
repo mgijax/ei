@@ -3,6 +3,8 @@
 -- Creator : lec
 -- Lib.d 11/19/98
 --
+-- Library functions (clearing the form, exiting, etc.)
+--
 -- History
 --
 -- lec 08/20/1999
