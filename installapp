@@ -1,0 +1,38 @@
+#!/bin/csh
+
+#
+# Builds (if necessary) and installs a compiled/interpreted version of 
+# application using uxb.conf.
+#
+# Usage:
+#
+#	installapp applicationdirectory [compiled]
+#
+# if 'compiled' is given as an argument, then the application is installed 
+# as a compiled application, rather than an interpreted D app.
+#
+
+source ../Configuration
+
+setenv APP	$1
+setenv MODE	$2
+
+switch ("$MODE")
+	case compiled:	
+			setenv OPTIONS "-dmode compiled"
+			breaksw
+	default:	
+			setenv OPTIONS ""
+			breaksw
+endsw
+
+#
+# uxb.conf is assumed...
+#
+
+# create the application directory if it isn't already there
+mkdir $EIINSTALLDIR/$APP >& /dev/null
+
+cd $APP
+uxb $OPTIONS -destdir $EIINSTALLDIR/$APP install
+cd ..
