@@ -561,7 +561,8 @@ rules:
 
 	  cmd : string := "select _Object_key, accID, description from " + dbView + 
 			  " where _Object_key = " + currentRecordKey + 
-			  " and prefixPart = 'MGI:' and preferred = 1\n" + 
+			  " and prefixPart = 'MGI:' and preferred = 1 " + 
+			  " order by description\n" +
 	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.* " +
 			  "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
@@ -580,6 +581,7 @@ rules:
 	  row : integer := 0;
 	  i : integer;
 	  results : integer := 1;
+	  objectLoaded : boolean := false;
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -587,9 +589,12 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
-	        top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
-	        top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
-	        top->mgiAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
+	        if (not objectLoaded) then
+	          top->mgiAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	          top->mgiAccession->AccessionID->text.value := mgi_getstr(dbproc, 2);
+	          top->mgiAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
+		  objectLoaded := true;
+		end if;
 	      elsif (results = 2) then
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 7));
 
