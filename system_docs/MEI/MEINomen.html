@@ -49,7 +49,6 @@ Detailed <A HREF="MEINomenEntry.html">Nomenclature Data Entry Documentation</A> 
 	<TR><TD>approvedName<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
 	<TR><TD>chromosome<TD>varchar(8)<TD>not null<TD>&nbsp;<TD>non-unique
 	<TR><TD>humanSymbol<TD>varchar(25)<TD>null<TD>&nbsp;<TD>none
-	<TR><TD>ECNumber<TD>varchar(25)<TD>null<TD>&nbsp;<TD>none
 	<TR><TD>statusNote<TD>varchar(255)<TD>null<TD>&nbsp;<TD>none
 	<TR><TD>broadcast_date<TD>datetime<TD>null<TD>&nbsp;<TD>non-unique
 	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
@@ -146,6 +145,12 @@ Detailed <A HREF="MEINomenEntry.html">Nomenclature Data Entry Documentation</A> 
 	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
 	</TABLE>
 <P>
+<LI>The Accession table (same as ACC_Accession in MGD database).
+<P>
+<LI>The Accession Reference table (same as ACC_Accession_Reference in MGD database).
+<P>
+<LI>The Accession MGI Type table (same as ACC_MGIType in MGD database).
+<P>
 <LI>All primary keys require a unique index.
 <P>
 <LI>Controlled vocabulary tables can be modified by privileged users.
@@ -157,6 +162,7 @@ Detailed <A HREF="MEINomenEntry.html">Nomenclature Data Entry Documentation</A> 
 <H4>Accession Numbers</H4>
 <OL>
 <LI>EC, cross reference to Enzyme Commission number at ExPASy
+<LI>Sequence, cross reference to GenBank, EMBL, DDBJ (nucleotide sequences)
 </OL>
 
 <H4>Data Verifications</H4>
