@@ -28,7 +28,7 @@ appropriate documentation manuals.
 <LI><A HREF="#dmodules">TeleUSE Dialog Components</A>
 <LI><A HREF="#cmodules">TeleUSE C Components</A>
 <LI><A HREF="#config">Configuration</A>
-<LI><A HREF="Tagging.html">Tagging a Release</A>
+<LI><A HREF="#tagging"">Tagging a Release</A>
 <LI><A HREF="#installsource">Install a copy of Production or Development Source</A>
 <LI><A HREF="#installdocs">Install system documentation</A>
 <LI><A HREF="#applconfig">Application Configuration Files</A>
@@ -516,6 +516,24 @@ The source root directory is sub-divided into several subdirectories.
 <P>
 Additional application subdirectories should be created under the root directory, as has been
 done for <I>gxd</I>, <I>mgd</I>, <I>nomen</I>, <I>mgiadmin</I>.
+<P>
+
+<HR>
+<A NAME="tagging"><H4>Tagging a Release</H4></A>
+Production releases of the EI are tagged with tags of the form "eiM-N", 
+where M is the Major release number and N is the minor release number. 
+Development releases can have "aX" or "bX" appended to the last Production
+tag, depending on whether the release is an alpha or beta release (where
+'a' and 'b' are literals and "X" is any positive integer >=0).
+Patch releases are maintained on a separate branch, "eiM-N-patches", and 
+are tagged with the suffix "pX".
+<P>
+Always update the HISTORY file associated with the source to indicate
+what has changed between tagging operations.
+<P>
+Refer to the CVS documentation concerning tagging releases. Please coordinate
+tagging with SEs that may be involved in parallel development of the same
+module. 
 <P>
 
 <HR>
