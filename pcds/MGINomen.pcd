@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan  5 14:10:45 2004";
+      lastWritten = "Wed Jan  7 13:17:35 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -531,32 +531,6 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                 }
-                                {
-                                  GeneFamily = Table : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = mgiNoteForm;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
-                                    leftWidget = mgiNoteForm;
-                                    topOffset = 5;
-                                    bottomOffset = 5;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblNumColumns = 4;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 30)";
-                                          xrtTblEditableSeries = "(all 0-2 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblTraversableSeries = "(all 0-2 False)";
-                                          xrtTblMaxLengthSeries = "(all 3 255)";
-                                          xrtTblColumnLabels = "Mode,Current Key,Key,Gene Family";
-                                          userDefinedAttributes = "familyCurrentKey:Int(Int)=\"1\"\nfamilyKey:Int(Int)=\"2\"\nfamilyName:Int=\"3\"\n";
-                                          xrtTblVisibleRows = 3;
-                                      }
-                                }
                           }
                     }
                     {
@@ -681,24 +655,6 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     labelString = "Broadcast Interim Symbol to MGD";
                                     activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
-                                }
-                                {
-                                  BroadcastBatch = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Broadcast by Batch to MGD";
-                                    activateCallback = "D:Broadcast(type = 5),\nD:GoHome";
-                                }
-                                {
-                                  BroadcastReference = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Broadcast by Reference to MGD\n(Editors only)";
-                                    activateCallback = "D:Broadcast(type = 6),\nD:GoHome";
-                                }
-                                {
-                                  BroadcastReference1 = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Broadcast by Reference to MGD\n(Nomen Coordinator only)";
-                                    activateCallback = "D:Broadcast(type = 7),\nD:GoHome";
                                 }
                           }
                     }
@@ -873,9 +829,6 @@ Shift<Key>Tab: prev-tab-group()
                                           visibleItemCount = 7;
                                       }
                                 }
-                                {
-                                  GeneFamilyList = GeneFamilyList : mgiLookup;
-                                }
                           }
                     }
                     Popups:
@@ -979,6 +932,8 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       BroadcastDialog = BroadcastDialog : mgiDialog;
+                      Group: Widget
+                        messageString = "Are you sure you want to broadcast this record?";
                     }
               }
         }

@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 17 14:33:52 2003";
+      lastWritten = "Wed Jan  7 11:36:31 2004";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -232,7 +232,7 @@ Module: mgiLookup
           MappingAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1075;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -252,7 +252,7 @@ Module: mgiLookup
           StrainTypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1075;
+            vip_y = 1020;
           Group: User
             cmd = "select * from MLP_StrainType order by strainType";
               {
@@ -272,7 +272,7 @@ Module: mgiLookup
           ESCellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1020;
+            vip_y = 965;
           Group: User
             cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View order by cellLine";
               {
@@ -445,7 +445,7 @@ Module: mgiLookup
           PhenoSlimList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1185;
           Group: User
             cmd = "select _Term_key, term, accID from VOC_Term_View where vocabName = \"PhenoSlim\" order by sequenceNum";
               {
@@ -466,7 +466,7 @@ Module: mgiLookup
           EvidenceCodeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1130;
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -496,28 +496,6 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   visibleItemCount = 10;
-              }
-        }
-        {
-          GeneFamilyList = LookupList;
-          Group: Control
-            vip_x = 95;
-            vip_y = 968;
-              {
-                Label = LookupLabel;
-                Group: Widget
-                  labelString = "0 Gene Families";
-                Group: User
-                  defaultLabel = "Gene Families";
-              }
-              {
-                List = list;
-                Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem";
-                Group: User
-                  targetWidget = GeneFamily;
-                  targetText = 3;
-                  targetKey = 2;
               }
         }
 }

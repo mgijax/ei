@@ -492,6 +492,7 @@ rules:
 	  value : string;
 	  from_annot : boolean := false;
 	  from_evidence : boolean := false;
+	  from_notes : boolean := false;
 
 	  from := "from " + dbView + " v";
 	  where := "";
@@ -601,8 +602,8 @@ rules:
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.notes);
 	  if (value.length > 0) then
-	    where := where + "\nand e.notes like " + mgi_DBprstr(value);
-	    from_evidence := true;
+	    where := where + "\nand n.note like " + mgi_DBprstr(value);
+	    from_notes := true;
 	  end if;
 
 	  if (from_evidence) then
@@ -618,6 +619,11 @@ rules:
 	  if (from_evidence) then
 	    from := from + "," + mgi_DBtable(VOC_EVIDENCE) + " e";
 	    where := where + "\nand a._Annot_key = e._Annot_key";
+	  end if;
+
+	  if (from_notes) then
+	    from := from + "," + mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n";
+	    where := where + "\nand v._Object_key = n._Object_key";
 	  end if;
 
           if (where.length > 0) then
