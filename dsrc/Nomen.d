@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 01/15/2001
+--	- TR 2189; BroadcastByMenu no longer a widget
+--
 -- lec 01/09/2001
 --	- added ModifySQL.transaction := true in Modify event
 --
@@ -313,10 +316,7 @@ rules:
             SetOption.value := STATUS_PENDING;
             send(SetOption, 0);
 
-            SetOption.source_widget := top->BroadcastByMenu;
-            SetOption.value := NOTSPECIFIED;
-            send(SetOption, 0);
-
+	    top->BroadcastBy->text.value := "";
 	    top->BroadcastDate->text.value := "";
 	  end if;
 
