@@ -10,11 +10,10 @@
 
 source Configuration
 
-setenv APP	$1
+setenv EIAPP	$1
 setenv REMFILES	"*.o *.c *.do *.ui cderes*"
 
-cd $APP
-source Configuration
+cd $EIAPP
 uxb clean
-rm -f $REMFILES $APP
+rm -f $REMFILES $EIAPP
 cd ..
