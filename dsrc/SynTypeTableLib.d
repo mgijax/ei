@@ -189,9 +189,9 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.synName, mgi_getstr(dbproc, 4));
 
 	      if (tableID = MGI_SYNONYM_NOMEN_VIEW) then
-	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 6));
-	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 8));
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
