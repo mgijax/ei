@@ -2058,8 +2058,12 @@ rules:
 
 	    -- Disallow continued processing of Marker
 
-            (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerKey, "NULL");
-            VerifyMarkerChromosome.doit := (integer) false;
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerKey, "NULL");
+              VerifyMarkerChromosome.doit := (integer) false;
+	    else
+	      top->mgiMarker->ObjectID->text.value := "NULL";
+	    end if;
           end if;
  
           if (not valid) then
