@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 12 09:49:21 2000";
+      lastWritten = "Tue Aug 29 13:24:10 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -1299,6 +1299,13 @@ Module: mgiOption
                         dbTable = 312;
                     }
                     {
+                      AntibodySpecies = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Antibody Species";
+                      Group: User
+                        dbTable = 335;
+                    }
+                    {
                       AssayType = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Assay Types";
@@ -1424,81 +1431,10 @@ Module: mgiOption
               Popups:
               {
                 AntibodySpeciesPulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select * from GXD_AntibodySpecies order by antibodySpecies";
                     {
                       SearchAll = SearchAll : mgiOption;
-                    }
-                    {
-                      mouse = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = "mouse, laboratory";
-                        background = Thistle;
-                      Group: User
-                        defaultValue = "mouse, laboratory";
-                        searchValue = "mouse, laboratory";
-                    }
-                    {
-                      human = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = human;
-                        defaultValue = human;
-                    }
-                    {
-                      chicken = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = chicken;
-                        defaultValue = chicken;
-                    }
-                    {
-                      donkey = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = donkey;
-                        defaultValue = donkey;
-                    }
-                    {
-                      goat = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = goat;
-                        defaultValue = goat;
-                    }
-                    {
-                      guineapig = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = "guinea pig";
-                      Group: User
-                        searchValue = "guinea pig";
-                        defaultValue = "guinea pig";
-                    }
-                    {
-                      hamster = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = hamster;
-                        defaultValue = hamster;
-                    }
-                    {
-                      sheep = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = sheep;
-                        defaultValue = sheep;
-                    }
-                    {
-                      rabbit = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = rabbit;
-                        defaultValue = rabbit;
-                    }
-                    {
-                      rat = OptionToggle : mgiOption;
-                      Group: User
-                        searchValue = rat;
-                        defaultValue = rat;
-                    }
-                    {
-                      NotSpecified = NotSpecified : mgiOption;
-                      Group: Widget
-                        background = Wheat;
-                    }
-                    {
-                      NotApplicable = NotApplicable : mgiOption;
                     }
               }
         }

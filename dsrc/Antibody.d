@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  08/29/2000
+--	- TR 1003; GXD_AntibodySpecies
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -165,21 +168,15 @@ rules:
           cmd := mgi_setDBkey(GXD_ANTIBODY, NEWKEY, KEYNAME) + 
 		 mgi_DBinsert(GXD_ANTIBODY, KEYNAME);
 
-          cmd := cmd + top->AntibodyClassMenu.menuHistory.defaultValue + ",";
-	  
 	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
             cmd := cmd + "NULL,";
 	  else
             cmd := cmd + top->mgiCitation->ObjectID->text.value + ",";
 	  end if;
 
-	  cmd := cmd +
+          cmd := cmd + top->AntibodyClassMenu.menuHistory.defaultValue + "," +
                  top->AntibodyTypeMenu.menuHistory.defaultValue + "," +
-                 mgi_DBprstr(top->Name->text.value) + "," +
-                 mgi_DBprstr(top->AntibodySpeciesMenu.menuHistory.defaultValue) + "," +
-                 mgi_DBprstr(top->AntibodyNote->text.value) + "," +
-                 mgi_DBprstr(top->WesternMenu.menuHistory.defaultValue) + "," +
-                 mgi_DBprstr(top->ImmunoMenu.menuHistory.defaultValue) + ",";
+                 top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
 
 	  if (top->AntigenAccession->ObjectID->text.value.length = 0) then
             cmd := cmd + "NULL,";
@@ -187,7 +184,11 @@ rules:
             cmd := cmd + top->AntigenAccession->ObjectID->text.value + ",";
 	  end if;
 
-          cmd := cmd + mgi_DBprstr(top->AntigenNote->text.value) + ")\n";
+	  cmd := cmd + mgi_DBprstr(top->Name->text.value) + "," +
+                 mgi_DBprstr(top->AntibodyNote->text.value) + "," +
+                 mgi_DBprstr(top->WesternMenu.menuHistory.defaultValue) + "," +
+                 mgi_DBprstr(top->ImmunoMenu.menuHistory.defaultValue) + "," +
+                 mgi_DBprstr(top->AntigenNote->text.value) + ")\n";
 
 	  send(ModifyAlias, 0);
 	  send(ModifyMarker, 0);
@@ -289,8 +290,7 @@ rules:
 	  end if;
 
 	  if (top->AntibodySpeciesMenu.menuHistory.modified) then
-            set := set + "antibodySpecies = " + 
-		mgi_DBprstr(top->AntibodySpeciesMenu.menuHistory.defaultValue) + ",";
+            set := set + "_AntibodySpecies_key = " + top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
 	  end if;
 
 	  if (top->WesternMenu.menuHistory.modified) then
@@ -497,8 +497,7 @@ rules:
           end if;
  
           if (top->AntibodySpeciesMenu.menuHistory.searchValue != "%") then
-            where := where + " and g.antibodySpecies = " + 
-		mgi_DBprstr(top->AntibodySpeciesMenu.menuHistory.searchValue);
+            where := where + " and g._AntibodySpecies_key = " + top->AntibodySpeciesMenu.menuHistory.searchValue;
           end if;
  
           if (top->WesternMenu.menuHistory.searchValue != "%") then
@@ -709,14 +708,14 @@ rules:
 	      -- Required Antibody Information
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Name->text.value         := mgi_getstr(dbproc, 5);
-	        top->AntibodyNote->text.value := mgi_getstr(dbproc, 7);
+	        top->Name->text.value         := mgi_getstr(dbproc, 7);
+	        top->AntibodyNote->text.value := mgi_getstr(dbproc, 8);
 	        top->AntigenNote->text.value  := mgi_getstr(dbproc, 11);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 12);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 13);
 
                 SetOption.source_widget := top->AntibodyClassMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
+                SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->AntibodyTypeMenu;
@@ -724,15 +723,15 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->AntibodySpeciesMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
+                SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->WesternMenu;
-                SetOption.value := mgi_getstr(dbproc, 8);
+                SetOption.value := mgi_getstr(dbproc, 9);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->ImmunoMenu;
-                SetOption.value := mgi_getstr(dbproc, 9);
+                SetOption.value := mgi_getstr(dbproc, 10);
                 send(SetOption, 0);
 
 	      -- Optional Antibody Reference

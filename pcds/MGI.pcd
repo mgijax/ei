@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 24 10:27:56 2000";
+      lastWritten = "Tue Aug 29 13:24:14 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -862,6 +862,9 @@ Module: MGI
                                             }
                                             {
                                               AntibodyType = ControlledVocabToggle;
+                                            }
+                                            {
+                                              AntibodySpecies = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               AssayType = ControlledVocabToggle;
