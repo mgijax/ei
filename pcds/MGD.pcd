@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 26 13:49:37 2003";
+      lastWritten = "Fri Apr 18 13:37:11 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -2448,8 +2448,6 @@ Module: MGD
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblVisibleRows = 5;
                                       }
                                       {
                                         Add = TablePush;
@@ -2459,67 +2457,8 @@ Module: MGD
                                       }
                                       {
                                         AccSourceMenu = AccSourceMenu;
-                                        Group: User
-                                          defaultOption = WashU;
-                                            Popups:
-                                            {
-                                              AccSourcePulldown = OptionPulldown;
-                                                  {
-                                                    MGI = AccToggle;
-                                                  }
-                                                  {
-                                                    J = AccToggle;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
-                                                    PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    SWISSPROT = AccToggle;
-                                                  }
-                                                  {
-                                                    TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PDB = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    MGC = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UniGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
-                                                    ATCC = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                            }
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                                 {
@@ -2950,7 +2889,8 @@ Module: MGD
                     {
                       Table = mgiTable;
                       Group: Widget
-                        xrtTblVisibleRows = 3;
+                        xrtTblVisibleRows = 6;
+                        xrtTblNumRows = 10;
                     }
                     {
                       Add = TablePush;
@@ -2999,6 +2939,8 @@ Module: MGD
                                 }
                                 {
                                   MGC = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
                                 }
                                 {
                                   WashU = AccToggle;
@@ -3085,7 +3027,7 @@ Module: MGD
                   bottomAttachment = attach_none;
                   resizable = true;
                   topWidget = mgiCitation;
-                  topOffset = 20;
+                  topOffset = 5;
                   rightOffset = 2;
                     {
                       label = XmLabel;
@@ -3108,7 +3050,7 @@ Module: MGD
                   leftWidget = AccRef;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = AccRef;
+                  topWidget = Alias;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -3201,10 +3143,10 @@ Module: MGD
                 Alias = Table : mgiTable;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = RFLV;
+                  leftWidget = HasSequence;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = RFLV;
+                  topWidget = HasSequence;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
@@ -3219,7 +3161,7 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-1 0)";
                         xrtTblTraversableSeries = "(all 0-1 False)";
                         userDefinedAttributes = "aliasKey:Int=\"1\"\nalias:Int=\"2\"\n";
-                        xrtTblVisibleRows = 3;
+                        xrtTblVisibleRows = 2;
                     }
               }
         }
