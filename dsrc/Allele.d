@@ -103,9 +103,12 @@ locals:
 
 	pendingStatusKey : string;
 	defaultInheritanceKey : string;
-	defaultESCellLineKey : string;
-	defaultStrainKey : string;
-	defaultMutantESCellLineKey : string;
+	defaultESCellLineKeyNS : string;
+	defaultESCellLineKeyNA : string;
+	defaultStrainKeyNS : string;
+	defaultStrainKeyNA : string;
+	defaultMutantESCellLineKeyNS : string;
+	defaultMutantESCellLineKeyNA : string;
 
 rules:
 
@@ -230,14 +233,20 @@ rules:
 	  defaultInheritanceKey := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
 		"where term = " + mgi_DBprstr(top->InheritanceModeMenu.defaultValue));
 
-	  defaultESCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 0 " +
-		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
+	  defaultStrainKeyNS := NOTSPECIFIED;
+	  defaultStrainKeyNA := NOTAPPLICABLE;
 
-	  defaultStrainKey := mgi_sql1("select _Strain_key from ALL_CellLine where isMutant = 0 " +
-		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
+	  defaultESCellLineKeyNS := mgi_sql1("select _CellLine_key from ALL_CellLine " +
+		"where isMutant = 0 and cellLine = 'Not Specified' and _Strain_key = -1");
 
-	  defaultMutantESCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 1 " +
-		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiMutantESCellLine->CellLine->text.defaultValue));
+	  defaultESCellLineKeyNA := mgi_sql1("select _CellLine_key from ALL_CellLine " +
+		"where isMutant = 0 and cellLine = 'Not Applicable' and _Strain_key = -2");
+
+	  defaultMutantESCellLineKeyNS := mgi_sql1("select _CellLine_key from ALL_CellLine " + 
+		"where isMutant = 1 and cellLine = 'Not Specified' and _Strain_key = -1");
+
+	  defaultMutantESCellLineKeyNA := mgi_sql1("select _CellLine_key from ALL_CellLine " + 
+		"where isMutant = 1 and cellLine = 'Not Applicable' and _Strain_key = -2");
 
 	end does;
 
@@ -353,15 +362,24 @@ rules:
 	  end if;
 
 	  if (top->EditForm->mgiParentalESCellLine->ObjectID->text.value.length = 0) then
-	    esCellLineKey := defaultESCellLineKey;
-	    strainKey := defaultStrainKey;
+            if (top->AlleleTypeMenu.menuHistory.labelString = GENE_TRAPPED) then
+	      esCellLineKey := defaultESCellLineKeyNS;
+	      strainKey := defaultStrainKeyNS;
+	    else
+	      esCellLineKey := defaultESCellLineKeyNA;
+	      strainKey := defaultStrainKeyNA;
+	    end if;
 	  else
 	    esCellLineKey := top->EditForm->mgiParentalESCellLine->ObjectID->text.value;
 	    strainKey := top->EditForm->mgiParentalESCellLine->StrainID->text.value;
 	  end if;
 
 	  if (top->EditForm->mgiMutantESCellLine->ObjectID->text.value.length = 0) then
-	    mutantesCellLineKey := defaultMutantESCellLineKey;
+            if (top->AlleleTypeMenu.menuHistory.labelString = GENE_TRAPPED) then
+	      mutantesCellLineKey := defaultMutantESCellLineKeyNS;
+	    else
+	      mutantesCellLineKey := defaultMutantESCellLineKeyNA;
+	    end if;
 	  else
 	    mutantesCellLineKey := top->EditForm->mgiMutantESCellLine->ObjectID->text.value;
 	  end if;

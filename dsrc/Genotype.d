@@ -74,10 +74,7 @@ devents:
 
 	GenotypeClipboardAdd :local [];
 
-	VerifyAllelePairState :local [source_widget : widget;
-				      column : integer;
-				      row : integer;
-				      reason : integer;];
+	VerifyAlleleCombination :local [];
 
 locals:
 	mgi : widget;
@@ -98,7 +95,7 @@ locals:
                                         -- Initialized in Select[] and Add[] events
  
 	allelePairString : string;
-	alleleStateOK : boolean;
+	alleleCombinationOK : boolean;
 
 rules:
 
@@ -203,6 +200,13 @@ rules:
 
           (void) busy_cursor(top);
 
+	  send(VerifyAlleleCombination, 0);
+
+	  if (not alleleCombinationOK) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
           -- If adding, then @KEYNAME must be used in all Modify events
  
           currentRecordKey := "@" + KEYNAME;
@@ -303,6 +307,13 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
+
+	  send(VerifyAlleleCombination, 0);
+
+	  if (not alleleCombinationOK) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
 
 	  cmd := "";
 	  set := "";
@@ -916,65 +927,81 @@ rules:
    end does;
 
 --
--- VerifyAllelePairState
+-- VerifyAlleleCombination
 --
--- Verifies Allele Pair State vs. Allele Pairs.
--- Sets global alleleStateOK = 1 if Allele Pair State is okay, else 0.
+-- Verifies Allele Combination
 --
-	VerifyAllelePairState does
-	  table : widget := VerifyAllelePairState.source_widget;
-	  column : integer := VerifyAllelePairState.column;
-	  row : integer := VerifyAllelePairState.row;
-	  reason : integer := VerifyAllelePairState.reason;
-          alleleKey1 : string;
-          alleleKey2 : string;
-	  alleleState : string;
+	VerifyAlleleCombination does
+	  table : widget := top->AllelePair->Table;
+	  row : integer;
+	  editMode : string;
+	  compoundTerm : string;
+	  markerChr : string;
+	  topRow : integer := -1;
+	  bottomRow : integer := -1;
+	  chrList : string_list := create string_list();
 
-	  alleleStateOK := true;
+	  alleleCombinationOK := true;
 
-	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	    return;
-	  end if;
-
-	  if (column != table.alleleState and column != (integer) table.alleleSymbol[2]) then
-	    return;
-	  end if;
-
-          alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
-          alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
-          alleleState := mgi_tblGetCell(table, row, table.alleleState);
+          -- Process while non-empty rows are found
  
-	  if (alleleKey1.length = 0) then
+	  row := 0;
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+ 
+            if (editMode != TBL_ROW_DELETE) then
+
+              compoundTerm := mgi_tblGetCell(table, row, table.compound);
+              markerChr := mgi_tblGetCell(table, row, table.markerChr);
+
+	      if (compoundTerm = "Top") then
+		topRow := row;
+		chrList.insert(markerChr, chrList.count + 1);
+	      end if;
+
+	      if (compoundTerm = "Bottom") then
+		bottomRow := row;
+		chrList.insert(markerChr, chrList.count + 1);
+	      end if;
+
+	      if (topRow > -1 and bottomRow > -1 and topRow < bottomRow) then
+	        chrList.reduce;
+	        if (chrList.count > 1) then
+	          alleleCombinationOK := false;
+                  StatusReport.source_widget := top;
+                  StatusReport.message := "Compound Attribute Error:  All Markers for Alleles in a Compound Display Group must have the same chromosome.";
+	          send(StatusReport, 0);
+	          return;
+	        end if;
+		chrList.reset;
+	      end if;
+
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  chrList.reduce;
+	  if (chrList.count > 1) then
+	    alleleCombinationOK := false;
+            StatusReport.source_widget := top;
+            StatusReport.message := "Compound Attribute Error:  All Markers for Alleles in a Compound Display Group must have the same chromosome.";
+	    send(StatusReport, 0);
 	    return;
 	  end if;
 
-	  if (alleleKey2.length = 0) then
-	    alleleKey2 := "NULL";
-	  end if;
-
-	  -- If the Allele State is provided, then verify
-
-	  if (alleleState != "") then
-	    if (alleleState = "Homozygous" and alleleKey1 != alleleKey2) then
-	      alleleStateOK := false;
-	    elsif (alleleState = "Heterozygous" and (alleleKey1 = alleleKey2 or alleleKey2 = "NULL")) then
-	      alleleStateOK := false;
-	    elsif (alleleState = "Hemizygous" and alleleKey2 != "NULL") then
-	      alleleStateOK := false;
-	    elsif (alleleState = "Unknown" and alleleKey2 != "NULL") then
-	      alleleStateOK := false;
-	    end if;
-	  else
-	    -- If the Allele State was not entered, then set it
-	    if (alleleKey2 != "NULL" and alleleKey1 = alleleKey2) then
-	      alleleState := "Homozygous";
-	    elsif (alleleKey2 != "NULL" and alleleKey1 != alleleKey2) then
-	      alleleState := "Heterozygous";
-	    elsif (alleleKey2 = "NULL") then
-	      alleleState := "Hemizygous";
-	    end if;
-
-	    mgi_tblSetCell(table, row, table.alleleState, alleleState);
+	  if ((topRow = -1 and bottomRow > -1) or
+	      (topRow > -1 and bottomRow = -1) or
+	      (topRow > bottomRow )) then
+	    alleleCombinationOK := false;
+            StatusReport.source_widget := top;
+            StatusReport.message := "Compound Attribute Error:  A Compound Display Group must be closed: Top and Bottom Annotations.";
+	    send(StatusReport, 0);
+	    return;
 	  end if;
 
 	end does;
