@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Jan  3 09:26:57 2002";
+      lastWritten = "Tue Apr  9 10:31:34 2002";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -326,7 +326,7 @@ Module: mgiCV
         {
           CVAllele = CVMenu;
           Group: Control
-            vip_x = 50;
+            vip_x = 145;
             vip_y = 195;
               {
                 MolecularMutationMenu = MolecularMutationMenu : mgiOption;
@@ -335,8 +335,8 @@ Module: mgiCV
         {
           CVSpecimen = XmFrame;
           Group: Control
-            vip_x = 145;
-            vip_y = 195;
+            vip_x = 50;
+            vip_y = 250;
             vipComment = "";
               {
                 panedWindow = XmPanedWindow;
@@ -438,6 +438,29 @@ Module: mgiCV
                               dialogName = InSituResultsDialog;
                           }
                     }
+              }
+        }
+        {
+          CVStagingNote = XmRowColumn;
+          Group: Widget
+            orientation = horizontal;
+          Group: Control
+            vipComment = "";
+            vip_x = 50;
+            vip_y = 195;
+              {
+                AgeNotSpecified = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Age Not Specified";
+                Group: User
+                  note = "Age of embryo at noon of plug day not specified in reference.";
+              }
+              {
+                AgeNormalized = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Age Normalized";
+                Group: User
+                  note = "Age normalized so that noon of plug day = E0.5.";
               }
         }
 }

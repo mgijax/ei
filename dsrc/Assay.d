@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 04/09/2002
+--	- TR 2860; added CVStagingNotes to module;added AppendToAgeNote Devent
+--
 -- lec 10/22/2001
 --	- added Search for Genotype
 --
@@ -165,6 +168,7 @@ devents:
 	AddAntibodyPrep :local [];
 	AddProbePrep :local [];
 	AddProbeReference :local [];
+	AppendToAgeNote :local [];
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
 		    reset : boolean := false;
@@ -598,6 +602,30 @@ rules:
 	         top->mgiCitation->ObjectID->text.value + "," +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "\n";
 	end
+
+--
+-- AppendToAgeNote
+--
+-- Appends the text associated with the push button to each Age Note
+-- column in the Specimen or Gel Lane table.
+--
+
+	AppendToAgeNote does
+	  table : widget;
+	  row : integer := 0;
+	  note : string := AppendToAgeNote.source_widget.note;
+
+	  if (assayDetailForm.name = "InSituForm") then
+            table := top->InSituForm->Specimen->Table;
+	  elsif (assayDetailForm.name = "GelForm") then
+            table := top->GelForm->GelLane->Table;
+	  end if;
+
+          while (row < mgi_tblNumRows(table)) do
+	    (void) mgi_tblSetCell(table, row, table.ageNote, note);
+	    row := row + 1;
+	  end while;
+	end does;
 
 --
 -- CopySpecimen

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Feb 11 09:45:27 2002";
+      lastWritten = "Tue Apr  9 10:39:32 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -992,6 +992,28 @@ Shift<Key>Tab: prev-tab-group()
                                         NotePush = NotePush;
                                         Group: Widget
                                           labelString = "Assay Notes";
+                                      }
+                                }
+                                {
+                                  CVStagingNote = CVStagingNote : mgiCV;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = AssayNote;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = AssayNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        AgeNotSpecified = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          activateCallback = "D:AppendToAgeNote";
+                                      }
+                                      {
+                                        AgeNormalized = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          activateCallback = "D:AppendToAgeNote";
                                       }
                                 }
                                 {
@@ -2185,10 +2207,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Stage = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = StagingNotNormalized;
+                                    leftWidget = CVStagingNote;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = StagingNotNormalized;
+                                    topWidget = CVStagingNote;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2230,9 +2252,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  StagingNotNormalized = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Staging Not Normalized";
+                                  CVStagingNote = CVStagingNote : mgiCV;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Note;
@@ -2242,9 +2262,16 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                  Group: User
-                                    note = "Staging not normalized.";
-                                    noteWidget = Note;
+                                      {
+                                        AgeNotSpecified = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = Note;
+                                      }
+                                      {
+                                        AgeNormalized = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = Note;
+                                      }
                                 }
                           }
                     }
