@@ -267,6 +267,8 @@ extern char *global_version;
 #define MGI_REFTYPE_ALLELE_VIEW		645
 #define MGI_SYNONYM_ALLELE_VIEW		646
 #define MGI_SYNONYMTYPE_ALLELE_VIEW	647
+#define MGI_NOTE_GENOTYPE_VIEW		648
+#define MGI_NOTETYPE_GENOTYPE_VIEW	649
 
 
 /* Strains Tables */
@@ -357,6 +359,7 @@ extern char *global_version;
 #define ALL_STATUS_DELETED	"Deleted"
 #define ALL_STATUS_RESERVED	"Reserved"
 #define ALL_STATUS_APPROVED	"Approved"
+#define TRANSGENIC_REPORTER	"Transgenic (Reporter)"
 
 /* This CV term requires Notes */
 

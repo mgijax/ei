@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar  3 10:21:05 2005";
+      lastWritten = "Fri Mar  4 15:17:57 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1283,16 +1283,16 @@ Module: MGI
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 14;
-                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,State Key,Comp Key,Marker,Allele1,Allele 2,State,Compound";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 9-11 30)(all 12 20)(all 13 15)";
+                                          xrtTblNumColumns = 15;
+                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,State Key,Comp Key,Chr,Marker,Allele1,Allele 2,State,Compound";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 9 3)(all 10-12 30)(all 13 20)(all 14 15)";
                                           xrtTblEditableSeries = "(all 0-8 False)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-8 0)";
-                                          xrtTblTraversableSeries = "(all 0-8 False)";
+                                          xrtTblTraversableSeries = "(all 0-9 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"9\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"12\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int=\"7\"\ncompoundKey:Int=\"8\"\ncompound:Int=\"13\"\n";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"10\"\nmarkerChr:Int(Int)=\"9\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"13\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int(Int)=\"7\"\ncompoundKey:Int(Int)=\"8\"\ncompound:Int(Int)=\"14\"\n";
                                         Group: User
-                                          alleleSymbol = "10\n11";
+                                          alleleSymbol = "11\n12";
                                           alleleKey = "5\n6";
                                             {
                                               label = XtXrtLabel;
@@ -1328,7 +1328,7 @@ Module: MGI
                                               AllelePairStatePulldown = OptionPulldown;
                                               Group: User
                                                 tableForm = AllelePair;
-                                                tableOption = 12;
+                                                tableOption = 13;
                                                 tableOptionKey = 7;
                                             }
                                       }
@@ -1349,7 +1349,7 @@ Module: MGI
                                               Group: User
                                                 tableForm = AllelePair;
                                                 tableOptionKey = 8;
-                                                tableOption = 13;
+                                                tableOption = 14;
                                             }
                                       }
                                 }
@@ -1395,6 +1395,29 @@ Module: MGI
                                           rows = 5;
                                           scrollHorizontal = False;
                                           scrollVertical = False;
+                                      }
+                                }
+                                {
+                                  CombinationNote1 = Notes : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Note;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Note;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 50;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Allele Detail Display";
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          rows = 5;
+                                          columns = 60;
                                       }
                                 }
                                 {

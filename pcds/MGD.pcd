@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  2 10:27:40 2005";
+      lastWritten = "Fri Mar  4 16:08:52 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8470,21 +8470,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
-                                    leftOffset = 30;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Symbol;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                  Group: User
-                                    defaultChild = 4;
-                                }
-                                {
                                   messageText = messageText : mgiDataTypes;
                                   Group: Widget
                                     background = Yellow;
@@ -8567,6 +8552,9 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           userDefinedAttributes = "origRefsKey:Int\n";
+                                          xrtTblVisibleRows = 10;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 40)";
+                                          xrtTblNumRows = 11;
                                         Group: User
                                           mgiTypeKey = 11;
                                           origRefsKey = 0;
@@ -8579,6 +8567,9 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                        Group: Constraint
+                                          leftWidget = Table;
+                                          topWidget = Table;
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
@@ -8589,6 +8580,9 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         ReviewMenu = YesNoMenu : mgiOption;
+                                        Group: Constraint
+                                          rightWidget = Table;
+                                          topWidget = Table;
                                             Popups:
                                             {
                                               ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
@@ -8611,18 +8605,32 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AlleleTypeMenu = AlleleTypeMenu : mgiOption;
+                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = MolecularMutation;
-                                    rightAttachment = attach_form;
+                                    leftWidget = Reference;
+                                    leftOffset = 10;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = MolecularMutation;
+                                    topWidget = Reference;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 25;
-                                    topOffset = 20;
+                                    topOffset = 5;
+                                  Group: User
+                                    defaultChild = 4;
+                                }
+                                {
+                                  AlleleTypeMenu = AlleleTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleStatusMenu;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleStatusMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                     rightOffset = 5;
+                                    topOffset = 5;
                                 }
                                 {
                                   InheritanceModeMenu = InheritanceModeMenu : mgiOption;
@@ -8657,11 +8665,17 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblColumnLabels = "Mode,Current Key,Key,Molecular Mutation";
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 60)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 65)";
                                           userDefinedAttributes = "mutationCurrentKey:Int=\"1\"\nmutationKey:Int=\"2\"\nmutation:Int=\"3\"\n";
                                           xrtTblVisibleRows = 3;
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblTraversableSeries = "(all 0-2 False)";
+                                        Group: Constraint
+                                          leftAttachment = attach_form;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_form;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -8670,6 +8684,16 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = MolecularMutationMenu;
+                                          leftOffset = 10;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
@@ -8677,14 +8701,14 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         MolecularMutationMenu = MolecularMutationMenu : mgiOption;
                                         Group: Constraint
-                                          leftAttachment = attach_none;
-                                          rightAttachment = attach_opposite_widget;
-                                          rightWidget = Table;
+                                          leftAttachment = attach_opposite_widget;
+                                          rightAttachment = attach_none;
                                           topAttachment = attach_widget;
                                           topWidget = Table;
-                                          topOffset = 2;
                                           bottomAttachment = attach_none;
                                           resizable = true;
+                                          topOffset = 2;
+                                          leftWidget = Table;
                                             Popups:
                                             {
                                               MolecularMutationPulldown = OptionPulldown : mgiOption;
@@ -8742,6 +8766,29 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  MutantProvider = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = MutantESCellLine;
+                                    leftOffset = 10;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = MutantESCellLine;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Provider;
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 30;
+                                          inTabGroup = False;
+                                      }
+                                }
+                                {
                                   ESCellLine = mgiVerify : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -8790,14 +8837,14 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Strain = Strain : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_widget;
                                     leftWidget = ESCellLine;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     topWidget = ESCellLine;
-                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftOffset = 5;
                                       {
                                         StrainID = ID;
                                             {
@@ -8830,21 +8877,29 @@ Shift<Key>Tab: prev-tab-group()
                                     resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Strain;
+                                    leftWidget = ESCellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Strain;
+                                    topWidget = ESCellLine;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     bottomOffset = 5;
                                       {
-                                        Table = mgiTable : mgiTable;
+                                        Table = XtXrtTable : mgiTable;
                                         Group: Widget
                                           xrtTblPixelWidthSeries = "(all 0-4 0)(all 8-9 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 40)(all 8 12)(all 9 10)";
+                                          xrtTblVisibleRows = 5;
+                                        Group: User
+                                          requiredColumns = "3\n5";
+                                          useDefaultSynType = 1;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          labelString = "Add Row";
+                                          activateCallback = "D:AddRow";
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
                                           leftWidget = Table;
@@ -8863,19 +8918,25 @@ Shift<Key>Tab: prev-tab-group()
                                         SynonymTypeMenu = SynonymTypeMenu : mgiOption;
                                         Group: Widget
                                           managed = False;
+                                            Popups:
+                                            {
+                                              SynonymTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Allele_View where allowOnlyOne = 0 order by _SynonymType_key";
+                                            }
                                       }
                                 }
                                 {
                                   markerDescription = mgiNoteShort : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = InheritanceModeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightWidget = InheritanceModeMenu;
+                                    leftWidget = AlleleStatusMenu;
                                   Group: Control
                                     vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
                                       {
@@ -8901,14 +8962,14 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   mgiNoteForm = mgiNoteForm : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = markerDescription;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
-                                    rightWidget = markerDescription;
+                                    leftWidget = markerDescription;
                                 }
                           }
                     }

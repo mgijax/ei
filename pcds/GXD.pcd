@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  2 10:27:41 2005";
+      lastWritten = "Fri Mar  4 16:05:24 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2255,9 +2255,6 @@ Shift<Key>Tab: prev-tab-group()
                                   mgiMarker = mgiMarker : mgiDataTypes;
                                 }
                                 {
-                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
-                                }
-                                {
                                   messageText = messageText : mgiDataTypes;
                                 }
                                 {
@@ -2302,6 +2299,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                       }
+                                }
+                                {
+                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
                                 }
                                 {
                                   AlleleTypeMenu = AlleleTypeMenu : mgiOption;
