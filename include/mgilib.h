@@ -219,6 +219,8 @@ extern char *global_version;
 #define MLP_STRAIN_VIEW		706
 #define PRB_STRAIN_MARKER_VIEW	707
 #define MLP_STRAINTYPES_VIEW	708
+#define MLP_STRAIN_MERGE1	709
+#define MLP_STRAIN_MERGE2	710
 
 /* End of Table Definitions */
 

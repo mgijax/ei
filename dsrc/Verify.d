@@ -1554,9 +1554,17 @@ rules:
 	    -- If user verifies it is okay to add the item...
 
 	    if (root->VerifyItemAdd.doAdd) then
-	      cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
-		     mgi_DBinsert(tableID, KEYNAME) +
-	             "\"" + item.value + "\",0)\n";
+	      if (tableID = STRAIN) then
+	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
+		       mgi_DBinsert(tableID, KEYNAME) +
+	               "\"" + item.value + "\",0,0)\n" +
+		       mgi_DBinsert(MLP_STRAIN, KEYNAME) + "-1,NULL,NULL)\n";
+	      else
+	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
+		       mgi_DBinsert(tableID, KEYNAME) +
+	               "\"" + item.value + "\",0)\n";
+	      end if;
+
 	      AddSQL.tableID := tableID;
 	      AddSQL.cmd := cmd;
 	      AddSQL.list := nil;
@@ -2646,11 +2654,12 @@ rules:
               if (top->VerifyItemAdd.doAdd) then
 	      	ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
 			       mgi_DBinsert(STRAIN, KEYNAME) + 
-			       mgi_DBprstr(s) + ",0)\n";
+			       mgi_DBprstr(s) + ",0,0)\n" +
+			       mgi_DBinsert(MLP_STRAIN, KEYNAME) + "-1,NULL,NULL)\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
                 strainKeys := strainKeys + 
-			mgi_sql1("select _Strain_key from PRB_Strain where strain = " + mgi_DBprstr(s)) + ", ";
+			mgi_sql1("select " + mgi_DBkey(STRAIN) + " from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(s)) + ", ";
               end if;
             end if;
  

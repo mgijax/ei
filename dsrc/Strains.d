@@ -163,12 +163,12 @@ rules:
           currentRecordKey := "@" + KEYNAME;
  
           cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
-                 mgi_DBinsert(STRAIN, KEYNAME) +
+	         mgi_DBinsert(STRAIN, KEYNAME) +
                  mgi_DBprstr(top->Name->text.value) + "," +
-		 top->StandardMenu.menuHistory.defaultValue + "," +
-		 top->NeedsReviewMenu.menuHistory.defaultValue + ")\n";
-
-	  cmd := cmd + mgi_DBinsert(MLP_STRAIN, KEYNAME) + "," +
+                 top->StandardMenu.menuHistory.defaultValue + "," +
+                 top->NeedsReviewMenu.menuHistory.defaultValue + ")\n";
+ 
+          cmd := cmd + mgi_DBinsert(MLP_STRAIN, KEYNAME) +
 		 top->mgiSpecies->ObjectID->text.value + "," +
 		 mgi_DBprstr(top->User1->text.value) + "," +
 		 mgi_DBprstr(top->User2->text.value) + ")\n";
@@ -401,6 +401,12 @@ rules:
 --
 
 	PrepareSearch does
+	  from_mlp : boolean := false;
+	  from_notes : boolean := false;
+	  from_marker : boolean := false;
+	  from_types : boolean := false;
+	  value : string;
+
 	  from := "from " + mgi_DBtable(STRAIN) + " s";
 	  where := "";
 
@@ -430,6 +436,76 @@ rules:
             where := where + "\nand s.standard = " + top->StandardMenu.menuHistory.searchValue;
           end if;
  
+          if (top->NeedsReviewMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand s.needsReview = " + top->NeedsReviewMenu.menuHistory.searchValue;
+          end if;
+ 
+	  if (top->mgiSpecies->Species->text.value.length > 0) then
+	    where := where + "\nand m.species like " + mgi_DBprstr(top->mgiSpecies->Species->text.value);
+	    from_mlp := true;
+	  end if;
+
+	  if (top->User1->text.value.length > 0) then
+	    where := where + "\nand m.userDefined1 like " + mgi_DBprstr(top->User1->text.value);
+	    from_mlp := true;
+	  end if;
+
+	  if (top->User2->text.value.length > 0) then
+	    where := where + "\nand m.userDefined2 like " + mgi_DBprstr(top->User2->text.value);
+	    from_mlp := true;
+	  end if;
+
+	  if (top->Notes->text.value.length > 0) then
+	    where := where + "\nand n.note like " + mgi_DBprstr(top->Note->text.value);
+	    from_notes := true;
+	  end if;
+
+          value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.markerKey);
+
+          if (value.length > 0) then
+	    where := where + "\nand sm._Marker_key = " + value;
+	    from_marker := true;
+	  else
+            value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.markerSymbol);
+            if (value.length > 0) then
+	      where := where + "\nand sm.symbol like " + mgi_DBprstr(value);
+	      from_marker := true;
+	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(top->StrainType->Table, 0, top->StrainType->Table.strainTypeKey);
+
+          if (value.length > 0) then
+	    where := where + "\nand st._StrainType_key = " + value;
+	    from_types := true;
+	  else
+            value := mgi_tblGetCell(top->StrainType->Table, 0, top->StrainType->Table.strainType);
+            if (value.length > 0) then
+	      where := where + "\nand st.strainType like " + mgi_DBprstr(value);
+	      from_types := true;
+	    end if;
+	  end if;
+
+	  if (from_mlp) then
+	    from := from + "," + mgi_DBtable(MLP_STRAIN_VIEW) + " m";
+	    where := where + "\nand s._Strain_key = m._Strain_key";
+	  end if;
+
+	  if (from_notes) then
+	    from := from + "," + mgi_DBtable(MLP_NOTES) + " n";
+	    where := where + "\nand s._Strain_key = n._Strain_key";
+	  end if;
+
+	  if (from_marker) then
+	    from := from + "," + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) + " sm";
+	    where := where + "\nand s._Strain_key = sm._Strain_key";
+	  end if;
+
+	  if (from_types) then
+	    from := from + "," + mgi_DBtable(MLP_STRAINTYPES_VIEW) + " st";
+	    where := where + "\nand s._Strain_key = st._Strain_key";
+	  end if;
+
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
           end if;

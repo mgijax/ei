@@ -819,6 +819,10 @@ char *mgi_DBaccTable(int table)
     case MRK_NOMEN_ACC_REFERENCE:
 	    sprintf(buf, "%s..MRK_Nomen_AccRef_View", getenv("NOMEN"));
             break;
+    case STRAIN:
+    case MLP_STRAIN:
+	    sprintf(buf, "PRB_Strain_Acc_View");
+            break;
     default:
             sprintf(buf, "Invalid Table: %d", table);
             break;
@@ -1267,6 +1271,12 @@ char *mgi_DBtable(int table)
 	    break;
     case MLP_STRAINTYPES_VIEW:
 	    sprintf(buf, "%s..MLP_StrainTypes_View", getenv("STRAINS"));
+	    break;
+    case MLP_STRAIN_MERGE1:
+	    sprintf(buf, "%s..MLP_mergeStandardStrain", getenv("STRAINS"));
+	    break;
+    case MLP_STRAIN_MERGE2:
+	    sprintf(buf, "%s..MLP_mergeStrain", getenv("STRAINS"));
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
