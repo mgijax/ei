@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep  5 09:48:59 2000";
+      lastWritten = "Mon Sep 25 13:46:39 2000";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -291,18 +291,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Broadcast Date";
                                             }
                                       }
-                                }
-                                {
-                                  AccessionID = AccessionID : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = BroadcastDate;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = BroadcastDate;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
                                 }
                                 {
                                   StatusNotes = SingleNote : mgiDataTypes;

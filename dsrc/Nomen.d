@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 09/25/2000
+--	- TR 1966
+--
 -- lec 09/05/2000
 --	- TR 1916
 --
@@ -310,7 +313,6 @@ rules:
             send(SetOption, 0);
 
 	    top->BroadcastDate->text.value := "";
-	    top->AccessionID->text.value := "";
 	  end if;
 
 	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED) and
@@ -357,7 +359,7 @@ rules:
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
-	         mgi_DBprstr(top->HumanSymbol->text.value) + ",NULL," +
+	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
 	         mgi_DBprstr(top->StatusNotes->text.value) + ",NULL)\n";
 
 	  ModifyNotes.source_widget := top->EditorNote->Note;
@@ -506,13 +508,6 @@ rules:
 	  if (top->BroadcastDate->text.modified) then
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to modify the Broadcast Date field.\n";
-            send(StatusReport);
-	    error := true;
-	  end if;
-
-	  if (top->AccessionID->text.modified) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the MGI Accession ID field.\n";
             send(StatusReport);
 	    error := true;
 	  end if;
@@ -919,11 +914,6 @@ rules:
 	    printSelect := printSelect + "\nHuman Symbol = " + top->HumanSymbol->text.value;
 	  end if;
 	    
-          if (top->AccessionID->text.value.length > 0) then
-	    where := where + "\nand m.mgiAccID like " + mgi_DBprstr(top->AccessionID->text.value);
-	    printSelect := printSelect + "\nMGI Accession ID = " + top->AccessionID->text.value;
-	  end if;
-	    
           if (top->StatusNotes->text.value.length > 0) then
 	    where := where + "\nand m.statusNote like " + mgi_DBprstr(top->StatusNotes->text.value);
 	    printSelect := printSelect + "\nStatus Notes = " + top->StatusNotes->text.value;
@@ -1193,14 +1183,13 @@ rules:
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
 	        top->SubmittedBy->text.value    := mgi_getstr(dbproc, 6);
 	        top->BroadcastBy->text.value    := mgi_getstr(dbproc, 7);
-	        top->Symbol->text.value         := mgi_getstr(dbproc, 9);
-	        top->Name->text.value           := mgi_getstr(dbproc, 10);
-	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 12);
-	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 13);
-	        top->AccessionID->text.value    := mgi_getstr(dbproc, 8);
-	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 14);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 15);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 16);
+	        top->Symbol->text.value         := mgi_getstr(dbproc, 8);
+	        top->Name->text.value           := mgi_getstr(dbproc, 9);
+	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 11);
+	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
+	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
+	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
+	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
 
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -1215,7 +1204,7 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->ChromosomeMenu;
-                SetOption.value := mgi_getstr(dbproc, 11);
+                SetOption.value := mgi_getstr(dbproc, 10);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
