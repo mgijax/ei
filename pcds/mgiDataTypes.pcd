@@ -780,7 +780,7 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          mgiSpecies = mgiObject;
+          mgiOrganism = mgiObject;
           Group: Control
             vip_x = 60;
             vip_y = 1845;
@@ -790,11 +790,11 @@ Shift<Key>Tab: prev-tab-group()
                 ObjectID = ID;
               }
               {
-                Species : CharText = CharText;
+                Organism : CharText = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
-                        labelString = Species;
+                        labelString = Organism;
                     }
                     {
                       text = text;
@@ -802,7 +802,7 @@ Shift<Key>Tab: prev-tab-group()
                         columns = 50;
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifySpecies()";
+<Key>Tab: VerifyOrganism()";
                     }
               }
         }

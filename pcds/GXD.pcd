@@ -154,7 +154,7 @@ Module: GXD
                                         mgiCitation = mgiCitation : mgiDataTypes;
                                       }
                                       {
-                                        ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
+                                        ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
@@ -403,7 +403,7 @@ Module: GXD
                                     resizable = true;
                                 }
                                 {
-                                  AntibodySpeciesMenu = AntibodySpeciesMenu : mgiOption;
+                                  AntibodyOrganismMenu = AntibodyOrganismMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = AntibodyClassMenu;

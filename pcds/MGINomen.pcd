@@ -164,7 +164,7 @@ Module: MGINomen
                                         ChromosomePulldown = OptionPulldown;
                                         Group: User
                                           childTemplate = OptionToggle;
-                                          sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Species_key = 1\norder by sequenceNum\nselect \"W\", label = \"W\", sequenceNum = 101";
+                                          sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum\nselect \"W\", label = \"W\", sequenceNum = 101";
                                       }
                                 }
                                 {

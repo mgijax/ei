@@ -159,7 +159,7 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  mgiSpecies = mgiSpecies : mgiDataTypes;
+                                  mgiOrganism = mgiOrganism : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Description;
@@ -176,10 +176,10 @@ Module: MGIAdmin
                                     labelString = "Within the URL, use a place holder of '@@@@' to designate where the Accession number needs to be substituted.";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiSpecies;
+                                    leftWidget = mgiOrganism;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = mgiSpecies;
+                                    topWidget = mgiOrganism;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -271,18 +271,18 @@ Module: MGIAdmin
                                   QueryList = QueryList;
                                 }
                                 {
-                                  SpeciesList = SpeciesList : mgiLookup;
+                                  OrganismList = OrganismList : mgiLookup;
                                   Group: User
-                                    cmd = "select _Species_key, species from MGI_Species_Marker_View where _Species_key <=  2 order by species\nselect _Species_key, species from MGI_Species_Marker_View where _Species_key > 2 order by species";
+                                    cmd = "select _Organism_key, organism from MGI_Organism_Marker_View where _Organism_key <=  2 order by organism\nselect _Organism_key, organism from MGI_Organism_Marker_View where _Organism_key > 2 order by organism";
                                       {
                                         Label = LookupLabel;
                                       }
                                       {
                                         List = list;
                                         Group: User
-                                          targetText = Species;
+                                          targetText = Organism;
                                           targetKey = ObjectID;
-                                          targetWidget = mgiSpecies;
+                                          targetWidget = mgiOrganism;
                                       }
                                 }
                           }

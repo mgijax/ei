@@ -1154,9 +1154,9 @@ Module: mgiOption
                         dbTable = 312;
                     }
                     {
-                      AntibodySpecies = ControlledVocabToggle : mgiOption;
+                      AntibodyOrganism = ControlledVocabToggle : mgiOption;
                       Group: Widget
-                        labelString = "Antibody Species";
+                        labelString = "Antibody Organism";
                       Group: User
                         dbTable = 335;
                     }
@@ -1281,9 +1281,9 @@ Module: mgiOption
               }
         }
         {
-          AntibodySpeciesMenu = OptionMenu;
+          AntibodyOrganismMenu = OptionMenu;
           Group: Widget
-            subMenuId = AntibodySpeciesPulldown;
+            subMenuId = AntibodyOrganismPulldown;
             labelString = "Antibody\nRaised In";
           Group: Control
             vip_x = 80;
@@ -1292,9 +1292,9 @@ Module: mgiOption
             defaultValue = 4;
               Popups:
               {
-                AntibodySpeciesPulldown : OptionPulldown = OptionPulldown;
+                AntibodyOrganismPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from MGI_Species_Antibody_View order by commonName";
+                  sql = "select * from MGI_Organism_Antibody_View order by commonName";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -1605,7 +1605,7 @@ Module: mgiOption
               {
                 ChromosomePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Species_key = 1\norder by sequenceNum";
+                  sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Organism_key = 1\norder by sequenceNum";
                   childTemplate = ChromToggle;
                     {
                       SearchAll = SearchAll : mgiOption;
@@ -2192,18 +2192,18 @@ Module: mgiOption
               }
         }
         {
-          ProbeSpeciesMenu = OptionMenu;
+          ProbeOrganismMenu = OptionMenu;
           Group: Widget
-            subMenuId = ProbeSpeciesPulldown;
-            labelString = Species;
+            subMenuId = ProbeOrganismPulldown;
+            labelString = Organism;
           Group: Control
             vip_x = 80;
             vip_y = 1350;
               Popups:
               {
-                ProbeSpeciesPulldown : OptionPulldown = OptionPulldown;
+                ProbeOrganismPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from MGI_Species_Probe_View order by commonName";
+                  sql = "select * from MGI_Organism_Probe_View order by commonName";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

@@ -667,6 +667,8 @@ char *mgi_DBkey(int table)
     case MLP_STRAINTYPES:
     case MLP_NOTES:
     case MLP_EXTRA:
+            strcpy(buf, "_Strain_key");
+	    break;
     case MLP_STRAINTYPE:
             strcpy(buf, "_StrainType_key");
 	    break;

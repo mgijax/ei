@@ -608,7 +608,7 @@ Module: MGI
                     }
               }
               {
-                ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
+                ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_form;
                   leftOffset = 5;
@@ -622,10 +622,10 @@ Module: MGI
                 Strain = Strain : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = ProbeSpeciesMenu;
+                  leftWidget = ProbeOrganismMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = ProbeSpeciesMenu;
+                  topWidget = ProbeOrganismMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -858,7 +858,7 @@ Module: MGI
                                               AntibodyType = ControlledVocabToggle;
                                             }
                                             {
-                                              AntibodySpecies = ControlledVocabToggle : mgiOption;
+                                              AntibodyOrganism = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               AssayType = ControlledVocabToggle;

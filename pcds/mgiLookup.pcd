@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Jun  7 11:38:19 2002";
+      lastWritten = "Thu Aug 15 08:00:43 2002";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -191,18 +191,18 @@ Module: mgiLookup
               }
         }
         {
-          SpeciesList = LookupList;
+          OrganismList = LookupList;
           Group: Control
             vip_x = 90;
             vip_y = 250;
           Group: User
-            cmd = "select _Species_key, species from MGI_Species_Marker_View order by species\n";
+            cmd = "select _Organism_key, organism from MGI_Organism_Marker_View order by organism\n";
               {
                 Label = LookupLabel;
                 Group: Widget
-                  labelString = Species;
+                  labelString = Organisms;
                 Group: User
-                  defaultLabel = Species;
+                  defaultLabel = Organisms;
               }
               {
                 List = list;
@@ -521,7 +521,7 @@ Module: mgiLookup
               }
         }
         {
-          SpeciesMGITypeList = LookupList;
+          OrganismMGITypeList = LookupList;
           Group: Control
             vip_x = 90;
             vip_y = 1295;
@@ -530,9 +530,9 @@ Module: mgiLookup
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "Species MGI Types";
+                  labelString = "Organism MGI Types";
                 Group: User
-                  defaultLabel = "Species MGI Types";
+                  defaultLabel = "Organism MGI Types";
               }
               {
                 List = list : mgiDataTypes;
