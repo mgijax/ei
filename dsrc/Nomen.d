@@ -301,12 +301,18 @@ rules:
           top->MarkerStatusPulldown.background := "Wheat";
           top->MarkerStatusPulldown->SearchAll.background := "Wheat";
           top->MarkerStatusMenu.menuHistory.background := "Wheat";
-	  top->EditorNote->NotePush.background := "Wheat";
-	  top->CoordNote->NotePush.background := "Wheat";
+
 	  Clear.source_widget := top;
 	  Clear.clearLists := 3;
 	  Clear.clearKeys := ClearNomen.clearKeys;
 	  send(Clear, 0);
+
+	  notes.open;
+	  while (notes.more) do
+	    SetNotesDisplay.note := notes.next;
+	    send(SetNotesDisplay, 0);
+	  end while;
+	  notes.close;
 	end does;
 
 --
@@ -1312,17 +1318,12 @@ rules:
 	  end while;
 	  (void) dbclose(dbproc);
 
-	  if (top->EditorNote->Note->text.value.length > 0) then
-	    top->EditorNote->NotePush.background := "PaleGreen";
-	  else
-	    top->EditorNote->NotePush.background := "Wheat";
-	  end if;
-
-	  if (top->CoordNote->Note->text.value.length > 0) then
-	    top->CoordNote->NotePush.background := "PaleGreen";
-	  else
-	    top->CoordNote->NotePush.background := "Wheat";
-	  end if;
+	  notes.open;
+	  while (notes.more) do
+	    SetNotesDisplay.note := notes.next;
+	    send(SetNotesDisplay, 0);
+	  end while;
+	  notes.close;
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentNomenKey;

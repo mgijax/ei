@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- lec 03/15/2001
+--	- Added SetNotesDisplay
+--
 -- lec 08/20/1999
 --	- PrintFile; check for orientation value length before
 --	  including in option list
@@ -700,6 +703,25 @@ rules:
 
 	SetModify does
 	  SetModify.source_widget.modified := SetModify.flag;
+	end does;
+
+--
+-- SetNotesDisplay
+--
+-- 	Sets the background of the Notes button if data exists
+--	Assumes "note" is a mgiNote template
+--
+
+	SetNotesDisplay does
+	  note : widget := SetNotesDisplay.note;
+	  pushButton : widget;
+
+	  pushButton := (note.parent)->NotePush;
+          if (note->text.value.length > 0) then
+            pushButton.background := "PaleGreen";
+          else
+            pushButton.background := note->text.background;
+          end if;
 	end does;
 
 --
