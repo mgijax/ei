@@ -2149,7 +2149,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy, notes)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_FANTOM2:
-            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupIDs, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupID, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_FANTOM2NOTES:
             sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
