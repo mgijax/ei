@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 03/21/2001
+--	- TR 2237; changed sort for MRK_Reference/Other Names
+--
 -- 04/28/2000 - ?
 --	- TR 1404; remove MRK_Symbol and MRK_Name
 --
@@ -1724,7 +1727,7 @@ rules:
 	         "select _Other_key = null, name = null, _Refs_key, jnum, short_citation, isReviewArticle " +
 		 "from MRK_Reference_View " +
 		 "where _Marker_key = " + currentRecordKey + " and auto = 0 " +
-		 "order by name desc, short_citation\n";
+		 "order by name, short_citation\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
