@@ -28,9 +28,11 @@ rules:
 -- Will correctly process:
 --
 --	> 9/9/1995
---	>= 9/9/1995
 --	< 9/9/1995
---	<= 9/9/1995
+--
+-- Note that <= and >= don't work as you would expect.
+-- If you want to query for <= "04/10/2001", then you really
+-- need to enter use <  "04/11/2001"
 --
 
 	QueryDate does
