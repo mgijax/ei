@@ -57,6 +57,8 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
 
+	clearLists : integer := 3;
+
 	cmd : string;
 	from : string;
 	where : string;
@@ -122,6 +124,7 @@ rules:
 
 	  -- Clear form
 	  Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
 	  send(Clear, 0);
 	end does;
 
@@ -169,6 +172,7 @@ rules:
 	  if (top->QueryList->List.sqlSuccessful) then
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
+	    Clear.clearLists := clearLists;
             send(Clear, 0);
 	  end if;
 
@@ -192,6 +196,7 @@ rules:
 	  if (top->QueryList->List.row = 0) then
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
+	    Clear.clearLists := clearLists;
             send(Clear, 0);
 	  end if;
 
@@ -224,10 +229,6 @@ rules:
             set := set + "commonName = " + mgi_DBprstr(top->Common->text.value) + ",";
           end if;
 
-	  if (set.length > 0) then
-	    cmd := mgi_DBupdate(MGI_SPECIES, currentRecordKey, set);
-	  end if;
-
 	  send(ModifyAnchor, 0);
 	  send(ModifyChromosome, 0);
 	  send(ModifySpeciesMGIType, 0);
@@ -239,6 +240,10 @@ rules:
           ProcessAcc.tableID := MGI_SPECIES;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
+
+          if (cmd.length > 0 or set.length > 0) then
+            cmd := cmd + mgi_DBupdate(MGI_SPECIES, currentRecordKey, set);
+          end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -407,10 +412,10 @@ rules:
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_MGIType_key = " + newKey;
               cmd := cmd + mgi_DBupdate(MGI_SPECIESTYPE, currentRecordKey, set) +
-		"and _MGIType_key = " + key;
+		"and _MGIType_key = " + key + "\n";
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(MGI_SPECIESTYPE, currentRecordKey) +
-		"and _MGIType_key = " + key;
+		"and _MGIType_key = " + key + "\n";
             end if;
  
             row := row + 1;
@@ -576,6 +581,7 @@ rules:
 
 	  Clear.source_widget := top;
           Clear.reset := true;
+	  Clear.clearLists := clearLists;
           send(Clear, 0);
 
 	  (void) reset_cursor(top);
