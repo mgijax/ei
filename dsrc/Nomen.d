@@ -1207,7 +1207,7 @@ rules:
 	        top->Symbol->text.value         := mgi_getstr(dbproc, 9);
 	        top->Name->text.value           := mgi_getstr(dbproc, 10);
 	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 12);
-	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 17);
+	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 13);
 	        top->AccessionID->text.value    := mgi_getstr(dbproc, 8);
 	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 14);
 	        top->CreationDate->text.value   := mgi_getstr(dbproc, 15);
@@ -1266,10 +1266,10 @@ rules:
 
                 (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 8));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 9));
+                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 9));
+                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 6) then
 		table := top->Reference->Table;
