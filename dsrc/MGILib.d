@@ -83,7 +83,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-tr6520-3";
+	  global_version := "CVS ei-tr6520-4";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -381,10 +381,10 @@ rules:
 --
 
         StatusReportOK does
-	  if (StatusReportOK.source_widget = top->StatusDialog and
-	      top.name != "Login") then
-	    top.back;
-	  end if;
+--	  if (StatusReportOK.source_widget = top->StatusDialog and
+--	      top.name != "Login") then
+--	    top.back;
+--	  end if;
 
 	  StatusReportOK.source_widget.managed := false;
           StatusReportOK.source_widget.messageString := "";
