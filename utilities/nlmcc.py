@@ -883,10 +883,12 @@ def processRec(rec, rectags):
 		else:
 			rec[newField] = 'NULL'
 
-	# Replace double quotes w/ single quotes in Abstract
-	if rec.has_key('AB'):
-		newAbstract = regsub.gsub('"', '\'', rec['AB'])
-		rec['AB'] = newAbstract
+	# Replace double quotes w/ single quotes in Abstract, Title
+	# for SQL adds/updates
+	for i in ('TI', 'AB'):
+		if rec.has_key(i):
+			newValue = regsub.gsub('"', '\'', rec[i])
+			rec[i] = newValue
 
 	# Short title for Submission matches
 	rec['TISHORT'] = rec['TI'][:25]
