@@ -539,6 +539,19 @@ char *mgi_DBkey(int table)
     case HMD_NOTES:
             strcpy(buf, "_Homology_key");
 	    break;
+    case MGI_NOTE:
+    case MGI_NOTECHUNK:
+	    strcpy(buf, "_Note_key");
+	    break;
+    case MGI_NOTETYPE:
+	    strcpy(buf, "_NoteType_key");
+	    break;
+    case MGI_NOTETYPE_MRKGO_VIEW:
+	    strcpy(buf, "_Object_key");
+	    break;
+    case MGI_NOTE_MRKGO_VIEW:
+	    strcpy(buf, "_Object_key");
+	    break;
     case MLD_CONCORDANCE:
     case MLD_DISTANCE:
     case MLD_EXPT_MARKER:
@@ -1092,6 +1105,21 @@ char *mgi_DBtable(int table)
     case HMD_NOTES:
             strcpy(buf, "HMD_Notes");
 	    break;
+    case MGI_NOTE:
+            strcpy(buf, "MGI_Note");
+            break;
+    case MGI_NOTECHUNK:
+            strcpy(buf, "MGI_NoteChunk");
+            break;
+    case MGI_NOTETYPE:
+            strcpy(buf, "MGI_NoteType");
+            break;
+    case MGI_NOTE_MRKGO_VIEW:
+            strcpy(buf, "MGI_Note_MRKGO_View");
+            break;
+    case MGI_NOTETYPE_MRKGO_VIEW:
+            strcpy(buf, "MGI_NoteType_MRKGO_View");
+            break;
     case MRK_MOUSE:
             strcpy(buf, "MRK_Mouse_View");
 	    break;
@@ -1723,6 +1751,8 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_GELLANESTRUCTURE:
     case GXD_STRUCTURENAME:
     case GXD_INDEXSTAGES:
+    case MGI_NOTE:
+    case MGI_NOTECHUNK:
     case MLC_LOCK_EDIT:
     case MLC_MARKER_EDIT:
     case MLC_REFERENCE_EDIT:
@@ -1831,6 +1861,15 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (%s, sequenceNum, notes)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
+    case MGI_NOTE:
+            sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _NoteType_key)", mgi_DBtable(table), mgi_DBkey(table));
+            break;
+    case MGI_NOTECHUNK:
+            sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
+            break;
+    case MGI_NOTETYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
+            break;
     case MLC_LOCK_EDIT:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2318,6 +2357,9 @@ char *mgi_DBupdate(int table, char *key, char *str)
 	      break;
       case ALL_ALLELE:
       case GXD_GENOTYPE:
+      case MGI_NOTE:
+      case MGI_NOTECHUNK:
+      case MGI_NOTETYPE:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
@@ -2334,6 +2376,9 @@ char *mgi_DBupdate(int table, char *key, char *str)
     {
       case ALL_ALLELE:
       case GXD_GENOTYPE:
+      case MGI_NOTE:
+      case MGI_NOTECHUNK:
+      case MGI_NOTETYPE:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);
@@ -2612,6 +2657,9 @@ char *mgi_DBcvname(int table)
 	    break;
     case HMD_ASSAY:
             strcpy(buf, "assay");
+	    break;
+    case MGI_NOTETYPE:
+            strcpy(buf, "noteType");
 	    break;
     case STRAIN:
             strcpy(buf, "strain");

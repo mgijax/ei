@@ -240,10 +240,15 @@ extern char *global_version;
 #define MRK_NOMEN_ACC_REFERENCE		514
 #define MRK_NOMEN_OTHER_VIEW		516
 
-/* MGI Admin Tables */
+/* MGI Tables */
 
 #define MGI_TABLES			600
 #define MGI_COLUMNS			601
+#define MGI_NOTE                        602
+#define MGI_NOTECHUNK                   603
+#define MGI_NOTETYPE                    604
+#define MGI_NOTETYPE_MRKGO_VIEW		605
+#define MGI_NOTE_MRKGO_VIEW		606
 
 /* Strains Tables */
 
