@@ -37,7 +37,7 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
-	SetBackground :local [];
+	SetBackground :local [row : integer := -1;];
 	SortTable :local [];
 	VerifyFinalMGIID :local [];
 
@@ -247,111 +247,83 @@ rules:
 	    gbaName := mgi_tblGetCell(fantom, row, fantom.gbaName);
 
 	    if (seqID.length = 0) then
-	      seqID := "NULL";
+	      seqID := "-1";
 	    end if;
 
 	    if (locusID.length = 0) then
-	      locusID := "NULL";
+	      locusID := "-1";
 	    end if;
 
 	    if (clusterID.length = 0) then
-	      clusterID := "NULL";
+	      clusterID := "-1";
+	    end if;
+
+	    if (seqLength.length = 0) then
+	      seqLength := "-1";
 	    end if;
 
 	    if (cloneID.length = 0) then
-	      cloneID := "NULL";
-	    else
-	      cloneID := mgi_DBprstr(cloneID);
+	      cloneID := "zilch";
 	    end if;
 
 	    if (tigerID.length = 0) then
-	      tigerID := "NULL";
-	    else
-	      tigerID := mgi_DBprstr(tigerID);
+	      tigerID := "zilch";
 	    end if;
 
 	    if (unigeneID.length = 0) then
-	      unigeneID := "NULL";
-	    else
-	      unigeneID := mgi_DBprstr(unigeneID);
+	      unigeneID := "zilch";
 	    end if;
 
 	    if (mgiNumber.length = 0) then
-	      mgiNumber := "NULL";
-	    else
-	      mgiNumber := mgi_DBprstr(mgiNumber);
+	      mgiNumber := "zilch";
 	    end if;
 
 	    if (blastHit.length = 0) then
-	      blastHit := "NULL";
-	    else
-	      blastHit := mgi_DBprstr(blastHit);
+	      blastHit := "zilch";
 	    end if;
 
 	    if (blastExpect.length = 0) then
-	      blastExpect := "NULL";
-	    else
-	      blastExpect := mgi_DBprstr(blastExpect);
+	      blastExpect := "zilch";
 	    end if;
 
 	    if (autoAnnot.length = 0) then
-	      autoAnnot := "NULL";
-	    else
-	      autoAnnot := mgi_DBprstr(autoAnnot);
+	      autoAnnot := "zilch";
 	    end if;
 
 	    if (infoAnnot.length = 0) then
-	      infoAnnot := "NULL";
-	    else
-	      infoAnnot := mgi_DBprstr(infoAnnot);
+	      infoAnnot := "zilch";
 	    end if;
 
 	    if (finalMGIID.length = 0) then
-	      finalMGIID := "NULL";
-	    else
-	      finalMGIID := mgi_DBprstr(finalMGIID);
+	      finalMGIID := "zilch";
 	    end if;
 
 	    if (finalSymbol1.length = 0) then
-	      finalSymbol1 := "NULL";
-	    else
-	      finalSymbol1 := mgi_DBprstr(finalSymbol1);
+	      finalSymbol1 := "zilch";
 	    end if;
 
 	    if (finalName1.length = 0) then
-	      finalName1 := "NULL";
-	    else
-	      finalName1 := mgi_DBprstr(finalName1);
+	      finalName1 := "zilch";
 	    end if;
 
 	    if (finalSymbol2.length = 0) then
-	      finalSymbol2 := "NULL";
-	    else
-	      finalSymbol2 := mgi_DBprstr(finalSymbol2);
+	      finalSymbol2 := "zilch";
 	    end if;
 
 	    if (finalName2.length = 0) then
-	      finalName2 := "NULL";
-	    else
-	      finalName2 := mgi_DBprstr(finalName2);
+	      finalName2 := "zilch";
 	    end if;
 
 	    if (gbaMGIID.length = 0) then
-	      gbaMGIID := "NULL";
-	    else
-	      gbaMGIID := mgi_DBprstr(gbaMGIID);
+	      gbaMGIID := "zilch";
 	    end if;
 
 	    if (gbaSymbol.length = 0) then
-	      gbaSymbol := "NULL";
-	    else
-	      gbaSymbol := mgi_DBprstr(gbaSymbol);
+	      gbaSymbol := "zilch";
 	    end if;
 
 	    if (gbaName.length = 0) then
-	      gbaName := "NULL";
-	    else
-	      gbaName := mgi_DBprstr(gbaName);
+	      gbaName := "zilch";
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -359,35 +331,38 @@ rules:
 	      cmd := mgi_setDBkey(MGI_FANTOM2, NEWKEY, KEYNAME) +
                      mgi_DBinsert(MGI_FANTOM2, KEYNAME) + 
 		     seqID + "," +
-		     cloneID + "," +
+		     mgi_DBprstr(cloneID) + "," +
 		     locusID + "," +
 		     clusterID + "," +
 		     mgi_DBprstr(genbankID) + ",0," +
-		     tigerID + "," +
-		     unigeneID + "," +
+		     mgi_DBprstr(tigerID) + "," +
+		     mgi_DBprstr(unigeneID) + "," +
 		     seqLength + "," +
 		     mgi_DBprstr(seqNote) + "," +
 		     mgi_DBprstr(seqQuality) + "," +
 		     mgi_DBprstr(locusStatus) + "," +
 		     mgi_DBprstr(mgiStatus) + "," +
-		     mgiNumber + "," +
-		     blastHit + "," +
-		     blastExpect + "," +
-		     autoAnnot + "," +
-		     infoAnnot + "," +
+		     mgi_DBprstr(mgiNumber) + "," +
+		     mgi_DBprstr(blastHit) + "," +
+		     mgi_DBprstr(blastExpect) + "," +
+		     mgi_DBprstr(autoAnnot) + "," +
+		     mgi_DBprstr(infoAnnot) + "," +
 		     mgi_DBprstr(catID) + "," +
-		     finalMGIID + "," +
-		     finalSymbol2 + "," +
-		     finalName2 + "," +
+		     mgi_DBprstr(finalMGIID) + "," +
+		     mgi_DBprstr(finalSymbol2) + "," +
+		     mgi_DBprstr(finalName2) + "," +
 		     mgi_DBprstr(nomenEvent) + "," +
 		     mgi_DBprstr(global_login) + "," +
 		     mgi_DBprstr(global_login) + "," + ")\n";
 
               cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHEFINAL, KEYNAME) +
-			finalSymbol1 + "," + finalName1 + ")\n";
+			mgi_DBprstr(finalSymbol1) + "," + 
+			mgi_DBprstr(finalName1) + ")\n";
 
               cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHEGBA, KEYNAME) +
-			gbaMGIID + "," + gbaSymbol + "," + gbaName + ")\n";
+			mgi_DBprstr(gbaMGIID) + "," + 
+			mgi_DBprstr(gbaSymbol) + "," + 
+			mgi_DBprstr(gbaName) + ")\n";
 
 	      ModifyNotes.source_widget := fantom;
 	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
@@ -421,39 +396,39 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "riken_seqid = " + seqID + "," +
-		     "riken_cloneid = " + cloneID + "," +
+		     "riken_cloneid = " + mgi_DBprstr(cloneID) + "," +
 		     "riken_locusid = " + locusID + "," +
 		     "riken_cluster = " + clusterID + "," +
 		     "genbank_id = " + mgi_DBprstr(genbankID) + "," +
-		     "tiger_tc = " + tigerID + "," +
-		     "unigene_id = " + unigeneID + "," +
+		     "tiger_tc = " + mgi_DBprstr(tigerID) + "," +
+		     "unigene_id = " + mgi_DBprstr(unigeneID) + "," +
 		     "seq_length = " + seqLength + "," +
 		     "seq_note = " + mgi_DBprstr(seqNote) + "," +
 		     "seq_quality = " + mgi_DBprstr(seqQuality) + "," +
 		     "riken_locusStatus = " + mgi_DBprstr(locusStatus) + "," +
 		     "mgi_statusCode = " + mgi_DBprstr(mgiStatus) + "," +
-		     "mgi_numberCode = " + mgiNumber + "," +
-		     "blast_hit = " + blastHit + "," +
-		     "blast_expect = " + blastExpect + "," +
-		     "auto_annot = " + autoAnnot + "," +
-		     "info_annot = " + infoAnnot + "," +
+		     "mgi_numberCode = " + mgi_DBprstr(mgiNumber) + "," +
+		     "blast_hit = " + mgi_DBprstr(blastHit) + "," +
+		     "blast_expect = " + mgi_DBprstr(blastExpect) + "," +
+		     "auto_annot = " + mgi_DBprstr(autoAnnot) + "," +
+		     "info_annot = " + mgi_DBprstr(infoAnnot) + "," +
 		     "cat_id = " + mgi_DBprstr(catID) + "," +
-		     "final_mgiID = " + finalMGIID + "," +
-		     "final_symbol2 = " + finalSymbol2 + "," +
-		     "final_name2 = " + finalName2 + "," +
+		     "final_mgiID = " + mgi_DBprstr(finalMGIID) + "," +
+		     "final_symbol2 = " + mgi_DBprstr(finalSymbol2) + "," +
+		     "final_name2 = " + mgi_DBprstr(finalName2) + "," +
 		     "nomen_event = " + mgi_DBprstr(nomenEvent) + "," +
 		     "modifiedBy = " + mgi_DBprstr(global_login);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
 	      -- Update Final Cache Table
-	      set := "final_symbol1 = " + finalSymbol1 + "," +
-		     "final_name1 = " + finalName1;
+	      set := "final_symbol1 = " + mgi_DBprstr(finalSymbol1) + "," +
+		     "final_name1 = " + mgi_DBprstr(finalName1);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHEFINAL, key, set);
 
 	      -- Update GBA Cache Table
-	      set := "gba_mgiID = " + gbaMGIID + "," +
-		     "gba_symbol = " + gbaSymbol + "," +
-		     "gba_name = " + gbaName;
+	      set := "gba_mgiID = " + mgi_DBprstr(gbaMGIID) + "," +
+		     "gba_symbol = " + mgi_DBprstr(gbaSymbol) + "," +
+		     "gba_name = " + mgi_DBprstr(gbaName);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHEGBA, key, set);
 
 	      ModifyNotes.source_widget := fantom;
@@ -531,7 +506,7 @@ rules:
 	  where := "";
 
 	  -- Construct Order By
-	  orderBy := " order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
+	  orderBy := " order by f._Fantom2_key," + top->sortOptions->sortMenu1.menuHistory.dbField;
 		
 	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
 	    orderBy := orderBy + "," + top->sortOptions->sortMenu2.menuHistory.dbField;
@@ -712,7 +687,7 @@ rules:
 --
 -- Activated from:	top->Control->SearchCount
 --
--- Prepare and execute search
+-- Prepare and execute search to retrieve Record Count only
 --
 
 	SearchCount does
@@ -864,7 +839,7 @@ rules:
 --
 -- Activated from:	top->Control->SearchBig
 --
--- Prepare and execute search by creating a file or results and loading
+-- Prepare and execute search by creating a file of results and loading
 --
 
 	SearchBig does
@@ -954,15 +929,16 @@ rules:
 --
 -- If fatnom.fantom1Clone = 1, then set to Thistle
 -- If fatnom.fantom2Clone = 1, then set to PaleGreen
--- If nonRIKEN clone (cloneID NULL and seqID NULL), then set to SkyBlue
+-- If nonRIKEN clone (cloneID NULL and seqID -1), then set to SkyBlue
 -- If Seq Quality != zilch, then set to Red
 --
 
 	SetBackground does
-	  newBackground : string;
 	  i : integer := 0;
+	  newBackground : string;
 
 	  newBackground := fantom.saveBackgroundSeries;
+	  i := 0;
 
 	  while (i < mgi_tblNumRows(fantom)) do
 
@@ -979,7 +955,7 @@ rules:
 	      newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT4 + ")";
 	    end if;
 
-	    if (mgi_tblGetCell(fantom, i, fantom.seqID) = "zilch" and
+	    if (mgi_tblGetCell(fantom, i, fantom.seqID) = "-1" and
 	        mgi_tblGetCell(fantom, i, fantom.cloneID) = "zilch") then
 	      newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT3 + ")";
 	    end if;
