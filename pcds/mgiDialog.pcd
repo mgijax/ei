@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Jan 16 12:56:56 2001";
+      lastWritten = "Wed Apr  4 13:47:14 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -2421,6 +2421,13 @@ Shift<Key>Tab: prev-tab-group()
                             label = XmLabel;
                             Group: Widget
                               labelString = "Marker\n(TAB after entering symbol)";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyAnyMarker()";
                           }
                     }
               }

@@ -18,6 +18,7 @@
 --
 -- lec 04/04/2001
 --	- VerifyItem; added ALL_CELLLINE
+--	- added VerifyAnyMarker
 --
 -- lec 03/20/2001
 --	- TR 1939; VerifyAllele; status must be approved to be valid
@@ -1649,6 +1650,19 @@ rules:
 	  top->DistalSymbol->text.value := symbol + "-d";
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyAnyMarker
+--
+-- Call VerifyMarker() (a translation) with allowWithdrawn = true
+-- to allow ANY valid marker (withdrawn or approved) to be used
+--
+
+	VerifyAnyMarker does
+	  VerifyMarker.source_widget := VerifyAnyMarker.source_widget;
+	  VerifyMarker.allowWithdrawn := true;
+	  send(VerifyMarker, 0);
 	end does;
 
 --
