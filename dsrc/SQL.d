@@ -3,6 +3,17 @@
 -- Creator : lec
 -- SQL.d 02/12/99
 --
+-- This modules contains events which actually execute 99% of the SQL
+-- commands in the EI.
+--
+-- AddSQL, ModifySQL, DeleteSQL all call ExecSQL which actually executes
+-- the SQL commands.  ExecSQL then processes any error messages returned
+-- from the Sybase error handler defined in syblib.c.
+--
+-- ModifyNotes - is a generic routine for constructing SQL to modify
+-- note objects.
+--
+-- The Query events handle all dynamic searching w/in the EI.
 --
 -- History
 --
@@ -237,6 +248,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "No Values Were Modified";
             send(StatusReport);
+            (void) XmListSelectPos(ModifySQL.list->List, ModifySQL.list->List.row, true);
 	    return;
 	  end if;
 
