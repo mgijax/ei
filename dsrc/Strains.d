@@ -623,6 +623,14 @@ rules:
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
           end if;
 
+	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
+            where := where + "\nand exists (select 1 from VOC_Annot a " +
+		"where s._Strain_key = a._Object_key and a._AnnotType_key = " + annotTypeKey + ") ";
+	  elsif (top->SuperStandardMenu.menuHistory.searchValue = NO) then
+            where := where + "\nand not exists (select 1 from VOC_Annot a " +
+		"where s._Strain_key = a._Object_key and a._AnnotType_key = " + annotTypeKey + ") ";
+          end if;
+
 	  if (top->mlpSpecies->Species->text.value.length > 0) then
 	    where := where + "\nand s.species like " + mgi_DBprstr(top->mlpSpecies->Species->text.value);
 	  end if;
@@ -710,6 +718,7 @@ rules:
 	      from := from + "," + mgi_DBtable(PRB_STRAIN_SYNONYM) + " ss";
 	      where := where + "\nand s._Strain_key = ss._Strain_key";
 	    end if;
+
 	    if (from_marker) then
 	      from := from + "," + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) + " sm";
 	      where := where + "\nand s._Strain_key = sm._Strain_key";
