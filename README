@@ -30,4 +30,4 @@ installall [compiled]
 
 To run:
 
-$INSTALLDIRECTORY/mgd/runmgd
+$INSTALLDIRECTORY/runapp mgi
