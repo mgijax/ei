@@ -572,7 +572,7 @@ rules:
 		end if;
 
 		if (accID.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand ac.accID = \"" + accID + "\"";
+	          table.sqlWhere := table.sqlWhere + "\nand ac.accID like \"" + accID + "\"";
 		end if;
 
 		if (refsKey.length > 0) then
