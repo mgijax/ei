@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Sep 25 13:46:46 2000";
+      lastWritten = "Wed Sep 27 09:27:09 2000";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1286,7 +1286,7 @@ Module: MGD
                                                     IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Sequence = AccToggle : mgiOption;
+                                                    NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     SequencePID = AccToggle : mgiOption;
@@ -2375,7 +2375,7 @@ Module: MGD
                                                       managed = True;
                                                   }
                                                   {
-                                                    Sequence = AccToggle;
+                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -2802,7 +2802,7 @@ Module: MGD
                     {
                       AccSourceMenu = AccSourceMenu;
                       Group: User
-                        defaultOption = Sequence;
+                        defaultOption = NSequence;
                           Popups:
                           {
                             AccSourcePulldown = OptionPulldown;
@@ -2832,7 +2832,7 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
-                                  Sequence = AccToggle;
+                                  NSequence = AccToggle;
                                   Group: Widget
                                     set = True;
                                     managed = True;
@@ -5247,7 +5247,7 @@ Module: MGD
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = AccToggle;
+                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     SequencePID = AccToggle;
@@ -6576,7 +6576,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = AccToggle;
+                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                     Group: User
@@ -6659,7 +6659,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = AccToggle;
+                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                     Group: User
@@ -8168,7 +8168,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AccSourceMenu = AccSourceMenu;
                                         Group: User
-                                          defaultOption = Sequence;
+                                          defaultOption = NSequence;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -8198,7 +8198,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = AccToggle;
+                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -8328,7 +8328,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = AccToggle;
+                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     SequencePID = AccToggle;
