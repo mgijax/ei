@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jan  9 08:04:06 2004";
+      lastWritten = "Wed Jan 14 10:44:24 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2513,8 +2513,8 @@ Module: mgiOption
             subMenuId = CurationStatePulldown;
             labelString = "Curation State";
           Group: Control
-            vip_x = 84;
-            vip_y = 4889;
+            vip_x = 80;
+            vip_y = 4870;
               Popups:
               {
                 CurationStatePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2523,6 +2523,18 @@ Module: mgiOption
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
+              }
+        }
+        {
+          NoteMenu = OptionMenu;
+          Group: Widget
+            subMenuId = NotePulldown;
+          Group: Control
+            vip_x = 80;
+            vip_y = 4925;
+              Popups:
+              {
+                NotePulldown : OptionPulldown = OptionPulldown : mgiOption;
               }
         }
 }

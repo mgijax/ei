@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May  9 12:03:19 2003";
+      lastWritten = "Wed Jan 14 11:03:08 2004";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -362,7 +362,7 @@ Shift<Key>Tab: prev-tab-group()
           NotePush = XmPushButton;
           Group: Widget
             activateCallback = "D:NoteInit";
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\nmgiDialogName:String=\"NoteDialog\"\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\nmgiDialogName:String(String)=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
             background = Wheat;
