@@ -560,10 +560,10 @@ rules:
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
 	      -- Update GBA Cache Table
-	      set := "gba_mgiID = " + mgi_DBprstr(gbaMGIID) + "," +
-		     "gba_symbol = " + mgi_DBprstr(gbaSymbol) + "," +
-		     "gba_name = " + mgi_DBprstr(gbaName);
-              cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHE, key, set);
+--	      set := "gba_mgiID = " + mgi_DBprstr(gbaMGIID) + "," +
+--		     "gba_symbol = " + mgi_DBprstr(gbaSymbol) + "," +
+--		     "gba_name = " + mgi_DBprstr(gbaName);
+--              cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHE, key, set);
 
 	      ModifyNotes.source_widget := fantom;
 	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
