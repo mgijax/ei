@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 16 08:58:48 2004";
+      lastWritten = "Mon Aug 16 10:26:29 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9448,7 +9448,7 @@ Shift<Key>Tab: prev-tab-group()
                                         text = text : mgiDataTypes;
                                         Group: Widget
                                           columns = 50;
-                                          maxLength = 50;
+                                          maxLength = 60;
                                         Group: User
                                           required = True;
                                       }
