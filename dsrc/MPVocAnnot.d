@@ -639,6 +639,7 @@ rules:
 	  if (annotEvidenceKey.length = 0) then
 	    ClearTable.table := noteTable;
 	    send(ClearTable, 0);
+	    noteTable->label.labelString := "Notes";
 	    return;
           end if;
 
@@ -1229,11 +1230,17 @@ rules:
           while (i < annotclipboard->List.items.count) do
 	    key := annotclipboard->List.keys[i];
 
-	    cmd := "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.*" +
-		   " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," + mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
+	    cmd := "select a._Term_key, t.term, t.sequenceNum, ac.accID, a.isNot, " +
+		   "e._EvidenceTerm_key, et.abbreviation, et.sequenceNum " +
+		   " from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et " +
 		   " where a._AnnotType_key = " + annotTypeKey +
+		   " and a._Term_key = ac._Object_key " + 
+		   " and ac._MGIType_key = 13 " + 
+		   " and ac.preferred = 1 " +
+		   " and a._Term_key = t._Term_key " +
 		   " and a._Annot_key = e._Annot_key " +
-		   " and e._AnnotEvidence_key = " + key;
+		   " and e._AnnotEvidence_key = " + key + 
+		   " and e._EvidenceTerm_key = et._Term_key";
 
             (void) dbcmd(dbproc, cmd);
             (void) dbsqlexec(dbproc);
@@ -1246,11 +1253,16 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceSeqNum, mgi_getstr(dbproc, 17));
+		if (mgi_getstr(dbproc, 5) = "1") then
+	          (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, "Yes");
+		else
+	          (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, "No");
+		end if;
+
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceSeqNum, mgi_getstr(dbproc, 8));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_ADD);
 		row := row + 1;
