@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  4 13:47:14 2001";
+      lastWritten = "Fri Apr  6 14:49:04 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1723,6 +1723,21 @@ Module: mgiDialog
                   topOffset = 5;
               }
               {
+                addAsSynonym = toggle : mgiDataTypes;
+                Group: Widget
+                  labelString = "Add Marker being withdrawn as synonym.";
+                  set = True;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = hasAlleles;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = hasAlleles;
+                  topOffset = 5;
+              }
+              {
                 MarkerEventMenu = MarkerEventMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
@@ -1731,8 +1746,8 @@ Module: mgiDialog
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = hasAlleles;
-                  topWidget = hasAlleles;
+                  leftWidget = addAsSynonym;
+                  topWidget = addAsSynonym;
                     Popups:
                     {
                       MarkerEventPulldown = OptionPulldown;
