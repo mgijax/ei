@@ -67,5 +67,6 @@ for r in results:
 		fp.write(string.ljust(m['name'], 30))
 		fp.write(CRT)
 
+reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 

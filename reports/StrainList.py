@@ -45,5 +45,6 @@ for s in strains:
 	fp.write(s['strain'])
 	fp.write(CRT)
 
+reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 

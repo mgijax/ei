@@ -173,5 +173,6 @@ for r in results:
 		fp.write(CRT)
 		fp.write(PAGE)
 
+reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 

@@ -149,5 +149,6 @@ elif reportType == "dupall":
 
 fp = reportlib.init(name, title, os.environ['EIREPORTDIR'])
 process_ref(fp, cmd, format)
+reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 

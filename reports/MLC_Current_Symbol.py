@@ -238,4 +238,5 @@ fp.write(2*CRT)
 fp.write('Modification date:  ' + mgi_utils.prvalue(modification_date) + \
 	' by user ' + mgi_utils.prvalue(userID))
 
+reportlib.trailer(fp)
 reportlib.finish_nonps(fp)

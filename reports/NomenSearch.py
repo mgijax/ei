@@ -63,5 +63,6 @@ for r in results:
 
 if fp is not None:
 	fp.write(2*CRT + '(' + `records` + ' rows affected)' + CRT)
+	reportlib.trailer(fp)
 	reportlib.finish_nonps(fp)
 

@@ -285,5 +285,6 @@ header = header + alias_string + crt(1)
 
 if fp is not None:
 	fp.write(header + probe_info)
+	reportlib.trailer(fp)
 	reportlib.finish_nonps(fp)
 

@@ -186,5 +186,6 @@ for s in strains:
 		prevStrain = s['strain']
 		prevProbe = r['_Probe_key']
 
+reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 
