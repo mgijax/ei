@@ -3,3 +3,10 @@ SE: gld
 TAG: initial
 CHANGES: None. We are importing the EI into CVS as part of the 08/02/1999 patch 
          release.
+
+DATE: 08/01/1999
+SE: gld
+TAG: ei1-0 
+CHANGES: Removed MEITEST directory and replaced with "testing", as this is the
+standard directory name we use for testing-related documentation. Made
+many changes to system_docs to make them compatible with the patch release. 
