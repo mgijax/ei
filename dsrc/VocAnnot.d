@@ -635,7 +635,8 @@ rules:
 	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
 	  elsif (annotTable.annotVocab = "PhenoSlim") then
 	    orderBy := "a.sequenceNum, e.modification_date\n";
---	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	    orderBy := "e.jnum, a.term\n";
 	  else
 	    orderBy := "a.term, e.modification_date\n";
 	  end if;

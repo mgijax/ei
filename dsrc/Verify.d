@@ -3175,7 +3175,7 @@ rules:
 	    if (isTable) then
 	      if (sourceWidget.annotVocab = "PhenoSlim" or 
 		  sourceWidget.annotVocab = "Mammalian Phenotype") then
-		evidence := "TAS";
+		evidence := "EE";
 	        pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring(evidence));
 		evidenceKey := top->EvidenceCodeList->List.keys[pos];
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, evidenceKey);
