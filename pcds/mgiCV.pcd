@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon May  5 15:16:50 2003";
+      lastWritten = "Tue Jun  3 15:19:28 2003";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -143,8 +143,8 @@ Module: mgiCV
                               visibleItemCount = 3;
                             Group: User
                               targetWidget = GelLane;
-                              targetKey = 4;
-                              targetText = 14;
+                              targetKey = 5;
+                              targetText = 15;
                           }
                     }
                     {
@@ -167,8 +167,8 @@ Module: mgiCV
                                   GelControlPulldown = OptionPulldown : mgiOption;
                                   Group: User
                                     tableForm = GelLane;
-                                    tableOption = 12;
-                                    tableOptionKey = 2;
+                                    tableOption = 13;
+                                    tableOptionKey = 3;
                                 }
                           }
                           {
@@ -178,8 +178,8 @@ Module: mgiCV
                                   GelRNATypePulldown = OptionPulldown : mgiOption;
                                   Group: User
                                     tableForm = GelLane;
-                                    tableOptionKey = 5;
-                                    tableOption = 16;
+                                    tableOptionKey = 6;
+                                    tableOption = 17;
                                 }
                           }
                           {
@@ -189,8 +189,8 @@ Module: mgiCV
                                   AgePulldown = OptionPulldown : mgiOption;
                                   Group: User
                                     tableForm = GelLane;
-                                    tableOption = 17;
-                                    tableOptionKey = 6;
+                                    tableOption = 18;
+                                    tableOptionKey = 7;
                                       {
                                         SearchAll = SearchAll : mgiOption;
                                         Group: Widget
@@ -205,8 +205,8 @@ Module: mgiCV
                                   SexPulldown = OptionPulldown : mgiOption;
                                   Group: User
                                     tableForm = GelLane;
-                                    tableOptionKey = 9;
-                                    tableOption = 20;
+                                    tableOptionKey = 10;
+                                    tableOption = 21;
                                       {
                                         SearchAll = SearchAll : mgiOption;
                                         Group: Widget
@@ -249,7 +249,7 @@ Module: mgiCV
                                     labelString = "Age Notes";
                                   Group: User
                                     targetWidget = GelLane;
-                                    targetColumn = 19;
+                                    targetColumn = 20;
                                 }
                                 {
                                   LaneNote = NotePushShort : mgiDataTypes;
@@ -257,7 +257,7 @@ Module: mgiCV
                                     labelString = "Lane Notes";
                                   Group: User
                                     targetWidget = GelLane;
-                                    targetColumn = 21;
+                                    targetColumn = 22;
                                 }
                                 {
                                   RowNote = NotePushShort : mgiDataTypes;

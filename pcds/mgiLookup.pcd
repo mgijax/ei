@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Apr 25 09:02:21 2003";
+      lastWritten = "Tue Jun  3 15:14:35 2003";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -459,8 +459,8 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: User
                   targetWidget = GelLane;
-                  targetAccID = 13;
-                  targetKey = 3;
+                  targetAccID = 14;
+                  targetKey = 4;
               }
         }
         {

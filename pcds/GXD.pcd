@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May 14 10:44:25 2003";
+      lastWritten = "Thu Jun  5 07:31:05 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -873,6 +873,7 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                 Group: Widget
                   height = 775;
+                  width = 1000;
                     {
                       MainMenu = MainMenu;
                           {
@@ -1200,11 +1201,21 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Delete = ControlPush;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Add;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Add;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
-                                  Duplicate = ControlPush : mgiControl;
+                                  DuplicatePartial = ControlPush : mgiControl;
                                   Group: Widget
-                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:Duplicate,\nD:GoHome";
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicatePartial,\nD:GoHome";
+                                    labelString = "Duplicate Partial";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Search;
@@ -1216,10 +1227,45 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                 }
                                 {
+                                  DuplicateAll = ControlPush : mgiControl;
+                                  Group: Widget
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAll,\nD:GoHome";
+                                    labelString = "Duplicate All";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = DuplicatePartial;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = DuplicatePartial;
+                                    leftOffset = 2;
+                                }
+                                {
                                   Previous = ControlArrow;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = RecordCount;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = RecordCount;
+                                    leftOffset = 5;
+                                    topOffset = 5;
                                 }
                                 {
                                   Next = ControlArrow;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Previous;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = Previous;
+                                    topOffset = 0;
+                                    leftOffset = 5;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -1228,10 +1274,10 @@ Shift<Key>Tab: prev-tab-group()
                                   RecordCount = RecordCount;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Duplicate;
+                                    leftWidget = DuplicatePartial;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Duplicate;
+                                    topWidget = DuplicatePartial;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2093,13 +2139,13 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       List = list;
                       Group: Widget
-                        visibleItemCount = 10;
+                        visibleItemCount = 18;
                         scrollBarDisplayPolicy = static;
                         listSizePolicy = variable;
                     }
               }
               {
-                GelLane = TableLabel : mgiTable;
+                GelLane = OrderedTableLabel : mgiTable;
                 Group: Widget
                   rubberPositioning = False;
                   resizePolicy = resize_any;
@@ -2114,18 +2160,21 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       Table = mgiTable;
                       Group: Widget
-                        xrtTblNumColumns = 22;
-                        xrtTblColumnLabels = "Mode,Gel Lane Key,Control Key,Genotype key,Structure Key,RNA Key,Age Key,Age Min,Age Max,Sex Key,Lane,Label,Control,Genotype,Structures,Sample Amt,RNA,Age,Age Range,Age Note,Sex,Notes";
-                        xrtTblPixelWidthSeries = "(all 0-9 0)";
-                        xrtTblTraversableSeries = "(all 0-10 False)";
-                        xrtTblEditableSeries = "(all all False) (all 11 True) (all 13 True) (all 15 True) (all 18 True)";
-                        userDefinedAttributes = "laneKey:Int(Int)=\"1\"\ncontrolKey:Int(Int)=\"2\"\ngenotypeKey:Int(Int)=\"3\"\nrnaKey:Int(Int)=\"5\"\nageKey:Int(Int)=\"6\"\nageMin:Int(Int)=\"7\"\nageMax:Int(Int)=\"8\"\nsexKey:Int(Int)=\"9\"\nseqNum:Int(Int)=\"10\"\nlabel:Int(Int)=\"11\"\ncontrol:Int(Int)=\"12\"\ngenotype:Int(Int)=\"13\"\nstructures:Int(Int)=\"14\"\nsampleAmt:Int(Int)=\"15\"\nrna:Int(Int)=\"16\"\nagePrefix:Int(Int)=\"17\"\nageRange:Int(Int)=\"18\"\nageNote:Int(Int)=\"19\"\nsex:Int(Int)=\"20\"\nlaneNote:Int(Int)=\"21\"\nstructureKeys:Int(Int)=\"4\"\nverifyFloat:StringTable=\"15\"\n";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 10 4)(all 11 5)(all 12 7)(all 13 15)(all 14 10)(all 16 8)(all 18 9)(all 19 8)(all 20 6)(all 21 5)";
+                        xrtTblColumnLabels = "Mode,Current Order,Gel Lane Key,Control Key,Genotype key,Structure Key,RNA Key,Age Key,Age Min,Age Max,Sex Key,Lane,Label,Control,Genotype,Structures,Sample Amt,RNA,Age,Age Range,Age Note,Sex,Notes";
                         xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
+                        xrtTblNumColumns = 23;
+                        xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)";
+                        xrtTblNumRows = 11;
+                        xrtTblPixelWidthSeries = "(all 0-10 0)";
                         xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVGel\"),\nD:CommitTableCellEdit";
-                        xrtTblMaxLengthSeries = "(all 11 255)(all 19 255)(all 21 255)";
+                        xrtTblVisibleRows = 10;
+                        userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\n";
+                        xrtTblTraversableSeries = "(all 0-11 False)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 10)(all 17 8)(all 19 9)(all 20 8)(all 21 6)(all 22 5)";
                       Group: User
-                        addSeqNum = True;
+                        seqNum = 11;
+                        saveEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)";
+                        saveTraversableSeries = "(all 0-11 False)";
                           {
                             label = XtXrtLabel;
                             Group: Widget
@@ -2139,16 +2188,30 @@ Shift<Key>Tab: prev-tab-group()
                       DeleteRow = TablePush;
                     }
                     {
+                      InsertRow = TablePush : mgiTable;
+                    }
+                    {
+                      EditOrder = toggle : mgiDataTypes;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = CopyColumn;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = CopyColumn;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
                       CopyColumn = TablePush : mgiTable;
                       Group: Widget
                         activateCallback = "D:CopyGelLaneColumn,\nD:GoHome";
                         labelString = "Copy Column";
                       Group: Constraint
                         leftAttachment = attach_widget;
-                        leftWidget = DeleteRow;
+                        leftWidget = InsertRow;
                         rightAttachment = attach_none;
                         topAttachment = attach_opposite_widget;
-                        topWidget = DeleteRow;
+                        topWidget = InsertRow;
                         bottomAttachment = attach_none;
                         resizable = true;
                     }
