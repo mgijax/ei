@@ -13,7 +13,7 @@
 
 source Configuration
 
-setenv APP	$1
+setenv EIAPP	$1
 setenv MODE	$2
 
 switch ("$MODE")
@@ -29,6 +29,5 @@ endsw
 # uxb.conf is assumed...
 #
 
-cd $APP
-source Configuration
+cd $EIAPP
 uxb $OPTIONS

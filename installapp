@@ -14,7 +14,7 @@
 
 source Configuration
 
-setenv APP	$1
+setenv EIAPP	$1
 setenv MODE	$2
 
 switch ("$MODE")
@@ -32,11 +32,10 @@ endsw
 
 # create the application directory if it isn't already there
 mkdir $EIINSTALLDIR >& /dev/null
-mkdir $EIINSTALLDIR/$APP >& /dev/null
+mkdir $EIINSTALLDIR/$EIAPP >& /dev/null
 
-cd $APP
-source Configuration	# application-specific configuration file
-uxb $OPTIONS -destdir $EIINSTALLDIR/$APP install
+cd $EIAPP
+uxb $OPTIONS -destdir $EIINSTALLDIR/$EIAPP install
 cd ..
 
 #
