@@ -190,6 +190,7 @@ devents:
 	AppendToAgeNote :local [];
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
+		    clearForms : integer := 511;
 		    clearLists : integer := 3;
 		    reset : boolean := false;
 		    select: boolean := false;];
@@ -259,7 +260,7 @@ locals:
 	prepForms : list;               -- List of Prep Forms
 	tables : list;			-- List of Tables
 
-	clearAssay : integer := 255;	-- Value for Clear.clearForms
+	clearAssayGel : integer := 255; -- Value for Clear.clearForms excluding GelForm
 
 	currentAssay : string;      	-- Primary Key value of currently selected record
 				    	-- Set in Add[] and Select[]
@@ -373,7 +374,7 @@ rules:
 	AssayClear does
 
 	  Clear.source_widget := top;
-	  Clear.clearForms := clearAssay;
+	  Clear.clearForms := AssayClear.clearForms;
 	  Clear.clearLists := AssayClear.clearLists;
 	  Clear.clearKeys := AssayClear.clearKeys;
 	  Clear.reset := AssayClear.reset;
@@ -2372,6 +2373,12 @@ rules:
 	  end if;
 
           top->QueryList->List.row := Select.item_position;
+
+	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
+
+	  if (assayDetailForm.name = "GelForm") then
+	    AssayClear.clearForms := clearAssayGel;
+	  end if;
 
           AssayClear.reset := true;
 	  AssayClear.select := true;
