@@ -1155,12 +1155,12 @@ rules:
           if (value.length > 0 and value != "NULL") then
 	    where := where + " and g._Refs_key = " + value;
 	    from_marker := true;
-	  else
-            value := mgi_tblGetCell(table, 0, table.citation);
-            if (value.length > 0) then
-	      where := where + "\nand g.short_citation like " + mgi_DBprstr(value);
-	      from_marker := true;
-	    end if;
+--	  else
+--            value := mgi_tblGetCell(table, 0, table.citation);
+--            if (value.length > 0) then
+--	      where := where + "\nand g.short_citation like " + mgi_DBprstr(value);
+--	      from_marker := true;
+--	    end if;
 	  end if;
 
           if (top->MolMarkerForm->MolNote->text.value.length > 0) then
@@ -1270,38 +1270,38 @@ rules:
 	  end if;
 
           if (from_marker) then
-	    from := from + "," + mgi_DBtable(PRB_MARKER_VIEW) + " g";
-	    where := where + "\nand g." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE);
+	    from := from + "," + mgi_DBtable(PRB_MARKER) + " g";
+	    where := "\nand g." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE) + where;
 	  end if;
 
           if (from_gmarker) then
-	    from := from + ",MRK_Mouse_View l1";
-	    where := where + "\nand l1._Marker_key = g._Marker_key";
+	    from := from + ",MRK_Marker l1";
+	    where := "\nand l1._Organism_key = " + MOUSE + "\nand l1._Marker_key = g._Marker_key" + where;
 	  end if;
 
           if (from_probe) then
 	    from := from + "," + mgi_DBtable(PRB_PROBE) + " p2";
-	    where := where + "\nand p2." + mgi_DBkey(PRB_PROBE) + " = p.derviedFrom";
+	    where := "\nand p2." + mgi_DBkey(PRB_PROBE) + " = p.derviedFrom" + where;
 	  end if;
 
           if (from_note) then
 	    from := from + "," + mgi_DBtable(PRB_NOTES) + " n";
-	    where := where + "\nand n." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE);
+	    where := "\nand n." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE) + where;
 	  end if;
 
           if (from_ref) then
 	    from := from + ",PRB_Reference_View r";
-	    where := where + "\nand r." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE);
+	    where := "\nand r." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE) + where;
 	  end if;
 
           if (from_refnote) then
 	    from := from + "," + mgi_DBtable(PRB_REF_NOTES) + " rn";
-	    where := where + "\nand rn." + mgi_DBkey(PRB_REFERENCE) + " = r." + mgi_DBkey(PRB_REFERENCE);
+	    where := "\nand rn." + mgi_DBkey(PRB_REFERENCE) + " = r." + mgi_DBkey(PRB_REFERENCE) + where;
 	  end if;
 
           if (from_alias) then
 	    from := from + "," + mgi_DBtable(PRB_ALIAS) + " ra";
-	    where := where + "\nand ra." + mgi_DBkey(PRB_REFERENCE) + " = r." + mgi_DBkey(PRB_REFERENCE);
+	    where := "\nand ra." + mgi_DBkey(PRB_REFERENCE) + " = r." + mgi_DBkey(PRB_REFERENCE) + where;
 	  end if;
 
           if (from_strain) then
@@ -1309,19 +1309,19 @@ rules:
 		    mgi_DBtable(PRB_ALLELE) + " ba," +
 	            mgi_DBtable(PRB_ALLELE_STRAIN) + " bas," + 
 		    mgi_DBtable(STRAIN) + " bs";
-	    where := where + "\nand bs._Strain_key = bas._Strain_key " +
+	    where := "\nand bs._Strain_key = bas._Strain_key " +
 		"and bas._Allele_key = ba._Allele_key " +
-		"and ba._RFLV_key = rv._RFLV_key";
+		"and ba._RFLV_key = rv._RFLV_key" + where;
 	  end if;
 
           if (from_rflvs) then
 	    from := from + "," + mgi_DBtable(PRB_RFLV) + " rv";
-	    where := where + "\nand rv._Reference_key = r._Reference_key";
+	    where := "\nand rv._Reference_key = r._Reference_key" + where;
 	  end if;
 
           if (from_rmarker) then
-	    from := from + ",MRK_Mouse_View l2";
-	    where := where + "\nand l2._Marker_key = rv._Marker_key";
+	    from := from + ",MRK_Marker l2";
+	    where := "\nand l2._Organism_key = " + MOUSE + "\nand l2._Marker_key = rv._Marker_key" + where;
 	  end if;
 
           if (where.length > 0) then
