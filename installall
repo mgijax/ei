@@ -24,3 +24,5 @@ do
    installapp compiled
    cd ..
 done | tee installall.log 2> installall.errs
+
+cp -r system_docs $EIINSTALLDIR
