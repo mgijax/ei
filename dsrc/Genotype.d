@@ -737,7 +737,7 @@ rules:
                 top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
                 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 9);
-                top->EditForm->Note->text.value := mgi_getstr(dbproc, 6);
+                top->EditForm->Note->text.value := mgi_getstr(dbproc, 4);
 		table := top->Control->ModificationHistory->Table;
 		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 7));
