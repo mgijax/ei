@@ -319,10 +319,10 @@ rules:
               cmd := cmd + 
 		     mgi_DBinsert(IMG_IMAGEPANE, keyName) +
                      currentRecordKey + "," + 
-		     mgi_DBprstr(paneLabel) + ")\n";
+		     mgi_DBprstr2(paneLabel) + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              update := "paneLabel = " + mgi_DBprstr(paneLabel);
+              update := "paneLabel = " + mgi_DBprstr2(paneLabel);
               cmd := cmd + mgi_DBupdate(IMG_IMAGEPANE, key, update);
             end if;
  
@@ -394,7 +394,7 @@ rules:
 
 	  value := mgi_tblGetCell(table, 0, table.paneLabel);
 	  if (value.length > 0) then
-	    where := where + "\nand p.paneLabel like " + mgi_DBprstr(value);
+	    where := where + "\nand p.paneLabel like " + mgi_DBprstr2(value);
 	    from_pane := true;
 	  end if;
 

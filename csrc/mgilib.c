@@ -126,6 +126,7 @@ char *global_loginKey;        /* Set in Application dModule; holds login key val
    If the value is a string of blanks, return NULL.
 
    Strip out any carriage returns
+   Strip out leading spaces
 
    requires:	
 	value (char *), the value
