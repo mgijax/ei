@@ -298,6 +298,7 @@ extern char *global_version;
 
 #define	BACKGROUNDNORMAL	"Wheat"
 #define	BACKGROUNDALT1		"Thistle"
+#define	BACKGROUNDALT2		"Red"
 
 #define	STANDARD	"Wheat"
 #define	NONSTANDARD	"Red"
