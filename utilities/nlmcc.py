@@ -825,7 +825,10 @@ def processRec(rec, rectags):
 	if mode in ('cc', 'addcc'):
 		rec['TA'] = rec['JI']
 		rec['PG'] = rec['BP'] + '-' + rec['EP']
-		rec['PD'] = rec['PY'] + ' ' + rec['PD']
+
+		# If Year is not in Date string, then add it
+		if string.find(rec['PD'], rec['PY']) == -1:
+			rec['PD'] = rec['PY'] + ' ' + rec['PD']
 
 	# If no AU field, skip this record
 	if not rec.has_key('AU'):
