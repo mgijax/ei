@@ -910,6 +910,11 @@ rules:
           top->ID->text.value := "";
 	  currentNomenKey := "";
  
+	  -- Reset status to unknown
+          SetOption.source_widget := top->MarkerStatusMenu;
+          SetOption.value := "%";
+          send(SetOption, 0);
+
           -- Clear all tables
 	  resettables.open;
 	  while (resettables.more) do
