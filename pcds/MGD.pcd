@@ -6253,7 +6253,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 80;
             vip_y = 30;
           Group: User
-            initDialog = "TissueDialog\nRIDialog\nCrossDialog";
+            initDialog = "StrainDialog\nTissueDialog\nRIDialog\nCrossDialog";
               {
                 MGDForm = XmForm;
                     {
