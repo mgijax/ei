@@ -12,10 +12,6 @@
 --
 -- History
 --
--- 08/16/2001 lec
---	- TR 2846; removed "launchedFrom" parameter since we no longer
---	  launch this module from anywhere except the menu
---
 -- 03/04/2001 lec
 --	- TR 2217; Allele Enhancements
 --	- TR 1939; Allele Nomenclature
@@ -35,7 +31,8 @@ dmodule Allele is
 
 devents:
 
-	INITIALLY [parent : widget;];
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];
 	Add :local [];
 	BuildDynamicComponents :local [];
 	Delete :local [];
