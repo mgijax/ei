@@ -1,4 +1,5 @@
-#!/bin/ksh
+#!/bin/csh
+
 #
 # Does a 'uxb clean' on all EI apps directories, and removes
 # generated files not removed by this command. 
@@ -9,14 +10,14 @@
 #          target directories, mgd, gxd, etc.
 #
 
-REMFILES="*.o *.c *.do *.ui cderes*"
-apps="mgd gxd mgiadmin mgi"
+source Configuration
 
-for app in $apps 
-do
+setenv REMFILES	"*.o *.c *.do *.ui cderes*"
+
+foreach app ($EIAPPS)
    echo "CLEANING $app"
    cd $app
    uxb clean
-   \rm -f $REMFILES $app
+   rm -f $REMFILES $app
    cd ..
-done
+end

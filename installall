@@ -1,28 +1,27 @@
-#!/bin/ksh
+#!/bin/csh
+
 #
 # Installs all EI apps as compiled applications
 # Progress of install is sent to stdout and a logfile.
 #
-# Assumes: EIINSTALLDIR is set to the appropriate installation 
-#          prefix, e.g., '/usr/local/mgi/ei'
-#
-#          Must be executed in the same directory as the application 
+# Assumes: Must be executed in the same directory as the application 
 #          target directories, mgd, gxd, etc.
 # 
 # Usage: installall
 #
-# Output: installall.log contains report of stdout messages
-#         installall.errs contains report of stderr messages
+# Output: installall.log contains report of stdout and stderr messages
 #
 
-apps="mgd gxd mgiadmin mgi"
+source Configuration
 
-for app in $apps 
-do
+setenv LOG `pwd`/installall.log
+rm -f $LOG
+
+foreach app ($EIAPPS)
    echo "INSTALLING $app"
    cd $app
-   installapp compiled
+   installapp compiled | tee >>& $LOG
    cd ..
-done | tee installall.log 2> installall.errs
+end
 
 cp -r system_docs $EIINSTALLDIR

@@ -1,26 +1,31 @@
-#!/bin/ksh
+#!/bin/csh
+
 #
 # Builds all EI apps as compiled applications
-# (as is typically done prior to a release). Progress of build
-# is sent to stdout and a logfile.
+# (as is typically done prior to a release). 
+#
+# Progress of build is sent to stdout and a logfile.
 #
 # Usage: buildall 
 # 
 # Assumes: Must be executed in the same directory as the application
 #          target directories, mgd, gxd, etc. 
 #
-# Output: buildall.log contains report of stdout messages
-#         buildall.errs contains report of stderr messages
+# Output: buildall.log contains report of stdout and stderr messages
 
-REMFILES="*.o *.c *.do *.ui"
-apps="mgd gxd mgiadmin mgi"
+source Configuration
 
-for app in $apps 
-do
+setenv REMFILES "*.o *.c *.do *.ui"
+setenv LOG `pwd`/buildall.log
+
+rm -f $LOG
+
+foreach app ($EIAPPS)
    echo "BUILDING $app"
    cd $app
    uxb clean
-   \rm -f $REMFILES $app
-   buildapp compiled
+   rm -f $REMFILES $app
+   buildapp compiled | tee >>& $LOG
    cd ..
-done 1> buildall.log 2> buildall.errs
+end
+
