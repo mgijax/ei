@@ -473,7 +473,7 @@ rules:
 	    end if;
 	  end if;
 
-	  if (top->Library.managed) then
+	  if (top.top.name = "MolecularSourceModule") then
 	    QueryModificationHistory.table := top.top->ControlForm->ModificationHistory->Table;
 	    QueryModificationHistory.tag := "s";
 	    send(QueryModificationHistory, 0);
