@@ -319,13 +319,7 @@ rules:
 	  -- If the current row's Term is not equal to the previous row's Term,
 	  -- then we have a new _Annot_key.
 
-	  if (not mgi_tblSort(annotTable, annotTable.term)) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Could Not Sort Table.";
-	    send(StatusReport);
-	    (void) reset_cursor(top);
-	    return;
-	  end if;
+	  (void) mgi_tblSort(annotTable, annotTable.term);
 
 	  editTerm := top->Annotation->EditTerm.set;
 
