@@ -54,7 +54,7 @@ locals:
 --	clearLists : integer := 7;
 
 	cmd : string;
-	select : string := "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID\n";
+	select : string := "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID, ac.preferred\n";
 	from : string;
 	where : string;
 	union : string;
@@ -360,7 +360,6 @@ rules:
 
 	  from := "from SEQ_Sequence s, VOC_Term v1, VOC_Term v2";
 	  where := "ac._MGIType_key = 19 " +
-		   "and ac.preferred = 1 " +
 		   "and s._SequenceType_key = v1._Term_key " +
 		   "and s._SequenceProvider_key = v2._Term_key";
 	  union := "";
@@ -588,7 +587,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := select + from + "\n" + where + "\n" + union + "\norder by v1.term, ac.accID\n";
+	  Query.select := select + from + "\n" + where + "\n" + union + "\norder by v1.term, ac.preferred desc, ac.accID\n";
 	  Query.table := SEQ_SEQUENCE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
