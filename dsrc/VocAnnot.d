@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 04/28/2004 lec
+--	- TR 5693; GO annotation note template (see NotePreInit)
+--
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
 --	- TR 5515; allow search by obsolete term
@@ -64,6 +67,7 @@ devents:
 	VocAnnotExit :local [];				-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
+	NotePreInit :local [];				-- Pre-initialization of Note
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
@@ -91,7 +95,9 @@ locals:
 	mgiTypeKey : string;		-- MGI Type key (of Annotation Type)
 	dbView : string;		-- DB View Table (of ACC_MGIType._MGIType_key)
 
-	annotTable : widget;
+	annotTable : widget;		-- Annotation table
+
+	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nqualifier:\n";
 
 rules:
 
@@ -979,6 +985,24 @@ rules:
           SetOption.value := mgi_tblGetCell(table, row, table.notKey);
           send(SetOption, 0);
         end does;
+
+--
+-- NotePreInit
+-- (TR 5693)
+--
+-- Activated From:  NotePush.activateCallback
+-- Does:            If current row note is blank and annotation is GO/Marker,
+--		    then initialize row note with GO note template.
+--
+
+	NotePreInit does
+	  row : integer := mgi_tblGetCurrentRow(annotTable);
+
+	  if (annotTable.annotVocab = "GO" and
+	      mgi_tblGetCell(annotTable, row, annotTable.notes) = "") then
+	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, goNoteTemplate);
+	  end if;
+	end does;
 
 --
 -- Exit
