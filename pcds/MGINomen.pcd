@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 30 15:39:30 2004";
+      lastWritten = "Thu Jul 29 10:12:11 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -449,6 +449,18 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = False;
                                                   }
                                                   {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -733,6 +745,18 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;

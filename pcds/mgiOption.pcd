@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jun 28 08:11:33 2004";
+      lastWritten = "Thu Jul 29 10:12:08 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -160,6 +160,32 @@ Module: mgiOption
                       LocusLink = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 24;
+                    }
+                    {
+                      EntrezGene = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Entrez Gene";
+                      Group: User
+                        defaultValue = 55;
+                    }
+                    {
+                      Ensembl = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 33;
+                    }
+                    {
+                      NCBIGeneModel = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NCBI Gene Model";
+                      Group: User
+                        defaultValue = 56;
+                    }
+                    {
+                      EnsemblGeneModel = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Ensembl Gene Model";
+                      Group: User
+                        defaultValue = 57;
                     }
                     {
                       UniGene = AccToggle : mgiOption;
@@ -341,11 +367,6 @@ Module: mgiOption
                         labelString = Taxonomy;
                       Group: User
                         defaultValue = 32;
-                    }
-                    {
-                      Ensembl = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 33;
                     }
                     {
                       TIGR = AccToggle : mgiOption;

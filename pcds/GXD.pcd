@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 30 15:47:52 2004";
+      lastWritten = "Thu Jul 29 10:12:13 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -850,6 +850,18 @@ Shift<Key>Tab: prev-tab-group()
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1340,6 +1352,18 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -2767,6 +2791,18 @@ Shift<Key>Tab: prev-tab-group()
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2837,9 +2873,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGR = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul  1 07:50:28 2004";
+      lastWritten = "Thu Jul 29 10:12:35 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -327,6 +327,18 @@ Module: MGD
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -2886,6 +2898,18 @@ Module: MGD
                                   LocusLink = AccToggle : mgiOption;
                                 }
                                 {
+                                  EntrezGene = AccToggle : mgiOption;
+                                }
+                                {
+                                  Ensembl = AccToggle : mgiOption;
+                                }
+                                {
+                                  NCBIGeneModel = AccToggle : mgiOption;
+                                }
+                                {
+                                  EnsemblGeneModel = AccToggle : mgiOption;
+                                }
+                                {
                                   UniGene = AccToggle : mgiOption;
                                 }
                                 {
@@ -2969,9 +2993,6 @@ Module: MGD
                                 }
                                 {
                                   Taxon = AccToggle : mgiOption;
-                                }
-                                {
-                                  Ensembl = AccToggle : mgiOption;
                                 }
                                 {
                                   TIGR = AccToggle : mgiOption;
@@ -3494,6 +3515,18 @@ Module: MGD
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3567,9 +3600,6 @@ Module: MGD
                                                   }
                                                   {
                                                     Taxon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGR = AccToggle : mgiOption;
@@ -5554,9 +5584,33 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -5722,6 +5776,18 @@ Module: MGD
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -7083,6 +7149,18 @@ Shift<Key>Tab: prev-tab-group()
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -7243,6 +7321,18 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                     Group: User
                                                       required = True;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -8916,6 +9006,26 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -8999,11 +9109,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Taxon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     TIGR = AccToggle : mgiOption;
@@ -9165,6 +9270,18 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -10562,6 +10679,18 @@ Shift<Key>Tab: prev-tab-group()
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10634,9 +10763,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TIGR = AccToggle : mgiOption;
@@ -11185,6 +11311,20 @@ Shift<Key>Tab: prev-tab-group()
                                               LocusLink = AccToggle : mgiOption;
                                             }
                                             {
+                                              EntrezGene = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              Ensembl = AccToggle : mgiOption;
+                                              Group: Widget
+                                                managed = True;
+                                            }
+                                            {
+                                              NCBIGeneModel = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              EnsemblGeneModel = AccToggle : mgiOption;
+                                            }
+                                            {
                                               UniGene = AccToggle : mgiOption;
                                             }
                                             {
@@ -11260,11 +11400,6 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               Taxon = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              Ensembl = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
                                             }
                                             {
                                               TIGR = AccToggle : mgiOption;
