@@ -211,8 +211,6 @@ label to it so that it can be detected, e.g. by autoradiography.
 <LI>Genotypes
 	<OL>
 	<LI>If no Genotype value is entered, then the Genotype will default to <I>Not Specified</I>.
-	<LI>If no Allele Name is entered during an Allele add, then the Allele Name will default 
-	    to <I>allele name in progress</I>.
 	</OL>
 </OL>
  
@@ -256,8 +254,11 @@ building a new Genotype defintion for the same Strain, then the user should <B>n
 perform a row copy.  The user must bring up the Genotype dialog and define a new Genotype.
 <P>
 <LI>Marker Alleles (see <A HREF="MEI.html#dataVerAllele">Data Verifications section on Marker Alleles</A>) 
-may be added during Genotype entry.  If no Allele Name is entered, then the default 
-<I>allele name in progress</I> will be used.
+may be added during Genotype entry.  If an entered Allele does not exist, then the
+<A HREF="MEIAllele.html">Allele form</A> is launched so that the user can immediately
+add the new allele.  After the allele is successfully added using the Allele form, the
+Allele form is closed.
+<P>
 </OL>
 
 <H4>Anatomical Structures</H4>
