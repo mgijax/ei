@@ -29,6 +29,7 @@ import mgdlib
 import reportlib
 
 CRT = reportlib.CRT
+TAB = reportlib.TAB
 fp = reportlib.init(sys.argv[0], 'Counts of Mouse Homologies by Species')
 
 speciesResults = []
@@ -51,12 +52,14 @@ for s in species:
 	results = mgdlib.sql(cmd, 'auto')
 
 	for r in results:
-		speciesResults.append(tuple([r[''], s['name']]))
+		speciesResults.append(tuple([r[''], s['name'], s['_Species_key']]))
 
 speciesResults.sort()
 for s in speciesResults:
-		fp.write(string.ljust(s[1], 50))
-		fp.write(str(s[0]) + CRT)
+	fp.write(string.ljust(s[1], 50))
+	fp.write(str(s[0]) + TAB)
+	fp.write(str(s[2]) + CRT)
 
+reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 

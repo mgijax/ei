@@ -37,7 +37,7 @@ PAGE = reportlib.PAGE
 # Main
 #
 
-fp = reportlib.init(reportName, 'Markers')
+fp = reportlib.init(sys.argv[0], 'title')
 
 #
 # cmd = sys.argv[1]
@@ -47,10 +47,10 @@ fp = reportlib.init(reportName, 'Markers')
 # cmd = 'select * from MRK_Marker where _Species_key = 1 and chromosome = "1"'
 #
 
-results = mgdlib.sql(cmd, 'auto')
+#results = mgdlib.sql(cmd, 'auto')
 
-for r in results:
-	fp.write(r['item'] + CRT)
+#for r in results:
+#	fp.write(r['item'] + CRT)
 
 reportlib.trailer(fp)
 reportlib.finish_nonps(fp)	# non-postscript file
