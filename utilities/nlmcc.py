@@ -218,7 +218,7 @@ def printRec(fd, rec, rectags, msg = None):
 
 	for t in rectags:
 		if mode in ('nlm', 'addnlm'):
-			str = t + '  -'
+			str = t + ' -'
 		else:
 			str = t
 
@@ -541,7 +541,7 @@ def processSO(rec):
 
 #	rec['TA'] = journal
 #	rec['PG'] = pgs
-#	rec['VI'] = vol
+	rec['VI'] = vol
 
 	# Use same tags as CC uses for storing this data in the rec dictionary
 	rec['PD'] = date
