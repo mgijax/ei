@@ -397,6 +397,7 @@ rules:
 	  end if;
 
 	  if (from_term) then 
+	    dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + top->MGITypeMenu.menuHistory.defaultValue);
 	    from := from + "," + mgi_DBtable(MGI_TRANSLATION) + " m, " + dbView + " v";
 	    where := where + "\nand t._TranslationType_key = m._TranslationType_key";
 	    where := where + "\nand m._Object_key = v._Object_key";
