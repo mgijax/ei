@@ -18,7 +18,7 @@ INSTALL_ROOT=`pwd`
 
 OPENWINHOME=/usr/openwin
 XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
-PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
+PYTHONPATH=/usr/local/mgi/lib/python:/usr/local/etc/httpd/python
 
 USERLOG=$HOME/.gxd-log
 
