@@ -10,7 +10,7 @@
 #
 
 REMFILES="*.o *.c *.do *.ui cderes*"
-apps="mgd gxd mgiadmin"
+apps="mgd gxd mgiadmin mgi"
 
 for app in $apps 
 do

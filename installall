@@ -15,7 +15,7 @@
 #         installall.errs contains report of stderr messages
 #
 
-apps="mgd gxd mgiadmin"
+apps="mgd gxd mgiadmin mgi"
 
 for app in $apps 
 do
