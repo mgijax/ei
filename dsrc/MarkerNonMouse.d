@@ -167,7 +167,7 @@ rules:
 --
 
 	Add does
-	  curationState : string := mgd_sql1("select _Term_key from VOC_Term_CurationState_View where term = 'internal'");
+	  curationState : string := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = 'internal'");
 
 	  if (not top.allowEdit) then
 	    return;
