@@ -146,7 +146,7 @@ rules:
 
 	  top->StrainTypeList.cmd := 
 	    "select * from " + mgi_DBtable(MLP_STRAINTYPE) + 
-	    " order by " + mgi_DBcvname(MLP_STRAINTYPE);
+	    " where strainType not like '*%' order by " + mgi_DBcvname(MLP_STRAINTYPE);
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
 
