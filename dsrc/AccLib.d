@@ -374,6 +374,7 @@ rules:
 
 	  -- For each modified row in the Accession Table...
 
+	  r := 0;
           while (r < mgi_tblNumRows(table)) do
 
 	    editMode := mgi_tblGetCell(table, r, table.editMode);
