@@ -443,7 +443,8 @@ rules:
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "s";
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->Latin->text.value.length > 0) then
             where := where + "\nand s.latinName like " + mgi_DBprstr(top->Latin->text.value);

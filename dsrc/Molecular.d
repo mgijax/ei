@@ -1034,6 +1034,7 @@ rules:
  
           if (top->Control->References.set) then
             tag := "r";
+	    from_ref := true;
 	  else
             tag := "p";
 	  end if;
@@ -1041,17 +1042,12 @@ rules:
 	  QueryModificationHistory.table := modTable;
 	  QueryModificationHistory.tag := tag;
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
-	  if (tag = "r" and top->ModificationHistory->Table.sqlCmd.length > 0) then
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
+	  if (tag = "r" and top->ModificationHistory->Table.sqlWhere.length > 0) then
 	    from_ref := true;
 	  end if;
  
-          if (top->Control->References.set and
-	      (top->CreationDate.sql.length > 0 or
-	       top->ModifiedDate.sql.length > 0)) then
-	    from_ref := true;
-	  end if;
-
           if (top->MolMasterForm->SeqTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand p._SegmentType_key = " + top->MolMasterForm->SeqTypeMenu.menuHistory.searchValue;
           end if;

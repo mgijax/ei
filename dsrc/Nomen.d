@@ -832,9 +832,10 @@ rules:
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "m";
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
-	  if (top->ModificationHistory->Table.sqlCmd.length > 0) then
-	    printSelect := printSelect + "\nDate = " + top->ModificationHistory->Table.sqlCmd;
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
+	  if (top->ModificationHistory->Table.sqlWhere.length > 0) then
+	    printSelect := printSelect + "\nDate = " + top->ModificationHistory->Table.sqlWhere;
 	  end if;
  
 	  SearchRefTypeTable.table := top->Reference->Table;

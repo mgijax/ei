@@ -506,7 +506,8 @@ rules:
 	    QueryModificationHistory.table := top.top->ControlForm->ModificationHistory->Table;
 	    QueryModificationHistory.tag := "s";
 	    send(QueryModificationHistory, 0);
-            where := where + top.top->ControlForm->ModificationHistory->Table.sqlCmd;
+            from := from + top->ModificationHistory->Table.sqlFrom;
+            where := where + top->ModificationHistory->Table.sqlWhere;
 	  end if;
 
 	  -- To search each note type individually...
