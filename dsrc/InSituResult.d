@@ -170,7 +170,7 @@ rules:
 -- 
 
 	InSituResultExit does
-	  top.show;
+	  top.managed := false;
 	end does;
 
 --

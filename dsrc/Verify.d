@@ -3005,6 +3005,7 @@ rules:
           cmd : string;
           added : string := "";
           s : string;
+	  sUpper : string;
           i : integer;
  
           -- Parse Strains
@@ -3018,19 +3019,20 @@ rules:
           strains.rewind;
           while (strains.more) do
             s := strains.next;
-            cmd := "select _Strain_key, strain, private from PRB_Strain where strain = " + mgi_DBprstr(s);
+	    sUpper := s.raise_case;
+            cmd := "select _Strain_key, strain, private from PRB_Strain where strain = " + mgi_DBprstr(sUpper);
             (void) dbcmd(dbproc, cmd);
             (void) dbsqlexec(dbproc);
             while (dbresults(dbproc) != NO_MORE_RESULTS) do
               while (dbnextrow(dbproc) != NO_MORE_ROWS) do
                 keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
-                results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+                results.insert(mgi_getstr(dbproc, 2).raise_case, results.count + 1);
                 private.insert(mgi_getstr(dbproc, 3), private.count + 1);
               end while;
             end while;
  
             -- Set i to index of string for exact match
-            i := results.find(s);
+            i := results.find(sUpper);
  
             if (i > 0) then     -- Strain found
 	      if (private[i] = "1") then 	-- Strain is private
