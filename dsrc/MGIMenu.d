@@ -23,6 +23,8 @@ locals:
 
 	top : widget;
 
+	subprocs : list;	-- a list of proc ids for each subprocess
+
 rules:
 
 --
@@ -31,6 +33,7 @@ rules:
 
 	INITIALLY does
 	  top := create widget("MGIMenu", nil, nil);
+	  subprocs := create list(nil);
 	  top.show;
 	end does;
 
@@ -39,6 +42,7 @@ rules:
 
 	  cmd_str.insert(ForkIt.app, cmd_str.count + 1);
 	  proc_id : opaque := tu_fork_process(cmd_str[1], cmd_str, nil, ForkEnd);
+	  subprocs.append(proc_id);
 	  tu_fork_free(proc_id);
 	end does;
 
@@ -46,6 +50,13 @@ rules:
 	end does;
 
 	Exit does
+
+	  -- Kill all subprocesses created by ForkIt
+	  subprocs.open;
+	  while (subprocs.more) do
+		tu_fork_kill(subprocs.next);
+	  end while;
+
 	  tu_exit(0);           -- Clean up
 	  destroy top;		-- Kill Application
 	end does;
