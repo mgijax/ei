@@ -12,6 +12,7 @@ CHANGES:
 7) converted all scripts to csh
 8) added cleanapp; modified cleanall
 9) all log files are .ei-log
+10) TR 2711
 
 TAG: ei-4-6-3
 DATE: 06/27/2001
