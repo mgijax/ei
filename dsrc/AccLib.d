@@ -205,6 +205,7 @@ rules:
 	  logicalDBkey : string;
 	  prefix : string;
 	  accID : string;
+	  preferred : string;
 	  orderBy : string;
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
@@ -213,7 +214,7 @@ rules:
 	    orderBy := " order by _LogicalDB_key, prefixPart, numericPart";
 	  end if;
 
-          cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart";
+          cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
 
 	  if (table.is_defined("refsKey") != nil) then
 	    cmd := cmd + ", _Refs_key, jnum, short_citation";
@@ -234,6 +235,7 @@ rules:
  
               logicalDBkey := mgi_getstr(dbproc, 1);
               prefix := mgi_getstr(dbproc, 4);
+	      preferred := mgi_getstr(dbproc, 6);
 	      i := 1;
 
 	      -- Find the LogicalDB in AccSourcePulldown which
@@ -242,7 +244,8 @@ rules:
               while (i <= source.subMenuId.num_children) do
                 if (logicalDBkey = source.subMenuId.child(i).defaultValue) then
                   if (((integer) logicalDBkey = 1 and 
-			prefix = source.subMenuId.child(i).labelString) or 
+			prefix = source.subMenuId.child(i).labelString and
+			preferred = (string) source.subMenuId.child(i).preferred) or 
 			(integer) logicalDBkey > 1) then
                     source.menuHistory := source.subMenuId.child(i);
 		    break;

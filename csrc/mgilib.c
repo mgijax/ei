@@ -1955,6 +1955,8 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOTES:
     case MRK_OFFSET:
     case MRK_REFERENCE:
+    case NOM_GENEFAMILY:
+    case NOM_SYNONYM:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
     case PRB_ALIAS:
@@ -2346,12 +2348,12 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case NOM_MARKER:
-            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, submittedBy, broadcastBy, symbol, name, chromosome, humanSymbol, statusNote, broadcast_date, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, _Marker_Type_key, _NomenStatus_key, _Marker_Event_key, _Marker_EventReason_key, _CurationState_key, symbol, name, chromosome, humanSymbol, statusNote, _CreatedBy_key, _ModifiedBy_key)",
 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case NOM_GENEFAMILY:
-            sprintf(buf, "insert %s (%s, _Marker_Family_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _GeneFamily_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case NOM_SYNONYM:
             sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));

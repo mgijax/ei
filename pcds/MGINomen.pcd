@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 17 12:38:59 2003";
+      lastWritten = "Wed Dec 17 12:09:24 2003";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -180,6 +180,8 @@ Module: MGINomen
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    required = False;
                                 }
                                 {
                                   Symbol = CharText : mgiDataTypes;
@@ -270,19 +272,18 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Review Key,Type,Reference Type,J#,Citation,Review?";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 6 20)(all 8 60)(all 9 7)";
-                                          xrtTblEditableSeries = "(all 0-6 False)";
-                                          xrtTblMaxLengthSeries = "(all 8 255)";
-                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
-                                          xrtTblTraversableSeries = "(all 0-6 False)";
-                                          xrtTblNumColumns = 10;
-                                          userDefinedAttributes = "reviewKey:Int=\"4\"\nreview:Int=\"9\"\n";
+                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Current Type,Type key,Review key,Reference Type,J#,Citation,Review";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 25)(all 9 60)(all 10 7)";
+                                          xrtTblNumColumns = 11;
+                                          userDefinedAttributes = "reviewKey:Int(Int)=\"6\"\nreview:Int(Int)=\"10\"\n";
+                                          xrtTblEditableSeries = "(all 0-7 False)";
+                                          xrtTblMaxLengthSeries = "(all 9 255)";
+                                          xrtTblPixelWidthSeries = "(all 0-6 0)";
+                                          xrtTblTraversableSeries = "(all 0-7 False)";
                                         Group: User
-                                          citation = 8;
-                                          jnum = 7;
-                                          refsName = 6;
-                                          refsType = 5;
+                                          citation = 9;
+                                          jnum = 8;
+                                          refsName = 7;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;

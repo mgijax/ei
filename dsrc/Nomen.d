@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec 12/17/2003
+--	- TR 5327; nomen merge
+--
 -- lec 04/24/2003
 --	- TR 4752; added rjc
 --
@@ -100,7 +103,7 @@
 --
 -- lec 02/12/1999
 --	- added Symbol/Name search
---	- use MRK_NOMEN_COORDNOTES and MRK_NOMEN_EDITORNOTES
+--	- use NOM_MARKER_COORDNOTES and NOM_MARKER_EDITORNOTES
 --
 -- lec 01/25/1999 - 1/29/1999
 --	- removed Correspondence table processing; removed from requirements
@@ -149,8 +152,10 @@ devents:
 	-- Process Broadcast Events
 	Broadcast :local [type : integer;];
 	BroadcastExec :local [];
-	AddBroadcast :local [];
-	BroadcastSymbol :local [];
+	AddBroadcastOfficial :local [];
+	AddBroadcastInterim :local [];
+	BroadcastSymbolOfficial :local [];
+	BroadcastSymbolInterim :local [];
 	BroadcastBatch :local [];
 	BroadcastReferenceEditor :local [];
 	BroadcastReferenceCoord :local [];
@@ -425,8 +430,7 @@ rules:
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
-	         mgi_DBprstr(top->StatusNotes->text.value) + ",NULL,NULL," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+	         mgi_DBprstr(top->StatusNotes->text.value) + ")\n";
 
 	  send(ModifyNomenNotes, 0);
 	  send(ModifyGeneFamily, 0);
@@ -532,7 +536,8 @@ rules:
 	    error := true;
 	  end if;
 
-	  if (not (global_login = "ljm" or global_login = "lmm" or 
+	  if (not (global_login = "mgo_dbo" or
+	           global_login = "ljm" or global_login = "lmm" or 
 		   global_login = "cml" or global_login = "rjc" or
 		   global_login = "bobs" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
@@ -688,8 +693,7 @@ rules:
             if (editMode = TBL_ROW_ADD and newKey.length > 0) then
               cmd := cmd + mgi_DBinsert(NOM_GENEFAMILY, NOKEY) + 
 		     currentNomenKey + "," + 
-		     newKey + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     newKey + ")\n";
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
               set := "_GeneFamily_key = " + newKey;
               cmd := cmd + mgi_DBupdate(NOM_GENEFAMILY, currentNomenKey, set) + 
@@ -780,8 +784,7 @@ rules:
 		     currentNomenKey + "," +
 		     refsKey + "," +
 		     mgi_DBprstr(name) + "," +
-		     isAuthor + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     isAuthor + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "name = " + mgi_DBprstr(name) +
@@ -1095,11 +1098,11 @@ rules:
 	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 11);
 
 	        table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 14));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(table, table.broadcastBy, table.byDate, mgi_getstr(dbproc, 12));
 
                 SetOption.source_widget := top->MarkerTypeMenu;
@@ -1271,21 +1274,21 @@ rules:
 	  -- For Add, allow (D:Verify) to test for required fields, etc.
 	  -- If the Add verifications pass, continue
 
-	  if (broadcastType = 1 and not top.allowEdit) then
+	  if ((broadcastType = 1 or broadcastType = 2) and not top.allowEdit) then
 	    return;
 	  end if;
 
-	  if (broadcastType = 1) then
+	  if (broadcastType = 1 or broadcastType = 2) then
 	    message := message + "\n" + top->Symbol->text.value;
 	    recordCount := 1;
 	    broadcastOK := true;
-	  elsif (broadcastType = 2) then
+	  elsif (broadcastType = 3 or broadcastType = 4) then
 	    message := message + "\n" + top->Symbol->text.value;
 	    if (currentNomenKey.length > 0) then
 	      recordCount := 1;
 	      broadcastOK := true;
 	    end if;
-	  elsif (broadcastType = 3) then
+	  elsif (broadcastType = 5) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select symbol from " + mgi_DBtable(NOM_MARKER) + 
 		  " where _NomenStatus_key = " + STATUS_NAPPROVED;
@@ -1303,7 +1306,7 @@ rules:
 	      end while;
 	      (void) dbclose(dbproc);
 	    end if;
-	  elsif (broadcastType = 4) then
+	  elsif (broadcastType = 6) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(NOM_MARKER) + " n," +
@@ -1325,7 +1328,7 @@ rules:
 	      end while;
 	      (void) dbclose(dbproc);
 	    end if;
-	  elsif (broadcastType = 5) then
+	  elsif (broadcastType = 7) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(NOM_MARKER) + " n," +
@@ -1357,7 +1360,7 @@ rules:
 
 	  -- Check for Primary Reference
 
-	  if ((broadcastType = 1 or broadcastType = 2 or broadcastType = 4 or broadcastType = 5)
+	  if ((broadcastType <= 4 or broadcastType >= 6)
 	      and
 	      ((mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                 mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE))) then
@@ -1387,14 +1390,18 @@ rules:
 	  BroadcastEvent : devent;
 
 	  if (broadcastType = 1) then
-	    BroadcastEvent := AddBroadcast;
+	    BroadcastEvent := AddBroadcastOfficial;
 	  elsif (broadcastType = 2) then
-	    BroadcastEvent := BroadcastSymbol;
+	    BroadcastEvent := AddBroadcastInterim;
 	  elsif (broadcastType = 3) then
-	    BroadcastEvent := BroadcastBatch;
+	    BroadcastEvent := BroadcastSymbolOfficial;
 	  elsif (broadcastType = 4) then
-	    BroadcastEvent := BroadcastReferenceEditor;
+	    BroadcastEvent := BroadcastSymbolInterim;
 	  elsif (broadcastType = 5) then
+	    BroadcastEvent := BroadcastBatch;
+	  elsif (broadcastType = 6) then
+	    BroadcastEvent := BroadcastReferenceEditor;
+	  elsif (broadcastType = 7) then
 	    BroadcastEvent := BroadcastReferenceCoord;
 	  end if;
 
@@ -1410,12 +1417,12 @@ rules:
 	end does;
 
 --
--- AddBroadcast
+-- AddBroadcastOfficial
 --
 -- Adds symbol to Nomen and broadcasts to MGD in one step
 --
 
-	AddBroadcast does
+	AddBroadcastOfficial does
 
 	  -- add the Nomen record
 
@@ -1425,7 +1432,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey;
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1433,14 +1440,50 @@ rules:
 	end does;
 
 --
--- BroadcastSymbol
+-- AddBroadcastInterim
+--
+-- Adds symbol to Nomen and broadcasts to MGD in one step
+--
+
+	AddBroadcastInterim does
+
+	  -- add the Nomen record
+
+	  Add.broadcast := true;
+	  send(Add, 0);
+
+	  -- if Add was successful, broadcast to Nomen
+	  if (top->QueryList->List.sqlSuccessful) then
+	    (void) busy_cursor(top);
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
+	    send(ExecSQL, 0);
+	    (void) reset_cursor(top);
+	  end if;
+
+	end does;
+
+--
+-- BroadcastSymbolOfficial
 --
 -- Broadcast selected symbol to MGD
 --
 
-	BroadcastSymbol does
+	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey;
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
+	  send(ExecSQL, 0);
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- BroadcastSymbolInterim
+--
+-- Broadcast selected symbol to MGD
+--
+
+	BroadcastSymbolInterim does
+	  (void) busy_cursor(top);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

@@ -1,8 +1,8 @@
 Module: MGIAdmin
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed May 15 15:25:18 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Fri Dec 19 15:31:02 2003";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -415,6 +415,9 @@ Module: MGIAdmin
                                               Development = ServerToggle;
                                               Group: Widget
                                                 valueChangedCallback = "D:NewServer,\nD:SetModify";
+                                            }
+                                            {
+                                              Development1 = ServerToggle : mgiOption;
                                             }
                                             {
                                               Public = ServerToggle;
