@@ -563,24 +563,15 @@ To export tagged source for a Production build (read-only source): <BR>
 The value of &lt;tag&gt depends on the build you are doing. Check with your
 CVS administrator. 
 <P>
-<LI>The appropriate SYBASE and TeleUSE environment also needs to be configured:
-	<PRE>
-        OPENWINHOME=/usr/openwin
-        XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
-        PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
-        DSQUERY=MGD
-        MGD=mgd
-        
-        SYBASE=/opt/sybase
-        TeleUSE=/opt/teleuseXRT
-        XNLSPATH=$TeleUSE/X11R5/lib/nls
-        XUSERFILESEARCHPATH=%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-defaults/%N:
-		$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:
-		/usr/lib/X11/app-defaults/%N
-        
-        LD_LIBRARY_PATH=$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
-        PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$TeleUSE/XRT/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
-	</PRE>
+<LI>The appropriate SYBASE and TeleUSE environment also needs to be configured.
+    Copy the <CODE>Configuration.default</CODE> file to <CODE>Configuration</CODE>
+    and edit approriately.  Then, source the <CODE>Configuration</CODE> file to
+    initialize your environment.
+    <PRE>
+    cp Configuration.default Configuration
+    <edit Configuration>
+    source Configuration
+    </PRE>
 <P>
 <LI>Refer to <A HREF="#applconfig">Application Configuration Files</A> for information on building the installed applications.
 <P>
