@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	07/11/2001
+--	- TR 2709; add figure label to search results
+--
 -- lec	12/15/98-12/21/98
 --	- TR#28; Image notes are unlimited
 --
@@ -395,7 +398,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct i._Image_key, i.jnumID\n" + from + "\n" + 
+	  Query.select := "select distinct i._Image_key, i.jnumID + \";\" + i.figureLabel\n" + from + "\n" + 
 			where + "\norder by i.jnum\n";
 	  Query.table := IMG_IMAGE;
 	  send(Query, 0);
