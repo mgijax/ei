@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Nov  4 11:03:02 1999";
+      lastWritten = "Mon Nov  8 12:02:15 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -6216,6 +6216,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGI = AccToggle;
                                                   }
                                                   {
+                                                    GDB = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     J = AccToggle;
                                                   }
                                                   {
@@ -6235,56 +6245,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Sequence = AccToggle;
-                                                  }
-                                                  {
-                                                    SequencePID = AccToggle;
-                                                  }
-                                                  {
-                                                    UniGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ATCC = AccToggle;
-                                                  }
-                                                  {
-                                                    MRK = AccToggle;
-                                                  }
-                                                  {
-                                                    MGIImage = AccToggle;
-                                                  }
-                                                  {
-                                                    CREX = AccToggle;
-                                                  }
-                                                  {
-                                                    HYEX = AccToggle;
-                                                  }
-                                                  {
-                                                    INEX = AccToggle;
-                                                  }
-                                                  {
-                                                    FSEX = AccToggle;
-                                                  }
-                                                  {
-                                                    RIEX = AccToggle;
-                                                  }
-                                                  {
-                                                    TEXT = AccToggle;
-                                                  }
-                                                  {
-                                                    TXEX = AccToggle;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle;
-                                                  }
-                                                  {
-                                                    E = AccToggle;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
