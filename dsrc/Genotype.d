@@ -567,14 +567,6 @@ rules:
 	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 	     from + "\n" + where;
 
---	Because genotypes are returned by unique strain + allele pair,
---	double (or triple) mutants will return two (or three) records
---	with the same genotype key.  To exclude this records, we could
---	add (and ap.sequenceNum = 1) to the query.  However, if the
---	user queries by Marker and/or Allele, then the query will not
---	return appropriate results. 
---	     "\nand ap.sequenceNum = 1";
-
 	  if (manualSearch) then
 	    Query.source_widget := top;
 	    Query.select := select + orderBy;
