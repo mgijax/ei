@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	10/15/2002
+--	- TR 4167; update of Abbrev2 was using Abbrev1
+--
 -- lec	02/06/2002
 --	- added DisplayMarker toggle
 --
@@ -209,7 +212,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  send(Init, 0);
 
@@ -1410,7 +1413,7 @@ rules:
 	  end if;
 
 	  if (ExptForm->Abbrev2->text.modified) then
-	    set := set + "abbrevHT = " + mgi_DBprstr(ExptForm->Abbrev1->text.value) + ",";
+	    set := set + "abbrevHT = " + mgi_DBprstr(ExptForm->Abbrev2->text.value) + ",";
 	  end if;
 
 	  if (ExptForm->Strain2->StrainID->text.modified) then
