@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb  3 09:27:40 2003";
+      lastWritten = "Wed Feb 12 08:10:46 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -122,6 +122,13 @@ Module: mgiOption
                         labelString = "SWISS-PROT";
                       Group: User
                         defaultValue = 13;
+                    }
+                    {
+                      TrEMBL = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = TrEMBL;
+                      Group: User
+                        defaultValue = 41;
                     }
                     {
                       WashU = AccToggle : mgiOption;
