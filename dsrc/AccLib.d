@@ -23,6 +23,9 @@
 --
 -- History:
 --
+-- lec	06/10/2003
+--	TR 4741
+--
 -- lec	06/05/2002
 --	TR 3677; VerifyMGIAcc
 --
@@ -247,6 +250,20 @@ rules:
                 i := i + 1;
               end while;
 
+	      -- Find row in accession table where logicalDBkey = table.logicalKey
+	      i := 0;
+	      while (i < mgi_tblNumRows(table)) do
+		if (mgi_tblGetCell(table, i, table.logicalKey) = logicalDBkey and
+			mgi_tblGetCell(table, i, table.accKey) = "") then
+		  break;
+		end if;
+		i := i + 1;
+	      end while;
+
+	      if (i < mgi_tblNumRows(table)) then
+		row := i;
+	      end if;
+
 	      -- Set the _LogicalDB_key, _Accession_key and Logical DB Name
 
 	      (void) mgi_tblSetCell(table, row, table.logicalKey, logicalDBkey);
@@ -336,6 +353,25 @@ rules:
 	    exec := "exec " + db + "..";
 	  end if;
  
+	  -- For each required Accession ID, if blank print message
+	  i := 1;
+          while (i <= source.subMenuId.num_children) do
+	    if (source.subMenuId.child(i).managed and source.subMenuId.child(i).required) then
+	      r := 0;
+	      while (r < mgi_tblNumRows(table)) do
+	        if (mgi_tblGetCell(table, r, table.accName) = source.subMenuId.child(i).labelString
+		    and mgi_tblGetCell(table, r, table.editMode) = TBL_ROW_EMPTY) then
+                  StatusReport.source_widget := table.top;
+                  StatusReport.message := "The Accession ID for " + 
+			mgi_tblGetCell(table, r, table.accName) + " is required.";
+                  send(StatusReport);
+		end if;
+		r := r + 1;
+	      end while;
+	    end if;
+            i := i + 1;
+          end while;
+
 	  -- For each modified row in the Accession Table...
 
           while (r < mgi_tblNumRows(table)) do

@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	06/10/2003
+--	TR 4741
+--
 -- 08/15/2002
 --	- TR 1463; Species replaced with Organism
 --
@@ -49,6 +52,7 @@ devents:
 
 	Search :local [];
 	Select :local [item_position : integer;];
+	SetLocusLink :local [];
 
 locals:
 	mgi : widget;
@@ -505,6 +509,20 @@ rules:
 	  send(Clear, 0);
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- SetLocusLink
+--
+-- Set the required flag for the LocusLink ID
+--
+
+        SetLocusLink does
+	  if (top->mgiSpecies->ObjectID->text.value = HUMAN) then
+	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := true;
+	  else
+	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := false;
+	  end if;
 	end does;
 
 --
