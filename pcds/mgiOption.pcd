@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct  7 13:35:48 2004";
+      lastWritten = "Wed Oct 27 11:14:58 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -334,6 +334,27 @@ Module: mgiOption
                         defaultValue = 26;
                     }
                     {
+                      NIA = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = NIA;
+                      Group: User
+                        defaultValue = 49;
+                    }
+                    {
+                      NIA7 = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NIA 7.4K";
+                      Group: User
+                        defaultValue = 50;
+                    }
+                    {
+                      NIA15K = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NIA 15K";
+                      Group: User
+                        defaultValue = 46;
+                    }
+                    {
                       RPCI23 = AccToggle : mgiOption;
                       Group: Widget
                         labelString = RPCI23;
@@ -431,13 +452,6 @@ Module: mgiOption
                         labelString = "IMAGE Library";
                       Group: User
                         defaultValue = 43;
-                    }
-                    {
-                      NIA15K = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "NIA 15K";
-                      Group: User
-                        defaultValue = 46;
                     }
                     {
                       dbESTLibrary = AccToggle : mgiOption;

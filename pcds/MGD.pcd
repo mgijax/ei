@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 13 11:12:44 2004";
+      lastWritten = "Wed Oct 27 11:15:17 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -399,6 +399,15 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RPCI23 = AccToggle : mgiOption;
@@ -2754,62 +2763,27 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
+                                  NIA = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                                {
+                                  NIA7 = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                                {
+                                  NIA15K = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                                {
                                   RPCI23 = AccToggle : mgiOption;
                                   Group: Widget
                                     managed = True;
                                 }
                                 {
                                   RPCI24 = AccToggle : mgiOption;
-                                  Group: Widget
-                                    managed = True;
-                                }
-                                {
-                                  RefSeq = AccToggle : mgiOption;
-                                }
-                                {
-                                  InterPro = AccToggle : mgiOption;
-                                }
-                                {
-                                  Taxon = AccToggle : mgiOption;
-                                }
-                                {
-                                  TIGR = AccToggle : mgiOption;
-                                }
-                                {
-                                  DOTS = AccToggle : mgiOption;
-                                }
-                                {
-                                  NIAGeneIndex = AccToggle : mgiOption;
-                                }
-                                {
-                                  EMMA = AccToggle : mgiOption;
-                                }
-                                {
-                                  MMRRC = AccToggle : mgiOption;
-                                }
-                                {
-                                  MMHCC = AccToggle : mgiOption;
-                                }
-                                {
-                                  Harwell = AccToggle : mgiOption;
-                                }
-                                {
-                                  ORNL = AccToggle : mgiOption;
-                                }
-                                {
-                                  NMICE = AccToggle : mgiOption;
-                                }
-                                {
-                                  CARD = AccToggle : mgiOption;
-                                }
-                                {
-                                  BCBC = AccToggle : mgiOption;
-                                }
-                                {
-                                  IMAGELibrary = AccToggle : mgiOption;
-                                }
-                                {
-                                  NIA15K = AccToggle : mgiOption;
                                   Group: Widget
                                     managed = True;
                                 }
@@ -3374,6 +3348,17 @@ Module: MGD
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     RPCI23 = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3423,11 +3408,6 @@ Module: MGD
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    NIA15K = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -7017,6 +6997,15 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RPCI23 = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8882,6 +8871,15 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RPCI23 = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10570,6 +10568,15 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RPCI23 = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -11215,6 +11222,15 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               RIKENClone = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              NIA = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              NIA7 = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              NIA15K = AccToggle : mgiOption;
                                             }
                                             {
                                               RPCI23 = AccToggle : mgiOption;
