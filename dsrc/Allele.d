@@ -930,8 +930,14 @@ rules:
 		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 14));
 
-		top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 17);
+		-- If the Marker key is null, then use the Nomen Symbol field
+		if (mgi_getstr(dbproc, 2) = "") then
+		  top->mgiMarker->ObjectID->text.value := "";
+		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 10);
+		else
+		  top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 2);
+		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 17);
+		end if;
 
 		top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);

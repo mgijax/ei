@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 03/20/2001
+--	- TR 1939; VerifyAllele; status must be approved to be valid
+--
 -- lec 12/19/2000
 --	- TR 2128; VerifyChromosome; raise case
 --
@@ -734,7 +737,8 @@ rules:
  
                 select := "select _Allele_key, _Marker_key, symbol, markerSymbol " +
 			  "from " + mgi_DBtable(ALL_ALLELE_VIEW) +
-                          " where symbol = " + mgi_DBprstr(value);
+                          " where symbol = " + mgi_DBprstr(value) +
+			  " and _Allele_Status_key = " + ALL_STATUS_APPROVED;
 
 	        if (markerKey.length > 0 and markerKey != "NULL") then
                   select := select + " and _Marker_key = " + markerKey;
@@ -1770,7 +1774,17 @@ rules:
 
 	  select : string := "select _Marker_key, _Marker_Status_key, symbol, chromosome, cytogeneticOffset " +
 			     "from MRK_Marker where _Species_key = " + speciesKey + 
-			     " and symbol = \"" + value + "\"\n";
+			     " and symbol = " + mgi_DBprstr(value) + "\n";
+
+	  -- If searching Nomen as well....
+
+	  if (VerifyMarker.allowNomen) then
+	    select := select + "union\n" +
+		"select null, _Marker_Status_key, symbol, chromosome, null " +
+		"\nfrom " + getenv("NOMEN") + " ..MRK_Nomen " +
+		"\nwhere symbol = " + mgi_DBprstr(value) + 
+		"\nand _Marker_Status_key in (" + STATUS_PENDING + "," + STATUS_RESERVED + ")\n";
+	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list
 	  -- Insert chromosomes into string list for future reference

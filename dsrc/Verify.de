@@ -38,6 +38,7 @@ VerifyBreakpointMarker :translation [];
 
 VerifyMarker :translation [source_widget : widget;
 			   allowWithdrawn : boolean := false;
+			   allowNomen : boolean := false;
 			   verifyOtherSpecies : boolean := false;];
 
 VerifyMarkerChromosome :translation [allowMismatch : boolean := true;];
