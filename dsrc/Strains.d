@@ -625,10 +625,14 @@ rules:
 
 	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
             where := where + "\nand exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key and a._AnnotType_key = " + annotTypeKey + ") ";
+		"where s._Strain_key = a._Object_key " +
+		" and a._AnnotType_key = " + annotTypeKey + 
+		" and a._Term_key = " + superStandardKey + ") ";
 	  elsif (top->SuperStandardMenu.menuHistory.searchValue = NO) then
             where := where + "\nand not exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key and a._AnnotType_key = " + annotTypeKey + ") ";
+		"where s._Strain_key = a._Object_key " +
+		" and a._AnnotType_key = " + annotTypeKey + 
+		" and a._Term_key = " + superStandardKey + ") ";
           end if;
 
 	  if (top->mlpSpecies->Species->text.value.length > 0) then
@@ -827,8 +831,10 @@ rules:
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
                  "select rtrim(note) from " + mgi_DBtable(MLP_NOTES) +
                  " where " + mgi_DBkey(MLP_NOTES) + " = " + currentRecordKey + " order by sequenceNum\n" +
-		 "select _Annot_key from VOC_Annot where _AnnotType_key = " + annotTypeKey +
-		 "and _Object_key = " + currentRecordKey + "\n";
+		 "select _Annot_key from VOC_Annot " +
+		 "where _AnnotType_key = " + annotTypeKey +
+		 " and _Term_key = " + superStandardKey +
+		 " and _Object_key = " + currentRecordKey + "\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
