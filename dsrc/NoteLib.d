@@ -104,8 +104,8 @@ rules:
 	  label : string;
 	  k : integer;
 
-	  if (tableID = MGI_NOTETYPE_NOMEN_VIEW or tableID = MGI_NOTETYPE_SOURCE_VIEW) then
-	    cmd := "select _NoteType_key, noteType, private, _MGIType_key from " + mgi_DBtable(tableID) +
+	  if (tableID = MGI_NOTETYPE_MRKGO_VIEW) then
+	    cmd := "select _NoteType_key, noteType, private = -1, _MGIType_key from " + mgi_DBtable(tableID) +
 		  "\norder by _NoteType_key";
 	  else
 	    cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
@@ -136,7 +136,7 @@ rules:
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
-	        if (tableID = MGI_NOTETYPE_NOMEN_VIEW or tableID = MGI_NOTETYPE_SOURCE_VIEW) then
+	        if (tableID = MGI_NOTETYPE_MRKGO_VIEW) then
 		  x->Note.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
 		end if;
 		x.unbatch;
@@ -170,7 +170,7 @@ rules:
 	  ClearSetNoteForm.notew := notew;
 	  send(ClearSetNoteForm, 0);
 
-	  if (tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW) then
+	  if (tableID = MGI_NOTE_MRKGO_VIEW) then
             cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
 	  	  " from " + mgi_DBtable(tableID) +
 		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
@@ -191,7 +191,7 @@ rules:
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
 
-	      if (tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW) then
+	      if (tableID = MGI_NOTE_MRKGO_VIEW) then
 	        noteKey := mgi_getstr(dbproc, 4);
 	      end if;
 
@@ -576,7 +576,10 @@ rules:
 	  if (isTable) then
 	    noteType := ModifyNotes.noteType;
 	  elsif (noteWidget.noteTypeKey > 0) then
-	    noteType := (string) noteWidget.noteTypeKey + "," + (string) noteWidget.private;
+	    noteType := (string) noteWidget.noteTypeKey;
+	    if (noteWidget.private >= 0) then
+	      noteType := noteType + "," + (string) noteWidget.private;
+	    end if;
 	  elsif (noteWidget.noteType.length > 0) then
 	    noteType := mgi_DBprstr(noteWidget.noteType);
 	  end if;

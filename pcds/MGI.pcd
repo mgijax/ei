@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 26 13:47:51 2003";
+      lastWritten = "Thu Apr  3 12:40:36 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -1153,6 +1153,7 @@ Module: MGI
                             EditForm = EditForm : MGI;
                             Group: Widget
                               rubberPositioning = False;
+                              resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
                                 }
@@ -1286,6 +1287,21 @@ Module: MGI
                                         Group: Widget
                                           managed = False;
                                       }
+                                }
+                                {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Widget
+                                    orientation = horizontal;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = VocAnnotTypeMenu;
+                                    leftOffset = 30;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = VocAnnotTypeMenu;
+                                    topOffset = "-5";
                                 }
                           }
                     }

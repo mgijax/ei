@@ -806,7 +806,7 @@ rules:
 	  if (annotTable.annotVocab = "GO") then
 	    send(SelectGOReferences, 0);
 	    LoadNoteForm.notew := top->mgiNoteForm;
-	    LoadNoteForm.tableID := MGI_NOTETYPE_MRKGO_VIEW;
+	    LoadNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
 	    LoadNoteForm.objectKey := currentRecordKey;
 	    send(LoadNoteForm, 0);
 	  end if;
