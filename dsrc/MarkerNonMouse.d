@@ -52,7 +52,6 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	speciesKey : string;    -- Species key
 	markerTypeKey : string := "1"; -- Default Marker Type
 	clearLists : integer;	-- Clear List value for Clear event
 
@@ -131,7 +130,7 @@ rules:
  
 	  -- Clear the form
 
-	  clearLists := 7;
+	  clearLists := 3;
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
 	  send(Clear, 0);
@@ -351,12 +350,10 @@ rules:
  
           if (top->Symbol->text.value.length > 0) then
 	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->Symbol->text.value);
-	    from_symbol := true;
 	  end if;
 	    
           if (top->Name->text.value.length > 0) then
 	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
-	    from_name := true;
 	  end if;
 	    
           if (top->Chromosome->text.value.length > 0) then
@@ -411,6 +408,7 @@ rules:
         Select does
 
 	  InitAcc.table := accTable;
+	  InitAcc.showMGI := false;
           send(InitAcc, 0);
  
 	  InitAcc.table := accRefTable;
@@ -434,12 +432,11 @@ rules:
 
 	  top->Notes->text.value := "";
 
-	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Marker_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, creation_date, modification_date " +
-		 "from MRK_Marker where _Marker_key = " + currentRecordKey + "\n" +
+	  cmd := "select _Marker_key, _Species_key, symbol, name, chromosome, " +
+		 "cytogeneticOffset, species, creation_date, modification_date " +
+		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
 	         "select note from MRK_Notes " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum\n";
@@ -454,14 +451,17 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 2);
-	        top->Name->text.value         := mgi_getstr(dbproc, 3);
-	        top->Chromosome->text.value   := mgi_getstr(dbproc, 4);
-	        top->Cyto->text.value         := mgi_getstr(dbproc, 5);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 6);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 7);
+	        top->Symbol->text.value       := mgi_getstr(dbproc, 3);
+	        top->Name->text.value         := mgi_getstr(dbproc, 4);
+	        top->Chromosome->text.value   := mgi_getstr(dbproc, 5);
+	        top->Cyto->text.value         := mgi_getstr(dbproc, 6);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 8);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
+		top->mgiSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
+		top->mgiSpecies->Species->text.value := mgi_getstr(dbproc, 7);
 	      elsif (results = 2) then
 		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+	      end if;
 	    end while;
 	    results := results + 1;
 	  end while;
@@ -471,6 +471,7 @@ rules:
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := MRK_MARKER;
+	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  
           LoadAcc.table := accRefTable;
