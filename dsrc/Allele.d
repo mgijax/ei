@@ -1014,9 +1014,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
---	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE_VIEW) +
---		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
-	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE) +
+	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 	         "select _Mutation_key, mutation from " + mgi_DBtable(ALL_MUTATION_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
