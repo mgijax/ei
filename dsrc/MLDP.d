@@ -676,7 +676,7 @@ rules:
 	  -- Delete Master Reference
 
 	  if (not top->Control->Experiments.set) then
-	    DeleteSQL.tableID := MLD_MARKER;
+	    DeleteSQL.tableID := MLD_MARKERBYREF;
 	    DeleteSQL.key := currentRefKey;
 	    DeleteSQL.list := top->QueryList;
 	    send(DeleteSQL, 0);
@@ -782,11 +782,6 @@ rules:
 	  (void) busy_cursor(top);
 
           cmd := "";
-	  set : string := "";
- 
-          if (top->ExptMasterForm->mgiCitation->ObjectID->text.modified) then
-	    set := "_Refs_key = " + mgi_DBprkey(top->ExptMasterForm->mgiCitation->ObjectID->text.value);
-          end if;
  
 	  -- Process Primary Markers
 
@@ -799,10 +794,6 @@ rules:
           ModifyNotes.key := currentRefKey;
           send(ModifyNotes, 0);
           cmd := cmd + top->ExptMasterForm->Notes.sql;
-
-	  if (cmd.length > 0 or set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MLD_MARKER, currentRefKey, set);
-	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -1047,8 +1038,10 @@ rules:
           deleteCmd : string := "";
           tmpCmd : string := "";
  
+	  keyDeclared : boolean := false;
           currentSeqNum : string;
           newSeqNum : string;
+          refMarkerKey : string;
           markerKey : string;
  
 	  -- Check for duplicate Seq # assignments
@@ -1072,10 +1065,19 @@ rules:
  
             currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
             newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
+            refMarkerKey := mgi_tblGetCell(table, row, table.refMarkerKey);
             markerKey := mgi_tblGetCell(table, row, table.markerKey);
  
+	    if (not keyDeclared) then
+	      tmpCmd := tmpCmd + mgi_setDBkey(MLD_MARKER, NEWKEY, KEYNAME);
+	      keyDeclared := true;
+	    else
+	      tmpCmd := tmpCmd + mgi_DBincKey(KEYNAME);
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
-              tmpCmd := tmpCmd + mgi_DBinsert(MLD_MARKER, NOKEY) +
+
+              tmpCmd := tmpCmd + mgi_DBinsert(MLD_MARKER, KEYNAME) +
                         currentRefKey + "," +
                         markerKey + "," +
                         newSeqNum + ")\n";
@@ -1087,12 +1089,11 @@ rules:
               if (currentSeqNum != newSeqNum) then
                 -- Delete records with current Seq # (cannot have duplicate Seq #)
  
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_MARKER, currentRefKey) +
-                             "and sequenceNum = " + currentSeqNum + "\n";
+                deleteCmd := deleteCmd + mgi_DBdelete(MLD_MARKER, refMarkerKey);
  
                 -- Insert new record
  
-                tmpCmd := tmpCmd + mgi_DBinsert(MLD_MARKER, NOKEY) +
+                tmpCmd := tmpCmd + mgi_DBinsert(MLD_MARKER, KEYNAME) +
                           currentRefKey + "," +
                           markerKey + "," +
                           newSeqNum + ")\n";
@@ -1101,13 +1102,11 @@ rules:
  
               else
                 set := "_Marker_key = " + markerKey;
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_MARKER, currentRefKey, set) +
-                          "and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MLD_MARKER, refMarkerKey, set);
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_MARKER, currentRefKey) +
-                        "and sequenceNum = " + currentSeqNum + "\n";
+              tmpCmd := tmpCmd + mgi_DBdelete(MLD_MARKER, refMarkerKey);
             end if;
  
             row := row + 1;
@@ -3129,22 +3128,23 @@ rules:
 	      if (results = 1) then
 
 		if (row = 0) then
-	          top->ExptMasterForm->ID->text.value := mgi_getstr(dbproc, 4);
-	          top->ExptMasterForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 4);
+	          top->ExptMasterForm->ID->text.value := mgi_getstr(dbproc, 5);
+	          top->ExptMasterForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 5);
 	          top->ExptMasterForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 2);
 	          top->ExptDetailForm->Jnum->text.value := mgi_getstr(dbproc, 2);
 	          top->ExptMasterForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 3);
 		end if;
 
-                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 9));
+                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.refMarkerKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 		-- Insert all Primary Markers into Marker List
-                InsertList.item := mgi_getstr(dbproc, 9);
-                InsertList.key := mgi_getstr(dbproc, 5);
+                InsertList.item := mgi_getstr(dbproc, 12);
+                InsertList.key := mgi_getstr(dbproc, 6);
                 InsertList.list := top->MarkerList;
                 send(InsertList, 0);
 	      elsif (results = 2) then

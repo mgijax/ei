@@ -804,6 +804,11 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Expt_key");
 	    break;
     case MLD_MARKER:
+	    strcpy(buf, "_RefMarker_key");
+	    break;
+    case MLD_MARKERBYREF:
+	    strcpy(buf, "_Refs_key");
+	    break;
     case MLD_NOTES:
     case MLD_EXPTS_DELETE:
             strcpy(buf, "_Refs_key");
@@ -1506,6 +1511,7 @@ char *mgi_DBtable(int table)
             strcpy(buf, "MLD_ISRegion");
 	    break;
     case MLD_MARKER:
+    case MLD_MARKERBYREF:
             strcpy(buf, "MLD_Marker");
 	    break;
     case MLD_MCMASTER:
@@ -1911,6 +1917,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTECHUNK:
     case MGI_ORGANISMTYPE:
     case MGI_REFERENCE_ASSOC:
+    case MGI_SETMEMBER:
     case MLC_LOCK:
     case MLC_MARKER:
     case MLC_REFERENCE:
@@ -2246,7 +2253,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_MARKER:
-	    sprintf(buf, "insert %s (%s, _Marker_key, sequenceNum)",
+	    sprintf(buf, "insert %s (%s, _Refs_key, _Marker_key, sequenceNum)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_MCMASTER:
