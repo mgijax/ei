@@ -1,3 +1,10 @@
+TAG: ei-10-0-2
+DATE: 12/04/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) nlm.py - NLM format change
+
 TAG: ei-10-0-1
 DATE: 12/03/2003
 STAFF: lec
