@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 30 11:57:34 2004";
+      lastWritten = "Fri Oct  8 09:02:26 2004";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -660,6 +660,20 @@ Module: mgiTable
               }
               {
                 DeleteRow = TablePush : mgiTable;
+              }
+              {
+                EditRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:EditSynType";
+                  labelString = "Edit Type";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = DeleteRow;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = DeleteRow;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 SynonymTypeMenu = SynonymTypeMenu : mgiOption;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  8 08:53:19 2004";
+      lastWritten = "Fri Oct  8 09:02:49 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -10214,6 +10214,20 @@ Shift<Key>Tab: prev-tab-group()
                                         DeleteRow = TablePush : mgiTable;
                                       }
                                       {
+                                        EditRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          activateCallback = "D:EditStrainAlleleType";
+                                          labelString = "Edit Type";
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = DeleteRow;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = DeleteRow;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                      {
                                         StrainAlleleTypeMenu = StrainAlleleTypeMenu : mgiOption;
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
@@ -10248,6 +10262,9 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        EditRow = TablePush : mgiTable;
                                       }
                                       {
                                         SynonymTypeMenu = SynonymTypeMenu : mgiOption;
