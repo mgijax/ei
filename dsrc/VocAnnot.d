@@ -461,6 +461,8 @@ rules:
 	    from_evidence := true;
 	  end if;
 
+	  -- Modification date
+
 	  top->Annotation->Table.sqlCmd := "";
           QueryDate.source_widget := top->Annotation->Table;
 	  QueryDate.row := 0;
@@ -472,8 +474,6 @@ rules:
 	    where := where + annotTable.sqlCmd;
 	    from_evidence := true;
 	  end if;
-
-	  -- Modification date
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.notes);
 	  if (value.length > 0) then

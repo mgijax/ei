@@ -327,6 +327,15 @@ rules:
 	  keyName := "allele" + KEYNAME;
 	  allelePairString := "";
 
+	  -- Check for duplicate Seq # assignments
+
+          DuplicateSeqNumInTable.table := table;
+          send(DuplicateSeqNumInTable, 0);
+
+          if (table.duplicateSeqNum) then
+            return;
+          end if;
+ 
           -- Process while non-empty rows are found
  
           while (row < mgi_tblNumRows(table)) do
