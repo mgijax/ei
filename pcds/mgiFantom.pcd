@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Apr  4 12:45:15 2002";
+      lastWritten = "Fri Apr 12 08:04:05 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -783,6 +783,13 @@ Module: mgiFantom
                                     labelString = "3' end mismatch";
                                   Group: User
                                     defaultValue = "3' end mismatch";
+                                }
+                                {
+                                  Problem = FantomNotePush : mgiFantom;
+                                  Group: Widget
+                                    labelString = "Problem Cluster";
+                                  Group: User
+                                    defaultValue = "Problem Cluster";
                                 }
                           }
                     }
