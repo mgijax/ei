@@ -35,7 +35,7 @@ import reportlib
 
 fp = reportlib.init(sys.argv[0])
 
-cmd = 'select m._Marker_key, m.symbol, m.name, c._Current_key, o.offset, m.chromosome, a.accID, isPrimary = 1 ' + \
+cmd = 'select m._Marker_key, m.symbol, m.name, c._Current_key, offset = str(o.offset,10,2), m.chromosome, a.accID, isPrimary = 1 ' + \
   'from MRK_Marker m, MRK_Offset o, MRK_Current c, MRK_Acc_View a ' + \
   'where m._Species_key = 1 ' + \
   'and m._Marker_key = o._Marker_key ' + \
@@ -79,7 +79,7 @@ for r in results:
 		fp.write(r['accID'] + reportlib.TAB + \
 	         	r['symbol'] + reportlib.TAB + \
 		 	r['name'] + reportlib.TAB + \
-		 	`r['offset']` + reportlib.TAB + \
+		 	r['offset'] + reportlib.TAB + \
 		 	r['chromosome'] + reportlib.TAB)
 
 		otherAccIds = []
