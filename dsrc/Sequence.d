@@ -353,6 +353,7 @@ rules:
 	  from_gender : boolean := false;
 	  from_cellline : boolean := false;
 	  from_object : boolean := false;
+	  from_objectacc : boolean := false;
 	  value : string;
 	  value2 : string;
 	  tag : string := "s";
@@ -558,7 +559,14 @@ rules:
 	    from_object := true;
 	  end if;
 
-	  -- install Acc ID query
+	  -- Accession ID
+
+	  value := mgi_tblGetCell(table, 0, table.mgiID);
+          if (value.length > 0) then
+	    whereMarker := where + "\nand ma.accID = " + mgi_DBprstr(value);
+	    whereProbe := where + "\nand pa.accID = " + mgi_DBprstr(value);
+	    from_objectacc := true;
+	  end if;
 
 	  -- References
 
@@ -573,6 +581,20 @@ rules:
 	    whereMarker := whereMarker + "\nand s._Sequence_key = m._Sequence_key";
 	    fromProbe := from + ", SEQ_Probe_Cache_View p";
 	    whereProbe := whereProbe + "\nand s._Sequence_key = p._Sequence_key";
+	    union := "union\n" + select + fromProbe + "\n" + "where " + whereProbe;
+	    from := fromMarker;
+	    where := whereMarker;
+	  end if;
+
+	  if (from_objectacc) then
+	    fromMarker := from + ", ACC_Accession ma, SEQ_Marker_Cache m";
+	    whereMarker := whereMarker + "\nand s._Sequence_key = m._Sequence_key" +
+		"\nand m._Marker_key = ma._Object_key" +
+		"\nand ma._MGIType_key = 2";
+	    fromProbe := from + ", ACC_Accession pa, SEQ_Probe_Cache p";
+	    whereProbe := whereProbe + "\nand s._Sequence_key = p._Sequence_key" +
+		"\nand p._Probe_key = pa._Object_key" +
+		"\nand pa._MGIType_key = 3";
 	    union := "union\n" + select + fromProbe + "\n" + "where " + whereProbe;
 	    from := fromMarker;
 	    where := whereMarker;
