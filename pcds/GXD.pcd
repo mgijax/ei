@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep 13 10:13:16 2001";
+      lastWritten = "Thu Sep 13 13:52:03 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2225,10 +2225,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Stage = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Note;
+                                    leftWidget = StagingNotNormalized;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = Note;
+                                    topWidget = StagingNotNormalized;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2268,6 +2268,23 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           managed = False;
                                       }
+                                }
+                                {
+                                  StagingNotNormalized = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Staging Not Normalized";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Note;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Note;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    note = "Staging not normalized.";
+                                    noteWidget = Note;
                                 }
                           }
                     }
@@ -2705,7 +2722,6 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Search = MenuPush : mgiMenu;
                                         Group: Widget
-                                          managed = False;
                                           activateCallback = "D:SearchGenotype,\nD:GoHome";
                                       }
                                       {
@@ -2722,8 +2738,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Clear = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         Clear1 = MenuPush : mgiMenu;
@@ -2828,24 +2842,31 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Search = ControlPush;
                                   Group: Widget
-                                    managed = False;
                                     activateCallback = "D:SearchGenotype,\nD:GoHome";
                                 }
                                 {
                                   Clear = ControlPush;
-                                  Group: Widget
-                                    managed = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = Search;
+                                    topWidget = Search;
                                 }
                                 {
                                   Modify = ControlPush;
                                   Group: Constraint
-                                    leftAttachment = attach_form;
+                                    leftAttachment = attach_widget;
                                     leftOffset = 2;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_form;
-                                    topOffset = 2;
+                                    topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftWidget = Clear;
+                                    topWidget = Clear;
                                 }
                                 {
                                   Add = ControlPush;
@@ -2856,27 +2877,26 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Previous = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Delete;
-                                    leftOffset = 2;
-                                    rightAttachment = attach_none;
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_widget;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = Delete;
+                                    topWidget = Next;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightWidget = Next;
+                                    rightOffset = 5;
                                 }
                                 {
                                   Next = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Previous;
-                                    leftOffset = 2;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Previous;
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    topAttachment = attach_widget;
+                                    topWidget = Delete;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 0;
+                                    topOffset = 2;
+                                    rightWidget = Delete;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -2885,10 +2905,10 @@ Shift<Key>Tab: prev-tab-group()
                                   RecordCount = RecordCount : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Modify;
+                                    leftWidget = Search;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Modify;
+                                    topWidget = Search;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2897,7 +2917,7 @@ Shift<Key>Tab: prev-tab-group()
                                   CreationDate = CreationDate : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Modify;
+                                    leftWidget = RecordCount;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = RecordCount;
@@ -2908,7 +2928,7 @@ Shift<Key>Tab: prev-tab-group()
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Modify;
+                                    leftWidget = CreationDate;
                                     rightAttachment = attach_form;
                                     rightOffset = 5;
                                     topAttachment = attach_widget;
@@ -2921,10 +2941,10 @@ Shift<Key>Tab: prev-tab-group()
                                   ModificationHistory = ModificationHistory : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Modify;
+                                    leftWidget = ModifiedDate;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = RecordCount;
+                                    topWidget = ModifiedDate;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }

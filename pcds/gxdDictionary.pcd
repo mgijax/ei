@@ -2,12 +2,11 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep 13 10:23:54 2001";
+      lastWritten = "Thu Sep 13 12:28:01 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
             title = "Anatomical Dictionary";
-            destroyCallback = "D:DictionaryExit";
           Group: Control
             vip_x = 60;
             vip_y = 30;
@@ -23,15 +22,6 @@ Module: gxdDictionary
                       MainMenu = MainMenu;
                           {
                             File = File;
-                                Popups:
-                                {
-                                  FilePulldown = MenuPulldown;
-                                      {
-                                        Exit = MenuPush;
-                                        Group: Widget
-                                          activateCallback = "D:DictionaryExit";
-                                      }
-                                }
                           }
                           {
                             Commands = Commands;
@@ -276,7 +266,6 @@ Module: gxdDictionary
                                   treeDisplay = treeDisplay : gxdDictionary;
                                   Group: Widget
                                     highlightColor = Firebrick;
-                                    xrtGearSelectionCallback = "C:nodeSelectionCB";
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
