@@ -36,7 +36,8 @@
 -- History
 --
 -- lec  04/17/2000
---	- TR 1177; MLC text needs to be translated
+--	- TR 148; MLC text needs to be translated
+--	- fixed bugs in Modify (dup reference bug, displaying split symbol)
 --
 -- gld  06/09/1999
 --      changed C API to use XrtLists, rather than C lists.
@@ -186,7 +187,6 @@ rules:
 	  send(InitMLCED);                    
  
 	  (void) reset_cursor(mgi);
-
 	end does;
 
 --
@@ -214,7 +214,7 @@ rules:
  
 	  Clear.source_widget := top;
 	  send(Clear, 0);
-	end
+	end does;
 
 --
 -- Checkin
@@ -222,7 +222,6 @@ rules:
 -- If current Marker has a lock, then remove the lock and re-set the currentMarkerKey
 --
 	Checkin does
-
 	  if (lockon) then
 	    (void) mgi_writeLog("RELEASING LOCK ON SYMBOL WITH KEY: " + currentMarkerKey + "\n");
 	    (void) release_mlc_lock(currentMarkerKey);
@@ -230,7 +229,6 @@ rules:
 	  end if; 
 
 	  lockon := false;
-
 	end does;
 
 --
@@ -323,202 +321,185 @@ rules:
 --
 
 	Modify does
-		offset : integer;
-		locustext : widget := top->Description->text;
-		dialog, dialoglist : widget;
-		locustaglist, prob_list, l : opaque;
-		notfound_list, split_list, notcurr_list : xm_string_list;
-		prob : TagCheck := create TagCheck();
-		newsym : string;
+	  locustext : widget := top->Description->text;
 
-		if (not top.allowEdit) then
-		  return;
-		end if;
+	  if (not top.allowEdit) then
+	    return;
+	  end if;
 
-		-- Check for duplicate J# listed as separate references.  These
-		-- should be collapsed together by the user.
+	  -- Check for duplicate J# listed as separate references.
+	  -- These should be collapsed together by the user.
 
-		-- get a pointer to the references table
-		refTable : widget := top->Reference->Table;
-		jnum_list : list := create list("string");
-		dup_list : list := create list("string");
-		rnumstr, jnumstr : string;
-		sym, editMode : string;
-		row : integer := 0;
-		i,j, itemcnt : integer;
+	  refTable : widget := top->Reference->Table;
+	  jnum_list : string_list := create string_list();
+	  dup_list : string_list := create string_list();
+	  rnumstr, jnumstr : string;
+	  editMode : string;
+	  row : integer := 0;
 
-		-- build a list of references, and a list of the reference
-		-- indexes that are dups.
+	  -- build a list of references and a list of duplicate references
 
-		while (row < mgi_tblNumRows(refTable)) do
-			editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
+	  while (row < mgi_tblNumRows(refTable)) do
+	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
-			if (editMode = TBL_ROW_EMPTY) then
-				break;
-			end if;
+	    if (editMode = TBL_ROW_EMPTY or editMode = TBL_ROW_DELETE) then
+	      break;
+	    end if;
 
-			if (editMode = TBL_ROW_ADD or editMode = TBL_ROW_MODIFY) then
-				rnumstr := mgi_tblGetCell(refTable, row, refTable.refsKey);
-				jnumstr := mgi_tblGetCell(refTable, row, refTable.jnum);
+	    rnumstr := mgi_tblGetCell(refTable, row, refTable.seqNum);
+	    jnumstr := mgi_tblGetCell(refTable, row, refTable.jnum);
 
-				if (jnum_list.in_list(jnumstr)) then
-					-- save the index of the duplicate
-					dup_list.append(rnumstr);
-				else
-					jnum_list.append(jnumstr);
-				end if;
+	    if (jnum_list.find(jnumstr) > 0) then
+	      dup_list.insert(rnumstr, dup_list.count + 1);
+	    else
+	      jnum_list.insert(jnumstr, jnum_list.count + 1);
+	    end if;
 
-			end if;
-			row := row + 1;
-		end while;
+	    row := row + 1;
+	  end while;
 
-		-- create an error message, listing the reference indexes where there
-		-- are dups.
+	  -- create an error message, listing the duplicate references
 
-		indexes : string := "";
+	  dups : string := "";
+	  if (dup_list.count > 0) then
+	    dup_list.rewind;
+	    while dup_list.more do
+	      dups := dups + "\n" + dup_list.next;
+	    end while;
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Duplicate Ref#(s):\n" + dups;
+	    send(StatusReport);
+	    return;
+	  end if;
 
-		if (dup_list.count > 0) then
-			dup_list.open;
-			while dup_list.more do
-			   indexes := dup_list.next + " " + indexes;
-			end while;
-			dup_list.close;
-			StatusReport.source_widget := top;
-			StatusReport.message := "Duplicate reference at index(es): " + 
-									indexes;
-			send(StatusReport);
-			return;
-		end if;
+	  -- Verify Markerup tags
 
-		muchars : string := "";
+	  offset : integer;
 
-		offset := checkmarkuppairs(locustext.value);
-		if (offset >= 0) then
-			XmTextSetHighlight(locustext, offset, offset + 1, 1);
-			StatusReport.source_widget := top;
-			StatusReport.message := "Unmatched <> or parentheses." +
-                                    " Edit and resubmit.";
-			send(StatusReport);
-			return;
-		end if;
+	  offset := checkmarkuppairs(locustext.value);
 
-		offset := checkmarkup(locustext.value);
-		if (offset >= 0) then
-			XmTextSetHighlight(locustext, offset, offset + 1, 1);
-			StatusReport.source_widget := top;
-			
-			sprintf(muchars, "%c or %c", OBADMARKUPCHAR, CBADMARKUPCHAR);
-			StatusReport.message := "Bad/Disallowed markup, Using " + 
-									muchars +  
-									" or other invalid characters. " +
-									"Edit and resubmit.";
-			send(StatusReport);
-			return;
-		end if;
+	  if (offset >= 0) then
+	    XmTextSetHighlight(locustext, offset, offset + 1, 1);
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Unmatched <> or parentheses.  Edit and resubmit.";
+	    send(StatusReport);
+	    return;
+	  end if;
 
-		dialog := top->SymbolErrorDialog;
+	  offset := checkmarkup(locustext.value);
 
-		notfound_list := create xm_string_list();
-		split_list := create xm_string_list();
-		notcurr_list := create xm_string_list();
+	  if (offset >= 0) then
+	    XmTextSetHighlight(locustext, offset, offset + 1, 1);
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Bad/Disallowed markup using " + 
+		(string) OBADMARKUPCHAR + " or " + (string) CBADMARKUPCHAR +
+		" or other invalid characters. Edit and resubmit.";
+	    send(StatusReport);
+	    return;
+	  end if;
 
-		(void) busy_cursor(top);
+	  -- Verify Symbols
 
-		-- get a list of the locus tags (no duplicates)
-		locustaglist := getlocustaglist(locustext.value, locustext.value.length);
+	  (void) busy_cursor(top);
 
-		-- see if we have any tags which are not the most current 
-		-- symbol
+	  dialog, dialoglist : widget;
+	  notfound_list, split_list, notcurr_list : xm_string_list;
+	  locustaglist, prob_list : opaque;
+	  newsym : string;
+	  i, j, itemcnt : integer;
+	  prob : TagCheck := create TagCheck();
 
-		-- returns a list of Current records: (reason, symbol, (symbol_list))
-		-- reason can be: (0 - not exists, 1 - not current, or 2 - split)
-		-- if reason is 0, then symbol_list is null
-		--              1, then symbol_list contains 1 symbol
-		--              2, then symbol_list contains as many symbols as
-		--                 are involved in the split    
+	  dialog := top->SymbolErrorDialog;
 
-		dialoglist:= XmSelectionBoxGetChild(dialog,XmDIALOG_LIST);
-		(void) XmListDeleteAllItems(dialoglist);
+	  notfound_list := create xm_string_list();
+	  split_list := create xm_string_list();
+	  notcurr_list := create xm_string_list();
 
-		prob_list := check_tags(locustaglist);
-		if ( prob_list = nil )
-        then
-			StatusReport.source_widget := top;
-			StatusReport.message := "Couldn't complete operation due to lack" +
-                                    " of memory.";
-			send(StatusReport);
+	  -- get a list of the locus tags (no duplicates)
+	  locustaglist := getlocustaglist(locustext.value, locustext.value.length);
+
+	  -- see if we have any tags which are not the most current symbol
+
+	  -- returns a list of Current records: (reason, symbol, (symbol_list))
+	  -- reason can be: (0 - not exists, 1 - not current, or 2 - split)
+	  -- if reason is 0, then symbol_list is null
+	  --              1, then symbol_list contains 1 symbol
+	  --              2, then symbol_list contains as many symbols as
+	  --                 are involved in the split    
+
+	  dialoglist:= XmSelectionBoxGetChild(dialog,XmDIALOG_LIST);
+	  (void) XmListDeleteAllItems(dialoglist);
+
+	  prob_list := check_tags(locustaglist);
+	  if (prob_list = nil) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Couldn't complete operation due to lack of memory.";
+	    send(StatusReport);
             return;
-        end if;
+          end if;
 
-		i := 0;
-		itemcnt := XrtGearListGetItemCount(prob_list);
-		while (i < itemcnt) do
-			prob := TagCheckList_getitem(prob_list, i);
-			if (prob.reason = 0) then
-				notfound_list.insert(prob.symbol + "    NOT_IN_MGD   " + \
-									 "   ",notfound_list.count + 1);
-			elsif (prob.reason = 1) then
-				l := prob.symbol_list;    
-				-- retrieve the only item on the list
-				newsym := StringList_getitem(l, 0);
-				notcurr_list.insert(prob.symbol + "    NOT_CURRENT   " + \ 
-					 newsym, notcurr_list.count + 1);
-			elsif (prob.reason = 2) then
+	  i := 0;
+	  itemcnt := XrtGearListGetItemCount(prob_list);
 
-				l := prob.symbol_list;
-				newsym :="";
-				j := 0;
-				while (j < XrtGearListGetItemCount(l)) do
-					sym := StringList_getitem(l, i);
-					-- append the split symbols onto newsym
-					newsym := newsym + sym + " ";
-					j := j + 1;
-				end while; 
-				
-				split_list.insert(prob.symbol + "    SPLIT   " + \
-							newsym,split_list.count + 1);
-			else
-				(void) mgi_writeLog("Invalid reason code from check_tags\n");
-			end if;
-			i := i + 1;
-		end while;
+	  while (i < itemcnt) do
+	    prob := TagCheckList_getitem(prob_list, i);
 
-		if (itemcnt > 0) then 
-			(void) XmListAddItems(dialoglist, notfound_list, notfound_list.count,0);
-			(void) XmListAddItems(dialoglist, notcurr_list, notcurr_list.count, 0);
-			(void) XmListAddItems(dialoglist, split_list, split_list.count, 0);
-			top->SymbolErrorDialog.textString := "";
-			top->SymbolErrorDialog.managed := true;
-			(void) reset_cursor(top);
-			TagCheckList_destroy(prob_list);
-			TagList_destroy(locustaglist);
-			return;  /* abort submission until problems are cleared up */
-		end if;
-		TagCheckList_destroy(prob_list);
-		TagList_destroy(locustaglist);
+	    if (prob.reason = 0) then
+	      notfound_list.insert(prob.symbol + "    NOT_IN_MGD      ", notfound_list.count + 1);
 
-		-- initialize command string, before appending to it.
-		cmd := "";
+	    elsif (prob.reason = 1) then
+	      newsym := StringList_getitem(prob.symbol_list, 0);
+	      notcurr_list.insert(prob.symbol + "    NOT_CURRENT   " + newsym, notcurr_list.count + 1);
+	    elsif (prob.reason = 2) then
+		newsym := "";
+		j := 0;
+		while (j < XrtGearListGetItemCount(prob.symbol_list)) do
+		  newsym := newsym + StringList_getitem(prob.symbol_list, j) + " ";
+		  j := j + 1;
+		end while; 
+		split_list.insert(prob.symbol + "    SPLIT   " + newsym, split_list.count + 1);
+	    else
+	      (void) mgi_writeLog("Invalid reason code from check_tags\n");
+	    end if;
+	    i := i + 1;
+	  end while;
 
-		-- Build the cmd string
-		send(ModifyText,0);
-		send(ModifyReference, 0);
-		send(ModifyClass, 0);
+	  TagCheckList_destroy(prob_list);
+	  TagList_destroy(locustaglist);
 
-		ModifySQL.cmd := cmd;
-		ModifySQL.list := top->QueryList;
-		ModifySQL.reselect := false;
+	  -- abort modification until problems are fixed
 
-		if (debug) then 
-			(void) mgi_writeLog("MLCED ADD/MODIFY DEBUG: \n" + cmd + "\n");
-		else
-			 send(ModifySQL, 0);
-		end if;
+	  if (itemcnt > 0) then 
+	    (void) XmListAddItems(dialoglist, notfound_list, notfound_list.count, 0);
+	    (void) XmListAddItems(dialoglist, notcurr_list, notcurr_list.count, 0);
+	    (void) XmListAddItems(dialoglist, split_list, split_list.count, 0);
+	    top->SymbolErrorDialog.textString := "";
+	    top->SymbolErrorDialog.managed := true;
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
 
-		send(CheckSQLrc,0);
+	  -- initialize command string, before appending to it.
+	  cmd := "";
 
-		(void) reset_cursor(top);
-	end
+	  -- Build the cmd string
+	  send(ModifyText,0);
+	  send(ModifyReference, 0);
+	  send(ModifyClass, 0);
+
+	  ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := false;
+
+	  if (debug) then 
+	    (void) mgi_writeLog("MLCED ADD/MODIFY DEBUG: \n" + cmd + "\n");
+	  else
+	     send(ModifySQL, 0);
+	  end if;
+
+	  send(CheckSQLrc,0);
+	  (void) reset_cursor(top);
+	end does;
 
 --
 -- ModifyReference
@@ -627,73 +608,72 @@ rules:
 -- Affects: MLC_TEXT_EDIT, MLC_MARKER_EDIT
 -- 
 	ModifyText does
-		ltag : Tag;
-		mk2 : string;
-		locustaglist : opaque;
-		locustxt : widget := top->Description->text;
-		set : string;
-		i, itemcnt : integer;
+	  ltag : Tag;
+	  mk2 : string;
+	  locustaglist : opaque;
+	  locustxt : widget := top->Description->text;
+	  set : string;
+	  i, itemcnt : integer;
 	
-		/* get a list of tags - with no duplicates! */
-		locustaglist := getlocustaglist(locustxt.value, locustxt.value.length);
+	  /* get a list of tags - with no duplicates! */
+	  locustaglist := getlocustaglist(locustxt.value, locustxt.value.length);
 
-		-- Always re-insert the text so that the modification date and userID
-		-- gets updated.  Save the original creation date, if one exists.
+	  -- Always re-insert the text so that the modification date and userID
+	  -- gets updated.  Use the original creation date, if one exists.
 
-		-- delete Text entry in MLC_Text_edit for this marker key
-		cmd := cmd + mgi_DBdelete(MLC_TEXT_EDIT, currentMarkerKey);
+	  -- delete Text entry in MLC_Text_edit for this marker key
+	  cmd := cmd + mgi_DBdelete(MLC_TEXT_EDIT, currentMarkerKey);
 
-		-- note: mgi_DBprstr escape all of the "s in the text using "mgi_escape_quotes"
-		-- insert the new text
+	  -- note: mgi_DBprstr escape all of the "s in the text using "mgi_escape_quotes"
+	  -- insert the new text
 
-		cmd := cmd + mgi_DBinsert(MLC_TEXT_EDIT, NOKEY) + 
-				currentMarkerKey + ", " + 
-				mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + "," +
-				mgi_DBprstr(mlced_eiDescToDB(locustxt.value, locustaglist)) + "," +
-				mgi_DBprstr(global_login) + ",";
+	  cmd := cmd + mgi_DBinsert(MLC_TEXT_EDIT, NOKEY) + 
+			currentMarkerKey + ", " + 
+			mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + "," +
+			mgi_DBprstr(mlced_eiDescToDB(locustxt.value, locustaglist)) + "," +
+			mgi_DBprstr(global_login) + ",";
 
-		-- If a Creation date exists, then save it for the new Text record
-		-- Else, use the current date
+	  -- If a Creation date exists, then save it for the new Text record
+	  -- Else, use the current date
 
-		if (top->CreationDate->text.value.length > 0) then
-			cmd := cmd + mgi_DBprstr(top->CreationDate->text.value) + ")\n";
-		else
-			cmd := cmd + "getdate())\n";
-		end if;
+	  if (top->CreationDate->text.value.length > 0) then
+		  cmd := cmd + mgi_DBprstr(top->CreationDate->text.value) + ")\n";
+	  else
+		  cmd := cmd + "getdate())\n";
+	  end if;
 
-		cmd := cmd + mgi_DBdelete(MLC_MARKER_EDIT, currentMarkerKey);
+	  cmd := cmd + mgi_DBdelete(MLC_MARKER_EDIT, currentMarkerKey);
 
-		i := 0;
-		itemcnt := XrtGearListGetItemCount(locustaglist);
-		while (i < itemcnt) do
-			ltag := TagList_getitem(locustaglist, i);
-
-			-- Note: triggers cannot be used to look up the 
-			-- current key on the server side. Server is 
-			-- case-insensitive and thus cannot distinguish between 
-			-- 't' and 'T' for example. 
-			--
-			-- NOTE: Use of getIdbySymbol at this point assumes that 
-			-- _Marker_key exists for the tag, and that a split has not 
-			-- occurred.  We can make that assumption here, since 
-			-- tags have all been checked by this point.
-			-- Use of getIdbySymbol should be reconsidered, and a 
-			-- caching mechanism might be used in the future, if
-			-- the same symbols usually exist multiple times in a
-			-- document.  For now, the simple (and slower) solution.
+	  i := 0;
+	  itemcnt := XrtGearListGetItemCount(locustaglist);
+	  while (i < itemcnt) do
+	    -- Note: triggers cannot be used to look up the 
+	    -- current key on the server side. Server is 
+	    -- case-insensitive and thus cannot distinguish between 
+	    -- 't' and 'T' for example. 
+	    --
+	    -- NOTE: Use of getIdbySymbol at this point assumes that 
+	    -- _Marker_key exists for the tag, and that a split has not 
+	    -- occurred.  We can make that assumption here, since 
+	    -- tags have all been checked by this point.
+	    -- Use of getIdbySymbol should be reconsidered, and a 
+	    -- caching mechanism might be used in the future, if
+	    -- the same symbols usually exist multiple times in a
+	    -- document.  For now, the simple (and slower) solution.
 				
-			mk2 := getIdbySymbol(ltag.tagstr,true); 
-			cmd := cmd + mgi_DBinsert(MLC_MARKER_EDIT, NOKEY) +
-				currentMarkerKey + "," + (string) (i + 1) + ", " + mk2 + ")\n";     
-			i := i + 1;
-		end while;
-		TagList_destroy(locustaglist);
+	    ltag := TagList_getitem(locustaglist, i);
+	    mk2 := getIdbySymbol(ltag.tagstr,true); 
+	    cmd := cmd + mgi_DBinsert(MLC_MARKER_EDIT, NOKEY) +
+		   currentMarkerKey + "," + (string) (i + 1) + ", " + mk2 + ")\n";     
+	    i := i + 1;
+	  end while;
+	  TagList_destroy(locustaglist);
 
-		if (top->MLCModeMenu.menuHistory.modified and
-			top->MLCModeMenu.menuHistory.searchValue != "%") then
-			set := set + "mode = " + mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + ",";
-			cmd := cmd + mgi_DBupdate(MLC_TEXT_EDIT, currentMarkerKey, set);
-		end if;
+	  if (top->MLCModeMenu.menuHistory.modified and
+	      top->MLCModeMenu.menuHistory.searchValue != "%") then
+	    set := set + "mode = " + mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + ",";
+	    cmd := cmd + mgi_DBupdate(MLC_TEXT_EDIT, currentMarkerKey, set);
+	  end if;
 	end does;
 
 --
@@ -791,7 +771,6 @@ rules:
 --
  
 	Search does
-
 	  if (lockon) then 
 	    if (top->Description->text.modified or
 	        top->Reference->Table.modified or
@@ -846,7 +825,6 @@ rules:
 	    end if;
 
 	    send(Checkin,0);
-
 	  end if;
 
           -- If no new item selected, return
@@ -914,7 +892,6 @@ rules:
 	  (void) mgi_writeLog(cmd);
 
 	  dbproc : opaque := mgi_dbopen();
-	  set_textlimit(dbproc, 500000);
 	  (void) dbcmd(dbproc, cmd);
 	  (void) dbsqlexec(dbproc);
 
@@ -1549,35 +1526,35 @@ rules:
 ---
 
 	FixSymbols does
-		dialog : widget := FixSymbols.source_widget;
-		errlist : widget := XmSelectionBoxGetChild(dialog,XmDIALOG_LIST); 
-		symbol, reason, newsymbols, row : string;
+	  dialog : widget := FixSymbols.source_widget;
+	  errlist : widget := XmSelectionBoxGetChild(dialog,XmDIALOG_LIST); 
+	  symbol, reason, newsymbols, row : string;
 
-		if (errlist.selectedItemCount = 1) then
-			row := errlist.selectedItems[0]; 
-			symbol := getfixsymbol(row);
-			reason := getfixreason(row);
-			newsymbols := getfixnew(row); 
+	  if (errlist.selectedItemCount = 1) then
+	    row := errlist.selectedItems[0]; 
+	    symbol := getfixsymbol(row);
+	    reason := getfixreason(row);
+	    newsymbols := getfixnew(row); 
 
-			if (reason != nil and reason = "NOT_IN_MGD") then
-				StatusReport.source_widget := top;
-				StatusReport.message := "\nCannot fix NOT_IN_MGD errors.\n";
-				send(StatusReport);
-				return;
-			end if;
+	    if (reason != nil and reason = "NOT_IN_MGD") then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "\nCannot fix NOT_IN_MGD errors.\n";
+	      send(StatusReport);
+	      return;
+	    end if;
 
-			-- allow the global replace to start at the beginning each time
-			XmTextSetInsertionPosition(top->Description->text,0);
-			SearchReplaceText.type := "GlobalReplace_noinput";
-			SearchReplaceText.find_string := symbol;    
-			SearchReplaceText.replace_string := newsymbols;
-			send(SearchReplaceText,0);
-			(void) XmListDeleteItem(errlist, xm_xmstring(errlist.selectedItems[0]));
-		else
-			StatusReport.source_widget := top;
-			StatusReport.message := "\nNeed to select a symbol to fix.\n";
-			send(StatusReport);
-		end if;
+	    -- allow the global replace to start at the beginning each time
+	    XmTextSetInsertionPosition(top->Description->text,0);
+	    SearchReplaceText.type := "GlobalReplace_noinput";
+	    SearchReplaceText.find_string := symbol;    
+	    SearchReplaceText.replace_string := newsymbols;
+	    send(SearchReplaceText,0);
+	    (void) XmListDeleteItem(errlist, xm_xmstring(errlist.selectedItems[0]));
+	  else
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "\nNeed to select a symbol to fix.\n";
+	    send(StatusReport);
+	  end if;
 	end does;
 
 --
