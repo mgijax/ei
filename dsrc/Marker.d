@@ -1938,7 +1938,9 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  top->OtherReference->Table.xrtTblNumRows := row + 1;
+	  if (row > 5) then
+	    top->OtherReference->Table.xrtTblNumRows := row + 1;
+	  end if;
 
 	  -- Initialize Offset rows which do not exist
 	  row := 0;
