@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Oct  4 08:15:00 1999";
+      lastWritten = "Thu Oct  7 09:19:01 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -334,6 +334,8 @@ Module: mgiOption
                       UniGene = AccToggle : mgiOption;
                       Group: Widget
                         labelString = UniGene;
+                      Group: User
+                        defaultValue = 23;
                     }
                     {
                       ATCC = AccToggle : mgiOption;
@@ -1432,6 +1434,14 @@ Module: mgiOption
                       Group: User
                         searchValue = goat;
                         defaultValue = goat;
+                    }
+                    {
+                      guineapig = OptionToggle : mgiOption;
+                      Group: Widget
+                        labelString = "guinea pig";
+                      Group: User
+                        searchValue = "guinea pig";
+                        defaultValue = "guinea pig";
                     }
                     {
                       hamster = OptionToggle : mgiOption;
