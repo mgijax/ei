@@ -34,87 +34,6 @@ dmodule RefTypeTableLib is
 rules:
 
 --
--- AddRefTypeRow
---
---	Adds Row to ReferenceType Table
---	Sets appropriate refsType value
---	based on most recent ReferenceTypeMenu selection.
---
-
-        AddRefTypeRow does
-	  table : widget := AddRefTypeRow.table;
-
-	  if (table = nil) then
-	    table := AddRefTypeRow.source_widget.parent.child_by_class(TABLE_CLASS);
-	  end if;
-
-	  source : widget := table.parent.child_by_class("XmRowColumn");
-	  refsType : string;
-
-	  source := source.menuHistory;
-
-	  -- Traverse thru table and find first empty row
-	  row : integer := 0;
-	  while (row < mgi_tblNumRows(table)) do
-	    refsType := mgi_tblGetCell(table, row, table.refsCurrentType);
-	    if (refsType.length = 0) then
-	      break;
-	    end if;
-	    row := row + 1;
-	  end while;
-
-	  -- Set RefType, Label for row
-
-	  (void) mgi_tblSetCell(table, row, table.refsCurrentType, source.defaultValue);
-	  (void) mgi_tblSetCell(table, row, table.refsType, source.defaultValue);
-	  (void) mgi_tblSetCell(table, row, table.refsName, source.labelString);
-	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
-
-          -- Traverse to new table row
-
-          TraverseToTableCell.table := table;
-          TraverseToTableCell.row := row;
-          TraverseToTableCell.column := 0;
-          send(TraverseToTableCell, 0);
-
-	end
-
---
--- EditRefType
---
---	Edits Ref Type of current row based on most recent ReferenceTypeMenu selection.
---
-
-        EditRefType does
-	  table : widget := EditRefType.table;
-	  row : integer;
-
-	  if (table = nil) then
-	    table := EditRefType.source_widget.parent.child_by_class(TABLE_CLASS);
-	  end if;
-
-	  source : widget := table.parent.child_by_class("XmRowColumn");
-
-	  source := source.menuHistory;
-	  row := mgi_tblGetCurrentRow(table);
-
-	  -- Set RefType, Label for row
-
-	  -- don't touch refsCurrentType
-	  (void) mgi_tblSetCell(table, row, table.refsType, source.defaultValue);
-	  (void) mgi_tblSetCell(table, row, table.refsName, source.labelString);
-	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_MODIFY);
-
-          -- Traverse to new table row
-
-          TraverseToTableCell.table := table;
-          TraverseToTableCell.row := row;
-          TraverseToTableCell.column := 0;
-          send(TraverseToTableCell, 0);
-
-	end
-
---
 -- InitRefTypeTable
 --
 --	Initializes ReferenceType Table
@@ -145,13 +64,12 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	       (void) mgi_tblSetCell(table, row, table.refsCurrentType, mgi_getstr(dbproc, 1));
-	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 1));
-	       (void) mgi_tblSetCell(table, row, table.refsName,  mgi_getstr(dbproc, 2));
+	       (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 1));
+	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
 
 	       if (tableID = MGI_REFTYPE_NOMEN_VIEW or tableID = MGI_REFTYPE_SEQUENCE_VIEW or tableID = MGI_REFTYPE_STRAIN_VIEW) then
-	         table.mgiTypeKey := mgi_getstr(dbproc, 4);
+	         table.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
 	       end if;
 
 	       if (mgi_getstr(dbproc, 2) = "Original" 
@@ -210,17 +128,11 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-
---	      while (mgi_tblGetCell(table, row, table.refsType) != "" and
---		     mgi_tblGetCell(table, row, table.refsType) != mgi_getstr(dbproc, 2)) do
---		row := row + 1;
---	      end while;
-
 	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.refsCurrentType, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(table, row, table.refsName, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.refsCurrentTypeKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 6));
 
@@ -261,11 +173,11 @@ rules:
           row : integer := 0;
           editMode : string;
           assocKey : string;
-          key : string;
-          newKey : string;
-	  refsType : string;
-	  newRefsType : string;
-	  mgiType : string;
+          refsCurrentKey : string;
+          refsKey : string;
+	  refsCurrentTypeKey : string;
+	  refsTypeKey : string;
+	  mgiTypeKey : string;
 	  set : string := "";
 	  keyName : string := "refassocKey";
 	  keyDefined : boolean := false;
@@ -276,11 +188,11 @@ rules:
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
             assocKey := mgi_tblGetCell(table, row, table.assocKey);
-            key := mgi_tblGetCell(table, row, table.refsCurrentKey);
-            newKey := mgi_tblGetCell(table, row, table.refsKey);
-	    refsType := mgi_tblGetCell(table, row, table.refsCurrentType);
-	    newRefsType := mgi_tblGetCell(table, row, table.refsType);
-	    mgiType := table.mgiTypeKey;
+            refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
+            refsKey := mgi_tblGetCell(table, row, table.refsKey);
+	    refsCurrentTypeKey := mgi_tblGetCell(table, row, table.refsCurrentTypeKey);
+	    refsTypeKey := mgi_tblGetCell(table, row, table.refsTypeKey);
+	    mgiTypeKey := (string) table.mgiTypeKey;
  
             if (editMode = TBL_ROW_ADD) then
 	      if (tableID = MGI_REFERENCE_ASSOC) then
@@ -293,50 +205,49 @@ rules:
 		end if;
 
 		cmd := cmd + mgi_DBinsert(tableID, keyName) +
-		       newKey + "," +
+		       refsKey + "," +
 		       objectKey + "," +
-		       mgiType + "," +
-		       refsType + "," +
+		       mgiTypeKey + "," +
+		       refsTypeKey + "," +
 		       global_loginKey + "," + global_loginKey + ")\n";
               else 
 		cmd := cmd + mgi_DBinsert(tableID, NOKEY) + 
 		     objectKey + "," + 
-		     newKey + "," +
-		     refsType + ")\n";
+		     refsKey + "," +
+		     refsTypeKey + ")\n";
 	      end if;
 
 	      if (table.is_defined("reviewKey") != nil) then
                 set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-                cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
+                cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
 	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
 	      if (tableID = MGI_REFERENCE_ASSOC) then
-                set := "_Refs_key = " + newKey + "," +
-		       "_RefAssocType_key = " + newRefsType;
+                set := "_Refs_key = " + refsKey + "," +
+		       "_RefAssocType_key = " + refsTypeKey;
                 cmd := cmd + mgi_DBupdate(tableID, assocKey, set);
 	      else
-                set := "_Refs_key = " + newKey + "," +
-		       "_RefsType_key = " + newRefsType;
+                set := "_Refs_key = " + refsKey + "," +
+		       "_RefsType_key = " + refsTypeKey;
                 cmd := cmd + mgi_DBupdate(tableID, objectKey, set) + 
-                       "and _Refs_key = " + key + 
-		       " and _RefsType_key = " + refsType + "\n";
+                       "and _Refs_key = " + refsCurrentKey + 
+		       " and _RefsType_key = " + refsCurrentTypeKey + "\n";
 	      end if;
 
 	      if (table.is_defined("reviewKey") != nil) then
                 set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-                cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
+                cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
 	      end if;
 
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-	      if (tableID = MGI_REFERENCE_ASSOC) then
-                cmd := cmd + mgi_DBdelete(tableID, assocKey);
-	      else
-                cmd := cmd + mgi_DBdelete(tableID, objectKey) + 
-                     "and _Refs_key = " + key + 
-		     " and _RefsType_key = " + refsType + "\n";
-	      end if;
+            elsif (editMode = TBL_ROW_DELETE and assocKey.length > 0) then
+              cmd := cmd + mgi_DBdelete(tableID, assocKey);
+
+            elsif (editMode = TBL_ROW_DELETE and refsKey.length > 0) then
+              cmd := cmd + mgi_DBdelete(tableID, objectKey) + 
+                     "and _Refs_key = " + refsCurrentKey + 
+		     " and _RefsType_key = " + refsCurrentTypeKey + "\n";
             end if;
  
             row := row + 1;

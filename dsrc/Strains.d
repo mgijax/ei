@@ -153,11 +153,9 @@ rules:
 	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
 	  send(InitSynTypeTable, 0);
 
-	  -- Initialize Reference table
-
-	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := MGI_REFTYPE_STRAIN_VIEW;
-	  send(InitRefTypeTable, 0);
+	  -- Ref Type Menu
+	  InitOptionMenu.option := top->ReferenceTypeMenu;
+	  send(InitOptionMenu, 0);
 
 	  -- Strain/Genotype Qualifier Menu
 	  InitOptionMenu.option := top->StrainGenoQualMenu;
@@ -775,10 +773,6 @@ rules:
 --	  InitSynTypeTable.table := top->Synonym->Table;
 --	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
 --	  send(InitSynTypeTable, 0);
-
---	  InitRefTypeTable.table := top->Reference->Table;
---	  InitRefTypeTable.tableID := MGI_REFTYPE_STRAIN_VIEW;
---	  send(InitRefTypeTable, 0);
 
 	  top->ReferenceMGI->Records.labelString := "0 Records";
 	  top->DataSets->Records.labelString := "0 Records";
