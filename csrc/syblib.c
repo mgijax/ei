@@ -40,6 +40,7 @@ static Widget search_list;
 static int search_table;
 
 char *global_login;		/* Set in Application dModule; holds user login value */
+int global_loginKey;            /* Set in Application dModule; holds user login key value */
 char *global_passwd_file;	/* Set in mgi_dbinit; holds user password file name */
 char *global_passwd;		/* Set in mgi_dbinit; holds user password name */
 char *global_reportdir;		/* Set in mgi_dbinit; holds user report directory name */

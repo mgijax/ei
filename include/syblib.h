@@ -36,6 +36,7 @@ extern int mgi_process_sql(Widget);
 
 extern LOGINREC *loginrec;
 extern char *global_login;
+extern int globa_loginKey;
 extern char *global_passwd_file;
 extern char *global_passwd;
 extern char *global_reportdir;
