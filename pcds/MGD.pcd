@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Apr 13 11:41:31 2001";
+      lastWritten = "Wed May  9 09:36:24 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -9032,7 +9032,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               text = text;
                                               Group: User
-                                                defaultValue = "-1";
+                                                defaultValue = "-2";
                                                 required = True;
                                             }
                                       }
