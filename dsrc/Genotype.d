@@ -44,7 +44,6 @@ devents:
 
 	ModifyAllelePair :local [];
 
-	PrepareSearch :local [];
 	Select :local [item_position : integer;];
 	SelectReferences :local [];
 	SetOptions :local [source_widget : widget;
@@ -67,7 +66,6 @@ locals:
 	cmd : string;
 	from : string;
 	where : string;
-	manualSearch : boolean := false;
 
 	assayTable : widget;
 	assayPush : widget;
@@ -408,19 +406,26 @@ rules:
         end does;
 
 --
--- PrepareSearch
+-- SearchGenotype
 --
--- Activated from:  devent Search
---
--- Prepare select statement based on user input
+-- Retrieve Genotype records for given assayKey
+-- Global event (defined in Genotype.de)
 --
 
-	PrepareSearch does
-	  from_allele : boolean := false;
+	SearchGenotype does
+	  assayKey : string := SearchGenotype.assayKey;
+	  select : string;
 	  value : string;
+	  orderBy : string := "\norder by g.strain, ap.allele1";
+	  from_allele : boolean := false;
+	  manualSearch : boolean := false;
 
-	  manualSearch := false;
+          (void) busy_cursor(top);
 
+	  --
+	  -- See if the user has entered any search constraints;
+	  -- If so, then process the user-specified query
+	  --
 	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
 	  	", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
 	  where := "";
@@ -433,7 +438,6 @@ rules:
 	  if (accTable.sqlFrom.length > 0) then
 	    from := from + accTable.sqlFrom;
 	    where := where + accTable.sqlWhere;
-	    manualSearch := true;
 	  end if;
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
@@ -442,28 +446,23 @@ rules:
 
 	  if (top->ModificationHistory->Table.sqlCmd.length > 0) then
             where := where + top->ModificationHistory->Table.sqlCmd;
-	    manualSearch := true;
 	  end if;
 
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	    where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
-	    manualSearch := true;
 	  else
 	    value := top->EditForm->Strain->Verify->text.value;
 	    if (value .length > 0) then
 	      where := where + "\nand g.strain like " + mgi_DBprstr(value);
-	      manualSearch := true;
 	    end if;
 	  end if;
 	    
           if (top->ConditionalMenu.menuHistory.searchValue != "%") then
             where := where + "\nand g.isConditional = " + top->ConditionalMenu.menuHistory.searchValue;
-	    manualSearch := true;
           end if;
 
 	  if (top->Note->text.value.length > 0) then
             where := where + "\nand g.note like " + mgi_DBprstr(top->Note->text.value);
-	    manualSearch := true;
 	  end if;
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
@@ -505,48 +504,16 @@ rules:
 	    end if;
 	  end if;
 
+	  -- If no manual search constraints entered...
+	  if (where.length > 0) then
+	    manualSearch := true;
+	  end if;
+
 	  if (from_allele) then
 	    where := "where g._Genotype_key = ap._Genotype_key" + where;
-	    manualSearch := true;
 	  else
 	    where := "where g._Genotype_key *= ap._Genotype_key" + where;
 	  end if;
-
-	  -- Reference search
-	  -- if searching by reference, then use the stored procedure
-	  -- this search ignores other search criteria
-
-          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
-
-          if (value.length > 0) then
-	    Query.source_widget := top;
-	    Query.select := "exec MGI_searchGenotypeByRef " + value + "\n";
-	    Query.table := (integer) NOTSPECIFIED;
-	    send(Query, 0);
-	    manualSearch := false;
-	  end if;
-	end does;
-
---
--- SearchGenotype
---
--- Retrieve Genotype records for given assayKey
--- Global event (defined in Genotype.de)
---
-
-	SearchGenotype does
-	  assayKey : string := SearchGenotype.assayKey;
-	  select : string;
-	  orderBy : string := "\norder by g.strain, ap.allele1";
-
-          (void) busy_cursor(top);
-
-	  --
-	  -- See if the user has entered any search constraints;
-	  -- If so, then process the user-specified query
-	  --
-
-	  send(PrepareSearch, 0);
 
 	  if (not manualSearch and mgi->AssayModule != nil and assayKey.length = 0) then
 	    assayKey := mgi->AssayModule->ID->text.value;
@@ -572,10 +539,14 @@ rules:
 	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 	     from + "\n" + where;
 
-	  if (manualSearch) then
+	  -- Reference search
+	  -- if searching by reference, then ignore other search criteria
+
+          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
+          if (value.length > 0) then
 	    Query.source_widget := top;
-	    Query.select := select + orderBy;
-	    Query.table := GXD_GENOTYPE_VIEW;
+	    Query.select := "exec MGI_searchGenotypeByRef " + value + "\n";
+	    Query.table := (integer) NOTSPECIFIED;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then
 	    QueryNoInterrupt.select := select + orderBy;
@@ -583,9 +554,12 @@ rules:
 	    QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
 	    QueryNoInterrupt.selectItem := false;
 	    send(QueryNoInterrupt, 0);
+	  else
+	    Query.source_widget := top;
+	    Query.select := select + orderBy;
+	    Query.table := GXD_GENOTYPE_VIEW;
+	    send(Query, 0);
 	  end if;
-
-	  manualSearch := false;
 
 	  (void) reset_cursor(top);
 	end does;
