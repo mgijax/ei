@@ -319,20 +319,22 @@ rules:
 	  editTerm : boolean := false;
 	  clipAnnotEvidenceKey : string;
  
+	  (void) busy_cursor(top);
+
+	  -- First, sort the table by the Term so that all like Terms
           if (not top.allowEdit) then
+	    (void) reset_cursor(top);
             return;
           end if;
 
 	  if (top->Annotation->SearchObsoleteTerm.set) then
+	    (void) reset_cursor(top);
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot save this Annotation if the 'Search Obsolete Term' toggle is set.";
 	    send(StatusReport, 0);
 	    return;
 	  end if;
 
-	  (void) busy_cursor(top);
-
-	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current row's Term is not equal to the previous row's Term,
@@ -1169,6 +1171,10 @@ rules:
 	  row : integer := MPTraverse.row;
 	  column : integer := MPTraverse.column;
 	  reason : integer := MPTraverse.reason;
+
+	  if (row < 0) then
+	    return;
+	  end if;
 
 	  if (column = annotTable.evidence) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then

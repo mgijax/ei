@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 25 10:45:46 2005";
+      lastWritten = "Mon Mar 28 15:03:55 2005";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -615,12 +615,12 @@ Module: mgiLookup
               {
                 Add = TablePush : mgiTable;
                 Group: Widget
-                  labelString = "Add Selected Annotation To Clipboard";
+                  labelString = "Copy Selected Annotation To Clipboard";
               }
               {
                 AddAll = TablePush : mgiTable;
                 Group: Widget
-                  labelString = "Add All Annotations To Clipboard";
+                  labelString = "Copy All Annotations To Clipboard";
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Add;
@@ -663,7 +663,7 @@ Module: mgiLookup
               {
                 CopyAnnot = TablePush : mgiTable;
                 Group: Widget
-                  labelString = "Copy Clipboard Annotations To Table";
+                  labelString = "Paste Clipboard Annotations To Table";
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = AddAll;

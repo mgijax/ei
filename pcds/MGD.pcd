@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 25 10:45:48 2005";
+      lastWritten = "Mon Mar 28 14:52:01 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13670,8 +13670,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Reference = ReferenceTable : mgiTable;
-                                  Group: Widget
-                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Annotation;
@@ -13824,7 +13822,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   NotePush = NotePush : mgiDataTypes;
                                   Group: Widget
-                                    activateCallback = "D:NotePreInit,D:NoteInit";
+                                    activateCallback = "D:GONoteInit";
                                   Group: User
                                     targetColumn = 20;
                                     targetWidget = Annotation;

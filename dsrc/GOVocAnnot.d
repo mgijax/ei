@@ -1024,6 +1024,10 @@ rules:
 	  column : integer := GOTraverse.column;
 	  reason : integer := GOTraverse.reason;
 
+	  if (row < 0) then
+	    return;
+	  end if;
+
 	  if (column = annotTable.inferredFrom) then
 	    send(GONoteInit, 0);
 	  end if;
