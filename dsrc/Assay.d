@@ -1845,14 +1845,14 @@ rules:
 	  -- From InSitu Form
 	  if (assayDetailForm.name = "InSituForm") then
 	    table := top->InSituForm->Specimen->Table;
-	    value := mgi_tblGetCell(table, 0, table.genotype);
+	    value := mgi_tblGetCell(table, 0, table.genotypeKey);
 	    if (value.length > 0) then
 	      where := where + " and ig._Genotype_key = " + value;
 	      from_specimen := true;
 	    end if;
 	  elsif (assayDetailForm.name = "GelForm") then
 	    table := top->GelForm->GelLane->Table;
-	    value := mgi_tblGetCell(table, 0, table.genotype);
+	    value := mgi_tblGetCell(table, 0, table.genotypeKey);
 	    if (value.length > 0) then
 	      where := where + " and gg._Genotype_key = " + value;
 	      from_gel := true;
@@ -2139,7 +2139,7 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.specimenKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.specimenLabel, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(table, row, table.fixationKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.fixation, mgi_getstr(dbproc, 18));
 	        (void) mgi_tblSetCell(table, row, table.embeddingKey, mgi_getstr(dbproc, 3));
@@ -2240,7 +2240,7 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.controlKey, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(table, row, table.control, mgi_getstr(dbproc, 19));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(table, row, table.rnaKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.rna, mgi_getstr(dbproc, 17));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));

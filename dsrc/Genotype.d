@@ -41,6 +41,7 @@ locals:
 	mgi : widget;
 	top : widget;
 	ab : widget;
+	accTable : widget;
 
 	cmd : string;
 	from : string;
@@ -99,6 +100,8 @@ rules:
 	    assayTable := mgi->AssayModule->GelLane->Table;
 	    assayPush := mgi->AssayModule->Lookup->CVGel->GenotypePush;
 	  end if;
+
+	  accTable := top->mgiAccessionTable->Table;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -426,6 +429,9 @@ rules:
 
           (void) busy_cursor(top);
 
+	  InitAcc.table := accTable;
+	  send(InitAcc, 0);
+	  
           ClearTable.table := top->AllelePair->Table;
           send(ClearTable, 0);
 
@@ -479,6 +485,11 @@ rules:
 	  end while;
 
 	  (void) dbclose(dbproc);
+
+	  LoadAcc.table := accTable;
+	  LoadAcc.objectKey := currentRecordKey;
+	  LoadAcc.tableID := GXD_GENOTYPE;
+	  send(LoadAcc, 0);
 
           top->QueryList->List.row := Select.item_position;
 
