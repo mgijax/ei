@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 29 10:34:17 2004";
+      lastWritten = "Thu Apr 29 11:29:29 2004";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -844,7 +844,7 @@ Module: mgiDialog
                               xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9 11)(all 10-11 15)(all 12 100)";
                               xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,Structures,Strength,Pattern,Image Panes,Notes";
                               xrtTblNumColumns = 13;
-                              xrtTblEditableSeries = "(all 0-2 False)(all 8-12 False)";
+                              xrtTblEditableSeries = "(all 0-2 False)(all 8-11 False)";
                               xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
                               xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
                               xrtTblTraversableSeries = "(all 0-7 False)";
@@ -859,7 +859,7 @@ Module: mgiDialog
                             Group: User
                               requiredColumns = "5\n9";
                               saveTraversableSeries = "(all 0-7 False)";
-                              saveEditableSeries = "(all 0-2 False)(all 8-12 False)";
+                              saveEditableSeries = "(all 0-2 False)(all 8-11 False)";
                                 {
                                   label = XtXrtLabel;
                                   Group: Widget
