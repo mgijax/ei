@@ -246,8 +246,7 @@ rules:
 		       currentRecordKey + "," +
 		       objectKey + "," +
 		       mgi_DBprstr(nonmgiTerm) + "," + 
-		       newSeqNum + "," +
-		       global_loginKey + "," + global_loginKey + ")\n";
+		       newSeqNum + "\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place
@@ -366,7 +365,7 @@ rules:
 
 	  cmd := "select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, " +
 		  "t.modifiedBy, t.modification_date, v.description, v.accID, v.mgiID " +
-		  "from MGI_Translation_View t, " + dbView + " v" +
+		  "from MGI_Translation t, " + dbView + " v" +
 		  " where v._Object_key = t._Object_key" + 
 		  " and t._TranslationType_key = " + currentRecordKey +
 		  " order by t.sequenceNum\n";
