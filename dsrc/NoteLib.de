@@ -8,6 +8,28 @@
 -- This is the companion D event declarations file for NoteLib.d.
 --
 
+-- Events which handle mgiNoteForm template
+
+-- Clear all Notes in NoteForm; set background display
+ClearNoteForm [notew : widget;
+	       clearNote : boolean := true;];
+
+-- Initialize NoteForm from tableID
+InitNoteForm [notew : widget;
+	      tableID : integer;];
+
+-- Load NoteForm from tableID for given objectKey
+LoadNoteForm [notew : widget;
+	      tableID : integer;
+	      objectKey : string;];
+
+-- Process NoteForm data from tableID for given objectKey
+ProcessNoteForm [notew : widget;
+                 tableID : integer;
+                 objectKey : string;];
+
+-- Events which handle Note Dialog
+
 NoteCancel [source_widget : widget;];
 
 NoteCommit [source_widget : widget;]; 
@@ -15,9 +37,13 @@ NoteCommit [source_widget : widget;];
 NoteInit [commit : boolean := true;
           shortNote : boolean := false;];
 
--- ModifyNotes ; Sets noteWidget.sql
+-- Events which support processing of Note data
+
+-- ModifyNotes ; Sets source_widget.sql
 ModifyNotes [source_widget : widget;
              tableID : integer;
-             noteType : string;
              key : string;];
+
+-- Set background display for Note Push Button
+SetNotesDisplay [note : widget;];
 

@@ -48,8 +48,6 @@ SetDefault :translation [source_widget : widget;];-- Translation for text fields
 SetModify [source_widget : widget;
 	   flag : boolean := true;];		-- Set text modification flag
 
-SetNotesDisplay [note : widget;];		-- Set Note Push Button Display
-
 SetOption [source_widget : widget;		-- Reset Option Menu default and modification flags
 	   value : string;
 	   setDefault : boolean := false;

@@ -72,7 +72,6 @@ locals:
 	where : string;
 
 	tables : list;
-	notes : list;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -143,12 +142,17 @@ rules:
           LoadList.list := top->ESCellLineList;
 	  send(LoadList, 0);
 
-	  -- Initial Reference table
+	  -- Initialize Reference table
 
 	  InitRefTypeTable.table := top->Reference->Table;
 	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
 	  send(InitRefTypeTable, 0);
 
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := ALL_NOTETYPE;
+	  send(InitNoteForm, 0);
 	end does;
 
 --
@@ -166,7 +170,6 @@ rules:
 
 	Init does
 	  tables := create list("widget");
-	  notes := create list("widget");
 
 	  -- List of all Table widgets used in form
 
@@ -174,13 +177,6 @@ rules:
 	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->Synonym->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
-
-	  -- List of all Notes used in form
-
-	  notes.append(top->MolecularNote->Note);
-	  notes.append(top->AlleleNote->Note);
-	  notes.append(top->PromoterNote->Note);
-	  notes.append(top->NomenclatureNote->Note);
 
 	  -- Global Accession number Tables
 
@@ -208,13 +204,6 @@ rules:
 	  Clear.clearKeys := ClearAllele.clearKeys;
 	  Clear.reset := ClearAllele.reset;
 	  send(Clear, 0);
-
-	  notes.open;
-	  while (notes.more) do
-	    SetNotesDisplay.note := notes.next;
-	    send(SetNotesDisplay, 0);
-	  end while;
-	  notes.close;
 
 	  -- Initialize Reference table
 
@@ -279,7 +268,7 @@ rules:
 	  send(ModifyAlleleNotes, 0);
 	  send(ModifySynonym, 0);
 
-	  if (top->AlleleNote->Note->text.value.length = 0 and alleleNotesRequired) then
+	  if (top->GeneralNote->Note->text.value.length = 0 and alleleNotesRequired) then
             StatusReport.source_widget := top;
             StatusReport.message := "Allele Notes are required.";
             send(StatusReport);
@@ -527,7 +516,7 @@ rules:
 	  send(ModifyAlleleNotes, 0);
 	  send(ModifySynonym, 0);
 
-	  if (top->AlleleNote->Note->text.value.length = 0 and alleleNotesRequired) then
+	  if (top->GeneralNote->Note->text.value.length = 0 and alleleNotesRequired) then
             StatusReport.source_widget := top;
             StatusReport.message := "Allele Notes are required.";
             send(StatusReport);
@@ -583,19 +572,12 @@ rules:
 --
  
 	ModifyAlleleNotes does
-	  notew: widget;
 
-	  notes.open;
-	  while (notes.more) do
-	    notew := notes.next;
-	    ModifyNotes.source_widget := notew;
-	    ModifyNotes.tableID := ALL_NOTE;
-	    ModifyNotes.noteType := notew.noteType;
-	    ModifyNotes.key := currentRecordKey;
-	    send(ModifyNotes, 0);
-	    cmd := cmd + notew.sql;
-	  end while;
-	  notes.close;
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := ALL_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  if (top->InheritanceModeMenu.menuHistory.labelString = OTHERNOTES or
 	      top->AlleleTypeMenu.menuHistory.labelString = OTHERNOTES) then
@@ -726,7 +708,6 @@ rules:
 	PrepareSearch does
 	  from_mutation   : boolean := false;
 	  from_synonym    : boolean := false;
-	  from_note       : boolean := false;
 
 	  value : string;
 
@@ -826,26 +807,6 @@ rules:
 	    end if;
 	  end if;
 
-          if (top->MolecularNote->text.value.length > 0) then
-	    where := where + "\nand an.note like " + mgi_DBprstr(top->MolecularNote->text.value);
-	    from_note := true;
-	  end if;
-	    
-          if (top->AlleleNote->text.value.length > 0) then
-	    where := where + "\nand an.note like " + mgi_DBprstr(top->AlleleNote->text.value);
-	    from_note := true;
-	  end if;
-	    
-          if (top->PromoterNote->text.value.length > 0) then
-	    where := where + "\nand an.note like " + mgi_DBprstr(top->PromoterNote->text.value);
-	    from_note := true;
-	  end if;
-	    
-          if (top->NomenclatureNote->text.value.length > 0) then
-	    where := where + "\nand an.note like " + mgi_DBprstr(top->NomenclatureNote->text.value);
-	    from_note := true;
-	  end if;
-	    
 	  if (from_mutation) then
 	    from := from + "," + mgi_DBtable(ALL_MUTATION_VIEW) + " m";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = m." + mgi_DBkey(ALL_ALLELE);
@@ -854,11 +815,6 @@ rules:
 	  if (from_synonym) then
 	    from := from + "," + mgi_DBtable(ALL_SYNONYM_VIEW) + " s";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = s." + mgi_DBkey(ALL_ALLELE);
-	  end if;
-
-	  if (from_note) then
-	    from := from + "," + mgi_DBtable(ALL_NOTE) + " an";
-	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = an." + mgi_DBkey(ALL_ALLELE);
 	  end if;
 
           if (where.length > 0) then
@@ -913,12 +869,6 @@ rules:
 	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
 	  send(InitRefTypeTable, 0);
 
-	  notes.open;
-	  while (notes.more) do
-	    notes.next->text.value := "";
-	  end while;
-	  notes.close;
-
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -936,19 +886,7 @@ rules:
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 	         "select _Synonym_key, synonym, _Refs_key, jnum, short_citation from " + 
 		 mgi_DBtable(ALL_SYNONYM_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
-		 "select note from " + mgi_DBtable(ALL_NOTE_MOLECULAR_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey +
-		 " order by sequenceNum\n" +
-		 "select note from " + mgi_DBtable(ALL_NOTE_GENERAL_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey +
-		 " order by sequenceNum\n" +
-		 "select note from " + mgi_DBtable(ALL_NOTE_PROMOTER_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey +
-		 " order by sequenceNum\n" +
-		 "select note from " + mgi_DBtable(ALL_NOTE_NOMENCLATURE_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey +
-		 " order by sequenceNum\n";
+		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1009,19 +947,6 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-	      elsif (results = 4) then
-		top->MolecularNote->text.value := top->MolecularNote->text.value + mgi_getstr(dbproc, 1);
-
-	      elsif (results = 5) then
-		top->AlleleNote->text.value := top->AlleleNote->text.value + mgi_getstr(dbproc, 1);
-
-	      elsif (results = 6) then
-		top->PromoterNote->text.value := top->PromoterNote->text.value + mgi_getstr(dbproc, 1);
-
-	      elsif (results = 7) then
-		top->NomenclatureNote->text.value := top->NomenclatureNote->text.value + mgi_getstr(dbproc, 1);
-
 	      end if;
 	      row := row + 1;
 	    end while;
@@ -1030,18 +955,16 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  notes.open;
-	  while (notes.more) do
-	    SetNotesDisplay.note := notes.next;
-	    send(SetNotesDisplay, 0);
-	  end while;
-	  notes.close;
-
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := ALL_REFERENCE_VIEW;
           LoadRefTypeTable.objectKey := currentRecordKey;
           send(LoadRefTypeTable, 0);
  
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := ALL_NOTE_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
+
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := ALL_ALLELE;

@@ -295,17 +295,19 @@ rules:
                   else  -- XmOptionMenu
 		    child := editForm.child(i);
 
-		    if (child.required and child.menuHistory.defaultValue = "%") then
-		      -- If Child is required and has a default, use it
-		      if (child.defaultOption = nil) then
-	                  top.allowEdit := false;
-                          StatusReport.source_widget := top;
-                          StatusReport.message := "Required Field \n\n'" + caption + "'";
-                          send(StatusReport);
-	                  (void) XmProcessTraversal(child, XmTRAVERSE_CURRENT);
-		          break;
-		      else
-		        child.menuHistory := child.defaultOption;
+		    if (child.is_defined("required") != nil) then
+		      if (child.required and child.menuHistory.defaultValue = "%") then
+		        -- If Child is required and has a default, use it
+		        if (child.defaultOption = nil) then
+	                    top.allowEdit := false;
+                            StatusReport.source_widget := top;
+                            StatusReport.message := "Required Field \n\n'" + caption + "'";
+                            send(StatusReport);
+	                    (void) XmProcessTraversal(child, XmTRAVERSE_CURRENT);
+		            break;
+		        else
+		          child.menuHistory := child.defaultOption;
+		        end if;
 		      end if;
 		    end if;
 		  end if;

@@ -677,7 +677,6 @@ rules:
 	    notew := notes.next;
 	    ModifyNotes.source_widget := notew;
 	    ModifyNotes.tableID := MRK_NOMEN_NOTES;
-	    ModifyNotes.noteType := notew.noteType;
 	    ModifyNotes.key := currentNomenKey;
 	    send(ModifyNotes, 0);
 	    cmd := cmd + notew.sql;

@@ -2,7 +2,10 @@
 -- Name: Note.d
 -- Note.d 03/02/99
 --
+-- Handles interactions of mgiNoteForm template.
+--
 -- Handles interactions of NoteDialog template.
+--
 -- Use NotePush w/ either mgiNote template or mgiTable template.
 -- The actual Note is stored in the target text field or Table column.
 -- The dialog handles the editing of the Note.
@@ -27,7 +30,7 @@
 --	- enhanced to process Notes if target is either mgiNote or Table
 --
 
-dmodule Note is
+dmodule NoteLib is
 
 #include <mgilib.h>
 #include <tables.h>
@@ -35,6 +38,180 @@ dmodule Note is
 devents:
 
 rules:
+
+--
+-- ClearNoteForm
+--
+
+	ClearNoteForm does
+	  notew : widget := ClearNoteForm.notew;
+	  clearNote : boolean := ClearNoteForm.clearNote;
+
+	  i : integer := 1;
+	  while (i <= notew.numChildren) do
+	    if (clearNote) then
+	      notew.child(i)->Note->text.value := "";
+	      notew.child(i)->Note->text.modified := false;
+	    end if;
+	    SetNotesDisplay.note := notew.child(i)->Note;
+	    send(SetNotesDisplay, 0);
+	    i := i + 1;
+	  end while;
+	end does;
+
+--
+-- InitNoteForm
+--
+-- Dynamically builds mgiNoteForm children based on entries in tableID
+-- (NoteType table).
+--
+-- Uses mgiNote template for children
+--
+
+	InitNoteForm does
+	  notew : widget := InitNoteForm.notew;
+	  tableID : integer := InitNoteForm.tableID;
+
+	  cmd : string;
+	  x : widget;
+	  instance : string := ""; -- Unique name of child instance
+	  label : string;
+
+	  cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
+		"\nwhere _NoteType_key > 0 " +
+		"\norder by _NoteType_key";
+
+          dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+ 
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+		label := mgi_getstr(dbproc, 2);
+		instance := label + "Note";
+		x := create widget("mgiNote", instance, notew);
+		x.batch;
+		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
+		x->Note.noteType := label;
+		x->Note.private := (integer) mgi_getstr(dbproc, 3);
+		x.unbatch;
+		x->NotePush.labelString := label + " Notes";
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	end does;
+
+--
+-- LoadNoteForm
+--
+--	Finds all Notes from a given Note Table for
+--	a given object (LoadNoteForm.objectKey).
+--	Loads Notes into mgiNoteForm template
+--
+
+	LoadNoteForm does
+	  notew : widget := LoadNoteForm.notew;
+	  tableID : integer := LoadNoteForm.tableID;
+	  objectKey : string := LoadNoteForm.objectKey;
+	  noteTypeKey : integer;
+	  childnote : widget := nil;
+	  notecontinuation : boolean := false;
+	  note : string;
+	  i : integer;
+
+	  ClearNoteForm.notew := notew;
+	  send(ClearNoteForm, 0);
+
+          cmd : string := "select _NoteType_key, note, sequenceNum" +
+	  	" from " + mgi_DBtable(tableID) +
+		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		 " order by _NoteType_key, sequenceNum";
+
+          dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+ 
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
+	      note := mgi_getstr(dbproc, 2);
+
+	      -- check if this a continuation of the same note type
+
+	      if (childnote = nil) then
+		notecontinuation := false;
+	      elsif (childnote->Note.noteTypeKey != noteTypeKey) then
+		notecontinuation := false;
+	      else
+		notecontinuation := true;
+	      end if;
+
+	      -- if new note type, find appropriate note widget
+
+	      if (not notecontinuation) then
+	        i := 1;
+	        childnote := nil;
+	        while (i <= notew.numChildren and childnote = nil) do
+		  if (notew.child(i)->Note.noteTypeKey = noteTypeKey) then
+		    childnote := notew.child(i);
+		  end if;
+		  i := i + 1;
+	        end while;
+	      end if;
+
+	      -- should have childnote set now
+
+	      if (childnote != nil) then
+		if (not notecontinuation) then
+		  childnote->Note->text.value := note;
+		else
+		  childnote->Note->text.value := childnote->Note->text.value + note;
+		end if;
+	        childnote->Note->text.modified := false;
+	      else
+                StatusReport.source_widget := notew.top;
+                StatusReport.message := "Cannot determine Note Type\n";
+                send(StatusReport, 0);
+	      end if;
+
+            end while;
+          end while;
+          (void) dbclose(dbproc);
+
+	  -- Set Notes Display
+
+	  ClearNoteForm.notew := notew;
+	  ClearNoteForm.clearNote := false;
+	  send(ClearNoteForm, 0);
+	end does;
+
+--
+-- ProcessNoteForm
+--
+-- Construct insert/update/delete statement for mgiNoteForm template
+-- Appends to table.sql string
+--
+
+	ProcessNoteForm does
+          notew : widget := ProcessNoteForm.notew;
+	  tableID : integer := ProcessNoteForm.tableID;
+	  objectKey : string := ProcessNoteForm.objectKey;
+	  textw : widget;
+
+	  notew.sql := "";
+
+	  i : integer := 1;
+	  while (i <= notew.numChildren) do
+	    textw := notew.child(i);
+	    ModifyNotes.source_widget := textw->Note;
+	    ModifyNotes.tableID := tableID;
+	    ModifyNotes.key := objectKey;
+	    send(ModifyNotes, 0);
+	    notew.sql := notew.sql + textw->Note.sql;
+	    i := i + 1;
+	  end while;
+	end does;
 
 --
 -- NoteCancel
@@ -195,32 +372,28 @@ rules:
 --
 -- Construct command for deleting/re-inserting Notes
 --
---	source_widget	: Note Source Widget using template mgiDataTypes:SingleNote
+--	source_widget	: Note Source Widget using template mgiDataTypes:mgiNote
 --	tableID		: table ID of database Note table
---	key		: primary key of database Note table
+--	key		: primary key of object being modified
 --
 -- Appends sql commands to Note Source Widget UDA 'sql'.
 --
  
         ModifyNotes does
 	  noteWidget : widget := ModifyNotes.source_widget;
-          note : string := noteWidget->text.value;
 	  tableID : integer := ModifyNotes.tableID;
-	  noteType : string := ModifyNotes.noteType;
-	  private : string := "";
 	  key : string := ModifyNotes.key;
+          note : string := noteWidget->text.value;
+	  noteType : string;
           i : integer := 1;
-	  cmd : string;
  
-	  if (noteType.length > 0) then
-	    if (tableID = ALL_NOTE) then
-	      cmd := "select private from " + mgi_DBtable(ALL_NOTETYPE) +
-		" where " + mgi_DBkey(ALL_NOTETYPE) + " = " + mgi_DBprkey(noteType);
-	      private := mgi_sql1(cmd);
-	      noteType := mgi_DBprkey(noteType) + "," + mgi_DBprkey(private);
-	    else
-	      noteType := mgi_DBprstr(noteType);
-	    end if;
+	  -- If the noteWidget has a valid noteTypeKey, use it
+	  -- Else if the noteWidget has a valid noteType (string), use it
+
+	  if (noteWidget.noteTypeKey > 0) then
+	    noteType := (string) noteWidget.noteTypeKey + "," + (string) noteWidget.private;
+	  elsif (noteWidget.noteType.length > 0) then
+	    noteType := mgi_DBprstr(noteWidget.noteType);
 	  end if;
 
 	  noteWidget.sql := "";
@@ -228,14 +401,11 @@ rules:
 	  if (noteWidget->text.modified) then
             noteWidget.sql := mgi_DBdelete(tableID, key);
 
-	    if (noteType.length > 0) then
-	      if (tableID = MRK_NOMEN_NOTES) then
+	    if (noteWidget.noteTypeKey > 0) then
 	        noteWidget.sql := noteWidget.sql + 
-			" and noteType = " + noteType + "\n";
-	      elsif (tableID = ALL_NOTE) then
-	        noteWidget.sql := noteWidget.sql + 
-			" and " +  mgi_DBkey(ALL_NOTETYPE) + " = " + ModifyNotes.noteType + "\n";
-	      end if;
+			" and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
+	    elsif (noteWidget.noteType.length > 0) then
+	      noteWidget.sql := noteWidget.sql + " and noteType = " + noteType + "\n";
 	    end if;
 	  else
 	    return;
@@ -279,5 +449,24 @@ rules:
 	  end if;
         end does;
  
+--
+-- SetNotesDisplay
+--
+-- 	Sets the background of the Notes button if data exists
+--	Assumes "note" is a mgiNote template
+--
+
+	SetNotesDisplay does
+	  note : widget := SetNotesDisplay.note;
+	  pushButton : widget;
+
+	  pushButton := (note.parent)->NotePush;
+          if (note->text.value.length > 0) then
+            pushButton.background := "PaleGreen";
+          else
+            pushButton.background := note->text.background;
+          end if;
+	end does;
+
 end dmodule;
 

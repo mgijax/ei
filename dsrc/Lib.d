@@ -166,7 +166,7 @@ rules:
 		      end if;
 		      l := l + 1;
 		    end while;
-		  else	-- XmOptionMenu
+		  elsif (clearForm.is_defined("clear") != nil) then	-- XmOptionMenu
 		    if (not Clear.reset and clearForm.child(i).clear) then
 		      ClearOption.source_widget := clearForm.child(i);
 		      send(ClearOption, 0);
@@ -703,25 +703,6 @@ rules:
 
 	SetModify does
 	  SetModify.source_widget.modified := SetModify.flag;
-	end does;
-
---
--- SetNotesDisplay
---
--- 	Sets the background of the Notes button if data exists
---	Assumes "note" is a mgiNote template
---
-
-	SetNotesDisplay does
-	  note : widget := SetNotesDisplay.note;
-	  pushButton : widget;
-
-	  pushButton := (note.parent)->NotePush;
-          if (note->text.value.length > 0) then
-            pushButton.background := "PaleGreen";
-          else
-            pushButton.background := note->text.background;
-          end if;
 	end does;
 
 --
