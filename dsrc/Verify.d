@@ -2332,6 +2332,8 @@ rules:
 --
 --	Copy Unique Key into Appropriate widget/column
 --
+--	If ignoreRow > -1, then don't valid that row.
+--
 
 	VerifyOrganism does
 	  sourceWidget : widget := VerifyOrganism.source_widget;
@@ -2339,6 +2341,7 @@ rules:
 	  isTable : boolean;
 	  value : string;
 	  whichItem : widget := top.root->WhichItem;	-- WhichItem widget
+	  ignoreRow : integer := VerifyOrganism.ignoreRow;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -2367,6 +2370,11 @@ rules:
             if (column != sourceWidget.organismName) then
               return;
             end if;
+
+	    -- if ignoring row, do nothing
+	    if (row = ignoreRow) then
+	      return;
+	    end if;
 
 	    organismKey := sourceWidget.organismKey;
 	    organismName := sourceWidget.organismName;
