@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul  7 15:02:31 2003";
+      lastWritten = "Wed Jun 23 11:10:45 2004";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -88,22 +88,36 @@ Module: mgiAnatDictionary
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
-                              height = 650;
+                              height = 700;
                             Group: User
                               homeWidget = structureText;
                                 {
                                   ID = ID;
                                 }
                                 {
-                                  structureText = CharText : mgiDataTypes;
+                                  label = label : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Note that only Structure and Stage values are considered during a Search.";
                                   Group: Constraint
                                     leftAttachment = attach_form;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_form;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 5;
+                                }
+                                {
+                                  structureText = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                     topOffset = 5;
+                                    leftWidget = label;
+                                    topWidget = label;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -566,6 +580,31 @@ Module: mgiAnatDictionary
                 Add = TablePush : mgiTable;
                 Group: Widget
                   activateCallback = "D:ADClipboardAdd";
+              }
+              {
+                AddAll = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:ADClipboardAddAll";
+                  labelString = "Add All";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Add;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = Add;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Delete = TablePush : mgiTable;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = AddAll;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = AddAll;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
         {

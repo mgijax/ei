@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 17 15:27:07 2004";
+      lastWritten = "Wed Jun 23 15:21:40 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1706,6 +1706,8 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 3770;
+          Group: User
+            defaultValue = "Not Specified";
               Popups:
               {
                 SegmentTypePulldown : OptionPulldown = OptionPulldown;
@@ -1725,6 +1727,8 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 3660;
+          Group: User
+            defaultValue = "Not Specified";
               Popups:
               {
                 VectorTypePulldown : OptionPulldown = OptionPulldown;
@@ -2108,7 +2112,7 @@ Module: mgiOption
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from ALL_Type order by alleleType";
+                  sql = "select * from ALL_Type order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
