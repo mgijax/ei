@@ -362,6 +362,8 @@ rules:
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 	      elsif (tableID = HMD_ASSAY) then
 	        top->AssayAbbrev->text.value := mgi_getstr(dbproc, 3);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      else
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
