@@ -2160,13 +2160,13 @@ rules:
           tables.close;
  
 	  -- Clear Prep forms
-	  prepForms.open;
-	  while (prepForms.more) do
-	    ClearForm.source_widget := top;
-	    ClearForm.form := prepForms.next;
-	    send(ClearForm, 0);
-          end while;
-	  prepForms.close;
+--	  prepForms.open;
+--	  while (prepForms.more) do
+--	    ClearForm.source_widget := top;
+--	    ClearForm.form := prepForms.next;
+--	    send(ClearForm, 0);
+--          end while;
+--	  prepForms.close;
 
 	  -- Clear out the Notes
 
