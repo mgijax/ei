@@ -138,7 +138,7 @@ rules:
 --
 -- BuildDynamicComponents
 --
--- Activated from:  devent Allele
+-- Activated from:  devent INITIALLY
 --
 -- For initializing dynamic GUI components prior to managing the top form.
 --

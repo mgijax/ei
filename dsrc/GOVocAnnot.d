@@ -67,6 +67,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
+	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
 	GOVocAnnotExit :local [];				-- Destroys D module instance & cleans up
 	GOTraverse :local [];
@@ -132,6 +133,9 @@ rules:
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
 
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
+
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
 	  top.show;
@@ -146,6 +150,21 @@ rules:
 	  send(InitNoteForm, 0);
 
 	  (void) reset_cursor(mgi);
+	end does;
+
+--
+-- BuildDynamicComponents
+--
+-- Activated from:  devent INITIALLY
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+	  annotTable := top->Annotation->Table;
 	end does;
 
 --
@@ -168,7 +187,6 @@ rules:
 
 	  tables.append(top->Annotation->Table);
 	  tables.append(top->Reference->Table);
-	  annotTable := top->Annotation->Table;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
