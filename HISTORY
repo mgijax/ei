@@ -1,3 +1,11 @@
+TAG: ei-8-3-8
+DATE: 04/22/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) added Accession IDs to Molecular Source Form
+2) TR 4705; added modifiedBy to History table
+
 TAG: ei-8-3-7
 DATE: 04/18/2003
 STAFF: lec
