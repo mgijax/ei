@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 11/12/2002
+--	- SAO
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -679,6 +682,7 @@ rules:
           editMode : string;
           key : string;
           newKey : string;
+	  refsKey : string;
 	  relationship : string;
 	  set : string;
  
@@ -693,6 +697,7 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.markerCurrentKey);
             newKey := mgi_tblGetCell(table, row, table.markerKey);
+            refsKey := mgi_tblGetCell(table, row, table.refsKey);
             relationship := mgi_tblGetCell(table, row, table.relationship);
             relationship := relationship.raise_case;
  
@@ -700,9 +705,11 @@ rules:
               cmd := cmd + mgi_DBinsert(PRB_MARKER, "") + 
 			   currentMasterKey + "," + 
 			   newKey + "," +
+			   refsKey + "," +
 			   mgi_DBprstr(relationship) + ")\n";
             elsif (editMode = TBL_ROW_MODIFY and newKey.length > 0 and newKey != "NULL") then
               set := "_Marker_key = " + newKey +
+		     ",_Refs_key = " + refsKey +
 		     ",relationship = " + mgi_DBprstr(relationship);
               cmd := cmd + mgi_DBupdate(PRB_MARKER, currentMasterKey, set) +
 			" and _Marker_key = " + key + "\n";
@@ -1120,6 +1127,19 @@ rules:
             from_marker := true;
           end if;
 
+          value := mgi_tblGetCell(table, 0, table.refsKey);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + " and g._Refs_key = " + value;
+	    from_marker := true;
+	  else
+            value := mgi_tblGetCell(table, 0, table.citation);
+            if (value.length > 0) then
+	      where := where + "\nand g.short_citation like " + mgi_DBprstr(value);
+	      from_marker := true;
+	    end if;
+	  end if;
+
           if (top->MolMarkerForm->MolNote->text.value.length > 0) then
 	    where := where + "\nand n.note like " + mgi_DBprstr(top->MolMarkerForm->MolNote->text.value);
 	    from_note := true;
@@ -1232,7 +1252,7 @@ rules:
 	  end if;
 
           if (from_marker) then
-	    from := from + "," + mgi_DBtable(PRB_MARKER) + " g";
+	    from := from + "," + mgi_DBtable(PRB_MARKER_VIEW) + " g";
 	    where := where + "\nand g." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE);
 	  end if;
 
@@ -1440,6 +1460,10 @@ rules:
 		mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 4));
 		mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 5));
 		mgi_tblSetCell(table, row, table.relationship, mgi_getstr(dbproc, 6));
+		mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 7));
+		mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 7));
+		mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 8));
+		mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 9));
 		mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
 	      end if;

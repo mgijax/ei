@@ -92,6 +92,7 @@ extern char *global_version;
 #define PRB_RFLV		138
 #define PRB_SOURCE		139
 #define PRB_SOURCE_MASTER	140		/* Behavior when table treated as Master record */
+#define PRB_MARKER_VIEW  	141		/* Behavior when table treated as Master record */
 
 #define HMD_CLASS		150
 #define HMD_HOMOLOGY		151

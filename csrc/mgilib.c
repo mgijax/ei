@@ -733,6 +733,7 @@ char *mgi_DBkey(int table)
 	    break;
     case PRB_PROBE:
     case PRB_MARKER:
+    case PRB_MARKER_VIEW:
     case PRB_NOTES:
             strcpy(buf, "_Probe_key");
 	    break;
@@ -1453,6 +1454,9 @@ char *mgi_DBtable(int table)
     case PRB_MARKER:
             strcpy(buf, "PRB_Marker");
 	    break;
+    case PRB_MARKER_VIEW:
+            strcpy(buf, "PRB_Marker_View");
+	    break;
     case PRB_NOTES:
             strcpy(buf, "PRB_Notes");
 	    break;
@@ -2130,7 +2134,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_MARKER:
-            sprintf(buf, "insert %s (%s, _Marker_key, relationship)",
+            sprintf(buf, "insert %s (%s, _Marker_key, _Refs_key, relationship)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_PROBE:
