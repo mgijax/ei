@@ -55,10 +55,10 @@ select * from MRK_Marker where _Marker_key = KEY
 go
 
 print ""
-print "Marker Name"
+print "Marker Label"
 print ""
 
-select * from MRK_Name where _Marker_key = KEY
+select * from MRK_Label where _Marker_key = KEY
 go
 
 print ""
