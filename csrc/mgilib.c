@@ -1273,10 +1273,10 @@ char *mgi_DBtable(int table)
 	    sprintf(buf, "%s..MLP_StrainTypes_View", getenv("STRAINS"));
 	    break;
     case STRAIN_MERGE1:
-	    sprintf(buf, "PRB_mergeStandardStrain");
+	    sprintf(buf, "%s..MLP_mergeStandardStrain", getenv("STRAINS"));
 	    break;
     case STRAIN_MERGE2:
-	    sprintf(buf, "PRB_mergeStrain");
+	    sprintf(buf, "%s..MLP_mergeStrain", getenv("STRAINS"));
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
