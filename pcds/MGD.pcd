@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 15 09:24:35 2002";
+      lastWritten = "Mon Oct 21 12:58:26 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8417,6 +8417,21 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    TIGR = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    DOTS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
