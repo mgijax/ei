@@ -629,9 +629,10 @@ rules:
 	  buf := buf + "\n\n";
 	  (void) mgi_writeLog(buf);
 
+	  -- Execute the withdrawal wrapper
           MarkerWithdrawalEnd.source_widget := dialog;
-	  proc_id : opaque;
-          proc_id := tu_fork_process(cmds[1], cmds, dialog->Output, MarkerWithdrawalEnd);
+	  dialog->Output.value := "";
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog->Output, MarkerWithdrawalEnd);
 	  tu_fork_free(proc_id);
 	end does;
 
@@ -757,8 +758,7 @@ rules:
           -- Execute the BreakpointSplit, MarkerBreakpointSplitEnd event will be called after child finishes
  
           MarkerBreakpointSplitEnd.source_widget := dialog;
-	  proc_id : opaque;
-          proc_id := tu_fork_process(cmds[1], cmds, dialog->Output, MarkerBreakpointSplitEnd);
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog->Output, MarkerBreakpointSplitEnd);
 	  tu_fork_free(proc_id);
 	end does;
 
