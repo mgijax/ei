@@ -876,25 +876,25 @@ rules:
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.nomenNote);
 	  if (value.length > 0) then
-	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value) + " and sn.noteType = \"N\"";
 	    searchNote := true;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.rikenNote);
 	  if (value.length > 0) then
-	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value) + " and sn.noteType = \"R\"";
 	    searchNote := true;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.curatorNote);
 	  if (value.length > 0) then
-	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value) + " and sn.noteType = \"C\"";
 	    searchNote := true;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.homologyNote);
 	  if (value.length > 0) then
-	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value) + " and sn.noteType = \"H\"";
 	    searchNote := true;
 	  end if;
 
