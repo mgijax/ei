@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	01/16/2001
+--	- TR 2194; newRequiredColumns for Gel Band Table
+--
 -- lec	12/19/2000
 --	- TR 2130;  Add; prepDetailForm
 --
@@ -1554,12 +1557,6 @@ rules:
             strengthKey := mgi_tblGetCell(table, row, table.strengthKey + x);
             bandMode := mgi_tblGetCell(table, row, table.bandMode + x);
 
-	    -- Default Strength if no values entered
-
-	    if (strengthKey.length = 0) then
-	      strengthKey := top->CVGel->StrengthMenu.defaultOption.defaultValue;
-	    end if;
-
 	    -- If Lane key is blank, copy from previous row
 
             if (laneKey.length = 0 and strengthKey.length > 0) then
@@ -2263,6 +2260,7 @@ rules:
 	  newCharWidthSeries : string := "(all 0 1)(all 3 3)(all 4-6 5)";
 	  newTraverseSeries : string := "(all 0-3 False)";
 	  newEditableSeries : string := "(all 0-3 False) (all 5-6 False)";
+	  newRequiredColumns : string_list := create string_list();
 
 	  b : integer := 1;
 	  while (b <= hasLanes) do
@@ -2276,6 +2274,8 @@ rules:
 		" (all " + (string) begCol + "-" + (string) endCol + " False)";
 	    newEditableSeries := newEditableSeries + 
 		" (all " + (string) noteCol + " False)";
+	    newRequiredColumns.insert((string) endCol, newRequiredColumns.count + 1);
+	    newRequiredColumns.insert((string) (endCol + 1), newRequiredColumns.count + 1);
 	    b := b + 1;
 	    begCol := begCol + table.bandIncrement;
 	    endCol := endCol + table.bandIncrement;
@@ -2289,6 +2289,7 @@ rules:
 	    table.xrtTblCharWidthSeries := newCharWidthSeries;
 	    table.xrtTblTraversableSeries := newTraverseSeries;
 	    table.xrtTblEditableSeries := newEditableSeries;
+	    table.requiredColumns := newRequiredColumns;
 	    table.unbatch;
 	  end if;
 

@@ -288,10 +288,6 @@ rules:
             resultNote := mgi_tblGetCell(table, row, table.notes);
 	    paneList := mgi_splitfields(mgi_tblGetCell(table, row, table.imagePaneKeys), ",");
  
---            if (strengthKey.length = 0) then
---              strengthKey := top->CVInSituResult->StrengthMenu.defaultOption.defaultValue;
---            end if;
- 
             if (patternKey.length = 0) then
               patternKey := top->CVInSituResult->PatternMenu.defaultOption.defaultValue;
             end if;
