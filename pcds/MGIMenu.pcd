@@ -66,6 +66,14 @@ Module: MGIMenu
                                     labelString = "GXD Production";
                                 }
                                 {
+                                  FANTOMPROD = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:ForkIt(app = \"runapp fantom\", path = \"dev\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                    labelString = "Fantom Production";
+                                }
+                                {
                                   separatorGadget = XmSeparatorGadget;
                                 }
                                 {
