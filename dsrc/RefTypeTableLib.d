@@ -34,6 +34,52 @@ dmodule RefTypeTableLib is
 rules:
 
 --
+-- AddRefTypeRow
+--
+--	Adds Row to ReferenceType Table
+--	Sets appropriate refsType value
+--	based on most recent ReferenceTypeMenu selection.
+--
+
+        AddRefTypeRow does
+	  table : widget := AddRefTypeRow.table;
+
+	  if (table = nil) then
+	    table := AddRefTypeRow.source_widget.parent.child_by_class(TABLE_CLASS);
+	  end if;
+
+	  source : widget := table.parent.child_by_class("XmRowColumn");
+	  refsType : string;
+
+	  source := source.menuHistory;
+
+	  -- Traverse thru table and find first empty row
+	  row : integer := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    refsType := mgi_tblGetCell(table, row, table.refsCurrentType);
+	    if (refsType.length = 0) then
+	      break;
+	    end if;
+	    row := row + 1;
+	  end while;
+
+	  -- Set RefType, Label for row
+
+	  (void) mgi_tblSetCell(table, row, table.refsCurrentTypeKey, source.defaultValue);
+	  (void) mgi_tblSetCell(table, row, table.refsTypeKey, source.defaultValue);
+	  (void) mgi_tblSetCell(table, row, table.refsType, source.labelString);
+	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+          -- Traverse to new table row
+
+          TraverseToTableCell.table := table;
+          TraverseToTableCell.row := row;
+          TraverseToTableCell.column := 0;
+          send(TraverseToTableCell, 0);
+
+	end
+
+--
 -- InitRefTypeTable
 --
 --	Initializes ReferenceType Table
