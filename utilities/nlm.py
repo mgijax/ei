@@ -87,6 +87,7 @@
 #
 #	lec	02/16/2001
 #	- TR 2290; new PMID in file
+#	- TR ; add PMID accession ID to Reference record
 #
 #	lec	09/12/2000
 #	- TR 1937; numerics showing up in Author names
@@ -515,10 +516,11 @@ def doUpdate(rec, rectags):
 	# Get UI Accession key(s)
 
 	uiKey = accessionlib.get_Accession_key(refKey, 'Reference', MEDLINESTR)
+	pmidKey = accessionlib.get_Accession_key(refKey, 'Reference', PUBMEDSTR)
 
-	# Update existing entry if ui, title or abstract is NULL
+	# Update existing entry if ui, pmid, title or abstract is NULL
  
-	if uiKey is None or title is None or abstract is None:
+	if uiKey is None or pmidKey is None or title is None or abstract is None:
 
 		attachQuotes(rec)
 		cmd = []
@@ -550,15 +552,19 @@ def doUpdate(rec, rectags):
 
         	if rec['UI'] != '"0"':
 			if uiKey is not None:
-				if type(uiKey) == type([]):
-					for ui in uiKey:
-          					cmd.append('exec ACC_update %s,%s' % (ui, rec['UI']))
-				else:
-          				cmd.append('exec ACC_update %s,%s' % (uiKey, rec['UI']))
+          			cmd.append('exec ACC_update %s,%s' % (uiKey, rec['UI']))
 			else:	
           			cmd.append('exec ACC_insert %d,%s,%d,%s' \
 				     	% (refKey, rec['UI'], MEDLINEKEY, MGITYPE))
  
+		# Update/Add PubMed ID
+
+		if pmidKey is not None:
+          		cmd.append('exec ACC_update %s,%s' % (pmiKey, rec['PMID']))
+		else:	
+          		cmd.append('exec ACC_insert %d,%s,%d,%s' \
+				     	% (refKey, rec['PMID'], PUBMEDKEY, MGITYPE))
+			
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
 
@@ -788,6 +794,8 @@ def processFile():
 
 MEDLINESTR = 'MEDLINE'
 MEDLINEKEY = 7
+PUBMEDSTR = 'PubMed'
+PUBMEDKEY = 29
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
 
