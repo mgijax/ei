@@ -1,8 +1,8 @@
 Module: MGIAdmin
 {
       autoCuil = False;
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Sep 14 09:53:07 1999";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Mon Sep 27 11:38:05 1999";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -22,9 +22,9 @@ Module: MGIAdmin
                             File = File : mgiMenu;
                                 Popups:
                                 {
-                                  FilePulldown = XmPulldownMenu;
+                                  FilePulldown = MenuPulldown;
                                       {
-                                        Exit = XmPushButton;
+                                        Exit = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:ExitApplication";
                                       }
@@ -65,13 +65,6 @@ Module: MGIAdmin
                           }
                     }
               }
-              Popups:
-              {
-                StatusDialog = XmWarningDialog;
-              }
-              {
-                WorkingDialog = XmWorkingDialog;
-              }
         }
         {
           ActualLogical = Module : MGI;
@@ -85,40 +78,31 @@ Module: MGIAdmin
               {
                 MainForm = XmForm;
                     {
-                      MainMenu = XmMenuBar;
+                      MainMenu = MainMenu;
                           {
-                            File = XmCascadeButton;
+                            File = File;
                           }
                           {
-                            Commands = XmCascadeButton;
+                            Commands = Commands;
                           }
                           {
-                            Edit = XmCascadeButton;
+                            Edit = Edit;
                           }
                           {
-                            View = XmCascadeButton;
+                            View = View;
                             Group: Widget
                               managed = False;
-                          }
-                          {
-                            Reports = XmCascadeButton;
-                          }
-                          {
-                            Utilities = XmCascadeButton;
-                          }
-                          {
-                            Help = XmCascadeButton;
                           }
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = XmForm;
+                            EditForm = EditForm;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
                                   Name = CharText : mgiDataTypes;
@@ -137,7 +121,7 @@ Module: MGIAdmin
                                           labelString = Name;
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           maxLength = 80;
                                           columns = 80;
@@ -160,7 +144,7 @@ Module: MGIAdmin
                                           labelString = Description;
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           columns = 100;
                                       }
@@ -204,7 +188,7 @@ Module: MGIAdmin
                                     resizable = true;
                                     rightOffset = 5;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumColumns = 9;
                                           xrtTblColumnLabels = "Mode,Actual Key,Active Key,Multiple Key,Name,URL,Active?,Multiple?,Delimiter";
@@ -217,12 +201,6 @@ Module: MGIAdmin
                                               Group: Widget
                                                 labelString = "Actual Databases";
                                             }
-                                      }
-                                      {
-                                        AddRow = XmPushButton;
-                                      }
-                                      {
-                                        DeleteRow = XmPushButton;
                                       }
                                 }
                                 {
@@ -241,7 +219,7 @@ Module: MGIAdmin
                                     rightOffset = 5;
                                       Popups:
                                       {
-                                        ActivePulldown : YesNoPulldown = XmPulldownMenu;
+                                        ActivePulldown : YesNoPulldown = OptionPulldown;
                                         Group: User
                                           tableForm = ActualDB;
                                           tableOptionKey = 2;
@@ -264,7 +242,7 @@ Module: MGIAdmin
                                     rightOffset = 5;
                                       Popups:
                                       {
-                                        MultiplePulldown : YesNoPulldown = XmPulldownMenu;
+                                        MultiplePulldown : YesNoPulldown = OptionPulldown;
                                         Group: User
                                           tableForm = ActualDB;
                                           tableOptionKey = 3;
@@ -274,24 +252,24 @@ Module: MGIAdmin
                           }
                     }
                     {
-                      Control = XmFrame;
+                      Control = Control;
                     }
                     {
-                      Lookup = XmFrame;
+                      Lookup = Lookup;
                           {
                             panedWindow = XmPanedWindow;
                                 {
-                                  QueryList = XmForm;
+                                  QueryList = QueryList;
                                 }
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
                                   Group: User
                                     cmd = "select _Species_key, name from MRK_Species where _Species_key <= 2 order by _Species_key\nselect _Species_key, name from MRK_Species where _Species_key > 2 order by name\n";
                                       {
-                                        Label = XmPushButton;
+                                        Label = LookupLabel;
                                       }
                                       {
-                                        List = XmScrolledList;
+                                        List = list;
                                         Group: User
                                           targetText = Species;
                                           targetKey = ObjectID;
@@ -299,31 +277,6 @@ Module: MGIAdmin
                                       }
                                 }
                           }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = XmWarningDialog;
-                    }
-                    {
-                      DeleteDialog = XmQuestionDialog;
-                    }
-                    {
-                      ReportDialog = XmFormDialog;
-                    }
-                    {
-                      SearchDialog = XmWorkingDialog;
-                    }
-                    {
-                      WhichItem = XmFormDialog;
-                    }
-                    {
-                      VerifyItemAdd = XmQuestionDialog;
-                    }
-                    {
-                      WorkingDialog = XmWorkingDialog;
-                    }
-                    {
-                      NoteDialog = XmFormDialog;
                     }
               }
         }
@@ -337,40 +290,31 @@ Module: MGIAdmin
               {
                 MainForm = XmForm;
                     {
-                      MainMenu = XmMenuBar;
+                      MainMenu = MainMenu;
                           {
-                            File = XmCascadeButton;
+                            File = File;
                           }
                           {
-                            Commands = XmCascadeButton;
+                            Commands = Commands;
                           }
                           {
-                            Edit = XmCascadeButton;
+                            Edit = Edit;
                           }
                           {
-                            View = XmCascadeButton;
+                            View = View;
                             Group: Widget
                               managed = False;
-                          }
-                          {
-                            Reports = XmCascadeButton;
-                          }
-                          {
-                            Utilities = XmCascadeButton;
-                          }
-                          {
-                            Help = XmCascadeButton;
                           }
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = XmForm;
+                            EditForm = EditForm;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
                                   LoginServer = LoginServer : mgiOption;
@@ -384,24 +328,24 @@ Module: MGIAdmin
                                     resizable = true;
                                       Popups:
                                       {
-                                        LoginServerPulldown = XmPulldownMenu;
+                                        LoginServerPulldown = OptionPulldown;
                                             {
-                                              Production = XmToggleButton;
+                                              Production = ServerToggle;
                                               Group: Widget
                                                 valueChangedCallback = "D:NewServer,\nD:SetModify";
                                             }
                                             {
-                                              Development = XmToggleButton;
+                                              Development = ServerToggle;
                                               Group: Widget
                                                 valueChangedCallback = "D:NewServer,\nD:SetModify";
                                             }
                                             {
-                                              Public = XmToggleButton;
+                                              Public = ServerToggle;
                                               Group: Widget
                                                 valueChangedCallback = "D:NewServer,\nD:SetModify";
                                             }
                                             {
-                                              Junior = XmToggleButton;
+                                              Junior = ServerToggle;
                                               Group: Widget
                                                 valueChangedCallback = "D:NewServer,\nD:SetModify";
                                             }
@@ -436,7 +380,7 @@ Module: MGIAdmin
                                           labelString = Table;
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           maxLength = 50;
                                           columns = 50;
@@ -459,7 +403,7 @@ Module: MGIAdmin
                                           labelString = Description;
                                       }
                                       {
-                                        text = XmScrolledText;
+                                        text = scrolledText;
                                         Group: Widget
                                           rows = 15;
                                           columns = 125;
@@ -478,7 +422,7 @@ Module: MGIAdmin
                                     resizable = true;
                                     bottomOffset = 5;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblPixelWidthSeries = "(all 0-1 0)";
                                           xrtTblColumnLabels = "Mode,Key,Column,Description,Example";
@@ -491,12 +435,12 @@ Module: MGIAdmin
                                           xrtTblWordWrapSeries = "(allcells 3-4 True)";
                                       }
                                       {
-                                        AddRow = XmPushButton;
+                                        AddRow = TablePush;
                                         Group: Widget
                                           managed = False;
                                       }
                                       {
-                                        DeleteRow = XmPushButton;
+                                        DeleteRow = TablePush;
                                         Group: Widget
                                           managed = False;
                                       }
@@ -504,75 +448,29 @@ Module: MGIAdmin
                           }
                     }
                     {
-                      Control = XmFrame;
+                      Control = Control;
                           {
                             ControlForm = XmForm;
                                 {
-                                  Search = XmPushButton;
+                                  Search = ControlPush;
                                 }
                                 {
-                                  Clear = XmPushButton;
+                                  Clear = ControlPush;
                                 }
                                 {
-                                  Modify = XmPushButton;
+                                  Modify = ControlPush;
                                 }
                                 {
-                                  Add = XmPushButton;
+                                  Add = ControlPush;
                                   Group: Widget
                                     sensitive = False;
                                 }
                                 {
-                                  Delete = XmPushButton;
+                                  Delete = ControlPush;
                                   Group: Widget
                                     sensitive = False;
-                                }
-                                {
-                                  Previous = XmArrowButton;
-                                }
-                                {
-                                  Next = XmArrowButton;
-                                }
-                                {
-                                  Clear1 = XmMenuBar;
-                                }
-                                {
-                                  RecordCount = XmXrtAligner;
-                                }
-                                {
-                                  CreationDate = XmXrtAligner;
-                                }
-                                {
-                                  ModifiedDate = XmXrtAligner;
                                 }
                           }
-                    }
-                    {
-                      Lookup = XmFrame;
-                    }
-                    Popups:
-                    {
-                      StatusDialog = XmWarningDialog;
-                    }
-                    {
-                      DeleteDialog = XmQuestionDialog;
-                    }
-                    {
-                      ReportDialog = XmFormDialog;
-                    }
-                    {
-                      SearchDialog = XmWorkingDialog;
-                    }
-                    {
-                      WhichItem = XmFormDialog;
-                    }
-                    {
-                      VerifyItemAdd = XmQuestionDialog;
-                    }
-                    {
-                      WorkingDialog = XmWorkingDialog;
-                    }
-                    {
-                      NoteDialog = XmFormDialog;
                     }
               }
         }

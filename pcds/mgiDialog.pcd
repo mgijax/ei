@@ -2,8 +2,8 @@ Module: mgiDialog
 {
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Sep 14 09:52:50 1999";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Tue Sep 28 12:56:37 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -74,7 +74,7 @@ Module: mgiDialog
             vip_x = 80;
             vip_y = 250;
               {
-                FileSelection = XmFileSelectionBox;
+                FileSelection = FileSelection;
                 Group: Widget
                   okCallback = "D:ReportGenerate";
                   okLabelString = Generate;
@@ -92,24 +92,24 @@ Module: mgiDialog
                           {
                             ReportList = LookupList : mgiLookup;
                                 {
-                                  Label = XmPushButton;
+                                  Label = LookupLabel;
                                   Group: Widget
                                     labelString = Reports;
                                 }
                                 {
-                                  List = XmScrolledList;
+                                  List = list;
                                   Group: Widget
                                     singleSelectionCallback = "D:ReportSelect";
                                 }
                           }
                           {
-                            PrinterList = XmForm;
+                            PrinterList = LookupList;
                           }
                           {
-                            PrintOrient = XmFrame : mgiDataTypes;
+                            PrintOrient = Choice : mgiDataTypes;
                           }
                           {
-                            PrintColumn = XmFrame : mgiDataTypes;
+                            PrintColumn = Choice : mgiDataTypes;
                           }
                           {
                             Output = XmScrolledText;
@@ -167,14 +167,14 @@ Module: mgiDialog
                           {
                             PrinterList = LookupList : mgiLookup;
                                 {
-                                  Label = XmPushButton;
+                                  Label = LookupLabel;
                                   Group: Widget
                                     labelString = Printers;
                                   Group: User
                                     defaultLabel = Printers;
                                 }
                                 {
-                                  List = XmScrolledList;
+                                  List = list;
                                   Group: Widget
                                     items = "jaguar\nzinger\nmgmgrand\nmeadow\ninforback\ndiva\nwizard\nmario\nzeppelin\nbentley\ntucker\npackard";
                                 }
@@ -254,13 +254,13 @@ Module: mgiDialog
                   leftOffset = 2;
                   rightOffset = 2;
                     {
-                      Label = XmPushButton;
+                      Label = LookupLabel;
                       Group: Widget
                         labelString = Items;
                         managed = False;
                     }
                     {
-                      List = XmScrolledList;
+                      List = list;
                       Group: Widget
                         width = 250;
                         singleSelectionCallback = "D:WhichItem,\nC:TuUnmanage";
@@ -339,7 +339,7 @@ Module: mgiDialog
           Group: User
             useReportDir = False;
               {
-                FileSelection = XmFileSelectionBox;
+                FileSelection = FileSelection;
                 Group: Widget
                   okCallback = "D:ReportGenerate(nlmMode = 1)";
                   okLabelString = NLM;
@@ -363,24 +363,18 @@ Module: mgiDialog
                       Group: Widget
                         activateCallback = "D:ReportGenerate(nlmMode = 3)";
                     }
-                    {
-                      Print = XmPushButton;
-                    }
-                    {
-                      Delete = XmPushButton;
-                    }
               }
               {
                 Lookup = XmFrame;
                     {
                       panedWindow = XmPanedWindow;
                           {
-                            ReportList = XmForm;
+                            ReportList = LookupList;
                                 {
-                                  Label = XmPushButton;
+                                  Label = LookupLabel;
                                 }
                                 {
-                                  List = XmScrolledList;
+                                  List = list;
                                   Group: Widget
                                     items = "NLM/CC Updates";
                                   Group: User
@@ -388,16 +382,25 @@ Module: mgiDialog
                                 }
                           }
                           {
-                            PrinterList = XmForm;
+                            PrinterList = LookupList;
                           }
                           {
-                            PrintOrient = XmFrame : mgiDataTypes;
+                            PrintOrient = Choice : mgiDataTypes;
+                                {
+                                  PrintOrientBox = XmRowColumn;
+                                }
+                                {
+                                  ChoiceBox = XmRowColumn;
+                                }
                           }
                           {
-                            PrintColumn = XmFrame : mgiDataTypes;
-                          }
-                          {
-                            Output = XmScrolledText;
+                            PrintColumn = Choice : mgiDataTypes;
+                                {
+                                  PrintColumnBox = XmRowColumn;
+                                }
+                                {
+                                  ChoiceBox = XmRowColumn;
+                                }
                           }
                     }
               }
@@ -417,9 +420,6 @@ Module: mgiDialog
                       label = XmLabel;
                       Group: Widget
                         labelString = "Starting J: (for Add only)";
-                    }
-                    {
-                      text = XmTextField;
                     }
               }
         }
@@ -459,14 +459,14 @@ Module: mgiDialog
                   rightOffset = 2;
                   topOffset = 2;
                     {
-                      Label = XmPushButton;
+                      Label = LookupLabel;
                       Group: Widget
                         labelString = "0 Items";
                       Group: User
                         defaultLabel = Items;
                     }
                     {
-                      List = XmScrolledList;
+                      List = list;
                       Group: Widget
                         width = 250;
                         visibleItemCount = 10;
@@ -488,10 +488,12 @@ Module: mgiDialog
                   resizable = true;
                   rightOffset = 2;
                     {
-                      Selection : label = XmLabel;
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Selection;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 40;
                         maxLength = 255;
@@ -523,13 +525,10 @@ Module: mgiDialog
                   leftPosition = 15;
                   bottomOffset = 2;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:FindSelectionItem";
                         labelString = Find;
-                    }
-                    {
-                      Cancel = XmPushButton;
                     }
               }
         }
@@ -539,33 +538,26 @@ Module: mgiDialog
             vip_x = 80;
             vip_y = 1185;
               {
-                ItemList = XmForm;
+                ItemList = LookupList;
                 Group: User
                   cmd = "select * from PRB_Strain order by strain";
                     {
-                      Label = XmPushButton;
+                      Label = LookupLabel;
                       Group: Widget
                         labelString = "0 Strains";
                       Group: User
                         defaultLabel = Strains;
                     }
-                    {
-                      List = XmScrolledList;
-                    }
               }
               {
-                Selection = XmXrtAligner;
+                Selection = CharText;
                 Group: Constraint
                   topWidget = ItemList;
-              }
-              {
-                SelectionKey = XmXrtAligner;
-              }
-              {
-                separator = XmSeparator;
-              }
-              {
-                Buttons = XmRowColumn;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Strain;
+                    }
               }
         }
         {
@@ -576,33 +568,26 @@ Module: mgiDialog
             vip_x = 80;
             vip_y = 1130;
               {
-                ItemList = XmForm;
+                ItemList = LookupList;
                 Group: User
                   cmd = "select * from PRB_Tissue order by tissue";
                     {
-                      Label = XmPushButton;
+                      Label = LookupLabel;
                       Group: Widget
                         labelString = "0 Tissues";
                       Group: User
                         defaultLabel = Tissues;
                     }
-                    {
-                      List = XmScrolledList;
-                    }
               }
               {
-                Selection = XmXrtAligner;
+                Selection = CharText;
                 Group: Constraint
                   topWidget = ItemList;
-              }
-              {
-                SelectionKey = XmXrtAligner;
-              }
-              {
-                separator = XmSeparator;
-              }
-              {
-                Buttons = XmRowColumn;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Tissue;
+                    }
               }
         }
         {
@@ -645,7 +630,7 @@ Module: mgiDialog
                         managed = False;
                     }
                     {
-                      text = XmScrolledText;
+                      text = scrolledText;
                       Group: Widget
                         rows = 15;
                         columns = 75;
@@ -675,13 +660,13 @@ Module: mgiDialog
                   bottomOffset = 5;
                   topOffset = 5;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:NoteCommit";
                         labelString = "Save Changes";
                     }
                     {
-                      Cancel = XmPushButton;
+                      Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "D:NoteCancel";
                         labelString = "Cancel Changes";
@@ -700,9 +685,9 @@ Module: mgiDialog
           Group: User
             homeWidget = "Strain\nMarkerAllele";
               {
-                EditForm = XmForm : MGI;
+                EditForm = EditForm : MGI;
                     {
-                      ID = XmXrtAligner;
+                      ID = ID;
                     }
                     {
                       Strain = Strain : mgiDataTypes;
@@ -727,7 +712,7 @@ Module: mgiDialog
                         resizable = true;
                         leftOffset = 5;
                           {
-                            Table = XtXrtTable;
+                            Table = mgiTable;
                             Group: Widget
                               xrtTblNumColumns = 9;
                               xrtTblColumnLabels = "Mode, Key, M Key, A1 Key, A2 Key,Seq #,Marker,Allele 1,Allele2";
@@ -748,12 +733,6 @@ Module: mgiDialog
                                     labelString = "Allele Pairs";
                                 }
                           }
-                          {
-                            AddRow = XmPushButton;
-                          }
-                          {
-                            DeleteRow = XmPushButton;
-                          }
                     }
                     {
                       AlleleName = CharText : mgiDataTypes;
@@ -765,7 +744,7 @@ Module: mgiDialog
                               labelString = "Allele Name";
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               columns = 50;
                             Group: User
@@ -777,14 +756,14 @@ Module: mgiDialog
                 separator = XmSeparator;
               }
               {
-                Buttons = XmRowColumn;
+                Buttons = Buttons;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:GenotypeCommit";
                     }
                     {
-                      Cancel = XmPushButton;
+                      Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "D:GenotypeCancel";
                     }
@@ -855,12 +834,9 @@ Module: mgiDialog
                   resizable = true;
                   bottomOffset = 5;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         labelString = "Save Edits\nand Quit";
-                    }
-                    {
-                      Cancel = XmPushButton;
                     }
               }
         }
@@ -875,7 +851,7 @@ Module: mgiDialog
             vip_x = 80;
             vip_y = 1405;
               {
-                EditForm = XmForm : MGI;
+                EditForm = EditForm : MGI;
                 Group: Widget
                   rubberPositioning = False;
                   resizePolicy = resize_any;
@@ -886,7 +862,7 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      ID = XmXrtAligner;
+                      ID = ID;
                     }
                     {
                       Results = TableLabel : mgiTable;
@@ -899,7 +875,7 @@ Module: mgiDialog
                         bottomAttachment = attach_none;
                         resizable = true;
                           {
-                            Table = XtXrtTable;
+                            Table = mgiTable;
                             Group: Widget
                               xrtTblNumColumns = 12;
                               xrtTblColumnLabels = "Mode,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,SeqNum,Structures,Strength,Pattern,Image Panes,Notes";
@@ -916,12 +892,6 @@ Module: mgiDialog
                                     labelString = "InSitu Results";
                                 }
                           }
-                          {
-                            AddRow = XmPushButton;
-                          }
-                          {
-                            DeleteRow = XmPushButton;
-                          }
                     }
               }
               {
@@ -937,7 +907,7 @@ Module: mgiDialog
                   bottomOffset = 5;
               }
               {
-                Buttons = XmRowColumn;
+                Buttons = Buttons;
                 Group: Constraint
                   leftAttachment = attach_position;
                   rightAttachment = attach_none;
@@ -947,7 +917,7 @@ Module: mgiDialog
                   bottomOffset = 5;
                   leftPosition = 5;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:InSituResultCommit(quit = true)";
                     }
@@ -958,7 +928,7 @@ Module: mgiDialog
                         activateCallback = "D:InSituResultCommit";
                     }
                     {
-                      Cancel = XmPushButton;
+                      Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "D:InSituResultCancel";
                     }
@@ -975,7 +945,7 @@ Module: mgiDialog
                     {
                       panedWindow = XmPanedWindow;
                           {
-                            QueryList = XmForm;
+                            QueryList = QueryList;
                             Group: Widget
                               managed = False;
                           }
@@ -987,7 +957,7 @@ Module: mgiDialog
                             Group: User
                               cmd = "select _ImagePane_key, paneLabel from IMG_ImagePaneRef_View where _Refs_key =";
                                 {
-                                  Label = XmPushButton;
+                                  Label = LookupLabel;
                                   Group: Widget
                                     labelString = "Image Panes";
                                     activateCallback = "D:LoadImagePaneList";
@@ -995,7 +965,7 @@ Module: mgiDialog
                                     defaultLabel = "Image Panes";
                                 }
                                 {
-                                  List = XmScrolledList;
+                                  List = list;
                                   Group: Widget
                                     selectionPolicy = multiple_select;
                                     multipleSelectionCallback = "D:SelectImagePane";
@@ -1006,12 +976,12 @@ Module: mgiDialog
                             Group: User
                               cmd = "select distinct _Structure_key, dbName from GXD_ISResultStructure_View where _Specimen_key = ";
                                 {
-                                  Label = XmPushButton;
+                                  Label = LookupLabel;
                                   Group: Widget
                                     activateCallback = "D:UnselectInsituResults,\nD:LoadStructureList";
                                 }
                                 {
-                                  List = XmScrolledList;
+                                  List = list;
                                   Group: User
                                     targetWidget = Results;
                                 }
@@ -1025,33 +995,29 @@ Module: mgiDialog
             vip_x = 80;
             vip_y = 1515;
               {
-                ItemList = XmForm;
+                ItemList = LookupList;
                 Group: User
                   cmd = "select _RISet_key, designation from RI_RISet order by designation";
                     {
-                      Label = XmPushButton;
+                      Label = LookupLabel;
                       Group: Widget
                         labelString = "0 RI Sets";
                       Group: User
                         defaultLabel = "RI Sets";
                     }
                     {
-                      List = XmScrolledList;
+                      List = list;
                       Group: Widget
                         singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem,\nD:SelectRILookup";
                     }
               }
               {
-                Selection = XmXrtAligner;
-              }
-              {
-                SelectionKey = XmXrtAligner;
-              }
-              {
-                separator = XmSeparator;
-              }
-              {
-                Buttons = XmRowColumn;
+                Selection = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = "RI Set";
+                    }
               }
         }
         {
@@ -1060,33 +1026,29 @@ Module: mgiDialog
             vip_x = 80;
             vip_y = 1570;
               {
-                ItemList = XmForm;
+                ItemList = LookupList;
                 Group: User
                   cmd = "select _Cross_key = -1, display = \"Anonymous\", whoseCross = \"Anonymous\"\nunion\nselect _Cross_key, display, whoseCross from CRS_Cross_View where displayed = 1 \norder by whoseCross";
                     {
-                      Label = XmPushButton;
+                      Label = LookupLabel;
                       Group: Widget
                         labelString = "0 Crosses";
                       Group: User
                         defaultLabel = Crosses;
                     }
                     {
-                      List = XmScrolledList;
+                      List = list;
                       Group: Widget
                         singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem,\nD:SelectCrossLookup";
                     }
               }
               {
-                Selection = XmXrtAligner;
-              }
-              {
-                SelectionKey = XmXrtAligner;
-              }
-              {
-                separator = XmSeparator;
-              }
-              {
-                Buttons = XmRowColumn;
+                Selection = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Cross;
+                    }
               }
         }
         {
@@ -1141,17 +1103,14 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      StrainID = XmXrtAligner;
+                      StrainID = ID;
                     }
                     {
-                      Verify = XmXrtAligner;
+                      Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            label = XmLabel;
                             Group: Widget
                               labelString = "New Strain";
-                          }
-                          {
-                            text = XmTextField;
                           }
                     }
               }
@@ -1168,17 +1127,14 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      StrainID = XmXrtAligner;
+                      StrainID = ID;
                     }
                     {
-                      Verify = XmXrtAligner;
+                      Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            label = XmLabel;
                             Group: Widget
                               labelString = "Old Strain";
-                          }
-                          {
-                            text = XmTextField;
                           }
                     }
               }
@@ -1279,18 +1235,12 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      Verify = XmXrtAligner;
+                      Verify = CharText;
                           {
-                            Tissue = XmLabel;
+                            label = XmLabel;
                             Group: Widget
                               labelString = "New Tissue";
                           }
-                          {
-                            text = XmTextField;
-                          }
-                    }
-                    {
-                      TissueID = XmXrtAligner;
                     }
               }
               {
@@ -1306,18 +1256,12 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      Verify = XmXrtAligner;
+                      Verify = CharText;
                           {
-                            Tissue = XmLabel;
+                            label = XmLabel;
                             Group: Widget
                               labelString = "Old Tissue";
                           }
-                          {
-                            text = XmTextField;
-                          }
-                    }
-                    {
-                      TissueID = XmXrtAligner;
                     }
               }
               {
@@ -1403,7 +1347,7 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      Table = XtXrtTable;
+                      Table = mgiTable;
                       Group: Widget
                         xrtTblNumColumns = 8;
                         xrtTblColumnLabels = "Mode,Key 1,Key 2,Refs Key,Old Symbol,New Symbol,J#,Citation";
@@ -1420,12 +1364,12 @@ Module: mgiDialog
                         requiredColumns = "1\n2\n3\n4\n5\n6";
                     }
                     {
-                      AddRow = XmPushButton;
+                      AddRow = TablePush;
                       Group: Widget
                         managed = False;
                     }
                     {
-                      DeleteRow = XmPushButton;
+                      DeleteRow = TablePush;
                       Group: Widget
                         managed = False;
                     }
@@ -1474,7 +1418,7 @@ Module: mgiDialog
                                     managed = False;
                                 }
                                 {
-                                  text = XmScrolledText;
+                                  text = scrolledText;
                                   Group: Widget
                                     columns = 25;
                                     maxLength = 1000;
@@ -1516,7 +1460,7 @@ Module: mgiDialog
                                     managed = False;
                                 }
                                 {
-                                  text = XmScrolledText;
+                                  text = scrolledText;
                                   Group: Widget
                                     columns = 65;
                                     maxLength = 1000;
@@ -1541,7 +1485,7 @@ Module: mgiDialog
                                     managed = False;
                                 }
                                 {
-                                  text = XmScrolledText;
+                                  text = scrolledText;
                                   Group: Widget
                                     columns = 65;
                                     maxLength = 1000;
@@ -1561,7 +1505,7 @@ Module: mgiDialog
                                     managed = False;
                                 }
                                 {
-                                  text = XmScrolledText;
+                                  text = scrolledText;
                                   Group: Widget
                                     columns = 65;
                                     maxLength = 1000;
@@ -1581,7 +1525,7 @@ Module: mgiDialog
                                     managed = False;
                                 }
                                 {
-                                  text = XmScrolledText;
+                                  text = scrolledText;
                                   Group: Widget
                                     columns = 65;
                                     maxLength = 1000;
@@ -1601,7 +1545,7 @@ Module: mgiDialog
                                     managed = False;
                                 }
                                 {
-                                  text = XmScrolledText;
+                                  text = scrolledText;
                                   Group: Widget
                                     columns = 65;
                                     maxLength = 1000;
@@ -1646,14 +1590,14 @@ Module: mgiDialog
                   bottomOffset = 2;
                   resizable = true;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "C: TuManage(find = VerifyTransferDialog)";
                         labelString = "Process Transfer";
                         managed = False;
                     }
                     {
-                      Cancel = XmPushButton;
+                      Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "C: TuUnmanage";
                         labelString = Done;
@@ -1694,7 +1638,7 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      Table = XtXrtTable;
+                      Table = mgiTable;
                       Group: Widget
                         xrtTblNumColumns = 3;
                         xrtTblColumnLabels = "Mode,Key,New Symbol(s)";
@@ -1707,12 +1651,12 @@ Module: mgiDialog
                         xrtTblVisibleRows = 3;
                     }
                     {
-                      AddRow = XmPushButton;
+                      AddRow = TablePush;
                       Group: Widget
                         managed = False;
                     }
                     {
-                      DeleteRow = XmPushButton;
+                      DeleteRow = TablePush;
                       Group: Widget
                         managed = False;
                     }
@@ -1790,7 +1734,7 @@ Module: mgiDialog
                         labelString = Name;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 70;
                     }
@@ -1807,18 +1751,18 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      Jnum = XmXrtAligner;
+                      Jnum = Jnum;
                     }
                     {
-                      Citation = XmXrtAligner;
+                      Citation = Citation;
                           {
                             label = XmLabel;
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               columns = 50;
                           }
@@ -1875,13 +1819,13 @@ Module: mgiDialog
                   bottomOffset = 2;
                   resizable = true;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:MarkerWithdrawal";
                         labelString = "Process Withdrawal";
                     }
                     {
-                      Cancel = XmPushButton;
+                      Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "D:MarkerWithdrawalCancel";
                     }
@@ -1916,10 +1860,10 @@ Module: mgiDialog
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      Marker = XmXrtAligner;
+                      Marker = CharText;
                       Group: Widget
                         xrtGearOrientation = vertical;
                           {
@@ -1928,7 +1872,7 @@ Module: mgiDialog
                               labelString = "Import Text from which symbol?\n(TAB after entering symbol)";
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -2044,14 +1988,14 @@ Shift<Key>Tab: prev-tab-group()
                   leftWidget = Choice;
                   topWidget = Choice;
                     {
-                      Date = XmXrtAligner;
+                      Date = Date;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "Broadcast Date";
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -2077,7 +2021,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Preview File Name";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 35;
                     }
@@ -2099,7 +2043,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Broadcast File Name";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 35;
                     }
@@ -2121,7 +2065,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Email File Name";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 35;
                     }
@@ -2179,13 +2123,13 @@ Shift<Key>Tab: prev-tab-group()
                   rightWidget = Lookup;
                   rightOffset = 2;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:Broadcast";
                         labelString = Process;
                     }
                     {
-                      Done : Cancel = XmPushButton;
+                      Done : Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "C: TuUnmanage";
                     }
@@ -2213,15 +2157,15 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      Marker = XmXrtAligner;
+                      Marker = CharText;
                           {
                             label = XmLabel;
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               columns = 25;
                               maxLength = 25;
@@ -2240,17 +2184,14 @@ Shift<Key>Tab: prev-tab-group()
                   leftWidget = mgiMarker;
                   topWidget = mgiMarker;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      Allele = XmXrtAligner;
+                      Allele = CharText;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "Old Allele Symbol";
-                          }
-                          {
-                            text = XmTextField;
                           }
                     }
               }
@@ -2266,17 +2207,14 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      Allele = XmXrtAligner;
+                      Allele = CharText;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "New Allele Symbol";
-                          }
-                          {
-                            text = XmTextField;
                           }
                     }
               }
@@ -2342,7 +2280,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Allele Name";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 50;
                       Group: User
@@ -2393,15 +2331,15 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      Marker = XmXrtAligner;
+                      Marker = CharText;
                           {
                             label = XmLabel;
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -2426,7 +2364,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Band;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 20;
                         maxLength = 20;
@@ -2451,7 +2389,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Proximal Symbol";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 25;
                         maxLength = 25;
@@ -2476,7 +2414,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Distal Symbol";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 25;
                         maxLength = 25;
@@ -2502,7 +2440,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Proximal Band";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         maxLength = 20;
                         columns = 20;
@@ -2527,7 +2465,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Distal Band";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         maxLength = 20;
                         columns = 20;
@@ -2545,13 +2483,13 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
                   topWidget = DistalSymbol;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "C: TuManage(find = VerifyBreakpointSplitDialog)";
                         labelString = "Process Split";
                     }
                     {
-                      Cancel = XmPushButton;
+                      Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "C: TuUnmanage";
                         labelString = Done;
@@ -2592,19 +2530,16 @@ Shift<Key>Tab: prev-tab-group()
                   leftOffset = 5;
                   topOffset = 5;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      Marker = XmXrtAligner;
+                      Marker = CharText;
                       Group: Widget
                         xrtGearOrientation = vertical;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "Marker\n(TAB after entering symbol)";
-                          }
-                          {
-                            text = XmTextField;
                           }
                     }
               }
@@ -2621,13 +2556,13 @@ Shift<Key>Tab: prev-tab-group()
                   topWidget = mgiMarker;
                   topOffset = 5;
                     {
-                      OK = XmPushButton;
+                      OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:Unlock";
                         labelString = Process;
                     }
                     {
-                      Cancel = XmPushButton;
+                      Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "C: TuUnmanage";
                         labelString = Done;
