@@ -2184,6 +2184,8 @@ rules:
 	  column : integer;
 	  reason : integer;
 
+	  (void) busy_cursor(top);
+
 	  isTable := mgi_tblIsTable(sourceWidget);
 
 	  -- Processing for Table
@@ -2194,12 +2196,14 @@ rules:
 	    reason := VerifyMarkerAlleles.reason;
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      (void) reset_cursor(top);
 	      return;
 	    end if;
 					   
 	    -- If not in the marker column, return
 
             if (column != sourceWidget.markerSymbol) then
+	      (void) reset_cursor(top);
               return;
             end if;
 
@@ -2212,6 +2216,7 @@ rules:
 	  end if;
 
 	  if (value.length = 0 or value = "NULL") then
+	    (void) reset_cursor(top);
 	    return;
 	  end if;
 
@@ -2225,6 +2230,8 @@ rules:
 			"Please check these records before entering your new Allele Symbol.\n";
                 send(StatusReport);
           end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

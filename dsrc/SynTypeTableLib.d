@@ -208,6 +208,10 @@ rules:
  
 	  syntableID : integer := MGI_SYNONYM;
 
+	  if (table.useDefaultSynType = 1) then
+	    synTypeKey := mgi_sql1("select _SynonymType_key from " + mgi_DBtable(tableID));
+	  end if;
+
           -- Process 
  
           while (row < mgi_tblNumRows(table)) do
@@ -215,9 +219,7 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.synKey);
 
-	    if (table.useDefaultSynType = 1) then
-	      synTypeKey := mgi_sql1("select _SynonymType_key from " + mgi_DBtable(tableID));
-	    else
+	    if (table.useDefaultSynType = 0) then
 	      synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
 	    end if;
 
