@@ -67,7 +67,7 @@ umask 002
 
 cd $HOME
 
-PUBLIC_RPTS="NOMEN_Tracking.sql"
+PUBLIC_RPTS="MRK_NomenUpdates.sql"
 
 # Copy all of the generated reports from the EI installation filesystem
 # to the FTP site.
