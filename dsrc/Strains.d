@@ -621,7 +621,7 @@ rules:
 		table := top->Marker->Table;
                 (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 4) then
 		table := top->StrainType->Table;
