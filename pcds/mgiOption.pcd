@@ -54,6 +54,7 @@ Module: mgiOption
           Group: Widget
             userDefinedAttributes = "searchValue:String(String)=\"%\"\ndefaultValue:String(String)\nform:String(String)\nmodified:Boolean(Boolean)=\"False\"\n";
             activateCallback = "D:SetModify";
+            background = Wheat;
           Group: Control
             vip_x = 80;
             vip_y = 195;
