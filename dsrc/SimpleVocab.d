@@ -254,6 +254,7 @@ rules:
 	  end if;
 
 	  send(ModifyTerm, 0);
+	  send(ModifySynonym, 0);
 
 	  if (cmd.length > 0 or set.length > 0) then
 	    cmd := mgi_DBupdate(VOC_VOCAB, currentRecordKey, set) + cmd;
@@ -345,8 +346,7 @@ rules:
 	      send(ModifyNotes, 0);
 	      cmd := cmd + termTable.sqlCmd;
 
-	      ModifySynonym.termKey := "@" + keyName;
-	      send(ModifySynonym, 0);
+              mgi_tblSetCell(termTable, row, termTable.termKey, "@" + keyName);
 
 	      termModified := true;
 
@@ -605,10 +605,6 @@ rules:
 	  synTable : widget := top->Synonym->Table;
 	  row : integer := mgi_tblGetCurrentRow(termTable);
 	  termKey : string := mgi_tblGetCell(termTable, row, termTable.termKey);
-
-	  if (SelectSynonym.reason != TBL_REASON_ENTER_CELL_END) then
-	    return;
-	  end if;
 
           ClearTable.table := synTable;
           send(ClearTable, 0);
