@@ -71,7 +71,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS 7-0-34";
+	  global_version := "CVS 7-0-35";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -184,7 +184,7 @@ rules:
 	    end if;
 
 	    destroy mgi;
-	    top.managed := true;
+	    top.show;
 	    (void) mgi_writeLog(get_time() + "Logged in to Application.\n\n");
 	  end if;
 
