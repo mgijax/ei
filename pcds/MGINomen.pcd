@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu May 11 14:38:53 2000";
+      lastWritten = "Tue May 16 10:25:43 2000";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -664,6 +664,8 @@ Shift<Key>Tab: prev-tab-group()
                         resizable = true;
                           {
                             BroadcastForm = XmRowColumn;
+                            Group: Widget
+                              spacing = 15;
                                 {
                                   AddandSymbol = ControlPush : mgiControl;
                                   Group: Widget
@@ -863,6 +865,20 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NoteDialog = NoteDialog : mgiDialog;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            Note = Notes : mgiDataTypes;
+                                {
+                                  label = XmLabel;
+                                }
+                                {
+                                  text = scrolledText;
+                                  Group: Widget
+                                    rows = 50;
+                                }
+                          }
                     }
                     {
                       BroadcastDialog = BroadcastDialog : mgiDialog;
