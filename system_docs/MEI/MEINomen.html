@@ -1,20 +1,20 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGD EDITING INTERFACE: Design and Requirements - Nomenclature
+MGI EDITING INTERFACE: Design and Requirements - Nomenclature
 </TITLE>
 </HEADER>
 
 <BODY BGCOLOR="#FFFFFF">
 
 <H2>
-MGD EDITING INTERFACE: Design and Requirements - Nomenclature
+MGI EDITING INTERFACE: Design and Requirements - Nomenclature
 </H2>
 <BR>
 
 <H4>Introduction</H4>
 The Nomen DB is used by the MGI informatics group to enter novel and reserved mouse gene
-symbols and to broadcast these symbols to MGD.
+symbols and to broadcast these symbols to MGI.
 <P>
 Refer to <A HREF="http://prodwww/wts_projects/1200/1291/userrequirements.pdf">TR 1291 Requirements</A>
 for more information.
@@ -38,9 +38,9 @@ for more information.
 <BR><I>last updated:  ljm 01/09/2004</I><BR><BR>
 	<UL>
 	<LI>Broadcast - Official; the symbol has been approved by Mouse Genomic Nomenclature Committee (MGNC) and/or
-	    the HUGO Gene Nomenclature Committee (HGNC) and transferred to MGD as an "official" symbol.
+	    the HUGO Gene Nomenclature Committee (HGNC) and transferred to MGI as an "official" symbol.
 	<P>
-	<LI>Broadcast - Interim; the symbol has not been approved by MGNC or HGNC at the time it was transferred to MGD.
+	<LI>Broadcast - Interim; the symbol has not been approved by MGNC or HGNC at the time it was transferred to MGI.
 	    Symbol is temporary and awaiting further review until an official symbol is assigned.  This allows data
 	    to be associated with the symbol and entered into MGI in a timely fashion.
 	<P>
@@ -67,9 +67,9 @@ for more information.
 <P>
 <LI>Markers
 	<UL>
-	<LI>If the Marker symbol exists in MGD or Nomen, then a warning is displayed to the user.  
+	<LI>If the Marker symbol exists in MGI or Nomen, then a warning is displayed to the user.  
 	    Modifications allowed.
-	<LI>If the Marker symbol exists in MGD with the "-pending" suffix,
+	<LI>If the Marker symbol exists in MGI with the "-pending" suffix,
 	    then a warning is displayed to the user.  Modifications allowed.
 	</UL>
 <P>
@@ -89,7 +89,7 @@ for more information.
 <P>
 <LI>Review? (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
     <P>
-    Modifying this value will set the "Is Review Article?" flag in the MGD Master Bib record
+    Modifying this value will set the "Is Review Article?" flag in the MGI Master Bib record
     of the reference.
 <P>
 </OL>
@@ -139,7 +139,7 @@ for more information.
     one of these values is allowed.
 </OL>
 
-<H4>Broadcasts to MGD</H4>
+<H4>Broadcasts to MGI</H4>
 (Note:  Refer to <A HREF="http://prodwww/wts_projects/1200/1291/userrequirements.pdf">TR 1291 Requirements</A>
 for definitions of Tier 3 and Tier 4 users and more details on each type of Broadcast.)
 <P>
@@ -150,20 +150,20 @@ a symbol with a status of <I>Broadcast</I>, <I>Approved</I> or <I>Deleted</I>.
 For the <I>add and broadcast</I> options, if any errors are detected during the broadcast,
 the symbol will still be added to Nomen.
 <P>
-When a broadcast to MGD is successful, the <I>Status</I>, <I>Broadcast by</I>,
+When a broadcast to MGI is successful, the <I>Status</I>, <I>Broadcast by</I>,
 <I>Broadcast Date</I>, and <I>MGI Accession ID</I> fields are automatically populated.  No
 user can edit these fields manually.
 <P>
 <OL>
-<LI><I>Add and Broadcast Official to MGD</I> - add symbol to Nomen and broadcast to MGD as <I>Official</I> in one step
-<LI><I>Add and Broadcast Interim to MGD</I> - add symbol to Nomen and broadcast to MGD as <I>Interim</I> in one step
-<LI><I>Broadcast Official Symbol to MGD</I> - broadcast one symbol to MGD and status as <I>Official</I>
-<LI><I>Broadcast Interim Symbol to MGD</I> - broadcast one symbol to MGD and status as <I>Interim</I>
+<LI><I>Add and Broadcast Official to MGI</I> - add symbol to Nomen and broadcast to MGI as <I>Official</I> in one step
+<LI><I>Add and Broadcast Interim to MGI</I> - add symbol to Nomen and broadcast to MGI as <I>Interim</I> in one step
+<LI><I>Broadcast Official Symbol to MGI</I> - broadcast one symbol to MGI and status as <I>Official</I>
+<LI><I>Broadcast Interim Symbol to MGI</I> - broadcast one symbol to MGI and status as <I>Interim</I>
 </OL>
 
 <H4>Miscellaneous</H4>
 <OL>
-<LI>When the user adds either a <I>Primary</I> or <I>Related</I> Reference, the MGD Master 
+<LI>When the user adds either a <I>Primary</I> or <I>Related</I> Reference, the MGI Master 
     Bibliography record for that Reference will be updated so that the <I>Nomenclature</I> data 
     set is selected.
 <P>
