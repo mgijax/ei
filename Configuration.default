@@ -11,10 +11,10 @@
 #unsetenv TERM
 
 # install directory
-setenv EIINSTALLDIR /usr/local/mgi/ei
+setenv EIINSTALLDIR /usr/local/mgi/ei/?
 
 # build directory
-setenv EIBUILDDIR /home/lec/ei/ei
+setenv EIBUILDDIR /usr/local/mgi/ei/ei_build/?
 
 # data directory
 setenv EIDATADIR /usr/local/mgi/ei_data
