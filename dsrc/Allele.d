@@ -618,11 +618,13 @@ rules:
 
 	  -- Modify Marker Description
 
-          ModifyNotes.source_widget := top->markerDescription->Note;
-          ModifyNotes.tableID := MRK_NOTES;
-          ModifyNotes.key := top->mgiMarker->ObjectID->text.value;
-          send(ModifyNotes, 0);
-          cmd := cmd + top->markerDescription->Note.sql;
+	  if (top->mgiMarker->ObjectID->text.value.length > 0) then
+            ModifyNotes.source_widget := top->markerDescription->Note;
+            ModifyNotes.tableID := MRK_NOTES;
+            ModifyNotes.key := top->mgiMarker->ObjectID->text.value;
+            send(ModifyNotes, 0);
+            cmd := cmd + top->markerDescription->Note.sql;
+	  end if;
 
 	  -- Set required field for General Notes
 
