@@ -200,7 +200,8 @@ rules:
             cmd := cmd + top->EditForm->Strain->StrainID->text.value + ",";
 	  end if;
  
-	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + ")\n";
+	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
