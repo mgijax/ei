@@ -219,6 +219,10 @@ rules:
           ProcessAcc.tableID := PRB_SOURCE_MASTER;
           send(ProcessAcc, 0);
 
+          if (cmd.length > 0) then 
+            cmd := cmd + mgi_DBupdate(PRB_SOURCE_MASTER, currentRecordKey, "");
+          end if; 
+ 
           ModifySQL.cmd := top->SourceForm.sql + accTable.sqlCmd + cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
