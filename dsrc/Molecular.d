@@ -1338,16 +1338,6 @@ rules:
           end while;
           refTables.close;
  
-	  -- Initialize Reference info on master form
-          top->MolMasterForm->MJnum->Jnum->text.value := "";
-          top->MolMasterForm->MJnum->ObjectID->text.value := "";
-          top->MolMasterForm->MJnum->Citation->text.value := "";
-
-	  -- Initialize Reference form
-	  ClearForm.source_widget := top.root;
-	  ClearForm.form := "MolReferenceForm";
-	  send(ClearForm, 0);
-
           ClearList.source_widget := top->ReferenceList;
           send(ClearList, 0);
 
