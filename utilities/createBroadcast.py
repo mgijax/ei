@@ -76,6 +76,9 @@
 #
 # History:
 #
+# lec	12/09/1999
+#	- TR 623; replace use of first letter of Marker Type w/ Marker Type Key
+#
 # lec	08/16/1999
 #	- TR518; added Accession numbers for New symbols
 #

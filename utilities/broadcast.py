@@ -40,8 +40,8 @@
 # 2. For all withdrawals, a row must exist for the new symbol if the new symbol
 #    does not already exist in the database:
 #
-#    1  Symbol-A  N  G  this is Symbol-A       J:12345  Other Names
-#    W  Symbol-B  W  G  withdrawn, = Symbol-A  J:12345
+#    1  Symbol-A  N  1  this is Symbol-A       J:12345  Other Names
+#    W  Symbol-B  W  1  withdrawn, = Symbol-A  J:12345
 #
 # Processing:
 #
