@@ -1930,7 +1930,7 @@ class Marker:
 			if self.getAlleleOf() and not self.getHasAllele():
   				newAllele = new.symbol + '<' + self.getSymbol() + '>'
   				cmd.append('execute MRK_insertAllele %d,"%s","%s"' \
-			                   % (new.key, newAllele, self.getName()))
+			                   % (new.key, newAllele, self.getOrigName()))
 
 		# Remove old History (since copied to the new symbol(s))
 		# Remove old Accession #'s if split (since copied to the new symbol(s))
