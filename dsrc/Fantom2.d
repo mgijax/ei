@@ -10,6 +10,10 @@
 --
 -- History
 --
+-- 03/07/2002	lec
+--	- added CopyToNomenNote
+--	- modified VerifyFinalMGIID to only verify if the prefix "MGI:" exists
+--
 -- 03/06/2002	lec
 --	- added CopyColumn
 --	- added finalCluster field/column
@@ -31,6 +35,7 @@ devents:
 	ClearFantom2 :local [reset : boolean := false;];-- Local Clear 
 	CopyColumn :local [];				-- Copies Select Column to all Rows
 	CopyGBAtoFinal :local [];			-- Copies GBA MGI ID fields to Final
+	CopyToNomenNote :local [];			-- Copies Option to Nomen Note
 	Exit :local [];					-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
@@ -211,6 +216,7 @@ rules:
 	  gbaMGIID : string;
 	  gbaSymbol : string;
 	  gbaName : string;
+	  finalCluster : string;
 
 	  (void) busy_cursor(top);
 
@@ -248,6 +254,7 @@ rules:
 	    finalSymbol2 := mgi_tblGetCell(fantom, row, fantom.finalSymbol2);
 	    finalName2 := mgi_tblGetCell(fantom, row, fantom.finalName2);
 	    nomenEvent := mgi_tblGetCell(fantom, row, fantom.nomenEvent);
+	    finalCluster:= mgi_tblGetCell(fantom, row, fantom.finalCluster);
 	    gbaMGIID := mgi_tblGetCell(fantom, row, fantom.gbaMGIID);
 	    gbaSymbol := mgi_tblGetCell(fantom, row, fantom.gbaSymbol);
 	    gbaName := mgi_tblGetCell(fantom, row, fantom.gbaName);
@@ -268,8 +275,16 @@ rules:
 	      seqLength := "-1";
 	    end if;
 
+	    if (finalCluster.length = 0) then
+	      finalCluster := "-1";
+	    end if;
+
 	    if (cloneID.length = 0) then
 	      cloneID := "zilch";
+	    end if;
+
+	    if (genbankID.length = 0) then
+	      genbankID := "zilch";
 	    end if;
 
 	    if (tigerID.length = 0) then
@@ -278,6 +293,22 @@ rules:
 
 	    if (unigeneID.length = 0) then
 	      unigeneID := "zilch";
+	    end if;
+
+	    if (seqNote.length = 0) then
+	      seqNote := "zilch";
+	    end if;
+
+	    if (seqQuality.length = 0) then
+	      seqQuality := "zilch";
+	    end if;
+
+	    if (locusStatus.length = 0) then
+	      locusStatus := "zilch";
+	    end if;
+
+	    if (mgiStatus.length = 0) then
+	      mgiStatus := "zilch";
 	    end if;
 
 	    if (mgiNumber.length = 0) then
@@ -300,6 +331,10 @@ rules:
 	      infoAnnot := "zilch";
 	    end if;
 
+	    if (catID.length = 0) then
+	      catID := "zilch";
+	    end if;
+
 	    if (finalMGIID.length = 0) then
 	      finalMGIID := "zilch";
 	    end if;
@@ -318,6 +353,10 @@ rules:
 
 	    if (finalName2.length = 0) then
 	      finalName2 := "zilch";
+	    end if;
+
+	    if (nomenEvent.length = 0) then
+	      nomenEvent := "zilch";
 	    end if;
 
 	    if (gbaMGIID.length = 0) then
@@ -340,7 +379,7 @@ rules:
 		     mgi_DBprstr(cloneID) + "," +
 		     locusID + "," +
 		     clusterID + "," +
-		     mgi_DBprstr(genbankID) + ",0," +
+		     mgi_DBprstr(genbankID) + ",0,1," +
 		     mgi_DBprstr(tigerID) + "," +
 		     mgi_DBprstr(unigeneID) + "," +
 		     seqLength + "," +
@@ -360,8 +399,9 @@ rules:
 		     mgi_DBprstr(finalSymbol2) + "," +
 		     mgi_DBprstr(finalName2) + "," +
 		     mgi_DBprstr(nomenEvent) + "," +
+		     finalCluster + "," +
 		     mgi_DBprstr(global_login) + "," +
-		     mgi_DBprstr(global_login) + "," + ")\n";
+		     mgi_DBprstr(global_login) + ")\n";
 
               cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHE, KEYNAME) +
 			mgi_DBprstr(gbaMGIID) + "," + 
@@ -423,6 +463,7 @@ rules:
 		     "final_symbol2 = " + mgi_DBprstr(finalSymbol2) + "," +
 		     "final_name2 = " + mgi_DBprstr(finalName2) + "," +
 		     "nomen_event = " + mgi_DBprstr(nomenEvent) + "," +
+		     "final_cluster = " + finalCluster + "," +
 		     "modifiedBy = " + mgi_DBprstr(global_login);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
@@ -986,22 +1027,23 @@ rules:
               break;
             end if;
 	
-	    if (mgi_tblGetCell(fantom, i, column) = "zilch" or 
-		mgi_tblGetCell(fantom, i, column) = "-1") then
+	    if (row != i) then
+	      if (mgi_tblGetCell(fantom, i, column) = "zilch" or 
+		  mgi_tblGetCell(fantom, i, column) = "-1") then
 
-	      (void) mgi_tblSetCell(fantom, i, column, value);
+	        (void) mgi_tblSetCell(fantom, i, column, value);
 
-	      if (column = fantom.finalMGIID) then
-	        (void) mgi_tblSetCell(fantom, i, fantom.finalSymbol1, mgi_tblGetCell(fantom, row, fantom.gbaSymbol));
-	        (void) mgi_tblSetCell(fantom, i, fantom.finalName1, mgi_tblGetCell(fantom, row, fantom.gbaName));
+	        if (column = fantom.finalMGIID) then
+	          (void) mgi_tblSetCell(fantom, i, fantom.finalSymbol1, mgi_tblGetCell(fantom, row, fantom.gbaSymbol));
+	          (void) mgi_tblSetCell(fantom, i, fantom.finalName1, mgi_tblGetCell(fantom, row, fantom.gbaName));
+	        end if;
+
+	        CommitTableCellEdit.source_widget := fantom;
+	        CommitTableCellEdit.row := i;
+	        CommitTableCellEdit.value_changed := true;
+	        send(CommitTableCellEdit, 0);
 	      end if;
-
-	      CommitTableCellEdit.source_widget := fantom;
-	      CommitTableCellEdit.row := i;
-	      CommitTableCellEdit.value_changed := true;
-	      send(CommitTableCellEdit, 0);
 	    end if;
-
 	    i := i + 1;
 	  end while;
 
@@ -1024,6 +1066,23 @@ rules:
 	  CommitTableCellEdit.row := row;
 	  CommitTableCellEdit.value_changed := true;
 	  send(CommitTableCellEdit, 0);
+	end does;
+
+--
+-- CopyToNomenNote
+--
+-- Copies Option to beginning of Nomen Note
+--
+--
+ 
+        CopyToNomenNote does
+	  value : string;
+
+	  -- only process if setting to true
+	  if (CopyToNomenNote.set = 1) then
+	    value := top->NoteDialog->Note->text.value;
+	    top->NoteDialog->Note->text.value := top->NomenNoteMenu.menuHistory.defaultValue + value;
+	  end if;
 	end does;
 
 --
@@ -1169,6 +1228,8 @@ rules:
 	  accID : string := VerifyFinalMGIID.value;
 	  mgiTypeKey : integer := 2;
 
+	  accID := accID.raise_case;
+
 	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	    return;
 	  end if;
@@ -1177,7 +1238,7 @@ rules:
 	    return;
 	  end if;
 
-	  if (accID.length = 0 or strstr(accID, "%") != nil) then
+	  if (accID.length = 0 or strstr(accID, "%") != nil or strstr(accID, "MGI:") = nil) then
 	    return;
 	  end if;
 
