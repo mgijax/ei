@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep  6 10:39:31 2001";
+      lastWritten = "Tue Sep 11 08:22:04 2001";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -463,7 +463,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 470;
           Group: User
-            cmd = "select g._Genotype_key, g.dbName + \",\" + ap.symbol + \",\" + ap.allele1 from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select g._Genotype_key, g.dbName  + \",\" + ap.allele1 + \",\" + ap.allele2 from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }
@@ -481,7 +481,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 580;
           Group: User
-            cmd = "select g._Genotype_key, g.dbName + \",\" + ap.symbol + \",\" + ap.allele1  from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select g._Genotype_key, g.dbName + \",\"  + ap.allele1 + \",\" + ap.allele2 from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }

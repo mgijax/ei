@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep  6 11:05:00 2001";
+      lastWritten = "Tue Sep 11 13:00:10 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1605,7 +1605,7 @@ Module: mgiOption
                                 }
                           }
                           {
-                            AgeNote = NotePush : mgiDataTypes;
+                            AgeNote = NotePushShort : mgiDataTypes;
                             Group: Widget
                               labelString = "Age Notes";
                             Group: User
@@ -1613,7 +1613,7 @@ Module: mgiOption
                               targetColumn = 16;
                           }
                           {
-                            SpecimenNotes = NotePush : mgiDataTypes;
+                            SpecimenNotes = NotePushShort : mgiDataTypes;
                             Group: Widget
                               labelString = "Specimen Notes";
                             Group: User
@@ -1839,7 +1839,7 @@ Module: mgiOption
                               orientation = horizontal;
                               numColumns = 2;
                                 {
-                                  AgeNote = NotePush : mgiDataTypes;
+                                  AgeNote = NotePushShort : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Age Notes";
                                   Group: User
@@ -1847,7 +1847,7 @@ Module: mgiOption
                                     targetColumn = 19;
                                 }
                                 {
-                                  LaneNote = NotePush : mgiDataTypes;
+                                  LaneNote = NotePushShort : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Lane Notes";
                                   Group: User
@@ -1855,7 +1855,7 @@ Module: mgiOption
                                     targetColumn = 21;
                                 }
                                 {
-                                  RowNote = NotePush : mgiDataTypes;
+                                  RowNote = NotePushShort : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Row Notes";
                                   Group: User
@@ -1863,7 +1863,7 @@ Module: mgiOption
                                     targetColumn = 6;
                                 }
                                 {
-                                  BandNote = NotePush : mgiDataTypes;
+                                  BandNote = NotePushShort : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Band Notes";
                                   Group: User

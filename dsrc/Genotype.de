@@ -7,5 +7,7 @@
 -- This is the companion D event declarations file for Genotype.d
 --
 
+SearchGenotype [assayKey : string;];
+
 SelectGenotypeRecord [];
 

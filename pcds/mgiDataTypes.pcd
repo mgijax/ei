@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 28 08:31:13 2001";
+      lastWritten = "Tue Sep 11 13:12:10 2001";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -367,13 +367,13 @@ Shift<Key>Tab: prev-tab-group()
             traversalOn = False;
             background = Wheat;
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 1020;
         }
         {
           mgiNote = XmRowColumn;
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 800;
               {
                 Note = Notes : mgiDataTypes;
@@ -389,8 +389,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             userDefinedAttributes = "tableID:Int\n";
           Group: Control
-            vip_x = 160;
-            vip_y = 800;
+            vip_x = 55;
+            vip_y = 855;
               {
                 ObjectID = ID : mgiDataTypes;
               }
@@ -429,7 +429,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             orientation = horizontal;
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 855;
               {
                 ObjectID = ID : mgiDataTypes;
@@ -457,7 +457,7 @@ Shift<Key>Tab: prev-tab-group()
             orientation = horizontal;
             userDefinedAttributes = "tableID:Int\n";
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 965;
               {
                 ObjectID = ID : mgiDataTypes;
@@ -471,8 +471,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             userDefinedAttributes = "accessionWidget:String\n";
           Group: Control
-            vip_x = 160;
-            vip_y = 855;
+            vip_x = 55;
+            vip_y = 910;
           Group: User
             tableID = 113;
               {
@@ -504,13 +504,13 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "targetWidget:Widget(Widget)\ntableColumn:Int(Int)\ntableKeyColumn:Int(Int)=\"-1\"\ndialogName:String\n";
             activateCallback = "D:VerifyEdit(mode = 1)";
           Group: Control
-            vip_x = 160;
-            vip_y = 965;
+            vip_x = 55;
+            vip_y = 1020;
         }
         {
           DataSets = XmFrame;
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 1130;
               {
                 DataSetsForm = XmForm;
@@ -583,8 +583,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             shadowThickness = 0;
           Group: Control
-            vip_x = 160;
-            vip_y = 1020;
+            vip_x = 55;
+            vip_y = 1075;
               {
                 ChoiceBox = XmRowColumn;
                 Group: Widget
@@ -597,8 +597,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiJournal = mgiVerify : mgiDataTypes;
           Group: Control
-            vip_x = 160;
-            vip_y = 910;
+            vip_x = 55;
+            vip_y = 965;
           Group: User
             verifyTable = 100;
             verifyAdd = False;
@@ -633,8 +633,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             orientation = horizontal;
           Group: Control
-            vip_x = 160;
-            vip_y = 1130;
+            vip_x = 55;
+            vip_y = 1185;
           Group: User
             verifyTable = 321;
             verifyDialog = RIDialog;
@@ -705,8 +705,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiCross = mgiVerify : mgiDataTypes;
           Group: Control
-            vip_x = 160;
-            vip_y = 1185;
+            vip_x = 55;
+            vip_y = 1240;
           Group: User
             verifyDialog = CrossDialog;
             verifyKey = CrossID;
@@ -756,7 +756,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiSpecies = mgiObject;
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 910;
           Group: User
             tableID = 110;
@@ -789,8 +789,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiAllele = mgiObject;
           Group: Control
-            vip_x = 160;
-            vip_y = 1295;
+            vip_x = 55;
+            vip_y = 1350;
           Group: User
             tableID = 115;
               {
@@ -819,7 +819,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             userDefinedAttributes = "verifyDialog:String(String)\nverifyTable:Int(Int)\nverifyAdd:Boolean(Boolean)=\"True\"\nverifyChars:Int(Int)=\"-1\"\nverifyNotSpecified:Boolean(Boolean)=\"True\"\nverifyKey:Widget\n";
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 1240;
               {
                 Verify = CharText : mgiDataTypes;
@@ -852,8 +852,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiDate = XmRowColumn;
           Group: Control
-            vip_x = 160;
-            vip_y = 1240;
+            vip_x = 55;
+            vip_y = 1295;
               {
                 Date = Date : mgiDataTypes;
                     {
@@ -898,14 +898,15 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ndialogName:String=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
+            background = Wheat;
           Group: Control
-            vip_x = 160;
-            vip_y = 1075;
+            vip_x = 55;
+            vip_y = 1130;
         }
         {
           mlpSpecies = mgiObject;
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 1075;
               {
                 ObjectID = ID : mgiDataTypes;
@@ -968,7 +969,7 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "sql:String(String)\nsqlFrom:String\nsqlWhere:String\n";
           Group: Control
             vipComment = "";
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 1295;
         }
         {
@@ -992,8 +993,31 @@ Shift<Key>Tab: prev-tab-group()
             activateCallback = "D:AppendNote";
             userDefinedAttributes = "note:String(String)\nnoteWidget:String(String)\n";
           Group: Control
-            vip_x = 55;
+            vip_x = 160;
             vip_y = 1185;
+        }
+        {
+          mgiNoteShort = XmRowColumn;
+          Group: Control
+            vipComment = "";
+            vip_x = 55;
+            vip_y = 800;
+              {
+                Note = Notes : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = scrolledText : mgiDataTypes;
+                      Group: Widget
+                        maxLength = 255;
+                    }
+              }
+              {
+                NotePushShort = NotePushShort : mgiDataTypes;
+              }
         }
 }
 

@@ -84,6 +84,7 @@ rules:
         AddSQL does
 	  top : widget;
 	  cmd : string;
+	  item : string := AddSQL.item;
 
 	  if (AddSQL.list != nil) then
 	    top := AddSQL.list.top;
@@ -130,8 +131,12 @@ rules:
 	  --   Re-count records
 
           if (AddSQL.list->List.sqlSuccessful) then
+	    if (AddSQL.appendKeyToItem) then
+	      item := "[ID " + AddSQL.key.value + "]:  " + item;
+	    end if;
+
             InsertList.list := AddSQL.list;
-            InsertList.item := AddSQL.item;
+            InsertList.item := item;
             InsertList.key := AddSQL.key.value;
             send(InsertList, 0);
 	    top->RecordCount->text.value := mgi_DBrecordCount(AddSQL.tableID);

@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep  6 10:53:54 2001";
+      lastWritten = "Tue Sep 11 12:55:04 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -117,13 +117,30 @@ Module: gxdDictionary
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "Structure:";
+                                          labelString = Structure;
                                       }
                                       {
                                         text = text;
                                         Group: Widget
                                           columns = 50;
                                           userDefinedAttributes = "structureNameKey:String\n";
+                                      }
+                                }
+                                {
+                                  stagesText = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = structureText;
+                                    leftWidget = structureText;
+                                    topOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Stage(s)";
                                       }
                                 }
                                 {
@@ -136,7 +153,7 @@ Module: gxdDictionary
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = structureText;
+                                    topWidget = stagesText;
                                     leftWidget = structureText;
                                     topOffset = 5;
                                       {
@@ -204,23 +221,6 @@ Module: gxdDictionary
                                       }
                                 }
                                 {
-                                  stagesText = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = mgiAliasTable;
-                                    leftWidget = structureText;
-                                    topOffset = 5;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Stage(s)";
-                                      }
-                                }
-                                {
                                   MGIAddedMenu = YesNoMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = MGIAddedPulldown;
@@ -285,7 +285,7 @@ Module: gxdDictionary
                                     bottomAttachment = attach_widget;
                                     resizable = true;
                                     bottomWidget = progressMeter;
-                                    topWidget = stagesText;
+                                    topWidget = mgiAliasTable;
                                     topOffset = 5;
                                 }
                                 {

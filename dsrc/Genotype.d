@@ -34,7 +34,7 @@ devents:
 
 	ModifyAllelePair :local [];
 
-	Search :local [assayKey : string;];
+--	Search :local [assayKey : string;];
 	Select :local [item_position : integer;];
 
 	GenotypeClipboardAdd :local [];
@@ -112,8 +112,8 @@ rules:
 
 	  -- if an Assay record has been selected, then select
 	  -- the Genotype records for the Assay
-	  Search.assayKey := mgi->AssayModule->EditForm->ID->text.value;
-	  send(Search, 0);
+	  SearchGenotype.assayKey := mgi->AssayModule->EditForm->ID->text.value;
+	  send(SearchGenotype, 0);
 	end does;
 
 --
@@ -154,6 +154,7 @@ rules:
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
+	  AddSQL.appendKeyToItem := true;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
@@ -279,9 +280,8 @@ rules:
             alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
  
 	    if (row = 0) then
-	      allelePairString := mgi_tblGetCell(table, row, table.markerSymbol) + "," +
-			    mgi_tblGetCell(table, row, (integer) table.alleleSymbol[1]) + "," +	
-			    mgi_tblGetCell(table, row, (integer) table.alleleSymbol[2]);
+	      allelePairString := mgi_tblGetCell(table, row, (integer) table.alleleSymbol[1]) + "," 
+			+ mgi_tblGetCell(table, row, (integer) table.alleleSymbol[2]);
 	    end if;
 
 	    if (alleleKey1.length = 0) then
@@ -332,14 +332,14 @@ rules:
         end does;
 
 --
--- Search
+-- SearchGenotype
 --
 -- Retrieve Genotype records for given assayKey
 -- Global event (defined in Genotype.de)
 --
 
-	Search does
-	  assayKey : string := Search.assayKey;
+	SearchGenotype does
+	  assayKey : string := SearchGenotype.assayKey;
 	  assayExists : string;
 	  notExists : string;
 
@@ -367,12 +367,12 @@ rules:
 	    end if;
 
 	    assayExists := "select distinct g._Genotype_key, " +
-	 	  "g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
+	 	  "g.genotypeDisplay + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 		  from + "\n" + where;
 	  end if;
 
           notExists := "select distinct g._Genotype_key, " +
-		"g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
+		"g.genotypeDisplay + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 	  	"from GXD_Genotype_View g, GXD_AllelePair_View ap \n" +
 	  	"where not exists (select 1 from GXD_Specimen s\n" +
 	  	"where g._Genotype_key = s._Genotype_key)\n" +

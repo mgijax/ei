@@ -2042,6 +2042,13 @@ rules:
           -- Load the Clipboards
 	  send(LoadClipboards, 0);
 
+	  -- If the Genotype Module is active, then search for the Genotype records
+
+	  if (mgi->GenotypeModule != nil) then
+	    SearchGenotype.assayKey := currentAssay;
+	    send(SearchGenotype, 0);
+	  end if;
+
           top->QueryList->List.row := Select.item_position;
 
           AssayClear.reset := true;
@@ -2092,7 +2099,8 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.specimenKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.specimenLabel, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 19));
+--	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 19));
+	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(table, row, table.fixationKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.fixation, mgi_getstr(dbproc, 18));
 	        (void) mgi_tblSetCell(table, row, table.embeddingKey, mgi_getstr(dbproc, 3));
@@ -2193,7 +2201,8 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.controlKey, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(table, row, table.control, mgi_getstr(dbproc, 19));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 18));
+--	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 18));
+	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(table, row, table.rnaKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.rna, mgi_getstr(dbproc, 17));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
