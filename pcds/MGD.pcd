@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 17 13:05:47 2005";
+      lastWritten = "Fri Mar 18 08:30:19 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11082,6 +11082,14 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           managed = False;
                                       }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:ClearMP";
+                                      }
                                 }
                           }
                     }
@@ -11428,6 +11436,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:ClearMP";
                                 }
                                 {
                                   Modify = ControlPush;
