@@ -413,7 +413,8 @@ rules:
             if (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(MGI_ORGANISMTYPE, NOKEY) + 
 		currentRecordKey + "," +
-		newKey + ")\n";
+		newKey + "," +
+		global_loginKey + "," + global_loginKey + ")\n";
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_MGIType_key = " + newKey;
               cmd := cmd + mgi_DBupdate(MGI_ORGANISMTYPE, currentRecordKey, set) +
