@@ -720,9 +720,9 @@ rules:
 	  cmd := "select r.* from BIB_GOXRef_View r " + 
 		 "where r._Marker_key = " + currentRecordKey + 
 		 " and not exists (select 1 from " +
-			mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-			" where a._Object_key = " + currentRecordKey + 
+			mgi_DBtable(VOC_ANNOT) + " a," +
+			mgi_DBtable(VOC_EVIDENCE) + " e" +
+			" where a._Object_key = r._Marker_key " +
 			" and a._Annot_key = e._Annot_key " +
 			" and e._Refs_key = r._Refs_key) " +
 		" order by r.jnum desc\n";
