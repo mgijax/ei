@@ -1495,7 +1495,7 @@ rules:
 	  end if;
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "a";
+	  QueryModificationHistory.tag := "m";
 	  send(QueryModificationHistory, 0);
           where := where + top->ModificationHistory->Table.sqlCmd;
  
