@@ -77,4 +77,4 @@ setenv XRES	$EIBUILDDIR/XRes.in
 setenv XRTMAKE	$EIBUILDDIR/Makefile.xrt
 
 # Set umask for permissions on files created
-umask 022
+umask 002
