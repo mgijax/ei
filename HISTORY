@@ -5,6 +5,7 @@ RELEASE: A
 CHANGES:
 1) MGI 3.01 
 2) csrc/syblib.c, csrc/mgilib.c; new gcc fixes
+3) removed breakpointsplit
 
 TAG: ei-12-0-27
 DATE: 09/14/2004
