@@ -306,7 +306,7 @@ rules:
             send(SetOption, 0);
 
             SetOption.source_widget := top->BroadcastByMenu;
-            SetOption.value := NOTAPPLICABLE;
+            SetOption.value := NOTSPECIFIED;
             send(SetOption, 0);
 
 	    top->BroadcastDate->text.value := "";
@@ -365,7 +365,7 @@ rules:
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventReasonMenu.menuHistory.defaultValue + "," +
                  suid + "," +
-		 NOTAPPLICABLE + "," +
+		 NOTSPECIFIED + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
