@@ -62,9 +62,11 @@ VerifyOrganism :translation [];
 
 VerifySpeciesMLP :translation [];
 
-VerifyStrains [];
+VerifyStrains [ignoreRow : integer := -1;];
 
 VerifyStrengthPattern [];
+
+VerifyTissue [ignoreRow : integer := -1;];
 
 VerifyTissueAge :translation [];
 

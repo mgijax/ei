@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	09/15/2003
+--	- SAO; added VerifyTissue
+--
 -- lec	01/02/2003
 --	- TR 4272; VerifyVocabEvidence; default for Mammalian Phenotype
 --
@@ -2957,6 +2960,8 @@ rules:
 --	If a Strain entered cannot be validated, give the user the option
 --	to add the Strain (as Non-Standard).
 --
+--	If ignoreRow > -1, then don't valid that row.
+--
  
         VerifyStrains does
 	  top : widget := VerifyStrains.source_widget.top;
@@ -2965,8 +2970,14 @@ rules:
 	  column : integer := VerifyStrains.column;
 	  reason : integer := VerifyStrains.reason;
 	  value : string := VerifyStrains.value;
+	  ignoreRow : integer := VerifyStrains.ignoreRow;
  
 	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  -- if ignoring row, do nothing
+	  if (row = ignoreRow) then
 	    return;
 	  end if;
 
@@ -3130,6 +3141,125 @@ rules:
 	    (void) mgi_tblSetCell(table, row, table.pattern, "Not Applicable");
 	  end if;
 
+	end does;
+
+--
+-- VerifyTissue
+--
+--      Verify Tissue entered into Table Row
+--	Assumes use of mgiTable template
+--	UDAS:  tissue (integer), tissueKey (integer)
+--
+--	Stores the key for the tissue in the tissueKey UDA
+--	If a Tissue entered cannot be validated, give the user the option
+--	to add the Tissue (as Non-Standard).
+--
+--	If ignoreRow > -1, then don't valid that row.
+--
+ 
+        VerifyTissue does
+	  top : widget := VerifyTissue.source_widget.top;
+	  table : widget := VerifyTissue.source_widget;
+	  row : integer := VerifyTissue.row;
+	  column : integer := VerifyTissue.column;
+	  reason : integer := VerifyTissue.reason;
+	  value : string := VerifyTissue.value;
+	  ignoreRow : integer := VerifyTissue.ignoreRow;
+ 
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  -- if ignoring row, do nothing
+	  if (row = ignoreRow) then
+	    return;
+	  end if;
+
+          -- If not in the Tissue column, do nothing
+ 
+          if (column != table.tissue) then
+            return;
+          end if;
+ 
+          -- If no Tissue entered, do nothing
+ 
+          if (value.length = 0) then
+            (void) mgi_tblSetCell(table, row, table.tissueKey, "");
+            return;
+          end if;
+ 
+          (void) busy_cursor(top);
+ 
+          keys : xm_string_list := create xm_string_list();
+          results : xm_string_list := create xm_string_list();
+          tissueKey : string := "";
+          cmd : string;
+          added : boolean := false;
+          i : integer;
+ 
+          -- Try to get key from the database
+          -- If the Tissue does not exist, then add it
+ 
+          dbproc : opaque := mgi_dbopen();
+          cmd := "select _Tissue_key, tissue from PRB_Tissue where tissue = " + mgi_DBprstr(value);
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
+              results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+            end while;
+          end while;
+ 
+          -- Set i to index of string for exact match
+          i := results.find(value);
+ 
+          if (i > 0) then     -- Tissue found
+            tissueKey := keys[i];
+          else                -- Tissue not found
+ 
+            -- Have user verify that this item should be added
+ 
+            top->VerifyItemAdd.doAdd := false;
+            top->VerifyItemAdd.messageString := "The item:\n\n" + value +
+              "\n\ndoes not exist in the database.\n\nDo you want to ADD this item?";
+            top->VerifyItemAdd.managed := true;
+ 
+            -- Keep busy while user verifies the add
+ 
+            while (top->VerifyItemAdd.managed = true) do
+                (void) keep_busy();
+            end while;
+ 
+            (void) XmUpdateDisplay(top);
+ 
+            -- If user verifies it is okay to add the item...
+ 
+            if (top->VerifyItemAdd.doAdd) then
+              ExecSQL.cmd := mgi_setDBkey(TISSUE, NEWKEY, KEYNAME) +
+                             mgi_DBinsert(TISSUE, KEYNAME) +
+                             mgi_DBprstr(value) + ",0)\n";
+              send(ExecSQL, 0);
+              added := true;
+              tissueKey := mgi_sql1("select " + mgi_DBkey(TISSUE) + " from " + mgi_DBtable(TISSUE) + 
+		  " where tissue = " + mgi_DBprstr(value)) + ", ";
+            end if;
+          end if;
+ 
+          (void) dbclose(dbproc);
+ 
+          -- Tell user what Tissue were added
+ 
+          if (added) then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "New Tissue has been added as a Non-Standard.\n";
+            send(StatusReport);
+          end if;
+ 
+          -- Store Tissue key for row
+ 
+          (void) mgi_tblSetCell(table, row, table.tissueKey, tissueKey);
+          (void) reset_cursor(top);
 	end does;
 
 --
