@@ -129,6 +129,7 @@ locals:
 	printSelect : string;
 
 	tables : list;
+	resettables : list;
 
         currentNomenKey : string;	-- Primary Key value of currently selected record
                                  	-- Initialized in Select[] and Add[] events
@@ -229,6 +230,7 @@ rules:
 
 	Init does
 	  tables := create list("widget");
+	  resettables := create list("widget");
 
 	  -- List of all Table widgets used in form
 
@@ -237,6 +239,11 @@ rules:
 	  tables.append(top->GeneFamily->Table);
 	  tables.append(top->Marker->Table);
 	  tables.append(top->AccessionReference->Table);
+
+	  resettables.append(top->Other->Table);
+	  resettables.append(top->GeneFamily->Table);
+	  resettables.append(top->Marker->Table);
+	  resettables.append(top->AccessionReference->Table);
 
 	  reserved := mgi_sql1("select " + mgi_DBkey(MRK_STATUS) + 
 		" from " + mgi_DBtable(MRK_STATUS) +
@@ -1047,30 +1054,34 @@ rules:
 
 	Reset does
 	  table : widget;
+	  row : integer;
+	  editMode : string;
 
           -- Reset ID to blank so new ID is loaded during Add
           top->ID->text.value := "";
 	  currentNomenKey := "";
  
-	  -- Save Primary reference
-	  table := top->Reference->Table;
-	  refKey : string := mgi_tblGetCell(table, 0, table.refsKey);
-	  jnum : string := mgi_tblGetCell(table, 0, table.jnum);
-	  citation : string := mgi_tblGetCell(table, 0, table.citation);
-
           -- Clear all tables
-	  tables.open;
-	  while (tables.more) do
-	    ClearTable.table := tables.next;
+	  resettables.open;
+	  while (resettables.more) do
+	    ClearTable.table := resettables.next;
 	    send(ClearTable, 0);
 	  end while;
 
-	  -- Re-populate Primary reference
-          (void) mgi_tblSetCell(table, 0, table.refsCurrentKey, refKey);
-          (void) mgi_tblSetCell(table, 0, table.refsKey, refKey);
-          (void) mgi_tblSetCell(table, 0, table.jnum, jnum);
-          (void) mgi_tblSetCell(table, 0, table.citation, citation);
-	  (void) mgi_tblSetCell(table, 0, table.editMode, TBL_ROW_ADD);
+	  -- Re-set Reference records to add mode
+
+	  table := top->Reference->Table;
+	  row := 0;
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+
+            (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+            row := row + 1;
+          end while;
 
 	  -- Do not duplicate Editor or Coordinator notes
 	  top->EditorNote->Note->text.modified := false;
