@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Jan  7 08:47:37 2002";
+      lastWritten = "Fri Jan 18 09:40:37 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -2307,7 +2307,7 @@ Module: mgiOption
               {
                 VocAnnotTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _AnnotType_key, name, _EvidenceVocab_key from VOC_AnnotType order by name";
+                  sql = "select _AnnotType_key, name, _EvidenceVocab_key, _MGIType_key, _Vocab_key, vocab from VOC_AnnotType_View order by name";
                   childTemplate = AnnotTypeToggle;
               }
         }
@@ -2331,7 +2331,7 @@ Module: mgiOption
           AnnotTypeToggle = OptionToggle;
           Group: Widget
             valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
-            userDefinedAttributes = "evidenceKey:Int=\"0\"\n";
+            userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\n";
           Group: Control
             vip_x = 80;
             vip_y = 4430;

@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Jan  4 13:04:19 2002";
+      lastWritten = "Tue Jan 15 15:01:11 2002";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -436,8 +436,6 @@ Module: mgiLookup
             cmd = "select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  activateCallback = "D:ClipboardLoad(allowDups = true)";
               }
               {
                 List = list : mgiDataTypes;
@@ -456,8 +454,6 @@ Module: mgiLookup
             cmd = "select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  activateCallback = "D:ClipboardLoad(allowDups = true)";
               }
               {
                 List = list : mgiDataTypes;
@@ -473,7 +469,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1240;
           Group: User
-            cmd = "select _Term_key, term, mgiID from VOC_Term_View where vocabName = \"PhenoSlim\" order by sequenceNum";
+            cmd = "select _Term_key, term, accID from VOC_Term_View where vocabName = \"PhenoSlim\" order by sequenceNum";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget

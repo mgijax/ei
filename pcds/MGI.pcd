@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Jan  7 08:42:35 2002";
+      lastWritten = "Fri Jan 18 14:17:56 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1490,20 +1490,24 @@ Module: MGI
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 15;
-                                          xrtTblNumColumns = 18;
-                                          xrtTblColumnLabels = "Mode,Anot key,Vocab key,Term key,Not key,Refs key,Evidence key,Term Acc ID,Vocabulary,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Editor,Date,Notes";
-                                          xrtTblPixelWidthSeries = "(all 0-6 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 15)(all 8 10)(all 9 25)(all 10 3)(all 12 10)(all 13 10)(all 14 20)(all 15 6)(all 16 10)(all 17 5)";
+                                          xrtTblNumColumns = 21;
+                                          xrtTblColumnLabels = "Mode,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Editor,Date,Notes";
+                                          xrtTblPixelWidthSeries = "(all 0-9 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 10)(all 12 25)(all 13 3)(all 15 10)(all 16 10)(all 17 20)(all 18 6)(all 19 10)(all 20 5)";
                                           xrtTblAllowCellResize = resize_horizontal;
                                           xrtTblDisplayHorizScrollBar = dispsb_as_needed;
-                                          userDefinedAttributes = "annotKey:Int=\"1\"\nvocabKey:Int=\"2\"\ntermKey:Int=\"3\"\nnotKey:Int=\"4\"\nrefsKey:Int=\"5\"\nevidenceKey:Int=\"6\"\ntermAccID:Int=\"7\"\nvocab:Int=\"8\"\nterm:Int=\"9\"\nnot:Int=\"10\"\njnum:Int=\"11\"\ncitation:Int=\"12\"\nevidence:Int=\"13\"\ninferredFrom:Int=\"14\"\neditor:Int=\"15\"\nmodifiedDate:Int=\"16\"\nnotes:Int=\"17\"\n";
-                                          xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nnotKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\ndag:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\ninferredFrom:Int(Int)=\"17\"\neditor:Int(Int)=\"18\"\nmodifiedDate:Int(Int)=\"19\"\nnotes:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"6\"\ncurrentEvidenceKey:Int(Int)=\"8\"\ntermSeqNum:Int(Int)=\"3\"\nevidenceSeqNum:Int(Int)=\"9\"\nannotVocab:String\n";
+                                          xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
+                                          xrtTblTraversableSeries = "(all 0-9 False)(all 11-13 False)(all 15 False)";
+                                          xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
-                                          requiredColumns = "2\n3\n5\n6\n8\n9\n11\n12\n13";
+                                          requiredColumns = "2\n5";
                                       }
                                 }
                                 {
                                   Reference = ReferenceTable : mgiTable;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Annotation;
@@ -1520,7 +1524,6 @@ Module: MGI
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 10;
-                                          xrtTblCellValues = "(X,1,1,J:63349,Behrens)(X,1,1,J:61535,Bishop)(X,1,1,J:54240,Briscoe)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -1610,7 +1613,7 @@ Module: MGI
                         rightAttachment = attach_form;
                         topAttachment = attach_widget;
                         topWidget = Control;
-                        bottomAttachment = attach_form;
+                        bottomAttachment = attach_none;
                         resizable = true;
                           {
                             panedWindow = XmPanedWindow;
@@ -1656,7 +1659,7 @@ Module: MGI
                                         NotPulldown : YesNoPulldown = OptionPulldown;
                                         Group: User
                                           tableForm = Annotation;
-                                          tableOption = 10;
+                                          tableOption = 13;
                                           tableOptionKey = 4;
                                       }
                                 }
@@ -1672,8 +1675,8 @@ Module: MGI
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetWidget = Annotation;
-                                          targetKey = 6;
-                                          targetText = 13;
+                                          targetKey = 7;
+                                          targetText = 16;
                                       }
                                 }
                                 {
@@ -1688,10 +1691,10 @@ Module: MGI
                                         Group: Widget
                                           visibleItemCount = 25;
                                         Group: User
-                                          targetKey = 3;
+                                          targetKey = 2;
                                           targetWidget = Annotation;
-                                          targetText = 9;
-                                          targetAccID = 7;
+                                          targetText = 12;
+                                          targetAccID = 10;
                                       }
                                 }
                           }
@@ -1752,6 +1755,20 @@ Module: MGI
                                       }
                                 }
                           }
+                          {
+                            Edit = Edit : mgiMenu;
+                                Popups:
+                                {
+                                  EditPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        VocAnnotation = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:CreateMGIModule(name = \"VocAnnot\")";
+                                          labelString = Annotations;
+                                          userDefinedAttributes = "annotTypeKey:Int=\"1000\"\n";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1794,33 +1811,30 @@ Module: MGI
                                     leftOffset = 5;
                                 }
                                 {
-                                  AllelePair = TableLabel : mgiTable;
+                                  AllelePair = OrderedTableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_form;
-                                    rightAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Strain;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 5;
-                                    rightOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 10;
-                                          xrtTblColumnLabels = "Mode, Key, M Key, A1 Key, A2 Key,Seq #,Marker,Allele 1,Allele2,State";
-                                          xrtTblCharWidthSeries = "(all 6-8 20)(all 9 12)";
-                                          xrtTblMaxLengthSeries = "(all 6 25) (all 7-8 50)";
+                                          xrtTblNumColumns = 11;
+                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,Marker,Allele1,Allele 2,State";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 7-9 20)(all 10 12)";
+                                          xrtTblEditableSeries = "(all 0-6 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-6 0)";
+                                          xrtTblTraversableSeries = "(all 0-6 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerAlleles,\nD:VerifyAllele,\nD:VerifyAllelePairState,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"6\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\nseqNum:Int(Int)=\"5\"\npairKey:Int(Int)=\"1\"\nmarkerColumns:Int(Int)=\"1\"\nalleleState:Int(Int)=\"9\"\n";
-                                          xrtTblTraversableSeries = "(all 0-5 False)";
-                                          xrtTblEditableSeries = "(all 0-5 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleState:Int(Int)=\"10\"\n";
                                         Group: User
-                                          alleleSymbol = "7\n8";
-                                          alleleKey = "3\n4";
-                                          requiredColumns = "6\n7";
+                                          alleleSymbol = "8\n9";
+                                          alleleKey = "5\n6";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -1858,9 +1872,8 @@ Module: MGI
                                     topAttachment = attach_widget;
                                     topWidget = ConditionalMenu;
                                     topOffset = 10;
-                                    bottomAttachment = attach_form;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
-                                    bottomOffset = 5;
                                     leftOffset = 50;
                                       {
                                         label = XmLabel;
@@ -1871,6 +1884,70 @@ Module: MGI
                                           rows = 5;
                                           scrollHorizontal = False;
                                           scrollVertical = False;
+                                      }
+                                }
+                                {
+                                  Reference = ReferenceTable : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = ConditionalMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Note;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    bottomOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 5;
+                                          xrtTblNumColumns = 6;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 40)(all 5 20)";
+                                          xrtTblColumnLabels = "Mode,Current Key,New Key,J#,Citation,Data Set";
+                                          userDefinedAttributes = "dataSet:Int=\"5\"\n";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Retrieve = XmPushButtonGadget;
+                                        Group: Widget
+                                          labelString = "Retrieve Records";
+                                          activateCallback = "D:SelectReferences";
+                                        Group: Constraint
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          topOffset = 5;
+                                      }
+                                      {
+                                        Records = XmLabel;
+                                        Group: Widget
+                                          labelString = "0 Records";
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = Retrieve;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          topWidget = Retrieve;
+                                          leftOffset = 5;
                                       }
                                 }
                           }
@@ -2038,7 +2115,7 @@ Module: MGI
                                         AllelePairStatePulldown = OptionPulldown;
                                         Group: User
                                           tableForm = AllelePair;
-                                          tableOption = 9;
+                                          tableOption = 10;
                                           tableOptionKey = "-1";
                                       }
                                 }
@@ -2136,6 +2213,8 @@ Module: MGI
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    defaultOption = No;
                                       Popups:
                                       {
                                         ACCPrivatePulldown : YesNoPulldown = OptionPulldown;
@@ -2168,20 +2247,20 @@ Module: MGI
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 8;
-                                          xrtTblColumnLabels = "Mode,Current Order,#,Term Key,MGI Acc ID,Term,Abbr,Definition";
-                                          xrtTblEditableSeries = "(all 0-4 False)";
+                                          xrtTblNumColumns = 10;
+                                          xrtTblColumnLabels = "Mode,Current Order,#,Term Key,Obsolete Key,Acc ID,Term,Abbr,Definition,Obsolete";
+                                          xrtTblEditableSeries = "(all 0-5 False)";
                                           xrtTblNumRows = 25;
                                           xrtTblVisibleRows = 20;
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 3 10)(all 4 20)(all 5 70)(all 6 5)(all 7 15)";
-                                          userDefinedAttributes = "termKey:Int(Int)=\"3\"\nterm:Int(Int)=\"5\"\nabbreviation:Int(Int)=\"6\"\ndefinition:Int(Int)=\"7\"\nmgiID:Int(Int)=\"4\"\n";
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
-                                          xrtTblEnterCellCallback = "D:SelectSynonym";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-4 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 3 10)(all 4 1)(all 5 20)(all 6 70)(all 7 5)(all 8 15)(all 9 8)";
+                                          userDefinedAttributes = "termKey:Int(Int)=\"3\"\nterm:Int(Int)=\"6\"\nabbreviation:Int(Int)=\"7\"\ndefinition:Int(Int)=\"8\"\nmgiID:Int(Int)=\"5\"\nisObsolete:Int(Int)=\"9\"\nobsoleteKey:Int=\"4\"\n";
+                                          xrtTblTraversableSeries = "(all 0-5 False)";
+                                          xrtTblEnterCellCallback = "D:SetOptions,\nD:SelectSynonym";
                                         Group: User
-                                          saveEditableSeries = "(all 0-4 False)";
-                                          saveTraversableSeries = "(all 0-4 False)";
-                                          requiredColumns = 5;
+                                          saveEditableSeries = "(all 0-5 False)";
+                                          saveTraversableSeries = "(all 0-5 False)";
+                                          requiredColumns = 6;
                                       }
                                 }
                                 {
@@ -2247,7 +2326,22 @@ Module: MGI
                                     labelString = Definition;
                                   Group: User
                                     targetWidget = Term;
-                                    targetColumn = 7;
+                                    targetColumn = 8;
+                                }
+                                {
+                                  YesNoMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "Obsolete?";
+                                  Group: User
+                                    defaultOption = No;
+                                      Popups:
+                                      {
+                                        YesNoPulldown = OptionPulldown;
+                                        Group: User
+                                          tableForm = Term;
+                                          tableOption = 9;
+                                          tableOptionKey = 4;
+                                      }
                                 }
                           }
                     }
