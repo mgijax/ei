@@ -188,14 +188,10 @@ rules:
 	  refsType : string;
 	  set : string := "";
  
-          -- Process while non-empty rows are found
+          -- Process 
  
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
  
             key := mgi_tblGetCell(table, row, table.refsCurrentKey);
             newKey := mgi_tblGetCell(table, row, table.refsKey);
