@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 02/01/2001 lec
+--	- allow modifications to marker symbol
+--
 -- 04/07/2000
 --	- tr 1177
 --
@@ -399,6 +402,10 @@ rules:
 
 	  cmd := "";
 	  set : string := "";
+
+	  if (top->mgiMarker->ObjectID->text.modified) then
+	    set := set + "_Marker_key = " + top->mgiMarker->ObjectID->text.value + ",";
+	  end if;
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
