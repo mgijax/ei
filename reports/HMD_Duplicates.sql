@@ -43,41 +43,6 @@ go
 drop table #homology
 go
 
-select r._Refs_key, r._Class_key, m._Species_key
-into #homology
-from HMD_Homology r, HMD_Homology_Marker h, MRK_Marker m
-where r._Homology_key = h._Homology_key
-and h._Marker_key = m._Marker_key
-go
-
-select distinct _Class_key
-into #duplicates
-from #homology
-group by _Class_key, _Refs_key, _Species_key having count(*) > 1
-go
-
-set nocount off
-go
-
-print ""
-print "Duplicate Homologies by Reference"
-print ""
-
-select v.jnum, v.symbol, substring(v.commonName,1,25), v._Class_key, v._Homology_key, v._Marker_key
-from HMD_Homology_View v, #duplicates d
-where d._Class_key = v._Class_key
-order by v._Class_key, v.commonName, v.jnum
-go
-
-set nocount on
-go
-
-drop table #homology
-go
-
-drop table #duplicates
-go
-
 select distinct r._Class_key, m._Species_key, m.symbol
 into #homology
 from HMD_Homology r, HMD_Homology_Marker h, MRK_Marker m
