@@ -864,7 +864,7 @@ rules:
 	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
 	  send(SetOptions, 0);
 
-	  top->numRows.value := (string) row + " Results";
+	  top->numRows.value := (string) (row + 1) + " Results";
           ClearFantom2.reset := true;
           send(ClearFantom2, 0);
 
