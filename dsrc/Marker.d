@@ -120,6 +120,7 @@ devents:
 	Init :local [];
 
 	-- Process Marker Withdrawal Events
+	DisplayMarker : translation [];
 	MarkerWithdrawalCancel : local [];
 	MarkerWithdrawalInit :local [];
 	MarkerWithdrawal :local [];
@@ -422,6 +423,29 @@ rules:
 	end does;
 
 --
+-- DisplayMarker
+--
+--      Retrieve Symbol of MGI Acc ID entered
+--
+ 
+        DisplayMarker does
+ 
+          (void) busy_cursor(top);
+ 
+          if (top->markerAccession->ObjectID->text.value.length > 0) then
+            top->mgiMarker->ObjectID->text.value := top->markerAccession->ObjectID->text.value;
+            top->mgiMarker->Marker->text.value := 
+		mgi_sql1("select symbol from MRK_Mouse_View " +
+		"where mgiID = " + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
+	  else
+            top->mgiMarker->ObjectID->text.value := "";
+            top->mgiMarker->Marker->text.value := "";
+	  end if;
+
+          (void) reset_cursor(top);
+        end does;
+ 
+--
 -- MarkerWithdrawalCancel
 --
 -- Activated from:  widget top->WithdrawalDialog->Cancel
@@ -474,6 +498,7 @@ rules:
 	  dialog->nonVerified->Marker->text.value := "";
 	  dialog->mgiMarker->ObjectID->text.value := "";
 	  dialog->mgiMarker->Marker->text.value := "";
+	  dialog->markerAccession->AccessionID->text.value := "";
 	  dialog->Name->text.value := top->Name->text.value;
 	  dialog->mgiCitation->ObjectID->text.value := "";
 	  dialog->mgiCitation->Jnum->text.value := "";
@@ -484,6 +509,7 @@ rules:
 	  dialog->nonVerified.sensitive := true;
 	  dialog->Name.sensitive := true;
 	  dialog->mgiMarker.managed := false;
+	  dialog->markerAccession.managed := false;
 	  dialog->NewMarker.sensitive := false;
 	  dialog.managed := true;
 	end does;
@@ -504,24 +530,30 @@ rules:
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := true;
 	    dialog->mgiMarker.managed := false;
+	    dialog->markerAccession.managed := false;
 	    dialog->NewMarker.sensitive := false;
 	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
 	    dialog->nonVerified.managed := false;
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := false;
 	    dialog->mgiMarker.managed := true;
+	    dialog->markerAccession.managed := false;
+-- when ready to implement, remove the false and uncomnent the true
+--	    dialog->markerAccession.managed := true;
 	    dialog->NewMarker.sensitive := false;
 	  elsif (event = EVENT_SPLIT) then
 	    dialog->nonVerified.managed := true;
 	    dialog->nonVerified.sensitive := false;
 	    dialog->Name.sensitive := false;
 	    dialog->mgiMarker.managed := false;
+	    dialog->markerAccession.managed := false;
 	    dialog->NewMarker.sensitive := true;
 	  elsif (event = EVENT_DELETED) then
 	    dialog->nonVerified.managed := false;
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := false;
 	    dialog->mgiMarker.managed := false;
+	    dialog->markerAccession.managed := false;
 	    dialog->NewMarker.sensitive := false;
 	  end if;
 	end does;
