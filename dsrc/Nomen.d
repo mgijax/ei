@@ -1057,7 +1057,7 @@ rules:
 	  table : widget;
 	  currentNomenKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(NOM_MARKER) + 
+	  cmd := "select * from NOM_Marker_View " +
 		 " where _Nomen_key = " + currentNomenKey + "\n" +
 	         "select * from " + mgi_DBtable(NOM_SYNONYM) +
 		 " where _Nomen_key = " + currentNomenKey + 
