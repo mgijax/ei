@@ -399,6 +399,7 @@ rules:
 	  if (from_term) then 
 	    from := from + "," + mgi_DBtable(MGI_TRANSLATION) + " m, " + dbView + " v";
 	    where := where + "\nand t._TranslationType_key = m._TranslationType_key";
+	    where := where + "\nand m._Object_key = v._Object_key";
 	  end if;
 
 	  if (where.length > 0) then
@@ -687,7 +688,7 @@ rules:
 	  select : string := "select _Object_key, description, accID, mgiID from " + dbView;
 
 	  if (column = sourceWidget.mgiTerm) then
-	    select := select + " where description = " + mgi_DBprstr(value);
+	    select := select + " where description like " + mgi_DBprstr(value);
 	  else
 	    select := select + " where accID = " + mgi_DBprstr(value);
 	  end if;
