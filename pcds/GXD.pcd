@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr  9 10:39:32 2002";
+      lastWritten = "Wed Apr 10 10:12:03 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -2234,6 +2234,8 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "beginX:Int=\"1\"\nendX:Int=\"42\"\n";
                                           xrtTblBackgroundSeries = "(0-2 all Wheat) (3-5 all Gray) (6-8 all Wheat) (9-10 all Gray)(label all Thistle) (all label Thistle)";
                                           xrtTblLeftColumn = 14;
+                                        Group: User
+                                          saveBackgroundSeries = "(0-2 all Wheat) (3-5 all Gray) (6-8 all Wheat) (9-10 all Gray)(label all Thistle) (all label Thistle)";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
