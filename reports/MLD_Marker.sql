@@ -121,11 +121,13 @@ print ""
 print "Mapping - Markers in Experiment Marker List - Not Used in Experimental Data"
 print ""
 
-select distinct v.jnum, exptType = substring(v.exptType, 1, 30), v.tag, v.symbol
-from MLD_Expt_Marker_View v, #expts e
-where e._Expt_key = v._Expt_key
-and e._Marker_key = v._Marker_key
-order by v.jnum, v.exptType, v.tag
+select distinct c.jnum, exptType = substring(x.exptType, 1, 30), x.tag, m.symbol
+from #expts e, BIB_View c, MLD_Expts x, MLD_Expt_Marker em, MRK_Marker m
+where e._Expt_key = x._Expt_key
+and c._Refs_key = x._Refs_key
+and x._Expt_key = em._Expt_key
+and em._Marker_key = m._Marker_key
+order by c.jnum, x.exptType, x.tag
 go
 
 set nocount on
