@@ -225,6 +225,7 @@ rules:
 	  tables.append(top->Reference->Table);
 	  tables.append(top->GeneFamily->Table);
 	  tables.append(top->Marker->Table);
+	  tables.append(top->AccessionReference->Table);
 
 	  reserved := mgi_sql1("select " + mgi_DBkey(MRK_STATUS) + 
 		" from " + mgi_DBtable(MRK_STATUS) +
@@ -359,12 +360,14 @@ rules:
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
           ProcessAcc.tableID := MRK_NOMEN;
+          ProcessAcc.db := getenv("NOMEN");
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
       
           ProcessAcc.table := accRefTable;
           ProcessAcc.objectKey := currentNomenKey;
           ProcessAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+          ProcessAcc.db := getenv("NOMEN");
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
 
@@ -380,9 +383,7 @@ rules:
 	  -- If add was sucessful, re-initialize the form
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    Clear.source_widget := top;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
+	    send(ClearNomen, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -544,12 +545,14 @@ rules:
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
           ProcessAcc.tableID := MRK_NOMEN;
+          ProcessAcc.db := getenv("NOMEN");
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
       
           ProcessAcc.table := accRefTable;
           ProcessAcc.objectKey := currentNomenKey;
           ProcessAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+          ProcessAcc.db := getenv("NOMEN");
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
 
@@ -1081,6 +1084,12 @@ rules:
             return;
           end if;
 
+          InitAcc.table := accTable;
+          send(InitAcc, 0);
+ 
+          InitAcc.table := accRefTable;
+          send(InitAcc, 0);
+ 
 	  tables.open;
 	  while (tables.more) do
 	    ClearTable.table := tables.next;
@@ -1133,14 +1142,10 @@ rules:
 	        top->ApprovedSymbol->text.value := mgi_getstr(dbproc, 8);
 	        top->ApprovedName->text.value   := mgi_getstr(dbproc, 9);
 	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 11);
-	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 13);
-	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 14);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 15);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 16);
---	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
---	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
---	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
---	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
+	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
+	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
+	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
+	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
 
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
