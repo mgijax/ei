@@ -460,19 +460,7 @@ rules:
 
 	PrepareSearch does
 	  from := "from " + mgi_DBtable(VOC_VOCAB) + " ";
-	  where := "";
-
-          QueryDate.source_widget := top->CreationDate;
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
- 
-          if (where.length > 0) then
-            where := "where" + where->substr(5, where.length);
-          end if;
+	  where := "where isSimple = 1";
 	end does;
 
 --
