@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 22 09:05:14 2005";
+      lastWritten = "Tue Mar 22 09:55:40 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13609,6 +13609,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblFrozenColumns = 21;
                                           xrtTblAllowCellResize = resize_all;
                                           width = 950;
+                                          xrtTblTraverseCellCallback = "D:GOTraverse";
                                         Group: User
                                           requiredColumns = "3\n6\n8";
                                       }

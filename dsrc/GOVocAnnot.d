@@ -69,6 +69,7 @@ devents:
 	Add :local [];					-- Add record
 	Delete :local [];				-- Delete record
 	GOVocAnnotExit :local [];				-- Destroys D module instance & cleans up
+	GOTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	NotePreCancel :local [];			-- Pre-cancellation of Note Dialog
@@ -1003,6 +1004,31 @@ rules:
 	      mgi_tblGetCell(annotTable, row, annotTable.notes) = "") then
 	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, goNoteTemplate);
 	  end if;
+	end does;
+
+--
+-- GOTraverse
+--
+--  Skips over the Modified By/Modification Date/Created By/Creation Date columns
+--  These cells need to be traversable in order to enter search criteria,
+--  but we want to skip them while curating.
+--
+--
+
+	GOTraverse does;
+	  table : widget := GOTraverse.source_widget;
+	  row : integer := GOTraverse.row;
+	  column : integer := GOTraverse.column;
+	  reason : integer := GOTraverse.reason;
+
+	  if (column = annotTable.notes) then
+	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
+	      row := -1;
+	    end if;
+	    GOTraverse.next_row := row + 1;
+	    GOTraverse.next_column := annotTable.termAccID;
+	  end if;
+
 	end does;
 
 --
