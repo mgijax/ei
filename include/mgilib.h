@@ -153,7 +153,6 @@ extern char *global_version;
 #define GXD_INDEX		223
 #define GXD_INDEXSTAGES		224
 #define IMG_IMAGENOTE		225
-#define GXD_ANTIBODYSPECIES	226
 
 /* Allele Tables */
 
@@ -204,6 +203,7 @@ extern char *global_version;
 #define ALL_TYPE		332
 #define ALL_INHERITANCE_MODE	333
 #define ALL_MOLECULAR_MUTATION	334
+#define GXD_ANTIBODYSPECIES	335
 
 /* Accession Tables */
 
