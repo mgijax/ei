@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Aug 26 08:21:13 2004";
+      lastWritten = "Wed Sep 29 13:21:19 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -894,6 +894,9 @@ Module: MGI
                                               RefAssocType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
+                                              SynType = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
                                               AlleleType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
@@ -910,12 +913,6 @@ Module: MGI
                                             }
                                             {
                                               AlleleReferenceType = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              StrainType = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              StrainSpecies = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               separator = XmSeparator;

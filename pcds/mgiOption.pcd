@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 29 09:46:52 2004";
+      lastWritten = "Wed Sep 29 13:34:21 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1212,6 +1212,13 @@ Module: mgiOption
                         dbTable = 606;
                     }
                     {
+                      SynType = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "MGI Synonym Type";
+                      Group: User
+                        dbTable = 630;
+                    }
+                    {
                       AlleleType = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Allele Type";
@@ -1252,20 +1259,6 @@ Module: mgiOption
                         labelString = "Allele Reference Type";
                       Group: User
                         dbTable = 339;
-                    }
-                    {
-                      StrainType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Strain Type";
-                      Group: User
-                        dbTable = 701;
-                    }
-                    {
-                      StrainSpecies = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Strain Species";
-                      Group: User
-                        dbTable = 703;
                     }
                     {
                       separator = XmSeparator;

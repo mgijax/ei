@@ -157,6 +157,10 @@ rules:
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
 	           top->AllowOnlyOneMenu.menuHistory.defaultValue;
+	  elsif (tableID = MGI_SYNONYMTYPE) then
+	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
+		   mgi_DBprstr(top->Name->text.value) + "," +
+		   global_loginKey + "," + global_loginKey;
 	  elsif (tableID = ALL_TYPE) then
 	    cmd := cmd + "1";
 	  else
@@ -297,7 +301,7 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
 	    if (top->MGITypeMenu.menuHistory.modified) then
 	      set := set + "_MGIType_key = " + top->MGITypeMenu.menuHistory.defaultValue;
 	    end if;
@@ -382,7 +386,7 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
 	    if (top->MGITypeMenu.menuHistory.searchValue != "%") then
 	      where := where + "\nand _MGIType_key = " + top->MGITypeMenu.menuHistory.searchValue;
 	    end if;
@@ -410,6 +414,8 @@ rules:
 	    qry := "select _NoteType_key, noteType, _MGIType_key, private, creation_date, modification_date";
 	  elsif (tableID = MGI_REFASSOCTYPE) then
 	    qry := "select _RefAssocType_key, assoctype, _MGIType_key, allowOnlyOne, creation_date, modification_date";
+	  elsif (tableID = MGI_SYNONYMTYPE) then
+	    qry := "select _SynonymType_key, synonymType, _MGIType_key, creation_date, modification_date";
 	  else
 	    qry := "select distinct *";
 	  end if;
@@ -443,6 +449,8 @@ rules:
 	    cmd := "select _NoteType_key, noteType, _MGIType_key, private, creation_date, modification_date";
 	  elsif (tableID = MGI_REFASSOCTYPE) then
 	    cmd := "select _RefAssocType_key, assoctype, _MGIType_key, allowOnlyOne, creation_date, modification_date";
+	  elsif (tableID = MGI_SYNONYMTYPE) then
+	    cmd := "select _SynonymType_key, synonymType, _MGIType_key, creation_date, modification_date";
 	  else
 	    cmd := "select *";
 	  end if;
@@ -503,6 +511,13 @@ rules:
                 SetOption.source_widget := top->AllowOnlyOneMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
+	      elsif (tableID = MGI_SYNONYMTYPE) then
+                SetOption.source_widget := top->MGITypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 3);
+		SetOption.setDefault := true;
+                send(SetOption, 0);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      else
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
@@ -592,7 +607,7 @@ rules:
 	    top->AllowOnlyOneMenu.required := false;
 	  end if;
 
-	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_NOTETYPE or tableID = MGI_REFASSOCTYPE or tableID = MGI_SYNONYMTYPE) then
 	    top->MGITypeMenu.sensitive := true;
 	    top->MGITypeMenu.required := true;
 	  else
