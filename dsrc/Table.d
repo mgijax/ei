@@ -785,7 +785,7 @@ rules:
 
 	  i := 0;
 	  j : integer;
-	  msg : string := "\nRequired Column In Table\n\nOr...\n\n" +
+	  msg : string := "\nMissing Required Column In Table\n\nOr...\n\n" +
 			  "Did You Forget To Tab Out Of The Last Cell You Edited?";
 
           while (i < mgi_tblNumRows(table)) do
