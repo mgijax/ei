@@ -54,7 +54,7 @@ locals:
 --	clearLists : integer := 7;
 
 	cmd : string;
-	select : string := "select ac._Object_key, ac.accID + ',' + s.sequenceType + ',' + s.sequenceProvider, s.sequenceType, ac.accID\n";
+	select : string := "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID\n";
 	from : string;
 	where : string;
 	union : string;
@@ -363,8 +363,8 @@ rules:
 	  fromMarker : string := "";
 	  fromProbe : string := "";
 
-	  from := "from SEQ_Sequence_View s";
-	  where := "";
+	  from := "from SEQ_Sequence s, VOC_Term v1, VOC_Term v2";
+	  where := "s._SequenceType_key = v1._Term_key and s._SequenceProvider_key = v2._Term_key";
 	  union := "";
 
 	  -- Common Stuff
@@ -379,7 +379,7 @@ rules:
             where := where + accTable.sqlWhere;
 	    from_acc := true;
 	  else
-	    where := "\nand ac._Object_key = s._Sequence_key";
+	    where := where + "\nand ac._Object_key = s._Sequence_key";
 	    from := from + ", Seq_Sequence_Acc_View ac";
           end if;
  
@@ -411,7 +411,7 @@ rules:
 	  value := top->SequenceProviderMenu.menuHistory.searchValue;
           if (value != "%") then
 	    if (value[value.length] = '%') then
-              where := where + "\nand s.sequenceProvider like " + mgi_DBprstr(value);
+              where := where + "\nand v2.term like " + mgi_DBprstr(value);
 	    else
               where := where + "\nand s._SequenceProvider_key = " + value;
 	    end if;
@@ -572,13 +572,13 @@ rules:
 	    whereMarker := whereMarker + "\nand s._Sequence_key = m._Sequence_key";
 	    fromProbe := from + ", SEQ_Probe_Cache_View p";
 	    whereProbe := whereProbe + "\nand s._Sequence_key = p._Sequence_key";
-	    union := "union\n" + select + fromProbe + "\n" + "where" + whereProbe->substr(5, whereProbe.length);
+	    union := "union\n" + select + fromProbe + "\n" + "where " + whereProbe;
 	    from := fromMarker;
 	    where := whereMarker;
 	  end if;
 
 	  if (where.length > 0) then
-	    where := "where" + where->substr(5, where.length);
+	    where := "where " + where;
 	  end if;
 	end does;
 
@@ -590,7 +590,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := select + from + "\n" + where + "\n" + union + "\norder by s.sequenceType, ac.accID\n";
+	  Query.select := select + from + "\n" + where + "\n" + union + "\norder by v1.term, ac.accID\n";
 	  Query.table := SEQ_SEQUENCE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
