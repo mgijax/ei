@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	02/06/2002
+--	- TR 3230; copy field type of previous row
+--
 -- lec	07/11/2001
 --	- TR 2709; add figure label to search results
 --
@@ -47,6 +50,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
+	CopyImagePane :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -520,6 +524,48 @@ rules:
           SetOption.source_widget := top->FieldTypeMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.fieldTypeKey);
           send(SetOption, 0);
+	end does;
+
+--
+-- CopyImagePane
+--
+--	Copy the previous row's values to the current row
+--	if current row value is blank and previous row value is not blank.
+--
+--	Only copy the Field Type
+--
+
+	CopyImagePane does
+	  table : widget := CopyImagePane.source_widget;
+	  row : integer := CopyImagePane.row;
+	  column : integer := CopyImagePane.column;
+	  reason : integer := CopyImagePane.reason;
+
+          if (CopyImagePane.reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
+            return;
+          end if;
+ 
+          if (mgi_tblGetCell(table, row, table.editMode) = TBL_ROW_DELETE) then
+            return;
+          end if;
+ 
+	  -- Only copy Field Type
+
+	  if (row = 0 or column != table.fieldType) then
+	    return;
+	  end if;
+
+	  if (mgi_tblGetCell(table, row, column) = "" and
+	      mgi_tblGetCell(table, row - 1, column) != "") then
+
+	    mgi_tblSetCell(table, row, column, mgi_tblGetCell(table, row - 1, column));
+	    mgi_tblSetCell(table, row, table.fieldTypeKey, mgi_tblGetCell(table, row - 1, table.fieldTypeKey));
+
+	    CommitTableCellEdit.source_widget := table;
+	    CommitTableCellEdit.row := row;
+	    CommitTableCellEdit.value_changed := true;
+	    send(CommitTableCellEdit, 0);
+	  end if;
 	end does;
 
 --
