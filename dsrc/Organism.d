@@ -518,7 +518,7 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from MGI_Organism where _Organism_key = " + currentRecordKey +
+	  cmd := "select * from MGI_Organism_View where _Organism_key = " + currentRecordKey +
 		 " order by commonName\n" +
 	         "select _MGIType_key, typeName from MGI_Organism_MGIType_View " +
 		 "where _Organism_key = " + currentRecordKey + "order by typeName\n" +
@@ -547,9 +547,9 @@ rules:
                 top->Latin->text.value   := mgi_getstr(dbproc, 3);
                 top->Common->text.value  := mgi_getstr(dbproc, 2);
 		table := top->Control->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 7));
 	      elsif (results = 2) then
                 table := top->OrganismType->Table;
@@ -581,6 +581,7 @@ rules:
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := MGI_ORGANISM;
+	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  
           top->QueryList->List.row := Select.item_position;
