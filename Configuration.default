@@ -33,7 +33,7 @@ setenv XKEYSYMDB	$OPENWINHOME/lib/XKeysymDB
 
 # TeleUSE
 setenv TeleUSE	/opt/teleuseXRT
-setenv XNLSPATH	$TeleUSE/X11R5/lib/nls
+#setenv XNLSPATH	$TeleUSE/X11R5/lib/nls
 setenv XUSERFILESEARCHPATH	%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-defaults/%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
 
 setenv LD_LIBRARY_PATH	$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
