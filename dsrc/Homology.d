@@ -667,7 +667,7 @@ rules:
 	    end if;
 
             value := mgi_tblGetCell(top->Marker->Table, row, top->Marker->Table.accID);
-            if (not enough and value.length > 0) then
+            if (not enough and value.length > 0 and value != "GDB:") then
 	      where := where + "\nand ac.accID = " + mgi_DBprstr(value);
 	      from_accession := true;
 	    end if;
@@ -1022,6 +1022,11 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
               mgi_tblSetCell(table, row, table.speciesKey, mgi_getstr(dbproc, 1));
               mgi_tblSetCell(table, row, table.species, mgi_getstr(dbproc, 2));
+
+	      if (mgi_tblGetCell(table, row, table.speciesKey) = "2") then
+                mgi_tblSetCell(table, row, table.accID, "GDB:");
+	      end if;
+
 	      row := row + 1;
 	    end while;
 	  end while;
