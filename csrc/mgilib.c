@@ -1526,6 +1526,10 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (%s, _Assay_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
+    case HMD_ASSAY:
+            sprintf(buf, "insert %s (%s, %s, abbrev)", 
+		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
+	    break;
     case PRB_ALIAS:
             sprintf(buf, "insert %s (%s, _Reference_key, alias)",
 		mgi_DBtable(table), mgi_DBkey(table));

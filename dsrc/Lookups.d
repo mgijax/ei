@@ -21,6 +21,9 @@
 --
 -- History
 --
+-- lec 10/12/1999
+--	- TR 153; new attribute for Homology Assays
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -139,6 +142,10 @@ rules:
 	  if (tableID = GXD_ASSAYTYPE) then
             cmd := cmd + "," + top->RNAAssayMenu.menuHistory.defaultValue;
             cmd := cmd + "," + top->GelAssayMenu.menuHistory.defaultValue;
+	  end if;
+
+	  if (tableID = HMD_ASSAY) then
+	    cmd := cmd + "," + mgi_DBprstr(top->AssayAbbrev->text.value);
 	  end if;
 
 	  cmd := cmd + ")\n";
@@ -282,6 +289,12 @@ rules:
             end if;
 	  end if;
  
+	  if (tableID = HMD_ASSAY) then
+	    if (top->AssayAbbrev->text.value.length > 0) then
+	      where := where + "\nand abbrev like " + mgi_DBprstr(top->AssayAbbrev->text.value);
+	    end if;
+	  end if;
+
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
           end if;
@@ -391,6 +404,14 @@ rules:
 	    top->GelAssayMenu.sensitive := false;
 	    top->RNAAssayMenu.required := false;
 	    top->GelAssayMenu.required := false;
+	  end if;
+
+	  if (tableID = HMD_ASSAY) then
+	    top->AssayAbbrev.sensitive := true;
+	    top->AssayAbbrev->text.required := true;
+	  else
+	    top->AssayAbbrev.sensitive := false;
+	    top->AssayAbbrev->text.required := false;
 	  end if;
 
           -- Set Row Count
