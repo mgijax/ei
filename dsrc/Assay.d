@@ -2827,8 +2827,12 @@ rules:
 
 	Exit does
 
-	  if (mgi->GenotypeModule != nil) then
-	    mgi->GenotypeModule.destroy_widget;
+	  -- exiting using window manager causes problems, so check first
+
+	  if (Exit.source_name = "Exit") then
+	    if (mgi->GenotypeModule != nil) then
+	      mgi->GenotypeModule.destroy_widget;
+	    end if;
 	  end if;
 
   	  ab.sensitive := true;
