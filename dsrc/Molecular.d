@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- lec  08/25/1999
+--	TR 846
+--	TR 907; Initialize Reference info on master form
+--
 -- lec	01/27/1999
 --	TR 307; ModifyReferenceRFLV; only add/modify if Strains are present
 --
@@ -237,6 +241,14 @@ rules:
 --
 
         Add does
+	  -- TR 846; temporary restriction; can be removed after TR 554 is implemented
+	  if (origSeqType = "EST" or top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue = "EST") then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot add EST records.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
 	  if (top->Control->References.set) then
 	    send(AddReference, 0);
 	    return;
@@ -431,6 +443,14 @@ rules:
 --
 
         Delete does
+	  -- TR 846; temporary restriction; can be removed after TR 554 is implemented
+	  if (origSeqType = "EST" or top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue = "EST") then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot delete EST records.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
           (void) busy_cursor(top);
 
 	  -- Delete master Molecular Segment
@@ -484,6 +504,14 @@ rules:
 --
 
 	Modify does
+	  -- TR 846; temporary restriction; can be removed after TR 554 is implemented
+	  if (origSeqType = "EST" or top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue = "EST") then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot modify EST records.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
 	  if (top->Control->References.set) then
 	    send(ModifyReference, 0);
 	    return;
@@ -1310,6 +1338,14 @@ rules:
           end while;
           refTables.close;
  
+	  -- Initialize Reference info on master form
+          top->MolMasterForm->MJnum->Jnum->text.value := "";
+          top->MolMasterForm->MJnum->ObjectID->text.value := "";
+          top->MolMasterForm->MJnum->Citation->text.value := "";
+          top->MolReferenceForm->mgiCitation->Citation->text.value := "";
+          top->MolReferenceForm->mgiCitation->Jnum->text.value := "";
+          top->MolReferenceForm->mgiCitation->ObjectID->text.value := "";
+
           ClearList.source_widget := top->ReferenceList;
           send(ClearList, 0);
 
@@ -1319,9 +1355,6 @@ rules:
           if (top->QueryList->List.selectedItemCount = 0) then
             top->QueryList->List.row := 0;
             top->MolMasterForm->ID->text.value := "";
-            top->MolMasterForm->MJnum->ObjectID->text.value := "";
-            top->MolMasterForm->MJnum->Jnum->text.value := "";
-            top->MolMasterForm->MJnum->Citation->text.value := "";
 	    currentMasterKey := "";
 	    currentReferenceKey := "";
 
