@@ -302,7 +302,7 @@ rules:
 	  -- If no Submitted User selected, try to use global_login value
 
 	  if (top->NomenUserMenu.menuHistory.defaultValue = "%") then
-	    suid := mgi_sql1("select suid from nomen..MRK_Nomen_User_View where name = " 
+	    suid := mgi_sql1("select suid from " + getenv("NOMEN") + "..MRK_Nomen_User_View where name = " 
 			+ mgi_DBprstr(global_login));
             SetOption.source_widget := top->NomenUserMenu;
             SetOption.value := suid;
@@ -1293,7 +1293,7 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
-	  (void) mgi_sql1("exec nomen..NOMEN_verifyMarker " + mgi_DBprstr(value));
+	  (void) mgi_sql1("exec " + getenv("NOMEN") + "..NOMEN_verifyMarker " + mgi_DBprstr(value));
 
 	  if (top->ApprovedSymbol->text.value.length = 0) then
 	    top->ApprovedSymbol->text.value := top->ProposedSymbol->text.value;
@@ -1366,6 +1366,7 @@ rules:
 	  cmds.insert("createBroadcast.py", cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-D" + getenv("NOMEN"), cmds.count + 1);
 
 	  if (dialog->Choice->Preview.set) then
 	    cmds.insert("--BFILE=" + dialog->PreviewFileName->text.value, cmds.count + 1);
