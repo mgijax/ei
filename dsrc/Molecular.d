@@ -1595,11 +1595,11 @@ rules:
               elsif (results = 4) then
 		table := top->MolReferenceForm->RFLV->Table;
  
-                new_allele := mgi_getstr(dbproc, 7);
+                new_allele := mgi_getstr(dbproc, 9);
  
                 if (row >= 0 and prev_allele = new_allele) then
-                  strains := strains + ", " + mgi_getstr(dbproc, 10);
-                  strainKeys := strainKeys + ", " + mgi_getstr(dbproc, 12);
+                  strains := strains + ", " + mgi_getstr(dbproc, 12);
+                  strainKeys := strainKeys + ", " + mgi_getstr(dbproc, 14);
                 else
                   if (row >= 0) then
                     mgi_tblSetCell(table, row, table.strains, strains);
@@ -1607,16 +1607,16 @@ rules:
                   end if;
  
                   row := row + 1;
-                  strains := mgi_getstr(dbproc, 10);
-                  strainKeys := mgi_getstr(dbproc, 12);
+                  strains := mgi_getstr(dbproc, 12);
+                  strainKeys := mgi_getstr(dbproc, 14);
  
 		  mgi_tblSetCell(table, row, table.rflvKey, mgi_getstr(dbproc, 1));
 		  mgi_tblSetCell(table, row, table.alleleKey, new_allele);
 		  mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
 		  mgi_tblSetCell(table, row, table.endo, mgi_getstr(dbproc, 4));
-		  mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 11));
-		  mgi_tblSetCell(table, row, table.allele, mgi_getstr(dbproc, 8));
-		  mgi_tblSetCell(table, row, table.fragments, mgi_getstr(dbproc, 9));
+		  mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
+		  mgi_tblSetCell(table, row, table.allele, mgi_getstr(dbproc, 10));
+		  mgi_tblSetCell(table, row, table.fragments, mgi_getstr(dbproc, 11));
 		  mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		end if;
 
