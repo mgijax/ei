@@ -657,10 +657,10 @@ rules:
 --		top->MGIAddedAliasMenu.menuHistory.searchValue;
 --            end if;
 
---            if (top->printStopMenu.menuHistory.searchValue != "%") then
---              where := where + "\nand printStop = " + 
---		top->printStopMenu.menuHistory.searchValue;
---            end if;
+            if (top->printStopMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand printStop = " + 
+		top->printStopMenu.menuHistory.searchValue;
+            end if;
 
         end does;
 
