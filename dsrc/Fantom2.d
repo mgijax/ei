@@ -202,7 +202,6 @@ rules:
 	  finalSymbol2 : string;
 	  finalName2 : string;
 	  nomenEvent : string;
-	  nomenDetail : string;
 	  gbaMGIID : string;
 	  gbaSymbol : string;
 	  gbaName : string;
@@ -243,7 +242,6 @@ rules:
 	    finalSymbol2 := mgi_tblGetCell(fantom, row, fantom.finalSymbol2);
 	    finalName2 := mgi_tblGetCell(fantom, row, fantom.finalName2);
 	    nomenEvent := mgi_tblGetCell(fantom, row, fantom.nomenEvent);
-	    nomenDetail := mgi_tblGetCell(fantom, row, fantom.nomenDetail);
 	    gbaMGIID := mgi_tblGetCell(fantom, row, fantom.gbaMGIID);
 	    gbaSymbol := mgi_tblGetCell(fantom, row, fantom.gbaSymbol);
 	    gbaName := mgi_tblGetCell(fantom, row, fantom.gbaName);
@@ -338,12 +336,6 @@ rules:
 	      finalName2 := mgi_DBprstr(finalName2);
 	    end if;
 
-	    if (nomenDetail.length = 0) then
-	      nomenDetail := "NULL";
-	    else
-	      nomenDetail := mgi_DBprstr(nomenDetail);
-	    end if;
- 
 	    if (gbaMGIID.length = 0) then
 	      gbaMGIID := "NULL";
 	    else
@@ -388,7 +380,6 @@ rules:
 		     finalSymbol2 + "," +
 		     finalName2 + "," +
 		     mgi_DBprstr(nomenEvent) + "," +
-		     nomenDetail + "," +
 		     mgi_DBprstr(global_login) + "," +
 		     mgi_DBprstr(global_login) + "," + ")\n";
 
@@ -451,7 +442,6 @@ rules:
 		     "final_symbol2 = " + finalSymbol2 + "," +
 		     "final_name2 = " + finalName2 + "," +
 		     "nomen_event = " + mgi_DBprstr(nomenEvent) + "," +
-		     "nomen_detail = " + nomenDetail + "," +
 		     "modifiedBy = " + mgi_DBprstr(global_login);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
@@ -659,11 +649,6 @@ rules:
 	    where := where + " and f.mgi_numberCode like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(fantom, row, fantom.nomenDetail);
-	  if (value.length > 0) then
-	    where := where + " and f.nomen_detail like " + mgi_DBprstr(value);
-	  end if;
-
 	  value := mgi_tblGetCell(fantom, row, fantom.nomenEvent);
 	  if (value.length > 0) then
 	    where := where + " and f.nomen_event like " + mgi_DBprstr(value);
@@ -790,31 +775,32 @@ rules:
 
 		row := row + 1;
 	        fantomKey := mgi_getstr(dbproc, 1);
+	        (void) mgi_tblSetCell(fantom, row, fantom.row, (string) (row + 1));
 	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, fantomKey);
 	        (void) mgi_tblSetCell(fantom, row, fantom.seqID, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(fantom, row, fantom.cloneID, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(fantom, row, fantom.genbankID, mgi_getstr(dbproc, 6));
-	        (void) mgi_tblSetCell(fantom, row, fantom.genbankInMGI, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqLength, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqNote, mgi_getstr(dbproc, 11));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqQuality, mgi_getstr(dbproc, 12));
+	        (void) mgi_tblSetCell(fantom, row, fantom.fantom1Clone, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(fantom, row, fantom.fantom2Clone, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqLength, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqNote, mgi_getstr(dbproc, 12));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqQuality, mgi_getstr(dbproc, 13));
 	        (void) mgi_tblSetCell(fantom, row, fantom.locusID, mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(fantom, row, fantom.tigerID, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(fantom, row, fantom.unigeneID, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(fantom, row, fantom.tigerID, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(fantom, row, fantom.unigeneID, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(fantom, row, fantom.clusterID, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(fantom, row, fantom.locusStatus, mgi_getstr(dbproc, 13));
-	        (void) mgi_tblSetCell(fantom, row, fantom.mgiStatus, mgi_getstr(dbproc, 14));
-	        (void) mgi_tblSetCell(fantom, row, fantom.mgiNumber, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(fantom, row, fantom.blastHit, mgi_getstr(dbproc, 16));
-	        (void) mgi_tblSetCell(fantom, row, fantom.blastExpect, mgi_getstr(dbproc, 17));
-	        (void) mgi_tblSetCell(fantom, row, fantom.autoAnnot, mgi_getstr(dbproc, 18));
-	        (void) mgi_tblSetCell(fantom, row, fantom.infoAnnot, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(fantom, row, fantom.catID, mgi_getstr(dbproc, 20));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_getstr(dbproc, 21));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 23));
-	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 24));
-	        (void) mgi_tblSetCell(fantom, row, fantom.nomenDetail, mgi_getstr(dbproc, 25));
+	        (void) mgi_tblSetCell(fantom, row, fantom.locusStatus, mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(fantom, row, fantom.mgiStatus, mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(fantom, row, fantom.mgiNumber, mgi_getstr(dbproc, 16));
+	        (void) mgi_tblSetCell(fantom, row, fantom.blastHit, mgi_getstr(dbproc, 17));
+	        (void) mgi_tblSetCell(fantom, row, fantom.blastExpect, mgi_getstr(dbproc, 18));
+	        (void) mgi_tblSetCell(fantom, row, fantom.autoAnnot, mgi_getstr(dbproc, 19));
+	        (void) mgi_tblSetCell(fantom, row, fantom.infoAnnot, mgi_getstr(dbproc, 20));
+	        (void) mgi_tblSetCell(fantom, row, fantom.catID, mgi_getstr(dbproc, 21));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_getstr(dbproc, 22));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 23));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 24));
+	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 25));
 	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 26));
 	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 28));
 	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 27));
@@ -966,7 +952,9 @@ rules:
 --
 -- SetBackground
 --
--- If fatnom.genbankInMGI = 0, then set to Thistle
+-- If fatnom.fantom1Clone = 1, then set to Thistle
+-- If fatnom.fantom2Clone = 1, then set to PaleGreen
+-- If nonRIKEN clone (cloneID NULL and seqID NULL), then set to SkyBlue
 -- If Seq Quality != zilch, then set to Red
 --
 
@@ -983,8 +971,17 @@ rules:
 	      break;
 	    end if;
 
-	    if (mgi_tblGetCell(fantom, i, fantom.genbankInMGI) = "0") then
+	    if (mgi_tblGetCell(fantom, i, fantom.fantom1Clone) = "1") then
 	      newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT1 + ")";
+	    end if;
+
+	    if (mgi_tblGetCell(fantom, i, fantom.fantom2Clone) = "1") then
+	      newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT4 + ")";
+	    end if;
+
+	    if (mgi_tblGetCell(fantom, i, fantom.seqID) = "zilch" and
+	        mgi_tblGetCell(fantom, i, fantom.cloneID) = "zilch") then
+	      newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT3 + ")";
 	    end if;
 
 	    if (mgi_tblGetCell(fantom, i, fantom.seqQuality) != "zilch") then
