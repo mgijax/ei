@@ -802,15 +802,20 @@ rules:
 		  -- If "Allele" Module is not already instantiated, create it
 
 		  if (root.parent->mgiModules->Allele.sensitive = true) then
-		    (void) create dmodule("AlleleModule", root.parent, top);
+		    (void) create dmodule("Allele", root.parent, top);
 		  end if;
 
 		  alleletop := root.parent->AlleleModule;
 		  alleletop.front;
-		  alleletop->mgiMarker->ObjectID->text.value := markerKey;
-		  alleletop->mgiMarker->Marker->text.value := markerSymbol;
-		  alleletop->Symbol->text.value := value;
-		  (void) XmProcessTraversal(alleletop->Name->text, XmTRAVERSE_CURRENT);
+
+		  -- If no item is selected, then default the fields
+		  if (alleletop->QueryList->List.selectedItemCount = 0 and
+		      alleletop->mgiMarker->Marker->text.value.length = 0) then
+		    alleletop->mgiMarker->ObjectID->text.value := markerKey;
+		    alleletop->mgiMarker->Marker->text.value := markerSymbol;
+		    alleletop->Symbol->text.value := value;
+		    (void) XmProcessTraversal(alleletop->Name->text, XmTRAVERSE_CURRENT);
+		  end if;
 
 		  if (isTable) then
 	            (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");

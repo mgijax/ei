@@ -285,7 +285,7 @@ rules:
 	  -- it was launched from within another application for the
 	  -- purpose of adding a non-existent allele record
 
-	  if (launchedFrom != mgi) then
+	  if (top->QueryList->List.sqlSuccessful and launchedFrom != mgi) then
 	    send(Exit, 0);
 	  end if;
 	end does;
