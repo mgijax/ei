@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 02/04/2003 lec
+--	- TR 3853; annotation for OMIM/Genotype
+--
 -- 01/02/2003 lec
 --	- TR 4272; annotation for Mammalian Phenotype
 --
@@ -595,10 +598,11 @@ rules:
 	  -- Different Sorts for different Annotation Types
 	  if (annotTable.annotVocab = "GO") then
 	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
-	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
-	    orderBy := "a.term, e.modification_date\n";
 	  elsif (annotTable.annotVocab = "PhenoSlim") then
 	    orderBy := "a.sequenceNum, e.modification_date\n";
+--	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	  else
+	    orderBy := "a.term, e.modification_date\n";
 	  end if;
 
 	  cmd : string := "select _Object_key, accID, description, short_description " +
@@ -840,7 +844,8 @@ rules:
 	  elsif (annotTable.annotVocab = "GO") then
 	    top->PhenoSlimList.managed := false;
 	    top->Reference.managed := true;
-	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+--	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	  else
 	    top->PhenoSlimList.managed := false;
 	    top->Reference.managed := false;
 	  end if;

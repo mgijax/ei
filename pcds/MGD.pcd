@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb  3 09:37:13 2003";
+      lastWritten = "Wed Feb  5 12:49:17 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1061,40 +1061,38 @@ Module: MGD
                                   Marker = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = StrainType;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = StrainType;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 5;
+                                    leftWidget = StrainType;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 5;
-                                          xrtTblColumnLabels = "Mode,Current Key,Key,Chr,Symbol";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 3)(all 4 25)";
+                                          userDefinedAttributes = "markerColumns:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"5\"\nmarkerChr:Int(Int)=\"4\"\nalleleKey:StringTable(StringTable)=\"3\"\nalleleSymbol:StringTable(StringTable)=\"6\"\nprimaryKey:Int(Int)=\"1\"\n";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
+                                          xrtTblNumColumns = 7;
+                                          xrtTblColumnLabels = "Mode,Key,Key,Key,Chr,Marker,Allele";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 30)";
                                           xrtTblEditableSeries = "(all 0-3 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyStrainMarker,\nD:CommitTableCellEdit";
-                                          xrtTblMaxLengthSeries = "(all 3 25)";
-                                          userDefinedAttributes = "markerColumns:Int(Int)=\"1\"\nmarkerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"4\"\nmarkerChr:Int=\"3\"\n";
-                                          xrtTblVisibleRows = 3;
                                           xrtTblTraversableSeries = "(all 0-3 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblVisibleRows = 3;
                                       }
                                 }
                                 {
                                   Synonym = Table : mgiTable;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
                                     topWidget = Marker;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 25;
                                     leftWidget = Marker;
-                                    rightOffset = 5;
+                                    topOffset = 5;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
@@ -1115,9 +1113,9 @@ Module: MGD
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = Marker;
+                                    topWidget = Synonym;
                                     topOffset = 5;
-                                    leftWidget = Marker;
+                                    leftWidget = Synonym;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -1221,7 +1219,7 @@ Module: MGD
                                         text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           columns = 100;
-                                          rows = 10;
+                                          rows = 3;
                                       }
                                 }
                           }
