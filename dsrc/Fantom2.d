@@ -39,7 +39,6 @@ devents:
 			   reason : integer;];
 	SortTable :local [];
 	VerifyFinalMGIID :local [];
-	VerifyGenBankID :local [];
 
 	-- Not Used; they're defined so errors don't appear
 	Add :local [];
@@ -656,7 +655,7 @@ rules:
 
           (void) busy_cursor(top);
  	  send(PrepareSearch, 0);
-	  cmd := "select count(f._Fantom2_key) " + from + where;
+	  cmd := "select count(distinct f._Fantom2_key) " + from + where;
 	  (void) mgi_writeLog(cmd + "\n");
 	  top->numRows.value := mgi_sql1(cmd) + " Results";
           (void) reset_cursor(top);
@@ -935,60 +934,14 @@ rules:
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid MGI Accession ID For This Field";
             send(StatusReport);
+            VerifyFinalMGIID.doit := (integer) false;
 	  else
 	    CommitTableCellEdit.source_widget := fantom;
 	    CommitTableCellEdit.row := mgi_tblGetCurrentRow(fantom);
 	    CommitTableCellEdit.value_changed := true;
 	    send(CommitTableCellEdit, 0);
-            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
           end if;
  
-          (void) reset_cursor(top);
-        end does;
-
---
--- VerifyGenBankID
---
---      Verify Marker MGI Accession number (MGI:)
---
- 
-        VerifyGenBankID does
-	  column : integer := VerifyGenBankID.column;
-	  row : integer := VerifyGenBankID.row;
-	  reason : integer := VerifyGenBankID.reason;
-	  accID : string := VerifyGenBankID.value;
-	  mgiTypeKey : integer := 2;
-
-	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	    return;
-	  end if;
-
-	  if (column != fantom.gbaMGIID) then
-	    return;
-	  end if;
-
-	  if (accID.length = 0 or strstr(accID, "%") != nil) then
-	    return;
-	  end if;
-
-          (void) busy_cursor(top);
- 
-          mgi_tblSetCell(fantom, row, fantom.gbaSymbol, "");
-          mgi_tblSetCell(fantom, row, fantom.gbaName, "");
-
-	  cmd : string := "select symbol, name from MRK_Mouse_View where mgiID = " + mgi_DBprstr(accID);
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 1));
-	      mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 2));
-            end while;
-          end while;
-          (void) dbclose(dbproc);
- 
-          (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
           (void) reset_cursor(top);
         end does;
 
