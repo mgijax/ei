@@ -187,6 +187,7 @@ devents:
 	AddAntibodyPrep :local [];
 	AddProbePrep :local [];
 	AddProbeReference :local [];
+	AddToEditClipboard :local [];
 	AppendToAgeNote :local [];
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
@@ -668,6 +669,38 @@ rules:
 	         top->mgiCitation->ObjectID->text.value + "," +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "\n";
 	end
+
+--
+-- AddToEditClipboard
+--
+
+	AddToEditClipboard does
+	  clipboard : widget;
+
+	  if (currentAssay = "") then
+	    StatusReport.source_widget := top;
+            StatusReport.message := "An Assay record must be selected in order to use this function.\n";
+            send(StatusReport, 0);
+            return;
+	  end if;
+
+	  if (assayDetailForm.name = "GelForm") then
+	    clipboard := top->CVGel->ADClipboard;
+	  else
+	    clipboard := top->InSituResultDialog->ADClipboard;
+	  end if;
+
+	  if (top.parent->(clipboard.editClipboard) = nil) then
+	    StatusReport.source_widget := top;
+            StatusReport.message := "The Anatomical Dictionary Module must be open in order to use this function.\n";
+            send(StatusReport, 0);
+            return;
+	  end if;
+
+	  EditClipboardLoad.source_widget := clipboard;
+	  send(EditClipboardLoad, 0);
+	  send(AssayClear, 0);
+	end does;
 
 --
 -- AppendToAgeNote
