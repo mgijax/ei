@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar  3 09:55:59 2003";
+      lastWritten = "Fri Mar 21 11:22:33 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1338,10 +1338,13 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle : mgiOption;
+                                                    IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle : mgiOption;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -2442,6 +2445,8 @@ Module: MGD
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 5;
                                       }
                                       {
                                         Add = TablePush;
@@ -2480,12 +2485,17 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    IMAGE = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    MGC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -2974,12 +2984,15 @@ Module: MGD
                                   TrEMBL = AccToggle : mgiOption;
                                 }
                                 {
-                                  WashU = AccToggle;
+                                  IMAGE = AccToggle;
                                   Group: Widget
                                     managed = True;
                                 }
                                 {
-                                  IMAGE = AccToggle;
+                                  MGC = AccToggle : mgiOption;
+                                }
+                                {
+                                  WashU = AccToggle;
                                   Group: Widget
                                     managed = True;
                                 }
@@ -5316,9 +5329,33 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -5471,10 +5508,13 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -6819,10 +6859,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle : mgiOption;
+                                                    IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle : mgiOption;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -6972,10 +7015,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8492,10 +8538,13 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8701,10 +8750,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 13 10:13:29 2003";
+      lastWritten = "Fri Mar 21 11:19:50 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -132,16 +132,21 @@ Module: mgiOption
                         defaultValue = 41;
                     }
                     {
-                      WashU = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 16;
-                    }
-                    {
                       IMAGE = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "I.M.A.G.E.";
                       Group: User
                         defaultValue = 17;
+                    }
+                    {
+                      MGC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 44;
+                    }
+                    {
+                      WashU = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 16;
                     }
                     {
                       LocusLink = AccToggle : mgiOption;
@@ -337,6 +342,13 @@ Module: mgiOption
                       ORNL = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 40;
+                    }
+                    {
+                      IMAGELibrary = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "IMAGE Library";
+                      Group: User
+                        defaultValue = 43;
                     }
               }
         }

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 13 10:13:34 2003";
+      lastWritten = "Fri Mar 21 11:21:08 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -736,10 +736,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -1886,10 +1889,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
