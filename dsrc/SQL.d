@@ -231,7 +231,7 @@ rules:
 
 	  dbclose(dbproc);
 
-	  (void) mgi_writeLog("@@error:  " + (string) error + "\n");
+	  (void) mgi_writeLog("\n@@error:  " + (string) error + "\n");
 	  (void) mgi_writeLog("@@transtate:  " + (string) transtate + "\n");
 
 	  -- Fatal Errors
