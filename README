@@ -1,0 +1,25 @@
+copy the Configuration.default file to Configuration
+edit appropriately
+
+cvs export -r ei-tag -d ei-tag ei
+cd ei
+
+To build an application:
+
+buildapp mgd [compiled]
+
+To install an application:
+
+installapp mgd [compiled]
+
+To build all applications:
+
+buildall [compiled]
+
+To install all applications:
+
+installall [compiled]
+
+To run:
+
+$INSTALLDIRECTORY/mgd/runmgd
