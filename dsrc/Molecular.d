@@ -672,8 +672,6 @@ rules:
 	    end if;
 	  end if;
 
-	  send(ModifyMarker, 0);
-
           ModifyNotes.source_widget := top->MolMarkerForm->MolNote;
           ModifyNotes.tableID := PRB_NOTES;
           ModifyNotes.key := currentMasterKey;
@@ -686,13 +684,35 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
  
+	  --
+	  -- Modifications to Marker relationships are handled as
+	  -- distinct transactions from other modifications due
+	  -- to the editing restrictions on clones.
+	  --
+	  -- Editing restrictions on clones (IMAGE, RIKEN, etc.)
+	  -- are not necessarily applied to edits of Marker relationships.
+	  -- That is, the users have to be able to edit Marker relationships
+	  -- even if the Clone is restricted from other types of edits.
+	  -- Since the restriction logic is implemented in PRB_Probe triggers,
+	  -- then we cannot update the modification date/user of the PRB_Probe
+	  -- record due to an edit of the Marker relationships.
+	  --
+	  -- We don't refresh the Probe record until we're done with
+	  -- all transactions.
+	  --
+
+	  send(ModifyMarker, 0);
+
           if (cmd.length > 0 or set.length > 0) then 
             cmd := cmd + mgi_DBupdate(PRB_PROBE, currentMasterKey, set);
+            ModifySQL.cmd := cmd;
+	    ModifySQL.list := top->QueryList;
+	    ModifySQL.reselect := false;
+            send(ModifySQL, 0);
           end if; 
  
-          ModifySQL.cmd := cmd;
-	  ModifySQL.list := top->QueryList;
-          send(ModifySQL, 0);
+	  -- Refresh the Mol Seg record
+	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 
 	  (void) reset_cursor(top);
 	end does;
@@ -706,6 +726,7 @@ rules:
  
         ModifyMarker does
           table : widget := top->MolMarkerForm->Marker->Table;
+	  modifyCmd : string := "";
           row : integer := 0;
           editMode : string;
           key : string;
@@ -730,7 +751,7 @@ rules:
             relationship := relationship.raise_case;
  
             if (editMode = TBL_ROW_ADD and newKey.length > 0 and newKey != "NULL") then
-              cmd := cmd + mgi_DBinsert(PRB_MARKER, "") + 
+              modifyCmd := modifyCmd + mgi_DBinsert(PRB_MARKER, "") + 
 			   currentMasterKey + "," + 
 			   newKey + "," +
 			   refsKey + "," +
@@ -740,15 +761,23 @@ rules:
               set := "_Marker_key = " + newKey +
 		     ",_Refs_key = " + refsKey +
 		     ",relationship = " + mgi_DBprstr(relationship);
-              cmd := cmd + mgi_DBupdate(PRB_MARKER, currentMasterKey, set) +
+              modifyCmd := modifyCmd + mgi_DBupdate(PRB_MARKER, currentMasterKey, set) +
 			" and _Marker_key = " + key + "\n";
             elsif (editMode = TBL_ROW_DELETE and key.length > 0 and key != "NULL") then
-               cmd := cmd + mgi_DBdelete(PRB_MARKER, currentMasterKey) +
+               modifyCmd := modifyCmd + mgi_DBdelete(PRB_MARKER, currentMasterKey) +
 			" and _Marker_key = " + key + "\n";
             end if;
  
             row := row + 1;
           end while;
+
+	  if (modifyCmd.length > 0) then
+            ModifySQL.cmd := modifyCmd;
+	    ModifySQL.list := top->QueryList;
+	    ModifySQL.reselect := false;
+            send(ModifySQL, 0);
+	  end if;
+
         end
  
 --
