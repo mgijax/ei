@@ -76,7 +76,7 @@ rules:
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab : widget := mgi->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
