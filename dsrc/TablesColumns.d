@@ -234,7 +234,7 @@ rules:
           editMode : string;
           set : string := "";
 
-	  columnKey : string;
+	  column : string;
 	  description : string;
 	  example : string;
 
@@ -249,14 +249,14 @@ rules:
               break;
             end if;
  
-            columnKey := mgi_tblGetCell(table, row, table.columnKey);
+            column := mgi_tblGetCell(table, row, table.columnName);
             description := mgi_tblGetCell(table, row, table.description);
             example := mgi_tblGetCell(table, row, table.example);
  
             if (editMode = TBL_ROW_MODIFY) then
               set := "description = " + mgi_DBprstr(description) + "," +
 		     "example = " + mgi_DBprstr(example);
-              cmd := cmd + mgi_DBupdate(MGI_COLUMNS, currentKey + ":" + columnKey, set);
+              cmd := cmd + mgi_DBupdate(MGI_COLUMNS, currentKey + ":" + column, set);
             end if;
  
             row := row + 1;
@@ -325,8 +325,8 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct _Table_id, table_name\n" + from + "\n" + where + 
-		"\norder by table_name\n";
+	  Query.select := "select distinct id = table_name, table_name\n" + 
+		from + "\n" + where + "\norder by table_name\n";
 	  Query.table := MGI_TABLES;
 	  send(Query, 0);
           (void) reset_cursor(top);
@@ -363,12 +363,12 @@ rules:
 
 	  currentKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Table_id, table_name, table_description, creation_date, modification_date " +
+	  cmd := "select table_name, table_description, creation_date, modification_date " +
 		 " from MGI_Table_Column_View" +
-		 " where _Table_id = " + currentKey + "\n" +
-		 "select _Column_id, column_name, column_description, example from MGI_Table_Column_View" +
-		 " where _Table_id = " + currentKey + 
-		 " order by _Column_id\n";
+		 " where table_name = " + mgi_DBprstr(currentKey) + "\n" +
+		 "select column_name, column_description, example from MGI_Table_Column_View" +
+		 " where table_name = " + mgi_DBprstr(currentKey) + 
+		 " order by column_name\n";
 
           table : widget := top->Columns->Table;
 	  results : integer := 1;
@@ -383,16 +383,15 @@ rules:
 	      if (results = 1) then
 		if (top->ID->text.value.length = 0) then
 	          top->ID->text.value           := mgi_getstr(dbproc, 1);
-	          top->Name->text.value         := mgi_getstr(dbproc, 2);
-	          top->Description->text.value  := mgi_getstr(dbproc, 3);
-	          top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-	          top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+	          top->Name->text.value         := mgi_getstr(dbproc, 1);
+	          top->Description->text.value  := mgi_getstr(dbproc, 2);
+	          top->CreationDate->text.value := mgi_getstr(dbproc, 3);
+	          top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
 		end if;
 	      elsif (results = 2) then
-                (void) mgi_tblSetCell(table, row, table.columnKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.columnName, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.description, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.example, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.columnName, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.description, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.example, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      end if;
