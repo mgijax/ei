@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Oct 25 08:50:25 1999";
+      lastWritten = "Mon Oct 25 14:12:35 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -965,35 +965,54 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  Notes = Notes : mgiDataTypes;
+                                  Note = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = References;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    rightOffset = 5;
                                     topAttachment = attach_widget;
                                     topWidget = References;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        label = XmLabel;
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 7;
+                                          xrtTblNumRows = 1;
+                                          xrtTblVisibleRows = 1;
+                                          xrtTblColumnLabels = "Mode,B,C,D,E,F,G";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 10)(all 3 10)(all 4 30)(all 5 15)(all 6 10)";
+                                          userDefinedAttributes = "andor:Int=\"1\"\nreference:Int=\"2\"\ndataset:Int=\"3\"\nnote1:Int=\"4\"\nnote2:Int=\"5\"\nnote3:Int=\"6\"\n";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = Notes;
+                                            }
                                       }
                                       {
-                                        text = scrolledText : mgiDataTypes;
+                                        AddRow = TablePush : mgiTable;
                                         Group: Widget
-                                          columns = 80;
-                                          rows = 5;
+                                          managed = False;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                                 {
                                   User1 = CharSText : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Notes;
+                                    leftWidget = Note;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = Notes;
-                                    topOffset = 5;
+                                    topWidget = Note;
+                                    topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 2;
@@ -1010,6 +1029,8 @@ Module: MGD
                                 }
                                 {
                                   User2 = CharSText : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = User1;
