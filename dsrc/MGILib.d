@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- 02/19/2004 lec
+--	- TR 5567; launch MP Annotations
+--
 -- 07/11/2001 lec
 --	- APP changed to EIAPP
 --
@@ -58,6 +61,8 @@ rules:
 	  launchTop : widget;
 	  
 	  launchedFrom := CreateMGIModule.source_widget;
+
+	  -- this must be set to the root for the parent and child to function properly
 	  launchTop := launchedFrom.root;
 
 	  -- if the parent is set properly, then when the parent dies, the child will die
