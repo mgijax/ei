@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 29 10:01:08 2003";
+      lastWritten = "Mon Feb  3 09:27:40 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -2309,7 +2309,7 @@ Module: mgiOption
               {
                 EvidenceVocabPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Vocab_key, name from VOC_Vocab where isSimple = 1 order by name";
+                  sql = "select _Vocab_key, name from VOC_Vocab \nwhere isSimple = 1 \nunion\nselect -1, \"Not Specified\"\norder by name";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

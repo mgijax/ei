@@ -385,8 +385,6 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       mgi_DBprstr(inferredFrom) + "," +
-		       mgi_DBprstr(global_login) + "," +
-		       mgi_DBprstr(global_login) + "," +
 		       mgi_DBprstr(notes) + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 29 10:01:15 2003";
+      lastWritten = "Tue Feb  4 12:33:16 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -2005,7 +2005,7 @@ Module: MGI
                                       {
                                         ACCLogicalPulldown = OptionPulldown;
                                         Group: User
-                                          sql = "select _LogicalDB_key, name from ACC_LogicalDB\nwhere _LogicalDB_key in (-1, 1)\norder by name";
+                                          sql = "select _LogicalDB_key, name from ACC_LogicalDB\nwhere _LogicalDB_key in (-1, 1,15)\norder by name";
                                       }
                                 }
                                 {

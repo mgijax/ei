@@ -287,8 +287,8 @@ rules:
                  top->AlleleStatusMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
-		 mgi_DBprstr(nomenSymbol) + "," +
-		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ",";
+		 mgi_DBprstr(nomenSymbol);
+--		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ",";
 
 	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
 	    cmd := cmd + mgi_DBprstr(global_login) + ",getdate())\n";

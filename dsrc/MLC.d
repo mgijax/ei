@@ -635,8 +635,7 @@ rules:
 	  cmd := cmd + mgi_DBinsert(MLC_TEXT_EDIT, NOKEY) + 
 			currentMarkerKey + ", " + 
 			mgi_DBprstr(top->MLCModeMenu.menuHistory.defaultValue) + "," +
-			mgi_DBprstr(mlced_eiDescToDB(locustxt.value, locustaglist)) + "," +
-			mgi_DBprstr(global_login) + ",";
+			mgi_DBprstr(mlced_eiDescToDB(locustxt.value, locustaglist)) + ",";
 
 	  -- If a Creation date exists, then save it for the new Text record
 	  -- Else, use the current date

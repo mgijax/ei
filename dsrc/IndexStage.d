@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec  02/10/2003
+--	- TR 3711; Coded
+--
 -- lec  05/21/2002
 --	- TR 3710, 3711; new Assay Type, Priority status
 --
@@ -454,6 +457,18 @@ rules:
 	    where := where + "\nand i.comments like " + mgi_DBprstr(top->Note->text.value);
 	  end if;
 
+          if (top->CodedMenu.menuHistory.searchValue != "%") then
+            if (top->CodedMenu.menuHistory.searchValue = YES) then
+	      where := where + "\nand exists (select 1 from GXD_Assay a, GXD_Expression e " +
+		" where i._Refs_key = a._Refs_key and i._Marker_key = a._Marker_key\n" +
+		" and a._Assay_key = e._Assay_key)\n";
+	    else
+	      where := where + "\nand not exists (select 1 from GXD_Assay a, GXD_Expression e " +
+		" where i._Refs_key = a._Refs_key and i._Marker_key = a._Marker_key\n" +
+		" and a._Assay_key = e._Assay_key)\n";
+	    end if;
+	  end if;
+
 	  -- Chop off leading "\nand"
 
           if (where.length > 0) then
@@ -506,7 +521,12 @@ rules:
 
 	  cmd := "select * from GXD_Index_View where _Index_key = " + currentRecordKey + "\n" +
 		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
-			" order by _Assay_key, _StageID_key\n";
+			" order by _Assay_key, _StageID_key\n" +
+		 "select assays = count(distinct a._Assay_key) from GXD_Index i, GXD_Assay a, GXD_Expression e " +
+		 "where i._Index_key = " + currentRecordKey + 
+		 " and i._Refs_key = a._Refs_key" +
+		 " and i._Marker_key = a._Marker_key" +
+		 " and a._Assay_key = e._Assay_key";
 
 	  table : widget;
 	  results : integer := 1;
@@ -552,6 +572,16 @@ rules:
 		-- place an "X" in the correct column (stage)
 		(void) mgi_tblSetCell(table, row, stageKeys.find(mgi_getstr(dbproc, 3)), "X");
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      elsif (results = 3) then
+		if (mgi_getstr(dbproc, 1) = "0") then
+                  SetOption.source_widget := top->CodedMenu;
+                  SetOption.value := NO;
+                  send(SetOption, 0);
+		else
+                  SetOption.source_widget := top->CodedMenu;
+                  SetOption.value := YES;
+                  send(SetOption, 0);
+		end if;
 	      end if;
 	    end while;
 	    results := results + 1;
