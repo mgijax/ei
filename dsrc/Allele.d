@@ -252,6 +252,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "An Original Reference is required.";
             send(StatusReport);
+	    top->QueryList->List.sqlSuccessful := false;
             return;
 	  end if;
 
