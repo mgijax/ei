@@ -1732,7 +1732,7 @@ rules:
 
 	  else
 	    value := top->mgiMarker->Marker->text.value;
-	    if (top->mgiMarker.accessionWidget != "") then
+	    if (top->mgiMarker.accessionWidget.length > 0) then
 	      accessionWidget := top->(top->mgiMarker.accessionWidget);
 	    end if;
 	  end if;
