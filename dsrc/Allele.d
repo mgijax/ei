@@ -67,6 +67,9 @@ locals:
 	clearLists : integer :exported := 3; -- exported so VerifyAllele can access this value
 
 	alleleNotesRequired : boolean;  -- Are Allele Notes a required field for the edit?
+	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
+
+	origReferenceRequired : boolean;
 
 rules:
 
@@ -188,19 +191,19 @@ rules:
 	    return;
 	  end if;
 
-	  (void) busy_cursor(top);
-
-          -- If adding, then @KEYNAME must be used in all Modify events
- 
-          currentRecordKey := "@" + KEYNAME;
- 
-	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
+	  if (top->mgiCitation->Jnum->text.value.length = 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "An Original Reference is required.";
             send(StatusReport);
             return;
 	  end if;
 
+	  (void) busy_cursor(top);
+
+          -- If adding, then @KEYNAME must be used in all Modify events
+ 
+          currentRecordKey := "@" + KEYNAME;
+ 
 	  if (top->mgiCitation1->ObjectID->text.value.length = 0) then
 	    top->mgiCitation1->ObjectID->text.value := "NULL";
 	  end if;
@@ -227,13 +230,22 @@ rules:
                  reviewed + ")\n";
 
 	  alleleNotesRequired := false;
-	  send(ModifyAlleleNotes, 0);
+	  molecularNotesRequired := false;
 	  send(ModifyMolecularMutation, 0);
+	  send(ModifyAlleleNotes, 0);
 	  send(ModifySynonym, 0);
 
 	  if (top->AlleleNote->Note->text.value.length = 0 and alleleNotesRequired) then
             StatusReport.source_widget := top;
             StatusReport.message := "Allele Notes are required.";
+            send(StatusReport);
+	    reset_cursor(top);
+	    return;
+	  end if;
+
+	  if (top->MolecularNote->Note->text.value.length = 0 and molecularNotesRequired) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Molecular Notes are required.";
             send(StatusReport);
 	    reset_cursor(top);
 	    return;
@@ -364,7 +376,7 @@ rules:
 	    return;
 	  end if;
 
-	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
+	  if (origReferenceRequired and top->mgiCitation->Jnum->text.value.length = 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "An Original Reference is required.";
             send(StatusReport);
@@ -413,13 +425,22 @@ rules:
 	  end if;
 
 	  alleleNotesRequired := false;
-	  send(ModifyAlleleNotes, 0);
+	  molecularNotesRequired := false;
 	  send(ModifyMolecularMutation, 0);
+	  send(ModifyAlleleNotes, 0);
 	  send(ModifySynonym, 0);
 
 	  if (top->AlleleNote->Note->text.value.length = 0 and alleleNotesRequired) then
             StatusReport.source_widget := top;
             StatusReport.message := "Allele Notes are required.";
+            send(StatusReport);
+	    reset_cursor(top);
+	    return;
+	  end if;
+
+	  if (top->MolecularNote->Note->text.value.length = 0 and molecularNotesRequired) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Molecular Notes are required.";
             send(StatusReport);
 	    reset_cursor(top);
 	    return;
@@ -522,7 +543,7 @@ rules:
 	    end if;
  
 	    if (mgi_tblGetCell(table, row, table.mutation) = OTHERNOTES) then
-	      alleleNotesRequired := true;
+	      molecularNotesRequired := true;
 	    end if;
 
 	    row := row + 1;
@@ -827,6 +848,7 @@ rules:
 	  top->mgiCitation1->Citation->text.value := "";
 	  top->MolecularNote->text.value := "";
 	  top->AlleleNote->text.value := "";
+	  origReferenceRequired := false;
 
 	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
@@ -889,6 +911,7 @@ rules:
 		top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 1);
 		top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 2);
 		top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 3);
+		origReferenceRequired := true;
 
 	      elsif (results = 3) then
 		top->mgiCitation1->ObjectID->text.value := mgi_getstr(dbproc, 1);
