@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:22:50 2005";
+      lastWritten = "Wed Feb 23 15:27:59 2005";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -274,19 +274,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          userDefinedAttributes = "reviewKey:Int(Int)=\"6\"\nreview:Int(Int)=\"10\"\n";
-                                          xrtTblNumColumns = 11;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 60)";
-                                          xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Type key,Review key,Type,J#,Citation,Review?";
-                                          xrtTblEditableSeries = "(all 0-7 False)";
-                                          xrtTblMaxLengthSeries = "(all 9 255)";
                                           xrtTblPixelWidthSeries = "(all 0-6 0)";
-                                          xrtTblTraversableSeries = "(all 0-7 False)";
-                                        Group: User
-                                          citation = 9;
-                                          jnum = 8;
-                                          refsName = 7;
-                                          refsType = 7;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -301,8 +289,12 @@ Shift<Key>Tab: prev-tab-group()
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Nomen_View order by _RefAssocType_key";
-                                                tableOption = 7;
                                             }
+                                      }
+                                      {
+                                        ReviewMenu = YesNoMenu : mgiOption;
+                                        Group: Widget
+                                          managed = True;
                                       }
                                 }
                                 {
@@ -429,6 +421,13 @@ Shift<Key>Tab: prev-tab-group()
                                                       private = True;
                                                   }
                                                   {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                    Group: User
+                                                      private = True;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -517,34 +516,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENCluster = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    RIKENClone = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA7 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA15K = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RPCI23 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                             }
                                       }
@@ -677,34 +648,13 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      CVNomen = CVNomen : mgiCV;
-                      Group: Constraint
-                        leftAttachment = attach_opposite_widget;
-                        leftWidget = BroadcastToMenu;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_widget;
-                        topWidget = BroadcastToMenu;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                          {
-                            ReviewMenu = YesNoMenu : mgiOption;
-                                Popups:
-                                {
-                                  ReviewPulldown = OptionPulldown : mgiOption;
-                                  Group: User
-                                    tableOption = 10;
-                                    tableOptionKey = 6;
-                                }
-                          }
-                    }
-                    {
                       Lookup = Lookup;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Edit;
                         rightAttachment = attach_form;
                         topAttachment = attach_widget;
-                        topWidget = CVNomen;
+                        topWidget = BroadcastToMenu;
                         bottomAttachment = attach_form;
                         resizable = true;
                           {
@@ -723,7 +673,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AccSourceMenu = AccSourceMenu;
                                         Group: User
-                                          defaultOption = EC;
+                                          defaultOption = NSequence;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -741,6 +691,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle : mgiOption;

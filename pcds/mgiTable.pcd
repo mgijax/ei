@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:22:50 2005";
+      lastWritten = "Wed Feb 23 15:23:01 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -523,20 +523,21 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"5\"\nrefsCurrentTypeKey:Int(Int)=\"4\"\n";
-                  xrtTblNumColumns = 9;
-                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Type key,Type,J#,Citation";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 60)";
-                  xrtTblMaxLengthSeries = "(all 8 255)";
-                  xrtTblPixelWidthSeries = "(all 0-5 0)";
-                  xrtTblEditableSeries = "(all 0-6 False)";
-                  xrtTblTraversableSeries = "(all 0-6 False)";
+                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"5\"\nrefsCurrentTypeKey:Int(Int)=\"4\"\nreviewKey:Int=\"6\"\nreview:Int=\"10\"\n";
+                  xrtTblNumColumns = 11;
+                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Type key,Review key,Type,J#,Citation,Review?";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 60)";
+                  xrtTblMaxLengthSeries = "(all 9 255)";
+                  xrtTblPixelWidthSeries = "(all 0-6 0)(all 10 0)";
+                  xrtTblEditableSeries = "(all 0-7 False)(all 10 False)";
+                  xrtTblTraversableSeries = "(all 0-7 False)(all 10 False)";
                 Group: User
-                  citation = 8;
-                  jnum = 7;
+                  citation = 9;
+                  jnum = 8;
                   refsKey = 3;
                   refsCurrentKey = 2;
                   requiredColumns = "3\n5";
+                  refsType = 7;
               }
               {
                 AddRow = TablePush : mgiTable;
@@ -569,9 +570,40 @@ Module: mgiTable
                     {
                       ReferenceTypePulldown = OptionPulldown : mgiOption;
                       Group: User
-                        tableOption = 6;
+                        tableOption = 7;
                         tableOptionKey = 5;
                         tableForm = Reference;
+                    }
+              }
+              {
+                ReviewMenu = YesNoMenu : mgiOption;
+                Group: Widget
+                  labelString = "Review?";
+                  subMenuId = ReviewPulldown;
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_none;
+                  rightAttachment = attach_opposite_widget;
+                  rightWidget = Table;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  defaultOption = No;
+                    Popups:
+                    {
+                      ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Reference;
+                        tableOptionKey = 6;
+                        tableOption = 10;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
                     }
               }
         }

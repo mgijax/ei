@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:22:48 2005";
+      lastWritten = "Wed Feb 23 14:48:03 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -117,6 +117,13 @@ Module: mgiOption
                         labelString = "Nucleotide Sequence";
                       Group: User
                         defaultValue = 9;
+                    }
+                    {
+                      RefSeq = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = RefSeq;
+                      Group: User
+                        defaultValue = 27;
                     }
                     {
                       SWISSPROT = AccToggle : mgiOption;
@@ -364,13 +371,6 @@ Module: mgiOption
                         labelString = RPCI24;
                       Group: User
                         defaultValue = 52;
-                    }
-                    {
-                      RefSeq = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = RefSeq;
-                      Group: User
-                        defaultValue = 27;
                     }
                     {
                       InterPro = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:22:53 2005";
+      lastWritten = "Wed Feb 23 15:25:35 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -308,6 +308,9 @@ Module: MGD
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -411,9 +414,6 @@ Module: MGD
                                                   }
                                                   {
                                                     RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -2665,6 +2665,9 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
+                                  RefSeq = AccToggle : mgiOption;
+                                }
+                                {
                                   SWISSPROT = AccToggle;
                                 }
                                 {
@@ -3259,6 +3262,9 @@ Module: MGD
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3364,9 +3370,6 @@ Module: MGD
                                                   }
                                                   {
                                                     RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -5422,9 +5425,33 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -5569,6 +5596,9 @@ Module: MGD
                                                   }
                                                   {
                                                     NSequence = AccToggle;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -6964,116 +6994,14 @@ Shift<Key>Tab: prev-tab-group()
                                                       private = True;
                                                   }
                                                   {
-                                                    SWISSPROT = AccToggle;
+                                                    RefSeq = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                     Group: User
                                                       private = True;
                                                   }
                                                   {
-                                                    TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PDB = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MGC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EnsemblGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UniGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ATCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MRK = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MGIImage = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    CREX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HYEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    INEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    FSEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TEXT = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    E = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HGNC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RGD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    JRS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENCluster = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENClone = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA7 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA15K = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RPCI23 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
+                                                    SWISSPROT = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                     Group: User
@@ -7142,6 +7070,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = False;
                                                     Group: User
                                                       private = True;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -8656,6 +8587,28 @@ Shift<Key>Tab: prev-tab-group()
                                                 tableForm = Reference;
                                             }
                                       }
+                                      {
+                                        ReviewMenu = YesNoMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = Reference;
+                                                tableOptionKey = 3;
+                                                tableOption = 6;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  }
+                                                  {
+                                                    Yes = Yes : mgiOption;
+                                                  }
+                                                  {
+                                                    No = No : mgiOption;
+                                                  }
+                                            }
+                                      }
                                 }
                                 {
                                   AlleleTypeMenu = AlleleTypeMenu : mgiOption;
@@ -9447,6 +9400,28 @@ Shift<Key>Tab: prev-tab-group()
                                                 tableForm = Reference;
                                             }
                                       }
+                                      {
+                                        ReviewMenu = YesNoMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = Reference;
+                                                tableOptionKey = 3;
+                                                tableOption = 6;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  }
+                                                  {
+                                                    Yes = Yes : mgiOption;
+                                                  }
+                                                  {
+                                                    No = No : mgiOption;
+                                                  }
+                                            }
+                                      }
                                 }
                                 {
                                   Genotype = Table : mgiTable;
@@ -9715,6 +9690,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9820,9 +9798,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -10364,6 +10339,11 @@ Shift<Key>Tab: prev-tab-group()
                                                 managed = True;
                                             }
                                             {
+                                              RefSeq = AccToggle : mgiOption;
+                                              Group: Widget
+                                                managed = True;
+                                            }
+                                            {
                                               SWISSPROT = AccToggle : mgiOption;
                                               Group: Widget
                                                 managed = True;
@@ -10473,11 +10453,6 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               RPCI24 = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              RefSeq = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
                                             }
                                             {
                                               InterPro = AccToggle : mgiOption;
@@ -10755,6 +10730,28 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Sequence_View where allowOnlyOne = 0 order by assocType";
                                           tableForm = Reference;
+                                      }
+                                }
+                                {
+                                  ReviewMenu = YesNoMenu : mgiOption;
+                                      Popups:
+                                      {
+                                        ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Reference;
+                                          tableOptionKey = 3;
+                                          tableOption = 6;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                              Group: Widget
+                                                managed = False;
+                                            }
+                                            {
+                                              Yes = Yes : mgiOption;
+                                            }
+                                            {
+                                              No = No : mgiOption;
+                                            }
                                       }
                                 }
                           }
@@ -11808,6 +11805,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -11931,11 +11933,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -12211,6 +12208,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle;
                                                   }
                                                   {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -12261,30 +12261,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   CVMarker = CVMarker : mgiCV;
-                                      {
-                                        MarkerEventMenu = MarkerEventMenu : mgiOption;
-                                      }
-                                      {
-                                        MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
-                                      }
-                                      {
-                                        ReviewMenu : YesNoMenu = YesNoMenu : mgiOption;
-                                        Group: Widget
-                                          subMenuId = ReviewPulldown;
-                                            Popups:
-                                            {
-                                              ReviewPulldown : YesNoPulldown = OptionPulldown;
-                                              Group: User
-                                                tableForm = OtherReference;
-                                                tableOptionKey = 4;
-                                                tableOption = 8;
-                                                  {
-                                                    SearchAll = SearchAll : mgiOption;
-                                                    Group: Widget
-                                                      managed = False;
-                                                  }
-                                            }
-                                      }
                                 }
                                 {
                                   QueryList = QueryList : mgiLookup;
@@ -12750,7 +12726,10 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Reference = ReferenceTable : mgiTable;
+                                  Reference = ReferenceTypeTable : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
@@ -12764,18 +12743,39 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 5;
-                                          userDefinedAttributes = "reviewKey:Int(Int)=\"3\"\nreview:Int(Int)=\"6\"\n";
-                                          xrtTblEnterCellCallback = "D:SetOptions";
-                                          xrtTblNumColumns = 7;
-                                          xrtTblColumnLabels = "Mode,Current Key,New Key,Review Key,J#,Citation,Review?";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 60)(all 6 7)";
-                                          xrtTblEditableSeries = "(all 0-3 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          xrtTblTraversableSeries = "(all 0-3 False)";
-                                        Group: User
-                                          jnum = 4;
-                                          citation = 5;
+                                          xrtTblPixelWidthSeries = "(all 0-7 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 100)";
+                                        Group: Constraint
+                                          leftAttachment = attach_form;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_form;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Constraint
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        ReviewMenu = YesNoMenu : mgiOption;
+                                        Group: Widget
+                                          managed = True;
                                       }
                                 }
                                 {
@@ -12830,6 +12830,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -12841,8 +12846,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
@@ -12953,11 +12956,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     InterPro = AccToggle : mgiOption;
@@ -13088,7 +13086,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AccSourceMenu = AccSourceMenu;
                                         Group: User
-                                          defaultOption = EC;
+                                          defaultOption = NSequence;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -13106,6 +13104,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -13158,30 +13159,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   CVMarker = CVMarker : mgiCV;
-                                      {
-                                        MarkerEventMenu = MarkerEventMenu : mgiOption;
-                                      }
-                                      {
-                                        MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
-                                      }
-                                      {
-                                        ReviewMenu : YesNoMenu = YesNoMenu : mgiOption;
-                                        Group: Widget
-                                          subMenuId = ReviewPulldown;
-                                            Popups:
-                                            {
-                                              ReviewPulldown : YesNoPulldown = OptionPulldown;
-                                              Group: User
-                                                tableForm = OtherReference;
-                                                tableOptionKey = 4;
-                                                tableOption = 8;
-                                                  {
-                                                    SearchAll = SearchAll : mgiOption;
-                                                    Group: Widget
-                                                      managed = False;
-                                                  }
-                                            }
-                                      }
                                 }
                                 {
                                   QueryList = QueryList : mgiLookup;

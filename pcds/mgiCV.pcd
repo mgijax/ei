@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Dec 10 08:34:20 2004";
+      lastWritten = "Wed Feb 23 14:51:51 2005";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -41,26 +41,6 @@ Module: mgiCV
                         tableForm = History;
                         tableOption = 13;
                         tableOptionKey = 5;
-                          {
-                            SearchAll = SearchAll : mgiOption;
-                            Group: Widget
-                              managed = False;
-                          }
-                    }
-              }
-              {
-                YesNoMenu = YesNoMenu : mgiOption;
-                Group: Widget
-                  labelString = "Review?";
-                Group: User
-                  defaultOption = No;
-                    Popups:
-                    {
-                      YesNoPulldown = OptionPulldown : mgiOption;
-                      Group: User
-                        tableForm = Reference;
-                        tableOptionKey = 3;
-                        tableOption = 6;
                           {
                             SearchAll = SearchAll : mgiOption;
                             Group: Widget
@@ -297,35 +277,10 @@ Module: mgiCV
               }
         }
         {
-          CVNomen = CVMenu;
-          Group: Control
-            vip_x = 50;
-            vip_y = 140;
-              {
-                ReviewMenu = YesNoMenu : mgiOption;
-                Group: Widget
-                  subMenuId = ReviewPulldown;
-                  labelString = "Review?";
-                    Popups:
-                    {
-                      ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
-                      Group: User
-                        tableForm = Reference;
-                        tableOption = 9;
-                        tableOptionKey = 4;
-                          {
-                            SearchAll = SearchAll : mgiOption;
-                            Group: Widget
-                              managed = False;
-                          }
-                    }
-              }
-        }
-        {
           CVAllele = CVMenu;
           Group: Control
-            vip_x = 50;
-            vip_y = 195;
+            vip_x = 145;
+            vip_y = 140;
               {
                 MolecularMutationMenu = MolecularMutationMenu : mgiOption;
               }
@@ -333,7 +288,7 @@ Module: mgiCV
         {
           CVSpecimen = XmFrame;
           Group: Control
-            vip_x = 145;
+            vip_x = 50;
             vip_y = 195;
             vipComment = "";
               {
@@ -496,7 +451,7 @@ Module: mgiCV
             orientation = horizontal;
           Group: Control
             vipComment = "";
-            vip_x = 145;
+            vip_x = 50;
             vip_y = 140;
               {
                 AgeNotSpecified = AppendNotePush : mgiDataTypes;
@@ -517,8 +472,8 @@ Module: mgiCV
           CVSequence = XmRowColumn;
           Group: Control
             vipComment = "";
-            vip_x = 50;
-            vip_y = 250;
+            vip_x = 145;
+            vip_y = 195;
               {
                 AgeMenu = AgeMenu : mgiOption;
                     Popups:
