@@ -835,7 +835,7 @@ rules:
 	  -- Don't do anything if not in this module
 	  --
 
-	  if (src.name != "Marker") then
+	  if (src.name != "MarkerModule") then
 	    return;
 	  end if;
 
