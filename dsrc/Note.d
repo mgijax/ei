@@ -9,6 +9,9 @@
 --
 -- History
 --
+-- lec 08/06/1999
+--	- TR 602; Note dialog attributes must be re-set for Short Notes
+--
 -- lec 02/25/1999
 --	- NoteInit; place dialog in front
 --
@@ -24,7 +27,8 @@ devents:
 
 	NoteCancel [source_widget : widget;];
 	NoteCommit [source_widget : widget;]; 
-	NoteInit [commit : boolean := true;];
+	NoteInit [commit : boolean := true;
+		  shortNote : boolean := false;];
 
 rules:
 
@@ -157,8 +161,23 @@ rules:
 		mgi_tblGetCell(table, mgi_tblGetCurrentRow(table), dialog.targetColumn);
 	  end if;
 
-	  dialog.targetWidget := target;
+	  -- Save initial value of max note length
+	  if (dialog->Note->text.saveMaxNoteLength = 0) then
+	    dialog->Note->text.saveMaxNoteLength := dialog->Note->text.maxLength;
+	  end if;
+
 	  dialog->label.labelString := push.labelString;
+	  dialog->Note->text.rows := 15;
+	  dialog->Note->text.maxLength := dialog->Note->text.saveMaxNoteLength;
+
+	  -- For short notes (max 255)
+	  if (NoteInit.shortNote) then
+	    dialog->label.labelString := dialog->label.labelString + " (max 255 characters)";
+	    dialog->Note->text.rows := 4;
+	    dialog->Note->text.maxLength := dialog->Note->text.shortMaxNoteLength;
+	  end if;
+
+	  dialog.targetWidget := target;
 	  dialog.managed := true;
         end does;
 
