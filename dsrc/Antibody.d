@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  06/20/2001
+--	- TR 2650; search Name and Alias when user enters Name value
+--
 -- lec  06/13/2001
 --	- TR 2589; added ClearAntibody
 --
@@ -505,8 +508,10 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->Name->text.value.length > 0) then
-	    where := where + " and g.antibodyName like " + 
+	    where := where + " and (g.antibodyName like " + 
 		mgi_DBprstr(top->Name->text.value);
+            where := where + " or aa.alias like " + mgi_DBprstr(top->Name->text.value) + ")";
+            from_alias := true;
 	  end if;
 
           if (top->AntibodyTypeMenu.menuHistory.searchValue != "%") then
