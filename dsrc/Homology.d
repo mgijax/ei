@@ -106,6 +106,7 @@ devents:
 	SplitKey : local [key : string;];
 
 	VerifyMarkerExists :local [];
+	WarnOfIllegalEdits :local [];
 
 locals:
 	mgi : widget;
@@ -1025,6 +1026,38 @@ rules:
             (void) mgi_tblSetCell(table, row, column, "");
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "There is no associated Symbol for this column.";
+	    send(StatusReport, 0);
+	  end if;
+
+	end does;
+
+--
+-- WarnOfIllegalEdits
+--
+-- If user alters value of marker chromosome, cytogenetic offset, name or accession ID,
+-- inform user that these edits will be ignored and that the user must use the Marker
+-- Info form instead.
+--
+
+	WarnOfIllegalEdits does
+  	  table :widget := WarnOfIllegalEdits.source_widget;
+  	  row :integer := WarnOfIllegalEdits.row;
+  	  column : integer := WarnOfIllegalEdits.column;
+	  reason : integer := WarnOfIllegalEdits.reason;
+	  value_changed : boolean := WarnOfIllegalEdits.value_changed;
+
+	  table := top->Marker->Table;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  if (column >= table.markerChr and column <= table.accID and value_changed) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Edits to:\n\n" +
+		"Marker Chromosome\nCytogenetic Offset\nName\nAccession ID\n\n" +
+		"must be made using the Marker Information form.\n\n" +
+		"The edits you have made in this form will NOT be processed.\n";
 	    send(StatusReport, 0);
 	  end if;
 
