@@ -120,11 +120,7 @@ rules:
 	  (void) busy_cursor(top);
 
 	  -- Login to Server; Set DSQUERY and MGD env variables
-	  (void) putenv("DSQUERY=" + global_server);
-	  (void) putenv("MGD=" + global_database);
-
-	  -- If successful logging in, destroy Login window and create main 
-	  -- menu window.
+	  -- If successful, destroy Login window and create main menu window
 
 	  if (mgi_dbinit(global_login, global_passwd) = 1) then
 	    title := top->LoginServer.menuHistory.name;

@@ -1,15 +1,15 @@
 
 !
 ! VIP init file
-! written: Tue Aug 31 09:34:48 1999
+! written: Tue Sep 28 13:02:17 1999
 !
 
 session_information {
-  x       = 426
-  y       = 160
-  width   = 831
-  height  = 819
-  display = "argus:0.0"
+  x       = 460
+  y       = 433
+  width   = 800
+  height  = 550
+  display = ":0.0"
 }
 
 pcds

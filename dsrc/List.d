@@ -469,12 +469,14 @@ rules:
 	  else
 	    textWidget := targetWidget->(list_w.targetText);
 	    textWidget->text.value := list_w.selectedItems[0];
+	    textWidget->text.modified := true;
 
 	    -- If key widget is specified, copy the key
 
 	    if (list_w.targetKey.length > 0) then
 	      keyWidget := targetWidget->(list_w.targetKey);
 	      keyWidget->text.value := list_w.keys[SelectLookupListItem.item_position];
+	      keyWidget->text.modified := true;
 	    end if; 
 	  end if;
 
