@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 17 08:32:26 2003";
+      lastWritten = "Thu Jul  3 13:08:24 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -2380,7 +2380,7 @@ Module: mgiOption
             labelString = "Annotation Type";
           Group: Control
             vip_x = 80;
-            vip_y = 4705;
+            vip_y = 4595;
               Popups:
               {
                 VocAnnotTypePulldown : OptionPulldown = OptionPulldown;
@@ -2467,41 +2467,13 @@ Module: mgiOption
               }
         }
         {
-          TranslationTypeMenu = OptionMenu;
-          Group: Widget
-            subMenuId = TranslationTypePulldown;
-            labelString = "Translation Type";
-          Group: Control
-            vip_x = 80;
-            vip_y = 4595;
-              Popups:
-              {
-                TranslationTypePulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  sql = "select _TranslationType_key, translationType, _MGIType_key from MGI_TranslationType order by translationType";
-                  childTemplate = TranslationTypeToggle;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
-              }
-        }
-        {
-          TranslationTypeToggle = OptionToggle;
-          Group: Widget
-            valueChangedCallback = "D:SetModify,\nD:SetTransTypeDefaults";
-            userDefinedAttributes = "mgiTypeKey:Int(Int)=\"0\"\ntransType:String(String)\n";
-          Group: Control
-            vip_x = 80;
-            vip_y = 4650;
-        }
-        {
           GXDIndexPriorityMenu = OptionMenu;
           Group: Widget
             subMenuId = GXDIndexPriorityPulldown;
             labelString = Priority;
           Group: Control
             vip_x = 80;
-            vip_y = 4760;
+            vip_y = 4650;
               Popups:
               {
                 GXDIndexPriorityPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2519,7 +2491,7 @@ Module: mgiOption
             labelString = "Reporter \nGene";
           Group: Control
             vip_x = 80;
-            vip_y = 4815;
+            vip_y = 4705;
               Popups:
               {
                 GXDReporterGenePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2537,7 +2509,7 @@ Module: mgiOption
             labelString = "Knock In\nType";
           Group: Control
             vip_x = 80;
-            vip_y = 4870;
+            vip_y = 4760;
           Group: User
             defaultOption = nucleotide;
               Popups:
