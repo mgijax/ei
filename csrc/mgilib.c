@@ -1403,7 +1403,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_CONCORDANCE:
-	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key, chromosome, cpp, cpn, cnp,, cnn)",
+	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key, chromosome, cpp, cpn, cnp, cnn)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_DISTANCE:
