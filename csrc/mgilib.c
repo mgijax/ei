@@ -1498,6 +1498,9 @@ char *mgi_DBtable(int table)
     case VOC_EVIDENCE_VIEW:
             strcpy(buf, "VOC_Evidence_View");
 	    break;
+    case VOC_VOCABDAG_VIEW:
+            strcpy(buf, "VOC_VocabDAG_View");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -2120,7 +2123,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _MGIType_key, _Vocab_key, _EvidenceVocab_key, name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_ANNOT:
-            sprintf(buf, "insert %s (%s, _AnnotType_key, _Obejct_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_EVIDENCE:
             sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy, notes)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2135,7 +2138,10 @@ char *mgi_DBinsert(int table, char *keyName)
 
   if (selectKey)
   {
-    sprintf(buf2, "select @%s\n", keyName);
+    if (isalpha(keyName[0]))
+      sprintf(buf2, "select @%s\n", keyName);
+    else
+      sprintf(buf2, "select %s\n", keyName);
     strcat(buf2, buf);
     strcpy(buf, buf2);
   }
@@ -2153,7 +2159,10 @@ char *mgi_DBinsert(int table, char *keyName)
               sprintf(buf3, "\nvalues(@%s)\n", keyName);
 	      break;
       default:
-              sprintf(buf3, "\nvalues(@%s,", keyName);
+	      if (isalpha(keyName[0]))
+                sprintf(buf3, "\nvalues(@%s,", keyName);
+	      else
+                sprintf(buf3, "\nvalues(%s,", keyName);
 	      break;
     }
   }
@@ -2353,17 +2362,28 @@ char *mgi_DBreport(int table, char *key)
 	    where preferred = 1 and prefixPart = "MGI:" and _Object_key = 1000
 */
 
-char *mgi_DBaccSelect(int table, int key)
+char *mgi_DBaccSelect(int table, int mgiTypeKey, int key)
 {
   static char buf[BUFSIZ];
+  static char dbView[80];
 
   memset(buf, '\0', sizeof(buf));
+  memset(dbView, '\0', sizeof(dbView));
 
-  switch (table)
+  if (table > 0)
   {
-    default:
-            sprintf(buf, "select _Object_key, accID, description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d\n", mgi_DBaccTable(table), key);
-	    break;
+  	switch (table)
+  	{
+    	  default:
+            	sprintf(buf, "select _Object_key, accID, description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d\n", mgi_DBaccTable(table), key);
+	    	break;
+  	}
+  }
+  else if (mgiTypeKey > 0)
+  {
+    sprintf(buf, "select dbView from ACC_MGIType where _MGIType_key = %d", mgiTypeKey);
+    strcpy(dbView, mgi_sql1(buf));
+    sprintf(buf, "select _Object_key, accID, description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d\n", dbView, key);
   }
 
   return(buf);
