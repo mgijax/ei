@@ -286,7 +286,7 @@ rules:
           cmd := cmd + "declare @stagekey int\n";
           cmd := cmd + "select @stagekey=_Stage_key from GXD_TheilerStage " + 
                        "where stage = " + (string) current_stagenum + "\n";
-          cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, skeyName) + 
+          cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, "@" + skeyName) + 
                             parentKey + "," +
                             "@" + snkeyName + "," +
                             "@stagekey," +
