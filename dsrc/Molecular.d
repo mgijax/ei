@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 07/12/2001
+--	- TR 2723; search by Citation
+--
 -- lec 07/11/2001
 --	- TR 2706; added RiboProbe note; replaced KFMemorial with AppendNote
 --	  (see NoteLib.d)
@@ -1143,6 +1146,16 @@ rules:
 	    end if;
 	    if (value.length > 0) then
 	      where := where + "\nand r.jnum = " + value;
+	      from_ref := true;
+	    end if;
+	  end if;
+
+	  -- Check Citation field
+
+	  if (value.length = 0) then
+	    value := top->MolReferenceForm->mgiCitation->Citation->text.value;
+	    if (value.length > 0) then
+	      where := where + "\nand r.short_citation like " + mgi_DBprstr(value);
 	      from_ref := true;
 	    end if;
 	  end if;
