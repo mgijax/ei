@@ -262,10 +262,10 @@ rules:
                  top->AlleleStatusMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
-		 "user_name(),user_name(),";
+		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ",";
 
 	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
-	    cmd := cmd + "user_name(),getdate())\n";
+	    cmd := cmd + mgi_DBprstr(global_login) + ",getdate())\n";
 	  else
 	    cmd := cmd + "NULL,NULL)\n";
 	  end if;
@@ -477,7 +477,7 @@ rules:
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
-	      set := set + "approvedBy = user_name(),approval_date = getdate(),";
+	      set := set + "approvedBy = " + mgi_DBprstr(global_login) + ",approval_date = getdate(),";
 	    end if;
           end if;
 

@@ -105,6 +105,11 @@ rules:
 	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.refsName,  mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+	       if (mgi_getstr(dbproc, 2) = "Original" 
+			and table.is_defined("origRefsKey") != nil) then
+		 table.origRefsKey := row;
+	       end if;
 	       row := row + 1;
 	    end while;
 	  end while;
@@ -224,7 +229,8 @@ rules:
 -- SearchRefTypeTable
 --
 --	Formulates 'from' and 'where' clause for searching
---	appropriate Accession number table.
+--	RefTypeTable table.  Always uses first row and searches
+--	ANY reference type.
 --
 --	'table.sqlFrom' and 'table.sqlWhere' are initialized
 --	and are to be used by the calling module to help formulate
@@ -233,23 +239,20 @@ rules:
 --
 --	An example:
 --
---	table.sqlFrom = ,BIB_Acc_View ac
---	table.sqlWhere = ac.accID = "MGI:12345" and 
---	                  ac._LogicalDB_key = 1 and
--- 	                  ac._Refs_key = r._Refs_key
+--	table.sqlFrom = ,ALL_Reference_View ar
+--	table.sqlWhere = ar._Refs_key = 12345
 --
 
-        SearchAcc does
-	  table : widget := SearchAcc.table;
-	  source : widget := table.parent.child_by_class("XmRowColumn");
-	  tableID : integer := SearchAcc.tableID;
+        SearchRefTypeTable does
+	  table : widget := SearchRefTypeTable.table;
+	  tableID : integer := SearchRefTypeTable.tableID;
+	  join : string := SearchRefTypeTable.join;
+	  tableTag : string := SearchRefTypeTable.tableTag;
 
           r : integer := 0;
 	  editMode : string;
-	  logicalKey : string;
-	  accName : string;
-          accID : string;
 	  refsKey : string;
+	  citation : string;
 	  cmd : string := "";
  
 	  table.sqlFrom := "";
@@ -261,52 +264,28 @@ rules:
 
 	    if (editMode != TBL_ROW_EMPTY) then
 
-              logicalKey := mgi_tblGetCell(table, r, table.logicalKey);
-              accName := mgi_tblGetCell(table, r, table.accName);
-              accID := mgi_tblGetCell(table, r, table.accID);
+              refsKey := mgi_tblGetCell(table, r, table.refsKey);
+              citation := mgi_tblGetCell(table, r, table.citation);
  
-	      if (table.is_defined("refsKey") != nil) then
-                refsKey := mgi_tblGetCell(table, r, table.refsKey);
-		if (refsKey = "NULL") then
-		  refsKey := "";
-		end if;
-	      else
-		refsKey := "";
+	      table.sqlFrom := "," + mgi_DBtable(tableID) + " " + tableTag;
+
+	      if (refsKey.length > 0) then
+	        table.sqlWhere := table.sqlWhere + "\nand " + 
+			tableTag + "._Refs_key = " + refsKey;
+	      elsif (citation.length > 0) then
+	        table.sqlWhere := table.sqlWhere + "\nand " + 
+			tableTag + ".citation like " + mgi_DBprstr(citation);
 	      end if;
 
-	      if (accID.length > 0 or refsKey.length > 0) then
-	        if (accName = "MGI:" or 
-		    accName = "J:" or 
-		    accName = "MGD-MRK-" or
-		    accName = "MGD-CREX-" or
-		    accName = "MGD-RIEX-" or
-		    accName = "MGD-HYEX-" or
-		    accName = "MGD-FSEX-" or
-		    accName = "MGD-ISEX-" or
-		    accName = "MGD-TEXT-") then
-		  accID := accName + accID;
-	        end if;
-
-	        table.sqlFrom := "," + mgi_DBaccTable(tableID) + " ac";
-		table.sqlWhere := "ac." + mgi_DBaccKey(tableID) + " = " + SearchAcc.objectKey;
-
-	        if (logicalKey.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand ac._LogicalDB_key = " + logicalKey;
-		end if;
-
-		if (accID.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand ac.accID = \"" + accID + "\"";
-		end if;
-
-		if (refsKey.length > 0) then
-	          table.sqlWhere := table.sqlWhere + "\nand ac._Refs_key = " + refsKey;
-		end if;
-
-	        break;
-	      end if;
+	      break;
 	    end if;
             r := r + 1;
 	  end while;
+
+	  if (table.sqlWhere.length > 0) then
+	    table.sqlWhere := table.sqlWhere + "\nand " + tableTag + "." + 
+		mgi_DBkey(tableID) + " = " + join;
+	  end if;
 	end does;
 
  end dmodule;

@@ -9,6 +9,10 @@
 --
 -- History
 --
+-- lec 03/19/2001
+--	- Renamed NoteLib.d from Note.d
+--	- Created NoteLib.de
+--
 -- lec 05/16/2000
 --	- TR 1291; Save "rows" dialog attributes since this can be different
 --		within different forms.
@@ -29,15 +33,6 @@ dmodule Note is
 #include <tables.h>
 
 devents:
-
-	NoteCancel [source_widget : widget;];
-	NoteCommit [source_widget : widget;]; 
-	NoteInit [commit : boolean := true;
-		  shortNote : boolean := false;];
-	ModifyNotes [source_widget : widget;
-	     	     tableID : integer;
-	     	     noteType : string;
-	     	     key : string;];
 
 rules:
 

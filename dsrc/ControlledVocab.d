@@ -20,6 +20,9 @@
 --
 -- History
 --
+-- lec 03/04/2001
+--	- TR 2217; add ALL_CELLLINE
+--
 -- lec 10/12/1999
 --	- TR 153; new attribute for Homology Assays
 --
@@ -100,10 +103,10 @@ rules:
 	  i : integer := 1;
 	  child : widget;
 
-	  while (i <= top->ControlledVocabMenu.subMenuId.num_children) do
-	    child := top->ControlledVocabMenu.subMenuId.child(i);
+	  while (i <= top->EditForm->ControlledVocabMenu.subMenuId.num_children) do
+	    child := top->EditForm->ControlledVocabMenu.subMenuId.child(i);
 	    if (child.managed) then
-	      top->ControlledVocabMenu.menuHistory := child;
+	      top->EditForm->ControlledVocabMenu.menuHistory := child;
 	      break;
 	    end if;
 	    i := i + 1;
@@ -128,7 +131,7 @@ rules:
 	  -- Do not allow insertions of certain records
 	  -- Generally, the Not Specified and Not Applicable records cannot be inserted
 
-	  if (not top->ControlledVocabMenu.menuHistory.allowModifications) then
+	  if (not top->EditForm->ControlledVocabMenu.menuHistory.allowModifications) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot add this record.";
             send(StatusReport);
@@ -138,15 +141,15 @@ rules:
           (void) busy_cursor(top);
 
 	  cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) + tableInsert +
-                 mgi_DBprstr(top->Name->text.value);
+                 mgi_DBprstr(top->EditForm->Name->text.value);
  
 	  if (tableID = GXD_ASSAYTYPE) then
-            cmd := cmd + "," + top->RNAAssayMenu.menuHistory.defaultValue;
-            cmd := cmd + "," + top->GelAssayMenu.menuHistory.defaultValue;
-	  end if;
-
-	  if (tableID = HMD_ASSAY) then
-	    cmd := cmd + "," + mgi_DBprstr(top->AssayAbbrev->text.value);
+            cmd := cmd + "," + top->EditForm->RNAAssayMenu.menuHistory.defaultValue;
+            cmd := cmd + "," + top->EditForm->GelAssayMenu.menuHistory.defaultValue;
+	  elsif (tableID = HMD_ASSAY) then
+	    cmd := cmd + "," + mgi_DBprstr(top->EditForm->AssayAbbrev->text.value);
+	  elsif (tableID = ALL_CELLLINE) then
+	    cmd := cmd + "," + top->EditForm->Strain->StrainID->text.value;
 	  end if;
 
 	  cmd := cmd + ")\n";
@@ -154,15 +157,15 @@ rules:
 	  AddSQL.tableID := tableID;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
-          AddSQL.item := top->Name->text.value;
-          AddSQL.key := top->ID->text;
+          AddSQL.item := top->EditForm->Name->text.value;
+          AddSQL.key := top->EditForm->ID->text;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
             send(Clear, 0);
-	    top->ControlledVocabMenu.menuHistory.set := true;
+	    top->EditForm->ControlledVocabMenu.menuHistory.set := true;
 	  end if;
 
           (void) reset_cursor(top);
@@ -177,12 +180,12 @@ rules:
         Delete does
           (void) busy_cursor(top);
 
-	  key : string := top->ID->text.value;
+	  key : string := top->EditForm->ID->text.value;
 
 	  -- Do not allow record deletions for some records
 	  -- Generally, Not Specified and Not Applicable records cannot be deleted
 	  
-	  if (not top->ControlledVocabMenu.menuHistory.allowModifications or (integer) key < 0) then
+	  if (not top->EditForm->ControlledVocabMenu.menuHistory.allowModifications or (integer) key < 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot delete this record.";
             send(StatusReport);
@@ -199,7 +202,7 @@ rules:
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
             send(Clear, 0);
-	    top->ControlledVocabMenu.menuHistory.set := true;
+	    top->EditForm->ControlledVocabMenu.menuHistory.set := true;
 	  end if;
 
           (void) reset_cursor(top);
@@ -218,12 +221,12 @@ rules:
             return;
           end if;
 
-	  key : string := top->ID->text.value;
+	  key : string := top->EditForm->ID->text.value;
 
 	  -- Do not allow modifications of certain records
 	  -- Generally, the Not Specified and Not Applicable records cannot be modified
 
-	  if (not top->ControlledVocabMenu.menuHistory.allowModifications or (integer) key < 0) then
+	  if (not top->EditForm->ControlledVocabMenu.menuHistory.allowModifications or (integer) key < 0) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot modify this record.";
             send(StatusReport);
@@ -235,24 +238,28 @@ rules:
           cmd := "";
 	  set : string := "";
 
-          if (top->Name->text.modified) then
-            set := set + tableName + " = " + mgi_DBprstr(top->Name->text.value) + ",";
+          if (top->EditForm->Name->text.modified) then
+            set := set + tableName + " = " + mgi_DBprstr(top->EditForm->Name->text.value) + ",";
           end if;
 
 	  if (tableID = GXD_ASSAYTYPE) then
-            if (top->RNAAssayMenu.menuHistory.modified and
-                top->RNAAssayMenu.menuHistory.searchValue != "%") then
-              set := set + "isRNAAssay = "  + top->RNAAssayMenu.menuHistory.defaultValue + ",";
+            if (top->EditForm->RNAAssayMenu.menuHistory.modified and
+                top->EditForm->RNAAssayMenu.menuHistory.searchValue != "%") then
+              set := set + "isRNAAssay = "  + top->EditForm->RNAAssayMenu.menuHistory.defaultValue + ",";
             end if;
 
-            if (top->GelAssayMenu.menuHistory.modified and
-                top->GelAssayMenu.menuHistory.searchValue != "%") then
-              set := set + "isGelAssay = "  + top->GelAssayMenu.menuHistory.defaultValue + ",";
+            if (top->EditForm->GelAssayMenu.menuHistory.modified and
+                top->EditForm->GelAssayMenu.menuHistory.searchValue != "%") then
+              set := set + "isGelAssay = "  + top->EditForm->GelAssayMenu.menuHistory.defaultValue + ",";
             end if;
 	  elsif (tableID = HMD_ASSAY) then
-	    if (top->AssayAbbrev->text.modified) then
-	      set := set + "abbrev = " + mgi_DBprstr(top->AssayAbbrev->text.value) + ",";
+	    if (top->EditForm->AssayAbbrev->text.modified) then
+	      set := set + "abbrev = " + mgi_DBprstr(top->EditForm->AssayAbbrev->text.value) + ",";
 	    end if;
+	  elsif (tableID = ALL_CELLLINE) then
+		if (top->EditForm->Strain->StrainID->text.modified) then
+		   set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
+		end if;
 	  end if;
 
           ModifySQL.cmd := mgi_DBupdate(tableID, key, set);
@@ -269,7 +276,13 @@ rules:
 --
 
 	PrepareSearch does
-	  from := "from " + table;
+
+	  if (tableID = ALL_CELLLINE) then
+	    from := "from " + mgi_DBtable(ALL_CELLLINE_VIEW);
+	  else
+	    from := "from " + table;
+	  end if;
+
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -280,23 +293,29 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
-          if (top->Name->text.value.length > 0) then
-            where := where + "\nand " + tableName + " like " + mgi_DBprstr(top->Name->text.value);
+          if (top->EditForm->Name->text.value.length > 0) then
+            where := where + "\nand " + tableName + " like " + mgi_DBprstr(top->EditForm->Name->text.value);
           end if;
 
 	  if (tableID = GXD_ASSAYTYPE) then
-            if (top->RNAAssayMenu.menuHistory.searchValue != "%") then
-              where := where + "\nand isRNAAssay = " + top->RNAAssayMenu.menuHistory.searchValue;
+            if (top->EditForm->RNAAssayMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand isRNAAssay = " + top->EditForm->RNAAssayMenu.menuHistory.searchValue;
             end if;
 
-            if (top->GelAssayMenu.menuHistory.searchValue != "%") then
-              where := where + "\nand isGelAssay = " + top->GelAssayMenu.menuHistory.searchValue;
+            if (top->EditForm->GelAssayMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand isGelAssay = " + top->EditForm->GelAssayMenu.menuHistory.searchValue;
             end if;
-	  end if;
- 
-	  if (tableID = HMD_ASSAY) then
-	    if (top->AssayAbbrev->text.value.length > 0) then
-	      where := where + "\nand abbrev like " + mgi_DBprstr(top->AssayAbbrev->text.value);
+
+	  elsif (tableID = HMD_ASSAY) then
+	    if (top->EditForm->AssayAbbrev->text.value.length > 0) then
+	      where := where + "\nand abbrev like " + mgi_DBprstr(top->EditForm->AssayAbbrev->text.value);
+	    end if;
+
+	  elsif (tableID = ALL_CELLLINE) then
+	    if (top->EditForm->Strain->StrainID->text.value.length > 0) then
+	      where := where + "\nand _Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value);
+	    elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
+	      where := where + "\nand cellLineStrain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
 	    end if;
 	  end if;
 
@@ -332,7 +351,7 @@ rules:
 
           if (top->QueryList->List.selectedItemCount = 0) then
             top->QueryList->List.row := 0;
-            top->ID->text.value := "";
+            top->EditForm->ID->text.value := "";
             return;
           end if;
 
@@ -340,8 +359,15 @@ rules:
 
 	  key : string := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + table + " where " + tableKey + " = " + key + 
-		 " order by " + tableName;
+	  cmd := "select * from ";
+	  
+	  if (tableID = ALL_CELLLINE) then
+	    cmd := cmd + mgi_DBtable(ALL_CELLLINE_VIEW);
+	  else
+	    cmd := cmd + table;
+	  end if;
+
+	  cmd := cmd + " where " + tableKey + " = " + key + " order by " + tableName;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -349,20 +375,25 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->ID->text.value   := mgi_getstr(dbproc, 1);
-              top->Name->text.value := mgi_getstr(dbproc, 2);
+	      top->EditForm->ID->text.value   := mgi_getstr(dbproc, 1);
+              top->EditForm->Name->text.value := mgi_getstr(dbproc, 2);
 
 	      if (tableID = GXD_ASSAYTYPE) then
-                SetOption.source_widget := top->RNAAssayMenu;
+                SetOption.source_widget := top->EditForm->RNAAssayMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
-                SetOption.source_widget := top->GelAssayMenu;
+                SetOption.source_widget := top->EditForm->GelAssayMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 5);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 	      elsif (tableID = HMD_ASSAY) then
-	        top->AssayAbbrev->text.value := mgi_getstr(dbproc, 3);
+	        top->EditForm->AssayAbbrev->text.value := mgi_getstr(dbproc, 3);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+	      elsif (tableID = ALL_CELLLINE) then
+	        top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+	        top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 6);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      else
@@ -380,7 +411,7 @@ rules:
 	  Clear.source_widget := top;
           Clear.reset := true;
           send(Clear, 0);
-	  top->ControlledVocabMenu.menuHistory.set := true;
+	  top->EditForm->ControlledVocabMenu.menuHistory.set := true;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -404,23 +435,31 @@ rules:
 	  tableName := mgi_DBcvname(tableID);
 
 	  if (tableID = GXD_ASSAYTYPE) then
-	    top->RNAAssayMenu.sensitive := true;
-	    top->GelAssayMenu.sensitive := true;
-	    top->RNAAssayMenu.required := true;
-	    top->GelAssayMenu.required := true;
+	    top->EditForm->RNAAssayMenu.sensitive := true;
+	    top->EditForm->GelAssayMenu.sensitive := true;
+	    top->EditForm->RNAAssayMenu.required := true;
+	    top->EditForm->GelAssayMenu.required := true;
 	  else
-	    top->RNAAssayMenu.sensitive := false;
-	    top->GelAssayMenu.sensitive := false;
-	    top->RNAAssayMenu.required := false;
-	    top->GelAssayMenu.required := false;
+	    top->EditForm->RNAAssayMenu.sensitive := false;
+	    top->EditForm->GelAssayMenu.sensitive := false;
+	    top->EditForm->RNAAssayMenu.required := false;
+	    top->EditForm->GelAssayMenu.required := false;
 	  end if;
 
 	  if (tableID = HMD_ASSAY) then
-	    top->AssayAbbrev.sensitive := true;
-	    top->AssayAbbrev->text.required := true;
+	    top->EditForm->AssayAbbrev.sensitive := true;
+	    top->EditForm->AssayAbbrev->text.required := true;
 	  else
-	    top->AssayAbbrev.sensitive := false;
-	    top->AssayAbbrev->text.required := false;
+	    top->EditForm->AssayAbbrev.sensitive := false;
+	    top->EditForm->AssayAbbrev->text.required := false;
+	  end if;
+
+	  if (tableID = ALL_CELLLINE) then
+	    top->EditForm->Strain->Verify->label.sensitive := true;
+	    top->EditForm->Strain->Verify->text.sensitive := true;
+	  else
+	    top->EditForm->Strain->Verify->label.sensitive := false;
+	    top->EditForm->Strain->Verify->text.sensitive := false;
 	  end if;
 
           -- Set Row Count
