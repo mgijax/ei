@@ -625,6 +625,7 @@ rules:
 	  tables.close;
 
 	  top->EditForm->Note->text.value := "";
+	  top->Reference->Records.labelString := "0 Records";
 
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";

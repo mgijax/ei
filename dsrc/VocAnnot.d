@@ -34,6 +34,7 @@ devents:
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [];				-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
+	SelectGOReferences :local [];			-- Select GO References
 	SetAnnotTypeDefaults :exported [];		-- Set Defaults based on Annotation Type
 	SetOptions :local [source_widget : widget;
 			   row : integer;
@@ -552,13 +553,11 @@ rules:
 		          " where a._Object_key = " + currentRecordKey + 
 			  " and a._Annot_key = e._Annot_key " +
 			  " order by " + orderBy +
-			  "select distinct a._Annot_key, v.dag " +
+			  "select distinct a._Annot_key, v.dagAbbrev " +
 			  "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			  	mgi_DBtable(VOC_VOCABDAG_VIEW) + " v" +
 		          " where a._Object_key = " + currentRecordKey + 
 			  " and a._Vocab_key = v._Vocab_key\n";
-
-	  (void) mgi_writeLog(cmd);
 
 	  row : integer := 0;
 	  i : integer;
@@ -659,6 +658,10 @@ rules:
 
 	  -- End Reset Background
 
+	  if (annotTable.annotVocab = "GO") then
+	    send(SelectGOReferences, 0);
+	  end if;
+
           top->QueryList->List.row := Select.item_position;
 
 	  Clear.source_widget := top;
@@ -676,6 +679,48 @@ rules:
 	end does;
 
 --
+-- SelectGOReferences
+--
+-- Retrieve and display GO References for the selected record.
+-- Retrieve References which are cross-referenced to the Marker,
+-- are not NO-GO references (that is, they have not been designated as
+-- "Never Used"), and have not been annotated to the Marker.
+--
+-- Sort by J:, descending.
+--
+
+	SelectGOReferences does
+	  table : widget := top->Reference->Table;
+
+	  cmd : string;
+	  cmd := "select r.* from BIB_GOXRef_View r " + 
+		 "where r._Marker_key = " + currentRecordKey + 
+		 " and not exists (select 1 from " +
+			mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
+			mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
+			" where a._Object_key = " + currentRecordKey + 
+			" and a._Annot_key = e._Annot_key " +
+			" and e._Refs_key = r._Refs_key) " +
+		" order by r.jnum desc\n";
+
+	  row : integer := 0;
+          dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+ 
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 24));
+	      row := row + 1;
+	    end while;
+          end while;
+ 
+	  (void) dbclose(dbproc);
+	end does;
+
+--
 -- SetAnnotTypeDefaults
 --
 -- Set defaults based on Annotation Type selected
@@ -685,6 +730,8 @@ rules:
 --
 
 	SetAnnotTypeDefaults does
+
+	  (void) busy_cursor(mgi);
 
           -- Clear form
           Clear.source_widget := top;
@@ -715,6 +762,7 @@ rules:
 	    top->Reference.managed := true;
 	  end if;
 
+	  (void) reset_cursor(mgi);
 	end does;
 
 --

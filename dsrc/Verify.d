@@ -3148,7 +3148,7 @@ rules:
 	  term : string;
 	  dag : string;
 
-	  select : string := "select t.accID, t._Term_key, t.term, d.dag " +
+	  select : string := "select t.accID, t._Term_key, t.term, d.dagAbbrev " +
 		"from VOC_Term_View t, VOC_VocabDAG_View d " +
 		"where t.accID = " + mgi_DBprstr(value) + 
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
