@@ -2633,7 +2633,7 @@ rules:
 	    while (lanes.more) do
                x := i * table.bandIncrement;
               (void) mgi_tblSetCell(table, row, table.laneKey + x, lanes.next);
-	      (void) mgi_tblSetCell(table, row, table.bandMode + x, TBL_ROW_NOCHG);
+	      (void) mgi_tblSetCell(table, row, table.bandMode + x, TBL_ROW_EMPTY);
 
 	      -- For first row, if Lane Control != No then Strength = Not Applicable
 	      if (row = 0) then
