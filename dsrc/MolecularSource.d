@@ -34,6 +34,7 @@ dmodule MolecularSource is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <tables.h>
 
 devents:
 
@@ -43,6 +44,7 @@ devents:
 	Delete :local [];
 	MolecularSourceExit :global [];
 	Modify :local [];
+	ModifyCloneLibrarySet :local [];
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [item_position : integer;];
@@ -52,6 +54,8 @@ locals:
 	top : widget;
 	ab : widget;
 
+	currentRecordKey : string;
+	cmd : string;
 	from : string;
 	where : string;
 
@@ -115,12 +119,16 @@ rules:
 
           (void) busy_cursor(top);
 
+	  currentRecordKey := "@" + KEYNAME;
+
 	  -- Use Molecular Source library
 
 	  AddMolecularSource.source_widget := top;
 	  AddMolecularSource.keyLabel := "key";
 	  AddMolecularSource.master := true;
 	  send(AddMolecularSource, 0);
+
+	  send(ModifyCloneLibrarySet, 0);
 
 	  if (top->SourceForm.sql.length = 0) then
 	    (void) reset_cursor(top);
@@ -137,7 +145,7 @@ rules:
           -- Execute the add
  
           AddSQL.tableID := PRB_SOURCE_MASTER;
-          AddSQL.cmd := top->SourceForm.sql + accTable.sqlCmd;
+          AddSQL.cmd := top->SourceForm.sql + accTable.sqlCmd + cmd;
           AddSQL.list := top->QueryList;
           AddSQL.item := top->SourceForm->Library->text.value;
           AddSQL.key := top->SourceForm->SourceID->text;
@@ -163,7 +171,7 @@ rules:
           (void) busy_cursor(top);
 
 	  DeleteSQL.tableID := PRB_SOURCE_MASTER;
-	  DeleteSQL.key := top->SourceForm->SourceID->text.value;
+	  DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
 
@@ -195,23 +203,84 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  cmd := "";
+
           -- Use Molecular Source library
 
           ModifyNamedMolecularSource.source_widget := top;
           send(ModifyNamedMolecularSource, 0);
 
+	  send(ModifyCloneLibrarySet, 0);
+
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
-          ProcessAcc.objectKey := top->SourceForm->SourceID->text.value;
+          ProcessAcc.objectKey := currentRecordKey;
           ProcessAcc.tableID := PRB_SOURCE_MASTER;
           send(ProcessAcc, 0);
 
-          ModifySQL.cmd := top->SourceForm.sql + accTable.sqlCmd;
+          ModifySQL.cmd := top->SourceForm.sql + accTable.sqlCmd + cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- ModifyCloneLibrarySet
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Marker Current symbols
+--
+
+	ModifyCloneLibrarySet does
+          table : widget := top->CloneLibrarySet->Table;
+          row : integer := 0;
+          editMode : string;
+          memberKey : string;
+	  setKey : string;
+	  set : string := "";
+	  keyDeclared : boolean := false;
+	  keyName : string := "memberKey";
+ 
+          -- Process while non-empty rows are found
+ 
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+ 
+            memberKey := mgi_tblGetCell(table, row, table.memberKey);
+            setKey := mgi_tblGetCell(table, row, table.setKey);
+ 
+            if (editMode = TBL_ROW_ADD) then
+
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(MGI_SETMEMBER, NEWKEY, keyName);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+ 
+              cmd := cmd + mgi_DBinsert(MGI_SETMEMBER, keyName) + 
+		     setKey + "," + 
+		     currentRecordKey + "," + 
+		     (string) (row + 1) + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+            elsif (editMode = TBL_ROW_MODIFY) then
+              set := "_Set_key = " + setKey;
+              cmd := cmd + mgi_DBupdate(MGI_SETMEMBER, memberKey, set);
+
+            elsif (editMode = TBL_ROW_DELETE and memberKey.length > 0) then
+               cmd := cmd + mgi_DBdelete(MGI_SETMEMBER, memberKey);
+            end if;
+ 
+            row := row + 1;
+          end while;
 	end does;
 
 --
@@ -275,35 +344,43 @@ rules:
 
           (void) busy_cursor(top);
 
-	  top->SourceForm->SourceID->text.value := top->QueryList->List.keys[Select.item_position];
+	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
+
+	  top->SourceForm->SourceID->text.value := currentRecordKey;
 	  DisplayMolecularSource.source_widget := top;
-	  DisplayMolecularSource.key := top->SourceForm->SourceID->text.value;
+	  DisplayMolecularSource.key := currentRecordKey;
 	  DisplayMolecularSource.master := true;
 	  send(DisplayMolecularSource, 0);
 
-	  cmd : string;
+	  -- Select Clone Library Sets
+
 	  cmd := "select m._Set_key, m._SetMember_key, v.name " + 
 	      "from MGI_Set_CloneLibrary_View v, MGI_SetMember m " +
 	      "where v._Set_key = m._Set_key " +
-	      "and m._Object_key = " + top->SourceForm->SourceID->text.value;
+	      "and m._Object_key = " + currentRecordKey +
+	      " order by m.sequenceNum";
 
+	  table : widget := top->CloneLibrarySet->Table;
 	  row : integer := 0;
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
 
---	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
---	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
- --             (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
---	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
---	    end while;
- --         end while;
---	  (void) dbclose(dbproc);
+	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              (void) mgi_tblSetCell(table, row, table.setKey, mgi_getstr(dbproc, 1));
+              (void) mgi_tblSetCell(table, row, table.memberKey, mgi_getstr(dbproc, 2));
+              (void) mgi_tblSetCell(table, row, table.cloneLibrary, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+	    end while;
+          end while;
+	  (void) dbclose(dbproc);
 
           top->QueryList->List.row := Select.item_position;
 
           LoadAcc.table := accTable;
-          LoadAcc.objectKey := top->SourceForm->SourceID->text.value;
+          LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := PRB_SOURCE_MASTER;
 	  LoadAcc.reportError := false;
           send(LoadAcc, 0);

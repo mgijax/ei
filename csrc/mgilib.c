@@ -484,7 +484,7 @@ char *mgi_DBrecordCount(int table)
   switch (table)
   {
     default:
-  	    sprintf(cmd, "exec GEN_rowcount %s", mgi_DBtable(table));
+  	    sprintf(cmd, "exec MGI_getRowCount %s", mgi_DBtable(table));
 	    break;
   }
 
@@ -767,6 +767,9 @@ char *mgi_DBkey(int table)
     case MGI_REFERENCE_NOMEN_VIEW:
     case MGI_REFERENCE_SEQUENCE_VIEW:
             strcpy(buf, "_Object_key");
+	    break;
+    case MGI_SETMEMBER:
+	    strcpy(buf, "_SetMember_key");
 	    break;
     case MGI_TRANSLATION:
             strcpy(buf, "_Translation_key");
@@ -1436,6 +1439,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_REFTYPE_SEQUENCE_VIEW:
 	    strcpy(buf, "MGI_RefType_Sequence_View");
+	    break;
+    case MGI_SETMEMBER:
+            strcpy(buf, "MGI_SetMember");
 	    break;
     case MGI_TRANSLATION:
             strcpy(buf, "MGI_Translation");
@@ -2175,6 +2181,9 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_REFASSOCTYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, assocType, allowOnlyOne, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case MGI_SETMEMBER:
+            sprintf(buf, "insert %s (%s, _Set_key, _Object_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case MGI_TRANSLATION:
             sprintf(buf, "insert %s (%s, _TranslationType_key, _Object_key, badName, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2512,6 +2521,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_ORGANISMTYPE:
       case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
+      case MGI_SETMEMBER:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
@@ -2558,6 +2568,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_ORGANISMTYPE:
       case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
+      case MGI_SETMEMBER:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
