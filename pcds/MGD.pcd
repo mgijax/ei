@@ -5156,7 +5156,7 @@ Module: MGD
                                         Transfer = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:MarkerTransferInit()";
-                                          labelString = "Marker Transfer";
+                                          labelString = "Marker Transfer Report";
                                       }
                                 }
                           }

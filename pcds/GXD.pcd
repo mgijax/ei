@@ -691,7 +691,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Transfer = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "C: TuManage(find = MRKTransferDialog)";
-                                          labelString = "Marker Transfer";
+                                          labelString = "Marker Transfer Report";
                                       }
                                 }
                           }
