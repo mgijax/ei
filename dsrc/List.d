@@ -474,7 +474,7 @@ rules:
 
 	    -- Process Multiple Selection list
 
-	    if (list_w.selectedItems.count > 1) then
+	    if (list_w.selectionPolicy = 1) then
 	      i := 0;
               while (i < SelectLookupListItem.selected_items.count) do
                 item := SelectLookupListItem.selected_items[i];
