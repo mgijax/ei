@@ -1,3 +1,12 @@
+TAG: ei-4-4-0
+DATE: 04/19/2001
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) Nomen.py; fixed
+2) DateLib.d; fixed date query
+3) updated Printer list
+
 TAG: ei-4-3-0
 DATE: 04/13/2001
 STAFF: lec
