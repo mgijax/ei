@@ -411,8 +411,6 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       mgi_DBprstr(inferredFrom) + "," +
-		       global_loginKey + "," +
-		       global_loginKey + "," +
 		       mgi_DBprstr(notes) + "," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 
