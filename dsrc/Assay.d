@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 09/26/2001
+--	- TR 2916; new datatype for sampleAmt in Gel Lane table
+--
 -- lec 09/12/2001
 --	- TR 2844; changes for new Genotype module
 --
@@ -1485,7 +1488,7 @@ rules:
 		     controlKey + "," +
 	             mgi_tblGetCell(table, row, table.seqNum) + "," +
 	             mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
-	             sampleAmt + "," +
+	             mgi_DBprstr(sampleAmt) + "," +
 		     mgi_DBprstr(sexKey) + "," +
 		     mgi_DBprstr(ageKey) + "," +
 		     ageMin + "," +
@@ -1508,7 +1511,7 @@ rules:
 		        "_GelRNAType_key = " + rnaKey + "," +
                         "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
 		        "_GelControl_key = " + controlKey + "," +
-		        "sampleAmount = " + sampleAmt + "," +
+		        "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
                         "sex = " + mgi_DBprstr(sexKey) + "," +
                         "age = " + mgi_DBprstr(ageKey) + "," +
                         "ageMin = " + ageMin + "," +
@@ -2210,7 +2213,7 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.rna, mgi_getstr(dbproc, 17));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.label, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(table, row, table.sampleAmt, mgi_getstr(dbproc, 20));
+	        (void) mgi_tblSetCell(table, row, table.sampleAmt, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.sexKey, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(table, row, table.sex, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(table, row, table.ageNote, mgi_getstr(dbproc, 13));

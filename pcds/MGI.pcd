@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 16 09:27:57 2001";
+      lastWritten = "Wed Sep 26 11:15:59 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -608,24 +608,24 @@ Module: MGI
                     }
               }
               {
-                SpeciesMenu = SpeciesMenu : mgiOption;
+                ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_form;
+                  leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_form;
+                  topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  topOffset = 5;
-                  leftOffset = 5;
               }
               {
                 Strain = Strain : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = SpeciesMenu;
+                  leftWidget = ProbeSpeciesMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = SpeciesMenu;
+                  topWidget = ProbeSpeciesMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -847,6 +847,9 @@ Module: MGI
                                             }
                                             {
                                               StrainSpecies = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
+                                              MolecularSourceSpecies = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               separator = XmSeparator;

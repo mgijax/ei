@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 25 13:43:44 2001";
+      lastWritten = "Thu Oct 11 08:49:24 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -263,7 +263,7 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  Origin = CharText : mgiDataTypes;
+                                  Strain1 = Strain : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Designation;
@@ -274,27 +274,48 @@ Module: MGD
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = Origin;
+                                        StrainID = ID;
                                       }
                                       {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 35;
-                                          maxLength = 35;
-                                        Group: User
-                                          required = True;
+                                        Verify = CharText;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Strain 1";
+                                            }
+                                      }
+                                }
+                                {
+                                  Strain2 = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Strain1;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Strain1;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        StrainID = ID;
+                                      }
+                                      {
+                                        Verify = CharText;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Strain 2";
+                                            }
                                       }
                                 }
                                 {
                                   Abbrev1 = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Origin;
+                                    leftWidget = Strain2;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Origin;
+                                    topWidget = Strain2;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -931,16 +952,37 @@ Module: MGD
                                     resizable = true;
                                 }
                                 {
-                                  StandardMenu = StandardMenu : mgiOption;
+                                  PrivateMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = PrivatePulldown;
+                                    labelString = "Private?";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = mlpSpecies;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = mlpSpecies;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 5;
+                                  Group: User
+                                    defaultOption = No;
+                                      Popups:
+                                      {
+                                        PrivatePulldown : YesNoPulldown = OptionPulldown;
+                                      }
+                                }
+                                {
+                                  StandardMenu = StandardMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = PrivateMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = PrivateMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 25;
                                 }
                                 {
                                   NeedsReviewMenu = YesNoMenu : mgiOption;
@@ -1029,7 +1071,7 @@ Module: MGD
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = StandardMenu;
+                                    topWidget = PrivateMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1082,7 +1124,7 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  Note = TableLabel : mgiTable;
+                                  Extra = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = References;
@@ -1125,10 +1167,10 @@ Module: MGD
                                     managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Note;
+                                    leftWidget = Extra;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = Note;
+                                    topWidget = Extra;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1168,6 +1210,27 @@ Module: MGD
                                         text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           columns = 70;
+                                      }
+                                }
+                                {
+                                  Notes = Notes : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Extra;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Extra;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 100;
+                                          rows = 10;
                                       }
                                 }
                           }
@@ -1248,8 +1311,6 @@ Module: MGD
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
-                                        Group: User
-                                          showMGI = False;
                                       }
                                       {
                                         Add = TablePush;
@@ -1355,6 +1416,10 @@ Module: MGD
                                 }
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
+                                  Group: Control
+                                    lockedResources = cmd;
+                                  Group: User
+                                    cmd = "select * from MLP_Species order by species";
                                       {
                                         Label = LookupLabel;
                                       }
@@ -2036,9 +2101,9 @@ Module: MGD
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = Homology;
+                                                items = "Homology\nLoad Bulk Homology";
                                               Group: User
-                                                keys = "Homology.py";
+                                                keys = "Homology.py\nloadBulkHomology.csh";
                                             }
                                       }
                                       {
@@ -3262,16 +3327,17 @@ Module: MGD
                                           managed = True;
                                       }
                                       {
-                                        SpeciesMenu = SpeciesMenu;
+                                        ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
                                         Group: Constraint
-                                          leftAttachment = attach_form;
-                                          leftOffset = 5;
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = mgiCitation;
                                           rightAttachment = attach_none;
                                           topAttachment = attach_widget;
                                           topWidget = mgiCitation;
                                           topOffset = 5;
                                           bottomAttachment = attach_none;
                                           resizable = true;
+                                          leftOffset = 5;
                                       }
                                 }
                           }
@@ -4027,17 +4093,6 @@ Module: MGD
                     }
                     {
                       Origin = CharText : mgiDataTypes;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = Origin;
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              columns = 25;
-                              maxLength = 35;
-                          }
                     }
                     {
                       Abbrev1 = CharText : mgiDataTypes;
@@ -7736,10 +7791,10 @@ Shift<Key>Tab: prev-tab-group()
                       mgiCitation = mgiCitation : mgiDataTypes;
                     }
                     {
-                      SpeciesMenu = SpeciesMenu : mgiOption;
+                      ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
                       Group: Constraint
-                        leftAttachment = attach_form;
-                        leftOffset = 5;
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = Library;
                         rightAttachment = attach_none;
                         topAttachment = attach_widget;
                         topWidget = Library;

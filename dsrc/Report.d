@@ -109,6 +109,19 @@ rules:
        if (printSelect.length != 0) then
          commands.insert(printSelect, commands.count + 1);
        end if;
+
+     --
+     -- c-shell scripts expect 5 parameters:
+     -- 	DSQUERY, DATABASE, LOGIN, PASSWORDFILE  and FILE TO PROCESS
+     --
+
+     elsif (strstr(commands[1], ".csh") != nil) then
+
+       commands.insert(getenv("DSQUERY"), commands.count + 1);
+       commands.insert(getenv("MGD"), commands.count + 1);
+       commands.insert(global_login, commands.count + 1);
+       commands.insert(global_passwd_file, commands.count + 1);
+       commands.insert(dialog->FileSelection.textString, commands.count + 1);
      end if;
  
      -- Print some diagnostics for the User

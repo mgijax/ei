@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 09/26/2001
+--      - TR 2714/Probe Species Menu
+--
 -- lec 07/12/2001
 --	- TR 2723; search by Citation
 --
@@ -187,6 +190,10 @@ rules:
  
 	  InitOptionMenu.option := top->MolDetailForm->VectorTypeMenu;
 	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->MolDetailForm->SourceForm->ProbeSpeciesMenu;
+	  send(InitOptionMenu, 0);
+
         end does;
  
 --
@@ -213,7 +220,7 @@ rules:
 	   
           sourceKeyName := "maxSource";
 
-	  sourceOptions.append(top->SpeciesMenu);
+	  sourceOptions.append(top->ProbeSpeciesMenu);
 	  sourceOptions.append(top->AgeMenu);
 	  sourceOptions.append(top->SexMenu);
 

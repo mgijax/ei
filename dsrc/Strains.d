@@ -14,6 +14,10 @@
 --
 -- History
 --
+-- lec	09/26/2001
+--	- TR 2541; add MGI Accession IDs; Private attribute
+--	- TR 2358; moved Strains DB into MGD
+--
 -- lec  10/14/1999
 --	- TR 204
 --
@@ -63,7 +67,7 @@ devents:
 
 	ModifyMarker :local [];
 	ModifyType :local [];
-	ModifyStrainNote :local [add : boolean := false;];
+	ModifyStrainExtra :local [add : boolean := false;];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -130,7 +134,7 @@ rules:
 
 	  tables.append(top->StrainType->Table);
 	  tables.append(top->Marker->Table);
-	  tables.append(top->Note->Table);
+	  tables.append(top->Extra->Table);
 	  tables.append(top->References->Table);
 	  tables.append(top->DataSets->Table);
 
@@ -138,15 +142,9 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 
-	  top->SpeciesList.cmd := 
-	    "select * from " + mgi_DBtable(MLP_SPECIES) + 
-	    " order by " + mgi_DBcvname(MLP_SPECIES);
           LoadList.list := top->SpeciesList;
 	  send(LoadList, 0);
 
-	  top->StrainTypeList.cmd := 
-	    "select * from " + mgi_DBtable(MLP_STRAINTYPE) + 
-	    " order by " + mgi_DBcvname(MLP_STRAINTYPE);
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
 
@@ -188,7 +186,8 @@ rules:
 	         mgi_DBinsert(STRAIN, KEYNAME) +
                  mgi_DBprstr(top->Name->text.value) + "," +
                  top->StandardMenu.menuHistory.defaultValue + "," +
-                 top->NeedsReviewMenu.menuHistory.defaultValue + ")\n";
+                 top->NeedsReviewMenu.menuHistory.defaultValue + "," +
+                 top->PrivateMenu.menuHistory.defaultValue + ")\n";
  
           cmd := cmd + mgi_DBinsert(MLP_STRAIN, NOKEY) +
 		 currentRecordKey + "," +
@@ -198,8 +197,14 @@ rules:
 
 	  send(ModifyMarker, 0);
 	  send(ModifyType, 0);
-	  ModifyStrainNote.add := true;
-	  send(ModifyStrainNote, 0);
+	  ModifyStrainExtra.add := true;
+	  send(ModifyStrainExtra, 0);
+
+          ModifyNotes.source_widget := top->Notes;
+          ModifyNotes.tableID := MLP_NOTES;
+          ModifyNotes.key := currentRecordKey;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->Notes.sql;
 
 	  --  Process Accession numbers
 
@@ -236,7 +241,7 @@ rules:
 
           (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := MLP_STRAIN;
+	  DeleteSQL.tableID := STRAIN;
           DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
@@ -283,6 +288,11 @@ rules:
             set := set + "needsReview = "  + top->NeedsReviewMenu.menuHistory.defaultValue + ",";
           end if;
  
+          if (top->PrivateMenu.menuHistory.modified and
+              top->PrivateMenu.menuHistory.searchValue != "%") then
+            set := set + "private = "  + top->PrivateMenu.menuHistory.defaultValue + ",";
+          end if;
+ 
           cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
 
 	  set := "";
@@ -303,7 +313,13 @@ rules:
 
 	  send(ModifyMarker, 0);
 	  send(ModifyType, 0);
-	  send(ModifyStrainNote, 0);
+	  send(ModifyStrainExtra, 0);
+
+          ModifyNotes.source_widget := top->Notes;
+          ModifyNotes.tableID := MLP_NOTES;
+          ModifyNotes.key := currentRecordKey;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->Notes.sql;
 
 	  --  Process Accession numbers
 
@@ -409,7 +425,7 @@ rules:
 	end does;
  
 --
--- ModifyStrainNote
+-- ModifyStrainExtra
 --
 -- Activated from: devent Modify
 --
@@ -417,8 +433,8 @@ rules:
 -- Appends to global "cmd" string
 --
 
-	ModifyStrainNote does
-          table : widget := top->Note->Table;
+	ModifyStrainExtra does
+          table : widget := top->Extra->Table;
           row : integer := 0;
           andor : string;
           reference : string;
@@ -442,8 +458,8 @@ rules:
             return;
 	  end if;
 
-	  if (ModifyStrainNote.add) then
-	      cmd := cmd + mgi_DBinsert(MLP_NOTES, NOKEY) + 
+	  if (ModifyStrainExtra.add) then
+	      cmd := cmd + mgi_DBinsert(MLP_EXTRA, NOKEY) + 
 		     currentRecordKey + "," + 
                      mgi_DBprstr(andor) + "," +
                      mgi_DBprkey(reference) + "," +
@@ -458,7 +474,7 @@ rules:
                    ",note1 = " + mgi_DBprstr(note1) +
                    ",note2 = " + mgi_DBprstr(note2) +
                    ",note3 = " + mgi_DBprstr(note3);
-            cmd := cmd + mgi_DBupdate(MLP_NOTES, currentRecordKey, set);
+            cmd := cmd + mgi_DBupdate(MLP_EXTRA, currentRecordKey, set);
 	  end if;
 
 	end does;
@@ -470,6 +486,7 @@ rules:
 --
 
 	PrepareSearch does
+	  from_extra : boolean := false;
 	  from_notes : boolean := false;
 	  from_marker : boolean := false;
 	  from_types : boolean := false;
@@ -505,6 +522,10 @@ rules:
             where := where + "\nand s.needsReview = " + top->NeedsReviewMenu.menuHistory.searchValue;
           end if;
  
+          if (top->PrivateMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
+          end if;
+
 	  if (top->mlpSpecies->Species->text.value.length > 0) then
 	    where := where + "\nand s.species like " + mgi_DBprstr(top->mlpSpecies->Species->text.value);
 	  end if;
@@ -543,45 +564,55 @@ rules:
 	    end if;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.andor);
+	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.andor);
 	  if (value.length > 0) then
 	    where := where + "\nand n.andor like " + mgi_DBprstr(value);
-	    from_notes := true;
+	    from_extra := true;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.reference);
+	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.reference);
 	  if (value.length > 0) then
 	    where := where + "\nand n.reference = " + mgi_DBprkey(value);
-	    from_notes := true;
+	    from_extra := true;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.dataset);
+	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.dataset);
 	  if (value.length > 0) then
 	    where := where + "\nand n.dataset like " + mgi_DBprstr(value);
-	    from_notes := true;
+	    from_extra := true;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.note1);
+	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.note1);
 	  if (value.length > 0) then
 	    where := where + "\nand n.note1 like " + mgi_DBprstr(value);
-	    from_notes := true;
+	    from_extra := true;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.note2);
+	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.note2);
 	  if (value.length > 0) then
 	    where := where + "\nand n.note2 like " + mgi_DBprstr(value);
-	    from_notes := true;
+	    from_extra := true;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Note->Table, 0, top->Note->Table.note3);
+	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.note3);
 	  if (value.length > 0) then
 	    where := where + "\nand n.note3 like " + mgi_DBprstr(value);
-	    from_notes := true;
+	    from_extra := true;
+	  end if;
+
+          if (top->Notes->text.value.length > 0) then
+            where := where + "\nand sn.note like " + mgi_DBprstr(top->Notes->text.value);
+            from_notes := true;
+          end if;
+      
+	  if (from_extra) then
+	    from := from + "," + mgi_DBtable(MLP_EXTRA) + " n";
+	    where := where + "\nand s._Strain_key = n._Strain_key";
 	  end if;
 
 	  if (from_notes) then
-	    from := from + "," + mgi_DBtable(MLP_NOTES) + " n";
-	    where := where + "\nand s._Strain_key = n._Strain_key";
+	    from := from + "," + mgi_DBtable(MLP_NOTES) + " sn";
+	    where := where + "\nand s._Strain_key = sn._Strain_key";
 	  end if;
 
 	  if (from_marker) then
@@ -609,7 +640,8 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct s._Strain_key, s.strain\n" + from + "\n" + where + "\norder by s.strain\n";
+	  Query.select := "select distinct s._Strain_key, s.strain\n" + 
+		from + "\n" + where + "\norder by s.strain\n";
 	  Query.table := STRAIN;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
@@ -655,6 +687,7 @@ rules:
 
 	  top->References->Records.labelString := "0 Records";
 	  top->DataSets->Records.labelString := "0 Records";
+          top->Notes->text.value := "";
  
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
@@ -671,12 +704,14 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(MLP_STRAIN_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
-	         "select * from " + mgi_DBtable(MLP_NOTES) +
+	         "select * from " + mgi_DBtable(MLP_EXTRA) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
 		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
-		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n";
+		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
+                 "select rtrim(note) from " + mgi_DBtable(MLP_NOTES) +
+                 " where " + mgi_DBkey(MLP_NOTES) + " = " + currentRecordKey + " order by sequenceNum\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -700,8 +735,11 @@ rules:
                 SetOption.source_widget := top->NeedsReviewMenu;
                 SetOption.value := mgi_getstr(dbproc, 10);
                 send(SetOption, 0);
+                SetOption.source_widget := top->PrivateMenu;
+                SetOption.value := mgi_getstr(dbproc, 11);
+                send(SetOption, 0);
 	      elsif (results = 2) then
-		table := top->Note->Table;
+		table := top->Extra->Table;
 		(void) mgi_tblSetCell(table, row, table.andor, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.reference, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.dataset, mgi_getstr(dbproc, 4));
@@ -721,6 +759,8 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.strainTypeKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.strainType, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      elsif (results = 5) then
+                top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
 	      end if;
 	      row := row + 1;
             end while;

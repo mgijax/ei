@@ -118,7 +118,6 @@ extern char *global_version;
 #define MLD_RIHAPLOTYPE		178
 #define MLD_RI2POINT		179
 #define MLD_STATISTICS		180
-
 #define MLC_MARKER_EDIT_VIEW	181
 
 /* GXD Tables */
@@ -208,6 +207,8 @@ extern char *global_version;
 #define ALL_STATUS		337
 #define ALL_NOTETYPE		338
 #define ALL_REFERENCETYPE	339
+#define PRB_SPECIES		340
+#define RISET_VIEW		341
 
 /* Accession Tables */
 
@@ -251,6 +252,7 @@ extern char *global_version;
 #define MLP_STRAINTYPES_VIEW	708
 #define STRAIN_MERGE1		709
 #define STRAIN_MERGE2		710
+#define MLP_EXTRA		711
 
 /* End of Table Definitions */
 

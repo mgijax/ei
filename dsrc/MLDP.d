@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	09/25/2001
+--	- TR 256
+--
 -- lec	11/18/98
 --	- ModifyExptMarker; yesno should default to "yes"
 --
@@ -485,7 +488,7 @@ rules:
 	  add := "";
 
           if (ExptForm->mgiCross->CrossID->text.value.length = 0 or
-              ExptForm->mgiCross->CrossID->text.value = "-1") then
+              ExptForm->mgiCross->CrossID->text.value = NOTSPECIFIED) then
 	    send(AddCrossLookup, 0);
 	  else
 	    currentCrossKey := ExptForm->mgiCross->CrossID->text.value;
@@ -637,9 +640,12 @@ rules:
 
         AddRI does
 
+	  if (ExptForm->mgiRISet->RIID->text.value.length = 0) then
+	    ExptForm->mgiRISet->RIID->text.value := NOTSPECIFIED;
+	  end if;
+
           cmd := cmd + mgi_DBinsert(MLD_RI, NOKEY) +
 		       currentExptKey + "," +
-		       "NULL,NULL,NULL,NULL," +
 		       mgi_DBprstr(ExptForm->Animal->text.value) + "," +
 		       mgi_DBprkey(ExptForm->mgiRISet->RIID->text.value) + ")\n";
 
@@ -1107,7 +1113,7 @@ rules:
 	  add := "";
 
           if (ExptForm->mgiCross->CrossID->text.value.length = 0 or
-              ExptForm->mgiCross->CrossID->text.value = "-1") then
+              ExptForm->mgiCross->CrossID->text.value = NOTSPECIFIED) then
 	    send(AddCrossLookup, 0);		-- Appends to global 'add' string
 	  else
 	    currentCrossKey := ExptForm->mgiCross->CrossID->text.value;
@@ -3353,7 +3359,7 @@ rules:
 	  -- If no Cross or Anonymous Cross, don't overwrite any values
 
 	  if (ExptForm->mgiCross->CrossID->text.value.length = 0 or
-	      ExptForm->mgiCross->CrossID->text.value = "-1") then
+	      ExptForm->mgiCross->CrossID->text.value = NOTSPECIFIED) then
 	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
             return;
 	  end if;
@@ -3494,18 +3500,39 @@ rules:
 
 	SelectRILookup does
 
-	  -- If no RI, don't overwrite any values
+	  -- If RI exists and is not modified, don't overwrite any values
 
-	  if (ExptForm->mgiRISet->RIID->text.value.length = 0 or
-	      ExptForm->mgiRISet->RIID->text.value = "-1") then
+	  if (ExptForm->mgiRISet->RIID->text.value.length > 0 and
+	      not ExptForm->mgiRISet->Verify->text.modified) then
 	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
             return;
+
+	  -- If no key but designation is entered, lookup
+
+	  elsif (ExptForm->mgiRISet->RIID->text.value.length = 0 and
+	         ExptForm->mgiRISet->Verify->text.value.length > 0) then
+	    ExptForm->mgiRISet->RIID->text.value :=  
+		mgi_sql1("select _RISet_key from RI_RISet where designation = " + 
+			mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value));
+
+	  -- If key is blank, default to Not Specified
+
+	  elsif (ExptForm->mgiRISet->RIID->text.value.length = 0) then
+	    ExptForm->mgiRISet->RIID->text.value := NOTSPECIFIED;
 	  end if;
 
           (void) busy_cursor(top);
 
 	  currentRIKey := ExptForm->mgiRISet->RIID->text.value;
-          cmd := "select * from RI_RISet where _RISet_key = " + currentRIKey;
+
+	  if (currentRIKey.length = 0) then
+	      (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	      (void) reset_cursor(top);
+              return;
+	  end if;
+
+          cmd := "select designation, origin, abbrev1, abbrev2, RI_IdList " +
+		"from RI_RISet_View where _RISet_key = " + currentRIKey;
  
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -3513,11 +3540,11 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      ExptForm->mgiRISet->Verify->text.value := mgi_getstr(dbproc, 3);
-	      ExptForm->mgiRISet->Origin->text.value := mgi_getstr(dbproc, 2);
-	      ExptForm->mgiRISet->Abbrev1->text.value := mgi_getstr(dbproc, 4);
-	      ExptForm->mgiRISet->Abbrev2->text.value := mgi_getstr(dbproc, 5);
-	      ExptForm->Animal->text.value            := mgi_getstr(dbproc, 6);
+	      ExptForm->mgiRISet->Verify->text.value  := mgi_getstr(dbproc, 1);
+	      ExptForm->mgiRISet->Origin->text.value  := mgi_getstr(dbproc, 2);
+	      ExptForm->mgiRISet->Abbrev1->text.value := mgi_getstr(dbproc, 3);
+	      ExptForm->mgiRISet->Abbrev2->text.value := mgi_getstr(dbproc, 4);
+	      ExptForm->Animal->text.value            := mgi_getstr(dbproc, 5);
 	    end while;
 	  end while;
 
@@ -3530,7 +3557,7 @@ rules:
 	  ExptForm->mgiRISet->Abbrev1->text.modified := false;
 	  ExptForm->mgiRISet->Abbrev2->text.modified := false;
 
-	  (void) XmProcessTraversal(top->Female->text, XmTRAVERSE_CURRENT);
+	  (void) XmProcessTraversal(top->Animal->text, XmTRAVERSE_CURRENT);
           (void) reset_cursor(top);
 	end
 --

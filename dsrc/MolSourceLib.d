@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 09/26/2001
+--      - TR 2714/Probe Species Menu
+--
 -- lec 09/23/1999
 --	- TR 940; Age verification
 --
@@ -66,7 +69,7 @@ rules:
 	         mgi_DBprstr(top->Library->text.value) + "," +
                  mgi_DBprstr(top->Description->text.value) + "," +
                  mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
-                 mgi_DBprstr(top->SpeciesMenu.menuHistory.defaultValue) + "," +
+                 top->ProbeSpeciesMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
                  top->Tissue->TissueID->text.value + ",";
 
@@ -264,14 +267,14 @@ rules:
                   end if;
                 end if;
 
-                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 15);
+                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 16);
                 sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 6);
-                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 17);
+                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 18);
                 sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 7);
                 sourceForm->CellLine->text.value := mgi_getstr(dbproc, 12);
                 sourceForm->Description->text.value := mgi_getstr(dbproc, 3);
  
-                SetOption.source_widget := sourceForm->SpeciesMenu;
+                SetOption.source_widget := sourceForm->ProbeSpeciesMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
  
@@ -351,8 +354,8 @@ rules:
 	    end if;
 	  end if;
 
-          if (top->SpeciesMenu.menuHistory.modified) then
-            set := set + "species = " + mgi_DBprstr(top->SpeciesMenu.menuHistory.defaultValue) + ",";
+          if (top->ProbeSpeciesMenu.menuHistory.modified) then
+            set := set + "_ProbeSpecies_key = " + top->ProbeSpeciesMenu.menuHistory.defaultValue + ",";
           end if;
  
           if (top->Strain->StrainID->text.modified) then
@@ -447,8 +450,8 @@ rules:
 	    where := where + " and _Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value);
 	  end if;
 
-          if (top->SpeciesMenu.menuHistory.searchValue != "%") then
-            where := where + " and s.species = " + mgi_DBprstr(top->SpeciesMenu.menuHistory.searchValue);
+          if (top->ProbeSpeciesMenu.menuHistory.searchValue != "%") then
+            where := where + " and s._ProbeSpecies_key = " + top->ProbeSpeciesMenu.menuHistory.searchValue;
           end if;
  
           if (top->Strain->StrainID->text.value.length > 0) then

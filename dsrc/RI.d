@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec  09/25/2001
+--	- TR 256
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -108,7 +111,8 @@ rules:
  
           cmd := mgi_setDBkey(RISET, NEWKEY, KEYNAME) +
                  mgi_DBinsert(RISET, KEYNAME) +
-		 mgi_DBprstr(top->Origin->text.value) + "," +
+		 mgi_DBprstr(top->Strain1->StrainID->text.value) + "," +
+		 mgi_DBprstr(top->Strain2->StrainID->text.value) + "," +
 		 mgi_DBprstr(top->Designation->text.value) + "," +
 		 mgi_DBprstr(top->Abbrev1->text.value) + "," +
 		 mgi_DBprstr(top->Abbrev2->text.value) + "," +
@@ -170,8 +174,12 @@ rules:
 
 	  set : string := "";
 
-          if (top->Origin->text.modified) then
-            set := set + "origin = " + mgi_DBprstr(top->Origin->text.value) + ",";
+          if (top->Strain1->StrainID->text.modified) then
+            set := set + "_Strain_key_1 = " + top->Strain1->StrainID->text.value + ",";
+          end if;
+
+          if (top->Strain2->StrainID->text.modified) then
+            set := set + "_Strain_key_2 = " + top->Strain2->StrainID->text.value + ",";
           end if;
 
           if (top->Designation->text.modified) then
@@ -204,7 +212,7 @@ rules:
 --
 
 	PrepareSearch does
-	  from := "from " + mgi_DBtable(RISET);
+	  from := "from " + mgi_DBtable(RISET_VIEW);
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -215,9 +223,17 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
-          if (top->Origin->text.value.length > 0) then
-            where := where + "\nand origin like " + mgi_DBprstr(top->Origin->text.value);
-          end if;
+          if (top->Strain1->StrainID->text.value.length > 0) then
+            where := where + "\nand _Strain_key_1 like " + mgi_DBprstr(top->Strain1->StrainID->text.value);
+	  elsif (top->Strain1->Verify->text.value.length > 0) then
+	    where := where + "\nand strain1 like " + mgi_DBprstr(top->Strain1->Verify->text.value);
+	  end if;
+
+          if (top->Strain2->StrainID->text.value.length > 0) then
+            where := where + "\nand _Strain_key_2 like " + mgi_DBprstr(top->Strain2->StrainID->text.value);
+	  elsif (top->Strain2->Verify->text.value.length > 0) then
+	    where := where + "\nand strain2 like " + mgi_DBprstr(top->Strain2->Verify->text.value);
+	  end if;
 
           if (top->Designation->text.value.length > 0) then
             where := where + "\nand designation like " + mgi_DBprstr(top->Designation->text.value);
@@ -276,7 +292,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from RI_RISet where _RISet_key = " + currentRecordKey + 
+	  cmd := "select * from RI_RISet_View where _RISet_key = " + currentRecordKey + 
 		" order by designation\n";
 
           dbproc : opaque := mgi_dbopen();
@@ -285,14 +301,17 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->ID->text.value           := mgi_getstr(dbproc, 1);
-              top->Origin->text.value       := mgi_getstr(dbproc, 2);
-              top->Designation->text.value  := mgi_getstr(dbproc, 3);
-              top->Abbrev1->text.value      := mgi_getstr(dbproc, 4);
-              top->Abbrev2->text.value      := mgi_getstr(dbproc, 5);
-              top->Labels->text.value       := mgi_getstr(dbproc, 6);
-	      top->CreationDate->text.value := mgi_getstr(dbproc, 7);
-	      top->ModifiedDate->text.value := mgi_getstr(dbproc, 8);
+	      top->ID->text.value                := mgi_getstr(dbproc, 1);
+              top->Strain1->StrainID->text.value := mgi_getstr(dbproc, 2);
+              top->Strain2->StrainID->text.value := mgi_getstr(dbproc, 3);
+              top->Strain1->Verify->text.value   := mgi_getstr(dbproc, 10);
+              top->Strain2->Verify->text.value   := mgi_getstr(dbproc, 11);
+              top->Designation->text.value       := mgi_getstr(dbproc, 4);
+              top->Abbrev1->text.value           := mgi_getstr(dbproc, 5);
+              top->Abbrev2->text.value           := mgi_getstr(dbproc, 6);
+              top->Labels->text.value            := mgi_getstr(dbproc, 7);
+	      top->CreationDate->text.value      := mgi_getstr(dbproc, 8);
+	      top->ModifiedDate->text.value      := mgi_getstr(dbproc, 9);
             end while;
           end while;
  

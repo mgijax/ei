@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 09/26/2001
+--	- TR 2714/Probe Species Menu
+--
 -- lec 07/12/2001
 --	- TR 2715; Notes required when Other species selected
 --
@@ -77,6 +80,9 @@ rules:
 
 	  send(Init, 0);
 
+          InitOptionMenu.option := top->SourceForm->ProbeSpeciesMenu;
+          send(InitOptionMenu, 0);
+
 	  ab : widget := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
@@ -102,7 +108,7 @@ rules:
 	Init does
 	  sourceOptions := create list("widget");
 
-	  sourceOptions.append(top->SpeciesMenu);
+	  sourceOptions.append(top->ProbeSpeciesMenu);
 	  sourceOptions.append(top->AgeMenu);
 	  sourceOptions.append(top->SexMenu);
 
@@ -187,7 +193,7 @@ rules:
 
 	CheckNote does
 
-	  if (top->SpeciesMenu.menuHistory.labelString = OTHERNOTES and
+	  if (top->ProbeSpeciesMenu.menuHistory.labelString = OTHERNOTES and
 	      top->Note->text.value.length = 0) then
                 StatusReport.source_widget := top;
                 StatusReport.message := "Antigen Notes are Required.";

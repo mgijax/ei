@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec 09/26/2001
+--      - TR 2714/Probe Species Menu
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -58,6 +61,9 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  top := create widget("MolecularSourceModule", nil, mgi);
+
+          InitOptionMenu.option := top->ProbeSpeciesMenu;
+          send(InitOptionMenu, 0);
 
           ab : widget := mgi->(top.activateButtonName);
           ab.sensitive := false;

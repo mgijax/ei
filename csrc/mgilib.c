@@ -347,9 +347,6 @@ char *mgi_DBrecordCount(int table)
     case MRK_NOMEN:
     case MRK_GENEFAMILY:
     case MRK_NOMENSTATUS:
-    case MLP_STRAINTYPE:
-    case MLP_SPECIES:
-    case MLP_STRAIN:
             sprintf(cmd, "select count(*) from %s", mgi_DBtable(table));
 	    break;
     default:
@@ -519,6 +516,9 @@ char *mgi_DBkey(int table)
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
             strcpy(buf, "_Source_key");
+	    break;
+    case PRB_SPECIES:
+            strcpy(buf, "_ProbeSpecies_key");
 	    break;
     case CROSS:
             strcpy(buf, "_Cross_key");
@@ -709,6 +709,7 @@ char *mgi_DBkey(int table)
     case MLP_STRAIN:
     case MLP_STRAINTYPES:
     case MLP_NOTES:
+    case MLP_EXTRA:
     case PRB_STRAIN_MARKER:
             strcpy(buf, "_Strain_key");
 	    break;
@@ -1019,6 +1020,9 @@ char *mgi_DBtable(int table)
     case PRB_SOURCE_MASTER:
             strcpy(buf, "PRB_Source");
 	    break;
+    case PRB_SPECIES:
+	    sprintf(buf, "PRB_Species");
+	    break;
     case MRK_SPECIES:
             strcpy(buf, "MRK_Species");
 	    break;
@@ -1060,6 +1064,9 @@ char *mgi_DBtable(int table)
 	    break;
     case RISET:
             strcpy(buf, "RI_RISet");
+	    break;
+    case RISET_VIEW:
+            strcpy(buf, "RI_RISet_View");
 	    break;
     case MLD_ASSAY:
             strcpy(buf, "MLD_Assay_Types");
@@ -1337,31 +1344,34 @@ char *mgi_DBtable(int table)
 	    sprintf(buf, "PRB_Strain_Marker_View");
 	    break;
     case MLP_STRAIN:
-	    sprintf(buf, "%s..MLP_Strain", getenv("STRAINS"));
+	    sprintf(buf, "MLP_Strain");
 	    break;
     case MLP_STRAIN_VIEW:
-	    sprintf(buf, "%s..MLP_Strain_View", getenv("STRAINS"));
+	    sprintf(buf, "MLP_Strain_View");
 	    break;
     case MLP_SPECIES:
-	    sprintf(buf, "%s..MLP_Species", getenv("STRAINS"));
+	    sprintf(buf, "MLP_Species");
 	    break;
     case MLP_NOTES:
-	    sprintf(buf, "%s..MLP_Notes", getenv("STRAINS"));
+	    sprintf(buf, "MLP_Notes");
+	    break;
+    case MLP_EXTRA:
+	    sprintf(buf, "MLP_Extra");
 	    break;
     case MLP_STRAINTYPE:
-	    sprintf(buf, "%s..MLP_StrainType", getenv("STRAINS"));
+	    sprintf(buf, "MLP_StrainType");
 	    break;
     case MLP_STRAINTYPES:
-	    sprintf(buf, "%s..MLP_StrainTypes", getenv("STRAINS"));
+	    sprintf(buf, "MLP_StrainTypes");
 	    break;
     case MLP_STRAINTYPES_VIEW:
-	    sprintf(buf, "%s..MLP_StrainTypes_View", getenv("STRAINS"));
+	    sprintf(buf, "MLP_StrainTypes_View");
 	    break;
     case STRAIN_MERGE1:
-	    sprintf(buf, "%s..MLP_mergeStandardStrain", getenv("STRAINS"));
+	    sprintf(buf, "MLP_mergeStandardStrain");
 	    break;
     case STRAIN_MERGE2:
-	    sprintf(buf, "%s..MLP_mergeStrain", getenv("STRAINS"));
+	    sprintf(buf, "MLP_mergeStrain");
 	    break;
     case NOMEN_TRANSFERSYMBOL:
 	    sprintf(buf, "%s..Nomen_transferToMGD", getenv("NOMEN"));
@@ -1548,6 +1558,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLP_STRAIN:
     case MLP_STRAINTYPES:
     case MLP_NOTES:
+    case MLP_EXTRA:
     case PRB_STRAIN_MARKER:
     case MGI_TABLES:
     case MGI_COLUMNS:
@@ -1587,6 +1598,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOTES:
     case PRB_NOTES:
     case PRB_REF_NOTES:
+    case MLP_NOTES:
 	    sprintf(buf, "insert %s (%s, sequenceNum, note)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
@@ -1667,7 +1679,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_RI:
-	    sprintf(buf, "insert %s (%s, origin, designation, abbrev1, abbrev2, RI_IdList, _RISet_key)",
+	    sprintf(buf, "insert %s (%s, RI_IdList, _RISet_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLD_RIHAPLOTYPE:
@@ -1768,7 +1780,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, name, description, _Refs_key, species, _Strain_key, _Tissue_key, age, ageMin, ageMax, sex, cellLine)",
+            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _ProbeSpecies_key, _Strain_key, _Tissue_key, age, ageMin, ageMax, sex, cellLine)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIGEN:
@@ -1876,7 +1888,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (_Species_key, chromosome, sequenceNum)", mgi_DBtable(table));
 	    break;
     case RISET:
-            sprintf(buf, "insert %s (%s, origin, designation, abbrev1, abbrev2, RI_IdList)", 
+            sprintf(buf, "insert %s (%s, _Strain_key_1, _Strain_key_2, designation, abbrev1, abbrev2, RI_IdList)", 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case CROSS:
@@ -1884,7 +1896,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case STRAIN:
-            sprintf(buf, "insert %s (%s, %s, standard, needsReview)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
+            sprintf(buf, "insert %s (%s, %s, standard, needsReview, private)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case TISSUE:
             sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
@@ -1924,7 +1936,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLP_SPECIES:
             sprintf(buf, "insert %s (%s, species)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLP_NOTES:
+    case MLP_EXTRA:
             sprintf(buf, "insert %s (%s, andor, reference, dataset, note1, note2, note3)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_MARKER:
@@ -2323,6 +2335,9 @@ char *mgi_DBcvname(int table)
 	    break;
     case PRB_VECTOR_TYPE:
             strcpy(buf, "vectorType");
+	    break;
+    case PRB_SPECIES:
+            strcpy(buf, "species");
 	    break;
     case GXD_ANTIBODYCLASS:
             strcpy(buf, "class");
