@@ -165,9 +165,9 @@ rules:
             newCmd := saveCmd + " " + key + "\norder by " + clipboard.orderBy;
             clipboard.cmd := newCmd;
  
-            -- Load the list; disallow duplicates
+            -- Load the list
             LoadList.list := clipboard;
-	    LoadList.allowDups := false;
+	    LoadList.allowDups := ClipboardLoad.allowDups;
             send(LoadList, 0);
  
             -- Restore original lookup command
@@ -215,7 +215,7 @@ rules:
 	      cKey := editClipboard->List.keys[i];
 	      cName := editClipboard->List.items[i];
 
-	      if (sKeys.find(cKey) < 0) then
+	      if (ClipboardLoad.allowDups or sKeys.find(cKey) < 0) then
 	        sKeys.insert(cKey, sKeys.count + 1);
 	        sResults.insert(cbPrefix + cName, sResults.count + 1);
 	      end if;

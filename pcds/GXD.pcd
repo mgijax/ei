@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 11 14:49:25 2001";
+      lastWritten = "Wed Sep 12 09:41:15 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2746,6 +2746,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Search = MenuPush : mgiMenu;
                                         Group: Widget
                                           managed = False;
+                                          activateCallback = "D:SearchGenotype,\nD:GoHome";
                                       }
                                       {
                                         Modify = MenuPush : mgiMenu;
@@ -2858,6 +2859,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Search = ControlPush;
                                   Group: Widget
                                     managed = False;
+                                    activateCallback = "D:SearchGenotype,\nD:GoHome";
                                 }
                                 {
                                   Clear = ControlPush;
@@ -2971,9 +2973,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           defaultLabel = "Available Assay Genotypes";
                                       }
-                                }
-                                {
-                                  GenotypeEditClipboard = GenotypeEditClipboard : mgiLookup;
                                 }
                           }
                     }

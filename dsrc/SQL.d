@@ -132,7 +132,7 @@ rules:
 
           if (AddSQL.list->List.sqlSuccessful) then
 	    if (AddSQL.appendKeyToItem) then
-	      item := "[ID " + AddSQL.key.value + "]:  " + item;
+	      item := "*[" + AddSQL.key.value + "]:  " + item;
 	    end if;
 
             InsertList.list := AddSQL.list;

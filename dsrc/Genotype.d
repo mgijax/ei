@@ -34,10 +34,8 @@ devents:
 
 	ModifyAllelePair :local [];
 
---	Search :local [assayKey : string;];
 	Select :local [item_position : integer;];
 
-	GenotypeClipboardAdd :local [];
 
 locals:
 	mgi : widget;
@@ -158,7 +156,6 @@ rules:
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    send(GenotypeClipboardAdd, 0);
 	    (void) XmListDeselectAllItems(top->QueryList->List);
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
@@ -342,6 +339,7 @@ rules:
 	  assayKey : string := SearchGenotype.assayKey;
 	  assayExists : string;
 	  notExists : string;
+	  orderBy : string := "\norder by g._Genotype_key";
 
 	  if (mgi->AssayModule = nil) then
 	    send(Exit, 0);
@@ -367,12 +365,12 @@ rules:
 	    end if;
 
 	    assayExists := "select distinct g._Genotype_key, " +
-	 	  "g.genotypeDisplay + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+	 	  "g.dbName + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 		  from + "\n" + where;
 	  end if;
 
           notExists := "select distinct g._Genotype_key, " +
-		"g.genotypeDisplay + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+		"'*' + g.dbName + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 	  	"from GXD_Genotype_View g, GXD_AllelePair_View ap \n" +
 	  	"where not exists (select 1 from GXD_Specimen s\n" +
 	  	"where g._Genotype_key = s._Genotype_key)\n" +
@@ -381,9 +379,9 @@ rules:
 		" and g._Genotype_key *= ap._Genotype_key\n";
 
 	  if (assayKey.length > 0) then
-	    QueryNoInterrupt.select := assayExists + "\nunion\n" + notExists;
+	    QueryNoInterrupt.select := assayExists + "\nunion\n" + notExists + orderBy;
 	  else
-	    QueryNoInterrupt.select := notExists;
+	    QueryNoInterrupt.select := notExists + orderBy;
 	  end if;
 
 	  QueryNoInterrupt.source_widget := top;
@@ -405,6 +403,11 @@ rules:
 	SelectGenotypeRecord does
 	  row : integer := mgi_tblGetCurrentRow(assayTable);
 	  genotypeKey : string := mgi_tblGetCell(assayTable, row, assayTable.genotypeKey);
+
+	  if (top->QueryList->List.selectedItemCount = 0) then
+	    return;
+	  end if;
+
 	  pos : integer := top->QueryList->List.keys.find(genotypeKey);
 
 	  if (pos > 0) then
@@ -486,24 +489,6 @@ rules:
 
 	  (void) reset_cursor(top);
 	end does;
-
---
--- GenotypeClipboardAdd 
---
--- Adds the current structure to the clipboard.
---
-
-   GenotypeClipboardAdd does
-
-	if (top->QueryList->List.selectedItemCount = 0) then
-	  return;
-	end if;
-
-	ClipboardAdd.clipboard := top->GenotypeEditClipboard;
-	ClipboardAdd.item := top->QueryList->List.items[top->QueryList->List.row];
-	ClipboardAdd.key := top->ID->text.value;
-	send(ClipboardAdd, 0);
-   end does;
 
 --
 -- Exit

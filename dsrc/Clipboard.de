@@ -17,7 +17,8 @@ ClipboardDelete [source_widget : widget;];
 
 ClipboardSort [source_widget : widget;];
 
-ClipboardLoad [source_widget : widget;];
+ClipboardLoad [source_widget : widget;
+	       allowDups : boolean := false;];
 
 ClipboardSetItems [table : widget;
 		   clipboard : widget;

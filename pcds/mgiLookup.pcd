@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 11 08:22:04 2001";
+      lastWritten = "Wed Sep 12 10:29:53 2001";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -105,7 +105,7 @@ Module: mgiLookup
           LibraryList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 800;
+            vip_y = 745;
           Group: User
             cmd = "select -1, name = \"Anonymous\"\nselect _Source_key, name from PRB_Source\nwhere name is not null and name != \"Anonymous\" and _Source_key > 0\norder by name";
               {
@@ -154,7 +154,7 @@ Module: mgiLookup
           ClassList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 855;
+            vip_y = 800;
           Group: User
             cmd = "select * from MRK_Class order by name";
               {
@@ -174,7 +174,7 @@ Module: mgiLookup
           HomologyAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 745;
+            vip_y = 690;
           Group: User
             cmd = "select * from HMD_Assay where _Assay_key != 15 order by assay";
               {
@@ -214,7 +214,7 @@ Module: mgiLookup
           MarkerList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 910;
+            vip_y = 855;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -232,7 +232,7 @@ Module: mgiLookup
           MappingAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1075;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -252,7 +252,7 @@ Module: mgiLookup
           GeneFamilyList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 965;
+            vip_y = 910;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -274,7 +274,7 @@ Module: mgiLookup
           StrainTypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1075;
+            vip_y = 1020;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -292,7 +292,7 @@ Module: mgiLookup
           ESCellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1020;
+            vip_y = 965;
           Group: User
             cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View order by cellLine";
               {
@@ -315,7 +315,7 @@ Module: mgiLookup
             resizePolicy = resize_any;
           Group: Control
             vip_x = 90;
-            vip_y = 690;
+            vip_y = 635;
               {
                 Label = LookupLabel : mgiLookup;
               }
@@ -407,46 +407,12 @@ Module: mgiLookup
               }
         }
         {
-          GenotypeEditClipboard = ClipboardEditList;
-          Group: Control
-            vip_x = 90;
-            vip_y = 635;
-              {
-                Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  labelString = "Genotype Clipboard";
-                Group: User
-                  defaultLabel = "Genotype Clipboard";
-              }
-              {
-                List = list : mgiDataTypes;
-                Group: Widget
-                  visibleItemCount = 10;
-              }
-              {
-                Add = TablePush : mgiTable;
-                Group: Widget
-                  activateCallback = "D:GenotypeClipboardAdd";
-              }
-              {
-                Delete = TablePush : mgiTable;
-              }
-              {
-                Clear = TablePush : mgiTable;
-              }
-              {
-                Sort = TablePush : mgiTable;
-                Group: Widget
-                  managed = False;
-              }
-        }
-        {
           GenotypeClipboard = ClipboardList;
           Group: Control
             vip_x = 90;
             vip_y = 415;
           Group: User
-            orderBy = "g.strain";
+            orderBy = "g._Genotype_key";
             clipboardModule = GenotypeModule;
             editClipboard = GenotypeEditClipboard;
               {
@@ -463,9 +429,11 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 470;
           Group: User
-            cmd = "select g._Genotype_key, g.dbName  + \",\" + ap.allele1 + \",\" + ap.allele2 from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, '*' + g.dbName + ',' + ap.allele1 + ',' + ap.allele2 from GXD_Genotype_View g, GXD_AllelePair_View ap where not exists (select 1 from GXD_Specimen s where g._Genotype_key = s._Genotype_key) and not exists (select 1 from GXD_GelLane s where g._Genotype_key = s._Genotype_key) and g._Genotype_key *= ap._Genotype_key union select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2 from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  activateCallback = "D:ClipboardLoad(allowDups = true)";
               }
               {
                 List = list : mgiDataTypes;
@@ -481,9 +449,11 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 580;
           Group: User
-            cmd = "select g._Genotype_key, g.dbName + \",\"  + ap.allele1 + \",\" + ap.allele2 from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, '*' + g.dbName + ',' + ap.allele1 + ',' + ap.allele2 from GXD_Genotype_View g, GXD_AllelePair_View ap where not exists (select 1 from GXD_Specimen s where g._Genotype_key = s._Genotype_key) and not exists (select 1 from GXD_GelLane s where g._Genotype_key = s._Genotype_key) and g._Genotype_key *= ap._Genotype_key union select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2 from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  activateCallback = "D:ClipboardLoad(allowDups = true)";
               }
               {
                 List = list : mgiDataTypes;
