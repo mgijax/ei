@@ -42,5 +42,7 @@ fi
 
 # create the mgd directory if it isn't already there
 mkdir $EIINSTALLDIR/mgd >/dev/null 2>&1
+mkdir $EIINSTALLDIR/mgd/mgireport >/dev/null 2>&1
+mkdir $EIINSTALLDIR/mgd/mgireport/withdrawals >/dev/null 2>&1
 
 uxb $OPTIONS -destdir $EIINSTALLDIR/mgd install

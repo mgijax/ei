@@ -679,7 +679,8 @@ rules:
 
 	  value := mgi_tblGetCell(top->MolecularMutation->Table, 0, top->MolecularMutation->Table.mutationKey);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand a._Mutation_key = " + value;
+	    where := where + "\nand m._Mutation_key = " + value;
+	    from_mutation := true;
 	  else
 	    value := mgi_tblGetCell(top->MolecularMutation->Table, 0, top->MolecularMutation->Table.mutation);
 	    if (value.length > 0) then

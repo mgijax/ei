@@ -47,6 +47,9 @@ extern char *global_version;
 #define	NOTSPECIFIED	"-1"
 #define NOTAPPLICABLE	"-2"
 
+#define YES		"1"
+#define NO 		"0"
+
 /* Table Definitions must be unique */
 
 /* MGD Tables */
@@ -149,7 +152,20 @@ extern char *global_version;
 #define GXD_INDEXSTAGES		224
 #define IMG_IMAGENOTE		225
 
-/* MGI Lookup (Controlled Vocabulary Tables */
+/* Allele Tables */
+
+#define ALL_ALLELE		230
+#define ALL_ALLELE_MUTATION	231
+#define ALL_MOLECULAR_NOTE 	232
+#define ALL_NOTE		233
+#define ALL_SYNONYM		234
+#define ALL_ALLELE_VIEW		235
+#define ALL_SYNONYM_VIEW	236
+#define ALL_MUTATION_VIEW	237
+#define ALL_REFS_VIEW		238
+#define ALL_MOLREFS_VIEW	239
+
+/* MGI Controlled Vocabulary Tables */
 
 #define GXD_ANTIBODYCLASS	300
 #define GXD_PROBESENSE		301
@@ -182,6 +198,9 @@ extern char *global_version;
 #define GXD_GELCONTROL		329
 #define MRK_EVENTREASON		330
 #define MRK_STATUS		331
+#define ALL_TYPE		332
+#define ALL_INHERITANCE_MODE	333
+#define ALL_MOLECULAR_MUTATION	334
 
 /* Accession Tables */
 
@@ -258,5 +277,9 @@ extern char *global_version;
 #define STATUS_PENDING		"1"
 #define STATUS_RESERVED		"3"
 #define STATUS_BROADCAST	"5"
+
+/* This CV term requires Notes */
+
+#define OTHERNOTES		"Other (see notes)"
 
 #endif
