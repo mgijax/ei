@@ -1,3 +1,10 @@
+TAG: ei-6-0-13-patch-4
+DATE: 12/10/2001
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) SelectionLookupList; check list_w.selectionPolicy
+
 TAG: ei-6-0-13-patch-3
 DATE: 11/15/2001
 STAFF: lec
