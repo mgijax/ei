@@ -1,9 +1,10 @@
-TAG: ei-8-0-15, ei-8-0-16
+TAG: ei-8-0-15, ei-8-0-16, ei-8-0-17
 DATE: 11/26/2002
 STAFF: lec
 RELEASE: A
 CHANGES:
 1) Fantom2; nonmgi_mgiID changed to load_mgiID
+2) removed workaround from */uxb.conf
 
 TAG: ei-8-0-14
 DATE: 11/22/2002
