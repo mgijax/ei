@@ -13,6 +13,7 @@ CALLS
 
 	 mgi_setDBkey("int", "int", "char *")		: "char *";
 	 mgi_DBprstr("char *")				: "char *";
+	 mgi_DBprnotestr("char *")			: "char *";
 	 mgi_DBprkey("char *")				: "char *";
 	 mgi_DBincKey("char *")				: "char *";
 	 mgi_DBnextSeqKey("int", "char *", "char *")	: "char *";
