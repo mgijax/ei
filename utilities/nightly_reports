@@ -188,6 +188,7 @@ PRB_TissueCell.sql \
 PRB_TissueNonStd.sql \
 NOMEN_CheckMGD.sql \
 NOMEN_NoPrimaryRef.sql \
+MLP_Nomenclature.sql \
 chkESTForgnAcc.sql"
 
 for i in $INTERNAL_RPTS
