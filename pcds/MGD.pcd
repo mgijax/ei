@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 17 14:00:55 2002";
+      lastWritten = "Wed Aug 21 13:10:14 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -3249,6 +3249,8 @@ Module: MGD
         }
         {
           MolecularSourceModule = Module : MGI;
+          Group: Widget
+            destroyCallback = "D:MolecularSourceExit";
           Group: Control
             vip_x = 80;
             vip_y = 800;
@@ -3261,6 +3263,18 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:MolecularSourceExit";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jun 26 08:53:23 2002";
+      lastWritten = "Wed Aug 21 13:08:35 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1136,6 +1136,7 @@ Module: MGI
           Group: Widget
             width = 1200;
             height = 825;
+            destroyCallback = "D:VocAnnotExit";
           Group: Control
             vip_x = 70;
             vip_y = 580;
@@ -1149,6 +1150,18 @@ Module: MGI
                   resizePolicy = resize_any;
                     {
                       MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:VocAnnotExit";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1450,6 +1463,8 @@ Module: MGI
         }
         {
           GenotypeModule = Module : MGI;
+          Group: Widget
+            destroyCallback = "D:GenotypeExit";
           Group: Control
             vip_x = 70;
             vip_y = 470;
@@ -1462,6 +1477,15 @@ Module: MGI
                       MainMenu = MainMenu : mgiMenu;
                           {
                             File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:GenotypeExit";
+                                      }
+                                }
                           }
                           {
                             Commands = Commands : mgiMenu;
