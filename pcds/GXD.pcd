@@ -144,6 +144,20 @@ Module: GXD
                                     topWidget = separatorGadget;
                                     bottomAttachment = attach_form;
                                     resizable = true;
+                                      {
+                                        SourceID : ID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        Library = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        mgiCitation = mgiCitation : mgiDataTypes;
+                                      }
+                                      {
+                                        SpeciesMenu = SpeciesMenu : mgiOption;
+                                        Group: User
+                                          defaultOption = NotSpecified;
+                                      }
                                 }
                           }
                     }
