@@ -151,6 +151,7 @@ locals:
 	tables : list;
 
 	currentChr : string;		-- current Chromosome of selected record
+	hasAlleles : boolean;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -448,12 +449,7 @@ rules:
 	  send(ClearTable, 0);
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
-
-	  if (mgi_tblGetCell(top->Allele->Table, 0, top->Allele->Table.alleleKey) != "") then
-	    dialog->hasAlleles.set := true;
-	  else
-	    dialog->hasAlleles.set := false;
-	  end if;
+	  dialog->hasAlleles.set := hasAlleles;
 
 	  dialog->nonVerified->ObjectID->text.value := "";
 	  dialog->nonVerified->Marker->text.value := "";
@@ -1675,6 +1671,7 @@ rules:
 
           (void) busy_cursor(top);
 
+	  hasAlleles := false;
 	  top->Notes->text.value := "";
 
 	  table : widget;
@@ -1820,6 +1817,7 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.alleleSymbol, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.alleleName, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		hasAlleles := true;
 	      elsif (results = 9) then
 		table := top->OtherReference->Table;
                 (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
