@@ -15,6 +15,7 @@
 -- lec 03/15/2001
 --	- Added ModifyNomenNotes; changed to be consistent with Allele Note
 --	  processing; changes to SQL.d/SQL.de
+--	- TR 2401; Broadcast; syntax error in "where" clause
 --
 -- lec 01/15/2001
 --	- TR 2189; BroadcastByMenu no longer a widget
@@ -1460,7 +1461,7 @@ rules:
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(MRK_NOMEN) + " n," +
-		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r," +
+		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r " +
 		  " where n._Marker_Status_key = " + STATUS_PENDING +
 		  " and n._Suid_key = u.suid" +
 		  " and n.submittedBy = user_name()" +
