@@ -2298,6 +2298,7 @@ rules:
 
 	  key : string;
 	  citation : string;
+	  isReview : string;
 
 	  select : string := "exec BIB_byJnum " + value;
 
@@ -2308,6 +2309,7 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      key := mgi_getstr(dbproc, 1);
 	      citation := mgi_getstr(dbproc, 2);
+	      isReview := mgi_getstr(dbproc, 3);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
@@ -2322,6 +2324,14 @@ rules:
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, key);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, citation);
+	      if (sourceWidget.is_defined("reviewKey") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.reviewKey, isReview);
+		if (isReview = "1") then
+	          (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.review, "Yes");
+ 		else
+	          (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.review, "No");
+		end if;
+	      end if;
 	    else
 	      refTop->ObjectID->text.value := key;
 	      refTop->Citation->text.value := citation;
@@ -2332,6 +2342,10 @@ rules:
 	      VerifyReference.doit := (integer) false;
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, "");
+	      if (sourceWidget.is_defined("reviewKey") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.reviewKey, "NULL");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.review, "");
+	      end if;
 	    else
 	      refTop->ObjectID->text.value := "NULL";
 	      refTop->Jnum->text.value := "";
