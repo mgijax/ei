@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May  9 11:47:47 2003";
+      lastWritten = "Tue Jun 17 08:32:58 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -3013,6 +3013,41 @@ Module: MGD
                                   Group: Widget
                                     managed = True;
                                 }
+                                {
+                                  RefSeq = AccToggle : mgiOption;
+                                }
+                                {
+                                  InterPro = AccToggle : mgiOption;
+                                }
+                                {
+                                  Ensembl = AccToggle : mgiOption;
+                                }
+                                {
+                                  TIGR = AccToggle : mgiOption;
+                                }
+                                {
+                                  DOTS = AccToggle : mgiOption;
+                                }
+                                {
+                                  EMMA = AccToggle : mgiOption;
+                                }
+                                {
+                                  MMRRC = AccToggle : mgiOption;
+                                }
+                                {
+                                  Harwell = AccToggle : mgiOption;
+                                }
+                                {
+                                  ORNL = AccToggle : mgiOption;
+                                }
+                                {
+                                  IMAGELibrary = AccToggle : mgiOption;
+                                }
+                                {
+                                  NIA15K = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
                           }
                     }
               }
@@ -3550,6 +3585,11 @@ Module: MGD
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -5945,12 +5985,6 @@ Module: MGD
                                           activateCallback = "C: TuManage(find = ImportMLCTextDialog)";
                                       }
                                       {
-                                        Submit = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          labelString = "Submit Data to Production";
-                                          activateCallback = "C: TuManage(find = SubmitDialog)";
-                                      }
-                                      {
                                         Unlock = MenuPush : mgiMenu;
                                         Group: Widget
                                           labelString = "Unlock Record";
@@ -6500,13 +6534,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NoteDialog = NoteDialog;
-                    }
-                    {
-                      SubmitDialog = VerifyDialog : mgiDialog;
-                      Group: Widget
-                        okCallback = "D:Submit";
-                        dialogTitle = "MLC - Submit Data";
-                        messageString = "You are about to transfer the \ncurrent record to the \nMLC Production Database.\nIf you have deleted the current\nrecord, then this same delete\nwill occur on Production.\nSelect \"Yes\" to confirm, \"No\"\nto cancel.";
                     }
                     {
                       ImportMLCTextDialog = ImportMLCTextDialog : mgiDialog;
@@ -7190,6 +7217,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     LocusLink = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      required = True;
                                                   }
                                             }
                                       }

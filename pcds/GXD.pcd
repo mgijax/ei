@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun  5 07:31:05 2003";
+      lastWritten = "Tue Jun 17 08:32:32 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -1214,7 +1214,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   DuplicatePartial = ControlPush : mgiControl;
                                   Group: Widget
-                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicatePartial,\nD:GoHome";
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAssay(dupAll = 0),\nD:GoHome";
                                     labelString = "Duplicate Partial";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -1229,7 +1229,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   DuplicateAll = ControlPush : mgiControl;
                                   Group: Widget
-                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAll,\nD:GoHome";
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAssay,\nD:GoHome";
                                     labelString = "Duplicate All";
                                   Group: Constraint
                                     leftAttachment = attach_widget;
@@ -1240,6 +1240,21 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     topWidget = DuplicatePartial;
                                     leftOffset = 2;
+                                }
+                                {
+                                  AddToEditClipboard = ControlPush : mgiControl;
+                                  Group: Widget
+                                    activateCallback = "D:AddToEditClipboard";
+                                    labelString = "Add Assay Structures To AD Clipboard";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = DuplicatePartial;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = DuplicatePartial;
+                                    topOffset = 2;
                                 }
                                 {
                                   Previous = ControlArrow;
@@ -1274,10 +1289,10 @@ Shift<Key>Tab: prev-tab-group()
                                   RecordCount = RecordCount;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = DuplicatePartial;
+                                    leftWidget = AddToEditClipboard;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = DuplicatePartial;
+                                    topWidget = AddToEditClipboard;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1322,6 +1337,28 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   CVSpecimen = CVSpecimen : mgiCV;
+                                      {
+                                        panedWindow = XmPanedWindow;
+                                            {
+                                              GenotypeSpecimenClipboard = GenotypeSpecimenClipboard : mgiLookup;
+                                            }
+                                            {
+                                              CVMenu = CVMenu;
+                                            }
+                                            {
+                                              ADClipboard = ADClipboard : mgiLookup;
+                                                  {
+                                                    Label = LookupLabel;
+                                                  }
+                                                  {
+                                                    List = list;
+                                                    Group: User
+                                                      targetWidget = Results;
+                                                      targetKey = 4;
+                                                      targetText = 8;
+                                                  }
+                                            }
+                                      }
                                 }
                                 {
                                   CVGel = CVGel : mgiCV;
@@ -2142,6 +2179,7 @@ Shift<Key>Tab: prev-tab-group()
                         visibleItemCount = 18;
                         scrollBarDisplayPolicy = static;
                         listSizePolicy = variable;
+                        width = 20;
                     }
               }
               {
@@ -2168,7 +2206,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblPixelWidthSeries = "(all 0-10 0)";
                         xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVGel\"),\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 10;
-                        userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\n";
+                        userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\nclipboard:String(String)=\"CVGel\"\n";
                         xrtTblTraversableSeries = "(all 0-11 False)";
                         xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 10)(all 17 8)(all 19 9)(all 20 8)(all 21 6)(all 22 5)";
                       Group: User

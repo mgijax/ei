@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun  3 15:19:28 2003";
+      lastWritten = "Thu Jun 12 08:58:01 2003";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -436,6 +436,24 @@ Module: mgiCV
                               tableColumn = 21;
                               tableKeyColumn = 3;
                               mgiDialogName = InSituResultsDialog;
+                          }
+                    }
+                    {
+                      ADClipboard = ADClipboard : mgiLookup;
+                      Group: Widget
+                        managed = False;
+                      Group: User
+                        cmd = "select distinct i._Structure_key, i.dbName from GXD_ISResultStructure_View i, GXD_Specimen s where s._Specimen_key = i._Specimen_key and s._Assay_key = ";
+                        orderBy = "i.sequenceNum";
+                          {
+                            Label = LookupLabel;
+                          }
+                          {
+                            List = list;
+                            Group: User
+                              targetWidget = Results;
+                              targetKey = 4;
+                              targetText = 8;
                           }
                     }
               }
