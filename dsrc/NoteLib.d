@@ -160,7 +160,7 @@ rules:
 	  childnote : widget := nil;
 	  notecontinuation : boolean := false;
 	  note : string;
-	  noteKey : string;
+	  noteKey : string := "";
 	  i : integer;
 	  cmd : string;
 
@@ -224,7 +224,9 @@ rules:
 		  childnote->Note->text.value := childnote->Note->text.value + note;
 		end if;
 	        childnote->Note->text.modified := false;
-	        childnote->Note.noteKey := (integer) noteKey;
+		if (noteKey.length > 0) then
+	          childnote->Note.noteKey := (integer) noteKey;
+		end if;
 	      else
                 StatusReport.source_widget := notew.top;
                 StatusReport.message := "Cannot determine Note Type\n";

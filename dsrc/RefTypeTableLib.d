@@ -171,10 +171,10 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      while (mgi_tblGetCell(table, row, table.refsType) != "" and
-		     mgi_tblGetCell(table, row, table.refsType) != mgi_getstr(dbproc, 2)) do
-		row := row + 1;
-	      end while;
+--	      while (mgi_tblGetCell(table, row, table.refsType) != "" and
+--		     mgi_tblGetCell(table, row, table.refsType) != mgi_getstr(dbproc, 2)) do
+--		row := row + 1;
+--	      end while;
 
 	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
