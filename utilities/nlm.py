@@ -86,6 +86,9 @@
 #
 # History
 #
+#	lec	-9/17/2003
+#	- TR 5148; format changed PMID is listed before UI
+#
 #	lec	03/27/2001
 #	- pmiKey should be pmidKey
 #
@@ -749,9 +752,9 @@ def processFile():
 
 	while line:
 
-		# Find start of new record by looking for line containing 'PMID-'
+		# Find start of new record by looking for line containing 'PMID  -'
 
-		if regex.match('PMID-', line) > 0:
+		if regex.match('PMID-', line) > 0 or regex.match('PMID  -', line) > 0:
 			if newRec:	# Found new record, process current one
 				processRec(rec, rectags)
 				rec = {}	# re-set the dictionary
