@@ -1,3 +1,10 @@
+TAG: ei-2-6-3
+DATE: 09/28/2000
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) added "mgi" to installall, buildall, cleanall
+
 TAG: ei-2-6-2
 DATE: 09/27/2000
 STAFF: lec
