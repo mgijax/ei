@@ -373,6 +373,7 @@ rules:
 	  logicalKey : string;
 	  accKey : string;
           accID : string;
+          tempAccID : string;
 	  accName : string;
 	  origRefsKey : string;
 	  cmd : string := "";
@@ -423,9 +424,14 @@ rules:
 	      end if;
 
               accKey := mgi_tblGetCell(table, r, table.accKey);
-              accID := mgi_tblGetCell(table, r, table.accID);
+              tempAccID := mgi_tblGetCell(table, r, table.accID);
               accName := mgi_tblGetCell(table, r, table.accName);
 	      origRefsKey := "-1";
+
+	      -- Get rid of trailing tabs or newlines
+	      accID := mgi_simplesub("\t", "", tempAccID);
+	      tempAccID := accID;
+	      accID := mgi_simplesub("\n", "", tempAccID);
 
 	      -- If accession table contains a reference column, use it
 
