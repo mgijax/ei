@@ -609,6 +609,10 @@ rules:
 		column := (integer) list_w.targetAccID;
 	      end if;
 	    else
+	      if (list_w.selectedItems.count = 0) then
+		return;
+	      end if;
+
 	      item := list_w.selectedItems[0];
 
 	      if (item.length > cbPrefix.length) then
