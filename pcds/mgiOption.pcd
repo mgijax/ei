@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 30 08:16:17 2001";
+      lastWritten = "Thu Aug 30 10:52:21 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1478,7 +1478,7 @@ Module: mgiOption
           AntibodySpeciesMenu = OptionMenu;
           Group: Widget
             subMenuId = AntibodySpeciesPulldown;
-            labelString = "Ab raised in";
+            labelString = "Antibody\nRaised In";
           Group: Control
             vip_x = 80;
             vip_y = 1295;
