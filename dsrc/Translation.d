@@ -364,7 +364,7 @@ rules:
 			top->MGITypeMenu.menuHistory.defaultValue);
 
 	  cmd := "select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, " +
-		  "t.modifiedBy, t.modification_date, v.description, v.accID " +
+		  "t.modifiedBy, t.modification_date, v.description, v.accID, v.mgiID " +
 		  "from " + mgi_DBtable(MGI_TRANSLATION) + " t, " + dbView + " v" +
 		  " where v._Object_key = t._Object_key" + 
 		  " and t._TranslationType_key = " + currentRecordKey +
@@ -377,17 +377,26 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      (void) mgi_tblSetCell(transTable, row, transTable.transKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(transTable, row, transTable.objectKey, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(transTable, row, transTable.nonmgiTerm, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(transTable, row, transTable.mgiTerm, mgi_getstr(dbproc, 7));
-	      (void) mgi_tblSetCell(transTable, row, transTable.accID, mgi_getstr(dbproc, 8));
-	      (void) mgi_tblSetCell(transTable, row, transTable.currentSeqNum, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(transTable, row, transTable.seqNum, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(transTable, row, transTable.modifiedBy, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(transTable, row, transTable.modifiedDate, mgi_getstr(dbproc, 6));
-	      (void) mgi_tblSetCell(transTable, row, transTable.editMode, TBL_ROW_NOCHG);
-	      row := row + 1;
+
+	      if (row = (integer) mgi_getstr(dbproc, 4) - 1) then
+	        (void) mgi_tblSetCell(transTable, row, transTable.transKey, mgi_getstr(dbproc, 1));
+	        (void) mgi_tblSetCell(transTable, row, transTable.objectKey, mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(transTable, row, transTable.nonmgiTerm, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(transTable, row, transTable.mgiTerm, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(transTable, row, transTable.currentSeqNum, mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(transTable, row, transTable.seqNum, mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(transTable, row, transTable.modifiedBy, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(transTable, row, transTable.modifiedDate, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(transTable, row, transTable.editMode, TBL_ROW_NOCHG);
+
+	        if (mgi_getstr(dbproc, 9).length > 0) then
+		  (void) mgi_tblSetCell(transTable, row, transTable.accID, mgi_getstr(dbproc, 9));
+	        else
+		  (void) mgi_tblSetCell(transTable, row, transTable.accID, mgi_getstr(dbproc, 8));
+	        end if;
+
+	        row := row + 1;
+	      end if;
             end while;
           end while;
  
@@ -485,7 +494,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  select : string := "select _Object_key, description, accID from " + dbView;
+	  select : string := "select _Object_key, description, accID, mgiID from " + dbView;
 
 	  if (column = sourceWidget.mgiTerm) then
 	    select := select + " where description = " + mgi_DBprstr(value);
@@ -500,7 +509,12 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      objectKey := mgi_getstr(dbproc, 1);
 	      mgiTerm  := mgi_getstr(dbproc, 2);
-	      accID := mgi_getstr(dbproc, 3);
+
+	      if (mgi_getstr(dbproc, 4).length > 0) then
+	       accID := mgi_getstr(dbproc, 4);
+	      else
+	       accID := mgi_getstr(dbproc, 3);
+	      end if;
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
