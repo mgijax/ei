@@ -960,7 +960,7 @@ rules:
 	    -- Else, copy key column
 
 	    elsif (keyColumn > -1) then
-	      mgi_tblSetCell(table, row, keyColumn, mgi_tblGetCell(table, row, keyColumn));
+	      mgi_tblSetCell(table, i, keyColumn, mgi_tblGetCell(table, row, keyColumn));
 	    end if;
 
 	    CommitTableCellEdit.source_widget := table;
