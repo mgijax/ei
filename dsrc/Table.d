@@ -300,8 +300,8 @@ rules:
 	  result := XrtTblMakeCellVisible(table, 0, 0);
 
 	  -- Traverse to the first cell
---	  TraverseToTableCell.table := table;
---	  send(TraverseToTableCell, 0);
+	  TraverseToTableCell.table := table;
+	  send(TraverseToTableCell, 0);
 
 	  -- Re-set the table modification flag
 	  table.modified := false;

@@ -1170,8 +1170,6 @@ rules:
 	  column : integer := MPTraverse.column;
 	  reason : integer := MPTraverse.reason;
 
-	  return;
-
 	  if (column = annotTable.evidence) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
 	      row := -1;

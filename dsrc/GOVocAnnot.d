@@ -19,7 +19,7 @@
 --	exclude *any* reference which has a GO annotation
 --
 -- 04/28/2004 lec
---	- TR 5693; GO annotation note template (see NotePreInit, NotePreCancel)
+--	- TR 5693; GO annotation note template (see GONoteInit, NotePreCancel)
 --
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
@@ -77,7 +77,7 @@ devents:
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	NotePreCancel :local [];			-- Pre-cancellation of Note Dialog
-	NotePreInit :local [];				-- Pre-initialization of Note Dialog
+	GONoteInit :local [];				-- Pre-initialization of Note Dialog
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
@@ -300,13 +300,11 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  if (annotTable.annotVocab = "GO") then
-	    ProcessNoteForm.notew := top->mgiNoteForm;
-	    ProcessNoteForm.tableID := MGI_NOTE;
-	    ProcessNoteForm.objectKey := currentRecordKey;
-	    send(ProcessNoteForm, 0);
-	    cmd := top->mgiNoteForm.sql;
-          end if;
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := top->mgiNoteForm.sql;
 
 	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
@@ -504,14 +502,12 @@ rules:
 	    end if;
 	  end if;
 
-	  if (annotTable.annotVocab = "GO") then
-	    SearchNoteForm.notew := top->mgiNoteForm;
-	    SearchNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
-            SearchNoteForm.join := "v._Object_key";
-	    send(SearchNoteForm, 0);
-	    from := from + top->mgiNoteForm.sqlFrom;
-	    where := where + top->mgiNoteForm.sqlWhere;
-          end if;
+	  SearchNoteForm.notew := top->mgiNoteForm;
+	  SearchNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
+          SearchNoteForm.join := "v._Object_key";
+	  send(SearchNoteForm, 0);
+	  from := from + top->mgiNoteForm.sqlFrom;
+	  where := where + top->mgiNoteForm.sqlWhere;
 
 	  -- Annotations
 
@@ -693,10 +689,7 @@ rules:
 	  top->ReportDialog.select := "select distinct _Object_key, description " +
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
-	  -- Different Sorts for different Annotation Types
-	  if (annotTable.annotVocab = "GO") then
-	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
-	  end if;
+	  orderBy := "e.evidenceSeqNum, e.modification_date\n";
 
 	  cmd : string := "select _Object_key, accID, description, short_description" +
 			  " from " + dbView + 
@@ -807,9 +800,7 @@ rules:
 	  (void) dbclose(dbproc);
 
 	  -- Sort by DAG
-	  if (annotTable.annotVocab = "GO") then
-	    (void) mgi_tblSort(annotTable, annotTable.dag);
-	  end if;
+	  (void) mgi_tblSort(annotTable, annotTable.dag);
 
 	  -- Reset Background
 
@@ -856,13 +847,11 @@ rules:
 
 	  -- End Reset Background
 
-	  if (annotTable.annotVocab = "GO") then
-	    send(SelectGOReferences, 0);
-	    LoadNoteForm.notew := top->mgiNoteForm;
-	    LoadNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
-	    LoadNoteForm.objectKey := currentRecordKey;
-	    send(LoadNoteForm, 0);
-	  end if;
+	  send(SelectGOReferences, 0);
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
 
           top->QueryList->List.row := Select.item_position;
 
@@ -957,14 +946,6 @@ rules:
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
-	  if (annotTable.annotVocab = "GO") then
-	    top->mgiNoteForm.managed := true;
-	    top->Reference.managed := true;
-	  else
-	    top->mgiNoteForm.managed := false;
-	    top->Reference.managed := false;
-	  end if;
-
 	  (void) reset_cursor(mgi);
 	end does;
 
@@ -1003,14 +984,13 @@ rules:
 	NotePreCancel does
 	  row : integer := mgi_tblGetCurrentRow(annotTable);
 
-	  if (annotTable.annotVocab = "GO" and
-	      mgi_tblGetCell(annotTable, row, annotTable.notes) = goNoteTemplate) then
+	  if (mgi_tblGetCell(annotTable, row, annotTable.notes) = goNoteTemplate) then
 	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, "");
 	  end if;
 	end does;
 
 --
--- NotePreInit
+-- GONoteInit
 -- (TR 5693)
 --
 -- Activated From:  NotePush.activateCallback
@@ -1018,13 +998,15 @@ rules:
 --		    then initialize row note with GO note template.
 --
 
-	NotePreInit does
+	GONoteInit does
 	  row : integer := mgi_tblGetCurrentRow(annotTable);
 
-	  if (annotTable.annotVocab = "GO" and
-	      mgi_tblGetCell(annotTable, row, annotTable.notes) = "") then
+	  if (mgi_tblGetCell(annotTable, row, annotTable.notes) = "") then
 	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, goNoteTemplate);
 	  end if;
+
+	  NoteInit.source_widget := top->Lookup->NotePush;
+	  send(NoteInit, 0);
 	end does;
 
 --
@@ -1043,6 +1025,10 @@ rules:
 	  reason : integer := GOTraverse.reason;
 
 	  if (column = annotTable.inferredFrom) then
+	    send(GONoteInit, 0);
+	  end if;
+
+	  if (column = annotTable.editor) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
 	      row := -1;
 	    end if;
