@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Sep 27 11:21:00 1999";
+      lastWritten = "Tue Oct  5 13:40:57 1999";
         {
           MGINomen = Application : MGI;
           Group: Control
@@ -898,82 +898,9 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 35;
             vip_y = 85;
-              {
-                MainForm = XmForm;
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                    }
-                    {
-                      SearchDialog = SearchDialog;
-                    }
-                    {
-                      WhichItem = WhichItem;
-                    }
-                    {
-                      VerifyItemAdd = VerifyItemAdd;
-                    }
-                    {
-                      WorkingDialog = WorkingDialog;
-                    }
-                    {
-                      NoteDialog = NoteDialog;
-                    }
-                    {
-                      MRKTransferDialog = MRKTransferDialog : mgiDialog;
-                          {
-                            frame = XmFrame;
-                          }
-                          {
-                            Marker = Table;
-                          }
-                          {
-                            manualFrame = XmFrame;
-                                {
-                                  manualEdit = XmRowColumn;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        Homology = toggle;
-                                      }
-                                      {
-                                        MLCOld = toggle;
-                                      }
-                                      {
-                                        MLCNew = toggle;
-                                      }
-                                      {
-                                        MarkerAccession = toggle : mgiDataTypes;
-                                      }
-                                      {
-                                        MarkerAccessionText = CharSText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                managed = False;
-                                            }
-                                            {
-                                              text = scrolledText;
-                                              Group: Widget
-                                                columns = 70;
-                                                maxLength = 1000;
-                                                editable = False;
-                                            }
-                                      }
-                                }
-                          }
-                    }
-              }
         }
         {
-          Reference = ReferenceSave : MGD;
+          Reference = Reference : MGD;
           Group: Control
             vip_x = 175;
             vip_y = 30;

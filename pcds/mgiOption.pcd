@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Sep 27 11:40:41 1999";
+      lastWritten = "Mon Oct  4 08:15:00 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -331,6 +331,11 @@ Module: mgiOption
                         defaultValue = 11;
                     }
                     {
+                      UniGene = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = UniGene;
+                    }
+                    {
                       ATCC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 12;
@@ -440,6 +445,7 @@ Module: mgiOption
                         labelString = "JAX Mice Registry";
                       Group: User
                         private = True;
+                        defaultValue = 22;
                     }
               }
         }
