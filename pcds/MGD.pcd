@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 31 12:55:18 2005";
+      lastWritten = "Thu Feb  3 14:43:41 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9189,11 +9189,11 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = StrainType;
+                                    topWidget = strainSpecies;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 20;
-                                    leftWidget = StrainType;
+                                    leftWidget = strainSpecies;
                                   Group: User
                                     defaultOption = No;
                                       Popups:
@@ -9426,6 +9426,31 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  Genotype = Table : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Reference;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Reference;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 3;
+                                          xrtTblNumColumns = 7;
+                                          xrtTblColumnLabels = "Mode,Key,G Key,Q Key,MGI ID,Genotype,Qualifier";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 50)(all 6 15)";
+                                          userDefinedAttributes = "strainGenotypeKey:Int(Int)=\"1\"\ngenotypeKey:Int(Int)=\"2\"\nqualifierKey:Int(Int)=\"3\"\ngenotype:Int(Int)=\"4\"\ngenotypeName:Int(Int)=\"5\"\nqualifier:Int(Int)=\"6\"\n";
+                                          xrtTblValidateCellCallback = "D:VerifyGenotype\nD:CommitTableCellEdit";
+                                          xrtTblTraversableSeries = "(all 0 False)(all 5 False)";
+                                          xrtTblEditableSeries = "(all 0 False)(all 5 False)";
+                                      }
+                                }
+                                {
                                   ReferenceMGI = DataSetForm : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -9433,7 +9458,7 @@ Shift<Key>Tab: prev-tab-group()
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = Reference;
+                                    topWidget = Genotype;
                                     topOffset = 5;
                                     leftWidget = Name;
                                       {
@@ -9459,7 +9484,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Retrieve = TablePush;
                                         Group: Widget
-                                          activateCallback = "D:SelectReferences";
+                                          activateCallback = "D:SelectReferenceMGI";
                                       }
                                 }
                                 {
@@ -9827,6 +9852,17 @@ Shift<Key>Tab: prev-tab-group()
                                           targetWidget = StrainType;
                                           targetKey = 2;
                                           targetText = 3;
+                                      }
+                                }
+                                {
+                                  StrainGenoQualMenu = StrainGenoQualMenu : mgiOption;
+                                      Popups:
+                                      {
+                                        StrainGenoQualPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Genotype;
+                                          tableOption = 6;
+                                          tableOptionKey = 3;
                                       }
                                 }
                           }

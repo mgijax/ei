@@ -1207,7 +1207,8 @@ rules:
 	  row : integer := VerifyGenotype.row;
 	  column : integer := VerifyGenotype.column;
 	  reason : integer := VerifyGenotype.reason;
-	  genotypeKey : string;
+	  genotypeKey : string := "";
+	  genotypeName : string := "";
 
 	  if (reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
 	    return;
@@ -1219,21 +1220,41 @@ rules:
 	    return;
 	  end if;
 
-	  (void) busy_cursor(top);
+	  -- a kludge...this really needs to be specific to GXD Assays
+	  -- where we want to default the Gentoype
 
 	  if (mgi_tblGetCell(table, row, table.genotype) = "") then
-	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
-	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
-	  else
-	    genotypeKey := mgi_sql1("select _Object_key from GXD_Genotype_Acc_View " +
-		"where accID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)));
-	    if (genotypeKey.length > 0) then
-	      (void) mgi_tblSetCell(table, row, table.genotypeKey, genotypeKey);
-	    else
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "Invalid Genotype.\n";
-	      send(StatusReport, 0);
+	    if (table.is_defined("genotypeName") = nil) then
+	      (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
+	      (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
 	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  dbproc : opaque := mgi_dbopen();
+	  cmd : string := "select _Object_key, description from GXD_Genotype_Summary_View " +
+		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype));
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      genotypeKey := mgi_getstr(dbproc, 1);
+	      genotypeName := mgi_getstr(dbproc, 2);
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  if (genotypeKey.length > 0) then
+	    (void) mgi_tblSetCell(table, row, table.genotypeKey, genotypeKey);
+	    if (table.is_defined("genotypeName") != nil) then
+	      (void) mgi_tblSetCell(table, row, table.genotypeName, genotypeName);
+	    end if;
+	  else
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Invalid Genotype.\n";
+	    send(StatusReport, 0);
 	  end if;
 
 	  (void) reset_cursor(top);

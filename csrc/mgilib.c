@@ -788,6 +788,7 @@ char *mgi_DBkey(int table)
 	    break;
     case MGI_REFERENCE_NOMEN_VIEW:
     case MGI_REFERENCE_SEQUENCE_VIEW:
+    case MGI_REFERENCE_STRAIN_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
     case MGI_SETMEMBER:
@@ -914,6 +915,9 @@ char *mgi_DBkey(int table)
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
             strcpy(buf, "_Source_key");
+	    break;
+    case PRB_STRAIN_GENOTYPE:
+            strcpy(buf, "_StrainGenotype_key");
 	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "_StrainMarker_key");
@@ -1701,6 +1705,9 @@ char *mgi_DBtable(int table)
     case PRB_SOURCE_MASTER:
             strcpy(buf, "PRB_Source");
 	    break;
+    case PRB_STRAIN_GENOTYPE:
+            strcpy(buf, "PRB_Strain_Genotype");
+	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
 	    break;
@@ -1979,6 +1986,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_REF_NOTES:
     case PRB_RFLV:
     case PRB_SOURCE:
+    case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
     case PRB_STRAIN_TYPE:
     case VOC_ANNOT:
@@ -2393,6 +2401,9 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case PRB_STRAIN_GENOTYPE:
+            sprintf(buf, "insert %s (%s, _Strain_key, _Genotype_key, _Qualifier_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case PRB_STRAIN_MARKER:
             sprintf(buf, "insert %s (%s, _Strain_key, _Marker_key, _Allele_key, _Qualifier_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2522,8 +2533,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
 		mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
       case ALL_ALLELE:
-      case BIB_REFS:
       case BIB_DATASET_ASSOC:
+      case BIB_REFS:
       case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:
@@ -2540,6 +2551,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_SYNONYMTYPE:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
+      case MLD_MARKER:
+      case MRK_CHROMOSOME:
       case MRK_HISTORY:
       case MRK_MARKER:
       case NOM_MARKER:
@@ -2551,6 +2564,9 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_REFERENCE:
       case PRB_RFLV:
       case PRB_SOURCE:
+      case PRB_STRAIN_GENOTYPE:
+      case PRB_STRAIN_MARKER:
+      case PRB_STRAIN_TYPE:
       case SEQ_SEQUENCE:
       case STRAIN:
       case VOC_EVIDENCE:

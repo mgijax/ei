@@ -86,6 +86,7 @@ devents:
 	Init :local [];
 	Modify :local [];
 
+	ModifyGenotype :local [];
 	ModifyType :local [];
 	ModifySuperStandard :local [];
 
@@ -181,6 +182,7 @@ rules:
 	  tables.append(top->StrainType->Table);
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Synonym->Table);
+	  tables.append(top->Genotype->Table);
 	  tables.append(top->ReferenceMGI->Table);
 	  tables.append(top->DataSets->Table);
 	  tables.append(top->Synonym->Table);
@@ -194,6 +196,10 @@ rules:
 
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
+
+	  -- Strain/Genotype Qualifier Menu
+	  InitOptionMenu.option := top->StrainGenoQualMenu;
+	  send(InitOptionMenu, 0);
 
 	  -- Initialize Notes form
 
@@ -248,6 +254,7 @@ rules:
 		 global_loginKey + "," + global_loginKey + ")\n";
  
 	  send(ModifyType, 0);
+	  send(ModifyGenotype, 0);
 	  annotKey := NO;
 	  send(ModifySuperStandard, 0);
 
@@ -385,6 +392,7 @@ rules:
           cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
 
 	  send(ModifyType, 0);
+	  send(ModifyGenotype, 0);
 	  send(ModifySuperStandard, 0);
 
 	  --  Process Markers/Alleles
@@ -479,6 +487,63 @@ rules:
 	      cmd := cmd + mgi_DBupdate(PRB_STRAIN_TYPE, key, set);
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
 	      cmd := cmd + mgi_DBdelete(PRB_STRAIN_TYPE, key);
+	    end if;
+ 
+	    row := row + 1;
+	  end while;
+	end does;
+ 
+--
+-- ModifyGenotype
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Genotypes
+-- Appends to global "cmd" string
+--
+ 
+	ModifyGenotype does
+	  table : widget := top->Genotype->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  genotypeKey : string;
+	  qualifierKey : string;
+	  set : string := "";
+	  keyDeclared : boolean := false;
+	  keyName : string := "genotypeKey";
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.strainGenotypeKey);
+	    genotypeKey := mgi_tblGetCell(table, row, table.genotypeKey);
+	    qualifierKey := mgi_tblGetCell(table, row, table.qualifierKey);
+
+	    if (editMode = TBL_ROW_ADD) then
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(PRB_STRAIN_GENOTYPE, NEWKEY, keyName);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+
+              cmd := cmd + mgi_DBinsert(PRB_STRAIN_GENOTYPE, keyName) + 
+		     currentRecordKey + "," + genotypeKey + "," + qualifierKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Genotype_key = " + genotypeKey + "," +
+		     "_Qualifier_key = " + qualifierKey;
+	      cmd := cmd + mgi_DBupdate(PRB_STRAIN_GENOTYPE, key, set);
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(PRB_STRAIN_GENOTYPE, key);
 	    end if;
  
 	    row := row + 1;
@@ -726,7 +791,10 @@ rules:
 		 "select _Annot_key from VOC_Annot " +
 		 "where _AnnotType_key = " + annotTypeKey +
 		 " and _Term_key = " + superStandardKey +
-		 " and _Object_key = " + currentRecordKey + "\n";
+		 " and _Object_key = " + currentRecordKey + "\n" +
+		 "select _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
+		 "from PRB_Strain_Genotype_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -764,8 +832,19 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.strainTypeKey, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.strainType, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
 	      elsif (results = 3) then
 		annotKey := mgi_getstr(dbproc, 1);
+
+	      elsif (results = 4) then
+		table := top->Genotype->Table;
+                (void) mgi_tblSetCell(table, row, table.strainGenotypeKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.qualifierKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.qualifier, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.genotypeName, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      end if;
 	      row := row + 1;
             end while;

@@ -189,7 +189,7 @@ rules:
 	  objectKey : string := LoadRefTypeTable.objectKey;
 	  cmd : string;
 
-	  if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW or tableID = MGI_REFTYPE_STRAIN_VIEW) then
+	  if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW or tableID = MGI_REFERENCE_STRAIN_VIEW) then
             cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
 		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
@@ -224,7 +224,7 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 6));
 
-	      if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW or tableID = MGI_REFTYPE_STRAIN_VIEW) then
+	      if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW or tableID = MGI_REFERENCE_STRAIN_VIEW) then
 	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
 
 	        if (table.is_defined("reviewKey") != nil) then
