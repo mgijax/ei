@@ -2,7 +2,7 @@
 
 '''
 #
-# TR 830
+# TR 830 - Recent Nomenclature Events Report in HTML format
 #
 # Report:
 #       template for creating Python reports
@@ -29,11 +29,6 @@ import os
 import mgdlib
 import reportlib
 
-CRT = reportlib.CRT
-SPACE = reportlib.SPACE
-TAB = reportlib.TAB
-PAGE = reportlib.PAGE
-
 #
 # Main
 #
@@ -48,7 +43,8 @@ bdate = results[0]['']
 results = mgdlib.sql('select convert(varchar(25), dateadd(day, 0, "%s"))' % (currentDate), 'auto')
 edate = results[0]['']
 
-fp = reportlib.init(reportName, 'Updates to Mouse Nomenclature from %s to %s' % (bdate, edate), isHTML = 1)
+title = 'Updates to Mouse Nomenclature from %s to $s' % (bdate, edate)
+fp = reportlib.init(reportName, title, isHTML = 1)
 
 cmd = []
 
@@ -98,7 +94,6 @@ for r in results[1]:
 		fp.write('%-25s ' % (r['symbol']))
 		
 	fp.write('%-25s ' % (r['name']))
-#	fp.write('%-6s ' % (r['jnum']))
 	fp.write('<A HREF="http://www.informatics.jax.org/searches/accession_report.cgi?id=%s">%-6s</A> ' % (r['jnumID'], r['jnum']))
 	fp.write('%-16s\n' % (r['author']))
 
