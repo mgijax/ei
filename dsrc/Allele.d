@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 05/23/2003 lec
+--	- replaced global_login with global_loginKey
+--
 -- 02/14/2003 lec
 --	- TR 1892; added "exec MRK_reloadLabel"
 --
@@ -231,16 +234,6 @@ rules:
 	  -- Set Note button
           SetNotesDisplay.note := top->markerDescription->Note;
           send(SetNotesDisplay, 0);
-
-	  -- Clear/Set Notes
-	  ClearSetNoteForm.notew := top->mgiNoteForm;
-
-	  if (ClearAllele.reset) then
-	    ClearSetNoteForm.clearNote := false;
-	  end if;
-
-	  send(ClearSetNoteForm, 0);
-
 	end does;
 
 --
@@ -291,10 +284,11 @@ rules:
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
-		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ",";
+		 global_loginKey + "," +
+		 global_loginKey + ",";
 
 	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
-	    cmd := cmd + mgi_DBprstr(global_login) + ",getdate())\n";
+	    cmd := cmd + global_loginKey + ",getdate())\n";
 	  else
 	    cmd := cmd + "NULL,NULL)\n";
 	  end if;
@@ -523,7 +517,7 @@ rules:
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
-	      set := set + "approvedBy = " + mgi_DBprstr(global_login) + ",approval_date = getdate(),";
+	      set := set + "_ApprovedBy_key = " + global_loginKey + ",approval_date = getdate(),";
 	    end if;
           end if;
 
@@ -561,8 +555,7 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
-	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or
-	       set.length > 0) then
+	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set) +
 		"\nexec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value;
 	  end if;
@@ -789,7 +782,7 @@ rules:
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "a";
 	  send(QueryModificationHistory, 0);
-	  from := from + top->ModificationHistory->Table.sqlFrom;
+          from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
  
 	  value := top->mgiMarker->ObjectID->text.value;
@@ -981,11 +974,11 @@ rules:
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 8);
 	        top->Name->text.value         := mgi_getstr(dbproc, 9);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 27));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 15));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 28));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 29));
 		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 14));
 
 		-- If the Marker key is null, then use the Nomen Symbol field

@@ -1,4 +1,4 @@
-
+--
 -- Name    : Assay.d
 -- Creator : lec
 -- Assay.d 07/01/99
@@ -28,16 +28,13 @@
 --
 -- History
 --
--- lec	11/05/2003
---	TR 4826; remove VerifyAge; using stored procedure PRB_ageMinMax now
---
 -- lec	10/31/2003
---	TR 5270; Reporter Gene Search
+--	- TR 5270; Reporter Gene
 --
 -- lec	06/03/2003
---	TR 4603; DuplicateAssay
---	TR 4610; added Insert Row to Gel Lane table
---	TR 4669; AddToEditClipboard
+--	- TR 4603; DuplicateAssay
+--	- TR 4610; added Insert Row to Gel Lane table
+--	- TR 4669; AddToEdtClipboard
 --
 -- lec	05/07/2003
 --	- TR 3710; added Knock In Assay Type
@@ -280,9 +277,10 @@ locals:
 
 	continueWithNextRecord : boolean;
 
-	lanes : string_list;		-- String List of Gel Lanes
+	lanes : string_list;            -- String List of Gel Lanes
 
-	-- these values are set by stored procedure MGI_resetAgeMinMax
+	-- these values are set in MGI_resetMinMax
+
 	ageMin : string := "NULL";
 	ageMax : string := "NULL";
 
@@ -395,7 +393,6 @@ rules:
           send(SetNotesDisplay, 0);
 
 	  if (not AssayClear.select) then
-	    currentAssay := "";
 	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
@@ -403,6 +400,7 @@ rules:
 	    top->KnockInForm.sensitive := false;
 	    top->GXDReporterGeneMenu.required := false;
 	    top->GXDKnockInMenu.required := false;
+	    currentAssay := "";
 	  end if;
 	end does;
 
@@ -429,6 +427,7 @@ rules:
 	  tables.append(top->InSituForm->Specimen->Table);
 	  tables.append(top->GelForm->GelLane->Table);
 	  tables.append(top->GelForm->GelRow->Table);
+	  tables.append(top->Control->ModificationHistory->Table);
 
 	  SetRowCount.source_widget := top;
 	  SetRowCount.tableID := GXD_ASSAY;
@@ -570,7 +569,7 @@ rules:
 	    cmd := cmd + top->GXDReporterGeneMenu.menuHistory.defaultValue;
 	  end if;
 
-	  cmd := cmd + ")\n";
+	  cmd := global_loginKey + "," + global_loginKey + ")\n";
 
 	  -- Probe Reference
 
@@ -642,7 +641,7 @@ rules:
 	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ")\n";
 
 	  prepDetailForm.sql := add;
-	end does;
+	end
 
 --
 -- AddProbePrep
@@ -665,7 +664,7 @@ rules:
 		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
 
 	  prepDetailForm.sql := add;
-	end does;
+	end
 
 --
 -- AddProbeReference
@@ -678,7 +677,7 @@ rules:
 	  cmd := cmd + "execute PRB_insertReference " +
 	         top->mgiCitation->ObjectID->text.value + "," +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "\n";
-	end does;
+	end
 
 --
 -- AddToEditClipboard
@@ -875,7 +874,7 @@ rules:
 	      keyColumn := table.sexKey;
 	    end if;
 
-	    -- For Age Prefix, copy Age Key column
+	    -- For Age Prefix, copy Age Key columns
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, row, table.ageKey, mgi_tblGetCell(table, row - 1, table.ageKey));
@@ -936,7 +935,7 @@ rules:
 	      keyColumn := table.sexKey;
 	    end if;
 
-	    -- For Age Prefix, copy Age Key column
+	    -- For Age Prefix, copy Age Key columns
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, i, table.ageKey, mgi_tblGetCell(table, row, table.ageKey));
@@ -1140,9 +1139,6 @@ rules:
 	LoadClipboards does
 
           ClipboardLoad.source_widget := top->CVGel->ADClipboard->Label;
-          send(ClipboardLoad, 0);
-
-          ClipboardLoad.source_widget := top->InSituResultDialog->ADClipboard->Label;
           send(ClipboardLoad, 0);
 
 	  if (assayDetailForm.name = "InSituForm") then
@@ -1480,9 +1476,9 @@ rules:
                           "age = " + mgi_DBprstr(ageKey) + "," +
                           "ageNote = " + mgi_DBprstr(ageNote) + "," +
                           "hybridization = " + mgi_DBprstr(hybridizationKey) + "," +
-                          "specimenNote = " + mgi_DBprstr(specimenNote);
-                cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update) +
-		     "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_SPECIMEN) + "," + key + "\n";
+                          "specimenNote = " + mgi_DBprstr(specimenNote) +
+		          "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_SPECIMEN) + "," + key + "\n";
+                cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
 	      end if;
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_SPECIMEN, key);
@@ -1632,7 +1628,6 @@ rules:
               -- Else, a simple update
  
               else
-
                 update := "_Genotype_key = " + genotypeKey + "," +
 		          "_GelRNAType_key = " + rnaKey + "," +
                           "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
@@ -1641,19 +1636,18 @@ rules:
                           "sex = " + mgi_DBprstr(sexKey) + "," +
                           "age = " + mgi_DBprstr(ageKey) + "," +
 	    	          "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
-                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update) +
-		     "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_GELLANE) + "," + key + "\n";
+	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) +
+		          "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_GELLANE) + "," + key + "\n";
+                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
 
                 -- Process Gel Lane Structures
-
+  
                 ModifyStructure.source_widget := table;
                 ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
                 ModifyStructure.key := key;
                 ModifyStructure.row := row;
                 send(ModifyStructure, 0);
                 cmd := cmd + top->CVGel->ADClipboard.updateCmd;
-   
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
@@ -1872,15 +1866,11 @@ rules:
           from := from + accTable.sqlFrom;
           where := where + accTable.sqlWhere;
  
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "g";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "g";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "g";
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->mgiCitation->ObjectID->text.value.length > 0 and
               top->mgiCitation->ObjectID->text.value != "NULL") then
@@ -2210,6 +2200,7 @@ rules:
 	  results : integer := 1;
 	  reporterGene : string;
 	  knockInPrep : string;
+	  table : widget := top->Control->ModificationHistory->Table;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2223,8 +2214,11 @@ rules:
                 top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 24);
                 top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 4);
                 top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 19);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 11);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 12);
+
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 26));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 12));
 
                 SetOption.source_widget := top->AssayTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -2375,7 +2369,7 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
-	  -- Don't clear the Gel form because it'll wipe out editMode flags on Gel Bands
+	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
 
 	  if (assayDetailForm.name = "GelForm") then
 	    AssayClear.clearForms := clearAssayGel;
@@ -2701,10 +2695,10 @@ rules:
 	    newColLabels := newColLabels + 
 		",Mode,Lane key,Band key,Strength key," + (string) b + "; " + laneLabel + ",Note";
 	    newPixelWidthSeries := newPixelWidthSeries +
-		" (all " + (string) (begCol + 1) + "-" + (string) endCol + " 0)";
+		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
 	    newCharWidthSeries := newCharWidthSeries +
 		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)" +
-			" (all " + (string) begCol + " 1)";
+		" (all " + (string) begCol + " 1)";
 	    newTraverseSeries := newTraverseSeries + 
 		" (all " + (string) begCol + "-" + (string) endCol + " False)";
 	    newEditableSeries := newEditableSeries + 
@@ -2816,10 +2810,10 @@ rules:
 	      --	then we're okay
 	      -- else
 	      --	skip to the appropriate Gel Lane in the Gel Row table
-	      --	flag Gel Band for Add
+	      --        flag Gel Band for Add
 
 	      while (mgi_getstr(dbproc, 2) != mgi_tblGetCell(gelTable, row, gelTable.laneKey + x)) do
-	        (void) mgi_tblSetCell(gelTable, row, gelTable.bandMode + x, TBL_ROW_ADD);
+		(void) mgi_tblSetCell(gelTable, row, gelTable.bandMode + x, TBL_ROW_ADD);
 		lane := lane + 1;
 	        x := lane * gelTable.bandIncrement;
 	      end while;
@@ -2850,9 +2844,6 @@ rules:
 	    i := i + 1;
 	  end while;
 
-	  -- Set bandMode for any bands which have not been set
-          -- Set row.editMode based on whether any bandModes have been set for that row
-
 	  row := 0;
 	  i := 0;
 	  while (row < mgi_tblNumRows(gelTable)) do
@@ -2880,7 +2871,6 @@ rules:
 	    end while;
 	    row := row + 1;
           end while;
-
 	end does;
 
 --

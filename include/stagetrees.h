@@ -49,12 +49,6 @@
 #include <mgilib.h> 
 #include <hashtbl.h>
 
-
-#if defined(__cplusplus) || defined(c_plusplus)
-  extern "C" {
-#endif
-
-
 /* DEFINES */
 
 /* the maximum length of a string (+1 over DB's definition, to hold null) */
@@ -731,11 +725,5 @@ Widget createNodeFolder(Widget parent, char *widgetName,
       returns: created XmXrtNodeFolder.
      
     */
-
-
-#if defined(__cplusplus) || defined(c_plusplus)
-   } 
-#endif
-
 
 #endif

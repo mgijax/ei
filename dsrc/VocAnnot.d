@@ -11,9 +11,6 @@
 --
 -- History
 --
--- 12/12/2003 lec
---	- TR 5422; fix notes
---
 -- 09/18/2003 lec
 --	- TR 4579; VOC_Evidence; extended notes; added primary key
 --
@@ -307,7 +304,6 @@ rules:
 	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
-	  notesModified : boolean := false;
  
           if (not top.allowEdit) then
             return;
@@ -426,19 +422,15 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       mgi_DBprstr(inferredFrom) + "," +
-		       mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ")\n";
+		       global_loginKey + "," + global_loginKey + ")\n";
 
 	      ModifyNotes.source_widget := annotTable;
 	      ModifyNotes.tableID := MGI_NOTE;
 	      ModifyNotes.key := "@" + keyName;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
-	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
 	      cmd := cmd + annotTable.sqlCmd;
-	      if (annotTable.sqlCmd.length > 0) then
-	        notesModified := true;
-	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -461,12 +453,8 @@ rules:
 	      ModifyNotes.key := key;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
-	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
 	      cmd := cmd + annotTable.sqlCmd;
-	      if (annotTable.sqlCmd.length > 0) then
-	        notesModified := true;
-	      end if;
 
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
@@ -777,9 +765,10 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 11));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 13));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 12));
+--	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 22));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);

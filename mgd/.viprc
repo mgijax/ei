@@ -89,7 +89,11 @@ pcds
     show_names  = false
     height      = 1166
 
+<<<<<<< .viprc
   load "/home/lec/ei/ei/pcds/mgiAnatDictionary.pcd"
+=======
+  load "/home/lec/ei/ei/pcds/mgiAnatDictionary.pcd"
+>>>>>>> 1.8.2.3
     floating    = false
     opened      = false
     show_names  = false

@@ -7,9 +7,6 @@
 --
 -- History
 --
--- lec	12/17/2003
---	- TR 5327; Nomen merge
---
 -- lec 07/11/2001
 --	- fixed bug in use of QueryDate.tag value
 --
@@ -101,7 +98,7 @@ rules:
 	QueryModificationHistory does
 	  table : widget := QueryModificationHistory.table;
 	  tag : string := QueryModificationHistory.tag;
-	  from : string := "";
+	  from : string;
 	  where : string;
 	  value : string;
 
@@ -143,25 +140,33 @@ rules:
 
 	  value := mgi_tblGetCell(table, table.createdBy, table.byUser);
 	  if (value.length > 0) then
-	    where := where + "\nand " + tag + ".createdBy like " + mgi_DBprstr(value);
+	    where := where + "\nand " + tag + "._CreatedBy_key = u1._User_key" +
+		"\nand u1.login like " + mgi_DBprstr(value);
+	    from := ",MGI_User u1";
 	  end if;
 
 	  value := mgi_tblGetCell(table, table.modifiedBy, table.byUser);
 	  if (value.length > 0) then
-	    where := where + "\nand " + tag + ".modifiedBy like " + mgi_DBprstr(value);
+	    where := where + "\nand " + tag + "._ModifiedBy_key = u2._User_key" +
+		"\nand u2.login like " + mgi_DBprstr(value);
+	    from := from + ",MGI_User u2";
 	  end if;
 
 	  if (table.is_defined("approvedBy") != nil) then
 	    value := mgi_tblGetCell(table, table.approvedBy, table.byUser);
 	    if (value.length > 0) then
-	      where := where + "\nand " + tag + ".approvedBy like " + mgi_DBprstr(value);
+	      where := where + "\nand " + tag + "._ApprovedBy_key = u3._User_key" +
+		  "\nand u3.login like " + mgi_DBprstr(value);
+	      from := from + ",MGI_User u3";
 	    end if;
 	  end if;
 
 	  if (table.is_defined("broadcastBy") != nil) then
 	    value := mgi_tblGetCell(table, table.broadcastBy, table.byUser);
 	    if (value.length > 0) then
-	      where := where + "\nand " + tag + ".broadcastBy like " + mgi_DBprstr(value);
+	      where := where + "\nand " + tag + "._BroadcastBy_key = u4._User_key" +
+		  "\nand u4.login like " + mgi_DBprstr(value);
+	      from := from + ",MGI_User u4";
 	    end if;
 	  end if;
 

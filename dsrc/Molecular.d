@@ -12,6 +12,13 @@
 --
 -- History
 --
+-- lec	07/25/2003
+--	- JSAM
+--
+-- lec 11/12/2002
+--	- SAO
+--	- implemented ModificationHistory table
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -139,8 +146,13 @@ locals:
  
         sourceKeyName : string;		-- key name when adding new Source record
 
+	modTable : widget;
+	prb_createdBy : string;
+	prb_modifiedBy : string;
 	prb_creation_date : string;
 	prb_modification_date : string;
+	ref_createdBy : string;
+	ref_modifiedBy : string;
 	ref_creation_date : string;
 	ref_modification_date : string;
 
@@ -189,15 +201,15 @@ rules:
           LoadList.list := top->LibraryList;
           send(LoadList, 0);
 
-          -- Dynmcically create menus
+          -- Dynamically create menus
  
-	  InitOptionMenu.option := top->OldSegmentTypeMenu;
+	  InitOptionMenu.option := top->MolMasterForm->SegmentTypeMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->MolDetailForm->VectorTypeMenu;
 	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->MolDetailForm->SourceForm->ProbeSpeciesMenu;
+	  InitOptionMenu.option := top->MolDetailForm->SourceForm->ProbeOrganismMenu;
 	  send(InitOptionMenu, 0);
 
         end does;
@@ -226,9 +238,12 @@ rules:
 	   
           sourceKeyName := "maxSource";
 
-	  sourceOptions.append(top->ProbeSpeciesMenu);
-	  sourceOptions.append(top->AgeMenu);
-	  sourceOptions.append(top->SexMenu);
+	  sourceOptions.append(top->MolDetailForm->ProbeOrganismMenu);
+	  sourceOptions.append(top->MolDetailForm->AgeMenu);
+	  sourceOptions.append(top->MolDetailForm->GenderMenu);
+
+	  InitOptionMenu.option := top->MolDetailForm->GenderMenu;
+	  send(InitOptionMenu, 0);
 
 	  prbTables.append(top->MolMarkerForm->Marker->Table);
 
@@ -238,8 +253,13 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 
+	  modTable := top->Control->ModificationHistory->Table;
+	  prb_createdBy := "";
+	  prb_modifiedBy := "";
 	  prb_creation_date := "";
 	  prb_modification_date := "";
+	  ref_createdBy := "";
+	  ref_modifiedBy := "";
 	  ref_creation_date := "";
 	  ref_modification_date := "";
 
@@ -326,6 +346,7 @@ rules:
 	    end if;
 
             cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
+                         top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL,NULL,";	-- primer1sequence, primer2sequence
 
             if (top->MolMasterForm->Region->text.value.length <= 255) then
@@ -337,16 +358,16 @@ rules:
 
 	    cmd := cmd + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + "," +
 	                 mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + "," +
-                         mgi_DBprstr(top->MolMasterForm->OldSegmentTypeMenu.menuHistory.defaultValue) + "," +
 	                 "NULL," +	-- repeatUnit
-	                 "NULL,0";	-- productSize, moreProduct
+	                 "NULL,0,";	-- productSize, moreProduct
 
 	  -- Insert for Primers
 
 	  else
 	    cmd := cmd + "NULL,-2,-2," +
-	           mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
-	           mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
+                         top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
+	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
+	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
 
             if (top->MolMasterForm->Region->text.value.length <= 255) then
               cmd := cmd + mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",NULL,";
@@ -356,14 +377,13 @@ rules:
             end if;
 
 	    cmd := cmd + "NULL,NULL," +	-- insertSite, insertSize
-                   mgi_DBprstr(top->MolMasterForm->OldSegmentTypeMenu.menuHistory.defaultValue) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->Repeat->text.value) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + "," +
-	           (string)((integer) top->MolPrimerForm->More.set);
+	           (string)((integer) top->MolPrimerForm->More.set) + ",";
 
 	  end if;
 
-	  cmd := cmd + ")\n";
+	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyMarker, 0);
 
@@ -428,7 +448,8 @@ rules:
 	         top->MolReferenceForm->mgiCitation->ObjectID->text.value + "," +
 	         mgi_DBprstr(top->MolReferenceForm->Holder->text.value) + "," +
 	         (string)((integer) top->MolReferenceForm->RMAP.set) + "," +
-                 (string)((integer) top->MolReferenceForm->HasSequence.set) + ")\n";
+                 (string)((integer) top->MolReferenceForm->HasSequence.set) + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyReferenceAlias, 0);
 	  send(ModifyReferenceRFLV, 0);
@@ -524,7 +545,7 @@ rules:
           end if; 
 
 	  if (origSegmentType = "primer" and 
-	      top->MolMasterForm->OldSegmentTypeMenu.menuHistory.defaultValue != "primer") then
+	      top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue != "primer") then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot change Primer to Molecular Segment.";
 	    send(StatusReport);
@@ -532,7 +553,7 @@ rules:
 	  end if;
 
 	  if (origSegmentType != "primer" and 
-	      top->MolMasterForm->OldSegmentTypeMenu.menuHistory.defaultValue = "primer") then
+	      top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue = "primer") then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot change Molecular Segment to Primer.";
 	    send(StatusReport);
@@ -561,32 +582,32 @@ rules:
 	  -- Modify Non-Primer Molecular Segment
 
           if (detailForm = top->MolDetailForm) then
-            if (top->MolDetailForm->VectorTypeMenu.menuHistory.modified) then
-	      set := set + "_Vector_key = " + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + ",";
+            if (detailForm->VectorTypeMenu.menuHistory.modified) then
+	      set := set + "_Vector_key = " + detailForm->VectorTypeMenu.menuHistory.defaultValue + ",";
 	    end if;
   
-	    if (top->MolDetailForm->InsertSize->text.modified) then
-              set := set + "insertSize = " + mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + ",";
+	    if (detailForm->InsertSize->text.modified) then
+              set := set + "insertSize = " + mgi_DBprstr(detailForm->InsertSize->text.value) + ",";
 	    end if;
 
-	    if (top->MolDetailForm->InsertSite->text.modified) then
-              set := set + "insertSite = " + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + ",";
+	    if (detailForm->InsertSite->text.modified) then
+              set := set + "insertSite = " + mgi_DBprstr(detailForm->InsertSite->text.value) + ",";
 	    end if;
 
-            if (top->MolMasterForm->OldSegmentTypeMenu.menuHistory.modified) then
-	      set := set + "DNAtype = " + mgi_DBprstr(top->MolMasterForm->OldSegmentTypeMenu.menuHistory.defaultValue) + ",";
+            if (top->MolMasterForm->SegmentTypeMenu.menuHistory.modified) then
+	      set := set + "_SegmentType_key = " + top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + ",";
 	    end if;
 
 	    -- If Parent Clone has been modified, then Source info must be reviewed
 
-	    if (top->MolDetailForm->ParentClone->ObjectID->text.modified) then
+	    if (detailForm->ParentClone->ObjectID->text.modified) then
 
 	      -- New Parent Clone value
 
-	      if (top->MolDetailForm->ParentClone->ObjectID->text.value.length > 0 and
-	          top->MolDetailForm->ParentClone->ObjectID->text.value != "NULL") then
-                set := set + "derivedFrom = " + top->MolDetailForm->ParentClone->ObjectID->text.value + ",";
-	        set := set + "_Source_key = " + top->MolDetailForm->SourceForm->SourceID->text.value + ",";
+	      if (detailForm->ParentClone->ObjectID->text.value.length > 0 and
+	          detailForm->ParentClone->ObjectID->text.value != "NULL") then
+                set := set + "derivedFrom = " + detailForm->ParentClone->ObjectID->text.value + ",";
+	        set := set + "_Source_key = " + detailForm->SourceForm->SourceID->text.value + ",";
 
 	      -- No Parent Clone value given
 	      --  1.  create new Source record for Molecular Segment
@@ -597,11 +618,11 @@ rules:
                 AddMolecularSource.source_widget := detailForm;
                 AddMolecularSource.keyLabel := sourceKeyName;
                 send(AddMolecularSource, 0);
-	        if (top->MolDetailForm->SourceForm.sql.length = 0) then
+	        if (detailForm->SourceForm.sql.length = 0) then
 	          (void) reset_cursor(top);
 	          return;
 	        end if;
-                cmd := cmd + top->MolDetailForm->SourceForm.sql;
+                cmd := cmd + detailForm->SourceForm.sql;
 	        set := set + "derivedFrom = NULL,";
 	        set := set + "_Source_key = @" + sourceKeyName + ",";
 	      end if;
@@ -609,14 +630,22 @@ rules:
 	    -- Parent Clone has not been modified, so process any Source modifications
 
             else
-              -- ModifyMolecularSource will set top->MolDetailForm->SourceForm.sql appropriately
-              -- Append this value to the 'cmd' string
-              ModifyMolecularSource.source_widget := detailForm;
-              send(ModifyMolecularSource, 0);
-              cmd := cmd + top->MolDetailForm->SourceForm.sql;
+	      -- can only modify Anonymous Source
+	      if (detailForm->SourceForm->Library->text.value.length = 0) then
+                -- ModifyProbeSource will set top->MolDetailForm->SourceForm.sql appropriately
+                -- Append this value to the 'cmd' string
+                ModifyProbeSource.source_widget := detailForm;
+	        ModifyProbeSource.probeKey := currentMasterKey;
+                send(ModifyProbeSource, 0);
+--	      else
+--                ModifyNamedMolecularSource.source_widget := detailForm;
+--                send(ModifyNamedMolecularSource, 0);
+	      end if;
 
-	      if (top->MolDetailForm->SourceForm->SourceID->text.modified) then
-	        set := set + "_Source_key = " + top->MolDetailForm->SourceForm->SourceID->text.value + ",";
+              cmd := cmd + detailForm->SourceForm.sql;
+
+	      if (detailForm->SourceForm->SourceID->text.modified) then
+	        set := set + "_Source_key = " + detailForm->SourceForm->SourceID->text.value + ",";
 	      end if;
 	    end if;
 
@@ -682,6 +711,7 @@ rules:
           editMode : string;
           key : string;
           newKey : string;
+	  refsKey : string;
 	  relationship : string;
 	  set : string;
  
@@ -696,6 +726,7 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.markerCurrentKey);
             newKey := mgi_tblGetCell(table, row, table.markerKey);
+            refsKey := mgi_tblGetCell(table, row, table.refsKey);
             relationship := mgi_tblGetCell(table, row, table.relationship);
             relationship := relationship.raise_case;
  
@@ -703,9 +734,12 @@ rules:
               cmd := cmd + mgi_DBinsert(PRB_MARKER, "") + 
 			   currentMasterKey + "," + 
 			   newKey + "," +
-			   mgi_DBprstr(relationship) + ")\n";
+			   refsKey + "," +
+			   mgi_DBprstr(relationship) + "," +
+			   global_loginKey + "," + global_loginKey + ")\n";
             elsif (editMode = TBL_ROW_MODIFY and newKey.length > 0 and newKey != "NULL") then
               set := "_Marker_key = " + newKey +
+		     ",_Refs_key = " + refsKey +
 		     ",relationship = " + mgi_DBprstr(relationship);
               cmd := cmd + mgi_DBupdate(PRB_MARKER, currentMasterKey, set) +
 			" and _Marker_key = " + key + "\n";
@@ -822,7 +856,8 @@ rules:
               cmd := cmd +
                      mgi_DBinsert(PRB_ALIAS, keyName) +
                      currentReferenceKey + "," +
-                     mgi_DBprstr(alias) + ")\n";
+                     mgi_DBprstr(alias) + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
  
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "alias = " + mgi_DBprstr(alias);
@@ -907,7 +942,8 @@ rules:
 	        cmd := cmd + mgi_DBinsert(PRB_RFLV, rflvKeyName) +
 			     currentReferenceKey + "," +
                              markerKey + "," + 
-			     mgi_DBprstr(endo) + ")\n";
+			     mgi_DBprstr(endo) + "," +
+			     global_loginKey + "," + global_loginKey + ")\n";
 	      end if;
 
 	      -- Add Allele
@@ -922,13 +958,15 @@ rules:
 		cmd := cmd + rflvKey + ",";
 	      end if;
  
-              cmd := cmd + mgi_DBprstr(allele) + "," + mgi_DBprstr(fragments) + ")\n";
+              cmd := cmd + mgi_DBprstr(allele) + "," + mgi_DBprstr(fragments) + "," +
+	             global_loginKey + "," + global_loginKey + ")\n";
 
 	      -- Add Strains
 
               strainKeys.rewind;
               while (strainKeys.more) do
-                cmd := cmd + mgi_DBinsert(PRB_ALLELE_STRAIN, alleleKeyName) + strainKeys.next + ")\n";
+                cmd := cmd + mgi_DBinsert(PRB_ALLELE_STRAIN, alleleKeyName) + strainKeys.next + "," +
+		       global_loginKey + "," + global_loginKey + ")\n";
               end while;
 
 	    elsif (editMode = TBL_ROW_MODIFY and strainKeys.count > 0) then
@@ -949,7 +987,8 @@ rules:
               strainKeys.rewind;
               while (strainKeys.more) do
                 cmd := cmd + mgi_DBinsert(PRB_ALLELE_STRAIN, NOKEY) +
-                       alleleKey + "," + strainKeys.next + ")\n";
+                       alleleKey + "," + strainKeys.next + "," +
+		       global_loginKey + "," + global_loginKey + ")\n";
               end while;
 
 	    elsif (editMode = TBL_ROW_DELETE and rflvKey.length > 0 and alleleKey.length > 0) then
@@ -1006,29 +1045,22 @@ rules:
  
           if (top->Control->References.set) then
             tag := "r";
+	    from_ref := true;
 	  else
             tag := "p";
 	  end if;
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := tag;
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := tag;
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
- 
-          if (top->Control->References.set and
-	      (top->CreationDate.sql.length > 0 or
-	       top->ModifiedDate.sql.length > 0)) then
+	  QueryModificationHistory.table := modTable;
+	  QueryModificationHistory.tag := tag;
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
+	  if (tag = "r" and top->ModificationHistory->Table.sqlWhere.length > 0) then
 	    from_ref := true;
 	  end if;
-
-          if (top->MolMasterForm->OldSegmentTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand p.DNAtype = " + 
-		mgi_DBprstr(top->MolMasterForm->OldSegmentTypeMenu.menuHistory.searchValue);
+ 
+          if (top->MolMasterForm->SegmentTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand p._SegmentType_key = " + top->MolMasterForm->SegmentTypeMenu.menuHistory.searchValue;
           end if;
 
           if (top->MolMasterForm->Name->text.value.length > 0) then
@@ -1122,6 +1154,19 @@ rules:
             where := where + "\nand g.relationship like " + mgi_DBprstr(value);
             from_marker := true;
           end if;
+
+          value := mgi_tblGetCell(table, 0, table.refsKey);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + " and g._Refs_key = " + value;
+	    from_marker := true;
+	  else
+            value := mgi_tblGetCell(table, 0, table.citation);
+            if (value.length > 0) then
+	      where := where + "\nand g.short_citation like " + mgi_DBprstr(value);
+	      from_marker := true;
+	    end if;
+	  end if;
 
           if (top->MolMarkerForm->MolNote->text.value.length > 0) then
 	    where := where + "\nand n.note like " + mgi_DBprstr(top->MolMarkerForm->MolNote->text.value);
@@ -1235,7 +1280,7 @@ rules:
 	  end if;
 
           if (from_marker) then
-	    from := from + "," + mgi_DBtable(PRB_MARKER) + " g";
+	    from := from + "," + mgi_DBtable(PRB_MARKER_VIEW) + " g";
 	    where := where + "\nand g." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE);
 	  end if;
 
@@ -1331,6 +1376,8 @@ rules:
 
 	Select does
 
+          (void) busy_cursor(top);
+
           InitAcc.table := accTable;
           send(InitAcc, 0);
 
@@ -1358,6 +1405,8 @@ rules:
           ClearList.source_widget := top->ReferenceList;
           send(ClearList, 0);
 
+	  prb_createdBy := "";
+	  prb_modifiedBy := "";
 	  prb_creation_date := "";
 	  prb_modification_date := "";
 
@@ -1368,23 +1417,22 @@ rules:
 	    currentReferenceKey := "";
 
 	    -- Re-set Library Source Key if Anonymous source
-	    if (top->MolDetailForm->SourceForm->Library->text.value = "") then
+	    if (top->MolDetailForm->SourceForm->Library->text.value.length = 0) then
 	      top->MolDetailForm->SourceForm->SourceID->text.value := "-1";
             end if;
 
+	    (void) reset_cursor(top);
 	    return;
           end if;
-
-          (void) busy_cursor(top);
 
           table : widget := top->MolMarkerForm->Marker->Table;
 	  currentMasterKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from PRB_View where _Probe_key = " + currentMasterKey + "\n" +
+	  cmd := "select * from PRB_Probe_View where _Probe_key = " + currentMasterKey + "\n" +
 		 "select parentKey, parentClone, parentNumeric from PRB_Parent_View " +
 		 "where _Probe_key = " + currentMasterKey + "\n" +
 		 "select rtrim(note) from PRB_Notes where _Probe_key = " + currentMasterKey + " order by sequenceNum\n" +
-	         "select * from PRB_Marker_View where _Probe_key = " + currentMasterKey;
+	         "select * from PRB_Marker_View where _Probe_key = " + currentMasterKey + " order by relationship, symbol";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1398,17 +1446,19 @@ rules:
 	      if (results = 1) then
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
-	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 8) + mgi_getstr(dbproc, 9);
+	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 9) + mgi_getstr(dbproc, 10);
                 top->MolMasterForm->MJnum->Jnum->text.value := "";
                 top->MolMasterForm->MJnum->ObjectID->text.value := "";
                 top->MolMasterForm->MJnum->Citation->text.value := "";
-		prb_creation_date := mgi_getstr(dbproc, 16);
-		prb_modification_date := mgi_getstr(dbproc, 17);
+		prb_createdBy := mgi_getstr(dbproc, 23);
+		prb_modifiedBy := mgi_getstr(dbproc, 24);
+		prb_creation_date := mgi_getstr(dbproc, 18);
+		prb_modification_date := mgi_getstr(dbproc, 19);
 
-		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 10);
-	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 11);
-	        top->MolPrimerForm->Sequence1->text.value   := mgi_getstr(dbproc, 6);
-	        top->MolPrimerForm->Sequence2->text.value   := mgi_getstr(dbproc, 7);
+		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 11);
+	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 12);
+	        top->MolPrimerForm->Sequence1->text.value   := mgi_getstr(dbproc, 7);
+	        top->MolPrimerForm->Sequence2->text.value   := mgi_getstr(dbproc, 8);
 	        top->MolPrimerForm->Repeat->text.value      := mgi_getstr(dbproc, 13);
 	        top->MolPrimerForm->ProductSize->text.value := mgi_getstr(dbproc, 14);
 	        top->MolPrimerForm->More.set                := (boolean)((integer) mgi_getstr(dbproc, 15));
@@ -1417,11 +1467,11 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
-		origSegmentType := mgi_getstr(dbproc, 12);
-                SetOption.source_widget := top->MolMasterForm->OldSegmentTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 12);
+                SetOption.source_widget := top->MolMasterForm->SegmentTypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
-		ViewMolSegDetail.source_widget := top->MolMasterForm->OldSegmentTypeMenu.menuHistory;
+		origSegmentType := top->MolMasterForm->SegmentTypeMenu.menuHistory.labelString;
+		ViewMolSegDetail.source_widget := top->MolMasterForm->SegmentTypeMenu.menuHistory;
 		send(ViewMolSegDetail, 0);
 
 	        top->MolMarkerForm->MolNote->text.value := "";
@@ -1446,6 +1496,10 @@ rules:
 		mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 4));
 		mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 5));
 		mgi_tblSetCell(table, row, table.relationship, mgi_getstr(dbproc, 6));
+		mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 7));
+		mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 7));
+		mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 8));
+		mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 9));
 		mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
 	      end if;
@@ -1456,8 +1510,10 @@ rules:
 	  (void) dbclose(dbproc);
  
           if (not top->Control->References.set) then
-            top->CreationDate->text.value := prb_creation_date;
-            top->ModifiedDate->text.value := prb_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdBy);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, prb_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, prb_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, prb_modification_date);
           end if;
 
           LoadAcc.table := accTable;
@@ -1490,6 +1546,8 @@ rules:
           end while;
 	  refTables.close;
 
+          ref_createdBy := "";
+          ref_modifiedBy := "";
           ref_creation_date := "";
           ref_modification_date := "";
 
@@ -1545,8 +1603,10 @@ rules:
                 top->MolReferenceForm->Holder->text.value := mgi_getstr(dbproc, 7);
                 top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 9));
                 top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 8));
-		ref_creation_date := mgi_getstr(dbproc, 10);
-		ref_modification_date := mgi_getstr(dbproc, 11);
+		ref_createdBy := mgi_getstr(dbproc, 16);
+		ref_modifiedBy := mgi_getstr(dbproc, 17);
+		ref_creation_date := mgi_getstr(dbproc, 12);
+		ref_modification_date := mgi_getstr(dbproc, 13);
               elsif (results = 2) then
                 top->MolReferenceForm->Notes->text.value := top->MolReferenceForm->Notes->text.value + 
 			mgi_getstr(dbproc, 1);
@@ -1561,11 +1621,11 @@ rules:
               elsif (results = 4) then
 		table := top->MolReferenceForm->RFLV->Table;
  
-                new_allele := mgi_getstr(dbproc, 7);
+                new_allele := mgi_getstr(dbproc, 9);
  
                 if (row >= 0 and prev_allele = new_allele) then
-                  strains := strains + ", " + mgi_getstr(dbproc, 10);
-                  strainKeys := strainKeys + ", " + mgi_getstr(dbproc, 12);
+                  strains := strains + ", " + mgi_getstr(dbproc, 12);
+                  strainKeys := strainKeys + ", " + mgi_getstr(dbproc, 14);
                 else
                   if (row >= 0) then
                     mgi_tblSetCell(table, row, table.strains, strains);
@@ -1573,16 +1633,16 @@ rules:
                   end if;
  
                   row := row + 1;
-                  strains := mgi_getstr(dbproc, 10);
-                  strainKeys := mgi_getstr(dbproc, 12);
+                  strains := mgi_getstr(dbproc, 12);
+                  strainKeys := mgi_getstr(dbproc, 14);
  
 		  mgi_tblSetCell(table, row, table.rflvKey, mgi_getstr(dbproc, 1));
 		  mgi_tblSetCell(table, row, table.alleleKey, new_allele);
 		  mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
 		  mgi_tblSetCell(table, row, table.endo, mgi_getstr(dbproc, 4));
-		  mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 11));
-		  mgi_tblSetCell(table, row, table.allele, mgi_getstr(dbproc, 8));
-		  mgi_tblSetCell(table, row, table.fragments, mgi_getstr(dbproc, 9));
+		  mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
+		  mgi_tblSetCell(table, row, table.allele, mgi_getstr(dbproc, 10));
+		  mgi_tblSetCell(table, row, table.fragments, mgi_getstr(dbproc, 11));
 		  mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		end if;
 
@@ -1607,8 +1667,10 @@ rules:
           send(LoadAcc, 0);
 
           if (top->Control->References.set) then
-            top->CreationDate->text.value := ref_creation_date;
-            top->ModifiedDate->text.value := ref_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdBy);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, ref_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, ref_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, ref_modification_date);
           end if;
  
           top->ReferenceList->List.row := SelectReference.item_position;
@@ -1645,7 +1707,7 @@ rules:
             NewForm.managed := true;
             detailForm.managed := false;
             detailForm := NewForm;
-            top->MolMasterForm->OldSegmentTypeMenu.modified := true;
+            top->MolMasterForm->SegmentTypeMenu.modified := true;
           end if;
         end does;
  
@@ -1665,19 +1727,27 @@ rules:
 	  if (top->MolMasterForm.managed) then
 	    detailForm.managed := true;
 	    if (top->MolMasterForm->ID->text.value.length = 0) then
+	      prb_createdBy := "";
+	      prb_modifiedBy := "";
 	      prb_creation_date := "";
 	      prb_modification_date := "";
 	    end if;
-            top->CreationDate->text.value := prb_creation_date;
-            top->ModifiedDate->text.value := prb_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdBy);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, prb_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, prb_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, prb_modification_date);
 	  else
 	    detailForm.managed := false;
 	    if (top->MolReferenceForm->ReferenceID->text.value.length = 0) then
+	      ref_createdBy := "";
+	      ref_modifiedBy := "";
 	      ref_creation_date := "";
 	      ref_modification_date := "";
 	    end if;
-            top->CreationDate->text.value := ref_creation_date;
-            top->ModifiedDate->text.value := ref_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdBy);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, ref_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, ref_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, ref_modification_date);
 	  end if;
 	end does;
 
@@ -1755,7 +1825,7 @@ rules:
  
         DisplayParentSource does
  
-          (void) busy_cursor(top);
+--          (void) busy_cursor(top);
  
           if (top->ParentClone->ObjectID->text.value.length = 0) then
             top->SourceForm->SourceID->text.value := "";
@@ -1769,7 +1839,7 @@ rules:
           DisplayMolecularSource.source_widget := top;
           send(DisplayMolecularSource, 0);
  
-          (void) reset_cursor(top);
+ --         (void) reset_cursor(top);
         end does;
  
 --

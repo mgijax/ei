@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 14 11:03:08 2004";
+      lastWritten = "Fri Aug 15 14:05:24 2003";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -362,7 +362,7 @@ Shift<Key>Tab: prev-tab-group()
           NotePush = XmPushButton;
           Group: Widget
             activateCallback = "D:NoteInit";
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\nmgiDialogName:String(String)=\"NoteDialog\"\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\nmgiDialogName:String=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
             background = Wheat;
@@ -379,7 +379,7 @@ Shift<Key>Tab: prev-tab-group()
                 Note = Notes : mgiDataTypes;
                 Group: Widget
                   managed = False;
-                  userDefinedAttributes = "mgiTypeKey:Int(Int)=\"-1\"\nnoteKey:Int=\"-1\"\n";
+                  userDefinedAttributes = "mgiTypeKey:Int(Int)=\"-1\"\nnoteKey:Int(Int)=\"-1\"\n";
               }
               {
                 NotePush = NotePush : mgiDataTypes;
@@ -419,7 +419,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = scrolledText;
+                      text = scrolledText : mgiDataTypes;
                       Group: Widget
                         inTabGroup = False;
                         columns = 20;
@@ -640,6 +640,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             traversalOn = False;
             activateCallback = "D:GoHome";
+            background = Wheat;
           Group: Control
             vip_x = 60;
             vip_y = 195;
@@ -780,7 +781,7 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          mgiSpecies = mgiObject;
+          mgiOrganism = mgiObject;
           Group: Control
             vip_x = 60;
             vip_y = 1845;
@@ -790,11 +791,11 @@ Shift<Key>Tab: prev-tab-group()
                 ObjectID = ID;
               }
               {
-                Species : CharText = CharText;
+                Organism : CharText = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
-                        labelString = Species;
+                        labelString = Organism;
                     }
                     {
                       text = text;
@@ -802,7 +803,7 @@ Shift<Key>Tab: prev-tab-group()
                         columns = 50;
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifySpecies()";
+<Key>Tab: VerifyOrganism()";
                     }
               }
         }
@@ -992,7 +993,7 @@ Shift<Key>Tab: prev-tab-group()
           mgiNoteForm = XmRowColumn;
           Group: Widget
             orientation = vertical;
-            userDefinedAttributes = "sql:String(String)\nsqlFrom:String\nsqlWhere:String\n";
+            userDefinedAttributes = "sql:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\n";
           Group: Control
             vipComment = "";
             vip_x = 60;
@@ -1064,19 +1065,6 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                       Group: Widget
                         labelString = "MGI Acc ID";
-                    }
-              }
-              {
-                AccessionName = CharSText : mgiDataTypes;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Strain;
-                    }
-                    {
-                      text = scrolledText;
-                      Group: Widget
-                        columns = 50;
                     }
               }
         }

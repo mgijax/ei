@@ -201,18 +201,20 @@ rules:
 	  table : widget := LoadAcc.table;
 	  source : widget := table.parent.child_by_class("XmRowColumn");
 	  tableID : integer := LoadAcc.tableID;
+	  sortColumn : integer := LoadAcc.sortColumn;
 	  logicalDBkey : string;
 	  prefix : string;
 	  accID : string;
+	  preferred : string;
 	  orderBy : string;
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
-	    orderBy := " order by _LogicalDB_key, prefixPart desc, numericPart";
+	    orderBy := " order by preferred desc, _LogicalDB_key, prefixPart desc, numericPart";
 	  else
-	    orderBy := " order by _LogicalDB_key, prefixPart, numericPart";
+	    orderBy := " order by preferred desc, _LogicalDB_key, prefixPart, numericPart";
 	  end if;
 
-          cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart";
+          cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
 
 	  if (table.is_defined("refsKey") != nil) then
 	    cmd := cmd + ", _Refs_key, jnum, short_citation";
@@ -233,6 +235,7 @@ rules:
  
               logicalDBkey := mgi_getstr(dbproc, 1);
               prefix := mgi_getstr(dbproc, 4);
+	      preferred := mgi_getstr(dbproc, 6);
 	      i := 1;
 
 	      -- Find the LogicalDB in AccSourcePulldown which
@@ -241,7 +244,7 @@ rules:
               while (i <= source.subMenuId.num_children) do
                 if (logicalDBkey = source.subMenuId.child(i).defaultValue) then
                   if (((integer) logicalDBkey = 1 and 
-			prefix = source.subMenuId.child(i).labelString) or 
+			prefix = source.subMenuId.child(i).labelString) or
 			(integer) logicalDBkey > 1) then
                     source.menuHistory := source.subMenuId.child(i);
 		    break;
@@ -277,6 +280,14 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 8));
 	      end if;
 
+	      if (table.is_defined("accStatus") != nil) then
+		if (preferred = "1") then
+	          (void) mgi_tblSetCell(table, row, table.accStatus, "Primary");
+		else
+	          (void) mgi_tblSetCell(table, row, table.accStatus, "Secondary");
+		end if;
+	      end if;
+
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      if ((integer) logicalDBkey > 1) then 	-- Not MGI
@@ -292,6 +303,12 @@ rules:
             end while;
           end while;
           (void) dbclose(dbproc);
+
+	  -- If sort column is specified, sort it
+
+	  if (sortColumn >= 0) then
+	      (void) mgi_tblSort(table, sortColumn);
+	  end if;
 
 	  -- Re-set the form
 
@@ -331,7 +348,6 @@ rules:
 	  objectKey : string := ProcessAcc.objectKey;
 	  refsKey : string := ProcessAcc.refsKey;
 	  tableID : integer := ProcessAcc.tableID;
-	  db : string := ProcessAcc.db;
 
           r : integer := 0;
 	  i : integer := 0;
@@ -347,12 +363,6 @@ rules:
 	  private : string := "";
 	  exec : string := "exec ";
 
-	  if (db.length = 0) then
-	    exec := "exec " + getenv("MGD") + "..";
-	  else
-	    exec := "exec " + db + "..";
-	  end if;
- 
 	  -- For each required Accession ID, if blank print message
 	  i := 1;
           while (i <= source.subMenuId.num_children) do
@@ -362,7 +372,7 @@ rules:
 	        if (mgi_tblGetCell(table, r, table.accName) = source.subMenuId.child(i).labelString
 		    and mgi_tblGetCell(table, r, table.editMode) = TBL_ROW_EMPTY) then
                   StatusReport.source_widget := table.top;
-                  StatusReport.message := "Note:  You did not provide an Accession ID for " +
+                  StatusReport.message := "Note:  You did not provide an Accession ID for " + 
 			mgi_tblGetCell(table, r, table.accName) + ".";
                   send(StatusReport);
 		end if;
@@ -518,7 +528,6 @@ rules:
 
         SearchAcc does
 	  table : widget := SearchAcc.table;
-	  source : widget := table.parent.child_by_class("XmRowColumn");
 	  tableID : integer := SearchAcc.tableID;
 
           r : integer := 0;

@@ -176,6 +176,7 @@ rules:
 --
 
         Add does
+	  note : string;
 
 --	  if (mgi->AssayModule = nil) then
 --	    send(Exit, 0);
@@ -200,8 +201,14 @@ rules:
             cmd := cmd + top->EditForm->Strain->StrainID->text.value + ",";
 	  end if;
  
+	  if (top->Note->text.value.length > 0) then
+	    note := mgi_DBprstr(top->Note->text.value);
+	  else
+	    note := "NULL";
+	  end if;
+
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
-		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ")\n";
+		 note + "," + global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
@@ -301,7 +308,7 @@ rules:
 
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
-		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
+	           "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
 	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
 	  end if;
 
@@ -729,9 +736,9 @@ rules:
                 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 9);
                 top->EditForm->Note->text.value := mgi_getstr(dbproc, 6);
 		table := top->Control->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 8));
 
                 SetOption.source_widget := top->ConditionalMenu;

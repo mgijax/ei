@@ -41,13 +41,7 @@
 #include "tables.h"
 #include "stagetrees.h"
 
-#if defined(__cplusplus) || defined(c_plusplus)
-          extern "C" {
-#endif
-
-
 /* ### Utility functions ### */
-
 
 char *parseStages(char *stages_spec);
    /*
@@ -96,10 +90,5 @@ char *format_stagenum(int stage);
       modifies: local static buffer.
       returns: pointer to static buffer containing formatted string.
     */
-
-#if defined(__cplusplus) || defined(c_plusplus)
-       } 
-#endif
-
 
 #endif

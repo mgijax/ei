@@ -15,16 +15,19 @@
 -- History
 --
 -- 06/27/2003
---	- TR 4872; Marker Withdrawals
+--      - TR 4872; Marker Withdrawals
 --
 -- 04/22/2003
---	- TR 4705; added modifiedBy to Marker history
+--	- TR 4705; added modifiedBy to Marker History
 --
 -- 04/18/2003
 --	- TR 4728; set addAsSynonym = true in MarkerWithdrawalInit
 --
 -- 10/01/2002
---	- TR 3516; move Marker Notes to Allele Module
+--      - TR 3516; move Marker Notes to Allele Module
+--
+-- 08/14/2002
+--	- TR 1463/SAO; Species to Organism
 --
 -- 06/04/2002
 --	- TR 3750; set OtherReference->Table.xrtTblNumRows
@@ -153,6 +156,7 @@ devents:
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;
 				    status : integer;];
+
 	-- Process Breakpoint Split Events
 	MarkerBreakpointSplitInit :local [];
 	MarkerBreakpointSplit :local [];
@@ -293,6 +297,7 @@ rules:
 	  tables.append(top->Offset->Table);
 	  tables.append(top->OtherReference->Table);
 	  tables.append(top->AccessionReference->Table);
+	  tables.append(top->Control->ModificationHistory->Table);
 
 	  -- Global Accession number Tables
 
@@ -787,7 +792,7 @@ rules:
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
 	  from := from + ",MRK_Current_View mu";
-	  where := "where m._Species_key = " + MOUSE;
+	  where := "where m._Organism_key = " + MOUSE;
 	  where := where + "\nand mu.current_symbol in (";
 
 	  if (dialog.eventKey = EVENT_RENAME) then
@@ -1038,10 +1043,11 @@ rules:
             set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-          if (top->MarkerStatusMenu.menuHistory.modified and
-	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
-            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
-          end if;
+	  -- Don't allow modifications to Marker Status; maybe in the future...
+--          if (top->MarkerStatusMenu.menuHistory.modified and
+--	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
+--            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
+--          end if;
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
@@ -1530,7 +1536,7 @@ rules:
 	  value : string;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Species_key = " + MOUSE;
+	  where := "where m._Organism_key = " + MOUSE;
 
 	  -- Cannot search both Accession tables at once
 
@@ -1551,15 +1557,11 @@ rules:
 	    where := where + accRefTable.sqlWhere;
 	  end if;
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "m";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "m";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "m";
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Type_key = " + top->MarkerTypeMenu.menuHistory.searchValue;
@@ -1801,12 +1803,14 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, creation_date, modification_date " +
-		 "from MRK_Marker where _Marker_key = " + currentRecordKey + "\n" +
+		 "cytogeneticOffset, createdBy, creation_date, modifiedBy, modification_date " +
+		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
 	         "select source, str(offset,10,2) from MRK_Offset " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by source\n" +
-	         "select * from MRK_History_View " +
+	         "select _Marker_Event_key, _Marker_EventReason_key, _History_key, sequenceNum, " +
+		 "name, event_display, event, eventReason, history, modifiedBy " +
+		 "from MRK_History_View " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum, _History_key\n" +
 	         "select sequenceNum, _Refs_key, jnum, short_citation from MRK_History_Ref_View " +
@@ -1847,12 +1851,15 @@ rules:
 	    row := 0;
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
+		table := top->Control->ModificationHistory->Table;
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 4);
 	        top->Name->text.value         := mgi_getstr(dbproc, 5);
 	        top->Cyto->text.value         := mgi_getstr(dbproc, 7);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 8);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
                 send(SetOption, 0);
@@ -1870,22 +1877,22 @@ rules:
 		(void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
 		table := top->History->Table;
-                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 16));
-                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 14));
-                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 15));
-                (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
+                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 9));
+                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 10) = "01/01/1900") then
                   (void) mgi_tblSetCell(table, row, table.eventDate, "");
 		else
-                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 13));
+                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 6));
 		end if;
 
           	-- Initialize Option Menus for row 0

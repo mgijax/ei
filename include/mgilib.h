@@ -5,10 +5,6 @@
 #include <string.h>
 #include <syblib.h>
 
-#if defined(__cplusplus) || defined(c_plusplus)
-          extern "C" {
-#endif
- 
 extern char *mgi_setDBkey(int, int, char *);
 extern char *mgi_DBprstr(char *);
 extern char *mgi_DBprstr2(char *);
@@ -34,10 +30,6 @@ extern char *mgi_DBrefstatus(int, int);
 extern Boolean mgi_DBisAnchorMarker(char *);
 extern char *mgi_escape_quotes(char *);
 
-#if defined(__cplusplus) || defined(c_plusplus)
-       } 
-#endif
- 
 extern char *global_application;
 extern char *global_version;
 
@@ -53,10 +45,10 @@ extern char *global_version;
 #define YES		"1"
 #define NO 		"0"
 
-#define INTERNALCURATIONSTATE   "Internal"
+#define INTERNALCURATIONSTATE	"Internal"
 
-#define BROADCASTOFFICIAL	"official"
-#define BROADCASTINTERIM	"interim"
+#define BROADCASTOFFICIAL       "official"
+#define BROADCASTINTERIM        "interim"
 
 /* Table Definitions must be unique */
 
@@ -68,7 +60,6 @@ extern char *global_version;
 #define BIB_BOOKS		101
 #define BIB_NOTES		102
 
-#define MRK_SPECIES   		110
 #define MRK_ANCHOR		111
 #define MRK_CHROMOSOME		112
 #define MRK_MARKER  		113
@@ -100,6 +91,7 @@ extern char *global_version;
 #define PRB_RFLV		138
 #define PRB_SOURCE		139
 #define PRB_SOURCE_MASTER	140		/* Behavior when table treated as Master record */
+#define PRB_MARKER_VIEW  	141		/* Behavior when table treated as Master record */
 
 #define HMD_CLASS		150
 #define HMD_HOMOLOGY		151
@@ -129,6 +121,7 @@ extern char *global_version;
 #define MLD_RI2POINT		179
 #define MLD_STATISTICS		180
 #define MLC_MARKER_VIEW		181
+#define MLD_MARKERBYREF		182
 
 /* GXD Tables */
 
@@ -199,27 +192,26 @@ extern char *global_version;
 #define MLD_ASSAY		316
 #define MRK_CLASS    		317
 #define MRK_TYPE		318
-#define PRB_VECTOR_TYPE		319
 #define CROSS      		320
 #define RISET  			321
 #define STRAIN     		322
 #define TISSUE     		323
 #define BIB_REVIEW_STATUS	324
 #define MRK_EVENT		327
-#define NOM_STATUS     		328
+#define NOM_STATUS		328
 #define GXD_GELCONTROL		329
 #define MRK_EVENTREASON		330
 #define MRK_STATUS		331
 #define ALL_TYPE		332
 #define ALL_INHERITANCE_MODE	333
 #define ALL_MOLECULAR_MUTATION	334
-#define GXD_ANTIBODYSPECIES	335
 #define ALL_CELLLINE		336
 #define ALL_STATUS		337
 #define ALL_NOTETYPE		338
 #define ALL_REFERENCETYPE	339
-#define PRB_SPECIES		340
 #define RISET_VIEW		341
+#define MGI_USER		342
+#define VOC_CELLLINE_VIEW	343
 
 /* Accession Tables */
 
@@ -269,6 +261,7 @@ extern char *global_version;
 #define MGI_NOTETYPE_VOCEVIDENCE_VIEW	625
 #define MGI_SETMEMBER			626
 
+
 /* Strains Tables */
 
 #define MLP_STRAIN		700
@@ -307,11 +300,16 @@ extern char *global_version;
 #define MGI_FANTOM2NOTES	901
 #define MGI_FANTOM2CACHE	902
 
+/* Sequence Tables */
+
+#define SEQ_SEQUENCE		1000
+#define SEQ_SOURCE_ASSOC	1001
+
 /* End of Table Definitions */
 
 /* Stored procedures */
 
-#define NOM_TRANSFERSYMBOL    2000
+#define NOM_TRANSFERSYMBOL	2000
 
 #define	MOUSE		"1"
 #define HUMAN		"2"
@@ -341,7 +339,7 @@ extern char *global_version;
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
 
-/* Nomen (VOC_Vocab._Vocab_key = 17) */
+/* Nomen Status */
 
 #define STATUS_PENDING          "In Progress"
 #define STATUS_NDELETED         "Deleted"

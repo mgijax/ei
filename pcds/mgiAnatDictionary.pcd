@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul  7 15:00:53 2003";
+      lastWritten = "Mon Jul  7 15:02:31 2003";
         {
           DictionaryModule = Module : MGI;
           Group: Widget

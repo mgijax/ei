@@ -246,7 +246,8 @@ rules:
 		       currentRecordKey + "," +
 		       objectKey + "," +
 		       mgi_DBprstr(nonmgiTerm) + "," + 
-		       newSeqNum + "\n";
+		       newSeqNum + "," +
+		       global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place
@@ -350,8 +351,8 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->ID->text.value   := mgi_getstr(dbproc, 1);
-	      top->Name->text.value := mgi_getstr(dbproc, 3);
-	      top->Compression->text.value := mgi_getstr(dbproc, 4);
+	      top->Name->text.value := mgi_getstr(dbproc, 4);
+	      top->Compression->text.value := mgi_getstr(dbproc, 5);
               SetOption.source_widget := top->MGITypeMenu;
               SetOption.value := mgi_getstr(dbproc, 2);
               send(SetOption, 0);
@@ -365,7 +366,7 @@ rules:
 
 	  cmd := "select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, " +
 		  "t.modifiedBy, t.modification_date, v.description, v.accID, v.mgiID " +
-		  "from MGI_Translation t, " + dbView + " v" +
+		  "from MGI_Translation_View t, " + dbView + " v" +
 		  " where v._Object_key = t._Object_key" + 
 		  " and t._TranslationType_key = " + currentRecordKey +
 		  " order by t.sequenceNum\n";

@@ -10,11 +10,14 @@
 --
 -- History
 --
+-- lec 07/25/2003
+--	- JSAM
+--
 -- lec 02/18/2003
 --	- TR 4489; display Antibodies for selected Antigen
 --
 -- lec 09/26/2001
---	- TR 2714/Probe Species Menu
+--	- TR 2714/Probe Organism Menu
 --
 -- lec 07/12/2001
 --	- TR 2715; Notes required when Other species selected
@@ -85,7 +88,7 @@ rules:
 
 	  send(Init, 0);
 
-          InitOptionMenu.option := top->SourceForm->ProbeSpeciesMenu;
+          InitOptionMenu.option := top->SourceForm->ProbeOrganismMenu;
           send(InitOptionMenu, 0);
 
 	  ab := INITIALLY.launchedFrom;
@@ -113,9 +116,12 @@ rules:
 	Init does
 	  sourceOptions := create list("widget");
 
-	  sourceOptions.append(top->ProbeSpeciesMenu);
+	  sourceOptions.append(top->ProbeOrganismMenu);
 	  sourceOptions.append(top->AgeMenu);
-	  sourceOptions.append(top->SexMenu);
+	  sourceOptions.append(top->GenderMenu);
+
+	  InitOptionMenu.option := top->GenderMenu;
+	  send(InitOptionMenu, 0);
 
 	  accTable := top->mgiAccessionTable->Table;
 	end does;
@@ -193,12 +199,12 @@ rules:
 --
 -- CheckNote
 --
--- Checks that Note has been entered if Species = "Other"
+-- Checks that Note has been entered if Organism = "Other"
 --
 
 	CheckNote does
 
-	  if (top->ProbeSpeciesMenu.menuHistory.labelString = OTHERNOTES and
+	  if (top->ProbeOrganismMenu.menuHistory.labelString = OTHERNOTES and
 	      top->Note->text.value.length = 0) then
                 StatusReport.source_widget := top;
                 StatusReport.message := "Antigen Notes are Required.";
@@ -265,10 +271,11 @@ rules:
 	    cmd := mgi_DBupdate(GXD_ANTIGEN, currentRecordKey, set);
 	  end if;
 
-	  -- ModifyMolecularSource will set top->SourceForm.sql appropriately
+	  -- ModifyAntigenSource will set top->SourceForm.sql appropriately
 	  -- Append this value to the 'cmd' string
-	  ModifyMolecularSource.source_widget := top;
-	  send(ModifyMolecularSource, 0);
+          ModifyAntigenSource.source_widget := top->SourceForm;
+	  ModifyAntigenSource.probeKey := currentRecordKey;
+          send(ModifyAntigenSource, 0);
 	  cmd := cmd + top->SourceForm.sql;
  
           ProcessAcc.table := accTable;

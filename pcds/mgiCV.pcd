@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan  5 14:10:44 2004";
+      lastWritten = "Mon Nov 17 13:07:29 2003";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -202,16 +202,11 @@ Module: mgiCV
                             SexMenu = SexMenu : mgiOption;
                                 Popups:
                                 {
-                                  SexPulldown = OptionPulldown : mgiOption;
+                                  SexPulldown = OptionPulldown;
                                   Group: User
                                     tableForm = GelLane;
-                                    tableOptionKey = 10;
                                     tableOption = 21;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
+                                    tableOptionKey = 10;
                                 }
                           }
                           {
@@ -294,8 +289,8 @@ Module: mgiCV
                       ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
                       Group: User
                         tableForm = Reference;
-                        tableOption = 7;
-                        tableOptionKey = 3;
+                        tableOption = 9;
+                        tableOptionKey = 4;
                           {
                             SearchAll = SearchAll : mgiOption;
                             Group: Widget
@@ -344,19 +339,6 @@ Module: mgiCV
                           }
                           {
                             SexMenu = SexMenu : mgiOption;
-                                Popups:
-                                {
-                                  SexPulldown = OptionPulldown : mgiOption;
-                                  Group: User
-                                    tableOption = 17;
-                                    tableOptionKey = 8;
-                                    tableForm = Specimen;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
                           }
                           {
                             FixationMenu = FixationMenu : mgiOption;
@@ -460,6 +442,35 @@ Module: mgiCV
                   labelString = "Age Normalized";
                 Group: User
                   note = "Age normalized so that noon of plug day = E0.5.";
+              }
+        }
+        {
+          CVSequence = XmRowColumn;
+          Group: Control
+            vipComment = "";
+            vip_x = 145;
+            vip_y = 250;
+              {
+                AgeMenu = AgeMenu : mgiOption;
+                    Popups:
+                    {
+                      AgePulldown = OptionPulldown;
+                      Group: User
+                        tableForm = SourceInfo;
+                        tableOption = 16;
+                        tableOptionKey = 7;
+                    }
+              }
+              {
+                GenderMenu = GenderMenu : mgiOption;
+                    Popups:
+                    {
+                      GenderPulldown = OptionPulldown;
+                      Group: User
+                        tableForm = SourceInfo;
+                        tableOption = 18;
+                        tableOptionKey = 10;
+                    }
               }
         }
 }

@@ -9,10 +9,6 @@
 #include <time.h>
 #include <teleuse/tu_runtime.h>
 
-#if defined(__cplusplus) || defined(c_plusplus)
-	extern "C" {
-#endif
-
 extern void keep_busy();
 extern void busy_cursor(Widget);
 extern void reset_cursor(Widget);
@@ -29,9 +25,5 @@ extern void mgi_writeLog(const char *);
 extern Boolean allow_only_digits(char *);
 extern Boolean allow_only_float(char *);
 extern Boolean allow_only(char *, char *);
-
-#if defined(__cplusplus) || defined(c_plusplus)
-	}
-#endif
 
 #endif

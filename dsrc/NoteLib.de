@@ -44,7 +44,8 @@ NoteCancel [source_widget : widget;];
 NoteCommit [source_widget : widget;]; 
 
 -- Initializes NoteDialog
-NoteInit [commit : boolean := true;
+NoteInit [source_widget : widget;
+	  commit : boolean := true;
           shortNote : boolean := false;];
 
 -- Events which support processing of Note data

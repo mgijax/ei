@@ -416,7 +416,8 @@ rules:
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
-	         mgi_DBprstr(top->StatusNotes->text.value) + ")\n";
+	         mgi_DBprstr(top->StatusNotes->text.value) + "," + 
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyNomenNotes, 0);
 	  send(ModifySynonym, 0);
@@ -704,7 +705,8 @@ rules:
 		     currentNomenKey + "," +
 		     refsKey + "," +
 		     mgi_DBprstr(name) + "," +
-		     isAuthor + ")\n";
+		     isAuthor + "," + 
+		     global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "name = " + mgi_DBprstr(name) +

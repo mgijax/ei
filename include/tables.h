@@ -3,10 +3,6 @@
 
 #include <Xm/XrtTable.h>
 
-#if defined(__cplusplus) || defined(c_plusplus)
-	extern "C" {
-#endif
-
 extern void mgi_tblSetReasonValues();
 extern void mgi_tblSetCell(Widget, int, int, char *);
 extern String mgi_tblGetCell(Widget, int, int);
@@ -27,10 +23,6 @@ extern void mgi_tblStopFlash(Widget, int, int);
 extern void mgi_tblStopFlashAll(Widget);
 extern Boolean mgi_tblSort(Widget, int);
 extern void mgi_tblDestroyCellValues(Widget);
-
-#if defined(__cplusplus) || defined(c_plusplus)
-	} 
-#endif
 
 #define TABLE_CLASS	"XtXrtTable"
 #define CAPTION_CLASS	"XmXrtAligner"

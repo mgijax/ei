@@ -40,6 +40,7 @@ static Widget search_list;
 static int search_table;
 
 char *global_login;		/* Set in Application dModule; holds user login value */
+char *global_loginKey;          /* Set in Application dModule; holds user login key value */
 char *global_passwd_file;	/* Set in mgi_dbinit; holds user password file name */
 char *global_passwd;		/* Set in mgi_dbinit; holds user password name */
 char *global_reportdir;		/* Set in mgi_dbinit; holds user report directory name */
@@ -226,7 +227,7 @@ char *mgi_citation(DBPROCESS *dbproc, int table)
          strcat(buf, mgi_getstr(dbproc, 4));
          break;
  
-    case MRK_SPECIES:
+    case MGI_ORGANISM:
          strcpy(buf, mgi_getstr(dbproc, 2));
          strcat(buf, " (");
          strcat(buf, mgi_getstr(dbproc, 3));
@@ -477,6 +478,7 @@ int mgi_msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, 
     (void) send_status(msgtext, appendMsg);
     if (severity > 0)
       (void) mgi_writeLog(msgtext);
+
   return(FAIL);
 }
 

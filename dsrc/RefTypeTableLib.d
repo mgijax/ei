@@ -13,12 +13,6 @@
 --
 -- History:
 --
--- lec  02/02/2004
---	- fix ProcessRefTypeTable
---
--- lec	12/17/2003
---	- TR 5327; nomen merge
---
 -- lec	09/17/2003
 --	- TR 4724; added EditRefType
 --
@@ -302,7 +296,8 @@ rules:
 		       newKey + "," +
 		       objectKey + "," +
 		       mgiType + "," +
-		       refsType + ")\n";
+		       refsType + "," +
+		       global_loginKey + "," + global_loginKey + ")\n";
               else 
 		cmd := cmd + mgi_DBinsert(tableID, NOKEY) + 
 		     objectKey + "," + 

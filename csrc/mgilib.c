@@ -14,6 +14,17 @@
  *
  * History:
  *
+ * lec 05/23/2003
+ *	- SAO; modifiedBy changed to _ModifiedBy_key
+ *	- added global_loginKey
+ *
+ * lec 08/15/2002
+ *	- TR 1463/SAO; SPECIES to ORGANISM
+ *	- update "modifiedBy" for appropriate tables
+ *
+ * lec 05/2002
+ *	- TR 1463/SAO; nomen tables, seq tables, mgi tables
+ *
  * lec 12/2001-01/2002
  *	- TR 2867/2239:  VOC
  *
@@ -101,6 +112,7 @@
 
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
+char *global_loginKey;        /* Set in Application dModule; holds login key value */
 
 /*
    Compose a string SQL value for a given value.
@@ -472,7 +484,7 @@ char *mgi_DBrecordCount(int table)
   switch (table)
   {
     default:
-  	    sprintf(cmd, "exec GEN_rowcount %s", mgi_DBtable(table));
+  	    sprintf(cmd, "exec MGI_getRowCount %s", mgi_DBtable(table));
 	    break;
   }
 
@@ -545,165 +557,32 @@ char *mgi_DBkey(int table)
     case ACC_LOGICALDB:
 	    strcpy(buf, "_LogicalDB_key");
 	    break;
-    case BIB_REFS:
-    case BIB_BOOKS:
-    case BIB_NOTES:
-            strcpy(buf, "_Refs_key");
-	    break;
-    case BIB_REVIEW_STATUS:
-            strcpy(buf, "_ReviewStatus_key");
-	    break;
-    case MRK_MARKER:
-    case MRK_MOUSE:
-    case MRK_ALIAS:
-    case MRK_ANCHOR:
-    case MRK_CLASSES:
-    case MRK_CURRENT:
-    case MRK_HISTORY:
-    case MRK_NOTES:
-    case MRK_OFFSET:
-    case MRK_REFERENCE:
-    case MLC_LOCK:
-    case MLC_MARKER:
-    case MLC_REFERENCE:
-    case MLC_TEXT:
-    case MLC_TEXT_ALL:
-            strcpy(buf, "_Marker_key");
-	    break;
-    case MRK_OTHER:
-            strcpy(buf, "_Other_key");
-	    break;
-    case MRK_ALLELE:
+    case ALL_ALLELE:
+    case ALL_ALLELE_MUTATION:
+    case ALL_NOTE:
+    case ALL_REFERENCE:
+    case ALL_ALLELE_VIEW:
+    case ALL_REFERENCE_VIEW:
+    case ALL_NOTE_VIEW:
+    case ALL_MUTATION_VIEW:
+    case ALL_SYNONYM_VIEW:
             strcpy(buf, "_Allele_key");
 	    break;
-    case MRK_SPECIES:
-            strcpy(buf, "_Species_key");
-	    break;
-    case MRK_CHROMOSOME:
-            strcpy(buf, "_Species_key");
-	    break;
-    case HMD_CLASS:
-            strcpy(buf, "_Class_key");
-	    break;
-    case HMD_HOMOLOGY:
-    case HMD_HOMOLOGY_MARKER:
-    case HMD_HOMOLOGY_ASSAY:
-    case HMD_NOTES:
-            strcpy(buf, "_Homology_key");
-	    break;
-    case MGI_NOTE:
-    case MGI_NOTECHUNK:
-	    strcpy(buf, "_Note_key");
-	    break;
-    case MGI_NOTETYPE:
-	    strcpy(buf, "_NoteType_key");
-	    break;
-    case MGI_NOTE_MRKGO_VIEW:
-    case MGI_NOTE_NOMEN_VIEW:
-    case MGI_NOTE_VOCEVIDENCE_VIEW:
-	    strcpy(buf, "_Object_key");
-	    break;
-    case MGI_REFERENCE_ASSOC:
-            strcpy(buf, "_Assoc_key");
-	    break;
-    case MGI_REFERENCE_NOMEN_VIEW:
-            strcpy(buf, "_Object_key");
-	    break;
-    case MGI_TRANSLATION:
-	    strcpy(buf, "_Translation_key");
-	    break;
-    case MGI_TRANSLATIONTYPE:
-	    strcpy(buf, "_TranslationType_key");
-	    break;
-    case MLD_CONCORDANCE:
-    case MLD_DISTANCE:
-    case MLD_EXPT_MARKER:
-    case MLD_EXPT_NOTES:
-    case MLD_EXPTS:
-    case MLD_FISH:
-    case MLD_FISH_REGION:
-    case MLD_HYBRID:
-    case MLD_INSITU:
-    case MLD_INSITU_REGION:
-    case MLD_MCMASTER:
-    case MLD_MC2POINT:
-    case MLD_MCHAPLOTYPE:
-    case MLD_PHYSICAL:
-    case MLD_RI:
-    case MLD_RIHAPLOTYPE:
-    case MLD_RI2POINT:
-    case MLD_STATISTICS:
-            strcpy(buf, "_Expt_key");
-	    break;
-    case MLD_MARKER:
-    case MLD_NOTES:
-    case MLD_EXPTS_DELETE:
-            strcpy(buf, "_Refs_key");
-	    break;
-    case PRB_ALIAS:
-            strcpy(buf, "_Alias_key");
-	    break;
-    case PRB_ALLELE:
-    case PRB_ALLELE_STRAIN:
-            strcpy(buf, "_Allele_key");
-	    break;
-    case PRB_PROBE:
-    case PRB_MARKER:
-    case PRB_NOTES:
-            strcpy(buf, "_Probe_key");
-	    break;
-    case PRB_REFERENCE:
-    case PRB_REF_NOTES:
-            strcpy(buf, "_Reference_key");
-	    break;
-    case PRB_RFLV:
-            strcpy(buf, "_RFLV_key");
-	    break;
-    case PRB_SOURCE:
-    case PRB_SOURCE_MASTER:
-            strcpy(buf, "_Source_key");
-	    break;
-    case PRB_SPECIES:
-            strcpy(buf, "_ProbeSpecies_key");
-	    break;
-    case CROSS:
-            strcpy(buf, "_Cross_key");
-	    break;
-    case RISET:
-            strcpy(buf, "_RISet_key");
-	    break;
-    case STRAIN:
-            strcpy(buf, "_Strain_key");
-	    break;
-    case TISSUE:
-            strcpy(buf, "_Tissue_key");
-	    break;
-    case MLD_ASSAY:
-            strcpy(buf, "_Assay_Type_key");
-	    break;
-    case HMD_ASSAY:
-            strcpy(buf, "_Assay_key");
-	    break;
-    case MRK_CLASS:
-            strcpy(buf, "_Class_key");
-	    break;
-    case MRK_TYPE:
-            strcpy(buf, "_Marker_Type_key");
-	    break;
-    case MRK_EVENT:
-            strcpy(buf, "_Marker_Event_key");
-	    break;
-    case MRK_EVENTREASON:
-            strcpy(buf, "_Marker_EventReason_key");
-	    break;
-    case MRK_STATUS:
-            strcpy(buf, "_Marker_Status_key");
-	    break;
-    case NOM_MARKER:
-            strcpy(buf, "_Nomen_key");
-	    break;
-    case NOM_SYNONYM:
+    case ALL_SYNONYM:
             strcpy(buf, "_Synonym_key");
+	    break;
+    case ALL_CELLLINE:
+    case ALL_CELLLINE_VIEW:
+            strcpy(buf, "_CellLine_key");
+	    break;
+    case ALL_NOTETYPE:
+            strcpy(buf, "_NoteType_key");
+	    break;
+    case ALL_REFERENCETYPE:
+            strcpy(buf, "_RefsType_key");
+	    break;
+    case ALL_STATUS:
+            strcpy(buf, "_Allele_Status_key");
 	    break;
     case ALL_TYPE:
             strcpy(buf, "_Allele_Type_key");
@@ -714,8 +593,16 @@ char *mgi_DBkey(int table)
     case ALL_MOLECULAR_MUTATION:
             strcpy(buf, "_Mutation_key");
 	    break;
-    case PRB_VECTOR_TYPE:
-            strcpy(buf, "_Vector_key");
+    case BIB_REFS:
+    case BIB_BOOKS:
+    case BIB_NOTES:
+            strcpy(buf, "_Refs_key");
+	    break;
+    case BIB_REVIEW_STATUS:
+            strcpy(buf, "_ReviewStatus_key");
+	    break;
+    case CROSS:
+            strcpy(buf, "_Cross_key");
 	    break;
     case GXD_ANTIGEN:
             strcpy(buf, "_Antigen_key");
@@ -778,9 +665,6 @@ char *mgi_DBkey(int table)
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "_AntibodyType_key");
 	    break;
-    case GXD_ANTIBODYSPECIES:
-            strcpy(buf, "_AntibodySpecies_key");
-	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "_GelRNAType_key");
 	    break;
@@ -789,13 +673,6 @@ char *mgi_DBkey(int table)
 	    break;
     case GXD_GELCONTROL:
             strcpy(buf, "_GelControl_key");
-	    break;
-    case IMG_IMAGE:
-    case IMG_IMAGENOTE:
-            strcpy(buf, "_Image_key");
-	    break;
-    case IMG_IMAGEPANE:
-            strcpy(buf, "_ImagePane_key");
 	    break;
     case GXD_GENOTYPE:
             strcpy(buf, "_Genotype_key");
@@ -833,11 +710,108 @@ char *mgi_DBkey(int table)
     case GXD_INDEXSTAGES:
             strcpy(buf, "_Index_key");
 	    break;
-    case MGI_TABLES:
-            strcpy(buf, "table_name");
+    case HMD_ASSAY:
+            strcpy(buf, "_Assay_key");
+	    break;
+    case HMD_CLASS:
+            strcpy(buf, "_Class_key");
+	    break;
+    case HMD_HOMOLOGY:
+    case HMD_HOMOLOGY_MARKER:
+    case HMD_HOMOLOGY_ASSAY:
+    case HMD_NOTES:
+            strcpy(buf, "_Homology_key");
+	    break;
+    case IMG_IMAGE:
+    case IMG_IMAGENOTE:
+            strcpy(buf, "_Image_key");
+	    break;
+    case IMG_IMAGEPANE:
+            strcpy(buf, "_ImagePane_key");
 	    break;
     case MGI_COLUMNS:
             strcpy(buf, "column_name");
+	    break;
+    case MGI_TABLES:
+            strcpy(buf, "table_name");
+	    break;
+    case MGI_FANTOM2:
+    case MGI_FANTOM2NOTES:
+    case MGI_FANTOM2CACHE:
+	    strcpy(buf, "_Fantom2_key");
+	    break;
+    case MGI_NOTE:
+    case MGI_NOTECHUNK:
+            strcpy(buf, "_Note_key");
+	    break;
+    case MGI_NOTETYPE:
+            strcpy(buf, "_NoteType_key");
+	    break;
+    case MGI_NOTE_MRKGO_VIEW:
+    case MGI_NOTE_NOMEN_VIEW:
+    case MGI_NOTE_SEQUENCE_VIEW:
+    case MGI_NOTE_SOURCE_VIEW:
+    case MGI_NOTE_VOCEVIDENCE_VIEW:
+            strcpy(buf, "_Object_key");
+	    break;
+    case MGI_ORGANISM:
+    case MGI_ORGANISMTYPE:
+            strcpy(buf, "_Organism_key");
+	    break;
+    case MGI_REFERENCE_ASSOC:
+            strcpy(buf, "_Assoc_key");
+	    break;
+    case MGI_REFASSOCTYPE:
+            strcpy(buf, "_RefAssocType_key");
+	    break;
+    case MGI_REFERENCE_NOMEN_VIEW:
+    case MGI_REFERENCE_SEQUENCE_VIEW:
+            strcpy(buf, "_Object_key");
+	    break;
+    case MGI_SETMEMBER:
+	    strcpy(buf, "_SetMember_key");
+	    break;
+    case MGI_TRANSLATION:
+            strcpy(buf, "_Translation_key");
+	    break;
+    case MGI_TRANSLATIONTYPE:
+            strcpy(buf, "_TranslationType_key");
+	    break;
+    case MGI_USER:
+	    strcpy(buf, "_User_key");
+	    break;
+    case MLD_ASSAY:
+            strcpy(buf, "_Assay_Type_key");
+	    break;
+    case MLD_CONCORDANCE:
+    case MLD_DISTANCE:
+    case MLD_EXPT_MARKER:
+    case MLD_EXPT_NOTES:
+    case MLD_EXPTS:
+    case MLD_FISH:
+    case MLD_FISH_REGION:
+    case MLD_HYBRID:
+    case MLD_INSITU:
+    case MLD_INSITU_REGION:
+    case MLD_MCMASTER:
+    case MLD_MC2POINT:
+    case MLD_MCHAPLOTYPE:
+    case MLD_PHYSICAL:
+    case MLD_RI:
+    case MLD_RIHAPLOTYPE:
+    case MLD_RI2POINT:
+    case MLD_STATISTICS:
+            strcpy(buf, "_Expt_key");
+	    break;
+    case MLD_MARKER:
+	    strcpy(buf, "_RefMarker_key");
+	    break;
+    case MLD_MARKERBYREF:
+	    strcpy(buf, "_Refs_key");
+	    break;
+    case MLD_NOTES:
+    case MLD_EXPTS_DELETE:
+            strcpy(buf, "_Refs_key");
 	    break;
     case MLP_STRAIN:
     case MLP_STRAINTYPES:
@@ -845,44 +819,103 @@ char *mgi_DBkey(int table)
     case MLP_EXTRA:
             strcpy(buf, "_Strain_key");
 	    break;
-    case PRB_STRAIN_MARKER:
-            strcpy(buf, "_StrainMarker_key");
-	    break;
-    case PRB_STRAIN_SYNONYM:
-            strcpy(buf, "_Synonym_key");
-	    break;
     case MLP_STRAINTYPE:
             strcpy(buf, "_StrainType_key");
 	    break;
     case MLP_SPECIES:
             strcpy(buf, "_Species_key");
 	    break;
-    case ALL_ALLELE:
-    case ALL_ALLELE_MUTATION:
-    case ALL_NOTE:
-    case ALL_REFERENCE:
-    case ALL_ALLELE_VIEW:
-    case ALL_REFERENCE_VIEW:
-    case ALL_NOTE_VIEW:
-    case ALL_MUTATION_VIEW:
-    case ALL_SYNONYM_VIEW:
+    case MRK_MARKER:
+    case MRK_MOUSE:
+    case MRK_ALIAS:
+    case MRK_ANCHOR:
+    case MRK_CLASSES:
+    case MRK_CURRENT:
+    case MRK_HISTORY:
+    case MRK_NOTES:
+    case MRK_OFFSET:
+    case MRK_REFERENCE:
+    case MLC_LOCK:
+    case MLC_MARKER:
+    case MLC_REFERENCE:
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
+            strcpy(buf, "_Marker_key");
+	    break;
+    case MRK_OTHER:
+            strcpy(buf, "_Other_key");
+	    break;
+    case MRK_ALLELE:
             strcpy(buf, "_Allele_key");
 	    break;
-    case ALL_SYNONYM:
+    case MRK_CHROMOSOME:
+            strcpy(buf, "_Chromosome_key");
+	    break;
+    case MRK_CLASS:
+            strcpy(buf, "_Class_key");
+	    break;
+    case MRK_TYPE:
+            strcpy(buf, "_Marker_Type_key");
+	    break;
+    case MRK_EVENT:
+            strcpy(buf, "_Marker_Event_key");
+	    break;
+    case MRK_EVENTREASON:
+            strcpy(buf, "_Marker_EventReason_key");
+	    break;
+    case MRK_STATUS:
+            strcpy(buf, "_Marker_Status_key");
+	    break;
+    case NOM_MARKER:
+            strcpy(buf, "_Nomen_key");
+	    break;
+    case NOM_SYNONYM:
             strcpy(buf, "_Synonym_key");
 	    break;
-    case ALL_CELLLINE:
-    case ALL_CELLLINE_VIEW:
-            strcpy(buf, "_CellLine_key");
+    case PRB_ALIAS:
+            strcpy(buf, "_Alias_key");
 	    break;
-    case ALL_NOTETYPE:
-            strcpy(buf, "_NoteType_key");
+    case PRB_ALLELE:
+    case PRB_ALLELE_STRAIN:
+            strcpy(buf, "_Allele_key");
 	    break;
-    case ALL_REFERENCETYPE:
-            strcpy(buf, "_RefsType_key");
+    case PRB_PROBE:
+    case PRB_MARKER:
+    case PRB_MARKER_VIEW:
+    case PRB_NOTES:
+            strcpy(buf, "_Probe_key");
 	    break;
-    case ALL_STATUS:
-            strcpy(buf, "_Allele_Status_key");
+    case PRB_REFERENCE:
+    case PRB_REF_NOTES:
+            strcpy(buf, "_Reference_key");
+	    break;
+    case PRB_RFLV:
+            strcpy(buf, "_RFLV_key");
+	    break;
+    case PRB_SOURCE:
+    case PRB_SOURCE_MASTER:
+            strcpy(buf, "_Source_key");
+	    break;
+    case PRB_STRAIN_MARKER:
+            strcpy(buf, "_StrainMarker_key");
+	    break;
+    case PRB_STRAIN_SYNONYM:
+            strcpy(buf, "_Synonym_key");
+	    break;
+    case RISET:
+            strcpy(buf, "_RISet_key");
+	    break;
+    case SEQ_SEQUENCE:
+            strcpy(buf, "_Sequence_key");
+	    break;
+    case SEQ_SOURCE_ASSOC:
+            strcpy(buf, "_Assoc_key");
+	    break;
+    case STRAIN:
+            strcpy(buf, "_Strain_key");
+	    break;
+    case TISSUE:
+            strcpy(buf, "_Tissue_key");
 	    break;
     case VOC_VOCAB:
 	    strcpy(buf, "_Vocab_key");
@@ -903,10 +936,8 @@ char *mgi_DBkey(int table)
     case VOC_EVIDENCE:
 	    strcpy(buf, "_AnnotEvidence_key");
 	    break;
-    case MGI_FANTOM2:
-    case MGI_FANTOM2NOTES:
-    case MGI_FANTOM2CACHE:
-	    strcpy(buf, "_Fantom2_key");
+    case VOC_CELLLINE_VIEW:
+	    strcpy(buf, "_Term_key");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -940,19 +971,11 @@ char *mgi_DBtype(int table)
 
   switch (table)
   {
+    case ALL_ALLELE:
+            strcpy(buf, "Allele");
+            break;
     case BIB_REFS:
             strcpy(buf, "Reference");
-	    break;
-    case MRK_MARKER:
-    case MRK_MOUSE:
-    case MRK_ACC_REFERENCE:
-            strcpy(buf, "Marker");
-	    break;
-    case PRB_PROBE:
-            strcpy(buf, "Segment");
-	    break;
-    case MLD_EXPTS:
-            strcpy(buf, "Experiment");
 	    break;
     case GXD_ANTIGEN:
             strcpy(buf, "Antigen");
@@ -966,19 +989,30 @@ char *mgi_DBtype(int table)
     case IMG_IMAGE:
             strcpy(buf, "Image");
 	    break;
+    case MLD_EXPTS:
+            strcpy(buf, "Experiment");
+	    break;
+    case MRK_MARKER:
+    case MRK_MOUSE:
+    case MRK_ACC_REFERENCE:
+            strcpy(buf, "Marker");
+	    break;
     case NOM_MARKER:
     case NOM_ACC_REFERENCE:
             strcpy(buf, "Nomenclature");
             break;
+    case PRB_PROBE:
+            strcpy(buf, "Segment");
+	    break;
+    case PRB_SOURCE_MASTER:
+            strcpy(buf, "Source");
+            break;
+    case SEQ_SEQUENCE:
+	    strcpy(buf, "Sequence");
+	    break;
     case STRAIN:
     case MLP_STRAIN:
             strcpy(buf, "Strain");
-            break;
-    case ALL_ALLELE:
-            strcpy(buf, "Allele");
-            break;
-    case PRB_SOURCE_MASTER:
-            strcpy(buf, "Source");
             break;
     case VOC_TERM:
 	    strcpy(buf, "Vocabulary Term");
@@ -1015,24 +1049,11 @@ char *mgi_DBaccTable(int table)
  
   switch (table)
   {
+    case ALL_ALLELE:
+            strcpy(buf, "ALL_Acc_View");
+            break;
     case BIB_REFS:
             strcpy(buf, "BIB_Summary_All_View");
-            break;
-    case MRK_MARKER:
-    case MRK_MOUSE:
-            strcpy(buf, "MRK_AccNoRef_View");
-            break;
-    case MRK_ACC_REFERENCE:
-            strcpy(buf, "MRK_AccRef_View");
-            break;
-    case PRB_PROBE:
-            strcpy(buf, "PRB_AccNoRef_View");
-            break;
-    case PRB_REFERENCE:
-            strcpy(buf, "PRB_AccRef_View");
-            break;
-    case MLD_EXPTS:
-            strcpy(buf, "MLD_Summary_View");
             break;
     case GXD_ANTIGEN:
             strcpy(buf, "GXD_Antigen_Summary_View");
@@ -1049,8 +1070,18 @@ char *mgi_DBaccTable(int table)
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image_Acc_View");
             break;
-    case ALL_ALLELE:
-            strcpy(buf, "ALL_Acc_View");
+    case MGI_ORGANISM:
+            strcpy(buf, "MGI_Organism_Acc_View");
+            break;
+    case MLD_EXPTS:
+            strcpy(buf, "MLD_Summary_View");
+            break;
+    case MRK_MARKER:
+    case MRK_MOUSE:
+            strcpy(buf, "MRK_AccNoRef_View");
+            break;
+    case MRK_ACC_REFERENCE:
+            strcpy(buf, "MRK_AccRef_View");
             break;
     case NOM_MARKER:
 	    sprintf(buf, "NOM_AccNoRef_View");
@@ -1058,12 +1089,21 @@ char *mgi_DBaccTable(int table)
     case NOM_ACC_REFERENCE:
 	    sprintf(buf, "NOM_AccRef_View");
             break;
+    case PRB_PROBE:
+            strcpy(buf, "PRB_AccNoRef_View");
+            break;
+    case PRB_REFERENCE:
+            strcpy(buf, "PRB_AccRef_View");
+            break;
     case PRB_SOURCE_MASTER:
 	    strcpy(buf, "PRB_Source_Acc_View");
 	    break;
     case STRAIN:
     case MLP_STRAIN:
 	    sprintf(buf, "PRB_Strain_Acc_View");
+            break;
+    case SEQ_SEQUENCE:
+	    sprintf(buf, "SEQ_Sequence_Acc_View");
             break;
     case VOC_TERM:
 	    sprintf(buf, "VOC_Term_Acc_View");
@@ -1106,6 +1146,60 @@ char *mgi_DBtable(int table)
     case ACC_LOGICALDB:
 	    strcpy(buf, "ACC_LogicalDB");
 	    break;
+    case ALL_ALLELE:
+            strcpy(buf, "ALL_Allele");
+	    break;
+    case ALL_CELLLINE:
+            strcpy(buf, "ALL_CellLine");
+	    break;
+    case ALL_ALLELE_MUTATION:
+            strcpy(buf, "ALL_Allele_Mutation");
+	    break;
+    case ALL_NOTE:
+            strcpy(buf, "ALL_Note");
+	    break;
+    case ALL_NOTETYPE:
+            strcpy(buf, "ALL_NoteType");
+	    break;
+    case ALL_REFERENCE:
+            strcpy(buf, "ALL_Reference");
+	    break;
+    case ALL_REFERENCETYPE:
+            strcpy(buf, "ALL_ReferenceType");
+	    break;
+    case ALL_STATUS:
+            strcpy(buf, "ALL_Status");
+	    break;
+    case ALL_SYNONYM:
+            strcpy(buf, "ALL_Synonym");
+	    break;
+    case ALL_ALLELE_VIEW:
+            strcpy(buf, "ALL_Allele_View");
+	    break;
+    case ALL_CELLLINE_VIEW:
+            strcpy(buf, "ALL_CellLine_View");
+	    break;
+    case ALL_MUTATION_VIEW:
+            strcpy(buf, "ALL_Allele_Mutation_View");
+	    break;
+    case ALL_SYNONYM_VIEW:
+            strcpy(buf, "ALL_Synonym_View");
+	    break;
+    case ALL_NOTE_VIEW:
+            strcpy(buf, "ALL_Note_View");
+	    break;
+    case ALL_REFERENCE_VIEW:
+            strcpy(buf, "ALL_Reference_View");
+	    break;
+    case ALL_TYPE:
+            strcpy(buf, "ALL_Type");
+	    break;
+    case ALL_INHERITANCE_MODE:
+            strcpy(buf, "ALL_Inheritance_Mode");
+	    break;
+    case ALL_MOLECULAR_MUTATION:
+            strcpy(buf, "ALL_Molecular_Mutation");
+	    break;
     case BIB_REFS:
             strcpy(buf, "BIB_Refs");
 	    break;
@@ -1118,278 +1212,11 @@ char *mgi_DBtable(int table)
     case BIB_REVIEW_STATUS:
             strcpy(buf, "BIB_ReviewStatus");
 	    break;
-    case MRK_MARKER:
-            strcpy(buf, "MRK_Marker");
-	    break;
-    case MRK_ALIAS:
-            strcpy(buf, "MRK_Alias");
-	    break;
-    case MRK_ALLELE:
-            strcpy(buf, "MRK_Allele");
-	    break;
-    case MRK_CLASSES:
-            strcpy(buf, "MRK_Classes");
-	    break;
-    case MRK_CURRENT:
-            strcpy(buf, "MRK_Current");
-	    break;
-    case MRK_HISTORY:
-            strcpy(buf, "MRK_History");
-	    break;
-    case MRK_NOTES:
-            strcpy(buf, "MRK_Notes");
-	    break;
-    case MRK_OFFSET:
-            strcpy(buf, "MRK_Offset");
-	    break;
-    case MRK_OTHER:
-            strcpy(buf, "MRK_Other");
-	    break;
-    case MRK_REFERENCE:
-            strcpy(buf, "MRK_Reference");
-	    break;
-    case NOM_MARKER:
-	    strcpy(buf, "NOM_Marker");
-	    break;
-    case NOM_MARKER_VIEW:
-	    strcpy(buf, "NOM_Marker_View");
-	    break;
-    case NOM_MARKER_VALID_VIEW:
-	    strcpy(buf, "NOM_Marker_Valid_View");
-	    break;
-    case NOM_STATUS:
-	    strcpy(buf, "VOC_Term_NomenStatus_View");
-	    break;
-    case NOM_SYNONYM:
-	    strcpy(buf, "NOM_Synonym");
-	    break;
-    case NOM_SYNONYM_VIEW:
-	    strcpy(buf, "NOM_Synonym_View");
-	    break;
-    case NOM_TRANSFERSYMBOL:
-	    strcpy(buf, "NOM_transferToMGD");
-	    break;
-    case HMD_CLASS:
-            strcpy(buf, "HMD_Class");
-	    break;
-    case HMD_HOMOLOGY:
-            strcpy(buf, "HMD_Homology");
-	    break;
-    case HMD_HOMOLOGY_MARKER:
-            strcpy(buf, "HMD_Homology_Marker");
-	    break;
-    case HMD_HOMOLOGY_ASSAY:
-            strcpy(buf, "HMD_Homology_Assay");
-	    break;
-    case HMD_NOTES:
-            strcpy(buf, "HMD_Notes");
-	    break;
-    case MGI_NOTE:
-            strcpy(buf, "MGI_Note");
-            break;
-    case MGI_NOTECHUNK:
-            strcpy(buf, "MGI_NoteChunk");
-            break;
-    case MGI_NOTETYPE:
-            strcpy(buf, "MGI_NoteType");
-            break;
-    case MGI_NOTE_MRKGO_VIEW:
-            strcpy(buf, "MGI_Note_MRKGO_View");
-            break;
-    case MGI_NOTETYPE_MRKGO_VIEW:
-            strcpy(buf, "MGI_NoteType_MRKGO_View");
-            break;
-    case MGI_NOTE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_Note_Nomen_View");
-	    break;
-    case MGI_NOTETYPE_NOMEN_VIEW:
-            strcpy(buf, "MGI_NoteType_Nomen_View");
-            break;
-    case MGI_NOTE_VOCEVIDENCE_VIEW:
-	    strcpy(buf, "MGI_Note_VocEvidence_View");
-	    break;
-    case MGI_NOTETYPE_VOCEVIDENCE_VIEW:
-            strcpy(buf, "MGI_NoteType_VocEvidence_View");
-            break;
-    case MGI_REFERENCE_ASSOC:
-	    strcpy(buf, "MGI_Reference_Assoc");
-	    break;
-    case MGI_REFERENCE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_Reference_Nomen_View");
-	    break;
-    case MGI_REFTYPE_NOMEN_VIEW:
-	    strcpy(buf, "MGI_RefType_Nomen_View");
-	    break;
-    case MRK_MOUSE:
-            strcpy(buf, "MRK_Mouse_View");
-	    break;
-    case PRB_ALIAS:
-            strcpy(buf, "PRB_Alias");
-	    break;
-    case PRB_ALLELE:
-            strcpy(buf, "PRB_Allele");
-	    break;
-    case PRB_ALLELE_STRAIN:
-            strcpy(buf, "PRB_Allele_Strain");
-	    break;
-    case PRB_MARKER:
-            strcpy(buf, "PRB_Marker");
-	    break;
-    case PRB_NOTES:
-            strcpy(buf, "PRB_Notes");
-	    break;
-    case PRB_PROBE:
-            strcpy(buf, "PRB_Probe");
-	    break;
-    case PRB_REF_NOTES:
-            strcpy(buf, "PRB_Ref_Notes");
-	    break;
-    case PRB_REFERENCE:
-            strcpy(buf, "PRB_Reference");
-	    break;
-    case PRB_RFLV:
-            strcpy(buf, "PRB_RFLV");
-	    break;
-    case PRB_SOURCE:
-    case PRB_SOURCE_MASTER:
-            strcpy(buf, "PRB_Source");
-	    break;
-    case PRB_SPECIES:
-	    sprintf(buf, "PRB_Species");
-	    break;
-    case MRK_SPECIES:
-            strcpy(buf, "MRK_Species");
-	    break;
-    case MRK_ANCHOR:
-            strcpy(buf, "MRK_Anchors");
-	    break;
-    case MRK_CHROMOSOME:
-            strcpy(buf, "MRK_Chromosome");
-	    break;
-    case MRK_CLASS:
-            strcpy(buf, "MRK_Class");
-	    break;
-    case MRK_TYPE:
-            strcpy(buf, "MRK_Types");
-	    break;
-    case MRK_EVENT:
-	    sprintf(buf, "MRK_Event");
-	    break;
-    case MRK_EVENTREASON:
-	    sprintf(buf, "MRK_EventReason");
-	    break;
-    case MRK_STATUS:
-	    sprintf(buf, "MRK_Status");
-	    break;
-    case ALL_TYPE:
-            strcpy(buf, "ALL_Type");
-	    break;
-    case ALL_INHERITANCE_MODE:
-            strcpy(buf, "ALL_Inheritance_Mode");
-	    break;
-    case ALL_MOLECULAR_MUTATION:
-            strcpy(buf, "ALL_Molecular_Mutation");
-	    break;
-    case PRB_VECTOR_TYPE:
-            strcpy(buf, "PRB_Vector_Types");
-	    break;
     case CROSS:
             strcpy(buf, "CRS_Cross");
 	    break;
-    case RISET:
-            strcpy(buf, "RI_RISet");
-	    break;
-    case RISET_VIEW:
-            strcpy(buf, "RI_RISet_View");
-	    break;
-    case MLD_ASSAY:
-            strcpy(buf, "MLD_Assay_Types");
-	    break;
-    case HMD_ASSAY:
-            strcpy(buf, "HMD_Assay");
-	    break;
-    case STRAIN:
-            strcpy(buf, "PRB_Strain");
-	    break;
-    case TISSUE:
-            strcpy(buf, "PRB_Tissue");
-	    break;
-    case MLC_LOCK:
-            strcpy(buf, "MLC_Lock");
-	    break;
-    case MLC_MARKER:
-            strcpy(buf, "MLC_Marker");
-	    break;
-    case MLC_MARKER_VIEW:
-            strcpy(buf, "MLC_Marker_View");
-	    break;
-    case MLC_REFERENCE:
-            strcpy(buf, "MLC_Reference");
-	    break;
-    case MLC_TEXT:
-    case MLC_TEXT_ALL:
-            strcpy(buf, "MLC_Text");
-	    break;
-    case MLD_CONCORDANCE:
-            strcpy(buf, "MLD_Concordance");
-	    break;
-    case MLD_DISTANCE:
-            strcpy(buf, "MLD_Distance");
-	    break;
-    case MLD_EXPT_MARKER:
-            strcpy(buf, "MLD_Expt_Marker");
-	    break;
-    case MLD_EXPT_NOTES:
-            strcpy(buf, "MLD_Expt_Notes");
-	    break;
-    case MLD_EXPTS:
-    case MLD_EXPTS_DELETE:
-            strcpy(buf, "MLD_Expts");
-	    break;
-    case MLD_FISH:
-            strcpy(buf, "MLD_FISH");
-	    break;
-    case MLD_FISH_REGION:
-            strcpy(buf, "MLD_FISH_Region");
-	    break;
-    case MLD_HYBRID:
-            strcpy(buf, "MLD_Hybrid");
-	    break;
-    case MLD_INSITU:
-            strcpy(buf, "MLD_InSitu");
-	    break;
-    case MLD_INSITU_REGION:
-            strcpy(buf, "MLD_ISRegion");
-	    break;
-    case MLD_MARKER:
-            strcpy(buf, "MLD_Marker");
-	    break;
-    case MLD_MCMASTER:
-            strcpy(buf, "MLD_Matrix");
-	    break;
-    case MLD_MC2POINT:
-            strcpy(buf, "MLD_MC2point");
-	    break;
-    case MLD_MCHAPLOTYPE:
-            strcpy(buf, "MLD_MCDataList");
-	    break;
-    case MLD_NOTES:
-            strcpy(buf, "MLD_Notes");
-	    break;
-    case MLD_PHYSICAL:
-            strcpy(buf, "MLD_PhysMap");
-	    break;
-    case MLD_RI:
-            strcpy(buf, "MLD_RI");
-	    break;
-    case MLD_RIHAPLOTYPE:
-            strcpy(buf, "MLD_RIData");
-	    break;
-    case MLD_RI2POINT:
-            strcpy(buf, "MLD_RI2Point");
-	    break;
-    case MLD_STATISTICS:
-            strcpy(buf, "MLD_Statistics");
+    case DAG_NODE_VIEW:
+            strcpy(buf, "DAG_Node_View");
 	    break;
     case GXD_ANTIGEN:
             strcpy(buf, "GXD_Antigen");
@@ -1454,9 +1281,6 @@ char *mgi_DBtable(int table)
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "GXD_AntibodyType");
 	    break;
-    case GXD_ANTIBODYSPECIES:
-            strcpy(buf, "GXD_AntibodySpecies");
-	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "GXD_GelRNAType");
 	    break;
@@ -1465,15 +1289,6 @@ char *mgi_DBtable(int table)
 	    break;
     case GXD_GELCONTROL:
             strcpy(buf, "GXD_GelControl");
-	    break;
-    case IMG_IMAGE:
-            strcpy(buf, "IMG_Image");
-	    break;
-    case IMG_IMAGEPANE:
-            strcpy(buf, "IMG_ImagePane");
-	    break;
-    case IMG_IMAGENOTE:
-            strcpy(buf, "IMG_ImageNote");
 	    break;
     case GXD_GENOTYPE:
             strcpy(buf, "GXD_Genotype");
@@ -1526,20 +1341,336 @@ char *mgi_DBtable(int table)
     case GXD_INDEXSTAGES:
             strcpy(buf, "GXD_Index_Stages");
 	    break;
+    case HMD_ASSAY:
+            strcpy(buf, "HMD_Assay");
+	    break;
+    case HMD_CLASS:
+            strcpy(buf, "HMD_Class");
+	    break;
+    case HMD_HOMOLOGY:
+            strcpy(buf, "HMD_Homology");
+	    break;
+    case HMD_HOMOLOGY_MARKER:
+            strcpy(buf, "HMD_Homology_Marker");
+	    break;
+    case HMD_HOMOLOGY_ASSAY:
+            strcpy(buf, "HMD_Homology_Assay");
+	    break;
+    case HMD_NOTES:
+            strcpy(buf, "HMD_Notes");
+	    break;
+    case IMG_IMAGE:
+            strcpy(buf, "IMG_Image");
+	    break;
+    case IMG_IMAGEPANE:
+            strcpy(buf, "IMG_ImagePane");
+	    break;
+    case IMG_IMAGENOTE:
+            strcpy(buf, "IMG_ImageNote");
+	    break;
     case MGI_TABLES:
             strcpy(buf, "MGI_Tables");
 	    break;
     case MGI_COLUMNS:
             strcpy(buf, "MGI_Columns");
 	    break;
+    case MGI_FANTOM2:
+	    strcpy(buf, "MGI_Fantom2");
+	    break;
+    case MGI_FANTOM2NOTES:
+	    strcpy(buf, "MGI_Fantom2Notes");
+	    break;
+    case MGI_FANTOM2CACHE:
+	    strcpy(buf, "MGI_Fantom2Cache");
+	    break;
+    case MGI_NOTE:
+	    strcpy(buf, "MGI_Note");
+	    break;
+    case MGI_NOTECHUNK:
+	    strcpy(buf, "MGI_NoteChunk");
+	    break;
+    case MGI_NOTETYPE:
+	    strcpy(buf, "MGI_NoteType");
+	    break;
+    case MGI_NOTE_MRKGO_VIEW:
+	    strcpy(buf, "MGI_Note_MRKGO_View");
+	    break;
+    case MGI_NOTETYPE_MRKGO_VIEW:
+	    strcpy(buf, "MGI_NoteType_MRKGO_View");
+	    break;
+    case MGI_NOTE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_Note_Nomen_View");
+	    break;
+    case MGI_NOTETYPE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_NoteType_Nomen_View");
+	    break;
+    case MGI_NOTE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_Note_Sequence_View");
+	    break;
+    case MGI_NOTETYPE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_NoteType_Sequence_View");
+	    break;
+    case MGI_NOTE_SOURCE_VIEW:
+	    strcpy(buf, "MGI_Note_Source_View");
+	    break;
+    case MGI_NOTE_VOCEVIDENCE_VIEW:
+	    strcpy(buf, "MGI_Note_VocEvidence_View");
+	    break;
+    case MGI_NOTETYPE_SOURCE_VIEW:
+	    strcpy(buf, "MGI_NoteType_Source_View");
+	    break;
+    case MGI_ORGANISM:
+            strcpy(buf, "MGI_Organism");
+	    break;
+    case MGI_ORGANISMTYPE:
+            strcpy(buf, "MGI_Organism_MGIType");
+	    break;
+    case MGI_REFERENCE_ASSOC:
+	    strcpy(buf, "MGI_Reference_Assoc");
+	    break;
+    case MGI_REFASSOCTYPE:
+	    strcpy(buf, "MGI_RefAssocType");
+	    break;
+    case MGI_REFERENCE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_Reference_Nomen_View");
+	    break;
+    case MGI_REFERENCE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_Reference_Sequence_View");
+	    break;
+    case MGI_REFTYPE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_RefType_Nomen_View");
+	    break;
+    case MGI_REFTYPE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_RefType_Sequence_View");
+	    break;
+    case MGI_SETMEMBER:
+            strcpy(buf, "MGI_SetMember");
+	    break;
     case MGI_TRANSLATION:
-	    strcpy(buf, "MGI_Translation");
+            strcpy(buf, "MGI_Translation");
 	    break;
     case MGI_TRANSLATIONTYPE:
-	    strcpy(buf, "MGI_TranslationType");
+            strcpy(buf, "MGI_TranslationType");
 	    break;
     case MGI_TRANSLATIONSTRAIN_VIEW:
-	    strcpy(buf, "MGI_TranslationStrain_View");
+            strcpy(buf, "MGI_TranslationStrain_View");
+	    break;
+    case MGI_USER:
+	    strcpy(buf, "MGI_User");
+	    break;
+    case MLC_LOCK:
+            strcpy(buf, "MLC_Lock");
+	    break;
+    case MLC_MARKER:
+            strcpy(buf, "MLC_Marker");
+	    break;
+    case MLC_MARKER_VIEW:
+            strcpy(buf, "MLC_Marker_View");
+	    break;
+    case MLC_REFERENCE:
+            strcpy(buf, "MLC_Reference");
+	    break;
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
+            strcpy(buf, "MLC_Text");
+	    break;
+    case MLD_ASSAY:
+            strcpy(buf, "MLD_Assay_Types");
+	    break;
+    case MLD_CONCORDANCE:
+            strcpy(buf, "MLD_Concordance");
+	    break;
+    case MLD_DISTANCE:
+            strcpy(buf, "MLD_Distance");
+	    break;
+    case MLD_EXPT_MARKER:
+            strcpy(buf, "MLD_Expt_Marker");
+	    break;
+    case MLD_EXPT_NOTES:
+            strcpy(buf, "MLD_Expt_Notes");
+	    break;
+    case MLD_EXPTS:
+    case MLD_EXPTS_DELETE:
+            strcpy(buf, "MLD_Expts");
+	    break;
+    case MLD_FISH:
+            strcpy(buf, "MLD_FISH");
+	    break;
+    case MLD_FISH_REGION:
+            strcpy(buf, "MLD_FISH_Region");
+	    break;
+    case MLD_HYBRID:
+            strcpy(buf, "MLD_Hybrid");
+	    break;
+    case MLD_INSITU:
+            strcpy(buf, "MLD_InSitu");
+	    break;
+    case MLD_INSITU_REGION:
+            strcpy(buf, "MLD_ISRegion");
+	    break;
+    case MLD_MARKER:
+    case MLD_MARKERBYREF:
+            strcpy(buf, "MLD_Marker");
+	    break;
+    case MLD_MCMASTER:
+            strcpy(buf, "MLD_Matrix");
+	    break;
+    case MLD_MC2POINT:
+            strcpy(buf, "MLD_MC2point");
+	    break;
+    case MLD_MCHAPLOTYPE:
+            strcpy(buf, "MLD_MCDataList");
+	    break;
+    case MLD_NOTES:
+            strcpy(buf, "MLD_Notes");
+	    break;
+    case MLD_PHYSICAL:
+            strcpy(buf, "MLD_PhysMap");
+	    break;
+    case MLD_RI:
+            strcpy(buf, "MLD_RI");
+	    break;
+    case MLD_RIHAPLOTYPE:
+            strcpy(buf, "MLD_RIData");
+	    break;
+    case MLD_RI2POINT:
+            strcpy(buf, "MLD_RI2Point");
+	    break;
+    case MLD_STATISTICS:
+            strcpy(buf, "MLD_Statistics");
+	    break;
+    case MLP_STRAIN:
+	    strcpy(buf, "MLP_Strain");
+	    break;
+    case MLP_STRAIN_VIEW:
+	    strcpy(buf, "MLP_Strain_View");
+	    break;
+    case MLP_SPECIES:
+	    strcpy(buf, "MLP_Species");
+	    break;
+    case MLP_NOTES:
+	    strcpy(buf, "MLP_Notes");
+	    break;
+    case MLP_EXTRA:
+	    strcpy(buf, "MLP_Extra");
+	    break;
+    case MLP_STRAINTYPE:
+	    strcpy(buf, "MLP_StrainType");
+	    break;
+    case MLP_STRAINTYPES:
+	    strcpy(buf, "MLP_StrainTypes");
+	    break;
+    case MLP_STRAINTYPES_VIEW:
+	    strcpy(buf, "MLP_StrainTypes_View");
+	    break;
+    case MRK_MARKER:
+            strcpy(buf, "MRK_Marker");
+	    break;
+    case MRK_ALIAS:
+            strcpy(buf, "MRK_Alias");
+	    break;
+    case MRK_ALLELE:
+            strcpy(buf, "MRK_Allele");
+	    break;
+    case MRK_CLASSES:
+            strcpy(buf, "MRK_Classes");
+	    break;
+    case MRK_CURRENT:
+            strcpy(buf, "MRK_Current");
+	    break;
+    case MRK_HISTORY:
+            strcpy(buf, "MRK_History");
+	    break;
+    case MRK_NOTES:
+            strcpy(buf, "MRK_Notes");
+	    break;
+    case MRK_OFFSET:
+            strcpy(buf, "MRK_Offset");
+	    break;
+    case MRK_OTHER:
+            strcpy(buf, "MRK_Other");
+	    break;
+    case MRK_REFERENCE:
+            strcpy(buf, "MRK_Reference");
+	    break;
+    case MRK_MOUSE:
+            strcpy(buf, "MRK_Mouse_View");
+	    break;
+    case MRK_ANCHOR:
+            strcpy(buf, "MRK_Anchors");
+	    break;
+    case MRK_CHROMOSOME:
+            strcpy(buf, "MRK_Chromosome");
+	    break;
+    case MRK_CLASS:
+            strcpy(buf, "MRK_Class");
+	    break;
+    case MRK_TYPE:
+            strcpy(buf, "MRK_Types");
+	    break;
+    case MRK_EVENT:
+	    sprintf(buf, "MRK_Event");
+	    break;
+    case MRK_EVENTREASON:
+	    sprintf(buf, "MRK_EventReason");
+	    break;
+    case MRK_STATUS:
+	    sprintf(buf, "MRK_Status");
+	    break;
+    case NOM_MARKER:
+	    strcpy(buf, "NOM_Marker");
+	    break;
+    case NOM_MARKER_VIEW:
+	    strcpy(buf, "NOM_Marker_View");
+	    break;
+    case NOM_MARKER_VALID_VIEW:
+	    strcpy(buf, "NOM_Marker_Valid_View");
+	    break;
+    case NOM_STATUS:
+	    strcpy(buf, "VOC_Term_NomenStatus_View");
+	    break;
+    case NOM_SYNONYM:
+	    strcpy(buf, "NOM_Synonym");
+	    break;
+    case NOM_SYNONYM_VIEW:
+	    strcpy(buf, "NOM_Synonym_View");
+	    break;
+    case NOM_TRANSFERSYMBOL:
+	    strcpy(buf, "NOM_transferToMGD");
+	    break;
+    case PRB_ALIAS:
+            strcpy(buf, "PRB_Alias");
+	    break;
+    case PRB_ALLELE:
+            strcpy(buf, "PRB_Allele");
+	    break;
+    case PRB_ALLELE_STRAIN:
+            strcpy(buf, "PRB_Allele_Strain");
+	    break;
+    case PRB_MARKER:
+            strcpy(buf, "PRB_Marker");
+	    break;
+    case PRB_MARKER_VIEW:
+            strcpy(buf, "PRB_Marker_View");
+	    break;
+    case PRB_NOTES:
+            strcpy(buf, "PRB_Notes");
+	    break;
+    case PRB_PROBE:
+            strcpy(buf, "PRB_Probe");
+	    break;
+    case PRB_REF_NOTES:
+            strcpy(buf, "PRB_Ref_Notes");
+	    break;
+    case PRB_REFERENCE:
+            strcpy(buf, "PRB_Reference");
+	    break;
+    case PRB_RFLV:
+            strcpy(buf, "PRB_RFLV");
+	    break;
+    case PRB_SOURCE:
+    case PRB_SOURCE_MASTER:
+            strcpy(buf, "PRB_Source");
 	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
@@ -1548,79 +1679,28 @@ char *mgi_DBtable(int table)
             strcpy(buf, "PRB_Strain_Synonym");
 	    break;
     case PRB_STRAIN_MARKER_VIEW:
-	    sprintf(buf, "PRB_Strain_Marker_View");
+	    strcpy(buf, "PRB_Strain_Marker_View");
 	    break;
-    case MLP_STRAIN:
-	    sprintf(buf, "MLP_Strain");
+    case RISET:
+            strcpy(buf, "RI_RISet");
 	    break;
-    case MLP_STRAIN_VIEW:
-	    sprintf(buf, "MLP_Strain_View");
+    case RISET_VIEW:
+            strcpy(buf, "RI_RISet_View");
 	    break;
-    case MLP_SPECIES:
-	    sprintf(buf, "MLP_Species");
+    case SEQ_SEQUENCE:
+	    strcpy(buf, "SEQ_Sequence");
 	    break;
-    case MLP_NOTES:
-	    sprintf(buf, "MLP_Notes");
+    case SEQ_SOURCE_ASSOC:
+	    strcpy(buf, "SEQ_Source_Assoc");
 	    break;
-    case MLP_EXTRA:
-	    sprintf(buf, "MLP_Extra");
-	    break;
-    case MLP_STRAINTYPE:
-	    sprintf(buf, "MLP_StrainType");
-	    break;
-    case MLP_STRAINTYPES:
-	    sprintf(buf, "MLP_StrainTypes");
-	    break;
-    case MLP_STRAINTYPES_VIEW:
-	    sprintf(buf, "MLP_StrainTypes_View");
+    case STRAIN:
+            strcpy(buf, "PRB_Strain");
 	    break;
     case STRAIN_MERGE:
-	    sprintf(buf, "MLP_mergeStrain");
+	    strcpy(buf, "MLP_mergeStrain");
 	    break;
-    case ALL_ALLELE:
-            strcpy(buf, "ALL_Allele");
-	    break;
-    case ALL_CELLLINE:
-            strcpy(buf, "ALL_CellLine");
-	    break;
-    case ALL_ALLELE_MUTATION:
-            strcpy(buf, "ALL_Allele_Mutation");
-	    break;
-    case ALL_NOTE:
-            strcpy(buf, "ALL_Note");
-	    break;
-    case ALL_NOTETYPE:
-            strcpy(buf, "ALL_NoteType");
-	    break;
-    case ALL_REFERENCE:
-            strcpy(buf, "ALL_Reference");
-	    break;
-    case ALL_REFERENCETYPE:
-            strcpy(buf, "ALL_ReferenceType");
-	    break;
-    case ALL_STATUS:
-            strcpy(buf, "ALL_Status");
-	    break;
-    case ALL_SYNONYM:
-            strcpy(buf, "ALL_Synonym");
-	    break;
-    case ALL_ALLELE_VIEW:
-            strcpy(buf, "ALL_Allele_View");
-	    break;
-    case ALL_CELLLINE_VIEW:
-            strcpy(buf, "ALL_CellLine_View");
-	    break;
-    case ALL_MUTATION_VIEW:
-            strcpy(buf, "ALL_Allele_Mutation_View");
-	    break;
-    case ALL_SYNONYM_VIEW:
-            strcpy(buf, "ALL_Synonym_View");
-	    break;
-    case ALL_NOTE_VIEW:
-            strcpy(buf, "ALL_Note_View");
-	    break;
-    case ALL_REFERENCE_VIEW:
-            strcpy(buf, "ALL_Reference_View");
+    case TISSUE:
+            strcpy(buf, "PRB_Tissue");
 	    break;
     case VOC_VOCAB:
             strcpy(buf, "VOC_Vocab");
@@ -1652,6 +1732,9 @@ char *mgi_DBtable(int table)
     case VOC_ANNOT_VIEW:
             strcpy(buf, "VOC_Annot_View");
 	    break;
+    case VOC_CELLLINE_VIEW:
+	    strcpy(buf, "VOC_Term_CellLine_View");
+	    break;
     case VOC_EVIDENCE:
             strcpy(buf, "VOC_Evidence");
 	    break;
@@ -1660,18 +1743,6 @@ char *mgi_DBtable(int table)
 	    break;
     case VOC_VOCABDAG_VIEW:
             strcpy(buf, "VOC_VocabDAG_View");
-	    break;
-    case DAG_NODE_VIEW:
-            strcpy(buf, "DAG_Node_View");
-	    break;
-    case MGI_FANTOM2:
-	    strcpy(buf, "MGI_Fantom2");
-	    break;
-    case MGI_FANTOM2NOTES:
-	    strcpy(buf, "MGI_Fantom2Notes");
-	    break;
-    case MGI_FANTOM2CACHE:
-	    strcpy(buf, "MGI_Fantom2Cache");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1733,7 +1804,7 @@ char *mgi_DBsumTable(int table)
             strcpy(buf, "PRB_Summary_View");
             break;
     case STRAIN:
-	    sprintf(buf, "PRB_Strain_Summary_View");
+	    strcpy(buf, "PRB_Strain_Summary_View");
             break;
     default:
             sprintf(buf, "Invalid Table: %d", table);
@@ -1789,6 +1860,11 @@ char *mgi_DBinsert(int table, char *keyName)
   switch (table)
   {
     case ACC_ACTUALDB:
+    case ALL_ALLELE_MUTATION:
+    case ALL_NOTE:
+    case ALL_NOTE_VIEW:
+    case ALL_REFERENCE:
+    case ALL_SYNONYM:
     case BIB_BOOKS:
     case BIB_NOTES:
     case GXD_ANTIBODYMARKER:
@@ -1797,8 +1873,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_ANTIBODYPREP:
     case GXD_PROBEPREP:
     case GXD_ALLELEPAIR:
-    case IMG_IMAGEPANE:
-    case IMG_IMAGENOTE:
     case GXD_SPECIMEN:
     case GXD_ISRESULT:
     case GXD_ISRESULTSTRUCTURE:
@@ -1809,9 +1883,21 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_GELLANESTRUCTURE:
     case GXD_STRUCTURENAME:
     case GXD_INDEXSTAGES:
+    case HMD_HOMOLOGY:
+    case HMD_HOMOLOGY_MARKER:
+    case HMD_HOMOLOGY_ASSAY:
+    case HMD_NOTES:
+    case IMG_IMAGEPANE:
+    case IMG_IMAGENOTE:
+    case MGI_TABLES:
+    case MGI_COLUMNS:
+    case MGI_FANTOM2NOTES:
+    case MGI_FANTOM2CACHE:
     case MGI_NOTE:
     case MGI_NOTECHUNK:
+    case MGI_ORGANISMTYPE:
     case MGI_REFERENCE_ASSOC:
+    case MGI_SETMEMBER:
     case MLC_LOCK:
     case MLC_MARKER:
     case MLC_REFERENCE:
@@ -1836,9 +1922,13 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLD_RIHAPLOTYPE:
     case MLD_RI2POINT:
     case MLD_STATISTICS:
-    case MRK_CHROMOSOME:
+    case MLP_STRAIN:
+    case MLP_STRAINTYPES:
+    case MLP_NOTES:
+    case MLP_EXTRA:
     case MRK_ANCHOR:
     case MRK_ALIAS:
+    case MRK_CHROMOSOME:
     case MRK_CLASSES:
     case MRK_CURRENT:
     case MRK_HISTORY:
@@ -1846,10 +1936,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_OFFSET:
     case MRK_REFERENCE:
     case NOM_SYNONYM:
-    case HMD_HOMOLOGY:
-    case HMD_HOMOLOGY_MARKER:
-    case HMD_HOMOLOGY_ASSAY:
-    case HMD_NOTES:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
     case PRB_ALIAS:
@@ -1858,24 +1944,11 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_REF_NOTES:
     case PRB_RFLV:
     case PRB_SOURCE:
-    case MLP_STRAIN:
-    case MLP_STRAINTYPES:
-    case MLP_NOTES:
-    case MLP_EXTRA:
     case PRB_STRAIN_MARKER:
     case PRB_STRAIN_SYNONYM:
-    case MGI_TABLES:
-    case MGI_COLUMNS:
-    case ALL_ALLELE_MUTATION:
-    case ALL_NOTE:
-    case ALL_NOTE_VIEW:
-    case ALL_REFERENCE:
-    case ALL_SYNONYM:
     case VOC_ANNOT:
     case VOC_TEXT:
     case VOC_EVIDENCE:
-    case MGI_FANTOM2NOTES:
-    case MGI_FANTOM2CACHE:
 	selectKey = 0;
 	break;
     default:
@@ -1890,8 +1963,34 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ACC_LOGICALDB:
-	    sprintf(buf, "insert %s (%s, name, description, _Species_key)",
+	    sprintf(buf, "insert %s (%s, name, description, _Organism_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_ALLELE:
+            sprintf(buf, "insert %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _CellLine_key, _Allele_Status_key, symbol, name, nomenSymbol, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_ALLELE_MUTATION:
+            sprintf(buf, "insert %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_CELLLINE:
+    case ALL_CELLLINE_VIEW:
+            sprintf(buf, "insert %s (%s, %s, _Strain_key)", 
+		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
+	    break;
+    case ALL_NOTE:
+            sprintf(buf, "insert %s (%s, sequenceNum, _NoteType_key, private, note)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_NOTETYPE:
+            sprintf(buf, "insert %s (%s, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_REFERENCE:
+            sprintf(buf, "insert %s (%s, _Refs_key, _RefsType_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_REFERENCETYPE:
+            sprintf(buf, "insert %s (%s, referenceType, allowOnlyOne)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_SYNONYM:
+            sprintf(buf, "insert %s (%s, _Allele_key, _Refs_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_REFS:
 	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, dbs, NLMstatus, isReviewArticle, abstract)",
@@ -1904,213 +2003,16 @@ char *mgi_DBinsert(int table, char *keyName)
     case BIB_NOTES:
     case MLD_NOTES:
     case MLD_EXPT_NOTES:
+    case MLP_NOTES:
     case MRK_NOTES:
     case PRB_NOTES:
     case PRB_REF_NOTES:
-    case MLP_NOTES:
 	    sprintf(buf, "insert %s (%s, sequenceNum, note)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
-    case HMD_NOTES:
-	    sprintf(buf, "insert %s (%s, sequenceNum, notes)",
+    case CROSS:
+            sprintf(buf, "insert %s (%s, type, _femaleStrain_key, femaleAllele1, femaleAllele2, _maleStrain_key, maleAllele1, maleAllele2, abbrevHO, _StrainHO_key, abbrevHT, _StrainHT_key, whoseCross, alleleFromSegParent, F1DirectionKnown, nProgeny, displayed)", 
 	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MGI_NOTE:
-            sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _NoteType_key)", mgi_DBtable(table), mgi_DBkey(table));
-            break;
-    case MGI_NOTECHUNK:
-            sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
-            break;
-    case MGI_NOTETYPE:
-            sprintf(buf, "insert %s (%s, _MGIType_key, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
-            break;
-    case MGI_REFERENCE_ASSOC:
-            sprintf(buf, "insert %s (%s, _Refs_key, _Object_key, _MGIType_key, _RefAssocType_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_LOCK:
-	    sprintf(buf, "insert %s (time, %s, checkedOut)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_MARKER:
-	    sprintf(buf, "insert %s (%s, tag, _Marker_key_2)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_REFERENCE:
-	    sprintf(buf, "insert %s (%s, _Refs_key, tag)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_TEXT:
-	    sprintf(buf, "insert %s (%s, mode, description, userID, creation_date)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_CONCORDANCE:
-	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key, chromosome, cpp, cpn, cnp, cnn)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_DISTANCE:
-	    sprintf(buf, "insert %s (%s, _Marker_key_1, _Marker_key_2, sequenceNum, estDistance, endonuclease, minFrag, notes, relativeArrangeCharStr, units, realisticDist)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_EXPT_MARKER:
-	    sprintf(buf, "insert %s (%s, _Marker_key, _Allele_key, _Assay_Type_key, sequenceNum, gene, description, matrixData)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_EXPTS:
-	    sprintf(buf, "insert %s (%s, _Refs_key, exptType, tag, chromosome)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_FISH:
-	    sprintf(buf, "insert %s (%s, band, _Strain_key, cellOrigin, karyotype, robertsonians, label, numMetaphase, totalSingle, totalDouble)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_FISH_REGION:
-	    sprintf(buf, "insert %s (%s, sequenceNum, region, totalSingle, totalDouble)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_HYBRID:
-	    sprintf(buf, "insert %s (%s, chrsOrGenes, band)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_INSITU:
-	    sprintf(buf, "insert %s (%s, band, _Strain_key, cellOrigin, karyotype, robertsonians, numMetaphase, totalGrains, grainsOnChrom, grainsOtherChrom)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_INSITU_REGION:
-	    sprintf(buf, "insert %s (%s, sequenceNum, region, grainCount)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_MARKER:
-	    sprintf(buf, "insert %s (%s, _Marker_key, sequenceNum)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_MCMASTER:
-	    sprintf(buf, "insert %s (%s, _Cross_key, female, female2, male, male2)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_MC2POINT:
-	    sprintf(buf, "insert %s (%s, _Marker_key_1, _Marker_key_2, sequenceNum, numRecombinants, numParentals)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_MCHAPLOTYPE:
-	    sprintf(buf, "insert %s (%s, sequenceNum, alleleLine, offspringNmbr)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_PHYSICAL:
-	    sprintf(buf, "insert %s (%s, definitiveOrder, geneOrder)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_RI:
-	    sprintf(buf, "insert %s (%s, RI_IdList, _RISet_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_RIHAPLOTYPE:
-	    sprintf(buf, "insert %s (%s, _Marker_key, sequenceNum, alleleLine)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_RI2POINT:
-	    sprintf(buf, "insert %s (%s, _Marker_key_1, _Marker_key_2, sequenceNum, numRecombinants, numTotal, RI_Lines)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLD_STATISTICS:
-	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key_1, _Marker_key_2, recomb, total, pcntrecomb, stderr)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MRK_MARKER:
-	    sprintf(buf, "insert %s (%s, _Species_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, cytogeneticOffset)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_ALIAS:
-	    sprintf(buf, "insert %s (_Alias_key, %s)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_ALLELE:
-	    sprintf(buf, "insert %s (%s, _Marker_key, symbol, name)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_CLASSES:
-	    sprintf(buf, "insert %s (_Class_key, %s)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_CURRENT:
-	    sprintf(buf, "insert %s (_Current_key, %s)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_HISTORY:
-	    sprintf(buf, "insert %s (%s, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_OFFSET:
-	    sprintf(buf, "insert %s (%s, source, offset)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_OTHER:
-	    sprintf(buf, "insert %s (%s, _Marker_key, name, _Refs_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_REFERENCE:
-	    sprintf(buf, "insert %s (%s, _Refs_key, auto)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case NOM_MARKER:
-            sprintf(buf, "insert %s (%s, _Marker_Type_key, _NomenStatus_key, _Marker_Event_key, _Marker_EventReason_key, _CurationState_key, symbol, name, chromosome, humanSymbol, statusNote)",
-
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case NOM_SYNONYM:
-            sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case HMD_CLASS:
-	    sprintf(buf, "insert %s (%s)", 
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_HOMOLOGY:
-	    sprintf(buf, "insert %s (%s, _Class_key, _Refs_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_HOMOLOGY_MARKER:
-	    sprintf(buf, "insert %s (%s, _Marker_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_HOMOLOGY_ASSAY:
-	    sprintf(buf, "insert %s (%s, _Assay_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case HMD_ASSAY:
-            sprintf(buf, "insert %s (%s, %s, abbrev)", 
-		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
-	    break;
-    case PRB_ALIAS:
-            sprintf(buf, "insert %s (%s, _Reference_key, alias)",
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_ALLELE:
-            sprintf(buf, "insert %s (%s, _RFLV_key, allele, fragments)",
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_ALLELE_STRAIN:
-            sprintf(buf, "insert %s (%s, _Strain_key)",
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_MARKER:
-            sprintf(buf, "insert %s (%s, _Marker_key, relationship)",
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_PROBE:
-            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, primer1sequence, primer2sequence, regionCovered, regionCovered2, insertSite, insertSize, DNAtype, repeatUnit, productSize, moreProduct)",
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_REFERENCE:
-            sprintf(buf, "insert %s (%s, _Probe_key, _Refs_key, holder, hasRmap, hasSequence)",
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_RFLV:
-            sprintf(buf, "insert %s (%s, _Reference_key, _Marker_key, endonuclease)",
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_SOURCE:
-    case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _ProbeSpecies_key, _Strain_key, _Tissue_key, _Refs_key, name, description, age, ageMin, ageMax, sex, cellLine)",
-		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIGEN:
             sprintf(buf, "insert %s (%s, _Source_key, antigenName, regionCovered, antigenNote)", 
@@ -2121,7 +2023,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
-            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _AntibodySpecies_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote)", 
+            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYMARKER:
@@ -2132,7 +2034,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAY:
-            sprintf(buf, "insert %s (%s, _AssayType_key, _Refs_key, _Marker_key, _ProbePrep_key, _AntibodyPrep_key, _ImagePane_key, _ReporterGene_key)", 
+            sprintf(buf, "insert %s (%s, _AssayType_key, _Refs_key, _Marker_key, _ProbePrep_key, _AntibodyPrep_key, _ImagePane_key, _ReporterGene_key, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYNOTE:
@@ -2147,20 +2049,8 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Probe_key, _Sense_key, _Label_key, _Coverage_key, _Visualization_key, type)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case IMG_IMAGE:
-            sprintf(buf, "insert %s (%s, _Refs_key, xDim, yDim, figureLabel, copyrightNote)", 
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case IMG_IMAGEPANE:
-            sprintf(buf, "insert %s (%s, _Image_key, _FieldType_key, paneLabel)", 
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case IMG_IMAGENOTE:
-            sprintf(buf, "insert %s (%s, sequenceNum, imageNote)", 
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case GXD_GENOTYPE:
-            sprintf(buf, "insert %s (%s, _Strain_key, isConditional, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Strain_key, isConditional, note, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_SPECIMEN:
             sprintf(buf, "insert %s (%s, _Assay_key, _Embedding_key, _Fixation_key, _Genotype_key, sequenceNum, specimenLabel, sex, age, ageMin, ageMax, ageNote, hybridization, specimenNote)", 
@@ -2202,45 +2092,182 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (_StructureName_key, _Structure_key, structure, mgiAdded)", mgi_DBtable(table));
 	    break;
     case GXD_INDEX:
-	    sprintf(buf, "insert %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, comments)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, comments, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
     case GXD_INDEXSTAGES:
-	    sprintf(buf, "insert %s (_Index_key, _IndexAssay_key, _StageID_key)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Index_key, _IndexAssay_key, _StageID_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
-    case MRK_SPECIES:
-            sprintf(buf, "insert %s (%s, name, species)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MRK_ANCHOR:
-            sprintf(buf, "insert %s (chromosome, _Marker_key)", mgi_DBtable(table));
-	    break;
-    case MRK_CHROMOSOME:
-            sprintf(buf, "insert %s (_Species_key, chromosome, sequenceNum)", mgi_DBtable(table));
-	    break;
-    case RISET:
-            sprintf(buf, "insert %s (%s, _Strain_key_1, _Strain_key_2, designation, abbrev1, abbrev2, RI_IdList)", 
+    case HMD_NOTES:
+	    sprintf(buf, "insert %s (%s, sequenceNum, notes)",
 	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case CROSS:
-            sprintf(buf, "insert %s (%s, type, _femaleStrain_key, femaleAllele1, femaleAllele2, _maleStrain_key, maleAllele1, maleAllele2, abbrevHO, _StrainHO_key, abbrevHT, _StrainHT_key, whoseCross, alleleFromSegParent, F1DirectionKnown, nProgeny, displayed)", 
+ 	    break;
+    case HMD_CLASS:
+	    sprintf(buf, "insert %s (%s)", 
 	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case HMD_HOMOLOGY:
+	    sprintf(buf, "insert %s (%s, _Class_key, _Refs_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case HMD_HOMOLOGY_MARKER:
+	    sprintf(buf, "insert %s (%s, _Marker_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case HMD_HOMOLOGY_ASSAY:
+	    sprintf(buf, "insert %s (%s, _Assay_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case HMD_ASSAY:
+            sprintf(buf, "insert %s (%s, %s, abbrev)", 
+		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
-    case STRAIN:
-            sprintf(buf, "insert %s (%s, %s, standard, needsReview, private)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
+    case IMG_IMAGE:
+            sprintf(buf, "insert %s (%s, _Refs_key, xDim, yDim, figureLabel, copyrightNote)", 
+		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case TISSUE:
-            sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
+    case IMG_IMAGEPANE:
+            sprintf(buf, "insert %s (%s, _Image_key, _FieldType_key, paneLabel)", 
+		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MGI_TABLES:
-            sprintf(buf, "insert %s (table_name, description)", mgi_DBtable(table));
+    case IMG_IMAGENOTE:
+            sprintf(buf, "insert %s (%s, sequenceNum, imageNote)", 
+		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_COLUMNS:
             sprintf(buf, "insert %s (table_name, column_name, description, example)", mgi_DBtable(table));
 	    break;
+    case MGI_TABLES:
+            sprintf(buf, "insert %s (table_name, description)", mgi_DBtable(table));
+	    break;
+    case MGI_FANTOM2:
+            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupID, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, cluster_evidence, load_mgiid, nonmgi_rep, approved_symbol, approved_name, chromosome)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_FANTOM2NOTES:
+            sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_FANTOM2CACHE:
+            sprintf(buf, "insert %s (%s, gba_mgiID, gba_symbol, gba_name)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_NOTE:
+            sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _NoteType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_NOTECHUNK:
+            sprintf(buf, "insert %s (%s, sequenceNum, note, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_NOTETYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key, noteType, private, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_ORGANISM:
+            sprintf(buf, "insert %s (%s, commonName, latinName, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_ORGANISMTYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_REFERENCE_ASSOC:
+            sprintf(buf, "insert %s (%s, _Refs_key, _Object_key, _MGIType_key, _RefAssocType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_REFASSOCTYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key, assocType, allowOnlyOne, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_SETMEMBER:
+            sprintf(buf, "insert %s (%s, _Set_key, _Object_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case MGI_TRANSLATION:
-	    sprintf(buf, "insert %s (%s, _TranslationType_key, _Object_key, badName, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _TranslationType_key, _Object_key, badName, sequenceNum, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_TRANSLATIONTYPE:
-	    sprintf(buf, "insert %s (%s, _MGIType_key, translationType, compressionChars, regularExpression)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _MGIType_key, translationType, compressionChars, regularExpression, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_USER:
+	    sprintf(buf, "insert %s (%s, _UserType_key, _UserStatus_key, login, fullName, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLC_LOCK:
+	    sprintf(buf, "insert %s (time, %s, checkedOut)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLC_MARKER:
+	    sprintf(buf, "insert %s (%s, tag, _Marker_key_2)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLC_REFERENCE:
+	    sprintf(buf, "insert %s (%s, _Refs_key, tag)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLC_TEXT:
+	    sprintf(buf, "insert %s (%s, mode, description, creation_date)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_CONCORDANCE:
+	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key, chromosome, cpp, cpn, cnp, cnn)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_DISTANCE:
+	    sprintf(buf, "insert %s (%s, _Marker_key_1, _Marker_key_2, sequenceNum, estDistance, endonuclease, minFrag, notes, relativeArrangeCharStr, units, realisticDist)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_EXPT_MARKER:
+	    sprintf(buf, "insert %s (%s, _Marker_key, _Allele_key, _Assay_Type_key, sequenceNum, gene, description, matrixData)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_EXPTS:
+	    sprintf(buf, "insert %s (%s, _Refs_key, exptType, tag, chromosome)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_FISH:
+	    sprintf(buf, "insert %s (%s, band, _Strain_key, cellOrigin, karyotype, robertsonians, label, numMetaphase, totalSingle, totalDouble)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_FISH_REGION:
+	    sprintf(buf, "insert %s (%s, sequenceNum, region, totalSingle, totalDouble)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_HYBRID:
+	    sprintf(buf, "insert %s (%s, chrsOrGenes, band)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_INSITU:
+	    sprintf(buf, "insert %s (%s, band, _Strain_key, cellOrigin, karyotype, robertsonians, numMetaphase, totalGrains, grainsOnChrom, grainsOtherChrom)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_INSITU_REGION:
+	    sprintf(buf, "insert %s (%s, sequenceNum, region, grainCount)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_MARKER:
+	    sprintf(buf, "insert %s (%s, _Refs_key, _Marker_key, sequenceNum)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_MCMASTER:
+	    sprintf(buf, "insert %s (%s, _Cross_key, female, female2, male, male2)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_MC2POINT:
+	    sprintf(buf, "insert %s (%s, _Marker_key_1, _Marker_key_2, sequenceNum, numRecombinants, numParentals)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_MCHAPLOTYPE:
+	    sprintf(buf, "insert %s (%s, sequenceNum, alleleLine, offspringNmbr)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_PHYSICAL:
+	    sprintf(buf, "insert %s (%s, definitiveOrder, geneOrder)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_RI:
+	    sprintf(buf, "insert %s (%s, RI_IdList, _RISet_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_RIHAPLOTYPE:
+	    sprintf(buf, "insert %s (%s, _Marker_key, sequenceNum, alleleLine)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_RI2POINT:
+	    sprintf(buf, "insert %s (%s, _Marker_key_1, _Marker_key_2, sequenceNum, numRecombinants, numTotal, RI_Lines)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLD_STATISTICS:
+	    sprintf(buf, "insert %s (%s, sequenceNum, _Marker_key_1, _Marker_key_2, recomb, total, pcntrecomb, stderr)",
+	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLP_STRAIN:
             sprintf(buf, "insert %s (%s, _Species_key, userDefined1, userDefined2)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2257,43 +2284,111 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLP_EXTRA:
             sprintf(buf, "insert %s (%s, reference, dataset, note1, note2)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case MRK_MARKER:
+	    sprintf(buf, "insert %s (%s, _Organism_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, cytogeneticOffset, _CreatedBy_key, _ModifiedBy_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_ALIAS:
+	    sprintf(buf, "insert %s (_Alias_key, %s)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_ALLELE:
+	    sprintf(buf, "insert %s (%s, _Marker_key, symbol, name)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_ANCHOR:
+            sprintf(buf, "insert %s (chromosome, _Marker_key)", mgi_DBtable(table));
+	    break;
+    case MRK_CHROMOSOME:
+            sprintf(buf, "insert %s (%s, _Organism_key, chromosome, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MRK_CLASSES:
+	    sprintf(buf, "insert %s (_Class_key, %s)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_CURRENT:
+	    sprintf(buf, "insert %s (_Current_key, %s)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_HISTORY:
+	    sprintf(buf, "insert %s (%s, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date, _CreatedBy_key, _ModifiedBy_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_OFFSET:
+	    sprintf(buf, "insert %s (%s, source, offset)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_OTHER:
+	    sprintf(buf, "insert %s (%s, _Marker_key, name, _Refs_key)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case MRK_REFERENCE:
+	    sprintf(buf, "insert %s (%s, _Refs_key, auto)",
+	      mgi_DBtable(table), mgi_DBkey(table));
+ 	    break;
+    case NOM_MARKER:
+            sprintf(buf, "insert %s (%s, _Marker_Type_key, _NomenStatus_key, _Marker_Event_key, _Marker_EventReason_key, _CurationState_key, symbol, name, chromosome, humanSymbol, statusNote, _CreatedBy_key, _ModifiedBy_key)",
+
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case NOM_SYNONYM:
+            sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_ALIAS:
+            sprintf(buf, "insert %s (%s, _Reference_key, alias, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_ALLELE:
+            sprintf(buf, "insert %s (%s, _RFLV_key, allele, fragments, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_ALLELE_STRAIN:
+            sprintf(buf, "insert %s (%s, _Strain_key, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_MARKER:
+            sprintf(buf, "insert %s (%s, _Marker_key, _Refs_key, relationship, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_PROBE:
+            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, _SegmentType_key, primer1sequence, primer2sequence, regionCovered, regionCovered2, insertSite, insertSize, repeatUnit, productSize, moreProduct, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_REFERENCE:
+            sprintf(buf, "insert %s (%s, _Probe_key, _Refs_key, holder, hasRmap, hasSequence, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_RFLV:
+            sprintf(buf, "insert %s (%s, _Reference_key, _Marker_key, endonuclease, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_SOURCE:
+    case PRB_SOURCE_MASTER:
+            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, _Refs_key, name, description, age, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case PRB_STRAIN_MARKER:
             sprintf(buf, "insert %s (%s, _Strain_key, _Marker_key, _Allele_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_SYNONYM:
             sprintf(buf, "insert %s (%s, _Strain_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case ALL_ALLELE:
-            sprintf(buf, "insert %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _CellLine_key, _Allele_Status_key, symbol, name, nomenSymbol, createdBy, modifiedBy, approvedBy, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+    case RISET:
+            sprintf(buf, "insert %s (%s, _Strain_key_1, _Strain_key_2, designation, abbrev1, abbrev2, RI_IdList)", 
+	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case ALL_ALLELE_MUTATION:
-            sprintf(buf, "insert %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));
+    case STRAIN:
+            sprintf(buf, "insert %s (%s, %s, standard, needsReview, private)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
-    case ALL_CELLLINE:
-    case ALL_CELLLINE_VIEW:
-            sprintf(buf, "insert %s (%s, %s, _Strain_key)", 
-		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
-	    break;
-    case ALL_NOTE:
-            sprintf(buf, "insert %s (%s, sequenceNum, _NoteType_key, private, note)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case ALL_NOTETYPE:
-            sprintf(buf, "insert %s (%s, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case ALL_REFERENCE:
-            sprintf(buf, "insert %s (%s, _Refs_key, _RefsType_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case ALL_REFERENCETYPE:
-            sprintf(buf, "insert %s (%s, referenceType, allowOnlyOne)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case ALL_SYNONYM:
-            sprintf(buf, "insert %s (%s, _Allele_key, _Refs_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
+    case TISSUE:
+            sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case VOC_VOCAB:
             sprintf(buf, "insert %s (%s, _Refs_key, _LogicalDB_key, isSimple, isPrivate, name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_TERM:
-            sprintf(buf, "insert %s (%s, _Vocab_key, term, abbreviation, sequenceNum, isObsolete)", mgi_DBtable(table), mgi_DBkey(table));
+    case VOC_CELLLINE_VIEW:
+            sprintf(buf, "insert %s (%s, _Vocab_key, term, abbreviation, sequenceNum, isObsolete, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(VOC_TERM), mgi_DBkey(VOC_TERM));
 	    break;
     case VOC_TEXT:
             sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2308,16 +2403,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_EVIDENCE:
-            sprintf(buf, "insert %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_FANTOM2:
-            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupID, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, cluster_evidence, load_mgiid, nonmgi_rep, approved_symbol, approved_name, chromosome, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_FANTOM2NOTES:
-            sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_FANTOM2CACHE:
-            sprintf(buf, "insert %s (%s, gba_mgiID, gba_symbol, gba_name)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
@@ -2416,13 +2502,32 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MGI_ORGANISM:
+      case MGI_ORGANISMTYPE:
+      case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
+      case MGI_SETMEMBER:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
+      case MRK_MARKER:
       case NOM_MARKER:
       case NOM_SYNONYM:
+      case PRB_ALIAS:
+      case PRB_ALLELE:
+      case PRB_ALLELE_STRAIN:
+      case PRB_MARKER:
+      case PRB_PROBE:
+      case PRB_REFERENCE:
+      case PRB_RFLV:
+      case PRB_SOURCE:
+      case SEQ_SEQUENCE:
       case VOC_EVIDENCE:
+      case VOC_TERM:
+              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
+		  mgi_DBtable(table), str, global_loginKey, mgi_DBkey(table), key);
+	      break;
+      case MGI_FANTOM2:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
@@ -2443,13 +2548,32 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MGI_ORGANISM:
+      case MGI_ORGANISMTYPE:
+      case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
+      case MGI_SETMEMBER:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
+      case MRK_MARKER:
       case NOM_MARKER:
       case NOM_SYNONYM:
+      case PRB_ALIAS:
+      case PRB_ALLELE:
+      case PRB_ALLELE_STRAIN:
+      case PRB_MARKER:
+      case PRB_PROBE:
+      case PRB_REFERENCE:
+      case PRB_RFLV:
+      case PRB_SOURCE:
+      case SEQ_SEQUENCE:
       case VOC_EVIDENCE:
+      case VOC_TERM:
+              sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
+		  mgi_DBtable(table), global_loginKey, mgi_DBkey(table), key);
+	      break;
+      case MGI_FANTOM2:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);
 	      break;
@@ -2713,17 +2837,38 @@ char *mgi_DBcvname(int table)
 
   switch (table)
   {
+    case ALL_TYPE:
+            strcpy(buf, "alleleType");
+	    break;
+    case ALL_INHERITANCE_MODE:
+            strcpy(buf, "mode");
+	    break;
+    case ALL_MOLECULAR_MUTATION:
+            strcpy(buf, "mutation");
+	    break;
+    case ALL_CELLLINE:
+    case ALL_CELLLINE_VIEW:
+            strcpy(buf, "cellLine");
+	    break;
+    case ALL_NOTETYPE:
+            strcpy(buf, "noteType");
+	    break;
+    case ALL_REFERENCETYPE:
+            strcpy(buf, "referenceType");
+	    break;
+    case ALL_STATUS:
+            strcpy(buf, "status");
+	    break;
     case BIB_REFS:
             strcpy(buf, "journal");
 	    break;
+    case BIB_REVIEW_STATUS:
+    case MRK_CLASS:
+    case MRK_TYPE:
+            strcpy(buf, "name");
+	    break;
     case CROSS:
             strcpy(buf, "whoseCross");
-	    break;
-    case RISET:
-            strcpy(buf, "designation");
-	    break;
-    case MLD_ASSAY:
-            strcpy(buf, "description");
 	    break;
     case HMD_ASSAY:
             strcpy(buf, "assay");
@@ -2731,22 +2876,11 @@ char *mgi_DBcvname(int table)
     case MGI_NOTETYPE:
             strcpy(buf, "noteType");
 	    break;
-    case STRAIN:
-            strcpy(buf, "strain");
+    case MGI_REFASSOCTYPE:
+            strcpy(buf, "assocType");
 	    break;
-    case TISSUE:
-            strcpy(buf, "tissue");
-	    break;
-    case BIB_REVIEW_STATUS:
-    case MRK_CLASS:
-    case MRK_TYPE:
-            strcpy(buf, "name");
-	    break;
-    case PRB_VECTOR_TYPE:
-            strcpy(buf, "vectorType");
-	    break;
-    case PRB_SPECIES:
-            strcpy(buf, "species");
+    case MLD_ASSAY:
+            strcpy(buf, "description");
 	    break;
     case GXD_ANTIBODYCLASS:
             strcpy(buf, "class");
@@ -2787,9 +2921,6 @@ char *mgi_DBcvname(int table)
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "antibodyType");
 	    break;
-    case GXD_ANTIBODYSPECIES:
-            strcpy(buf, "antibodySpecies");
-	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "rnaType");
 	    break;
@@ -2799,6 +2930,12 @@ char *mgi_DBcvname(int table)
     case GXD_GELCONTROL:
             strcpy(buf, "gelLaneContent");
 	    break;
+    case MLP_SPECIES:
+            strcpy(buf, "species");
+	    break;
+    case MLP_STRAINTYPE:
+            strcpy(buf, "strainType");
+	    break;
     case MRK_EVENT:
             strcpy(buf, "event");
 	    break;
@@ -2806,35 +2943,19 @@ char *mgi_DBcvname(int table)
             strcpy(buf, "eventReason");
 	    break;
     case MRK_STATUS:
-	    strcpy(buf, "status");
-	    break;
-    case MLP_SPECIES:
-            strcpy(buf, "species");
-	    break;
-    case MLP_STRAINTYPE:
-            strcpy(buf, "strainType");
-	    break;
-    case ALL_TYPE:
-            strcpy(buf, "alleleType");
-	    break;
-    case ALL_INHERITANCE_MODE:
-            strcpy(buf, "mode");
-	    break;
-    case ALL_MOLECULAR_MUTATION:
-            strcpy(buf, "mutation");
-	    break;
-    case ALL_CELLLINE:
-    case ALL_CELLLINE_VIEW:
-            strcpy(buf, "cellLine");
-	    break;
-    case ALL_NOTETYPE:
-            strcpy(buf, "noteType");
-	    break;
-    case ALL_REFERENCETYPE:
-            strcpy(buf, "referenceType");
-	    break;
-    case ALL_STATUS:
             strcpy(buf, "status");
+	    break;
+    case RISET:
+            strcpy(buf, "designation");
+	    break;
+    case STRAIN:
+            strcpy(buf, "strain");
+	    break;
+    case TISSUE:
+            strcpy(buf, "tissue");
+	    break;
+    case VOC_CELLLINE_VIEW:
+	    strcpy(buf, "term");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -2877,23 +2998,23 @@ char *mgi_DBrefstatus(int key, int table)
     case HMD_HOMOLOGY:
 	sprintf(cmd, "exec BIB_HMD_Exists %d", key);
 	break;
-    case PRB_REFERENCE:
-	sprintf(cmd, "exec BIB_PRB_Exists %d", key);
+    case MLC_REFERENCE:
+	sprintf(cmd, "exec BIB_MLC_Exists %d", key);
 	break;
     case MLD_MARKER:
 	sprintf(cmd, "exec BIB_MLD_Exists %d", key);
 	break;
-    case MLC_REFERENCE:
-	sprintf(cmd, "exec BIB_MLC_Exists %d", key);
+    case GO_DATAEVIDENCE:
+	sprintf(cmd, "exec BIB_GO_Exists %d", key);
 	break;
     case GXD_INDEX:
 	sprintf(cmd, "exec BIB_GXD_Exists %d", key);
 	break;
-    case GO_DATAEVIDENCE:
-	sprintf(cmd, "exec BIB_GO_Exists %d", key);
-	break;
     case MGI_REFERENCE_NOMEN_VIEW:
 	sprintf(cmd, "exec BIB_NOM_Exists %d", key);
+	break;
+    case PRB_REFERENCE:
+	sprintf(cmd, "exec BIB_PRB_Exists %d", key);
 	break;
   }
 

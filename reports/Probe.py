@@ -75,8 +75,8 @@ def parse_clone(probe):
 	      ' (' + probe['parentID'] + ')' + crt(1))
 
 def parse_source(probe):
-       	write(TAB + string.ljust('Species:  ', 15) + \
-		string.ljust(mgi_utils.prvalue(probe['species']), 20))
+       	write(TAB + string.ljust('Organism:  ', 15) + \
+		string.ljust(mgi_utils.prvalue(probe['organism]), 20))
 	write(string.rjust('Strain:  ', 15) + \
 		string.ljust(mgi_utils.prvalue(probe['strain']), 20) + crt(1))
        	write(TAB + string.ljust('Tissue:  ', 15) + \

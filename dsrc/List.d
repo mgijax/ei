@@ -112,6 +112,7 @@ rules:
 	  key : widget := top->SelectionKey->text;
 	  targetWidget : widget;
 	  targetKey : widget;
+	  itemPosition : integer;
 
 	  if (key.value.length = 0) then
 	    return;
@@ -125,6 +126,14 @@ rules:
 	      "Using the Mouse, choose the field where you wish\n" +
 	      "the selected item to be placed.";
 	    send(StatusReport);
+	    return;
+	  end if;
+
+	  if (mgi_tblIsTable(targetWidget.parent)) then
+	    itemPosition := XmListItemPos(top->ItemList->List, xm_xmstring(item.value));
+	    SelectLookupListItem.source_widget := top->ItemList->List;
+	    SelectLookupListItem.item_position := itemPosition;
+	    send(SelectLookupListItem, 0);
 	    return;
 	  end if;
 
@@ -178,7 +187,8 @@ rules:
         DeleteList does
 	  list_w : widget := DeleteList.list->List;
 	  label_w : widget := DeleteList.list->Label;
-	  tmp : string_list := create string_list();
+	  tmp1 : string_list := create string_list();
+	  tmp2 : string_list := create string_list();
 
 	  if (list_w.row <= 0) then
 	    return;
@@ -192,17 +202,17 @@ rules:
 
 	  -- Use tmp string list when manipulating list_w.keys
 
-	  tmp := list_w.keys;
-	  tmp.remove(list_w.keys[list_w.row]);
-	  list_w.keys := tmp;
+	  tmp1 := list_w.keys;
+	  tmp1.remove(list_w.keys[list_w.row]);
+	  list_w.keys := tmp1;
 
 	  -- Use tmp string list when manipulating list_w.accIDs
 
-	  tmp := list_w.accIDs;
-	  if (list_w.accIDs.count > 0) then
-	    tmp.remove(list_w.accIDs[list_w.row]);
+	  tmp2 := list_w.accIDs;
+	  if (tmp2.count > 0) then
+	    tmp2.remove(list_w.accIDs[list_w.row]);
 	  end if;
-	  list_w.accIDs := tmp;
+	  list_w.accIDs := tmp2;
 
 	  label_w.labelString := (string) list_w.itemCount + " " + label_w.defaultLabel;
 
@@ -479,9 +489,11 @@ rules:
 	  key.value := list_w.keys[SelectListItem.item_position];
 	  list_w.row := SelectListItem.item_position;
 
-	  if (SelectListItem.deselect) then
-	    (void) XmListDeselectAllItems(list_w);
-	  end if;
+	  -- turn off default of de-selecting item after copy
+
+--	  if (SelectListItem.deselect) then
+--	    (void) XmListDeselectAllItems(list_w);
+--	  end if;
 	end does;
 
 --
@@ -533,10 +545,11 @@ rules:
 	    return;
 	  end if;
 
-	  table := targetWidget.child_by_class(TABLE_CLASS);
+--	  table := targetWidget.child_by_class(TABLE_CLASS);
 
-	  if (table != nil) then
-	    isTable := true;
+          isTable := mgi_tblIsTable(targetWidget);
+	  if (not isTable) then
+            isTable := mgi_tblIsTable(targetWidget.child(1));
 	  end if;
 
 	  if (isTable) then
@@ -609,6 +622,11 @@ rules:
 		column := (integer) list_w.targetAccID;
 	      end if;
 	    else
+
+	      if (list_w.selectedItemCount = 0) then
+	        return;
+	      end if;
+
 	      item := list_w.selectedItems[0];
 
 	      if (item.length > cbPrefix.length) then
@@ -657,6 +675,11 @@ rules:
 	  -- Non-table text widget
 
 	  else
+
+	    if (list_w.selectedItemCount = 0) then
+	      return;
+	    end if;
+
 	    -- If text widget is specified, copy the text
 
 	    if (list_w.targetText.length > 0) then

@@ -252,7 +252,7 @@ rules:
 	    if (table.addSeqNum) then
 	      row := 0;
 	      while (row < mgi_tblNumRows(table)) do
-		mgi_tblSetCell(table, row, table.seqNum, (string)((integer) row + 1));
+		mgi_tblSetCell(table, row, table.seqNum, (string)(row + 1));
 		row := row + 1;
 	      end while;
 	    end if;
@@ -316,6 +316,7 @@ rules:
         CommitTableCellEdit does
 	  table : widget := CommitTableCellEdit.source_widget;
 	  row : integer := CommitTableCellEdit.row;
+	  top : widget := table.top;
 	  currentEditMode : string := mgi_tblGetCell(table, row, table.editMode);
 	  newEditMode : string;
 
@@ -348,6 +349,9 @@ rules:
 	  if (currentEditMode != newEditMode) then
 	    (void) mgi_tblSetCell(table, row, table.editMode, newEditMode);
 	    table.modified := true;
+	    if (top.is_defined("allowSelect") != nil) then
+	      top.allowSelect := false;
+	    end if;
 	  end if;
 
 	end does;

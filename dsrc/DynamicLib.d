@@ -15,8 +15,11 @@
 --
 -- History:
 --
---	lec	12/17/2003
---      TR 5327; nomen merge
+--	lec	05/23/2003
+--	TR 3710; set x.prepform in InitOptionMenu
+--
+--	lec	05/31/2002
+--	TR 1463; SAO; Nomen status can now be accessed 
 --
 --	lec	01/15/2002
 --	TR 2867; added mgiTypeKey, vocabKey to VOCAnnotTypeMenu
@@ -131,22 +134,14 @@ rules:
 		-- Set attributes
 
 		x.batch;
-
-		if (option.name = "OldSegmentTypeMenu") then
-		  x.searchValue := mgi_getstr(dbproc, 2);
-		  x.defaultValue := mgi_getstr(dbproc, 2);
-		else
-		  x.searchValue := mgi_getstr(dbproc, 1);
-		  x.defaultValue := mgi_getstr(dbproc, 1);
-		end if;
-
+		x.searchValue := mgi_getstr(dbproc, 1);
+		x.defaultValue := mgi_getstr(dbproc, 1);
 		x.labelString := label;
 
 		--
 		-- For GXD Assay Types
-		--	if Assay Type = knock-in, then set childprepForm = ProbePrepForm
-		-- 	if isRNAAssay = 0, then set child.prepForm = AntibodyPrepVerifyForm
-		-- 	if isRNAAssay = 1, then set child.prepForm = ProbePrepVerifyForm
+		-- 	if isRNAAssay = 0, then set child.prepForm = AntibodyPrepForm
+		-- 	if isRNAAssay = 1, then set child.prepForm = ProbePrepForm
 		-- 	if isGelAssay = 0, then set child.assayForm = InSituForm
 		-- 	if isGelAssay = 1, then set child.assayForm = GelForm
 		--
@@ -181,7 +176,10 @@ rules:
 
 		x.unbatch;
 
+		-- set default option
 		if (option.defaultValue = x.defaultValue) then
+		  option.defaultOption := x;
+		elsif (option.defaultValue = label) then
 		  option.defaultOption := x;
 		end if;
 
@@ -346,14 +344,14 @@ rules:
 	  -- Row Labels which appear in Table
 	  nonstatusLabels.insert("Tumor", nonstatusLabels.count + 1);
 	  nonstatusLabels.insert("SCC", nonstatusLabels.count + 1);
-	  nonstatusLabels.insert("Matrix", nonstatusLabels.count + 1);
-	  nonstatusLabels.insert("Chromosome Committee", nonstatusLabels.count + 1);
+--	  nonstatusLabels.insert("Matrix", nonstatusLabels.count + 1);
+--	  nonstatusLabels.insert("Chromosome Committee", nonstatusLabels.count + 1);
 
 	  -- Values used in Reference "dbs" string
 	  nonstatusDBS.insert("Tumor", nonstatusDBS.count + 1);
 	  nonstatusDBS.insert("SCC", nonstatusDBS.count + 1);
-	  nonstatusDBS.insert("Matrix", nonstatusDBS.count + 1);
-	  nonstatusDBS.insert("CC", nonstatusDBS.count + 1);
+--	  nonstatusDBS.insert("Matrix", nonstatusDBS.count + 1);
+--	  nonstatusDBS.insert("CC", nonstatusDBS.count + 1);
 
 	  -- Construct Row labels string, data set string and table ID string
 	  -- for Statused Data Sets
@@ -396,8 +394,11 @@ rules:
 	  end while;
 
 	  -- Set appropriate table attritbutes
+	  table.batch;
 	  table.xrtTblRowLabels := labels->substr(1, labels.length - 1);
+	  table.xrtTblVisibleRows := top->DataSets->RefDBSStatus->Table.xrtTblVisibleRows;
 	  table.dataSets := dbs->substr(1, dbs.length - 1);
+	  table.unbatch;
 	end does;
 
 end dmodule;

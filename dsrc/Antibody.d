@@ -10,6 +10,15 @@
 --
 -- History
 --
+-- lec	07/25/2003
+--	- JSAM
+--
+-- lec	08/15/2002
+--	- TR 1463 SAO; _AntibodySpecies_key replaced with _Organism_key
+--
+-- lec	05/16/2002
+--	- TR 1463 SAO; _AntibodySpecies_key replaced with _Species_key
+--
 -- lec  06/20/2001
 --	- TR 2650; search Name and Alias when user enters Name value
 --
@@ -65,7 +74,7 @@ devents:
 locals:
 	mgi : widget;		-- Main Application Widget
 	top : widget;		-- Local Application Widget
-	ab : widget;		-- Activation Button Widget
+	ab : widget;
 	accTable : widget;	-- Accession Table Widget
 
 	options : list;		-- List of Option Menus
@@ -133,12 +142,12 @@ rules:
 
 	  options.append(top->AntibodyTypeMenu);
 	  options.append(top->AntibodyClassMenu);
-	  options.append(top->AntibodySpeciesMenu);
+	  options.append(top->AntibodyOrganismMenu);
 	  options.append(top->WesternMenu);
 	  options.append(top->ImmunoMenu);
-	  options.append(top->SourceForm->ProbeSpeciesMenu);
+	  options.append(top->SourceForm->ProbeOrganismMenu);
 	  options.append(top->SourceForm->AgeMenu);
-	  options.append(top->SourceForm->SexMenu);
+	  options.append(top->SourceForm->GenderMenu);
 
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Alias->Table);
@@ -212,7 +221,7 @@ rules:
 
           cmd := cmd + top->AntibodyClassMenu.menuHistory.defaultValue + "," +
                  top->AntibodyTypeMenu.menuHistory.defaultValue + "," +
-                 top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
+                 top->AntibodyOrganismMenu.menuHistory.defaultValue + ",";
 
 	  if (top->AntigenAccession->ObjectID->text.value.length = 0) then
             cmd := cmd + "NULL,";
@@ -287,7 +296,7 @@ rules:
 --
 -- Modifies current record
 -- Calls ModifyAlias[] and ModifyMarker[] to process Alias/Marker tables
--- Calls ModifyMolecularSource[] to process Molecular Source info
+-- Calls ModifyAntigenSource[] to process Molecular Source info
 -- Calls ProcessAcc[] to process Accession numbers
 --
 
@@ -322,8 +331,8 @@ rules:
             set := set + "_AntibodyClass_key = " + top->AntibodyClassMenu.menuHistory.defaultValue + ",";
 	  end if;
 
-	  if (top->AntibodySpeciesMenu.menuHistory.modified) then
-            set := set + "_AntibodySpecies_key = " + top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
+	  if (top->AntibodyOrganismMenu.menuHistory.modified) then
+            set := set + "_Organism_key = " + top->AntibodyOrganismMenu.menuHistory.defaultValue + ",";
 	  end if;
 
 	  if (top->WesternMenu.menuHistory.modified) then
@@ -348,10 +357,11 @@ rules:
 	    cmd := mgi_DBupdate(GXD_ANTIBODY, currentRecordKey, set);
 	  end if;
 
-          -- ModifyMolecularSource will set top->SourceForm.sql appropriately
+          -- ModifyAntigenSource will set top->SourceForm.sql appropriately
           -- Append this value to the 'cmd' string
-          ModifyMolecularSource.source_widget := top;
-          send(ModifyMolecularSource, 0);
+          ModifyAntigenSource.source_widget := top;
+          ModifyAntigenSource.antigenKey := top->AntigenAccession->ObjectID->text.value;
+          send(ModifyAntigenSource, 0);
           cmd := cmd + top->SourceForm.sql;
  
 	  send(ModifyAlias, 0);
@@ -525,8 +535,8 @@ rules:
             where := where + " and g._AntibodyClass_key = " + top->AntibodyClassMenu.menuHistory.searchValue;
           end if;
  
-          if (top->AntibodySpeciesMenu.menuHistory.searchValue != "%") then
-            where := where + " and g._AntibodySpecies_key = " + top->AntibodySpeciesMenu.menuHistory.searchValue;
+          if (top->AntibodyOrganismMenu.menuHistory.searchValue != "%") then
+            where := where + " and g._Organism_key = " + top->AntibodyOrganismMenu.menuHistory.searchValue;
           end if;
  
           if (top->WesternMenu.menuHistory.searchValue != "%") then
@@ -776,7 +786,7 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
-                SetOption.source_widget := top->AntibodySpeciesMenu;
+                SetOption.source_widget := top->AntibodyOrganismMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 

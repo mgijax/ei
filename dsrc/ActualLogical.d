@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	08/15/2002
+--	- Species replaced with Organism
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -90,9 +93,9 @@ rules:
 --
  
         BuildDynamicComponents does
-          -- Load Species List
+          -- Load Organism List
  
-	   LoadList.list := top->SpeciesList;
+	   LoadList.list := top->OrganismList;
 	   send(LoadList, 0);
         end does;
  
@@ -136,7 +139,7 @@ rules:
 		 mgi_DBinsert(ACC_LOGICALDB, KEYNAME) +
                  mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Description->text.value) + "," +
-                 mgi_DBprkey(top->mgiSpecies->ObjectID->text.value) + ")\n";
+                 mgi_DBprkey(top->mgiOrganism->ObjectID->text.value) + ")\n";
 
 	  send(ModifyActual, 0);
 
@@ -205,8 +208,8 @@ rules:
             set := set + "description = " + mgi_DBprstr(top->Description->text.value) + ",";
           end if;
 
-          if (top->mgiSpecies->ObjectID->text.modified) then
-            set := set + "_Species_key = " + mgi_DBprkey(top->mgiSpecies->ObjectID->text.value) + ",";
+          if (top->mgiOrganism->ObjectID->text.modified) then
+            set := set + "_Organism_key = " + mgi_DBprkey(top->mgiOrganism->ObjectID->text.value) + ",";
           end if;
  
 	  if (set.length > 0) then
@@ -326,8 +329,8 @@ rules:
             where := where + "\nand description like " + mgi_DBprstr(top->Description->text.value);
           end if;
 
-          if (top->mgiSpecies->ObjectID->text.value.length > 0) then
-            where := where + "\nand _Species_key = " + mgi_DBprkey(top->mgiSpecies->ObjectID->text.value);
+          if (top->mgiOrganism->ObjectID->text.value.length > 0) then
+            where := where + "\nand _Organism_key = " + mgi_DBprkey(top->mgiOrganism->ObjectID->text.value);
           end if;
 
           if (where.length > 0) then
@@ -396,8 +399,8 @@ rules:
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
                 top->Name->text.value         := mgi_getstr(dbproc, 2);
                 top->Description->text.value  := mgi_getstr(dbproc, 3);
-		top->mgiSpecies->ObjectID->text.value := mgi_getstr(dbproc, 4);
-		top->mgiSpecies->Species->text.value := mgi_getstr(dbproc, 8);
+		top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 4);
+		top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 8);
                 top->CreationDate->text.value := mgi_getstr(dbproc, 5);
                 top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 	      elsif (results = 2) then
@@ -443,7 +446,7 @@ rules:
 --
 
 	Exit does
-          ab.sensitive := true;
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

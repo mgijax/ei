@@ -14,7 +14,7 @@
 -- lec	10/31/2003
 --	- TR 5271
 --
--- lec  05/05/2003
+-- lec	05/05/2003
 --	- TR 2459, 3711
 --
 -- lec  03/12/2003
@@ -264,7 +264,8 @@ rules:
                  top->mgiCitation->ObjectID->text.value + "," +
                  top->mgiMarker->ObjectID->text.value + "," +
 		 top->GXDIndexPriorityMenu.menuHistory.defaultValue + "," +
-		 mgi_DBprstr(top->Note->text.value) + ")\n";
+		 mgi_DBprstr(top->Note->text.value) + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyStage, 0);
 
@@ -424,7 +425,8 @@ rules:
 		cmd := cmd + mgi_DBinsert(GXD_INDEXSTAGES, NOKEY) + 
 			currentRecordKey + "," +
 			assayKey + "," +
-			stageKeys[column] + ")\n";
+			stageKeys[column] + "," +
+			global_loginKey + "," + global_loginKey + ")\n";
 		dpcsExist := true;
 	      end if;
 
@@ -458,7 +460,8 @@ rules:
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "i";
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->GXDIndexPriorityMenu.menuHistory.searchValue != "%") then
             where := where + "\nand _Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.searchValue;
@@ -584,9 +587,9 @@ rules:
                 send(SetOption, 0);
 
 		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 14));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 
 	      elsif (results = 2) then

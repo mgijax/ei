@@ -19,14 +19,14 @@ InitAcc [table : widget;  	         -- Accession Table
 LoadAcc [table : widget;		-- Accession Table
          tableID : integer;	        -- ID of table
          objectKey : string;  		-- Unique identifier of Accessionable Object
+	 sortColumn : integer := -1;    -- Sort column
 	 reportError : boolean := true;]; -- Report if no MGI Accession numbers found
 
 -- Process Accession Table
 ProcessAcc [table : widget;		-- Accession Table
             objectKey : string;		-- Unique identifier of Accessionable Object
 	    refsKey : string := "-1";   -- Reference Key for Accessionable Object
-            tableID : integer;  	-- ID of table
-	    db : string;];		-- DB to use (default is MGD)
+            tableID : integer;];  	-- ID of table
 
 -- Formulate 'from' and 'where' clauses for searching Accession Numbers
 SearchAcc [table : widget;		-- Accession Table

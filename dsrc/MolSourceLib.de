@@ -20,8 +20,24 @@ DisplayMolecularSource [source_widget : widget;		-- Display Molecular Source inf
 		        key : string;			-- Record key
 			master : boolean := false;];	-- Use master table conditions
 
-ModifyMolecularSource [source_widget : widget;];	-- Construct SQL for updating Mol Source record
+InitMolecularSource [source_widget : widget;];		-- Initialie Mol Source form
+
+ModifyNamedMolecularSource [source_widget : widget;]; 	-- Construct SQL for updating Mol Source record
+
+ModifyAntigenSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
+                     antigenKey : string;];             -- Antigen with which to associate the Mol Source record
+
+ModifyProbeSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
+                   probeKey : string;];                 -- Probe with which to associate the Mol Source record
+
+ModifySequenceSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
+		      row : integer;                    -- Table row
+                      sequenceKey : string;];           -- Sequence with which to associate the Mol Source record
 
 SelectMolecularSource [source_widget : widget;  	-- Construct SQL for querying Mol Source record
                        alias : string;          	-- Join table alias
 		       master : boolean := false;];	-- Use master table conditions
+
+ViewMolecularSourceAttributeHistory [source_widget : widget;   		-- View Attribute History for Mol Source record
+                                     sourceForm : string;];
+

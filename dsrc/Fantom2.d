@@ -473,9 +473,9 @@ rules:
 		     mgi_DBprstr(nonmgi_rep) + "," +
 		     mgi_DBprstr(approvedSymbol) + "," +
 		     mgi_DBprstr(approvedName) + "," +
-		     mgi_DBprstr(chromosome) + "," +
-		     mgi_DBprstr(global_login) + "," +
-		     mgi_DBprstr(global_login) + ")\n";
+		     mgi_DBprstr(chromosome) + ")\n";
+--		     mgi_DBprstr(global_login) + "," +
+--		     mgi_DBprstr(global_login) + ")\n";
 
               cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHE, KEYNAME) +
 			mgi_DBprstr(gbaMGIID) + "," + 
@@ -555,15 +555,15 @@ rules:
 		     "nonmgi_rep = " + mgi_DBprstr(nonmgi_rep) + "," +
 		     "approved_symbol = " + mgi_DBprstr(approvedSymbol) + "," +
 		     "approved_name = " + mgi_DBprstr(approvedName) + "," +
-		     "chromosome = " + mgi_DBprstr(chromosome) + "," +
-		     "modifiedBy = " + mgi_DBprstr(global_login);
+		     "chromosome = " + mgi_DBprstr(chromosome);
+--		     "modifiedBy = " + mgi_DBprstr(global_login);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
 	      -- Update GBA Cache Table
 --	      set := "gba_mgiID = " + mgi_DBprstr(gbaMGIID) + "," +
 --		     "gba_symbol = " + mgi_DBprstr(gbaSymbol) + "," +
 --		     "gba_name = " + mgi_DBprstr(gbaName);
---              cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHE, key, set);
+--             cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHE, key, set);
 
 	      ModifyNotes.source_widget := fantom;
 	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
@@ -1409,8 +1409,8 @@ rules:
 --
 -- SetBackground
 --
--- If fatnom.fantom1Clone = 1, then set to Thistle
--- If fatnom.fantom2Clone = 1, then set to PaleGreen
+-- If fantom.fantom1Clone = 1, then set to Thistle
+-- If fantom.fantom2Clone = 1, then set to PaleGreen
 -- If nonRIKEN clone (cloneID NULL and seqID -1), then set to SkyBlue
 -- If Seq Quality != zilch, then set to Red
 --

@@ -336,7 +336,7 @@ rules:
  
           if (clipboard->List.keys = nil) then
 	    return;
-	  end if;
+          end if;
 
           (void) XmListDeselectAllItems(clipboard->List);
 

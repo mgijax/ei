@@ -14,6 +14,9 @@
 -- lec	06/10/2003
 --	TR 4741
 --
+-- 08/15/2002
+--	- TR 1463; Species replaced with Organism
+--
 -- 09/19/2001
 --	- Converted NoteJ58000 to use AppendNotePush template
 --
@@ -112,7 +115,7 @@ rules:
 --
 
 	BuildDynamicComponents does
-          LoadList.list := top->SpeciesList;
+          LoadList.list := top->OrganismList;
 	  send(LoadList, 0);
 	end does;
 
@@ -181,7 +184,7 @@ rules:
 
           cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MRK_MARKER, KEYNAME) +
-	         top->mgiSpecies->ObjectID->text.value + "," +
+	         top->mgiOrganism->ObjectID->text.value + "," +
                  markerTypeKey + "," +
                  markerStatusKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
@@ -337,7 +340,7 @@ rules:
 	  from_notes    : boolean := false;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Species_key != " + MOUSE;	-- exclude mouse markers
+	  where := "where m._Organism_key != " + MOUSE;	-- exclude mouse markers
 
 	  -- Cannot search both Accession tables at once
 
@@ -368,8 +371,8 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
-          if (top->mgiSpecies->ObjectID->text.value.length > 0) then
-	    where := where + "\nand m._Species_key = " + top->mgiSpecies->ObjectID->text.value;
+          if (top->mgiOrganism->ObjectID->text.value.length > 0) then
+	    where := where + "\nand m._Organism_key = " + top->mgiOrganism->ObjectID->text.value;
 	  end if;
 
           if (top->Symbol->text.value.length > 0) then
@@ -457,8 +460,8 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Marker_key, _Species_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, species, creation_date, modification_date " +
+	  cmd := "select _Marker_key, _Organism_key, symbol, name, chromosome, " +
+		 "cytogeneticOffset, organism, creation_date, modification_date " +
 		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
 	         "select rtrim(note) from MRK_Notes " +
 		 "where _Marker_key = " + currentRecordKey +
@@ -480,8 +483,8 @@ rules:
 	        top->Cyto->text.value         := mgi_getstr(dbproc, 6);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 8);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
-		top->mgiSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->mgiSpecies->Species->text.value := mgi_getstr(dbproc, 7);
+		top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 2);
+		top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 7);
 	      elsif (results = 2) then
 		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
 	      end if;

@@ -38,7 +38,7 @@ VerifyAnyMarker :translation [];
 VerifyMarker :translation [source_widget : widget;
 			   allowWithdrawn : boolean := false;
 			   allowNomen : boolean := false;
-			   verifyOtherSpecies : boolean := false;];
+			   verifyOtherOrganism : boolean := false;];
 
 VerifyMarkerChromosome :translation [source_widget : widget;
 				     allowMismatch : boolean := true;];
@@ -55,13 +55,15 @@ VerifyReference :translation [];
 
 VerifyGOReference [];
 
-VerifySpecies :translation [];
+VerifyOrganism :translation [];
 
 VerifySpeciesMLP :translation [];
 
-VerifyStrains [];
+VerifyStrains [ignoreRow : integer := -1;];
 
 VerifyStrengthPattern [];
+
+VerifyTissue [ignoreRow : integer := -1;];
 
 VerifyTissueAge :translation [];
 

@@ -312,7 +312,7 @@ void mgi_tblSetNumRows(Widget table, int rows)
 
   requires:
 	table (Widget), the table
-	rows (int), the number of rows
+	rows (int), the number of visible rows
 
   effects:
 	changes the XmNxrtTblVisibleRows attribute

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jan 16 14:02:12 2004";
+      lastWritten = "Fri Jan 16 14:03:20 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -163,10 +163,9 @@ Module: MGI
         {
           Module = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\n";
-            createCallback = "D:SetTitle";
-            deleteResponse = do_nothing;
+            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
             closeWindowCallback = "D:Exit";
+            createCallback = "D:SetTitle";
           Group: Control
             vip_x = 70;
             vip_y = 30;
@@ -346,10 +345,9 @@ Module: MGI
         {
           Module1 = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String\n";
+            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
             closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
-            deleteResponse = do_nothing;
           Group: Control
             vip_x = 70;
             vip_y = 85;
@@ -537,11 +535,12 @@ Module: MGI
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
-                  topAttachment = attach_form;
+                  topAttachment = attach_widget;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
+                  topWidget = ViewAttributeHistory;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -593,35 +592,45 @@ Module: MGI
                     }
               }
               {
-                SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                SourceSegmentTypeMenu = SegmentTypeMenu : mgiOption;
                 Group: Widget
                   managed = False;
+                  subMenuId = SourceSegmentTypePulldown;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = mgiCitation;
+                  leftWidget = Library;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   topWidget = mgiCitation;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
+                    Popups:
+                    {
+                      SourceSegmentTypePulldown : SegmentTypePulldown = OptionPulldown;
+                    }
               }
               {
-                VectorTypeMenu = VectorTypeMenu : mgiOption;
+                SourceVectorTypeMenu = VectorTypeMenu : mgiOption;
                 Group: Widget
                   managed = False;
+                  subMenuId = SourceVectorTypePulldown;
                 Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = SegmentTypeMenu;
+                  leftAttachment = attach_widget;
+                  leftWidget = SourceSegmentTypeMenu;
+                  leftOffset = 5;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = SegmentTypeMenu;
-                  topOffset = 5;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = SourceSegmentTypeMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
+                    Popups:
+                    {
+                      SourceVectorTypePulldown : VectorTypePulldown = OptionPulldown;
+                    }
               }
               {
-                ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
+                ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_form;
                   leftOffset = 5;
@@ -632,13 +641,30 @@ Module: MGI
                   resizable = true;
               }
               {
+                ViewAttributeHistory = push : mgiDataTypes;
+                Group: Widget
+                  labelString = "View Attribute History";
+                  background = Violet;
+                  activateCallback = "D:ViewMolecularSourceAttributeHistory";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 5;
+                Group: Control
+                  vipComment = "XmPushButtonGadget issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButtonGadget differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButtonGadget.";
+              }
+              {
                 Strain = Strain : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = ProbeSpeciesMenu;
+                  leftWidget = ProbeOrganismMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = ProbeSpeciesMenu;
+                  topWidget = ProbeOrganismMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -679,7 +705,9 @@ Module: MGI
                     }
               }
               {
-                CellLine = CharText : mgiDataTypes;
+                CellLine = mgiVerify : mgiDataTypes;
+                Group: Widget
+                  userDefinedAttributes = "vocabKey:Int=\"16\"\n";
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Description;
@@ -688,16 +716,32 @@ Module: MGI
                   topWidget = Description;
                   bottomAttachment = attach_none;
                   resizable = true;
+                Group: User
+                  verifyKey = CellLineID;
+                  verifyTable = 343;
                     {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Cell Line";
+                      Verify = CharText : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Cell Line";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              columns = 50;
+                          }
                     }
                     {
-                      text = text;
-                      Group: Widget
-                        columns = 50;
-                        maxLength = 100;
+                      CellLineID : VerifyID = ID : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: User
+                              defaultValue = "Not Specified";
+                          }
                     }
               }
               {
@@ -736,7 +780,7 @@ Module: MGI
                     }
               }
               {
-                SexMenu = SexMenu : mgiOption;
+                GenderMenu = GenderMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = AgeMenu;
@@ -747,6 +791,46 @@ Module: MGI
                   topWidget = AgeMenu;
                   topOffset = 5;
                   bottomOffset = 5;
+              }
+              {
+                mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_none;
+                  rightAttachment = attach_form;
+                  rightOffset = 50;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = GenderMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                CloneLibrarySet = Table : mgiTable;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = GenderMenu;
+                  topOffset = 10;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 150;
+                    {
+                      Table = mgiTable : mgiTable;
+                      Group: Widget
+                        xrtTblColumnLabels = "Mode,Member key,Set key,Clone Library Set";
+                        xrtTblNumColumns = 4;
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                        xrtTblEditableSeries = "(all 0-2 False)";
+                        xrtTblPixelWidthSeries = "(all 0-2 0)";
+                        userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
+                        xrtTblVisibleRows = 3;
+                    }
+              }
+              Popups:
+              {
+                MolecularSourceAttributeHistoryDialog = MolecularSourceAttributeHistoryDialog : mgiDialog;
               }
         }
         {
@@ -788,16 +872,10 @@ Module: MGI
                                       {
                                         ControlledVocabPulldown = OptionPulldown;
                                             {
-                                              HomologyAssay = ControlledVocabToggle;
+                                              OrthologyAssay = ControlledVocabToggle;
                                             }
                                             {
                                               MappingAssay = ControlledVocabToggle;
-                                            }
-                                            {
-                                              MLCClass = ControlledVocabToggle;
-                                            }
-                                            {
-                                              MarkerType = ControlledVocabToggle;
                                             }
                                             {
                                               EventReason = ControlledVocabToggle;
@@ -806,6 +884,12 @@ Module: MGI
                                             }
                                             {
                                               ReviewStatus = ControlledVocabToggle;
+                                            }
+                                            {
+                                              NoteType = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
+                                              RefAssocType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               AlleleType = ControlledVocabToggle : mgiOption;
@@ -835,9 +919,6 @@ Module: MGI
                                               StrainSpecies = ControlledVocabToggle : mgiOption;
                                             }
                                             {
-                                              MolecularSourceSpecies = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
                                               separator = XmSeparator;
                                             }
                                             {
@@ -847,7 +928,7 @@ Module: MGI
                                               AntibodyType = ControlledVocabToggle;
                                             }
                                             {
-                                              AntibodySpecies = ControlledVocabToggle : mgiOption;
+                                              AntibodyOrganism = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               AssayType = ControlledVocabToggle;
@@ -987,9 +1068,9 @@ Module: MGI
                                     leftWidget = Name;
                                 }
                                 {
-                                  AllowOnlyOne = YesNoMenu : mgiOption;
+                                  AllowOnlyOneMenu = YesNoMenu : mgiOption;
                                   Group: Widget
-                                    subMenuId = YY;
+                                    subMenuId = AllowOnlyOnePulldown;
                                     labelString = "Allow Only One";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -1006,17 +1087,21 @@ Module: MGI
                                     vipComment = "";
                                   Group: User
                                     defaultOption = Yes;
+                                      Popups:
+                                      {
+                                        AllowOnlyOnePulldown : YesNoPulldown = OptionPulldown;
+                                      }
                                 }
                                 {
-                                  Private = YesNoMenu : mgiOption;
+                                  PrivateMenu = YesNoMenu : mgiOption;
                                   Group: Widget
-                                    subMenuId = YY;
+                                    subMenuId = PrivatePulldown;
                                     labelString = Private;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AllowOnlyOne;
+                                    topWidget = AllowOnlyOneMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = Name;
@@ -1027,6 +1112,37 @@ Module: MGI
                                     vipComment = "";
                                   Group: User
                                     defaultOption = No;
+                                      Popups:
+                                      {
+                                        PrivatePulldown : YesNoPulldown = OptionPulldown;
+                                      }
+                                }
+                                {
+                                  MGITypeMenu = MGITypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = PrivateMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    required = False;
+                                      Popups:
+                                      {
+                                        MGITypePulldown = OptionPulldown;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              NotSpecified = NotSpecified : mgiOption;
+                                              Group: User
+                                                defaultValue = NULL;
+                                                searchValue = NULL;
+                                            }
+                                      }
                                 }
                           }
                     }
@@ -2154,7 +2270,7 @@ Module: MGI
                                           xrtTblPixelWidthSeries = "(all 0-11 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-11 10)(all 12 15)(all 13 5)(all 14 25)(all 15 3)(all 17 10)(all 18 10)(all 19 20)(all 20 11)(all 21 10)(all 22 20)(all 24 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"12\"\ndag:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\ninferredFrom:Int(Int)=\"19\"\neditor:Int(Int)=\"20\"\nmodifiedDate:Int(Int)=\"21\"\nnotes:Int(Int)=\"22\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"23\"\ncreatedDate:Int(Int)=\"24\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int=\"11\"\n";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"12\"\ndag:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\ninferredFrom:Int(Int)=\"19\"\neditor:Int(Int)=\"20\"\nmodifiedDate:Int(Int)=\"21\"\nnotes:Int(Int)=\"22\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"23\"\ncreatedDate:Int(Int)=\"24\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int(Int)=\"11\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-11 False)(all 13-15 False)(all 17 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
