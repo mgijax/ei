@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr  6 08:28:09 2004";
+      lastWritten = "Wed Apr 14 12:34:09 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -912,9 +912,6 @@ Module: MGI
                                               AlleleReferenceType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
-                                              VectorType = ControlledVocabToggle;
-                                            }
-                                            {
                                               StrainType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
@@ -928,9 +925,6 @@ Module: MGI
                                             }
                                             {
                                               AntibodyType = ControlledVocabToggle;
-                                            }
-                                            {
-                                              AntibodyOrganism = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               AssayType = ControlledVocabToggle;
@@ -976,11 +970,6 @@ Module: MGI
                                             }
                                             {
                                               separator1 = XmSeparator;
-                                              Group: Widget
-                                                managed = True;
-                                            }
-                                            {
-                                              GeneFamily = ControlledVocabToggle;
                                               Group: Widget
                                                 managed = True;
                                             }

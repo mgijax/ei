@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 30 12:08:24 2004";
+      lastWritten = "Wed Apr 14 12:34:06 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1213,13 +1213,6 @@ Module: mgiOption
                         dbTable = 339;
                     }
                     {
-                      VectorType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Vector Types";
-                      Group: User
-                        dbTable = 319;
-                    }
-                    {
                       StrainType = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Strain Type";
@@ -1249,13 +1242,6 @@ Module: mgiOption
                         labelString = "Antibody Types";
                       Group: User
                         dbTable = 312;
-                    }
-                    {
-                      AntibodyOrganism = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Antibody Organism";
-                      Group: User
-                        dbTable = 335;
                     }
                     {
                       AssayType = ControlledVocabToggle : mgiOption;
@@ -1359,14 +1345,6 @@ Module: mgiOption
                       separator1 = XmSeparator;
                       Group: Widget
                         managed = False;
-                    }
-                    {
-                      GeneFamily = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Marker Gene Families";
-                        managed = False;
-                      Group: User
-                        dbTable = 326;
                     }
                     {
                       MLCClass = ControlledVocabToggle : mgiOption;

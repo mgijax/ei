@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 18 13:51:09 2004";
+      lastWritten = "Wed Apr 14 12:31:25 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1482,10 +1482,10 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblNumColumns = 23;
                         xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)";
-                        xrtTblNumRows = 11;
+                        xrtTblNumRows = 16;
                         xrtTblPixelWidthSeries = "(all 0-10 0)";
                         xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 10;
+                        xrtTblVisibleRows = 15;
                         userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\nclipboard:String=\"CVGel\"\n";
                         xrtTblTraversableSeries = "(all 0-11 False)";
                         xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 10)(all 17 8)(all 19 9)(all 20 8)(all 21 6)(all 22 5)";
@@ -1562,7 +1562,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblFrozenColumns = 6;
                         xrtTblEnterCellCallback = "D:SetOptions";
                         xrtTblValidateCellCallback = "D:CopyGelRow,\nD:VerifyFloat,\nD:VerifyGelRowUnits,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 10;
+                        xrtTblVisibleRows = 5;
                         xrtTblNumRows = 11;
                       Group: Control
                         lockedResources = xrtTblColumnLabels;
@@ -2017,13 +2017,6 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  MolecularSource = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
-                                    labelString = "Clone Libraries";
-                                    traversalOn = False;
-                                }
-                                {
                                   Image = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Image\")";
@@ -2064,6 +2057,13 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"Strains\")";
                                     traversalOn = False;
                                     labelString = Strains;
+                                }
+                                {
+                                  MolecularSource = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
+                                    labelString = "Clone Libraries";
+                                    traversalOn = False;
                                 }
                                 {
                                   ControlledVocab = XmPushButton;
@@ -2490,20 +2490,9 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               Table = mgiTable;
                                               Group: Widget
-                                                xrtTblColumnLabels = "Mode,Current Order,Gel Lane Key,Control Key,Genotype key,Structure Key,RNA Key,Age Key,Age Min,Age Max,Sex Key,Lane,Label,Control,Genotype,Structures,Sample Amt,RNA,Age,Age Range,Age Note,Sex,Notes";
-                                                xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
-                                                xrtTblNumColumns = 23;
-                                                xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)";
-                                                xrtTblNumRows = 11;
-                                                xrtTblPixelWidthSeries = "(all 0-10 0)";
-                                                xrtTblVisibleRows = 10;
                                                 userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\n";
-                                                xrtTblTraversableSeries = "(all 0-11 False)";
-                                                xrtTblCharWidthSeries = "(all 0 1)(all 11 4)(all 12 5)(all 13 7)(all 14 15)(all 15 10)(all 17 8)(all 19 9)(all 20 8)(all 21 6)(all 22 5)";
-                                              Group: User
-                                                seqNum = 11;
-                                                saveEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)";
-                                                saveTraversableSeries = "(all 0-11 False)";
+                                              Group: Control
+                                                collapsed = False;
                                                   {
                                                     label = XtXrtLabel;
                                                     Group: Widget
@@ -2543,6 +2532,14 @@ Shift<Key>Tab: prev-tab-group()
                                                 topWidget = InsertRow;
                                                 bottomAttachment = attach_none;
                                                 resizable = true;
+                                            }
+                                      }
+                                      {
+                                        GelRow = TableLabel : mgiTable;
+                                            {
+                                              Table = mgiTable;
+                                              Group: Control
+                                                collapsed = False;
                                             }
                                       }
                                 }
