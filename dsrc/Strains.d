@@ -183,6 +183,7 @@ rules:
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Synonym->Table);
 	  tables.append(top->Genotype->Table);
+	  tables.append(top->Reference->Table);
 	  tables.append(top->ReferenceMGI->Table);
 	  tables.append(top->DataSets->Table);
 	  tables.append(top->Synonym->Table);
@@ -274,7 +275,7 @@ rules:
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
-	  --  Process ReferenceMGI
+	  --  Process Reference
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
 	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
