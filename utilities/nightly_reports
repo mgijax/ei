@@ -122,14 +122,12 @@ GXD_ProbeReference.sql \
 GXD_Stats.sql \
 HMD_ConservedUN.sql \
 HMD_Duplicates.sql \
-HMD_References1.sql \
 HMD_References2.sql \
 HMD_References3.sql \
 HMD_References4.sql \
 HMD_References6.sql \
 HMD_SpeciesCount.py \
 HMD_Unreviewed.sql \
-MLC_Allele.sql \
 MLC_Alleles.sql \
 MRK_AllelesAll.sql \
 MLC_CheckImageIndex.py \
