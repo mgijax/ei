@@ -23,6 +23,9 @@
 --
 -- History:
 --
+-- lec	12/08/2004
+--	TR 6394; display/query Modified By/Modification Date 
+--
 -- lec	06/10/2003
 --	TR 4741
 --
@@ -220,6 +223,10 @@ rules:
 	    cmd := cmd + ", _Refs_key, jnum, short_citation";
 	  end if;
 
+	  if (table.is_defined("modifiedBy") != nil) then
+	    cmd := cmd + ", modifiedBy, modification_date";
+	  end if;
+
 	  cmd := cmd + " from " + mgi_DBaccTable(tableID) +
 		       " where " + mgi_DBaccKey(tableID) + " = " + LoadAcc.objectKey + orderBy;
 
@@ -295,6 +302,11 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 9));
+	      end if;
+
+	      if (table.is_defined("modifiedBy") != nil) then
+	        (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
 	      end if;
 
 	      if (table.is_defined("accStatus") != nil) then
@@ -560,6 +572,8 @@ rules:
 	  accName : string;
           accID : string;
 	  refsKey : string;
+	  modifiedBy : string;
+	  modifiedDate : string;
 	  cmd : string := "";
  
 	  table.sqlFrom := "";
@@ -584,7 +598,15 @@ rules:
 		refsKey := "";
 	      end if;
 
-	      if (accID.length > 0 or refsKey.length > 0) then
+	      if (table.is_defined("modifiedBy") != nil) then
+		modifiedBy := mgi_tblGetCell(table, r, table.modifiedBy);
+		modifiedDate := mgi_tblGetCell(table, r, table.modifiedDate);
+	      else
+		modifiedBy := "";
+		modifiedDate := "";
+	      end if;
+
+	      if (accID.length > 0 or refsKey.length > 0 or modifiedBy.length > 0 or modifiedDate.length > 0) then
 	        if (accName = "MGI:" or 
 		    accName = "J:" or 
 		    accName = "MGD-MRK-" or
@@ -610,6 +632,14 @@ rules:
 
 		if (refsKey.length > 0) then
 	          table.sqlWhere := table.sqlWhere + "\nand ac._Refs_key = " + refsKey;
+		end if;
+
+		if (modifiedBy.length > 0) then
+	          table.sqlWhere := table.sqlWhere + "\nand ac.modifiedBy = " + mgi_DBprstr(modifiedBy);
+		end if;
+
+		if (modifiedDate.length > 0) then
+	          table.sqlWhere := table.sqlWhere + "\nand convert(char(10), ac.modification_date, 101) = " + mgi_DBprstr(modifiedDate);
 		end if;
 
 	        break;
