@@ -11,6 +11,10 @@
 --
 -- History
 --
+-- lec	12/10/2001
+--	SelectLookupListItem; check list_w.selectionPolicy to determine if list 
+--	is a multiple selection list or not.
+--
 -- lec	10/16/2001
 --	CopySelectionItem; set "modify" attributes to true if selection is copied
 --
@@ -479,7 +483,7 @@ rules:
 
 	    -- Process Multiple Selection list
 
-	    if (list_w.selectedItems.count > 1) then
+	    if (list_w.selectionPolicy = 1) then
 	      i := 0;
               while (i < SelectLookupListItem.selected_items.count) do
                 item := SelectLookupListItem.selected_items[i];
