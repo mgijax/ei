@@ -70,24 +70,6 @@ def error(msg):
 	sys.stderr.write('Error: ' + msg + '\n')
 	sys.exit(1)
 
-def printMsg(fd, msg):
-	'''
-	#
-	# requires: fd, a file descriptor
-	#           msg, a message (string)
-	#
-	# effects:
-	# Prints message to file (if in DEBUG mode)
-	# 
-	#
-	# returns:
-	#
-	'''
-
-	if DEBUG:
-		fd.write(msg + '\n')
-		fd.flush()
-
 def showUsage():
 	'''
 	#
@@ -102,7 +84,7 @@ def showUsage():
  
         usage = 'usage: %s [-S server] [-D database] ' % sys.argv[0] + \
 		'-U user -P password file ' + \
-		'-m CR|RI|CRCHK|RICHK -e -1|-2|ExptKey -d'
+		'-m CR|RI|CRCHK|RICHK -e -1|-2|ExptKey'
         error(usage)
  
 def init():
@@ -118,10 +100,9 @@ def init():
 	'''
  
 	global mode, exptKey
-        global DEBUG, diagFile
 
         try:
-                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:m:e:d')
+                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:m:e:')
         except:
                 showUsage()
  
@@ -147,34 +128,14 @@ def init():
 			mode = opt[1]
                 elif opt[0] == '-e':
 			exptKey = string.atoi(opt[1])
-                elif opt[0] == '-d':
-                        DEBUG = 1
                 else:
                         showUsage()
  
 	if user is None or password is None or mode is None or exptKey == 0:
 		showUsage()
 
-	if server != 'MGD' or (server == 'MGD' and database == 'mgd_old'):
-		DEBUG = 1
-
 	# Initialize DBMS parameters
 	db.set_sqlLogin(user, password, server, database)
-
-	# Append to $HOME/.mgd_stats_log
-	home = os.environ['HOME']
-
-        try:
-                diagFile = open(home + '/.mgd_stats_log', 'a')
-        except:
-                error('Could not open file %s/.stats_log' % home)
- 
-	# Initialize logging file descriptor
-	db.set_sqlLogFD(diagFile)
-
-	# If debugging, log all SQL
-	if DEBUG == 1:
-		db.set_sqlLogFunction(db.sqlLogAll)
 
 def removeStats():
 	'''
@@ -212,8 +173,7 @@ def checkStatistics():
 
 	for result in results:
 		if result[''] != (sequenceNum - 1):
-			printMsg(diagFile, '%d (%d MLD_Statistics) (%d Calculated)\n' \
-				 % (exptKey, result[''] , compareRows))
+			print '%d (%d MLD_Statistics) (%d Calculated)\n' % (exptKey, result[''] , compareRows)
 
 def parseDatalines(datalines, columns = 0):
 	'''
@@ -458,14 +418,14 @@ def processCross():
 	columns = len(results)
 
 	if columns == 0:
-		printMsg(diagFile, 'Experiment %d has Number of Columns = 0\n' % exptKey)
+		print 'Experiment %d has Number of Columns = 0\n' % exptKey
 		return
 
 	# Translate haplotypes
 	comparematrix = parseDatalines(datalines, columns)
 
 	if len(comparematrix) / columns != rows:
-		printMsg(diagFile, 'Experiment %d has errors in its haplotype data\n' % exptKey)
+		print 'Experiment %d has errors in its haplotype data\n' % exptKey
 		return
 
 	c = 0
@@ -566,7 +526,7 @@ def processRI():
 	comparematrix = parseDatalines(datalines, 0)
  
 	if len(comparematrix) % rows != 0:
-		printMsg(diagFile, 'Experiment %d has errors in its haplotype data\n' % exptKey)
+		print 'Experiment %d has errors in its haplotype data\n' % exptKey
 		return
  
 	columns = (len(comparematrix) + 1) / rows;
@@ -687,7 +647,6 @@ def catchUp():
 #
 
 INSERTSTATS = 'insert MLD_Statistics (_Expt_key, sequenceNum, _Marker_key_1, _Marker_key_2, recomb, total, pcntrecomb, stderr)\n'
-DEBUG = 0
 
 mode = None	# Processing mode
 exptKey = 0	# Experiment Key
