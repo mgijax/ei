@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr 22 07:54:14 2003";
+      lastWritten = "Mon Apr 28 11:03:51 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -676,6 +676,11 @@ Module: mgiOption
                       mgd_release = OptionToggle : mgiOption;
                       Group: User
                         defaultValue = mgd_release;
+                    }
+                    {
+                      qatest1 = OptionToggle : mgiOption;
+                      Group: User
+                        defaultValue = qatest1;
                     }
               }
         }
