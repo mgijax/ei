@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 26 13:47:49 2003";
+      lastWritten = "Thu Apr 24 08:05:27 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -1786,6 +1786,23 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                   Group: User
                                     note = "Reprinted with permission of the author and Academic Press from *.  Copyright * by Academic Press.";
+                                    noteWidget = CopyrightNote;
+                                }
+                                {
+                                  NatureNote = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = Nature;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = DevBiolNote;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = DevBiolNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    note = "This image is from * and is displayed with the permission of <A HREF=\"http://www.nature.com/\">The Nature Publishing Group</A> who owns the Copyright.";
                                     noteWidget = CopyrightNote;
                                 }
                                 {
