@@ -771,6 +771,30 @@ rules:
 	    searchNote := true;
 	  end if;
 
+	  -- Modification date
+
+	  fantom.sqlCmd := "";
+          QueryDate.source_widget := fantom;
+	  QueryDate.row := 0;
+	  QueryDate.column := fantom.modifiedDate;
+	  QueryDate.fieldName := "modification_date";
+	  QueryDate.tag := "f";
+          send(QueryDate, 0);
+	  if (fantom.sqlCmd.length > 0) then
+	    where := where + fantom.sqlCmd;
+	  end if;
+
+	  fantom.sqlCmd := "";
+          QueryDate.source_widget := fantom;
+	  QueryDate.row := 0;
+	  QueryDate.column := fantom.createdDate;
+	  QueryDate.fieldName := "creation_date";
+	  QueryDate.tag := "f";
+          send(QueryDate, 0);
+	  if (fantom.sqlCmd.length > 0) then
+	    where := where + fantom.sqlCmd;
+	  end if;
+
 	  if (searchNote) then
 	    from := from + "," + mgi_DBtable(MGI_FANTOM2NOTES) + " sn ";
 	    where1 := where1 + " and f._Fantom2_key = sn._Fantom2_key";
