@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 05/30/2002 lec
+-- 	- TR 3677; modifedBy will be set in mgi_DBupdate()
+--
 -- 03/04/2001 lec
 --	- TR 2217; Allele Enhancements
 --	- TR 1939; Allele Nomenclature
@@ -549,9 +552,6 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
-
-	    set := set + "modifiedBy = " + mgi_DBprstr(global_login);
-
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
 	  end if;
 
