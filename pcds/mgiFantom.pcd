@@ -1,8 +1,8 @@
 Module: mgiFantom
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Aug 28 12:51:27 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Tue Nov  5 10:44:37 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -700,6 +700,12 @@ Module: mgiFantom
                                     labelString = "NOT search";
                                 }
                                 {
+                                  userID = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:PasteValue(value = \"global_login\"),\nD:GoHome";
+                                    labelString = "Paste UserID in Cell";
+                                }
+                                {
                                   zilch = push : mgiDataTypes;
                                   Group: Widget
                                     activateCallback = "D:PasteValue(value = \"zilch\"),\nD:GoHome";
@@ -806,8 +812,7 @@ Module: mgiFantom
                               topAttachment = attach_widget;
                               bottomAttachment = attach_none;
                               resizable = true;
-                              topWidget = Note;
-                              topOffset = 100;
+                              topWidget = NotePushForm;
                           }
                           {
                             Buttons = Buttons : mgiDialog;
@@ -831,65 +836,9 @@ Module: mgiFantom
                               rightAttachment = attach_form;
                               topAttachment = attach_opposite_widget;
                               topWidget = Note;
-                              bottomAttachment = attach_form;
+                              bottomAttachment = attach_none;
                               resizable = true;
                               rightOffset = 5;
-                                {
-                                  Intial = FantomNotePush : mgiFantom;
-                                }
-                                {
-                                  ProbOrtholog = FantomNotePush : mgiFantom;
-                                }
-                                {
-                                  PosOrtholog = FantomNotePush : mgiFantom;
-                                }
-                                {
-                                  ProbParalog = FantomNotePush : mgiFantom;
-                                }
-                                {
-                                  SymbolName = FantomNotePush : mgiFantom;
-                                }
-                                {
-                                  separatorGadget = XmSeparatorGadget;
-                                }
-                                {
-                                  BetterRefSeq = FantomNotePush : mgiFantom;
-                                }
-                                {
-                                  Mismatch1 = FantomNotePush : mgiFantom;
-                                  Group: Widget
-                                    labelString = "5' end mismatch";
-                                  Group: User
-                                    defaultValue = "5' end mismatch";
-                                }
-                                {
-                                  Mismatch2 = FantomNotePush : mgiFantom;
-                                  Group: Widget
-                                    labelString = "3' end mismatch";
-                                  Group: User
-                                    defaultValue = "3' end mismatch";
-                                }
-                                {
-                                  Problem = FantomNotePush : mgiFantom;
-                                  Group: Widget
-                                    labelString = "Problem Cluster";
-                                  Group: User
-                                    defaultValue = "Problem Cluster";
-                                }
-                                {
-                                  Overlap1 = FantomNotePush : mgiFantom;
-                                  Group: Widget
-                                    labelString = "Overlaps Same Strand";
-                                  Group: User
-                                    defaultValue = "Overlaps Same Strand:";
-                                }
-                                {
-                                  Overlap2 = FantomNotePush : mgiFantom;
-                                  Group: Widget
-                                    labelString = "Overlaps Opposite Strand";
-                                  Group: User
-                                    defaultValue = "Overlaps Opposite Strand:";
-                                }
                           }
                     }
               }
@@ -1393,7 +1342,7 @@ Module: mgiFantom
         {
           FantomNotePush = push : mgiDataTypes;
           Group: Widget
-            userDefinedAttributes = "placeBefore:Boolean(Boolean)=\"True\"\ndefaultValue:String\n";
+            userDefinedAttributes = "placeBefore:Boolean(Boolean)=\"True\"\ndefaultValue:String(String)\nattachUserID:Boolean=\"False\"\n";
             activateCallback = "D:CopyToNote";
           Group: Control
             vip_x = 160;
@@ -1447,6 +1396,56 @@ Module: mgiFantom
                   labelString = "Better RefSeq";
                 Group: User
                   defaultValue = "Better RefSeq";
+              }
+              {
+                MisMatch1 = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "5' end mismatch";
+                Group: User
+                  defaultValue = "5' end mismatch";
+              }
+              {
+                MisMatch2 = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "3' end mismatch";
+                Group: User
+                  defaultValue = "3' end mismatch";
+              }
+              {
+                Problem = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Problem Cluster";
+                Group: User
+                  defaultValue = "Problem Cluster";
+              }
+              {
+                Overlap1 = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Overlaps Same Strand";
+                Group: User
+                  defaultValue = "Overlaps Same Strand:";
+              }
+              {
+                Overlap2 = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Overlaps Opposite Strand";
+                Group: User
+                  defaultValue = "Overlaps Opposite Strand:";
+              }
+              {
+                HomologyNote = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Homology Note";
+                Group: User
+                  defaultValue = "Species:|Symbol:|Name:|Seqid:|LocusLink ID:|FDB ID:|Chr:|Evidence:|";
+              }
+              {
+                ParalogUserID = FantomNotePush : mgiFantom;
+                Group: Widget
+                  labelString = "Paralog/UserID";
+                Group: User
+                  defaultValue = "Paralog|ID:";
+                  attachUserID = True;
               }
         }
 }
