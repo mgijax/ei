@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 02/19/2004
+--	- TR 5523; remove Holder
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -425,8 +428,7 @@ rules:
           cmd := mgi_setDBkey(PRB_REFERENCE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(PRB_REFERENCE, KEYNAME) +
                  currentMasterKey + "," +
-	         top->MolReferenceForm->mgiCitation->ObjectID->text.value + "," +
-	         mgi_DBprstr(top->MolReferenceForm->Holder->text.value) + "," +
+	         top->MolReferenceForm->mgiCitation->ObjectID->text.value + ",NULL," +
 	         (string)((integer) top->MolReferenceForm->RMAP.set) + "," +
                  (string)((integer) top->MolReferenceForm->HasSequence.set) + ")\n";
 
@@ -734,10 +736,6 @@ rules:
 
           if (top->MolReferenceForm->mgiCitation->ObjectID->text.modified) then
             set := set + "_Refs_key = " + mgi_DBprkey(top->MolReferenceForm->mgiCitation->ObjectID->text.value) + ",";
-          end if;
-
-          if (top->MolReferenceForm->Holder->text.modified) then
-            set := set + "holder = " + mgi_DBprstr(top->MolReferenceForm->Holder->text.value) + ",";
           end if;
 
 	  if (top->MolReferenceForm->HasSequence.modified) then
@@ -1174,11 +1172,6 @@ rules:
 	    end if;
 	  end if;
 
-          if (top->MolReferenceForm->Holder->text.value.length > 0) then
-	    where := where + "\nand r.holder like " + mgi_DBprstr(top->MolReferenceForm->Holder->text.value);
-	    from_ref := true;
-	  end if;
-
 	  if (top->MolReferenceForm->HasSequence.set) then
 	    where := where + "\nand r.hasSequence = 1";
 	    from_ref := true;
@@ -1542,7 +1535,6 @@ rules:
                 top->MolMasterForm->MJnum->Jnum->text.value := mgi_getstr(dbproc, 1);
                 top->MolMasterForm->MJnum->ObjectID->text.value := mgi_getstr(dbproc, 6);
                 top->MolMasterForm->MJnum->Citation->text.value := mgi_getstr(dbproc, 3);
-                top->MolReferenceForm->Holder->text.value := mgi_getstr(dbproc, 7);
                 top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 9));
                 top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 8));
 		ref_creation_date := mgi_getstr(dbproc, 10);
