@@ -351,16 +351,14 @@ rules:
 
 	  if (accTable.sqlFrom.length > 0) then
 	    from := from + accTable.sqlFrom;
-	    where := where + "\nand " + accTable.sqlWhere;
+	    where := where + accTable.sqlWhere;
 	  else
             SearchAcc.table := accRefTable;
             SearchAcc.objectKey := "m." + mgi_DBkey(MRK_MARKER);
 	    SearchAcc.tableID := MRK_ACC_REFERENCE;
             send(SearchAcc, 0);
-	    if (accRefTable.sqlFrom.length > 0) then
-	      from := from + accRefTable.sqlFrom;
-	      where := where + "\nand " + accRefTable.sqlWhere;
-	    end if;
+	    from := from + accRefTable.sqlFrom;
+	    where := where + accRefTable.sqlWhere;
 	  end if;
 
           QueryDate.source_widget := top->CreationDate;

@@ -452,7 +452,6 @@ rules:
 	PrepareSearch does
 	  table : widget;
 	  value : string;
-	  from_acc : boolean := false;
 	  from_alias : boolean := false;
 	  from_amarker : boolean := false;
 	  from_marker : boolean := false;
@@ -466,12 +465,8 @@ rules:
           SearchAcc.objectKey := "g." + mgi_DBkey(GXD_ANTIBODY);
 	  SearchAcc.tableID := GXD_ANTIBODY;
           send(SearchAcc, 0);
- 
-          if (accTable.sqlFrom.length > 0) then
-            from := from + accTable.sqlFrom;
-            where := where + "\nand " + accTable.sqlWhere;
-	    from_acc := true;
-          end if;
+          from := from + accTable.sqlFrom;
+          where := where + accTable.sqlWhere;
  
           QueryDate.source_widget := top->CreationDate;
           QueryDate.tag := "g";

@@ -998,7 +998,7 @@ rules:
  
           if (accTable.sqlFrom.length > 0) then
             from := from + accTable.sqlFrom;
-            where := where + "\nand " + accTable.sqlWhere;
+            where := where + accTable.sqlWhere;
 	    from_acc := true;
           end if;
  
@@ -1138,7 +1138,7 @@ rules:
             if (table.sqlFrom.length > 0) then
 	      from_ref := true;
               from := from + table.sqlFrom;
-              where := where + "\nand " + table.sqlWhere;
+              where := where + table.sqlWhere;
             end if;
 	  end if;
 

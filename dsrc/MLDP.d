@@ -2393,7 +2393,7 @@ rules:
  
           if (accTable.sqlFrom.length > 0) then
             from := from + accTable.sqlFrom;
-            where := where + "\nand " + accTable.sqlWhere;
+            where := where + accTable.sqlWhere;
 	    from_expt := true;
           end if;
  

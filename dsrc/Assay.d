@@ -1618,11 +1618,8 @@ rules:
           SearchAcc.objectKey := "g." + mgi_DBkey(GXD_ASSAY);
 	  SearchAcc.tableID := GXD_ASSAY;
           send(SearchAcc, 0);
- 
-          if (accTable.sqlFrom.length > 0) then
-            from := from + accTable.sqlFrom;
-            where := where + "\nand " + accTable.sqlWhere;
-          end if;
+          from := from + accTable.sqlFrom;
+          where := where + accTable.sqlWhere;
  
           QueryDate.source_widget := top->CreationDate;
           QueryDate.tag := "g";

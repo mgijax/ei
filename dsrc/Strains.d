@@ -490,11 +490,8 @@ rules:
           SearchAcc.objectKey := "s." + mgi_DBkey(STRAIN);
 	  SearchAcc.tableID := STRAIN;
           send(SearchAcc, 0);
-
-	  if (accTable.sqlFrom.length > 0) then
-	    from := from + accTable.sqlFrom;
-	    where := where + "\nand " + accTable.sqlWhere;
-	  end if;
+	  from := from + accTable.sqlFrom;
+	  where := where + accTable.sqlWhere;
 
           if (top->Name->text.value.length > 0) then
             where := where + "\nand s.strain like " + mgi_DBprstr(top->Name->text.value);

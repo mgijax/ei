@@ -522,7 +522,7 @@ rules:
 	        end if;
 
 	        table.sqlFrom := "," + mgi_DBaccTable(tableID) + " ac";
-		table.sqlWhere := "ac." + mgi_DBaccKey(tableID) + " = " + SearchAcc.objectKey;
+		table.sqlWhere := "\nand ac." + mgi_DBaccKey(tableID) + " = " + SearchAcc.objectKey;
 
 	        if (logicalKey.length > 0) then
 	          table.sqlWhere := table.sqlWhere + "\nand ac._LogicalDB_key = " + logicalKey;
