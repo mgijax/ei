@@ -342,17 +342,19 @@ rules:
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
-	    if (editMode = TBL_ROW_EMPTY or editMode = TBL_ROW_DELETE) then
+	    if (editMode = TBL_ROW_EMPTY) then
 	      break;
 	    end if;
 
-	    rnumstr := mgi_tblGetCell(refTable, row, refTable.seqNum);
-	    jnumstr := mgi_tblGetCell(refTable, row, refTable.jnum);
+	    if (editMode != TBL_ROW_DELETE) then
+	      rnumstr := mgi_tblGetCell(refTable, row, refTable.seqNum);
+	      jnumstr := mgi_tblGetCell(refTable, row, refTable.jnum);
 
-	    if (jnum_list.find(jnumstr) > 0) then
-	      dup_list.insert(rnumstr, dup_list.count + 1);
-	    else
-	      jnum_list.insert(jnumstr, jnum_list.count + 1);
+	      if (jnum_list.find(jnumstr) > 0) then
+	        dup_list.insert(rnumstr, dup_list.count + 1);
+	      else
+	        jnum_list.insert(jnumstr, jnum_list.count + 1);
+	      end if;
 	    end if;
 
 	    row := row + 1;
@@ -875,12 +877,12 @@ rules:
 
 	  cmd := "select _Marker_key, symbol, name, chromosome " +
 		 "from MRK_Marker where _Marker_key = " + currentMarkerKey + "\n" +
-		 "select _Class_key, name from MRK_Classes_View where _Marker_key = " + currentMarkerKey + 
+		 "select _Class_key, name " +
+		 " from MRK_Classes_View where _Marker_key = " + currentMarkerKey + 
 		 " order by name\n" +
 		 "select b._Refs_key, r.tag, b.jnum, b.short_citation " +
 		 "from MLC_Reference_edit r, BIB_View b " +
-		 "where r._Marker_key = " + currentMarkerKey + 
-		 " and r._Refs_key = b._Refs_key " + 
+		 "where r._Marker_key = " + currentMarkerKey + " and r._Refs_key = b._Refs_key " + 
 		 "order by r.tag\n" +
 		 "select mode, description, creation_date, modification_date, userID " +
 	         "from MLC_Text_edit where _Marker_key = " + currentMarkerKey + "\n";
@@ -888,8 +890,6 @@ rules:
 	  table : widget;
 	  results : integer := 1;
 	  row : integer := 0;
-
-	  (void) mgi_writeLog(cmd);
 
 	  dbproc : opaque := mgi_dbopen();
 	  (void) dbcmd(dbproc, cmd);
@@ -975,109 +975,98 @@ rules:
 --                        ReplaceStr.value 
 --            "UndoReplace" : Undoes all of the last Replace changes.
 --
---
 
 	SearchReplaceText does
-		find_string : string := top->EditForm->SearchStr.value;
-		replace_string : string := top->EditForm->ReplaceStr.value;
-		locustext : widget := top->Description->text;
-		cursorpos : integer;
-		pos : integer;
-		selection : string;
-		type : string := SearchReplaceText.type;
+	  find_string : string := top->EditForm->SearchStr.value;
+	  replace_string : string := top->EditForm->ReplaceStr.value;
+	  locustext : widget := top->Description->text;
+	  type : string := SearchReplaceText.type;
+	  cursorpos : integer;
+	  pos : integer;
+	  selection : string;
 
-		-- the following is necessary to do a global replace
-		-- while ignoring the Search and Replace fields of the interface,
-		-- instead getting the info from the event. 
+	  -- the following is necessary to do a global replace
+	  -- while ignoring the Search and Replace fields of the interface,
+	  -- instead getting the info from the event. 
 
+	  if (type = "UndoReplace") then
+	    if (top->EditForm->UndoReplace.sensitive) then
+	      locustext.modified := true;
+	      locustext.value := savedlocustext;
+	      top->EditForm->UndoReplace.sensitive := false;
+	      return;
+	    end if;
+	  end if;
 
-		if (type = "UndoReplace") then
-			if (top->EditForm->UndoReplace.sensitive) then
-				locustext.modified := true;
-				locustext.value := savedlocustext;
-				top->EditForm->UndoReplace.sensitive := false;
-				return;
-			end if;
-		end if;
+	  if (type = "GlobalReplace_noinput" or type = "Replace_noinput") then
+	    find_string := SearchReplaceText.find_string; 
+	    replace_string := SearchReplaceText.replace_string;
+	    if (type = "Replace_noinput") then
+	      type := "Replace";
+	    end if;
+	  end if;
 
-		if (type = "GlobalReplace_noinput" or
-			type = "Replace_noinput") then
-			find_string := SearchReplaceText.find_string; 
-			replace_string := SearchReplaceText.replace_string;
-			if (type = "Replace_noinput") then
-				type := "Replace";
-			end if;
-		end if;
+	  if (find_string.length = 0) then
+	    return;
+	  end if;
 
-		if (strlen(find_string) = 0) then
-			return;
-		end if;
+	  selection := XmTextGetSelection(locustext);
+	  if (selection.length > 0) then
+	    cursorpos := XmTextGetInsertionPosition(locustext);
+	    pos := strpos(locustext.value, find_string, cursorpos + 1);
+	  else
+	    pos := strpos(locustext.value, find_string, 0);
+	  end if;
 
-		selection := XmTextGetSelection(locustext);
-		if (selection.length > 0) then
-			cursorpos := XmTextGetInsertionPosition(locustext);
-			pos := strpos(locustext.value,find_string,cursorpos+1);
-		else
-			pos := strpos(locustext.value,find_string,0);
-		end if;
+	  if (pos < 0) then
+	    top->EditForm->UndoReplace.sensitive := false;
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Position cursor BEFORE text which is being searched/replaced.";
+	    send(StatusReport);
+	    return;
+	  end if;    
 
-		if (type = "Search") then
-			if (pos < 0) then
-				return;
-			end if;    
-			-- position and highlight 
-			XmTextSetSelection(locustext,pos, pos+strlen(find_string),
-			XtLastTimestampProcessed(XtDisplay(top)));
-			XmTextSetInsertionPosition(locustext, pos+strlen(find_string));
-			XmTextSetTopCharacter(locustext,pos);
+	  if (type = "Search") then
+	    -- position and highlight 
+	    XmTextSetSelection(locustext, pos, pos + find_string.length,
+		XtLastTimestampProcessed(XtDisplay(top)));
+	    XmTextSetInsertionPosition(locustext, pos + find_string.length);
+	    XmTextSetTopCharacter(locustext, pos);
 
-		elsif (type = "Replace") then 
+	  elsif (type = "Replace") then 
+	    locustext.modified := true;
+	    -- position
+	    XmTextSetInsertionPosition(locustext, pos);
+	    XmTextSetTopCharacter(locustext, pos);
 
-			if (pos < 0) then
-				return;
-			end if;    
+	    -- replace highlighted text
+	    XmTextReplace(locustext,pos, pos + find_string.length, replace_string);
+	    XmTextSetSelection(locustext, pos, pos + replace_string.length, 
+		XtLastTimestampProcessed(XtDisplay(top)));
+	    XmTextSetInsertionPosition(locustext, pos + replace_string.length);
+	    XmTextSetTopCharacter(locustext, pos);
 
-			locustext.modified := true;
+	  elsif (type = "GlobalReplace") then 
+	    SearchReplaceText.type := "Replace";        
+	    send(SearchReplaceText,0);
+	    SearchReplaceText.type := "GlobalReplace";        
+	    send(SearchReplaceText,0);
 
-			-- position
-			XmTextSetInsertionPosition(locustext, pos);
-			XmTextSetTopCharacter(locustext,pos);
-
-			-- replace highlighted text
-			XmTextReplace(locustext,pos, pos+strlen(find_string), replace_string);
-			XmTextSetSelection(locustext,pos, pos+strlen(replace_string),
-			XtLastTimestampProcessed(XtDisplay(top)));
-			XmTextSetInsertionPosition(locustext,pos+strlen(replace_string));
-			XmTextSetTopCharacter(locustext,pos);
-
-		elsif (type = "GlobalReplace") then 
-			if (pos < 0) then
-				return;
-			else
-				SearchReplaceText.type := "Replace";        
-				send(SearchReplaceText,0);
-				SearchReplaceText.type := "GlobalReplace";        
-				send(SearchReplaceText,0);
-			end if;    
-		elsif (type = "GlobalReplace_noinput") then
-			if (pos < 0) then
-				return;
-			else
-				SearchReplaceText.type := "Replace_noinput";
-				send(SearchReplaceText,0);
-				SearchReplaceText.type := "GlobalReplace_noinput";
-				send(SearchReplaceText,0);
-			end if;
-		end if;
+	  elsif (type = "GlobalReplace_noinput") then
+	    SearchReplaceText.type := "Replace_noinput";
+	    send(SearchReplaceText,0);
+	    SearchReplaceText.type := "GlobalReplace_noinput";
+	    send(SearchReplaceText,0);
+	  end if;
 	end does;
 
 --
 -- SortReferences
 --
 -- All newly-added references have integer tags associated with them. These
--- tags are assigned automatically, when "Add" is chosen.  When a user presses
--- "Sort References", the list of References is sorted alphabetically, and
--- the column of numbers is relabeled in ascending order.  All changes made
+-- tags are assigned when entering the Reference into the Reference EI table.
+-- When a user presses "Sort References", the list of References is sorted alphabetically, 
+-- and the column of numbers is relabeled in ascending order.  All changes made
 -- to numbers must also be reflected in the tags within the 
 -- Description->text. These changes are performed within the C routine 
 -- "renumberRefs". This C routine marks locustext as modified, as well.
@@ -1097,151 +1086,130 @@ rules:
 --
 
 	SortReferences does
-		table : widget := top->EditForm->Reference->Table; 
-		Reflist : opaque := createRefList();
-		refnumslist, matchlist : opaque; 
-		itemcnt, row : integer;
-		ref : opaque;
-		seqnumtxt : string;
-		currentSeqNum, seqNum, refsCurrentKey, refsKey, 
-			jnum, citation, editMode : string;
+	  table : widget := top->EditForm->Reference->Table; 
+	  locustext : widget := top->Description->text;
+	  Reflist : opaque := createRefList();
+	  editMode : string;
+	  ref : opaque;
+	  refnumslist, matchlist : opaque; 
+	  row : integer;
  
-		-- begin : see if the References Table is in sync with the locustext 
+	  -- begin : see if the References Table is in sync with the locustext 
 
-		refnumslist := createStringList(REFNUMTXTLEN);
+	  refnumslist := createStringList(REFNUMTXTLEN);
 
-		-- Build a list of non-deleted references
+	  -- Build a list of non-deleted references
 
-		row := 0;
-		while (row < mgi_tblNumRows(table)) do
-			editMode := mgi_tblGetCell(table, row, table.editMode);
+	  row := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
 
-			if (editMode = TBL_ROW_EMPTY) then
-				break;
-			end if;
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
 
-			if (editMode != TBL_ROW_DELETE) then
-				seqnumtxt := mgi_tblGetCell(table, row, table.seqNum);
-				StringList_append(refnumslist, seqnumtxt);
-			end if;
-			row := row + 1;
-		end while;
+	    if (editMode != TBL_ROW_DELETE) then
+	      StringList_append(refnumslist, mgi_tblGetCell(table, row, table.seqNum));
+	    end if;
 
-		if ( row = 0 ) 
-		then  -- there are no references to sort
-			StatusReport.source_widget := top;
-			StatusReport.message := "No references to sort.";
-			send(StatusReport);
+	    row := row + 1;
+	  end while;
+
+	  -- if there are no references to sort, return
+
+	  if (row = 0) then  
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "No references to sort.";
+	    send(StatusReport);
             return;
-		end if;
+	  end if;
 
-		locustext : widget := top->Description->text;
+	  -- get reference tags not matching those in references list
+	  matchlist := getmatchrefs(locustext.value, refnumslist, 0);
 
-		-- get reference tags not matching those in references list
-		matchlist := getmatchrefs(locustext.value,refnumslist,0);
-		if ( matchlist = nil )
-        then
-			StatusReport.source_widget := top;
-			StatusReport.message := "Couldn't complete operation due to lack" +
-                                    " of memory.";
-			send(StatusReport);
+	  if (matchlist = nil) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Couldn't complete operation due to lack of memory.";
+	    send(StatusReport);
             return;
-        end if;
+          end if;
 
-		itemcnt := XrtGearListGetItemCount(matchlist);
-		if (itemcnt > 0) then
-			StatusReport.source_widget := top;
-			StatusReport.message := "Gaps in the Reference sequence; cannot apply sort.";
-			send(StatusReport);
-			HighlightRefs.type := "Miss";
-			send(HighlightRefs,0); -- highlight reason(s) for gaps
-			TxtSrchList_destroy(matchlist);
-			return;
-		end if;
-		TxtSrchList_destroy(matchlist);
+	  if (XrtGearListGetItemCount(matchlist) > 0) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Gaps in the Reference sequence; cannot apply sort.";
+	    send(StatusReport);
+	    HighlightRefs.type := "Miss";
+	    send(HighlightRefs,0); -- highlight reason(s) for gaps
+	    TxtSrchList_destroy(matchlist);
+	    return;
+	  end if;
 
-		-- end : see if the References Table is in sync with the locustext
+	  TxtSrchList_destroy(matchlist);
 
-		-- build a list of references 
-		row := 0;
-		while (row < mgi_tblNumRows(table)) do
+	  -- end : see if the References Table is in sync with the locustext
 
-			-- store each row in a data structure, then store data structure
-			-- in a list.  Pass list to C routine for sorting, and updating of
-			-- the Text file based on Reference number changes.
+	  -- build a list of references 
+	  row := 0;
+	  while (row < mgi_tblNumRows(table)) do
 
-			currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
-			seqNum     := mgi_tblGetCell(table, row, table.seqNum);
-			refsCurrentKey  := mgi_tblGetCell(table, row, table.refsCurrentKey);
-			refsKey  := mgi_tblGetCell(table, row, table.refsKey);
-			jnum     := mgi_tblGetCell(table, row, table.jnum);
-			citation := mgi_tblGetCell(table, row, table.citation);
-			editMode := mgi_tblGetCell(table, row, table.editMode);
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
 
-			-- create a Reference object
-			ref := createRef( currentSeqNum, seqNum, refsCurrentKey, 
-                              refsKey, jnum, citation, editMode );
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
 
-			-- If end of non-empty rows, break
-	
-			if (Ref_GetEditMode(ref) = TBL_ROW_EMPTY) then
-				break;
-			end if;
+	    if (editMode != TBL_ROW_DELETE) then
 
-			-- If row not being deleted, append to reference list for sorting
+	      -- store each row in a data structure, then store data structure
+	      -- in a list.  Pass list to C routine for sorting, and updating of
+	      -- the Text file based on Reference number changes.
 
-			if (Ref_GetEditMode(ref) != TBL_ROW_DELETE) then
-				RefList_append(Reflist, ref);
-			end if;
+	      ref := createRef(mgi_tblGetCell(table, row, table.currentSeqNum),
+			       mgi_tblGetCell(table, row, table.seqNum),
+			       mgi_tblGetCell(table, row, table.refsCurrentKey),
+			       mgi_tblGetCell(table, row, table.refsKey),
+			       mgi_tblGetCell(table, row, table.jnum),
+			       mgi_tblGetCell(table, row, table.citation),
+			       editMode);
+
+	      -- Append to reference list for sorting
+	      RefList_append(Reflist, ref);
+	    end if;
 			
-			row := row + 1;
-		end while;
+	    row := row + 1;
+	  end while;
 
-		-- sort the references and renumber the refs in C, returning the
-		-- sorted list.
+	  -- sort the references and renumber the refs in C, returning the sorted list.
 	
-		if (renumberRefs(locustext.value,Reflist) != 0)
-        then
-			StatusReport.source_widget := top;
-			StatusReport.message := "Couldn't sort references due to lack " +
-                                    " of memory.";
-			send(StatusReport);
-			return;
-        end if;
+	  if (renumberRefs(locustext.value, Reflist) != 0) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Couldn't sort references due to lack of memory.";
+	    send(StatusReport);
+	    return;
+          end if;
 
-		-- Make certain that the "modified" flag is set for the EditForm
-		-- Make certain that the "modified" flag is set for the Reference Table 
+	  -- Clear the table so it can be re-loaded
 
-		table.modified := false;
-
-		-- Clear the table so it can be re-loaded
-
-		ClearTable.table := table;
-		send(ClearTable, 0);
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
  
-		-- Load the Sorted References into the table
+	  -- Load the Sorted References into the table
 
-		row := 0;
-		itemcnt := XrtGearListGetItemCount(Reflist);
-		while (row < itemcnt) do
-			ref := RefList_getitem(Reflist, row);
-			(void) mgi_tblSetCell(table, row, table.currentSeqNum, 
-                   Ref_GetCurrentSeqNum(ref));
-			(void) mgi_tblSetCell(table, row, table.seqNum, Ref_GetSeqNum(ref));
-			(void) mgi_tblSetCell(table, row, table.refsCurrentKey, 
-                   Ref_GetCurrentKey(ref));
-			(void) mgi_tblSetCell(table, row, table.refsKey, Ref_GetKey(ref));
-			(void) mgi_tblSetCell(table, row, table.jnum, Ref_GetJnum(ref));
-			(void) mgi_tblSetCell(table, row, table.citation, 
-                   Ref_GetCitation(ref));
-			(void) mgi_tblSetCell(table, row, table.editMode, 
-                   Ref_GetEditMode(ref));
-			row := row + 1;
+	  row := 0;
+	  while (row < XrtGearListGetItemCount(Reflist)) do
+	    ref := RefList_getitem(Reflist, row);
+	    (void) mgi_tblSetCell(table, row, table.currentSeqNum, Ref_GetCurrentSeqNum(ref));
+	    (void) mgi_tblSetCell(table, row, table.seqNum, Ref_GetSeqNum(ref));
+	    (void) mgi_tblSetCell(table, row, table.refsCurrentKey, Ref_GetCurrentKey(ref));
+	    (void) mgi_tblSetCell(table, row, table.refsKey, Ref_GetKey(ref));
+	    (void) mgi_tblSetCell(table, row, table.jnum, Ref_GetJnum(ref));
+	    (void) mgi_tblSetCell(table, row, table.citation, Ref_GetCitation(ref));
+	    (void) mgi_tblSetCell(table, row, table.editMode, Ref_GetEditMode(ref));
+	    row := row + 1;
 
-			-- dispose of the previously-allocated Ref
-			Ref_destroy(ref);
-		end while;
-
+	    -- dispose of the previously-allocated Ref
+	    Ref_destroy(ref);
+	  end while;
 	end does;
 		
 --
@@ -1287,102 +1255,106 @@ rules:
 -- the text.
 --
 	HighlightRefs does
-		found : boolean;    
-		table, locustext : widget;
-		table := top->EditForm->Reference->Table;
-		locustext := top->Description->text;
-		type : string := HighlightRefs.type;
-		matchlist, refnumslist : opaque;
-		counttext : widget := top->EditForm->Reference->Count->text;
-		row, extracount : integer;
-		rnumstr : string;
-		tsrch : TxtSrch;
-		editMode : string;
-		i, itemcnt, refnumscount : integer;
-		
-		-- Re-set sequence numbers (Ref #)
-		send(UnSelectRefsTable, 0);
+	  table : widget := top->EditForm->Reference->Table;
+	  locustext : widget := top->Description->text;
+	  counttext : widget := top->EditForm->Reference->Count->text;
+	  type : string := HighlightRefs.type;
+	  matchlist, refnumslist : opaque;
+	  found : boolean;    
+	  row, extracount : integer;
+	  rnumstr : string;
+	  tsrch : TxtSrch;
+	  editMode : string;
+	  i, refnumscount : integer;
 
-		refnumslist := createStringList(REFNUMTXTLEN);
+	  -- Re-set sequence numbers (Ref #)
+	  send(UnSelectRefsTable, 0);
 
-		row := 0;
-		-- build a list of references row := 0; 
-		while (row < mgi_tblNumRows(table)) do
-			editMode := mgi_tblGetCell(table, row, table.editMode);
+	  refnumslist := createStringList(REFNUMTXTLEN);
 
-			if (editMode = TBL_ROW_EMPTY) then
-				break;
-			end if;
+	  -- build a list of references
+	  row := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
 
-			if (editMode != TBL_ROW_DELETE) then
-				StringList_append(refnumslist, mgi_tblGetCell(table, row, 
-									table.seqNum));
-			end if;
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
 
-			row := row + 1;
-		end while;
+	    if (editMode != TBL_ROW_DELETE) then
+	      StringList_append(refnumslist, mgi_tblGetCell(table, row, table.seqNum));
+	    end if;
 
-		if (type="Match") then     -- highlight all matching references in text
-			matchlist := getmatchrefs(locustext.value,refnumslist,1);
-			counttext.value := (string)XrtGearListGetItemCount(matchlist);
-		elsif (type="Miss") then    -- highlight all non-matching refs in text
-			matchlist := getmatchrefs(locustext.value,refnumslist,0);
-			counttext.value := (string)XrtGearListGetItemCount(matchlist);
-		elsif (type="Extra") then
-			matchlist := getmatchrefs(locustext.value,refnumslist,1);            
-			-- Clear highlights
-			SelectText.type := "None";
-			send(SelectText,0);
+	    row := row + 1;
+	  end while;
 
-			-- Compare each reference with the matchlist (references in the text)
-			row := 0; 
-			extracount:=0;
-			refnumscount := XrtGearListGetItemCount(refnumslist);
-			while (row < refnumscount) do
-				rnumstr := StringList_getitem(refnumslist, row);
+	-- highlight all matching references in text
+	if (type = "Match") then     
+	  matchlist := getmatchrefs(locustext.value,refnumslist, 1);
+	  counttext.value := (string)XrtGearListGetItemCount(matchlist);
 
-				i := 0;
-				found := false;
-				itemcnt := XrtGearListGetItemCount(matchlist);
-				while (i < itemcnt) do
-					tsrch := TxtSrchList_getitem(matchlist, i);
-					if ((string)(tsrch.refnum) = rnumstr) then
-						found := true;    
-						break;
-					end if;
-					i := i + 1;
-				end while;    
+	-- highlight all non-matching refs in text
+	elsif (type = "Miss") then
+	  matchlist := getmatchrefs(locustext.value,refnumslist, 0);
+	  counttext.value := (string)XrtGearListGetItemCount(matchlist);
 
-				-- If reference not found in the Description, highlight the
-				-- reference row in the Reference table by placing an asterisk
-				-- in the Ref# column
+	elsif (type = "Extra") then
+	  matchlist := getmatchrefs(locustext.value,refnumslist, 1);
 
-				if (not found) then
-					if (mgi_tblGetCell(table, (integer) rnumstr - 1, table.refsKey) != "") then
-						mgi_tblSetCell(table, (integer) rnumstr - 1, table.seqNum, "*");
-						extracount := extracount + 1;
-					end if;
-				end if;
-				row := row + 1;
-			end while;
+	  -- Clear highlights
+	  SelectText.type := "None";
+	  send(SelectText,0);
 
-			counttext.value := (string)extracount;
-			TxtSrchList_destroy(matchlist);
-			return;
-		end if;
+	  -- Compare each reference with the matchlist (references in the text)
+	  refnumscount := XrtGearListGetItemCount(refnumslist);
+	  row := 0; 
+	  extracount := 0;
 
-		-- Clear highlights
-		SelectText.type := "None";
-		send(SelectText,0);
+	  while (row < refnumscount) do
+	    rnumstr := StringList_getitem(refnumslist, row);
 
-		i := 0;
-		itemcnt := XrtGearListGetItemCount(matchlist);
-		while (i < itemcnt) do
-			tsrch := TxtSrchList_getitem(matchlist, i);
-			XmTextSetHighlight(locustext, tsrch.offset, tsrch.offset + tsrch.len, 1);
-			i := i + 1;
-		end while;
-		TxtSrchList_destroy(matchlist);
+	    i := 0;
+	    found := false;
+	    while (i < XrtGearListGetItemCount(matchlist)) do
+	      tsrch := TxtSrchList_getitem(matchlist, i);
+	      if ((string)(tsrch.refnum) = rnumstr) then
+		found := true;    
+		break;
+	      end if;
+	      i := i + 1;
+	    end while;    
+
+	    -- If reference not found in the Description, highlight the
+	    -- reference row in the Reference table by placing an asterisk
+	    -- in the Ref# column
+
+	    if (not found) then
+	      if (mgi_tblGetCell(table, (integer) rnumstr - 1, table.refsKey) != "") then
+		mgi_tblSetCell(table, (integer) rnumstr - 1, table.seqNum, "*");
+		extracount := extracount + 1;
+	       end if;
+	     end if;
+
+	     row := row + 1;
+	    end while;
+
+	    counttext.value := (string) extracount;
+	    TxtSrchList_destroy(matchlist);
+	    return;
+	  end if;
+
+	  -- Clear highlights
+	  SelectText.type := "None";
+	  send(SelectText,0);
+
+	  i := 0;
+	  while (i < XrtGearListGetItemCount(matchlist)) do
+	    tsrch := TxtSrchList_getitem(matchlist, i);
+	    XmTextSetHighlight(locustext, tsrch.offset, tsrch.offset + tsrch.len, 1);
+	    i := i + 1;
+	  end while;
+
+	  TxtSrchList_destroy(matchlist);
 	end does;
 
 --
@@ -1397,7 +1369,7 @@ rules:
 --
 	SelectText does
 	  type : string := SelectText.type;
-	  chr,find_string : string;
+	  chr, find_string : string;
 	  pos,lastpos,fstrlen,endpos : integer;
 	  locustext : widget := top->Description->text;
 
@@ -1422,7 +1394,7 @@ rules:
 	  lastpos := pos;
 
 	  while (pos >= lastpos and pos != XmTextGetLastPosition(locustext)) do
-	    fstrlen := strlen(find_string);
+	    fstrlen := find_string.length;
 
 	    if (lastpos = pos) then
 	      pos :=strpos(locustext.value,find_string,pos);
