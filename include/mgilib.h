@@ -166,6 +166,9 @@ extern char *global_version;
 #define ALL_NOTE_VIEW		240
 #define ALL_CELLLINE_VIEW	246
 
+/* Annotation Tables */
+#define GO_DATAEVIDENCE		247
+
 /* MGI Controlled Vocabulary Tables */
 
 #define GXD_ANTIBODYCLASS	300
@@ -250,8 +253,7 @@ extern char *global_version;
 #define MLP_STRAIN_VIEW		706
 #define PRB_STRAIN_MARKER_VIEW	707
 #define MLP_STRAINTYPES_VIEW	708
-#define STRAIN_MERGE1		709
-#define STRAIN_MERGE2		710
+#define STRAIN_MERGE		709
 #define MLP_EXTRA		711
 #define PRB_STRAIN_SYNONYM	712
 

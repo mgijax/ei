@@ -538,6 +538,10 @@ rules:
 	  from := from + accTable.sqlFrom;
 	  where := where + accTable.sqlWhere;
 
+          if (top->ID->text.value.length > 0) then
+            where := where + "\nand s._Strain_key = " + top->ID->text.value;
+          end if;
+
           if (top->Name->text.value.length > 0) then
             where := where + "\nand s.strain like " + mgi_DBprstr(top->Name->text.value);
           end if;
@@ -926,15 +930,10 @@ rules:
         StrainMergeInit does
           dialog : widget := top->StrainMergeDialog;
 
---	  dialog->Merge1.set := true;
---	  dialog->Old.sensitive := false;
---	  dialog->Old->Verify->text.value := "";
---	  dialog->Old->StrainID->text.value := "";
-
-	  -- Default Merge value to currently selected record
-
---	  dialog->New->Verify->text.value := top->Name->text.value;
---	  dialog->New->StrainID->text.value := currentRecordKey;
+	  dialog->Strain1->Verify->text.value := "";
+	  dialog->Strain1->StrainID->text.value := "";
+	  dialog->Strain2->Verify->text.value := "";
+	  dialog->Strain2->StrainID->text.value := "";
 	  dialog.managed := true;
 	end does;
 
@@ -949,43 +948,35 @@ rules:
         StrainMerge does
           dialog : widget := top->StrainMergeDialog;
  
-          if (dialog->New->StrainID->text.value.length = 0) then
+          if (dialog->Strain1->StrainID->text.value.length = 0) then
             StatusReport.source_widget := top;
-            StatusReport.message := "New Strain required during this merge";
+            StatusReport.message := "Old Strain Required.";
             send(StatusReport);
             return;
           end if;
  
-          if (dialog->Merge3.set and dialog->Old->StrainID->text.value.length = 0) then
+          if (dialog->Strain2->StrainID->text.value.length = 0) then
             StatusReport.source_widget := top;
-            StatusReport.message := "Old Strain required during this merge";
+            StatusReport.message := "New Strain Required.";
             send(StatusReport);
             return;
           end if;
  
           (void) busy_cursor(dialog);
 
-          if (dialog->Merge1.set) then
-	    cmd := "\nexec " + mgi_DBtable(STRAIN_MERGE1) + " " +
-		mgi_DBprstr(dialog->New->Verify->text.value);
-          elsif (dialog->Merge2.set) then
-	    cmd := "\nexec " + mgi_DBtable(STRAIN_MERGE1) + " " +
-		mgi_DBprstr(dialog->New->Verify->text.value) + ",1,0";
-	  else
-	    cmd := "exec " + mgi_DBtable(STRAIN_MERGE2) +  " " +
-		   dialog->Old->StrainID->text.value + "," +
-	           dialog->New->StrainID->text.value + "\n";
-	  end if;
+	  cmd := "exec " + mgi_DBtable(STRAIN_MERGE) +  " " +
+		  dialog->Strain1->StrainID->text.value + "," +
+	          dialog->Strain2->StrainID->text.value + "\n";
 	  
 	  ExecSQL.cmd := cmd;
 	  send(ExecSQL, 0);
 
 	  -- After merge, search for New Strain
 
-	  Clear.source_widget := top;
-	  send(Clear, 0);
-          top->Name->text.value := dialog->New->Verify->text.value;
-	  send(Search, 0);
+--	  Clear.source_widget := top;
+--	  send(Clear, 0);
+--        top->ID->text.value := dialog->Strain2->StrainID->text.value;
+--	  send(Search, 0);
 
 	  (void) reset_cursor(dialog);
 

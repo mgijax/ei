@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Oct 23 14:18:01 2001";
+      lastWritten = "Wed Oct 31 08:40:32 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2497,6 +2497,16 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = "Index/Stages";
                                 }
                                 {
+                                  separator = XmSeparator;
+                                }
+                                {
+                                  Reference = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Reference\")";
+                                    labelString = References;
+                                    traversalOn = False;
+                                }
+                                {
                                   MolecularSegment = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
@@ -2518,7 +2528,7 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  separator = XmSeparator;
+                                  separator1 = XmSeparator;
                                 }
                                 {
                                   ControlledVocab = XmPushButton;
@@ -2546,33 +2556,9 @@ Shift<Key>Tab: prev-tab-group()
               }
               {
                 StrainDialog = StrainDialog : mgiDialog;
-                    {
-                      ItemList = LookupList;
-                    }
-                    {
-                      Selection = CharText;
-                          {
-                            Selection = XmLabel;
-                          }
-                          {
-                            text = text;
-                          }
-                    }
               }
               {
                 TissueDialog = TissueDialog : mgiDialog;
-                    {
-                      ItemList = LookupList;
-                    }
-                    {
-                      Selection = CharText;
-                          {
-                            Selection = XmLabel;
-                          }
-                          {
-                            text = text;
-                          }
-                    }
               }
         }
         {

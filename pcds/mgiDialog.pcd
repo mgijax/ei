@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep 27 10:15:37 2001";
+      lastWritten = "Wed Oct 31 08:58:18 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -497,9 +497,6 @@ Module: mgiDialog
                   topAttachment = attach_form;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftOffset = 2;
-                  rightOffset = 2;
-                  topOffset = 2;
                     {
                       Label = LookupLabel;
                       Group: Widget
@@ -511,7 +508,7 @@ Module: mgiDialog
                       List = list;
                       Group: Widget
                         width = 250;
-                        visibleItemCount = 10;
+                        visibleItemCount = 25;
                         singleSelectionCallback = "D:SelectListItem,\nD:CopySelectionItem";
                     }
               }
@@ -520,15 +517,13 @@ Module: mgiDialog
                 Group: Widget
                   xrtGearOrientation = vertical;
                 Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 2;
-                  rightAttachment = attach_form;
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = ItemList;
+                  rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   topWidget = ItemList;
-                  topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  rightOffset = 2;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -576,13 +571,16 @@ Module: mgiDialog
         }
         {
           StrainDialog = SelectDialog : mgiDialog;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
             vip_y = 1240;
               {
-                ItemList = LookupList;
+                ItemList = LookupList : mgiLookup;
                 Group: User
-                  cmd = "select * from PRB_Strain order by strain";
+                  cmd = "select _Strain_key, strain from PRB_Strain where private = 0 order by strain";
                     {
                       Label = LookupLabel;
                       Group: Widget
@@ -592,27 +590,36 @@ Module: mgiDialog
                     }
               }
               {
-                Selection = CharText;
+                Selection = CharText : mgiDataTypes;
+              }
+              {
+                SelectionKey = ID : mgiDataTypes;
+              }
+              {
+                separator = XmSeparator;
                 Group: Constraint
-                  topWidget = ItemList;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Strain;
-                    }
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Selection;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
         {
           TissueDialog = SelectDialog : mgiDialog;
           Group: Widget
             dialogTitle = Tissues;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
             vip_y = 1185;
               {
-                ItemList = LookupList;
+                ItemList = LookupList : mgiLookup;
                 Group: User
-                  cmd = "select * from PRB_Tissue order by tissue";
+                  cmd = "select _Tissue_key, tissue from PRB_Tissue order by tissue";
                     {
                       Label = LookupLabel;
                       Group: Widget
@@ -622,14 +629,21 @@ Module: mgiDialog
                     }
               }
               {
-                Selection = CharText;
+                Selection = CharText : mgiDataTypes;
+              }
+              {
+                SelectionKey = ID : mgiDataTypes;
+              }
+              {
+                separator = XmSeparator;
                 Group: Constraint
-                  topWidget = ItemList;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Tissue;
-                    }
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Selection;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
         {
@@ -956,13 +970,16 @@ Module: mgiDialog
         }
         {
           RIDialog = SelectDialog;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
             vip_y = 1515;
               {
-                ItemList = LookupList;
+                ItemList = LookupList : mgiLookup;
                 Group: User
-                  cmd = "select _RISet_key, designation from RI_RISet order by designation";
+                  cmd = "select _RISet_key, designation from RI_RISet_View order by designation";
                     {
                       Label = LookupLabel;
                       Group: Widget
@@ -978,22 +995,34 @@ Module: mgiDialog
               }
               {
                 Selection = CharText : mgiDataTypes;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "RI Set";
-                    }
+              }
+              {
+                SelectionKey = ID : mgiDataTypes;
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Selection;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
         {
           CrossDialog = SelectDialog;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
             vip_y = 1570;
               {
-                ItemList = LookupList;
+                ItemList = LookupList : mgiLookup;
                 Group: User
-                  cmd = "select _Cross_key = -1, display = \"Anonymous\", whoseCross = \"Anonymous\"\nunion\nselect _Cross_key, display, whoseCross from CRS_Cross_View where displayed = 1 \norder by whoseCross";
+                  cmd = "select _Cross_key = -1, display = \"Anonymous\", whoseCross = \"Anonymous\"\nunion\nselect _Cross_key, display, whoseCross from CRS_Cross_View where displayed = 1\norder by whoseCross";
                     {
                       Label = LookupLabel;
                       Group: Widget
@@ -1009,11 +1038,20 @@ Module: mgiDialog
               }
               {
                 Selection = CharText : mgiDataTypes;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Cross;
-                    }
+              }
+              {
+                SelectionKey = ID : mgiDataTypes;
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Selection;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
         {
@@ -1028,69 +1066,18 @@ Module: mgiDialog
             vip_x = 80;
             vip_y = 1680;
               {
-                Mode = XmRadioBox;
+                Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_form;
-                  leftOffset = 2;
+                  leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_form;
-                  topOffset = 2;
+                  topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                    {
-                      Merge1 = toggle : mgiDataTypes;
-                      Group: Widget
-                        set = True;
-                        labelString = "Merge Non-standard Strains into Standard Strain\n(enter New Strain only)";
-                        valueChangedCallback = "D:SetModify,\nD:StrainMergeSet";
-                    }
-                    {
-                      Merge2 = toggle : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Merge Standard Strains into Non-standard Strain\n(enter New Strain only)";
-                        valueChangedCallback = "D:SetModify,\nD:StrainMergeSet";
-                    }
-                    {
-                      Merge3 = toggle : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Merge old Strain into new Strain";
-                        valueChangedCallback = "D:SetModify,\nD:StrainMergeSet";
-                    }
-              }
-              {
-                New = Strain : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Mode;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Mode;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      StrainID = ID;
-                    }
-                    {
-                      Verify = CharText;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "New Strain";
-                          }
-                    }
-              }
-              {
-                Old = Strain : mgiDataTypes;
-                Group: Widget
-                  sensitive = False;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = New;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = New;
-                  bottomAttachment = attach_none;
-                  resizable = true;
+                Group: User
+                  verifyAdd = False;
+                  verifyPrivate = False;
                     {
                       StrainID = ID;
                     }
@@ -1104,12 +1091,38 @@ Module: mgiDialog
                     }
               }
               {
+                Strain2 = Strain : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Strain1;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Strain1;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  verifyAdd = False;
+                  verifyPrivate = False;
+                    {
+                      StrainID = ID;
+                    }
+                    {
+                      Verify = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "New Strain";
+                          }
+                    }
+              }
+              {
                 separator = XmSeparator;
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = Old;
+                  topWidget = Strain2;
                   topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;

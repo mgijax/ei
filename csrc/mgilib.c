@@ -892,7 +892,7 @@ char *mgi_DBaccTable(int table)
             break;
     case STRAIN:
     case MLP_STRAIN:
-	    sprintf(buf, "PRB_Strain_Acc_View");
+	    sprintf(buf, "PRB_Strain_Summary_View");
             break;
     default:
             sprintf(buf, "Invalid Table: %d", table);
@@ -1373,10 +1373,7 @@ char *mgi_DBtable(int table)
     case MLP_STRAINTYPES_VIEW:
 	    sprintf(buf, "MLP_StrainTypes_View");
 	    break;
-    case STRAIN_MERGE1:
-	    sprintf(buf, "MLP_mergeStandardStrain");
-	    break;
-    case STRAIN_MERGE2:
+    case STRAIN_MERGE:
 	    sprintf(buf, "MLP_mergeStrain");
 	    break;
     case NOMEN_TRANSFERSYMBOL:
@@ -1435,6 +1432,9 @@ char *mgi_DBtable(int table)
 	    break;
     case ALL_REFERENCE_VIEW:
             strcpy(buf, "ALL_Reference_View");
+	    break;
+    case GO_DATAEVIDENCE:
+	    strcpy(buf, "GO_DataEvidence");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
