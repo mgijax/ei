@@ -105,7 +105,7 @@ rules:
 
 	  clearForm, child, lookups : widget;
 	  class : string;
-	  i, j, k, l : integer;
+	  i, j, k, l, m : integer;
 
           (void) busy_cursor(root);
 
@@ -183,8 +183,30 @@ rules:
 		        end if;
 		        child.modified := false;
 		      end if;
+
+		      m := 1;
+	              while (m <= clearForm.child(i).child(l).num_children) do
+	                child := clearForm.child(i).child(l).child(m).child_by_class("XmTextField");
+
+		        if (child = nil) then
+	                  child := clearForm.child(i).child(l).child(m).child_by_class("XmText");
+		        end if;
+
+		        if (child = nil) then
+	                  child := clearForm.child(i).child(l).child(m).child_by_class("XmScrolledText");
+		        end if;
+
+		        if (child != recordCount and child != nil) then
+		          if (not Clear.reset) then
+		            child.value := "";
+		          end if;
+		          child.modified := false;
+		        end if;
+		        m := m + 1;
+		      end while;
 		      l := l + 1;
 		    end while;
+
 		  elsif (clearForm.child(i).is_defined("clear") != nil) then	-- XmOptionMenu
 		    if (not Clear.reset and clearForm.child(i).clear) then
 		      ClearOption.source_widget := clearForm.child(i);
