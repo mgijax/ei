@@ -654,33 +654,36 @@ rules:
 	    from_reference := true;
 	  end if;
 
-	  if (from_extra) then
-	    from := from + "," + mgi_DBtable(MLP_EXTRA) + " n";
-	    where := where + "\nand s._Strain_key = n._Strain_key";
-	  end if;
+	  if (not from_reference) then
 
-	  if (from_notes) then
-	    from := from + "," + mgi_DBtable(MLP_NOTES) + " sn";
-	    where := where + "\nand s._Strain_key = sn._Strain_key";
-	  end if;
+	    if (from_extra) then
+	      from := from + "," + mgi_DBtable(MLP_EXTRA) + " n";
+	      where := where + "\nand s._Strain_key = n._Strain_key";
+	    end if;
 
-	  if (from_synonym) then
-	    from := from + "," + mgi_DBtable(PRB_STRAIN_SYNONYM) + " ss";
-	    where := where + "\nand s._Strain_key = ss._Strain_key";
-	  end if;
-	  if (from_marker) then
-	    from := from + "," + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) + " sm";
-	    where := where + "\nand s._Strain_key = sm._Strain_key";
-	  end if;
+	    if (from_notes) then
+	      from := from + "," + mgi_DBtable(MLP_NOTES) + " sn";
+	      where := where + "\nand s._Strain_key = sn._Strain_key";
+	    end if;
 
-	  if (from_types) then
-	    from := from + "," + mgi_DBtable(MLP_STRAINTYPES_VIEW) + " st";
-	    where := where + "\nand s._Strain_key = st._Strain_key";
-	  end if;
+	    if (from_synonym) then
+	      from := from + "," + mgi_DBtable(PRB_STRAIN_SYNONYM) + " ss";
+	      where := where + "\nand s._Strain_key = ss._Strain_key";
+	    end if;
+	    if (from_marker) then
+	      from := from + "," + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) + " sm";
+	      where := where + "\nand s._Strain_key = sm._Strain_key";
+	    end if;
 
-	  if (not from_reference and where.length > 0) then
-            where := "where" + where->substr(5, where.length);
-          end if;
+	    if (from_types) then
+	      from := from + "," + mgi_DBtable(MLP_STRAINTYPES_VIEW) + " st";
+	      where := where + "\nand s._Strain_key = st._Strain_key";
+	    end if;
+
+	    if (where.length > 0) then
+              where := "where" + where->substr(5, where.length);
+            end if;
+	  end if;
 	end does;
 
 --
