@@ -1266,7 +1266,9 @@ rules:
 			mgi_DBprkey(eventReasonKey) + "," +
 			newSeqNum + "," +
 			mgi_DBprstr(name) + "," +
-			mgi_DBprstr(eventDate) + ")\n";
+			mgi_DBprstr(eventDate) + "," +
+			global_loginKey + "," +
+			global_loginKey + ")\n";
 
 	      historyModified := true;
 
@@ -1290,7 +1292,9 @@ rules:
 			  mgi_DBprkey(eventReasonKey) + "," +
 			  newSeqNum + "," +
 			  mgi_DBprstr(name) + "," +
-			  mgi_DBprstr(eventDate) + ")\n";
+			  mgi_DBprstr(eventDate) + "," +
+			  global_loginKey + "," +
+			  global_loginKey + ")\n";
 
               -- Else, a simple update
  
