@@ -1,23 +1,23 @@
 --
--- Name    : Homology.d
+-- Name    : Orthology.d
 -- Creator : lec
--- Homology.d 12/21/98
+-- Orthology.d 12/21/98
 --
--- TopLevelShell:		Homology
+-- TopLevelShell:		Orthology
 -- Database Tables Affected:	HMD_Class, HMD_Homology, HMD_Homology_Marker, HMD_Homology_Assay,
 --				HMD_Assay, HMD_Notes
 -- Cross Reference Tables:	MRK_Marker
 -- Actions Allowed:		Add, Modify, Delete
 --
--- The unique key for a Homology record is the _Class_key:_Refs_key composite.
+-- The unique key for a Orthology record is the _Class_key:_Refs_key composite.
 -- Results returned from a query store this value in QueryList->List.keys.
 -- When a particular record is selected, values are stored in top->ID->text.value
 -- and top->mgiCitation->ID->text.value.
 --
--- Homology groupings are defined by the Marker/Assay relationships.  Markers which
--- are assigned to the same Assay define a Homology group.  If a Marker is entered
+-- Orthology groupings are defined by the Marker/Assay relationships.  Markers which
+-- are assigned to the same Assay define a Orthology group.  If a Marker is entered
 -- in the Marker table, but is not assigned to any Assay in the Assay table,
--- this Marker will NOT be inserted into the Homology tables.
+-- this Marker will NOT be inserted into the Orthology tables.
 --
 -- During migration to MGI1.0, all Homologies without Assay were assigned an 
 -- Assay of "Unreviewed".
@@ -30,6 +30,9 @@
 --
 --
 -- History
+--
+-- lec	11/05/2002
+--	- Renamed "Homology" to "Orthology"
 --
 -- lec 08/15/2002
 --	- TR 1463/SAO; Species replaced with Organism
@@ -80,7 +83,7 @@
 --	- fixed bug in adding mulitple new Markers within one modification
 --
 
-dmodule Homology is
+dmodule Orthology is
 
 #include <mgilib.h>
 #include <syblib.h>
@@ -96,12 +99,12 @@ devents:
 	Exit :local [];
 	Init :local [];
 
-	HomologyClear :local [source_widget : widget;
+	OrthologyClear :local [source_widget : widget;
 			      clearKeys : boolean := true;
 			      reset : boolean := false;];
 
 	Modify :local [];
-	ModifyHomology :local [add : boolean := false;];
+	ModifyOrthology :local [add : boolean := false;];
 
 	PrepareSearch :local [];
 
@@ -140,7 +143,7 @@ locals:
 rules:
 
 --
--- Homology
+-- Orthology
 --
 
 	INITIALLY does
@@ -148,7 +151,7 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("HomologyModule", nil, mgi);
+	  top := create widget("OrthologyModule", nil, mgi);
 
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
@@ -166,7 +169,7 @@ rules:
 --
 -- BuildDynamicComponents
 --
--- Activated from:  devent Homology
+-- Activated from:  devent Orthology
 --
 -- For initializing dynamic GUI components prior to managing the top form.
 --
@@ -178,14 +181,14 @@ rules:
           LoadList.list := top->OrganismList;
 	  send(LoadList, 0);
 
-          LoadList.list := top->HomologyAssayList;
+          LoadList.list := top->OrthologyAssayList;
 	  send(LoadList, 0);
         end does;
  
 --
 -- Init
 --
--- Activated from:  devent Homology
+-- Activated from:  devent Orthology
 --
 -- For initializing static GUI components after managing top form
 --
@@ -211,18 +214,18 @@ rules:
  
           -- Clear the form
  
-          HomologyClear.source_widget := top;
-          send(HomologyClear, 0);
+          OrthologyClear.source_widget := top;
+          send(OrthologyClear, 0);
 	end
 
 --
--- HomologyClear
+-- OrthologyClear
 --
 
-	HomologyClear does
+	OrthologyClear does
 	  Clear.source_widget := top;
-	  Clear.clearKeys := HomologyClear.clearKeys;
-	  Clear.reset := HomologyClear.reset;
+	  Clear.clearKeys := OrthologyClear.clearKeys;
+	  Clear.reset := OrthologyClear.reset;
 	  send(Clear, 0);
 
 	  send(SetOrganismDefault, 0);
@@ -252,8 +255,8 @@ rules:
 	  cmd := mgi_setDBkey(HMD_CLASS, NEWKEY, KEYNAME) +
 		 mgi_DBinsert(HMD_CLASS, KEYNAME);
 
-	  ModifyHomology.add := true;
-	  send(ModifyHomology, 0);
+	  ModifyOrthology.add := true;
+	  send(ModifyOrthology, 0);
                                  
 	  if (errorDetected) then
 	    (void) reset_cursor(top);
@@ -289,9 +292,9 @@ rules:
 	  send(DeleteSQL, 0);
 
 	  if (top->QueryList->List.row = 0) then
-	    HomologyClear.source_widget := top;
-	    HomologyClear.clearKeys := false;
-	    send(HomologyClear, 0);
+	    OrthologyClear.source_widget := top;
+	    OrthologyClear.clearKeys := false;
+	    send(OrthologyClear, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -315,7 +318,7 @@ rules:
 
 	  errorDetected := false;
 
-	  send(ModifyHomology, 0);
+	  send(ModifyOrthology, 0);
 
 	  if (errorDetected) then
 	    (void) reset_cursor(top);
@@ -326,7 +329,7 @@ rules:
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
-	  -- Merge Homology Classes; record new _Class_key
+	  -- Merge Orthology Classes; record new _Class_key
 
 	  if (top->QueryList->List.sqlSuccessful) then
 	    SplitKey.key := mgi_sql1("exec HMD_updateClass " + classKey + "," + refKey + ",0");
@@ -337,7 +340,7 @@ rules:
 	end
 
 --
--- ModifyHomology
+-- ModifyOrthology
 --
 -- Handles all modifications to HMD_Homology, HMD_Homology_Marker and HMD_Homology_Assay
 --
@@ -350,7 +353,7 @@ rules:
 -- Assay required during add (top->Assay->Table.required = true).
 --
 
-        ModifyHomology does
+        ModifyOrthology does
           markerTable : widget := top->Marker->Table;
           assayTable : widget := top->Assay->Table;
           row : integer := 0;
@@ -400,7 +403,7 @@ rules:
 	    return;
 	  end if;
 
-	  if (not ModifyHomology.add) then
+	  if (not ModifyOrthology.add) then
 
 	    -- Determine if any modifications have occurred
 
@@ -422,7 +425,7 @@ rules:
 	      return;
 	    end if;
 
-	    -- Delete all Homology records
+	    -- Delete all Orthology records
 
 	    cmd := cmd + mgi_DBdelete(HMD_HOMOLOGY, currentRecordKey);
 	  end if;
@@ -432,7 +435,7 @@ rules:
 	  cmd := cmd + mgi_setDBkey(HMD_HOMOLOGY, NEWKEY, homologyKeyName);
 
 	  -- Process each ASSAY row
-	  -- Assay definitions determine the Homology groupings
+	  -- Assay definitions determine the Orthology groupings
 
 	  row := 0;
           while (row < mgi_tblNumRows(assayTable)) do
@@ -460,7 +463,7 @@ rules:
 	      if (organism1.length > 0) then
 
 	        -- Must get all of the appropriate marker keys from the Marker table
-	        -- If Organism list different than previous row's, a new Homology group is defined
+	        -- If Organism list different than previous row's, a new Orthology group is defined
 
 	        if (organism1 != organismPrev) then
 
@@ -819,7 +822,7 @@ rules:
 	  end while;
 
 	  -- Get Assay info for all Homologies for the Class:Reference composite
-	  -- Get Homology keys
+	  -- Get Orthology keys
 	  -- Get Organism keys
 	  -- Get Assays
 
@@ -851,7 +854,7 @@ rules:
 	    row := -1;
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
-	        -- Stay on the same row for Homology/Assay pair
+	        -- Stay on the same row for Orthology/Assay pair
 
 	        if (homKey != mgi_getstr(dbproc, 1) or
 	            assayKey != mgi_getstr(dbproc, 2)) then
@@ -883,7 +886,7 @@ rules:
 	      elsif (results = 2) then
 	        homKey := mgi_getstr(dbproc, 1);
 
-	        -- Find row for given Homology key
+	        -- Find row for given Orthology key
 	        i := 0;
 	        while (i < mgi_tblNumRows(assayTable)) do
 		  if (homKey = mgi_tblGetCell(assayTable, i, assayTable.homologyKey)) then
@@ -893,7 +896,7 @@ rules:
 		  i := i + 1;
 	        end while;
 
-	        -- If Homology key found...
+	        -- If Orthology key found...
 	        if (row >= 0) then
                   note := mgi_tblGetCell(assayTable, row, assayTable.notes);
 		  note := note + mgi_getstr(dbproc, 3);
@@ -908,9 +911,9 @@ rules:
 
 	  top->QueryList->List.row := Select.item_position;
 
-	  HomologyClear.source_widget := top;
-	  HomologyClear.reset := true;
-	  send(HomologyClear, 0);
+	  OrthologyClear.source_widget := top;
+	  OrthologyClear.reset := true;
+	  send(OrthologyClear, 0);
 
 	  (void) reset_cursor(top);
 	end
@@ -976,7 +979,7 @@ rules:
 --
 -- SplitKey
 --
--- The unique key for a Homology record is the _Class_key:_Refs_key composite.
+-- The unique key for a Orthology record is the _Class_key:_Refs_key composite.
 -- This routine splits up the composite into its separate parts and constructs
 -- a 'where' clause for use in subsequent modification or delete operations.
 --
