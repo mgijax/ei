@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	07/25/2003
+--	- JSAM
+--
 -- lec 02/28/2003
 --	- JSAM; clearLists = 3; added mgiAccessionTable
 --

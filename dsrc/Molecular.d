@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	07/25/2003
+--	- JSAM
+--
 -- lec 11/12/2002
 --	- SAO
 --	- implemented ModificationHistory table
