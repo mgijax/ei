@@ -198,9 +198,9 @@ rules:
           LoadList.list := top->LibraryList;
           send(LoadList, 0);
 
-          -- Dynmcically create menus
+          -- Dynamically create menus
  
-	  InitOptionMenu.option := top->SegmentTypeMenu;
+	  InitOptionMenu.option := top->MolMasterForm->SegmentTypeMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->MolDetailForm->VectorTypeMenu;
@@ -235,11 +235,11 @@ rules:
 	   
           sourceKeyName := "maxSource";
 
-	  sourceOptions.append(top->ProbeOrganismMenu);
-	  sourceOptions.append(top->AgeMenu);
-	  sourceOptions.append(top->GenderMenu);
+	  sourceOptions.append(top->MolDetailForm->ProbeOrganismMenu);
+	  sourceOptions.append(top->MolDetailForm->AgeMenu);
+	  sourceOptions.append(top->MolDetailForm->GenderMenu);
 
-	  InitOptionMenu.option := top->GenderMenu;
+	  InitOptionMenu.option := top->MolDetailForm->GenderMenu;
 	  send(InitOptionMenu, 0);
 
 	  prbTables.append(top->MolMarkerForm->Marker->Table);
@@ -627,10 +627,11 @@ rules:
 	    -- Parent Clone has not been modified, so process any Source modifications
 
             else
-              -- ModifyMolecularSource will set top->MolDetailForm->SourceForm.sql appropriately
+              -- ModifyProbeSource will set top->MolDetailForm->SourceForm.sql appropriately
               -- Append this value to the 'cmd' string
-              ModifyMolecularSource.source_widget := detailForm;
-              send(ModifyMolecularSource, 0);
+              ModifyProbeSource.source_widget := detailForm;
+	      ModifyProbeSource.probeKey := currentMasterKey;
+              send(ModifyProbeSource, 0);
               cmd := cmd + top->MolDetailForm->SourceForm.sql;
 
 	      if (top->MolDetailForm->SourceForm->SourceID->text.modified) then
