@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- lec 06/29/2004
+--	- TR 326/4190 - normalize data sets
+--
 -- lec 10/05/1999
 --	- TR 375; new attribute isReviewArticle for BIB_Refs
 --
@@ -89,6 +92,7 @@ locals:
 	statusTable : widget;		-- Statused Data Set Table widget
 	nonstatusTable : widget;	-- Non-Statused Data Set Table widget
 	modTable : widget;		-- Modification Table widget
+	statusTableList : list;		-- List of all Status Table widgets
 
 	currentRecordKey : string;	-- Primary Key value of currently selected record
 					-- Initialized in Select[] and Add[] events
@@ -168,6 +172,11 @@ rules:
 --
 
         Init does
+
+	  statusTableList := create list("widget");
+	  statusTableList.append(statusTable);
+	  statusTableList.append(nonstatusTable);
+
 	  -- Initialize next J: value
 	  NextJnum.source_widget := top;
 	  send(NextJnum, 0);
@@ -634,8 +643,10 @@ rules:
 	  from_book : boolean := false;
 	  from_notes : boolean := false;
 	  from_dataset : boolean := false;
-	  searchAnd : boolean := false;
+	  searchConnector : string;
 	  dataSetKeys : string_list := create string_list();
+	  neverUsedKeys : string_list := create string_list();
+	  table : widget;
 	  row : integer;
 
 	  from := "from BIB_All_View r";
@@ -744,48 +755,51 @@ rules:
 	  end if;
 
 	  -- DataSets
-	  row := 0;
-	  while (row < mgi_tblNumRows(statusTable)) do
-	    if (mgi_tblGetCell(statusTable, row, statusTable.selected) != "") then
-	      dataSetKeys.insert(mgi_tblGetCell(statusTable, row, statusTable.dataSetKey), dataSetKeys.count + 1);
-	      from_dataset := true;
-	    end if;
-	    row := row + 1;
+	  statusTableList.open;
+	  while (statusTableList.more) do
+	    table := statusTableList.next;
+	    row := 0;
+	    while (row < mgi_tblNumRows(table)) do
+	      if (mgi_tblGetCell(table, row, table.selected) != "") then
+	        dataSetKeys.insert(mgi_tblGetCell(table, row, table.dataSetKey), dataSetKeys.count + 1);
+	        if (mgi_tblGetCell(table, row, table.neverUsed) != "") then
+	          neverUsedKeys.insert("1", neverUsedKeys.count + 1);
+	        else
+	          neverUsedKeys.insert("0", neverUsedKeys.count + 1);
+	        end if;
+	        from_dataset := true;
+	      end if;
+	      row := row + 1;
+	    end while;
 	  end while;
-
-	  row := 0;
-	  while (row < mgi_tblNumRows(nonstatusTable)) do
-	    if (mgi_tblGetCell(nonstatusTable, row, nonstatusTable.selected) != "") then
-	      dataSetKeys.insert(mgi_tblGetCell(nonstatusTable, row, nonstatusTable.dataSetKey), dataSetKeys.count + 1);
-	      from_dataset := true;
-	    end if;
-	    row := row + 1;
-	  end while;
+	  statusTableList.close;
 
 	  if (top->DataSets->Query->AND.set) then
-	    searchAnd := true;
+	    searchConnector := "\nand ";
+	  else
+	    searchConnector := "\nor ";
 	  end if;
 
+	  -- Use "exists" clauses to check for data set association and "never used" value
+
 	  if (from_dataset) then
-	    if (searchAnd) then
-	      row := 1;
-	      while (row <= dataSetKeys.count) do
-		where := where + "\nand exists (select 1 from BIB_DataSet_Assoc ba " +
-			" where r._Refs_key = ba._Refs_key " +
-			" and ba._DataSet_key = " + dataSetKeys[row] + ")";
-		row := row + 1;
-	      end while;
-	    else
-	      from := from + ",BIB_DataSet_Assoc ba";
-	      where := where + "\nand r._Refs_key = ba._Refs_key";
-	      where := where + "\nand ba._DataSet_key in (";
-	      row := 1;
-	      while (row <= dataSetKeys.count) do
-		where := where + dataSetKeys[row] + ",";
-		row := row + 1;
-	      end while;
-	      where :=  where->substr(1, where.length - 1) + ")";
-	    end if;
+	    row := 1;
+	    where := where + "\nand (";
+	    while (row <= dataSetKeys.count) do
+
+	      where := where + "exists (select 1 from BIB_DataSet_Assoc ba " +
+			"where r._Refs_key = ba._Refs_key " +
+			"and ba._DataSet_key = " + dataSetKeys[row];
+
+	      -- if "never used" is set, then query for it
+	      if (neverUsedKeys[row] = "1") then
+		where := where + " and ba.isNeverUsed = " + neverUsedKeys[row];
+	      end if;
+
+	      where := where + ")" + searchConnector;
+	      row := row + 1;
+	    end while;
+	    where := where->substr(1, where.length - searchConnector.length) + ")";
 	  end if;
 
 	  if (from_book) then
