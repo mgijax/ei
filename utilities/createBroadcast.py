@@ -567,19 +567,22 @@ Gene Name, J# (internal filing number), First Author, Other Names.
 
 		fp.write(self.TAB)
 
-		cmd = 'select accID, _Refs_key, _LogicalDB_key from MRK_Nomen_AccRef_View ' + \
+		astr = ''
+		cmd = 'select accID, jnumID, _LogicalDB_key from MRK_Nomen_AccRef_View ' + \
 		      'where _Object_key = %d' % (nomenKey)
 
 		results = mgdlib.sql(cmd, 'auto')
 		for r in results:
-			fp.write('%s&%d&%d|' % (r['accID'], r['_Refs_key'], r['_LogicalDB_key']))
+			astr = astr + '%s&%s&%d|' % (r['accID'], r['jnumID'], r['_LogicalDB_key'])
 
 		cmd = 'select accID, _LogicalDB_key from MRK_Nomen_AccNoRef_View ' + \
 		      'where _Object_key = %d' % (nomenKey)
 
 		results = mgdlib.sql(cmd, 'auto')
 		for r in results:
-			fp.write('%s&&%d|' % (r['accID'], r['_LogicalDB_key']))
+			astr = astr + '%s&&%d|' % (r['accID'], r['_LogicalDB_key'])
+
+		fp.write(astr[:len(astr) - 1])
 
 #
 # Main Routine
