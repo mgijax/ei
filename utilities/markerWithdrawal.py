@@ -6,8 +6,8 @@
 #
 # Wrapper for processing a Nomenclature Withdrawal.
 # 
-# -S = the name of the database server (defaults to DBQUERY env value)
-# -D = the name of the database (defaults to MGD env value)
+# -S = the name of the database server
+# -D = the name of the database
 # -U = the Sybase user
 # -P = the file which contains the password of the Sybase user
 # --eventKey = event key of the nomenclature event
@@ -20,6 +20,9 @@
 #	(ex. --newSymbols="new-1,new-2")
 #
 # History
+#
+# 03/26/2001 lec
+#	- made -S and -D required parameters
 #
 # 04/17/2000 lec
 #	- TR 1291
@@ -128,12 +131,12 @@ DELETED = 6
 NOTSPECIFIED = -1
 
 try:
-	optlist, args = getopt.getopt(sys.argv[1:], 'SDU:P:', ['eventKey=', 'eventReasonKey=', 'oldKey=', 'refKey=', 'newName=', 'newKey=', 'newSymbols='])
+	optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:', ['eventKey=', 'eventReasonKey=', 'oldKey=', 'refKey=', 'newName=', 'newKey=', 'newSymbols='])
 except:
 	showUsage()
 
-server = db.get_sqlServer()
-database = db.get_sqlDatabase()
+server = None
+database = None
 user = None
 password = None
 eventKey = None
