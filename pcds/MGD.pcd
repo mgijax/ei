@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 15 15:26:36 2005";
+      lastWritten = "Wed Mar 16 13:46:36 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8581,7 +8581,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Allele_View order by assocType";
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne, seq = 1 from MGI_RefType_Allele_View where assocType = \"Indexed\"\nunion\nselect _RefAssocType_key, assocType, allowOnlyOne, seq = 2 from MGI_RefType_Allele_View where assocType != \"Indexed\"\norder by seq, assocType";
                                                 tableForm = Reference;
                                             }
                                       }

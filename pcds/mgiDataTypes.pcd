@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 15 14:01:39 2005";
+      lastWritten = "Wed Mar 16 10:38:39 2005";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1103,7 +1103,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       text = text : mgiDataTypes;
                       Group: Widget
-                        columns = 30;
+                        columns = 50;
                         inTabGroup = False;
                         editable = False;
                     }
