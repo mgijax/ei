@@ -31,13 +31,14 @@ Assume user needs insert, update and delete permissions for database tables list
 	</OL>
 
 <TR><TD>Molecular Segments & Probes
-    <TD>PRB_*, ACC_Accession*
-    <TD>&nbsp;
+    <TD>PRB_*, ACC_Accession*, strains..MLP_Strain, strains..MLP_Notes
+    <TD>insert only on strains tables
 
 <TR><TD>Mapping
-    <TD>MLD_*, CRS_Cross, RI_RISet, MRK_Marker, ACC_Accession*
+    <TD>MLD_*, CRS_Cross, RI_RISet, MRK_Marker, ACC_Accession*, strains..MLP_Strain, strains..MLP_Notes
     <TD><OL>
 	<LI>Trigger may update MRK_Marker.chromosome.
+	<LI>Insert only on strains tables.
 	</OL>
 
 <TR><TD>Mapping Panels
@@ -53,10 +54,11 @@ Assume user needs insert, update and delete permissions for database tables list
 	</OL>
 
 <TR><TD>GXD
-    <TD>GXD_*, IMG_*, PRB_Reference, PRB_Source, MRK_Allele, ACC_Accession*
+    <TD>GXD_*, IMG_*, PRB_Reference, PRB_Source, MRK_Allele, ACC_Accession*, strains..MLP_Strain, strains..MLP_Notes
     <TD><OL>
 	<LI>Antigen entry requires PRB_Source;Trigger may insert records into PRB_Reference.
 	<LI>Assay Genotype dialog may insert records into MRK_Allele.
+	<LI>Insert only on strains tables.
 	</OL>
 
 <TR><TD>MLC
@@ -67,6 +69,7 @@ Assume user needs insert, update and delete permissions for database tables list
     <TD>MRK_*, PRB_*, MLD_*, GXD_AntibodyMarker, GXD_Assay, GXD_Expression, GXD_Index
     <TD><OL>
 	<LI><CODE>transferMarker.py</CODE> initiated from editing interface.
+	<LI><B>disabled</B>
 	</OL>
 
 <TR><TD>Marker Broadcast
