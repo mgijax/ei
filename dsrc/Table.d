@@ -683,6 +683,17 @@ rules:
         end does;
 
 --
+-- SetTableValidateCallback
+--
+-- Sets table's ValidateCallback
+--
+	SetTableValidateCallback does
+	  table : widget := SetTableValidateCallback.source_widget;
+
+	  table.xrtTblValidateCellCallback := SetTableValidateCallback.callback;
+	end does;
+
+--
 -- TraverseToTableCell
 --
 --	table : widget;		the table widget

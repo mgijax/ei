@@ -51,6 +51,9 @@ SetCellToX [source_widget : widget;		-- Set Table Cell Value to X
 
 SetXCellsToFlash [source_widget : widget;];	-- Set all X Cells to Flash
 
+SetTableValidateCallback [source_widget : widget; -- Set Table's Validate Callback
+			  callback : string;];
+
 TraverseToTableCell [table : widget;		-- Traverse To Cell
 		     row : integer := 0;
 		     column : integer := 0;];
