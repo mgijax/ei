@@ -115,7 +115,10 @@ rules:
 
 	  sourceOptions.append(top->ProbeOrganismMenu);
 	  sourceOptions.append(top->AgeMenu);
-	  sourceOptions.append(top->SexMenu);
+	  sourceOptions.append(top->GenderMenu);
+
+	  InitOptionMenu.option := top->GenderMenu;
+	  send(InitOptionMenu, 0);
 
 	  accTable := top->mgiAccessionTable->Table;
 	end does;

@@ -91,7 +91,8 @@ rules:
                  mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
                  top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
-                 top->Tissue->TissueID->text.value + ",";
+                 top->Tissue->TissueID->text.value + "," +
+                 top->GenderMenu.menuHistory.defaultValue + ",";
 
 	  -- Construct Age value
 
@@ -124,7 +125,6 @@ rules:
             add := add + mgi_DBprstr(age) + "," +
                          top->AgeMin->text.value + "," +
                          top->AgeMax->text.value + "," +
-                         mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + "," +
             	         mgi_DBprstr(top->CellLine->text.value) + ")\n";
  
 	    top.sql := add;
@@ -313,14 +313,14 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
  
-                SetOption.source_widget := sourceForm->SexMenu;
-                SetOption.value := mgi_getstr(dbproc, 11);
+                SetOption.source_widget := sourceForm->GenderMenu;
+                SetOption.value := mgi_getstr(dbproc, 8);
                 send(SetOption, 0);
 
 		DisplayMolecularAge.source_widget := sourceForm->Age->text;
-		DisplayMolecularAge.age := mgi_getstr(dbproc, 8);
-		DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 9);
-		DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 10);
+		DisplayMolecularAge.age := mgi_getstr(dbproc, 9);
+		DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 10);
+		DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 11);
 		send(DisplayMolecularAge, 0);
 
 	      elsif (results = 2) then
@@ -378,6 +378,9 @@ rules:
 	  InitNoteForm.notew := top->mgiNoteForm;
 	  InitNoteForm.tableID := MGI_NOTETYPE_SOURCE_VIEW;
 	  send(InitNoteForm, 0);
+
+	  InitOptionMenu.option := top->GenderMenu;
+	  send(InitOptionMenu, 0);
 	end does;
 
 --
@@ -430,6 +433,10 @@ rules:
             set := set + "_Tissue_key = " + top->Tissue->TissueID->text.value + ",";
           end if;
  
+          if (top->GenderMenu.menuHistory.modified) then
+            set := set + "_Gender_key = " + top->GenderMenu.menuHistory.defaultValue + ",";
+          end if;
+ 
           if (top->Description->text.modified) then
             set := set + "description = " + mgi_DBprstr(top->Description->text.value) + ",";
           end if;
@@ -456,10 +463,6 @@ rules:
 	    else
 	      set := "";
 	    end if;
-          end if;
- 
-          if (top->SexMenu.menuHistory.modified) then
-            set := set + "sex = " + mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + ",";
           end if;
  
 	  if (top->Library.managed) then
@@ -566,6 +569,10 @@ rules:
             where := where + " and st.tissue like " + mgi_DBprstr(top->Tissue->Verify->text.value) + "\n";
           end if;
  
+          if (top->GenderMenu.menuHistory.searchValue != "%") then
+            where := where + " and s._Gender_key = " + top->GenderMenu.menuHistory.defaultValue;
+          end if;
+
           if (top->AgeMenu.menuHistory.searchValue != "%") then
             where := where + " and s.age like \"" + top->AgeMenu.menuHistory.defaultValue;
 
@@ -578,10 +585,6 @@ rules:
             where := where + " and s.age like \"%" + top->Age->text.value + "\"";
           end if;
  
-          if (top->SexMenu.menuHistory.searchValue != "%") then
-            where := where + " and s.sex = " + mgi_DBprstr(top->SexMenu.menuHistory.defaultValue);
-          end if;
-
           if (top->CellLine->text.value.length > 0) then
             where := where + " and s.cellLine like " + mgi_DBprstr(top->CellLine->text.value);
           end if;

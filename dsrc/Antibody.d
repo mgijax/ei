@@ -144,7 +144,7 @@ rules:
 	  options.append(top->ImmunoMenu);
 	  options.append(top->SourceForm->ProbeOrganismMenu);
 	  options.append(top->SourceForm->AgeMenu);
-	  options.append(top->SourceForm->SexMenu);
+	  options.append(top->SourceForm->GenderMenu);
 
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Alias->Table);
