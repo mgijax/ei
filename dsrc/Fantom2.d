@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 11/05/2002	lec
+--	- TR 4225; added global_login condition to PasteValue, CopyToNote
+--
 -- 08/28/2002	lec
 --	- TR 4025; pre-load supplement to table
 --
@@ -1312,15 +1315,19 @@ rules:
  
         CopyToNote does
 	  value : string;
+	  addValue : string;
 
 	  value := top->NoteDialog->Note->text.value;
+	  addValue := CopyToNote.source_widget.defaultValue;
+
+	  if (CopyToNote.source_widget.attachUserID) then
+	    addValue := addValue + global_login;
+	  end if;
 
 	  if (CopyToNote.source_widget.placeBefore) then
-	    top->NoteDialog->Note->text.value := 
-	        CopyToNote.source_widget.defaultValue + value;
+	    top->NoteDialog->Note->text.value := addValue + value;
 	  else
-	    top->NoteDialog->Note->text.value := 
-		value + CopyToNote.source_widget.defaultValue;
+	    top->NoteDialog->Note->text.value := value + addValue;
 	  end if;
 	end does;
 
@@ -1383,6 +1390,10 @@ rules:
 	  row : integer := mgi_tblGetCurrentRow(fantom);
 	  column : integer := mgi_tblGetCurrentColumn(fantom);
 	  value : string := PasteValue.value;
+
+	  if (value = "global_login") then
+	    value := "ID:" + global_login;
+	  end if;
 
 	  (void) mgi_tblSetCell(fantom, row, column, value);
 	  CommitTableCellEdit.source_widget := fantom;
