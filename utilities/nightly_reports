@@ -22,7 +22,8 @@
 #
 #
 
-export DSQUERY MGD HOME FTP PYTHONPATH SYBASE PATH PUBLIC_RPTS
+export DSQUERY MGD INTERNAL_RPTS_DIR FTP_RPTS_DIR
+export NOMEN HOME FTP PYTHONPATH SYBASE PATH PUBLIC_RPTS
 
 if [ "$#" -ne 4 ]
 then
@@ -32,8 +33,18 @@ then
     exit 1
 fi
 
+DSQUERY=$1
+MGD=$2
 INTERNAL_RPTS_DIR=$3
 FTP_RPTS_DIR=$4
+
+NOMEN=nomen
+FTP=$FTP_RPTS_DIR
+PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
+SYBASE=/opt/sybase
+PATH=$PATH:$SYBASE/bin
+
+umask 002
 
 # check command-line arguments for validity
 if [ ! -d $INTERNAL_RPTS_DIR/mgireport ]
@@ -55,17 +66,7 @@ BASENAME=`basename $0`; NOTBASENAME=`echo $0 | sed "s/$BASENAME$//"`
    cd $NOTBASENAME
 }
  
-DSQUERY=$1
-MGD=$2
-NOMEN=nomen
 HOME=`pwd`
-FTP=$FTP_RPTS_DIR
-PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
-SYBASE=/opt/sybase
-PATH=$PATH:$SYBASE/bin
-
-umask 002
-
 cd $HOME
 
 PUBLIC_RPTS="GDB_Accession.py \

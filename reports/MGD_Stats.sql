@@ -1,5 +1,10 @@
 #!/bin/csh
  
+#
+# lec 12/03/1999
+#	- TR 467; added DNA Seq/Protein Seq counts for Genes
+#
+
 setenv DSQUERY $1
 setenv MGD $2
  
@@ -35,6 +40,28 @@ select count(*) from MRK_Marker
 where _Species_key = 1 
 and _Marker_Type_key = 1
 and chromosome != 'W'
+go
+
+print ""
+print "Number of Genes w/ DNA Sequence information"
+select count(distinct m._Marker_key)
+from MRK_Marker m, MRK_Acc_View a
+where m._Species_key = 1 
+and m._Marker_Type_key = 1
+and m.chromosome != 'W'
+and m._Marker_key = a._Object_key
+and a._LogicalDB_Key = 9
+go
+
+print ""
+print "Number of Genes w/ Protein Sequence information"
+select count(distinct m._Marker_key)
+from MRK_Marker m, MRK_Acc_View a
+where m._Species_key = 1 
+and m._Marker_Type_key = 1
+and m.chromosome != 'W'
+and m._Marker_key = a._Object_key
+and a._LogicalDB_Key = 13
 go
 
 print ""
