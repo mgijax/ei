@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Dec 18 09:59:24 2000";
+      lastWritten = "Fri Dec 29 11:10:39 2000";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8225,6 +8225,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 4;
+                                          xrtTblValidateCellCallback = "D:VerifyAcc,\nD:VerifyReference,\nD:CommitTableCellEdit";
                                       }
                                       {
                                         Add = TablePush;
@@ -8329,6 +8330,19 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENCluster = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    InterPro = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
