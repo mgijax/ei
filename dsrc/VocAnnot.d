@@ -304,6 +304,7 @@ rules:
 	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
+	  notesModified : boolean := false;
  
           if (not top.allowEdit) then
             return;
@@ -429,7 +430,9 @@ rules:
 	      ModifyNotes.key := "@" + keyName;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
+	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
+	      notesModified := true;
 	      cmd := cmd + annotTable.sqlCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
@@ -453,7 +456,9 @@ rules:
 	      ModifyNotes.key := key;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
+	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
+	      notesModified := true;
 	      cmd := cmd + annotTable.sqlCmd;
 
             elsif (editMode = TBL_ROW_DELETE) then
