@@ -153,7 +153,7 @@ rules:
 
 		-- For XmOption menus (except the ControlForm and Lookups)...
 
-		elsif (clearForm.name != "ControlForm" and class = "XmRowColumn") then
+		elsif (clearForm.name != "ControlForm" and clearForm.child(i).name != "mgiNoteForm" and class = "XmRowColumn") then
 
 		  -- Not an XmOptionMenu
 
@@ -208,6 +208,20 @@ rules:
 		    ClearTable.clearCells := not Clear.reset;
 		    send(ClearTable, 0);
 		  end if;	-- End if child != nil
+
+		  -- if XmForm has an mgiNoteForm
+		  if (top->mgiNoteForm != nil) then
+
+	  	    -- Clear/Set Notes
+	  	    ClearSetNoteForm.notew := top->mgiNoteForm;
+
+	  	    if (Clear.reset) then
+	    	      ClearSetNoteForm.clearNote := false;
+	  	    end if;
+
+	  	    send(ClearSetNoteForm, 0);
+		  end if;	-- if mgiNoteForm found
+
 		end if;		-- End if class = "XmForm"
 		i := i + 1;
 	      end while;

@@ -129,6 +129,15 @@ rules:
  
 	    top.sql := add;
 	  end if;
+
+	  if (top->Library.managed) then
+	    ProcessNoteForm.notew := top->mgiNoteForm;
+	    ProcessNoteForm.tableID := MGI_NOTE;
+	    ProcessNoteForm.objectKey := keyLabel;
+	    send(ProcessNoteForm, 0);
+	    top.sql := top.sql + top->mgiNoteForm.sql;
+	  end if;
+
         end does;
  
 --
@@ -327,6 +336,13 @@ rules:
  
           (void) dbclose(dbproc);
 
+	  if (sourceForm->Library.managed) then
+	    LoadNoteForm.notew := sourceForm->mgiNoteForm;
+	    LoadNoteForm.tableID := MGI_NOTE_SOURCE_VIEW;
+	    LoadNoteForm.objectKey := key;
+	    send(LoadNoteForm, 0);
+	  end if;
+
 	  -- Reset the SourceForm
 
 	  if (DisplayMolecularSource.master) then
@@ -346,6 +362,23 @@ rules:
 
           (void) reset_cursor(top);
         end does;
+
+--
+-- InitMolecularSource
+--
+-- Initialize Molecular Source form
+-- Assumes use of SourceForm template
+--
+ 
+        InitMolecularSource does
+	  top : widget := InitMolecularSource.source_widget->SourceForm;
+
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_SOURCE_VIEW;
+	  send(InitNoteForm, 0);
+	end does;
 
 --
 -- ModifyMolecularSource
@@ -429,8 +462,16 @@ rules:
             set := set + "sex = " + mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + ",";
           end if;
  
-          if (set.length > 0) then
-            top.sql := mgi_DBupdate(PRB_SOURCE, top->SourceID->text.value, set);
+	  if (top->Library.managed) then
+	    ProcessNoteForm.notew := top->mgiNoteForm;
+	    ProcessNoteForm.tableID := MGI_NOTE;
+	    ProcessNoteForm.objectKey := top->SourceID->text.value;
+	    send(ProcessNoteForm, 0);
+	    top.sql := top.sql + top->mgiNoteForm.sql;
+	  end if;
+
+          if (top.sql.length > 0 or set.length > 0) then
+            top.sql := top.sql + mgi_DBupdate(PRB_SOURCE, top->SourceID->text.value, set);
           end if;
  
         end does;
@@ -450,6 +491,7 @@ rules:
           where : string := "";
 	  fromStrain : boolean := false;
 	  fromTissue : boolean := false;
+	  i : integer;
 
 	  top.sqlFrom := "";
 	  top.sqlWhere := "";
@@ -478,6 +520,24 @@ rules:
 	    QueryModificationHistory.tag := "s";
 	    send(QueryModificationHistory, 0);
             where := where + top.top->ControlForm->ModificationHistory->Table.sqlCmd;
+	  end if;
+
+	  -- To search each note type individually...
+	  -- remove noteTypeKey and just have one call to SearchNoteForm
+	  -- to search all note types
+
+	  if (top.top.name = "MolecularSourceModule") then
+	    i := 1;
+	    while (i <= top->mgiNoteForm.numChildren) do
+	      SearchNoteForm.notew := top->mgiNoteForm;
+	      SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	      SearchNoteForm.tableID := MGI_NOTE_SOURCE_VIEW;
+              SearchNoteForm.join := "s." + mgi_DBkey(PRB_SOURCE);
+	      send(SearchNoteForm, 0);
+	      from := from + top->mgiNoteForm.sqlFrom;
+	      where := where + top->mgiNoteForm.sqlWhere;
+	      i := i + 1;
+	    end while;
 	  end if;
 
 	  if (top->Library->text.value.length > 0) then

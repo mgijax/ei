@@ -72,6 +72,9 @@ rules:
           InitOptionMenu.option := top->ProbeOrganismMenu;
           send(InitOptionMenu, 0);
 
+	  InitMolecularSource.source_widget := top;
+	  send(InitMolecularSource, 0);
+
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
