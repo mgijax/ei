@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb 17 14:54:53 2004";
+      lastWritten = "Thu Feb 19 15:16:14 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2979,6 +2979,9 @@ Module: MGD
                                   DOTS = AccToggle : mgiOption;
                                 }
                                 {
+                                  NIAGeneIndex = AccToggle : mgiOption;
+                                }
+                                {
                                   EMMA = AccToggle : mgiOption;
                                 }
                                 {
@@ -3002,31 +3005,6 @@ Module: MGD
                     }
               }
               {
-                Holder = CharText : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = AccRef;
-                  leftOffset = 25;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topWidget = mgiCitation;
-                  topOffset = 5;
-                  rightOffset = 2;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Holder;
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 40;
-                        maxLength = 40;
-                    }
-              }
-              {
                 Notes = SingleNote : mgiDataTypes;
                 Group: Widget
                   xrtGearOrientation = vertical;
@@ -3035,7 +3013,7 @@ Module: MGD
                   leftWidget = AccRef;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = Alias;
+                  topWidget = AccRef;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -3053,14 +3031,15 @@ Module: MGD
                 Group: Widget
                   labelString = "Has Sequence Presented";
                 Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Holder;
+                  leftAttachment = attach_widget;
+                  leftWidget = AccRef;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = Holder;
-                  topOffset = 2;
+                  topWidget = mgiCitation;
+                  topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 25;
               }
               {
                 RMAP = toggle : mgiDataTypes;
@@ -3146,7 +3125,7 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-1 0)";
                         xrtTblTraversableSeries = "(all 0-1 False)";
                         userDefinedAttributes = "aliasKey:Int=\"1\"\nalias:Int=\"2\"\n";
-                        xrtTblVisibleRows = 2;
+                        xrtTblVisibleRows = 3;
                     }
               }
         }
@@ -3630,6 +3609,9 @@ Module: MGD
                                                   }
                                                   {
                                                     DOTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
@@ -9048,6 +9030,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
+                                                  {
+                                                    NIAGeneIndex = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
                                             }
                                       }
                                 }
@@ -10668,6 +10655,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     DOTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;

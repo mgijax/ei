@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb 17 14:05:06 2004";
+      lastWritten = "Thu Feb 19 15:44:20 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1318,7 +1318,7 @@ Module: MGI
                                           activateCallback = "D:CreateMGIModule(name = \"VocAnnot\")";
                                           labelString = "Mammalian Phenotype Annotations";
                                           userDefinedAttributes = "annotTypeKey:Int(Int)=\"1002\"\n";
-                                          managed = False;
+                                          managed = True;
                                       }
                                 }
                           }
@@ -2221,6 +2221,49 @@ Module: MGI
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      Popups:
+                                      {
+                                        VocAnnotTypePulldown = OptionPulldown;
+                                            {
+                                              GOMarker = OptionToggle;
+                                              Group: Widget
+                                                valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
+                                                userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\n";
+                                                labelString = "GO/Marker";
+                                              Group: User
+                                                annotVocab = GO;
+                                                evidenceKey = 3;
+                                                mgiTypeKey = 2;
+                                                vocabKey = 4;
+                                                defaultValue = 1000;
+                                            }
+                                            {
+                                              MPGenotype = OptionToggle;
+                                              Group: Widget
+                                                valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
+                                                userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\n";
+                                                labelString = "Mammalian Phenotype/Genotype";
+                                              Group: User
+                                                annotVocab = "Mammalian Phenotype";
+                                                evidenceKey = 2;
+                                                mgiTypeKey = 12;
+                                                vocabKey = 5;
+                                                defaultValue = 1002;
+                                            }
+                                            {
+                                              PSGenotype = OptionToggle;
+                                              Group: Widget
+                                                valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
+                                                userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\n";
+                                                labelString = "PhenoSlim/Genotype";
+                                              Group: User
+                                                annotVocab = PhenoSlim;
+                                                evidenceKey = 2;
+                                                mgiTypeKey = 12;
+                                                vocabKey = 1;
+                                                defaultValue = 1001;
+                                            }
+                                      }
                                 }
                                 {
                                   mgiAccession = mgiAccession : mgiDataTypes;
@@ -2240,6 +2283,16 @@ Module: MGI
                                       }
                                       {
                                         AccessionID = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() Search() GoHome()";
+                                            }
                                       }
                                       {
                                         AccessionName = CharSText : mgiDataTypes;
@@ -2253,6 +2306,9 @@ Module: MGI
                                               Group: Widget
                                                 columns = 75;
                                                 scrollHorizontal = True;
+                                                translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SetDefault() Search() GoHome()";
                                             }
                                       }
                                 }
@@ -2306,6 +2362,19 @@ Module: MGI
                                           rightAttachment = attach_none;
                                           topAttachment = attach_opposite_widget;
                                           topWidget = DeleteRow;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                      {
+                                        SearchObsoleteTerm = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Search Obsolete Term";
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = EditTerm;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = EditTerm;
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                       }
