@@ -149,7 +149,7 @@ rules:
 	  if (value.length > 0) then
 	    where := where + "\nand " + tag + "._ModifiedBy_key = u2._User_key" +
 		"\nand u2.login like " + mgi_DBprstr(value);
-	    from := ",MGI_User u2";
+	    from := from + ",MGI_User u2";
 	  end if;
 
 	  if (table.is_defined("approvedBy") != nil) then
