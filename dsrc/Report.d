@@ -139,7 +139,7 @@ rules:
      ReportEnd.dialog := dialog;
 
      proc_p : opaque 
-	:= tu_fork_process2(program, commands, dialog->Output, dialog->Output, ReportEnd);
+	:= tu_fork_process(program, commands, dialog->Output, ReportEnd);
 
      -- check to see if we could exec the script 
      if (tu_fork_status(proc_p) = 2) then 
