@@ -20,7 +20,7 @@ OPENWINHOME=/usr/openwin
 XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
 PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
 
-USERLOG=$HOME/.gxd-log
+USERLOG=$HOME/.gxd_dev-log
 
 DSQUERY=MGD_DEV
 MGD=mgd_release
