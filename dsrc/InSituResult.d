@@ -348,7 +348,7 @@ rules:
 	      ModifyStructure.key := "@" + KEYNAME;
 	      ModifyStructure.row := row;
 	      send(ModifyStructure, 0);
-	      cmd := cmd + top->StructureList.updateCmd;
+	      cmd := cmd + top->ADClipboard.updateCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -379,7 +379,7 @@ rules:
 	        ModifyStructure.key := key;
 	        ModifyStructure.row := row;
 	        send(ModifyStructure, 0);
-	        cmd := cmd + top->StructureList.updateCmd;
+	        cmd := cmd + top->ADClipboard.updateCmd;
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
@@ -464,9 +464,9 @@ rules:
 	  -- Load the Image Pane List
 	  send(LoadImagePaneList, 0);
 
-	  -- Load the Anatomical Structure List
-	  LoadStructureList.source_widget := top;
-	  send(LoadStructureList, 0);
+	  -- Load the Anatomical Clipboard
+	  ClipboardLoad.source_widget := top->ADClipboard->Label;
+	  send(ClipboardLoad, 0);
 
 	  cmd := "select * from GXD_InSituResult_View where _Specimen_key = " + specimenKey +
 		"\norder by sequenceNum\n" +

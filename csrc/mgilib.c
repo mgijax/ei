@@ -1237,8 +1237,14 @@ char *mgi_DBtable(int table)
     case GXD_GENOTYPE:
             strcpy(buf, "GXD_Genotype");
 	    break;
+    case GXD_GENOTYPE_VIEW:
+            strcpy(buf, "GXD_Genotype_View");
+	    break;
     case GXD_ALLELEPAIR:
             strcpy(buf, "GXD_AllelePair");
+	    break;
+    case GXD_ALLELEPAIR_VIEW:
+            strcpy(buf, "GXD_AllelePair_View");
 	    break;
     case GXD_SPECIMEN:
             strcpy(buf, "GXD_Specimen");
@@ -2007,9 +2013,6 @@ char *mgi_DBinsert(int table, char *keyName)
             update GXD_Antigen set name = 'antigen' where _Antigen_key = 1000
 
    NOTE:  If the length of str is 0, then still update the modification_date.
-
-   NOTE:  When IDDS is installed, we can remove the ',modification_date = getdate()'
-	  part since IDDS will update the modification date.
 */
 
 char *mgi_DBupdate(int table, char *key, char *str)

@@ -152,8 +152,8 @@ devents:
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
 		    reset : boolean := false;
-		    select: boolean := true;];
-
+		    select: boolean := false;];
+	BuildDynamicComponents :local [];
 	CopySpecimen :local [];
 	CopyGelLane :local [];
 	CopyGelLaneColumn :local [];
@@ -232,63 +232,31 @@ rules:
 
 	  top := create widget("AssayModule", nil, mgi);
 
-	  send(Init, 0);
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
 
           ab : widget := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
-	  SetRowCount.source_widget := top;
-	  SetRowCount.tableID := GXD_ASSAY;
-	  send(SetRowCount, 0);
+	  send(Init, 0);
 
-	  send(AssayClear, 0);
- 
 	  (void) reset_cursor(mgi);
 	end does;
 
 --
--- AssayClear
+-- BuildDynamicComponents
 --
--- Special clearing for Assay form
+-- Activated from:  devent Marker
 --
-	AssayClear does
-
-	  Clear.source_widget := top;
-	  Clear.clearForms := clearAssay;
-	  Clear.clearLists := 3;
-	  Clear.clearKeys := AssayClear.clearKeys;
-	  Clear.reset := AssayClear.reset;
-	  send(Clear, 0);
-
-          SetNotesDisplay.note := top->AssayNote->Note;
-          send(SetNotesDisplay, 0);
-
-	  if (not AssayClear.select) then
-            LoadStructureList.source_widget := top;
-	    send(LoadStructureList, 0);
-	    send(InitImagePane, 0);
-	    send(CreateGelBandColumns, 0);
-	    currentAssay := "";
-	  end if;
-	end does;
-
--- 
+-- For initializing dynamic GUI components prior to managing the top form.
 --
--- Init
---
--- Initializes list of Option Menus (sourceOptions)
--- Initializes global accTable
--- Initializes global variables
+-- Initialize dynamic option menus
+-- Initialize lookup lists
 --
 
-	Init does
+	BuildDynamicComponents does
           options := create list("widget");
-          tables := create list("widget");
-
-	  accTable := top->mgiAccessionTable->Table;
-          prepDetailForm := top->ProbePrepForm;
-          assayDetailForm := top->InSituForm;
 
 	  -- Initialize Option Menus
 
@@ -322,12 +290,61 @@ rules:
             send(InitOptionMenu, 0);
           end while;
           options.close;
+	end does;
+
+--
+-- AssayClear
+--
+-- Special clearing for Assay form
+--
+	AssayClear does
+
+	  Clear.source_widget := top;
+	  Clear.clearForms := clearAssay;
+	  Clear.clearLists := 3;
+	  Clear.clearKeys := AssayClear.clearKeys;
+	  Clear.reset := AssayClear.reset;
+	  send(Clear, 0);
+
+          SetNotesDisplay.note := top->AssayNote->Note;
+          send(SetNotesDisplay, 0);
+
+	  if (not AssayClear.select) then
+            ClipboardLoad.source_widget := top->ADClipboard->Label;
+	    send(ClipboardLoad, 0);
+	    send(InitImagePane, 0);
+	    send(CreateGelBandColumns, 0);
+	    currentAssay := "";
+	  end if;
+	end does;
+
+-- 
+--
+-- Init
+--
+-- Initializes list of Option Menus (sourceOptions)
+-- Initializes global accTable
+-- Initializes global variables
+--
+
+	Init does
+          tables := create list("widget");
+
+	  accTable := top->mgiAccessionTable->Table;
+          prepDetailForm := top->ProbePrepForm;
+          assayDetailForm := top->InSituForm;
 
 	  -- Initialize Tables
 
 	  tables.append(top->InSituForm->Specimen->Table);
 	  tables.append(top->GelForm->GelLane->Table);
 	  tables.append(top->GelForm->GelRow->Table);
+
+	  SetRowCount.source_widget := top;
+	  SetRowCount.tableID := GXD_ASSAY;
+	  send(SetRowCount, 0);
+
+	  send(AssayClear, 0);
 	end does;
 
 --
@@ -1396,7 +1413,7 @@ rules:
               ModifyStructure.key := "@" + keyName;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
-              cmd := cmd + top->StructureList.updateCmd;
+              cmd := cmd + top->ADClipboard.updateCmd;
  
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -1420,7 +1437,7 @@ rules:
               ModifyStructure.key := key;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
-              cmd := cmd + top->StructureList.updateCmd;
+              cmd := cmd + top->ADClipboard.updateCmd;
  
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_GELLANE, key);
@@ -1806,9 +1823,9 @@ rules:
 	    currentAssay := "";
             top->QueryList->List.row := 0;
             top->ID->text.value := "";
-            -- Re-Load the Anatomical Structure List
-            LoadStructureList.source_widget := top;
-            send(LoadStructureList, 0);
+            -- Re-Load the Anatomical Clipboard
+            ClipboardLoad.source_widget := top->ADClipboard->Label;
+            send(ClipboardLoad, 0);
             return;
           end if;
 
@@ -1942,10 +1959,9 @@ rules:
           LoadAcc.tableID := GXD_ASSAY;
           send(LoadAcc, 0);
  
-          -- Load the Anatomical Structure List
-
-          LoadStructureList.source_widget := top;
-          send(LoadStructureList, 0);
+          -- Load the Anatomical Clipboard
+          ClipboardLoad.source_widget := top->ADClipboard->Label;
+          send(ClipboardLoad, 0);
  
           top->QueryList->List.row := Select.item_position;
 

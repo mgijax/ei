@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	08/23/2001
+--	Modified SelectLookupListItem to work for single & multiple selection lists
+--
 -- lec	01/18/2001
 --	Fixed LoadList; if cmd length = 0, return
 --
@@ -405,6 +408,9 @@ rules:
 	  isTable : boolean := false;
 	  scrollToRow : boolean := false;
 	  i : integer;
+	  pos : integer;
+	  item : string;
+	  keys : string := "";
 
 	  -- These variables are only relevant for Tables
 	  table : widget;
@@ -463,13 +469,37 @@ rules:
 	      return;
 	    end if;
 
-	    (void) mgi_tblSetCell(table, row, (integer) list_w.targetText, list_w.selectedItems[0]);
+	    -- Process Multiple Selection list
 
-	    -- If table key column specified, copy the key
+	    if (list_w.selectedItems.count > 1) then
+	      i := 0;
+              while (i < SelectLookupListItem.selected_items.count) do
+                item := SelectLookupListItem.selected_items[i];
+                pos := XmListItemPos(list_w, xm_xmstring(item));
+                keys := keys + list_w.keys[pos] + ",";
+                i := i + 1;
+              end while;
+
+              -- Remove trailing ','
+ 
+              if (keys.length > 0) then
+                keys := keys->substr(1, keys.length - 1);
+              end if;
+ 
+              (void) mgi_tblSetCell(table, row, (integer) list_w.targetText,
+                            (string) SelectLookupListItem.selected_items.count);
+              (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, keys);
+	    else
+
+	      item := list_w.selectedItems[0];
+	      (void) mgi_tblSetCell(table, row, (integer) list_w.targetText, item);
+
+	      -- If table key column specified, copy the key
   
-	    if ((integer) list_w.targetKey >= 0) then
-	      key := list_w.keys[SelectLookupListItem.item_position];
-	      (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, key);
+	      if ((integer) list_w.targetKey >= 0) then
+	        key := list_w.keys[SelectLookupListItem.item_position];
+	        (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, key);
+	      end if;
 	    end if;
 
 	    -- Commit table cell edit

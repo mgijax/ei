@@ -25,7 +25,8 @@ DeleteEnd [dialog : widget;];		        -- End DeleteFile process
 
 DeleteFile [];					-- Delete File
 
-ExitWindow [source_widget : widget;];		-- Exit Window
+ExitWindow [source_widget : widget;  		-- Exit Window
+            ab : widget;];
 
 GoHome [source_widget : widget;];		-- Return Cursor to Home Widget
 

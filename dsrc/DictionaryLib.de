@@ -9,14 +9,10 @@
 --
 
  
-LoadStructureList [source_widget : widget;];	-- Load AD Structure Lookup List
- 
 ModifyStructure [source_widget : widget;	-- Modify Structure records
 		 primaryID : integer;
 		 key : string;
 		 row : integer;];
 
-SelectStructure [];				-- Select Structure from Lookup List
-
-SetStructure [];				-- Select Structure in Lookup List based on current row
+SetADClipboard [];				-- Select Item in Lookup List based on current row
 

@@ -19,6 +19,10 @@
 --
 -- History
 --
+-- lec  08/23/2001
+--	- removed SelectADClipboard; can use List.d/SelectLookupListItem
+--	- moved some stuff to Clipboard.d
+--
 -- lec  08/21/2001
 --	- simplified lots of code here
 --	- removed ADI_ExecSQL (we can use SQL.d events)
@@ -65,9 +69,7 @@ devents:
         Search :local [];
         Select :local [];
 
-        ClipboardAddCurrent :local [];
-        ClipboardDelete :local [];
-        ClipboardClear :local [];
+        ADClipboardAdd :local [];
 
         DictionaryClear:local [clearLists : integer := 1;
 			       clearStages : boolean := false;
@@ -99,7 +101,7 @@ locals:
         treesLoaded : boolean;       -- indicator that >= 1 tree is loaded
                                      -- (just a sanity check)
 
-        clipboardList : widget;      -- the clipboard list.
+        clipboard : widget;      -- the clipboard list.
 
         addDialog : widget;      -- Add node dialog
 
@@ -127,17 +129,11 @@ rules:
 
           top := create widget("DictionaryModule", nil, mgi);
 
-          send(Init, 0);
-
           ab : widget := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
           top.show;
 
-          -- clear the clipboard prior to use
-          send(ClipboardClear,0);
- 
-	  GoHome.source_widget := top;
-	  send(GoHome, 0);
+          send(Init, 0);
 
           (void) reset_cursor(mgi);
         end does;
@@ -152,7 +148,7 @@ rules:
 
             -- current stagetree user is in (0 is invalid stagenum)
             current_stagenum := 0;
-            clipboardList := top->structureClipboard;
+            clipboard := top->ADEditClipboard;
             addDialog := top->AddDialog;
 
             -- create the toplevel node for the stages hierarchy
@@ -165,6 +161,9 @@ rules:
 
             -- initialize the alias key list
             delaliaskey_list := create string_list();
+
+	    DictionaryClear.clearLists := 3;
+	    send(DictionaryClear, 0);
 
             send(CheckTriggers,0);
 
@@ -368,9 +367,9 @@ rules:
              stagetrees_deleteStructureByKey((integer)(top->ID->text.value));
 
              -- delete the structure from the clipboard, if present
-	     clipboardList->List.row := clipboardList->List.keys.find(top->ID->text.value);
-	     if (clipboardList->List.row > 0) then
-	       DeleteList.list := clipboardList;
+	     clipboard->List.row := clipboard->List.keys.find(top->ID->text.value);
+	     if (clipboard->List.row > 0) then
+	       DeleteList.list := clipboard;
 	       send(DeleteList, 0);
 	     end if;
           end if; -- top->QueryList->List.sqlSuccessful
@@ -831,14 +830,14 @@ rules:
     end does;
 
 --
--- ClipboardAddCurrent 
+-- ADClipboardAdd 
 --
 -- Adds the current structure to the clipboard.
 --
 
-   ClipboardAddCurrent does
-       pos : integer;
+   ADClipboardAdd does
        item : string;
+       key : string;
 
        /* only add if there is a current structure */
        if (current_structure = nil) then
@@ -854,43 +853,12 @@ rules:
        item := format_stagenum(structure_getStage(current_structure)) +
 		(string) structure_getPrintName(current_structure);
 
-       pos := XmListItemPos(clipboardList->List, xm_xmstring(item));
+       key := (string) structure_getStructureKey(current_structure);
 
-       -- don't add duplicates
-
-       if (pos > 0) then
-	 return;
-       end if;
-
-       InsertList.list := clipboardList;
-       InsertList.item := item;
-       InsertList.key := (string) structure_getStructureKey(current_structure);
-       send(InsertList, 0);
-   end does;
-
---
--- ClipboardDelete
---
--- Deletes the currently-selected structure from the clipboard.
---
-   ClipboardDelete does
-       DeleteList.list := clipboardList;
-       DeleteList.resetRow := false;
-       send(DeleteList, 0);
-       if (clipboardList->List.row > 0) then
-         clipboardList->List.row := clipboardList->List.row - 1;
-       end if;
-   end does;
-
---
--- ClipboardClear
---
--- Clears the clipboard of all structures
--- 
-
-   ClipboardClear does
-       ClearList.source_widget := clipboardList;
-       send(ClearList, 0);
+       ClipboardAdd.clipboard := clipboard;
+       ClipboardAdd.item := item;
+       ClipboardAdd.key := key;
+       send(ClipboardAdd, 0);
    end does;
 
 --

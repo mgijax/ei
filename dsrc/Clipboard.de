@@ -8,11 +8,15 @@
 -- This is the companion D event declarations file for Clipboard.d.
 --
 
-AddToClipboard [source_widget : widget;];
+ClipboardAdd [clipboard : widget;
+	      item : string;
+	      key : string;];
 
-CopyClipboard [source_widget : widget;];
+ClipboardClear [source_widget : widget;];
 
-ClearClipboard [source_widget : widget;];
+ClipboardDelete [source_widget : widget;];
 
-DeleteFromClipboard [source_widget : widget;];
+ClipboardSort [source_widget : widget;];
+
+ClipboardLoad [source_widget : widget;];
 

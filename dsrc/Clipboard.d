@@ -5,7 +5,7 @@
 --
 -- Templates:
 --
--- mgiDialog:ClipboardDialog
+-- mgiLookup:ClipboardEditLookup
 --
 -- History
 --
@@ -15,116 +15,230 @@
 
 dmodule Clipboard is
 
-#include <mgilib.h>
-#include <syblib.h>
-#include <tables.h>
+locals:
+	cbPrefix : string := "[Clipboard]:  ";	-- From the Clipboard
 
 rules:
 
 --
--- AddToClipboard
+-- ClipboardAdd
 --
--- 	Add item in Selection text to Clipboard
+-- Adds the item to the clipboard.
+-- Assumes "clipboard" is of type LookupList.
 --
 
-	AddToClipboard does
-	  top : widget := AddToClipboard.source_widget.top;
+   ClipboardAdd does
+       clipboard : widget := ClipboardAdd.clipboard;
+       item : string := ClipboardAdd.item;
+       key : string := ClipboardAdd.key;
+       pos : integer;
 
-	  if (top->Selection->text.value.length > 0) then
-	    InsertList.list := top->ItemList;
-	    InsertList.item := top->Selection->text.value;
-	    InsertList.key := "";
-	    send(InsertList, 0);
-	    top->Selection->text.value := "";
-	    top->SelectionKey->text.value := "";
-	    (void) XmListDeselectAllItems(top->ItemList->List);
+       pos := XmListItemPos(clipboard->List, xm_xmstring(item));
+
+       -- don't add duplicates
+
+       if (pos > 0) then
+	 return;
+       end if;
+
+       InsertList.list := clipboard;
+       InsertList.item := item;
+       InsertList.key := key;
+       send(InsertList, 0);
+   end does;
+
+--
+-- ClipboardClear
+--
+-- Clears the clipboard
+-- 
+
+   ClipboardClear does
+       parent : widget := ClipboardClear.source_widget.parent;
+       clipboard : widget := parent;
+
+       ClearList.source_widget := clipboard;
+       send(ClearList, 0);
+   end does;
+
+--
+-- ClipboardDelete
+--
+-- Deletes the currently selected row from the clipboard.
+-- Assumes "clipboard" is of type LookupList.
+--
+   ClipboardDelete does
+       parent : widget := ClipboardDelete.source_widget.parent;
+       clipboard : widget := parent;
+
+       DeleteList.list := clipboard;
+       DeleteList.resetRow := false;
+       send(DeleteList, 0);
+
+       if (clipboard->List.row > 0) then
+         clipboard->List.row := clipboard->List.row - 1;
+       end if;
+   end does;
+
+--
+-- ClipboardSort
+--
+-- Sorts the clipboard alphabetically
+-- 
+
+   ClipboardSort does
+       parent : widget := ClipboardSort.source_widget.parent;
+       clipboardList : widget := parent->List;
+
+       tempList : xm_string_list;
+       sortList : xm_string_list;
+       tempKeys : string_list;
+       sortKeys : string_list;
+       i : integer;
+
+       tempList := create xm_string_list();
+       sortList := create xm_string_list();
+       tempKeys := create string_list();
+       sortKeys := create string_list();
+
+       tempList := clipboardList.items;
+       tempKeys := clipboardList.keys;
+       sortList := tempList;
+       sortList.sort;
+
+       tempList.rewind;
+       tempKeys.rewind;
+       sortList.rewind;
+
+       while (sortList.more) do
+	 i := tempList.find(sortList.next); 
+	 sortKeys.insert(tempKeys[i], sortKeys.count + 1);
+       end while;
+
+       clipboardList.keys := sortKeys;
+       (void) XmListDeleteAllItems(clipboardList);
+       (void) XmListAddItems(clipboardList, sortList, sortList.count, 0);
+   end does;
+
+--
+-- ClipboardLoad
+--
+--      source_widget : widget		source widget
+--
+-- Load Clipboard list for current record and Clipboard
+-- Current record is retrieved from top shell ID->text.
+--
+-- Should be called upon initialization of record/form which contains the 
+-- Clipboard activateCallback for top->Clipboard->List->label
+--
+ 
+        ClipboardLoad does
+	  top : widget := ClipboardLoad.source_widget.top;
+	  clipboard : widget := ClipboardLoad.source_widget.parent;
+	  mgi : widget := top.root.parent;
+	  clipboardModule : widget := mgi->(clipboard.clipboardModule);
+	  editClipboard : widget := clipboardModule->(clipboard.editClipboard);
+
+          key : string;
+          saveCmd : string;
+          newCmd : string;
+ 
+	  if (top->ID = nil) then
+	    top := top.root;
 	  end if;
-	end does;
 
---
--- ClearClipboard
---
--- 	Clear Clipboard
---
+	  -- First, cancel the edit to the target cell
 
-	ClearClipboard does
-	  top : widget := ClearClipboard.source_widget.top;
+	  table : widget;
+	  if (clipboard->List.targetWidget != nil) then
+	    table := clipboard->List.targetWidget->Table;
+	    (void) XrtTblCancelEdit(table, true);
+	  end if;
 
-	  ClearList.source_widget := top->ItemList;
-	  send(ClearList, 0);
-	  top->Selection->text.value := "";
-	  top->SelectionKey->text.value := "";
-	end does;
+          -- Get current record key
+          key := top->ID->text.value;
+ 
+	  if (key.length > 0) then
+            -- Save lookup command
+            saveCmd := clipboard.cmd;
+ 
+            -- Append key to lookup command
+            newCmd := saveCmd + " " + key + "\norder by " + clipboard.orderBy;
+            clipboard.cmd := newCmd;
+ 
+            -- Load the list; disallow duplicates
+            LoadList.list := clipboard;
+	    LoadList.allowDups := false;
+            send(LoadList, 0);
+ 
+            -- Restore original lookup command
+            clipboard.cmd := saveCmd;
 
---
--- CopyClipboard
---
--- 	Copy Selected Item to Widget w/ Focus
---	The 'targetWidget' must contain a child of "text" or 
---	be of class XmPushButton with a "dialogName" UDA.
---
+	  -- If no current key, then clear the list
 
-	CopyClipboard does
-	  top : widget := CopyClipboard.source_widget.top;
-	  form : widget := top.child(1).editForm;
-	  item : widget := top->Selection->text;
-	  key : widget := top->SelectionKey->text;
-	  targetWidget : widget;
+	  else
+            if (clipboard->List.itemCount > 0) then
+              ClearList.source_widget := clipboard;
+              ClearList.clearkeys := true;
+              send(ClearList, 0);
+            end if;
+	  end if;
 
-	  if (top->ItemList->List.selectedItemCount = 0) then
+          -- If clipboard->List.keys doesn't exist already, create it
+ 
+          if (clipboard->List.keys = nil) then
+            clipboard->List.keys := create string_list();
+          end if;
+ 
+          -- Append from the specified editing Clipboard
+ 
+	  if (clipboardModule = nil or editClipboard = nil) then
 	    return;
 	  end if;
 
-	  if (item.value.length = 0) then
-	    return;
-	  end if;
+	  sKeys : string_list := create string_list();
+	  sResults : xm_string_list := create xm_string_list();
+	  notify : boolean := false;
 
-	  targetWidget := XmGetFocusWidget(form);
+	  -- Append new keys to current keys
 
-	  if (targetWidget = nil) then
-	    StatusReport.source_widget := top.root;
-	    StatusReport.message := "No field has been selected.\n\n" +
-	      "Using the Mouse, choose the field where you wish\n" +
-	      "the selected item to be placed.";
-	    send(StatusReport);
-	    return;
-	  end if;
+	  sKeys := clipboard->List.keys;
 
-	  -- Check if text widget exists
+	  i : integer := 1;
+	  numItems : integer;
+	  cKey : string;
+	  cName : string;
 
-	  if (targetWidget->text != nil) then
-	    targetWidget->text.value := item.value;
+	  if (editClipboard->List != nil) then
+	    numItems := editClipboard->List.itemCount;
 
-	  -- If target is not a text widget, then it may be a push button
-	  -- which launches a dialog
+	    while (i <= numItems) do
+	      cKey := editClipboard->List.keys[i];
+	      cName := editClipboard->List.items[i];
 
-	  elsif (targetWidget.class_name = "XmPushButton"
-		   and targetWidget.is_defined("dialogName") != nil) then
-	    form := form->(targetWidget.dialogName);
-	    targetWidget := XmGetFocusWidget(form);
-	    if (targetWidget->text != nil) then
-	      targetWidget->text.value := item.value;
+	      if (sKeys.find(cKey) < 0) then
+	        sKeys.insert(cKey, sKeys.count + 1);
+	        sResults.insert(cbPrefix + cName, sResults.count + 1);
+	      end if;
+
+	      i := i + 1;
+	    end while;
+
+	    -- Append the items to the list
+
+	    if (sResults.count > 0) then
+              clipboard->List.keys := sKeys;
+	      (void) XmListAddItems(clipboard->List, sResults, sResults.count, 0);
 	    end if;
+
+	    -- Set the label
+
+	    clipboard->Label.labelString := 
+		  (string) clipboard->List.itemCount + " " +
+		  clipboard->Label.defaultLabel;
+
 	  end if;
 
-	  -- Don't traverse to next field in form
-	  -- User must TAB so that appropriate verifications can take place
-	  -- (void) XmProcessTraversal(form, XmTRAVERSE_NEXT_TAB_GROUP);
-	end does;
-
---
--- DeleteFromClipboard
---
--- 	Delete selected item from Clipboard
---
-
-	DeleteFromClipboard does
-	  top : widget := DeleteFromClipboard.source_widget.top;
-
-	  DeleteList.list := top->ItemList;
-	  send(DeleteList, 0);
-	  top->Selection->text.value := "";
-	  top->SelectionKey->text.value := "";
 	end does;
 
 end dmodule;

@@ -1,26 +1,19 @@
 --
 -- Name    : Genotype.d
 -- Creator : lec
--- Genotype.d 12/03/98
+-- Genotype.d 08/21/2001
 --
--- TopLevelShell:		GenotypeDialog (XmFormDialog)
+-- TopLevelShell:		Genotype
 -- Database Tables Affected:	GXD_Genotype, GXD_AllelePair
--- Cross Reference Tables:	
+-- Cross Reference Tables:	PRB_Strain, MRK_Marker, ALL_Allele
 -- Actions Allowed:		Add, Modify, Delete
 --
--- The Genotype dialog is managed from a TopLevelShell parent.
--- using the GenotypePush template.
+-- Module to process edits for Genotype tables.
 --
 -- History
 --
--- lec 12/03/98
---	Add; use default for Strain value if nothing entered
---
--- lec	07/28/98
---	replaced xrtTblNumRows with mgi_tblNumRows(table)
---
--- lec	03/30/98
---	- created
+-- lec	08/22/2001
+--	- TR 2844
 --
 
 dmodule Genotype is
@@ -31,176 +24,100 @@ dmodule Genotype is
 
 devents:
 
-	GenotypeCancel [source_widget : widget;];
-	GenotypeCommit [];
-	GenotypeInit [];
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];
+	Init :local [];
 	Add :local [];
+	Delete :local [];
+	Exit :local [];
 	Modify :local [];
+
 	ModifyAllelePair :local [];
 
+	PrepareSearch :local [];
+	Search :local [];
+	SelectGenotypeByAssay :local [assayKey : string;];
+	Select :local [item_position : integer;];
+
+	AssignGenotypeToAssay :local [];
+	GenotypeClipboardAdd :local [];
+
 locals:
+	mgi : widget;
 	top : widget;
+	ab : widget;
+
 	cmd : string;
+	from : string;
+	where : string;
 	set : string;
 
-	currentRecordKey : string;      -- Primary Key value of currently selected record
-
+        currentRecordKey : string;      -- Primary Key value of currently selected record
+                                        -- Initialized in Select[] and Add[] events
+ 
 rules:
 
 --
--- GenotypeInit
---
--- When Genotype is acitivated by push button:
---	Initialize Genotype Dialog targetWidget, targetColumn, targetKeyColumn
---		attributes from push button
---	Clear the form
---	If table(current row, targetKeyColumn) has a value, then retrieve
---		the appropriate DB info and initialize the dialog form 
---	Manage the Genotype Dialog
+-- Genotype
 --
 
-        GenotypeInit does
-	  push : widget := GenotypeInit.source_widget;
-	  root : widget := push.root;
+	INITIALLY does
+	  mgi := INITIALLY.parent;
 
-	  top := root->GenotypeDialog;
+	  (void) busy_cursor(mgi);
 
-	  -- unmanage (if already managed) so that it will "float" to the top
-	  -- top.front does not work on the Mac
-	  top.managed := false;
+	  top := create widget("GenotypeModule", nil, mgi);
 
-	  -- Set the target widget, column, key column values
+          ab := INITIALLY.launchedFrom;
+          ab.sensitive := false;
+	  top.show;
 
-	  top.targetWidget := push.targetWidget;
-	  top.targetColumn := push.tableColumn;
-	  top.targetKeyColumn := push.tableKeyColumn;
+	  send(Init, 0);
 
-	  -- Clear the dialog form
+	  (void) reset_cursor(mgi);
+	end does;
 
-          Clear.source_widget := top;
-          Clear.clearLists := 0;
-          send(Clear, 0);
+--
+-- Init
+--
+-- Activated from:  devent Genotype
+--
+-- For initializing static GUI components after managing top form
+-- and global variables.
+--
+-- Initializes global module variables
+-- Sets Row Count
+-- Clears Form
+--
 
-	  -- Get the Genotype value from the target table
-	  table : widget := top.targetWidget->Table;
-          row : integer := mgi_tblGetCurrentRow(table);
-	  value : string := mgi_tblGetCell(table, row, top.targetKeyColumn);
-
-	  results : integer := 1;
-	  row := 0;
-	  dbproc : opaque;
-
-	  if (value.length > 0) then
-	    cmd := "select * from GXD_Genotype_View where _Genotype_key = " + value +
-	           "select * from GXD_AllelePair_View where _Genotype_key = " + value +
-		   "\norder by sequenceNum\n";
-            dbproc := mgi_dbopen();
-            (void) dbcmd(dbproc, cmd);
-            (void) dbsqlexec(dbproc);
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		if (results = 1) then
-                  top->ID->text.value := mgi_getstr(dbproc, 1);
-                  top->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
-                  top->Strain->Verify->text.value := mgi_getstr(dbproc, 5);
-		else
-	          table := top->AllelePair->Table;
-	          (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
-	          (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 3));
-	          (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
-	          (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 9));
-	          (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
-	          (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 5));
-	          (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 10));
-	          (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 11));
-		  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		  row := row + 1;
-		end if;
-	      end while;
-	      results := results + 1;
-	    end while;
-	    (void) dbclose(dbproc);
-	  end if;
+	Init does
+          -- Set Row Count
+          SetRowCount.source_widget := top;
+          SetRowCount.tableID := GXD_GENOTYPE;
+          send(SetRowCount, 0);
  
-	  -- Reset modification flags to false
-
           Clear.source_widget := top;
-          Clear.reset := true;
           send(Clear, 0);
 
-	  top.managed := true;
-        end does;
-
---
--- GenotypeCancel
---
--- When Genotype is cancelled:
---	Unmanage the dialog
---
--- activateCallback for GenotypeDialog->Buttons->OK
---
-
-	GenotypeCancel does
-	  top.managed := false;
-        end does;
-
---
--- GenotypeCommit
---
--- When Genotype is committed:
---	Process the modifications
---		Change the editMode of the target Table appropriately
---	Copy the ID to the appropriate top.targetKeyColumn
---	Copy the Strain to the appropriate top.targetColumn
---	Cancel the dialog
---
--- activateCallback for GenotypeDialog->Buttons->OK
---
-
-	GenotypeCommit does
-	  table : widget := top.targetWidget->Table;
-	  row : integer := mgi_tblGetCurrentRow(table);
-
-	  -- If attempting to edit Genotype of Not Specified or Not Applicable,
-	  -- remove ID and allow add of entirely new Genotype record
-
-	  if ((integer) top->ID->text.value < 0) then
-	    top->ID->text.value := "";
-	  end if;
-
-	  if (top->ID->text.value.length = 0) then
-	    send(Add, 0);
-	    CommitTableCellEdit.source_widget := table;
-	    CommitTableCellEdit.row := row;
-	    CommitTableCellEdit.reason := TBL_REASON_VALIDATE_CELL_END;
-	    CommitTableCellEdit.value_changed := true;
-	    send(CommitTableCellEdit, 0);
-	  else
-	    send(Modify, 0);
-	  end if;
-
-	  -- Copy the appropriate values to the target table
-
-	  (void) mgi_tblSetCell(table, row, top.targetColumn, top->Strain->Verify->text.value);
-	  (void) mgi_tblSetCell(table, row, top.targetKeyColumn, top->ID->text.value);
-
-	  top.managed := false;
-        end does;
+	  -- if an Assay record has been selected, then select
+	  -- the Genotype records for the Assay
+	  SelectGenotypeByAssay.assayKey := mgi->AssayModule->EditForm->ID->text.value;
+	  send(SelectGenotypeByAssay, 0);
+	end does;
 
 --
 -- Add
 --
--- Constructs and executes SQL insert statement
--- Calls ModifyAllelePair[] to process Marker/Allele table
+-- Construct and execute commands for record insertion
 --
- 
+
         Add does
- 
+
+          if (not top.allowEdit) then
+            return;
+          end if;
+
           (void) busy_cursor(top);
- 
-	  if ((integer) top->Strain->StrainID->text.value = -2) then
-	    return;
-	  end if;
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
@@ -209,60 +126,91 @@ rules:
           cmd := mgi_setDBkey(GXD_GENOTYPE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(GXD_GENOTYPE, KEYNAME);
  
-	  if (top->Strain->StrainID->text.value.length = 0) then
-            cmd := cmd + top->Strain->StrainID->text.defaultValue + ")\n";
+	  if (top->EditForm->Strain->StrainID->text.value.length = 0) then
+            cmd := cmd + top->EditForm->Strain->StrainID->text.defaultValue + ")\n";
 	  else
-            cmd := cmd + top->Strain->StrainID->text.value + ")\n";
+            cmd := cmd + top->EditForm->Strain->StrainID->text.value + ")\n";
 	  end if;
  
-          send(ModifyAllelePair, 0);
- 
-          -- Execute the insert of the Primary record first
- 
-          AddSQL.tableID := GXD_GENOTYPE;
+	  send(ModifyAllelePair, 0);
+
+	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
-          AddSQL.list := nil;
-          AddSQL.item := "";
+	  AddSQL.list := top->QueryList;
+	  AddSQL.selectNewListItem := false;
+          AddSQL.item := top->EditForm->Strain->Verify->text.value;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
- 
+
+	  if (top->QueryList->List.sqlSuccessful) then
+	    Clear.source_widget := top;
+            Clear.clearKeys := false;
+            send(Clear, 0);
+	  end if;
+
+          (void) reset_cursor(top);
+	end does;
+
+--
+-- Delete
+--
+-- Constructs and executes command for record deletion
+--
+
+        Delete does
+
+          (void) busy_cursor(top);
+
+	  DeleteSQL.tableID := GXD_GENOTYPE;
+          DeleteSQL.key := currentRecordKey;
+	  DeleteSQL.list := top->QueryList;
+          send(DeleteSQL, 0);
+
+	  if (top->QueryList->List.row = 0) then
+	    Clear.source_widget := top;
+            Clear.clearKeys := false;
+            send(Clear, 0);
+	  end if;
+
           (void) reset_cursor(top);
         end does;
 
 --
 -- Modify
 --
--- Modifies current record
--- Calls ModifyAllelePair[] process Marker/Allele table
+-- Construct and execute command for record modifcation
+-- Each form element is tested for modification.  Only
+-- modified columns are updated in the database.
 --
- 
-        Modify does
- 
-          (void) busy_cursor(top);
- 
-	  currentRecordKey := top->ID->text.value;
 
-          cmd := "";
-          set := "";
- 
-          if (top->Strain->StrainID->text.modified) then
-            set := set + "_Strain_key = " + top->Strain->StrainID->text.value + ",";
+	Modify does
+
+          if (not top.allowEdit) then
+            return;
           end if;
- 
-          if (set.length > 0) then
+
+	  (void) busy_cursor(top);
+
+	  cmd := "";
+	  set := "";
+
+          if (top->EditForm->Strain->StrainID->text.modified) then
+            set := "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
+          end if;
+
+	  if (set.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set);
-          end if;
- 
-          send(ModifyAllelePair, 0);
- 
-          ModifySQL.source_widget := top;
+	  end if;
+
+	  send(ModifyAllelePair, 0);
+
           ModifySQL.cmd := cmd;
-          ModifySQL.list := nil;
+	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
- 
-          (void) reset_cursor(top);
-        end does;
- 
+
+	  (void) reset_cursor(top);
+	end does;
+
 --
 -- ModifyAllelePair
 --
@@ -343,6 +291,248 @@ rules:
             row := row + 1;
           end while;
         end does;
- 
-end dmodule;
 
+--
+-- PrepareSearch
+--
+-- Construct select statement based on values entered by user
+--
+
+	PrepareSearch does
+	  from_allele : boolean;
+	  value : string;
+
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
+	  where := "";
+
+          QueryDate.source_widget := top->CreationDate;
+          send(QueryDate, 0);
+          where := where + top->CreationDate.sql;
+ 
+          QueryDate.source_widget := top->ModifiedDate;
+          send(QueryDate, 0);
+          where := where + top->ModifiedDate.sql;
+ 
+	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
+	       where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
+	  elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
+		where := where + "\nand g.strain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
+	  end if;
+
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand a._Marker_key = " + value;
+	    from_allele := true;
+	  else
+            value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
+            if (value.length > 0) then
+	      where := where + "\nand a.symbol like " + mgi_DBprstr(value);
+	      from_allele := true;
+	    end if;
+	  end if;
+
+	  if (from_allele) then
+	    from := from + "," + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " a";
+	    where := where + "\nand g._Genotype_key = a._Genotype_key";
+	  end if;
+
+          if (where.length > 0) then
+            where := "where" + where->substr(5, where.length);
+          end if;
+	end does;
+
+--
+-- Search
+--
+-- Prepare and execute search
+--
+
+	Search does
+          (void) busy_cursor(top);
+	  send(PrepareSearch, 0);
+	  Query.source_widget := top;
+	  Query.select := "select distinct g._Genotype_key, g.strain\n" + 
+		from + "\n" + where + "\norder by g.strain\n";
+	  Query.table := GXD_GENOTYPE_VIEW;
+	  send(Query, 0);
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- SelectGenotypeByAssay
+--
+-- Retrieve Genotype records for given assayKey
+--
+
+	SelectGenotypeByAssay does
+	  assayKey : string := SelectGenotypeByAssay.assayKey;
+
+	  if (assayKey.length = 0) then
+	    return;
+	  end if;
+
+          (void) busy_cursor(top);
+
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
+	  where := "where g._Genotype_key = a._Genotype_key " + "and a._Assay_key = " + assayKey;
+
+	  if (mgi->AssayModule->InSituForm.managed) then
+	    from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
+	  else
+	    from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
+	  end if;
+
+	  QueryNoInterrupt.source_widget := top;
+	  QueryNoInterrupt.select := "select distinct g._Genotype_key, g.strain\n" + 
+		from + "\n" + where + "\norder by g.strain\n";
+	  QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
+	  send(QueryNoInterrupt, 0);
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- Select
+--
+-- Retrieve and display detail information for specific record
+-- determined by selected row in Query results list.
+--
+
+	Select does
+
+          (void) busy_cursor(top);
+
+          ClearTable.table := top->AllelePair->Table;
+          send(ClearTable, 0);
+
+          if (top->QueryList->List.selectedItemCount = 0) then
+	    currentRecordKey := "";
+            top->QueryList->List.row := 0;
+            top->ID->text.value := "";
+            (void) reset_cursor(top);
+            return;
+          end if;
+
+	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
+	  results : integer := 1;
+	  row : integer;
+	  table : widget;
+
+	  cmd := "select * from " + mgi_DBtable(GXD_GENOTYPE_VIEW) +
+		" where _Genotype_key = " + currentRecordKey + "\n" +
+	         "select * from " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + 
+		 " where _Genotype_key = " + currentRecordKey + 
+		 "\norder by sequenceNum\n";
+
+          dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      if (results = 1) then
+                top->ID->text.value := mgi_getstr(dbproc, 1);
+                top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
+                top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 5);
+                top->CreationDate->text.value := mgi_getstr(dbproc, 3);
+                top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
+	      else
+	        table := top->AllelePair->Table;
+	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
+	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		row := row + 1;
+	      end if;
+	    end while;
+	    results := results + 1;
+	  end while;
+
+	  (void) dbclose(dbproc);
+
+          top->QueryList->List.row := Select.item_position;
+
+	  Clear.source_widget := top;
+          Clear.reset := true;
+          send(Clear, 0);
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- AssignGenotypeToAssay
+--
+-- Activated from AssignGenotypeToAssay push button
+--
+-- Associates the selected Genotype record with the current Specimen or Gel Lane
+--
+
+	AssignGenotypeToAssay does
+	  push : widget;
+	  table : widget;
+	  row : integer;
+
+	  -- If no Genotype selected, return
+          if (top->QueryList->List.selectedItemCount = 0) then
+	    currentRecordKey := "";
+            top->QueryList->List.row := 0;
+            top->ID->text.value := "";
+            return;
+          end if;
+
+	  if (mgi->AssayModule->InSituForm.managed) then
+	    push := mgi->AssayModule->Lookup->CVSpecimen->GenotypePush;
+          else
+	    push := mgi->AssayModule->Lookup->CVGel->GenotypePush;
+	  end if;
+
+	  table := push.targetWidget->Table;
+	  row := mgi_tblGetCurrentRow(table);
+
+	  -- Copy the appropriate values to the target table
+
+	  (void) mgi_tblSetCell(table, row, push.tableColumn, top->EditForm->Strain->Verify->text.value);
+	  (void) mgi_tblSetCell(table, row, push.tableKeyColumn, top->ID->text.value);
+
+	  top.managed := false;
+	end does;
+
+--
+-- GenotypeClipboardAdd 
+--
+-- Adds the current structure to the clipboard.
+--
+
+   GenotypeClipboardAdd does
+
+	if (top->QueryList->List.selectedItemCount = 0) then
+	  return;
+	end if;
+
+	ClipboardAdd.clipboard := top->GenotypeEditClipboard;
+	ClipboardAdd.item := top->EditForm->Strain->Verify->text.value;
+	ClipboardAdd.key := top->ID->text.value;
+	send(ClipboardAdd, 0);
+   end does;
+
+--
+-- Exit
+--
+-- Destroy D module instance and call ExitWindow to destroy widgets
+--
+
+	Exit does
+	  destroy self;
+	  ExitWindow.source_widget := top;
+	  ExitWindow.ab := ab;
+	  send(ExitWindow, 0);
+	end does;
+
+end dmodule;
