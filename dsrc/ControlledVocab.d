@@ -522,10 +522,8 @@ rules:
 
 	  if (tableID = ALL_CELLLINE) then
 	    top->EditForm->Strain->Verify.sensitive := true;
-	    top->EditForm->Strain->Verify.required := true;
 	  else
 	    top->EditForm->Strain->Verify.sensitive := false;
-	    top->EditForm->Strain->Verify.required := false;
 	  end if;
 
 	  if (tableID = ALL_NOTETYPE) then
