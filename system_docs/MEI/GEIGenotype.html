@@ -1,0 +1,86 @@
+<HTML>
+<HEADER>
+<TITLE>
+GXD EDITING INTERFACE: Design and Requirements - Genotypes
+</TITLE>
+</HEADER>
+
+<BODY BGCOLOR="#FFFFFF">
+ 
+<H2>
+GXD EDITING INTERFACE: Design and Requirements - Genotypes
+</H2>
+
+<H4>Introduction</H4>
+ 
+<P>
+An expression assay is defined as a group of expression-related facts reported in a
+single reference, having a single type (e.g. Western blot), measuring the expression of
+a single gene and using a single probe.  Within one assay, expression may be measured
+among different animals (having different genotypes and/or ages) and within different tissues.
+<P>
+If an assay is a Gel Assay (e.g. Northern), the the assay record corresponds to the gel itself.
+<P>
+If an assay is an In Situ (e.g. Immunohistochemistry), then the assay record corresponds to a
+somewhat abstract grouping of the animals and results for a single probe.
+<P>
+If a Gel or In Situ assay uses multiple probes, then it is split into separate assays when it
+is entered into the database.
+<P>
+Each Assay contains a nucleotide probe preparation record or an antibody preparation record.
+A probe (nucleotide or antibody) used in an assay is "prepared" by attaching a radioactive
+label to it so that it can be detected, e.g. by autoradiography.
+<P>
+
+<H4>Editing Form</H4>
+<OL>
+<LI><A HREF="genotype.gif">GIF Image</A>
+</OL>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Strain (see <A HREF="MEI.html#dataVerStrain">Data Verifications section on Strain</A>)
+<P>
+<LI>Markers (see <A HREF="MEI.html#dataVerMarker">Data Verifications section on Markers</A>)
+<P>
+<LI>Marker Alleles (see <A HREF="MEI.html#dataVerAllele">Data Verifications section on Marker Alleles</A>)
+<P>
+</OL>
+ 
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Strain
+	</OL>
+<P>
+<LI>Note that if a Marker is specified, then both Allele 1 and Allele 2 are required.
+<P>
+</UL>
+
+<H4>Defaults</H4>
+<OL>
+<LI>Strain - <I>Not Specified</I>
+</OL>
+ 
+<H4>Deletions</H4>
+  
+A Genotype cannot be deleted if it is referenced by a:
+<OL>
+<LI>Speciman
+<LI>Gel Lane
+</OL>
+
+<H4>Miscellaneous</H4>
+<OL>	
+<LI>The only Genotype records returned by a <I>Search</I> are those Genotypes records
+    which are cross-referenced by the currently selected Assay record in the Assay module
+    (if there is one) and those Genotype records which are not cross-referenced by any Assay.
+<P>
+<LI>When a Genotype record is <I>Added</I> to the database, the Genotype record is
+    automatically added to the <I>Genotype Clipboard</I>.
+<P>
+</OL>
+
+</BODY>
+</HTML>
