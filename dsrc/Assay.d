@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 09/12/2001
+--	- TR 2844; changes for new Genotype module
+--
 -- lec 08/29/2001
 --	- Modify; check length of "cmd" and "set" before updating modification date
 --	- TR 2767; added DetectISResultModification, NextISResult

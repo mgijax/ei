@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Sep 12 12:51:27 2001";
+      lastWritten = "Thu Sep 13 10:13:16 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1778,7 +1778,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                   Group: User
                                     noteWidget = CopyrightNote;
-                                    note = "This image is from * and is displayed with the permission of The Company of Biologists who owns the Copyright.";
+                                    note = "This image is from * and is displayed with the permission of The Company of Biologists Limited who owns the Copyright.";
                                 }
                                 {
                                   DevBiolNote = AppendNotePush : mgiDataTypes;
@@ -2722,6 +2722,16 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Clear1 = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Clear2 = MenuPush : mgiMenu;
                                         Group: Widget
                                           managed = False;
                                       }

@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec 09/12/2001
+--	- AddSQL; add appendKeyToItem
+--
 -- lec 08/28/2001
 --	- QueryNoInterrupt; write SQL to log
 --
