@@ -14,6 +14,8 @@
 --
 -- History
 --
+-- 04/09/2001
+--	- TR 2237; added addAsSynonym option to Withdrawal dialog/processing
 -- 03/26/2001
 --	- markerWithdrawal.py; added -S and -D parameters
 --
@@ -620,6 +622,7 @@ rules:
 	  cmds.insert("--eventReasonKey=" + eventReason, cmds.count + 1);
 	  cmds.insert("--oldKey=" + currentRecordKey, cmds.count + 1);
 	  cmds.insert("--refKey=" + dialog->mgiCitation->ObjectID->text.value, cmds.count + 1);
+	  cmds.insert("--addAsSynonym=" + (string) ((integer) dialog->addAsSynonym.set), cmds.count + 1);
 
 	  if (event = EVENT_WITHDRAWAL) then
 	    cmds.insert("--newName=" + mgi_DBprstr(dialog->Name->text.value), cmds.count + 1);

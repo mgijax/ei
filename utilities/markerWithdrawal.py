@@ -18,8 +18,13 @@
 # --newKey = marker key of the new symbol (allele of, merged)
 # --newSymbols = list of comma-separated new symbols (withdrawn, split) in quotes
 #	(ex. --newSymbols="new-1,new-2")
+# --addAsSynonym = 0|1; should the old symbol be added as an other name to the new symbol?
+#	only applies to rename, merge, alleleOf.
 #
 # History
+#
+# 04/09/2001 lec
+#	- TR 2237 - added "addAsSynonym" parameter
 #
 # 03/26/2001 lec
 #	- made -S and -D required parameters
@@ -75,7 +80,8 @@ def showUsage():
 		'[-D database]\n' + \
 		'[--newName=name of new symbol]\n' + \
 		'[--newKey=marker key of new symbol]\n' + \
-		'[--newSymbols=list of new symbols]'
+		'[--newSymbols=list of new symbols]\n' + \
+		'[--addAsSynonym=add old symbol as synonym of new symbol]'
 	error(usage)
  
 def snapShot(markerKey):
@@ -136,7 +142,7 @@ DELETED = 6
 NOTSPECIFIED = -1
 
 try:
-	optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:', ['eventKey=', 'eventReasonKey=', 'oldKey=', 'refKey=', 'newName=', 'newKey=', 'newSymbols='])
+	optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:', ['eventKey=', 'eventReasonKey=', 'oldKey=', 'refKey=', 'newName=', 'newKey=', 'newSymbols=', 'addAsSynonym='])
 except:
 	showUsage()
 
@@ -151,6 +157,7 @@ refKey = None
 newName = None
 newKey = None
 newSymbols = None
+addAsSynonym = 1
 
 for opt in optlist:
 	if opt[0] == '-S':
@@ -175,6 +182,8 @@ for opt in optlist:
 		newKey = string.atoi(opt[1])
 	elif opt[0] == '--newSymbols':
 		newSymbols = opt[1]
+	elif opt[0] == '--addAsSynonym':
+		addAsSynonym = string.atoi(opt[1])
 	else:
 		showUsage()
 
@@ -185,7 +194,8 @@ if user is None or \
    eventKey is None or \
    eventReasonKey is None or \
    oldKey is None or \
-   refKey is None:
+   refKey is None or \
+   addAsSynonym is None:
 	showUsage()
 
 # required parameters based on eventKey
@@ -234,14 +244,14 @@ elif eventKey == SPLIT:
 if eventKey == WITHDRAWAL:
 	newSymbolsList = string.split(newSymbols, ',')
 	newSymbol = newSymbolsList[0]
-	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s' \
-		% (oldKey, refKey, eventReasonKey, newSymbol, newName)
+	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
+		% (oldKey, refKey, eventReasonKey, newSymbol, newName, addAsSynonym)
 elif eventKey == MERGED:
-	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d' \
-		% (oldKey, newKey, refKey, eventKey, eventReasonKey)
+	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d' \
+		% (oldKey, newKey, refKey, eventKey, eventReasonKey, addAsSynonym)
 elif eventKey == ALLELEOF:
-	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d' \
-		% (oldKey, newKey, refKey, eventReasonKey)
+	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d' \
+		% (oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
 elif eventKey == SPLIT:
 	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
 		% (oldKey, refKey, eventReasonKey, newSymbols)
