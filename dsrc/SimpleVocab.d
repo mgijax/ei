@@ -55,6 +55,7 @@ locals:
                                         -- Initialized in Select[] and Add[] events
  
 	tables : list;
+	termTable : widget;
 
 rules:
 
@@ -106,6 +107,7 @@ rules:
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
 
+	  termTable := top->Term->Table;
 	  InitOptionMenu.option := top->ACCLogicalMenu;
 	  send(InitOptionMenu, 0);
 
@@ -166,12 +168,11 @@ rules:
           cmd := mgi_setDBkey(VOC_VOCAB, NEWKEY, KEYNAME) +
                  mgi_DBinsert(VOC_VOCAB, KEYNAME) +
 		 top->mgiCitation->ObjectID->text.value + "," +
-		 top->ACCLogicalMenu->menuHistory.defaultValue + "," +
-		 top->ACCPrivate->menuHistory.defaultValue + ",1," +
+		 top->ACCLogicalMenu.menuHistory.defaultValue + "," +
+		 top->ACCPrivateMenu.menuHistory.defaultValue + ",1," +
 		 mgi_DBprstr(top->Name->text.value) + ")\n";
 
 	  send(ModifyTerm, 0);
-	  send(ModifySynonym, 0);
 
 	  AddSQL.tableID := VOC_VOCAB;
           AddSQL.cmd := cmd;
@@ -253,7 +254,6 @@ rules:
 	  end if;
 
 	  send(ModifyTerm, 0);
-	  send(ModifySynonym, 0);
 
 	  if (cmd.length > 0 or set.length > 0) then
 	    cmd := mgi_DBupdate(VOC_VOCAB, currentRecordKey, set) + cmd;
@@ -276,7 +276,6 @@ rules:
 --
 
 	ModifyTerm does
-          table : widget := top->Term->Table;
           row : integer;
           editMode : string;
           set : string := "";
@@ -294,30 +293,30 @@ rules:
 
 	  -- Check for duplicate Seq # assignments
 
-          DuplicateSeqNumInTable.table := table;
+          DuplicateSeqNumInTable.table := termTable;
           send(DuplicateSeqNumInTable, 0);
  
-          if (table.duplicateSeqNum) then
+          if (termTable.duplicateSeqNum) then
             return;
           end if;
  
           -- Process while non-empty rows are found
  
           row := 0;
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
+          while (row < mgi_tblNumRows(termTable)) do
+            editMode := mgi_tblGetCell(termTable, row, termTable.editMode);
  
             if (editMode = TBL_ROW_EMPTY) then
               break;
             end if;
  
-            currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
-            newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
-            termKey := mgi_tblGetCell(table, row, table.termKey);
-            term := mgi_tblGetCell(table, row, table.term);
-            abbrev := mgi_tblGetCell(table, row, table.abbreviation);
-            definition := mgi_tblGetCell(table, row, table.definition);
-            isObsolete := mgi_tblGetCell(table, row, table.obsoleteKey);
+            currentSeqNum := mgi_tblGetCell(termTable, row, termTable.currentSeqNum);
+            newSeqNum := mgi_tblGetCell(termTable, row, termTable.seqNum);
+            termKey := mgi_tblGetCell(termTable, row, termTable.termKey);
+            term := mgi_tblGetCell(termTable, row, termTable.term);
+            abbrev := mgi_tblGetCell(termTable, row, termTable.abbreviation);
+            definition := mgi_tblGetCell(termTable, row, termTable.definition);
+            isObsolete := mgi_tblGetCell(termTable, row, termTable.obsoleteKey);
  
 	    if (isObsolete.length = 0) then
 	      isObsolete := top->YesNoMenu.defaultOption.defaultValue;
@@ -338,13 +337,13 @@ rules:
 			newSeqNum + "," +
 			isObsolete + ")\n";
 
-	      ModifyNotes.source_widget := table;
+	      ModifyNotes.source_widget := termTable;
 	      ModifyNotes.tableID := VOC_TEXT;
 	      ModifyNotes.key := "@" + keyName;
 	      ModifyNotes.row := row;
-	      ModifyNotes.column := table.definition;
+	      ModifyNotes.column := termTable.definition;
 	      send(ModifyNotes, 0);
-	      cmd := cmd + table.sqlCmd;
+	      cmd := cmd + termTable.sqlCmd;
 
 	      ModifySynonym.termKey := "@" + keyName;
 	      send(ModifySynonym, 0);
@@ -365,13 +364,13 @@ rules:
 
               cmd := cmd + mgi_DBupdate(VOC_TERM, termKey, set);
 
-	      ModifyNotes.source_widget := table;
+	      ModifyNotes.source_widget := termTable;
 	      ModifyNotes.tableID := VOC_TEXT;
 	      ModifyNotes.key := termKey;
 	      ModifyNotes.row := row;
-	      ModifyNotes.column := table.definition;
+	      ModifyNotes.column := termTable.definition;
 	      send(ModifyNotes, 0);
-	      cmd := cmd + table.sqlCmd;
+	      cmd := cmd + termTable.sqlCmd;
 
 	      termModified := true;
 
@@ -404,7 +403,6 @@ rules:
           set : string := "";
 	  keyName : string := "synKey";
 	  keyDeclared : boolean := false;
-	  termTable : widget := top->Term->Table;
 
 	  termKey : string;
 	  synKey : string;
@@ -536,7 +534,6 @@ rules:
 
 	  results : integer := 1;
 	  row : integer := 0;
-	  table : widget;
 	  definition : string;
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -549,7 +546,7 @@ rules:
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Name->text.value         := mgi_getstr(dbproc, 6);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
-	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 9);
+	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 10);
 	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 11);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 7);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 8);
@@ -560,22 +557,20 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 	      elsif (results = 2) then
-		table := top->Term->Table;
-		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, row, table.abbreviation, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.obsoleteKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.isObsolete, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		(void) mgi_tblSetCell(termTable, row, termTable.currentSeqNum, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(termTable, row, termTable.seqNum, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(termTable, row, termTable.termKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(termTable, row, termTable.term, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(termTable, row, termTable.mgiID, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(termTable, row, termTable.abbreviation, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(termTable, row, termTable.obsoleteKey, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      elsif (results = 3) then
-		table := top->Term->Table;
 		row := 0;
-		while (mgi_tblGetCell(table, row, table.termKey) != "" and
-		       mgi_tblGetCell(table, row, table.termKey) != mgi_getstr(dbproc, 1)) do
+		while (mgi_tblGetCell(termTable, row, termTable.termKey) != "" and
+		       mgi_tblGetCell(termTable, row, termTable.termKey) != mgi_getstr(dbproc, 1)) do
 		  row := row + 1;
 		end while;
 
@@ -585,8 +580,8 @@ rules:
 		  definition := definition + mgi_getstr(dbproc, 3);
 		end if;
 
-		(void) mgi_tblSetCell(table, row, table.definition, definition);
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		(void) mgi_tblSetCell(termTable, row, termTable.definition, definition);
+		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
 	      end if;
             end while;
 	    results := results + 1;
@@ -596,7 +591,7 @@ rules:
 
 	  -- Set Option Menu for row 0
 
-	  SetOptions.source_widget := table;
+	  SetOptions.source_widget := termTable;
 	  SetOptions.row := 0;
 	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
 	  send(SetOptions, 0);
@@ -619,7 +614,6 @@ rules:
 --
 
 	SelectSynonym does
-	  termTable : widget := top->Term->Table;
 	  synTable : widget := top->Synonym->Table;
 	  row : integer := mgi_tblGetCurrentRow(termTable);
 	  termKey : string := mgi_tblGetCell(termTable, row, termTable.termKey);
@@ -678,7 +672,6 @@ rules:
           SetOption.source_widget := top->YesNoMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.obsoleteKey);
           send(SetOption, 0);
-
         end does;
 
 --
