@@ -1029,6 +1029,9 @@ rules:
 	  QueryModificationHistory.tag := tag;
 	  send(QueryModificationHistory, 0);
           where := where + top->ModificationHistory->Table.sqlCmd;
+	  if (tag = "r" and top->ModificationHistory->Table.sqlCmd.length > 0) then
+	    from_ref := true;
+	  end if;
  
           if (top->Control->References.set and
 	      (top->CreationDate.sql.length > 0 or
