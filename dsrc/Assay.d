@@ -392,16 +392,6 @@ rules:
 
         Add does
 
-	  -- removed per TR 2547
-	  -- if (prepDetailForm.name = "ProbePrepForm") then
-	  --   if (prepDetailForm->Holder->text.value.length = 0) then
-	  --     StatusReport.source_widget := top;
-	  --     StatusReport.message := "Required Field\n\n'Probe Holder'";
-	  --     send(StatusReport, 0);
-	  --     top.allowEdit := false;
-	  --   end if;
-	  -- end if;
-
           if (not top.allowEdit) then
             return;
           end if;
@@ -552,8 +542,7 @@ rules:
 
 	  cmd := cmd + "execute PRB_insertReference " +
 	         top->mgiCitation->ObjectID->text.value + "," +
-	         prepDetailForm->ProbeAccession->ObjectID->text.value + "," +
-	         mgi_DBprstr(prepDetailForm->Holder->text.value) + "\n";
+	         prepDetailForm->ProbeAccession->ObjectID->text.value + "\n";
 	end
 
 --
