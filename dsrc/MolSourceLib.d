@@ -574,6 +574,7 @@ rules:
 	  row : integer := ModifySequenceSource.row;
 	  age : string := "";
 	  isAnon : string := YES;
+	  strainKey : string := "";
 
 	  age := mgi_tblGetCell(table, row, table.agePrefix);
 	  if (mgi_tblGetCell(table, row, table.ageRange) != "") then
@@ -584,13 +585,17 @@ rules:
 	    isAnon := NO;
 	  end if;
 
+	  -- VerifyStrain puts a trailing "," in the strainKeys field
+	  -- We need to remove this...
+	  strainKey := mgi_tblGetCell(table, row, table.strainKeys);
+
 	  table.sqlCmd := "exec PRB_processSequenceSource " +
 	      isAnon + "," +
 	      mgi_tblGetCell(table, row, table.assocKey) + "," +
 	      sequenceKey + "," +
 	      mgi_tblGetCell(table, row, table.sourceKey) + "," +
 	      mgi_tblGetCell(table, row, table.organismKey) + "," +
-	      mgi_tblGetCell(table, row, table.strainKeys) + "," +
+	      strainKey->substr(1, strainKey.length - 2) + "," +
 	      mgi_tblGetCell(table, row, table.tissueKey) + "," +
 	      mgi_tblGetCell(table, row, table.genderKey) + "," +
 	      mgi_tblGetCell(table, row, table.cellLineKey) + "," +
