@@ -93,7 +93,7 @@ devents:
 
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
-	Add :local [];
+	Add :local [broadcast : boolean := false;];
 	BuildDynamicComponents :local [];
 	Delete :local [];
 	Exit :local [];
@@ -317,16 +317,18 @@ rules:
 	    top->AccessionID->text.value := "";
 	  end if;
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
+	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED) and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
             StatusReport.source_widget := top;
             StatusReport.message := "Primary Reference Required.";
             send(StatusReport);
+	    top->QueryList->List.sqlSuccessful := false;
             return;
 	  end if;
 
 	  if (not top.allowEdit) then
+	    top->QueryList->List.sqlSuccessful := false;
 	    return;
 	  end if;
 
@@ -334,6 +336,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "This Chromosome value is no longer valid.\n";
             send(StatusReport);
+	    top->QueryList->List.sqlSuccessful := false;
 	    return;
 	  end if;
 
@@ -351,6 +354,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "Invalid Editor: " + global_login + "\n";
             send(StatusReport);
+	    top->QueryList->List.sqlSuccessful := false;
 	    return;
 	  end if;
 
@@ -1302,7 +1306,7 @@ rules:
           	  send(SetOptions, 0);
 		end if;
 
-	      elsif (results = 6) then
+	      elsif (results = 7) then
 		table := top->GeneFamily->Table;
                 (void) mgi_tblSetCell(table, row, table.familyCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.familyKey, mgi_getstr(dbproc, 1));
@@ -1437,13 +1441,20 @@ rules:
 	  elsif (broadcastType = 2) then
 	    message := message + "\n" + top->Symbol->text.value;
 	    if (currentNomenKey.length > 0) then
+	      if ((mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
+                   mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
+                StatusReport.source_widget := top;
+                StatusReport.message := "Primary Reference Required.";
+                send(StatusReport);
+                return;
+	      end if;
 	      recordCount := 1;
 	      broadcastOK := true;
 	    end if;
 	  elsif (broadcastType = 3) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select symbol from " + mgi_DBtable(MRK_NOMEN) + 
-		  " where _Marker_Status_key = 4";
+		  " where _Marker_Status_key = " + STATUS_NAPPROVED;
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
               (void) dbsqlexec(dbproc);
@@ -1464,7 +1475,7 @@ rules:
 		  mgi_DBtable(MRK_NOMEN) + " n," +
 		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r," +
 		  mgi_DBtable(MRK_NOMEN_USER_VIEW) + " u " +
-		  " where n._Marker_Status_key = 1" +
+		  " where n._Marker_Status_key = " + STATUS_PENDING +
 		  " and n._Suid_key = u.suid" +
 		  " and u.name = (select user_name())" +
 		  " and n._Nomen_key = r._Nomen_key" +
@@ -1487,7 +1498,7 @@ rules:
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(MRK_NOMEN) + " n," +
 		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r" +
-		  " where n._Marker_Status_key = 4" +
+		  " where n._Marker_Status_key = " + STATUS_NAPPROVED +
 		  " and n._Nomen_key = r._Nomen_key" +
 		  " and r.isPrimary = 1" +
 		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
@@ -1564,6 +1575,7 @@ rules:
 
 	  -- add the Nomen record
 
+	  Add.broadcast := true;
 	  send(Add, 0);
 
 	  -- if Add was successful, broadcast to Nomen
