@@ -1,33 +1,66 @@
 
-Export the EI you want to build (if it not already built) to
-a "build" directory.  The default is /usr/local/mgi/ei/ei_build.
+1.  Export the EI you want to build into /usr/local/mgi/ei/ei_build:
 
-Note that exporting the EI is NOT an installation of the EI!!!
+    Note that exporting the EI is NOT an installation of the EI!!!
+    
+    cd /usr/local/mgi/ei/ei_build
+    cvs export -r ei-tag -d ei-tag ei
 
-cd /usr/local/mgi/ei/ei_build
-cvs export -r ei-tag -d ei-tag ei
-cd ei-tag
-cp Configuration.default Configuration
-edit Configuration file carefully and appropriately
+2.  Link /usr/local/mgi/ei/ei_build/ei-tag to /usr/local/mgi/ei/ei_build/ei
 
-Build/Install:
+    rm -rf ei	(remove existing link)
+    ln -s ei-tag ei
 
-To build an application:
+3.  Edit Configuration file:
 
-buildapp mgd [compiled]
+    cd ei-tag
+    cp Configuration.default Configuration
+    edit Configuration file carefully and appropriately
 
-To install an application:
+    on rohan (development):
+	setenv EIINSTALLDIR /usr/local/mgi/ei/dev
+	setenv USERLOG  $HOME/.eidev-log
+	setenv DSQUERY DEV_MGI
+	setenv MGD mgd_release
+	setenv NOMEN nomen_release
 
-installapp mgd [compiled]
+    on shire (production):
+	use defaults
 
-To build all applications:
+4.  Building
 
-buildall [compiled]
+    note: install also does a build.  so, if you're ultimate
+    goal is to install the application, you can skip this step.
 
-To install all applications:
+    one application:
 
-installall [compiled]
+    	buildapp mgd compiled
 
-To run:
+    all applications:
 
-$INSTALLDIRECTORY/runapp mgi
+    	buildall compiled
+
+    For production and integration/beta testing, install compiled.
+    For debugging, leave off "compiled" option.
+
+5.  Installing
+
+    one application:
+
+    	installapp mgd compiled
+
+    all applications:
+
+    	installall compiled
+
+    For production and integration/beta testing, install compiled.
+    For debugging, leave off "compiled" option.
+
+6.  Running:
+
+    rohan:
+    	/usr/local/mgi/ei/dev/runapp mgi
+
+    shire:
+    	/usr/local/mgi/ei/prod/runapp mgi
+

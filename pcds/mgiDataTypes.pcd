@@ -1,8 +1,8 @@
 Module: mgiDataTypes
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jun  5 12:58:19 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Fri May  9 12:03:43 2003";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -992,7 +992,7 @@ Shift<Key>Tab: prev-tab-group()
           mgiNoteForm = XmRowColumn;
           Group: Widget
             orientation = vertical;
-            userDefinedAttributes = "sql:String(String)\nsqlFrom:String\nsqlWhere:String\n";
+            userDefinedAttributes = "sql:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\n";
           Group: Control
             vipComment = "";
             vip_x = 60;
@@ -1039,6 +1039,7 @@ Shift<Key>Tab: prev-tab-group()
                       text = scrolledText : mgiDataTypes;
                       Group: Widget
                         maxLength = 255;
+                        rows = 4;
                     }
               }
               {

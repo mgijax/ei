@@ -22,6 +22,8 @@ DisplayMolecularSource [source_widget : widget;		-- Display Molecular Source inf
 		        key : string;			-- Record key
 			master : boolean := false;];	-- Use master table conditions
 
+InitMolecularSource [source_widget : widget;];		-- Initialie Mol Source form
+
 ModifyMolecularSource [source_widget : widget;];	-- Construct SQL for updating Mol Source record
 
 SelectMolecularSource [source_widget : widget;  	-- Construct SQL for querying Mol Source record

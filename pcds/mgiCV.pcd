@@ -1,8 +1,8 @@
 Module: mgiCV
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 28 11:10:25 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Mon Mar 10 10:15:57 2003";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -200,19 +200,6 @@ Module: mgiCV
                           }
                           {
                             SexMenu = SexMenu : mgiOption;
-                                Popups:
-                                {
-                                  SexPulldown = OptionPulldown : mgiOption;
-                                  Group: User
-                                    tableForm = GelLane;
-                                    tableOptionKey = 9;
-                                    tableOption = 20;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
                           }
                           {
                             GelUnitsMenu = GelUnitsMenu : mgiOption;
@@ -344,19 +331,6 @@ Module: mgiCV
                           }
                           {
                             SexMenu = SexMenu : mgiOption;
-                                Popups:
-                                {
-                                  SexPulldown = OptionPulldown : mgiOption;
-                                  Group: User
-                                    tableOption = 17;
-                                    tableOptionKey = 8;
-                                    tableForm = Specimen;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
                           }
                           {
                             FixationMenu = FixationMenu : mgiOption;

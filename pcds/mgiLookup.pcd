@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Nov  5 09:59:10 2002";
+      lastWritten = "Fri Apr 25 09:08:03 2003";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -107,7 +107,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 800;
           Group: User
-            cmd = "select -1, name = \"Anonymous\"\nselect _Source_key, name from PRB_Source\nwhere name is not null and name != \"Anonymous\" and _Source_key > 0\norder by name";
+            cmd = "select _Source_key, name from PRB_Source where name is not null and _Source_key > 0 order by name";
               {
                 Label = LookupLabel;
                 Group: Widget

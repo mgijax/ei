@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 12 08:12:28 2003";
+      lastWritten = "Wed May 28 13:21:35 2003";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -306,10 +306,16 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle : mgiOption;
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -1991,59 +1997,8 @@ Module: MGD
                                       }
                                       {
                                         AccSourceMenu = AccSourceMenu;
-                                        Group: User
-                                          defaultOption = WashU;
-                                            Popups:
-                                            {
-                                              AccSourcePulldown = OptionPulldown;
-                                                  {
-                                                    MGI = AccToggle;
-                                                  }
-                                                  {
-                                                    J = AccToggle;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
-                                                    PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    SWISSPROT = AccToggle;
-                                                  }
-                                                  {
-                                                    TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UniGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
-                                                    ATCC = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                            }
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                                 {
@@ -2479,7 +2434,8 @@ Module: MGD
                     {
                       Table = mgiTable;
                       Group: Widget
-                        xrtTblVisibleRows = 3;
+                        xrtTblVisibleRows = 6;
+                        xrtTblNumRows = 10;
                     }
                     {
                       Add = TablePush;
@@ -2519,12 +2475,20 @@ Module: MGD
                                   TrEMBL = AccToggle : mgiOption;
                                 }
                                 {
-                                  WashU = AccToggle;
+                                  PDB = AccToggle : mgiOption;
+                                }
+                                {
+                                  IMAGE = AccToggle;
                                   Group: Widget
                                     managed = True;
                                 }
                                 {
-                                  IMAGE = AccToggle;
+                                  MGC = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                                {
+                                  WashU = AccToggle;
                                   Group: Widget
                                     managed = True;
                                 }
@@ -2608,7 +2572,7 @@ Module: MGD
                   bottomAttachment = attach_none;
                   resizable = true;
                   topWidget = mgiCitation;
-                  topOffset = 20;
+                  topOffset = 5;
                   rightOffset = 2;
                     {
                       label = XmLabel;
@@ -2631,7 +2595,7 @@ Module: MGD
                   leftWidget = AccRef;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = AccRef;
+                  topWidget = Alias;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -2724,10 +2688,10 @@ Module: MGD
                 Alias = Table : mgiTable;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = RFLV;
+                  leftWidget = HasSequence;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = RFLV;
+                  topWidget = HasSequence;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
@@ -2742,7 +2706,7 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-1 0)";
                         xrtTblTraversableSeries = "(all 0-1 False)";
                         userDefinedAttributes = "aliasKey:Int=\"1\"\nalias:Int=\"2\"\n";
-                        xrtTblVisibleRows = 3;
+                        xrtTblVisibleRows = 2;
                     }
               }
         }
@@ -2890,6 +2854,33 @@ Module: MGD
                                       }
                                 }
                           }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:Clear(clearLists = 3)";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2937,6 +2928,218 @@ Module: MGD
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                           leftOffset = 5;
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Clear(clearLists = 3)";
+                                }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                        Group: User
+                                          showMGI = False;
+                                      }
+                                      {
+                                        Add = TablePush;
+                                      }
+                                      {
+                                        Delete = TablePush;
+                                      }
+                                      {
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
+                                        Group: User
+                                          defaultOption = IMAGELibrary;
+                                            Popups:
+                                            {
+                                              AccSourcePulldown = OptionPulldown;
+                                                  {
+                                                    MGI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    J = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Medline = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NSequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ATCC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MRK = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CREX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HYEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    INEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    FSEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TEXT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TXEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PMEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    E = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENCluster = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    InterPro = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Taxon = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TIGR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DOTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMMA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Harwell = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ORNL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGELibrary = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    dbESTLibrary = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                            }
                                       }
                                 }
                           }
@@ -3021,7 +3224,7 @@ Module: MGD
                     {
                       text = scrolledText;
                       Group: Widget
-                        rows = 40;
+                        rows = 25;
                     }
               }
         }
@@ -3029,7 +3232,7 @@ Module: MGD
           ExptForm = EditForm : MGI;
           Group: Widget
             width = 600;
-            height = 700;
+            height = 800;
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
@@ -4189,6 +4392,11 @@ Module: MGD
                   bottomOffset = 2;
                   resizable = true;
                   topOffset = 2;
+                    {
+                      Table = mgiTable;
+                      Group: Widget
+                        xrtTblVisibleRows = 2;
+                    }
               }
         }
         {
@@ -4375,7 +4583,7 @@ Module: MGD
                       text = scrolledText;
                       Group: Widget
                         columns = 90;
-                        rows = 5;
+                        rows = 10;
                     }
               }
               {
@@ -4542,9 +4750,10 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-5 0)";
                         xrtTblTraversableSeries = "(all 0-6 False)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 2;
+                        xrtTblVisibleRows = 10;
                         xrtTblMaxLengthSeries = "(all 7 25)(all 8 20)(all 9 80)(all 10 255)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
+                        xrtTblNumRows = 15;
                       Group: User
                         seqNum = 6;
                         saveTraversableSeries = "(all 0-6 False)";
@@ -4810,7 +5019,7 @@ Module: MGD
                         width = 600;
                         rubberPositioning = False;
                         resizePolicy = resize_any;
-                        height = 750;
+                        height = 800;
                           {
                             ID = ID;
                           }
@@ -5034,10 +5243,16 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -6386,10 +6601,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle : mgiOption;
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -6539,10 +6760,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -7609,7 +7836,7 @@ Shift<Key>Tab: prev-tab-group()
                       AgeMax = ID : mgiDataTypes;
                     }
                     {
-                      SexMenu = SexMenu : mgiOption;
+                      GenderMenu = GenderMenu : mgiOption;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Age;
@@ -7891,15 +8118,15 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)";
-                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Event Reason";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)(all 14 12)";
+                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
                                           xrtTblEditableSeries = "(all 0-6 False)";
                                           xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 25)(all 8 255)(all 9-10 10)(all 11-13 255)";
-                                          xrtTblNumColumns = 14;
+                                          xrtTblNumColumns = 15;
                                           xrtTblPixelWidthSeries = "(all 0-5 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int=\"4\"\neventReasonKey:Int=\"5\"\neventReason:Int=\"13\"\n";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
                                           xrtTblVisibleRows = 4;
                                           xrtTblAllowCellResize = resize_horizontal;
                                           xrtTblEnterCellCallback = "D:SetOptions";
@@ -8061,10 +8288,18 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    PDB = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8294,10 +8529,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8904,7 +9145,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  markerDescription = mgiNote : mgiDataTypes;
+                                  markerDescription = mgiNoteShort : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_opposite_widget;
@@ -8914,11 +9155,24 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightWidget = InheritanceModeMenu;
+                                  Group: Control
+                                    vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
                                       {
                                         Note = Notes : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Marker Detail Clip";
+                                            }
+                                            {
+                                              text = scrolledText : mgiDataTypes;
+                                              Group: Widget
+                                                maxLength = 300;
+                                                shadowThickness = 6;
+                                            }
                                       }
                                       {
-                                        NotePush = NotePush : mgiDataTypes;
+                                        NotePush = NotePushShort : mgiDataTypes;
                                         Group: Widget
                                           labelString = "Marker Detail Clip";
                                       }
@@ -9649,10 +9903,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle : mgiOption;
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
