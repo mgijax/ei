@@ -23,6 +23,9 @@
 --
 -- History:
 --
+-- lec	03/12/2001
+--	Added "end does;" for all events
+--
 -- lec	12/29/2000
 --	TR 1971; added VerifyAcc
 --
@@ -125,7 +128,7 @@ rules:
 	  (void) mgi_tblSetCell(table, row, table.logicalKey, source.defaultValue);
 	  (void) mgi_tblSetCell(table, row, table.accName, source.labelString);
 	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
-	end
+	end does;
 
 --
 -- InitAcc
@@ -168,7 +171,7 @@ rules:
 	  table.sqlFrom := "";
 	  table.sqlWhere := "";
 	  table.sqlCmd := "";
-	end
+	end does;
 
 --
 -- LoadAcc
@@ -275,7 +278,7 @@ rules:
 	  end if;
 
           source.menuHistory := source.defaultOption;
-	end
+	end does;
 
 --
 -- ProcessAcc
@@ -442,7 +445,7 @@ rules:
 	  -- The sqlCmd should be concatenated onto other commands for execution in the
 	  -- calling event of the specific form (see Marker.d/Add)
 	  table.sqlCmd := cmd;
-	end
+	end does;
 
 --
 -- SearchAcc
@@ -531,7 +534,7 @@ rules:
 	    end if;
             r := r + 1;
 	  end while;
-	end
+	end does;
 
 --
 -- SetAccSourceMenu
