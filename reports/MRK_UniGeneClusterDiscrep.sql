@@ -11,10 +11,9 @@
 #	MRK_UniGeneClusterDiscrp.sql MGD mgd
 #
 
-
-
 setenv DSQUERY $1
 setenv MGD $2
+
 if ${?HOME} then
     set rpt=${HOME}/mgireport/$0.rpt
 else
@@ -23,10 +22,11 @@ endif
 
 header.sh $0
 
-isql -S$DSQUERY -Umgd_public -Pmgdpub -w200 -e <<END >> $rpt
+isql -S$DSQUERY -Umgd_public -Pmgdpub -w200 <<END >> $rpt
 
 use $MGD
 go
+
 select accID, _Object_key
 into #ug
 from ACC_Accession
@@ -55,7 +55,9 @@ and #ug._Object_key = m._Marker_key
 order by accID, chromosome, symbol
 
 go
+
 quit
+
 END
 
-## cat trailer >> $rpt
+cat trailer >> $rpt
