@@ -12,9 +12,6 @@
 --
 -- History
 --
--- 08/15/2002
---	- TR 1463; Species replaced with Organism
---
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -97,6 +94,8 @@ devents:
 	Exit :local [];
 	Init :local [];
 
+	MolecularSourceExit : global [];	-- defined in MolecularSource.d
+
 	Modify :local [];
 	ModifyMarker :local [];
 	ModifyReference :local [];
@@ -163,9 +162,9 @@ rules:
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize
 	  send(Init, 0);
@@ -1765,6 +1764,11 @@ rules:
 --
 
 	Exit does
+
+	  if (mgi->MolecularSourceModule != nil) then
+	    send(MolecularSourceExit, 0);
+	  end if;
+
 	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;

@@ -104,9 +104,9 @@ rules:
 
 	  send(Init, 0);
 
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  top->AntigenAccession.tableID := GXD_ANTIGEN;
 

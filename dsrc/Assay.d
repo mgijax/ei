@@ -184,6 +184,8 @@ devents:
 	DeleteGelBand :local [];
 	DetectISResultModification :local [];
 	Duplicate :local [];
+
+	GenotypeExit :global [];	-- defined in Genotype.d
 	Exit :local [];
 
 	Init :local [];
@@ -263,9 +265,9 @@ rules:
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  send(Init, 0);
 
@@ -2827,12 +2829,8 @@ rules:
 
 	Exit does
 
-	  -- exiting using window manager causes problems, so check first
-
-	  if (Exit.source_name = "Exit") then
-	    if (mgi->GenotypeModule != nil) then
-	      mgi->GenotypeModule.destroy_widget;
-	    end if;
+	  if (mgi->GenotypeModule != nil) then
+	    send(GenotypeExit, 0);
 	  end if;
 
   	  ab.sensitive := true;

@@ -212,9 +212,9 @@ rules:
 
 	  -- Prevent multiple instances of the Nomen form
 
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize
 	  send(Init, 0);

@@ -13,11 +13,8 @@
 --
 -- History
 --
--- 08/15/2002
---	- TR 1463; Species replaced with Organism
---
 -- lec 09/26/2001
---      - TR 2714/Probe Species Menu
+--      - TR 2714/Probe  Menu
 --
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
@@ -38,7 +35,7 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [];
 	Delete :local [];
-	Exit :local [];
+	MolecularSourceExit :global [];
 	Modify :local [];
 	PrepareSearch :local [];
 	Search :local [];
@@ -69,9 +66,9 @@ rules:
           InitOptionMenu.option := top->ProbeOrganismMenu;
           send(InitOptionMenu, 0);
 
-          ab := mgi->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -240,17 +237,8 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
 
-	Exit does
-
-	  -- exiting using window manager causes problems, so check first
-
-	  if (Exit.source_name = "Exit") then
-	    if (mgi->MolecularSource != nil) then
-              mgi->MolecularSource.sensitive := true;
-	    end if;
-	  end if;
-
-          ab.sensitive := true;
+	MolecularSourceExit does
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

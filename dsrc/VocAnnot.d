@@ -38,7 +38,7 @@ devents:
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];		-- Build Dynamic widget components
 	Delete :local [];				-- Delete record
-	Exit :local [];					-- Destroys D module instance & cleans up
+	VocAnnotExit :global [];			-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
@@ -98,7 +98,7 @@ rules:
 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize Global variables, Clear form, etc.
 	  send(Init, 0);
@@ -868,7 +868,7 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
  
-        Exit does
+        VocAnnotExit does
 	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;

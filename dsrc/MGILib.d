@@ -97,7 +97,7 @@ rules:
 
 	  (void) mgi_tblSetReasonValues();
 
-	  top.show;
+	  top.managed := true;
 
 	  envList := create list("string");
 	  envList.append("EIAPP");
@@ -186,7 +186,7 @@ rules:
 	    end if;
 
 	    destroy mgi;
-	    top.show;
+	    top.managed := true;
 	    (void) mgi_writeLog(get_time() + "Logged in to Application.\n\n");
 	  end if;
 

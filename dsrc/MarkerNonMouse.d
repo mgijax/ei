@@ -90,9 +90,9 @@ rules:
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
-          ab := mgi->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize
 	  send(Init, 0);

@@ -134,9 +134,9 @@ rules:
 
           top := create widget("DictionaryModule", nil, mgi);
 
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-          top.show;
+          top.managed := true;
 
           send(Init, 0);
 

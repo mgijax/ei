@@ -81,12 +81,12 @@ rules:
 
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
-          ab := mgi->mgiModules->(top.activateButtonName);
+          ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize Global variables, Clear form, etc.
 	  send(Init, 0);
