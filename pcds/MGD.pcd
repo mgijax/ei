@@ -9087,7 +9087,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:Clear(clearLists = 3)";
+                                    activateCallback = "D:ClearAllele";
                                 }
                                 {
                                   Modify = ControlPush;
