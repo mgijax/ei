@@ -344,6 +344,7 @@ rules:
 	  -- Row Labels which appear in Table
 	  nonstatusLabels.insert("Tumor", nonstatusLabels.count + 1);
 	  nonstatusLabels.insert("SCC", nonstatusLabels.count + 1);
+	  nonstatusLabels.insert("Matrix", nonstatusLabels.count + 1);
 	  nonstatusLabels.insert("Chromosome Committee", nonstatusLabels.count + 1);
 
 	  -- Values used in Reference "dbs" string
@@ -395,7 +396,7 @@ rules:
 	  -- Set appropriate table attritbutes
 	  table.batch;
 	  table.xrtTblRowLabels := labels->substr(1, labels.length - 1);
-	  table.xrtTblVisibleRows := row;
+	  table.xrtTblVisibleRows := top->DataSets->RefDBSStatus->Table.xrtTblVisibleRows;
 	  table.dataSets := dbs->substr(1, dbs.length - 1);
 	  table.unbatch;
 	end does;
