@@ -241,37 +241,54 @@ rules:
 	      -- Find the LogicalDB in AccSourcePulldown which
 	      -- matches the LogicalDB for the returned Accession ID
 
-              while (i <= source.subMenuId.num_children) do
-                if (logicalDBkey = source.subMenuId.child(i).defaultValue) then
-                  if (((integer) logicalDBkey = 1 and 
-			prefix = source.subMenuId.child(i).labelString) or
-			(integer) logicalDBkey > 1) then
-                    source.menuHistory := source.subMenuId.child(i);
+	      if (source.managed) then
+                while (i <= source.subMenuId.num_children) do
+                  if (logicalDBkey = source.subMenuId.child(i).defaultValue) then
+                    if (((integer) logicalDBkey = 1 and 
+			  prefix = source.subMenuId.child(i).labelString) or
+			  (integer) logicalDBkey > 1) then
+                      source.menuHistory := source.subMenuId.child(i);
+		      break;
+		    end if;
+                  end if;
+                  i := i + 1;
+                end while;
+
+	        -- Find row in accession table where logicalDBkey = table.logicalKey
+	        i := 0;
+	        while (i < mgi_tblNumRows(table)) do
+		  if (mgi_tblGetCell(table, i, table.logicalKey) = logicalDBkey and
+			  mgi_tblGetCell(table, i, table.accKey) = "") then
 		    break;
 		  end if;
-                end if;
-                i := i + 1;
-              end while;
+	  	  i := i + 1;
+	        end while;
 
-	      -- Find row in accession table where logicalDBkey = table.logicalKey
-	      i := 0;
-	      while (i < mgi_tblNumRows(table)) do
-		if (mgi_tblGetCell(table, i, table.logicalKey) = logicalDBkey and
-			mgi_tblGetCell(table, i, table.accKey) = "") then
-		  break;
-		end if;
-		i := i + 1;
-	      end while;
+	      else
+
+	        -- Find next empty row in accession table
+	        i := 0;
+	        while (i < mgi_tblNumRows(table)) do
+		  if (mgi_tblGetCell(table, i, table.accKey) = "") then
+		    break;
+		  end if;
+	  	  i := i + 1;
+	        end while;
+
+	      end if;	-- if source.managed
 
 	      if (i < mgi_tblNumRows(table)) then
-		row := i;
+	        row := i;
 	      end if;
 
 	      -- Set the _LogicalDB_key, _Accession_key and Logical DB Name
 
 	      (void) mgi_tblSetCell(table, row, table.logicalKey, logicalDBkey);
 	      (void) mgi_tblSetCell(table, row, table.accKey, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(table, row, table.accName, source.menuHistory.labelString);
+
+	      if (source.managed) then
+	        (void) mgi_tblSetCell(table, row, table.accName, source.menuHistory.labelString);
+	      end if;
 
 	      if (table.is_defined("refsKey") != nil) then
 	        (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 7));

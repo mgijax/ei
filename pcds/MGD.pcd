@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Apr 30 13:52:40 2004";
+      lastWritten = "Fri Apr 30 15:40:48 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11118,8 +11118,9 @@ Shift<Key>Tab: prev-tab-group()
                                     xrtTblCharWidthSeries = "(all 0 1) (all 3 30) (all 4 30) (all 5 20)";
                                     xrtTblEditableSeries = "(all 0 False) (all 3 False) (all 5 False)";
                                     xrtTblTraversableSeries = "(all 0 False) (all 3 False) (all 5 False)";
-                                    xrtTblVisibleRows = 8;
+                                    xrtTblVisibleRows = 5;
                                     xrtTblNumRows = 10;
+                                    xrtTblPixelWidthSeries = "(all 0-3 0)";
                                   Group: User
                                     showMGI = False;
                                       {
@@ -11141,6 +11142,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   AccSourceMenu = AccSourceMenu : mgiOption;
+                                  Group: Widget
+                                    managed = False;
                                   Group: User
                                     defaultOption = NSequence;
                                       Popups:
@@ -11388,7 +11391,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Table = mgiTable;
                                   Group: Widget
                                     xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 8;
+                                    xrtTblVisibleRows = 15;
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 15)(all 8 35)";
                                       {
                                         label = XtXrtLabel;
@@ -11435,7 +11438,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Table = mgiTable : mgiTable;
                                   Group: Widget
                                     xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 8;
+                                    xrtTblVisibleRows = 15;
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 20)(all 5 30)(all 6 10)";
                                       {
                                         label = XtXrtLabel;
