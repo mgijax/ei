@@ -1,14 +1,14 @@
 
 !
 ! VIP init file
-! written: Mon Feb 25 10:07:01 2002
+! written: Tue Dec 21 10:30:14 2004
 !
 
 session_information {
-  x       = 379
-  y       = 236
-  width   = 881
-  height  = 747
+  x       = 926
+  y       = 0
+  width   = 979
+  height  = 862
   display = ":0.0"
 }
 
@@ -40,7 +40,7 @@ pcds
 
   load "/home/lec/ei/ei-maint6300/pcds/MGD.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 836
 
@@ -125,6 +125,12 @@ pcds
     opened      = false
     show_names  = false
     height      = 176
+
+  load "/home/lec/ei/ei-maint6300/pcds/mgiNoteBook.pcd"
+    floating    = false
+    opened      = false
+    show_names  = false
+    height      = 66
 
 }
 
