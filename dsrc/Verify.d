@@ -1507,7 +1507,7 @@ rules:
 	      if (tableID = STRAIN) then
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
-		       mgi_DBprstr(item.value) + ",0,0)\n" +
+		       mgi_DBprstr(item.value) + ",0,0,0)\n" +
 		       mgi_DBinsert(MLP_STRAIN, NOKEY) + "@" + KEYNAME + ",-1,NULL,NULL)\n" +
 		       mgi_DBinsert(MLP_NOTES, NOKEY) + "@" + KEYNAME + ",NULL,NULL,NULL,NULL,NULL,NULL)\n";
 	      else
