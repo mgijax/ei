@@ -1,3 +1,13 @@
+TAG: ei-7-0-24
+DATE: 05/28/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 3730/tables.c/mgi_tblSetCell/use XmString
+   pcds/mgiTable.pcd; explicitly set
+   xrtTblXmStringGetMode = get_xmstring;
+   xrtTblXmStringSetMode = set_xmstring;
+
 TAG: ei-7-0-23
 DATE: 05/15/2002
 STAFF: lec
