@@ -44,6 +44,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget;
+	ab : widget;
 
 	cmd : string;
 	from : string;
@@ -65,7 +66,7 @@ rules:
           InitOptionMenu.option := top->ProbeSpeciesMenu;
           send(InitOptionMenu, 0);
 
-          ab : widget := mgi->(top.activateButtonName);
+          ab := mgi->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -240,6 +241,7 @@ rules:
 	  if (mgi->MolecularSource != nil) then
             mgi->MolecularSource.sensitive := true;
 	  end if;
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

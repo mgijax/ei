@@ -44,6 +44,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget;
+	ab : widget;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -68,7 +69,7 @@ rules:
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -442,6 +443,7 @@ rules:
 --
 
 	Exit does
+          ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

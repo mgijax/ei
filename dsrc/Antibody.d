@@ -65,6 +65,7 @@ devents:
 locals:
 	mgi : widget;		-- Main Application Widget
 	top : widget;		-- Local Application Widget
+	ab : widget;		-- Activation Button Widget
 	accTable : widget;	-- Accession Table Widget
 
 	options : list;		-- List of Option Menus
@@ -97,7 +98,7 @@ rules:
 
 	  send(Init, 0);
 
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -898,6 +899,7 @@ rules:
 --
 
 	Exit does
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

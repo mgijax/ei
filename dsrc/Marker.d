@@ -163,6 +163,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget;
+	ab : widget;
 	accTable : widget;
 	accRefTable : widget;
 
@@ -202,7 +203,7 @@ rules:
 	  send(BuildDynamicComponents, 0);
 
 	  -- Prevent multiple instances of the Marker form
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -2024,6 +2025,7 @@ rules:
 --
 
 	Exit does
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

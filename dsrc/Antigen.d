@@ -52,6 +52,7 @@ devents:
 locals:
 	mgi : widget;		-- Main Application Widget
 	top : widget;		-- Local Application Widget
+	ab : widget;
 	accTable : widget;	-- Accession Table Widget
 
 	cmd : string;
@@ -83,7 +84,7 @@ rules:
           InitOptionMenu.option := top->SourceForm->ProbeSpeciesMenu;
           send(InitOptionMenu, 0);
 
-	  ab : widget := mgi->mgiModules->(top.activateButtonName);
+	  ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -420,6 +421,7 @@ rules:
 --
 
 	Exit does
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

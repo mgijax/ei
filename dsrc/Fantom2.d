@@ -71,6 +71,7 @@ devents:
 locals:
 	mgi : widget;			-- Top-level shell of Application
 	top : widget;			-- Top-level shell of Module
+	ab : widget;
 
 	select : string;		-- global SQL select clause
 	from : string;			-- global SQL from clause
@@ -79,8 +80,6 @@ locals:
 
 	fantom : widget;
 	menus : list;
-
-        ab : widget;
 
 	searchEvent : devent;
 

@@ -49,6 +49,7 @@ devents:
 locals:
 	mgi : widget;			-- Top-level shell of Application
 	top : widget;			-- Top-level shell of Module
+	ab: widget;			-- Activation Button 
 	accTable : widget;		-- Accession Table widget (optional)
 
 	from : string;			-- global SQL from clause
@@ -81,7 +82,7 @@ rules:
  
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 
 	  -- Create windows for all widgets in the widget hierarchy
@@ -335,6 +336,7 @@ rules:
 --
  
         Exit does
+	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;
           send(ExitWindow, 0);

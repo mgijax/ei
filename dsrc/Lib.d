@@ -378,41 +378,10 @@ rules:
         ExitWindow does
 	  top : widget := ExitWindow.source_widget.root;
 	  mgi : widget := ExitWindow.source_widget.find_ancestor(global_application);
-	  module : widget;
 	  dialog : widget;
 	  i : integer := 1;
-	  slist : string_list;
-	  activateButton : string := "";
 
           if (top.mapped) then
-	    -- Re-sensitive activate button
-	    --
-	    -- The name of the activate button is the name of the
-	    -- top-level shell minus the word "Module".
-	    -- We have a user-defined attribute of "activateButtonName"
-	    -- for the top-level shell, BUT when the window is closed
-	    -- using the window environment's "Close" (as opposed to the
-	    -- application File->Exit), the UDAs are not found...
-	    --
-	    -- An activation may take place from the main menu (mgiModules)
-	    -- or from within another form under mgi->Edit
-
-	    if (top->activateButtonName = nil) then
-	      slist := mgi_splitfields(top.name, "Module");
-	      activateButton := slist[1];
-	    else
-	      activateButton := top.activateButtonName;
-	    end if;
-
-	    module := mgi->mgiModules->(activateButton);
-	    if (module != nil) then
-	      module.sensitive := true;
-	    end if;
-
-	    module := mgi->EditPulldown->(activateButton);
-	    if (module != nil) then
-	      module.sensitive := true;
-	    end if;
 
 	    -- Unmanage any dialogs which are still active
             while (i <= mgi.initDialog.count) do
