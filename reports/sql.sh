@@ -3,12 +3,17 @@
 #
 # Wrapper for generating SQL reports
 #
-# usage:  sql.sh <database> <file containing SQL commands>
+# usage:  sql.sh <database> <file containing SQL commands> <output directory>
 #
 
 setenv DATABASE	$1
 setenv SQL	$2
-setenv OUTPUT	$EIREPORTDIR/$SQL.rpt
+
+if (${#argv} > 2) then
+	setenv OUTPUT	$3/`basename $SQL`.rpt
+else
+	setenv OUTPUT	$EIREPORTDIR/$SQL.rpt
+endif
 
 cat > $OUTPUT <<END
 The Jackson Laboratory - Mouse Genome Informatics - Mouse Genome Database (MGD)
