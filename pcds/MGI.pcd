@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 12 08:11:09 2003";
+      lastWritten = "Tue Feb 25 14:20:03 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -1153,7 +1153,6 @@ Module: MGI
                             EditForm = EditForm : MGI;
                             Group: Widget
                               rubberPositioning = False;
-                              resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
                                 }
@@ -1207,7 +1206,7 @@ Module: MGI
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = mgiAccession;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = mgiAccession;
                                     topOffset = 10;
@@ -1218,16 +1217,18 @@ Module: MGI
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 15;
-                                          xrtTblNumColumns = 21;
-                                          xrtTblColumnLabels = "Mode,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Editor,Date,Notes";
+                                          xrtTblNumColumns = 23;
+                                          xrtTblColumnLabels = "Mode,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Modified By,Date,Notes,Created By,Date";
                                           xrtTblPixelWidthSeries = "(all 0-9 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 5)(all 12 25)(all 13 3)(all 15 10)(all 16 10)(all 17 20)(all 18 6)(all 19 10)(all 20 5)";
-                                          xrtTblAllowCellResize = resize_horizontal;
-                                          xrtTblDisplayHorizScrollBar = dispsb_as_needed;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nnotKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\ndag:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\ninferredFrom:Int(Int)=\"17\"\neditor:Int(Int)=\"18\"\nmodifiedDate:Int(Int)=\"19\"\nnotes:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"6\"\ncurrentEvidenceKey:Int(Int)=\"8\"\ntermSeqNum:Int(Int)=\"3\"\nevidenceSeqNum:Int(Int)=\"9\"\nannotVocab:String\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 5)(all 12 25)(all 13 3)(all 15 10)(all 16 10)(all 17 20)(all 18 11)(all 19 10)(all 20 20)(all 22 10)";
+                                          xrtTblDisplayHorizScrollBar = dispsb_always;
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nnotKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\ndag:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\ninferredFrom:Int(Int)=\"17\"\neditor:Int(Int)=\"18\"\nmodifiedDate:Int(Int)=\"19\"\nnotes:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"6\"\ncurrentEvidenceKey:Int(Int)=\"8\"\ntermSeqNum:Int(Int)=\"3\"\nevidenceSeqNum:Int(Int)=\"9\"\nannotVocab:String(String)\ncreatedBy:Int=\"21\"\ncreatedDate:Int=\"22\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-9 False)(all 11-13 False)(all 15 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
+                                          xrtTblFrozenColumns = 11;
+                                          xrtTblAllowCellResize = resize_horizontal;
+                                          width = 950;
                                         Group: User
                                           requiredColumns = "2\n5\n7";
                                       }
