@@ -620,6 +620,12 @@ rules:
 	  top.sqlFrom := "";
 	  top.sqlWhere := "";
  
+	  -- If master specified, then there is only one "from" table
+
+	  if (SelectMolecularSource.master) then
+            from := "from " + mgi_DBtable(PRB_SOURCE) + " s";
+	  end if;
+
 	  -- If the ID is known....
 
 	  if (top->SourceID->text.value.length > 0) then
@@ -726,14 +732,7 @@ rules:
             where := where + " and s.description like " + mgi_DBprstr(top->Description->text.value);
           end if;
  
-	  -- If master specified, then there is only one "from" table
-
-	  if (SelectMolecularSource.master) then
-            from := "from " + mgi_DBtable(PRB_SOURCE) + " s";
-
-	  -- Else, there is > 1 from table
-
-	  elsif (where.length > 0) then
+	  if (not SelectMolecularSource.master and where.length > 0) then
             from := "," + mgi_DBtable(PRB_SOURCE) + " s";
 	    where := where + " and s." + mgi_DBkey(PRB_SOURCE) + " = " + alias + "." + mgi_DBkey(PRB_SOURCE);
 	  end if;
