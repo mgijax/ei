@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- lec	12/17/2003
+--	- TR 5327; Nomen merge
+--
 -- lec 07/11/2001
 --	- fixed bug in use of QueryDate.tag value
 --
@@ -98,6 +101,7 @@ rules:
 	QueryModificationHistory does
 	  table : widget := QueryModificationHistory.table;
 	  tag : string := QueryModificationHistory.tag;
+	  from : string := "";
 	  where : string;
 	  value : string;
 
@@ -127,6 +131,16 @@ rules:
             where := where + table.sqlCmd;
 	  end if;
 
+	  if (table.is_defined("broadcastBy") != nil) then
+            QueryDate.source_widget := table;
+	    QueryDate.row := table.broadcastBy;
+	    QueryDate.column := table.byDate;
+            QueryDate.tag := tag;
+            QueryDate.fieldName := table.broadcastFieldName;
+            send(QueryDate, 0);
+            where := where + table.sqlCmd;
+	  end if;
+
 	  value := mgi_tblGetCell(table, table.createdBy, table.byUser);
 	  if (value.length > 0) then
 	    where := where + "\nand " + tag + ".createdBy like " + mgi_DBprstr(value);
@@ -144,7 +158,15 @@ rules:
 	    end if;
 	  end if;
 
-	  table.sqlCmd := where;
+	  if (table.is_defined("broadcastBy") != nil) then
+	    value := mgi_tblGetCell(table, table.broadcastBy, table.byUser);
+	    if (value.length > 0) then
+	      where := where + "\nand " + tag + ".broadcastBy like " + mgi_DBprstr(value);
+	    end if;
+	  end if;
+
+	  table.sqlWhere := where;
+	  table.sqlFrom := from;
 	end does;
 
 end dmodule;

@@ -71,7 +71,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS 10-0-5";
+	  global_version := "CVS 10-1-0";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -101,7 +101,6 @@ rules:
 	  envList.append("DSQUERY");
 	  envList.append("SYBASE");
 	  envList.append("MGD");
-	  envList.append("NOMEN");
 	  envList.append("EIDEBUG");
 
 	  envList.open;

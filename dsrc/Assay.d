@@ -609,7 +609,7 @@ rules:
 	  -- Update the modification date of the primary table so that the
 	  -- expression cache gets updated AFTER the Assay details are added
 
-	  cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "");
+	  cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, "") + "\nselect @key\n";
 
 	  -- Execute the insert
 

@@ -4,19 +4,21 @@
 -- Nomen.d 03/25/99
 --
 -- TopLevelShell:		Nomen
--- Database Tables Affected:	MRK_Nomen, MRK_Nomen_GeneFamily,
---				MRK_Nomen_Other, MRK_Nomen_Reference, MRK_Nomen_Notes
+-- Database Tables Affected:	NOM_Marker, NOM_GeneFamily, NOM_Synonym, MGI_Note, MGI_Reference_Assoc
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module process edits for Nomen tables.
 --
 -- History
 --
--- lec 08/26/2003
---	- TR 4708; -pending
+-- lec 12/17/2003
+--	- TR 5327; nomen merge
 --
 -- lec 04/24/2003
 --	- TR 4752; added rjc
+--
+-- lec 05/21/2002
+--	- TR 1463; SAO; move NomenDB into MGD
 --
 -- lec 11/13/2001
 --	- TR 3099; always update modification date
@@ -86,7 +88,7 @@
 --
 -- lec 02/25/1999
 --	- Reference query will ignore Primary/Related flag
---	- Other Name query will ignore Author/Other flag
+--	- Synonym Name query will ignore Author/Synonym flag
 --
 -- lec 02/24/1999
 --	- change listing of Proposed to Approved in Query list
@@ -101,7 +103,7 @@
 --
 -- lec 02/12/1999
 --	- added Symbol/Name search
---	- use MRK_NOMEN_COORDNOTES and MRK_NOMEN_EDITORNOTES
+--	- use NOM_MARKER_COORDNOTES and NOM_MARKER_EDITORNOTES
 --
 -- lec 01/25/1999 - 1/29/1999
 --	- removed Correspondence table processing; removed from requirements
@@ -161,8 +163,7 @@ devents:
 	Modify :local [];
 	ModifyGeneFamily :local [];
 	ModifyNomenNotes :local [];
-	ModifyOther :local [];
-	ModifyReference :local [];
+	ModifySynonym :local [];
 
 	PrepareSearch :local [];
 
@@ -187,7 +188,6 @@ locals:
 	printSelect : string;
 
 	tables : list;
-	notes : list;
 	resettables : list;
 
         currentNomenKey : string;	-- Primary Key value of currently selected record
@@ -197,6 +197,8 @@ locals:
 
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
+
+	curationState : string := "";	-- Default Curation State
 
 rules:
 
@@ -255,10 +257,8 @@ rules:
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
---	  top->MarkerStatusMenu.subMenuId.sql := 
---		"select * from " + mgi_DBtable(MRK_NOMENSTATUS) + " order by " + mgi_DBkey(MRK_NOMENSTATUS);
 	  top->MarkerStatusMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_NOMENSTATUS) + " order by status";
+		"select _Term_key, term from " + mgi_DBtable(NOM_STATUS) + " order by _Term_key";
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
@@ -268,10 +268,25 @@ rules:
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
+--	  InitOptionMenu.option := top->CurationStateMenu;
+--	  send(InitOptionMenu, 0);
+
 	  top->GeneFamilyList.cmd :=
-		"select * from " + mgi_DBtable(MRK_GENEFAMILY) + " order by " + mgi_DBcvname(MRK_GENEFAMILY);
+		"select _Term_key, term from " + mgi_DBtable(VOC_NOMGENEFAMILY) + " order by term";
 	  LoadList.list := top->GeneFamilyList;
 	  send(LoadList, 0);
+
+	  -- Initialize Reference table
+
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
+	  send(InitRefTypeTable, 0);
+
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_NOMEN_VIEW;
+	  send(InitNoteForm, 0);
 	end does;
 
 --
@@ -290,29 +305,26 @@ rules:
 	Init does
 	  tables := create list("widget");
 	  resettables := create list("widget");
-	  notes := create list("widget");
 
 	  -- List of all Table widgets used in form
 
-	  tables.append(top->OtherReference->Table);
+	  tables.append(top->SynonymReference->Table);
 	  tables.append(top->Reference->Table);
 	  tables.append(top->GeneFamily->Table);
 	  tables.append(top->AccessionReference->Table);
+	  tables.append(top->ModificationHistory->Table);
 
 	  -- List of all Table widgets used in Reset
 
-	  resettables.append(top->OtherReference->Table);
+	  resettables.append(top->SynonymReference->Table);
 	  resettables.append(top->GeneFamily->Table);
 	  resettables.append(top->AccessionReference->Table);
 
-	  -- List of all Note widgets used in form
-
-	  notes.append(top->EditorNote->Note);
-	  notes.append(top->CoordNote->Note);
+	  curationState := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = " + mgi_DBprstr(INTERNALCURATIONSTATE));
 
           -- Set Row Count
           SetRowCount.source_widget := top;
-          SetRowCount.tableID := MRK_NOMEN;
+          SetRowCount.tableID := NOM_MARKER;
           send(SetRowCount, 0);
  
 	  -- Clear the form
@@ -341,12 +353,13 @@ rules:
 	  Clear.reset := ClearNomen.reset;
 	  send(Clear, 0);
 
-	  notes.open;
-	  while (notes.more) do
-	    SetNotesDisplay.note := notes.next;
-	    send(SetNotesDisplay, 0);
-	  end while;
-	  notes.close;
+	  -- Initialize Reference table
+
+	  if (not ClearNomen.reset) then
+	    InitRefTypeTable.table := top->Reference->Table;
+	    InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
+	    send(InitRefTypeTable, 0);
+	  end if;
 	end does;
 
 --
@@ -382,7 +395,7 @@ rules:
             StatusReport.message := "Primary Reference Required.";
             send(StatusReport);
 	    top->QueryList->List.sqlSuccessful := false;
-            return;
+           return;
 	  end if;
 
 	  if (not top.allowEdit) then
@@ -398,8 +411,6 @@ rules:
 	    return;
 	  end if;
 
-	  top->SubmittedBy->text.value := global_login;
-
 	  (void) busy_cursor(top);
 
           -- If adding, then @KEYNAME must be used in all Modify events
@@ -408,43 +419,46 @@ rules:
  
 	  -- Insert master Nomen Record
 
-          cmd := mgi_setDBkey(MRK_NOMEN, NEWKEY, KEYNAME) +
-                 mgi_DBinsert(MRK_NOMEN, KEYNAME) +
+          cmd := mgi_setDBkey(NOM_MARKER, NEWKEY, KEYNAME) +
+                 mgi_DBinsert(NOM_MARKER, KEYNAME) +
                  top->MarkerTypeMenu.menuHistory.defaultValue + "," +
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
                  NOTSPECIFIED + "," +
-		 mgi_DBprstr(top->SubmittedBy->text.value) + "," +
-		 mgi_DBprstr(top->BroadcastBy->text.value) + "," +
+                 curationState + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
-	         mgi_DBprstr(top->StatusNotes->text.value) + ",NULL)\n";
-
+	         mgi_DBprstr(top->StatusNotes->text.value) + ")\n";
 
 	  send(ModifyNomenNotes, 0);
 	  send(ModifyGeneFamily, 0);
-	  send(ModifyOther, 0);
-	  send(ModifyReference, 0);
+	  send(ModifySynonym, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentNomenKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
-          ProcessAcc.tableID := MRK_NOMEN;
-          ProcessAcc.db := getenv("NOMEN");
+          ProcessAcc.tableID := NOM_MARKER;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
       
           ProcessAcc.table := accRefTable;
           ProcessAcc.objectKey := currentNomenKey;
-          ProcessAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
-          ProcessAcc.db := getenv("NOMEN");
+          ProcessAcc.tableID := NOM_ACC_REFERENCE;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
 
 	  -- Execute the add
 
-	  AddSQL.tableID := MRK_NOMEN;
+	  AddSQL.tableID := NOM_MARKER;
           AddSQL.cmd := cmd;
           AddSQL.list := top->QueryList;
           AddSQL.item := top->Symbol->text.value;
@@ -473,7 +487,7 @@ rules:
 	Delete does
 	  (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := MRK_NOMEN;
+	  DeleteSQL.tableID := NOM_MARKER;
 	  DeleteSQL.key := currentNomenKey;
 	  DeleteSQL.list := top->QueryList;
 	  send(DeleteSQL, 0);
@@ -497,6 +511,7 @@ rules:
 
 	Modify does
 	  table : widget := top->Reference->Table;
+	  value : string;
 	  error : boolean := false;
 
 	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
@@ -521,15 +536,10 @@ rules:
 	    error := true;
 	  end if;
 
-	  if (not (global_login = "bobs" or 
-		   global_login = "cml" or 
-		   global_login = "csmith" or
-		   global_login = "djr" or
-		   global_login = "ljm" or 
-		   global_login = "ln" or 
-		   global_login = "rjc" or 
-		   global_login = "rmb" or
-		   global_login = "tier4") and
+	  if (not (global_login = "mgo_dbo" or
+	           global_login = "ljm" or global_login = "lmm" or 
+		   global_login = "cml" or global_login = "rjc" or
+		   global_login = "bobs" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
@@ -540,33 +550,30 @@ rules:
 
           if (top->MarkerStatusMenu.menuHistory.modified and
 	      (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTOFF or
-	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT)) then
+	       top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT)) then
             StatusReport.source_widget := top;
             StatusReport.message := "You cannot modify status to Broadcast.\n";
             send(StatusReport);
 	    error := true;
 	  end if;
 
-          if (top->SubmittedBy->text.modified) then
+	  table := top->ModificationHistory->Table;
+	  value := mgi_tblGetCell(table, table.createdBy, table.editMode);
+	  if (value = TBL_ROW_MODIFY) then
             StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Submitted By field.\n";
+            StatusReport.message := "You do not have permission to modify the Created By or Date field.\n";
             send(StatusReport);
 	    error := true;
           end if;
 
-          if (top->BroadcastBy->text.modified) then
+	  table := top->ModificationHistory->Table;
+	  value := mgi_tblGetCell(table, table.broadcastBy, table.editMode);
+	  if (value = TBL_ROW_MODIFY) then
             StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Broadcast By field.\n";
+            StatusReport.message := "You do not have permission to modify the Broadcast By or Date field.\n";
             send(StatusReport);
 	    error := true;
           end if;
-
-	  if (top->BroadcastDate->text.modified) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Broadcast Date field.\n";
-            send(StatusReport);
-	    error := true;
-	  end if;
 
 	  if (error) then
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
@@ -585,13 +592,18 @@ rules:
 
           if (top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
-            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
+            set := set + "_NomenStatus_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
           end if;
 
           if (top->MarkerTypeMenu.menuHistory.modified and
 	      top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
           end if;
+
+--          if (top->CurationStateMenu.menuHistory.modified and
+--	      top->CurationStateMenu.menuHistory.searchValue != "%") then
+--            set := set + "_CurationState_key = "  + top->CurationStateMenu.menuHistory.defaultValue + ",";
+--          end if;
 
           if (top->ChromosomeMenu.menuHistory.modified and
 	      top->ChromosomeMenu.menuHistory.searchValue != "%") then
@@ -615,27 +627,32 @@ rules:
 	  end if;
 
 	  send(ModifyGeneFamily, 0);
-	  send(ModifyOther, 0);
-	  send(ModifyReference, 0);
+	  send(ModifySynonym, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentNomenKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
-          ProcessAcc.tableID := MRK_NOMEN;
-          ProcessAcc.db := getenv("NOMEN");
+          ProcessAcc.tableID := NOM_MARKER;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
       
           ProcessAcc.table := accRefTable;
           ProcessAcc.objectKey := currentNomenKey;
-          ProcessAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
-          ProcessAcc.db := getenv("NOMEN");
+          ProcessAcc.tableID := NOM_ACC_REFERENCE;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
 
 	  send(ModifyNomenNotes, 0);
 
 	  if (cmd.length > 0 or set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MRK_NOMEN, currentNomenKey, set);
+	    cmd := cmd + mgi_DBupdate(NOM_MARKER, currentNomenKey, set);
 	  end if;
 
 	  ModifySQL.cmd := cmd;
@@ -674,16 +691,16 @@ rules:
             newKey := mgi_tblGetCell(table, row, table.familyKey);
  
             if (editMode = TBL_ROW_ADD and newKey.length > 0) then
-              cmd := cmd + mgi_DBinsert(MRK_NOMEN_GENEFAMILY, NOKEY) + 
+              cmd := cmd + mgi_DBinsert(NOM_GENEFAMILY, NOKEY) + 
 		     currentNomenKey + "," + 
 		     newKey + ")\n";
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
-              set := "_Marker_Family_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(MRK_NOMEN_GENEFAMILY, currentNomenKey, set) + 
-                     "and _Marker_Family_key = " + key + "\n";
+              set := "_GeneFamily_key = " + newKey;
+              cmd := cmd + mgi_DBupdate(NOM_GENEFAMILY, currentNomenKey, set) + 
+                     "and _GeneFamily_key = " + key + "\n";
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_NOMEN_GENEFAMILY, currentNomenKey) + 
-		      "and _Marker_Family_key = " + key + "\n";
+               cmd := cmd + mgi_DBdelete(NOM_GENEFAMILY, currentNomenKey) + 
+		      "and _GeneFamily_key = " + key + "\n";
             end if;
  
             row := row + 1;
@@ -699,32 +716,25 @@ rules:
 --
  
 	ModifyNomenNotes does
-	  notew: widget;
-
-	  notes.open;
-	  while (notes.more) do
-	    notew := notes.next;
-	    ModifyNotes.source_widget := notew;
-	    ModifyNotes.tableID := MRK_NOMEN_NOTES;
-	    ModifyNotes.key := currentNomenKey;
-	    send(ModifyNotes, 0);
-	    cmd := cmd + notew.sql;
-	  end while;
-	  notes.close;
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentNomenKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
 	end does;
 
 --
--- ModifyOther
+-- ModifySynonym
 --
 -- Activated from: devent Add/Modify
 --
--- Construct insert/update/delete for Nomen Other Names
+-- Construct insert/update/delete for Nomen Synonym Names
 --
 -- The first row is always the Author's Name
 --
 
-	ModifyOther does
-          table : widget := top->OtherReference->Table;
+	ModifySynonym does
+          table : widget := top->SynonymReference->Table;
           row : integer := 0;
           editMode : string;
           key : string;
@@ -733,7 +743,7 @@ rules:
 	  refsCurrentKey : string;
 	  isAuthor : string;
           set : string := "";
-	  keyName : string := "otherKey";
+	  keyName : string := "synKey";
 	  keysDeclared : boolean := false;
  
           -- Process while non-empty rows are found
@@ -745,8 +755,8 @@ rules:
               break;
             end if;
  
-            key := mgi_tblGetCell(table, row, table.otherKey);
-            name := mgi_tblGetCell(table, row, table.otherName);
+            key := mgi_tblGetCell(table, row, table.synKey);
+            name := mgi_tblGetCell(table, row, table.synonym);
 	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
 	    refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
 
@@ -763,14 +773,14 @@ rules:
             if (editMode = TBL_ROW_ADD) then
 	      
               if (not keysDeclared) then
-                cmd := cmd + mgi_setDBkey(MRK_NOMEN_OTHER, NEWKEY, keyName);
+                cmd := cmd + mgi_setDBkey(NOM_SYNONYM, NEWKEY, keyName);
                 keysDeclared := true;
               else
                 cmd := cmd + mgi_DBincKey(keyName);
               end if;
 
               cmd := cmd +
-                     mgi_DBinsert(MRK_NOMEN_OTHER, keyName) +
+                     mgi_DBinsert(NOM_SYNONYM, keyName) +
 		     currentNomenKey + "," +
 		     refsKey + "," +
 		     mgi_DBprstr(name) + "," +
@@ -779,94 +789,13 @@ rules:
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "name = " + mgi_DBprstr(name) +
 		     ",_Refs_key = " + refsKey;
-              cmd := cmd + mgi_DBupdate(MRK_NOMEN_OTHER, key, set);
+              cmd := cmd + mgi_DBupdate(NOM_SYNONYM, key, set);
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_NOMEN_OTHER, key);
+               cmd := cmd + mgi_DBdelete(NOM_SYNONYM, key);
             end if;
  
             row := row + 1;
 	  end while;
-	end does;
-
---
--- ModifyReference
---
--- Activated from: devent Add/Modify
---
--- Construct insert/update/delete for Nomen References
---
--- The first row is always the primary reference
---
-
-	ModifyReference does
-          table : widget := top->Reference->Table;
-          row : integer := 0;
-          editMode : string;
-          key : string;
-          newKey : string;
-	  isPrimary : string;
-	  isBroadcast : string;
-	  isReview : string;
-	  set : string := "";
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (row > 0 and editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            key := mgi_tblGetCell(table, row, table.refsCurrentKey);
-            newKey := mgi_tblGetCell(table, row, table.refsKey);
-	    isReview := mgi_tblGetCell(table, row, table.reviewKey);
-	    isBroadcast := mgi_tblGetCell(table, row, table.broadcastKey);
- 
-	    if (row = 0) then
-	      isPrimary := "1";
-	    else
-	      isPrimary := "0";
-	    end if;
- 
-	    -- Primary reference is ALWAYS broadcast
-
-	    if (isPrimary = "1" or isBroadcast = "") then
-	      isBroadcast := "1";
-	    end if;
-
-            if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MRK_NOMEN_REFERENCE, NOKEY) + 
-		     currentNomenKey + "," + 
-		     newKey + "," +
-		     isPrimary + "," +
-		     isBroadcast + ")\n";
-
-              -- update Review? value for row
-
-              set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-              cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Refs_key = " + newKey + "," +
-		     "broadcastToMGD = " + isBroadcast;
-              cmd := cmd + mgi_DBupdate(MRK_NOMEN_REFERENCE, currentNomenKey, set) + 
-                     "and _Refs_key = " + key + 
-		     " and isPrimary = " + isPrimary + "\n";
-
-              -- update Review? value for row
-
-              set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-              cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
-
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_NOMEN_REFERENCE, currentNomenKey) + 
-		      "and _Refs_key = " + key +
-		      " and isPrimary = " + isPrimary + "\n";
-            end if;
- 
-            row := row + 1;
-          end while;
 	end does;
 
 --
@@ -878,10 +807,7 @@ rules:
 --
 
 	PrepareSearch does
-	  from_editornotes : boolean := false;
-	  from_coordnotes  : boolean := false;
 	  from_other       : boolean := false;
-	  from_reference   : boolean := false;
 	  from_genefamily  : boolean := false;
 
 	  printSelect := "";
@@ -890,14 +816,14 @@ rules:
 	  table : widget;
 	  i : integer;
 
-	  from := " from " + mgi_DBtable(MRK_NOMEN) + " m";
+	  from := " from " + mgi_DBtable(NOM_MARKER) + " m";
 	  where := "";
 
           -- Cannot search both Accession tables at once
       
           SearchAcc.table := accTable;
-          SearchAcc.objectKey := "m." + mgi_DBkey(MRK_NOMEN);
-          SearchAcc.tableID := MRK_NOMEN;
+          SearchAcc.objectKey := "m." + mgi_DBkey(NOM_MARKER);
+          SearchAcc.tableID := NOM_MARKER;
           send(SearchAcc, 0);
       
           if (accTable.sqlFrom.length > 0) then
@@ -905,28 +831,44 @@ rules:
             where := where + accTable.sqlWhere;
           else
             SearchAcc.table := accRefTable;
-            SearchAcc.objectKey := "m." + mgi_DBkey(MRK_NOMEN);
-            SearchAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+            SearchAcc.objectKey := "m." + mgi_DBkey(NOM_MARKER);
+            SearchAcc.tableID := NOM_ACC_REFERENCE;
             send(SearchAcc, 0);
             from := from + accRefTable.sqlFrom;
             where := where + accRefTable.sqlWhere;
           end if;
 
-	  QueryDate.source_widget := top->CreationDate;
-	  QueryDate.tag := "m";
-	  send(QueryDate, 0);
-	  where := where + top->CreationDate.sql;
-	  if (top->CreationDate.sql.length > 0) then
-	    printSelect := printSelect + "\nCreation Date = " + top->CreationDate->text.value;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "m";
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
+	  if (top->ModificationHistory->Table.sqlWhere.length > 0) then
+	    printSelect := printSelect + "\nDate = " + top->ModificationHistory->Table.sqlWhere;
 	  end if;
+ 
+	  SearchRefTypeTable.table := top->Reference->Table;
+	  SearchRefTypeTable.tableID := MGI_REFERENCE_NOMEN_VIEW;
+          SearchRefTypeTable.join := "m." + mgi_DBkey(NOM_MARKER);
+	  send(SearchRefTypeTable, 0);
+	  from := from + top->Reference->Table.sqlFrom;
+	  where := where + top->Reference->Table.sqlWhere;
 
-	  QueryDate.source_widget := top->ModifiedDate;
-	  QueryDate.tag := "m";
-	  send(QueryDate, 0);
-	  where := where + top->ModifiedDate.sql;
-	  if (top->ModifiedDate.sql.length > 0) then
-	    printSelect := printSelect + "\nModified Date = " + top->ModifiedDate->text.value;
-	  end if;
+	  -- To search each note type individually...
+	  -- remove noteTypeKey and just have one call to SearchNoteForm
+	  -- to search all note types
+
+	  i := 1;
+	  while (i <= top->mgiNoteForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_NOMEN_VIEW;
+            SearchNoteForm.join := "m." + mgi_DBkey(NOM_MARKER);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+	    i := i + 1;
+	  end while;
 
           if (top->MarkerEventMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Event_key = " + top->MarkerEventMenu.menuHistory.searchValue;
@@ -934,7 +876,7 @@ rules:
           end if;
 
           if (top->MarkerStatusMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._Marker_Status_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
+            where := where + "\nand m._NomenStatus_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
 	    printSelect := printSelect + "\nMarker Status = " + top->MarkerStatusMenu.menuHistory.labelString;
           end if;
 
@@ -943,19 +885,14 @@ rules:
 	    printSelect := printSelect + "\nMarker Type = " + top->MarkerTypeMenu.menuHistory.labelString;
           end if;
 
+--          if (top->CurationStateMenu.menuHistory.searchValue != "%") then
+--            where := where + "\nand m._CurationState_key = " + mgi_DBprstr(top->CurationStateMenu.menuHistory.searchValue);
+--	    printSelect := printSelect + "\nMarker Curation State = " + top->CurationStateMenu.menuHistory.labelString;
+--          end if;
+
           if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m.chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.searchValue);
 	    printSelect := printSelect + "\nMarker Chromosome = " + top->ChromosomeMenu.menuHistory.labelString;
-          end if;
-
-          if (top->SubmittedBy->text.value.length > 0) then
-            where := where + "\nand m.submittedBy like " + mgi_DBprstr(top->SubmittedBy->text.value);
-	    printSelect := printSelect + "\nSubmitted By = " + top->SubmittedBy->text.value;
-          end if;
-
-          if (top->BroadcastBy->text.value.length > 0) then
-            where := where + "\nand m.broadcastBy like " + mgi_DBprstr(top->BroadcastBy->text.value);
-	    printSelect := printSelect + "\nBroadcast By = " + top->BroadcastBy->text.value;
           end if;
 
           if (top->Symbol->text.value.length > 0) then
@@ -978,84 +915,30 @@ rules:
 	    printSelect := printSelect + "\nStatus Notes = " + top->StatusNotes->text.value;
 	  end if;
 	    
-          QueryDate.source_widget := top->BroadcastDate->Date;
-          QueryDate.tag := "m";
-          send(QueryDate, 0);
-          where := where + top->BroadcastDate->Date.sql;
-	  if (top->BroadcastDate->Date.sql.length > 0) then
-	    printSelect := printSelect + "\nBroadcast Date = " + top->BroadcastDate->Date.sql;
-	  end if;
-
-          if (top->EditorNote->Note->text.value.length > 0) then
-	    where := where + "\nand men.note like " + mgi_DBprstr(top->EditorNote->Note->text.value);
-	    printSelect := printSelect + "\nEditor Notes = " + top->EditorNote->Note->text.value;
-	    from_editornotes := true;
-	  end if;
-	    
-          if (top->CoordNote->Note->text.value.length > 0) then
-	    where := where + "\nand mcn.note like " + mgi_DBprstr(top->CoordNote->Note->text.value);
-	    printSelect := printSelect + "\nCoord Notes = " + top->CoordNote->Note->text.value;
-	    from_coordnotes := true;
-	  end if;
-	    
-	  -- Check both Author and Other Names
-	  table := top->OtherReference->Table;
+	  -- Check both Author and Synonym Names
+	  table := top->SynonymReference->Table;
 	  i := 0;
 	  while (i <= 1) do
-            value := mgi_tblGetCell(table, i, table.otherName);
+            value := mgi_tblGetCell(table, i, table.synonym);
             if (value.length > 0) then
 	      where := where + "\nand mo.name like " + mgi_DBprstr(value);
-	      printSelect := printSelect + "\nOther Name = " + value;
+	      printSelect := printSelect + "\nSynonym Name = " + value;
 	      from_other := true;
 	    end if;
 
             value := mgi_tblGetCell(table, i, table.refsKey);
             if (value.length > 0 and value != "NULL") then
 	      where := where + "\nand mo._Refs_key = " + value;
-	      printSelect := printSelect + "\nOther Reference = J:" + mgi_tblGetCell(table, i, table.jnum);
+	      printSelect := printSelect + "\nSynonym Reference = J:" + mgi_tblGetCell(table, i, table.jnum);
 	      from_other := true;
 	    end if;
-	    i := i + 1;
-	  end while;
-
-	  table := top->Reference->Table;
-	  i := 0;
-	  while (not from_reference and i <= 1) do
-            value := mgi_tblGetCell(table, i, table.refsKey);
-            if (value.length > 0 and value != "NULL") then
-	      where := where + "\nand mr._Refs_key = " + value;
-	      printSelect := printSelect + "\nReference = J:" + mgi_tblGetCell(table, i, table.jnum);
-	      from_reference := true;
-	    else
-              value := mgi_tblGetCell(table, i, table.citation);
-              if (value.length > 0) then
-	        where := where + "\nand mr.short_citation like " + mgi_DBprstr(value);
-	        printSelect := printSelect + "\nReference = " + value;
-	        from_reference := true;
-	      end if;
-	    end if;
-
-            value := mgi_tblGetCell(table, i, table.reviewKey);
-            if (value.length > 0 and value != "NULL") then
-	      where := where + "\nand mr.isReviewArticle = " + value;
-	      printSelect := printSelect + "\nReference Review Article? = " + value;
-	      from_reference := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, i, table.broadcastKey);
-            if (value.length > 0 and value != "NULL") then
-	      where := where + "\nand mr.broadcastToMGD = " + value;
-	      printSelect := printSelect + "\nReference Broadcast to MGD? = " + value;
-	      from_reference := true;
-	    end if;
-
 	    i := i + 1;
 	  end while;
 
 	  table := top->GeneFamily->Table;
           value := mgi_tblGetCell(table, 0, table.familyKey);
           if (value.length > 0) then
-	    where := where + "\nand mf._Marker_Family_key = " + value;
+	    where := where + "\nand mf._GeneFamily_key = " + value;
 	    printSelect := printSelect + "\nGene Family = " + mgi_tblGetCell(table, 0, table.familyName);
 	    from_genefamily := true;
 	  end if;
@@ -1066,34 +949,16 @@ rules:
 	    where := "\nand (m.symbol like " + mgi_DBprstr(top->SymbolName->text.value) +
 	             "\nor m.name like " + mgi_DBprstr(top->SymbolName->text.value) + ")";
 	    printSelect := printSelect + "\nSymbol/Name = \n" + top->SymbolName->text.value;
-	    from_editornotes := false;
-	    from_coordnotes := false;
 	    from_other := false;
-	    from_reference := false;
 	  end if;
 	    
-	  if (from_editornotes) then
-	    from := from + "," + mgi_DBtable(MRK_NOMEN_EDITORNOTES) + " men";
-	    where := where + "\nand m._Nomen_key = men._Nomen_key";
-	  end if;
-
-	  if (from_coordnotes) then
-	    from := from + "," + mgi_DBtable(MRK_NOMEN_COORDNOTES) + " mcn";
-	    where := where + "\nand m._Nomen_key = mcn._Nomen_key";
-	  end if;
-
 	  if (from_other) then
-	    from := from + "," + mgi_DBtable(MRK_NOMEN_OTHER) + " mo";
+	    from := from + "," + mgi_DBtable(NOM_SYNONYM) + " mo";
 	    where := where + "\nand m._Nomen_key = mo._Nomen_key";
 	  end if;
 
-	  if (from_reference) then
-	    from := from + "," + mgi_DBtable(MRK_NOMEN_REFERENCE_VIEW) + " mr";
-	    where := where + "\nand m._Nomen_key = mr._Nomen_key";
-	  end if;
-
 	  if (from_genefamily) then
-	    from := from + "," + mgi_DBtable(MRK_NOMEN_GENEFAMILY) + " mf";
+	    from := from + "," + mgi_DBtable(NOM_GENEFAMILY_VIEW) + " mf";
 	    where := where + "\nand m._Nomen_key = mf._Nomen_key";
 	  end if;
 
@@ -1119,7 +984,7 @@ rules:
 	  Query.select := "select distinct m._Nomen_key, m.symbol\n" + from + "\n" + 
 			  where + "\norder by m.symbol\n";
 	  Query.printSelect := printSelect;
-	  Query.table := MRK_NOMEN;
+	  Query.table := NOM_MARKER;
 	  send(Query, 0);
           (void) reset_cursor(top);
         end does;
@@ -1160,10 +1025,6 @@ rules:
             (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
             row := row + 1;
           end while;
-
-	  -- Do not duplicate Editor or Coordinator notes
-	  top->EditorNote->Note->text.modified := false;
-	  top->CoordNote->Note->text.modified := false;
 	end does;
 
 --
@@ -1197,36 +1058,27 @@ rules:
 	  end while;
 	  tables.close;
 
-	  top->EditorNote->Note->text.value := "";
-	  top->CoordNote->Note->text.value := "";
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
+	  send(InitRefTypeTable, 0);
 
           (void) busy_cursor(top);
 
 	  table : widget;
 	  currentNomenKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(MRK_NOMEN_VIEW) + 
+	  cmd := "select * from NOM_Marker_View " +
 		 " where _Nomen_key = " + currentNomenKey + "\n" +
-	         "select rtrim(note) from " + mgi_DBtable(MRK_NOMEN_EDITORNOTES) +
-		 " where _Nomen_key = " + currentNomenKey +
-		 " order by sequenceNum\n" +
-	         "select rtrim(note) from " + mgi_DBtable(MRK_NOMEN_COORDNOTES) +
-		 " where _Nomen_key = " + currentNomenKey +
-		 " order by sequenceNum\n" +
-	         "select * from " + mgi_DBtable(MRK_NOMEN_OTHER) +
+	         "select * from " + mgi_DBtable(NOM_SYNONYM) +
 		 " where _Nomen_key = " + currentNomenKey + 
 		 " order by isAuthor desc, name\n" +
-	         "select * from " + mgi_DBtable(MRK_NOMEN_OTHER_VIEW) +
+	         "select * from " + mgi_DBtable(NOM_SYNONYM_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey + 
 		 " order by isAuthor desc, name\n" +
-	         "select isPrimary, _Refs_key, jnum, short_citation, isReviewArticle, broadcastToMGD from " +
-		  mgi_DBtable(MRK_NOMEN_REFERENCE_VIEW) +
+	         "select _GeneFamily_key, term from " +
+		  mgi_DBtable(NOM_GENEFAMILY_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey +
-		 " order by isPrimary desc, short_citation\n" +
-	         "select _Marker_Family_key, name from " +
-		  mgi_DBtable(MRK_NOMEN_GENEFAMILY_VIEW) +
-		 " where _Nomen_key = " + currentNomenKey +
-		 " order by name\n";
+		 " order by term\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1240,15 +1092,18 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->SubmittedBy->text.value    := mgi_getstr(dbproc, 6);
-	        top->BroadcastBy->text.value    := mgi_getstr(dbproc, 7);
-	        top->Symbol->text.value         := mgi_getstr(dbproc, 8);
-	        top->Name->text.value           := mgi_getstr(dbproc, 9);
-	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 11);
-	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
-	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
+	        top->Symbol->text.value         := mgi_getstr(dbproc, 7);
+	        top->Name->text.value           := mgi_getstr(dbproc, 8);
+	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 10);
+	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 11);
+
+	        table := top->ModificationHistory->Table;
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 15));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.broadcastBy, table.byDate, mgi_getstr(dbproc, 12));
 
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -1262,77 +1117,40 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
+--                SetOption.source_widget := top->CurationStateMenu;
+--                SetOption.value := mgi_getstr(dbproc, 6);
+--                send(SetOption, 0);
+
                 SetOption.source_widget := top->ChromosomeMenu;
-                SetOption.value := mgi_getstr(dbproc, 10);
+                SetOption.value := mgi_getstr(dbproc, 9);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
-		top->EditorNote->Note->text.value := 
-			top->EditorNote->Note->text.value + mgi_getstr(dbproc, 1);
-	      elsif (results = 3) then
-		top->CoordNote->Note->text.value := 
-			top->CoordNote->Note->text.value + mgi_getstr(dbproc, 1);
-	      elsif (results = 4) then
-		table := top->OtherReference->Table;
+		table := top->SynonymReference->Table;
 
 		if (row = 0 and mgi_getstr(dbproc, 5) != "1") then
 		  row := row + 1;
 		end if;
 
-                (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.synKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.synonym, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 5) then
-		table := top->OtherReference->Table;
+	      elsif (results = 3) then
+		table := top->SynonymReference->Table;
 
 		if (row = 0 and mgi_getstr(dbproc, 5) != "1") then
 		  row := row + 1;
 		end if;
 
-                (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.synKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.synonym, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 9));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 6) then
-		table := top->Reference->Table;
-
-		if (row = 0 and mgi_getstr(dbproc, 1) != "1") then
-		  row := row + 1;
-		end if;
-
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.broadcastKey, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 11));
+                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
-                if (mgi_getstr(dbproc, 5) = "1") then
-                  (void) mgi_tblSetCell(table, row, table.review, "Yes");
-                else
-                  (void) mgi_tblSetCell(table, row, table.review, "No");
-                end if;
-
-                if (mgi_getstr(dbproc, 6) = "1") then
-                  (void) mgi_tblSetCell(table, row, table.broadcast, "Yes");
-                else
-                  (void) mgi_tblSetCell(table, row, table.broadcast, "No");
-                end if;
-
-          	-- Initialize Option Menus for row 0
-
-		if (row = 0) then
-          	  SetOptions.source_widget := table;
-          	  SetOptions.row := 0;
-          	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
-          	  send(SetOptions, 0);
-		end if;
-
-	      elsif (results = 7) then
+	      elsif (results = 4) then
 		table := top->GeneFamily->Table;
                 (void) mgi_tblSetCell(table, row, table.familyCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.familyKey, mgi_getstr(dbproc, 1));
@@ -1345,17 +1163,34 @@ rules:
 	  end while;
 	  (void) dbclose(dbproc);
 
+          LoadRefTypeTable.table := top->Reference->Table;
+	  LoadRefTypeTable.tableID := MGI_REFERENCE_NOMEN_VIEW;
+          LoadRefTypeTable.objectKey := currentNomenKey;
+          send(LoadRefTypeTable, 0);
+ 
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_NOMEN_VIEW;
+	  LoadNoteForm.objectKey := currentNomenKey;
+	  send(LoadNoteForm, 0);
+
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentNomenKey;
-          LoadAcc.tableID := MRK_NOMEN;
+          LoadAcc.tableID := NOM_MARKER;
           LoadAcc.reportError := false;
           send(LoadAcc, 0);
 
           LoadAcc.table := accRefTable;
           LoadAcc.objectKey := currentNomenKey;
-          LoadAcc.tableID := MRK_NOMEN_ACC_REFERENCE;
+          LoadAcc.tableID := NOM_ACC_REFERENCE;
           LoadAcc.reportError := false;
           send(LoadAcc, 0);
+
+          -- Initialize Option Menus for Reference table, row 0
+
+          SetOptions.source_widget := top->Reference->Table;
+          SetOptions.row := 0;
+          SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+          send(SetOptions, 0);
 
 	  top->QueryList->List.row := Select.item_position;
 	  ClearNomen.reset := true;
@@ -1385,10 +1220,6 @@ rules:
           SetOption.source_widget := top->CVNomen->ReviewMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.reviewKey);
           send(SetOption, 0);
-
-          SetOption.source_widget := top->CVNomen->BroadcastMenu;
-          SetOption.value := mgi_tblGetCell(table, row, table.broadcastKey);
-          send(SetOption, 0);
         end does;
 
 --
@@ -1410,7 +1241,7 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
-	  (void) mgi_sql1("exec " + getenv("NOMEN") + "..NOMEN_verifyMarker " + mgi_DBprstr(value));
+	  (void) mgi_sql1("exec " + "NOM_verifyMarker " + mgi_DBprstr(value));
 
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
@@ -1459,8 +1290,8 @@ rules:
 	    end if;
 	  elsif (broadcastType = 5) then
 	    if (currentNomenKey.length > 0) then
-	      cmd := "select symbol from " + mgi_DBtable(MRK_NOMEN) + 
-		  " where _Marker_Status_key = " + STATUS_NAPPROVED;
+	      cmd := "select symbol from " + mgi_DBtable(NOM_MARKER) + 
+		  " where _NomenStatus_key = " + STATUS_NAPPROVED;
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
               (void) dbsqlexec(dbproc);
@@ -1478,12 +1309,12 @@ rules:
 	  elsif (broadcastType = 6) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
-		  mgi_DBtable(MRK_NOMEN) + " n," +
-		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r " +
-		  " where n._Marker_Status_key = " + STATUS_PENDING +
-		  " and n.submittedBy = user_name()" +
-		  " and n._Nomen_key = r._Nomen_key" +
-		  " and r.isPrimary = 1" +
+		  mgi_DBtable(NOM_MARKER) + " n," +
+		  mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) + " r " +
+		  " where n._NomenStatus_key = " + STATUS_PENDING +
+		  " and n.createdBy = user_name()" +
+		  " and n._Nomen_key = r._Object_key" +
+		  " and r.assocType = 'Primary'" +
 		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
@@ -1500,11 +1331,11 @@ rules:
 	  elsif (broadcastType = 7) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
-		  mgi_DBtable(MRK_NOMEN) + " n," +
-		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r" +
-		  " where n._Marker_Status_key = " + STATUS_NAPPROVED +
-		  " and n._Nomen_key = r._Nomen_key" +
-		  " and r.isPrimary = 1" +
+		  mgi_DBtable(NOM_MARKER) + " n," +
+		  mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) + " r" +
+		  " where n._NomenStatus_key = " + STATUS_NAPPROVED +
+		  " and n._Nomen_key = r._Object_key" +
+		  " and r.assocType = 'Primary'" +
 		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
@@ -1601,7 +1432,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1624,7 +1455,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1639,7 +1470,7 @@ rules:
 
 	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1652,7 +1483,7 @@ rules:
 
 	BroadcastSymbolInterim does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1665,7 +1496,7 @@ rules:
 
 	BroadcastBatch does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERBATCH);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERBATCH);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1680,7 +1511,7 @@ rules:
 	  table : widget := top->Reference->Table;
 
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREFEDITOR) + " " + mgi_tblGetCell(table, 0, table.refsKey);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERREFEDITOR) + " " + mgi_tblGetCell(table, 0, table.refsKey);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1695,7 +1526,7 @@ rules:
 	  table : widget := top->Reference->Table;
 
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREFCOORD) + " " + mgi_tblGetCell(table, 0, table.refsKey);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERREFCOORD) + " " + mgi_tblGetCell(table, 0, table.refsKey);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1707,7 +1538,7 @@ rules:
 --
 
 	Exit does
-	  ab.sensitive := true;
+          ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

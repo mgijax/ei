@@ -53,6 +53,8 @@ extern char *global_version;
 #define YES		"1"
 #define NO 		"0"
 
+#define INTERNALCURATIONSTATE   "Internal"
+
 #define BROADCASTOFFICIAL	"official"
 #define BROADCASTINTERIM	"interim"
 
@@ -205,7 +207,7 @@ extern char *global_version;
 #define BIB_REVIEW_STATUS	324
 #define MRK_GENEFAMILY		326
 #define MRK_EVENT		327
-#define MRK_NOMENSTATUS		328
+#define NOM_STATUS     		328
 #define GXD_GELCONTROL		329
 #define MRK_EVENTREASON		330
 #define MRK_STATUS		331
@@ -231,33 +233,45 @@ extern char *global_version;
 
 /* Nomen Tables */
 
-#define MRK_NOMEN			500
-#define MRK_NOMEN_VIEW			501
-#define MRK_NOMEN_GENEFAMILY		503
-#define MRK_NOMEN_NOTES			504
-#define MRK_NOMEN_OTHER			505
-#define MRK_NOMEN_REFERENCE		506
-#define MRK_NOMEN_REFERENCE_VIEW	507
-#define MRK_NOMEN_GENEFAMILY_VIEW	511
-#define MRK_NOMEN_COORDNOTES		512
-#define MRK_NOMEN_EDITORNOTES		513
-#define MRK_NOMEN_ACC_REFERENCE		514
-#define MRK_NOMEN_OTHER_VIEW		516
+#define NOM_MARKER			500
+#define NOM_MARKER_VIEW			501
+#define NOM_GENEFAMILY      		502
+#define NOM_SYNONYM     		503
+#define NOM_GENEFAMILY_VIEW      	504
+#define NOM_ACC_REFERENCE		505
+#define NOM_SYNONYM_VIEW     		506
+#define NOM_MARKER_VALID_VIEW		507
+#define VOC_NOMGENEFAMILY      		508
 
 /* MGI Tables */
 
 #define MGI_TABLES			600
 #define MGI_COLUMNS			601
-#define MGI_NOTE                        602
-#define MGI_NOTECHUNK                   603
-#define MGI_NOTETYPE                    604
-#define MGI_NOTETYPE_MRKGO_VIEW		605
-#define MGI_NOTE_MRKGO_VIEW		606
-#define MGI_TRANSLATION                 613
-#define MGI_TRANSLATIONTYPE             614
-#define MGI_TRANSLATIONSTRAIN_VIEW      615
-#define MGI_NOTE_VOCEVIDENCE_VIEW       624
-#define MGI_NOTETYPE_VOCEVIDENCE_VIEW   625
+#define MGI_NOTE			602
+#define MGI_NOTECHUNK			603
+#define MGI_NOTETYPE			604
+#define MGI_REFERENCE_ASSOC		605
+#define MGI_REFASSOCTYPE		606
+#define MGI_REFERENCE_NOMEN_VIEW	607
+#define MGI_REFERENCE_SEQUENCE_VIEW	608
+#define MGI_ORGANISM			609
+#define MGI_ORGANISMTYPE		610
+#define MGI_NOTE_MRKGO_VIEW             611
+#define MGI_NOTETYPE_MRKGO_VIEW         612
+#define MGI_NOTE_NOMEN_VIEW		613
+#define MGI_NOTETYPE_NOMEN_VIEW		614
+#define MGI_NOTE_SEQUENCE_VIEW		615
+#define MGI_NOTETYPE_SEQUENCE_VIEW	616
+#define MGI_NOTE_SOURCE_VIEW		617
+#define MGI_NOTETYPE_SOURCE_VIEW	618
+#define MGI_REFTYPE_NOMEN_VIEW		619
+#define MGI_REFTYPE_SEQUENCE_VIEW	620
+#define MGI_TRANSLATION			621
+#define MGI_TRANSLATIONTYPE		622
+#define MGI_TRANSLATIONSTRAIN_VIEW	623
+#define MGI_NOTE_VOCEVIDENCE_VIEW	624
+#define MGI_NOTETYPE_VOCEVIDENCE_VIEW	625
+#define MGI_SETMEMBER			626
 
 /* Strains Tables */
 
@@ -301,10 +315,10 @@ extern char *global_version;
 
 /* Stored procedures */
 
-#define NOMEN_TRANSFERSYMBOL	1000
-#define NOMEN_TRANSFERBATCH	1001
-#define NOMEN_TRANSFERREFEDITOR	1002
-#define NOMEN_TRANSFERREFCOORD	1003
+#define NOM_TRANSFERSYMBOL    2000
+#define NOM_TRANSFERBATCH     2001
+#define NOM_TRANSFERREFEDITOR 2002
+#define NOM_TRANSFERREFCOORD  2003
 
 #define	MOUSE		"1"
 #define HUMAN		"2"
@@ -334,14 +348,14 @@ extern char *global_version;
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
 
-/* Nomen */
+/* Nomen (VOC_Vocab._Vocab_key = 17) */
 
-#define STATUS_PENDING		"1"
-#define STATUS_NDELETED		"2"
-#define STATUS_RESERVED		"3"
-#define STATUS_NAPPROVED	"4"
-#define STATUS_BROADCASTOFF	"5"
-#define STATUS_BROADCASTINT	"7"
+#define STATUS_PENDING          "93914"
+#define STATUS_NDELETED         "93915"
+#define STATUS_RESERVED         "93916"
+#define STATUS_NAPPROVED        "93917"
+#define STATUS_BROADCASTOFF     "93918"
+#define STATUS_BROADCASTINT     "93919"
 
 /* Allele Nomen */
 

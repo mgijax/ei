@@ -471,11 +471,6 @@ char *mgi_DBrecordCount(int table)
 
   switch (table)
   {
-    case MRK_NOMEN:
-    case MRK_GENEFAMILY:
-    case MRK_NOMENSTATUS:
-            sprintf(cmd, "select count(*) from %s", mgi_DBtable(table));
-	    break;
     default:
   	    sprintf(cmd, "exec GEN_rowcount %s", mgi_DBtable(table));
 	    break;
@@ -603,13 +598,16 @@ char *mgi_DBkey(int table)
     case MGI_NOTETYPE:
 	    strcpy(buf, "_NoteType_key");
 	    break;
-    case MGI_NOTETYPE_MRKGO_VIEW:
-    case MGI_NOTETYPE_VOCEVIDENCE_VIEW:
-	    strcpy(buf, "_Object_key");
-	    break;
     case MGI_NOTE_MRKGO_VIEW:
+    case MGI_NOTE_NOMEN_VIEW:
     case MGI_NOTE_VOCEVIDENCE_VIEW:
 	    strcpy(buf, "_Object_key");
+	    break;
+    case MGI_REFERENCE_ASSOC:
+            strcpy(buf, "_Assoc_key");
+	    break;
+    case MGI_REFERENCE_NOMEN_VIEW:
+            strcpy(buf, "_Object_key");
 	    break;
     case MGI_TRANSLATION:
 	    strcpy(buf, "_Translation_key");
@@ -700,6 +698,14 @@ char *mgi_DBkey(int table)
 	    break;
     case MRK_STATUS:
             strcpy(buf, "_Marker_Status_key");
+	    break;
+    case NOM_MARKER:
+    case NOM_GENEFAMILY:
+    case VOC_NOMGENEFAMILY:
+            strcpy(buf, "_Nomen_key");
+	    break;
+    case NOM_SYNONYM:
+            strcpy(buf, "_Synonym_key");
 	    break;
     case ALL_TYPE:
             strcpy(buf, "_Allele_Type_key");
@@ -835,23 +841,6 @@ char *mgi_DBkey(int table)
     case MGI_COLUMNS:
             strcpy(buf, "column_name");
 	    break;
-    case MRK_NOMEN:
-    case MRK_NOMEN_GENEFAMILY:
-    case MRK_NOMEN_NOTES:
-    case MRK_NOMEN_REFERENCE:
-    case MRK_NOMEN_COORDNOTES:
-    case MRK_NOMEN_EDITORNOTES:
-            strcpy(buf, "_Nomen_key");
-	    break;
-    case MRK_NOMEN_OTHER:
-            strcpy(buf, "_Other_key");
-	    break;
-    case MRK_GENEFAMILY:
-            strcpy(buf, "_Marker_Family_key");
-	    break;
-    case MRK_NOMENSTATUS:
-            strcpy(buf, "_Marker_Status_key");
-	    break;
     case MLP_STRAIN:
     case MLP_STRAINTYPES:
     case MLP_NOTES:
@@ -979,8 +968,8 @@ char *mgi_DBtype(int table)
     case IMG_IMAGE:
             strcpy(buf, "Image");
 	    break;
-    case MRK_NOMEN:
-    case MRK_NOMEN_ACC_REFERENCE:
+    case NOM_MARKER:
+    case NOM_ACC_REFERENCE:
             strcpy(buf, "Nomenclature");
             break;
     case STRAIN:
@@ -1065,11 +1054,11 @@ char *mgi_DBaccTable(int table)
     case ALL_ALLELE:
             strcpy(buf, "ALL_Acc_View");
             break;
-    case MRK_NOMEN:
-	    sprintf(buf, "%s..MRK_Nomen_AccNoRef_View", getenv("NOMEN"));
+    case NOM_MARKER:
+	    sprintf(buf, "NOM_AccNoRef_View");
             break;
-    case MRK_NOMEN_ACC_REFERENCE:
-	    sprintf(buf, "%s..MRK_Nomen_AccRef_View", getenv("NOMEN"));
+    case NOM_ACC_REFERENCE:
+	    sprintf(buf, "NOM_AccRef_View");
             break;
     case PRB_SOURCE_MASTER:
 	    strcpy(buf, "PRB_Source_Acc_View");
@@ -1161,6 +1150,45 @@ char *mgi_DBtable(int table)
     case MRK_REFERENCE:
             strcpy(buf, "MRK_Reference");
 	    break;
+    case NOM_MARKER:
+	    strcpy(buf, "NOM_Marker");
+	    break;
+    case NOM_MARKER_VIEW:
+	    strcpy(buf, "NOM_Marker_View");
+	    break;
+    case NOM_MARKER_VALID_VIEW:
+	    strcpy(buf, "NOM_Marker_Valid_View");
+	    break;
+    case NOM_GENEFAMILY:
+	    strcpy(buf, "NOM_GeneFamily");
+	    break;
+    case NOM_GENEFAMILY_VIEW:
+	    strcpy(buf, "NOM_GeneFamily_View");
+	    break;
+    case VOC_NOMGENEFAMILY:
+	    strcpy(buf, "VOC_Term_GeneFamily_View");
+	    break;
+    case NOM_STATUS:
+	    strcpy(buf, "VOC_Term_NomenStatus_View");
+	    break;
+    case NOM_SYNONYM:
+	    strcpy(buf, "NOM_Synonym");
+	    break;
+    case NOM_SYNONYM_VIEW:
+	    strcpy(buf, "NOM_Synonym_View");
+	    break;
+    case NOM_TRANSFERSYMBOL:
+	    strcpy(buf, "NOM_transferToMGD");
+	    break;
+    case NOM_TRANSFERBATCH:
+	    strcpy(buf, "NOM_transferAllToMGD");
+	    break;
+    case NOM_TRANSFERREFEDITOR:
+	    strcpy(buf, "NOM_transferEditorRefToMGD");
+	    break;
+    case NOM_TRANSFERREFCOORD:
+	    strcpy(buf, "NOM_transferCoordRefToMGD");
+	    break;
     case HMD_CLASS:
             strcpy(buf, "HMD_Class");
 	    break;
@@ -1191,12 +1219,27 @@ char *mgi_DBtable(int table)
     case MGI_NOTETYPE_MRKGO_VIEW:
             strcpy(buf, "MGI_NoteType_MRKGO_View");
             break;
+    case MGI_NOTE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_Note_Nomen_View");
+	    break;
+    case MGI_NOTETYPE_NOMEN_VIEW:
+            strcpy(buf, "MGI_NoteType_Nomen_View");
+            break;
     case MGI_NOTE_VOCEVIDENCE_VIEW:
 	    strcpy(buf, "MGI_Note_VocEvidence_View");
 	    break;
     case MGI_NOTETYPE_VOCEVIDENCE_VIEW:
             strcpy(buf, "MGI_NoteType_VocEvidence_View");
             break;
+    case MGI_REFERENCE_ASSOC:
+	    strcpy(buf, "MGI_Reference_Assoc");
+	    break;
+    case MGI_REFERENCE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_Reference_Nomen_View");
+	    break;
+    case MGI_REFTYPE_NOMEN_VIEW:
+	    strcpy(buf, "MGI_RefType_Nomen_View");
+	    break;
     case MRK_MOUSE:
             strcpy(buf, "MRK_Mouse_View");
 	    break;
@@ -1518,45 +1561,6 @@ char *mgi_DBtable(int table)
     case MGI_TRANSLATIONSTRAIN_VIEW:
 	    strcpy(buf, "MGI_TranslationStrain_View");
 	    break;
-    case MRK_NOMEN:
-	    sprintf(buf, "%s..MRK_Nomen", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_GENEFAMILY:
-	    sprintf(buf, "%s..MRK_Nomen_GeneFamily", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_NOTES:
-	    sprintf(buf, "%s..MRK_Nomen_Notes", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_COORDNOTES:
-	    sprintf(buf, "%s..MRK_Nomen_CoordNotes_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_EDITORNOTES:
-	    sprintf(buf, "%s..MRK_Nomen_EditorNotes_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_OTHER:
-	    sprintf(buf, "%s..MRK_Nomen_Other", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_OTHER_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_Other_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_REFERENCE:
-	    sprintf(buf, "%s..MRK_Nomen_Reference", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_REFERENCE_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_Reference_View", getenv("NOMEN"));
-	    break;
-    case MRK_GENEFAMILY:
-	    sprintf(buf, "%s..MRK_GeneFamily", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_GENEFAMILY_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_GeneFamily_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMENSTATUS:
-	    sprintf(buf, "%s..MRK_Status", getenv("NOMEN"));
-	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
 	    break;
@@ -1592,18 +1596,6 @@ char *mgi_DBtable(int table)
 	    break;
     case STRAIN_MERGE:
 	    sprintf(buf, "MLP_mergeStrain");
-	    break;
-    case NOMEN_TRANSFERSYMBOL:
-	    sprintf(buf, "%s..Nomen_transferToMGD", getenv("NOMEN"));
-	    break;
-    case NOMEN_TRANSFERBATCH:
-	    sprintf(buf, "%s..Nomen_transferAllToMGD", getenv("NOMEN"));
-	    break;
-    case NOMEN_TRANSFERREFEDITOR:
-	    sprintf(buf, "%s..Nomen_transferEditorRefToMGD", getenv("NOMEN"));
-	    break;
-    case NOMEN_TRANSFERREFCOORD:
-	    sprintf(buf, "%s..Nomen_transferCoordRefToMGD", getenv("NOMEN"));
 	    break;
     case ALL_ALLELE:
             strcpy(buf, "ALL_Allele");
@@ -1839,6 +1831,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_INDEXSTAGES:
     case MGI_NOTE:
     case MGI_NOTECHUNK:
+    case MGI_REFERENCE_ASSOC:
     case MLC_LOCK:
     case MLC_MARKER:
     case MLC_REFERENCE:
@@ -1872,6 +1865,8 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOTES:
     case MRK_OFFSET:
     case MRK_REFERENCE:
+    case NOM_GENEFAMILY:
+    case NOM_SYNONYM:
     case HMD_HOMOLOGY:
     case HMD_HOMOLOGY_MARKER:
     case HMD_HOMOLOGY_ASSAY:
@@ -1884,12 +1879,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_REF_NOTES:
     case PRB_RFLV:
     case PRB_SOURCE:
-    case MRK_NOMEN_GENEFAMILY:
-    case MRK_NOMEN_NOTES:
-    case MRK_NOMEN_COORDNOTES:
-    case MRK_NOMEN_EDITORNOTES:
-    case MRK_NOMEN_OTHER:
-    case MRK_NOMEN_REFERENCE:
     case MLP_STRAIN:
     case MLP_STRAINTYPES:
     case MLP_NOTES:
@@ -1956,6 +1945,9 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTETYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
             break;
+    case MGI_REFERENCE_ASSOC:
+            sprintf(buf, "insert %s (%s, _Refs_key, _Object_key, _MGIType_key, _RefAssocType_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case MLC_LOCK:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2080,6 +2072,17 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (%s, _Refs_key, auto)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
+    case NOM_MARKER:
+            sprintf(buf, "insert %s (%s, _Marker_Type_key, _NomenStatus_key, _Marker_Event_key, _Marker_EventReason_key, _CurationState_key, symbol, name, chromosome, humanSymbol, statusNote)",
+
+	      mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case NOM_GENEFAMILY:
+            sprintf(buf, "insert %s (%s, _GeneFamily_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case NOM_SYNONYM:
+            sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case HMD_CLASS:
 	    sprintf(buf, "insert %s (%s)", 
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2263,23 +2266,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_TRANSLATIONTYPE:
 	    sprintf(buf, "insert %s (%s, _MGIType_key, translationType, compressionChars, regularExpression)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MRK_NOMEN:
-            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, submittedBy, broadcastBy, symbol, name, chromosome, humanSymbol, statusNote, broadcast_date)",
-
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MRK_NOMEN_GENEFAMILY:
-            sprintf(buf, "insert %s (%s, _Marker_Family_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MRK_NOMEN_NOTES:
-            sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MRK_NOMEN_OTHER:
-            sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MRK_NOMEN_REFERENCE:
-            sprintf(buf, "insert %s (%s, _Refs_key, isPrimary, broadcastToMGD)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case MLP_STRAIN:
             sprintf(buf, "insert %s (%s, _Species_key, userDefined1, userDefined2)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2454,9 +2440,13 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MGI_REFERENCE_ASSOC:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
+      case NOM_GENEFAMILY:
+      case NOM_MARKER:
+      case NOM_SYNONYM:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
@@ -2478,9 +2468,13 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MGI_REFERENCE_ASSOC:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
+      case NOM_GENEFAMILY:
+      case NOM_MARKER:
+      case NOM_SYNONYM:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);
@@ -2841,8 +2835,7 @@ char *mgi_DBcvname(int table)
             strcpy(buf, "eventReason");
 	    break;
     case MRK_STATUS:
-    case MRK_NOMENSTATUS:
-            strcpy(buf, "status");
+	    strcpy(buf, "status");
 	    break;
     case MLP_SPECIES:
             strcpy(buf, "species");
@@ -2927,6 +2920,9 @@ char *mgi_DBrefstatus(int key, int table)
 	break;
     case GO_DATAEVIDENCE:
 	sprintf(cmd, "exec BIB_GO_Exists %d", key);
+	break;
+    case MGI_REFERENCE_NOMEN_VIEW:
+	sprintf(cmd, "exec BIB_NOM_Exists %d", key);
 	break;
   }
 

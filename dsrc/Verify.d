@@ -1564,7 +1564,7 @@ rules:
 	  if (VerifyMarker.allowNomen) then
 	    select := select + "union\n" +
 		"select -1, _Marker_Status_key, symbol, chromosome, null " +
-		"\nfrom " + getenv("NOMEN") + " ..MRK_Nomen " +
+		"\nfrom " + mgi_DBtable(NOM_MARKER_VALID_VIEW) +
 		"\nwhere symbol = " + mgi_DBprstr(value) + 
 		"\nand _Marker_Status_key in (" + STATUS_PENDING + "," + STATUS_RESERVED + ")\n";
 	  end if;
