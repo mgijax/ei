@@ -386,9 +386,11 @@ rules:
 	    -- Unmanage any dialogs which are still active
             while (i <= mgi.initDialog.count) do
               dialog := mgi->(mgi.initDialog[i]);
-	      UnManageSelectionList.top := top;
-	      UnManageSelectionList.dialog := dialog;
-	      send(UnManageSelectionList, 0);
+	      if (dialog != nil) then
+	        UnManageSelectionList.top := top;
+	        UnManageSelectionList.dialog := dialog;
+	        send(UnManageSelectionList, 0);
+	      end if;
               i := i + 1;
             end while;
  
