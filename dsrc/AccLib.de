@@ -13,7 +13,8 @@ AddAccRow [table : widget;];		 -- Accession Table
 
 -- Initialize Accession Table
 InitAcc [table : widget;  	         -- Accession Table
-         clearCells : boolean := true;]; -- Clear Cells flag
+         clearCells : boolean := true;   -- Clear Cells flag
+	 showMGI : boolean := true;];	-- Display MGI Accession prefix
 
 -- Load Accession Numbers into mgiAccessionTable->Table
 LoadAcc [table : widget;		-- Accession Table
@@ -25,7 +26,8 @@ LoadAcc [table : widget;		-- Accession Table
 ProcessAcc [table : widget;		-- Accession Table
             objectKey : string;		-- Unique identifier of Accessionable Object
 	    refsKey : string := "-1";   -- Reference Key for Accessionable Object
-            tableID : integer;];	-- ID of table
+            tableID : integer;  	-- ID of table
+	    db : string;];		-- DB to use (default is MGD)
 
 -- Formulate 'from' and 'where' clauses for searching Accession Numbers
 SearchAcc [table : widget;		-- Accession Table

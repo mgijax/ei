@@ -147,7 +147,8 @@ rules:
 	  --   Set LogicalDB and Name values using Accession ID type values
 
           while (i <= source.subMenuId.num_children) do
-	    if (source.subMenuId.child(i).labelString = "MGI:" or source.subMenuId.child(i).managed) then
+	    if ((InitAcc.showMGI and source.subMenuId.child(i).labelString = "MGI:") or 
+		source.subMenuId.child(i).managed) then
 	      (void) mgi_tblSetCell(table, row, table.logicalKey, source.subMenuId.child(i).defaultValue);
 	      (void) mgi_tblSetCell(table, row, table.accName, source.subMenuId.child(i).labelString);
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -221,10 +222,6 @@ rules:
                 end if;
                 i := i + 1;
               end while;
-
-	      if ((integer) logicalDBkey > 1 and row = 0) then 	-- Not MGI
-		row := 1;
-	      end if;
 
 	      -- Set the _LogicalDB_key, _Accession_key and Logical DB Name
 
