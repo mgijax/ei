@@ -111,8 +111,8 @@ rules:
  
           cmd := mgi_setDBkey(RISET, NEWKEY, KEYNAME) +
                  mgi_DBinsert(RISET, KEYNAME) +
-		 mgi_DBprstr(top->Strain1->StrainID->text.value) + "," +
-		 mgi_DBprstr(top->Strain2->StrainID->text.value) + "," +
+		 top->Strain1->StrainID->text.value + "," +
+		 top->Strain2->StrainID->text.value + "," +
 		 mgi_DBprstr(top->Designation->text.value) + "," +
 		 mgi_DBprstr(top->Abbrev1->text.value) + "," +
 		 mgi_DBprstr(top->Abbrev2->text.value) + "," +
@@ -224,13 +224,13 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->Strain1->StrainID->text.value.length > 0) then
-            where := where + "\nand _Strain_key_1 like " + mgi_DBprstr(top->Strain1->StrainID->text.value);
+            where := where + "\nand _Strain_key_1 = " + top->Strain1->StrainID->text.value;
 	  elsif (top->Strain1->Verify->text.value.length > 0) then
 	    where := where + "\nand strain1 like " + mgi_DBprstr(top->Strain1->Verify->text.value);
 	  end if;
 
           if (top->Strain2->StrainID->text.value.length > 0) then
-            where := where + "\nand _Strain_key_2 like " + mgi_DBprstr(top->Strain2->StrainID->text.value);
+            where := where + "\nand _Strain_key_2 = " + top->Strain2->StrainID->text.value;
 	  elsif (top->Strain2->Verify->text.value.length > 0) then
 	    where := where + "\nand strain2 like " + mgi_DBprstr(top->Strain2->Verify->text.value);
 	  end if;
