@@ -593,9 +593,10 @@ rules:
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
 	  -- Different Sorts for different Annotation Types
-	  if (annotTable.annotVocab = "GO" or
-	      annotTable.annotVocab = "Mammalian Phenotype") then
+	  if (annotTable.annotVocab = "GO") then
 	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
+	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	    orderBy := "a.term, e.modification_date\n";
 	  elsif (annotTable.annotVocab = "PhenoSlim") then
 	    orderBy := "a.sequenceNum, e.modification_date\n";
 	  end if;
