@@ -342,13 +342,14 @@ rules:
 
           value := mgi_tblGetCell(table, 0, table.antibody);
           if (value.length > 0) then
-            where := where + " and a.antibodyName like " + mgi_DBprstr(value);
+            where := where + " and (a.antibodyName like " + mgi_DBprstr(value) +
+		" or al.alias like " + mgi_DBprstr(value) + ")";
             from_antibody := true;
 	  end if;
 
 	  if (from_antibody) then
-	    from := from + ", " + mgi_DBtable(GXD_ANTIBODY) + " a";
-	    where := where + " and g._Antigen_key = a._Antigen_key";
+	    from := from + ", " + mgi_DBtable(GXD_ANTIBODY) + " a," + mgi_DBtable(GXD_ANTIBODYALIAS) + " al";
+	    where := where + " and g._Antigen_key = a._Antigen_key and a._Antibody_key = al._Antibody_key";
 	  end if;
 
           if (where.length > 0) then
@@ -401,7 +402,7 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from GXD_Antigen_View where _Antigen_key = " + currentRecordKey + "\n" +
-		"select antibodyName from GXD_Antibody where _Antigen_key = " + currentRecordKey + " order by antibodyName\n";
+		"select mgiID, antibodyName from GXD_Antibody_View where _Antigen_key = " + currentRecordKey + " order by antibodyName\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -424,7 +425,8 @@ rules:
 	        DisplayMolecularSource.source_widget := top;
 	        send(DisplayMolecularSource, 0);
 	      elsif (results = 2) then
-		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      end if;
