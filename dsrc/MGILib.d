@@ -188,9 +188,9 @@ rules:
 --
  
         SetServer does
-          SetServer.source_widget.dbInfo := "     User:  " + global_login +
-                                            "     Server:  " + global_server + 
-                                            "     Database:  " + global_database;
+          SetServer.source_widget.dbInfo := "  User:  " + global_login +
+                                            "  Server:  " + global_server + 
+                                            "  DB:  " + global_database;
         end does;
  
 --
@@ -202,9 +202,9 @@ rules:
         SetTitle does
           root : widget := SetTitle.source_widget.find_ancestor(global_application);
  
-          SetTitle.source_widget.title := "Application:  " + global_application + 
-                                          "     Version:  " + global_version +
-                                          "     Form:  " + SetTitle.source_widget.title;
+          SetTitle.source_widget.title := "App:  " + global_application + 
+                                          "  Ver:  " + global_version +
+                                          "  Form:  " + SetTitle.source_widget.title;
  
           if (root != nil) then
             SetTitle.source_widget.title := SetTitle.source_widget.title + root.dbInfo;
