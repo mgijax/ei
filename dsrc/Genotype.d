@@ -531,6 +531,12 @@ rules:
 	    end if;
 	  end if;
 
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerChr);
+          if (value.length > 0) then
+	      where := where + "\nand ap.chromosome like " + mgi_DBprstr(value);
+	      from_allele := true;
+	  end if;
+
           value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[1]);
 
           if (value.length > 0 and value != "NULL") then
@@ -759,14 +765,15 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
+	        (void) mgi_tblSetCell(table, row, table.markerChr, mgi_getstr(dbproc, 14));
 	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 14));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 16));
 		(void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 19));
 		(void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 19));
+		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 20));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      elsif (results = 3) then

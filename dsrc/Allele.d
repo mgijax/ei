@@ -269,6 +269,9 @@ rules:
 	Add does
 	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
+	  nomenSymbol : string := "NULL";
+	  statusKey : string;
+	  approvalLoginDate : string;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -286,8 +289,6 @@ rules:
 
           currentRecordKey := "@" + KEYNAME;
  
-	  nomenSymbol : string := "NULL";
-
 	  -- if validated NomenDB symbol, the set Marker key to NULL
 
 	  if (top->mgiMarker->ObjectID->text.value = "-1") then
@@ -299,13 +300,23 @@ rules:
 	    isWildType := 1;
 	  end if;
 
+	  -- if allele is transgenic (reporter) then status is "in progress"
+
+          if (top->AlleleTypeMenu.menuHistory.labelString = TRANSGENIC_REPORTER) then
+	    statusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
+	    approvalLoginDate := "NULL,NULL)\n";
+	  else
+	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
+	    approvalLoginDate := global_loginKey + ",getdate())\n";
+	  end if;
+
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
 		 top->mgiMarker->ObjectID->text.value + "," +
 		 top->EditForm->Strain->StrainID->text.value + "," +
                  top->InheritanceModeMenu.menuHistory.defaultValue + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
-                 top->AlleleStatusMenu.menuHistory.defaultValue + "," +
+                 statusKey + "," +
                  top->EditForm->ESCellLine->VerifyID->text.value + "," +
                  top->EditForm->MutantESCellLine->VerifyID->text.value + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
@@ -313,13 +324,8 @@ rules:
 		 mgi_DBprstr(nomenSymbol) + "," +
 		 (string) isWildType + "," +
 		 global_loginKey + "," +
-		 global_loginKey + ",";
-
-	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
-	    cmd := cmd + global_loginKey + ",getdate())\n";
-	  else
-	    cmd := cmd + "NULL,NULL)\n";
-	  end if;
+		 global_loginKey + "," +
+		 approvalLoginDate;
 
 	  send(ModifyMolecularMutation, 0);
 
@@ -506,6 +512,7 @@ rules:
 	Modify does
 	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
+	  statusKey : string;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -575,11 +582,19 @@ rules:
             set := set + "_Allele_Type_key = "  + top->AlleleTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-          if (top->AlleleStatusMenu.menuHistory.modified and
+	  -- if allele is transgenic (reporter) then status is "in progress"
+
+          if (top->AlleleTypeMenu.menuHistory.labelString = TRANSGENIC_REPORTER) then
+	    statusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
+            set := set + "_Allele_Status_key = "  + statusKey + ",";
+	    set := set + "_ApprovedBy_key = null,approval_date = null,";
+          elsif (top->AlleleStatusMenu.menuHistory.modified and
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	      set := set + "_ApprovedBy_key = " + global_loginKey + ",approval_date = getdate(),";
+	    else
+	      set := set + "_ApprovedBy_key = null,approval_date = null,";
 	    end if;
           end if;
 
