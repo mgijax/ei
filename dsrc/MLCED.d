@@ -778,8 +778,8 @@ rules:
 	        top->Reference->Table.modified or
 	        top->Class->Table.modified) then
 	      StatusReport.source_widget := top;
-	      StatusReport.message := "You have made changes to the" +
-	                              "data\nassociated with the current symbol.\n"  +
+	      StatusReport.message := "You have made changes to the data\n" +
+	                              "associated with the current symbol.\n"  +
 	                              "Commit changes or Clear before\n" +
 	                              "selecting a new symbol to edit.";
 	      send(StatusReport);
