@@ -1625,7 +1625,11 @@ rules:
         ViewMolSegDetail does
           NewForm : widget;
  
-	  if (origSegmentType = "primer") then
+	  if (not ViewMolSegDetail.source_widget.set) then
+	    return;
+	  end if;
+
+	  if (ViewMolSegDetail.source_widget.labelString = "primer") then
 		NewForm := top->MolPrimerForm;
 	  else
 		NewForm := top->MolDetailForm;
