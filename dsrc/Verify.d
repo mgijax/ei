@@ -1281,7 +1281,7 @@ rules:
 
 	  if (mgi_tblGetCell(table, row, table.genotype) = "") then
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
-	    (void) mgi_tblSetCell(table, row, table.genotype, "-1");
+	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
 	  else
 	    genotypeKey := mgi_sql1("select _Object_key from GXD_Genotype_Acc_View " +
 		"where accID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)));
