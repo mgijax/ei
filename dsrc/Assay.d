@@ -623,6 +623,14 @@ rules:
 
           while (row < mgi_tblNumRows(table)) do
 	    (void) mgi_tblSetCell(table, row, table.ageNote, note);
+
+            if (mgi_tblGetCell(table, row, table.editMode) != TBL_ROW_EMPTY) then
+	      CommitTableCellEdit.source_widget := table;
+	      CommitTableCellEdit.row := row;
+	      CommitTableCellEdit.value_changed := true;
+	      send(CommitTableCellEdit, 0);
+	    end if;
+
 	    row := row + 1;
 	  end while;
 	end does;
