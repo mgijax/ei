@@ -725,10 +725,6 @@ char *mgi_DBkey(int table)
     case ALL_ALLELE_VIEW:
     case ALL_REFERENCE_VIEW:
     case ALL_NOTE_VIEW:
-    case ALL_NOTE_GENERAL_VIEW:
-    case ALL_NOTE_MOLECULAR_VIEW:
-    case ALL_NOTE_PROMOTER_VIEW:
-    case ALL_NOTE_NOMENCLATURE_VIEW:
     case ALL_MUTATION_VIEW:
     case ALL_SYNONYM_VIEW:
             strcpy(buf, "_Allele_key");
@@ -1415,18 +1411,6 @@ char *mgi_DBtable(int table)
     case ALL_NOTE_VIEW:
             strcpy(buf, "ALL_Note_View");
 	    break;
-    case ALL_NOTE_GENERAL_VIEW:
-            strcpy(buf, "ALL_Note_General_View");
-	    break;
-    case ALL_NOTE_MOLECULAR_VIEW:
-            strcpy(buf, "ALL_Note_Molecular_View");
-	    break;
-    case ALL_NOTE_PROMOTER_VIEW:
-            strcpy(buf, "ALL_Note_Promoter_View");
-	    break;
-    case ALL_NOTE_NOMENCLATURE_VIEW:
-            strcpy(buf, "ALL_Note_Nomenclature_View");
-	    break;
     case ALL_REFERENCE_VIEW:
             strcpy(buf, "ALL_Reference_View");
 	    break;
@@ -1564,10 +1548,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_ALLELE_MUTATION:
     case ALL_NOTE:
     case ALL_NOTE_VIEW:
-    case ALL_NOTE_GENERAL_VIEW:
-    case ALL_NOTE_MOLECULAR_VIEW:
-    case ALL_NOTE_PROMOTER_VIEW:
-    case ALL_NOTE_NOMENCLATURE_VIEW:
     case ALL_REFERENCE:
     case ALL_SYNONYM:
 	selectKey = 0;

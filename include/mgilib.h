@@ -162,11 +162,8 @@ extern char *global_version;
 #define ALL_MUTATION_VIEW	237
 #define ALL_REFERENCE		238
 #define ALL_REFERENCE_VIEW	239
-#define ALL_NOTE_GENERAL_VIEW	243
-#define ALL_NOTE_MOLECULAR_VIEW	244
-#define ALL_NOTE_PROMOTER_VIEW	245
+#define ALL_NOTE_VIEW		240
 #define ALL_CELLLINE_VIEW	246
-#define ALL_NOTE_NOMENCLATURE_VIEW	247
 
 /* MGI Controlled Vocabulary Tables */
 
