@@ -18,8 +18,6 @@
 #include <ux_uims.h>
 #include <Xm/Protocols.h>
 
-static Atom wm_delete_window;  /* X variable needed for graceful shutdown */
-
 static void dictionary_error(char *msg)
 {
    fprintf(stderr,"Dictionary module error: %s\n", msg);

@@ -16,21 +16,8 @@
 #include <stagetrees.h>
 #include <dictionary.h>
 
-
-
 /* teleUSE includes */
 #include <ux_uims.h>  /* event support */
-
-
-/* defines for the XRT includes */
-/*
-#define INTRINSICS 1
-#define MOTIF 1
-#define SOLARIS 1
-#define SYSV 1
-#include "motif_tools.h"
-#include "mtgear.h" 
-*/
 
 /* globals */
 
@@ -42,7 +29,6 @@ static Widget defaultnodestyle, leafnodestyle;
 
 /* end globals */
 
-
 /* local protos */
 
 void turnOnRepaint (XtPointer client_data, XtIntervalId *ID);
@@ -51,9 +37,7 @@ void turnOnRepaint (XtPointer client_data, XtIntervalId *ID);
       for a description of this function's arguments. client_data
       and ID are not used. */
 
-
-static void stagetrees_internalLoadStages(int countdstages, 
-                                          int *distinctstages);
+static void stagetrees_internalLoadStages(int countdstages, int *distinctstages);
    /* 
       The second phase of loading stage trees, called only from within this 
       module after a list of distinct stages affected has been created.
@@ -71,7 +55,6 @@ static void stagetrees_internalLoadStages(int countdstages,
       returns: nothing.
     */
   
-
 int node_compare_proc(XtPointer item1, XtPointer item2);
    /* 
       requires:
@@ -82,7 +65,6 @@ int node_compare_proc(XtPointer item1, XtPointer item2);
       modifies: nothing.
       returns: -1, 0, 1
     */
-
 
 void fixup_leaves(StageTree *stagetree);
    /*
@@ -96,7 +78,6 @@ void fixup_leaves(StageTree *stagetree);
       returns: nothing.
     */
 
-
 void open_folders(StageTree *stagetree);
    /*
       requires: 
@@ -106,7 +87,6 @@ void open_folders(StageTree *stagetree);
       modifies: state and presentation of the nodes in the stagetree. 
       returns: nothing.
     */
-
 
 void setFolderOpen(Widget child);
    /* 
@@ -118,18 +98,15 @@ void setFolderOpen(Widget child);
       returns: nothing.
     */
 
-
 /* 
  * ####  StageTrees module functions ####
  */
-
 
 void stagetrees_error(char *msg)
 {
    fprintf(stderr,"Stage Tree Module Error: %s\n", msg);
    exit(1);
 }
-
 
 int node_compare_proc(XtPointer item1, XtPointer item2)
 {
@@ -143,7 +120,6 @@ int node_compare_proc(XtPointer item1, XtPointer item2)
  
    return strncasecmp(buffer1, buffer2, STRUCTURENAMELEN);
 }
-
 
 Boolean stagetrees_isStageNodeKey(DBINT sk)
 {
@@ -165,9 +141,7 @@ Boolean stagetrees_isStageNodeKey(DBINT sk)
    return False;
 }
 
-
-void stagetrees_setProgressLabel(Boolean b, enum progresstype ptype, 
-                                 int numstages)
+void stagetrees_setProgressLabel(Boolean b, enum progresstype ptype, int numstages)
 {
     /* turn the progress display on or off */
     static char *loadinglabel = "Loading/Updating %V of %M stages";
@@ -182,7 +156,6 @@ void stagetrees_setProgressLabel(Boolean b, enum progresstype ptype,
     if (numstages == 0)
        numstages = 1;  /* prevent problems w/XRT Widget if this is 0 */
     
-
     XtVaSetValues(stagetrees.progress, 
                   XmNxrtGearLabelShow, b,
                   XmNxrtGearLabelFormat, processlabel,
@@ -196,21 +169,17 @@ void stagetrees_setProgressLabel(Boolean b, enum progresstype ptype,
     usleep(100000);
 }
 
-
 void stagetrees_setProgressValue(int t)
 {
     if( t < 0 || t > MAXSTAGE)
       stagetrees_error("Invalid stage passed to setProgressValue");
 
-    XtVaSetValues(stagetrees.progress, 
-                  XmNvalue, t,
-                  NULL);
+    XtVaSetValues(stagetrees.progress, XmNvalue, t, NULL);
     XFlush(XtDisplay(stagetrees.progress));
     XSync(XtDisplay(stagetrees.progress), False);
     XmUpdateDisplay(stagetrees.progress);
     usleep(100000);
 }
-
 
 void stagetrees_init(Widget outliner, Widget progressMeter)
 {
@@ -220,13 +189,10 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
    extern char *iconitem_xpm[];
 
    stagetrees.progress = progressMeter;
-                              /* initially, no progress label */
+   /* initially, no progress label */
    stagetrees_setProgressLabel(False, PROGRESS_LOADING, 28); 
-
    stagetrees.dbproc = (DBPROCESS *) mgi_dbopen();
-
    stagetrees.outliner = outliner;
-
 
    /* set the selection policy and other features of the outliner */
    XtVaSetValues(stagetrees.outliner,
@@ -234,14 +200,13 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
                  XRTGEAR_SELECTION_POLICY_SINGLE,
                  XmNxrtGearAutoSort, True,  /* we sort only explicitly */ 
                  XmNxrtGearNodeCheckForDuplicates, False,
-         XmNxrtGearTextHorizClipPolicy, XRTGEAR_COMPRESS_WITH_ELLIPSIS,
-         XmNxrtGearNodeMovePolicy, XRTGEAR_MOVE_NOWHERE,
-         XmNxrtGearNodeCompareProc, node_compare_proc,
+                 XmNxrtGearTextHorizClipPolicy, XRTGEAR_COMPRESS_WITH_ELLIPSIS,
+                 XmNxrtGearNodeMovePolicy, XRTGEAR_MOVE_NOWHERE,
+                 XmNxrtGearNodeCompareProc, node_compare_proc,
                  NULL);
 
    /* create the topmost stage node */
-   stagetrees.stagesroot = createNodeFolder(stagetrees.outliner, 
-                                            "Stages", "Stages", -1);
+   stagetrees.stagesroot = createNodeFolder(stagetrees.outliner, "Stages", "Stages", -1);
 
    /* create all the individual (empty) stage trees */
 
@@ -252,9 +217,10 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
    }
 
    /* set up the node styles, used to change the presentation of folders */
-   leafnodestyle = XmCreateXrtNodeStyle(stagetrees.outliner,
-                   "leafnodestyle", NULL, NULL);
-   if(!leafnodestyle) stagetrees_error("Could not create leafnodestyle");
+   leafnodestyle = XmCreateXrtNodeStyle(stagetrees.outliner, "leafnodestyle", NULL, NULL);
+
+   if (!leafnodestyle) 
+	stagetrees_error("Could not create leafnodestyle");
 
    /* get the default node style, so we can restore it later */
    XtVaGetValues(stagetrees.outliner,
@@ -263,8 +229,7 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
 
    /* load the leaf node icon */
 
-   XrtGearIconLoadFromXpmData(stagetrees.outliner, iconitem_xpm, "leaf", 
-                              &iconitem);
+   XrtGearIconLoadFromXpmData(stagetrees.outliner, iconitem_xpm, "leaf", &iconitem);
 
    XtVaSetValues(leafnodestyle,
            XmNxrtGearIconClosed, &iconitem,
@@ -276,11 +241,9 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
            NULL); 
 }
 
-
 void stagetrees_destroy()
 {
    stagetrees_unloadStages(False);   /* get rid of all non-stages nodes and structures */
-
    dbclose(stagetrees.dbproc);  /* close our connection to the DB */
 
    /* finally, get rid of the stagesroot widget */
@@ -289,7 +252,6 @@ void stagetrees_destroy()
       to like to have no children when it is destroyed */
 }
 
-
 char *stagetrees_convertDateToString(DBDATETIME *dbdate)
 {
     static BYTE strdate[MAXDATELEN];
@@ -297,32 +259,19 @@ char *stagetrees_convertDateToString(DBDATETIME *dbdate)
 
     int rc;
 
-    /* rc = dbconvert(stagetrees.dbproc,
-                   SYBDATETIME,
-                   (BYTE *) dbdate,
-                   IGNORELEN,
-                   SYBCHAR,
-                   strdate, 
-                   -1);  */ /* used to be MAXDATELEN */
-
     rc = dbdatecrack(stagetrees.dbproc, &dateinfo, dbdate); 
 
     if (rc < 0 || rc == FAIL)
        stagetrees_error("Couldn't convert datetime (Structure)");
 
-    sprintf(strdate, "%d/%d/%4d", dateinfo.datemonth+1, dateinfo.datedmonth,
-                                    dateinfo.dateyear);
+    sprintf(strdate, "%d/%d/%4d", dateinfo.datemonth+1, dateinfo.datedmonth, dateinfo.dateyear);
     return strdate;
 }
 
-
 void turnOnRepaint (XtPointer client_data, XtIntervalId *ID)
 {
-   XtVaSetValues ((Widget)client_data,
-                   XmNxrtGearRepaint, True,
-                   NULL);
+   XtVaSetValues ((Widget)client_data, XmNxrtGearRepaint, True, NULL);
 }
-
 
 int stagetrees_getNumLoaded()
 {
@@ -339,7 +288,6 @@ int stagetrees_getNumLoaded()
    return count;
 }
 
-
 void stagetrees_unloadStages( Boolean resetrepaint )
 {
    int i, pv;
@@ -349,7 +297,8 @@ void stagetrees_unloadStages( Boolean resetrepaint )
 
    node = XrtGearNodeGetFirstInTree(stagetrees.outliner);
 
-   if(!node) stagetrees_error("Null stage node in stagetrees"); 
+   if (!node) 
+	stagetrees_error("Null stage node in stagetrees"); 
 
    XrtGearNodeTraverseTo(node);
 
@@ -366,8 +315,7 @@ void stagetrees_unloadStages( Boolean resetrepaint )
                 XmNxrtGearRepaint, False,
                 NULL);
 
-   stagetrees_setProgressLabel(True, PROGRESS_UNLOADING, 
-                               stagetrees_getNumLoaded());
+   stagetrees_setProgressLabel(True, PROGRESS_UNLOADING, stagetrees_getNumLoaded());
 
    pv=1;
    for (i=0;i<MAXSTAGE; i++)  
@@ -382,7 +330,7 @@ void stagetrees_unloadStages( Boolean resetrepaint )
        }
    }
 
-   if(resetrepaint)
+   if (resetrepaint)
    {
    /* turn on screen updates AFTER destroys have been done */
       XtAppAddTimeOut(XtWidgetToApplicationContext(stagetrees.outliner), 0,
@@ -393,7 +341,6 @@ void stagetrees_unloadStages( Boolean resetrepaint )
    stagetrees_setProgressLabel(False, PROGRESS_UNLOADING, 28);
 }
 
-
 void stagetrees_deleteStructureByKey(DBINT sk)
 {
    Structure *s = stagetrees_getStructureByKey(sk);
@@ -401,12 +348,11 @@ void stagetrees_deleteStructureByKey(DBINT sk)
    if (s)
    {
       StageTree *st = stagetrees_getStageTree(structure_getStageKey(s));
-      if (!st) stagetrees_error("NULL stage tree returned by getStageTree");
-
+      if (!st) 
+	stagetrees_error("NULL stage tree returned by getStageTree");
       stagetree_deleteStructureByKey(st,sk);
    } 
 }
-
 
 StageTree *stagetrees_getStageTree(int stage)
 /* decrements the stage number by 1 */
@@ -436,7 +382,6 @@ Structure *stagetrees_getStructureByKey(DBINT sk)
 
     return NULL;
 }
-
 
 Structure *stagetrees_select(DBINT sk)
 {
@@ -499,7 +444,6 @@ Structure *stagetrees_select(DBINT sk)
     return NULL;  /* structure not found */
 }
 
-
 void setNodeIcon(Widget child)
 {
      int i, child_count;
@@ -532,7 +476,6 @@ void setNodeIcon(Widget child)
      XtVaSetValues(child, XmNxrtGearNodeStyle, defaultnodestyle, NULL); 
 }
 
-
 void fixup_leaves(StageTree *stagetree)
 {
    /* recursively decend the tree of nodes, changing
@@ -547,7 +490,6 @@ void fixup_leaves(StageTree *stagetree)
    /* call the recursive set routine */
    setNodeIcon(sroot); 
 } 
-
  
 void setFolderOpen(Widget child)
 {
@@ -576,7 +518,6 @@ void setFolderOpen(Widget child)
          setFolderOpen(children[i]);
 }
 
-
 void open_folders(StageTree *stagetree)
 {
    /* recursively decend the tree of nodes, changing
@@ -590,9 +531,7 @@ void open_folders(StageTree *stagetree)
    setFolderOpen(sroot); 
 } 
 
-
-static void stagetrees_internalLoadStages(int countdstages, 
-                                          int *distinctstages)
+static void stagetrees_internalLoadStages(int countdstages, int *distinctstages)
 {
     StageTree *stagetree;
     int i, rc;
@@ -615,19 +554,13 @@ static void stagetrees_internalLoadStages(int countdstages,
 
         stagetrees_setProgressValue(i+1); 
 
-         /* convert the time/datestamp for Structures stored in the 
-            specific tree to a string */
+         /* convert the time/datestamp for Structures stored in the specific tree to a string */
 
-        strcpy(smaxmod, 
-               stagetrees_convertDateToString(
-               &(stagetree_getMaxMod_S(stagetree))));
+        strcpy(smaxmod, stagetrees_convertDateToString( &(stagetree_getMaxMod_S(stagetree))));
 
-         /* convert the time/datestamp for StructureNames stored in the 
-            specific tree to a string */
+         /* convert the time/datestamp for StructureNames stored in the specific tree to a string */
 
-        strcpy(snmaxmod, 
-               stagetrees_convertDateToString(
-               &(stagetree_getMaxMod_SN(stagetree))));
+        strcpy(snmaxmod, stagetrees_convertDateToString(&(stagetree_getMaxMod_SN(stagetree))));
 
         /*
              Retrieve all Structures and StructureNames
@@ -655,10 +588,8 @@ static void stagetrees_internalLoadStages(int countdstages,
     stagetrees_setProgressLabel(False, PROGRESS_UNLOADING, 28);
 
     /* Turn on repainting now that we are done updating */
-    XtVaSetValues(stagetrees.outliner, XmNxrtGearRepaint, True,
-                  NULL);
+    XtVaSetValues(stagetrees.outliner, XmNxrtGearRepaint, True, NULL);
 }
-
 
 void stagetrees_loadStages(char *from, char *where)
 {
@@ -669,8 +600,6 @@ void stagetrees_loadStages(char *from, char *where)
     int countdstages; /* a count of the number of distinct stages we are 
                          processing */
     DBINT iresult;
-
-
 
     /* determine what stages are affected by the current query.  It would
        be nice to read them from the results already obtained, but the
@@ -702,11 +631,9 @@ void stagetrees_loadStages(char *from, char *where)
     stagetrees_internalLoadStages(countdstages, distinctstages);
 }
 
-
 void stagetrees_refresh()
 {
-   /* build a list of all loaded stages, and reload any changed nodes
-      in those stages */
+   /* build a list of all loaded stages, and reload any changed nodes in those stages */
    int distinctstages[MAXSTAGE];
    int i, countdstages = 0;
 
@@ -721,11 +648,9 @@ void stagetrees_refresh()
    stagetrees_internalLoadStages(countdstages, distinctstages);
 }
 
-
 /* 
  *  #### StageTree methods ####
  */
-
 
 void stagetree_init(StageTree *stagetree, int stgnum) 
 {
@@ -735,7 +660,6 @@ void stagetree_init(StageTree *stagetree, int stgnum)
     dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_S));
     dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_SN));
 }
-
 
 void stagetree_deleteStructures(StageTree *stagetree, Widget node)
 {
@@ -777,8 +701,6 @@ void stagetree_deleteStructures(StageTree *stagetree, Widget node)
         stagetree_deleteStructureByKey(stagetree, *sk);
 }
 
-
-
 void stagetree_deleteStructureByKey(StageTree *stagetree, DBINT sk)
 {
    Structure *st;
@@ -797,7 +719,6 @@ void stagetree_deleteStructureByKey(StageTree *stagetree, DBINT sk)
    structure_destroy(st);
 }
 
-
 void stagetree_unload(StageTree *stagetree)
 {
    /* removes all Structures from the stage tree,
@@ -810,7 +731,6 @@ void stagetree_unload(StageTree *stagetree)
    dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_S));
    dbdatezero(stagetrees.dbproc,&(stagetree->maxmod_SN));
 }
-
 
 void stagetree_destroy(StageTree *stagetree)
 {
@@ -827,7 +747,6 @@ void stagetree_destroy(StageTree *stagetree)
        component of the root structure in the tree, so it doesn't need to
        be dealt with here */ 
 }
-
 
 void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
 {
@@ -913,7 +832,6 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
    }
 }
 
-
 void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
 {
     /* iterate through the StructureName results. Save each result
@@ -955,7 +873,6 @@ void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
        }
     }
 }
-
 
 void stagetree_AddStructure(StageTree *stagetree, Structure *st)
 {
@@ -1066,7 +983,6 @@ void stagetree_AddStructure(StageTree *stagetree, Structure *st)
    }
 }
 
-
 void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
 {
     /* make sure we get results in ascending order of tree depth,
@@ -1118,7 +1034,6 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
     }
 }
 
-
 Structure *stagetree_getStructureByKey(StageTree *stagetree, DBINT sk)
 {
    HashTable *ht = stagetree->Structures;
@@ -1135,21 +1050,16 @@ Structure *stagetree_getStructureByKey(StageTree *stagetree, DBINT sk)
    return NULL;
 }
 
-
 Boolean stagetree_isEmpty(StageTree *stagetree)
 {
    return hashtbl_isEmpty(stagetree->Structures);
 }
 
-
 /* 
  * #### XRT Utility functions ####
  */ 
 
-Widget createNodeFolder(Widget parent, 
-                        char *widgetName, 
-                        char *folderLabel,
-                        DBINT structure_key)
+Widget createNodeFolder(Widget parent, char *widgetName, char *folderLabel, DBINT structure_key)
 {
    Widget folder;
    DBINT *stk;
@@ -1171,11 +1081,9 @@ Widget createNodeFolder(Widget parent,
    return folder; 
 }
 
-
 /* 
- * #### Structure methods ####
+ * #### XRT Utility functions ####
  */ 
-
 
 Structure *structure_create()
 {
