@@ -2155,7 +2155,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_FANTOM2CACHE:
-            sprintf(buf, "insert %s (%s, gba_mgiID, gba_symbol, gba_name)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, gba_mgID, gba_symbol, gba_name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
