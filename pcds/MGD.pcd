@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Sep 12 14:05:53 2001";
+      lastWritten = "Wed Sep 19 14:15:07 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -6625,9 +6625,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  J58000Note = push : mgiDataTypes;
+                                  J58000Note = AppendNotePush : mgiDataTypes;
                                   Group: Widget
-                                    activateCallback = "D:NoteJ58000";
                                     labelString = "J:58000 Note";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -6638,6 +6637,9 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    noteWidget = Notes;
+                                    note = "J:58000. Sequence homology based on a comparison of mouse sequence:";
                                 }
                                 {
                                   AccessionReference = AccessionReference : mgiTable;

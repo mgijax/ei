@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 09/19/2001
+--	- Converted NoteJ58000 to use AppendNotePush template
+--
 -- 03/28/2001
 --	- MRK_reloadLabel is called from MRK_Marker_Update trigger
 --
@@ -38,8 +41,6 @@ devents:
 	Init :local [];
 
 	Modify :local [];
-
-	NoteJ58000 :local [];
 
 	PrepareSearch :local [];
 
@@ -314,21 +315,6 @@ rules:
 	  send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- NoteJ58000
---
--- Places Note into Note field
---
--- Activated from:  widget top->J58000Note
--- 
---
-
-	NoteJ58000 does
-	  note : string := "J:58000. Sequence homology based on a comparison of mouse sequence:";
-
-	  top->Notes->text.value := top->Notes->text.value + note;
 	end does;
 
 --
