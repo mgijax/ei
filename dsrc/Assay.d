@@ -2658,8 +2658,7 @@ rules:
 	  endCol : integer := table.strengthKey;
 	  noteCol : integer := table.bandNotes;
 	  newColLabels : string := "Mode,Row Key,Unit Key,Row,Size,Units,Notes";
---	  newPixelWidthSeries : string := "(all 0-2 0)";
-	  newPixelWidthSeries : string := "";
+	  newPixelWidthSeries : string := "(all 0-2 0)";
 	  newCharWidthSeries : string := "(all 0 1)(all 3 3)(all 4-6 5)";
 	  newTraverseSeries : string := "(all 0-3 False)";
 	  newEditableSeries : string := "(all 0-3 False) (all 5-6 False)";
@@ -2671,9 +2670,8 @@ rules:
 	    laneLabel := mgi_simplesub(",", "\\,", mgi_tblGetCell(laneTable, b - 1, laneTable.label));
 	    newColLabels := newColLabels + 
 		",Mode,Lane key,Band key,Strength key," + (string) b + "; " + laneLabel + ",Note";
---	    newPixelWidthSeries := newPixelWidthSeries +
---		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
-	    newPixelWidthSeries := newPixelWidthSeries;
+	    newPixelWidthSeries := newPixelWidthSeries +
+		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
 	    newCharWidthSeries := newCharWidthSeries +
 		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)";
 	    newTraverseSeries := newTraverseSeries + 
