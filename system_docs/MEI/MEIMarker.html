@@ -1,24 +1,24 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGD EDITING INTERFACE: Design and Requirements - Markers
+MGI EDITING INTERFACE: Design and Requirements - Markers
 </TITLE>
 </HEADER>
 
 <BODY BGCOLOR="#FFFFFF">
 
 <H2>
-MGD EDITING INTERFACE: Design and Requirements - Markers
+MGI EDITING INTERFACE: Design and Requirements - Markers
 </H2>
 <BR>
 
 <H4>Introduction</H4>
-The Markers constitute one of the backbones of the MGD database.  Virtually no data is entered into
-the MGD database without a Marker of some kind associated with it.
+The Markers constitute one of the backbones of the MGI database.  Virtually no data is entered into
+the MGI database without a Marker of some kind associated with it.
 <P>
-Markers make their way into MGD via the Nomenclature process.  Novel and Reserved Markers are 
-<I>broadcast</I> from the Nomenclature database to MGD by Nomen editors via a broadcast process.
-For more information regarding the Nomenclature database and the Broadcast process, refer to:
+Markers make their way into MGI via the Nomenclature process.  Novel and Reserved Markers are 
+<I>broadcast</I> from the Nomenclature module to the Marker module by editors via a broadcast process.
+For more information regarding the Nomenclature and Broadcast process, refer to:
 	<UL>
 	<LI><A HREF="MEINomen.html">Nomenclature Requirements</A>
 	</UL>
@@ -147,7 +147,7 @@ Breakpoint Split process.
 When modifications are made to the Chromosome value of the Marker, certain rules apply:
 <OL>
 <LI>If the Chromosome is being changed to <I>UN</I>, then set the Offset to <I>-999.0</I>.
-<LI>If the Chromosome was known and is changed to another known, then set the MGD and CC Offsets to <I>-1.0</I>.
+<LI>If the Chromosome was known and is changed to another known, then set the MGI and CC Offsets to <I>-1.0</I>.
     However, if the Marker is an Anchor Locus, then the Anchor record must be deleted before the
     Chromosome value can be modified.
 </OL>
@@ -186,7 +186,7 @@ To do so:
 <H4>Miscellaneous</H4>
 <OL>
 <LI>The <I>Add</I> function has been disabled on this form.  All new marker symbols
-    must be input into MGD using the <A HREF="MEINomen.html">Nomenclature form</A>.
+    must be input into MGI using the <A HREF="MEINomen.html">Nomenclature form</A>.
 <P>
 <LI>Allele symbols and names may be searched using the Marker form, but can only be edited
     using the <A HREF="MEIAllele.html">Allele form</A>.

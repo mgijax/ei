@@ -1,14 +1,14 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGD EDITING INTERFACE: Design and Requirements - Molecular Probes & Segments
+MGI EDITING INTERFACE: Design and Requirements - Molecular Probes & Segments
 </TITLE>
 </HEADER>
 
 <BODY BGCOLOR="#FFFFFF">
 
 <H2>
-MGD EDITING INTERFACE: Design and Requirements - Molecular Probes & Segments
+MGI EDITING INTERFACE: Design and Requirements - Molecular Probes & Segments
 </H2>
 <BR>
 
@@ -16,8 +16,8 @@ MGD EDITING INTERFACE: Design and Requirements - Molecular Probes & Segments
 Molecular Segments contains:
 	<UL>
 	<LI>cDNA
-	<LI>genomic
 	<LI>DNA (construct)
+	<LI>genomic
 	<LI>mitochondrial
 	<LI>oligo
 	<LI>primer
@@ -25,12 +25,12 @@ Molecular Segments contains:
 <P>
 All Molecular Segments which are not designated as <I>primers</I> have a <I>Library</I> record which defines:
 	<UL>
-	<LI>Species
+	<LI>Organism
 	<LI>Strain
 	<LI>Tissue
 	<LI>Cell Line
 	<LI>Age
-	<LI>Sex
+	<LI>Gender
 	<LI>Tissue Treatment
 	</UL>
 <P>
@@ -40,15 +40,21 @@ Molecular Segments have <I>relationships</I> with Markers:
 	<LI><B>E</B>, a Marker <B>encodes</B> a probe if it hybridizes 100% to the probe
 	<LI><B>H</B>, a Marker <B>hybridizes</B> to a probe
 	<LI><B>M</B>, designation for <B>MIT</B> primers
-	<LI><B>P</B>, a <B>putative</B> association derived from UniGene
+	<LI><B>P</B>, a <B>putative</B> association derived from UniGene or Auto-E
 	</UL>
 <P>
 Each Molecular Segment may have a list of References which may contain RFLP information, including
 nucleotide (GenBank) accession numbers.
 <P>
 
-<!--Molecular Segments are loaded from external sources as well as manual input.  These updates occur ->
-<!--on a regular basis (quarterly, monthly, etc.): ->
+Molecular Segments are loaded from external sources as well as manual input.  These updates occur
+on a regular basis (quarterly, monthly, etc.):
+<OL>
+<LI>RIKEN
+<LI>IMAGE
+<LI>NIA
+<LI>MKIAA
+</OL>
 
 <H4>Editing Form</H4>
 <OL>
@@ -78,13 +84,14 @@ nucleotide (GenBank) accession numbers.
 <P>
 <LI>Vector Type (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 	<UL>
-	<LI>YAC
-	<LI>Cosmid
-	<LI>Plasmid
-	<LI>Phage
 	<LI>BAC
+	<LI>Cosmid
 	<LI>P1
+	<LI>PAC
+	<LI>Phage
+	<LI>Plasmid
 	<LI>Phagemid
+	<LI>YAC
 	</UL>
 <P>
 <LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
@@ -95,7 +102,7 @@ nucleotide (GenBank) accession numbers.
 <P>
 <LI>Library (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Controlled Vocabulary Lists</A>)
 <P>
-<LI>Species (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<LI>Organism (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 <P>
 <LI>Strain (see <A HREF="MEI.html#dataVerStrain">Data Verifications section on Strain</A>)
 <P>
@@ -103,7 +110,7 @@ nucleotide (GenBank) accession numbers.
 <P>
 <LI>Age (see <A HREF="MEI.html#dataVerAge">Data Verifications section on Age</A>)
 <P>
-<LI>Sex (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
+<LI>Gender (see <A HREF="MEI.html#dataVerPulldown">Data Verifications section on Pulldown Menus</A>)
 <P>
 </OL>
 
@@ -119,11 +126,11 @@ Sequence Type selected and different fields will become available for viewing/ed
 		<OL>
 		<LI>Vector Type
 		<LI>Library
-		<LI>Species
+		<LI>Organism
 		<LI>Strain
 		<LI>Tissue
 		<LI>Age
-		<LI>Sex
+		<LI>Gender
 		</OL>
 	</OL>
 <P>
@@ -143,8 +150,6 @@ Sequence Type selected and different fields will become available for viewing/ed
 		<OL>
 		<LI>Sequence 1
 		<LI>Sequence 2
-		<LI>Repeat Unit
-		<LI>More Than 1 Product
 		<LI>Product Size
 		</OL>
 	<LI>Marker
@@ -154,10 +159,10 @@ Sequence Type selected and different fields will become available for viewing/ed
 
 <H4>Defaults</H4>
 <OL>
-<LI>Species; default is <I>mouse, laboratory</I>
+<LI>Organism; default is <I>mouse, laboratory</I>
 <LI>Vector Type; default is <I>Not Specified</I>
 <LI>Age; default is <I>Not Specified</I>
-<LI>Sex; default is <I>Not Specified</I>
+<LI>Gender; default is <I>Not Specified</I>
 <LI>If <I>Tissue</I> is <I>unfertilized egg</I>, then <I>Age</I> default is <I>Not Applicable</I>
 <LI>If <I>Age</I> is <I>Not Applicable</I>, then <I>Tissue</I> must be <I>unfertilized egg</I>
 </OL>
@@ -173,18 +178,16 @@ A Molecular Segment cannot be deleted if it is referenced by a:
 <H4>Library</H4>
 A Library selection populates the Library text field and performs a lookup of:
 	<UL>
-	<LI>Species
+	<LI>Organism
 	<LI>Strain
 	<LI>Tissue
 	<LI>Cell Line
 	<LI>Age
-	<LI>Sex
+	<LI>Gender
 	<LI>Tissue Treatment
 	</UL>
 <P>
-To edit a non-anonymous Library, the user can also use the Molecular Probe Libraries form.
-To access this form, choose 
-<A HREF="molseglibrary.gif"><I>Edit->Molecular Probe Libraries</I></A>.
+To edit a non-anonymous Library, the user must use the <A HREF="MEICloneLibrary.html">Clone Libraries</A> form.
 <P>
 
 <H4>Miscellaneous</H4>
@@ -201,18 +204,11 @@ To access this form, choose
 	<LI>can be updated to another relationship from <I>P</I>
 	</UL>
 <P>
-<LI>The <I>KFMemorial</I> button places the following text in the <I>Notes</I> field:
-	<PRE>This clone is derived from a gene that produces alternate transcripts.</PRE>
+<LI>The <I>View Attribute History</I> button will display the last modification date and user
+    for each Molecular Source attribute (Organism, Strain, Tissue, Cell Line, Age, Gender, Tissue Treatment)
+    of the currently selected Molecular Segment.
 <P>
-<LI>The <I>Riboprobe</I> button places the following text in the <I>Notes</I> field:
-	<PRE>This clone was used to generate a riboprobe.</PRE>
-<P>
-<LI>The <I>Problem Sequence</I> button places the following text in the <I>Notes</I> field:
-	<PRE>
-	MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. 
-	The artifact may have been introduced during the cloning process, 
-	or may be due to unreliable sequence data.
-	</PRE>
+<LI>The <I>Pick List of Molecular Segment Notes</I> button places special text in the <I>Notes</I> field.
 <P>
 <LI>Strains in the RFLV table on the Reference form must be entered in the following format:
 	<PRE> Strain1, Strain2, Strain3</PRE>

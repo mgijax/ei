@@ -1,20 +1,20 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGD EDITING INTERFACE: Design and Requirements - References
+MGI EDITING INTERFACE: Design and Requirements - References
 </TITLE>
 </HEADER>
 
 <BODY BGCOLOR="#FFFFFF">
 
 <H2>
-MGD EDITING INTERFACE: Design and Requirements - References
+MGI EDITING INTERFACE: Design and Requirements - References
 </H2>
 <BR>
 
 <H4>Introduction</H4>
 References, also known as the Master Bibliography, constitute one of the backbones of the
-MGD database.  No data is input into MGD without a supported Reference.  Within the data entry
+MGI database.  No data is input into MGI without a supported Reference.  Within the data entry
 process, the Reference is the first bit of information entered into the database.
 <P>Along with the MGI accession number, an internal accession number (<I>J Number</I>) is also generated.  
 This J Number facilitates the filing and tracking of the References within the Data Processing group.
@@ -31,8 +31,8 @@ the Master Bibliography at regular intervals.
 <OL>
 <LI>MGI:, system-generated
 <LI>J:, system-generated or user-specified
-<LI>Medline UI, cross reference to The National Library of Medicine
 <LI>PubMed ID, cross reference to PubMed
+<LI>Medline UI, cross reference to The National Library of Medicine
 </OL>
 
 <H4>Data Verifications</H4>
@@ -130,11 +130,11 @@ A Reference cannot be deleted if it is referenced by any of the following object
 <LI>MLC entry
 <LI>Nomenclature
 <LI>Expression Assay
-<LI>Annotation (GO, MP, PhenSlim)
+<LI>Annotation (GO, MP, PhenoSlim)
 </OL>
 
 <H4>Reference Data Sets </H4>
-Each Reference can be assigned to one or more data sets in MGD:
+Each Reference can be assigned to one or more data sets in MGI:
 <OL>
 <LI>Probes/Seq (<I>Molecular Probes & Segments</I>)
 <LI>Mapping
@@ -145,8 +145,6 @@ Each Reference can be assigned to one or more data sets in MGD:
 <LI>Nomen
 <LI>Tumor
 <LI>SCC	(<I>Strain Characteristics Catalogue</I>)
-<LI>Matrix (<I>Biochemical Alleles</I>)
-<LI>Chromosome Committee
 </OL>
 <P>
 For data sets 1-7, one of the following statuses is determined automatically by the system:
@@ -157,19 +155,18 @@ For data sets 1-7, one of the following statuses is determined automatically by 
 <P>
 The user may also elect to status data sets 1-7 as <I>Never Used</I>.
 <P>
-The only status option for data sets 8-11 is <I>Never Used</I> since there is no way for the system to
+The only status option for data sets 8-9 is <I>Never Used</I> since there is no way for the system to
 determine a <I>Used/Not Used</I> status for these data sets.  (However, if any of these data sets were incorporated
-into MGD, then this behavior could be changed to automatically determine their status.)
+into MGI, then this behavior could be changed to automatically determine their status.)
 <P>
 To search for References by data set:
 <OL>
 <LI>Choose the data set(s)
 <LI>Choose the operator
 	<UL>
-	<LI><I>Equals</I> will search for References where the selected data set is the <B>only</B>
-	    data set assigned to the Reference.  Only select <B>one</B> data set when using the
-	    <I>Equals</I> option.
-	<LI><I>Contains</I> will search for References where <B>any</B> of the selected data sets are
+	<LI><I>AND</I> will search for References where the selected data set(s) are the <B>only</B>
+	    data set(s) assigned to the Reference.
+	<LI><I>OR</I> will search for References where <B>any</B> of the selected data sets are
 	    assigned to the Reference.
 	</UL>
 </OL>

@@ -89,18 +89,23 @@ There is one entry form for each main component of MGI:
 	<LI><A HREF = "MEIReference.html">References</A>
 	<LI><A HREF = "MEIMarker.html">Markers</A>
 	<LI><A HREF = "MEIAllele.html">Alleles</A>
+	<LI><A HREF = "GEIGenotype.html">Genotype</A>
 	<LI><A HREF = "MEIMolecular.html">Molecular Probes & Segments</A>
-	<LI><A HREF = "MEIHomology.html">Homology</A>
+	<LI><A HREF = "MEIOrthology.html">Orthology</A>
 	<LI><A HREF = "MEIMapping.html">Mapping</A>
 	<LI><A HREF = "MEIMLC.html">MLC</A>
 	<LI><A HREF = "MEINomen.html">Nomenclature</A>
-	<LI><A HREF = "MEISpecies.html">Species</A>
+	<LI><A HREF = "MEIAnnotation.html">Vocabulary Annotations</A>
+	<LI><A HREF = "MEISequence.html">Sequences</A>
+	<LI><A HREF = "MEICloneLibrary.html">Clone Libraries</A>
+	<LI><A HREF = "MEISV.html">Simple Vocabulary</A>
+	<LI><A HREF = "MEICV.html">Controlled Vocabulary</A>
+	<LI><A HREF = "MEIOrganism.html">Organism</A>
 	<LI><A HREF = "MEIStrain.html">Strains</A>
 	<LI><A HREF = "MEITissue.html">Tissues</A>
 	<LI><A HREF = "MEICrosses.html">Crosses</A>
 	<LI><A HREF = "MEIRISets.html">RI Sets</A>
-	<LI><A HREF = "MEICV.html">Controlled Vocabulary</A>
-	<LI><A HREF = "MEISV.html">Simple Vocabulary</A>
+	<LI><A HREF = "MEITranslation.html">Translations</A>
 	</OL>
 
 <H4>GXD (<A HREF="gxd.gif">Main Menu</A>)</H4>
@@ -162,11 +167,10 @@ and removed from any accessioned MGI object by the user.
 <P>
 Valid external Accession numbers include:
 	<OL>
-	<LI>Medline UI numbers can be attached to Reference objects.
-	<LI>EC numbers can be attached to Marker objects.
+	<LI>PubMed IDs can be attached to Reference objects.
+	<LI>GenBank IDs can be attached to Marker objects.
 	<LI>SWISS-PROT numbers can be attached to Marker objects.
 	<LI>ATCC numbers can be attached to Antibody objects.
-	<LI>NCBI (pid) numbers can be attached to Antigen objects.
 	</OL>
 
 <P>
@@ -308,7 +312,7 @@ a mouse click to another cell in the table also invokes the validation.
 		<LI>Marker Histories may include <I>withdrawn</I> symbols.
 		<LI>MLC queries may include <I>withdrawn</I> symbols.
 		<LI>Non-Approved Allele symbols may refer to non-approved Markers 
-		    which only exist in NomenDB.
+		    which only exist in Nomenclature.
 		</OL>
 	<LI>In some instances, additional information such as the chromosome or name of the Marker
 	    is displayed.
@@ -454,7 +458,7 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>Mouse Chromosomes
 	<LI>Experiment Types
 	<LI>Cross Types
-	<LI>Species
+	<LI>Organism
 	<LI>Age Prefixes
 	<LI>Sex
 	<LI>MLC Mode
@@ -481,8 +485,8 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>MLC Classes*
 	<LI>Molecular Probe & Segment Source Libraries
 	<LI>Mapping Assays*
-	<LI>Homology Assays*
-	<LI>Homology Species
+	<LI>Orthology Assays*
+	<LI>Orthology Organism
 	<LI>Allele ES Cell Lines*
 	</OL>
 	<P>
@@ -569,9 +573,9 @@ Database triggers detect the attempt to delete an object which is referenced by
 another object.  In order to delete the desired object, all cross-references to that
 object must be removed.  A few instances are given below:
 <OL>
-<LI>A Reference which is referenced by a Marker, Molecular Segment, Homology, Experiment, MLC, or GXD object 
+<LI>A Reference which is referenced by a Marker, Molecular Segment, Orthology, Experiment, MLC, or GXD object 
     cannot be deleted.
-<LI>A Marker which is referenced by a Molecular Segment, Homology, Experiment, MLC or GXD object cannot be deleted.
+<LI>A Marker which is referenced by a Molecular Segment, Orthology, Experiment, MLC or GXD object cannot be deleted.
 <LI>A Tissue which is referenced by a Molecular Segment object cannot be deleted.
 </OL>
 <P>
@@ -605,10 +609,10 @@ To run the Applications from a Solaris Workstation:
 	<LI><CODE>setenv DISPLAY &lt;your hostname&gt;:0</CODE>
 	<LI><TABLE BORDER=1>
 	    <TR ALIGN=left><TH>Application<TH>Script
-	    <TR><TD>Production MGI Menu<TD><CODE>/usr/local/mgi/ei/prod/mgi/runmgi&</CODE>
-	    <TR><TD>Production MGI Admin<TD><CODE>/usr/local/mgi/ei/prod/runapp mgiadmin&</CODE>
-	    <TR><TD>Development MGI Menu<TD><CODE>/usr/local/mgi/ei/dev/mgi/runmgi&</CODE>
-	    <TR><TD>Development MGI Admin<TD><CODE>/usr/local/mgi/ei/dev/runapp mgiadmin&</CODE>
+	    <TR><TD>Production MGI Menu<TD><CODE>/usr/local/mgi/live/ei/prod/mgi/runmgi&</CODE>
+	    <TR><TD>Production MGI Admin<TD><CODE>/usr/local/mgi/live/ei/prod/runapp mgiadmin&</CODE>
+	    <TR><TD>Development MGI Menu<TD><CODE>/usr/local/mgi/live/ei/dev/mgi/runmgi&</CODE>
+	    <TR><TD>Development MGI Admin<TD><CODE>/usr/local/mgi/live/ei/dev/runapp mgiadmin&</CODE>
 	    </TABLE>
 	<LI>At the application login screen, type in your SYBASE login and password.
 	</OL>
