@@ -1,8 +1,8 @@
 Module: MGINomen
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 28 11:08:11 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Mon Oct 21 13:00:37 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -267,7 +267,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Review Key,Type,Reference Type,J#,Citation,Review?";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 6 20)(all 8 60)(all 9 7)";

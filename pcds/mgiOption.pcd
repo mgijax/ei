@@ -2,8 +2,8 @@ Module: mgiOption
 {
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri May 24 09:58:08 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Mon Oct 21 13:00:32 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -301,6 +301,21 @@ Module: mgiOption
                         labelString = Taxonomy;
                       Group: User
                         defaultValue = 32;
+                    }
+                    {
+                      Ensembl = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 33;
+                    }
+                    {
+                      TIGR = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 35;
+                    }
+                    {
+                      DOTS = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 36;
                     }
               }
         }

@@ -2,8 +2,8 @@ Module: MGI
 {
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Aug 21 13:16:11 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Mon Oct 21 13:00:40 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -31,24 +31,6 @@ Module: MGI
                               bottomAttachment = attach_none;
                               resizable = true;
                               leftOffset = 5;
-                                Popups:
-                                {
-                                  LoginServerPulldown = OptionPulldown;
-                                      {
-                                        Production = ServerToggle : mgiOption;
-                                      }
-                                      {
-                                        Development = ServerToggle : mgiOption;
-                                      }
-                                      {
-                                        Public = ServerToggle : mgiOption;
-                                      }
-                                      {
-                                        Junior = ServerToggle : mgiOption;
-                                        Group: User
-                                          defaultValue = MGI_DEV_1151;
-                                      }
-                                }
                           }
                           {
                             LoginDB = LoginDB : mgiOption;

@@ -421,11 +421,6 @@ Module: MGIAdmin
                                               Group: Widget
                                                 valueChangedCallback = "D:NewServer,\nD:SetModify";
                                             }
-                                            {
-                                              Junior = ServerToggle;
-                                              Group: Widget
-                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
-                                            }
                                       }
                                 }
                                 {
