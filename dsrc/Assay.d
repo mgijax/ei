@@ -563,12 +563,12 @@ rules:
 	  -- Reporter Gene is only valid for knock in
 
 	  if (top->GXDReporterGeneMenu.menuHistory.defaultValue = "%") then
-	    cmd := cmd + "NULL";
+	    cmd := cmd + "NULL,";
 	  else
-	    cmd := cmd + top->GXDReporterGeneMenu.menuHistory.defaultValue;
+	    cmd := cmd + top->GXDReporterGeneMenu.menuHistory.defaultValue + ",";
 	  end if;
 
-	  cmd := global_loginKey + "," + global_loginKey + ")\n";
+	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
 
 	  -- Probe Reference
 
