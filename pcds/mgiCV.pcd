@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 12 09:03:43 2003";
+      lastWritten = "Fri Aug 29 10:27:23 2003";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -442,6 +442,35 @@ Module: mgiCV
                   labelString = "Age Normalized";
                 Group: User
                   note = "Age normalized so that noon of plug day = E0.5.";
+              }
+        }
+        {
+          CVSequence = XmRowColumn;
+          Group: Control
+            vipComment = "";
+            vip_x = 145;
+            vip_y = 250;
+              {
+                AgeMenu = AgeMenu : mgiOption;
+                    Popups:
+                    {
+                      AgePulldown = OptionPulldown;
+                      Group: User
+                        tableForm = SourceInfo;
+                        tableOption = 16;
+                        tableOptionKey = 7;
+                    }
+              }
+              {
+                GenderMenu = GenderMenu : mgiOption;
+                    Popups:
+                    {
+                      GenderPulldown = OptionPulldown;
+                      Group: User
+                        tableForm = SourceInfo;
+                        tableOption = 18;
+                        tableOptionKey = 10;
+                    }
               }
         }
 }

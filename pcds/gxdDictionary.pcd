@@ -1,8 +1,8 @@
-Module: gxdDictionary
+Module: mgiAnatDictionary
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Jan  4 12:12:46 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Mon Jul  7 14:59:41 2003";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -159,7 +159,7 @@ Module: gxdDictionary
                                       }
                                 }
                                 {
-                                  mgiAliasTable = aliasTable : gxdDictionary;
+                                  mgiAliasTable = aliasTable : mgiAnatDictionary;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
@@ -179,7 +179,7 @@ Module: gxdDictionary
                                       }
                                 }
                                 {
-                                  edinburghAliasTable = aliasTable : gxdDictionary;
+                                  edinburghAliasTable = aliasTable : mgiAnatDictionary;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = mgiAliasTable;
@@ -232,7 +232,7 @@ Module: gxdDictionary
                                       }
                                 }
                                 {
-                                  printStopMenu = printStopMenu : gxdDictionary;
+                                  printStopMenu = printStopMenu : mgiAnatDictionary;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
@@ -264,7 +264,7 @@ Module: gxdDictionary
                                       }
                                 }
                                 {
-                                  treeDisplay = treeDisplay : gxdDictionary;
+                                  treeDisplay = treeDisplay : mgiAnatDictionary;
                                   Group: Widget
                                     highlightColor = Firebrick;
                                     xrtGearSelectionCallback = "C:nodeSelectionCB";
@@ -423,7 +423,7 @@ Module: gxdDictionary
                                   QueryList = QueryList;
                                 }
                                 {
-                                  ADEditClipboard = ADEditClipboard : gxdDictionary;
+                                  ADEditClipboard = ADEditClipboard : mgiAnatDictionary;
                                 }
                           }
                     }
@@ -502,7 +502,7 @@ Module: gxdDictionary
                       NoteDialog = NoteDialog;
                     }
                     {
-                      AddDialog = AddDialog : gxdDictionary;
+                      AddDialog = AddDialog : mgiAnatDictionary;
                       Group: Widget
                         managed = False;
                         dialogTitle = "Structure Add Dialog";
@@ -667,7 +667,7 @@ Module: gxdDictionary
                           }
                     }
                     {
-                      mgiAliasTable = aliasTable : gxdDictionary;
+                      mgiAliasTable = aliasTable : mgiAnatDictionary;
                       Group: Constraint
                         leftAttachment = attach_opposite_widget;
                         rightAttachment = attach_none;
@@ -686,7 +686,7 @@ Module: gxdDictionary
                           }
                     }
                     {
-                      printStopMenu = printStopMenu : gxdDictionary;
+                      printStopMenu = printStopMenu : mgiAnatDictionary;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = mgiAliasTable;

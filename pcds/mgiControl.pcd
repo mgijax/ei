@@ -2,8 +2,8 @@ Module: mgiControl
 {
       autoCuil = False;
       dDialogFile = "mgiControl_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Jun  7 08:59:34 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Wed Aug 27 15:10:28 2003";
         {
           Control = XmFrame;
           Group: Control
@@ -121,6 +121,7 @@ Module: mgiControl
                         marginWidth = 0;
                         managed = False;
                         traversalOn = False;
+                        background = Wheat;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Search;
@@ -139,9 +140,12 @@ Module: mgiControl
                               marginWidth = 0;
                               shadowThickness = 3;
                               height = 18;
+                              background = Wheat;
                                 Popups:
                                 {
                                   ClearPulldown = XmPulldownMenu;
+                                  Group: Widget
+                                    background = Wheat;
                                 }
                           }
                     }
@@ -197,7 +201,7 @@ Module: mgiControl
               }
         }
         {
-          ControlPush = XmPushButton;
+          ControlPush = push : mgiDataTypes;
           Group: Widget
             traversalOn = False;
             activateCallback = "D:GoHome";

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul  7 10:23:54 2003";
+      lastWritten = "Wed Sep 17 12:39:02 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -154,13 +154,26 @@ Module: GXD
                                         mgiCitation = mgiCitation : mgiDataTypes;
                                       }
                                       {
-                                        SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                                        SourceSegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                                        Group: User
+                                          required = False;
                                       }
                                       {
-                                        VectorTypeMenu = VectorTypeMenu : mgiOption;
+                                        SourceVectorTypeMenu = VectorTypeMenu : mgiOption;
+                                        Group: User
+                                          required = False;
                                       }
                                       {
                                         ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ProbeOrganismPulldown = OptionPulldown;
+                                              Group: User
+                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                            }
+                                      }
+                                      {
+                                        ViewAttributeHistory = push;
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
@@ -191,6 +204,20 @@ Module: GXD
                                       }
                                       {
                                         mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                      }
+                                      {
+                                        CloneLibrarySet = Table : mgiTable;
+                                            {
+                                              Table = mgiTable : mgiTable;
+                                              Group: Widget
+                                                xrtTblColumnLabels = "Mode,Current Key,Key,Strain Type";
+                                                xrtTblNumColumns = 4;
+                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                                xrtTblEditableSeries = "(all 0-2 False)";
+                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
+                                                xrtTblVisibleRows = 3;
+                                            }
                                       }
                                 }
                                 {
@@ -571,6 +598,71 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        SourceID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        Library = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        mgiCitation = mgiCitation : mgiDataTypes;
+                                      }
+                                      {
+                                        SourceSegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                                      }
+                                      {
+                                        SourceVectorTypeMenu = VectorTypeMenu : mgiOption;
+                                      }
+                                      {
+                                        ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
+                                      }
+                                      {
+                                        ViewAttributeHistory = push;
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                      }
+                                      {
+                                        Tissue = Tissue : mgiDataTypes;
+                                      }
+                                      {
+                                        Description = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        CellLine = mgiVerify : mgiDataTypes;
+                                      }
+                                      {
+                                        AgeMenu = AgeMenu : mgiOption;
+                                      }
+                                      {
+                                        Age = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        AgeMin = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        AgeMax = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        GenderMenu = GenderMenu : mgiOption;
+                                      }
+                                      {
+                                        mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                      }
+                                      {
+                                        CloneLibrarySet = Table : mgiTable;
+                                            {
+                                              Table = mgiTable : mgiTable;
+                                              Group: Widget
+                                                xrtTblColumnLabels = "Mode,Current Key,Key,Strain Type";
+                                                xrtTblNumColumns = 4;
+                                                xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                                xrtTblEditableSeries = "(all 0-2 False)";
+                                                xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
+                                                xrtTblVisibleRows = 3;
+                                            }
+                                      }
                                 }
                                 {
                                   Marker = TableLabel : mgiTable;
@@ -739,10 +831,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle;
                                                   }
                                                   {
+                                                    NSequence2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
+                                                    SWISSPROT2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -1223,10 +1324,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle;
                                                   }
                                                   {
+                                                    NSequence2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
+                                                    SWISSPROT2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -1952,6 +2062,13 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  MolecularSource = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
+                                    labelString = "Clone Libraries";
+                                    traversalOn = False;
+                                }
+                                {
                                   Image = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Image\")";
@@ -2579,10 +2696,10 @@ Shift<Key>Tab: prev-tab-group()
                                   RecordCount = RecordCount;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = DuplicatePartial;
+                                    leftWidget = AddToEditClipboard;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = DuplicatePartial;
+                                    topWidget = AddToEditClipboard;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2646,10 +2763,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NSequence2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SWISSPROT2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -2709,10 +2835,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;

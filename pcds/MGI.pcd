@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul  7 10:25:57 2003";
+      lastWritten = "Thu Sep 18 15:24:46 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -535,11 +535,12 @@ Module: MGI
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
-                  topAttachment = attach_form;
+                  topAttachment = attach_widget;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
+                  topWidget = ViewAttributeHistory;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -591,32 +592,42 @@ Module: MGI
                     }
               }
               {
-                SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                SourceSegmentTypeMenu = SegmentTypeMenu : mgiOption;
                 Group: Widget
                   managed = False;
+                  subMenuId = SourceSegmentTypePulldown;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = mgiCitation;
+                  leftWidget = Library;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   topWidget = mgiCitation;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
+                    Popups:
+                    {
+                      SourceSegmentTypePulldown : SegmentTypePulldown = OptionPulldown;
+                    }
               }
               {
-                VectorTypeMenu = VectorTypeMenu : mgiOption;
+                SourceVectorTypeMenu = VectorTypeMenu : mgiOption;
                 Group: Widget
                   managed = False;
+                  subMenuId = SourceVectorTypePulldown;
                 Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = SegmentTypeMenu;
+                  leftAttachment = attach_widget;
+                  leftWidget = SourceSegmentTypeMenu;
+                  leftOffset = 5;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = SegmentTypeMenu;
-                  topOffset = 5;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = SourceSegmentTypeMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
+                    Popups:
+                    {
+                      SourceVectorTypePulldown : VectorTypePulldown = OptionPulldown;
+                    }
               }
               {
                 ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
@@ -628,6 +639,23 @@ Module: MGI
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
+              }
+              {
+                ViewAttributeHistory = push : mgiDataTypes;
+                Group: Widget
+                  labelString = "View Attribute History";
+                  background = Violet;
+                  activateCallback = "D:ViewMolecularSourceAttributeHistory";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 5;
+                Group: Control
+                  vipComment = "XmPushButtonGadget issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButtonGadget differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButtonGadget.";
               }
               {
                 Strain = Strain : mgiDataTypes;
@@ -801,6 +829,35 @@ Module: MGI
                   topWidget = GenderMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
+              }
+              {
+                CloneLibrarySet = Table : mgiTable;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = GenderMenu;
+                  topOffset = 10;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 150;
+                    {
+                      Table = mgiTable : mgiTable;
+                      Group: Widget
+                        xrtTblColumnLabels = "Mode,Current Key,Key,Clone Library Set";
+                        xrtTblNumColumns = 4;
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                        xrtTblEditableSeries = "(all 0-2 False)";
+                        xrtTblPixelWidthSeries = "(all 0-2 0)";
+                        userDefinedAttributes = "cloneLibraryCurrent:Int(Int)=\"1\"\ncloneLibraryKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
+                        xrtTblVisibleRows = 3;
+                    }
+              }
+              Popups:
+              {
+                MolecularSourceAttributeHistoryDialog = MolecularSourceAttributeHistoryDialog : mgiDialog;
               }
         }
         {
@@ -2235,20 +2292,20 @@ Module: MGI
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 15;
-                                          xrtTblNumColumns = 23;
-                                          xrtTblColumnLabels = "Mode,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Modified By,Date,Notes,Created By,Date";
-                                          xrtTblPixelWidthSeries = "(all 0-9 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 5)(all 12 25)(all 13 3)(all 15 10)(all 16 10)(all 17 20)(all 18 11)(all 19 10)(all 20 20)(all 22 10)";
+                                          xrtTblNumColumns = 25;
+                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Note key,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Modified By,Date,Notes,Created By,Date";
+                                          xrtTblPixelWidthSeries = "(all 0-11 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-11 10)(all 12 15)(all 13 5)(all 14 25)(all 15 3)(all 17 10)(all 18 10)(all 19 20)(all 20 11)(all 21 10)(all 22 20)(all 24 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nnotKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\ndag:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\ninferredFrom:Int(Int)=\"17\"\neditor:Int(Int)=\"18\"\nmodifiedDate:Int(Int)=\"19\"\nnotes:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"6\"\ncurrentEvidenceKey:Int(Int)=\"8\"\ntermSeqNum:Int(Int)=\"3\"\nevidenceSeqNum:Int(Int)=\"9\"\nannotVocab:String(String)\ncreatedBy:Int=\"21\"\ncreatedDate:Int=\"22\"\n";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"12\"\ndag:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\ninferredFrom:Int(Int)=\"19\"\neditor:Int(Int)=\"20\"\nmodifiedDate:Int(Int)=\"21\"\nnotes:Int(Int)=\"22\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"23\"\ncreatedDate:Int(Int)=\"24\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"24\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int=\"11\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0-9 False)(all 11-13 False)(all 15 False)";
+                                          xrtTblTraversableSeries = "(all 0-11 False)(all 13-15 False)(all 17 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
-                                          xrtTblFrozenColumns = 11;
+                                          xrtTblFrozenColumns = 12;
                                           xrtTblAllowCellResize = resize_horizontal;
                                           width = 950;
                                         Group: User
-                                          requiredColumns = "2\n5\n7";
+                                          requiredColumns = "3\n6\n8";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -2421,14 +2478,14 @@ Module: MGI
                                         NotPulldown : YesNoPulldown = OptionPulldown;
                                         Group: User
                                           tableForm = Annotation;
-                                          tableOption = 13;
-                                          tableOptionKey = 4;
+                                          tableOption = 15;
+                                          tableOptionKey = 5;
                                       }
                                 }
                                 {
-                                  NotePushShort = NotePushShort : mgiDataTypes;
+                                  NotePush = NotePush : mgiDataTypes;
                                   Group: User
-                                    targetColumn = 20;
+                                    targetColumn = 22;
                                     targetWidget = Annotation;
                                 }
                                 {
@@ -2440,8 +2497,8 @@ Module: MGI
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetWidget = Annotation;
-                                          targetKey = 7;
-                                          targetText = 16;
+                                          targetKey = 8;
+                                          targetText = 18;
                                       }
                                 }
                                 {
@@ -2456,10 +2513,10 @@ Module: MGI
                                         Group: Widget
                                           visibleItemCount = 25;
                                         Group: User
-                                          targetKey = 2;
+                                          targetKey = 3;
                                           targetWidget = Annotation;
-                                          targetText = 12;
-                                          targetAccID = 10;
+                                          targetText = 14;
+                                          targetAccID = 12;
                                       }
                                 }
                           }

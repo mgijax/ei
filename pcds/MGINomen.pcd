@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 17 08:33:18 2003";
+      lastWritten = "Wed Sep 17 12:38:59 2003";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -169,6 +169,8 @@ Module: MGINomen
                                 }
                                 {
                                   CurationStateMenu = CurationStateMenu : mgiOption;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MarkerEventMenu;
@@ -182,15 +184,14 @@ Module: MGINomen
                                 {
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = CurationStateMenu;
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = MarkerEventMenu;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = CurationStateMenu;
+                                    topAttachment = attach_widget;
+                                    topWidget = MarkerEventMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 5;
-                                    topOffset = "-5";
+                                    topOffset = 5;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -288,6 +289,9 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        EditRow = TablePush : mgiTable;
                                       }
                                       {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
@@ -417,10 +421,19 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    NSequence2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
+                                                    SWISSPROT2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;
@@ -484,10 +497,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    GDB = AccToggle : mgiOption;
+                                                    RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -628,34 +644,46 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               spacing = 15;
                                 {
-                                  AddandSymbol = ControlPush : mgiControl;
+                                  AddBroadcastOfficial = ControlPush : mgiControl;
                                   Group: Widget
-                                    labelString = "Add and Broadcast to MGD";
+                                    labelString = "Add and Broadcast Official to MGD";
                                     activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 1),\nD:GoHome";
                                 }
                                 {
-                                  BroadcastSymbol = ControlPush : mgiControl;
+                                  AddBroadcastInterim = ControlPush : mgiControl;
                                   Group: Widget
-                                    labelString = "Broadcast Symbol to MGD";
-                                    activateCallback = "D:Broadcast(type = 2),\nD:GoHome";
+                                    labelString = "Add and Broadcast Interim to MGD";
+                                    activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 2),\nD:GoHome";
+                                }
+                                {
+                                  BroadcastOfficial = ControlPush : mgiControl;
+                                  Group: Widget
+                                    labelString = "Broadcast Official Symbol to MGD";
+                                    activateCallback = "D:Broadcast(type = 3),\nD:GoHome";
+                                }
+                                {
+                                  BroadcastInterim = ControlPush : mgiControl;
+                                  Group: Widget
+                                    labelString = "Broadcast Interim Symbol to MGD";
+                                    activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
                                 }
                                 {
                                   BroadcastBatch = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Batch to MGD";
-                                    activateCallback = "D:Broadcast(type = 3),\nD:GoHome";
+                                    activateCallback = "D:Broadcast(type = 5),\nD:GoHome";
                                 }
                                 {
                                   BroadcastReference = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Reference to MGD\n(Editors only)";
-                                    activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
+                                    activateCallback = "D:Broadcast(type = 6),\nD:GoHome";
                                 }
                                 {
                                   BroadcastReference1 = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Reference to MGD\n(Nomen Coordinator only)";
-                                    activateCallback = "D:Broadcast(type = 5),\nD:GoHome";
+                                    activateCallback = "D:Broadcast(type = 7),\nD:GoHome";
                                 }
                           }
                     }
@@ -716,10 +744,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NSequence2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    SWISSPROT2 = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TrEMBL2 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PDB = AccToggle : mgiOption;

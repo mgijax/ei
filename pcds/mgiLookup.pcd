@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun  3 15:14:52 2003";
+      lastWritten = "Thu Aug 14 14:51:03 2003";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -118,7 +118,6 @@ Module: mgiLookup
               {
                 List = list;
                 Group: Widget
-                  items = Anonymous;
                   singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayMolecularSource";
                 Group: User
                   keys = "-1";
@@ -524,15 +523,70 @@ Module: mgiLookup
           OrganismMGITypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1350;
           Group: User
-            cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,16,17) order by name";
+            cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,18,19) order by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
                   labelString = "Organism MGI Types";
                 Group: User
                   defaultLabel = "Organism MGI Types";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          CloneLibrarySetList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1295;
+          Group: User
+            cmd = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "Clone Library Sets";
+                Group: User
+                  defaultLabel = "Clone Library Sets";
+              }
+        }
+        {
+          CellLineList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1405;
+          Group: User
+            cmd = "select _Term_key, term from VOC_Term_CellLine_View order by term";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "Cell Lines";
+                Group: User
+                  defaultLabel = "Cell Lines";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          OrganismSequenceList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1460;
+          Group: User
+            cmd = "select _Organism_key, commonName from MGI_Organism_Sequence_View order by commonName";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = Organisms;
+                Group: User
+                  defaultLabel = Organisms;
               }
               {
                 List = list : mgiDataTypes;
