@@ -1789,7 +1789,7 @@ mgi_DBtable(table));
             sprintf(buf, "insert %s (%s, species)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLP_NOTES:
-            sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, andor, reference, dataset, note1, note2, note3)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_MARKER:
             sprintf(buf, "insert %s (%s, _Marker_key)", mgi_DBtable(table), mgi_DBkey(table));

@@ -62,6 +62,7 @@ devents:
 
 	ModifyMarker :local [];
 	ModifyType :local [];
+	ModifyStrainNote :local [];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -125,6 +126,7 @@ rules:
 
 	  tables.append(top->StrainType->Table);
 	  tables.append(top->Marker->Table);
+	  tables.append(top->Note->Table);
 	  tables.append(top->References->Table);
 	  tables.append(top->DataSets->Table);
 
@@ -132,19 +134,21 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 
-	  top->SpeciesList.cmd := "select * from " + mgi_DBtable(MLP_SPECIES) + 
-		" order by " + mgi_DBcvname(MLP_SPECIES);
+	  top->SpeciesList.cmd := 
+	    "select * from " + mgi_DBtable(MLP_SPECIES) + 
+	    " order by " + mgi_DBcvname(MLP_SPECIES);
           LoadList.list := top->SpeciesList;
 	  send(LoadList, 0);
 
-	  top->StrainTypeList.cmd := "select * from " + mgi_DBtable(MLP_STRAINTYPE) + 
-		" order by " + mgi_DBcvname(MLP_STRAINTYPE);
+	  top->StrainTypeList.cmd := 
+	    "select * from " + mgi_DBtable(MLP_STRAINTYPE) + 
+	    " order by " + mgi_DBcvname(MLP_STRAINTYPE);
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
-          SetRowCount.tableID := STRAIN;
+          SetRowCount.tableID := MLP_STRAIN;
           send(SetRowCount, 0);
  
           -- Clear form
@@ -172,6 +176,10 @@ rules:
  
           currentRecordKey := "@" + KEYNAME;
  
+	  if (top->mgiSpecies->ObjectID->text.value.length = 0) then
+	    top->mgiSpecies->ObjectID->text.value := NOTSPECIFIED;
+	  end if;
+
           cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
 	         mgi_DBinsert(STRAIN, KEYNAME) +
                  mgi_DBprstr(top->Name->text.value) + "," +
@@ -185,12 +193,7 @@ rules:
 
 	  send(ModifyMarker, 0);
 	  send(ModifyType, 0);
-
-	  ModifyNotes.source_widget := top->Notes;
-	  ModifyNotes.tableID := MLP_NOTES;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->Notes.sql;
+	  send(ModifyStrainNote, 0);
 
 	  --  Process Accession numbers
 
@@ -279,7 +282,7 @@ rules:
 	  set := "";
 
 	  if (top->mgiSpecies->Species->text.modified) then
-	    set := set + "_Species_key = " + top->mgiSpecies->Species->ObjectID->text.value + ",";
+	    set := set + "_Species_key = " + top->mgiSpecies->ObjectID->text.value + ",";
 	  end if;
 
 	  if (top->User1->text.modified) then
@@ -294,12 +297,7 @@ rules:
 
 	  send(ModifyMarker, 0);
 	  send(ModifyType, 0);
-
-	  ModifyNotes.source_widget := top->Notes;
-	  ModifyNotes.tableID := MLP_NOTES;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->Notes.sql;
+	  send(ModifyStrainNote, 0);
 
 	  --  Process Accession numbers
 
@@ -405,6 +403,43 @@ rules:
 	end does;
  
 --
+-- ModifyStrainNote
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Strain Notes
+-- Appends to global "cmd" string
+--
+
+	ModifyStrainNote does
+          table : widget := top->Note->Table;
+          row : integer := 0;
+          andor : string;
+          reference : string;
+          dataset : string;
+          note1, note2, note3 : string;
+	  set : string := "";
+ 
+          -- Process one and only row
+ 
+          andor := mgi_tblGetCell(table, row, table.andor);
+          reference := mgi_tblGetCell(table, row, table.reference);
+          dataset := mgi_tblGetCell(table, row, table.dataset);
+          note1 := mgi_tblGetCell(table, row, table.note1);
+          note2 := mgi_tblGetCell(table, row, table.note2);
+          note3 := mgi_tblGetCell(table, row, table.note3);
+ 
+          set := "andor = " + mgi_DBprstr(andor) +
+                 ",reference = " + mgi_DBprstr(reference) +
+                 ",dataset = " + mgi_DBprstr(dataset) +
+                 ",note1 = " + mgi_DBprstr(note1) +
+                 ",note2 = " + mgi_DBprstr(note2) +
+                 ",note3 = " + mgi_DBprstr(note3);
+          cmd := cmd + mgi_DBupdate(MLP_NOTES, currentRecordKey, set);
+ 
+	end does;
+
+--
 -- PrepareSearch
 --
 -- Construct select statement based on values entered by user
@@ -459,11 +494,6 @@ rules:
 
 	  if (top->User2->text.value.length > 0) then
 	    where := where + "\nand s.userDefined2 like " + mgi_DBprstr(top->User2->text.value);
-	  end if;
-
-	  if (top->Notes->text.value.length > 0) then
-	    where := where + "\nand n.note like " + mgi_DBprstr(top->Note->text.value);
-	    from_notes := true;
 	  end if;
 
           value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.markerKey);
@@ -568,7 +598,6 @@ rules:
 
 	  top->References->Records.labelString := "0 Records";
 	  top->DataSets->Records.labelString := "0 Records";
-	  top->Notes->text.value := "";
  
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
@@ -585,9 +614,8 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(MLP_STRAIN_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
-	         "select note from " + mgi_DBtable(MLP_NOTES) +
+	         "select * from " + mgi_DBtable(MLP_NOTES) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey +
-		 " order by sequenceNum\n" +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
 		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
@@ -616,7 +644,14 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 10);
                 send(SetOption, 0);
 	      elsif (results = 2) then
-		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+		table := top->Note->Table;
+		(void) mgi_tblSetCell(table, row, table.andor, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(table, row, table.reference, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.dataset, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.note1, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, row, table.note2, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, row, table.note3, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
 		table := top->Marker->Table;
                 (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 2));
