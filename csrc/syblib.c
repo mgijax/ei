@@ -178,7 +178,7 @@ char *mgi_getstr(DBPROCESS *dbproc, int column)
 
   memset(buf, '\0', sizeof(buf));
 
-  if (len == 0)
+  if (len <= 0)
     return(buf);
 
   switch (coltype)

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Jan 18 14:17:56 2002";
+      lastWritten = "Mon Jan 21 14:35:10 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1493,7 +1493,7 @@ Module: MGI
                                           xrtTblNumColumns = 21;
                                           xrtTblColumnLabels = "Mode,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Editor,Date,Notes";
                                           xrtTblPixelWidthSeries = "(all 0-9 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 10)(all 12 25)(all 13 3)(all 15 10)(all 16 10)(all 17 20)(all 18 6)(all 19 10)(all 20 5)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 5)(all 12 25)(all 13 3)(all 15 10)(all 16 10)(all 17 20)(all 18 6)(all 19 10)(all 20 5)";
                                           xrtTblAllowCellResize = resize_horizontal;
                                           xrtTblDisplayHorizScrollBar = dispsb_as_needed;
                                           userDefinedAttributes = "annotKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nnotKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\ndag:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\ninferredFrom:Int(Int)=\"17\"\neditor:Int(Int)=\"18\"\nmodifiedDate:Int(Int)=\"19\"\nnotes:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"6\"\ncurrentEvidenceKey:Int(Int)=\"8\"\ntermSeqNum:Int(Int)=\"3\"\nevidenceSeqNum:Int(Int)=\"9\"\nannotVocab:String\n";
@@ -1518,12 +1518,12 @@ Module: MGI
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     leftOffset = 300;
-                                    bottomOffset = 10;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumRows = 20;
-                                          xrtTblVisibleRows = 10;
+                                          xrtTblVisibleRows = 9;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -1617,25 +1617,6 @@ Module: MGI
                         resizable = true;
                           {
                             panedWindow = XmPanedWindow;
-                                {
-                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
-                                  Group: Widget
-                                    managed = False;
-                                      {
-                                        Table = mgiTable;
-                                      }
-                                      {
-                                        Add = TablePush;
-                                      }
-                                      {
-                                        Delete = TablePush;
-                                      }
-                                      {
-                                        AccSourceMenu = AccSourceMenu : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
                                 {
                                   QueryList = QueryList : mgiLookup;
                                       {
@@ -1765,7 +1746,7 @@ Module: MGI
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"VocAnnot\")";
                                           labelString = Annotations;
-                                          userDefinedAttributes = "annotTypeKey:Int=\"1000\"\n";
+                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1001\"\n";
                                       }
                                 }
                           }
@@ -1831,7 +1812,7 @@ Module: MGI
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-6 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerAlleles,\nD:VerifyAllele,\nD:VerifyAllelePairState,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleState:Int(Int)=\"10\"\n";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nalleleState:Int(Int)=\"10\"\nmarkerColumns:Int=\"1\"\n";
                                         Group: User
                                           alleleSymbol = "8\n9";
                                           alleleKey = "5\n6";
@@ -2198,6 +2179,12 @@ Module: MGI
                                     resizable = true;
                                     topWidget = Name;
                                     topOffset = 5;
+                                      Popups:
+                                      {
+                                        ACCLogicalPulldown = OptionPulldown;
+                                        Group: User
+                                          sql = "select _LogicalDB_key, name from ACC_LogicalDB\nwhere _LogicalDB_key = 1\norder by name";
+                                      }
                                 }
                                 {
                                   ACCPrivateMenu = YesNoMenu : mgiOption;

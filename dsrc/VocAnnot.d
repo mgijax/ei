@@ -555,9 +555,10 @@ rules:
 			  " order by " + orderBy +
 			  "select distinct a._Annot_key, v.dagAbbrev " +
 			  "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			  	mgi_DBtable(VOC_VOCABDAG_VIEW) + " v" +
+			  	mgi_DBtable(DAG_NODE_VIEW) + " v" +
 		          " where a._Object_key = " + currentRecordKey + 
-			  " and a._Vocab_key = v._Vocab_key\n";
+			  " and a._Vocab_key = v._Vocab_key" +
+			  " and a._Term_key = v._Object_key\n";
 
 	  row : integer := 0;
 	  i : integer;
@@ -628,16 +629,26 @@ rules:
 
 	  -- Stripe rows by DAG; alternate; 
 	  -- that is, every other new DAG will change the color
-	  newDAG : integer := 1;
+
+	  newColor : string := BACKGROUNDNORMAL;
 	  i := 1;
+
 	  while (i < mgi_tblNumRows(annotTable)) do
+
+	    -- break when empty row is found
+            if (mgi_tblGetCell(annotTable, i, annotTable.editMode) = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+
 	    if (mgi_tblGetCell(annotTable, i, annotTable.dag) != 
 		mgi_tblGetCell(annotTable, i-1, annotTable.dag)) then
-	      if (newDAG mod 2 != 0) then
-	        newBackground := newBackground + "(" + (string) i + " all Thistle)";
+	      if (newColor = "Wheat") then
+		newColor := BACKGROUNDALT1;
+	      else
+		newColor := BACKGROUNDNORMAL;
 	      end if;
-	      newDAG := newDAG + 1;
 	    end if;
+	    newBackground := newBackground + "(" + (string) i + " all " + newColor + ")";
 	    i := i + 1;
 	  end while;
 

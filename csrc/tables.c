@@ -400,7 +400,6 @@ Widget mgi_tblGetCallbackParent(XrtTblCreateWidgetCallbackStruct *cbs)
 
 Boolean mgi_tblSort(Widget table, int column)
 {
-  extern int strcmp();
-  return (XrtTblSortTable(table, column, (int (*) (const void *, const void *)) strcmp));
+  return (XrtTblSortTable(table, column, NULL));
 }
 

@@ -19,12 +19,13 @@ extern char *mgi_DBaccKey(int);
 extern char *mgi_DBkey(int);
 extern char *mgi_DBaccTable(int);
 extern char *mgi_DBtable(int);
+extern char *mgi_DBsumTable(int);
 extern char *mgi_DBtype(int);
 extern char *mgi_DBinsert(int, char *);
 extern char *mgi_DBdelete(int, char *);
 extern char *mgi_DBupdate(int, char *, char *);
 extern char *mgi_DBreport(int, char *);
-extern char *mgi_DBaccSelect(int, int);
+extern char *mgi_DBaccSelect(int, int, int);
 extern char *mgi_DBcvname(int);
 extern char *mgi_DBcvLoad(int);
 extern char *mgi_DBrefstatus(int, int);
@@ -53,6 +54,8 @@ extern char *global_version;
 /* Table Definitions must be unique */
 
 /* MGD Tables */
+
+#define NO_TABLE		0
 
 #define BIB_REFS		100
 #define BIB_BOOKS		101
@@ -267,6 +270,12 @@ extern char *global_version;
 #define VOC_TERM_VIEW		805
 #define VOC_TEXT_VIEW		806
 #define VOC_ANNOTTYPE		807
+#define VOC_ANNOT		808
+#define VOC_EVIDENCE		809
+#define VOC_ANNOT_VIEW		810
+#define VOC_EVIDENCE_VIEW	811
+#define VOC_VOCABDAG_VIEW	812
+#define DAG_NODE_VIEW		813
 
 /* End of Table Definitions */
 
@@ -279,6 +288,9 @@ extern char *global_version;
 
 #define	MOUSE		"1"
 #define HUMAN		"2"
+
+#define	BACKGROUNDNORMAL	"Wheat"
+#define	BACKGROUNDALT1		"Thistle"
 
 #define	STANDARD	"Wheat"
 #define	NONSTANDARD	"Red"

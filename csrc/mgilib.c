@@ -1501,6 +1501,9 @@ char *mgi_DBtable(int table)
     case VOC_VOCABDAG_VIEW:
             strcpy(buf, "VOC_VocabDAG_View");
 	    break;
+    case DAG_NODE_VIEW:
+            strcpy(buf, "DAG_Node_View");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
