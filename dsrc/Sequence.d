@@ -570,6 +570,13 @@ rules:
 
 	  -- References
 
+	  value := mgi_tblGetCell(table, 0, table.refsKey);
+	  if (value.length > 0) then
+	    whereMarker := where + "\nand m._Refs_key = " + mgi_DBprstr(value);
+	    whereProbe := where + "\nand p._Ref_key = " + mgi_DBprstr(value);
+	    from_object := true;
+	  end if;
+
 	  if (from_source) then
 	    from := from + ",SEQ_Source_Assoc ssa, PRB_Source ps";
 	    where := where + "\nand s._Sequence_key = ssa._Sequence_key" +

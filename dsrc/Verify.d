@@ -2349,7 +2349,9 @@ rules:
 	  if (value.length = 0) then
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, "");
+	      if (sourceWidget.is_defined("citation") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, "");
+	      end if;
 	    else
 	      refTop->ObjectID->text.value := "NULL";
 	      refTop->Citation->text.value := "";
@@ -2387,7 +2389,9 @@ rules:
 	  if (citation.length > 0) then
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, key);
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, citation);
+	      if (sourceWidget.is_defined("citation") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, citation);
+	      end if;
 	      if (sourceWidget.is_defined("reviewKey") != nil) then
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.reviewKey, isReview);
 		if (isReview = "1") then
@@ -2405,7 +2409,9 @@ rules:
 	    if (isTable) then
 	      VerifyReference.doit := (integer) false;
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, "");
+	      if (sourceWidget.is_defined("citation") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, "");
+	      end if;
 	      if (sourceWidget.is_defined("reviewKey") != nil) then
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.reviewKey, "NULL");
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.review, "");
