@@ -1,7 +1,16 @@
+
+Export the EI you want to build (if it not already built) to
+a "build" directory.  The default is /usr/local/mgi/ei/ei_build.
+
+Note that exporting the EI is NOT an installation of the EI!!!
+
+cd /usr/local/mgi/ei/ei_build
 cvs export -r ei-tag -d ei-tag ei
-cd ei
+cd ei-tag
 cp Configuration.default Configuration
-edit Configuration file appropriately
+edit Configuration file carefully and appropriately
+
+Build/Install:
 
 To build an application:
 
