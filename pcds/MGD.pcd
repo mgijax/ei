@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr 24 14:35:59 2000";
+      lastWritten = "Mon Apr 24 15:24:50 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -8685,6 +8685,31 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        Jnum = Jnum : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = False;
+                                            }
+                                      }
+                                      {
+                                        Citation = Citation : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = False;
+                                            }
+                                      }
                                 }
                                 {
                                   ReviewedMenu = YesNoMenu : mgiOption;
