@@ -1,3 +1,11 @@
+TAG: ei-3-0-4
+DATE: 01/15/2001
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) TR 2192 - KF Memorial button modification
+2) Added stdout to run scripts for logging
+
 TAG: ei-3-0-3
 DATE: 01/15/2001
 STAFF: lec
