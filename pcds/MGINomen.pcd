@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 25 11:03:22 2000";
+      lastWritten = "Thu May 11 14:38:53 2000";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -129,8 +129,6 @@ Module: MGINomen
                                     leftWidget = MarkerStatusMenu;
                                     topWidget = MarkerStatusMenu;
                                     leftOffset = 5;
-                                  Group: User
-                                    defaultChild = 1;
                                 }
                                 {
                                   ChromosomeMenu = ChromosomeMenu : mgiOption;
