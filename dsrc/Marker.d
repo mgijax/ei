@@ -15,6 +15,9 @@
 --
 -- History
 --
+-- 10/05/1999
+--	- TR 375; changes to MRK_Other
+--
 -- 03/11/1999
 --	- TR 156; changes to MarkerWithdrawal Broadcast file format
 --
@@ -116,8 +119,7 @@ devents:
 	ModifyCurrent :local [];
 	ModifyHistory :local [];
 	ModifyOffset :local [];
-	ModifyOther :local [];
-	ModifyReference :local [];
+	ModifyOtherReference :local [];
 
 	PrepareSearch :local [];
 
@@ -226,8 +228,7 @@ rules:
 	  tables.append(top->Alias->Table);
 	  tables.append(top->Allele->Table);
 	  tables.append(top->Offset->Table);
-	  tables.append(top->Other->Table);
-	  tables.append(top->Reference->Table);
+	  tables.append(top->OtherReference->Table);
 	  tables.append(top->AccessionReference->Table);
 
 	  -- Global Accession number Tables
@@ -314,8 +315,7 @@ rules:
 	  send(ModifyAlias, 0);
 	  send(ModifyAllele, 0);
 	  send(ModifyCurrent, 0);
-	  send(ModifyOther, 0);
-	  send(ModifyReference, 0);
+	  send(ModifyOtherReference, 0);
 
 	  --  Process Accession numbers
 
@@ -927,8 +927,7 @@ rules:
 	  send(ModifyAllele, 0);
 	  send(ModifyCurrent, 0);
 	  send(ModifyOffset, 0);
-	  send(ModifyOther, 0);
-	  send(ModifyReference, 0);
+	  send(ModifyOtherReference, 0);
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
@@ -1282,80 +1281,39 @@ rules:
 	end does;
 
 --
--- ModifyOther
+-- ModifyOtherReference
 --
 -- Activated from: devent Modify
 --
 -- Construct insert/update/delete for Marker Other Names
 --
-
-	ModifyOther does
-          table : widget := top->Other->Table;
-          row : integer := 0;
-          editMode : string;
-          key : string;
-          name : string;
-          set : string := "";
-	  keyName : string := "otherKey";
-	  keysDeclared : boolean := false;
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            key := mgi_tblGetCell(table, row, table.otherKey);
-            name := mgi_tblGetCell(table, row, table.otherName);
- 
-            if (editMode = TBL_ROW_ADD) then
-	      
-              if (not keysDeclared) then
-                cmd := cmd + mgi_setDBkey(MRK_OTHER, NEWKEY, keyName);
-                keysDeclared := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
-
-              cmd := cmd +
-                     mgi_DBinsert(MRK_OTHER, keyName) +
-		     currentRecordKey + "," +
-		     mgi_DBprstr(name) + ")\n";
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "name = " + mgi_DBprstr(name);
-              cmd := cmd + mgi_DBupdate(MRK_OTHER, key, set);
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_OTHER, key);
-            end if;
- 
-            row := row + 1;
-	  end while;
-	end does;
-
---
--- ModifyReference
---
--- Activated from: devent Modify
---
 -- Construct insert/update/delete for Marker References
 -- Only add/modify/delete non-auto (auto = 0) records; that is, those that are
 -- entered using this interface.
+--
+-- For the OtherReference table:
+--
+-- If Other Name & Reference, then data belongs in MRK_OTHER table.
+-- If Other Name & No Reference, then data belongs in MRK_OTHER table w/ _Refs_key = NULL.
+-- If No Other Name & Reference, then data belongs in MRK_Reference table.
 --
 -- Auto references (auto = 1) are loaded during a nightly process and should not
 -- be edited via this event.
 --
 
-	ModifyReference does
-          table : widget := top->Reference->Table;
+	ModifyOtherReference does
+          table : widget := top->OtherReference->Table;
           row : integer := 0;
           editMode : string;
-          key : string;
-          newKey : string;
-	  set : string := "";
+          otherKey : string;
+          name : string;
+	  refsKey : string;
+	  refsCurrentKey : string;
+          set : string := "";
+	  keyName : string := "otherKey";
+	  keysDeclared : boolean := false;
+	  processOther : boolean := false;
+	  deleteAuto : boolean := false;
  
           -- Process while non-empty rows are found
  
@@ -1366,22 +1324,93 @@ rules:
               break;
             end if;
  
-            key := mgi_tblGetCell(table, row, table.refsCurrentKey);
-            newKey := mgi_tblGetCell(table, row, table.refsKey);
+	    processOther := false;
+	    deleteAuto := false;
+            otherKey := mgi_tblGetCell(table, row, table.otherKey);
+            name := mgi_tblGetCell(table, row, table.otherName);
+            refsKey := mgi_tblGetCell(table, row, table.refsKey);
+            refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
  
+	    -- If Other Name Key is given, then process using Other Name rules
+	    if (otherKey.length > 0) then
+	      processOther := true;
+	    -- Else if Other Name is given, then user is adding a new Other Name rec
+	    elsif (name.length > 0 and refsKey.length = 0) then
+	      processOther := true;
+	      editMode := TBL_ROW_ADD;
+	    elsif (name.length > 0 and refsKey.length > 0) then
+	      processOther := true;
+	      deleteAuto := true;
+	      editMode := TBL_ROW_ADD;
+	    end if;
+
+	    if (refsKey.length = 0) then
+	      refsKey := "NULL";
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MRK_REFERENCE, NOKEY) + currentRecordKey + "," + newKey + ",0)\n";
+	      
+	      if (processOther) then
+                if (not keysDeclared) then
+                  cmd := cmd + mgi_setDBkey(MRK_OTHER, NEWKEY, keyName);
+                  keysDeclared := true;
+                else
+                  cmd := cmd + mgi_DBincKey(keyName);
+                end if;
+
+		if (deleteAuto) then
+		   cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
+		          "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
+		end if;
+
+                cmd := cmd +
+                       mgi_DBinsert(MRK_OTHER, keyName) +
+		       currentRecordKey + "," +
+		       mgi_DBprstr(name) + "," +
+		       refsKey + ")\n";
+	      else
+                cmd := cmd + 
+		       mgi_DBinsert(MRK_REFERENCE, NOKEY) + 
+		       currentRecordKey + "," + 
+		       refsKey + ",0)\n";
+	      end if;
+
+	      -- update Review? value for row
+
+	      if (refsKey != "NULL") then
+	        set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+                cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
+	      end if;
+
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Refs_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(MRK_REFERENCE, currentRecordKey, set) + 
-                     "and _Refs_key = " + key + " and auto = 0\n";
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
-		      "and _Refs_key = " + key + " and auto = 0\n";
+	      if (processOther) then
+                set := "name = " + mgi_DBprstr(name) + 
+		       ",_Refs_key = " + refsKey;
+                cmd := cmd + mgi_DBupdate(MRK_OTHER, otherKey, set);
+	      else
+                set := "_Refs_key = " + refsKey;
+                cmd := cmd + mgi_DBupdate(MRK_REFERENCE, currentRecordKey, set) + 
+                       "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
+	      end if;
+
+	      -- update Review? value for row
+
+	      if (refsKey != "NULL") then
+	        set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+                cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
+	      end if;
+
+            elsif (editMode = TBL_ROW_DELETE) then
+	       if (processOther and otherKey.length > 0) then
+                 cmd := cmd + mgi_DBdelete(MRK_OTHER, otherKey);
+               elsif (not processOther and refsCurrentKey.length > 0) then
+		 cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
+		        "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
+	       end if;
             end if;
  
             row := row + 1;
-          end while;
+	  end while;
 	end does;
 
 --
@@ -1550,23 +1579,29 @@ rules:
 	    from_allele := true;
 	  end if;
 
-          value := mgi_tblGetCell(top->Other->Table, 0, top->Other->Table.otherName);
+          value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.otherName);
           if (value.length > 0) then
 	    where := where + "\nand mo.name like " + mgi_DBprstr(value);
 	    from_other := true;
 	  end if;
 
-          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
+          value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.refsKey);
 
           if (value.length > 0) then
 	    where := where + "\nand mr._Refs_key = " + value;
 	    from_reference := true;
 	  else
-            value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.jnum + 1);
+            value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.citation);
             if (value.length > 0) then
 	      where := where + "\nand mr.short_citation like " + mgi_DBprstr(value);
 	      from_reference := true;
 	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(top->OtherReference->Table, 0, top->OtherReference->Table.reviewKey);
+          if (value.length > 0) then
+	    where := where + "\nand mr.isReviewArticle = " + value;
+	    from_reference := true;
 	  end if;
 
 	  if (from_symbol) then
@@ -1616,7 +1651,7 @@ rules:
 
 	  if (from_reference) then
 	    from := from + ",MRK_Reference_View mr";
-	    where := where + "\nand m._Marker_key = mr._Marker_key and mr.auto = 0";
+	    where := where + "\nand m._Marker_key = mr._Marker_key";
 	  end if;
 
 	  if (from_citation) then
@@ -1709,11 +1744,18 @@ rules:
 	         "select * from MRK_Allele " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by symbol\n" +
-	         "select * from MRK_Other " +
+	         "select _Other_key, name, _Refs_key, jnum = null, short_citation = null, isReviewArticle = 0 " +
+		 "from MRK_Other " +
+		 "where _Marker_key = " + currentRecordKey + "and _Refs_key = null\n" +
+		 "union\n" +
+	         "select _Other_key, name, _Refs_key, jnum, short_citation, isReviewArticle " +
+		 "from MRK_Other_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
-	         "select _Refs_key, jnum, short_citation from MRK_Reference_View " +
+		 "union\n" +
+	         "select _Other_key = null, name = null, _Refs_key, jnum, short_citation, isReviewArticle " +
+		 "from MRK_Reference_View " +
 		 "where _Marker_key = " + currentRecordKey + " and auto = 0 " +
-		 "order by short_citation\n";
+		 "order by name desc, short_citation\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1807,16 +1849,26 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		hasAlleles := true;
 	      elsif (results = 9) then
-		table := top->Other->Table;
+		table := top->OtherReference->Table;
                 (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 10) then
-		table := top->Reference->Table;
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 6));
+
+		if (mgi_tblGetCell(table, row, table.refsKey) != "") then
+		  if (mgi_getstr(dbproc, 6) = "1") then
+                    (void) mgi_tblSetCell(table, row, table.review, "Yes");
+		  else
+                    (void) mgi_tblSetCell(table, row, table.review, "No");
+		  end if;
+		else
+                  (void) mgi_tblSetCell(table, row, table.reviewKey, "");
+                  (void) mgi_tblSetCell(table, row, table.review, "");
+		end if;
+
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      end if;
 	      row := row + 1;
