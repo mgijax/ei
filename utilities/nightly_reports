@@ -122,18 +122,14 @@ GXD_NotInCache.sql \
 GXD_ProbeMarker.sql \
 GXD_ProbeReference.sql \
 GXD_Stats.sql \
-HMD_Accession.sql \
 HMD_Duplicates.sql \
 HMD_References1.sql \
 HMD_References2.sql \
 HMD_References3.sql \
 HMD_References4.sql \
-HMD_References5.sql \
 HMD_References6.sql \
 HMD_Single.sql \
-HMD_SingleUnreviewed.sql \
 HMD_SpeciesCount.py \
-HMD_Unofficial.sql \
 HMD_Unreviewed.sql \
 MLC_Allele.sql \
 MLC_Alleles.sql \
@@ -190,7 +186,6 @@ PRB_Tissue.sql \
 PRB_TissueCell.sql \
 PRB_TissueNonStd.sql \
 NOMEN_CheckMGD.sql \
-NOMEN_Homology.sql \
 NOMEN_NoPrimaryRef.sql \
 chkESTForgnAcc.sql"
 
