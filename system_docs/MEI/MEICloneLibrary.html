@@ -1,35 +1,28 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGI EDITING INTERFACE: Design and Requirements - Vocabulary Annotation
+MGI EDITING INTERFACE: Design and Requirements - Clone Libraries
 </TITLE>
 </HEADER>
 
 <BODY BGCOLOR="#FFFFFF">
 
 <H2>
-MGI EDITING INTERFACE: Design and Requirements - Vocabulary Annotation
+MGI EDITING INTERFACE: Design and Requirements - Clone Libraries
 </H2>
 <BR>
 
 <H4>Introduction</H4>
 
-This module is used to annotation a specific vocabulary (GO, Mammalian Phenotype) to
-a specific type of database object (Marker, Genotype).
+This module is used to edit named Clone Libraries.
 
 <P>
 
 <H4>Editing Form</H4>
-<A HREF="annotation.gif">GIF Image</A>
+<A HREF="clonelibrary.gif">GIF Image</A>
 
 <H4>Data Verifications</H4>
 <OL>
-<LI>Term Acc ID
-<P>
-<LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
-<P>
-<LI>Evidence Code
-<P>
 </OL>
 <P>
 
@@ -37,34 +30,26 @@ a specific type of database object (Marker, Genotype).
 <UL>
 <LI>Required
 	<OL>
-	<LI>Annotation Type
-	<LI>MGI Accession ID/Object
-	<LI>Term Acc ID
+	<LI>Library
 	<LI>J:
-	<LI>Evidence
+	<LI>Segment Type
+	<LI>Vector Type
+	<LI>Organism
+	<LI>Strain
+	<LI>Tissue
+	<LI>Tissue Treatment
+	<LI>Cell Line
+	<LI>Age
+	<LI>Gender
 	</OL>
 <P>
 <LI>Not Required
 	<OL>
-	<LI>NOT
-	<LI>Inferred From
-	<LI>Modified By
-	<LI>Date
-	<LI>Notes
+	<LI>Clone Library Set
 	</OL>
 </UL>
 
 <H4>Defaults</H4>
-<OL>
-<LI><I>DAG</I> is automatically filled in based on the Term Acc ID.
-<P>
-<LI><I>Vocabulary Term</I> is automatically filled in based on the Term Acc ID.
-<P>
-<LI><I>Citation</I> is automatically filled in based on the J:.
-<P>
-<LI><I>Modified By</I> is automatically filled in based on user.
-<P>
-</OL>
 
 <H4>Miscellaneous</H4>
 
