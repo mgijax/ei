@@ -477,6 +477,8 @@ rules:
 	  from_annot : boolean := false;
 	  from_evidence : boolean := false;
 	  from_notes : boolean := false;
+	  from_user1 : boolean := false;
+	  from_user2 : boolean := false;
 
 	  from := "from " + dbView + " v";
 	  where := "";
@@ -546,14 +548,16 @@ rules:
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.editor);
 	  if (value.length > 0) then
-	    where := where + "\nand e.modifiedBy like " + mgi_DBprstr(value);
+	    where := where + "\nand u1.login like " + mgi_DBprstr(value);
 	    from_evidence := true;
+	    from_user1 := true;
 	  end if;
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.createdBy);
 	  if (value.length > 0) then
-	    where := where + "\nand e.createdBy like " + mgi_DBprstr(value);
+	    where := where + "\nand u2.login like " + mgi_DBprstr(value);
 	    from_evidence := true;
+	    from_user2 := true;
 	  end if;
 
 	  -- Modification date
@@ -605,6 +609,16 @@ rules:
 	  if (from_evidence) then
 	    from := from + "," + mgi_DBtable(VOC_EVIDENCE) + " e";
 	    where := where + "\nand a._Annot_key = e._Annot_key";
+	  end if;
+
+	  if (from_user1) then
+	    from := from + "," + mgi_DBtable(MGI_USER) + " u1";
+	    where := where + "\nand e._ModifiedBy_key = u1._User_key";
+	  end if;
+
+	  if (from_user2) then
+	    from := from + "," + mgi_DBtable(MGI_USER) + " u2";
+	    where := where + "\nand e._Created_key = u2._User_key";
 	  end if;
 
 	  if (from_notes) then
