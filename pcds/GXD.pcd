@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jun 28 08:11:39 2004";
+      lastWritten = "Wed Jun 30 15:47:52 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -681,8 +681,8 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblColumnLabels = "Mode,Current Key,New Key,Marker,Chr";
                                           xrtTblNumColumns = 5;
-                                          xrtTblCharWidthSeries = "(all 0 1) (all 1-2 10) (all 3 20) (all 4 4)";
-                                          xrtTblMaxLengthSeries = "(all 3 25) (all 4 8)";
+                                          xrtTblCharWidthSeries = "(all 0 1) (all 1-2 10) (all 3 25) (all 4 4)";
+                                          xrtTblMaxLengthSeries = "(all 3 40) (all 4 8)";
                                           xrtTblNumRows = 11;
                                           xrtTblVisibleRows = 10;
                                           userDefinedAttributes = "markerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"3\"\nmarkerChr:Int(Int)=\"4\"\nmarkerColumns:Int=\"1\"\n";
@@ -2354,7 +2354,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyMarker() VerifyMarkerInTable() VerifyNonGeneMarker()";
-                                                columns = 20;
+                                                columns = 30;
                                               Group: User
                                                 verifyAccessionID = ProbeAccession;
                                             }

@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jun 28 08:11:35 2004";
+      lastWritten = "Wed Jun 30 15:39:30 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -204,8 +204,8 @@ Module: MGINomen
                                       {
                                         text = text;
                                         Group: Widget
-                                          maxLength = 25;
-                                          columns = 25;
+                                          maxLength = 40;
+                                          columns = 40;
                                           translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyNomenSymbol()";
@@ -256,8 +256,8 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 20;
-                                          maxLength = 25;
+                                          columns = 40;
+                                          maxLength = 40;
                                       }
                                 }
                                 {

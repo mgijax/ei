@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jun 28 10:56:43 2004";
+      lastWritten = "Thu Jul  1 07:50:28 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1511,8 +1511,8 @@ Module: MGD
                                         Group: Widget
                                           xrtTblNumColumns = 11;
                                           xrtTblColumnLabels = "Mode,Marker Key,Acc Key,Organism Key,#,Organism,Symbol,Chr,Cyto,Name,Acc ID";
-                                          xrtTblMaxLengthSeries = "(all 1-3 10)(all 4 3)(all 5 50)(all 6 25)(all 7 8)(all 8 20)(all 9 255)(all 10 25)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 10)(all 7 3)(all 8 10)(all 9 30)(all 10 11)";
+                                          xrtTblMaxLengthSeries = "(all 1-3 10)(all 4 3)(all 5 50)(all 6 50)(all 7 8)(all 8 20)(all 9 255)(all 10 25)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 30)(all 7 3)(all 8 10)(all 9 30)(all 10 11)";
                                           xrtTblEditableSeries = "(all 0-4 False)(all 7-10 False)";
                                           xrtTblPixelWidthSeries = "(all 0-3 0)";
                                           xrtTblTraversableSeries = "(all 0-4 False)";
@@ -2634,7 +2634,7 @@ Module: MGD
                         xrtTblColumnLabels = "Mode,Current Key,New Key,Refs Key,Chr,Marker,R,J#,Citation,Modified By,Date";
                         xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 4)(all 5 20)(all 6 1)(all 7 10)(all 8 40)(all 9 20)(all 10 10)";
                         xrtTblEditableSeries = "(all 0-3 False)";
-                        xrtTblMaxLengthSeries = "(all 4 8)(all 5 25)(all 6 1)(all 8 255)";
+                        xrtTblMaxLengthSeries = "(all 4 8)(all 5 40)(all 6 1)(all 8 255)";
                         xrtTblNumColumns = 11;
                         xrtTblPixelWidthSeries = "(all 0-3 0)";
                         xrtTblTraversableSeries = "(all 0-3 False)";
@@ -5126,7 +5126,7 @@ Module: MGD
                         userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\nrefMarkerKey:Int=\"2\"\n";
                         xrtTblEditableSeries = "(all 0-4 False)";
                         xrtTblTraversableSeries = "(all 0-4 False)";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 4 3)(all 5 25)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 4 3)(all 5 40)";
                         xrtTblNumColumns = 6;
                       Group: User
                         seqNum = 4;
@@ -5233,16 +5233,17 @@ Module: MGD
                       Table = mgiTable;
                       Group: Widget
                         xrtTblNumColumns = 12;
-                        xrtTblCharWidthSeries = "(all 0 1)(all 6 3)(all 7-8 10)(all 9-10 25)(all 11 7)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 6 3)(all 7 25)(all 8 15)(all 9-10 20)(all 11 7)";
                         xrtTblColumnLabels = "Mode,Current Order,Marker key,Chr,Allele key,Assay key,#,Marker,Allele,Assay Type,Description,Matrix?";
                         xrtTblEditableSeries = "(all 0-6 False)";
                         xrtTblPixelWidthSeries = "(all 0-5 0)";
                         xrtTblTraversableSeries = "(all 0-6 False)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 15;
-                        xrtTblMaxLengthSeries = "(all 7 25)(all 8 20)(all 9 80)(all 10 255)";
+                        xrtTblMaxLengthSeries = "(all 7 40)(all 8 20)(all 9 80)(all 10 255)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
                         xrtTblNumRows = 20;
+                        xrtTblDisplayHorizScrollBar = dispsb_always;
                       Group: User
                         seqNum = 6;
                         saveTraversableSeries = "(all 0-6 False)";
@@ -5553,33 +5554,9 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -8623,8 +8600,8 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 25;
-                                          maxLength = 25;
+                                          columns = 40;
+                                          maxLength = 40;
                                         Group: User
                                           required = True;
                                       }
@@ -8672,8 +8649,8 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
                                           xrtTblVisibleRows = 3;
                                           xrtTblNumColumns = 4;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 20)";
-                                          xrtTblMaxLengthSeries = "(all 2 25)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 25)";
+                                          xrtTblMaxLengthSeries = "(all 2 40)";
                                           xrtTblTraversableSeries = "(all 0-2 False)";
                                           userDefinedAttributes = "markerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"3\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int=\"1\"\n";
                                           xrtTblColumnLabels = "Mode,Current key,Marker key,Current Symbol";
@@ -8753,7 +8730,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)(all 14 12)";
                                           xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
                                           xrtTblEditableSeries = "(all 0-6 False)";
-                                          xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 25)(all 8 255)(all 9-10 10)(all 11-13 255)";
+                                          xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 40)(all 8 255)(all 9-10 10)(all 11-13 255)";
                                           xrtTblNumColumns = 15;
                                           xrtTblPixelWidthSeries = "(all 0-5 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
@@ -10307,7 +10284,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
                                           xrtTblNumColumns = 7;
                                           xrtTblColumnLabels = "Mode,Key,Key,Key,Chr,Marker,Allele";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 25)(all 6 30)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 30)(all 6 30)";
                                           xrtTblEditableSeries = "(all 0-3 False)";
                                           xrtTblTraversableSeries = "(all 0-3 False)";
                                           xrtTblPixelWidthSeries = "(all 0-3 0)";

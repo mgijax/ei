@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jun 28 08:11:40 2004";
+      lastWritten = "Thu Jul  1 07:49:01 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1379,7 +1379,7 @@ Module: MGI
                                         Group: Widget
                                           xrtTblNumColumns = 11;
                                           xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,Marker,Allele1,Allele 2,State";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 7-9 20)(all 10 12)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 7-9 30)(all 10 12)";
                                           xrtTblEditableSeries = "(all 0-6 False)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-6 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
@@ -2423,9 +2423,9 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 15;
                                           xrtTblNumColumns = 25;
-                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Note key,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Modified By,Date,Notes,Created By,Date";
+                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Note key,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evi,Inferred From,Modified By,Date,Notes,Created By,Date";
                                           xrtTblPixelWidthSeries = "(all 0-11 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-11 10)(all 12 15)(all 13 5)(all 14 25)(all 15 3)(all 17 10)(all 18 10)(all 19 20)(all 20 11)(all 21 10)(all 22 50)(all 24 10)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-11 10)(all 12 15)(all 13 3)(all 14 25)(all 15 3)(all 17 10)(all 18 3)(all 19 20)(all 22 50)(all 20 11)(all 21 10)(all 24 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
                                           userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"12\"\ndag:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\ninferredFrom:Int(Int)=\"19\"\neditor:Int(Int)=\"20\"\nmodifiedDate:Int(Int)=\"21\"\nnotes:Int(Int)=\"22\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"23\"\ncreatedDate:Int(Int)=\"24\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int(Int)=\"11\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";

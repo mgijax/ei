@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jun 28 11:13:43 2004";
+      lastWritten = "Wed Jun 30 15:47:04 2004";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -495,8 +495,8 @@ Shift<Key>Tab: prev-tab-group()
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyMarker()";
-                        maxLength = 25;
-                        columns = 25;
+                        maxLength = 40;
+                        columns = 40;
                       Group: User
                         required = True;
                     }
