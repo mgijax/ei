@@ -454,11 +454,11 @@ rules:
 	  end if;
 
 	  select := "select distinct g._Genotype_key, " +
-	     "g.dbName + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 	     from + "\n" + where;
 
           notExists := "select distinct g._Genotype_key, " +
-		"'*' + g.dbName + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+		"'*' + g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 	  	"from GXD_Genotype_View g, GXD_AllelePair_View ap \n" +
 	  	"where not exists (select 1 from GXD_Specimen s\n" +
 	  	"where g._Genotype_key = s._Genotype_key)\n" +
