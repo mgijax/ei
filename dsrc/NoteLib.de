@@ -1,0 +1,23 @@
+--
+-- Name    : NoteLib.de
+-- Creator : lec
+-- Date    : 03/19/2001
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for NoteLib.d.
+--
+
+NoteCancel [source_widget : widget;];
+
+NoteCommit [source_widget : widget;]; 
+
+NoteInit [commit : boolean := true;
+          shortNote : boolean := false;];
+
+-- ModifyNotes ; Sets noteWidget.sql
+ModifyNotes [source_widget : widget;
+             tableID : integer;
+             noteType : string;
+             key : string;];
+
