@@ -109,7 +109,13 @@ print ""
 print "Marker Probe/Primer"
 print ""
 
-select * from PRB_Marker_View where _Marker_key = KEY
+select a.accID, m.* 
+from PRB_Marker_View m, PRB_Acc_View a
+where m._Marker_key = KEY
+and m._Probe_key = a._Object_key
+and a._LogicalDB_key = 1
+and a.prefixPart = "MGI:"
+and a.preferred = 1
 go
 
 print ""
