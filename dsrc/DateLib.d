@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- lec 07/11/2001
+--	- fixed bug in use of QueryDate.tag value
+--
 -- lec 03/19/2001
 --	- created
 --
@@ -47,16 +50,16 @@ rules:
 
 	  isTable := mgi_tblIsTable(dateW);
 
-	  if (not isTable) then
-	    value := dateW->text.value;
-	    fieldName := dateW.fieldName;
-	  else
-	    value := mgi_tblGetCell(dateW, row, column);
-	    fieldName := QueryDate.fieldName;
-	  end if;
-
 	  if (tag.length > 0) then
 	    tag := tag + ".";
+	  end if;
+
+	  if (not isTable) then
+	    value := dateW->text.value;
+	    fieldName := tag + dateW.fieldName;
+	  else
+	    value := mgi_tblGetCell(dateW, row, column);
+	    fieldName := tag + QueryDate.fieldName;
 	  end if;
 
 	  if (value.length > 0) then
