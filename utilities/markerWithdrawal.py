@@ -14,10 +14,10 @@
 # --eventReasonKey = event reason key of the nomenclature event
 # --oldKey = marker key of the symbol being withdrawn
 # --refKey = reference key of the nomenclature event
-# --newName = name of the new symbol (withdrawn) in quotes (ex. "new name")
+# --newName = name of the new symbol (withdrawn) in quotes (ex. --newName="new name")
 # --newKey = marker key of the new symbol (allele of, merged)
 # --newSymbols = list of comma-separated new symbols (withdrawn, split) in quotes
-#	(ex. "new-1,new-2")
+#	(ex. --newSymbols="new-1,new-2")
 #
 # History
 #
@@ -239,5 +239,5 @@ try:
 
 except db.error:
 	diagFile.close()
-	error('The withdrawal procedure could not be processed.\nReview the diagnostic file %s.' % (diagFileName))
+	error('The withdrawal procedure could not be processed.\n' + db.sql_message)
 
