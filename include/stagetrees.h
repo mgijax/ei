@@ -618,19 +618,16 @@ void stagetrees_loadStages(char *from, char *where);
    */
 
 
-void stagetrees_unloadStages(Boolean resetrepaint, Boolean resetcursor);
+void stagetrees_unloadStages(Boolean resetrepaint);
   /* 
      requires:
         resetrepaint: set to true if an apptimeout should be used to 
                     turn on repainting (should not do this before the
                     ADI is closed, since the apptimeout will call the
                     set functions for destroyed widgets). 
-        resetcursor: set to true if an apptimeout should be used to 
-                    reset the busy cursor.
      effects: unload stage trees from memory, and removes their 
-              presentation components.  Resets repainting of the outliner
-              and resets the busy cursor if the appropriate args are set 
-              to True.
+              presentation components.  Resets repainting of the outliner if
+              set to True.
      modifies: nothing.
      returns: nothing.
    */

@@ -21,7 +21,7 @@ CALLS
 
      stagetrees_init("Widget", "Widget");
      stagetrees_loadStages("char *", "char *");
-     stagetrees_unloadStages("Boolean", "Boolean");
+     stagetrees_unloadStages("Boolean");
      stagetrees_destroy();
      stagetrees_select("int") : "Structure *";
      stagetrees_convertDateToString("void *") : "char *";

@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec  09/13/2001
+--	- removed ResetCursor; not necessary
+--
 -- lec  08/23/2001
 --	- removed SelectADClipboard; can use List.d/SelectLookupListItem
 --	- moved some stuff to Clipboard.d
@@ -64,6 +67,7 @@ devents:
         Add :local [];
         AddDialog :local [];
         Delete :local [];
+	Exit : local [];
         Modify :local [];
         PrepareSearch :local [];
         Search :local [];
@@ -185,7 +189,7 @@ rules:
        if (DictionaryClear.clearStages) then
         current_structure := nil;
         treesLoaded := false;
-        stagetrees_unloadStages(true, true);
+        stagetrees_unloadStages(true);
        end if;
 
        Clear.source_widget := top;
@@ -672,7 +676,7 @@ rules:
           send(PrepareSearch, 0);
 
           Query.source_widget := top;
-          Query.select := "select distinct(s._Structure_key), t.stage, s.printName " 
+          Query.select := "select distinct s._Structure_key, t.stage, s.printName " 
                           + from + where + "\norder by s.printName asc";
           Query.table := GXD_STRUCTURE;
 	  Query.rowcount := NOROWLIMIT;
@@ -867,34 +871,18 @@ rules:
    end does;
 
 --
--- DictionaryExit
+-- Exit
 --
 -- Called to exit the application.
 --
 
-   DictionaryExit does
-      (void) busy_cursor(mgi); 	-- this will be undone by ResetCursor
+   Exit does
+      (void) busy_cursor(mgi); 	-- this will be undone by ExitWindow
       (void) busy_cursor(top); 	-- this will be undone by closing app 
       stagetrees_destroy();  	-- free up memory associated with trees.
       destroy self;		-- destroy D module instance
       ExitWindow.source_widget := top;
       send(ExitWindow, 0);     	-- the usual exit procedure
-   end does;
-
---
--- ResetCursor
---
--- Called by AppTimeout (stagetrees module) after widget (XRT node) 
--- deletion is finished.
---
-
-   ResetCursor does
-      if mgi->Dictionary.sensitive = false then  
-          -- this event might come after app has shut down
-          reset_cursor(top); 
-      end if;
-
-      (void) reset_cursor(mgi);
    end does;
 
 --

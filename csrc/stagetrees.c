@@ -52,13 +52,6 @@ void turnOnRepaint (XtPointer client_data, XtIntervalId *ID);
       and ID are not used. */
 
 
-void resetCursorCB (XtPointer client_data, XtIntervalId *ID);
-   /* sends a D event that will reset the busy cursor. Called from
-      within an apptimeout - see description of app timeout callbacks
-      for a description of this function's arguments. client_data
-      and ID are not used. */
-
-
 static void stagetrees_internalLoadStages(int countdstages, 
                                           int *distinctstages);
    /* 
@@ -286,8 +279,7 @@ void stagetrees_init(Widget outliner, Widget progressMeter)
 
 void stagetrees_destroy()
 {
-   stagetrees_unloadStages(False, True);   /* get rid of all non-stages nodes 
-                                   and structures */
+   stagetrees_unloadStages(False);   /* get rid of all non-stages nodes and structures */
 
    dbclose(stagetrees.dbproc);  /* close our connection to the DB */
 
@@ -332,21 +324,6 @@ void turnOnRepaint (XtPointer client_data, XtIntervalId *ID)
 }
 
 
-void resetCursorCB (XtPointer client_data, XtIntervalId *ID)
-{
-    ux_devent_instance dei;
-    tu_status_t status;
- 
-    dei = ux_get_devent ("ResetCursor", NULL, 0, &status);
- 
-    if (status.all != tu_status_ok)
-         fprintf(stderr, "Could not create ResetCursor event\n");
- 
-    ux_dispatch_event(dei);
-    ux_free_devent(dei);
-}
-
-
 int stagetrees_getNumLoaded()
 {
    int i, count = 0;
@@ -363,7 +340,7 @@ int stagetrees_getNumLoaded()
 }
 
 
-void stagetrees_unloadStages( Boolean resetrepaint, Boolean resetcursor )
+void stagetrees_unloadStages( Boolean resetrepaint )
 {
    int i, pv;
    XrtGearObject node;
@@ -412,11 +389,6 @@ void stagetrees_unloadStages( Boolean resetrepaint, Boolean resetcursor )
                      (XtTimerCallbackProc)turnOnRepaint, stagetrees.outliner);
    }
 
-   if(resetcursor)
-   {
-      XtAppAddTimeOut(XtWidgetToApplicationContext(stagetrees.outliner), 0,
-                     (XtTimerCallbackProc)resetCursorCB, stagetrees.outliner);
-   }
    stagetrees_setProgressValue(0);
    stagetrees_setProgressLabel(False, PROGRESS_UNLOADING, 28);
 }
