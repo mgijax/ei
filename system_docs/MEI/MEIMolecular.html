@@ -20,7 +20,6 @@ Molecular Segments contains:
 	<LI>DNA (construct)
 	<LI>mitochondrial
 	<LI>oligo
-	<LI>EST
 	<LI>primer
 	</UL>
 <P>
@@ -51,7 +50,6 @@ Molecular Segments are loaded from external sources as well as manual input.  Th
 on a regular basis (quarterly, monthly, etc.):
 	<UL>
 	<LI>MIT primers
-	<LI>dbEST ESTs
 	<LI>I.M.A.G.E. clones
 	</UL>
 
@@ -66,7 +64,6 @@ on a regular basis (quarterly, monthly, etc.):
 <H4>Accession Numbers</H4>
 <OL>
 <LI>MGI:, system-generated
-<LI>dbEST, cross reference to dbEST
 <LI>WashU, cross reference to WashU
 <LI>I.M.A.G.E., cross reference to I.M.A.G.E. consortium
 <LI>Sequence, cross reference to GenBank, EMBL, DDBJ (nucleotide sequences)
@@ -82,7 +79,6 @@ on a regular basis (quarterly, monthly, etc.):
 	<LI>DNA (construct)
 	<LI>mitochondrial
 	<LI>oligo
-	<LI>EST
 	<LI>primer
 	</UL>
 <P>
@@ -226,15 +222,32 @@ To access this form, choose
 <LI>The deletion of a master Molecular Segment record will delete the Molecular Segment and all
     of its References.
 <P>
-<LI>The editing of <I>ESTs</I> are prohibited.  <I>ESTs</I> will be removed from the database
-    with the implementation of TR554.  In the meantime, if the user attempts to add, modify or
-    delete a Molecular Segment with a Sequence Type of <I>EST</I> the following error message(s)
-    will be displayed:
+<LI>Editing of WashU clone records added from the electronic dbEST load is restricted.  These 
+    electronically loaded records are distinguished by the reference J:XXXXX.  Users may
+    add new Accession numbers to any WashU clone record, but they may not edit Accession numbers,
+    clone name or source information for any WashU clone which is referenced by J:XXXXX.
+    <P>
+    <UL>
+    <LI>If the user attempts to edit the Accession numbers of a WashU clone record from the dbEST load, 
+        the following error message will appear:
 	<PRE>
-	Cannot add EST records.
-	Cannot modify EST records.
-	Cannot delete EST records.
+	Accession ID is referenced by J:XXXXX, WashU-HHMI Database Download.
+	Cannot edit.
 	</PRE>
+    <LI>If the user attempts to edit the Source information of a WashU clone record from the dbEST load, 
+        the following error message will appear:
+	<PRE>
+	Molecular Segment is referenced by J:XXXXX, WashU-HHMI Database Download.
+	Cannot modify the Source information.
+	</PRE>
+    <LI>If the user attempts to edit the name of a WashU clone record from the dbEST load, 
+        the following error message will appear:
+	<PRE>
+	Molecular Segment is referenced by J:XXXXX, WashU-HHMI Database Download.
+	Cannot modify the name.
+	</PRE>
+    </UL>
+<P>
 </OL>
 
 <H4>Triggers/Views/Stored Procedures for Molecular Segment tables (<I>PRB_</I>)</H4>
