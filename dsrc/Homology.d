@@ -31,6 +31,9 @@
 --
 -- History
 --
+-- lec 08/15/2002
+--	- TR 1463/SAO; Species replaced with Organism
+--
 -- lec 05/16/2002
 --	- TR 1463/SAO; MRK_Species replaced with MGI_Species
 --
@@ -103,8 +106,8 @@ devents:
 	PrepareSearch :local [];
 
 	Search :local [];
-	SelectSpecies :local [];
-	SetSpeciesDefault :local [];
+	SelectOrganism :local [];
+	SetOrganismDefault :local [];
 	Select :local [item_position : integer;];
 	SplitKey : local [key : string;];
 
@@ -128,8 +131,8 @@ locals:
 	-- Variable names for keys used during insertions
 	homologyKeyName : string;
 
-	defaultSpecies : integer := 3;		   -- Number of default Species
-	defaultSpeciesKeys : string := "(1,2,40)"; -- _Species_key for default Species
+	defaultOrganism : integer := 3;		   -- Number of default Organism
+	defaultOrganismKeys : string := "(1,2,40)"; -- _Organism_key for default Organism
 
 	errorDetected : boolean;
 
@@ -171,7 +174,7 @@ rules:
  
         BuildDynamicComponents does
  
-          LoadList.list := top->SpeciesList;
+          LoadList.list := top->OrganismList;
 	  send(LoadList, 0);
 
           LoadList.list := top->HomologyAssayList;
@@ -221,7 +224,7 @@ rules:
 	  Clear.reset := HomologyClear.reset;
 	  send(Clear, 0);
 
-	  send(SetSpeciesDefault, 0);
+	  send(SetOrganismDefault, 0);
 	end does;
 
 --
@@ -353,11 +356,11 @@ rules:
           i : integer := 0;
 	  j : integer;
           assayKey : string;
-	  speciesList : string_list;
-	  species1 : string := "";
-	  species2 : string := "";
+	  organismList : string_list;
+	  organism1 : string := "";
+	  organism2 : string := "";
 	  note : string := "";
-	  speciesPrev : string := "";
+	  organismPrev : string := "";
 	  markerKey : string := "";
 	  editMode : string;
 	  table : widget;
@@ -365,7 +368,7 @@ rules:
 	  numAssays : integer := 0;
 	  invalidAssay : boolean := false;
 
-	  -- Determine if any Assay row contains less than 2 Species selected
+	  -- Determine if any Assay row contains less than 2 Organism selected
 
 	  i := 0;
 	  while (i < mgi_tblNumRows(assayTable)) do
@@ -389,7 +392,7 @@ rules:
 
 	  if (invalidAssay) then
 	    StatusReport.source_widget := top;
-	    StatusReport.message := "An Assay has been detected which contains only one Species.\n" + 
+	    StatusReport.message := "An Assay has been detected which contains only one Organism.\n" + 
 			"Correct the data and try again.";
 	    send(StatusReport, 0);
 	    errorDetected := true;
@@ -434,8 +437,8 @@ rules:
           while (row < mgi_tblNumRows(assayTable)) do
 	    editMode := mgi_tblGetCell(assayTable, row, assayTable.editMode);
             assayKey := mgi_tblGetCell(assayTable, row, assayTable.assayKey);
-	    species1 := "";
-	    species2 := "";
+	    organism1 := "";
+	    organism2 := "";
 
 	    if (editMode = TBL_ROW_EMPTY) then
 	      break;
@@ -443,24 +446,24 @@ rules:
 
 	    if (editMode != TBL_ROW_DELETE) then
 
-	      -- Load species column values into string
+	      -- Load organism column values into string
 
 	      j := assayTable.beginX;
 	      while (j <= assayTable.endX) do
-	        species1 := species1 + mgi_tblGetCell(assayTable, row, j) + ",";
+	        organism1 := organism1 + mgi_tblGetCell(assayTable, row, j) + ",";
 	        j := j + 1;
 	      end while;
           
-	      -- If species exist...
+	      -- If organism exist...
 
-	      if (species1.length > 0) then
+	      if (organism1.length > 0) then
 
 	        -- Must get all of the appropriate marker keys from the Marker table
-	        -- If Species list different than previous row's, a new Homology group is defined
+	        -- If Organism list different than previous row's, a new Homology group is defined
 
-	        if (species1 != speciesPrev) then
+	        if (organism1 != organismPrev) then
 
-	          if (speciesPrev != "") then
+	          if (organismPrev != "") then
 		    cmd := cmd + mgi_DBincKey(homologyKeyName);
 	          end if;
 
@@ -480,13 +483,13 @@ rules:
 			   (string) j + "," + mgi_DBprstr(note) + ")\n";
 		  end if;
 
-	          -- Split the species string into tokens
+	          -- Split the organism string into tokens
 
-	          speciesList := mgi_splitfields(species1, ",");
+	          organismList := mgi_splitfields(organism1, ",");
 
 		  -- Process MARKERS for given ASSAY
 		  -- Traverse thru the Marker table
-		  -- If the Marker/Species was selected in the Assay Table ("X"),
+		  -- If the Marker/Organism was selected in the Assay Table ("X"),
 		  --   insert an HMD_Homology_Marker record for the Marker
 
 	          i := 0;
@@ -496,9 +499,9 @@ rules:
 		    if (editMode != TBL_ROW_DELETE) then
 	              j := (integer) mgi_tblGetCell(markerTable, i, markerTable.seqNum);
 
-		      -- If species was "X"-ed...
+		      -- If organism was "X"-ed...
 
-		      if (speciesList[j] = "X") then
+		      if (organismList[j] = "X") then
 	                markerKey := mgi_tblGetCell(markerTable, i, markerTable.markerKey);
 
 			if (markerKey != "") then
@@ -509,14 +512,14 @@ rules:
 		    i := i + 1;
 	          end while;
 
-	          speciesPrev := species1;
+	          organismPrev := organism1;
 	        end if;
 
 	        -- Insert Assay
 
 	        cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_ASSAY, homologyKeyName) + assayKey + ")\n";
 
-	      end if;	-- if (species != "")
+	      end if;	-- if (organism != "")
 	    end if;	-- if (editMode != TBL_ROW_DELETE)
             row := row + 1;
           end while;
@@ -573,17 +576,17 @@ rules:
 	      end if;
 	    end if;
 
-	    -- If symbol entered, check Species
+	    -- If symbol entered, check Organism
 
 	    if (value.length > 0 and value != "NULL") then
-              value := mgi_tblGetCell(top->Marker->Table, row, top->Marker->Table.speciesKey);
+              value := mgi_tblGetCell(top->Marker->Table, row, top->Marker->Table.organismKey);
               if (value.length > 0) then
-	        where := where + "\nand h._Species_key = " + value;
+	        where := where + "\nand h._Organism_key = " + value;
 	        enough := true;
               else
-	        value := mgi_tblGetCell(top->Marker->Table, row, top->Marker->Table.species);
+	        value := mgi_tblGetCell(top->Marker->Table, row, top->Marker->Table.organism);
                 if (value.length > 0) then
-	          where := where + "\nand h.species like " + mgi_DBprstr(value);
+	          where := where + "\nand h.organism like " + mgi_DBprstr(value);
 		  enough := true;
 	        end if;
 	      end if;
@@ -705,7 +708,7 @@ rules:
 	  end while;
 	  tables.close;
 
-	  send(SetSpeciesDefault, 0);
+	  send(SetOrganismDefault, 0);
 
 	  top->ID->text.value := "";
 	  top->mgiCitation->Jnum->text.value := "";
@@ -741,25 +744,25 @@ rules:
 		 "creation_date, modification_date " +
 		 "from HMD_Homology_View" + classRefWhere +
 
-	         "select distinct _Marker_key, _Species_key, species, symbol, " +
+	         "select distinct _Marker_key, _Organism_key, organism, symbol, " +
 		 "chromosome, cytogeneticOffset, name " +
 		 "from HMD_Homology_View " + classRefWhere +
-		 " order by _Species_key\n" +
+		 " order by _Organism_key\n" +
 
 	         "select distinct hm._Marker_key, a.mgiID, a._Accession_key " +
 		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_Mouse_View a" +
 		 classRefWhere +
 		 "and h._Homology_key = hm._Homology_key " +
 		 "and hm._Marker_key = a._Marker_key " +
-		 " order by a._Species_key\n" +
+		 " order by a._Organism_key\n" +
 
 		 "select distinct hm._Marker_key, a.accID, a._Accession_key " +
 		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_NonMouse_View a" +
 		 classRefWhere +
 		 "and h._Homology_key = hm._Homology_key " +
 		 "and hm._Marker_key = a._Marker_key " +
-		 "and (a._Species_key != 2 or a.LogicalDB = 'LocusLink') " +
-		 " order by a._Species_key\n";
+		 "and (a._Organism_key != 2 or a.LogicalDB = 'LocusLink') " +
+		 " order by a._Organism_key\n";
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -776,14 +779,14 @@ rules:
           	top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 	      elsif (results = 2) then
 		row := 0;
-		while (mgi_tblGetCell(markerTable, row, markerTable.speciesKey) != "" and
-		       mgi_tblGetCell(markerTable, row, markerTable.speciesKey) != mgi_getstr(dbproc, 2)) do
+		while (mgi_tblGetCell(markerTable, row, markerTable.organismKey) != "" and
+		       mgi_tblGetCell(markerTable, row, markerTable.organismKey) != mgi_getstr(dbproc, 2)) do
 		  row := row + 1;
 		end while;
                 mgi_tblSetCell(markerTable, row, markerTable.seqNum, (string) (row + 1));
                 mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 1));
-                mgi_tblSetCell(markerTable, row, markerTable.speciesKey, mgi_getstr(dbproc, 2));
-                mgi_tblSetCell(markerTable, row, markerTable.species, mgi_getstr(dbproc, 3));
+                mgi_tblSetCell(markerTable, row, markerTable.organismKey, mgi_getstr(dbproc, 2));
+                mgi_tblSetCell(markerTable, row, markerTable.organism, mgi_getstr(dbproc, 3));
                 mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 4));
                 mgi_tblSetCell(markerTable, row, markerTable.markerChr, mgi_getstr(dbproc, 5));
                 mgi_tblSetCell(markerTable, row, markerTable.markerCyto, mgi_getstr(dbproc, 6));
@@ -816,16 +819,16 @@ rules:
 
 	  -- Get Assay info for all Homologies for the Class:Reference composite
 	  -- Get Homology keys
-	  -- Get Species keys
+	  -- Get Organism keys
 	  -- Get Assays
 
-	  cmd := "select distinct a._Homology_key, a._Assay_key, a.assay, s._Species_key " +
+	  cmd := "select distinct a._Homology_key, a._Assay_key, a.assay, s._Organism_key " +
 	         "from HMD_Homology h, HMD_Homology_Assay_View a, HMD_Homology_Marker m, MRK_Marker s " +
 		 classRefWhere +
 	         "and h._Homology_key = m._Homology_key " +
 	         "and m._Marker_key = s._Marker_key " +
 	         "and m._Homology_key = a._Homology_key " + 
-	         "order by a._Homology_key, a._Assay_key, s._Species_key\n" +
+	         "order by a._Homology_key, a._Assay_key, s._Organism_key\n" +
 	         "select distinct n._Homology_key, n.sequenceNum, n.notes " +
 	         "from HMD_Homology h, HMD_Notes n " +
 		 classRefWhere +
@@ -834,7 +837,7 @@ rules:
 
 	  homKey : string := "";
 	  assayKey : string := "";
-	  speciesKey : string := "";
+	  organismKey : string := "";
 	  note : string := "";
 	  j : integer;
 	  i : integer;
@@ -856,20 +859,20 @@ rules:
 
 	        homKey := mgi_getstr(dbproc, 1);
 	        assayKey := mgi_getstr(dbproc, 2);
-	        speciesKey := mgi_getstr(dbproc, 4);
+	        organismKey := mgi_getstr(dbproc, 4);
 
                 mgi_tblSetCell(assayTable, row, assayTable.homologyKey, homKey);
                 mgi_tblSetCell(assayTable, row, assayTable.assayKey, assayKey);
                 mgi_tblSetCell(assayTable, row, assayTable.assay, mgi_getstr(dbproc, 3));
                 mgi_tblSetCell(assayTable, row, assayTable.editMode, TBL_ROW_NOCHG);
 
-	        -- Place 'X' in appropriate Species column by comparing _Species_key returned
-	        -- from Assay query to _Species_key in Marker Table
+	        -- Place 'X' in appropriate Organism column by comparing _Organism_key returned
+	        -- from Assay query to _Organism_key in Marker Table
 
 	        i := 0;
 	        j := assayTable.beginX;
 	        while (i < mgi_tblNumRows(markerTable)) do
-		  if (mgi_tblGetCell(markerTable, i, markerTable.speciesKey) = speciesKey) then
+		  if (mgi_tblGetCell(markerTable, i, markerTable.organismKey) = organismKey) then
                     mgi_tblSetCell(assayTable, row, j, "X");
 		    break;
 		  end if;
@@ -912,61 +915,61 @@ rules:
 	end
 
 --
--- SelectSpecies
+-- SelectOrganism
 --
--- Do not overwrite default species when selecting from the Species lookup list
+-- Do not overwrite default organism when selecting from the Organism lookup list
 --
 
-	SelectSpecies does
+	SelectOrganism does
 	  row : integer;
 
-	  -- If current row is one of the default Species, then item
+	  -- If current row is one of the default Organism, then item
 	  -- must go into the next available row
 	  -- Else, item can go into the current row
 
-	  if (mgi_tblGetCurrentRow(top->Marker->Table) <= defaultSpecies - 1) then
+	  if (mgi_tblGetCurrentRow(top->Marker->Table) <= defaultOrganism - 1) then
 	    row := -2;
 	  else
 	    row := -1;
 	  end if;
 
           -- Copy appropriate values into target
-          SelectLookupListItem.source_widget := top->SpeciesList->List;
-          SelectLookupListItem.item_position := SelectSpecies.item_position;
+          SelectLookupListItem.source_widget := top->OrganismList->List;
+          SelectLookupListItem.item_position := SelectOrganism.item_position;
           SelectLookupListItem.row := row;
           send(SelectLookupListItem, 0);
 	end does;
 
 --
--- SetSpeciesDefault
+-- SetOrganismDefault
 --
--- Fill in default Species
+-- Fill in default Organism
 --
 
-	SetSpeciesDefault does
+	SetOrganismDefault does
 	  table : widget := top->Marker->Table;
 	  row : integer := 0;
 
-	  if (mgi_tblGetCell(table, row, table.speciesKey) != "") then
+	  if (mgi_tblGetCell(table, row, table.organismKey) != "") then
 	    return;
 	  end if;
 
-	  cmd := "select _Species_key, species from MGI_Species_Homology_View " +
-		 "where _Species_key in " + defaultSpeciesKeys + " order by _Species_key";
+	  cmd := "select _Organism_key, organism from MGI_Organism_Homology_View " +
+		 "where _Organism_key in " + defaultOrganismKeys + " order by _Organism_key";
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-              mgi_tblSetCell(table, row, table.speciesKey, mgi_getstr(dbproc, 1));
-              mgi_tblSetCell(table, row, table.species, mgi_getstr(dbproc, 2));
+              mgi_tblSetCell(table, row, table.organismKey, mgi_getstr(dbproc, 1));
+              mgi_tblSetCell(table, row, table.organism, mgi_getstr(dbproc, 2));
 	      row := row + 1;
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
 
-	  table.xrtTblEditableSeries := "(all 0-4 False) (0-2 " + (string) table.species + " False)";
+	  table.xrtTblEditableSeries := "(all 0-4 False) (0-2 " + (string) table.organism + " False)";
 	end does;
 
 --

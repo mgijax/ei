@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 06/26/2002 lec
+--	- TR 3772; set ReportDialog.select to query the currently selected record
+--
 -- 06/05/2002 lec
 --	- TR 3677; display all allele pairs for Genotype object
 --
@@ -584,6 +587,11 @@ rules:
           end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
+
+	  -- Set the ReportDialog.select to query the currently selected record only
+
+	  top->ReportDialog.select := "select distinct _Object_key, description " +
+			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
 	  -- Different Sorts for different Annotation Types
 	  if (annotTable.annotVocab = "GO") then

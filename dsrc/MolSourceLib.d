@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 08/15/2002
+--	- TR 1463; Species replaced with Organism
+--
 -- lec 06/05/2002
 --	- set "Anonymous" or "Not Specified" Library to NULL
 --
@@ -83,7 +86,7 @@ rules:
 	         library + "," +
                  mgi_DBprstr(top->Description->text.value) + "," +
                  mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
-                 top->ProbeSpeciesMenu.menuHistory.defaultValue + "," +
+                 top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
                  top->Tissue->TissueID->text.value + ",";
 
@@ -288,7 +291,7 @@ rules:
                 sourceForm->CellLine->text.value := mgi_getstr(dbproc, 12);
                 sourceForm->Description->text.value := mgi_getstr(dbproc, 3);
  
-                SetOption.source_widget := sourceForm->ProbeSpeciesMenu;
+                SetOption.source_widget := sourceForm->ProbeOrganismMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
  
@@ -373,8 +376,8 @@ rules:
 	    end if;
 	  end if;
 
-          if (top->ProbeSpeciesMenu.menuHistory.modified) then
-            set := set + "_Species_key = " + top->ProbeSpeciesMenu.menuHistory.defaultValue + ",";
+          if (top->ProbeOrganismMenu.menuHistory.modified) then
+            set := set + "_Organism_key = " + top->ProbeOrganismMenu.menuHistory.defaultValue + ",";
           end if;
  
           if (top->Strain->StrainID->text.modified) then
@@ -469,8 +472,8 @@ rules:
 	    where := where + " and _Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value);
 	  end if;
 
-          if (top->ProbeSpeciesMenu.menuHistory.searchValue != "%") then
-            where := where + " and s._Species_key = " + top->ProbeSpeciesMenu.menuHistory.searchValue;
+          if (top->ProbeOrganismMenu.menuHistory.searchValue != "%") then
+            where := where + " and s._Organism_key = " + top->ProbeOrganismMenu.menuHistory.searchValue;
           end if;
  
           if (top->Strain->StrainID->text.value.length > 0) then

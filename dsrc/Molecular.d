@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 08/15/2002
+--	- TR 1463; Species replaced with Organism
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -191,7 +194,7 @@ rules:
 	  InitOptionMenu.option := top->MolDetailForm->VectorTypeMenu;
 	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->MolDetailForm->SourceForm->ProbeSpeciesMenu;
+	  InitOptionMenu.option := top->MolDetailForm->SourceForm->ProbeOrganismMenu;
 	  send(InitOptionMenu, 0);
 
         end does;
@@ -220,7 +223,7 @@ rules:
 	   
           sourceKeyName := "maxSource";
 
-	  sourceOptions.append(top->ProbeSpeciesMenu);
+	  sourceOptions.append(top->ProbeOrganismMenu);
 	  sourceOptions.append(top->AgeMenu);
 	  sourceOptions.append(top->SexMenu);
 

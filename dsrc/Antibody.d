@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	08/15/2002
+--	- TR 1463 SAO; _AntibodySpecies_key replaced with _Organism_key
+--
 -- lec	05/16/2002
 --	- TR 1463 SAO; _AntibodySpecies_key replaced with _Species_key
 --
@@ -135,10 +138,10 @@ rules:
 
 	  options.append(top->AntibodyTypeMenu);
 	  options.append(top->AntibodyClassMenu);
-	  options.append(top->AntibodySpeciesMenu);
+	  options.append(top->AntibodyOrganismMenu);
 	  options.append(top->WesternMenu);
 	  options.append(top->ImmunoMenu);
-	  options.append(top->SourceForm->ProbeSpeciesMenu);
+	  options.append(top->SourceForm->ProbeOrganismMenu);
 	  options.append(top->SourceForm->AgeMenu);
 	  options.append(top->SourceForm->SexMenu);
 
@@ -214,7 +217,7 @@ rules:
 
           cmd := cmd + top->AntibodyClassMenu.menuHistory.defaultValue + "," +
                  top->AntibodyTypeMenu.menuHistory.defaultValue + "," +
-                 top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
+                 top->AntibodyOrganismMenu.menuHistory.defaultValue + ",";
 
 	  if (top->AntigenAccession->ObjectID->text.value.length = 0) then
             cmd := cmd + "NULL,";
@@ -324,8 +327,8 @@ rules:
             set := set + "_AntibodyClass_key = " + top->AntibodyClassMenu.menuHistory.defaultValue + ",";
 	  end if;
 
-	  if (top->AntibodySpeciesMenu.menuHistory.modified) then
-            set := set + "_Species_key = " + top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
+	  if (top->AntibodyOrganismMenu.menuHistory.modified) then
+            set := set + "_Organism_key = " + top->AntibodyOrganismMenu.menuHistory.defaultValue + ",";
 	  end if;
 
 	  if (top->WesternMenu.menuHistory.modified) then
@@ -527,8 +530,8 @@ rules:
             where := where + " and g._AntibodyClass_key = " + top->AntibodyClassMenu.menuHistory.searchValue;
           end if;
  
-          if (top->AntibodySpeciesMenu.menuHistory.searchValue != "%") then
-            where := where + " and g._Species_key = " + top->AntibodySpeciesMenu.menuHistory.searchValue;
+          if (top->AntibodyOrganismMenu.menuHistory.searchValue != "%") then
+            where := where + " and g._Organism_key = " + top->AntibodyOrganismMenu.menuHistory.searchValue;
           end if;
  
           if (top->WesternMenu.menuHistory.searchValue != "%") then
@@ -778,7 +781,7 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
-                SetOption.source_widget := top->AntibodySpeciesMenu;
+                SetOption.source_widget := top->AntibodyOrganismMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 

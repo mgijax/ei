@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 08/15/2002
+ *	- TR 1463/SAO; SPECIES to ORGANISM
+ *
  * lec 05/2002
  *	- TR 1463/SAO; nomen tables, seq tables, mgi tables
  *
@@ -628,9 +631,9 @@ char *mgi_DBkey(int table)
     case MGI_REFERENCE_NOMEN_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
-    case MGI_SPECIES:
-    case MGI_SPECIESTYPE:
-            strcpy(buf, "_Species_key");
+    case MGI_ORGANISM:
+    case MGI_ORGANISMTYPE:
+            strcpy(buf, "_Organism_key");
 	    break;
     case MLD_ASSAY:
             strcpy(buf, "_Assay_Type_key");
@@ -694,7 +697,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Allele_key");
 	    break;
     case MRK_CHROMOSOME:
-            strcpy(buf, "_Species_key");
+            strcpy(buf, "_Organism_key");
 	    break;
     case MRK_CLASS:
             strcpy(buf, "_Class_key");
@@ -901,8 +904,8 @@ char *mgi_DBaccTable(int table)
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image_Acc_View");
             break;
-    case MGI_SPECIES:
-            strcpy(buf, "MGI_Species_Acc_View");
+    case MGI_ORGANISM:
+            strcpy(buf, "MGI_Organism_Acc_View");
             break;
     case MLD_EXPTS:
             strcpy(buf, "MLD_Summary_View");
@@ -1235,11 +1238,11 @@ char *mgi_DBtable(int table)
     case MGI_REFTYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_RefType_Nomen_View");
 	    break;
-    case MGI_SPECIES:
-            strcpy(buf, "MGI_Species");
+    case MGI_ORGANISM:
+            strcpy(buf, "MGI_Organism");
 	    break;
-    case MGI_SPECIESTYPE:
-            strcpy(buf, "MGI_Species_MGIType");
+    case MGI_ORGANISMTYPE:
+            strcpy(buf, "MGI_Organism_MGIType");
 	    break;
     case MLC_LOCK_EDIT:
             strcpy(buf, "MLC_Lock_edit");
@@ -1684,7 +1687,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTE:
     case MGI_NOTECHUNK:
     case MGI_REFERENCE_ASSOC:
-    case MGI_SPECIESTYPE:
+    case MGI_ORGANISMTYPE:
     case MLC_LOCK_EDIT:
     case MLC_MARKER_EDIT:
     case MLC_REFERENCE_EDIT:
@@ -1749,7 +1752,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ACC_LOGICALDB:
-	    sprintf(buf, "insert %s (%s, name, description, _Species_key)",
+	    sprintf(buf, "insert %s (%s, name, description, _Organism_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE:
@@ -1809,7 +1812,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
-            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _AntibodySpecies_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote)", 
+            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYMARKER:
@@ -1949,10 +1952,10 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_REFASSOCTYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, assocType, allowOnlyOne)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MGI_SPECIES:
+    case MGI_ORGANISM:
             sprintf(buf, "insert %s (%s, commonName, latinName)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MGI_SPECIESTYPE:
+    case MGI_ORGANISMTYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_LOCK_EDIT:
@@ -2059,7 +2062,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, reference, dataset, note1, note2)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_MARKER:
-	    sprintf(buf, "insert %s (%s, _Species_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, cytogeneticOffset)",
+	    sprintf(buf, "insert %s (%s, _Organism_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, cytogeneticOffset)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_ALIAS:
@@ -2074,7 +2077,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (chromosome, _Marker_key)", mgi_DBtable(table));
 	    break;
     case MRK_CHROMOSOME:
-            sprintf(buf, "insert %s (_Species_key, chromosome, sequenceNum)", mgi_DBtable(table));
+            sprintf(buf, "insert %s (_Organism_key, chromosome, sequenceNum)", mgi_DBtable(table));
 	    break;
     case MRK_CLASSES:
 	    sprintf(buf, "insert %s (_Class_key, %s)",
@@ -2141,7 +2144,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _ProbeSpecies_key, _Strain_key, _Tissue_key, age, ageMin, ageMax, sex, cellLine)",
+            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _Organism_key, _Strain_key, _Tissue_key, age, ageMin, ageMax, sex, cellLine)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_MARKER:
@@ -2280,8 +2283,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTETYPE:
       case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
-      case MGI_SPECIES:
-      case MGI_SPECIESTYPE:
+      case MGI_ORGANISM:
+      case MGI_ORGANISMTYPE:
       case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
@@ -2308,8 +2311,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTETYPE:
       case MGI_REFASSOCTYPE:
       case MGI_REFERENCE_ASSOC:
-      case MGI_SPECIES:
-      case MGI_SPECIESTYPE:
+      case MGI_ORGANISM:
+      case MGI_ORGANISMTYPE:
       case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:

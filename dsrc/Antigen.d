@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 08/15/2002
+--	- TR 1463/SAO; Species replaced with Organism
+--
 -- lec 09/26/2001
 --	- TR 2714/Probe Species Menu
 --
@@ -80,7 +83,7 @@ rules:
 
 	  send(Init, 0);
 
-          InitOptionMenu.option := top->SourceForm->ProbeSpeciesMenu;
+          InitOptionMenu.option := top->SourceForm->ProbeOrganismMenu;
           send(InitOptionMenu, 0);
 
 	  ab : widget := mgi->mgiModules->(top.activateButtonName);
@@ -108,7 +111,7 @@ rules:
 	Init does
 	  sourceOptions := create list("widget");
 
-	  sourceOptions.append(top->ProbeSpeciesMenu);
+	  sourceOptions.append(top->ProbeOrganismMenu);
 	  sourceOptions.append(top->AgeMenu);
 	  sourceOptions.append(top->SexMenu);
 
@@ -188,12 +191,12 @@ rules:
 --
 -- CheckNote
 --
--- Checks that Note has been entered if Species = "Other"
+-- Checks that Note has been entered if Organism = "Other"
 --
 
 	CheckNote does
 
-	  if (top->ProbeSpeciesMenu.menuHistory.labelString = OTHERNOTES and
+	  if (top->ProbeOrganismMenu.menuHistory.labelString = OTHERNOTES and
 	      top->Note->text.value.length = 0) then
                 StatusReport.source_widget := top;
                 StatusReport.message := "Antigen Notes are Required.";

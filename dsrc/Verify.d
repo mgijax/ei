@@ -929,13 +929,13 @@ rules:
 -- Activated from:  Table ValidateCellCallback
 -- Activated from:  Chromosome->text translation
 --
--- Checks if Chromosome value for Species exists in Marker Chromosome table.
+-- Checks if Chromosome value for Organism exists in Marker Chromosome table.
 -- If not, then alerts user that value will be added to Marker Chromosome table
 -- when transaction is executed.
 --
 -- Also, raises the case of the Chromosome value so it is in upper case.
 --
--- 	UDAs required:  speciesKey (unique identifier of marker species)
+-- 	UDAs required:  organismKey (unique identifier of marker organism)
 -- 	UDAs required:  markerChr (column of chromosome value in table)
 --
 
@@ -943,7 +943,7 @@ rules:
           sourceWidget : widget := VerifyChromosome.source_widget;
           top : widget := sourceWidget.top;
 	  value : string;
-	  speciesKey : string;
+	  organismKey : string;
 	  isTable : boolean;
 	  select : string;
 	  where : string;
@@ -981,29 +981,29 @@ rules:
 	  (void) busy_cursor(top);
 
 	  if (isTable) then
-            speciesKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.speciesKey);
+            organismKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.organismKey);
 	  else
-	    speciesKey := top->mgiSpecies->ObjectID->text.value;
+	    organismKey := top->mgiOrganism->ObjectID->text.value;
 	  end if;
 
-	  -- If no species entered, cannot verify value
+	  -- If no organism entered, cannot verify value
 
-	  if (speciesKey.length > 0) then
+	  if (organismKey.length > 0) then
 	    select := "select count(*) from MRK_Chromosome ";
-	    where := " where _Species_key = " + speciesKey +
+	    where := " where _Organism_key = " + organismKey +
 		  " and chromosome = " + mgi_DBprstr(value) + "\n";
 
-	    if (speciesKey != "1" and (integer) mgi_sql1(select + where) = 0) then
+	    if (organismKey != "1" and (integer) mgi_sql1(select + where) = 0) then
               StatusReport.source_widget := top;
-	      StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value +
-		  "\n\nThis value will be added to Species/Chromosome master table\n" +
+	      StatusReport.message := "Invalid Chromosome value for Organism:\n\n" + value +
+		  "\n\nThis value will be added to Organism/Chromosome master table\n" +
 		  "when the current transaction is executed.\n\n" +
 		  "Replace the invalid value with a valid value if you DO NOT want\n" +
-		  "the invalid value added to the Species/Chromosome master table.\n";
+		  "the invalid value added to the Organism/Chromosome master table.\n";
               send(StatusReport);
-	    elsif (speciesKey = "1" and (integer) mgi_sql1(select + where) = 0) then
+	    elsif (organismKey = "1" and (integer) mgi_sql1(select + where) = 0) then
               StatusReport.source_widget := top;
-	      StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value + "\n";
+	      StatusReport.message := "Invalid Chromosome value for Organism:\n\n" + value + "\n";
               send(StatusReport);
 	      VerifyChromosome.doit := (integer) false;
 	    end if;
@@ -1714,7 +1714,7 @@ rules:
 --
 --	Invalid Markers include:
 --		Withdrawn Markers (status = WITHDRAWN)
---		non-Mouse Markers (species != MOUSE)
+--		non-Mouse Markers (organism != MOUSE)
 --
 --	If Text, assumes use of mgiMarker template
 --	If Table, assumes table.markerKey, table.markerSymbol are defined
@@ -1822,17 +1822,17 @@ rules:
 	  chromosome : string_list := create string_list();
 	  status : string_list := create string_list();
 	  band : string_list := create string_list();
-	  speciesKey : string := MOUSE;
+	  organismKey : string := MOUSE;
 
-          if (isTable and VerifyMarker.verifyOtherSpecies) then
-            speciesKey := mgi_tblGetCell(sourceWidget, VerifyMarker.row, sourceWidget.speciesKey);
+          if (isTable and VerifyMarker.verifyOtherOrganism) then
+            organismKey := mgi_tblGetCell(sourceWidget, VerifyMarker.row, sourceWidget.organismKey);
  
-	    -- No Species entered
-            if (speciesKey.length = 0) then
+	    -- No Organism entered
+            if (organismKey.length = 0) then
               VerifyMarker.doit := (integer) false;
               (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, markerKey, "");
               StatusReport.source_widget := VerifyMarker.source_widget.root;
-              StatusReport.message := "Must Select A Species\n\n";
+              StatusReport.message := "Must Select An Organism\n\n";
               send(StatusReport);
               (void) reset_cursor(top);
               return;
@@ -1847,7 +1847,7 @@ rules:
 	  -- Search for Marker in the database
 
 	  select : string := "select _Marker_key, _Marker_Status_key, symbol, chromosome, cytogeneticOffset " +
-			     "from MRK_Marker where _Species_key = " + speciesKey + 
+			     "from MRK_Marker where _Organism_key = " + organismKey + 
 			     " and symbol = " + mgi_DBprstr(value) + "\n";
 
 	  -- If searching Nomen as well....
@@ -1974,18 +1974,18 @@ rules:
           found : boolean := false;
 	  i : integer := 1;
 
-          if (isTable and VerifyMarker.verifyOtherSpecies) then
+          if (isTable and VerifyMarker.verifyOtherOrganism) then
             select := "select cytogeneticOffset, name, mgiID, _Accession_key " +
                       "from MRK_Mouse_View " +
                       "where _Marker_key = " + whichMarker + "\n" +
                       "select cytogeneticOffset, name " +
                       "from MRK_Marker " +
                       "where _Marker_key = " + whichMarker + "\n" +
-                      "and _Species_key != " + MOUSE + "\n" +
+                      "and _Organism_key != " + MOUSE + "\n" +
                       "select _Marker_key, accID, _Accession_key " +
                       "from MRK_NonMouse_View " +
                       "where _Marker_key = " + whichMarker +
-                      " and (_Species_key != 2 or LogicalDB = 'LocusLink')";
+                      " and (_Organism_key != 2 or LogicalDB = 'LocusLink')";
  
             dbproc := mgi_dbopen();
             (void) dbcmd(dbproc, select);
@@ -2016,16 +2016,16 @@ rules:
 
             if (top->ID->text.value.length > 0) then
  
-              -- Check if record already exists for same Class/Species/different Marker
+              -- Check if record already exists for same Class/Organism/different Marker
  
               message := "";
               select := "select count(*) from HMD_Homology_View " +
                         "where _Class_key = " + top->ID->text.value +
-                        " and _Species_key = " + speciesKey +
+                        " and _Organism_key = " + organismKey +
                         " and _Marker_key != " + whichMarker;
  
               if ((integer) mgi_sql1(select) > 0) then
-                message := "This Homology Class already contains a Symbol for this Species\n";
+                message := "This Homology Class already contains a Symbol for this Organism\n";
               end if;
  
               if (message.length > 0) then
@@ -2055,7 +2055,7 @@ rules:
 	    top->mgiMarker->Marker->text.value := whichSymbol;
 
 	    -- Get MGI Acc ID if Mouse and Accession Widget defined
-	    if (speciesKey = MOUSE and accessionWidget != nil) then
+	    if (organismKey = MOUSE and accessionWidget != nil) then
 	      markerMGIAccID := mgi_sql1("select mgiID from MRK_Mouse_View " +
 		"where _Marker_key = " + whichMarker);
 	      accessionWidget->AccessionID->text.value := markerMGIAccID;
@@ -2578,18 +2578,18 @@ rules:
 	end does;
 
 --
--- VerifySpecies
+-- VerifyOrganism
 --
---	Verify Species entered in TextField or Table
+--	Verify Organism entered in TextField or Table
 --
---	If Text, assumes use of mgiSpecies template
---	If Table, assumes table.speciesKey, table.species
+--	If Text, assumes use of mgiOrganism template
+--	If Table, assumes table.organismKey, table.organism
 --
 --	Copy Unique Key into Appropriate widget/column
 --
 
-	VerifySpecies does
-	  sourceWidget : widget := VerifySpecies.source_widget;
+	VerifyOrganism does
+	  sourceWidget : widget := VerifyOrganism.source_widget;
 	  top : widget := sourceWidget.top;
 	  isTable : boolean;
 	  value : string;
@@ -2599,59 +2599,59 @@ rules:
 	  row : integer;
 	  column : integer;
 	  reason : integer;
-	  speciesKey : integer;
-	  speciesName : integer;
+	  organismKey : integer;
+	  organismName : integer;
 
 	  isTable := mgi_tblIsTable(sourceWidget);
 
 	  -- Processing for Table
 
 	  if (isTable) then
-	    row := VerifySpecies.row;
-	    column := VerifySpecies.column;
-	    reason := VerifySpecies.reason;
-	    value := VerifySpecies.value;
-	    speciesKey := sourceWidget.speciesKey;
+	    row := VerifyOrganism.row;
+	    column := VerifyOrganism.column;
+	    reason := VerifyOrganism.reason;
+	    value := VerifyOrganism.value;
+	    organismKey := sourceWidget.organismKey;
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	      return;
 	    end if;
 					   
-	    -- If not in the species column, return
+	    -- If not in the organism column, return
 
-            if (column != sourceWidget.speciesName) then
+            if (column != sourceWidget.organismName) then
               return;
             end if;
 
-	    speciesKey := sourceWidget.speciesKey;
-	    speciesName := sourceWidget.speciesName;
+	    organismKey := sourceWidget.organismKey;
+	    organismName := sourceWidget.organismName;
 
 	  -- Processing for Text
 
 	  else
-	    value := top->mgiSpecies->Species->text.value;
+	    value := top->mgiOrganism->Organism->text.value;
 	  end if;
 
 	  -- If no value entered, return
 
 	  if (value.length = 0) then
 	    if (isTable) then
-              (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
+              (void) mgi_tblSetCell(sourceWidget, row, organismKey, "NULL");
 	    else
-	      top->mgiSpecies->ObjectID->text.value := "NULL";
+	      top->mgiOrganism->ObjectID->text.value := "NULL";
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    end if;
 	    return;
 	  end if;
 
-	  -- If a wildcard '%' appears in the species,
-	  --  Then set the Species key to empty and return
+	  -- If a wildcard '%' appears in the organism,
+	  --  Then set the Organism key to empty and return
 
 	  if (strstr(value, "%") != nil) then
 	    if (isTable) then
-              (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
+              (void) mgi_tblSetCell(sourceWidget, row, organismKey, "NULL");
 	    else
-	      top->mgiSpecies->ObjectID->text.value := "NULL";
+	      top->mgiOrganism->ObjectID->text.value := "NULL";
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    end if;
 	    return;
@@ -2660,26 +2660,26 @@ rules:
 	  (void) busy_cursor(top);
 
 	  message : string := "";
-	  whichSpeciesRow : integer := 0;
-	  whichSpecies : string := "";
+	  whichOrganismRow : integer := 0;
+	  whichOrganism : string := "";
 	  whichName : string := "";
 
 	  keys : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
 	  names : string_list := create string_list();
 
-	  -- Clear Species Lookup List
+	  -- Clear Organism Lookup List
 
 	  ClearList.source_widget := whichItem->ItemList;
 	  send(ClearList, 0);
 
-	  -- Search for Species in the database
+	  -- Search for Organism in the database
 
-	  select : string := "select _Species_key, commonName, species " +
-			     "from MGI_Species_Marker_View " +
+	  select : string := "select _Organism_key, commonName, organism " +
+			     "from MGI_Organism_Marker_View " +
 			     " where commonName = " + mgi_DBprstr(value) + "\n";
 
-	  -- Insert results into string list for loading into Species selection list
+	  -- Insert results into string list for loading into Organism selection list
 	  -- Insert chromosomes into string list for future reference
 
 	  dbproc : opaque := mgi_dbopen();
@@ -2694,7 +2694,7 @@ rules:
           end while;
 	  (void) dbclose(dbproc);
 
-	  -- Add items to Species List
+	  -- Add items to Organism List
           -- If keys doesn't exist already, create it
  
           if (whichItem->ItemList->List.keys = nil) then
@@ -2704,18 +2704,18 @@ rules:
           whichItem->ItemList->List.keys := keys;
 	  (void) XmListAddItems(whichItem->ItemList->List, results, results.count, 0);
 
-	  -- If results is empty, then species is invalid
+	  -- If results is empty, then organism is invalid
 
 	  if (results.count = 0) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Species '" + value + "'\n\n" + "Invalid Species";
+            StatusReport.message := "Organism '" + value + "'\n\n" + "Invalid Organism";
             send(StatusReport);
 
 	    if (isTable) then
-              (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
-	      VerifySpecies.doit := (integer) false;
+              (void) mgi_tblSetCell(sourceWidget, row, organismKey, "NULL");
+	      VerifyOrganism.doit := (integer) false;
 	    else
-	      top->mgiSpecies->ObjectID->text.value := "NULL";
+	      top->mgiOrganism->ObjectID->text.value := "NULL";
 	    end if;
 
 	    (void) reset_cursor(top);
@@ -2726,30 +2726,30 @@ rules:
           elsif (results.count > 1) then
             whichItem.managed := true;
 
-	    -- Keep busy while user selects which species
+	    -- Keep busy while user selects which organism
 
 	    while (whichItem.managed = true) do
 		(void) keep_busy();
 	    end while;
 
 	    (void) XmUpdateDisplay(top);
-	    whichSpeciesRow := whichItem->ItemList->List.row;
+	    whichOrganismRow := whichItem->ItemList->List.row;
 
 	  -- If only one result is found, then select first (& only) result from List
 
           else
-            whichSpeciesRow := 0;
+            whichOrganismRow := 0;
           end if;
  
-	  whichSpecies := whichItem->ItemList->List.keys[whichSpeciesRow];
-	  whichName := names[whichSpeciesRow];
+	  whichOrganism := whichItem->ItemList->List.keys[whichOrganismRow];
+	  whichName := names[whichOrganismRow];
 
 	  if (isTable) then
-            (void) mgi_tblSetCell(sourceWidget, row, speciesKey, whichSpecies);
-            (void) mgi_tblSetCell(sourceWidget, row, speciesName, whichName);
+            (void) mgi_tblSetCell(sourceWidget, row, organismKey, whichOrganism);
+            (void) mgi_tblSetCell(sourceWidget, row, organismName, whichName);
 	  else
-	    top->mgiSpecies->ObjectID->text.value := whichSpecies;
-	    top->mgiSpecies->Species->text.value := whichName;
+	    top->mgiOrganism->ObjectID->text.value := whichOrganism;
+	    top->mgiOrganism->Organism->text.value := whichName;
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
 

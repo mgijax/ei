@@ -42,7 +42,7 @@ TAB = reportlib.TAB
 
 def parse_homology(homology):
 	
-	fp.write(TAB + mgi_utils.prvalue(homology['species']) + TAB + \
+	fp.write(TAB + mgi_utils.prvalue(homology['organism']) + TAB + \
 		 mgi_utils.prvalue(homology['symbol']) + TAB + \
 		 mgi_utils.prvalue(homology['chromosome']))
 	fp.write(TAB + mgi_utils.prvalue(homology['offset']))
@@ -65,39 +65,39 @@ def parse_reference(reference):
 	# Retrieve Mouse Markers 
 
 	cmd = '''select distinct
-	      m._Species_key, m.species, m.symbol, m.name, m.chromosome,
+	      m._Organism_key, m.organism, m.symbol, m.name, m.chromosome,
 	      m.offset, accID = m.mgiID 
               from HMD_Homology h, HMD_Homology_Marker hm, MRK_Mouse_View m
 	      where h._Class_key = %s and h._Refs_key = %s
 	      and h._Homology_key = hm._Homology_key
-	      and hm._Marker_key = m._Marker_key order by _Species_key
+	      and hm._Marker_key = m._Marker_key order by _Organism_key
 	      ''' % (classKey, refKey)
 	db.sql(cmd, parse_homology)
 
-	# Retrieve non-mouse Markers w/ Accession numbers (_Species_key = 2, 40)
+	# Retrieve non-mouse Markers w/ Accession numbers (_Organism_key = 2, 40)
 
 	cmd = '''select distinct 
-	      m._Species_key, m.species, m.symbol, m.name, m.chromosome, 
+	      m._Organism_key, m.organism, m.symbol, m.name, m.chromosome, 
 	      offset = m.cytogeneticOffset, m.accID 
               from HMD_Homology h, HMD_Homology_Marker hm, MRK_NonMouse_View m
 	      where h._Class_key = %s and h._Refs_key = %s
 	      and h._Homology_key = hm._Homology_key
-	      and hm._Marker_key = m._Marker_key order by _Species_key
+	      and hm._Marker_key = m._Marker_key order by _Organism_key
 	      ''' % (classKey, refKey)
 	db.sql(cmd, parse_homology)
 
-	# Retrieve non-mouse Markers w/out Accession numbers (_Species_key not in (1,2,40)
+	# Retrieve non-mouse Markers w/out Accession numbers (_Organism_key not in (1,2,40)
 
 	cmd = '''select distinct 
-	      m._Species_key, species = s.name + " (" + s.species + ")", m.symbol, m.name, 
+	      m._Organism_key, organism = s.commonName + " (" + s.latinName + ")", m.symbol, m.name, 
 	      m.chromosome, offset = m.cytogeneticOffset
-              from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Species s
+              from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Organism s
 	      where h._Class_key = %s and h._Refs_key = %s
 	      and h._Homology_key = hm._Homology_key
 	      and hm._Marker_key = m._Marker_key
-	      and m._Species_key not in (1,2,40)
-	      and m._Species_key = s._Species_key
-	      order by m._Species_key
+	      and m._Organism_key not in (1,2,40)
+	      and m._Organism_key = s._Organism_key
+	      order by m._Organism_key
 	      ''' % (classKey, refKey)
 	db.sql(cmd, parse_homology)
 

@@ -1,16 +1,19 @@
 --
--- Name    : Species.d
+-- Name    : Organism.d
 -- Creator : lec
--- Species.d 09/23/98
+-- Organism.d 09/23/98
 --
--- TopLevelShell:		Species
--- Database Tables Affected:	MGI_Species, MRK_Chromosome, MRK_Anchors
+-- TopLevelShell:		Organism
+-- Database Tables Affected:	MGI_Organism, MRK_Chromosome, MRK_Anchors
 -- Cross Reference Tables:	MRK_Marker 
 -- Actions Allowed:		Add, Modify, Delete
 --
--- Module to process edits for Master Species table.
+-- Module to process edits for Master Organism table.
 --
 -- History
+--
+-- lec  08/15/2002
+--	- TR 1463/SAO; MGI_Organism replaces MGI_Species
 --
 -- lec  05/15/2002
 --	- TR 1463/SAO; MGI_Species replaces MRK_Species
@@ -26,7 +29,7 @@
 --	converted to XRT/API
 --
 
-dmodule Species is
+dmodule Organism is
 
 #include <mgilib.h>
 #include <syblib.h>
@@ -44,7 +47,7 @@ devents:
 	Modify :local [];
 	ModifyAnchor :local [];
 	ModifyChromosome :local [];
-	ModifySpeciesMGIType :local [];
+	ModifyOrganismMGIType :local [];
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [item_position : integer;];
@@ -66,7 +69,7 @@ locals:
 rules:
 
 --
--- Species
+-- Organism
 --
 
 	INITIALLY does
@@ -74,7 +77,7 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  top := create widget("SpeciesModule", nil, mgi);
+	  top := create widget("OrganismModule", nil, mgi);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -91,7 +94,7 @@ rules:
 --
 -- BuildDynamicComponents
 --
--- Activated from:  devent Species
+-- Activated from:  devent Organism
 --
 -- For initializing dynamic GUI components prior to managing the top form.
 --
@@ -99,7 +102,7 @@ rules:
 --
 
 	BuildDynamicComponents does
-          LoadList.list := top->SpeciesMGITypeList;
+          LoadList.list := top->OrganismMGITypeList;
 	  send(LoadList, 0);
 	end does;
 
@@ -119,7 +122,7 @@ rules:
 
           -- Set Row Count
           SetRowCount.source_widget := top;
-          SetRowCount.tableID := MGI_SPECIES;
+          SetRowCount.tableID := MGI_ORGANISM;
           send(SetRowCount, 0);
 
 	  -- Clear form
@@ -145,24 +148,24 @@ rules:
  
           currentRecordKey := "@" + KEYNAME;
 
-          cmd := mgi_setDBkey(MGI_SPECIES, NEWKEY, KEYNAME) +
-		 mgi_DBinsert(MGI_SPECIES, KEYNAME) +
+          cmd := mgi_setDBkey(MGI_ORGANISM, NEWKEY, KEYNAME) +
+		 mgi_DBinsert(MGI_ORGANISM, KEYNAME) +
                  mgi_DBprstr(top->Common->text.value) + "," +
                  mgi_DBprstr(top->Latin->text.value) + ")\n";
 
 	  send(ModifyAnchor, 0);
 	  send(ModifyChromosome, 0);
-	  send(ModifySpeciesMGIType, 0);
+	  send(ModifyOrganismMGIType, 0);
 
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := MGI_SPECIES;
+          ProcessAcc.tableID := MGI_ORGANISM;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
-	  AddSQL.tableID := MGI_SPECIES;
+	  AddSQL.tableID := MGI_ORGANISM;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->Common->text.value + " (" + top->Latin->text.value + ")";
@@ -188,7 +191,7 @@ rules:
         Delete does
           (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := MGI_SPECIES;
+	  DeleteSQL.tableID := MGI_ORGANISM;
 	  DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
@@ -231,18 +234,18 @@ rules:
 
 	  send(ModifyAnchor, 0);
 	  send(ModifyChromosome, 0);
-	  send(ModifySpeciesMGIType, 0);
+	  send(ModifyOrganismMGIType, 0);
 
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := MGI_SPECIES;
+          ProcessAcc.tableID := MGI_ORGANISM;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
           if (cmd.length > 0 or set.length > 0) then
-            cmd := cmd + mgi_DBupdate(MGI_SPECIES, currentRecordKey, set);
+            cmd := cmd + mgi_DBupdate(MGI_ORGANISM, currentRecordKey, set);
           end if;
 
           ModifySQL.cmd := cmd;
@@ -256,9 +259,9 @@ rules:
 -- ModifyChromosome
 --
 -- Append to global 'cmd' string updates to Marker Chromosome table
--- which stores Chromosome orders for each Species.
+-- which stores Chromosome orders for each Organism.
 --
--- During add of new species chromosome in Homology a
+-- During add of new organism chromosome in Homology a
 -- record will be added to MRK_Chromosome (trigger)
 --
  
@@ -380,13 +383,13 @@ rules:
  	end does;
 
 --
--- ModifySpeciesMGIType
+-- ModifyOrganismMGIType
 --
--- Append to global 'cmd' string updates to MGI_Species_MGIType table
+-- Append to global 'cmd' string updates to MGI_Organism_MGIType table
 --
  
-        ModifySpeciesMGIType does
-          table : widget := top->SpeciesType->Table;
+        ModifyOrganismMGIType does
+          table : widget := top->OrganismType->Table;
           row : integer := 0;
           editMode : string;
           key : string;
@@ -406,15 +409,15 @@ rules:
             newKey := mgi_tblGetCell(table, row, table.typeKey);
  
             if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + mgi_DBinsert(MGI_SPECIESTYPE, NOKEY) + 
+              cmd := cmd + mgi_DBinsert(MGI_ORGANISMTYPE, NOKEY) + 
 		currentRecordKey + "," +
 		newKey + ")\n";
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_MGIType_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(MGI_SPECIESTYPE, currentRecordKey, set) +
+              cmd := cmd + mgi_DBupdate(MGI_ORGANISMTYPE, currentRecordKey, set) +
 		"and _MGIType_key = " + key + "\n";
             elsif (editMode = TBL_ROW_DELETE) then
-               cmd := cmd + mgi_DBdelete(MGI_SPECIESTYPE, currentRecordKey) +
+               cmd := cmd + mgi_DBdelete(MGI_ORGANISMTYPE, currentRecordKey) +
 		"and _MGIType_key = " + key + "\n";
             end if;
  
@@ -432,7 +435,7 @@ rules:
 	  from_mgitype : boolean := false;
 	  value : string;
 
-	  from := "from " + mgi_DBtable(MGI_SPECIES) + " s";
+	  from := "from " + mgi_DBtable(MGI_ORGANISM) + " s";
 	  where := "";
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
@@ -448,15 +451,15 @@ rules:
             where := where + "\nand s.commonName like " + mgi_DBprstr(top->Common->text.value);
           end if;
 
-          value := mgi_tblGetCell(top->SpeciesType->Table, 0, top->SpeciesType->Table.typeKey);
+          value := mgi_tblGetCell(top->OrganismType->Table, 0, top->OrganismType->Table.typeKey);
           if (value.length > 0) then
 	    where := where + "\nand t._MGIType_key = " + value;
 	    from_mgitype := true;
 	  end if;
 	    
 	  if (from_mgitype) then
-	    from := from + ", " + mgi_DBtable(MGI_SPECIESTYPE) + " t";
-	    where := where + "\nand s._Species_key = t._Species_key";
+	    from := from + ", " + mgi_DBtable(MGI_ORGANISMTYPE) + " t";
+	    where := where + "\nand s._Organism_key = t._Organism_key";
 	  end if;
 
           if (where.length > 0) then
@@ -475,7 +478,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by commonName\n";
-	  Query.table := MGI_SPECIES;
+	  Query.table := MGI_ORGANISM;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -506,17 +509,17 @@ rules:
           send(ClearTable, 0);
           ClearTable.table := top->Anchor->Table;
           send(ClearTable, 0);
-          ClearTable.table := top->SpeciesType->Table;
+          ClearTable.table := top->OrganismType->Table;
           send(ClearTable, 0);
 
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from MGI_Species where _Species_key = " + currentRecordKey +
+	  cmd := "select * from MGI_Organism where _Organism_key = " + currentRecordKey +
 		 " order by commonName\n" +
-	         "select _MGIType_key, typeName from MGI_Species_MGIType_View " +
-		 "where _Species_key = " + currentRecordKey + "order by typeName\n" +
-	         "select * from MRK_Chromosome where _Species_key = " + currentRecordKey + 
+	         "select _MGIType_key, typeName from MGI_Organism_MGIType_View " +
+		 "where _Organism_key = " + currentRecordKey + "order by typeName\n" +
+	         "select * from MRK_Chromosome where _Organism_key = " + currentRecordKey + 
 		 " order by sequenceNum\n";
 
 	  -- For Mouse, retrieve Anchor information
@@ -546,7 +549,7 @@ rules:
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 7));
 	      elsif (results = 2) then
-                table := top->SpeciesType->Table;
+                table := top->OrganismType->Table;
 		(void) mgi_tblSetCell(table, row, table.currentTypeKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.typeKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.typeName, mgi_getstr(dbproc, 2));
@@ -574,7 +577,7 @@ rules:
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
-	  LoadAcc.tableID := MGI_SPECIES;
+	  LoadAcc.tableID := MGI_ORGANISM;
           send(LoadAcc, 0);
  
           top->QueryList->List.row := Select.item_position;

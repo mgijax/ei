@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- 08/15/2002
+--	- TR 1463; Species replaced with Organism
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -62,7 +65,7 @@ rules:
 
 	  top := create widget("MolecularSourceModule", nil, mgi);
 
-          InitOptionMenu.option := top->ProbeSpeciesMenu;
+          InitOptionMenu.option := top->ProbeOrganismMenu;
           send(InitOptionMenu, 0);
 
           ab : widget := mgi->(top.activateButtonName);
