@@ -166,7 +166,7 @@ rules:
 		      end if;
 		      l := l + 1;
 		    end while;
-		  elsif (clearForm.is_defined("clear") != nil) then	-- XmOptionMenu
+		  elsif (clearForm.child(i).is_defined("clear") != nil) then	-- XmOptionMenu
 		    if (not Clear.reset and clearForm.child(i).clear) then
 		      ClearOption.source_widget := clearForm.child(i);
 		      send(ClearOption, 0);
