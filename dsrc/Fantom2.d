@@ -944,19 +944,24 @@ rules:
  
 	  (void) dbclose(dbproc);
 
-	  -- don't forget to print out the note for the last row
-	  (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
-	  (void) mgi_tblSetCell(fantom, row, fantom.rikenNote, rikennote);
-	  (void) mgi_tblSetCell(fantom, row, fantom.curatorNote, curatornote);
+	  -- if values returned...
 
-	  send(SetBackground, 0);
+	  if (row >= 0) then
 
-	  -- Initialize Option Menus for row 0
+	    -- don't forget to print out the note for the last row
+	    (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
+	    (void) mgi_tblSetCell(fantom, row, fantom.rikenNote, rikennote);
+	    (void) mgi_tblSetCell(fantom, row, fantom.curatorNote, curatornote);
 
-	  SetOptions.source_widget := fantom;
-	  SetOptions.row := 0;
-	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
-	  send(SetOptions, 0);
+	    send(SetBackground, 0);
+
+	    -- Initialize Option Menus for row 0
+
+	    SetOptions.source_widget := fantom;
+	    SetOptions.row := 0;
+	    SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+	    send(SetOptions, 0);
+	  end if;
 
 	  top->numRows.value := (string) (row + 1) + " Results";
           ClearFantom2.reset := true;
