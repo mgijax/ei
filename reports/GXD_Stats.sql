@@ -37,7 +37,7 @@
 
 setenv DSQUERY $1
 setenv MGD $2
-
+set  cloneWhere = 'name = "I.M.A.G.E. clone" and DNAType = "cDNA"'
 header.sh $0
 
 isql -S$DSQUERY -Umgd_public -Pmgdpub -w200 <<END >> $HOME/mgireport/$0.rpt
@@ -52,13 +52,35 @@ go
 print ""
 print "I.M.A.G.E. cDNAs and ESTs:"
 
+declare @washUdb int, @ref int
+select @washUdb = _LogicalDB_key
+from ACC_LogicalDB
+where name like "WashU%"
+
+select @ref = _Object_key
+from ACC_Accession a
+where accID = "J:57656"			/* WashU/dbEST load reference */
+
 select "IMAGE cDNAs", count(*) 
 from PRB_Probe
-where name = 'I.M.A.G.E. clone' and DNAType = 'cDNA'
+where $cloneWhere
+
 union all
+/* Count EST accession IDs associated with these clones */
+/* 
+	the commented-out SQL is to further restrict the count to ESTs
+	from the dbEST/WashU EST load.
+*/
 select "ESTs", count(*)
-from PRB_Probe
-where DNAType = 'EST'
+from ACC_Accession a, PRB_Probe p  /*, ACC_AccessionReference ar */
+where _LogicalDB_key = @washUdb
+and _MGIType_key = 3 and a._Object_key = p._Probe_key
+and $cloneWhere
+/* 
+	and ar._Accession_key = a._Accession_key
+	and ar._Refs_key = @ref
+*/
+
 union all
 select "Putative Genes", count(distinct _Marker_key)
 from PRB_Marker
