@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Feb 11 12:59:45 2005";
+      lastWritten = "Mon Feb 14 08:25:25 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9455,11 +9455,12 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
                                     topWidget = Genotype;
                                     topOffset = 5;
                                     leftWidget = Name;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -9495,8 +9496,9 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = ReferenceMGI;
-                                    bottomAttachment = attach_none;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -9516,16 +9518,16 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   mgiNoteForm = mgiNoteForm : mgiDataTypes;
                                   Group: Widget
-                                    orientation = horizontal;
+                                    orientation = vertical;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
+                                    leftAttachment = attach_widget;
+                                    leftWidget = DataSets;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     topWidget = DataSets;
-                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftOffset = 5;
                                 }
                           }
                     }
