@@ -1047,33 +1047,31 @@ rules:
 
 	Reset does
 	  table : widget;
-	  row : integer;
-	  editMode : string;
 
           -- Reset ID to blank so new ID is loaded during Add
           top->ID->text.value := "";
 	  currentNomenKey := "";
  
-          -- Reset all non-empty table rows to edit mode of Add
-          -- so that upon sending of Add event, the rows are added to the new record
- 
+	  -- Save Primary reference
+	  table := top->Reference->Table;
+	  refKey : string := mgi_tblGetCell(table, 0, table.refsKey);
+	  jnum : string := mgi_tblGetCell(table, 0, table.jnum);
+	  citation : string := mgi_tblGetCell(table, 0, table.citation);
+
+          -- Clear all tables
 	  tables.open;
 	  while (tables.more) do
-	    table := tables.next;
-	    row := 0;
-
-            while (row < mgi_tblNumRows(table)) do
-              editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-              if (editMode != TBL_ROW_EMPTY) then
-                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
-	      end if;
-
-              row := row + 1;
-            end while;
+	    ClearTable.table := tables.next;
+	    send(ClearTable, 0);
 	  end while;
-	  tables.close;
- 
+
+	  -- Re-populate Primary reference
+          (void) mgi_tblSetCell(table, 0, table.refsCurrentKey, refKey);
+          (void) mgi_tblSetCell(table, 0, table.refsKey, refKey);
+          (void) mgi_tblSetCell(table, 0, table.jnum, jnum);
+          (void) mgi_tblSetCell(table, 0, table.citation, citation);
+	  (void) mgi_tblSetCell(table, 0, table.editMode, TBL_ROW_ADD);
+
 	  -- Do not duplicate Editor or Coordinator notes
 	  top->EditorNote->Note->text.modified := false;
 	  top->CoordNote->Note->text.modified := false;
