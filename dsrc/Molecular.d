@@ -370,11 +370,9 @@ rules:
                          top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + "," +
-                         mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",";
-
-	    cmd := cmd + "NULL,NULL," +	-- insertSite, insertSize
-	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + ",";
-
+                         mgi_DBprstr(top->MolMasterForm->Region->text.value) + "," +
+	                 "NULL,NULL," +	-- insertSite, insertSize
+	                 mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + ",";
 	  end if;
 
 	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
