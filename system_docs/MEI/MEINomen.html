@@ -38,8 +38,6 @@ for more information.
 	    value.
 	</UL>
 <P>
-<LI>Event Reason (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
-<P>
 <LI>Status (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 	<UL>
 	<LI>Pending; the symbol has not been approved by the Mouse Nomenclature Committee
@@ -97,10 +95,12 @@ for more information.
 	</UL>
 <P>
 <LI>Review? (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
-    Modifying this value for set the "Is Review Article?" flag in the MGD Master Bib record
+    <P>
+    Modifying this value will set the "Is Review Article?" flag in the MGD Master Bib record
     of the reference.
 <P>
 <LI>Broadcast? (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+    <P>
     If <I>Yes</I>, then the reference will be loaded into MGD during a broadcast.  If <I>No</I>,
     then the reference will not be loaded into MGD during a broadcast.  The <I>Primary</I> reference
     is <I>always</I> broadcast to MGD.
@@ -122,7 +122,6 @@ for more information.
 <LI>Not Required
 	<OL>
 	<LI>Event
-	<LI>Event Reason
 	<LI>Status
 	<LI>Human Symbol
 	<LI>Broadcast By
@@ -142,7 +141,6 @@ for more information.
 <H4>Defaults</H4>
 <OL>
 <LI>Event; default is <I>assigned</I>
-<LI>Event Reason; default is <I>Not Specified</I>
 <LI>Status; default is <I>Pending</I>
 <LI>Submitted by; default is current user
 <LI>Broadcast by; default is current user when user broadcasts symbol
@@ -198,11 +196,11 @@ user can edit these fields manually.
     <P>
     The search fields for <I>Symbol/Name Search</I> can be expanded to include Names and/or Notes.
 <P>
-<LI>To duplicate a record, select the record you want to duplicate and then de-select it.  The data
-    fields will remain populated.  Make the changes necessary for the <I>new</I> record and click
-    <I>Add</I>.  The new record will be added and will contain all of the information retained from
-    the original record.  <I>Editor's Notes</I> and <I>Nomenclature Coordinator Notes</I> are
-    <B>not</B> duplicated.
+<LI>To duplicate a record, select the record you want to duplicate and then de-select it.  All of
+    the data fields <I>except</I> Other Names, Accession Numbers, Editor's Notes and Nomenclature
+    Coordinator Notes will remain populated.
+    Make the changes necessary for the <I>new</I> record and click <I>Add</I>.  
+    The new record will be added.
 <P>
 </OL>
 
