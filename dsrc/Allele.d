@@ -300,6 +300,8 @@ rules:
 	  end if;
 
 	  send(ModifyMolecularMutation, 0);
+
+	  top->markerDescription->Note->text.modified := true;
 	  send(ModifyAlleleNotes, 0);
 
 	  if (not top.allowEdit) then
@@ -939,8 +941,6 @@ rules:
 	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
 	  send(InitRefTypeTable, 0);
 
-	  top->markerDescription->Note->text.value := "";
-
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -949,6 +949,8 @@ rules:
           end if;
 
           (void) busy_cursor(top);
+
+	  top->markerDescription->Note->text.value := "";
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
