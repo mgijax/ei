@@ -349,8 +349,8 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYM_ALLELE_VIEW;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
@@ -623,8 +623,8 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYM_ALLELE_VIEW;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
@@ -638,15 +638,26 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
-
-	    if (top->mgiMarker->ObjectID->text.value != "") then
-		cmd := cmd + "exec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value;
-	    end if;
 	  end if;
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
+
+	  if (cmd.length > 0) then
+	    cmd := "exec ALL_reloadLabel " + currentRecordKey;
+
+	    if (top->mgiMarker->ObjectID->text.value != "") then
+		cmd := cmd + "\nexec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value;
+	    end if;
+
+	    ModifySQL.cmd := cmd;
+	    ModifySQL.list := top->QueryList;
+	    ModifySQL.reselect := true;
+	    ModifySQL.transaction := false;
+	    send(ModifySQL, 0);
+          end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -1002,11 +1013,11 @@ rules:
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 9);
 	        top->Name->text.value         := mgi_getstr(dbproc, 10);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 31));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 30));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 32));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 31));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 18));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 33));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 32));
 		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 16));
 
 		-- If the Marker key is null, then use the Nomen Symbol field

@@ -268,7 +268,6 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
@@ -405,7 +404,6 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;

@@ -187,8 +187,13 @@ rules:
 
 	ProcessSynTypeTable does
           table : widget := ProcessSynTypeTable.table;
-	  tableID : integer := ProcessSynTypeTable.tableID;
 	  objectKey : string := ProcessSynTypeTable.objectKey;
+
+	  -- temporary id for table that has only one
+	  -- synonym type (like Alleles) that the user doesn't even see
+
+	  tableID : integer := ProcessSynTypeTable.tableID;
+
 	  cmd : string;
           row : integer := 0;
           editMode : string;
@@ -201,13 +206,21 @@ rules:
 	  keyName : string := "synKey";
 	  keyDefined : boolean := false;
  
+	  syntableID : integer := MGI_SYNONYM;
+
           -- Process 
  
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
             key := mgi_tblGetCell(table, row, table.synKey);
-	    synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
+
+	    if (table.useDefaultSynType = 1) then
+	      synTypeKey := mgi_sql1("select _SynonymType_key from " + mgi_DBtable(tableID));
+	    else
+	      synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
+	    end if;
+
 	    synName := mgi_tblGetCell(table, row, table.synName);
 	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
 	    mgiType := table.mgiTypeKey;
@@ -219,13 +232,13 @@ rules:
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keyDefined) then
-		cmd := cmd + mgi_setDBkey(tableID, NEWKEY, keyName);
+		cmd := cmd + mgi_setDBkey(syntableID, NEWKEY, keyName);
 		keyDefined := true;
 	      else
 		cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
 
-	      cmd := cmd + mgi_DBinsert(tableID, keyName) +
+	      cmd := cmd + mgi_DBinsert(syntableID, keyName) +
 		     objectKey + "," +
 		     mgiType + "," +
 		     synTypeKey + "," +
@@ -237,10 +250,10 @@ rules:
               set := "_SynonymType_key = " + synTypeKey +
 		     ",synonym = " + mgi_DBprstr(synName) +
 		     ",_Refs_key = " + refsKey;
-              cmd := cmd + mgi_DBupdate(tableID, key, set);
+              cmd := cmd + mgi_DBupdate(syntableID, key, set);
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-              cmd := cmd + mgi_DBdelete(tableID, key);
+              cmd := cmd + mgi_DBdelete(syntableID, key);
             end if;
  
             row := row + 1;

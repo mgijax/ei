@@ -716,6 +716,7 @@ rules:
 	  tables.close;
 
 	  top->EditForm->Note->text.value := "";
+	  top->EditForm->CombinationNote1->text.value := "";
 	  top->Reference->Records.labelString := "0 Records";
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
@@ -726,8 +727,9 @@ rules:
 	  cmd := "select * from " + mgi_DBtable(GXD_GENOTYPE_VIEW) +
 		" where _Genotype_key = " + currentRecordKey + "\n" +
 	         "select * from " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + 
-		 " where _Genotype_key = " + currentRecordKey + 
-		 "\norder by sequenceNum\n";
+		 " where _Genotype_key = " + currentRecordKey + "\norder by sequenceNum\n" +
+		 "select note, sequenceNum from " + mgi_DBtable(MGI_NOTE_GENOTYPE_VIEW) +
+		 " where _Object_key = " + currentRecordKey + "\norder by sequenceNum\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -750,7 +752,7 @@ rules:
                 SetOption.source_widget := top->ConditionalMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
-	      else
+	      elsif (results = 2) then
 	  	table := top->AllelePair->Table;
 	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 8));
@@ -767,6 +769,9 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 19));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
+	      elsif (results = 3) then
+	          top->EditForm->CombinationNote1->text.value := top->EditForm->CombinationNote1->text.value +
+			mgi_getstr(dbproc, 1);
 	      end if;
 	    end while;
 	    results := results + 1;

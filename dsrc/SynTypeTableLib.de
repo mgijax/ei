@@ -23,7 +23,7 @@ LoadSynTypeTable [table : widget;        -- Synonym Type Table
 
 -- Process Synonym Type Table; Sets table.sqlcmd 
 ProcessSynTypeTable [table : widget;     -- Synonym Type Table
-            tableID : integer;           -- ID of table
+            tableID : integer := 0;      -- ID of table
             objectKey : string;];        -- Unique identifier of Object
 
 -- Search Synonym Type Table
