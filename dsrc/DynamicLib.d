@@ -15,6 +15,9 @@
 --
 -- History:
 --
+--	lec	10/29/2001
+--	TR 2867; added GO
+--
 --	lec	05/04/2000
 --	TR 1549; change labels for Probes and MLC in Ref Data Sets
 --
@@ -295,6 +298,7 @@ rules:
 	  statusLabels.insert("MLC/Alleles", statusLabels.count + 1);
 	  statusLabels.insert("Homology", statusLabels.count + 1);
 	  statusLabels.insert("Expression", statusLabels.count + 1);
+	  statusLabels.insert("GO", statusLabels.count + 1);
 
 	  -- Values used in Reference "dbs" string
 	  statusDBS.insert("Probes", statusDBS.count + 1);
@@ -302,6 +306,7 @@ rules:
 	  statusDBS.insert("MLC", statusDBS.count + 1);
 	  statusDBS.insert("Homology", statusDBS.count + 1);
 	  statusDBS.insert("Expression", statusDBS.count + 1);
+	  statusDBS.insert("GO", statusDBS.count + 1);
 
 	  -- Table IDs for establishing status of Reference
 	  tableID.insert((string) PRB_REFERENCE, tableID.count + 1);
@@ -309,6 +314,7 @@ rules:
 	  tableID.insert((string) MLC_REFERENCE_EDIT, tableID.count + 1);
 	  tableID.insert((string) HMD_HOMOLOGY, tableID.count + 1);
 	  tableID.insert((string) GXD_INDEX, tableID.count + 1);
+	  tableID.insert((string) GO_DATAEVIDENCE, tableID.count + 1);
 
 	  -- Row Labels which appear in Table
 	  nonstatusLabels.insert("Tumor", nonstatusLabels.count + 1);
