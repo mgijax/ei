@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	04/23/2002
+--	- no TR; added ability to search by short citation
+--
 -- lec	02/06/2002
 --	- TR 3230; copy field type of previous row
 --
@@ -364,6 +367,8 @@ rules:
           if (top->mgiCitation->ObjectID->text.value.length > 0 and
               top->mgiCitation->ObjectID->text.value != "NULL") then
             where := where + "\nand i._Refs_key = " + top->mgiCitation->ObjectID->text.value;
+	  elsif (top->mgiCitation->Citation->text.value.length > 0) then
+            where := where + "\nand i.short_citation like " + mgi_DBprstr(top->mgiCitation->Citation->text.value);
           end if;
  
           if (top->FigureLabel->text.value.length > 0) then
