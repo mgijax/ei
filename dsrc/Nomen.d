@@ -4,7 +4,7 @@
 -- Nomen.d 03/25/99
 --
 -- TopLevelShell:		Nomen
--- Database Tables Affected:	NOM_Marker, NOM_GeneFamily, NOM_Synonym, MGI_Note, MGI_Reference_Assoc
+-- Database Tables Affected:	NOM_Marker, NOM_Synonym, MGI_Note, MGI_Reference_Assoc
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module process edits for Nomen tables.
@@ -156,12 +156,8 @@ devents:
 	AddBroadcastInterim :local [];
 	BroadcastSymbolOfficial :local [];
 	BroadcastSymbolInterim :local [];
-	BroadcastBatch :local [];
-	BroadcastReferenceEditor :local [];
-	BroadcastReferenceCoord :local [];
 
 	Modify :local [];
-	ModifyGeneFamily :local [];
 	ModifyNomenNotes :local [];
 	ModifySynonym :local [];
 
@@ -271,11 +267,6 @@ rules:
 --	  InitOptionMenu.option := top->CurationStateMenu;
 --	  send(InitOptionMenu, 0);
 
-	  top->GeneFamilyList.cmd :=
-		"select _Term_key, term from " + mgi_DBtable(VOC_NOMGENEFAMILY) + " order by term";
-	  LoadList.list := top->GeneFamilyList;
-	  send(LoadList, 0);
-
 	  -- Initialize Reference table
 
 	  InitRefTypeTable.table := top->Reference->Table;
@@ -310,14 +301,12 @@ rules:
 
 	  tables.append(top->SynonymReference->Table);
 	  tables.append(top->Reference->Table);
-	  tables.append(top->GeneFamily->Table);
 	  tables.append(top->AccessionReference->Table);
 	  tables.append(top->ModificationHistory->Table);
 
 	  -- List of all Table widgets used in Reset
 
 	  resettables.append(top->SynonymReference->Table);
-	  resettables.append(top->GeneFamily->Table);
 	  resettables.append(top->AccessionReference->Table);
 
 	  curationState := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = " + mgi_DBprstr(INTERNALCURATIONSTATE));
@@ -375,11 +364,11 @@ rules:
 	  suid : string := "";
 	  table : widget := top->Reference->Table;
 
-	  -- Set Status to Pending if set to Broadcast...this can happen
+	  -- Set Status to In Progress if set to Broadcast...this can happen
 	  -- if they user is duplicating a broadcast record
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTOFF or
-	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT) then
+	  if (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF or
+	      top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTINT) then
             SetOption.source_widget := top->MarkerStatusMenu;
             SetOption.value := STATUS_PENDING;
             send(SetOption, 0);
@@ -388,7 +377,7 @@ rules:
 	    top->BroadcastDate->text.value := "";
 	  end if;
 
-	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED) and
+	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.labelString != STATUS_RESERVED) and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
             StatusReport.source_widget := top;
@@ -430,10 +419,10 @@ rules:
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
-	         mgi_DBprstr(top->StatusNotes->text.value) + ")\n";
+	         mgi_DBprstr(top->StatusNotes->text.value) + "," + 
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyNomenNotes, 0);
-	  send(ModifyGeneFamily, 0);
 	  send(ModifySynonym, 0);
 
 	  --  Process References
@@ -511,10 +500,9 @@ rules:
 
 	Modify does
 	  table : widget := top->Reference->Table;
-	  value : string;
 	  error : boolean := false;
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
+	  if (top->MarkerStatusMenu.menuHistory.labelString != STATUS_RESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
             StatusReport.source_widget := top;
@@ -531,49 +519,31 @@ rules:
 	      top->ChromosomeMenu.menuHistory.searchValue != "%" and
               top->ChromosomeMenu.menuHistory.defaultValue = "W") then
             StatusReport.source_widget := top;
-            StatusReport.message := "This Chromosome value is no longer valid.\n";
+            StatusReport.message := "This Chromosome value is no longer valid.";
             send(StatusReport);
 	    error := true;
 	  end if;
 
-	  if (not (global_login = "mgo_dbo" or
+	  if (not (global_login = "mgd_dbo" or
 	           global_login = "ljm" or global_login = "lmm" or 
 		   global_login = "cml" or global_login = "rjc" or
 		   global_login = "bobs" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
-	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
+	      top->MarkerStatusMenu.menuHistory.labelString != STATUS_PENDING) then
             StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Status field.\n";
+            StatusReport.message := "You do not have permission to modify the Status field.";
             send(StatusReport);
 	    error := true;
 	  end if;
 
           if (top->MarkerStatusMenu.menuHistory.modified and
-	      (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTOFF or
-	       top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT)) then
+	      (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF or
+	       top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTINT)) then
             StatusReport.source_widget := top;
-            StatusReport.message := "You cannot modify status to Broadcast.\n";
+            StatusReport.message := "You cannot change the status to Broadcast.";
             send(StatusReport);
 	    error := true;
 	  end if;
-
-	  table := top->ModificationHistory->Table;
-	  value := mgi_tblGetCell(table, table.createdBy, table.editMode);
-	  if (value = TBL_ROW_MODIFY) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Created By or Date field.\n";
-            send(StatusReport);
-	    error := true;
-          end if;
-
-	  table := top->ModificationHistory->Table;
-	  value := mgi_tblGetCell(table, table.broadcastBy, table.editMode);
-	  if (value = TBL_ROW_MODIFY) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Broadcast By or Date field.\n";
-            send(StatusReport);
-	    error := true;
-          end if;
 
 	  if (error) then
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
@@ -626,7 +596,6 @@ rules:
 	    set := set + "statusNote = " + mgi_DBprstr(top->StatusNotes->text.value) + ",";
 	  end if;
 
-	  send(ModifyGeneFamily, 0);
 	  send(ModifySynonym, 0);
 
 	  --  Process References
@@ -660,51 +629,6 @@ rules:
 	  send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- ModifyGeneFamily
---
--- Activated from: devent Add/Modify
---
--- Construct insert/update/delete for Nomen Gene Families
---
-
-	ModifyGeneFamily does
-          table : widget := top->GeneFamily->Table;
-          row : integer := 0;
-          editMode : string;
-          key : string;
-          newKey : string;
-	  set : string := "";
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            key := mgi_tblGetCell(table, row, table.familyCurrentKey);
-            newKey := mgi_tblGetCell(table, row, table.familyKey);
- 
-            if (editMode = TBL_ROW_ADD and newKey.length > 0) then
-              cmd := cmd + mgi_DBinsert(NOM_GENEFAMILY, NOKEY) + 
-		     currentNomenKey + "," + 
-		     newKey + ")\n";
-            elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
-              set := "_GeneFamily_key = " + newKey;
-              cmd := cmd + mgi_DBupdate(NOM_GENEFAMILY, currentNomenKey, set) + 
-                     "and _GeneFamily_key = " + key + "\n";
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(NOM_GENEFAMILY, currentNomenKey) + 
-		      "and _GeneFamily_key = " + key + "\n";
-            end if;
- 
-            row := row + 1;
-          end while;
 	end does;
 
 --
@@ -784,7 +708,8 @@ rules:
 		     currentNomenKey + "," +
 		     refsKey + "," +
 		     mgi_DBprstr(name) + "," +
-		     isAuthor + ")\n";
+		     isAuthor + "," + 
+		     global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "name = " + mgi_DBprstr(name) +
@@ -808,7 +733,6 @@ rules:
 
 	PrepareSearch does
 	  from_other       : boolean := false;
-	  from_genefamily  : boolean := false;
 
 	  printSelect := "";
 
@@ -935,14 +859,6 @@ rules:
 	    i := i + 1;
 	  end while;
 
-	  table := top->GeneFamily->Table;
-          value := mgi_tblGetCell(table, 0, table.familyKey);
-          if (value.length > 0) then
-	    where := where + "\nand mf._GeneFamily_key = " + value;
-	    printSelect := printSelect + "\nGene Family = " + mgi_tblGetCell(table, 0, table.familyName);
-	    from_genefamily := true;
-	  end if;
-
 	  -- If SymbolName filled in, then ignore all other search criteria
 
           if (top->SymbolName->text.value.length > 0) then
@@ -955,11 +871,6 @@ rules:
 	  if (from_other) then
 	    from := from + "," + mgi_DBtable(NOM_SYNONYM) + " mo";
 	    where := where + "\nand m._Nomen_key = mo._Nomen_key";
-	  end if;
-
-	  if (from_genefamily) then
-	    from := from + "," + mgi_DBtable(NOM_GENEFAMILY_VIEW) + " mf";
-	    where := where + "\nand m._Nomen_key = mf._Nomen_key";
 	  end if;
 
           if (where.length > 0) then
@@ -1074,11 +985,7 @@ rules:
 		 " order by isAuthor desc, name\n" +
 	         "select * from " + mgi_DBtable(NOM_SYNONYM_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey + 
-		 " order by isAuthor desc, name\n" +
-	         "select _GeneFamily_key, term from " +
-		  mgi_DBtable(NOM_GENEFAMILY_VIEW) +
-		 " where _Nomen_key = " + currentNomenKey +
-		 " order by term\n";
+		 " order by isAuthor desc, name\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1148,13 +1055,6 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 11));
                 (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-	      elsif (results = 4) then
-		table := top->GeneFamily->Table;
-                (void) mgi_tblSetCell(table, row, table.familyCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.familyKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.familyName, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      end if;
 	      row := row + 1;
@@ -1257,11 +1157,8 @@ rules:
 --
 
 	Broadcast does
-	  message : string := "Are you sure you want to broadcast these records?\n";
 	  broadcastOK : boolean := false;
-	  dbproc : opaque;
 	  table : widget := top->Reference->Table;
-	  recordCount : integer := 0;
 
 	  broadcastType := Broadcast.type;
 
@@ -1279,75 +1176,10 @@ rules:
 	  end if;
 
 	  if (broadcastType = 1 or broadcastType = 2) then
-	    message := message + "\n" + top->Symbol->text.value;
-	    recordCount := 1;
 	    broadcastOK := true;
 	  elsif (broadcastType = 3 or broadcastType = 4) then
-	    message := message + "\n" + top->Symbol->text.value;
 	    if (currentNomenKey.length > 0) then
-	      recordCount := 1;
 	      broadcastOK := true;
-	    end if;
-	  elsif (broadcastType = 5) then
-	    if (currentNomenKey.length > 0) then
-	      cmd := "select symbol from " + mgi_DBtable(NOM_MARKER) + 
-		  " where _NomenStatus_key = " + STATUS_NAPPROVED;
-	      dbproc := mgi_dbopen();
-              (void) dbcmd(dbproc, cmd);
-              (void) dbsqlexec(dbproc);
-	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		  if (recordCount <= 25) then
-		    message := message + "\n" + mgi_getstr(dbproc, 1);
-		  end if;
-	          recordCount := recordCount + 1;
-		  broadcastOK := true;
-	        end while;
-	      end while;
-	      (void) dbclose(dbproc);
-	    end if;
-	  elsif (broadcastType = 6) then
-	    if (currentNomenKey.length > 0) then
-	      cmd := "select n.symbol from " + 
-		  mgi_DBtable(NOM_MARKER) + " n," +
-		  mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) + " r " +
-		  " where n._NomenStatus_key = " + STATUS_PENDING +
-		  " and n.createdBy = user_name()" +
-		  " and n._Nomen_key = r._Object_key" +
-		  " and r.assocType = 'Primary'" +
-		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
-	      dbproc := mgi_dbopen();
-              (void) dbcmd(dbproc, cmd);
-              (void) dbsqlexec(dbproc);
-	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		  message := message + "\n" + mgi_getstr(dbproc, 1);
-	          recordCount := recordCount + 1;
-		  broadcastOK := true;
-	        end while;
-	      end while;
-	      (void) dbclose(dbproc);
-	    end if;
-	  elsif (broadcastType = 7) then
-	    if (currentNomenKey.length > 0) then
-	      cmd := "select n.symbol from " + 
-		  mgi_DBtable(NOM_MARKER) + " n," +
-		  mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) + " r" +
-		  " where n._NomenStatus_key = " + STATUS_NAPPROVED +
-		  " and n._Nomen_key = r._Object_key" +
-		  " and r.assocType = 'Primary'" +
-		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
-	      dbproc := mgi_dbopen();
-              (void) dbcmd(dbproc, cmd);
-              (void) dbsqlexec(dbproc);
-	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		  message := message + "\n" + mgi_getstr(dbproc, 1);
-	          recordCount := recordCount + 1;
-		  broadcastOK := true;
-	        end while;
-	      end while;
-	      (void) dbclose(dbproc);
 	    end if;
 	  end if;
 
@@ -1358,24 +1190,6 @@ rules:
             return;
 	  end if;
 
-	  -- Check for Primary Reference
-
-	  if ((broadcastType <= 4 or broadcastType >= 6)
-	      and
-	      ((mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
-                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE))) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Primary Reference Required.";
-            send(StatusReport);
-            return;
-	  end if;
-
-	  if (recordCount > 25) then
-	    message := message + "\n\nNOTE:  Only the first 25 symbols are listed here.";
-	  end if;
-
-	  message := message + "\n\nTotal # of symbols to broadcast:  " + (string) recordCount;
-	  top->BroadcastDialog.messageString := message;
 	  top->BroadcastDialog.managed := true;
 	end does;
 
@@ -1397,12 +1211,6 @@ rules:
 	    BroadcastEvent := BroadcastSymbolOfficial;
 	  elsif (broadcastType = 4) then
 	    BroadcastEvent := BroadcastSymbolInterim;
-	  elsif (broadcastType = 5) then
-	    BroadcastEvent := BroadcastBatch;
-	  elsif (broadcastType = 6) then
-	    BroadcastEvent := BroadcastReferenceEditor;
-	  elsif (broadcastType = 7) then
-	    BroadcastEvent := BroadcastReferenceCoord;
 	  end if;
 
 	  -- Send appropriate Broadcast event
@@ -1484,49 +1292,6 @@ rules:
 	BroadcastSymbolInterim does
 	  (void) busy_cursor(top);
 	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
-	  send(ExecSQL, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- BroadcastBatch
---
--- Broadcast all Approved symbols to MGD
---
-
-	BroadcastBatch does
-	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERBATCH);
-	  send(ExecSQL, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- BroadcastReferenceEditor
---
--- Broadcast all Pending symbols w/ currently selected Primary reference
---
-
-	BroadcastReferenceEditor does
-	  table : widget := top->Reference->Table;
-
-	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERREFEDITOR) + " " + mgi_tblGetCell(table, 0, table.refsKey);
-	  send(ExecSQL, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- BroadcastReferenceCoord
---
--- Broadcast all Approved symbols w/ currently selected Primary reference
---
-
-	BroadcastReferenceCoord does
-	  table : widget := top->Reference->Table;
-
-	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERREFCOORD) + " " + mgi_tblGetCell(table, 0, table.refsKey);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

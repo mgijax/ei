@@ -226,13 +226,10 @@ extern char *global_version;
 
 #define NOM_MARKER			500
 #define NOM_MARKER_VIEW			501
-#define NOM_GENEFAMILY      		502
-#define NOM_SYNONYM     		503
-#define NOM_GENEFAMILY_VIEW      	504
-#define NOM_ACC_REFERENCE		505
-#define NOM_SYNONYM_VIEW     		506
-#define NOM_MARKER_VALID_VIEW		507
-#define VOC_NOMGENEFAMILY      		508
+#define NOM_SYNONYM     		502
+#define NOM_ACC_REFERENCE		503
+#define NOM_SYNONYM_VIEW     		504
+#define NOM_MARKER_VALID_VIEW		505
 
 /* MGI Tables */
 
@@ -345,15 +342,14 @@ extern char *global_version;
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
 
-/* Nomen (VOC_Vocab._Vocab_key = 19) */
+/* Nomen Status */
 
-#define STATUS_PENDING		"65709"
-#define STATUS_NDELETED		"65710"
-#define STATUS_RESERVED		"65711"
-#define STATUS_NAPPROVED	"65712"
-#define STATUS_BROADCASTOFF     "65713"
-#define STATUS_BROADCASTINT     "65714"
-
+#define STATUS_PENDING          "In Progress"
+#define STATUS_NDELETED         "Deleted"
+#define STATUS_RESERVED         "Reserved"
+#define STATUS_NAPPROVED        "Approved"
+#define STATUS_BROADCASTOFF     "Broadcast - Official"
+#define STATUS_BROADCASTINT     "Broadcast - Interim"
 
 /* Allele Nomen */
 

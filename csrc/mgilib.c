@@ -867,8 +867,6 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Marker_Status_key");
 	    break;
     case NOM_MARKER:
-    case NOM_GENEFAMILY:
-    case VOC_NOMGENEFAMILY:
             strcpy(buf, "_Nomen_key");
 	    break;
     case NOM_SYNONYM:
@@ -1628,15 +1626,6 @@ char *mgi_DBtable(int table)
     case NOM_MARKER_VALID_VIEW:
 	    strcpy(buf, "NOM_Marker_Valid_View");
 	    break;
-    case NOM_GENEFAMILY:
-	    strcpy(buf, "NOM_GeneFamily");
-	    break;
-    case NOM_GENEFAMILY_VIEW:
-	    strcpy(buf, "NOM_GeneFamily_View");
-	    break;
-    case VOC_NOMGENEFAMILY:
-	    strcpy(buf, "VOC_Term_GeneFamily_View");
-	    break;
     case NOM_STATUS:
 	    strcpy(buf, "VOC_Term_NomenStatus_View");
 	    break;
@@ -1955,7 +1944,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOTES:
     case MRK_OFFSET:
     case MRK_REFERENCE:
-    case NOM_GENEFAMILY:
     case NOM_SYNONYM:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
@@ -2352,9 +2340,6 @@ char *mgi_DBinsert(int table, char *keyName)
 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case NOM_GENEFAMILY:
-            sprintf(buf, "insert %s (%s, _GeneFamily_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case NOM_SYNONYM:
             sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2535,7 +2520,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
       case MRK_MARKER:
-      case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
       case PRB_ALIAS:
@@ -2582,7 +2566,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
       case MRK_MARKER:
-      case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
       case PRB_ALIAS:
