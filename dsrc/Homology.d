@@ -347,25 +347,10 @@ rules:
 	  editMode : string;
 	  table : widget;
 	  homologyModified : boolean := false;
-	  numSpecies : integer;
 	  numAssays : integer;
 	  invalidAssay : boolean := false;
-	  invalidSpecies : boolean := false;
 
 	  -- Determine if any Assay row contains less than 2 Species selected
-
-	  numSpecies := 0;
-	  i := 0;
-	  while (i < mgi_tblNumRows(markerTable)) do
-	    editMode := mgi_tblGetCell(markerTable, i, markerTable.editMode);
-	    if (editMode != TBL_ROW_EMPTY and 
-		editMode != TBL_ROW_DELETE) then
-	      if (mgi_tblGetCell(markerTable, i, markerTable.markerKey) != "") then
-		numSpecies := numSpecies + 1;
-	      end if;
-	    end if;
-	    i := i + 1;
-	  end while;
 
 	  i := 0;
 	  while (i < mgi_tblNumRows(assayTable)) do
@@ -384,24 +369,13 @@ rules:
 	    if (numAssays < 2) then
 	      invalidAssay := true;
 	    end if;
-	    if (numAssays > numSpecies) then
-	      invalidSpecies := true;
-	    end if;
 	    i := i + 1;
 	  end while;
 
 	  if (invalidAssay) then
 	    StatusReport.source_widget := top;
-	    StatusReport.message := "\nAn Assay has been detected which contains only one Species.\n" + 
-			"\nCorrect the data and try again.\n\n";
-	    send(StatusReport, 0);
-	    return;
-	  end if;
-
-	  if (invalidSpecies) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "\nA Species has been detected for which there is no Symbol.\n" +
-			"\nCorrect the data and try again.\n\n";
+	    StatusReport.message := "An Assay has been detected which contains only one Species.\n" + 
+			"Correct the data and try again.";
 	    send(StatusReport, 0);
 	    return;
 	  end if;
@@ -1138,6 +1112,7 @@ rules:
           table :widget := VerifyMarkerExists.source_widget;
           row :integer := VerifyMarkerExists.row;
           column : integer := VerifyMarkerExists.column;
+	  markerRow : integer;
  
           if (VerifyMarkerExists.reason != TBL_REASON_SELECT_BEGIN) then
             return;
@@ -1149,15 +1124,18 @@ rules:
  
           if (mgi_tblGetCell(table, row, column) = "") then
 	    return;
-          else
-	    row := column - table.beginX;
-	    if (mgi_tblGetCell(top->Marker->Table, row, top->Marker->Table.markerKey) = "") then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "WARNING:  There is no associated Symbol for this column.\n\n" +
-			"This information will be disregarded during modification.";
-	      send(StatusReport, 0);
-	    end if;
-          end if;
+	  end if;
+
+	  markerRow := column - table.beginX;
+
+	  if (mgi_tblGetCell(top->Marker->Table, markerRow, top->Marker->Table.markerKey) = "") then
+	    (void) mgi_tblStopFlash(table, row, column);
+            (void) mgi_tblSetCell(table, row, column, "");
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "There is no associated Symbol for this column.";
+	    send(StatusReport, 0);
+	  end if;
+
 	end does;
 
 --
