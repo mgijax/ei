@@ -293,6 +293,7 @@ rules:
 	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
+	  notesModified : boolean := false;
  
           if (not top.allowEdit) then
             return;
@@ -425,8 +426,12 @@ rules:
 	      ModifyNotes.key := "@" + keyName;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
+	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
 	      cmd := cmd + annotTable.sqlCmd;
+	      if (annotTable.sqlCmd.length > 0) then
+		notesModified := true;
+	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -449,8 +454,12 @@ rules:
 	      ModifyNotes.key := key;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := annotTable.notes;
+	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
 	      cmd := cmd + annotTable.sqlCmd;
+	      if (annotTable.sqlCmd.length > 0) then
+		notesModified := true;
+	      end if;
 
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
