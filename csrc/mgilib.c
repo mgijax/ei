@@ -336,6 +336,10 @@ char *mgi_DBrecordCount(int table)
     case MRK_STATUS:
             sprintf(cmd, "select count(*) from %s", mgi_DBtable(table));
 	    break;
+    case MLP_STRAINTYPE:
+    case MLP_SPECIES:
+            sprintf(cmd, "select count(*) from %s", mgi_DBtable(table));
+	    break;
     default:
   	    sprintf(cmd, "exec GEN_rowcount %s", mgi_DBtable(table));
 	    break;
