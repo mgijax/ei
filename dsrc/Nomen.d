@@ -187,9 +187,13 @@ rules:
 
 	  -- Dynamically create Marker Event, Status, Type and Chromosome Menus
 
+	  top->MarkerEventMenu.subMenuId.sql := 
+		"select * from " + mgi_DBtable(MRK_EVENT) + " order by " + mgi_DBkey(MRK_EVENT);
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
+	  top->MarkerStatusMenu.subMenuId.sql := 
+		"select * from " + mgi_DBtable(MRK_STATUS) + " order by " + mgi_DBkey(MRK_STATUS);
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
@@ -199,9 +203,13 @@ rules:
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
+	  top->NomenUserMenu.subMenuId.sql := 
+		"select * from " + mgi_DBtable(MRK_NOMEN_USER_VIEW) + " order by status, name";
 	  InitOptionMenu.option := top->NomenUserMenu;
 	  send(InitOptionMenu, 0);
 
+	  top->GeneFamilyList.cmd :=
+		"select * from " + mgi_DBtable(MRK_GENEFAMILY) + " order by " + mgi_DBcvname(MRK_GENEFAMILY);
 	  LoadList.list := top->GeneFamilyList;
 	  send(LoadList, 0);
 	end does;
