@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 23 12:59:58 2004";
+      lastWritten = "Fri Dec 10 08:34:20 2004";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -58,9 +58,9 @@ Module: mgiCV
                     {
                       YesNoPulldown = OptionPulldown : mgiOption;
                       Group: User
-                        tableForm = OtherReference;
-                        tableOptionKey = 4;
-                        tableOption = 8;
+                        tableForm = Reference;
+                        tableOptionKey = 3;
+                        tableOption = 6;
                           {
                             SearchAll = SearchAll : mgiOption;
                             Group: Widget

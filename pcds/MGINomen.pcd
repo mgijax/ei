@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 27 11:14:56 2004";
+      lastWritten = "Thu Dec  9 12:40:57 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -321,7 +321,9 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 6)(all 5 50)(all 6 10)(all 7 30)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 40)(all 6 10)(all 7 30)";
+                                        Group: User
+                                          requiredColumns = "5\n6";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -395,6 +397,8 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 3;
+                                          xrtTblPixelWidthSeries = "(all 0-4 0)(all 9-10 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 50)";
                                       }
                                       {
                                         Add = TablePush;
@@ -528,6 +532,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;

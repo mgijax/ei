@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 27 11:15:00 2004";
+      lastWritten = "Fri Dec 17 12:33:20 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1290,13 +1290,47 @@ Shift<Key>Tab: prev-tab-group()
                                     noteWidget = CopyrightNote;
                                 }
                                 {
+                                  PLOS = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = PLoS;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = DevelopmentNote;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = DevelopmentNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 2;
+                                  Group: User
+                                    note = "This image is from * , an open-access article distributed under the terms of the Creative Commons Attribution License.";
+                                    noteWidget = CopyrightNote;
+                                }
+                                {
+                                  BMC = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = BMC;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = PLOS;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = PLOS;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    note = "This image is from *, an open-access article, licensee BioMed Central Ltd.";
+                                    noteWidget = CopyrightNote;
+                                }
+                                {
                                   xDim = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = mgiCitation;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = DevelopmentNote;
+                                    topWidget = PLOS;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2915,6 +2949,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
