@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Jan 18 09:40:37 2002";
+      lastWritten = "Tue Jan 22 09:29:59 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -2383,9 +2383,6 @@ Module: mgiOption
                 ACCLogicalPulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select _LogicalDB_key, name from ACC_LogicalDB\norder by name";
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
               }
         }
 }
