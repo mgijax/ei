@@ -738,6 +738,7 @@ rules:
         DoStatisticsEnd does
 	  top->WorkingDialog.messageString := "";
 	  top->WorkingDialog.managed := false;
+	  send(SelectStatistics, 0);
         end does;
  
 --
