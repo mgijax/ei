@@ -29,7 +29,7 @@
 -- History
 --
 -- lec 08/16/2001
---	- TR 2849; CopyGelLane; don't copy Age Range during Age Prefix copy
+--	- TR 2855; CopyGelLane; don't copy Age Range during Age Prefix copy
 --	- TR 2847; Set Note color appropriately
 --
 -- lec 07/11/2001
