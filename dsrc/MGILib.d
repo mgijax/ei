@@ -94,7 +94,7 @@ rules:
 
 	  (void) mgi_tblSetReasonValues();
 
-	  top.managed := true;
+	  top.show;
 
 	  envList := create list("string");
 	  envList.append("EIAPP");
