@@ -1,0 +1,29 @@
+#!/bin/csh
+
+#
+# Builds a TeleUSE app using uxb.conf. 
+#
+# Usage:
+#
+#	buildapp [compiled] 
+#
+# Where 'compiled' specifies that a compiled application should be built.
+# Without this option, D modules are interpreted, which allows use of 
+# the TeleUSE debugger. 
+
+setenv MODE	$1
+
+switch ("$MODE")
+	case compiled:	
+			setenv OPTIONS "-dmode compiled"
+			breaksw
+	default:	
+			setenv OPTIONS ""
+			breaksw
+endsw
+
+#
+# uxb.conf is assumed...
+#
+
+uxb $OPTIONS

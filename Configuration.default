@@ -1,0 +1,75 @@
+#!/bin/csh
+
+#
+# Configuration.default
+#
+# Source this file from any csh script to set the env variables
+#
+#	ex. 	source Configuration.default
+#
+
+unsetenv TERM
+
+# install directory
+setenv EIINSTALLDIR /usr/local/mgi/ei
+
+# data directory
+setenv EIDATADIR /usr/local/mgi/ei_data
+
+# system doc directory
+setenv EISYSTEMDOCDIR $EIINSTALLDIR/system_docs
+
+# SYBASE
+setenv SYBASE /opt/sybase
+
+# OpenWindows
+setenv OPENWINHOME	/usr/openwin
+setenv XKEYSYMDB	$OPENWINHOME/lib/XKeysymDB
+
+# TeleUSE
+setenv TeleUSE	/opt/teleuseXRT
+setenv XNLSPATH	$TeleUSE/X11R5/lib/nls
+setenv XUSERFILESEARCHPATH	%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-defaults/%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
+
+setenv LD_LIBRARY_PATH	$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
+
+# PATH
+set path = ($path $OPENWINHOME/bin:$TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin)
+
+# PYTHON PATH
+setenv PYTHONPATH /usr/local/mgi/lib/python
+
+# Debug mode
+setenv EIDEBUG	0
+
+# User log
+setenv USERLOG	$HOME/.ei-log
+
+# EI Applications
+setenv EIAPPS	"mgd gxd mgiadmin mgi"
+
+# DB server name
+setenv DSQUERY MGD
+
+# DB instance names
+setenv MGD mgd
+setenv STRAINS strains
+setenv NOMEN nomen
+
+# Database User
+setenv DBUSER mgd_dbo
+
+# Database Password File
+setenv DBPASSWORDFILE $SYBASE/admin/.mgd_dbo_password
+
+# Data directories
+setenv EIREPORTDIR	$HOME/mgireport
+setenv EIARCHIVEDIR	$EIDATADIR
+setenv EIWITHDRAWALDIR	$EIDATADIR/withdrawals
+setenv EIBREAKSPLITDIR	$EIDATADIR/breakpointsplits
+
+setenv REPORTUSER	mgd_public
+setenv REPORTPASSWORD	mgdpub
+
+# Set umask for permissions on files created
+umask 022
