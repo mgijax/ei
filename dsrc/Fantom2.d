@@ -398,6 +398,36 @@ rules:
               cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHEGBA, KEYNAME) +
 			gbaMGIID + "," + gbaSymbol + "," + gbaName + ")\n";
 
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := "@" + KEYNAME;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.nomenNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "N";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := "@" + KEYNAME;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.rikenNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "R";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := "@" + KEYNAME;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.curatorNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "C";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
             elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "riken_seqid = " + seqID + "," +
 		     "riken_cloneid = " + cloneID + "," +
@@ -436,10 +466,41 @@ rules:
 		     "gba_name = " + gbaName;
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHEGBA, key, set);
 
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := key;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.nomenNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "N";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := key;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.rikenNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "R";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := key;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.curatorNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "C";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(MGI_FANTOM2, key);
                cmd := cmd + mgi_DBdelete(MGI_FANTOM2CACHEFINAL, key);
                cmd := cmd + mgi_DBdelete(MGI_FANTOM2CACHEGBA, key);
+               cmd := cmd + mgi_DBdelete(MGI_FANTOM2NOTES, key);
             end if;
  
             row := row + 1;
@@ -465,13 +526,18 @@ rules:
 	  value : string;
 	  row : integer := 0;
 	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " + 
-	       "and f._Fantom2_key = c2._Fantom2_key";
+	       "and f._Fantom2_key = c2._Fantom2_key " +
+	       "and f._Fantom2_key = n._Fantom2_key";
 
 	  select := "select f.*, " +
 		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
 		"cDate = convert(char(10), f.creation_date, 101), " +
-		"mDate = convert(char(10), f.modification_date, 101) ";
-	  from := "from " + mgi_DBtable(MGI_FANTOM2) + " f, MGI_Fantom2CacheGBA c1, MGI_Fantom2CacheFinal c2 ";
+		"mDate = convert(char(10), f.modification_date, 101), " +
+		"n.noteType, rtrim(n.note), n.sequenceNum ";
+	  from := "from " + mgi_DBtable(MGI_FANTOM2) + " f, " +
+		"MGI_Fantom2CacheGBA c1, " +
+		"MGI_Fantom2CacheFinal c2, " +
+		"MGI_Fantom2Notes n ";
 	  where := "";
 
 	  -- Construct Order By
@@ -484,6 +550,8 @@ rules:
 	  if (top->sortOptions->sortMenu3.menuHistory.dbField.length > 0) then
 	    orderBy := orderBy + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
 	  end if;
+
+	  orderBy := orderBy + ", n.noteType, n.sequenceNum";
 
 	  -- Build Where Clause
 
@@ -626,6 +694,16 @@ rules:
 	    where := where + " and c2.final_name1 like " + mgi_DBprstr(value);
 	  end if;
 
+	  value := mgi_tblGetCell(fantom, 0, fantom.createdBy);
+	  if (value.length > 0) then
+	    where := where + " and f.createdBy like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, 0, fantom.modifiedBy);
+	  if (value.length > 0) then
+	    where := where + " and f.modifiedBy like " + mgi_DBprstr(value);
+	  end if;
+
 	  -- Creation/Modification By/Date
 	  -- Notes
 
@@ -672,8 +750,13 @@ rules:
 
 	SearchLittle does
 	  cmd : string;
-	  results : integer := 1;
-	  row : integer := 0;
+	  row : integer;
+	  note : string;
+	  noteType : string;
+	  nomennote : string;
+	  rikennote : string;
+	  curatornote : string;
+	  fantomKey : string := "-1";
 
           (void) busy_cursor(top);
 
@@ -687,11 +770,26 @@ rules:
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
  
+          send(ClearFantom2, 0);
+
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
+	    row := -1;
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, mgi_getstr(dbproc, 1));
+
+	      noteType := mgi_getstr(dbproc, 37);
+	      note := mgi_getstr(dbproc, 38);
+
+	      if (mgi_getstr(dbproc, 1) != fantomKey) then
+
+		if (fantomKey != "-1") then
+	          (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
+	          (void) mgi_tblSetCell(fantom, row, fantom.rikenNote, rikennote);
+	          (void) mgi_tblSetCell(fantom, row, fantom.curatorNote, curatornote);
+		end if;
+
+		row := row + 1;
+	        fantomKey := mgi_getstr(dbproc, 1);
+	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, fantomKey);
 	        (void) mgi_tblSetCell(fantom, row, fantom.seqID, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(fantom, row, fantom.cloneID, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(fantom, row, fantom.genbankID, mgi_getstr(dbproc, 6));
@@ -730,16 +828,31 @@ rules:
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.editMode, TBL_ROW_NOCHG);
 
---	        (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, mgi_getstr(dbproc, 1));
---	        (void) mgi_tblSetCell(fantom, row, fantom.rikenNote, mgi_getstr(dbproc, 1));
---	        (void) mgi_tblSetCell(fantom, row, fantom.curatorNote, mgi_getstr(dbproc, 1));
-	        row := row + 1;
+		if (noteType = "N") then
+		  nomennote := note;
+		elsif (noteType = "R") then
+		  rikennote := note;
+		elsif (noteType = "C") then
+		  curatornote := note;
+		end if;
+	      else		-- continuation of note
+		if (noteType = "N") then
+		  nomennote := nomennote + note;
+		elsif (noteType = "R") then
+		  rikennote := rikennote + note;
+		elsif (noteType = "C") then
+		  curatornote := curatornote + note;
+		end if;
 	      end if;
             end while;
-	    results := results + 1;
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  -- don't forget to print out the note for the last row
+	  (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
+	  (void) mgi_tblSetCell(fantom, row, fantom.rikenNote, rikennote);
+	  (void) mgi_tblSetCell(fantom, row, fantom.curatorNote, curatornote);
 
 	  send(SetBackground, 0);
 
