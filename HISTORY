@@ -1,3 +1,9 @@
+TAG: ei-1-5-16
+DATE: 03/09/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.3.2/TR 1223; MRK_UniGeneClusterDiscrep.sql; missing trailer; spitting out SQL
+
 TAG: ei-1-5-15
 DATE: 03/09/2000
 STAFF: lec
