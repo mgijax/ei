@@ -14,6 +14,9 @@
 --
 -- History:
 --
+-- lec	08/16/2001
+--	-- ClearTable; traverse to cell 0,0
+--
 -- lec	03/03/1999
 --	- VerifyTable;
 --	  ignore rows flagged for deletion during requiredColumn check;
@@ -271,6 +274,10 @@ rules:
 
 	  -- Make the first cell, first column visible
 	  result := XrtTblMakeCellVisible(table, 0, 0);
+
+	  -- Traverse to the first cell
+	  TraverseToTableCell.table := table;
+	  send(TraverseToTableCell, 0);
 
 	  -- Re-set the table modification flag
 	  table.modified := false;
