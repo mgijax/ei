@@ -609,6 +609,12 @@ char *mgi_DBkey(int table)
     case MGI_NOTE_MRKGO_VIEW:
 	    strcpy(buf, "_Object_key");
 	    break;
+    case MGI_TRANSLATION:
+	    strcpy(buf, "_Translation_key");
+	    break;
+    case MGI_TRANSLATIONTYPE:
+	    strcpy(buf, "_TranslationType_key");
+	    break;
     case MLD_CONCORDANCE:
     case MLD_DISTANCE:
     case MLD_EXPT_MARKER:
@@ -1493,6 +1499,15 @@ char *mgi_DBtable(int table)
     case MGI_COLUMNS:
             strcpy(buf, "MGI_Columns");
 	    break;
+    case MGI_TRANSLATION:
+	    strcpy(buf, "MGI_Translation");
+	    break;
+    case MGI_TRANSLATIONTYPE:
+	    strcpy(buf, "MGI_TranslationType");
+	    break;
+    case MGI_TRANSLATIONSTRAIN_VIEW:
+	    strcpy(buf, "MGI_TranslationStrain_View");
+	    break;
     case MRK_NOMEN:
 	    sprintf(buf, "%s..MRK_Nomen", getenv("NOMEN"));
 	    break;
@@ -2105,7 +2120,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _ProbeSpecies_key, _Strain_key, _Tissue_key, age, ageMin, ageMax, sex, cellLine)",
+            sprintf(buf, "insert %s (%s, _SegmentType_key, _Vector_key, _ProbeSpecies_key, _Strain_key, _Tissue_key, _Refs_key, name, description, age, ageMin, ageMax, sex, cellLine)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIGEN:
@@ -2231,6 +2246,12 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MGI_COLUMNS:
             sprintf(buf, "insert %s (table_name, column_name, description, example)", mgi_DBtable(table));
+	    break;
+    case MGI_TRANSLATION:
+	    sprintf(buf, "insert %s (%s, _TranslationType_key, _Object_key, badName, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_TRANSLATIONTYPE:
+	    sprintf(buf, "insert %s (%s, _MGIType_key, translationType, compressionChars, regularExpression)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_NOMEN:
             sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, submittedBy, broadcastBy, symbol, name, chromosome, humanSymbol, statusNote, broadcast_date)",
@@ -2423,6 +2444,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MGI_TRANSLATION:
+      case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
@@ -2445,6 +2468,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MGI_TRANSLATION:
+      case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 

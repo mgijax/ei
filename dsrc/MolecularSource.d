@@ -66,6 +66,12 @@ rules:
 
 	  top := create widget("MolecularSourceModule", nil, mgi);
 
+          InitOptionMenu.option := top->SegmentTypeMenu;
+          send(InitOptionMenu, 0);
+
+          InitOptionMenu.option := top->VectorTypeMenu;
+          send(InitOptionMenu, 0);
+
           InitOptionMenu.option := top->ProbeSpeciesMenu;
           send(InitOptionMenu, 0);
 
@@ -230,7 +236,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by name\n";
+	  Query.select := "select distinct _Source_key, name\n" + from + "\n" + where + "\norder by name\n";
 	  Query.table := PRB_SOURCE_MASTER;
 	  send(Query, 0);
 	  (void) reset_cursor(top);

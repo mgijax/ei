@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul  3 13:12:09 2003";
+      lastWritten = "Mon Jul  7 09:55:57 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -541,6 +541,7 @@ Module: MGI
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 5;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -590,6 +591,34 @@ Module: MGI
                               required = False;
                           }
                     }
+              }
+              {
+                SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = mgiCitation;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = mgiCitation;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                VectorTypeMenu = VectorTypeMenu : mgiOption;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = SegmentTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = SegmentTypeMenu;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
@@ -2183,99 +2212,6 @@ Module: MGI
                   resizePolicy = resize_any;
                     {
                       MainMenu = MainMenu : mgiMenu;
-                          {
-                            File = File : mgiMenu;
-                                Popups:
-                                {
-                                  FilePulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Exit = MenuPush : mgiMenu;
-                                      }
-                                }
-                          }
-                          {
-                            Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Modify = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Add = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Next = MenuPush : mgiMenu;
-                                      }
-                                }
-                          }
-                          {
-                            Edit = Edit : mgiMenu;
-                                Popups:
-                                {
-                                  EditPulldown = MenuPulldown : mgiMenu;
-                                }
-                          }
-                          {
-                            View = View : mgiMenu;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                      }
-                                }
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
-                                }
-                          }
-                          {
-                            Help = Help : mgiMenu;
-                                Popups:
-                                {
-                                  HelpPulldown = MenuPulldown : mgiMenu;
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2286,12 +2222,6 @@ Module: MGI
                               resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   Name = CharText : mgiDataTypes;
@@ -2327,13 +2257,6 @@ Module: MGI
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 10;
-                                      Popups:
-                                      {
-                                        MGITypePulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                      }
                                 }
                                 {
                                   Compression = CharText : mgiDataTypes;
@@ -2387,18 +2310,6 @@ Module: MGI
                                           saveEditableSeries = "(all 0-4 False)";
                                           saveTraversableSeries = "(all 0-4 False)";
                                       }
-                                      {
-                                        AddRow = TablePush;
-                                      }
-                                      {
-                                        DeleteRow = TablePush;
-                                      }
-                                      {
-                                        InsertRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        EditOrder = toggle : mgiDataTypes;
-                                      }
                                 }
                           }
                     }
@@ -2451,58 +2362,21 @@ Module: MGI
                                 }
                                 {
                                   Clear1 = XmMenuBar;
-                                      {
-                                        Clear = XmCascadeButton;
-                                            Popups:
-                                            {
-                                              ClearPulldown = XmPulldownMenu;
-                                            }
-                                      }
                                 }
                                 {
                                   RecordCount = RecordCount : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
-                                }
-                                {
-                                  ModificationHistory = ModificationHistory : mgiTable;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
                                 }
                           }
                     }
@@ -2542,15 +2416,6 @@ Module: MGI
                       ReportDialog = ReportDialog : mgiDialog;
                           {
                             FileSelection = FileSelection;
-                                {
-                                  filler = XmSeparator;
-                                }
-                                {
-                                  Print = XmPushButton;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
                           }
                           {
                             Lookup = XmFrame;
@@ -2569,99 +2434,6 @@ Module: MGI
                                                 keys = "GORefs.py";
                                             }
                                       }
-                                      {
-                                        PrinterList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                            }
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        Output = XmScrolledText;
-                                      }
-                                }
-                          }
-                    }
-                    {
-                      SearchDialog = SearchDialog : mgiDialog;
-                    }
-                    {
-                      WhichItem = WhichItem : mgiDialog;
-                          {
-                            ItemList = LookupList : mgiLookup;
-                                {
-                                  Label = LookupLabel;
-                                }
-                                {
-                                  List = list;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = XmRowColumn;
-                                {
-                                  Cancel = DialogPush : mgiDialog;
-                                }
-                          }
-                    }
-                    {
-                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
-                    }
-                    {
-                      WorkingDialog = WorkingDialog : mgiDialog;
-                    }
-                    {
-                      NoteDialog = NoteDialog : mgiDialog;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            Note = Notes : mgiDataTypes;
-                                {
-                                  label = XmLabel;
-                                }
-                                {
-                                  text = scrolledText;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = Buttons : mgiDialog;
-                                {
-                                  OK = DialogPush;
-                                }
-                                {
-                                  Cancel = DialogPush;
                                 }
                           }
                     }

@@ -128,8 +128,15 @@ rules:
 		-- Set attributes
 
 		x.batch;
-		x.searchValue := mgi_getstr(dbproc, 1);
-		x.defaultValue := mgi_getstr(dbproc, 1);
+
+		if (option.name = "OldSegmentTypeMenu") then
+		  x.searchValue := mgi_getstr(dbproc, 2);
+		  x.defaultValue := mgi_getstr(dbproc, 2);
+		else
+		  x.searchValue := mgi_getstr(dbproc, 1);
+		  x.defaultValue := mgi_getstr(dbproc, 1);
+		end if;
+
 		x.labelString := label;
 
 		--

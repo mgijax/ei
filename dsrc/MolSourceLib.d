@@ -66,12 +66,14 @@ rules:
 	  end if;
 
 	  add := add +
-	         mgi_DBprstr(top->Library->text.value) + "," +
-                 mgi_DBprstr(top->Description->text.value) + "," +
-                 mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
+                 top->SegmentTypeMenu.menuHistory.defaultValue + "," +
+                 top->VectorTypeMenu.menuHistory.defaultValue + "," +
                  top->ProbeSpeciesMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
-                 top->Tissue->TissueID->text.value + ",";
+                 top->Tissue->TissueID->text.value + "," +
+                 mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
+	         mgi_DBprstr(top->Library->text.value) + "," +
+                 mgi_DBprstr(top->Description->text.value) + ",";
 
 	  -- Construct Age value
 
@@ -249,43 +251,51 @@ rules:
 	      if (results = 1) then
 
 		if (sourceForm->Library.managed) then
-                  sourceForm->Library->text.value := mgi_getstr(dbproc, 2);
+                  sourceForm->Library->text.value := mgi_getstr(dbproc, 8);
 		end if;
 
 		if (sourceForm->mgiCitation.managed) then
-                  sourceForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 4);
+                  sourceForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 7);
                   sourceForm->mgiCitation->Jnum->text.value := "";
                   sourceForm->mgiCitation->Citation->text.value := "";
 		end if;
 
+		if (sourceForm->SegmentTypeMenu.managed) then
+                  SetOption.source_widget := sourceForm->SegmentTypeMenu;
+                  SetOption.value := mgi_getstr(dbproc, 2);
+                  send(SetOption, 0);
+		end if;
+
+		if (sourceForm->VectorTypeMenu.managed) then
+                  SetOption.source_widget := sourceForm->VectorTypeMenu;
+                  SetOption.value := mgi_getstr(dbproc, 3);
+                  send(SetOption, 0);
+		end if;
+
 	        if (DisplayMolecularSource.master) then
-		  top->CreationDate->text.value := mgi_getstr(dbproc, 13);
-		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 14);
---		else
---                  if (sourceForm->Library->text.value.length = 0) then
---                    sourceForm->Library->text.value := "Anonymous";
---                  end if;
+		  top->CreationDate->text.value := mgi_getstr(dbproc, 15);
+		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 16);
                 end if;
 
-                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 16);
-                sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 6);
-                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 18);
-                sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 7);
-                sourceForm->CellLine->text.value := mgi_getstr(dbproc, 12);
-                sourceForm->Description->text.value := mgi_getstr(dbproc, 3);
+                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);
+                sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 5);
+                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 20);
+                sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 6);
+                sourceForm->CellLine->text.value := mgi_getstr(dbproc, 14);
+                sourceForm->Description->text.value := mgi_getstr(dbproc, 9);
  
                 SetOption.source_widget := sourceForm->ProbeSpeciesMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
+                SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
  
                 SetOption.source_widget := sourceForm->SexMenu;
-                SetOption.value := mgi_getstr(dbproc, 11);
+                SetOption.value := mgi_getstr(dbproc, 13);
                 send(SetOption, 0);
 
 		DisplayMolecularAge.source_widget := sourceForm->Age->text;
-		DisplayMolecularAge.age := mgi_getstr(dbproc, 8);
-		DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 9);
-		DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 10);
+		DisplayMolecularAge.age := mgi_getstr(dbproc, 10);
+		DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 11);
+		DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 12);
 		send(DisplayMolecularAge, 0);
 
 	      elsif (results = 2) then
@@ -352,6 +362,18 @@ rules:
 	    if (top->mgiCitation->ObjectID->text.modified) then
 	      set := set + "_Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + ",";
 	    end if;
+	  end if;
+
+	  if (top->SegmentTypeMenu.managed) then
+            if (top->SegmentTypeMenu.menuHistory.modified) then
+              set := set + "_SegmentType_key = " + top->SegmentTypeMenu.menuHistory.defaultValue + ",";
+            end if;
+	  end if;
+
+	  if (top->VectorTypeMenu.managed) then
+            if (top->VectorTypeMenu.menuHistory.modified) then
+              set := set + "_Vector_key = " + top->VectorTypeMenu.menuHistory.defaultValue + ",";
+            end if;
 	  end if;
 
           if (top->ProbeSpeciesMenu.menuHistory.modified) then
@@ -462,6 +484,14 @@ rules:
 	    where := where + " and s._Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value);
 	  end if;
 
+          if (top->SegmentTypeMenu.menuHistory.searchValue != "%") then
+            where := where + " and s._SegmentType_key = " + top->SegmentTypeMenu.menuHistory.searchValue;
+          end if;
+ 
+          if (top->VectorTypeMenu.menuHistory.searchValue != "%") then
+            where := where + " and s._Vector_key = " + top->VectorTypeMenu.menuHistory.searchValue;
+          end if;
+ 
           if (top->ProbeSpeciesMenu.menuHistory.searchValue != "%") then
             where := where + " and s._ProbeSpecies_key = " + top->ProbeSpeciesMenu.menuHistory.searchValue;
           end if;

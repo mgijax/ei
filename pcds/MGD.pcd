@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul  3 12:14:39 2003";
+      lastWritten = "Mon Jul  7 10:04:43 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -2308,7 +2308,7 @@ Module: MGD
                                   MolMarkerForm = MolMarkerForm;
                                 }
                                 {
-                                  SeqTypeMenu = SeqTypeMenu;
+                                  OldSegmentTypeMenu = SegmentTypeMenu;
                                 }
                                 {
                                   Name = CharText;
@@ -2576,7 +2576,7 @@ Module: MGD
                 ID = ID;
               }
               {
-                SeqTypeMenu = SeqTypeMenu : mgiOption;
+                OldSegmentTypeMenu = SegmentTypeMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_form;
                   leftOffset = 5;
@@ -2590,7 +2590,7 @@ Module: MGD
                 Name = CharText : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = SeqTypeMenu;
+                  leftWidget = OldSegmentTypeMenu;
                   leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_form;
@@ -3407,17 +3407,27 @@ Module: MGD
                                           managed = True;
                                       }
                                       {
+                                        SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
+                                        VectorTypeMenu = VectorTypeMenu : mgiOption;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
                                         ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
-                                          leftWidget = mgiCitation;
+                                          leftWidget = VectorTypeMenu;
                                           rightAttachment = attach_none;
                                           topAttachment = attach_widget;
-                                          topWidget = mgiCitation;
+                                          topWidget = VectorTypeMenu;
                                           topOffset = 5;
                                           bottomAttachment = attach_none;
                                           resizable = true;
-                                          leftOffset = 5;
+                                          leftOffset = 0;
                                       }
                                 }
                           }
@@ -8199,6 +8209,12 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       mgiCitation = mgiCitation : mgiDataTypes;
+                    }
+                    {
+                      SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                    }
+                    {
+                      VectorTypeMenu = VectorTypeMenu : mgiOption;
                     }
                     {
                       ProbeSpeciesMenu = ProbeSpeciesMenu : mgiOption;

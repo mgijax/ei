@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul  3 13:08:24 2003";
+      lastWritten = "Mon Jul  7 09:19:31 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -1711,81 +1711,20 @@ Module: mgiOption
             vip_y = 470;
         }
         {
-          SeqTypeMenu = OptionMenu;
+          SegmentTypeMenu = OptionMenu;
           Group: Widget
-            subMenuId = SeqTypePulldown;
-            labelString = "Sequence\nType";
+            subMenuId = SegmentTypePulldown;
+            labelString = "Segment\nType";
           Group: Control
             vip_x = 80;
             vip_y = 3605;
               Popups:
               {
-                SeqTypePulldown : OptionPulldown = OptionPulldown;
+                SegmentTypePulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term_SegmentType_View order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
-                    }
-                    {
-                      cDNA = OptionToggle : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        searchValue = cDNA;
-                        defaultValue = cDNA;
-                        form = MolDetailForm;
-                    }
-                    {
-                      genomic = OptionToggle : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        searchValue = genomic;
-                        defaultValue = genomic;
-                        form = MolDetailForm;
-                    }
-                    {
-                      construct = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = "DNA (construct)";
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        searchValue = "DNA (construct)";
-                        defaultValue = "DNA (construct)";
-                        form = MolDetailForm;
-                    }
-                    {
-                      mitochondrial = OptionToggle : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        searchValue = mitochondrial;
-                        defaultValue = mitochondrial;
-                        form = MolDetailForm;
-                    }
-                    {
-                      oligo = OptionToggle : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        searchValue = oligo;
-                        defaultValue = oligo;
-                        form = MolDetailForm;
-                    }
-                    {
-                      primer = OptionToggle : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        searchValue = primer;
-                        defaultValue = primer;
-                        form = MolPrimerForm;
-                    }
-                    {
-                      NotSpecified = NotSpecified : mgiOption;
-                      Group: Widget
-                        background = Wheat;
-                        valueChangedCallback = "D:SetModify,\nD:ViewMolSegDetail";
-                      Group: User
-                        form = MolDetailForm;
                     }
               }
         }
