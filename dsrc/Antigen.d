@@ -273,8 +273,8 @@ rules:
 
 	  -- ModifyAntigenSource will set top->SourceForm.sql appropriately
 	  -- Append this value to the 'cmd' string
-          ModifyAntigenSource.source_widget := top->SourceForm;
-	  ModifyAntigenSource.probeKey := currentRecordKey;
+          ModifyAntigenSource.source_widget := top;
+	  ModifyAntigenSource.antigenKey := currentRecordKey;
           send(ModifyAntigenSource, 0);
 	  cmd := cmd + top->SourceForm.sql;
  

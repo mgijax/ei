@@ -535,7 +535,7 @@ rules:
 	  top.sql := "exec PRB_processAntigenAnonSource " +
 	      antigenKey + "," +
 	      top->SourceID->text.value + "," +
-	      top->AntigenOrganismMenu.menuHistory.defaultValue + "," +
+	      top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
 	      top->Strain->StrainID->text.value + "," +
 	      top->Tissue->TissueID->text.value + "," +
 	      top->GenderMenu.menuHistory.defaultValue + "," +
