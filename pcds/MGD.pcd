@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 17 10:45:06 2003";
+      lastWritten = "Wed Sep 17 12:39:32 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -9502,6 +9502,11 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        EditRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = True;
                                       }
                                       {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;

@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec 09/17/2003
+--	- TR 4724; EditRefType
+--
 -- lec	03/12/2001
 --	new
 --
@@ -31,7 +34,7 @@ rules:
 -- AddRefTypeRow
 --
 --	Adds Row to ReferenceType Table
---	Sets appropriate refsType value
+--	Sets appropriate refsType and refsCurrentType value
 --	based on most recent ReferenceTypeMenu selection.
 --
 
@@ -50,7 +53,7 @@ rules:
 	  -- Traverse thru table and find first empty row
 	  row : integer := 0;
 	  while (row < mgi_tblNumRows(table)) do
-	    refsType := mgi_tblGetCell(table, row, table.refsType);
+	    refsType := mgi_tblGetCell(table, row, table.refsCurrentType);
 	    if (refsType.length = 0) then
 	      break;
 	    end if;
@@ -59,9 +62,45 @@ rules:
 
 	  -- Set RefType, Label for row
 
+	  (void) mgi_tblSetCell(table, row, table.refsCurrentType, source.defaultValue);
 	  (void) mgi_tblSetCell(table, row, table.refsType, source.defaultValue);
 	  (void) mgi_tblSetCell(table, row, table.refsName, source.labelString);
 	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+          -- Traverse to new table row
+
+          TraverseToTableCell.table := table;
+          TraverseToTableCell.row := row;
+          TraverseToTableCell.column := 0;
+          send(TraverseToTableCell, 0);
+
+	end
+
+--
+-- EditRefType
+--
+--	Edits Ref Type of current row based on most recent ReferenceTypeMenu selection.
+--
+
+        EditRefType does
+	  table : widget := EditRefType.table;
+	  row : integer;
+
+	  if (table = nil) then
+	    table := EditRefType.source_widget.parent.child_by_class(TABLE_CLASS);
+	  end if;
+
+	  source : widget := table.parent.child_by_class("XmRowColumn");
+
+	  source := source.menuHistory;
+	  row := mgi_tblGetCurrentRow(table);
+
+	  -- Set RefType, Label for row
+
+	  -- don't touch refsCurrentType
+	  (void) mgi_tblSetCell(table, row, table.refsType, source.defaultValue);
+	  (void) mgi_tblSetCell(table, row, table.refsName, source.labelString);
+	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_MODIFY);
 
           -- Traverse to new table row
 
@@ -97,6 +136,7 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	       (void) mgi_tblSetCell(table, row, table.refsCurrentType, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.refsName,  mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -155,6 +195,7 @@ rules:
 
 	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.refsCurrentType, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.refsName, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
@@ -189,6 +230,7 @@ rules:
           key : string;
           newKey : string;
 	  refsType : string;
+	  newRefsType : string;
 	  set : string := "";
  
           -- Process 
@@ -198,7 +240,8 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.refsCurrentKey);
             newKey := mgi_tblGetCell(table, row, table.refsKey);
-	    refsType := mgi_tblGetCell(table, row, table.refsType);
+	    refsType := mgi_tblGetCell(table, row, table.refsCurrentType);
+	    newRefsType := mgi_tblGetCell(table, row, table.refsType);
  
             if (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(tableID, NOKEY) + 
@@ -207,7 +250,8 @@ rules:
 		     refsType + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Refs_key = " + newKey;
+              set := "_Refs_key = " + newKey + "," +
+		     "_RefsType_key = " + newRefsType;
               cmd := cmd + mgi_DBupdate(tableID, objectKey, set) + 
                      "and _Refs_key = " + key + 
 		     " and _RefsType_key = " + refsType + "\n";

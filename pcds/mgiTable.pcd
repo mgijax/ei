@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Aug 26 13:32:17 2003";
+      lastWritten = "Wed Sep 17 12:44:44 2003";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -498,17 +498,17 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  userDefinedAttributes = "refsType:Int(Int)=\"3\"\nrefsName:Int(Int)=\"4\"\n";
-                  xrtTblNumColumns = 7;
-                  xrtTblColumnLabels = "Mode,Current Key,New Key,Type,Ref Type,J#,Citation";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1-5 10)(all 6 60)";
-                  xrtTblMaxLengthSeries = "(all 6 255)";
-                  xrtTblPixelWidthSeries = "(all 0-3 0)";
-                  xrtTblEditableSeries = "(all 0-4 False)";
-                  xrtTblTraversableSeries = "(all 0-4 False)";
+                  userDefinedAttributes = "refsType:Int(Int)=\"4\"\nrefsName:Int(Int)=\"5\"\nrefsCurrentType:Int(Int)=\"3\"\n";
+                  xrtTblNumColumns = 8;
+                  xrtTblColumnLabels = "Mode,Current Key,New Key,Current Type,Type,Ref Type,J#,Citation";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 60)";
+                  xrtTblMaxLengthSeries = "(all 7 255)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblEditableSeries = "(all 0-5 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)";
                 Group: User
-                  citation = 6;
-                  jnum = 5;
+                  citation = 7;
+                  jnum = 6;
               }
               {
                 AddRow = TablePush : mgiTable;
@@ -525,6 +525,21 @@ Module: mgiTable
               }
               {
                 DeleteRow = TablePush : mgiTable;
+              }
+              {
+                EditRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:EditRefType";
+                  labelString = "Edit Ref Type";
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = DeleteRow;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = DeleteRow;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
