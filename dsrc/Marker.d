@@ -5,8 +5,7 @@
 --
 -- TopLevelShell:		Marker
 -- Database Tables Affected:	MRK_Alias, MRK_Current, MRK_History
---				MRK_Marker, MRK_Name, MRK_Notes, MRK_Offset, MRK_Other
---				MRK_Reference, MRK_Symbol
+--				MRK_Marker, MRK_Notes, MRK_Offset, MRK_Other, MRK_Reference
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -14,6 +13,9 @@
 -- Non-Mouse Markers can only be edited using the Homology module.
 --
 -- History
+--
+-- 04/28/2000 - ?
+--	- TR 1404; remove MRK_Symbol and MRK_Name
 --
 -- 03/20/2000 - ?
 --	- tr 1291, tr 1177
@@ -969,7 +971,9 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accRefTable.sqlCmd and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set);
+	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set) +
+		   "\nexec MRK_reloadLabel " + currentRecordKey +
+		   "\nexec MRK_reloadReference " + currentRecordKey;
 	  end if;
 
 	  ModifySQL.cmd := cmd;
@@ -1398,12 +1402,10 @@ rules:
 	  from_citation : boolean := false;
 	  from_current  : boolean := false;
 	  from_history  : boolean := false;
-	  from_name     : boolean := false;
 	  from_notes    : boolean := false;
 	  from_other    : boolean := false;
 	  from_offset   : boolean := false;
 	  from_reference: boolean := false;
-	  from_symbol   : boolean := false;
 
 	  value : string;
 
@@ -1450,13 +1452,11 @@ rules:
           end if;
 
           if (top->Symbol->text.value.length > 0) then
-	    where := where + "\nand ms.symbol like " + mgi_DBprstr(top->Symbol->text.value);
-	    from_symbol := true;
+	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->Symbol->text.value);
 	  end if;
 	    
           if (top->Name->text.value.length > 0) then
-	    where := where + "\nand mn.name like " + mgi_DBprstr(top->Name->text.value);
-	    from_name := true;
+	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
 	  end if;
 	    
           if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
@@ -1583,16 +1583,6 @@ rules:
           if (value.length > 0) then
 	    where := where + "\nand mr.isReviewArticle = " + value;
 	    from_reference := true;
-	  end if;
-
-	  if (from_symbol) then
-	    from := from + ",MRK_Symbol ms";
-	    where := where + "\nand m._Marker_key = ms._Marker_key";
-	  end if;
-
-	  if (from_name) then
-	    from := from + ",MRK_Name mn";
-	    where := where + "\nand m._Marker_key = mn._Marker_key";
 	  end if;
 
 	  if (from_offset) then
