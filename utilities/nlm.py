@@ -10,6 +10,8 @@
 # Records which exist in the database will be updated (BIB_Refs)
 # Records which do not exist in the database will either be 
 # reported in the nomatch file or added,
+# Records which match a Submission reference in MGD will be reported
+# in the submission file.
 # depending on the mode requested by the user.
 #
 # This program is normally executed from the Editing Interface/Reference form/NLM dialog,
@@ -20,7 +22,8 @@
 # Matches are performed on Journal, Year, Volume, First Page
 # Updates are performed iff Medline UI, Title or Abstract is NULL
 #
-# Duplicates and Submission References are reported in '.duplicates' file
+# Duplicates References are reported in '.duplicates' file
+# Submission References are reported in '.submission' file
 # No Matches are reported in '.nomatch' file
 # Diagnostics are reported in '.diagnostics' file
 # Adds are reported in '.added' file
@@ -87,6 +90,7 @@
 #	  no more cc.journals
 #	  small changes to use NLM export tags VI, IP, DP, PG instead of 
 #	  parsing the SO field (removed processSO routine).
+#	- create a .submission output file and place Submission matches here
 #
 #	lec	12/10/99
 #	- TR 1160; new Current Contents format
@@ -205,7 +209,7 @@ def init():
 	#
 	'''
  
-	global nlmFile, diagFile, dupsFile, nomatchFile, outFile
+	global nlmFile, diagFile, dupsFile, nomatchFile, submissionFile, outFile
 	global mode, nextJnum
  
         try:
@@ -276,6 +280,11 @@ def init():
 	except:
 		error('Could not open file %s.nomatch' % inputFile)
 
+	try:
+		submissionFile = open(inputFile + '.submission', 'w')
+	except:
+		error('Could not open file %s.submission' % inputFile)
+
 	if mode == 'addnlm':
 		try:
 			outFile = open(inputFile + '.added', 'w')
@@ -318,6 +327,11 @@ def finish():
 		pass	# may not be open
 	
 	try:
+		submissionFile.close()
+	except:
+		pass	# may not be open
+	
+	try:
 		outFile.close()
 	except:
 		pass	# may not be open
@@ -354,7 +368,7 @@ def processAU(value, currentValue = None):
 
 	return authors, primary
 
-def getRec(rec, rectags, maxCount = 1):
+def isDuplicate(rec, rectags, maxCount):
 	'''
 	#
 	# requires: rec, a dictionary of NLM records (dictionary)
@@ -391,70 +405,41 @@ def getRec(rec, rectags, maxCount = 1):
 
 	# If duplicate is found, report it and skip
 
-	if len(results) > maxCount:
+	if len(results) >= maxCount:
 		printRec(dupsFile, rec, rectags, "DUPLICATE FOUND IN MGD")
 		ok = 0
-       	else:
-		cmd = 'select _Refs_key from BIB_Refs ' + \
-               	      'where journal = "Submission" and _primary = "%s" ' % rec['PAU'] + \
-	 	      'and (authors like "%s" ' % rec['AU'] + \
-		      'or authors2 like "%s" ' % rec['AU2'] + \
-		      'or substring(title,1,25) = "%s") ' % rec['TISHORT']
-		submission = mgdlib.sql(cmd, 'auto')
 
-		# If a Submission reference is found, report it and skip
+	return results, ok
 
-		if len(submission) > maxCount:
-			printRec(dupsFile, rec, rectags, "SUBMISSION FOUND IN MGD")
-			ok = 0
- 
-        return results, ok
-
-def determineMatch(rec, rectags):
+def isSubmission(rec, rectags):
 	'''
 	#
 	# requires: rec, a dictionary of NLM records (dictionary)
 	#           rectags, a list of ordered tags for the record
 	#
 	# effects:
-	# Determines if the NLM record has a match in the database
-	# Determines if the 'rec' already exists in the database
+	# Determines if the 'rec' exists as a Submission reference
 	#
 	# returns:
-	# 1 if the record is a match
-	# 0 if the record is not a match
+	# 1 if the record matches a Submission reference, else 0
 	#
 	'''
 
-	# Check for Duplicates
+	cmd = 'select _Refs_key from BIB_Refs ' + \
+               'where journal = "Submission" and _primary = "%s" ' % rec['PAU'] + \
+	       'and (authors like "%s" ' % rec['AU'] + \
+	       'or authors2 like "%s" ' % rec['AU2'] + \
+	       'or substring(title,1,25) = "%s") ' % rec['TISHORT']
 
-	results, ok = getRec(rec, rectags, 1)
+	submission = mgdlib.sql(cmd, 'auto')
 
-	if not ok:
-		return 0
+	# If a Submission reference is found, report it and skip
+
+	if len(submission) > 0:
+		printRec(submissionFile, rec, rectags, "SUBMISSION FOUND IN MGD")
+		return 1
  
-	# No results, no Match
-
-	if len(results) == 0:
-		return 0
-
-	# Else, we've got one record in 'results'
-
-	for result in results:
-		refKey = result['_Refs_key']
-		title = result['title']
-		abstract = result['abstract']
-		jnum = result['jnum']
-
-	# Get UI Accession key(s)
-	uiKey = accessionlib.get_Accession_key(refKey, "Reference", "Medline")
-
-	# Update existing entry if ui, title or abstract is NULL
- 
-	if uiKey is None or title is None or abstract is None:
-		doUpdate(refKey, uiKey, rec)
-
-        return 1
+	return 0
 
 def attachQuotes(rec):
 	'''
@@ -475,63 +460,90 @@ def attachQuotes(rec):
 		except:
 			pass
 
-def doUpdate(refKey, uiKey, rec):
+def doUpdate(rec, rectags):
 	'''
 	#
-	# requires: refKey, the internal identifier of the record (integer)
-	#           uiKey, the internal identifier of the Medline Accession number
-	#           (integer)
-	#           rec, a dictionary of NLM records (dictionary)
+	# requires: rec, a dictionary of NLM records (dictionary)
+	#           rectags, a list of ordered tags for the record
 	#
 	# effects:
-	# Updates database record (specified by refKey)
-	# from NLM record (specified by rec)
+	# Determines if the NLM record has a match in the database
+	# Determines if the 'rec' already exists in the database
 	#
 	# returns:
 	#
 	'''
 
-	attachQuotes(rec)
-	cmd = []
-	cmd.append('begin transaction')
-	update = []
+	# Check if Submission
 
-	update.append('update BIB_Refs set ' + \
-		'refType = "ART",' + \
-        	'authors = %s,' % rec['AU'] + \
-        	'authors2 = %s,' % rec['AU2'] + \
-        	'_primary = %s,' % rec['PAU'] + \
-        	'title = %s,' % rec['TI'] + \
-        	'title2 = %s,' % rec['TI2'] + \
-        	'issue = %s,' % rec['IP'] + \
-        	'date = %s,' % rec['DP'] + \
-        	'year = %s,' % rec['YR'] + \
-        	'pgs = %s,' % rec['PG'] + \
-        	'journal = %s,' % rec['TA'] + \
-        	'vol = %s' % rec['VI'])
+	if isSubmission(rec, rectags):
+		return
+
+	# Check if Duplicates; 
+	# For an update; 2 or more instances constitute a dup
+
+	results, ok = isDuplicate(rec, rectags, 2)
+
+	if not ok or len(results) == 0:
+		printRec(nomatchFile, rec, rectags)
+		return
  
-	# If record has abstract and abstract is not null, update it
-	if rec.has_key('AB') and rec['AB'] != 'NULL':
-		update.append('abstract = %s' % rec['AB'])
+	# Else, we've got one record in 'results'
 
-        update.append('modification_date = getdate() where _Refs_key = %d' % refKey)
-	cmd.append(string.join(update, ','))
+	for result in results:
+		refKey = result['_Refs_key']
+		title = result['title']
+		abstract = result['abstract']
+		jnum = result['jnum']
 
-	# Update/Add Medline UI
+	# Get UI Accession key(s)
+	uiKey = accessionlib.get_Accession_key(refKey, "Reference", "Medline")
 
-        if mode == 'nlm' and rec['UI'] != '"0"':
-		if uiKey is not None:
-			if type(uiKey) == type([]):
-				for ui in uiKey:
-          				cmd.append('exec ACC_update %s,%s' % (ui, rec['UI']))
-			else:
-          			cmd.append('exec ACC_update %s,%s' % (uiKey, rec['UI']))
-		else:	
-          		cmd.append('exec ACC_insert %d,%s,%d,%s' \
-				     % (refKey, rec['UI'], MEDLINE, MGITYPE))
+	# Update existing entry if ui, title or abstract is NULL
  
-	cmd.append('commit transaction')
-	mgdlib.sql(cmd, None)
+	if uiKey is None or title is None or abstract is None:
+
+		attachQuotes(rec)
+		cmd = []
+		cmd.append('begin transaction')
+		update = []
+
+		update.append('update BIB_Refs set ' + \
+			'refType = "ART",' + \
+        		'authors = %s,' % rec['AU'] + \
+        		'authors2 = %s,' % rec['AU2'] + \
+        		'_primary = %s,' % rec['PAU'] + \
+        		'title = %s,' % rec['TI'] + \
+        		'title2 = %s,' % rec['TI2'] + \
+        		'issue = %s,' % rec['IP'] + \
+        		'date = %s,' % rec['DP'] + \
+        		'year = %s,' % rec['YR'] + \
+        		'pgs = %s,' % rec['PG'] + \
+        		'journal = %s,' % rec['TA'] + \
+        		'vol = %s' % rec['VI'])
+ 
+		# If record has abstract and abstract is not null, update it
+		if rec.has_key('AB') and rec['AB'] != 'NULL':
+			update.append('abstract = %s' % rec['AB'])
+
+        	update.append('modification_date = getdate() where _Refs_key = %d' % refKey)
+		cmd.append(string.join(update, ','))
+
+		# Update/Add Medline UI
+
+        	if rec['UI'] != '"0"':
+			if uiKey is not None:
+				if type(uiKey) == type([]):
+					for ui in uiKey:
+          					cmd.append('exec ACC_update %s,%s' % (ui, rec['UI']))
+				else:
+          				cmd.append('exec ACC_update %s,%s' % (uiKey, rec['UI']))
+			else:	
+          			cmd.append('exec ACC_insert %d,%s,%d,%s' \
+				     	% (refKey, rec['UI'], MEDLINE, MGITYPE))
+ 
+		cmd.append('commit transaction')
+		mgdlib.sql(cmd, None)
 
 def doAdd(rec, rectags):
 	'''
@@ -551,9 +563,15 @@ def doAdd(rec, rectags):
 
 	''' Insert new NLM records '''
 
-	# Check for Duplicates
+	# Check for Submission
 
-	results, ok = getRec(rec, rectags, 0)
+	if isSubmission(rec, rectags):
+		return 0
+
+	# Check for Duplicates;
+	# For an add, 1 or more instances constitute a dup
+
+	results, ok = isDuplicate(rec, rectags, 1)
 
 	if not ok:
 		return
@@ -666,8 +684,7 @@ def processRec(rec, rectags):
 	rec['TISHORT'] = rec['TI'][:25]
 
 	if mode == 'nlm':
-		if not determineMatch(rec, rectags):
-			printRec(nomatchFile, rec, rectags)
+		doUpdate(rec, rectags)
 
 	elif mode == 'addnlm':
 		doAdd(rec, rectags)

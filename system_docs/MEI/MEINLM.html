@@ -97,7 +97,7 @@ There are 2 modes defined for processing NLM data files:
 <LI>If more than one match is found, then the NLM reference is reported as a "duplicate".
 <P>
 <LI>If a match to a Submission record is found, then the NLM reference is reported as
-    a "duplicate" and the message "SUBMISSION FOUND IN MGD" is recorded.
+    a "submission" and the message "SUBMISSION FOUND IN MGD" is recorded.
 <P>
 <LI>If no match is found, then the NLM reference is reported as "nomatch".
 <P>
@@ -134,11 +134,14 @@ the user's <CODE>$HOME</CODE> directory.
 <P>
 <LI><I>&lt;inputfile&gt;.duplicates</I>
     <P>Listing of all References which contain duplicate entries in MGD.
-       Listing of all References for which a Submission reference was found in MGD.
        This file is in the same format as the input file.
 <P>
 <LI><I>&lt;inputfile&gt;.nomatch</I>
     <P>Listing of all References in the input file for which no match could be found in MGD.
+       This file is in the same format as the input file.
+<P>
+<LI><I>&lt;inputfile&gt;.submission</I>
+    <P>Listing of all References for which a Submission reference was found in MGD.
        This file is in the same format as the input file.
 <P>
 <LI><I>&lt;inputfile&gt;.added</I>
