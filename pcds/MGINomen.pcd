@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 28 10:37:23 2002";
+      lastWritten = "Tue May 28 11:08:11 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -269,8 +269,19 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = XtXrtTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Type,Reference Type,J#,Citation";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 5 20)(all 7 60)";
+                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Review Key,Type,Reference Type,J#,Citation,Review?";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 6 20)(all 8 60)(all 9 7)";
+                                          xrtTblEditableSeries = "(all 0-6 False)";
+                                          xrtTblMaxLengthSeries = "(all 8 255)";
+                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                          xrtTblTraversableSeries = "(all 0-6 False)";
+                                          xrtTblNumColumns = 10;
+                                          userDefinedAttributes = "reviewKey:Int=\"4\"\nreview:Int=\"9\"\n";
+                                        Group: User
+                                          citation = 8;
+                                          jnum = 7;
+                                          refsName = 6;
+                                          refsType = 5;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;

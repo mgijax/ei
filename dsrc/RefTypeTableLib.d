@@ -147,7 +147,7 @@ rules:
 
 	  if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
             cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
-		  "jnum, short_citation, _Assoc_key, _MGIType_key" +
+		  "jnum, short_citation, _Assoc_key, _MGIType_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
 		  " where " + mgi_DBkey(tableID) + " = " + objectKey +
 		  " order by allowOnlyOne desc, _RefAssocType_key";
@@ -182,6 +182,8 @@ rules:
 	      if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
 	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
 		table.mgiTypeKey := mgi_getstr(dbproc, 8);
+	        (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(table, row, table.review, mgi_getstr(dbproc, 10));
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -244,6 +246,11 @@ rules:
 		     refsType + ")\n";
 	      end if;
 
+	      if (table.is_defined("reviewKey") != nil) then
+                set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+                cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
+	      end if;
+
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_Refs_key = " + newKey;
 
@@ -253,6 +260,11 @@ rules:
                 cmd := cmd + mgi_DBupdate(tableID, objectKey, set) + 
                        "and _Refs_key = " + key + 
 		       " and _RefsType_key = " + refsType + "\n";
+	      end if;
+
+	      if (table.is_defined("reviewKey") != nil) then
+                set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+                cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then

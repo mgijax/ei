@@ -156,7 +156,6 @@ devents:
 	ModifyGeneFamily :local [];
 	ModifyNomenNotes :local [];
 	ModifySynonym :local [];
-	ModifyReference :local [];
 
 	PrepareSearch :local [];
 
@@ -382,15 +381,15 @@ rules:
 	    top->BroadcastDate->text.value := "";
 	  end if;
 
---	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED) and
---              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
---               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
---            StatusReport.source_widget := top;
---            StatusReport.message := "Primary Reference Required.";
---            send(StatusReport);
---	    top->QueryList->List.sqlSuccessful := false;
---           return;
---	  end if;
+	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED) and
+              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
+               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Primary Reference Required.";
+            send(StatusReport);
+	    top->QueryList->List.sqlSuccessful := false;
+           return;
+	  end if;
 
 	  if (not top.allowEdit) then
 	    top->QueryList->List.sqlSuccessful := false;
@@ -430,7 +429,14 @@ rules:
 	  send(ModifyNomenNotes, 0);
 	  send(ModifyGeneFamily, 0);
 	  send(ModifySynonym, 0);
-	  send(ModifyReference, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentNomenKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
@@ -502,14 +508,14 @@ rules:
 	  value : string;
 	  error : boolean := false;
 
---	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
---              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
---               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
---            StatusReport.source_widget := top;
---            StatusReport.message := "Primary Reference Required.";
---            send(StatusReport);
---            error := true;
---	  end if;
+	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
+              (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
+               mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Primary Reference Required.";
+            send(StatusReport);
+            error := true;
+	  end if;
 
 	  if (not top.allowEdit) then
 	    error := true;
@@ -525,7 +531,8 @@ rules:
 	  end if;
 
 	  if (not (global_login = "ljm" or global_login = "lmm" or 
-		   global_login = "cml" or global_login = "tier4") and
+		   global_login = "cml" or global_login = "csmith" or
+		   global_login = "tc" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
@@ -613,7 +620,14 @@ rules:
 
 	  send(ModifyGeneFamily, 0);
 	  send(ModifySynonym, 0);
-	  send(ModifyReference, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentNomenKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
 	  ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentNomenKey;
@@ -774,61 +788,6 @@ rules:
  
             row := row + 1;
 	  end while;
-	end does;
-
---
--- ModifyReference
---
--- Activated from: devent Add/Modify
---
--- Construct insert/update/delete for Nomen References
---
--- The first row is always the primary reference
---
-
-	ModifyReference does
-          table : widget := top->Reference->Table;
-          row : integer := 0;
-          editMode : string;
-          key : string;
-          newKey : string;
-	  isPrimary : string;
-	  isBroadcast : string;
-	  isReview : string;
-	  set : string := "";
- 
-	  --  Process References
-
-	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
-	  ProcessRefTypeTable.objectKey := currentNomenKey;
-	  send(ProcessRefTypeTable, 0);
-          cmd := cmd + top->Reference->Table.sqlCmd;
-	  return;
-
-	  -- Process updates to Review Status
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (row > 0 and editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-	    isReview := mgi_tblGetCell(table, row, table.reviewKey);
- 
-            if (editMode = TBL_ROW_ADD) then
-              -- update Review? value for row
-              set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-              cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-              cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
-            end if;
- 
-            row := row + 1;
-          end while;
 	end does;
 
 --
@@ -1216,6 +1175,13 @@ rules:
           LoadAcc.tableID := NOM_ACC_REFERENCE;
           LoadAcc.reportError := false;
           send(LoadAcc, 0);
+
+          -- Initialize Option Menus for Reference table, row 0
+
+          SetOptions.source_widget := top->Reference->Table;
+          SetOptions.row := 0;
+          SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+          send(SetOptions, 0);
 
 	  top->QueryList->List.row := Select.item_position;
 	  ClearNomen.reset := true;
