@@ -2466,6 +2466,15 @@ Module: mgiOption
                         form = ExptTextForm;
                     }
                     {
+                      Text5 = ExptToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Text-Radiation Hybrid";
+                      Group: User
+                        searchValue = "TEXT-Radiation Hybrid";
+                        defaultValue = "TEXT-Radiation Hybrid";
+                        form = ExptTextForm;
+                    }
+                    {
                       RI = ExptToggle : mgiOption;
                       Group: User
                         searchValue = RI;
