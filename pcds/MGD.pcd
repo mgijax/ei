@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr  6 08:13:49 2004";
+      lastWritten = "Mon Apr 12 10:44:33 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -6677,13 +6677,6 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  Sequence = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Sequence\")";
-                                    labelString = Sequences;
-                                    traversalOn = False;
-                                }
-                                {
                                   Marker = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Marker\")";
@@ -6698,17 +6691,17 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  Genotypes = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
+                                    labelString = Genotypes;
+                                    traversalOn = False;
+                                }
+                                {
                                   MolecularSegment = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
                                     labelString = "Molecular Probes & Segments";
-                                    traversalOn = False;
-                                }
-                                {
-                                  MolecularSource = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
-                                    labelString = "Clone Libraries";
                                     traversalOn = False;
                                 }
                                 {
@@ -6751,10 +6744,17 @@ Shift<Key>Tab: prev-tab-group()
                                     shadowThickness = 5;
                                 }
                                 {
-                                  Genotypes = XmPushButton;
+                                  Sequence = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
-                                    labelString = Genotypes;
+                                    activateCallback = "D:CreateMGIModule(name = \"Sequence\")";
+                                    labelString = Sequences;
+                                    traversalOn = False;
+                                }
+                                {
+                                  MolecularSource = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSource\")";
+                                    labelString = "Clone Libraries";
                                     traversalOn = False;
                                 }
                                 {
@@ -11385,7 +11385,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Table = mgiTable;
                                   Group: Widget
                                     xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 14;
+                                    xrtTblVisibleRows = 10;
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 15)(all 8 35)";
                                       {
                                         label = XtXrtLabel;
@@ -11432,7 +11432,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Table = mgiTable : mgiTable;
                                   Group: Widget
                                     xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 14;
+                                    xrtTblVisibleRows = 10;
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 20)(all 5 30)(all 6 10)";
                                       {
                                         label = XtXrtLabel;
