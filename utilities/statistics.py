@@ -70,24 +70,6 @@ def error(msg):
 	sys.stderr.write('Error: ' + msg + '\n')
 	sys.exit(1)
 
-def printMsg(fd, msg):
-	'''
-	#
-	# requires: fd, a file descriptor
-	#           msg, a message (string)
-	#
-	# effects:
-	# Prints message to file (if in DEBUG mode)
-	# 
-	#
-	# returns:
-	#
-	'''
-
-	if DEBUG:
-		fd.write(msg + '\n')
-		fd.flush()
-
 def showUsage():
 	'''
 	#
@@ -118,7 +100,6 @@ def init():
 	'''
  
 	global mode, exptKey
-        global DEBUG, diagFile
 
         try:
                 optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:m:e:d')
@@ -161,21 +142,6 @@ def init():
 	# Initialize DBMS parameters
 	db.set_sqlLogin(user, password, server, database)
 
-	# Append to $HOME/.mgd_stats_log
-	home = os.environ['HOME']
-
-        try:
-                diagFile = open(home + '/.mgd_stats_log', 'a')
-        except:
-                error('Could not open file %s/.stats_log' % home)
- 
-	# Initialize logging file descriptor
-	db.set_sqlLogFD(diagFile)
-
-	# If debugging, log all SQL
-	if DEBUG == 1:
-		db.set_sqlLogFunction(db.sqlLogAll)
-
 def removeStats():
 	'''
 	#
@@ -212,8 +178,7 @@ def checkStatistics():
 
 	for result in results:
 		if result[''] != (sequenceNum - 1):
-			printMsg(diagFile, '%d (%d MLD_Statistics) (%d Calculated)\n' \
-				 % (exptKey, result[''] , compareRows))
+			print '%d (%d MLD_Statistics) (%d Calculated)\n' % (exptKey, result[''] , compareRows)
 
 def parseDatalines(datalines, columns = 0):
 	'''
@@ -458,14 +423,14 @@ def processCross():
 	columns = len(results)
 
 	if columns == 0:
-		printMsg(diagFile, 'Experiment %d has Number of Columns = 0\n' % exptKey)
+		print 'Experiment %d has Number of Columns = 0\n' % exptKey
 		return
 
 	# Translate haplotypes
 	comparematrix = parseDatalines(datalines, columns)
 
 	if len(comparematrix) / columns != rows:
-		printMsg(diagFile, 'Experiment %d has errors in its haplotype data\n' % exptKey)
+		print 'Experiment %d has errors in its haplotype data\n' % exptKey
 		return
 
 	c = 0
@@ -566,7 +531,7 @@ def processRI():
 	comparematrix = parseDatalines(datalines, 0)
  
 	if len(comparematrix) % rows != 0:
-		printMsg(diagFile, 'Experiment %d has errors in its haplotype data\n' % exptKey)
+		print 'Experiment %d has errors in its haplotype data\n' % exptKey
 		return
  
 	columns = (len(comparematrix) + 1) / rows;
