@@ -20,7 +20,7 @@
 # Triage Process:  SEE TR 1227
 #
 # Matches are performed on Journal, Year, Volume, First Page
-# Updates are performed iff Medline UI, Title or Abstract is NULL
+# Updates are performed iff Medline UI, PubMed ID, Title or Abstract is NULL
 #
 # Duplicates References are reported in '.duplicates' file
 # Submission References are reported in '.submission' file
@@ -42,6 +42,7 @@
 #	(a record ID, list of export tags and data)
 #
 #	UI  - Medline unique identifier
+#	PMID- PubMed unique identifier
 #	AU  - list of authors in format (NAME II; NAME II; ...)
 #	TI  - title of article
 #	TA  - journal
@@ -87,7 +88,7 @@
 #
 #	lec	02/16/2001
 #	- TR 2290; new PMID in file
-#	- TR ; add PMID accession ID to Reference record
+#	- TR 2298; add PMID accession ID to Reference record
 #
 #	lec	09/12/2000
 #	- TR 1937; numerics showing up in Author names
@@ -559,10 +560,11 @@ def doUpdate(rec, rectags):
  
 		# Update/Add PubMed ID
 
-		if pmidKey is not None:
-          		cmd.append('exec ACC_update %s,%s' % (pmiKey, rec['PMID']))
-		else:	
-          		cmd.append('exec ACC_insert %d,%s,%d,%s' \
+		if rec.has_key('PMID'):
+			if pmidKey is not None:
+          			cmd.append('exec ACC_update %s,%s' % (pmiKey, rec['PMID']))
+			else:	
+          			cmd.append('exec ACC_insert %d,%s,%d,%s' \
 				     	% (refKey, rec['PMID'], PUBMEDKEY, MGITYPE))
 			
 		cmd.append('commit transaction')
