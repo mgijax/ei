@@ -14,13 +14,8 @@ CALLS
          "StructureName *"   <--> opaque;
 		 "xrtlist" <--> opaque;
 
-         "ADI_Structure *" <--> ADIStructure [
-              type : "int";
-              key  : "int";
-              name : "char *";
-         ];
+	ENTRY
 
-	ENTRY 
      init_callbacks();
      parseStages("char *") : "char *";
 
@@ -34,7 +29,6 @@ CALLS
      stagetrees_deleteStructureByKey("int");
      stagetrees_isStageNodeKey("int") : "Boolean";
      
-
      structure_getPreferredStructureName("Structure *") : "StructureName *";
      structure_getNotes("Structure *") : "char *";
      structure_getPrintStop("Structure *") : "Boolean";
@@ -49,11 +43,6 @@ CALLS
     
      structurename_getName("StructureName *") : "char *"; 
      structurename_getStructureNameKey("StructureName *") : "int"; 
-
-     mgi_adi_countStructures() : "int";
-     mgi_adi_getADIStructure("int") : "ADI_Structure *";
-     adi_clipboardInit("Widget", "Widget");
-     adi_clipboardDestroy();
 
      format_stagenum("int") : "char *";
 

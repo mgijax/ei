@@ -18,22 +18,13 @@
 #include <ux_uims.h>
 #include <Xm/Protocols.h>
 
-
-struct clipboardinfo
-{
-  XrtGearObject outliner;
-  Widget clipboard;
-};
-
 static Atom wm_delete_window;  /* X variable needed for graceful shutdown */
-static struct clipboardinfo clipinfo = {NULL,NULL};
 
 static void dictionary_error(char *msg)
 {
    fprintf(stderr,"Dictionary module error: %s\n", msg);
    exit(1);
 }
-
 
 char *parseStages(char *stages_spec)
 {
@@ -102,10 +93,8 @@ char *parseStages(char *stages_spec)
    }
    XrtGearListDestroy(list);
 
-
    return buf;
 }
-
 
 void send_SelectNode_event(DBINT sk)
 {
@@ -129,7 +118,6 @@ void send_SelectNode_event(DBINT sk)
          ux_free_devent(dei);
     }
 }
-
 
 void nodeSelectionCB(Widget widget, XtPointer client_data,
                      XtPointer call_data)
@@ -158,218 +146,9 @@ void nodeSelectionCB(Widget widget, XtPointer client_data,
    }
 }
 
-
 void init_callbacks()
 {
    tu_ccb_define("nodeSelectionCB", (TuCallbackProc)nodeSelectionCB);
-}
-
-
-/* 
- * ##### ADI Clipboard functions  #####
- */
-
-
-void adi_clipboardInit(Widget outliner, Widget clipboard)
-{
-    clipinfo.outliner = outliner;
-    clipinfo.clipboard = clipboard;
-}
-
-
-void adi_clipboardDestroy()
-{
-    clipinfo.outliner = NULL;
-    clipinfo.clipboard = NULL;
-}
-
-
-int adi_countClipboardItems()
-{
-   int row,rows;    
-   int count = 0;
- 
-   /* retrieve each row of the table, examining the sk field
-      If non-"", then it contains an assumed valid key */ 
-
-   if (!clipinfo.clipboard)  /* user hasn't fired up the ADI yet */
-      return -1;
-
-   rows = mgi_tblNumRows(clipinfo.clipboard);
-
-   for (row=0;row<rows;row++)
-   {
-      if (strlen(mgi_tblGetCell(clipinfo.clipboard,
-                                row,CLIPBOARD_SK_INDEX)) > 0)
-         count += 1; 
-   }
-
-   return count;
-}
-
-
-DBINT adi_getCurrentItemKey()
-{
-   XrtGearObject node;
-   DBINT *sk;
-
-   if (!clipinfo.outliner)  /* user hasn't fired up the ADI yet */
-      return -1;
-
-   XtVaGetValues(clipinfo.outliner,
-                 XmNxrtGearNodeCurrent, &node,
-                 NULL);
-
-   if (!node)
-      return -1;
-
-   /* get the userdata for this node */
-
-   XtVaGetValues(node,
-                 XmNuserData, &sk,
-                 NULL);
-
-   if(!sk) return -1;
-
-   return *sk;
-}
-
-
-void adi_getCurrentItem(DBINT *key, char *name)
-{
-   DBINT sk;
-   Structure *structure; 
-
-   if (!clipinfo.outliner)  /* user hasn't fired up the ADI yet */
-      return;
-
-   /* get the userData associated with the node, use it to look up
-      the structure by key */
-
-   sk = adi_getCurrentItemKey();
-
-   if (sk < 0)  /* then there is no current item */
-   {
-       *key = -1;
-       name[0] = '\0';
-       return;
-   }
-
-   structure = stagetrees_getStructureByKey(sk);   
-
-   if(structure)
-   {
-      strncpy(name, format_stagenum(structure_getStage(structure)), 
-              MAXNAMEPREFIX);
-      strncat(name,structure_getPrintName(structure),PRINTNAMELEN);
-      *key = structure_getStructureKey(structure);
-   }
-}
-
-
-int mgi_adi_countStructures()
-{
-   int count;
-   if (!clipinfo.outliner)  /* user hasn't fired up the ADI yet */
-      return 0;
-
-   /* look at the clipboard and count all entries */
-   count = adi_countClipboardItems();
-
-   /* look at the outliner and see if there is a current entry */
-   if (adi_getCurrentItemKey() > 0) 
-       count = count + 1;
-
-   return count;
-}
-
-
-
-void adi_getClipboardItem(int index, DBINT *key,
-                          char *name)
-{
-   int cicount = adi_countClipboardItems();
-   int entrycount, row, rows;
-
-   /* retrieve the 'index'th item in the table */
-   if (cicount < 0 ||
-       index < 0 || 
-       index >= cicount)
-   {
-      *key  = -1;
-      name[0] = '\0';
-      return;
-   }
-
-   /* get the number of rows in the clipboard */
-   rows = mgi_tblNumRows(clipinfo.clipboard);
-
-   /* return the indexth element, but this means skipping deleted entries */
-
-   /* count the number of empty rows between 0 and index (inclusive), and add 
-      this count onto index */
-
-   entrycount = 0;
-
-   for (row=0;row<=rows;row++)
-   {
-       strncpy(name, mgi_tblGetCell(clipinfo.clipboard,row,
-                   CLIPBOARD_NAME_INDEX), PRINTNAMELEN);
-       if (strlen(name) != 0) /* a valid row */
-       {
-          if (entrycount == index)  /* when == to the indexth entry */
-            break;                 /* we've found what we are looking for */
-          entrycount += 1;     /* increment count of entries */
-       }
-   }
-  
-   /* row is the valid row we are interested in */
-
-   *key = atol(mgi_tblGetCell(clipinfo.clipboard,row, CLIPBOARD_SK_INDEX));
-   strncpy(name, mgi_tblGetCell(clipinfo.clipboard,row, CLIPBOARD_NAME_INDEX), PRINTNAMELEN);
-}
-
-
-ADI_Structure *mgi_adi_getADIStructure(int index)
-{
-   static ADI_Structure st = {-1,-1,NULL};
-   int numitems = mgi_adi_countStructures();
-
-   /* allocate the name once.  It isn't static, because D 
-      needs a "char *" in the definition of the analogous D type */
-
-   if (!st.name)
-      st.name = (char *) malloc(PRINTNAMELEN + MAXNAMEPREFIX);
-
-   if (!clipinfo.outliner || index < 0 || index > (numitems - 1)) 
-   {
-      st.type = ADI_STRUCTURE_INVALID;
-      st.key = -1;
-      st.name[0] = '\0';
-      return &(st);
-   }
-
-   if (adi_getCurrentItemKey() > 0) 
-   {
-       if (index == 0)  /* then return the current item */
-       {
-            adi_getCurrentItem(&(st.key), st.name);
-            st.type = ADI_STRUCTURE_CURRENT;
-       }
-       else  /* return the n-1th element of the clipboard */
-       {
-            adi_getClipboardItem(index-1, &(st.key), st.name);
-            st.type = ADI_STRUCTURE_CLIPBOARD;
-       }
-   }
-   else /* then no current item */
-   {
-        /* return the nth element of the clipboard */
-        adi_getClipboardItem(index, &(st.key), st.name);
-        st.type = ADI_STRUCTURE_CLIPBOARD;
-   }
-
-   return &(st); 
 }
 
 
