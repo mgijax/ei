@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 12 08:11:09 2003";
+      lastWritten = "Tue Feb 18 10:19:27 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -142,7 +142,7 @@ Module: GXD
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = separatorGadget;
-                                    bottomAttachment = attach_form;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
                                       {
                                         SourceID : ID = ID : mgiDataTypes;
@@ -182,6 +182,47 @@ Module: GXD
                                       }
                                       {
                                         SexMenu = SexMenu : mgiOption;
+                                      }
+                                }
+                                {
+                                  separatorGadget1 = XmSeparatorGadget;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = SourceForm;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Antibody = Table : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = separatorGadget1;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    bottomOffset = 5;
+                                    topOffset = 5;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 3;
+                                          xrtTblColumnLabels = "Mode,Acc ID,Antibody";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 30)(all 2 75)";
+                                          userDefinedAttributes = "antibody:Int(Int)=\"2\"\naccID:Int=\"1\"\n";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                           }
