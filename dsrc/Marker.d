@@ -137,6 +137,9 @@ devents:
 
 	Search :local [];
 	Select :local [item_position : integer;];
+	SetOptions :local [source_widget : widget;
+			   row : integer;
+			   reason : integer;];
 
 locals:
 	mgi : widget;
@@ -211,6 +214,13 @@ rules:
 
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->CVMarker->MarkerEventMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->CVMarker->MarkerEventReasonMenu;
+	  send(InitOptionMenu, 0);
+
 	end does;
 
 --
@@ -1833,6 +1843,16 @@ rules:
 		else
                   (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 10));
 		end if;
+
+          	-- Initialize Option Menus for row 0
+
+		if (row = 0) then
+          	  SetOptions.source_widget := table;
+          	  SetOptions.row := 0;
+          	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+          	  send(SetOptions, 0);
+		end if;
+
 	      elsif (results = 5) then
 	        table := top->History->Table;
 
@@ -1895,6 +1915,16 @@ rules:
 		end if;
 
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
+          	-- Initialize Option Menus for row 0
+
+		if (row = 0) then
+          	  SetOptions.source_widget := table;
+          	  SetOptions.row := 0;
+          	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+          	  send(SetOptions, 0);
+		end if;
+
 	      end if;
 	      row := row + 1;
 	    end while;
@@ -1942,6 +1972,40 @@ rules:
 
 	  (void) reset_cursor(top);
 	end does;
+
+--
+-- SetOptions
+--
+-- Each time a row is entered, set the option menus based on the values
+-- in the appropriate column.
+--
+-- EnterCellCallback for table.
+--
+ 
+        SetOptions does
+          table : widget := SetOptions.source_widget;
+          row : integer := SetOptions.row;
+	  reason : integer := SetOptions.reason;
+ 
+	  if (reason != TBL_REASON_ENTER_CELL_END) then
+	    return;
+	  end if;
+
+	  if (table.parent.name = "History") then
+            SetOption.source_widget := top->CVMarker->MarkerEventMenu;
+            SetOption.value := mgi_tblGetCell(table, row, table.eventKey);
+            send(SetOption, 0);
+
+            SetOption.source_widget := top->CVMarker->MarkerEventReasonMenu;
+            SetOption.value := mgi_tblGetCell(table, row, table.eventReasonKey);
+            send(SetOption, 0);
+	  else
+            SetOption.source_widget := top->CVMarker->ReviewMenu;
+            SetOption.value := mgi_tblGetCell(table, row, table.reviewKey);
+            send(SetOption, 0);
+	  end if;
+
+        end does;
 
 --
 -- Exit
