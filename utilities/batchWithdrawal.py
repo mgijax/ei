@@ -10,6 +10,7 @@
 #	old MGI Acc ID
 #	new MGI Acc ID
 #	new symbol
+#	new name
 # 
 # This wrapper will execute markerWithdrawal.py for each row in the
 # input file.
@@ -182,7 +183,7 @@ for line in inputFile.readlines():
 
 	errorFound = 0
 
-	[oldID, newID, newSymbol] = string.splitfields(string.rstrip(line), '\t')
+	[oldID, newID, newSymbol, newName] = string.splitfields(string.rstrip(line), '\t')
 
 	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s" and preferred = 1' % (oldID), 'auto')
 
@@ -200,14 +201,15 @@ for line in inputFile.readlines():
 		error('Invalid New Marker Acc ID %s' % (newID), 0)
 		errorFound = 1
 
-	results = db.sql('select symbol, name from MRK_Marker where _Marker_key = %s' % (newKey), 'auto')
+	if eventKey in [3, 4]:
+		results = db.sql('select symbol, name from MRK_Marker where _Marker_key = %s' % (newKey), 'auto')
 
-	if results[0]['symbol'] is not None:
-		newSymbol = results[0]['symbol']
-		newName = results[0]['name']
-	else:
-		error('Invalid New Marker Name/Symbol %s' % (newID), 0)
-		errorFound = 1
+		if results[0]['symbol'] is not None:
+			newSymbol = results[0]['symbol']
+			newName = results[0]['name']
+		else:
+			error('Invalid New Marker Name/Symbol %s' % (newID), 0)
+			errorFound = 1
 
 	if not errorFound:
 		cmd = '%s ' % (WITHDRAWALPROG) + \
