@@ -225,6 +225,16 @@ To access this form, choose
 <P>
 <LI>The deletion of a master Molecular Segment record will delete the Molecular Segment and all
     of its References.
+<P>
+<LI>The editing of <I>ESTs</I> are prohibited.  <I>ESTs</I> will be removed from the database
+    with the implementation of TR554.  In the meantime, if the user attempts to add, modify or
+    delete a Molecular Segment with a Sequence Type of <I>EST</I> the following error message(s)
+    will be displayed:
+	<PRE>
+	Cannot add EST records.
+	Cannot modify EST records.
+	Cannot delete EST records.
+	</PRE>
 </OL>
 
 <H4>Triggers/Views/Stored Procedures for Molecular Segment tables (<I>PRB_</I>)</H4>
