@@ -58,3 +58,5 @@ quit
 
 END
 
+cat trailer >> $HOME/mgireport/$0.rpt
+
