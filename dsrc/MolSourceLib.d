@@ -140,13 +140,13 @@ rules:
  
 	  top.sql := add;
  
-	  if (top->Library.managed) then
-	    ProcessNoteForm.notew := top->mgiNoteForm;
-	    ProcessNoteForm.tableID := MGI_NOTE;
-	    ProcessNoteForm.objectKey := keyLabel;
-	    send(ProcessNoteForm, 0);
-	    top.sql := top.sql + top->mgiNoteForm.sql;
-	  end if;
+--	  if (top->Library.managed) then
+--	    ProcessNoteForm.notew := top->mgiNoteForm;
+--	    ProcessNoteForm.tableID := MGI_NOTE;
+--	    ProcessNoteForm.objectKey := keyLabel;
+--	    send(ProcessNoteForm, 0);
+--	    top.sql := top.sql + top->mgiNoteForm.sql;
+--	  end if;
 
         end does;
  
@@ -336,12 +336,12 @@ rules:
  
           (void) dbclose(dbproc);
 
-	  if (sourceForm->Library.managed) then
-	    LoadNoteForm.notew := sourceForm->mgiNoteForm;
-	    LoadNoteForm.tableID := MGI_NOTE_SOURCE_VIEW;
-	    LoadNoteForm.objectKey := key;
-	    send(LoadNoteForm, 0);
-	  end if;
+--	  if (sourceForm->Library.managed) then
+--	    LoadNoteForm.notew := sourceForm->mgiNoteForm;
+--	    LoadNoteForm.tableID := MGI_NOTE_SOURCE_VIEW;
+--	    LoadNoteForm.objectKey := key;
+--	    send(LoadNoteForm, 0);
+--	  end if;
 
 	  -- Reset the SourceForm
 
@@ -374,9 +374,9 @@ rules:
 
 	  -- Initialize Notes form
 
-	  InitNoteForm.notew := top->mgiNoteForm;
-	  InitNoteForm.tableID := MGI_NOTETYPE_SOURCE_VIEW;
-	  send(InitNoteForm, 0);
+--	  InitNoteForm.notew := top->mgiNoteForm;
+--	  InitNoteForm.tableID := MGI_NOTETYPE_SOURCE_VIEW;
+--	  send(InitNoteForm, 0);
 
 	  LoadList.list := top.root->CloneLibrarySetList;
 	  send(LoadList, 0);
@@ -473,13 +473,13 @@ rules:
 	    set := set + "age = " + mgi_DBprstr(age) + ",";
           end if;
  
-	  if (top->Library.managed) then
-	    ProcessNoteForm.notew := top->mgiNoteForm;
-	    ProcessNoteForm.tableID := MGI_NOTE;
-	    ProcessNoteForm.objectKey := top->SourceID->text.value;
-	    send(ProcessNoteForm, 0);
-	    top.sql := top.sql + top->mgiNoteForm.sql;
-	  end if;
+--	  if (top->Library.managed) then
+--	    ProcessNoteForm.notew := top->mgiNoteForm;
+--	    ProcessNoteForm.tableID := MGI_NOTE;
+--	    ProcessNoteForm.objectKey := top->SourceID->text.value;
+--	    send(ProcessNoteForm, 0);
+--	    top.sql := top.sql + top->mgiNoteForm.sql;
+--	  end if;
 
 	  if (set.length > 0) then
 	    set := set + "isCuratorEdited = " + isCuratorEdited + ",";
@@ -657,19 +657,19 @@ rules:
 	  -- remove noteTypeKey and just have one call to SearchNoteForm
 	  -- to search all note types
 
-	  if (top.top.name = "MolecularSourceModule") then
-	    i := 1;
-	    while (i <= top->mgiNoteForm.numChildren) do
-	      SearchNoteForm.notew := top->mgiNoteForm;
-	      SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
-	      SearchNoteForm.tableID := MGI_NOTE_SOURCE_VIEW;
-              SearchNoteForm.join := "s." + mgi_DBkey(PRB_SOURCE);
-	      send(SearchNoteForm, 0);
-	      from := from + top->mgiNoteForm.sqlFrom;
-	      where := where + top->mgiNoteForm.sqlWhere;
-	      i := i + 1;
-	    end while;
-	  end if;
+--	  if (top.top.name = "MolecularSourceModule") then
+--	    i := 1;
+--	    while (i <= top->mgiNoteForm.numChildren) do
+--	      SearchNoteForm.notew := top->mgiNoteForm;
+--	      SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+--	      SearchNoteForm.tableID := MGI_NOTE_SOURCE_VIEW;
+--            SearchNoteForm.join := "s." + mgi_DBkey(PRB_SOURCE);
+--	      send(SearchNoteForm, 0);
+--	      from := from + top->mgiNoteForm.sqlFrom;
+--	      where := where + top->mgiNoteForm.sqlWhere;
+--	      i := i + 1;
+--	    end while;
+--	  end if;
 
 	  if (top->Library->text.value.length > 0) then
 	    where := where + " and s.name like " + mgi_DBprstr(top->Library->text.value);
