@@ -94,16 +94,13 @@ rules:
 	  envList := create list("string");
 	  envList.append("APP");
 	  envList.append("DSQUERY");
-	  envList.append("MGD");
 	  envList.append("SYBASE");
+	  envList.append("MGD");
+	  envList.append("NOMEN");
 
 	  if (global_application = "MGD" or
 	      global_application = "GXD") then
 	    envList.append("STRAINS");
-	  end if;
-
-	  if (global_application = "NOMEN") then
-	    envList.append("NOMEN");
 	  end if;
 
 	  envList.open;
