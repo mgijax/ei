@@ -30,6 +30,7 @@ devents:
         BuildDynamicComponents :local [];
 	ClearSequence :local [clearKeys : boolean := true;
 			      reset : boolean := false;];
+	CreateSourceColumns :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -46,14 +47,16 @@ locals:
 	mgi : widget;
 	top : widget;
 	ab : widget;
-	accTable : widget;
-	modTable : widget;
 	tables : list;
 --	clearLists : integer := 7;
 
 	cmd : string;
 	from : string;
 	where : string;
+
+	accTable : widget;
+	modTable : widget;
+	sourceTable : widget;
 
         currentKey : string;      -- Primary Key value of currently selected Master record
                                   -- Initialized in Select[] and Add[] events
@@ -155,6 +158,7 @@ rules:
 
 	  accTable := top->AccessionReference->Table;
 	  modTable := top->Control->ModificationHistory->Table;
+	  sourceTable := top->SourceInfo->Table;
 
 	  -- List of all Table widgets used in form
 
@@ -302,11 +306,93 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct a._Object_key, a.accID + ',' + s.sequenceType + ',' + s.sequenceProvider\n" + 
+	  Query.select := "select a._Object_key, a.accID + ',' + s.sequenceType + ',' + s.sequenceProvider\n" + 
 	      from + "\n" + where + "\norder by s.sequenceType, a.accID\n";
 	  Query.table := SEQ_SEQUENCE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- CreateSourceColumns
+--
+-- Retrieves Source information for currently selected record
+-- Creates appropriate number of columns in the SourceInfo table
+--
+
+	CreateSourceColumns does
+	  numSources : integer := 0;
+	  hasSources : integer := 0;
+	  begCol : integer;
+	  endCol : integer;
+	  sourceCol : integer;
+	  newColLabels : string;
+	  newPixelWidthSeries : string;
+	  newCharWidthSeries : string;
+	  b : integer;
+
+	  -- How many Sources is the sourceTable ready for?
+
+	  hasSources := (mgi_tblNumColumns(sourceTable) - 1) / sourceTable.sourceIncrement;
+
+	  -- Retrieve number of Sources for Segment
+
+	  if (currentKey.length > 0) then
+	    numSources := 
+	      (integer) mgi_sql1("select count(*) from SEQ_Source_Assoc where _Sequence_key = " + currentKey);
+	  end if;
+
+	  -- Add/Delete columns to support needed number of Sources
+
+	  if (hasSources < numSources) then
+	    while (hasSources < numSources) do
+	      AddTableColumn.table := sourceTable;
+	      AddTableColumn.numColumns := sourceTable.sourceIncrement;
+	      send(AddTableColumn, 0);
+	      hasSources := hasSources + 1;
+	    end while;
+	  elsif (hasSources > numSources) then
+	    while (hasSources > numSources) do
+	      DeleteTableColumn.table := sourceTable;
+	      DeleteTableColumn.position := mgi_tblNumColumns(sourceTable) - sourceTable.sourceIncrement;
+	      DeleteTableColumn.numColumns := sourceTable.sourceIncrement;
+	      send(DeleteTableColumn, 0);
+	      hasSources := hasSources - 1;
+	    end while;
+	  end if;
+
+	  -- Modify sourceTable attributes
+
+	  if (numSources > 1) then
+	    begCol := sourceTable.sourceMode + sourceTable.sourceIncrement;
+	    endCol := sourceTable.valueKey + sourceTable.sourceIncrement;
+	    sourceCol := sourceTable.source + sourceTable.sourceIncrement;
+	    newColLabels := "Raw,Mode,Assoc key,Source key,Value key,Source";
+	    newPixelWidthSeries := "(all 1-4 0)";
+	    newCharWidthSeries := "(all 0 65)(all 1 1)(all 2-4 10)(all 5 65)";
+
+	    b := 1;
+	    while (b <= hasSources) do
+	      newColLabels := newColLabels + ",Mode,Assoc key,Source key,Value key,Source";
+	      newPixelWidthSeries := newPixelWidthSeries + " (all " + (string) begCol + "-" + (string) endCol + " 0)";
+	      newCharWidthSeries := newCharWidthSeries + 
+		  " (all " + (string) begCol + " 1)" +
+		  " (all " + (string) sourceCol + " 65)";
+	      b := b + 1;
+	      begCol := begCol + sourceTable.sourceIncrement;
+	      endCol := endCol + sourceTable.sourceIncrement;
+	      sourceCol := sourceCol + sourceTable.sourceIncrement;
+	    end while;
+
+	    if (hasSources > 0) then
+	      sourceTable.batch;
+	      sourceTable.xrtTblColumnLabels := newColLabels;
+	      sourceTable.xrtTblPixelWidthSeries := newPixelWidthSeries;
+	      sourceTable.xrtTblCharWidthSeries := newCharWidthSeries;
+	      sourceTable.unbatch;
+	    end if;
+          end if;
+
 	end does;
 
 --
@@ -341,15 +427,23 @@ rules:
           table : widget;
 	  currentKey := top->QueryList->List.keys[Select.item_position];
 
+	  send(CreateSourceColumns, 0);
+
 	  cmd := "select * from SEQ_Sequence_View where _Sequence_key = " + currentKey + "\n" +
 		"select s._Assoc_key, v.* from SEQ_Source_Assoc s, PRB_Source_View v\n" +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = v._Source_key\n" +
+		"order by v._Organism_key\n" +
 		"select * from SEQ_Marker_View where sequencekey = " + currentKey + "\n" +
 		"select * from SEQ_MolecularSegment_View where sequencekey = " + currentKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
+	  assocKeyColumn : integer := sourceTable.assocKey;
+	  sourceKeyColumn : integer := sourceTable.sourceKey;
+	  sourceModeColumn : integer := sourceTable.sourceMode;
+	  sourceColumn : integer := sourceTable.source;
+	  valueKeyColumn : integer := sourceTable.valueKey;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -372,9 +466,7 @@ rules:
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 24));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 31));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 25));
---		(void) mgi_tblSetCell(table, table.seqRecordDate, table.byUser, mgi_getstr(dbproc, 31));
 		(void) mgi_tblSetCell(table, table.seqRecordDate, table.byDate, mgi_getstr(dbproc, 22));
---		(void) mgi_tblSetCell(table, table.sequenceDate, table.byUser, mgi_getstr(dbproc, 31));
 		(void) mgi_tblSetCell(table, table.sequenceDate, table.byDate, mgi_getstr(dbproc, 23));
 
                 SetOption.source_widget := top->SequenceTypeMenu;
@@ -407,14 +499,47 @@ rules:
 		(void) mgi_tblSetCell(table, table.cellLine, table.rawSource, mgi_getstr(dbproc, 18));
 
 	      elsif (results = 2) then
-		table := top->SourceInfo->Table;
-		(void) mgi_tblSetCell(table, table.library, table.source1, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(table, table.organism, table.source1, mgi_getstr(dbproc, 21));
-		(void) mgi_tblSetCell(table, table.strain, table.source1, mgi_getstr(dbproc, 22));
-		(void) mgi_tblSetCell(table, table.tissue, table.source1, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(table, table.age, table.source1, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.gender, table.source1, mgi_getstr(dbproc, 26));
-		(void) mgi_tblSetCell(table, table.cellLine, table.source1, mgi_getstr(dbproc, 27));
+
+		-- store association key, source key and source mode on each row
+
+		row := sourceTable.library;
+		while (row <= sourceTable.cellLine) do
+		  (void) mgi_tblSetCell(sourceTable, row, assocKeyColumn, mgi_getstr(dbproc, 1));
+		  (void) mgi_tblSetCell(sourceTable, row, sourceKeyColumn, mgi_getstr(dbproc, 2));
+		  (void) mgi_tblSetCell(sourceTable, row, sourceModeColumn, TBL_ROW_NOCHG);
+		  row := row + 1;
+		end while;
+
+		-- store value key/value pairs
+
+		(void) mgi_tblSetCell(sourceTable, sourceTable.library, valueKeyColumn, "");
+		(void) mgi_tblSetCell(sourceTable, sourceTable.library, sourceColumn, mgi_getstr(dbproc, 11));
+
+		(void) mgi_tblSetCell(sourceTable, sourceTable.organism, valueKeyColumn, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(sourceTable, sourceTable.organism, sourceColumn, mgi_getstr(dbproc, 21));
+
+		(void) mgi_tblSetCell(sourceTable, sourceTable.strain, valueKeyColumn, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(sourceTable, sourceTable.strain, sourceColumn, mgi_getstr(dbproc, 22));
+
+		(void) mgi_tblSetCell(sourceTable, sourceTable.tissue, valueKeyColumn, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(sourceTable, sourceTable.tissue, sourceColumn, mgi_getstr(dbproc, 24));
+
+		(void) mgi_tblSetCell(sourceTable, sourceTable.age, valueKeyColumn, "");
+		(void) mgi_tblSetCell(sourceTable, sourceTable.age, sourceColumn, mgi_getstr(dbproc, 13));
+
+		(void) mgi_tblSetCell(sourceTable, sourceTable.gender, valueKeyColumn, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(sourceTable, sourceTable.gender, sourceColumn, mgi_getstr(dbproc, 26));
+
+		(void) mgi_tblSetCell(sourceTable, sourceTable.cellLine, valueKeyColumn, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(sourceTable, sourceTable.cellLine, sourceColumn, mgi_getstr(dbproc, 27));
+
+		-- increment column indexes
+
+		assocKeyColumn := assocKeyColumn + sourceTable.sourceIncrement;
+		sourceKeyColumn := sourceKeyColumn + sourceTable.sourceIncrement;
+		sourceModeColumn := sourceModeColumn + sourceTable.sourceIncrement;
+		sourceColumn := sourceColumn + sourceTable.sourceIncrement;
+		valueKeyColumn := valueKeyColumn + sourceTable.sourceIncrement;
 
 	      elsif (results = 3 or results = 4) then
 		table := top->ObjectAssociation->Table;
@@ -425,6 +550,7 @@ rules:
 	      end if;
             end while;
 	    results := results + 1;
+	    row := 0;
           end while;
 
 	  (void) dbclose(dbproc);
