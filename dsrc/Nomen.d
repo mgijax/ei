@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- jsb 05/02/2001
+--	- revised code in Modify so that we can modify basic info without
+--	  also changing the notes (bug introduced recently)
+--
 -- lec 04/23/2001
 --	- TR 2515; added 'cml' as Tier4
 --
@@ -603,12 +607,13 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
 
-	  -- Do this last because it may set updateModDate to false
-	  send(ModifyNomenNotes, 0);
-
+	  -- Moved up before the "send" below because we test 'updateModDate'
 	  if (updateModDate and (cmd.length > 0 or set.length > 0)) then
 	    cmd := cmd + mgi_DBupdate(MRK_NOMEN, currentNomenKey, set);
 	  end if;
+
+	  -- Do this last because it may set updateModDate to false
+	  send(ModifyNomenNotes, 0);
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
