@@ -295,6 +295,13 @@ rules:
             return;
           end if;
 
+	  if (top->Annotation->SearchObsoleteTerm.set) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot save this Annotation if the 'Search Obsolete Term' toggle is set.";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
+
 	  (void) busy_cursor(top);
 
 	  if (annotTable.annotVocab = "GO") then

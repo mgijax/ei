@@ -3009,7 +3009,7 @@ rules:
 	    end if;
 
 	    if (sourceWidget.parent->SearchObsoleteTerm != nil) then
-	      if (sourceWidget.parent->SearchObsoleteTerm.set = true) then
+	      if (sourceWidget.parent->SearchObsoleteTerm.set) then
 		searchObsolete := true;
 	      end if;
 	    end if;
