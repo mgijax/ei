@@ -128,6 +128,7 @@ rules:
 	  AddMolecularSource.master := true;
 	  send(AddMolecularSource, 0);
 
+	  cmd := "";
 	  send(ModifyCloneLibrarySet, 0);
 
 	  if (top->SourceForm.sql.length = 0) then
