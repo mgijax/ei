@@ -80,7 +80,7 @@ int mgi_dbinit(char *user, char *pwd)
 
   if ((dbproc = dbopen(loginrec, global_server)) == (DBPROCESS *) NULL)
   {
-    send_status("Login Failed");
+    send_status("Login Failed", 0);
     return(0);
   }
 
@@ -92,7 +92,7 @@ int mgi_dbinit(char *user, char *pwd)
 
   if ((pf = fopen(passwdfile, "w")) == (FILE *) NULL)
   {
-    send_status("Cannot create password file");
+    send_status("Cannot create password file", 0);
     return(0);
   }
 
@@ -109,7 +109,7 @@ int mgi_dbinit(char *user, char *pwd)
   {
     if (mkdir(reportdir, 0775) == -1)
     {
-      send_status("Cannot create report directory");
+      send_status("Cannot create report directory", 0);
       return(0);
     }
   }
@@ -124,13 +124,13 @@ int mgi_dbinit(char *user, char *pwd)
 
   if (putenv(server) != 0)
   {
-    send_status(server);
+    send_status(server, 0);
     return(0);
   }
 
   if (putenv(database) != 0)
   {
-    send_status(database);
+    send_status(database, 0);
     return(0);
   }
 
@@ -159,7 +159,7 @@ DBPROCESS *mgi_dbopen()
   dbproc = dbopen(loginrec, global_server);
 
   if (dbuse(dbproc, global_database) == FAIL)
-    send_status("DBUSE Failed");
+    send_status("DBUSE Failed", 0);
 
   return(dbproc);
 }
@@ -404,7 +404,7 @@ void mgi_execute_search(Widget dialog, Widget list, char *cmd, int table, char *
   if (strcmp(rowcount, "0") != 0)
   {
     if (dbsetopt(search_proc, DBROWCOUNT, ROWLIMIT, -1) == FAIL)
-      send_status("Setting of DBROWCOUNT Failed.");
+      send_status("Setting of DBROWCOUNT Failed.", 0);
   }
 
   dbcmd(search_proc, cmd);
@@ -419,29 +419,29 @@ int mgi_err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char 
   switch (dberr)
   {
     case SYBESEOF:
-      (void) send_status("Server Died");
+      (void) send_status("Server Died", 0);
       return(INT_CANCEL);
       break;
 
     case SYBEPWD:
-      (void) send_status("Login Failed");
+      (void) send_status("Login Failed", 0);
       return(INT_CANCEL);
       break;
 
     case SYBETIME:
-      (void) send_status("Timeout From Server");
+      (void) send_status("Timeout From Server", 0);
       return(INT_CONTINUE);
       break;
 
     case SYBEFCON:
-      (void) send_status("Timeout On Login");
+      (void) send_status("Timeout On Login", 0);
       return(INT_CONTINUE);
       break;
 
     case SYBESMSG:
       if (severity > 16)
       {
-        (void) send_status("Fatal Server Error");
+        (void) send_status("Fatal Server Error", 0);
 	return(INT_EXIT);
       }
       else
@@ -456,18 +456,21 @@ int mgi_err_handler(DBPROCESS *dbproc, int severity, int dberr, int oserr, char 
  
 /* Message handler for Sybase */
 
-int mgi_msg_handler(dbproc, msgno, msgstate, severity, msgtext, srvname, procname, line)
-DBPROCESS *dbproc;
-DBINT msgno;
-int msgstate;
-int severity;
-char *msgtext;
-char *srvname;
-char *procname;
-DBUSMALLINT line;
+int mgi_msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, char *msgtext, char *srvname, char *procname, DBUSMALLINT line)
 {
+  static int serverID = -1;
+  int appendMsg = 0;
+
+  /* If same server process, set append message flag */
+
+  if ((serverID == dbspid(dbproc)) && msgno == 0)
+    appendMsg = 1;
+    
+  serverID = dbspid(dbproc);
+
   if (severity > 0 || msgno == 0)
-    (void) send_status(msgtext);
+    (void) send_status(msgtext, appendMsg);
+
   return(FAIL);
 }
 
@@ -516,16 +519,17 @@ static void send_insertlist()
 
 /* Send event StatusReport */
 
-static void send_status(char *msg)
+static void send_status(char *msg, int appendMsg)
 {
   tu_status_t status;
-  ux_devent_instance dei;
+  tu_event_instance dei;
 
-  dei = ux_get_devent ("StatusReport", NULL, 0, &status);
+  dei = tu_create_named_event ("StatusReport", &status);
 
   if (status.all == tu_status_ok)
   {
     tu_assign_event_field(dei, "message", XtRString, (tu_pointer) msg, &status);
+    tu_assign_event_field(dei, "appendMessage", XtRInt, appendMsg, &status);
     tu_dispatch_event(dei);
     tu_free_event(dei);
   }
