@@ -1994,8 +1994,8 @@ class Marker:
 		#
 		'''
 
-		cmd = 'exec MRK_simpleWithdrawal %d, "%s", "%s", "%s", "%s"' \
-			% (self.getKey(), self.getSymbol(), new.getSymbol(), new.getName(), self.getJnum())
+		cmd = 'exec MRK_simpleWithdrawal %d, "%s", "%s", "%s"' \
+			% (self.getKey(), new.getSymbol(), new.getName(), self.getJnum())
 		mgdlib.sql(cmd, None)
 
 		# now get the new key of the old symbol....for symbolchg.py
