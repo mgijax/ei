@@ -5,6 +5,10 @@
 --
 -- History
 --
+-- lec 08/20/1999
+--	- PrintFile; check for orientation value length before
+--	  including in option list
+--
 -- lec 04/09/1999
 --	- PrintFile; use env PRINTER if set
 --	- PrintFile; add Orientation and Column options
@@ -569,7 +573,11 @@ rules:
           print : string_list := create string_list();
           print.insert("/usr/local/bin/enscript", print.count + 1);
           print.insert("-P" + printer, print.count + 1);
-          print.insert(orientation, print.count + 1);
+
+	  if (orientation.length > 0) then
+            print.insert(orientation, print.count + 1);
+	  end if;
+
           print.insert(filename, print.count + 1);
 
 	  PrintEnd.dialog := dialog;
