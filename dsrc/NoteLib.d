@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 07/11/2001
+--	- TR 2711; added AppendNote
+--
 -- lec 03/19/2001-03/20/2001
 --	- Renamed NoteLib.d from Note.d
 --	- Created NoteLib.de
@@ -585,6 +588,25 @@ rules:
 	    i := i + 1;
 	  end while;
 
+	end does;
+
+--
+-- AppendNote
+--
+-- Append special text in the Notes field
+--
+
+	AppendNote does
+	  top : widget := AppendNote.source_widget.top;
+	  sourceWidget : widget := AppendNote.source_widget;
+	  noteWidget : widget := top->(sourceWidget.noteWidget);
+	  oldValue : string := "";
+
+	  if (noteWidget->text.value.length > 0) then
+		oldValue := noteWidget->text.value + "  ";
+	  end if;
+
+	  noteWidget->text.value := oldValue + sourceWidget.note;
 	end does;
 
 end dmodule;

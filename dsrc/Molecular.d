@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- lec 07/11/2001
+--	- TR 2706; added RiboProbe note; replaced KFMemorial with AppendNote
+--	  (see NoteLib.d)
+--
 -- lec 01/15/2001
 --	- TR 2192 ; change KFMemorial to append rather than replace
 --
@@ -83,7 +87,6 @@ devents:
 	DisplayParentSource :translation [];
 	Exit :local [];
 	Init :local [];
-	KFMemorialMolSeg :local [];
 
 	Modify :local [];
 	ModifyMarker :local [];
@@ -489,23 +492,6 @@ rules:
 
           (void) reset_cursor(top);
         end does;
-
---
--- KFMemorialMolSeg
---
--- Append special text in the Notes field
---
-
-	KFMemorialMolSeg does
-	  oldValue : string := "";
-
-	  if (top->MolNote->text.value.length > 0) then
-		oldValue := top->MolNote->text.value + "  ";
-	  end if;
-
-	  top->MolNote->text.value := oldValue +
-		"This clone is derived from a gene that produces alternate transcripts.";
-	end does;
 
 --
 -- Modify

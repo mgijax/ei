@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  07/11/2001
+--	- TR 2706; replaced StagingNotNormalized w/ AppendNote (see NoteLib.d)
+--
 -- lec  06/13/2001
 --	- TR 2592; added StagingNotNormalized
 --	- TR 2556; added ClearIndex to set starting column
@@ -54,7 +57,6 @@ devents:
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [];
-	StagingNotNormalized :local [];
 
 locals:
 	mgi : widget;		-- Main Application Widget
@@ -468,23 +470,6 @@ rules:
 	  send(SetXCellsToFlash, 0);
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- StagingNotNormalized
---
--- Append special text in the Notes field
---
-
-	StagingNotNormalized does
-	  oldValue : string := "";
-
-	  if (top->Note->text.value.length > 0) then
-		oldValue := top->Note->text.value + "  ";
-	  end if;
-
-	  top->Note->text.value := oldValue +
-		"Staging not normalized.";
 	end does;
 
 --

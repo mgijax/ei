@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Jun 14 11:33:45 2001";
+      lastWritten = "Wed Jul 11 10:20:47 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -2156,9 +2156,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  StagingNotNormalized = push : mgiDataTypes;
+                                  StagingNotNormalized = AppendNotePush : mgiDataTypes;
                                   Group: Widget
-                                    activateCallback = "D:StagingNotNormalized";
                                     labelString = "Staging Not Normalized";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -2169,6 +2168,9 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    note = "Staging not normalized.";
+                                    noteWidget = Note;
                                 }
                                 {
                                   Stage = TableLabel : mgiTable;

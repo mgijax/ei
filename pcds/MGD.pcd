@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jun 27 13:52:08 2001";
+      lastWritten = "Wed Jul 11 10:18:07 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -2725,9 +2725,7 @@ Module: MGD
                     }
               }
               {
-                KFMemorial = push : mgiDataTypes;
-                Group: Widget
-                  activateCallback = "D:KFMemorialMolSeg";
+                KFMemorial = AppendNotePush : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = MolNote;
@@ -2738,6 +2736,24 @@ Module: MGD
                   bottomAttachment = attach_form;
                   resizable = true;
                   bottomOffset = 5;
+                Group: User
+                  noteWidget = MolNote;
+                  note = "This clone is derived from a gene that produces alternate transcripts.";
+              }
+              {
+                Riboprobe = AppendNotePush : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = KFMemorial;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = KFMemorial;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  note = "This clone was used to generate a riboprobe.";
+                  noteWidget = MolNote;
               }
         }
         {

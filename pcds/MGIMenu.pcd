@@ -2,7 +2,7 @@ Module: MGIMenu
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 29 11:30:41 2000";
+      lastWritten = "Wed Jul 11 10:27:06 2001";
         {
           MGIMenu = TopLevelShell;
           Group: Widget
@@ -52,7 +52,7 @@ Module: MGIMenu
                                 {
                                   MGDPROD = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/mgd/runmgd\")";
+                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/prod/mgd/runmgd\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "MGD Production";
@@ -60,7 +60,7 @@ Module: MGIMenu
                                 {
                                   GXDPROD = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/gxd/rungxd\")";
+                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/prod/gxd/rungxd\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "GXD Production";
@@ -71,7 +71,7 @@ Module: MGIMenu
                                 {
                                   MGDDEV = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/mgd/runmgd-dev\")";
+                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/dev/mgd/runmgd\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "MGD Development";
@@ -79,7 +79,7 @@ Module: MGIMenu
                                 {
                                   GXDDEV = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/gxd/rungxd-dev\")";
+                                    activateCallback = "D:ForkIt(app = \"/usr/local/mgi/ei/dev/gxd/rungxd\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "GXD Development";
