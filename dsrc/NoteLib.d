@@ -601,12 +601,17 @@ rules:
 	  sourceWidget : widget := AppendNote.source_widget;
 	  noteWidget : widget := top->(sourceWidget.noteWidget);
 	  oldValue : string := "";
+	  newValue : string := "";
 
 	  if (noteWidget->text.value.length > 0) then
 		oldValue := noteWidget->text.value + "  ";
 	  end if;
 
-	  noteWidget->text.value := oldValue + sourceWidget.note;
+	  newValue := oldValue + sourceWidget.note;
+
+	  if (newValue.length <= noteWidget->text.maxLength) then
+	    noteWidget->text.value := newValue;
+	  end if;
 	end does;
 
 end dmodule;
