@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 30 09:37:20 2003";
+      lastWritten = "Fri Jan 16 14:03:21 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2796,6 +2796,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI23 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI24 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
