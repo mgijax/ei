@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 08/16/2001
+--	- TR 2846; VerifyAllele; don't launch Allele module upon invalid entry
+--
 -- lec 06/27/2001
 --	- TR 2671; use key.defaultValue and item.defaultValue
 --	  in VerifyItem
@@ -661,7 +664,6 @@ rules:
 	  value : string;
 	  verifyAdd : boolean := VerifyAllele.verifyAdd;
 	  isTable : boolean;
-	  alleletop : widget;
 
 	  -- Relevant for Tables only
 	  row : integer := 0;
@@ -790,7 +792,7 @@ rules:
 
 	        -- If No Alleles Exist, inform user
 
-                if (alleleKeys.count = 0 and not verifyAdd) then
+                if (alleleKeys.count = 0) then
 
                   if (markerKey.length > 0 and markerKey != "NULL") then
                     message := "The allele... \n\n'" + value + 
@@ -810,56 +812,6 @@ rules:
 
                   (void) reset_cursor(top);
                   return;
-
-                -- If okay to add a new allele...
-
-		elsif (alleleKeys.count = 0 and verifyAdd) then
-
-                  if (markerKey.length = 0 or markerKey = "NULL") then
-                    StatusReport.source_widget := root;
-                    StatusReport.message := "The allele... \n\n'" + VerifyAllele.value +  "'\n\ndoes not exist.\n\n" +
-                        "If you want to add this allele to the database, you MUST specify a Marker symbol.\n";
-                    send(StatusReport);
-
-                    if (isTable) then
-                      (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
-                      VerifyAllele.doit := (integer) false;
-                    end if;
-
-                    (void) reset_cursor(top);
-                    return;
-                  end if;
-
-		  -- If "Allele" Module is not already instantiated, create it
-
-		  if (root.parent->mgiModules->Allele.sensitive = true) then
-		    (void) create dmodule("Allele", root.parent, top);
-		    alleletop := root.parent->AlleleModule;
-		  else
-		    alleletop := root.parent->AlleleModule;
-		    -- for some reason, this does not work properly on the Mac....
-		    -- alleletop.front := true;
-		    -- so we unmanage, then manage...
-		    alleletop.managed := false;
-		    alleletop.managed := true;
-		  end if;
-
-		  -- If no item is selected, then default the fields
-		  if (alleletop->QueryList->List.selectedItemCount = 0 and
-		      alleletop->mgiMarker->Marker->text.value.length = 0) then
-		    alleletop->mgiMarker->ObjectID->text.value := markerKey;
-		    alleletop->mgiMarker->Marker->text.value := markerSymbol;
-		    alleletop->Symbol->text.value := value;
-		    (void) XmProcessTraversal(alleletop->Name->text, XmTRAVERSE_CURRENT);
-		  end if;
-
-		  if (isTable) then
-	            (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
-	            VerifyAllele.doit := (integer) false;
-		  end if;
-
-                  (void) reset_cursor(top);
-	          return;
 
                 elsif (alleleKeys.count = 1) then
 	          whichMarker := 0;

@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- 08/16/2001 lec
+--	- TR 2846; removed "launchedFrom" parameter since we no longer
+--	  launch this module from anywhere except the menu
+--
 -- 03/04/2001 lec
 --	- TR 2217; Allele Enhancements
 --	- TR 1939; Allele Nomenclature
@@ -31,8 +35,7 @@ dmodule Allele is
 
 devents:
 
-	INITIALLY [parent : widget;
-		   launchedFrom : widget;];
+	INITIALLY [parent : widget;];
 	Add :local [];
 	BuildDynamicComponents :local [];
 	Delete :local [];
@@ -64,7 +67,6 @@ devents:
 locals:
 	mgi : widget;
 	top : widget :exported; -- exported so VerifyAllele can access this value
-	launchedFrom : widget;
 	accTable : widget;
 
 	cmd : string;
@@ -92,7 +94,6 @@ rules:
 
 	INITIALLY does
 	  mgi := INITIALLY.parent;
-	  launchedFrom := INITIALLY.launchedFrom;
 
 	  (void) busy_cursor(mgi);
 
@@ -330,14 +331,6 @@ rules:
 	  end if;
 
 	  (void) reset_cursor(top);
-
-	  -- if module was not created from main menu, then destroy it
-	  -- it was launched from within another application for the
-	  -- purpose of adding a non-existent allele record
-
-	  if (top->QueryList->List.sqlSuccessful and launchedFrom != mgi) then
-	    send(Exit, 0);
-	  end if;
 	end does;
 
 --
