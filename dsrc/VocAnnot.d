@@ -921,6 +921,7 @@ rules:
 			mgi_DBtable(VOC_ANNOT) + " a," +
 			mgi_DBtable(VOC_EVIDENCE) + " e" +
 			" where a._Annot_key = e._Annot_key " +
+			" and a._AnnotType_key = " + annotTypeKey +
 			" and e._Refs_key = r._Refs_key) " +
 		" order by r.jnum desc\n";
 
