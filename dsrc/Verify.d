@@ -2225,9 +2225,10 @@ rules:
 	    return;
 	  end if;
 
-	  select := "select count(*) from " + mgi_DBtable(ALL_ALLELE_VIEW) +
-		" where _Marker_key = " + value +
-		" and status != " + mgi_DBprstr(ALL_STATUS_APPROVED);
+	  select := "select count(a._Allele_key) from ALL_Allele a, VOC_Term t " +
+	  	"where a._Marker_key = " + value + 
+	  	" and a._Allele_Status_key = t._Term_key" +
+	  	" and t.term != " + mgi_DBprstr(ALL_STATUS_APPROVED);
 
           if ((integer) mgi_sql1(select) > 0) then
                 StatusReport.source_widget := top.root;

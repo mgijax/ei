@@ -771,9 +771,9 @@ rules:
 	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 15));
 	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 16));
 		(void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 19));
+		(void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 17));
 		(void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 20));
+		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 18));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      elsif (results = 3) then
