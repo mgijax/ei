@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 04/04/2001
+--	- VerifyItem; added ALL_CELLLINE
+--
 -- lec 03/20/2001
 --	- TR 1939; VerifyAllele; status must be approved to be valid
 --	- VerifyNomenMarker; created
@@ -1415,6 +1418,8 @@ rules:
 	    select := "select _Cross_key, display, standard = 1 from " + table + " where ";
 	  elsif (tableID = RISET) then
 	    select := "select _RISet_key, designation, standard = 1 from " + table + " where ";
+	  elsif (tableID = ALL_CELLLINE) then
+	    select := "select _CellLine_key, cellLine, standard = 1 from " + table + " where ";
 	  end if;
 
 	  dbproc : opaque := mgi_dbopen();

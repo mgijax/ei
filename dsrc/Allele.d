@@ -46,7 +46,7 @@ devents:
 	AlleleMergeInit :local [];
 	AlleleMerge :local [];
 
-	DisplayESCellLine :local [];
+	DisplayESCellLine :translation [];
 
 	Modify :local [];
 	ModifyAlleleNotes :local [];
@@ -272,7 +272,7 @@ rules:
 		 top->EditForm->Strain->StrainID->text.value + "," +
                  top->InheritanceModeMenu.menuHistory.defaultValue + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
-                 top->EditForm->ESCellLine->ObjectID->text.value + "," +
+                 top->EditForm->ESCellLine->VerifyID->text.value + "," +
                  top->AlleleStatusMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
@@ -434,7 +434,7 @@ rules:
 	  cmd := "select cellLine, _Strain_key, cellLineStrain from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
-		" = " + top->EditForm->ESCellLine->ObjectID->text.value;
+		" = " + top->EditForm->ESCellLine->VerifyID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -442,7 +442,7 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	         top->ESCellLine->CharText->text.value := mgi_getstr(dbproc, 1);
+	         top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 1);
 		 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
 		 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 3);
 	    end while;
@@ -508,8 +508,8 @@ rules:
             set := set + "_Allele_Type_key = "  + top->AlleleTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-	  if (top->ESCellLine->ObjectID->text.modified) then
-	    set := set + "_CellLine_key = " + mgi_DBprkey(top->ESCellLine->ObjectID->text.value) + ",";
+	  if (top->ESCellLine->VerifyID->text.modified) then
+	    set := set + "_CellLine_key = " + mgi_DBprkey(top->ESCellLine->VerifyID->text.value) + ",";
 	  end if;
 
           if (top->AlleleStatusMenu.menuHistory.modified and
@@ -805,10 +805,10 @@ rules:
             where := where + "\nand a._Allele_Status_key = " + top->AlleleStatusMenu.menuHistory.searchValue;
           end if;
 
-          if (top->ESCellLine->ObjectID->text.value.length > 0) then
-            where := where + "\nand a._CellLine_key = " + top->ESCellLine->ObjectID->text.value;
-          elsif (top->ESCellLine->CharText->text.value.length > 0) then
-            where := where + "\nand a.cellLine like " + mgi_DBprstr(top->ESCellLine->CharText->text.value);
+          if (top->ESCellLine->VerifyID->text.value.length > 0) then
+            where := where + "\nand a._CellLine_key = " + top->ESCellLine->VerifyID->text.value;
+          elsif (top->ESCellLine->Verify->text.value.length > 0) then
+            where := where + "\nand a.cellLine like " + mgi_DBprstr(top->ESCellLine->Verify->text.value);
           end if;
 
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
@@ -968,8 +968,8 @@ rules:
 		top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);
 
-		top->ESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 6);
-		top->ESCellLine->CharText->text.value := mgi_getstr(dbproc, 21);
+		top->ESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 6);
+		top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 21);
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);

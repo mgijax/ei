@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Mar 27 10:51:27 2001";
+      lastWritten = "Wed Apr  4 08:36:41 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8994,7 +8994,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  ESCellLine = mgiObject : mgiDataTypes;
+                                  ESCellLine = mgiVerify : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MolecularMutation;
@@ -9004,29 +9004,24 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    verifyAdd = False;
+                                    verifyTable = 336;
+                                    verifyKey = VerifyID;
                                       {
-                                        ObjectID = ID : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                defaultValue = "-1";
-                                                required = True;
-                                            }
-                                      }
-                                      {
-                                        CharText = CharText : mgiDataTypes;
+                                        Verify = CharText : mgiDataTypes;
                                             {
                                               label = XmLabel;
                                               Group: Widget
                                                 labelString = "ES Cell Line";
                                             }
                                             {
-                                              text = text : mgiDataTypes;
+                                              text = text;
                                               Group: Widget
-                                                columns = 35;
+                                                columns = 30;
+                                                translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyItem() DisplayESCellLine()";
                                             }
                                       }
                                 }
