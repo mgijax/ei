@@ -2692,7 +2692,7 @@ rules:
 	  endCol : integer := table.strengthKey;
 	  noteCol : integer := table.bandNotes;
 	  newColLabels : string := "Mode,Row Key,Unit Key,Row,Size,Units,Notes";
-	  newPixelWidthSeries : string := "(all 0-2 0)";
+	  newPixelWidthSeries : string := "(all 1-2 0)";
 	  newCharWidthSeries : string := "(all 0 1)(all 3 3)(all 4-6 5)";
 	  newTraverseSeries : string := "(all 0-3 False)";
 	  newEditableSeries : string := "(all 0-3 False) (all 5-6 False)";
@@ -2705,9 +2705,10 @@ rules:
 	    newColLabels := newColLabels + 
 		",Mode,Lane key,Band key,Strength key," + (string) b + "; " + laneLabel + ",Note";
 	    newPixelWidthSeries := newPixelWidthSeries +
-		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
+		" (all " + (string) (begCol + 1) + "-" + (string) endCol + " 0)";
 	    newCharWidthSeries := newCharWidthSeries +
-		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)";
+		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)" +
+			" (all " + (string) begCol + " 1)";
 	    newTraverseSeries := newTraverseSeries + 
 		" (all " + (string) begCol + "-" + (string) endCol + " False)";
 	    newEditableSeries := newEditableSeries + 
