@@ -647,9 +647,9 @@ rules:
             from_notes := true;
           end if;
       
-	  if (top->mgiCitation->ObjectID->text.value.length > 0 and
-	      top->mgiCitation->ObjectID->text.value != "NULL") then
-	    where := top->mgiCitation->ObjectID->text.value;
+          value := mgi_tblGetCell(top->References->Table, 0, top->References->Table.refsKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := value;
 	    from_reference := true;
 	  end if;
 
