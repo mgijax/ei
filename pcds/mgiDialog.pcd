@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 25 10:57:59 2004";
+      lastWritten = "Fri Jun  4 12:44:35 2004";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -807,7 +807,7 @@ Module: mgiDialog
             rubberPositioning = False;
             closeWindowCallback = "D:InSituResultCancel";
             resizePolicy = resize_any;
-            height = 350;
+            height = 500;
           Group: Control
             vip_x = 120;
             vip_y = 1515;
@@ -874,23 +874,21 @@ Module: mgiDialog
                   leftAttachment = attach_form;
                   rightAttachment = attach_widget;
                   rightWidget = Lookup;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_none;
+                  topAttachment = attach_none;
+                  bottomAttachment = attach_widget;
                   resizable = true;
-                  topWidget = EditForm;
-                  topOffset = 5;
+                  bottomWidget = Buttons;
+                  bottomOffset = 5;
               }
               {
                 Buttons = Buttons;
                 Group: Constraint
                   leftAttachment = attach_position;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
+                  topAttachment = attach_none;
                   bottomAttachment = attach_form;
                   resizable = true;
-                  leftPosition = 10;
-                  topWidget = separator;
-                  topOffset = 5;
+                  leftPosition = 20;
                   bottomOffset = 5;
                     {
                       OK = DialogPush;
@@ -961,7 +959,7 @@ Module: mgiDialog
                                 {
                                   List = list;
                                   Group: Widget
-                                    visibleItemCount = 15;
+                                    visibleItemCount = 30;
                                   Group: User
                                     targetWidget = Results;
                                     targetKey = 4;
