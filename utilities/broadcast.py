@@ -26,12 +26,7 @@
 # 'W' for withdrawal
 # 'P' is used within this program to designate "-pending" symbol updates
 #
-# Type can be:
-#
-# 'D' for DNA Segment
-# 'G' for Gene (default)
-# 'Q' for QTL
-# 'C' for Chromosomal Aberration
+# Type can be any _Marker_Type_key from MRK_Types
 #
 # Requirements:
 #
@@ -521,12 +516,6 @@ class Broadcast:
                         	self.printMsg(self.statsFile, '\tJ Number Invalid\n')
                         	continue
  
-			# Inform user if no Marker Type specified
-
-			if not marker.validType():
-                        	self.printMsg(self.statsFile, '\tNo Marker Type (G,D,C,Q) specified\n')
-				continue
-			
 			# Get info from DB about Marker being withdrawn
 
 			marker.getCurrentSymbol()
@@ -695,12 +684,6 @@ class Broadcast:
 			msg = msg + '\t%s\n' % (marker.printAccessionIds())
 			self.printMsg(self.statsFile, msg)
 
-			# Inform user if no Marker Type specified
-	
-			if not marker.validType():
-                        	self.printMsg(self.statsFile, '\tNo Marker Type (G,D,C,Q) specified\n')
-				continue
-			
                         # Disallow invalid Mode
  
                         if not marker.validMode():
@@ -839,7 +822,7 @@ class Marker:
 		# requires: chr (string)
 		#           symbol (string)
 		#           mode (string), 'W', 'N'
-		#	    type (string), 'D', 'G', 'Q', 'C'
+		#	    type (string), marker type key
 		#	    name (string)
 		#	    jnum (string), format 'J:####'
 		#           proposedSymbol (string)
@@ -1539,22 +1522,6 @@ class Marker:
 		'''
 
                 if self.getRefKey() is None:
-			return 0
-		else:
-			return 1
-
-	def validType(self):
-		'''
-		# requires:
-		#
-		# effects:
-		#
-		# returns: 0 if the Marker's type is invalid
-		#          1 if the Marker's type is valid
-		#
-		'''
-
-		if len(self.getType()) == 0:
 			return 0
 		else:
 			return 1
