@@ -1420,7 +1420,7 @@ rules:
           table : widget := top->MolMarkerForm->Marker->Table;
 	  currentMasterKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from PRB_Probe where _Probe_key = " + currentMasterKey + "\n" +
+	  cmd := "select * from PRB_Probe_View where _Probe_key = " + currentMasterKey + "\n" +
 		 "select parentKey, parentClone, parentNumeric from PRB_Parent_View " +
 		 "where _Probe_key = " + currentMasterKey + "\n" +
 		 "select rtrim(note) from PRB_Notes where _Probe_key = " + currentMasterKey + " order by sequenceNum\n" +
@@ -1439,8 +1439,8 @@ rules:
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
 	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 9) + mgi_getstr(dbproc, 10);
-		prb_createdBy := mgi_getstr(dbproc, 16);
-		prb_modifiedBy := mgi_getstr(dbproc, 17);
+		prb_createdBy := mgi_getstr(dbproc, 23);
+		prb_modifiedBy := mgi_getstr(dbproc, 24);
 		prb_creation_date := mgi_getstr(dbproc, 18);
 		prb_modification_date := mgi_getstr(dbproc, 19);
 
