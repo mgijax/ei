@@ -599,14 +599,14 @@ These files are located in <CODE>$source_directory/$application</CODE>:
 	<TD>TeleUSE configuration file for building and/or installing the application.
 	    See <CODE>buildapp</CODE> and <CODE>installapp</CODE> below.
             For more information, refer to the Building the Application manual.
-<TR><TD>buildapp
+<TR><TD>../buildapp
     <TD>Shell script to run <CODE>uxb</CODE> with the appropriate arguments in order to
 	build either a Production or Development copy of the application.
-<TR><TD>installapp
+<TR><TD>../installapp
     <TD>Shell script to run <CODE>uxb install</CODE> with the appropriate arguments in order to
 	install either a Production or Development copy of the application.
 	Defines the destination directory (<CODE>-destdir</CODE>) for the installed application.
-<TR><TD>Makefile.xrt
+<TR><TD>../Makefile.xrt
 	<TD>XRT-authorize the executable
 <TR><TD>run$application
 	<TD>Script to run the Production copy of the application.  Contains environment
@@ -618,7 +618,7 @@ These files are located in <CODE>$source_directory/$application</CODE>:
 	    assignments for DSQUERY, MGD, SYBASE, TeleUSE, etc.
 	    This script must be edited to use the correct APP, DSQUERY, MGD values
 	    for your development installation.
-<TR><TD>X Resource File (MGD.in, GXD.in, MGIADMIN.in)
+<TR><TD>X Resource File (../XRes.in)
 	<TD>Resource files which defines copy/paste function keys for Mac users,
 	    global font, background, etc.
 <TR><TD>.viprc
@@ -659,21 +659,11 @@ that only reflect the different SE's source installation.
 Development copies of an EI application contain interpreted D code.  Interpreted D code
 allows the debugger to be used.
 <OL>
-<LI>Ensure that the EIINSTALLDIR variable in your environment is set to
-the directory that holds the  mgd, gxd, and mgiadmin directories
-(e.g., '/usr/local/mgi/ei'). 
+<LI>Go to the main EI directory: <CODE>cd $source_directory</CODE>
 <P>
-<LI>Go to the application directory
+<LI>Compile the application: <CODE>buildapp $application</CODE>
 <P>
-<LI>Compile the application: <CODE>buildapp</CODE>
-<P>
-<LI>Verify that the INSTALLFILE configuration variable is defined in <CODE>uxb.conf</CODE>:
-    <PRE>
-    INSTALLFILE     MGD runmgd runmgd-dev
-    etc.
-    </PRE>
-<P>
-<LI>Install the application in the destination directory: <CODE>installapp</CODE>
+<LI>Install the application in the destination directory: <CODE>installapp $application</CODE>
 <P>
 <LI>Run the application using the <CODE>run$application-dev</CODE> script: <CODE>DESTDIR/run$application-dev</CODE>
 </OL>
@@ -682,21 +672,11 @@ the directory that holds the  mgd, gxd, and mgiadmin directories
 <A NAME="buildComp"><H4>Build a Compiled copy of an EI Application</H4></A>
 Production copies of an MGI application translate D code into C code which is then compiled.
 <OL>
-<LI>Ensure that the EIINSTALLDIR variable in your environment is set to
-    the directory that holds the  mgd, gxd, and mgiadmin directories
-   (e.g., '/usr/local/mgi/ei'). 
+<LI>Go to the main EI directory: <CODE>cd $source_directory/$application</CODE>
 <P>
-<LI>Go to the application directory: <CODE>cd $source_directory/$application</CODE>
+<LI>Compile the application: <CODE>buildapp $application compiled</CODE>
 <P>
-<LI>Compile the application: <CODE>buildapp compiled</CODE>
-<P>
-<LI>Verify that the INSTALLFILE configuration variable is defined in <CODE>uxb.conf</CODE>:
-	<PRE>
-	INSTALLFILE     MGD runmgd runmgd-dev
-	etc.
-	</PRE>
-<P>
-<LI>Install the application in the destination directory: <CODE>installapp compiled</CODE>
+<LI>Install the application in the destination directory: <CODE>installapp $application compiled</CODE>
 <P>
 <LI>Run the application using the <CODE>run$application</CODE> script: <CODE>DESTDIR/run$application</CODE>
 </OL>
