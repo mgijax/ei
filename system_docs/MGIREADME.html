@@ -32,10 +32,11 @@ appropriate documentation manuals.
 <LI><A HREF="#installsource">Install a copy of Production or Development Source</A>
 <LI><A HREF="#installdocs">Install system documentation</A>
 <LI><A HREF="#applconfig">Application Configuration Files</A>
-<LI><A HREF="#buildInter">Build/Install an Interpreted copy of an MGI Application</A>
-<LI><A HREF="#buildComp">Build/Install a Compiled copy of an MGI Application</A>
-<LI><A HREF="#runMGI">Run an installed MGI Application</A>
-<LI><A HREF="#debug">Debug an installed MGI Application</A>
+<LI><A HREF="#buildInter">Build/Install an Interpreted copy of an EI Application</A>
+<LI><A HREF="#buildComp">Build/Install a Compiled copy of an EI Application</A>
+<LI><A HREF="#buildAll">Build/Install all EI Applications</A>
+<LI><A HREF="#runMGI">Run an installed EI Application</A>
+<LI><A HREF="#debug">Debug an installed EI Application</A>
 <LI><A HREF="#exodus">Configuring eXodus Client</A>
 <LI><A HREF="#interface">Interface</A>
 	<OL>
@@ -61,7 +62,7 @@ appropriate documentation manuals.
 <P>
 <LI><CODE>$application</CODE>
 	<P>
-	For the purposes of this document, a development subdirectory of the configuration file and build area for an MGI application. 
+	For the purposes of this document, a development subdirectory of the configuration file and build area for an EI application. 
 	<P>
 	Currently defined applications:
 		<OL>
@@ -205,7 +206,7 @@ Always execute <CODE>vip</CODE> from the <CODE>$source_directory/$application</C
 Refer to <A HREF="#applconfig">Application Configuration Files</A> for more information on <CODE>vip</CODE>
 and its configuration file <CODE>.viprc</CODE>.
 <P>
-The current set of PCDS for the MGI GUI:
+The current set of PCDS for the EI GUI:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>PCD file<TH>Description
 <TR><TD>MGI.pcd
@@ -402,7 +403,7 @@ in <CODE>$source_directory/include</CODE>.
 TeleUSE AIM files are stored in UNIX files with the extension <CODE>.aim</CODE>
 in <CODE>$source_directory/aim</CODE>.
 <P>
-The current set of C Source files for the MGI Application:
+The current set of C Source files for the EI Application:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Source file<TH>Description
 <TR><TD>dictionary.c
@@ -431,7 +432,7 @@ The current set of C Source files for the MGI Application:
 	<TD>Register converters for XRT; Tech support fix; see source for details
 </TABLE>
 <P>
-The current set of C Include files for the MGI Application:
+The current set of C Include files for the EI Application:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Source file<TH>Description
 <TR><TD>dictionary.h
@@ -456,7 +457,7 @@ The current set of C Include files for the MGI Application:
 	<TD>General utility routines.
 </TABLE>
 <P>
-The current set of AIM files for the MGI Application:
+The current set of AIM files for the EI Application:
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Source file<TH>Description
 <OL>
@@ -638,8 +639,8 @@ that only reflect the different SE's source installation.
 <P>
 
 <HR>
-<A NAME="buildInter"><H4>Build an Interpreted copy of an MGI Application</H4></A>
-Development copies of an MGI application contain interpreted D code.  Interpreted D code
+<A NAME="buildInter"><H4>Build an Interpreted copy of an EI Application</H4></A>
+Development copies of an EI application contain interpreted D code.  Interpreted D code
 allows the debugger to be used.
 <OL>
 <LI>Ensure that the EIINSTALLDIR variable in your environment is set to
@@ -662,7 +663,7 @@ allows the debugger to be used.
 </OL>
 
 <HR>
-<A NAME="buildComp"><H4>Build a Compiled copy of an MGI Application</H4></A>
+<A NAME="buildComp"><H4>Build a Compiled copy of an EI Application</H4></A>
 Production copies of an MGI application translate D code into C code which is then compiled.
 <OL>
 <LI>Ensure that the EIINSTALLDIR variable in your environment is set to
@@ -685,11 +686,24 @@ Production copies of an MGI application translate D code into C code which is th
 </OL>
 
 <HR>
-<A NAME="runMGI"><H4>Run an installed MGI Application</H4></A>
+<A NAME="buildAll"><H4>Build/Install All EI Applications</H4></A>
+<OL>
+<LI>Ensure that the EIINSTALLDIR variable in your environment is set to
+    the directory that holds the  mgd, gxd, and mgiadmin directories
+       (e.g., '/usr/local/mgi/ei'). 
+<P>
+<LI>Go to the main EI directory: <CODE>cd $source_directory</CODE>
+<P>
+<LI>Build/Install all applications: <CODE>installall [compiled]</CODE>
+<P>
+</OL>
+
+<HR>
+<A NAME="runMGI"><H4>Run an installed EI Application</H4></A>
 <CODE>DESTDIR/run$application</CODE>
 
 <HR>
-<A NAME="debug"><H4>Debug an installed Interpreted MGI Application</H4></A>
+<A NAME="debug"><H4>Debug an installed Interpreted EI Application</H4></A>
 Interpreted MGI EI installations can be easily debugged using the 
 TeleUSE <CODE>dbug</CODE> tool.  Production installations cannot use 
 this tool to step through D code since the D code is converted to C and 
