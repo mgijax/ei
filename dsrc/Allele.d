@@ -35,6 +35,7 @@ devents:
 	AlleleMerge :local [];
 
 	Modify :local [];
+	ModifyAlleleNotes :local [];
 	ModifyMolecularMutation :local [];
 	ModifySynonym :local [];
 
@@ -60,7 +61,8 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	clearLists : integer;	-- Clear List value for Clear event
+	clearLists : integer;		-- Clear List value for Clear event
+	alleleNotesRequired : boolean;   -- Are Allele Notes a required field for the edit?
 
 rules:
 
@@ -149,7 +151,7 @@ rules:
  
 	  -- Clear the form
 
---	  clearLists := 3;
+	  clearLists := 3;
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
 	  send(Clear, 0);
@@ -165,6 +167,8 @@ rules:
 --
 
 	Add does
+	  reviewed : string;
+
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
@@ -188,6 +192,12 @@ rules:
 
 	  -- Insert master Allele Record
 
+	  if (global_login = "cml") then
+	    reviewed := top->ReviewedMenu.menuHistory.defaultValue;
+	  else
+	    reviewed := NO;
+	  end if;
+
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
 		 top->mgiMarker->ObjectID->text.value + "," +
@@ -198,23 +208,21 @@ rules:
 		 top->mgiCitation1->ObjectID->text.value + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
-		 mgi_DBprstr(top->ModifiedBy->Text.value) + "," +
-                 top->ReviewedMenu.menuHistory.defaultValue + ")\n";
+		 mgi_DBprstr(global_login) + "," +
+                 reviewed + ")\n";
 
-	  ModifyNotes.source_widget := top->MolecularNote->Note;
-	  ModifyNotes.tableID := ALL_MOLECULAR_NOTE;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->MolecularNote->Note.sql;
-
-	  ModifyNotes.source_widget := top->AlleleNote->Note;
-	  ModifyNotes.tableID := ALL_NOTE;
-	  ModifyNotes.key := currentRecordKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->AlleleNote->Note.sql;
-
+	  alleleNotesRequired := false;
+	  send(ModifyAlleleNotes, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifySynonym, 0);
+
+	  if (top->AlleleNote->Note->text.value.length = 0 and alleleNotesRequired) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Allele Notes are required.";
+            send(StatusReport);
+	    reset_cursor(top);
+	    return;
+	  end if;
 
 	  --  Process Accession numbers
 
@@ -237,7 +245,7 @@ rules:
 
 	  if (top->QueryList->List.sqlSuccessful) then
 	    Clear.source_widget := top;
---	    Clear.clearLists := clearLists;
+	    Clear.clearLists := clearLists;
 	    Clear.clearKeys := false;
 	    send(Clear, 0);
 	  end if;
@@ -365,7 +373,8 @@ rules:
 	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
 	  end if;
 
-          if (top->ReviewedMenu.menuHistory.modified and
+          if (global_login = "cml" and
+	      top->ReviewedMenu.menuHistory.modified and
 	      top->ReviewedMenu.menuHistory.searchValue != "%") then
             set := set + "reviewed = "  + top->ReviewedMenu.menuHistory.defaultValue + ",";
           end if;
@@ -393,6 +402,54 @@ rules:
 	  end if;
 
 
+	  alleleNotesRequired := false;
+	  send(ModifyAlleleNotes, 0);
+	  send(ModifyMolecularMutation, 0);
+	  send(ModifySynonym, 0);
+
+	  if (top->AlleleNote->Note->text.value.length = 0 and alleleNotesRequired) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Allele Notes are required.";
+            send(StatusReport);
+	    reset_cursor(top);
+	    return;
+	  end if;
+
+          ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := ALL_ALLELE;
+          send(ProcessAcc, 0);
+          cmd := cmd + accTable.sqlCmd;
+
+	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or
+	       set.length > 0) then
+
+	    set := set + "userID = " + mgi_DBprstr(global_login);
+
+	    if (global_login != "cml") then
+	      set := set + ",reviewed = 0";
+	    end if;
+
+	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
+	  end if;
+
+	  ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  send(ModifySQL, 0);
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- ModifyAlleleNotes
+--
+-- Activated from: devent Modify
+--
+-- Appends to global "cmd" string
+--
+ 
+	ModifyAlleleNotes does
+
 	  ModifyNotes.source_widget := top->MolecularNote->Note;
 	  ModifyNotes.tableID := ALL_MOLECULAR_NOTE;
 	  ModifyNotes.key := currentRecordKey;
@@ -405,25 +462,11 @@ rules:
 	  send(ModifyNotes, 0);
 	  cmd := cmd + top->AlleleNote->Note.sql;
 
-	  send(ModifyMolecularMutation, 0);
-	  send(ModifySynonym, 0);
-
-          ProcessAcc.table := accTable;
-          ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := ALL_ALLELE;
-          send(ProcessAcc, 0);
-          cmd := cmd + accTable.sqlCmd;
-
-	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or
-	       set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
+	  if (top->InheritanceModeMenu.menuHistory.labelString = OTHERNOTES or
+	      top->AlleleTypeMenu.menuHistory.labelString = OTHERNOTES) then
+	    alleleNotesRequired := true;
 	  end if;
 
-	  ModifySQL.cmd := cmd;
-	  ModifySQL.list := top->QueryList;
-	  send(ModifySQL, 0);
-
-	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -468,6 +511,10 @@ rules:
 		     "and _Mutation_key = " + key + "\n";
 	    end if;
  
+	    if (mgi_tblGetCell(table, row, table.mutation) = OTHERNOTES) then
+	      alleleNotesRequired := true;
+	    end if;
+
 	    row := row + 1;
 	  end while;
 	end does;
@@ -565,12 +612,12 @@ rules:
 	  end if;
 
           QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "m";
+          QueryDate.tag := "a";
           send(QueryDate, 0);
           where := where + top->CreationDate.sql;
  
           QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "m";
+          QueryDate.tag := "a";
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
@@ -760,6 +807,12 @@ rules:
 
           (void) busy_cursor(top);
 
+	  top->mgiCitation->ObjectID->text.value := "";
+	  top->mgiCitation->Jnum->text.value := "";
+	  top->mgiCitation->Citation->text.value := "";
+	  top->mgiCitation1->ObjectID->text.value := "";
+	  top->mgiCitation1->Jnum->text.value := "";
+	  top->mgiCitation1->Citation->text.value := "";
 	  top->MolecularNote->text.value := "";
 	  top->AlleleNote->text.value := "";
 
@@ -767,6 +820,10 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE_VIEW) +
+		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
+	         "select _Refs_key, jnum, short_citation from " + mgi_DBtable(ALL_REFS_VIEW) +
+		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
+	         "select _Molecular_Refs_key, jnum, short_citation from " + mgi_DBtable(ALL_MOLREFS_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 	         "select _Mutation_key, mutation from " + mgi_DBtable(ALL_MUTATION_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
@@ -817,12 +874,22 @@ rules:
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
+		top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 1);
+		top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 2);
+		top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 3);
+
+	      elsif (results = 3) then
+		top->mgiCitation1->ObjectID->text.value := mgi_getstr(dbproc, 1);
+		top->mgiCitation1->Jnum->text.value := mgi_getstr(dbproc, 2);
+		top->mgiCitation1->Citation->text.value := mgi_getstr(dbproc, 3);
+
+	      elsif (results = 4) then
 		table := top->MolecularMutation->Table;
 		(void) mgi_tblSetCell(table, row, table.mutationKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mutation, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
-	      elsif (results = 3) then
+	      elsif (results = 5) then
 		table := top->Synonym->Table;
 		(void) mgi_tblSetCell(table, row, table.synonymKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.synonym, mgi_getstr(dbproc, 2));
@@ -831,10 +898,10 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
-	      elsif (results = 4) then
+	      elsif (results = 6) then
 		top->MolecularNote->text.value := top->MolecularNote->text.value + mgi_getstr(dbproc, 1);
 
-	      elsif (results = 5) then
+	      elsif (results = 7) then
 		top->AlleleNote->text.value := top->AlleleNote->text.value + mgi_getstr(dbproc, 1);
 
 	      end if;
