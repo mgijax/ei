@@ -175,7 +175,12 @@ Sequence Type selected and different fields will become available for viewing/ed
 </OL>
 
 <H4>Deletions</H4>
-There are no restrictions on deleting a Molecular Probe & Segment.
+A Molecular Segment cannot be deleted if it is referenced by a:
+<OL>
+<LI>another Molecular Segment
+<LI>Contig Experiment
+<LI>Expression Assay
+</OL>
 
 <H4>Library</H4>
 A Library selection populates the Library text field and performs a lookup of:
