@@ -73,20 +73,14 @@ print "GXD Index Stats:"
 
 /* Genes indexed in GXD_Index */
 
-/* Gene _Marker_Type_key is 1 */
-/* not currently used, as we take (currently) both marker types below:
-   declare @geneType int
-   select @geneType = (select _Marker_Type_key from MRK_Types
-	   where name = 'Gene')
-*/
-
 select "Genes Indexed", "count" = count(distinct i._Marker_key)
 from GXD_Index i  
-/*Martin states that the DNA segments "should" be promoted
-  to Genes, so don't distinguish by marker type; 
-  consistent w/ Gene-Ref assoc below): 
+/*
+  Martin states that the DNA segments "should" be promoted
+  to Genes, so do not distinguish by marker type; 
+  consistent w/ Gene-Ref assoc below):
      , MRK_Marker m
-     where m._Marker_key = i._Marker_key 
+     where m._Marker_key = i._Marker_key
      and m._Marker_Type_key = @geneType
 */
 
@@ -102,7 +96,7 @@ union all
 select "Index entries", count(*)
 from GXD_Index i
 /*Martin states that the DNA segments "should" be promoted
-  to Genes, so don't distinguish by marker type; 
+  to Genes, so do not distinguish by marker type; 
 	 , MRK_Marker m 
 	 where m._Marker_key = i._Marker_key
 	 and m._Marker_Type_key = @geneType
@@ -236,6 +230,9 @@ single pass AND let me display the results as columns instead of rows:
 */
 
 /* Assays by Source */
+declare @distinctGenes int
+select @distinctGenes = count (distinct _Marker_key) from GXD_Assay
+
 select "Assays",
 	/* sum ( if eds 1 else 0 ) */
 	"Electronic Submission" = SUM (1 - abs(sign(_Refs_key-@freemanRef))),
@@ -264,45 +261,151 @@ select  "Genes",
 	"Electronic Submission" = sum(cnt * eds), 
 	/* sum ( if not eds then 1 else 0 ) */
 	"Literature Curated" = sum(cnt * abs (sign(eds - 1) ) ),
-	"Total" = sum(cnt * eds) + sum(cnt * abs (sign(eds - 1) ) )
+	"Total" = @distinctGenes
 from #assayGenes
 
 drop table #assayGenes 
 go
 
+/* Gene acquisition stats by month-year */
+select     Year  = convert(numeric(4), datepart(year, a.creation_date)), 
+	   Month = convert(numeric(2), datepart(month, a.creation_date)), 
+	   Genes = count ( distinct _Marker_key ),
+	   Refs  = count ( distinct _Refs_key )
+into #assayGenes
+from GXD_Assay a
+group by datepart(year, a.creation_date), 
+	 datepart(month, a.creation_date)
+go
 
-/* Gene acquisition stats by month/year */
+
+select distinct 
+	   Year    = convert(numeric(4), datepart(year, creation_date)),
+	   Month   = convert(numeric(2), datepart(month, creation_date))
+into #periods
+from GXD_Assay
+UNION
+select distinct 
+	   Year    = convert(numeric(4), datepart(year, creation_date)),
+	   Month   = convert(numeric(2), datepart(month, creation_date))
+from GXD_GelBand
+UNION
+select distinct 
+	   Year    = convert(numeric(4), datepart(year, creation_date)),
+	   Month   = convert(numeric(2), datepart(month, creation_date))
+from GXD_InSituResult
+
+/* Result acquisition stats by month/year periods & AssayTypes */
+/* table with all rows & columns needed to accummulate these counts*/
+select Year,
+	   Month,
+	   t._AssayType_key,
+	   assayType = convert (varchar(25), t.assayType),
+	   Assays=0,
+	   Results=0
+into #periodCounts
+from #periods p, GXD_AssayType t
+where t._AssayType_key > 0
+go
+
+drop table #periods
+go
+
+/* Count the Assays by period and assay type */
+select Year    = convert(numeric(4), datepart(year, a.creation_date)), 
+	   Month   = convert(numeric(2), datepart(month, a.creation_date)),
+	   _AssayType_key,
+	   Assays = count(*) 
+into #assays
+from GXD_Assay a
+group by datepart(year, a.creation_date),
+		 datepart(month, a.creation_date),
+		 _AssayType_key
+
+update #periodCounts
+set Assays = a.Assays
+from #periodCounts p, #assays a
+where a.Year = p.Year
+and a.Month = p.Month
+and a._AssayType_key = p._AssayType_key
+go
+
+drop table #assays
+go
+
+/* get detailed counts for period and period-AssayType counts */
+/* ... for Gel Results */
+select Year    = convert(numeric(4), datepart(year, r.creation_date)), 
+	   Month   = convert(numeric(2), datepart(month, r.creation_date)),
+	   _AssayType_key,
+	   Results = count (*)
+into #gelresults
+from GXD_GelBand r, GXD_GelLane l, GXD_Assay a
+where a._Assay_key = l._Assay_key
+and l._GelLane_key = r._GelLane_key
+group by datepart(year, r.creation_date), 
+		 datepart(month, r.creation_date),
+		 _AssayType_key
+
+
+update #periodCounts
+set Results = p.Results + r.Results
+from #periodCounts p, #gelresults r
+where r.Year = p.Year
+and r.Month = p.Month
+and r._AssayType_key = p._AssayType_key
+
+go
+
+/* ... for InSitu Results */
+select Year    = convert(numeric(4), datepart(year, r.creation_date)), 
+	   Month   = convert(numeric(2), datepart(month, r.creation_date)), 
+	   _AssayType_key,
+	   Results   = count (*)
+into #insituResults
+from GXD_InsituResult r, GXD_Specimen s, GXD_Assay a
+where r._Specimen_key = s._Specimen_key 
+and s._Assay_key = a._Assay_key
+group by datepart(year, r.creation_date), 
+		 datepart(month, r.creation_date),
+		 _AssayType_key
+go
+
+update #periodCounts
+set Results = p.Results + r.Results
+from #periodCounts p, #insituresults r
+where r.Year = p.Year
+and r.Month = p.Month
+and r._AssayType_key = p._AssayType_key
+go
+
+
+/* remove any assay types for which we have no results */
+delete #periodCounts
+from #periodCounts p
+where exists ( select 1 from #periodCounts pc
+where p._AssayType_key = pc._AssayType_key
+group by pc._AssayType_key
+having sum (pc.Assays) = 0
+)
+
+/* report the results */
 print ""
 print "Gene and Result counts by monthly period:"
 print ""
-select Year    = convert(numeric(4), datepart(year, a.modification_date)), 
-	   Month   = convert(numeric(2), datepart(month, a.modification_date)), 
-	   Genes   = count ( distinct _Marker_key ),
-	   Refs    = count ( distinct _Refs_key )
-into #assayGenes
-from GXD_Assay a
-group by datepart(year, a.modification_date), 
-		 datepart(month, a.modification_date)
-go
-
-/* Result acquisition stats by month/year */
-select Year    = convert(numeric(4), datepart(year, e.modification_date)), 
-	   Month   = convert(numeric(2), datepart(month, e.modification_date)), 
-	   Results   = count (*)
-into #assayResults
-from GXD_Expression e
-group by datepart(year, e.modification_date), 
-		 datepart(month, e.modification_date)
-go
-
+/* 
+	#assayGenes is 1-to-many with #periodCounts
+	avg(Gene) & avg(References) to get single value from #assayGenes
+*/
 select g.Year,
 	   "Mo." = g.Month,
-	   Genes,
-	   Results,
-	   "References" = refs
-from #assayGenes g, #assayResults r
+	   Genes = avg (g.Genes),
+	   Results = sum (r.Results),
+	   "References" = avg (g.refs)
+from #assayGenes g, #periodCounts r
 where g.Year = r.Year and g.Month = r.Month
-compute sum ( Results )
+group by g.Year, g.Month
+compute sum ( sum (r.Results) )
 go
 
 
@@ -310,16 +413,11 @@ go
 print ""
 print "Assays and results by Assay-Type and monthly period:"
 print ""
-select assayType = substring ( assayType, 1, 25 ), 
-	   Year=convert(numeric(4), datepart(year, a.modification_date)), 
-	   "Mo."=convert(numeric(2), datepart(month, a.modification_date)), 
-	   "Assays" = convert(numeric(6), count ( distinct a._Assay_key )),
-	   Results = convert (numeric(6), count(*) )
-from GXD_Expression a, GXD_AssayType t
-where t._AssayType_key = a._AssayType_key
-group by assayType, 
-		 datepart(year, a.modification_date), 
-		 datepart(month, a.modification_date)
+
+select assayType, Year, "Mo"=Month, Assays, Results
+from #periodCounts
+order by AssayType, Year, Month
+compute sum(Assays), sum(Results) by assayType
 go
 
 quit
