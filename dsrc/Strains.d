@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec  12/01/2004
+--	- TR 6349; annotKey not initialized in Add
+--
 -- lec	02/04/2003
 --	- TR 4298; added Allele
 --
