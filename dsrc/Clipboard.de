@@ -21,6 +21,9 @@ ClipboardSort [source_widget : widget;];
 ClipboardLoad [source_widget : widget;
 	       allowDups : boolean := false;];
 
+EditClipboardLoad [source_widget : widget;
+	       allowDups : boolean := false;];
+
 ClipboardSetItems [table : widget;
 		   clipboard : widget;
 		   row : integer;

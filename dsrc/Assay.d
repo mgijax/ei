@@ -187,6 +187,7 @@ devents:
 	AddAntibodyPrep :local [];
 	AddProbePrep :local [];
 	AddProbeReference :local [];
+	AddToEditClipboard :local [];
 	AppendToAgeNote :local [];
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
@@ -630,7 +631,7 @@ rules:
 	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ")\n";
 
 	  prepDetailForm.sql := add;
-	end
+	end does;
 
 --
 -- AddProbePrep
@@ -653,7 +654,7 @@ rules:
 		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
 
 	  prepDetailForm.sql := add;
-	end
+	end does;
 
 --
 -- AddProbeReference
@@ -666,7 +667,23 @@ rules:
 	  cmd := cmd + "execute PRB_insertReference " +
 	         top->mgiCitation->ObjectID->text.value + "," +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "\n";
-	end
+	end does;
+
+--
+-- AddToEditClipboard
+--
+
+	AddToEditClipboard does
+
+	  if (assayDetailForm.name = "GelForm") then
+	    EditClipboardLoad.source_widget := top->CVGel->ADClipboard;
+	  else
+	    EditClipboardLoad.source_widget := top->InSituResultDialog->ADClipboard;
+	  end if;
+
+	  send(EditClipboardLoad, 0);
+	  send(AssayClear, 0);
+	end does;
 
 --
 -- AppendToAgeNote
