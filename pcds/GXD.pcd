@@ -493,14 +493,14 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                       {
-                                        AccessionName = CharText : mgiDataTypes;
+                                        AccessionName = CharSText : mgiDataTypes;
                                             {
                                               label = XmLabel;
                                               Group: Widget
                                                 labelString = "Antigen Name";
                                             }
                                             {
-                                              text = text;
+                                              text = scrolledText : mgiDataTypes;
                                               Group: Widget
                                                 columns = 40;
                                               Group: User
@@ -1393,7 +1393,7 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AccessionName = CharText;
+                      AccessionName = CharSText;
                           {
                             label = XmLabel;
                             Group: Widget
@@ -1486,7 +1486,7 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AccessionName = CharText;
+                      AccessionName = CharSText;
                           {
                             label = XmLabel;
                             Group: Widget

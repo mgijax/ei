@@ -23,6 +23,9 @@
 --
 -- History:
 --
+-- lec	06/05/2002
+--	TR 3677; VerifyMGIAcc
+--
 -- lec	01/15/2002
 --	Added mgiTypeKey to mgiAccession template, VerifyMGIAcc
 --
@@ -735,19 +738,22 @@ rules:
           (void) busy_cursor(top);
  
 	  cmd : string := mgi_DBaccSelect(tableID, mgiTypeKey, accNumeric);
-	  row : integer := 0;
+	  objectLoaded : boolean := false;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (row = 0) then
+	      if (not objectLoaded) then
                 top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
                 top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
                 top->AccessionName->text.value := mgi_getstr(dbproc, 3);
+		objectLoaded := true;
+	      else
+		top->AccessionName->text.value :=
+		  top->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 	      end if;
-	      row := row + 1;
             end while;
           end while;
           (void) dbclose(dbproc);

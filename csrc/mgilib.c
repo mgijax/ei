@@ -2424,7 +2424,7 @@ char *mgi_DBaccSelect(int table, int mgiTypeKey, int key)
   {
     sprintf(buf, "select dbView from ACC_MGIType where _MGIType_key = %d", mgiTypeKey);
     strcpy(dbView, mgi_sql1(buf));
-    sprintf(buf, "select _Object_key, accID, description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d\n", dbView, key);
+    sprintf(buf, "select _Object_key, accID, description, short_description from %s where preferred = 1 and prefixPart = 'MGI:' and numericPart = %d\n", dbView, key);
   }
 
   return(buf);

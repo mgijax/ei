@@ -7690,7 +7690,7 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AccessionName = CharText;
+                      AccessionName = CharSText;
                           {
                             label = XmLabel;
                             Group: Widget

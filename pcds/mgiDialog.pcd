@@ -1514,7 +1514,7 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AccessionName = CharText : mgiDataTypes;
+                      AccessionName = CharSText : mgiDataTypes;
                       Group: Widget
                         managed = False;
                     }
