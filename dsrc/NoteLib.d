@@ -12,9 +12,10 @@
 --
 -- History
 --
--- lec 03/19/2001
+-- lec 03/19/2001-03/20/2001
 --	- Renamed NoteLib.d from Note.d
 --	- Created NoteLib.de
+--	- Added routines to support mgiNoteForm template.
 --
 -- lec 05/16/2000
 --	- TR 1291; Save "rows" dialog attributes since this can be different
@@ -42,6 +43,13 @@ rules:
 --
 -- ClearNoteForm
 --
+-- if clearNote is True
+-- 	Clears Note value
+-- 	Sets Note Modified value to False
+-- 	Sets Note Required value to False
+--
+-- Sets Note Display Color
+--
 
 	ClearNoteForm does
 	  notew : widget := ClearNoteForm.notew;
@@ -52,6 +60,7 @@ rules:
 	    if (clearNote) then
 	      notew.child(i)->Note->text.value := "";
 	      notew.child(i)->Note->text.modified := false;
+	      notew.child(i)->Note->text.required := false;
 	    end if;
 	    SetNotesDisplay.note := notew.child(i)->Note;
 	    send(SetNotesDisplay, 0);
@@ -192,6 +201,10 @@ rules:
 -- Construct insert/update/delete statement for mgiNoteForm template
 -- Appends to table.sql string
 --
+-- Also checks "required" UDA of Note->text.  If Note is required
+-- (should be set by individual module applications), but Note is
+-- empty, then issues a Status Report and sets top.allowEdit to false.
+--
 
 	ProcessNoteForm does
           notew : widget := ProcessNoteForm.notew;
@@ -204,6 +217,15 @@ rules:
 	  i : integer := 1;
 	  while (i <= notew.numChildren) do
 	    textw := notew.child(i);
+
+	    if (textw->Note->text.required and textw->Note->text.value.length = 0) then
+              StatusReport.source_widget := notew.top;
+              StatusReport.message := textw->Note.noteType + " Notes are Required.\n";
+              send(StatusReport, 0);
+	      notew.top.allowEdit := false;
+	      return;
+	    end if;
+
 	    ModifyNotes.source_widget := textw->Note;
 	    ModifyNotes.tableID := tableID;
 	    ModifyNotes.key := objectKey;
@@ -466,6 +488,28 @@ rules:
           else
             pushButton.background := note->text.background;
           end if;
+	end does;
+
+--
+-- SetNotesRequired
+--
+-- Set "required" field for specific noteTypeKey.
+-- Assumes use of mgiNoteForm template
+--
+
+	SetNotesRequired does
+	  notew : widget := SetNotesRequired.notew;
+	  noteTypeKey : integer := SetNotesRequired.noteTypeKey;
+	  required : boolean := SetNotesRequired.required;
+
+	  i : integer := 1;
+	  while (i <= notew.numChildren) do
+	    if (notew.child(i)->Note.noteTypeKey = noteTypeKey) then
+	      notew.child(i)->Note->text.required := required;
+	    end if;
+	    i := i + 1;
+	  end while;
+
 	end does;
 
 end dmodule;

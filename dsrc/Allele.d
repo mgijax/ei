@@ -78,7 +78,6 @@ locals:
  
 	clearLists : integer := 3;
 
-	alleleNotesRequired : boolean;  -- Are Allele Notes a required field for the edit?
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
 
 rules:
@@ -239,8 +238,6 @@ rules:
 
 	  (void) busy_cursor(top);
 
-          -- If adding, then @KEYNAME must be used in all Modify events
- 
           currentRecordKey := "@" + KEYNAME;
  
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
@@ -261,28 +258,15 @@ rules:
 	    cmd := cmd + "NULL,NULL)\n";
 	  end if;
 
-	  alleleNotesRequired := false;
-	  molecularNotesRequired := false;
-
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyAlleleNotes, 0);
+
+	  if (not top.allowEdit) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
 	  send(ModifySynonym, 0);
-
-	  if (top->GeneralNote->Note->text.value.length = 0 and alleleNotesRequired) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Allele Notes are required.";
-            send(StatusReport);
-	    reset_cursor(top);
-	    return;
-	  end if;
-
-	  if (top->MolecularNote->Note->text.value.length = 0 and molecularNotesRequired) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Molecular Notes are required.";
-            send(StatusReport);
-	    reset_cursor(top);
-	    return;
-	  end if;
 
 	  --  Process References
 
@@ -510,27 +494,15 @@ rules:
 	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
 	  end if;
 
-	  alleleNotesRequired := false;
-	  molecularNotesRequired := false;
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyAlleleNotes, 0);
+
+	  if (not top.allowEdit) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
 	  send(ModifySynonym, 0);
-
-	  if (top->GeneralNote->Note->text.value.length = 0 and alleleNotesRequired) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Allele Notes are required.";
-            send(StatusReport);
-	    reset_cursor(top);
-	    return;
-	  end if;
-
-	  if (top->MolecularNote->Note->text.value.length = 0 and molecularNotesRequired) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Molecular Notes are required.";
-            send(StatusReport);
-	    reset_cursor(top);
-	    return;
-	  end if;
 
 	  --  Process References
 
@@ -573,16 +545,36 @@ rules:
  
 	ModifyAlleleNotes does
 
+	  -- Set required field for General Notes
+
+	  if (top->InheritanceModeMenu.menuHistory.labelString = OTHERNOTES or
+	      top->AlleleTypeMenu.menuHistory.labelString = OTHERNOTES) then
+	    SetNotesRequired.required := true;
+	  else
+	    SetNotesRequired.required := false;
+	  end if;
+
+	  SetNotesRequired.notew := top->mgiNoteForm;
+	  SetNotesRequired.noteTypeKey := ALL_GENERAL_NOTES;
+	  send(SetNotesRequired, 0);
+
+	  -- Set required field for Molecular Notes
+
+	  if (molecularNotesRequired) then
+	    SetNotesRequired.required := true;
+	  else
+	    SetNotesRequired.required := false;
+	  end if;
+
+	  SetNotesRequired.notew := top->mgiNoteForm;
+	  SetNotesRequired.noteTypeKey := ALL_MOLECULAR_NOTES;
+	  send(SetNotesRequired, 0);
+
 	  ProcessNoteForm.notew := top->mgiNoteForm;
 	  ProcessNoteForm.tableID := ALL_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
-
-	  if (top->InheritanceModeMenu.menuHistory.labelString = OTHERNOTES or
-	      top->AlleleTypeMenu.menuHistory.labelString = OTHERNOTES) then
-	    alleleNotesRequired := true;
-	  end if;
 
 	end does;
 
@@ -603,6 +595,8 @@ rules:
 	  newKey : string;
 	  set : string := "";
  
+	  molecularNotesRequired := false;
+
 	  -- Process while non-empty rows are found
  
 	  while (row < mgi_tblNumRows(table)) do
