@@ -16,6 +16,10 @@
 --
 -- History
 --
+-- lec 04/17/2002
+--	- TR 3402; VerifyNonGeneMarker; for GXD Assay/Index, display
+--	  a warning message if the Marker TYpe is not "Gene"
+--
 -- lec 04/16/2002
 --	- TR 3575; VerifyGelLaneControl; for Genotype, the genotype
 --	  field should contain the MGI Acc ID for Not Applicable, not
@@ -2301,6 +2305,41 @@ rules:
 	  VerifyMarker.source_widget := VerifyNomenMarker.source_widget;
 	  VerifyMarker.allowNomen := true;
 	  send(VerifyMarker, 0);
+	end does;
+
+--
+-- VerifyNonGeneMarker
+--
+-- If the Marker is not of type "Gene", then display a warning to the user.
+-- Allow the edit.
+--
+
+	VerifyNonGeneMarker does
+	  sourceWidget : widget := VerifyNonGeneMarker.source_widget;
+	  top : widget := sourceWidget.top;
+	  value : string;
+	  markerType : string;
+
+	  value := top->mgiMarker->ObjectID->text.value;
+
+	  -- If no value entered, return
+
+	  if (value.length = 0 or value = "NULL") then
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
+		" where _Marker_key = " + value);
+
+	  if (markerType != "1") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "\nWARNING:  This Marker is not a Gene.";
+            send(StatusReport);
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --
