@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 29 15:00:24 2004";
+      lastWritten = "Fri Apr 30 14:27:03 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -337,7 +337,7 @@ Module: MGI
             focusCallback = "D:StatusReportFront";
           Group: Control
             vip_x = 70;
-            vip_y = 250;
+            vip_y = 305;
               {
                 ID = ID : mgiDataTypes;
               }
@@ -514,7 +514,7 @@ Module: MGI
             userDefinedAttributes = "sqlFrom:String\nsqlWhere:String\n";
           Group: Control
             vip_x = 70;
-            vip_y = 305;
+            vip_y = 360;
           Group: User
             homeWidget = Library;
               {
@@ -841,7 +841,7 @@ Module: MGI
             title = "MGI Controlled Vocabulary";
           Group: Control
             vip_x = 70;
-            vip_y = 415;
+            vip_y = 470;
           Group: User
             homeWidget = Name;
             activateButtonName = ControlledVocab;
@@ -1222,7 +1222,7 @@ Module: MGI
             focusCallback = "D:StatusReportFront";
           Group: Control
             vip_x = 70;
-            vip_y = 360;
+            vip_y = 415;
         }
         {
           GenotypeModule = Module : MGI;
@@ -1230,7 +1230,7 @@ Module: MGI
             closeWindowCallback = "D:GenotypeExit";
           Group: Control
             vip_x = 70;
-            vip_y = 470;
+            vip_y = 525;
           Group: User
             homeWidget = Verify;
             activateButtonName = GenotypePush;
@@ -1700,7 +1700,7 @@ Module: MGI
           SimpleVocabModule = Module;
           Group: Control
             vip_x = 70;
-            vip_y = 525;
+            vip_y = 580;
           Group: User
             activateButtonName = SimpleVocab;
             homeWidget = Name;
@@ -1920,7 +1920,7 @@ Module: MGI
             height = 900;
           Group: Control
             vip_x = 70;
-            vip_y = 635;
+            vip_y = 690;
           Group: User
             activateButtonName = Translation;
             homeWidget = Name;
@@ -2169,7 +2169,7 @@ Module: MGI
             closeWindowCallback = "D:VocAnnotExit";
           Group: Control
             vip_x = 70;
-            vip_y = 580;
+            vip_y = 635;
           Group: User
             activateButtonName = VocAnnot;
             homeWidget = mgiAccession;
@@ -2635,6 +2635,23 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:NotePreCancel,D:NoteCancel";
                                 }
                           }
+                    }
+              }
+        }
+        {
+          Test = Application : MGI;
+          Group: Control
+            vip_x = 70;
+            vip_y = 250;
+              {
+                EditForm = XmRowColumn;
+                Group: Control
+                  vipComment = "";
+                    {
+                      xtXrtTable = XtXrtTable;
+                    }
+                    {
+                      xtXrtTable1 = XtXrtTable;
                     }
               }
         }
