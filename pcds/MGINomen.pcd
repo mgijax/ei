@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Apr  7 11:20:16 2000";
+      lastWritten = "Tue Apr 11 14:14:41 2000";
         {
           Nomen = Module : MGI;
           Group: Control
@@ -104,28 +104,14 @@ Module: MGINomen
                                     defaultChild = 2;
                                 }
                                 {
-                                  MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = MarkerEventMenu;
-                                    leftOffset = 20;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = MarkerEventMenu;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    defaultChild = 2;
-                                }
-                                {
                                   MarkerStatusMenu = MarkerStatusMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = MarkerEventReasonMenu;
-                                    leftOffset = 20;
+                                    leftWidget = MarkerEventMenu;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = MarkerEventReasonMenu;
+                                    topWidget = MarkerEventMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
@@ -134,14 +120,14 @@ Module: MGINomen
                                   Group: Widget
                                     labelString = "Marker Type";
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = MarkerEventMenu;
-                                    topWidget = MarkerEventReasonMenu;
-                                    topOffset = 5;
+                                    leftWidget = MarkerStatusMenu;
+                                    topWidget = MarkerStatusMenu;
+                                    leftOffset = 5;
                                   Group: User
                                     defaultChild = 1;
                                 }
@@ -150,7 +136,7 @@ Module: MGINomen
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = MarkerTypeMenu;
-                                    leftOffset = 20;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = MarkerTypeMenu;
@@ -170,13 +156,14 @@ Module: MGINomen
                                     subMenuId = SubmittedByPulldown;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = ChromosomeMenu;
+                                    leftWidget = HumanSymbol;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = ChromosomeMenu;
+                                    topWidget = HumanSymbol;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 20;
+                                    leftOffset = 10;
+                                    topOffset = 5;
                                   Group: User
                                     required = False;
                                       Popups:
@@ -188,10 +175,10 @@ Module: MGINomen
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = MarkerTypeMenu;
+                                    leftWidget = MarkerEventMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = MarkerTypeMenu;
+                                    topWidget = MarkerEventMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
