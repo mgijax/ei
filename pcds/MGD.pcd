@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 22 09:55:40 2005";
+      lastWritten = "Thu Mar 24 08:32:05 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8568,13 +8568,11 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          userDefinedAttributes = "origRefsKey:Int\n";
                                           xrtTblVisibleRows = 10;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 40)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 40)";
                                           xrtTblNumRows = 11;
                                         Group: User
                                           mgiTypeKey = 11;
-                                          origRefsKey = 0;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -8759,6 +8757,26 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        CellLine = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = ID;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                    Group: User
+                                                      required = False;
+                                                  }
+                                            }
+                                      }
                                 }
                                 {
                                   Synonym = SynonymTypeTable : mgiTable;
@@ -11301,6 +11319,9 @@ Shift<Key>Tab: prev-tab-group()
                                     rightOffset = 5;
                                       {
                                         Table = mgiTable;
+                                        Group: User
+                                          defaultNoteType = General;
+                                          useDefaultNoteType = True;
                                       }
                                       {
                                         AddRow = TablePush;
@@ -12932,8 +12953,8 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-6 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 100)";
+                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 100)";
                                         Group: Constraint
                                           leftAttachment = attach_form;
                                           rightAttachment = attach_none;
@@ -12941,8 +12962,9 @@ Shift<Key>Tab: prev-tab-group()
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                         Group: User
-                                          requiredColumns = 3;
+                                          requiredColumns = 2;
                                           useDefaultRefType = True;
+                                          defaultRefType = General;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;

@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 21 12:52:54 2005";
+      lastWritten = "Thu Mar 24 08:31:46 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -524,23 +524,22 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"4\"\nreviewKey:Int(Int)=\"5\"\nreview:Int(Int)=\"9\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\n";
-                  xrtTblNumColumns = 10;
-                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Review key,Type,J#,Citation,Review?";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 60)";
-                  xrtTblMaxLengthSeries = "(all 8 255)";
-                  xrtTblPixelWidthSeries = "(all 0-5 0)(all 9 0)";
-                  xrtTblEditableSeries = "(all 0-6 False)(all 8-9 False)";
-                  xrtTblTraversableSeries = "(all 0-6 False)(all 8-9 False)";
+                  userDefinedAttributes = "refsType:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\nrefsTypeKey:Int(Int)=\"3\"\nreviewKey:Int(Int)=\"4\"\nreview:Int(Int)=\"8\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\ndefaultRefType:String\n";
+                  xrtTblNumColumns = 9;
+                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Type key,Review key,Type,J#,Citation,Review?";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 60)";
+                  xrtTblMaxLengthSeries = "(all 7 255)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)(all 8 0)";
+                  xrtTblEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)(all 7-8 False)";
                 Group: User
-                  citation = 8;
-                  jnum = 7;
-                  refsKey = 3;
-                  refsCurrentKey = 2;
-                  requiredColumns = "3\n4";
-                  refsType = 6;
-                  saveEditableSeries = "(all 0-6 False)(all 8-9 False)";
-                  saveTraversableSeries = "(all 0-6 False)(all 8-9 False)";
+                  citation = 7;
+                  jnum = 6;
+                  refsKey = 2;
+                  requiredColumns = "2\n3";
+                  refsType = 5;
+                  saveEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  saveTraversableSeries = "(all 0-5 False)(all 7-8 False)";
               }
               {
                 AddRow = TablePush : mgiTable;
@@ -576,8 +575,8 @@ Module: mgiTable
                     {
                       ReferenceTypePulldown = OptionPulldown : mgiOption;
                       Group: User
-                        tableOption = 7;
-                        tableOptionKey = 5;
+                        tableOption = 5;
+                        tableOptionKey = 3;
                     }
               }
               {
@@ -602,8 +601,8 @@ Module: mgiTable
                       ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
                       Group: User
                         tableForm = Reference;
-                        tableOptionKey = 6;
-                        tableOption = 10;
+                        tableOptionKey = 4;
+                        tableOption = 8;
                           {
                             SearchAll = SearchAll : mgiOption;
                             Group: Widget
@@ -771,7 +770,7 @@ Module: mgiTable
                   xrtTblFrozenColumns = 6;
                   xrtTblEditableSeries = "(all 0-5 False)";
                   xrtTblTraversableSeries = "(all 0-5 False)";
-                  userDefinedAttributes = "noteTypeKey:Int(Int)=\"2\"\nnoteType:Int(Int)=\"5\"\nnote:Int(Int)=\"6\"\nmgiTypeKey:Int(Int)\nnoteKey:Int(Int)=\"1\"\nnotesLoaded:Boolean(Boolean)=\"False\"\n";
+                  userDefinedAttributes = "noteTypeKey:Int(Int)=\"2\"\nnoteType:Int(Int)=\"5\"\nnote:Int(Int)=\"6\"\nmgiTypeKey:Int(Int)\nnoteKey:Int(Int)=\"1\"\nnotesLoaded:Boolean(Boolean)=\"False\"\nuseDefaultNoteType:Boolean=\"False\"\ndefaultNoteType:String\n";
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_form;

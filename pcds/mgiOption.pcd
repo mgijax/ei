@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 21 12:52:51 2005";
+      lastWritten = "Wed Mar 23 15:07:01 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -758,11 +758,6 @@ Module: mgiOption
                       pub_2 = OptionToggle : mgiOption;
                       Group: User
                         defaultValue = pub_2;
-                    }
-                    {
-                      mgd_release = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = mgd_release;
                     }
                     {
                       qatest1 = OptionToggle : mgiOption;
@@ -2125,7 +2120,8 @@ Module: mgiOption
             vip_x = 80;
             vip_y = 4100;
           Group: User
-            defaultValue = "-2";
+            defaultValue = "Not Applicable";
+            required = False;
               Popups:
               {
                 InheritanceModePulldown : OptionPulldown = OptionPulldown : mgiOption;

@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 21 12:52:53 2005";
+      lastWritten = "Wed Mar 23 15:36:56 2005";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -274,7 +274,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
