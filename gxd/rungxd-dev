@@ -28,8 +28,8 @@ USERLOG=$HOME/.gxd_dev-log
 
 DSQUERY=MGD_DEV
 MGD=mgd_release
-STRAINS=strains_dev
-NOMEN=nomen_dev
+STRAINS=strains_release
+NOMEN=nomen_release
 
 EIREPORTDIR=$HOME/mgireport
 EIARCHIVEDIR=$INSTALL_ROOT/mgireport
