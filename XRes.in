@@ -1,12 +1,7 @@
-MGD*background:	Grey
 MGD*fontList:	"fixed"
-GXD*background:	Grey
 GXD*fontList:	"fixed"
-MGI*background:	Grey
 MGI*fontList:	"fixed"
-MGIADMIN*background:	Grey
 MGIADMIN*fontList:	"fixed"
-FANTOM*background:	Grey
 FANTOM*fontList:	"fixed"
 *XmText.translations: #override\n\
  	<Key>osfDelete:   delete-previous-character()\n\
