@@ -30,6 +30,7 @@
 --
 -- lec 08/29/2001
 --	- Modify; check length of "cmd" and "set" before updating modification date
+--	- TR 2767; added DetectISResultModification, NextISResult
 --
 -- lec 08/28/2001
 --	- TR 2869
