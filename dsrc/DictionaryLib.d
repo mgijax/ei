@@ -130,7 +130,7 @@ rules:
 
 	  sKeys := top->StructureList->List.keys;
 
-	  -- Retrieve A.D. clipboard structures
+	  -- Retrieve AD clipboard
 
 	  i : integer := 1;
 	  numStructures : integer := clipboardList->List.itemCount;

@@ -132,7 +132,7 @@ rules:
             InsertList.key := AddSQL.key.value;
             send(InsertList, 0);
 	    top->RecordCount->text.value := mgi_DBrecordCount(AddSQL.tableID);
-            (void) XmListSelectPos(AddSQL.list->List, AddSQL.list->List.row, true);
+            (void) XmListSelectPos(AddSQL.list->List, AddSQL.list->List.row, AddSQL.selectNewListItem);
           end if;
         end does;
  

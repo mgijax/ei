@@ -12,6 +12,7 @@ AddSQL [tableID : integer := 0;			-- Execute an Add
 	transaction : boolean := true;
 	cmd : string;
 	list : widget;
+	selectNewListItem : boolean := true;
         item : string;
         key : widget;
 	row : integer;
