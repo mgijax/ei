@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Wed Aug 11 08:35:36 1999";
+      lastWritten = "Wed Aug 11 14:14:34 1999";
         {
           MGINomen = Application : MGI;
           Group: Control
@@ -753,6 +753,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     E = XmToggleButton;
                                                   }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
+                                                  }
                                             }
                                       }
                                 }
@@ -938,6 +944,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     E = XmToggleButton;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                             }
                                       }

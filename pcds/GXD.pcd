@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Fri Aug  6 09:12:04 1999";
+      lastWritten = "Wed Aug 11 14:14:20 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -350,6 +350,12 @@ Module: GXD
                                                   }
                                                   {
                                                     E = XmToggleButton;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -923,6 +929,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     E = XmToggleButton;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -2132,6 +2144,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     E = XmToggleButton;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
