@@ -26,6 +26,9 @@ InitMolecularSource [source_widget : widget;];		-- Initialie Mol Source form
 
 ModifyMolecularSource [source_widget : widget;]; 	-- Construct SQL for updating Mol Source record
 
+ModifyAntigenSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
+                     antigenKey : string;];             -- Antigen with which to associate the Mol Source record
+
 ModifyProbeSource [source_widget : widget;  	        -- Construct SQL for updating Mol Source record
                    probeKey : string;];                 -- Probe with which to associate the Mol Source record
 

@@ -109,6 +109,13 @@ rules:
             return;
           end if;
 
+          if (top->SourceForm->Library->text.value.length = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You cannot use this form to add an Anonymous Molecular Source.";
+            send(StatusReport, 0);
+	    return;
+	  end if;
+
           (void) busy_cursor(top);
 
 	  -- Use Molecular Source library
@@ -181,6 +188,13 @@ rules:
           if (not top.allowEdit) then
             return;
           end if;
+
+          if (top->SourceForm->Library->text.value.length = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You cannot use this form to modify an Anonymous Molecular Source.";
+            send(StatusReport, 0);
+	    return;
+	  end if;
 
 	  (void) busy_cursor(top);
 

@@ -530,9 +530,42 @@ rules:
         end does;
  
 --
+-- ModifyAntigenSource
+--
+-- Construct SQL to update Molecular Source data for an Antigen
+-- SQL statement stored in SourceForm.sql UDA
+-- Assumes use of SourceForm template
+--
+ 
+        ModifyAntigenSource does
+	  top : widget := ModifyAntigenSource.source_widget->SourceForm;
+	  antigenKey : string :=  ModifyAntigenSource.antigenKey;
+	  age : string := "";
+
+	  top.sql := "";
+ 
+	  age := top->AgeMenu.menuHistory.defaultValue;
+	  if (top->Age->text.value.length > 0) then
+	    age := age + " " + top->Age->text.value;
+	  end if;
+
+	  top.sql := top.sql + "exec PRB_processAntigenAnonSource " +
+	      antigenKey + "," +
+	      top->SourceID->text.value + "," +
+	      top->AntigenOrganismMenu.menuHistory.defaultValue + "," +
+	      top->Strain->StrainID->text.value + "," +
+	      top->Tissue->TissueID->text.value + "," +
+	      top->GenderMenu.menuHistory.defaultValue + "," +
+	      top->CellLine->CellLineID->text.value + "," +
+	      mgi_DBprstr(age) + "," +
+	      global_loginKey + "\n";
+
+	end does;
+
+--
 -- ModifyProbeSource
 --
--- Construct SQL to update Molecular Source data
+-- Construct SQL to update Molecular Source data for a Probe
 -- SQL statement stored in SourceForm.sql UDA
 -- Assumes use of SourceForm template
 --
@@ -544,18 +577,6 @@ rules:
 
 	  top.sql := "";
  
-	  -- If no Source record to modify, then return
-
-          if (top->SourceID->text.value.length = 0) then
-	    return;
-	  end if;
-
---	  ProcessNoteForm.notew := top->mgiNoteForm;
---	  ProcessNoteForm.tableID := MGI_NOTE;
---	  ProcessNoteForm.objectKey := top->SourceID->text.value;
---	  send(ProcessNoteForm, 0);
---	  top.sql := top->mgiNoteForm.sql;
-
 	  age := top->AgeMenu.menuHistory.defaultValue;
 	  if (top->Age->text.value.length > 0) then
 	    age := age + " " + top->Age->text.value;

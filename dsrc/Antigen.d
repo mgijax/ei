@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 07/25/2003
+--	- JSAM
+--
 -- lec 02/18/2003
 --	- TR 4489; display Antibodies for selected Antigen
 --
@@ -268,10 +271,11 @@ rules:
 	    cmd := mgi_DBupdate(GXD_ANTIGEN, currentRecordKey, set);
 	  end if;
 
-	  -- ModifyMolecularSource will set top->SourceForm.sql appropriately
+	  -- ModifyAntigenSource will set top->SourceForm.sql appropriately
 	  -- Append this value to the 'cmd' string
-	  ModifyMolecularSource.source_widget := top;
-	  send(ModifyMolecularSource, 0);
+          ModifyAntigenSource.source_widget := top->SourceForm;
+	  ModifyAntigenSource.probeKey := currentRecordKey;
+          send(ModifyAntigenSource, 0);
 	  cmd := cmd + top->SourceForm.sql;
  
           ProcessAcc.table := accTable;
