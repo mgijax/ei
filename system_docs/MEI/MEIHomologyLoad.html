@@ -89,7 +89,7 @@ For each Marker record in MGD of the designated species:
 <LI>If the MGD Marker cannot be found in the input file, it is reported as <I>not found</I>.
 </OL>
 
-Once the input file record for the MGD Marker is located:
+Once the input file record for the MGD Marker is located, for GDB only!:
 <OL>
 <LI>If the <I>Source</I> Symbol has undergone a Nomenclature change and the
     <I>New</I> symbol exists in MGD, then the two homology classes must be <I>Merged</I>:
@@ -102,7 +102,8 @@ Once the input file record for the MGD Marker is located:
     If the new symbol does <I>not</I> exist in MGD, then the symbol for the
     MGD record is simply updated to the new symbol.
 <P>
-<LI>Update Symbol, Name, Acc ID, Chromosome, Offset if MGD values differ from <I>Source</I>.
+<LI>For GDB, update Symbol, Acc ID, Chromosome, Offset if MGD values differ from <I>Source</I>.
+    For RATMAP, update Acc ID, Chromosome, Offset if MGD values differ from <I>Source</I>.
 <P>
 <LI>If no Accession ID currently exists for the MGD symbol, then add it.
 </OL>
