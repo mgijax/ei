@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	11/05/2003
+--	- TR 4826; remove VerifyAge; using stored procedure PRB_ageMinMax now
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -95,38 +98,19 @@ rules:
 
 	  age := top->AgeMenu.menuHistory.defaultValue;
 
-	  -- If Age is Not Specified or Not Applicable, Age Min and Max are NULL
-
-          if (age = "Not Specified" or age = "Not Applicable") then
-            top->AgeMin->text.value := "NULL";
-            top->AgeMax->text.value := "NULL";
-	  end if;
-
           if (top->Age->text.value.length > 0) then
             age := age + " " + top->Age->text.value;
           end if;
  
-	  -- If either AgeMin or AgeMax is blank, then user did not tab out
-	  -- of Age->text field, so call VerifyAge to set the values
+	  -- note:  ageMin and ageMax are set by MGI_resetAgeMinMax
 
-	  if (top->AgeMin->text.value.length = 0 or
-	      top->AgeMax->text.value.length = 0) then
-	    VerifyAge.source_widget := top->Age->text;
-	    send(VerifyAge, 0);
-	  end if;
-
-	  -- If AgeMin and AgeMax are not set, then do not set top.sql
-
-	  if (top->AgeMin->text.value.length > 0 and
-	      top->AgeMax->text.value.length > 0) then
-            add := add + mgi_DBprstr(age) + "," +
-                         top->AgeMin->text.value + "," +
-                         top->AgeMax->text.value + "," +
-                         mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + "," +
-            	         mgi_DBprstr(top->CellLine->text.value) + ")\n";
+          add := add + mgi_DBprstr(age) + ",NULL,NULL," +
+                       mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + "," +
+            	       mgi_DBprstr(top->CellLine->text.value) + ")\n" +
+		 "exec MGI_resetAgeMinMax " + mgi_DBtable(PRB_SOURCE) + ", @" + keyLabel + "\n";
  
-	    top.sql := add;
-	  end if;
+	  top.sql := add;
+
         end does;
  
 --
@@ -156,8 +140,6 @@ rules:
 	  age : string := "";
 	  agePrefix : string := "";
 	  ageSuffix : string := "";
-	  ageMin : string := DisplayMolecularAge.ageMin;
-	  ageMax : string := DisplayMolecularAge.ageMax;
 
 	  -- Get Age Prefix values from Option List
 
@@ -199,24 +181,14 @@ rules:
           SetOption.value := agePrefix;
           send(SetOption, 0);
 
-          if (agePrefix = "Not Specified" or 
-              agePrefix = "Not Applicable") then
-            ageMin := "NULL";
-            ageMax := "NULL";
-	  end if; 
-
 	  if (isTable) then
-	    -- Set Age Prefix, Suffix, Min and Max in Table
+	    -- Set Age Prefix, Suffix in Table
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.ageKey, agePrefix);
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.agePrefix, agePrefix);
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.ageRange, ageSuffix);
-	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.ageMin, ageMin);
-	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.ageMax, ageMax);
 	  else
-	    -- Set Age Suffix, Min and Max in TextField
+	    -- Set Age Suffix in TextField
             sourceWidget.value := ageSuffix;
-	    top->AgeMin->text.value := ageMin;
-	    top->AgeMax->text.value := ageMax;
 	  end if;
 	end does;
 
@@ -310,8 +282,6 @@ rules:
 
 		DisplayMolecularAge.source_widget := sourceForm->Age->text;
 		DisplayMolecularAge.age := mgi_getstr(dbproc, 10);
-		DisplayMolecularAge.ageMin := mgi_getstr(dbproc, 11);
-		DisplayMolecularAge.ageMax := mgi_getstr(dbproc, 12);
 		send(DisplayMolecularAge, 0);
 
 	      elsif (results = 2) then
@@ -414,22 +384,10 @@ rules:
  
           if (top->AgeMenu.menuHistory.modified or top->Age->text.modified) then
 	    age := top->AgeMenu.menuHistory.defaultValue;
-
             if (top->Age->text.value.length > 0) then
               age := age + " " + top->Age->text.value;
-            end if;
-
-	    VerifyAge.source_widget := top->Age->text;
-	    send(VerifyAge, 0);
-
-	    if (top->AgeMin->text.value.length > 0 and
-	        top->AgeMax->text.value.length > 0) then
-	      set := set + "age = " + mgi_DBprstr(age) + "," +
-                           "ageMin = " + top->AgeMin->text.value + "," +
-                           "ageMax = " + top->AgeMax->text.value + ",";
-	    else
-	      set := "";
 	    end if;
+	    set := set + "age = " + mgi_DBprstr(age) + ",";
           end if;
  
           if (top->SexMenu.menuHistory.modified) then
@@ -437,7 +395,8 @@ rules:
           end if;
  
           if (set.length > 0) then
-            top.sql := mgi_DBupdate(PRB_SOURCE, top->SourceID->text.value, set);
+            top.sql := mgi_DBupdate(PRB_SOURCE, top->SourceID->text.value, set) +
+		"exec MGI_resetAgeMinMax " + mgi_DBtable(PRB_SOURCE) + ", " + top->SourceID->text.value + "\n";
           end if;
  
         end does;

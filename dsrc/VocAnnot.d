@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 09/18/2003 lec
+--	- TR 4579; VOC_Evidence; extended notes; added primary key
+--
 -- 02/26/2003 lec
 --	- TR 4562; added EditTerm toggle
 --
@@ -284,6 +287,7 @@ rules:
 	  cmd : string;
           row : integer := 0;
           editMode : string;
+	  key : string;
           annotKey : string;
           termKey : string;
 	  notKey : string;
@@ -295,6 +299,8 @@ rules:
 	  notes : string;
           set : string := "";
 	  keyDeclared : boolean := false;
+	  keyName : string := "annotEvidenceKey";
+	  annotKeyDeclared : boolean := false;
 	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
@@ -332,6 +338,7 @@ rules:
               break;
             end if;
  
+            key := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
             annotKey := mgi_tblGetCell(annotTable, row, annotTable.annotKey);
             termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
             notKey := mgi_tblGetCell(annotTable, row, annotTable.notKey);
@@ -364,15 +371,24 @@ rules:
 		end if;
 	      end if;
 
+	      -- Declare primary key name, or increment
+
+	      if (not keyDeclared) then
+                  cmd := cmd + mgi_setDBkey(VOC_EVIDENCE, NEWKEY, keyName);
+                  keyDeclared := true;
+	      else
+                  cmd := cmd + mgi_DBincKey(keyName);
+	      end if;
+
 	      -- If we need a new Annotation key...or if the Annotation key
 	      -- was created during this transaction...
 
 	      if (annotKey.length = 0 or (integer) annotKey < 1000) then
 
 		-- if the key def was not already declared, declare it
-                if (not keyDeclared) then
+                if (not annotKeyDeclared) then
                   cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, KEYNAME);
-                  keyDeclared := true;
+                  annotKeyDeclared := true;
 
 		-- if the Annotation key is blank, then it's a new Term
                 elsif (annotKey.length = 0) then
@@ -385,7 +401,7 @@ rules:
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, (string) newAnnotKey);
 		newAnnotKey := newAnnotKey + 1;
-		annotKey := KEYNAME;
+		annotKey := "@" + KEYNAME;
 
 	      end if;
 
@@ -393,7 +409,7 @@ rules:
 
 	      if (not dupAnnot) then
                 cmd := cmd +
-                       mgi_DBinsert(VOC_ANNOT, annotKey) +
+                       mgi_DBinsert(VOC_ANNOT, KEYNAME) +
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
@@ -401,13 +417,20 @@ rules:
 	      end if;
 
               cmd := cmd +
-		       mgi_DBinsert(VOC_EVIDENCE, annotKey) +
+		       mgi_DBinsert(VOC_EVIDENCE, keyName) +
+		       annotKey + "," +
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       mgi_DBprstr(inferredFrom) + "," +
-		       mgi_DBprstr(global_login) + "," +
-		       mgi_DBprstr(global_login) + "," +
-		       mgi_DBprstr(notes) + ")\n";
+		       global_loginKey + "," + global_loginKey + ")\n";
+
+	      ModifyNotes.source_widget := annotTable;
+	      ModifyNotes.tableID := MGI_NOTE;
+	      ModifyNotes.key := "@" + keyName;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := annotTable.notes;
+	      send(ModifyNotes, 0);
+	      cmd := cmd + annotTable.sqlCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -421,17 +444,20 @@ rules:
 
 	      set := "_EvidenceTerm_key = " + evidenceKey + "," +
                      "_Refs_key = " + refsKey + "," +
-		     "inferredFrom = " + mgi_DBprstr(inferredFrom) + "," +
-		     "notes = " + mgi_DBprstr(notes);
+		     "inferredFrom = " + mgi_DBprstr(inferredFrom);
 
-              cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, annotKey, set) + 
-		" and _EvidenceTerm_key = " + currentEvidenceKey +
-		" and _Refs_key = " + currentRefsKey + "\n";
+              cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, key, set);
+
+	      ModifyNotes.source_widget := annotTable;
+	      ModifyNotes.tableID := MGI_NOTE;
+	      ModifyNotes.key := key;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := annotTable.notes;
+	      send(ModifyNotes, 0);
+	      cmd := cmd + annotTable.sqlCmd;
 
             elsif (editMode = TBL_ROW_DELETE) then
-               cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, annotKey) + 
-		" and _EvidenceTerm_key = " + currentEvidenceKey +
-		" and _Refs_key = " + currentRefsKey + "\n";
+               cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
             end if;
  
             row := row + 1;
@@ -621,7 +647,8 @@ rules:
 
 	Select does
 	  orderBy : string;
-          annotKey : string;
+          objectKey : string;
+	  value : string;
 
           (void) busy_cursor(top);
 
@@ -658,25 +685,34 @@ rules:
 	    orderBy := "a.term, e.modification_date\n";
 	  end if;
 
-	  cmd : string := "select _Object_key, accID, description, short_description " +
-			  "from " + dbView + 
+	  cmd : string := "select _Object_key, accID, description, short_description" +
+			  " from " + dbView + 
 			  " where _Object_key = " + currentRecordKey + 
 			  " and prefixPart = 'MGI:' and preferred = 1 " + 
 			  " order by description\n" +
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.* " +
-			  "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
+	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.*" +
+			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
 		          " where a._AnnotType_key = " + annotTypeKey +
 			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Annot_key = e._Annot_key " +
 			  " order by " + orderBy +
-			  "select distinct a._Annot_key, v.dagAbbrev " +
-			  "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
+			  "select distinct a._Annot_key, v.dagAbbrev" +
+			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			  	mgi_DBtable(DAG_NODE_VIEW) + " v" +
 		          " where a._AnnotType_key = " + annotTypeKey +
 			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Vocab_key = v._Vocab_key" +
-			  " and a._Term_key = v._Object_key\n";
+			  " and a._Term_key = v._Object_key\n" +
+			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
+			  " from " + 
+			    mgi_DBtable(VOC_ANNOT) + " a, " +
+			    mgi_DBtable(VOC_EVIDENCE) + " e, " +
+			    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
+			  " where a._Object_key = " + currentRecordKey +
+			  " and a._Annot_key = e._Annot_key" +
+			  " and e._AnnotEvidence_key = n._Object_key" +
+			  " order by n._Object_key, n.sequenceNum\n";
 
 	  row : integer := 0;
 	  i : integer;
@@ -699,7 +735,8 @@ rules:
 		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 		end if;
 	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
@@ -709,30 +746,41 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentEvidenceKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentEvidenceKey, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceSeqNum, mgi_getstr(dbproc, 17));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentRefsKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentRefsKey, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 12));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 13));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 11));
+--	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 22));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
-                annotKey := mgi_getstr(dbproc, 1);
+                objectKey := mgi_getstr(dbproc, 1);
 		i := 0;
 		while (i < mgi_tblNumRows(annotTable)) do
-		  if (mgi_tblGetCell(annotTable, i, annotTable.annotKey) = annotKey) then
+		  if (mgi_tblGetCell(annotTable, i, annotTable.annotKey) = objectKey) then
 	            (void) mgi_tblSetCell(annotTable, i, annotTable.dag, mgi_getstr(dbproc, 2));
+		  end if;
+		  i := i + 1;
+		end while;
+	      elsif (results = 4) then
+                objectKey := mgi_getstr(dbproc, 2);
+		i := 0;
+		while (i < mgi_tblNumRows(annotTable)) do
+		  if (mgi_tblGetCell(annotTable, i, annotTable.annotEvidenceKey) = objectKey) then
+		    value := mgi_tblGetCell(annotTable, i, annotTable.notes) + mgi_getstr(dbproc, 3);
+	            (void) mgi_tblSetCell(annotTable, i, annotTable.notes, value);
+	            (void) mgi_tblSetCell(annotTable, i, annotTable.noteKey, mgi_getstr(dbproc, 1));
 		  end if;
 		  i := i + 1;
 		end while;
@@ -780,7 +828,6 @@ rules:
 	  end while;
 
 	  -- Set all "unknown" term rows to red
-	  value : string;
 	  i := 0;
 	  while (i < mgi_tblNumRows(annotTable)) do
 	    value := mgi_tblGetCell(annotTable, i, annotTable.term);
