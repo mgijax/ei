@@ -556,7 +556,7 @@ rules:
 	    accID := mgi_tblGetCell(table, row, table.accID);
 
 	    if (accID = "GDB:") then
-		accID = "";
+		accID := "";
 	    end if;
  
             if (editMode = TBL_ROW_ADD or editMode = TBL_ROW_MODIFY) then
