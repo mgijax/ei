@@ -635,12 +635,14 @@ int check_tag(DBPROCESS *dbproc, char *tag, int *reason, xrtlist *symlist)
 	tu_status_t status;
 	xrtlist slist = createStringList(MAXTAGLEN); 
 
-	sprintf(cmd, "Current_Symbol '%s'",tag);
+	sprintf(cmd, 
+		"select _Current_key, _Marker_key, current_symbol, symbol from MRK_Current_View where symbol = '%s'", tag);
 
 	dbcmd(dbproc, cmd);
-    dbsqlexec(dbproc);
+        dbsqlexec(dbproc);
 
-	inmgd=0;  /* if we have at least one row, then we know we have an MGD entry 			     for this symbol */
+	inmgd=0;  /* if we have at least one row, then we know we have an MGD entry for this symbol */
+
 	while (dbresults(dbproc) != NO_MORE_RESULTS){
         while (dbnextrow(dbproc) != NO_MORE_ROWS){
             strcpy(cs, mgi_getstr(dbproc, 3));

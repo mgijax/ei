@@ -63,7 +63,7 @@ Boolean current;
                 csym[MAXSYMLEN];
 	int foundit = 0;
 
-	sprintf(cmd, "Current_Symbol '%s'", symtext);
+	sprintf(cmd, "select _Current_key, _Marker_key, current_symbol, symbol from MRK_Current_View where symbol = '%s'", symtext);
 
     dbcmd(dbproc, cmd);
     dbsqlexec(dbproc);
