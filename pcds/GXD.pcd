@@ -961,6 +961,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   CVGel = CVGel : mgiOption;
+				  Group: Widget
+				  managed = False;
                                       {
                                         StructureList = StructureList : mgiLookup;
                                             {
