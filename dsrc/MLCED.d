@@ -130,7 +130,6 @@ devents:
 	UpdateLocusText :local [value : string;];
 	Checkin :local [];
 	Import :local [];
-	Submit :local [];
 	FixSymbols :local [];
 
 	UnlockInit :local [];    -- Initialize/Manage MLCUnlockDialog
@@ -1468,28 +1467,6 @@ rules:
 	  -- Append the text
 	  top->Description->text.value := top->Description->text.value + "\n\n" + newtext; 
 	  top->Description->text.modified := true;
-	end does;
-
---
--- Submit
---
--- Submits the current record to Production.  If the current record
--- doesn't exist in the MLC edit tables, this translates into a delete 
--- on Production.
---
---
-	Submit does
-
-	  if (currentMarkerKey.length != 0) then 
-	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec MLC_transfer " + currentMarkerKey;
-	    send(ExecSQL, 0);
-	    (void) reset_cursor(top);
-	  else
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "No current record to submit.";
-	    send(StatusReport);
-	  end if;
 	end does;
 
 ---
