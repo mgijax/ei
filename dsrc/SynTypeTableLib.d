@@ -28,6 +28,51 @@ dmodule SynTypeTableLib is
 rules:
 
 --
+-- AddSynTypeRow
+--
+--	Adds Row to SynonymType Table
+--	Sets appropriate synTypeKey value
+--	based on most recent SynonymTypeMenu selection.
+--
+
+        AddSynTypeRow does
+	  table : widget := AddSynTypeRow.table;
+
+	  if (table = nil) then
+	    table := AddSynTypeRow.source_widget.parent.child_by_class(TABLE_CLASS);
+	  end if;
+
+	  source : widget := table.parent.child_by_class("XmRowColumn");
+	  synTypeKey : string;
+
+	  source := source.menuHistory;
+
+	  -- Traverse thru table and find first empty row
+	  row : integer := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
+	    if (synTypeKey.length = 0) then
+	      break;
+	    end if;
+	    row := row + 1;
+	  end while;
+
+	  -- Set SynType, Label for row
+
+	  (void) mgi_tblSetCell(table, row, table.synTypeKey, source.defaultValue);
+	  (void) mgi_tblSetCell(table, row, table.synType, source.labelString);
+	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+          -- Traverse to new table row
+
+          TraverseToTableCell.table := table;
+          TraverseToTableCell.row := row;
+          TraverseToTableCell.column := 0;
+          send(TraverseToTableCell, 0);
+
+	end
+
+--
 -- InitSynTypeTable
 --
 --	Initializes SynonymType Table

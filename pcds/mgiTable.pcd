@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 24 15:48:17 2005";
+      lastWritten = "Mon Feb 28 08:17:49 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -144,7 +144,6 @@ Module: mgiTable
                       Group: User
                         tableOptionKey = 1;
                         tableOption = 3;
-                        tableForm = mgiAccessionTable;
                     }
               }
         }
@@ -576,7 +575,6 @@ Module: mgiTable
                       Group: User
                         tableOption = 7;
                         tableOptionKey = 5;
-                        tableForm = Reference;
                     }
               }
               {
@@ -714,6 +712,8 @@ Module: mgiTable
               }
               {
                 AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddSynTypeRow";
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = SynonymTypeMenu;
@@ -745,7 +745,6 @@ Module: mgiTable
                       Group: User
                         tableOption = 4;
                         tableOptionKey = 2;
-                        tableForm = Synonym;
                     }
               }
         }

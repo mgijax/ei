@@ -8,6 +8,9 @@
 -- This is the companion D event declarations file for SynTypeTableLib.d.
 --
 
+-- Add Row to Synonym Type Table
+AddSynTypeRow [table : widget;];	 -- Synonym Type Table
+
 -- Initialize Synonym Type Table
 InitSynTypeTable [table : widget;        -- Synonym Type Table
 	 tableID : integer;
