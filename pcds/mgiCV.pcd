@@ -435,7 +435,7 @@ Module: mgiCV
                               targetWidget = Specimen;
                               tableColumn = 21;
                               tableKeyColumn = 3;
-                              dialogName = InSituResultsDialog;
+                              mgiDialogName = InSituResultsDialog;
                           }
                     }
               }

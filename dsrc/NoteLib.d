@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 08/13/2002
+--	- TR 3988; renamed "dialogName" to "mgiDialogName" per TeleUSE 3.2.3 bug
+--
 -- lec 09/11/2001
 --	- TR 2860; moved AppendNote buttons to Age Notes
 --
@@ -407,10 +410,10 @@ rules:
 	  -- Unmanage, then re-manage later so that dialog is popped back up to the front.
 	  -- However, if not committing changes, unmanage and return.
 
-	  if (push.is_defined("dialogName") = nil) then
+	  if (push.is_defined("mgiDialogName") = nil) then
 	    dialog := top->NoteDialog;
 	  else
-	    dialog := top->(push.dialogName);
+	    dialog := top->(push.mgiDialogName);
 	  end if;
 
 	  if (dialog = nil) then
@@ -679,7 +682,7 @@ rules:
 	  end if;
 
 	  if (noteWidget->NotePush != nil) then
-	    dialogWidget := top->(noteWidget->NotePush.dialogName);
+	    dialogWidget := top->(noteWidget->NotePush.mgiDialogName);
 	    if (dialogWidget.managed) then
 	      dialogWidget->Note->text.value := 
 		dialogWidget->Note->text.value + sourceWidget.note;
