@@ -1227,6 +1227,9 @@ rules:
 	    send(ModifyGelLane, 0);
 	    send(ModifyGelRow, 0);
 	    send(CreateGelBandColumns, 0);
+	    if (cmd.length > 0) then
+	      cmd := cmd + "exec GXD_removeBadGelBand " + currentAssay + "\n";
+	    end if;
 	  end if;
 
 	  -- Process Accession IDs
