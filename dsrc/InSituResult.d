@@ -630,6 +630,7 @@ rules:
 	  paneList : string_list;
 	  pane : string;
 	  notify : boolean := false;
+	  setFirst : boolean := false;
 
 	  (void) XmListDeselectAllItems(top->ImagePaneList->List);
 	  paneList := mgi_splitfields(mgi_tblGetCell(table, row, table.imagePanes), ",");
@@ -637,6 +638,10 @@ rules:
 	  while (paneList.more) do
 	    pane := paneList.next;
 	    (void) XmListSelectItem(top->ImagePaneList->List, xm_xmstring(pane), notify);
+	    if (not setFirst) then
+	      (void) XmListSetItem(top->ImagePaneList->List, xm_xmstring(pane));
+	      setFirst := true;
+	    end if;
 	  end while;
 	end does;
 
