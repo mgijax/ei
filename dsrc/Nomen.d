@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 12/06/1999
+--	- TR 830; eliminate email report
+--
 -- lec 08/11/1999
 --	- TR 812; Nomenclature Report
 --
@@ -1327,7 +1330,6 @@ rules:
 
           dialog->PreviewFileName->text.value := "Broadcast-" + defaultDate + ".preview";
           dialog->BroadcastFileName->text.value := "Broadcast-" + defaultDate;
-          dialog->EmailFileName->text.value := "Broadcast-" + defaultDate + ".email";
 	end does;
 
 --
@@ -1343,11 +1345,9 @@ rules:
  
           dialog->Choice->Preview.set := true;
           dialog->Choice->Broadcast.set := false;
-          dialog->Choice->Email.set := false;
           dialog->mgiDate->text.value := get_date("");
           dialog->PreviewFileName->text.value := "Broadcast-" + get_date("%m-%d-%Y") + ".preview";
           dialog->BroadcastFileName->text.value := "Broadcast-" + get_date("%m-%d-%Y");
-          dialog->EmailFileName->text.value := "Broadcast-" + get_date("%m-%d-%Y") + ".email";
           dialog.managed := true;
         end does;
 
@@ -1376,15 +1376,12 @@ rules:
 	    cmds.insert("--BFILE=" + dialog->BroadcastFileName->text.value, cmds.count + 1);
 	  end if;
 
-	  cmds.insert("--EFILE=" + dialog->EmailFileName->text.value, cmds.count + 1);
 	  cmds.insert("--BDATE=" + dialog->mgiDate->text.value, cmds.count + 1);
 
 	  if (dialog->Choice->Preview.set) then
 	    cmds.insert("-F" + dialog->Choice->Preview.value, cmds.count + 1);
 	  elsif (dialog->Choice->Broadcast.set) then
 	    cmds.insert("-F" + dialog->Choice->Broadcast.value, cmds.count + 1);
-	  else
-	    cmds.insert("-F" + dialog->Choice->Email.value, cmds.count + 1);
 	  end if;
 
 	  -- Print cmds to Output
@@ -1415,7 +1412,6 @@ rules:
         BroadcastEnd does
 	  dialog : widget := BroadcastEnd.source_widget;
 	  bFile : string := global_reportdir + "/" + dialog->BroadcastFileName->text.value;
-	  eFile : string := global_reportdir + "/" + dialog->EmailFileName->text.value;
 
 	  -- Print some diagnostics for the User and to the User log
 
@@ -1428,7 +1424,6 @@ rules:
 	  dialog->Output.value := dialog->Output.value + 
                       "Check the files:\n\n" + 
 		       bFile + "\n" +
-		       eFile + "\n" +
 		       bFile + ".stats\n" +
 		       "for further information.";
 
