@@ -631,8 +631,8 @@ rules:
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = v._Source_key\n" +
 		"order by v._Organism_key\n" +
-		"select * from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
-		"select * from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n";
+		"select distinct mgiType, jnum, markerID, symbol from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
+		"select distinct mgiType, jnum, probeID, name from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n";
 
 	  results : integer := 1;
 	  nonRawRow : integer := 1;
@@ -722,9 +722,9 @@ rules:
 	      elsif (results = 3 or results = 4) then
 		table := top->ObjectAssociation->Table;
 		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, row, table.objectName, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.objectName, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
 		row := row + 1;
 	      end if;
             end while;
