@@ -168,6 +168,7 @@ devents:
 
 	Delete :local [];
 	DeleteGelBand :local [];
+	DetectISResultModification :local [];
 	Duplicate :local [];
 	Exit :local [];
 
@@ -184,6 +185,8 @@ devents:
 	ModifyGelRow :local [];
 	ModifyGelBand :local [row : integer;
 			      key : string;];
+
+	NextISResult :local [answer : boolean := true;];
 
 	PrepareSearch :local [];
 
@@ -224,6 +227,8 @@ locals:
 
 	antibodyPrepLabel : string := "maxAntibodyPrep";
 	probePrepLabel : string := "maxProbePrep";
+
+	continueWithNextRecord : boolean;
 
 rules:
 
@@ -921,6 +926,43 @@ rules:
           (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_MODIFY);
         end does;
  
+--
+-- DetectISResultModification
+--
+-- Determine if InSitu results have been modified but not saved.
+-- Manage dialog to allow user to continue traversal or abort traversal.
+--
+
+	DetectISResultModification does
+
+	  continueWithNextRecord := true;
+
+	  if (top->InSituResultDialog.managed) then
+	    if (top->InSituResultDialog->Results->Table.modified) then
+	      top->NextRecordDialog.managed := true;
+
+	      while (top->NextRecordDialog.managed = true) do
+	        (void) keep_busy();
+	      end while;
+	    end if;
+
+	    -- If user wishes to remain on current row, then re-set "next" attributes
+
+	    if (not continueWithNextRecord) then
+	      DetectISResultModification.next_row := DetectISResultModification.row;
+	      DetectISResultModification.next_column := DetectISResultModification.column;
+	    end if;
+	  end if;
+        end does;
+
+--
+-- NextISResult
+--
+--
+	NextISResult does
+	  continueWithNextRecord := NextISResult.answer;
+	end does;
+
 --
 -- Duplicate
 --
@@ -2461,17 +2503,11 @@ rules:
 
 	  if (table.parent.name = "Specimen") then
 
-	    -- If InSitu Dialog is already displayed...
 	    if (top->InSituResultDialog.managed) then
-	      -- If current InSitu results have been modified and not saved...
-	      if (top->InSituResultDialog->Results->Table.modified) then
-		StatusReport.source_widget := top;
-		StatusReport.message := "Changes made to previous results were not saved and have been lost.";
-		send(StatusReport, 0);
+	      if (continueWithNextRecord) then
+	        InSituResultInit.source_widget := top->CVSpecimen->ResultsPush;
+	        send(InSituResultInit, 0);
 	      end if;
-
-	      InSituResultInit.source_widget := top->CVSpecimen->ResultsPush;
-	      send(InSituResultInit, 0);
 	    end if;
 
 	    if (mgi->GenotypeModule != nil) then
