@@ -3091,8 +3091,7 @@ rules:
 -- VerifyVocabTermAccID
 --
 --	Verify Term Acc ID for Table
---	Assumes table.vocabKey, table.term, table.termAccID, table.dag, 
---              table.dagKey are defined as UDAs
+--	Assumes table.vocabKey, table.term, table.termAccID, table.dag are UDAs
 --	Copy Term Name into Appropriate widget/column
 --	Copy Term Key into Appropriate widget/column
 --	Copy DAG Key into Appropriate widget/column
@@ -3137,7 +3136,6 @@ rules:
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dagKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
 	    end if;
 	    return;
@@ -3148,10 +3146,9 @@ rules:
 	  termAcc : string;
 	  termKey : string;
 	  term : string;
-	  dagKey : string;
 	  dag : string;
 
-	  select : string := "select t.accID, t._Term_key, t.term, d._DAG_key, d.dag " +
+	  select : string := "select t.accID, t._Term_key, t.term, d.dag " +
 		"from VOC_Term_View t, VOC_VocabDAG_View d " +
 		"where t.accID = " + mgi_DBprstr(value) + 
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
@@ -3165,8 +3162,7 @@ rules:
 	      termAcc := mgi_getstr(dbproc, 1);
 	      termKey := mgi_getstr(dbproc, 2);
 	      term    := mgi_getstr(dbproc, 3);
-	      dagKey  := mgi_getstr(dbproc, 4);
-	      dag     := mgi_getstr(dbproc, 5);
+	      dag     := mgi_getstr(dbproc, 4);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
@@ -3182,7 +3178,6 @@ rules:
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termAccID, termAcc);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, termKey);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, term);
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dagKey, dagKey);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, dag);
 	    end if;
 	  else
@@ -3190,7 +3185,6 @@ rules:
 	      VerifyVocabTermAccID.doit := (integer) false;
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dagKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
 	    end if;
             StatusReport.source_widget := top.root;

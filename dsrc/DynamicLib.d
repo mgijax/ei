@@ -162,6 +162,7 @@ rules:
 		  x.evidenceKey := mgi_getstr(dbproc, 3);
 		  x.mgiTypeKey := mgi_getstr(dbproc, 4);
 		  x.vocabKey := mgi_getstr(dbproc, 5);
+		  x.annotVocab := mgi_getstr(dbproc, 6);
 		end if;
 
 		x.unbatch;
