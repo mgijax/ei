@@ -117,6 +117,8 @@ char *global_version;         /* Set in Application dModule; holds main applicat
    If the value = "NULL", return NULL.
    If the value is a string of blanks, return NULL.
 
+   Strip out any carriage returns
+
    requires:	
 	value (char *), the value
 
@@ -142,6 +144,71 @@ char *mgi_DBprstr(char *value)
 {
   static char buf[BUFSIZ];
   int allSpaces = 1;
+  int i;
+  char *s;
+
+  memset(buf, '\0', sizeof(buf));
+
+  for (s = value; *s != '\0'; s++)
+  {
+    allSpaces = isspace(*s);
+    if (!allSpaces)
+      break;
+  }
+
+  if (strlen(value) == 0 || strcmp(value, "NULL") == 0 || allSpaces)
+  {
+    strcpy(buf, "NULL");
+  }
+  else
+  {
+    /* replace newlines with spaces */
+
+    for (s = value; *s != '\0'; s++)
+    {
+      if (*s == '\n')
+	*s = ' ';
+    }
+    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+  }
+
+  return(buf);
+}
+
+/*
+   Compose a string SQL value for a given value.
+   If the value is not null, then enclose in escaped quotes so
+   that SQL will accept it.
+   If the value is null, return NULL.
+   If the value = "NULL", return NULL.
+   If the value is a string of blanks, return NULL.
+
+   requires:	
+	value (char *), the value
+
+   returns:
+	a string buffer containing the new string
+
+   example:
+
+	buf = mgi_DBprnotestr("")
+	the value of buf is: NULL
+
+	buf = mgi_DBprnotestr("Cook")
+	the value of buf is: \"Cook\"
+
+	buf = mgi_DBprnotestr("NULL")
+	the value of buf is: NULL
+
+	buf = mgi_DBprnotestr("    ")
+	the value of buf is: NULL
+*/
+
+char *mgi_DBprnotestr(char *value)
+{
+  static char buf[BUFSIZ];
+  int allSpaces = 1;
+  int i;
   char *s;
 
   memset(buf, '\0', sizeof(buf));

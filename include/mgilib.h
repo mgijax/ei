@@ -11,6 +11,7 @@
  
 extern char *mgi_setDBkey(int, int, char *);
 extern char *mgi_DBprstr(char *);
+extern char *mgi_DBprnotestr(char *);
 extern char *mgi_DBprkey(char *);
 extern char *mgi_DBincKey(char *);
 extern char *mgi_DBnextSeqKey(int, char *, char *);
