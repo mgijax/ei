@@ -90,8 +90,16 @@ def snapShot(markerKey):
 	outFileName = '/tmp/MRK_Snapshot-%d.sql' % (markerKey)
 
 	# Read the Snapshot template 
-	insql = open('MRK_Snapshot.sql', 'r')
-	outsql = open(outFileName, 'w')
+	try:
+		insql = open('MRK_Snapshot.sql', 'r')
+	except:
+		error('Could not open MRK_Snapshot.sql.\n')
+		
+	# Open the temp file
+	try:	
+		outsql = open(outFileName, 'w')
+	except:
+		error('Could not open %s.\n' % (outFileName))
 
 	# Replace all occurences of KEY in the template with the marker key
 	for line in insql.readlines():
@@ -218,7 +226,7 @@ elif eventKey == SPLIT:
 if eventKey == WITHDRAWAL:
 	newSymbolsList = string.split(newSymbols, ',')
 	newSymbol = newSymbolsList[0]
-	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s' \
+	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,"%s","%s"' \
 		% (oldKey, refKey, eventReasonKey, newSymbol, newName)
 elif eventKey == MERGED:
 	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d' \
