@@ -226,10 +226,10 @@ rules:
 	    note := mgi_tblGetCell(table, row, table.note);
 	    mgiType := (string) table.mgiTypeKey;
  
-	    if (table.useDefaultNoteType) then
+	    noteTypeKey := mgi_tblGetCell(table, row, table.noteTypeKey);
+
+	    if (noteTypeKey.length = 0 and table.useDefaultNoteType) then
 	      noteTypeKey := defaultNoteTypeKey;
-	    else
-	      noteTypeKey := mgi_tblGetCell(table, row, table.noteTypeKey);
 	    end if;
 
             if (editMode = TBL_ROW_ADD or editMode = TBL_ROW_MODIFY) then
