@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec  06/05/2002
+--	- TR 3677; ResetEditMode; don't clear fields on de-select
+--
 -- lec  01/18/2002
 --	- add Seq# to Allele Pair table
 --
@@ -46,6 +49,8 @@ devents:
 	Modify :local [];
 
 	ModifyAllelePair :local [];
+
+	ResetEditMode :local [];
 
 	Select :local [item_position : integer;];
 	SelectReferences :local [];
@@ -627,6 +632,39 @@ rules:
 	end does;
 
 --
+-- ResetEditMode
+--
+-- Resets editMode to Add so that a record can be duplicated
+--
+
+        ResetEditMode does
+          table : widget;
+	  row : integer := 0;
+	  editMode : string;
+
+	  -- Reset all table rows to edit mode of Add
+	  -- so that upon sending of Add event, the rows are added to the new record
+
+	  tables.open;
+	  while (tables.more) do
+	    table := tables.next;
+
+            while (row < mgi_tblNumRows(table)) do
+              editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+              if (editMode = TBL_ROW_EMPTY) then
+	        break;
+	      end if;
+
+	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+	      row := row + 1;
+	    end while;
+	  end while;
+	  tables.close;
+
+        end does;
+
+--
 -- Select
 --
 -- Retrieve and display detail information for specific record
@@ -640,6 +678,15 @@ rules:
 	  InitAcc.table := accTable;
 	  send(InitAcc, 0);
 	  
+          if (top->QueryList->List.selectedItemCount = 0) then
+	    currentRecordKey := "";
+            top->QueryList->List.row := 0;
+            top->ID->text.value := "";
+	    send(ResetEditMode, 0);
+            (void) reset_cursor(top);
+            return;
+          end if;
+
 	  tables.open;
 	  while (tables.more) do
 	    ClearTable.table := tables.next;
@@ -649,14 +696,6 @@ rules:
 
 	  top->EditForm->Note->text.value := "";
 	  top->Reference->Records.labelString := "0 Records";
-
-          if (top->QueryList->List.selectedItemCount = 0) then
-	    currentRecordKey := "";
-            top->QueryList->List.row := 0;
-            top->ID->text.value := "";
-            (void) reset_cursor(top);
-            return;
-          end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 	  results : integer := 1;
