@@ -24,6 +24,7 @@ extern Boolean mgi_tblMakeCellVisible(Widget, int, int);
 extern void mgi_tblStartFlash(Widget, int, int);
 extern void mgi_tblStopFlash(Widget, int, int);
 extern void mgi_tblStopFlashAll(Widget);
+extern Boolean mgi_tblSort(Widget, int);
 
 #if defined(__cplusplus) || defined(c_plusplus)
 	} 

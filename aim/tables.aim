@@ -29,6 +29,7 @@ CALLS
 	 mgi_tblStartFlash("Widget", "int", "int");
 	 mgi_tblStopFlash("Widget", "int", "int");
 	 mgi_tblStopFlashAll("Widget");
+	 mgi_tblSort("Widget", "int")       			: "Boolean";
 
 	 TBL_REASON_ENTER_CELL_BEGIN				: "int";
 	 TBL_REASON_ENTER_CELL_END				: "int";

@@ -394,3 +394,13 @@ Widget mgi_tblGetCallbackParent(XrtTblCreateWidgetCallbackStruct *cbs)
   return(w);
 }
 
+/*
+   Sort the given table on the given column
+*/
+
+Boolean mgi_tblSort(Widget table, int column)
+{
+  extern int strcmp();
+  return (XrtTblSortTable(table, column, (int (*) (const void *, const void *)) strcmp));
+}
+
