@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 30 09:40:26 2003";
+      lastWritten = "Tue Dec 30 14:16:35 2003";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11049,10 +11049,10 @@ Shift<Key>Tab: prev-tab-group()
                                     userDefinedAttributes = "assocKey:Int(Int)=\"1\"\nsourceKey:Int(Int)=\"2\"\norganismKey:Int(Int)=\"3\"\nstrainKeys:Int(Int)=\"4\"\ntissueKey:Int(Int)=\"5\"\ncellLineKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nlibrary:Int(Int)=\"11\"\norganism:Int(Int)=\"12\"\nstrains:Int(Int)=\"13\"\ntissue:Int(Int)=\"14\"\ncellLine:Int(Int)=\"15\"\nagePrefix:Int(Int)=\"16\"\nageRange:Int(Int)=\"17\"\ngenderKey:Int(Int)=\"10\"\ngender:Int(Int)=\"18\"\n";
                                     xrtTblNumRows = 4;
                                     xrtTblVisibleRows = 4;
-                                    xrtTblPixelWidthSeries = "(all 0-10 0)";
                                     xrtTblBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
                                     xrtTblEnterCellCallback = "D:SetOptions";
                                     xrtTblValidateCellCallback = "D:VerifyStrains (ignoreRow = 0),\nD:VerifyTissue (ignoreRow = 0),\nD:CommitTableCellEdit";
+                                    xrtTblPixelWidthSeries = "(all 0-10 0)";
                                   Group: User
                                     saveBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
                                       {
