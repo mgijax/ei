@@ -16,6 +16,10 @@
 --
 -- History
 --
+-- lec 06/27/2001
+--	- TR 2671; use key.defaultValue and item.defaultValue
+--	  in VerifyItem
+--
 -- lec 06/14/2001
 --	- TR 2547; remove VerifyProbeHolder
 --
@@ -1357,13 +1361,13 @@ rules:
             return;
 	  end if;
 
-	  -- If no value entered, "Not Specified"
+	  -- If no value entered, use defaults
 	  -- (Except for non-normalized data, leave blank)
 
 	  if (item.value.length = 0) then
 	    if (verify.verifyNotSpecified) then
-	      key.value := "-1";
-	      item.value := "Not Specified";
+	      key.value := key.defaultValue;
+	      item.value := item.defaultValue;
 	    end if;
 	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;
