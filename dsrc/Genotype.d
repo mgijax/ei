@@ -357,6 +357,7 @@ rules:
 	  keysDeclared : boolean := false;
 	  set : string;
 	  reordering : boolean := false;
+	  ordergenotypes : boolean := false;
  
 	  keyName := "allele" + KEYNAME;
 	  allelePairString := "";
@@ -401,6 +402,10 @@ rules:
 	      alleleKey2 := "NULL";
 	    end if;
 
+            if (compoundKey.length = 0) then
+              compoundKey := mgi_sql1("select _Term_key from VOC_Term_ALLCompound_View where term = 'Not Applicable'");
+            end if;
+
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
@@ -421,6 +426,8 @@ rules:
 		     newSeqNum + "," +
 		     global_loginKey + "," + global_loginKey + ")\n";
 
+	      ordergenotypes := true;
+
             elsif (editMode = TBL_ROW_MODIFY) then
 
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place
@@ -439,17 +446,20 @@ rules:
 		       "_PairState_key = " + stateKey + "," +
 		       "_Compound_key = " + compoundKey;
                 localCmd := localCmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
+	        ordergenotypes := true;
 	      end if;
 
-            end if;
- 
-            if (editMode = TBL_ROW_DELETE and key.length > 0) then
+            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               localCmd := localCmd + mgi_DBdelete(GXD_ALLELEPAIR, key);
+	      ordergenotypes := true;
             end if;
- 
-	    if (not reordering) then
-	      localCmd := localCmd + "exec GXD_orderGenotypes " + key + "\n";
-	    end if;
+
+	    if (ordergenotypes) then
+	      localCmd := localCmd + "exec GXD_orderGenotypes " +  alleleKey1 + "\n";
+	      if (alleleKey1 != alleleKey2 and alleleKey2 != "NULL") then
+	        localCmd := localCmd + "exec GXD_orderGenotypes " +  alleleKey2 + "\n";
+	      end if;
+            end if;
 
             row := row + 1;
           end while;

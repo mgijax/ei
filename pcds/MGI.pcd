@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  9 15:09:50 2005";
+      lastWritten = "Fri Mar 11 15:23:14 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1294,6 +1294,7 @@ Module: MGI
                                         Group: User
                                           alleleSymbol = "11\n12";
                                           alleleKey = "5\n6";
+                                          requiredColumns = "4\n7";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -1418,6 +1419,7 @@ Module: MGI
                                         Group: Widget
                                           rows = 5;
                                           columns = 60;
+                                          editable = False;
                                       }
                                 }
                                 {
