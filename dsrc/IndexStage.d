@@ -10,6 +10,10 @@
 --
 -- History
 --
+--
+-- lec  08/07/2001
+--	- ; add Duplicate function
+--
 -- lec  07/11/2001
 --	- TR 2706; replaced StagingNotNormalized w/ AppendNote (see NoteLib.d)
 --
@@ -51,6 +55,7 @@ devents:
 			   reset : boolean := false;];
 
 	Delete :local [];
+	Duplicate :local [];
 	Exit :local [];
 	Modify :local [];
 	ModifyStage :local [];
@@ -152,8 +157,8 @@ rules:
 	  AddSQL.tableID := GXD_INDEX;
           AddSQL.cmd := cmd;
           AddSQL.list := top->QueryList;
-          AddSQL.item := top->Marker->text.value + "," +
-			 "J:" + top->Jnum->text.value + "," +
+          AddSQL.item := top->Marker->text.value + ", " +
+			 "J:" + top->Jnum->text.value + ", " +
                          top->Citation->text.value;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
@@ -192,6 +197,37 @@ rules:
           end if;
  
           (void) reset_cursor(top);
+        end does;
+
+--
+-- Duplicate
+--
+-- Duplicates the current Index record
+--
+
+        Duplicate does
+          table : widget := top->Stage->Table;
+	  row : integer := 0;
+	  editMode : string;
+
+	  -- Reset ID to blank so new ID is loaded during Add
+	  top->ID->text.value := "";
+
+	  -- Reset all table rows to edit mode of Add
+	  -- so that upon sending of Add event, the rows are added to the new Assay
+
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+
+	    (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+	    row := row + 1;
+	  end while;
+
+	  send(Add, 0);
         end does;
 
 --
