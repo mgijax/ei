@@ -2816,9 +2816,14 @@ rules:
             send(StatusReport);
           end if;
  
-          -- Store strain keys for row
+	  if (strainKeys.length > 0) then
+            (void) mgi_tblSetCell(table, row, table.strainKeys, strainKeys);
+	  else
+	    VerifyStrains.doit := (integer) false;
+	    (void) mgi_tblSetCell(table, row, table.strainKeys, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.strains, "");
+	  end if;
  
-          (void) mgi_tblSetCell(table, row, table.strainKeys, strainKeys);
           (void) reset_cursor(top);
 	end does;
 
@@ -2979,17 +2984,22 @@ rules:
  
           (void) dbclose(dbproc);
  
-          -- Tell user what Tissue were added
+          -- Tell user what Tissue was added
  
           if (added) then
             StatusReport.source_widget := top;
 	    StatusReport.message := "New Tissue has been added as a Non-Standard.\n";
             send(StatusReport);
-          end if;
+	  end if;
+
+	  if (tissueKey.length > 0) then
+            (void) mgi_tblSetCell(table, row, table.tissueKey, tissueKey);
+	  else
+	    VerifyTissue.doit := (integer) false;
+	    (void) mgi_tblSetCell(table, row, table.tissueKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.tissue, "");
+	  end if;
  
-          -- Store Tissue key for row
- 
-          (void) mgi_tblSetCell(table, row, table.tissueKey, tissueKey);
           (void) reset_cursor(top);
 	end does;
 
