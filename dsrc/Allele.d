@@ -362,7 +362,12 @@ rules:
 	  end if;
 
 	  if (top->EditForm->mgiParentalESCellLine->ObjectID->text.value.length = 0) then
-            if (top->AlleleTypeMenu.menuHistory.labelString = GENE_TRAPPED) then
+            if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
 	      esCellLineKey := defaultESCellLineKeyNS;
 	      strainKey := defaultStrainKeyNS;
 	    else
