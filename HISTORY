@@ -1,3 +1,63 @@
+TAG: ei-8-1-2
+TAG: 
+DATE: 01/02/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 4272; annotate Mammalian Phenotype
+2) List.d:SelectLookupListItem;de-selection should be processed
+
+TAG: ei-8-1-1
+DATE: 12/31/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 4388 (Small EI Release)
+
+TAG: ei-8-1-0
+DATE: 12/31/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 4388 (Small EI Release)
+
+TAG: ei-8-0-15, ei-8-0-16, ei-8-0-17
+DATE: 11/26/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) Fantom2; nonmgi_mgiID changed to load_mgiID
+2) removed workaround from */uxb.conf
+
+TAG: ei-8-0-14
+DATE: 11/22/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) utilities/*.py; db.useOneConnection()
+
+TAG: ei-8-0-13
+DATE: 11/20/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) fixed utilities/fantom2.py
+
+TAG: ei-8-0-12
+TAG: ei-8-0-11
+DATE: 11/05/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 4225 - Fantom2 changes
+
+TAG: ei-8-0-10
+DATE: 11/04/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 4222 - ModifySpecimen/ModifyGelBand; ageMin/ageMax
+
 TAG: ei-8-0-9
 TAG: ei-8-0-8
 DATE: 10/24/2002
