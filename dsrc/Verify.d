@@ -1499,12 +1499,15 @@ rules:
 		       mgi_DBprstr(item.value) + ",0)\n";
 	      end if;
 
+	      -- Set key.value to blank so that new key value gets copied
+	      key.value := "";
 	      AddSQL.tableID := tableID;
 	      AddSQL.cmd := cmd;
 	      AddSQL.list := nil;
 	      AddSQL.key := key;
 	      send(AddSQL, 0);
 
+	      key.modified := true;
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 
               StatusReport.source_widget := root;
