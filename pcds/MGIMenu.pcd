@@ -68,7 +68,7 @@ Module: MGIMenu
                                 {
                                   FANTOMPROD = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"runapp fantom\", path = \"dev\")";
+                                    activateCallback = "D:ForkIt(app = \"runapp fantom\", path = \"prod\")";
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "Fantom Production";
