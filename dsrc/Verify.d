@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	02/19/2004
+--	- TR 5515; allow search by obsolete term
+--
 -- lec	12/17/2003
 --	- TR 5327; nomen merge
 --
@@ -2980,6 +2983,7 @@ rules:
 	  top : widget := sourceWidget.top;
 	  isTable : boolean;
 	  value : string;
+	  searchObsolete : boolean := false;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -3002,6 +3006,12 @@ rules:
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	      return;
+	    end if;
+
+	    if (sourceWidget.parent->SearchObsoleteTerm != nil) then
+	      if (sourceWidget.parent->SearchObsoleteTerm.set = true) then
+		searchObsolete := true;
+	      end if;
 	    end if;
 	  else
 	    return;
@@ -3029,15 +3039,23 @@ rules:
 	  select : string := "select t.accID, t._Term_key, t.term " +
 		"from VOC_Term_View t " +
 		"where t.accID = " + mgi_DBprstr(value) + 
-		" and t.isObsolete = 0 " +
-		" and t._Vocab_key = " + (string) sourceWidget.vocabKey + "\n" +
+		" and t._Vocab_key = " + (string) sourceWidget.vocabKey + "\n";
+
+	  if (not searchObsolete) then
+	    select := select + " and t.isObsolete = 0 ";
+	  end if;
+
+	  select := select + 
 	  	"select d.dagAbbrev " +
 		"from VOC_Term_View t, DAG_Node_View d " +
 		"where t.accID = " + mgi_DBprstr(value) + 
-		" and t.isObsolete = 0 " +
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
 		" and t._Vocab_key = d._Vocab_key" +
 		" and t._Term_key = d._Object_key";
+
+	  if (not searchObsolete) then
+	    select := select + " and t.isObsolete = 0 ";
+	  end if;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);

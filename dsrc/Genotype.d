@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	02/19/2004
+--	- TR 5567; launch MP Annotations
+--
 -- lec  07/23/2002
 --	- TR 3802; added call to GXD_loadGenoCacheByGenotype
 --

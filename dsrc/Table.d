@@ -278,10 +278,15 @@ rules:
 	    send(EditTableOrder, 0);
 	  end if;
 
-	  toggleWidget : widget := form.child_by_class("XmToggleButton");
-	  if (toggleWidget != nil) then
-		toggleWidget.set := false;
-	  end if;
+	  i : integer := 1;
+	  child : widget;
+	  while (i <= form.num_children) do
+	    child := form.child(i);
+	    if (child.class_name = "XmToggleButton") then
+	      child.set := false;
+	    end if;
+	    i := i + 1;
+	  end while;
 
 	  -- Make the first cell, first column visible
 	  result := XrtTblMakeCellVisible(table, 0, 0);
