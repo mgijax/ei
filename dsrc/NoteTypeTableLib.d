@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec	09/29/2004
 --	- TR 5686; derived from RefTypeTableLib
 --

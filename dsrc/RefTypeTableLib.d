@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec	09/17/2003
 --	- TR 4724; added EditRefType
 --

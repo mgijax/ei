@@ -251,9 +251,6 @@ rules:
 
 	  if (not ClearMP.reset) then
 	    noteTable->label.labelString := "Notes";
---	    InitNoteTypeTable.table := top->Note->Table;
---	    InitNoteTypeTable.tableID := MGI_NOTETYPE_VOCEVIDENCE_VIEW;
---	    send(InitNoteTypeTable, 0);
 	  end if;
 
 	end does;

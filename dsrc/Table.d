@@ -14,6 +14,9 @@
 --
 -- History:
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec	02/19/2002
 --	- ClearTable; table.xrtTblCellValues := nil;
 --

@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec  12/01/2004
 --	- TR 6349; annotKey not initialized in Add
 --
