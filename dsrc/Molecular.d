@@ -576,13 +576,7 @@ rules:
           end if;
 
           if (top->MolMasterForm->Region->text.modified) then
-            if (top->MolMasterForm->Region->text.value.length <= 255) then
-              set := set + "regionCovered = " + mgi_DBprstr(top->MolMasterForm->Region->text.value) + "," +
-                           "regionCovered2 = NULL,";
-            else
-              set := set + "regionCovered = " + mgi_DBprstr(top->MolMasterForm->Region->text.value->substr(1, 255)) + "," +
-                           "regionCovered2 = " + mgi_DBprstr(top->MolMasterForm->Region->text.value->substr(256, top->MolMasterForm->Region->text.value.length)) + ",";
-            end if;
+            set := set + "regionCovered = " + mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",";
           end if;
  
 	  -- Modify Non-Primer Molecular Segment
@@ -1488,20 +1482,20 @@ rules:
 	      if (results = 1) then
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
-	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 9) + mgi_getstr(dbproc, 10);
+	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 9);
                 top->MolMasterForm->MJnum->Jnum->text.value := "";
                 top->MolMasterForm->MJnum->ObjectID->text.value := "";
                 top->MolMasterForm->MJnum->Citation->text.value := "";
-		prb_createdBy := mgi_getstr(dbproc, 21);
-		prb_modifiedBy := mgi_getstr(dbproc, 22);
-		prb_creation_date := mgi_getstr(dbproc, 16);
-		prb_modification_date := mgi_getstr(dbproc, 17);
+		prb_createdBy := mgi_getstr(dbproc, 20);
+		prb_modifiedBy := mgi_getstr(dbproc, 21);
+		prb_creation_date := mgi_getstr(dbproc, 15);
+		prb_modification_date := mgi_getstr(dbproc, 16);
 
-		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 11);
-	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 12);
+		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 10);
+	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 11);
 	        top->MolPrimerForm->Sequence1->text.value   := mgi_getstr(dbproc, 7);
 	        top->MolPrimerForm->Sequence2->text.value   := mgi_getstr(dbproc, 8);
-	        top->MolPrimerForm->ProductSize->text.value := mgi_getstr(dbproc, 13);
+	        top->MolPrimerForm->ProductSize->text.value := mgi_getstr(dbproc, 12);
 	
                 SetOption.source_widget := top->MolDetailForm->VectorTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
