@@ -294,9 +294,9 @@ rules:
 
           if (top->Name->text.modified) then
             set := set + "strain = " + mgi_DBprstr(top->Name->text.value) + ",";
-	    (void) mgi_writeLog("\n" + get_time() + "STRAIN NAME MODIFIED:" +
-		"\tOriginal: " + origStrainName +
-		"\tNew: " + top->Name->text.value + "\n\n");
+	    (void) mgi_writeLog("STRAIN NAME MODIFIED:  " + get_time());
+	    (void) mgi_writeLog("STRAIN NAME MODIFIED:  original:  " + origStrainName + "\n");
+	    (void) mgi_writeLog("STRAIN NAME MODIFIED:  new     :  " + top->Name->text.value + "\n\n");
           end if;
 
           if (top->StandardMenu.menuHistory.modified and
