@@ -97,6 +97,7 @@ rules:
 	  envList.append("SYBASE");
 	  envList.append("MGD");
 	  envList.append("NOMEN");
+	  envList.append("EIDEBUG");
 
 	  if (global_application = "MGD" or
 	      global_application = "GXD") then
@@ -163,18 +164,21 @@ rules:
 
 	    -- Initializations
 
-	    XmUpdateDisplay(mgi);
-	    mgi->WorkingDialog.managed := true;
-	    XmUpdateDisplay(mgi->WorkingDialog);
+	    if (getenv("EIDEBUG") = "0") then
+	      XmUpdateDisplay(mgi);
+	      mgi->WorkingDialog.managed := true;
+	      XmUpdateDisplay(mgi->WorkingDialog);
 
-	    while (i <= top.initDialog.count) do
-	      dialog := top->(top.initDialog[i]);
-	      LoadList.list := dialog->ItemList;
-	      send(LoadList, 0);
-	      i := i + 1;
-	    end while;
+	      while (i <= top.initDialog.count) do
+	        dialog := top->(top.initDialog[i]);
+	        LoadList.list := dialog->ItemList;
+	        send(LoadList, 0);
+	        i := i + 1;
+	      end while;
 
-	    mgi->WorkingDialog.managed := false;
+	      mgi->WorkingDialog.managed := false;
+	    end if;
+
 	    destroy mgi;
 	    top.show;
 	    (void) mgi_writeLog(get_time() + "Logged in to Application.\n\n");
