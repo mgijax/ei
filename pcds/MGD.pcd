@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Sep 19 14:15:07 2001";
+      lastWritten = "Tue Sep 25 13:43:44 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -5628,12 +5628,6 @@ Module: MGD
                                           labelString = "Unlock Record";
                                           activateCallback = "D:UnlockInit";
                                       }
-                                      {
-                                        Transfer = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:MarkerTransferInit()";
-                                          labelString = "Marker Transfer Report";
-                                      }
                                 }
                           }
                     }
@@ -6212,32 +6206,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       MLCUnlockDialog = MLCUnlockDialog : mgiDialog;
-                    }
-                    {
-                      MRKTransferDialog = MRKTransferDialog : mgiDialog;
-                          {
-                            frame = XmFrame;
-                          }
-                          {
-                            Marker = Table;
-                          }
-                          {
-                            manualFrame = XmFrame;
-                          }
-                          {
-                            autoFrame = XmFrame;
-                          }
-                          {
-                            Lookup = XmFrame;
-                          }
-                          {
-                            Buttons = Buttons;
-                                {
-                                  OK = DialogPush;
-                                  Group: Widget
-                                    sensitive = False;
-                                }
-                          }
                     }
               }
         }
@@ -7936,12 +7904,6 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "Marker Withdrawal";
                                       }
                                       {
-                                        Transfer = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:MarkerTransferInit()";
-                                          labelString = "Marker Transfer Report";
-                                      }
-                                      {
                                         BreakpointSplit = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:MarkerBreakpointSplitInit()";
@@ -8680,9 +8642,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       MRKBreakpointSplitDialog = MRKBreakpointSplitDialog : mgiDialog;
-                    }
-                    {
-                      MRKTransferDialog = MRKTransferDialog : mgiDialog;
                     }
               }
         }
