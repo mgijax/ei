@@ -268,7 +268,7 @@ extern char *global_version;
 /* keys of Marker Events (see MRK_Event table) */
 
 #define EVENT_ASSIGNED		"1"
-#define EVENT_WITHDRAWAL	"2"
+#define EVENT_RENAME		"2"
 #define EVENT_MERGE		"3"
 #define EVENT_ALLELEOF		"4"
 #define EVENT_SPLIT		"5"

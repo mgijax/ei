@@ -456,7 +456,7 @@ rules:
 	  send(ClearTable, 0);
 
 	  SetOption.source_widget := dialog->MarkerEventMenu;
-	  SetOption.value := EVENT_WITHDRAWAL;
+	  SetOption.value := EVENT_RENAME;
 	  send(SetOption, 0);
 
 	  SetOption.source_widget := dialog->MarkerEventReasonMenu;
@@ -499,7 +499,7 @@ rules:
 	  dialog : widget := top->WithdrawalDialog;
 	  event : string := dialog->MarkerEventMenu.menuHistory.defaultValue;
 
-	  if (event = EVENT_WITHDRAWAL) then
+	  if (event = EVENT_RENAME) then
 	    dialog->nonVerified.managed := true;
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := true;
@@ -544,7 +544,7 @@ rules:
 
 	  if (dialog->MarkerEventMenu.menuHistory.defaultValue = "%") then
 	    SetOption.source_widget := top->MarkerEventMenu;
-	    SetOption.value := EVENT_WITHDRAWAL;
+	    SetOption.value := EVENT_RENAME;
 	    send(SetOption, 0);
 	  end if;
 
@@ -557,7 +557,7 @@ rules:
 	  event := dialog->MarkerEventMenu.menuHistory.defaultValue;
 	  eventReason := dialog->MarkerEventReasonMenu.menuHistory.defaultValue;
 
-	  if (event = EVENT_WITHDRAWAL and 
+	  if (event = EVENT_RENAME and 
 	      dialog->nonVerified->Marker->text.value.length = 0) then
 	    ok := false;
 	  elsif ((event = EVENT_MERGE or event = EVENT_ALLELEOF) and
@@ -584,7 +584,7 @@ rules:
 	  end if;
 
 	  ok := true;
-	  if (event = EVENT_WITHDRAWAL and
+	  if (event = EVENT_RENAME and
 	      dialog->nonVerified->Marker->text.value = dialog->currentMarker->Marker->text.value) then
 	    ok := false;
 	  elsif ((event = EVENT_MERGE or event = EVENT_ALLELEOF) and
@@ -624,7 +624,7 @@ rules:
 	  cmds.insert("--refKey=" + dialog->mgiCitation->ObjectID->text.value, cmds.count + 1);
 	  cmds.insert("--addAsSynonym=" + (string) ((integer) dialog->addAsSynonym.set), cmds.count + 1);
 
-	  if (event = EVENT_WITHDRAWAL) then
+	  if (event = EVENT_RENAME) then
 	    cmds.insert("--newName=" + mgi_DBprstr(dialog->Name->text.value), cmds.count + 1);
 	    cmds.insert("--newSymbols=" + mgi_DBprstr(dialog->nonVerified->Marker->text.value), cmds.count + 1);
 	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
@@ -686,7 +686,7 @@ rules:
 	  where := "where m._Species_key = " + MOUSE;
 	  where := where + "\nand mu.current_symbol in (";
 
-	  if (event = EVENT_WITHDRAWAL) then
+	  if (event = EVENT_RENAME) then
 	    where := where + mgi_DBprstr(dialog->nonVerified->Marker->text.value);
 	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
 	    where := where + mgi_DBprstr(dialog->mgiMarker->Marker->text.value);
