@@ -290,7 +290,7 @@ int mgi_tblNumColumns(Widget table)
 	rows (int), the number of rows
 
   effects:
-	changes the XmNxrtTblNumRows attribute
+	changes the XmNxrtTblNumRows and XmNxrtTblVisibleRows attributes
 
   returns:
 
