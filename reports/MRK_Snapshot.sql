@@ -16,7 +16,7 @@ print ""
 print "Marker Alleles"
 print ""
 
-select * from MRK_Allele where _Marker_key = KEY
+select * from ALL_Allele where _Marker_key = KEY
 go
 
 print ""
