@@ -290,6 +290,7 @@ rules:
 	  term : string;
 	  abbrev : string;
 	  definition : string;
+	  isObsolete : string;
 
 	  -- Check for duplicate Seq # assignments
 
@@ -316,7 +317,12 @@ rules:
             term := mgi_tblGetCell(table, row, table.term);
             abbrev := mgi_tblGetCell(table, row, table.abbreviation);
             definition := mgi_tblGetCell(table, row, table.definition);
+            isObsolete := mgi_tblGetCell(table, row, table.obsoleteKey);
  
+	    if (isObsolete.length = 0) then
+	      isObsolete := top->YesNoMenu.defaultOption.defaultValue;
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
               if (not keyDeclared) then
                 cmd := cmd + mgi_setDBkey(VOC_TERM, NEWKEY, keyName);
@@ -329,7 +335,8 @@ rules:
 			currentRecordKey + "," +
 			mgi_DBprstr(term) + "," +
 			mgi_DBprstr(abbrev) + "," +
-			newSeqNum + ")\n";
+			newSeqNum + "," +
+			isObsolete + ")\n";
 
 	      ModifyNotes.source_widget := table;
 	      ModifyNotes.tableID := VOC_TEXT;
@@ -352,7 +359,8 @@ rules:
 		set := "sequenceNum = " + newSeqNum;
               else
                 set := "term = " + mgi_DBprstr(term) + "," +
-		       "abbreviation = " + mgi_DBprstr(abbrev);
+		       "abbreviation = " + mgi_DBprstr(abbrev) + "," +
+		       "isObsolete = " + isObsolete;
               end if;
 
               cmd := cmd + mgi_DBupdate(VOC_TERM, termKey, set);
