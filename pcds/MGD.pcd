@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 12:46:58 2004";
+      lastWritten = "Thu May  6 14:11:31 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11455,6 +11455,7 @@ Shift<Key>Tab: prev-tab-group()
                                     xrtTblNumRows = 15;
                                     xrtTblVisibleRows = 15;
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 20)(all 5 30)(all 6 10)";
+                                    xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                                       {
                                         label = XtXrtLabel;
                                         Group: Widget
@@ -11520,7 +11521,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumRows = 4;
                                           xrtTblVisibleRows = 4;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1 15)(all 2 10)(all label 15)";
-                                          userDefinedAttributes = "seqRecordDate:Int(Int)=\"2\"\nsequenceDate:Int(Int)=\"3\"\n";
+                                          userDefinedAttributes = "seqRecordDate:Int(Int)=\"2\"\nsequenceDate:Int(Int)=\"3\"\nseqRecordFieldName:String=\"seqrecord_date\"\nsequenceFieldName:String=\"sequence_date\"\n";
                                       }
                                 }
                           }
