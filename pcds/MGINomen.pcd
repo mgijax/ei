@@ -214,7 +214,7 @@ Module: MGINomen
                                         ChromosomePulldown = OptionPulldown;
                                         Group: User
                                           childTemplate = OptionToggle;
-                                          sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Species_key = 1\norder by sequenceNum\nselect \"MT\", label = \"MT\", sequenceNum = 100\nselect \"W\", label = \"W\", sequenceNum = 101\nselect \"RE\", label = \"RE\", sequenceNum = 102";
+                                          sql = "select chromosome, label = chromosome, sequenceNum \nfrom MRK_Chromosome where _Species_key = 1\norder by sequenceNum\nselect \"W\", label = \"W\", sequenceNum = 101\nselect \"RE\", label = \"RE\", sequenceNum = 102";
                                       }
                                 }
                                 {
