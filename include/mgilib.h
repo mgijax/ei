@@ -257,6 +257,17 @@ extern char *global_version;
 #define MLP_EXTRA		711
 #define PRB_STRAIN_SYNONYM	712
 
+/* VOC & DAG Tables */
+
+#define VOC_VOCAB		800
+#define VOC_TERM 		801
+#define VOC_TEXT 		802
+#define VOC_SYNONYM		803
+#define VOC_VOCAB_VIEW		804
+#define VOC_TERM_VIEW		805
+#define VOC_TEXT_VIEW		806
+#define VOC_ANNOTTYPE		807
+
 /* End of Table Definitions */
 
 /* Stored procedures */

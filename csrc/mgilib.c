@@ -749,6 +749,16 @@ char *mgi_DBkey(int table)
     case ALL_STATUS:
             strcpy(buf, "_Allele_Status_key");
 	    break;
+    case VOC_VOCAB:
+	    strcpy(buf, "_Vocab_key");
+	    break;
+    case VOC_TERM:
+    case VOC_TEXT:
+	    strcpy(buf, "_Term_key");
+	    break;
+    case VOC_SYNONYM:
+	    strcpy(buf, "_Synonym_key");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -818,6 +828,9 @@ char *mgi_DBtype(int table)
     case ALL_ALLELE:
             strcpy(buf, "Allele");
             break;
+    case VOC_TERM:
+	    strcpy(buf, "Vocabulary Term");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -895,7 +908,10 @@ char *mgi_DBaccTable(int table)
             break;
     case STRAIN:
     case MLP_STRAIN:
-	    sprintf(buf, "PRB_Strain_Summary_View");
+	    sprintf(buf, "PRB_Strain_Acc_View");
+            break;
+    case VOC_TERM:
+	    sprintf(buf, "VOC_Term_Acc_View");
             break;
     default:
             sprintf(buf, "Invalid Table: %d", table);
@@ -1436,8 +1452,26 @@ char *mgi_DBtable(int table)
     case ALL_REFERENCE_VIEW:
             strcpy(buf, "ALL_Reference_View");
 	    break;
-    case GO_DATAEVIDENCE:
-	    strcpy(buf, "GO_DataEvidence");
+    case VOC_VOCAB:
+            strcpy(buf, "VOC_Vocab");
+	    break;
+    case VOC_TERM:
+            strcpy(buf, "VOC_Term");
+	    break;
+    case VOC_TEXT:
+            strcpy(buf, "VOC_Text");
+	    break;
+    case VOC_SYNONYM:
+            strcpy(buf, "VOC_Synonym");
+	    break;
+    case VOC_VOCAB_VIEW:
+            strcpy(buf, "VOC_Vocab_View");
+	    break;
+    case VOC_TERM_VIEW:
+            strcpy(buf, "VOC_Term_View");
+	    break;
+    case VOC_TEXT_VIEW:
+            strcpy(buf, "VOC_Text_View");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1577,6 +1611,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_NOTE_VIEW:
     case ALL_REFERENCE:
     case ALL_SYNONYM:
+    case VOC_TEXT:
 	selectKey = 0;
 	break;
     default:
@@ -1841,14 +1876,14 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_GENOTYPE:
-            sprintf(buf, "insert %s (%s, _Strain_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Strain_key, isConditional, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_SPECIMEN:
             sprintf(buf, "insert %s (%s, _Assay_key, _Embedding_key, _Fixation_key, _Genotype_key, sequenceNum, specimenLabel, sex, age, ageMin, ageMax, ageNote, hybridization, specimenNote)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ALLELEPAIR:
-            sprintf(buf, "insert %s (%s, _Genotype_key, sequenceNum, _Allele_key_1, _Allele_key_2, _Marker_key)", 
+            sprintf(buf, "insert %s (%s, _Genotype_key, sequenceNum, _Allele_key_1, _Allele_key_2, _Marker_key, isUnknown)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ISRESULT:
@@ -1980,6 +2015,18 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case ALL_SYNONYM:
             sprintf(buf, "insert %s (%s, _Allele_key, _Refs_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case VOC_VOCAB:
+            sprintf(buf, "insert %s (%s, _Refs_key, isSimple, name)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case VOC_TERM:
+            sprintf(buf, "insert %s (%s, _Vocab_key, term, abbreviation, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case VOC_TEXT:
+            sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case VOC_SYNONYM:
+            sprintf(buf, "insert %s (%s, _Term_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
@@ -2143,7 +2190,7 @@ char *mgi_DBdelete(int table, char *key)
 	      break;
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "delete from %s where _Table_id = %s and _Column_id = %s\n", 
+              sprintf(buf, "delete from %s where table_name = '%s' and column_name = '%s'\n", 
 		mgi_DBtable(table), tokens[0], tokens[1]);
 	      break;
       default:
