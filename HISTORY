@@ -1,3 +1,9 @@
+TAG: ei-1-5-11
+DATE: 02/23/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.3.2/TR 1223; MLCED.d (display of message when null text vs. no record)
+
 TAG: ei-1-5-10
 DATE: 02/23/2000
 STAFF: lec
