@@ -647,10 +647,6 @@ rules:
           objectKey : string;
 	  value : string;
 
-          if (top->QueryList->List.selectedItemCount = 1) then
-	    return;
-	  end if;
-
           (void) busy_cursor(top);
 
 	  tables.open;
