@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 23 11:25:54 2004";
+      lastWritten = "Wed Sep 15 13:08:40 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8447,12 +8447,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:MarkerWithdrawalDelete";
                                       }
-                                      {
-                                        BreakpointSplit = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:MarkerBreakpointSplitInit()";
-                                          labelString = "Breakpoint Split";
-                                      }
                                 }
                           }
                     }
@@ -9259,9 +9253,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       WithdrawalDialog = WithdrawalDialog : mgiDialog;
-                    }
-                    {
-                      MRKBreakpointSplitDialog = MRKBreakpointSplitDialog : mgiDialog;
                     }
               }
         }

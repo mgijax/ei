@@ -32,9 +32,6 @@ VerifyItem : translation [];
 
 VerifyItemAdd [];
 
--- Verify that Marker is considered valid for a breakpoint split
-VerifyBreakpointMarker :translation [];
-
 VerifyAnyMarker :translation [];
 
 VerifyMarker :translation [source_widget : widget;
