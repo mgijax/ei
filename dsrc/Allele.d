@@ -30,6 +30,10 @@ devents:
 	Exit :local [];
 	Init :local [];
 
+	-- exported so that VerifyAllele can call this D event
+	ClearAllele :exported [clearKeys : boolean := true;
+			       reset : boolean := false;];
+
 	-- Process Merge Events
 	AlleleMergeInit :local [];
 	AlleleMerge :local [];
@@ -49,7 +53,7 @@ devents:
 
 locals:
 	mgi : widget;
-	top : widget;
+	top : widget :exported; -- exported so that VerifyAllele can talk to the D module instance
 	accTable : widget;
 
 	cmd : string;
@@ -61,8 +65,9 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	clearLists : integer;		-- Clear List value for Clear event
-	alleleNotesRequired : boolean;   -- Are Allele Notes a required field for the edit?
+	clearLists : integer :exported := 3;
+
+	alleleNotesRequired : boolean;  -- Are Allele Notes a required field for the edit?
 
 rules:
 
@@ -151,9 +156,20 @@ rules:
  
 	  -- Clear the form
 
-	  clearLists := 3;
+	  send(ClearAllele, 0);
+	end does;
+
+--
+-- ClearAllele
+--
+-- Activated from:  local devents
+--
+
+	ClearAllele does
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
+	  Clear.clearKeys := ClearAllele.clearKeys;
+	  Clear.reset := ClearAllele.reset;
 	  send(Clear, 0);
 	end does;
 
@@ -244,10 +260,8 @@ rules:
 	  -- If add was sucessful, re-initialize the form
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    Clear.source_widget := top;
-	    Clear.clearLists := clearLists;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
+	    ClearAllele.clearKeys := false;
+	    send(ClearAllele, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -271,10 +285,8 @@ rules:
 	  send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-	    Clear.source_widget := top;
-	    Clear.clearLists := clearLists;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
+	    ClearAllele.clearKeys := false;
+	    send(ClearAllele, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -919,10 +931,8 @@ rules:
           send(LoadAcc, 0);
  
 	  top->QueryList->List.row := Select.item_position;
-	  Clear.source_widget := top;
-	  Clear.clearLists := clearLists;
-	  Clear.reset := true;
-	  send(Clear, 0);
+	  ClearAllele.reset := true;
+	  send(ClearAllele, 0);
 
 	  (void) reset_cursor(top);
 	end does;

@@ -112,6 +112,10 @@ dmodule Verify is
 
 devents:
 
+locals:
+	allelemod : dmodule;	-- For VerifyAllele which may create a D module instance
+				-- of "Allele"
+
 rules:
 
 --
@@ -627,7 +631,6 @@ rules:
           top : widget := sourceWidget.top;
           root : widget := sourceWidget.root;
 	  alleleWidget : widget;
-	  alleleName : string;
 	  value : string;
 	  verifyAdd : boolean := VerifyAllele.verifyAdd;
 	  isTable : boolean;
@@ -665,9 +668,8 @@ rules:
 	  markerKeys : string_list := create string_list();
 	  markerSymbols : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
-	  message : string;
 	  select : string;
-	  cmd : string;
+	  message : string;
           dbproc :opaque;
 	  whichMarker : integer;
 	  i : integer := 1;
@@ -724,14 +726,12 @@ rules:
 
 	        whichMarker := 1;
  
+                select := "select _Allele_key, _Marker_key, symbol, markerSymbol " +
+			  "from " + mgi_DBtable(ALL_ALLELE_VIEW) +
+                          " where symbol = " + mgi_DBprstr(value);
+
 	        if (markerKey.length > 0 and markerKey != "NULL") then
-                  select := "select * from MRK_Allele where _Marker_key = " + markerKey +
-                            " and symbol = '" + value + "'\n";
-	        else
-                  select := "select a._Allele_key, a._Marker_key, a.symbol, m.symbol " +
-			    "from MRK_Allele a, MRK_Marker m " +
-		            "where a.symbol = '" + value + 
-			    "' and a._Marker_key = m._Marker_key\n";
+                  select := select + " and _Marker_key = " + markerKey;
 	        end if;
 
                 dbproc := mgi_dbopen();
@@ -762,16 +762,64 @@ rules:
 	        -- If No Alleles Exist, inform user
 
                 if (alleleKeys.count = 0 and not verifyAdd) then
-	          if (markerKey.length > 0 and markerKey != "NULL") then
+
+                  if (markerKey.length > 0 and markerKey != "NULL") then
                     message := "The allele... \n\n'" + value + 
                                "'\n\ndoes not exist for symbol '" + markerSymbol + "'.\n";
-	          else
+                  else
                     message := "The allele... \n\n'" + VerifyAllele.value +  "'\n\ndoes not exist.\n";
-	          end if;
+                  end if;
 
                   StatusReport.source_widget := root;
                   StatusReport.message := message;
                   send(StatusReport);
+
+                  if (isTable) then
+                    (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
+                    VerifyAllele.doit := (integer) false;
+                  end if;
+
+                  (void) reset_cursor(top);
+                  return;
+
+                -- If okay to add a new allele...
+
+		elsif (alleleKeys.count = 0 and verifyAdd) then
+
+                  if (markerKey.length = 0 or markerKey = "NULL") then
+                    StatusReport.source_widget := root;
+                    StatusReport.message := "The allele... \n\n'" + VerifyAllele.value +  "'\n\ndoes not exist.\n\n" +
+                        "If you want to add this allele to the database, you MUST specify a Marker symbol.\n";
+                    send(StatusReport);
+
+                    if (isTable) then
+                      (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
+                      VerifyAllele.doit := (integer) false;
+                    end if;
+
+                    (void) reset_cursor(top);
+                    return;
+                  end if;
+
+		  -- If "Allele" Module is not already instantiated, create it
+
+		  if (root.parent->mgiModules->Allele.sensitive = true) then
+		    allelemod := create dmodule("Allele", root.parent);
+		  end if;
+
+		  -- If "Allele" Module was created by this event, then bring it
+		  -- to the front, clear the form and initialize the fields.
+
+		  if (allelemod != nil) then
+		    allelemod.top.front;
+		    Clear.source_widget := allelemod.top;
+		    Clear.clearLists := allelemod.clearLists;
+		    send(Clear, 0);
+		    allelemod.top->mgiMarker->ObjectID->text.value := markerKey;
+		    allelemod.top->mgiMarker->Marker->text.value := markerSymbol;
+		    allelemod.top->Symbol->text.value := value;
+		    (void) XmProcessTraversal(allelemod.top->Name->text, XmTRAVERSE_CURRENT);
+		  end if;
 
 		  if (isTable) then
 	            (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
@@ -780,110 +828,6 @@ rules:
 
                   (void) reset_cursor(top);
 	          return;
-
-	        -- If okay to add a new allele...
-
-		elsif (alleleKeys.count = 0 and verifyAdd) then
-	          if (markerKey.length = 0 or markerKey = "NULL") then
-                    StatusReport.source_widget := root;
-                    StatusReport.message := "The allele... \n\n'" + VerifyAllele.value +  "'\n\ndoes not exist.\n\n" +
-			"If you want to add this allele to the database, you MUST specify a Marker symbol.\n";
-                    send(StatusReport);
-
-		    if (isTable) then
-	              (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
-	              VerifyAllele.doit := (integer) false;
-		    end if;
-
-                    (void) reset_cursor(top);
-	            return;
-		  end if;
-
-	    	  -- Have user verify that this item should be added
-
-	    	  root->VerifyAlleleAdd.doAdd := false;
-	    	  root->VerifyAlleleAdd.messageString := "The allele:\n\n" + VerifyAllele.value +
-	    	     "\n\ndoes not exist in the database.\n\nDo you want to ADD this allele?";
-		  root->VerifyAlleleAdd->AlleleName->text.value := "";
-            	  root->VerifyAlleleAdd.managed := true;
-
-	    	  -- Keep busy while user verifies the add
-
-	    	  while (root->VerifyAlleleAdd.managed = true) do
-			  (void) keep_busy();
-	    	  end while;
-
-	    	  (void) XmUpdateDisplay(top);
-
-	    	  -- If user verifies it is okay to add the item...
-
-	    	  if (root->VerifyAlleleAdd.doAdd) then
-
-		    -- Marker Symbol must be within Allele symbol
-
-		    if (strstr(VerifyAllele.value, markerSymbol) = nil) then
-              	      StatusReport.source_widget := root;
-	      	      StatusReport.message := "Invalid Allele symbol. Cannot add Allele symbol.\n";
-              	      send(StatusReport);
-
-		      if (isTable) then
-	                (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
-	                VerifyAllele.doit := (integer) false;
-		      end if;
-
-                      (void) reset_cursor(top);
-	              return;
-
-		    else
-
-		      if (root->VerifyAlleleAdd->AlleleName->text.value.length = 0) then
-		        alleleName := root->VerifyAlleleAdd->AlleleName->text.defaultValue;
-		      else
-		        alleleName := root->VerifyAlleleAdd->AlleleName->text.value;
-		      end if;
-
-	      	      cmd := mgi_setDBkey(MRK_ALLELE, NEWKEY, KEYNAME) +
-		             mgi_DBinsert(MRK_ALLELE, KEYNAME) + 
-					  markerKey + "," +
-					  mgi_DBprstr(VerifyAllele.value) + "," +
-	  				  mgi_DBprstr(alleleName) + ")\n";
-	      	      AddSQL.tableID := MRK_ALLELE;
-	      	      AddSQL.cmd := cmd;
-	      	      AddSQL.list := nil;
-
-		      if (isTable) then
-	      	        AddSQL.key := sourceWidget;
-		        AddSQL.row := row;
-		        AddSQL.column := alleleKey;
-		      else
-	      	        AddSQL.key := alleleWidget->ObjectID;
-		      end if;
-
-	      	      send(AddSQL, 0);
-
-		      if (isTable) then
-	                alleleKeys.insert(mgi_tblGetCell(sourceWidget, row, alleleKey), alleleKeys.count + 1);
-	                alleleSymbols.insert(mgi_tblGetCell(sourceWidget, row, alleleSymbol), alleleSymbols.count + 1);
-		      else
-	                alleleKeys.insert(alleleWidget->ObjectID->text.value, alleleKeys.count + 1);
-	                alleleSymbols.insert(alleleWidget->Allele->text.value, alleleSymbols.count + 1);
-		      end if;
-
-              	      StatusReport.source_widget := root;
-	      	      StatusReport.message := "New allele has been added.\n";
-              	      send(StatusReport);
-		    end if;
-		  else
-		    if (isTable) then
-	              (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
-	              VerifyAllele.doit := (integer) false;
-		    end if;
-
-                    (void) reset_cursor(top);
-	            return;
-		  end if;
-
-                -- If 1 Allele exists...
 
                 elsif (alleleKeys.count = 1) then
 	          whichMarker := 0;
@@ -930,20 +874,6 @@ rules:
 
         end does;
  
---
--- VerifyAlelleAdd
---
---	Called when user chooses YES from VerifyAlleleAdd dialog
---	Flag Verified Item for add
---
-
-	VerifyAlleleAdd does
-	  root : widget := VerifyAlleleAdd.source_widget.root;
-
-	  root->VerifyAlleleAdd.doAdd := true;
-	  root->VerifyAlleleAdd.managed := false;
-	end does;
-
 --
 --
 --
