@@ -8,8 +8,6 @@
 #	ex. 	source Configuration.default
 #
 
-#unsetenv TERM
-
 # install directory
 setenv EIINSTALLDIR /usr/local/mgi/ei/prod
 
