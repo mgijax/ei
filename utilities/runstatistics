@@ -4,12 +4,8 @@
 # Runs statistics
 #
 
-setenv SYBASE /opt/sybase
-setenv PYTHONPATH /usr/local/mgi/lib/python
+cd `dirname $0` && source ../Configuration
 
-setenv DSQUERY $1
-setenv MGD $2
-
-/usr/local/mgi/ei/mgd/statistics.py -S$DSQUERY -D$MGD -Umgd_dbo -P$SYBASE/admin/.mgd_dbo_password -mCR -e-2
-/usr/local/mgi/ei/mgd/statistics.py -S$DSQUERY -D$MGD -Umgd_dbo -P$SYBASE/admin/.mgd_dbo_password -mRI -e-2
+${EIINSTALLDIR}/mgd/statistics.py -S${DSQUERY} -D${MGD} -U${DBUSER} -P${DBPASSWORDFILE} -mCR -e-2
+${EIINSTALLDIR}/mgd/statistics.py -S${DSQUERY} -D${MGD} -U${DBUSER} -P${DBPASSWORDFILE} -mRI -e-2
 
