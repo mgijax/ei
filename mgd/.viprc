@@ -1,7 +1,7 @@
 
 !
 ! VIP init file
-! written: Tue Sep 28 13:02:17 1999
+! written: Thu Aug 24 10:28:10 2000
 !
 
 session_information {
@@ -30,8 +30,7 @@ pcds
     floating    = false
     opened      = false
     show_names  = false
-    height      = 121
-    vsb_pos     = 72
+    height      = 561
 
   load "/home/lec/ei/ei/pcds/GXD.pcd"
     floating    = false
@@ -105,6 +104,12 @@ pcds
   load "/home/lec/ei/ei/pcds/MGINomen.pcd"
     floating    = false
     opened      = false
+    show_names  = false
+    height      = 120
+
+  load "/home/lec/ei/ei/pcds/MGIMenu.pcd"
+    floating    = false
+    opened      = true
     show_names  = false
     height      = 120
 
