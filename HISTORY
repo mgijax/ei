@@ -1,3 +1,11 @@
+TAG: ei-2-2-0
+DATE: 07/13/2000
+STAFF: lec
+RELEASE: A
+CHANGES: 
+a) TR 1773 - disallow edits to non-mouse species in Homology EI
+b) TR 1688 - add LocusLink to Nomen and Marker EIs
+
 TAG: ei-2-1-6
 DATE: 06/27/2000
 STAFF: lec
