@@ -570,9 +570,9 @@ Module: mgiOption
                         development = False;
                     }
                     {
-                      NEOJunior = ServerToggle : mgiOption;
+                      Rohan = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = NEO_MGD;
+                        defaultValue = DEV_MGI;
                     }
               }
         }
