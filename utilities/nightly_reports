@@ -165,6 +165,7 @@ MRK_Withdrawn.sql \
 PRB_AltTranscripts.sql \
 PRB_CellLine.sql \
 PRB_Marker.sql \
+PRB_MarkerSeq.sql \
 PRB_NoGenBank.sql \
 PRB_NoMarkerSeq.sql \
 PRB_Reference.sql \
