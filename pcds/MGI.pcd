@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 14 15:45:10 2005";
+      lastWritten = "Tue Mar 15 15:01:49 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1194,19 +1194,19 @@ Module: MGI
                                 {
                                   EditPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        PSAnnotation = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"VocAnnot\")";
-                                          labelString = "PhenoSlim Annotations";
-                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1001\"\n";
-                                      }
-                                      {
                                         MPAnnotation = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"VocAnnot\")";
+                                          activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
                                           labelString = "Mammalian Phenotype Annotations";
                                           userDefinedAttributes = "annotTypeKey:Int(Int)=\"1002\"\n";
                                           managed = True;
+                                      }
+                                      {
+                                        PSAnnotation = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
+                                          labelString = "PhenoSlim Annotations";
+                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1001\"\n";
                                       }
                                 }
                           }
@@ -2296,32 +2296,6 @@ Module: MGI
                                                 vocabKey = 4;
                                                 defaultValue = 1000;
                                             }
-                                            {
-                                              MPGenotype = OptionToggle;
-                                              Group: Widget
-                                                valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
-                                                userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\n";
-                                                labelString = "Mammalian Phenotype/Genotype";
-                                              Group: User
-                                                annotVocab = "Mammalian Phenotype";
-                                                evidenceKey = 2;
-                                                mgiTypeKey = 12;
-                                                vocabKey = 5;
-                                                defaultValue = 1002;
-                                            }
-                                            {
-                                              PSGenotype = OptionToggle;
-                                              Group: Widget
-                                                valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
-                                                userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\n";
-                                                labelString = "PhenoSlim/Genotype";
-                                              Group: User
-                                                annotVocab = PhenoSlim;
-                                                evidenceKey = 2;
-                                                mgiTypeKey = 12;
-                                                vocabKey = 1;
-                                                defaultValue = 1001;
-                                            }
                                       }
                                 }
                                 {
@@ -2610,24 +2584,6 @@ Shift<Key>Tab: prev-tab-group()
                                           targetWidget = Annotation;
                                           targetKey = 8;
                                           targetText = 18;
-                                      }
-                                }
-                                {
-                                  PhenoSlimList = PhenoSlimList : mgiLookup;
-                                  Group: Widget
-                                    managed = False;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: Widget
-                                          visibleItemCount = 15;
-                                        Group: User
-                                          targetKey = 3;
-                                          targetWidget = Annotation;
-                                          targetText = 14;
-                                          targetAccID = 12;
                                       }
                                 }
                           }
