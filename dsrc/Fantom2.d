@@ -49,8 +49,10 @@ locals:
 	mgi : widget;			-- Top-level shell of Application
 	top : widget;			-- Top-level shell of Module
 
+	select : string;		-- global SQL select clause
 	from : string;			-- global SQL from clause
 	where : string;			-- global SQL where clause
+	orderBy : string;		-- global SQL order by clause
 
 	fantom : widget;
 	menus : list;
@@ -464,8 +466,25 @@ rules:
 	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " + 
 	       "and f._Fantom2_key = c2._Fantom2_key";
 
+	  select := "select f.*, " +
+		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
+		"cDate = convert(char(10), f.creation_date, 101), " +
+		"mDate = convert(char(10), f.modification_date, 101) ";
 	  from := "from " + mgi_DBtable(MGI_FANTOM2) + " f, MGI_Fantom2CacheGBA c1, MGI_Fantom2CacheFinal c2 ";
 	  where := "";
+
+	  -- Construct Order By
+	  orderBy := " order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
+		
+	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
+	    orderBy := orderBy + "," + top->sortOptions->sortMenu2.menuHistory.dbField;
+	  end if;
+
+	  if (top->sortOptions->sortMenu3.menuHistory.dbField.length > 0) then
+	    orderBy := orderBy + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
+	  end if;
+
+	  -- Build Where Clause
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqID);
 	  if (value.length > 0) then
@@ -620,6 +639,7 @@ rules:
 	  else
 	    where := where1;
           end if;
+
 	end does;
 
 --
@@ -642,24 +662,8 @@ rules:
 	  end if;
 
           send(ClearFantom2, 0);
- 
-	  cmd := "select f.*, " +
-		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
-		"cDate = convert(char(10), f.creation_date, 101), " +
-		"mDate = convert(char(10), f.modification_date, 101) " +
-		from + " " + where + 
-		" order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
-		
-	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
-	    cmd := cmd + "," + top->sortOptions->sortMenu2.menuHistory.dbField;
-	  end if;
-
-	  if (top->sortOptions->sortMenu3.menuHistory.dbField.length > 0) then
-	    cmd := cmd + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
-	  end if;
-
+	  cmd := select + from + where + orderBy;
 	  (void) mgi_writeLog(cmd + "\n");
-
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -751,22 +755,7 @@ rules:
 	  end if;
 
           send(ClearFantom2, 0);
- 
-	  cmd := "select f.*, " +
-		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
-		"cDate = convert(char(10), f.creation_date, 101), " +
-		"mDate = convert(char(10), f.modification_date, 101) " +
-		from + " " + where + 
-		" order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
-		
-	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
-	    cmd := cmd + "," + top->sortOptions->sortMenu2.menuHistory.dbField;
-	  end if;
-
-	  if (top->sortOptions->sortMenu3.menuHistory.dbField.length > 0) then
-	    cmd := cmd + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
-	  end if;
-
+	  cmd := select + from + where + orderBy;
 	  (void) mgi_writeLog(cmd + "\n");
 
           commands : string_list := create string_list();
