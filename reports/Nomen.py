@@ -42,7 +42,7 @@ if os.environ.has_key('NOMEN'):
 else:
 	nomen = 'nomen'
 
-nomenFrom = 'from ' + nomen + '..'
+nomenFrom = nomen + '..'
 
 if len(sys.argv) == 1:
 	sys.exit(1)
@@ -61,7 +61,7 @@ for r in results:
 	       'bdate = convert(char(25), n.broadcast_date), ' + \
 	       'cdate = convert(char(25), n.creation_date), ' + \
 	       'mdate = convert(char(25), n.modification_date) ' + \
-	       nomenFrom + 'MRK_Nomen_View n, ACC_Accession a ' + \
+	       'from ' + nomenFrom + 'MRK_Nomen_View n, ' + nomenFrom + 'ACC_Accession a ' + \
 	       'where n._Nomen_key = %d ' % (r['_Nomen_key']) + \
 	       'and n._Nomen_key = a._Object_key ' + \
 	       'and a.prefixPart = "MGI:" '
@@ -89,7 +89,7 @@ for r in results:
 		#
 
 		fp.write("Other Names:" + CRT)
-		ocmd = 'select name, isAuthor ' + nomenFrom + 'MRK_Nomen_Other ' + \
+		ocmd = 'select name, isAuthor from ' + nomenFrom + 'MRK_Nomen_Other ' + \
 			'where _Nomen_key = %d order by isAuthor desc' % (r['_Nomen_key'])
 		others = db.sql(ocmd, 'auto')
 
@@ -106,7 +106,7 @@ for r in results:
 		#
 
 		fp.write("References:" + CRT)
-		rcmd = 'select jnumID, isPrimary ' + nomenFrom + 'MRK_Nomen_Reference_View ' + \
+		rcmd = 'select jnumID, isPrimary from ' + nomenFrom + 'MRK_Nomen_Reference_View ' + \
 			'where _Nomen_key = %d order by isPrimary desc' % (r['_Nomen_key'])
 		refs = db.sql(rcmd, 'auto')
 
@@ -123,7 +123,7 @@ for r in results:
 		#
 
 		fp.write("Gene Family:" + CRT)
-		gcmd = 'select name ' + nomenFrom + 'MRK_Nomen_GeneFamily_View ' + \
+		gcmd = 'select name from ' + nomenFrom + 'MRK_Nomen_GeneFamily_View ' + \
 			'where _Nomen_key = %d' % (r['_Nomen_key'])
 		gfam = db.sql(gcmd, 'auto')
 
@@ -137,15 +137,16 @@ for r in results:
 		#
 
 		fp.write("Accession Numbers:" + CRT)
-		acmd = 'select accID, LogicalDB ' + nomenFrom + 'MRK_Nomen_AccNoRef_View ' + \
-			'where _Object_key = %d' % (r['_Nomen_key'])
+		acmd = 'select accID, LogicalDB from ' + nomenFrom + 'MRK_Nomen_AccNoRef_View ' + \
+			'where _Object_key = %d ' % (r['_Nomen_key']) + \
+			'and prefixPart != "MGI:"'
 		accs = db.sql(acmd, 'auto')
 
 		for a in accs:
 			fp.write(TAB + mgi_utils.prvalue(a['LogicalDB']))
 			fp.write(TAB + mgi_utils.prvalue(a['accID']) + CRT)
 
-		acmd = 'select accID, jnum, LogicalDB ' + nomenFrom + 'MRK_Nomen_AccRef_View ' + \
+		acmd = 'select accID, jnum, LogicalDB from ' + nomenFrom + 'MRK_Nomen_AccRef_View ' + \
 			'where _Object_key = %d' % (r['_Nomen_key'])
 		accs = db.sql(acmd, 'auto')
 
@@ -159,7 +160,7 @@ for r in results:
 		fp.write(mgi_utils.prvalue(d['statusNote']) + CRT)
 
 		fp.write("Editor's Notes:" + 2*CRT)
-		ncmd = 'select note ' + nomenFrom + 'MRK_Nomen_EditorNotes_View ' + \
+		ncmd = 'select note from ' + nomenFrom + 'MRK_Nomen_EditorNotes_View ' + \
 			'where _Nomen_key = %d order by sequenceNum' % (r['_Nomen_key'])
 		notes = db.sql(ncmd, 'auto')
 
@@ -169,7 +170,7 @@ for r in results:
 		fp.write(CRT)
 
 		fp.write("Nomenclature Coordinator Notes:" + 2*CRT)
-		ncmd = 'select note ' + nomenFrom + 'MRK_Nomen_CoordNotes_View ' + \
+		ncmd = 'select note from ' + nomenFrom + 'MRK_Nomen_CoordNotes_View ' + \
 			'where _Nomen_key = %d order by sequenceNum' % (r['_Nomen_key'])
 		notes = db.sql(ncmd, 'auto')
 
