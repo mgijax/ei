@@ -800,7 +800,7 @@ rules:
           dialog : widget := MarkerBreakpointSplitEnd.source_widget;
  
           oFile : string := getenv("INSTALL_ROOT") + "/" + 
-                            getenv("APP") + "/" + REPORTDIR + 
+                            getenv("APP") + "/" + getenv("REPORTDIR") + 
                             "/EVENT_SPLITS/breakpointSplit." + 
 			    dialog->mgiMarker->Marker->text.value;
 
@@ -1827,21 +1827,21 @@ rules:
 		(void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 4) then
 		table := top->History->Table;
-                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 11));
-                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 5));
-                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 14));
+                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 12));
+                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
-		if (mgi_getstr(dbproc, 9) = "01/01/1900") then
+		if (mgi_getstr(dbproc, 10) = "01/01/1900") then
                   (void) mgi_tblSetCell(table, row, table.eventDate, "");
 		else
-                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 10));
+                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 11));
 		end if;
 
           	-- Initialize Option Menus for row 0

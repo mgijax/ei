@@ -101,8 +101,12 @@ devents:
 	ClearNomen :local [clearKeys : boolean := true;];
 
 	-- Process Broadcast Events
-	Broadcast :local [];
-	BroadcastEnd :local [];
+	Broadcast :local [type : integer;];
+	BroadcastExec :local [];
+	AddBroadcast :local [];
+	BroadcastSymbol :local [];
+	BroadcastBatch :local [];
+	BroadcastReference :local [];
 
 	Modify :local [];
 	ModifyGeneFamily :local [];
@@ -135,7 +139,7 @@ locals:
         currentNomenKey : string;	-- Primary Key value of currently selected record
                                  	-- Initialized in Select[] and Add[] events
  
-	reserved : string;
+	broadcastType : integer;	-- Type of Broadcast;  see Broadcast event
 
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
@@ -252,10 +256,6 @@ rules:
 	  tables.append(top->GeneFamily->Table);
 	  tables.append(top->AccessionReference->Table);
 
-	  reserved := mgi_sql1("select " + mgi_DBkey(MRK_NOMENSTATUS) + 
-		" from " + mgi_DBtable(MRK_NOMENSTATUS) +
-		" where " + mgi_DBcvname(MRK_NOMENSTATUS) + " = 'Reserved'");
-
           -- Set Row Count
           SetRowCount.source_widget := top;
           SetRowCount.tableID := MRK_NOMEN;
@@ -296,7 +296,23 @@ rules:
 	  suid : string := "";
 	  table : widget := top->Reference->Table;
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue != reserved and
+	  -- Set Status to Pending if set to Broadcast...this can happen
+	  -- if they user is duplicating a broadcast record
+
+	  if (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCAST) then
+            SetOption.source_widget := top->MarkerStatusMenu;
+            SetOption.value := STATUS_PENDING;
+            send(SetOption, 0);
+
+            SetOption.source_widget := top->BroadcastByMenu;
+            SetOption.value := NOTAPPLICABLE;
+            send(SetOption, 0);
+
+	    top->BroadcastDate->text.value := "";
+	    top->AccessionID->text.value := "";
+	  end if;
+
+	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
             StatusReport.source_widget := top;
@@ -347,13 +363,13 @@ rules:
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventReasonMenu.menuHistory.defaultValue + "," +
-                 suid + ",NULL," +
+                 suid + "," +
+		 NOTAPPLICABLE + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->HumanSymbol->text.value) + ",NULL," +
-	         mgi_DBprstr(top->StatusNotes->text.value) + "," +
-	         mgi_DBprstr(top->BroadcastDate->text.value) + ")\n";
+	         mgi_DBprstr(top->StatusNotes->text.value) + ",NULL)\n";
 
 	  ModifyNotes.source_widget := top->EditorNote->Note;
 	  ModifyNotes.tableID := MRK_NOMEN_EDITORNOTES;
@@ -443,7 +459,7 @@ rules:
 	  updateModDate : boolean := true;
 	  table : widget := top->Reference->Table;
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue != reserved and
+	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
             StatusReport.source_widget := top;
@@ -461,6 +477,44 @@ rules:
               top->ChromosomeMenu.menuHistory.defaultValue = "W") then
             StatusReport.source_widget := top;
             StatusReport.message := "This Chromosome value is no longer valid.\n";
+            send(StatusReport);
+	    return;
+	  end if;
+
+          if (top->MarkerStatusMenu.menuHistory.modified and
+	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCAST) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You cannot modify status to Broadcast.\n";
+            send(StatusReport);
+	    return;
+	  end if;
+
+          if (top->SubmittedByMenu.menuHistory.modified and
+	      top->SubmittedByMenu.menuHistory.searchValue != "%") then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You do not have permission to modify the Submittted By field.\n";
+            send(StatusReport);
+	    return;
+          end if;
+
+          if (top->BroadcastByMenu.menuHistory.modified and
+	      top->BroadcastByMenu.menuHistory.searchValue != "%") then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You do not have permission to modify the Broadcast By field.\n";
+            send(StatusReport);
+	    return;
+          end if;
+
+	  if (top->BroadcastDate->text.modified) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You do not have permission to modify the Broadcast Date field.\n";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  if (top->AccessionID->text.modified) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "You do not have permission to modify the MGI Accession ID field.\n";
             send(StatusReport);
 	    return;
 	  end if;
@@ -495,16 +549,6 @@ rules:
             set := set + "chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + ",";
           end if;
 
-          if (top->SubmittedByMenu.menuHistory.modified and
-	      top->SubmittedByMenu.menuHistory.searchValue != "%") then
-            set := set + "_Suid_key = "  + top->SubmittedByMenu.menuHistory.defaultValue + ",";
-          end if;
-
-          if (top->BroadcastByMenu.menuHistory.modified and
-	      top->BroadcastByMenu.menuHistory.searchValue != "%") then
-            set := set + "_Suid_broadcast_key = "  + top->BroadcastByMenu.menuHistory.defaultValue + ",";
-          end if;
-
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
 	  end if;
@@ -519,14 +563,6 @@ rules:
 
 	  if (top->StatusNotes->text.modified) then
 	    set := set + "statusNote = " + mgi_DBprstr(top->StatusNotes->text.value) + ",";
-	  end if;
-
-	  if (top->BroadcastDate->text.modified) then
-	    set := set + "broadcast_date = " + mgi_DBprstr(top->BroadcastDate->text.value) + ",";
-	  end if;
-
-	  if (top->AccessionID->text.modified) then
-	    set := set + "mgiAccID = " + mgi_DBprstr(top->AccessionID->text.value) + ",";
 	  end if;
 
 	  ModifyNotes.source_widget := top->EditorNote->Note;
@@ -1072,11 +1108,10 @@ rules:
             while (row < mgi_tblNumRows(table)) do
               editMode := mgi_tblGetCell(table, row, table.editMode);
  
-              if (editMode = TBL_ROW_EMPTY) then
-                break;
-              end if;
- 
-              (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+              if (editMode != TBL_ROW_EMPTY) then
+                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+	      end if;
+
               row := row + 1;
             end while;
 	  end while;
@@ -1244,15 +1279,15 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
                 if (mgi_getstr(dbproc, 5) = "1") then
-                  (void) mgi_tblSetCell(table, row, table.broadcast, "Yes");
-                else
-                  (void) mgi_tblSetCell(table, row, table.broadcast, "No");
-                end if;
-
-                if (mgi_getstr(dbproc, 6) = "1") then
                   (void) mgi_tblSetCell(table, row, table.review, "Yes");
                 else
                   (void) mgi_tblSetCell(table, row, table.review, "No");
+                end if;
+
+                if (mgi_getstr(dbproc, 6) = "1") then
+                  (void) mgi_tblSetCell(table, row, table.broadcast, "Yes");
+                else
+                  (void) mgi_tblSetCell(table, row, table.broadcast, "No");
                 end if;
 
           	-- Initialize Option Menus for row 0
@@ -1364,83 +1399,171 @@ rules:
 --
 -- Broadcast
 --
--- Activated from:  menu Broadcast
---
--- Broadcast Nomen symbols to MGD based on user selection 
+-- Wrapper for all Broadcast events
+-- Verifies that Broadast can be executed (i.e. all required info is available)
+-- Manages "Are You Sure"? dialog for any Broadcast.
+-- Sets global "broadcastType" value
 --
 
 	Broadcast does
-	  dialog : widget := top->NomenBroadcastDialog;
-	  cmds : string_list := create string_list();
+	  message : string := "Are you sure you want to broadcast these records?\n";
+	  broadcastOK : boolean := false;
+	  dbproc : opaque;
 
-	  (void) busy_cursor(dialog);
+	  broadcastType := Broadcast.type;
 
-	  cmds.insert("createBroadcast.py", cmds.count + 1);
-	  cmds.insert("-U" + global_login, cmds.count + 1);
-	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-D" + getenv("NOMEN"), cmds.count + 1);
+	  -- For Add, allow (D:Verify) to test for required fields, etc.
+	  -- If the Add verifications pass, continue
 
-	  if (dialog->Choice->Preview.set) then
-	    cmds.insert("--BFILE=" + dialog->PreviewFileName->text.value, cmds.count + 1);
-	  else
-	    cmds.insert("--BFILE=" + dialog->BroadcastFileName->text.value, cmds.count + 1);
+	  if (broadcastType = 1 and not top.allowEdit) then
+	    return;
 	  end if;
 
-	  cmds.insert("--BDATE=" + dialog->mgiDate->text.value, cmds.count + 1);
-
-	  if (dialog->Choice->Preview.set) then
-	    cmds.insert("-F" + dialog->Choice->Preview.value, cmds.count + 1);
-	  elsif (dialog->Choice->Broadcast.set) then
-	    cmds.insert("-F" + dialog->Choice->Broadcast.value, cmds.count + 1);
+	  if (broadcastType = 1) then
+	    message := message + "\n" + top->Symbol->text.value;
+	    broadcastOK := true;
+	  elsif (broadcastType = 2) then
+	    message := message + "\n" + top->Symbol->text.value;
+	    if (currentNomenKey.length > 0) then
+	      broadcastOK := true;
+	    end if;
+	  elsif (broadcastType = 3) then
+	    if (currentNomenKey.length > 0) then
+	      cmd := "select symbol from " + mgi_DBtable(MRK_NOMEN) + 
+		  " where _Marker_Status_key = 4";
+	      dbproc := mgi_dbopen();
+              (void) dbcmd(dbproc, cmd);
+              (void) dbsqlexec(dbproc);
+	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+		  message := message + "\n" + mgi_getstr(dbproc, 1);
+		  broadcastOK := true;
+	        end while;
+	      end while;
+	      (void) dbclose(dbproc);
+	    end if;
+	  elsif (broadcastType = 4) then
+	    if (currentNomenKey.length > 0) then
+	      cmd := "select symbol from " + mgi_DBtable(MRK_NOMEN) + 
+		  " where _Marker_Status_key = 4";
+	      dbproc := mgi_dbopen();
+              (void) dbcmd(dbproc, cmd);
+              (void) dbsqlexec(dbproc);
+	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+		  message := message + "\n" + mgi_getstr(dbproc, 1);
+		  broadcastOK := true;
+	        end while;
+	      end while;
+	      (void) dbclose(dbproc);
+	    end if;
 	  end if;
 
-	  -- Print cmds to Output
+	  if (not broadcastOK) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "There are no records to broadcast.";
+            send(StatusReport);
+            return;
+	  end if;
 
-	  dialog->Output.value := "PROCESSING...\n[";
-	  cmds.rewind;
-	  while (cmds.more) do
-	    dialog->Output.value := dialog->Output.value + cmds.next + " ";
-	  end while;
-	  cmds.rewind;
-	  dialog->Output.value := dialog->Output.value + "]\n\n";
-
-          BroadcastEnd.source_widget := dialog;
-          proc_id : opaque := 
-            tu_fork_process2(cmds[1], cmds, dialog->Output, dialog->Output, BroadcastEnd);
-	  tu_fork_free(proc_id);
+	  top->BroadcastDialog.messageString := message;
+	  top->BroadcastDialog.managed := true;
 	end does;
 
 --
--- BroadcastEnd
+-- BroadcastExec
 --
--- Activated from: child process forked from Broadcast is finished
+-- Called from: top->BroadcastDialog.okCallback
 --
--- Prints diagnostics
--- Queries for all new and old symbols
 --
- 
-        BroadcastEnd does
-	  dialog : widget := BroadcastEnd.source_widget;
-	  bFile : string := global_reportdir + "/" + dialog->BroadcastFileName->text.value;
 
-	  -- Print some diagnostics for the User and to the User log
+	BroadcastExec does
+	  BroadcastEvent : devent;
 
-          dialog->Output.value := dialog->Output.value + "PROCESSING COMPLETED\n\n";
+	  if (broadcastType = 1) then
+	    BroadcastEvent := AddBroadcast;
+	  elsif (broadcastType = 2) then
+	    BroadcastEvent := BroadcastSymbol;
+	  elsif (broadcastType = 3) then
+	    BroadcastEvent := BroadcastBatch;
+	  elsif (broadcastType = 4) then
+	    BroadcastEvent := BroadcastReference;
+	  end if;
 
-	  (void) mgi_writeLog(dialog->Output.value);
- 
-	  -- Give User file information
+	  -- Send appropriate Broadcast event
+	  send(BroadcastEvent, 0);
 
-	  dialog->Output.value := dialog->Output.value + 
-                      "Check the files:\n\n" + 
-		       bFile + "\n" +
-		       bFile + ".stats\n" +
-		       "for further information.";
+	  -- Re-select item so that new values are displayed
+	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 
-	  (void) XmTextShowPosition(dialog->Output, XmTextGetLastPosition(dialog->Output));
-	  (void) reset_cursor(top->NomenBroadcastDialog);
-        end does;
- 
+	  -- Un-managed dialog
+	  top->BroadcastDialog.managed := false;
+	end does;
+
+--
+-- AddBroadcast
+--
+-- Adds symbol to Nomen and broadcasts to MGD in one step
+--
+
+	AddBroadcast does
+
+	  -- add the Nomen record
+
+	  send(Add, 0);
+
+	  -- if Add was successful, broadcast to Nomen
+	  if (top->QueryList->List.sqlSuccessful) then
+	    (void) busy_cursor(top);
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey;
+	    send(ExecSQL, 0);
+	    (void) reset_cursor(top);
+	  end if;
+
+	end does;
+
+--
+-- BroadcastSymbol
+--
+-- Broadcast selected symbol to MGD
+--
+
+	BroadcastSymbol does
+	  (void) busy_cursor(top);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey;
+	  send(ExecSQL, 0);
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- BroadcastBatch
+--
+-- Broadcast all Approved symbols to MGD
+--
+
+	BroadcastBatch does
+	  (void) busy_cursor(top);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERBATCH);
+	  send(ExecSQL, 0);
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- BroadcastReference
+--
+-- If Tier 3:  Broadcast all Pending symbols w/ currently selected Primary reference
+-- If Tier 4:  Broadcast all Approved symbols w/ currently selected Primary reference
+--
+
+	BroadcastReference does
+	  table : widget := top->Reference->Table;
+
+	  (void) busy_cursor(top);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREF) + " " + mgi_tblGetCell(table, 0, table.refsKey);
+	  send(ExecSQL, 0);
+	  (void) reset_cursor(top);
+	end does;
+
 --
 -- Exit
 --

@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 03/22/2000
+--	- TR 1291; VerifyMarker; use status instead of chromosome
+--
 -- lec 09/23/1999
 --	- TR 940; VerifyAge
 --
@@ -1695,11 +1698,11 @@ rules:
 --	Verify Mouse Marker Symbol entered in TextField or Table
 --
 --	Invalid Markers include:
---		Withdrawn Markers (chromosome = W)
---		non-Mouse Markers (species != 1)
+--		Withdrawn Markers (status = WITHDRAWN)
+--		non-Mouse Markers (species != MOUSE)
 --
 --	If Text, assumes use of mgiMarker template
---	If Table, assumes table.markerKey, table.markerSymbol, table.markerChr are defined
+--	If Table, assumes table.markerKey, table.markerSymbol are defined
 --	  column values for unique identifier, chromosome, respectively
 --	Copy Unique Key into Appropriate widget/column
 --	Copy Chromosome into Appropriate widget/column
@@ -1784,12 +1787,14 @@ rules:
 	  whichMarkerRow : integer := 0;
 	  whichMarker : string := "";
 	  whichSymbol : string := "";
-	  whichChrom : string := "";
+	  whichStatus : string := "";
+	  whichChrom  : string := "";
 
 	  keys : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
 	  symbols : string_list := create string_list();
 	  chromosome : string_list := create string_list();
+	  status : string_list := create string_list();
 	  band : string_list := create string_list();
 	  speciesKey : string := "1";
 
@@ -1815,7 +1820,7 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  select : string := "select _Marker_key, symbol, chromosome, cytogeneticOffset " +
+	  select : string := "select _Marker_key, _Marker_Status_key, symbol, chromosome, cytogeneticOffset " +
 			     "from MRK_Marker where _Species_key = " + speciesKey + 
 			     " and symbol = \"" + value + "\"\n";
 
@@ -1828,11 +1833,13 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
-              symbols.insert(mgi_getstr(dbproc, 2), symbols.count + 1);
-              chromosome.insert(mgi_getstr(dbproc, 3), chromosome.count + 1);
-              band.insert(mgi_getstr(dbproc, 4), band.count + 1);
-              results.insert(mgi_getstr(dbproc, 2) + ", Chr " + 
-	      chromosome[chromosome.count] + ", Band " + band[band.count], results.count + 1);
+              status.insert(mgi_getstr(dbproc, 2), chromosome.count + 1);
+              symbols.insert(mgi_getstr(dbproc, 3), symbols.count + 1);
+              chromosome.insert(mgi_getstr(dbproc, 4), chromosome.count + 1);
+              band.insert(mgi_getstr(dbproc, 5), band.count + 1);
+              results.insert(symbols[symbols.count] + 
+		", Chr " + chromosome[chromosome.count] + 
+		", Band " + band[band.count], results.count + 1);
             end while;
           end while;
 	  (void) dbclose(dbproc);
@@ -1899,11 +1906,12 @@ rules:
  
 	  whichMarker := whichItem->ItemList->List.keys[whichMarkerRow];
 	  whichSymbol := symbols[whichMarkerRow];
-	  whichChrom := chromosome[whichMarkerRow];
+	  whichStatus := status[whichMarkerRow];
+	  whichChrom  := chromosome[whichMarkerRow];
 
 	  -- If withdrawn symbols are not allowed, then display list of current symbols
 
-	  if (not VerifyMarker.allowWithdrawn and whichChrom = "W") then
+	  if (not VerifyMarker.allowWithdrawn and whichStatus = STATUS_WITHDRAWN) then
             message := "Symbol '" + value + "' has been Withdrawn\n\n" +
                        "The current symbol(s) are:\n\n";
 
@@ -1945,7 +1953,7 @@ rules:
                       "select cytogeneticOffset, name " +
                       "from MRK_Marker " +
                       "where _Marker_key = " + whichMarker + "\n" +
-                      "and _Species_key != 1" + "\n" +
+                      "and _Species_key != " + MOUSE + "\n" +
                       "select _Marker_key, accID, _Accession_key " +
                       "from MRK_NonMouse_View " +
                       "where _Marker_key = " + whichMarker;
