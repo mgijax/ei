@@ -320,7 +320,7 @@ rules:
             dialog.managed := true;
 	  end if;
 
-	  dialog.front;
+	  dialog.top.front;
         end does;
  
 --
