@@ -104,18 +104,18 @@ devents:
 
 	CheckSQLrc :local [];
 	ClearMatchCount :local [];
-	Delete :local [];        -- "Delete" button in control panel
+	Delete :local [];
 
-	Modify :local [];        -- "Modify" button in control panel
+	Modify :local [];
 	ModifyClass :local [];
 	ModifyReference :local [];    
 	ModifyText :local [];
 
-	PrepareSearch :local []; -- events which are involved with retrieving
-	Search :local [];        -- symbol data
+	PrepareSearch :local [];
+	Search :local [];
 	Select :local [item_position : integer;];
 
-	-- References Table events 
+	-- Reference Table events 
 	SortReferences :local [table : widget;]; -- sort references in Ref Table 
 	UnSelectRefsTable :local [];
 
@@ -927,11 +927,14 @@ rules:
 		SetOption.value := mgi_getstr(dbproc, 1);
 		SetOption.setDefault := true;
 		send(SetOption, 0);
-		top->Description->text.value  := mlced_dbDescToEI(mgi_getstr(dbproc, 2), (integer) currentMarkerKey);
---		top->Description->text.value  := mgi_getstr(dbproc, 2);
+
+		top->Description->text.value  
+			:= mlced_dbDescToEI(mgi_getstr(dbproc, 2), (integer) currentMarkerKey);
+
 		top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 		top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
 		top->ModifiedBy->text.value   := mgi_getstr(dbproc, 5);
+
 		MLCexists := true;
 	      end if;
 			
@@ -953,7 +956,7 @@ rules:
 	    send(StatusReport);
 	  elsif (top->Description->text.value.length = 0) then
 	    StatusReport.source_widget := top;
-	    StatusReport.message := "Symbol has BLANK MLC description.\n" +
+	    StatusReport.message := "Symbol has a BLANK MLC description.\n" +
 		                    "Either insert some text or DELETE the MLC entry.\n" +
 		                    "Blank text will cause a display error in the WI.";
 	    send(StatusReport);
@@ -1020,9 +1023,6 @@ rules:
 
 	  if (pos < 0) then
 	    top->EditForm->UndoReplace.sensitive := false;
---	    StatusReport.source_widget := top;
---	    StatusReport.message := "Position cursor BEFORE text which is being searched/replaced.";
---	    send(StatusReport);
 	    return;
 	  end if;    
 
