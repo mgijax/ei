@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 17 15:06:33 2002";
+      lastWritten = "Wed Aug 28 12:51:27 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -105,17 +105,17 @@ Module: mgiFantom
                                         Group: Widget
                                           xrtTblNumRows = 70000;
                                           xrtTblVisibleRows = 50;
-                                          xrtTblNumColumns = 42;
-                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID,RA Symbol,Seq Length,Locus ID,UniGene ID,TIGR TC,R Cluster,Locus Status,RIKEN #,MGI Status,MGI #,BLAST Group ID,BLAST MGI:IDs,CDS Cat #,Seq Qual,Seq Note,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Notes,Cluster Anal,Gene Name Cur,CDS/GO Cur,Final Cluster ID,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
+                                          xrtTblNumColumns = 49;
+                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID,RA Symbol,Seq Length,Locus ID,UniGene ID,TIGR TC,R Cluster,Locus Status,RIKEN #,MGI Status,MGI #,BLAST Group ID,BLAST MGI:IDs,CDS Cat #,Seq Qual,Seq Note,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,Final Cluster ID,Cluster Evidence,Non-MGI MGI ID,Non-MGI Representative,Approved New Symbol,Approved New Name,Homology Note,Chromosome,NEvent,Nomen Notes,Cluster Anal,Gene Name Cur,CDS/GO Cur,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
                                           width = 1000;
                                           height = 800;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3-4 1)(all 5-6 5)(all 7-8 10)(all 9-10 15)(all 11 10)(all 12-19 10)(all 20-21 20)(all 22 8)(all 23-24 15)(all 25-29 25)(all 30 6)(all 31 25) (all 32-34 15)(all 35 10)(all 36-37 25)(all 38-41 10)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3-4 1)(all 5-6 5)(all 7-8 10)(all 9-10 15)(all 11 10)(all 12-19 10)(all 20-21 20)(all 22 8)(all 23-24 15)(all 25-29 25)(all 30 20)(all 31-32 20)(all 33 30)(all 34-36 25)(all 38 6)(all 39 25)(all 40-42 15)(all 43-44 25)(all 45-48 10)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           xrtTblTraversableSeries = "(all 0-5 False)";
                                           xrtTblEditableSeries = "(all 0-5 False)";
                                           xrtTblFrozenColumns = 11;
-                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"24\"\nseqQuality:Int(Int)=\"23\"\nlocusID:Int(Int)=\"12\"\ntigerID:Int(Int)=\"14\"\nunigeneID:Int(Int)=\"13\"\nclusterID:Int(Int)=\"15\"\nlocusStatus:Int(Int)=\"16\"\nmgiStatus:Int(Int)=\"18\"\nmgiNumber:Int(Int)=\"19\"\nblastGroupID:Int(Int)=\"20\"\nblastMGIIDs:Int(Int)=\"21\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"25\"\nfinalSymbol1:Int(Int)=\"26\"\nfinalName1:Int(Int)=\"27\"\nfinalSymbol2:Int(Int)=\"28\"\nfinalName2:Int(Int)=\"29\"\nnomenEvent:Int(Int)=\"30\"\nnomenNote:Int(Int)=\"31\"\nrikenNote:Int(Int)=\"36\"\ncuratorNote:Int(Int)=\"37\"\ncreatedBy:Int(Int)=\"38\"\ncreatedDate:Int(Int)=\"39\"\nmodifiedBy:Int(Int)=\"40\"\nmodifiedDate:Int(Int)=\"41\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int(Int)=\"4\"\nfinalCluster:Int(Int)=\"35\"\nrikenNumber:Int(Int)=\"17\"\ncds:Int(Int)=\"22\"\nclusterAnal:Int(Int)=\"32\"\ngeneNameCuration:Int(Int)=\"33\"\ncdsGOCuration:Int(Int)=\"34\"\n";
+                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"24\"\nseqQuality:Int(Int)=\"23\"\nlocusID:Int(Int)=\"12\"\ntigerID:Int(Int)=\"14\"\nunigeneID:Int(Int)=\"13\"\nclusterID:Int(Int)=\"15\"\nlocusStatus:Int(Int)=\"16\"\nmgiStatus:Int(Int)=\"18\"\nmgiNumber:Int(Int)=\"19\"\nblastGroupID:Int(Int)=\"20\"\nblastMGIIDs:Int(Int)=\"21\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"25\"\nfinalSymbol1:Int(Int)=\"26\"\nfinalName1:Int(Int)=\"27\"\nfinalSymbol2:Int(Int)=\"28\"\nfinalName2:Int(Int)=\"29\"\nnomenEvent:Int(Int)=\"38\"\nnomenNote:Int(Int)=\"39\"\nrikenNote:Int(Int)=\"43\"\ncuratorNote:Int(Int)=\"44\"\ncreatedBy:Int(Int)=\"45\"\ncreatedDate:Int(Int)=\"46\"\nmodifiedBy:Int(Int)=\"47\"\nmodifiedDate:Int(Int)=\"48\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int(Int)=\"4\"\nfinalCluster:Int(Int)=\"30\"\nrikenNumber:Int(Int)=\"17\"\ncds:Int(Int)=\"22\"\nclusterAnal:Int(Int)=\"40\"\ngeneNameCuration:Int(Int)=\"41\"\ncdsGOCuration:Int(Int)=\"42\"\nclusterEvidence:Int=\"31\"\nnonmgi_mgiID:Int=\"32\"\nnonmgi_rep:Int=\"33\"\napprovedSymbol:Int=\"34\"\napprovedName:Int=\"35\"\nhomologyNote:Int=\"36\"\nchromosome:Int=\"37\"\n";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblValidateCellCallback = "D:VerifyFinalMGIID,\nD:CommitTableCellEdit";
                                           xrtTblJumpScroll = jump_none;
@@ -553,10 +553,61 @@ Module: mgiFantom
                                       }
                                 }
                                 {
+                                  ClusterEvidenceMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = ClusterEvidencePulldown;
+                                    labelString = "Cluster Evidence";
+                                  Group: User
+                                    defaultOption = zilch;
+                                      Popups:
+                                      {
+                                        ClusterEvidencePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Fantom;
+                                          tableOption = 31;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              Single = OptionToggle : mgiOption;
+                                              Group: User
+                                                defaultValue = Single;
+                                                searchValue = Single;
+                                            }
+                                            {
+                                              MGI = OptionToggle : mgiOption;
+                                              Group: User
+                                                defaultValue = MGI;
+                                                searchValue = MGI;
+                                            }
+                                            {
+                                              FANTOM = OptionToggle : mgiOption;
+                                              Group: User
+                                                defaultValue = FANTOM;
+                                                searchValue = FANTOM;
+                                            }
+                                            {
+                                              RIKEN = OptionToggle : mgiOption;
+                                              Group: User
+                                                defaultValue = RIKEN;
+                                                searchValue = RIKEN;
+                                            }
+                                            {
+                                              zilch = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = zilch;
+                                              Group: User
+                                                searchValue = zilch;
+                                                defaultValue = zilch;
+                                            }
+                                      }
+                                }
+                                {
                                   NomenEventMenu = OptionMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = NomenEventPulldown;
-                                    labelString = "Nomen\nEvent";
+                                    labelString = "Nomen Event";
                                   Group: User
                                     defaultOption = zilch;
                                       Popups:
@@ -564,7 +615,7 @@ Module: mgiFantom
                                         NomenEventPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 30;
+                                          tableOption = 38;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -612,19 +663,27 @@ Module: mgiFantom
                                       }
                                 }
                                 {
+                                  HomologyNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Homology Notes";
+                                  Group: User
+                                    targetColumn = 36;
+                                    targetWidget = Fantom;
+                                }
+                                {
                                   NomenNote = NotePush : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Nomen Notes";
                                   Group: User
                                     targetWidget = Fantom;
-                                    targetColumn = 31;
+                                    targetColumn = 39;
                                 }
                                 {
                                   RIKENNote = NotePush : mgiDataTypes;
                                   Group: Widget
                                     labelString = "RIKEN Notes";
                                   Group: User
-                                    targetColumn = 36;
+                                    targetColumn = 43;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -632,7 +691,7 @@ Module: mgiFantom
                                   Group: Widget
                                     labelString = "Curator Notes";
                                   Group: User
-                                    targetColumn = 37;
+                                    targetColumn = 44;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -1145,42 +1204,90 @@ Module: mgiFantom
                     {
                       column30 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Nomen Event";
+                        labelString = "Final Cluster";
                       Group: User
-                        dbField = nomen_event;
+                        dbField = final_cluster;
                         columnValue = 30;
+                    }
+                    {
+                      column31 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Cluster Evidence";
+                      Group: User
+                        dbField = cluster_evidence;
+                        columnValue = 31;
                     }
                     {
                       column32 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Cluster Anal";
+                        labelString = "Non-MGI MGI ID";
                       Group: User
-                        dbField = cluster_analysis;
+                        dbField = nonmgi_mgiID;
                         columnValue = 32;
                     }
                     {
                       column33 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Gene Name Curation";
+                        labelString = "Non-MGI Representative";
                       Group: User
-                        dbField = gene_name_curation;
+                        dbField = nonmgi_rep;
                         columnValue = 33;
                     }
                     {
                       column34 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "CDS/GO Curation";
+                        labelString = "Approved New Symbol";
                       Group: User
-                        dbField = cds_go_curation;
+                        dbField = approved_symbol;
                         columnValue = 34;
                     }
                     {
                       column35 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Cluster";
+                        labelString = "Approved New Name";
                       Group: User
-                        dbField = final_cluster;
+                        dbField = approved_name;
                         columnValue = 35;
+                    }
+                    {
+                      column37 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = Chromosome;
+                      Group: User
+                        dbField = chromosome;
+                        columnValue = 37;
+                    }
+                    {
+                      column38 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Nomen Event";
+                      Group: User
+                        dbField = nomen_event;
+                        columnValue = 38;
+                    }
+                    {
+                      column40 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Cluster Anal";
+                      Group: User
+                        dbField = cluster_analysis;
+                        columnValue = 40;
+                    }
+                    {
+                      column41 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Gene Name Curation";
+                      Group: User
+                        dbField = gene_name_curation;
+                        columnValue = 41;
+                    }
+                    {
+                      column42 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "CDS/GO Curation";
+                      Group: User
+                        dbField = cds_go_curation;
+                        columnValue = 42;
                     }
                     {
                       column5 = ColumnToggle : mgiFantom;
