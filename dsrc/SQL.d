@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec 09/18/2001
+--	- QueryNoInterrupt; added "selectItem"
+--
 -- lec 09/12/2001
 --	- AddSQL; add appendKeyToItem
 --
@@ -416,8 +419,10 @@ rules:
  
             (void) XmListAddItems(list_w->List, results, results.count, 0);
             list_w->List.row := 1;
-            (void) XmListSelectPos(list_w->List, list_w->List.row, true);
             list_w->Label.labelString := (string) list_w->List.itemCount + " " + list_w->Label.defaultLabel;
+	    if (QueryNoInterrupt.selectItem) then
+              (void) XmListSelectPos(list_w->List, list_w->List.row, true);
+	    end if;
           end if;
         end does;
  

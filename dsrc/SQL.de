@@ -42,7 +42,8 @@ Query [source_widget : widget;			-- Query Database Allowing Interruption
 QueryNoInterrupt [source_widget : widget;	-- Query Database w/out Interruption
                   list_w : widget;
                   select : string;
-                  table : integer;];
+                  table : integer;
+		  selectItem : boolean := true;];
 
 QueryEnd [];					-- Things to do after Query event completes
 
