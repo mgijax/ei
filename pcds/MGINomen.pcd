@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Fri Aug  6 09:12:17 1999";
+      lastWritten = "Wed Aug 11 08:35:36 1999";
         {
           MGINomen = Application : MGI;
           Group: Control
@@ -975,6 +975,40 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       ReportDialog = XmFormDialog;
+                          {
+                            FileSelection = XmFileSelectionBox;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = XmForm : mgiLookup;
+                                            {
+                                              Label = XmPushButton;
+                                            }
+                                            {
+                                              List = XmScrolledList;
+                                              Group: Widget
+                                                items = "Nomenclature Search Results";
+                                              Group: User
+                                                keys = "NomenSearch.py";
+                                            }
+                                      }
+                                      {
+                                        PrinterList = XmForm;
+                                      }
+                                      {
+                                        PrintOrient = XmFrame : mgiDataTypes;
+                                      }
+                                      {
+                                        PrintColumn = XmFrame : mgiDataTypes;
+                                      }
+                                      {
+                                        Output = XmScrolledText;
+                                      }
+                                }
+                          }
                     }
                     {
                       SearchDialog = XmWorkingDialog;
