@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	12/12/2002
+--	- TR 4326; VerifyVocabEvidence; default for PhenoSlim
+--
 -- lec 12/06/2002
 --	- VerifyChromosome; disallow invalid chromosome values
 --
@@ -3133,11 +3136,14 @@ rules:
 	  top : widget := sourceWidget.top;
 	  isTable : boolean;
 	  value : string;
+	  evidenceKey : string;
+	  evidence : string;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
 	  column : integer;
 	  reason : integer;
+	  pos : integer;
 
 	  isTable := mgi_tblIsTable(sourceWidget);
 
@@ -3164,16 +3170,21 @@ rules:
 
 	  if (value.length = 0) then
 	    if (isTable) then
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
+	      if (sourceWidget.annotVocab = "PhenoSlim") then
+		evidence := "TAS";
+	        pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring(evidence));
+		evidenceKey := top->EvidenceCodeList->List.keys[pos];
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, evidenceKey);
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, evidence);
+	      else
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
+	      end if;
 	    end if;
 	    return;
 	  end if;
 
 	  (void) busy_cursor(top);
-
-	  evidenceKey : string;
-	  evidence : string;
 
 	  select : string := "select _Term_key, abbreviation from VOC_Term " +
 		"where abbreviation = " + mgi_DBprstr(value) + 
