@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	10/16/2001
+--	- TR 256; SelectRILookup
+--
 -- lec	09/25/2001
 --	- TR 256
 --
@@ -3500,25 +3503,37 @@ rules:
 
 	SelectRILookup does
 
-	  -- If RI exists and is not modified, don't overwrite any values
+	  currentRIKey := ExptForm->mgiRISet->RIID->text.value;
 
-	  if (ExptForm->mgiRISet->RIID->text.value.length > 0 and
-	      not ExptForm->mgiRISet->Verify->text.modified) then
-	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
-            return;
+	  if (ExptForm->mgiRISet->Verify->text.modified) then
 
-	  -- If no key but designation is entered, lookup
+	    -- If designation is blank, default to Not Specified
 
-	  elsif (ExptForm->mgiRISet->RIID->text.value.length = 0 and
-	         ExptForm->mgiRISet->Verify->text.value.length > 0) then
-	    ExptForm->mgiRISet->RIID->text.value :=  
+	    if (ExptForm->mgiRISet->Verify->text.value.length = 0) then
+	      ExptForm->mgiRISet->RIID->text.value := NOTSPECIFIED;
+
+	    -- Else, do a lookup
+
+	    else
+	      ExptForm->mgiRISet->RIID->text.value :=  
 		mgi_sql1("select _RISet_key from RI_RISet where designation = " + 
 			mgi_DBprstr(ExptForm->mgiRISet->Verify->text.value));
+	    end if;
 
-	  -- If key is blank, default to Not Specified
+	    -- If lookup fails, invalid
 
-	  elsif (ExptForm->mgiRISet->RIID->text.value.length = 0) then
-	    ExptForm->mgiRISet->RIID->text.value := NOTSPECIFIED;
+	    if (ExptForm->mgiRISet->RIID->text.value.length = 0) then
+              StatusReport.source_widget := top.root;
+              StatusReport.message := "Invalid RI Set\n";
+              send(StatusReport);
+	      return;
+	    end if;
+	  end if;
+
+	  if (currentRIKey = ExptForm->mgiRISet->RIID->text.value and
+	      ExptForm->mgiRISet->RIID->text.modified = false) then
+	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
 	  end if;
 
           (void) busy_cursor(top);

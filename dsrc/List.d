@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	10/16/2001
+--	CopySelectionItem; set "modify" attributes to true if selection is copied
+--
 -- lec	08/23/2001
 --	Modified SelectLookupListItem to work for single & multiple selection lists
 --
@@ -137,7 +140,9 @@ rules:
 
 	  targetKey := verify.verifyKey->text;
    	  targetWidget.value := item.value;
+   	  targetWidget.modified := true;
 	  targetKey.value := key.value;
+	  targetKey.modified := true;
 	  (void) XmProcessTraversal(form, XmTRAVERSE_NEXT_TAB_GROUP);
 	end does;
 
