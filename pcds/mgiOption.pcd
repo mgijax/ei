@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 19 13:54:57 2004";
+      lastWritten = "Mon Feb  9 11:38:31 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -97,6 +97,7 @@ Module: mgiOption
                         labelString = "J:";
                       Group: User
                         defaultValue = 1;
+                        allowDelete = False;
                     }
                     {
                       Medline = AccToggle : mgiOption;
