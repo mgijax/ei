@@ -17,6 +17,9 @@
 -- History
 --
 -- lec 12/06/2002
+--	- VerifyChromosome; disallow invalid chromosome values
+--
+-- lec 12/06/2002
 --	- TR 4262; for Unknown GO ID terms, fill in J: and Evidence code (VerifyVocabTermAccID)
 --
 -- lec 05/29/2002
@@ -933,8 +936,6 @@ rules:
 -- Activated from:  Chromosome->text translation
 --
 -- Checks if Chromosome value for Organism exists in Marker Chromosome table.
--- If not, then alerts user that value will be added to Marker Chromosome table
--- when transaction is executed.
 --
 -- Also, raises the case of the Chromosome value so it is in upper case.
 --
@@ -996,15 +997,7 @@ rules:
 	    where := " where _Organism_key = " + organismKey +
 		  " and chromosome = " + mgi_DBprstr(value) + "\n";
 
-	    if (organismKey != "1" and (integer) mgi_sql1(select + where) = 0) then
-              StatusReport.source_widget := top;
-	      StatusReport.message := "Invalid Chromosome value for Organism:\n\n" + value +
-		  "\n\nThis value will be added to Organism/Chromosome master table\n" +
-		  "when the current transaction is executed.\n\n" +
-		  "Replace the invalid value with a valid value if you DO NOT want\n" +
-		  "the invalid value added to the Organism/Chromosome master table.\n";
-              send(StatusReport);
-	    elsif (organismKey = "1" and (integer) mgi_sql1(select + where) = 0) then
+	    if ((integer) mgi_sql1(select + where) = 0) then
               StatusReport.source_widget := top;
 	      StatusReport.message := "Invalid Chromosome value for Organism:\n\n" + value + "\n";
               send(StatusReport);
