@@ -85,6 +85,9 @@
 #
 # History
 #
+#	lec	09/12/2000
+#	- TR 1937; numerics showing up in Author names
+#
 #	lec	04/27/2000
 #	- replaced mgdlib w/ db
 #	- not using accessionlib since it import wi_utils...
@@ -356,20 +359,23 @@ def processAU(value, currentValue = None):
 	#
 	'''
 
+	# strip out numerics from author names
+	newvalue = regsub.gsub('[0-9]', '', value)
+
 	# If List of authors...convert to 'NAME II; ' format
 	# Primary Author is first in list
 	if regex.search(';', value) > 0:
-		authors = regsub.gsub(' ;', ';', value)
+		authors = regsub.gsub(' ;', ';', newvalue)
 		[primary, ignore] = string.split(authors, ';', 1)
 
 	# Singles; append to current value
 	# Primary Author is first in list
 	elif currentValue != None:
-		authors = currentValue + '; ' + value
+		authors = currentValue + '; ' + newvalue
 		[primary, ignore] = string.split(authors, ';', 1)
 
 	else:
-		authors = value
+		authors = newvalue
 		primary = authors
 
 	return authors, primary
