@@ -486,6 +486,7 @@ rules:
 	  value : string;
 	  row : integer := 0;
 	  orderByGBA : boolean := false;
+	  clusterSearch : boolean := false;
 
 	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " +
 	       "and f._Fantom2_key = n._Fantom2_key";
@@ -542,11 +543,6 @@ rules:
 	  value := mgi_tblGetCell(fantom, row, fantom.locusID);
 	  if (value.length > 0) then
 	    where := where + " and f.riken_locusid = " + value;
-	  end if;
-
-	  value := mgi_tblGetCell(fantom, row, fantom.clusterID);
-	  if (value.length > 0) then
-	    where := where + " and f.riken_cluster = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqLength);
@@ -681,7 +677,25 @@ rules:
 	  -- Creation/Modification By/Date
 	  -- Notes
 
-          if (where.length > 0) then
+	  value := mgi_tblGetCell(fantom, row, fantom.clusterID);
+	  if (value.length > 0) then
+	    if (where.length > 0) then
+	      where := where + " and f.riken_cluster = " + value;
+	    else
+	      where := " and f.riken_cluster = " + value +
+	               " union " + select + from + where1 + 
+		" and exists (select 1 from MGI_Fantom2 f2 where " +
+		"f.unigene_id = f2.unigene_id and f2.riken_cluster = " + value + ")" +
+	        " union " + select + from + where1 + 
+		" and exists (select 1 from MGI_Fantom2 f2 where " +
+		"f.tiger_tc = f2.tiger_tc and f2.riken_cluster = " + value + ")";
+	      clusterSearch := true;
+	    end if;
+	  end if;
+
+	  if (clusterSearch) then
+	    where := where1 + where;
+          elsif (where.length > 0) then
 	    if (top->notSearch.set) then
               where := " not (" + where->substr(5, where.length) + ")";
             else
