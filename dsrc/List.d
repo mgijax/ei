@@ -657,7 +657,7 @@ rules:
 
 	    -- If accID widget is specified, copy the accID
 
-	    if (list_w.targetAccID.length > 0) then
+	    if ((integer) list_w.targetAccID >= 0) then
 	      accIDWidget := targetWidget->(list_w.targetAccID);
 	      accIDWidget->text.value := list_w.accIDs[SelectLookupListItem.item_position];
 	      accIDWidget->text.modified := true;
