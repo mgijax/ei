@@ -1601,6 +1601,12 @@ rules:
 	    from_history := true;
 	  end if;
 
+          value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.modifiedBy);
+          if (value.length > 0) then
+	    where := where + "\nand mh.modifiedBy like " + mgi_DBprstr(value);
+	    from_history := true;
+	  end if;
+
           value := mgi_tblGetCell(top->Alias->Table, 0, top->Alias->Table.markerSymbol);
           if (value.length > 0) then
 	    where := where + "\nand ma.alias like " + mgi_DBprstr(value);
