@@ -130,7 +130,6 @@ extern char *global_version;
 #define GXD_ANTIBODY		201
 #define GXD_ANTIBODYMARKER	202
 #define GXD_ANTIBODYALIAS	203
-#define GXD_ANTIBODYALIAS	203
 #define GXD_ASSAY   		204
 #define GXD_ASSAYNOTE 		205
 #define GXD_ANTIBODYPREP	206
@@ -213,6 +212,7 @@ extern char *global_version;
 #define ALL_NOTETYPE		338
 #define ALL_REFERENCETYPE	339
 #define RISET_VIEW		341
+#define MGI_USER		342
 
 /* Accession Tables */
 
@@ -252,6 +252,11 @@ extern char *global_version;
 #define MGI_TRANSLATION			613
 #define MGI_TRANSLATIONTYPE		614
 #define MGI_TRANSLATIONSTRAIN_VIEW	615
+#define MGI_NOTE_SOURCE_VIEW		616
+#define MGI_NOTETYPE_SOURCE_VIEW	617
+#define MGI_NOTETYPE_MRKGO_VIEW         618
+#define MGI_NOTE_MRKGO_VIEW             619
+
 
 /* Strains Tables */
 

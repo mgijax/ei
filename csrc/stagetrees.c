@@ -1018,12 +1018,13 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
        dbbind(dbproc, 6, STRINGBIND, (DBINT) 0, tmpst.printName);
        dbbind(dbproc, 7, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.treeDepth));
        dbbind(dbproc, 8, BITBIND, (DBINT) 0, (BYTE *) &(tmpst.printStop));
-       dbbind(dbproc, 9, STRINGBIND, (DBINT) 0, tmpst.structureNote);
-       dbbind(dbproc, 10, DATETIMEBIND, (DBINT) 0, 
-              (BYTE *) &(tmpst.creation_date));
+       dbbind(dbproc, 9, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.topoSort));
+       dbbind(dbproc, 10, STRINGBIND, (DBINT) 0, tmpst.structureNote);
        dbbind(dbproc, 11, DATETIMEBIND, (DBINT) 0, 
+              (BYTE *) &(tmpst.creation_date));
+       dbbind(dbproc, 12, DATETIMEBIND, (DBINT) 0, 
               (BYTE *) &(tmpst.modification_date));
-       dbbind(dbproc, 12, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
+       dbbind(dbproc, 13, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
 
        /* iterate through the Structure results. */
        while (dbnextrow(dbproc) != NO_MORE_ROWS)

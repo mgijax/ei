@@ -295,6 +295,7 @@ rules:
                             nullval + "," +   /* printName */
                              " 0, " +          /* treeDepth - set by trg */
                             addDialog->printStopMenu.menuHistory.defaultValue + "," +
+			    "0," +	/* topoSort */
 			    mgi_DBprstr(addDialog->structureNotes->text.value) + ")\n";
 
           -- StructureName will be created for the preferred name

@@ -82,6 +82,7 @@ typedef struct structure
    char printName[PRINTNAMELEN];
    DBINT treeDepth;
    DBBIT printStop;
+   DBINT topoSort;
    char structureNote[STRUCTURENOTELEN];
    DBDATETIME creation_date;
    DBDATETIME modification_date;

@@ -15,6 +15,7 @@ extern int mgi_tblGetCurrentRow(Widget);
 extern int mgi_tblNumRows(Widget);
 extern int mgi_tblNumColumns(Widget);
 extern void mgi_tblSetNumRows(Widget, int);
+extern void mgi_tblSetVisibleRows(Widget, int);
 extern Widget mgi_tblGetCallbackParent(XrtTblCreateWidgetCallbackStruct *);
 extern Boolean mgi_tblIsTable(Widget);
 extern Boolean mgi_tblIsCellEditable(Widget, int, int);

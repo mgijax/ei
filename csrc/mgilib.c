@@ -645,8 +645,6 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_StructureName_key");
             break;
     case GXD_INDEX:
-            strcpy(buf, "_Index_key");
-	    break;
     case GXD_INDEXSTAGES:
             strcpy(buf, "_Index_key");
 	    break;
@@ -1987,7 +1985,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (_GelLane_key, _Structure_key)", mgi_DBtable(table));
 	    break;
     case GXD_STRUCTURE:
-	    sprintf(buf, "insert %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, edinburghKey, printName, treeDepth, printStop, structureNote)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, edinburghKey, printName, treeDepth, printStop, topoSort, structureNote)", mgi_DBtable(table));
 	    break;
     case GXD_STRUCTURENAME:
 	    sprintf(buf, "insert %s (_StructureName_key, _Structure_key, structure, mgiAdded)", mgi_DBtable(table));
@@ -1996,7 +1994,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, comments)", mgi_DBtable(table));
 	    break;
     case GXD_INDEXSTAGES:
-	    sprintf(buf, "insert %s (_Index_key, _Assay_key, _StageID_key)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Index_key, _IndexAssay_key, _StageID_key)", mgi_DBtable(table));
 	    break;
     case HMD_NOTES:
 	    sprintf(buf, "insert %s (%s, sequenceNum, notes)",
