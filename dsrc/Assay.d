@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	06/03/2003
+--	- TR 4603; DuplicatePartial and DuplicateAll
+--
 -- lec	05/07/2003
 --	- TR 3710; added Knock In Assay Type
 --
@@ -199,7 +202,8 @@ devents:
 	Delete :local [];
 	DeleteGelBand :local [];
 	DetectISResultModification :local [];
-	Duplicate :local [];
+	DuplicateAll :local [];
+	DuplicatePartial :local [];
 
 	GenotypeExit :global [];	-- defined in Genotype.d
 	Exit :local [];
@@ -1084,51 +1088,47 @@ rules:
 	end does;
 
 --
--- Duplicate
+-- DuplicateAll
 --
--- Duplicates the current InSitu or Gel Assay record
+-- Duplicates the entire current InSitu or Gel Assay record
+--
+
+        DuplicateAll does
+	  newAssayKey : string;
+
+	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + ",1");
+	  from := "from " + mgi_DBtable(GXD_ASSAY) + "_View" + " g";
+	  where := "where g._Assay_key = " + newAssayKey;
+	  Query.source_widget := top;
+	  Query.select := "select distinct g._Assay_key, " + 
+			"g.jnumID + \";\" + g.assayType + \";\" + g.symbol\n" + 
+			from + "\n" + where + "\norder by g.jnumID\n";
+	  Query.table := GXD_ASSAY;
+	  send(Query, 0);
+	  return;
+        end does;
+
+--
+-- DuplicatePartial
+--
+-- Duplicates the partial current InSitu or Gel Assay record
 -- For InSitu Assays, duplicates all details except for Results
 -- For Gel Assays, duplicates all details except for Gel Rows/Bands
 --
 
-        Duplicate does
-          table : widget;
-	  row : integer := 0;
-	  editMode : string;
+        DuplicatePartial does
+	  newAssayKey : string;
 
-	  if (assayDetailForm.name = "InSituForm") then
-            table := top->InSituForm->Specimen->Table;
-	  elsif (assayDetailForm.name = "GelForm") then
-            table := top->GelForm->GelLane->Table;
-
-	    -- Clear out all Gel Row/Bands
-            ClearTable.table := top->GelForm->GelRow->Table;
-            send(ClearTable, 0);
-	  else
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "This function has not been implemented for this Assay\n";
-	    send(StatusReport);
-	    return;
-	  end if;
-
-	  -- Reset ID to blank so new ID is loaded during Add
-	  top->ID->text.value := "";
-
-	  -- Reset all table rows to edit mode of Add
-	  -- so that upon sending of Add event, the rows are added to the new Assay
-
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-	      break;
-	    end if;
-
-	    (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
-	    row := row + 1;
-	  end while;
-
-	  send(Add, 0);
+	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay);
+	  from := "from " + mgi_DBtable(GXD_ASSAY) + "_View" + " g";
+	  where := "where g._Assay_key = " + newAssayKey;
+	  Query.source_widget := top;
+	  Query.select := "select distinct g._Assay_key, " + 
+			"g.jnumID + \";\" + g.assayType + \";\" + g.symbol\n" + 
+			from + "\n" + where + "\norder by g.jnumID\n";
+	  Query.table := GXD_ASSAY;
+	  send(Query, 0);
+	  return;
         end does;
 
 --
