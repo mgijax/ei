@@ -70,7 +70,7 @@ int mgi_dbinit(char *user, char *pwd)
   global_passwd_file = passwdfile;
 
   memset(reportdir, '\0', sizeof(reportdir));
-  sprintf(reportdir, "%s/%s", getenv("HOME"), REPORTDIR);
+  sprintf(reportdir, "%s/%s", getenv("HOME"), getenv("REPORTDIR"));
   global_reportdir = reportdir;
 
   loginrec = dblogin();
