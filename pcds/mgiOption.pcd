@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 23 09:48:41 2000";
+      lastWritten = "Thu Mar 30 11:26:10 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -2566,7 +2566,7 @@ Module: mgiOption
               {
                 MarkerEventPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from MRK_Event order by _Event_key";
+                  sql = "select * from MRK_Event order by _Marker_Event_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2640,7 +2640,7 @@ Module: mgiOption
               {
                 MarkerEventReasonPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from MRK_EventReason where _EventReason_key >= -1 order by _EventReason_key";
+                  sql = "select * from MRK_EventReason where _Marker_EventReason_key >= -1 order by _Marker_EventReason_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2668,6 +2668,11 @@ Module: mgiOption
                         tableForm = History;
                         tableOption = 12;
                         tableOptionKey = 4;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
                     }
               }
               {
@@ -2679,6 +2684,11 @@ Module: mgiOption
                         tableForm = History;
                         tableOption = 13;
                         tableOptionKey = 5;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
                     }
               }
               {
@@ -2719,6 +2729,11 @@ Module: mgiOption
                         tableForm = Reference;
                         tableOption = 7;
                         tableOptionKey = 3;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
                     }
               }
               {
@@ -2733,6 +2748,11 @@ Module: mgiOption
                         tableForm = Reference;
                         tableOption = 8;
                         tableOptionKey = 4;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
                     }
               }
         }

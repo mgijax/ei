@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Mar 24 15:08:18 2000";
+      lastWritten = "Mon Apr  3 15:01:22 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -146,38 +146,6 @@ Module: MGD
                                               label = XtXrtLabel;
                                               Group: Widget
                                                 labelString = "Anchors for Web Mini-Map\n(Mouse only)";
-                                            }
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = Species;
-                                              Group: User
-                                                keys = "MRK_Species.sql";
                                             }
                                       }
                                 }
@@ -675,38 +643,6 @@ Module: MGD
                                     topWidget = Progeny;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = "Crosses in Display List";
-                                              Group: User
-                                                keys = "MLD_Crosses.sql";
-                                            }
-                                      }
                                 }
                           }
                     }
@@ -2214,9 +2150,9 @@ Module: MGD
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "Probe\nDuplicate/Missing Markers";
+                                                items = Probe;
                                               Group: User
-                                                keys = "Probe.py\nPRB_Marker.sql";
+                                                keys = "Probe.py";
                                             }
                                       }
                                 }
@@ -5057,9 +4993,9 @@ Module: MGD
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "MLDP\nCrosses in Lookup List\nInvalid Markers\nInvalid 2 Point\nInvalid Cross\nMissing Statistics";
+                                                items = MLDP;
                                               Group: User
-                                                keys = "Mldp.py\nMLD_Crosses.sql\nMLD_Marker.sql\nMLD_2Point.sql\nMLD_Cross.sql\nMLD_Statistics.sql";
+                                                keys = "Mldp.py";
                                             }
                                       }
                                 }
@@ -5655,9 +5591,9 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "Current Symbol\nTransfer Report";
+                                                items = "Current Symbol";
                                               Group: User
-                                                keys = "MLC_Current_Symbol.py\nMLC_TransferStats.py\n";
+                                                keys = "MLC_Current_Symbol.py";
                                             }
                                       }
                                 }
@@ -6268,38 +6204,6 @@ Shift<Key>Tab: prev-tab-group()
                                           targetWidget = mgiSpecies;
                                           targetText = Species;
                                           targetKey = ObjectID;
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = "Marker\nBroadcast";
-                                              Group: User
-                                                keys = "Marker.py\nbroadcast.py";
-                                            }
                                       }
                                 }
                           }
@@ -6934,9 +6838,9 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "Bibliography (format 1)\nBibliography (Moyha)\nBibliography (Moyha) w/ Abstracts\nReferences Needing NLM Update (<= 1993)\nDuplicate References excluding Mouse News Letter & Guidis\nAll Duplicate References\nDuplicate References for Mouse News Letter";
+                                                items = "Bibliography (format 1)\nBibliography (Moyha)\nBibliography (Moyha) w/ Abstracts\nDuplicate References excluding Mouse News Letter & Guidis\nAll Duplicate References";
                                               Group: User
-                                                keys = "Bibliographic.py 1\nBibliographic.py 2\nBibliographic.py 3\nBIB_NeedNLM.sql\nDupref.py\nDuprefAll.py\nDuprefMouseNews.py";
+                                                keys = "Bibliographic.py 1\nBibliographic.py 2\nBibliographic.py 3\nDupref.py\nDuprefAll.py";
                                             }
                                       }
                                 }
@@ -7366,17 +7270,18 @@ Shift<Key>Tab: prev-tab-group()
                                   Cyto = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
-                                    leftOffset = 5;
+                                    leftWidget = Offset;
+                                    leftOffset = 10;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
+                                    topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topWidget = Symbol;
+                                    topOffset = 2;
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "Cytogenetic\nBand";
+                                          labelString = "Cytogenetic Band";
                                       }
                                       {
                                         text = text;
@@ -7444,13 +7349,12 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Name = CharText : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Offset;
-                                    leftOffset = 10;
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Cyto;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = Symbol;
-                                    topOffset = 10;
+                                    topWidget = Cyto;
+                                    topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 2;
@@ -7478,7 +7382,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightOffset = 2;
                                     topAttachment = attach_widget;
                                     topWidget = Name;
-                                    topOffset = 5;
+                                    topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
@@ -7506,7 +7410,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11-13 20)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)";
                                           xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Event Reason";
                                           xrtTblEditableSeries = "(all 0-6 False)";
                                           xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 25)(all 8 255)(all 9-10 10)(all 11-13 255)";
@@ -7517,6 +7421,7 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int=\"4\"\neventReasonKey:Int=\"5\"\neventReason:Int=\"13\"\n";
                                           xrtTblVisibleRows = 4;
                                           xrtTblAllowCellResize = resize_horizontal;
+                                          xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
                                           saveTraversableSeries = "(all 0-6 False)";
                                           saveEditableSeries = "(all 0-6 False)";
@@ -7598,6 +7503,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblEditableSeries = "(all 0-4 False)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           userDefinedAttributes = "reviewKey:Int(Int)=\"4\"\nreview:Int(Int)=\"8\"\notherName:Int(Int)=\"5\"\notherKey:Int=\"1\"\n";
+                                          xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
                                           jnum = 6;
                                           citation = 7;
@@ -7781,10 +7687,12 @@ Shift<Key>Tab: prev-tab-group()
                                         MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
                                       }
                                       {
-                                        YesNoMenu = YesNoMenu : mgiOption;
+                                        ReviewMenu : YesNoMenu = YesNoMenu : mgiOption;
+                                        Group: Widget
+                                          subMenuId = ReviewPulldown;
                                             Popups:
                                             {
-                                              YesNoPulldown = OptionPulldown;
+                                              ReviewPulldown : YesNoPulldown = OptionPulldown;
                                               Group: User
                                                 tableForm = OtherReference;
                                                 tableOptionKey = 4;
@@ -7834,9 +7742,9 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "Marker\nBroadcast";
+                                                items = Marker;
                                               Group: User
-                                                keys = "Marker.py\nbroadcast.py";
+                                                keys = "Marker.py";
                                             }
                                       }
                                 }

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Mar 24 14:51:18 2000";
+      lastWritten = "Mon Apr  3 15:01:24 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -15,7 +15,7 @@ Module: mgiDialog
             okCallback = "D:StatusReportOK";
           Group: Control
             vip_x = 80;
-            vip_y = 360;
+            vip_y = 415;
         }
         {
           DeleteDialog = XmQuestionDialog;
@@ -40,7 +40,7 @@ Module: mgiDialog
             showHelpButton = False;
           Group: Control
             vip_x = 80;
-            vip_y = 635;
+            vip_y = 690;
               {
                 filler = XmSeparator;
                 Group: Widget
@@ -60,7 +60,7 @@ Module: mgiDialog
             autoUnmanage = False;
           Group: Control
             vip_x = 80;
-            vip_y = 415;
+            vip_y = 470;
         }
         {
           ReportDialog = FileDialog : mgiDialog;
@@ -70,7 +70,7 @@ Module: mgiDialog
             mapCallback = "D:ReportInit";
           Group: Control
             vip_x = 80;
-            vip_y = 250;
+            vip_y = 305;
               {
                 FileSelection = FileSelection;
                 Group: Widget
@@ -126,7 +126,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 855;
+            vip_y = 910;
               {
                 FileSelection = FileSelection : mgiDialog;
                 Group: Constraint
@@ -217,6 +217,7 @@ Module: mgiDialog
                               editable = False;
                               editMode = multi_line_edit;
                               background = Wheat;
+                              rows = 5;
                           }
                     }
               }
@@ -231,7 +232,7 @@ Module: mgiDialog
             okLabelString = Yes;
           Group: Control
             vip_x = 80;
-            vip_y = 525;
+            vip_y = 580;
         }
         {
           WhichItem = XmFormDialog;
@@ -243,7 +244,7 @@ Module: mgiDialog
             dialogTitle = "Which Item?";
           Group: Control
             vip_x = 80;
-            vip_y = 745;
+            vip_y = 800;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -311,7 +312,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1020;
+            vip_y = 1075;
         }
         {
           WorkingDialog = XmWorkingDialog;
@@ -326,7 +327,7 @@ Module: mgiDialog
             dialogTitle = "Working Dialog";
           Group: Control
             vip_x = 80;
-            vip_y = 305;
+            vip_y = 360;
         }
         {
           NLMDialog = ReportDialog : mgiDialog;
@@ -336,7 +337,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 800;
+            vip_y = 855;
           Group: User
             useReportDir = False;
               {
@@ -430,7 +431,7 @@ Module: mgiDialog
             cancelLabelString = No;
           Group: Control
             vip_x = 80;
-            vip_y = 910;
+            vip_y = 965;
         }
         {
           SelectDialog = XmFormDialog;
@@ -442,7 +443,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1075;
+            vip_y = 1130;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -532,7 +533,7 @@ Module: mgiDialog
           StrainDialog = SelectDialog : mgiDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1185;
+            vip_y = 1240;
               {
                 ItemList = LookupList;
                 Group: User
@@ -562,7 +563,7 @@ Module: mgiDialog
             dialogTitle = Tissues;
           Group: Control
             vip_x = 80;
-            vip_y = 1130;
+            vip_y = 1185;
               {
                 ItemList = LookupList;
                 Group: User
@@ -596,7 +597,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 80;
-            vip_y = 1240;
+            vip_y = 1295;
               {
                 label = XmLabel;
                 Group: Widget
@@ -677,7 +678,7 @@ Module: mgiDialog
             userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ntargetKeyColumn:Int(Int)\nclearForms:StringTable(StringTable)=\"EditForm\"\nhomeWidget:StringTable(StringTable)\n";
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1405;
           Group: User
             homeWidget = "Strain\nMarkerAllele";
               {
@@ -776,7 +777,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 1350;
               {
                 OK = DialogPush : mgiDialog;
               }
@@ -796,7 +797,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1515;
               {
                 EditForm = EditForm : MGI;
                 Group: Constraint
@@ -845,7 +846,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1460;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -987,7 +988,7 @@ Module: mgiDialog
           RIDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1570;
               {
                 ItemList = LookupList;
                 Group: User
@@ -1018,7 +1019,7 @@ Module: mgiDialog
           CrossDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1625;
               {
                 ItemList = LookupList;
                 Group: User
@@ -1055,7 +1056,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1735;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1187,7 +1188,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1790;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1314,7 +1315,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 2010;
               {
                 frame = XmFrame;
                 Group: Constraint
@@ -1620,7 +1621,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1845;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1677,7 +1678,7 @@ Module: mgiDialog
                     {
                       MarkerEventPulldown = OptionPulldown;
                       Group: User
-                        sql = "select * from MRK_Event where _Event_key > 1 order by _Event_key";
+                        sql = "select * from MRK_Event where _Marker_Event_key > 1 order by _Marker_Event_key";
                         childTemplate = EventToggle;
                     }
               }
@@ -1833,7 +1834,7 @@ Module: mgiDialog
             showHelpButton = False;
           Group: Control
             vip_x = 80;
-            vip_y = 195;
+            vip_y = 250;
         }
         {
           ImportMLCTextDialog = PromptDialog : mgiDialog;
@@ -1845,7 +1846,7 @@ Module: mgiDialog
             navigationType = none;
           Group: Control
             vip_x = 80;
-            vip_y = 690;
+            vip_y = 745;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                     {
@@ -1882,7 +1883,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:UncondExit";
           Group: Control
             vip_x = 80;
-            vip_y = 470;
+            vip_y = 525;
         }
         {
           VerifyRecord = VerifyDialog;
@@ -1892,7 +1893,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "C: TuUnmanage";
           Group: Control
             vip_x = 80;
-            vip_y = 580;
+            vip_y = 635;
         }
         {
           SelectionDialog = XmSelectionDialog;
@@ -1903,7 +1904,7 @@ Shift<Key>Tab: prev-tab-group()
             showApplyButton = False;
           Group: Control
             vip_x = 80;
-            vip_y = 85;
+            vip_y = 140;
         }
         {
           ClearDialog = VerifyDialog;
@@ -1913,7 +1914,7 @@ Shift<Key>Tab: prev-tab-group()
             cancelCallback = "C: TuUnmanage";
           Group: Control
             vip_x = 80;
-            vip_y = 140;
+            vip_y = 195;
         }
         {
           AlleleMergeDialog = XmFormDialog;
@@ -1925,7 +1926,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1680;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2051,7 +2052,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "D:VerifyAlleleAdd";
           Group: Control
             vip_x = 80;
-            vip_y = 965;
+            vip_y = 1020;
               {
                 AlleleName = CharText : mgiDataTypes;
                     {
@@ -2079,7 +2080,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1955;
               {
                 Lookup = XmFrame;
                 Group: Widget
@@ -2298,7 +2299,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1900;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2352,6 +2353,21 @@ Shift<Key>Tab: prev-tab-group()
               {
                 WhichItem = WhichItem : mgiDialog;
               }
+        }
+        {
+          BroadcastDialog = XmQuestionDialog;
+          Group: Widget
+            showHelpButton = False;
+            dialogStyle = dialog_primary_application_modal;
+            dialogTitle = "Are You Sure?";
+            managed = False;
+            okCallback = "D:BroadcastExec";
+            okLabelString = Yes;
+            cancelLabelString = No;
+          Group: Control
+            vipComment = "";
+            vip_x = 80;
+            vip_y = 85;
         }
 }
 

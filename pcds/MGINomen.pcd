@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 23 09:55:26 2000";
+      lastWritten = "Mon Apr  3 14:10:12 2000";
         {
           Nomen = Module : MGI;
           Group: Control
@@ -100,6 +100,8 @@ Module: MGINomen
                                     topOffset = 10;
                                     leftWidget = SymbolName;
                                     topWidget = SymbolName;
+                                  Group: User
+                                    defaultChild = 2;
                                 }
                                 {
                                   MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
@@ -113,7 +115,7 @@ Module: MGINomen
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                   Group: User
-                                    defaultChild = 1;
+                                    defaultChild = 2;
                                 }
                                 {
                                   MarkerStatusMenu = MarkerStatusMenu : mgiOption;
@@ -211,45 +213,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  HumanSymbol = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Symbol;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 5;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Human Symbol";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 20;
-                                          maxLength = 25;
-                                      }
-                                }
-                                {
-                                  Homology = toggle : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Homology record(s)\nin MGD";
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = HumanSymbol;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = HumanSymbol;
-                                    topOffset = 2;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 2;
-                                }
-                                {
                                   Name = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -274,6 +237,29 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  HumanSymbol = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Symbol;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Symbol;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Human Symbol";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          columns = 20;
+                                          maxLength = 25;
+                                      }
+                                }
+                                {
                                   BroadcastByMenu = NomenUserMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = BroadcastByPulldown;
@@ -289,7 +275,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                   Group: User
                                     required = False;
-                                    defaultOption = NotSpecified;
+                                    defaultOption = NotApplicable;
                                       Popups:
                                       {
                                         BroadcastByPulldown : NomenUserPulldown = OptionPulldown;
@@ -297,12 +283,12 @@ Shift<Key>Tab: prev-tab-group()
                                               SearchAll = SearchAll : mgiOption;
                                             }
                                             {
-                                              NotSpecified = NotSpecified : mgiOption;
+                                              NotApplicable = NotApplicable : mgiOption;
                                               Group: Widget
                                                 labelString = "Not Applicable";
                                               Group: User
-                                                defaultValue = "-1";
-                                                searchValue = "-1";
+                                                defaultValue = "-2";
+                                                searchValue = "-2";
                                             }
                                       }
                                 }
@@ -468,6 +454,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           xrtTblTraversableSeries = "(all 0-4 False)";
                                           userDefinedAttributes = "reviewKey:Int=\"3\"\nreview:Int=\"7\"\nbroadcastKey:Int=\"4\"\nbroadcast:Int=\"8\"\n";
+                                          xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
                                           citation = 6;
                                           jnum = 5;
@@ -697,21 +684,25 @@ Shift<Key>Tab: prev-tab-group()
                                   AddandSymbol = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Add and Broadcast to MGD";
+                                    activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 1),\nD:GoHome";
                                 }
                                 {
                                   BroadcastSymbol = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast Symbol to MGD";
+                                    activateCallback = "D:Broadcast(type = 2),\nD:GoHome";
                                 }
                                 {
                                   BroadcastBatch = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Batch to MGD";
+                                    activateCallback = "D:Broadcast(type = 3),\nD:GoHome";
                                 }
                                 {
                                   BroadcastReference = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Reference to MGD";
+                                    activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
                                 }
                           }
                     }
@@ -830,6 +821,24 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
+                    }
+                    {
+                      SearchDialog = SearchDialog : mgiDialog;
+                    }
+                    {
+                      WhichItem = WhichItem : mgiDialog;
+                    }
+                    {
+                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                    }
+                    {
+                      WorkingDialog = WorkingDialog : mgiDialog;
+                    }
+                    {
+                      NoteDialog = NoteDialog : mgiDialog;
+                    }
+                    {
+                      BroadcastDialog = BroadcastDialog : mgiDialog;
                     }
               }
         }
