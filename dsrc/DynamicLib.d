@@ -155,9 +155,17 @@ rules:
 		x.unbatch;
 
 		-- Set defaultOption for Menu to the Not Specified (-1) value
+		-- (except for Inheritance Mode, where the default is Not
+		-- Applicable, -2)
 
-		if (x.defaultValue = "-1") then
-		  option.defaultOption := x;
+		if (option.name = "InheritanceModeMenu") then
+		  if (x.defaultValue = "-2") then
+		    option.defaultOption := x;
+		  end if;
+		else
+		  if (x.defaultValue = "-1") then
+	 	    option.defaultOption := x;
+		  end if;
 		end if;
 
 		i := i + 1;
