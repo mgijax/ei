@@ -30,9 +30,8 @@ devents:
 	Exit :local [];
 	Init :local [];
 
-	-- exported so that VerifyAllele can call this D event
-	ClearAllele :exported [clearKeys : boolean := true;
-			       reset : boolean := false;];
+	ClearAllele :local [clearKeys : boolean := true;
+			    reset : boolean := false;];
 
 	-- Process Merge Events
 	AlleleMergeInit :local [];
@@ -53,7 +52,7 @@ devents:
 
 locals:
 	mgi : widget;
-	top : widget :exported; -- exported so that VerifyAllele can talk to the D module instance
+	top : widget :exported; -- exported so VerifyAllele can access this value
 	accTable : widget;
 
 	cmd : string;
@@ -65,7 +64,7 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	clearLists : integer :exported := 3;
+	clearLists : integer :exported := 3; -- exported so VerifyAllele can access this value
 
 	alleleNotesRequired : boolean;  -- Are Allele Notes a required field for the edit?
 
@@ -209,7 +208,7 @@ rules:
 	  -- Insert master Allele Record
 
 	  if (global_login = "cml") then
-	    reviewed := top->ReviewedMenu.menuHistory.defaultValue;
+	    reviewed := YES;
 	  else
 	    reviewed := NO;
 	  end if;
@@ -637,7 +636,8 @@ rules:
 	    where := where + "\nand a.userID like " + mgi_DBprstr(top->ModifiedBy->text.value);
 	  end if;
 
-	  if (top->mgiMarker->ObjectID->text.value.length > 0) then
+	  value := top->mgiMarker->ObjectID->text.value;
+	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand a._Marker_key = " + top->mgiMarker->ObjectID->text.value;
 	  elsif (top->mgiMarker->Marker->text.value.length > 0) then
 	    where := where + "\nand a.markerSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
