@@ -583,6 +583,35 @@ rules:
 
 	  dialog.dialogTitle := "Marker Withdrawal: " + dialog.eventLabel;
 
+	  SetOption.source_widget := dialog->MarkerEventReasonMenu;
+	  SetOption.value := NOTSPECIFIED;
+	  send(SetOption, 0);
+
+	  SetOption.source_widget := dialog->ChromosomeMenu;
+	  SetOption.value := top->ChromosomeMenu.menuHistory.defaultValue;
+	  send(SetOption, 0);
+
+	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
+	  dialog->hasAlleles.set := hasAlleles;
+	  dialog->addAsSynonym.set := true;
+
+	  dialog->nonVerified->ObjectID->text.value := "";
+	  dialog->nonVerified->Marker->text.value := "";
+	  dialog->mgiMarker->ObjectID->text.value := "";
+	  dialog->mgiMarker->Marker->text.value := "";
+	  dialog->markerAccession->AccessionID->text.value := "";
+	  dialog->Name->text.value := top->Name->text.value;
+	  dialog->mgiCitation->ObjectID->text.value := "";
+	  dialog->mgiCitation->Jnum->text.value := "";
+	  dialog->mgiCitation->Citation->text.value := "";
+	  dialog->Output.value := "";
+
+          dialog->nonVerified.managed := true;
+          dialog->mgiMarker.managed := false;
+          dialog->markerAccession.managed := false;
+
+	  dialog.managed := true;
+
 	  if (dialog.eventKey = EVENT_RENAME) then
 	    dialog->nonVerified.managed := true;
 	    dialog->nonVerified.sensitive := true;
@@ -612,31 +641,6 @@ rules:
 	    dialog->markerAccession.managed := false;
 	    dialog->NewMarker.sensitive := false;
 	  end if;
-
-	  SetOption.source_widget := dialog->MarkerEventReasonMenu;
-	  SetOption.value := NOTSPECIFIED;
-	  send(SetOption, 0);
-
-	  SetOption.source_widget := dialog->ChromosomeMenu;
-	  SetOption.value := top->ChromosomeMenu.menuHistory.defaultValue;
-	  send(SetOption, 0);
-
-	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
-	  dialog->hasAlleles.set := hasAlleles;
-	  dialog->addAsSynonym.set := true;
-
-	  dialog->nonVerified->ObjectID->text.value := "";
-	  dialog->nonVerified->Marker->text.value := "";
-	  dialog->mgiMarker->ObjectID->text.value := "";
-	  dialog->mgiMarker->Marker->text.value := "";
-	  dialog->markerAccession->AccessionID->text.value := "";
-	  dialog->Name->text.value := top->Name->text.value;
-	  dialog->mgiCitation->ObjectID->text.value := "";
-	  dialog->mgiCitation->Jnum->text.value := "";
-	  dialog->mgiCitation->Citation->text.value := "";
-	  dialog->Output.value := "";
-
-	  dialog.managed := true;
 
 	end does;
 
