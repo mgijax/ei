@@ -318,7 +318,7 @@ rules:
 
 
 	ModifySource does
-          row : integer := 0;
+          row : integer := 1;	-- row 0 is raw source and we never edit that
           editMode : string;
           key : string;
  
@@ -327,7 +327,7 @@ rules:
           while (row < mgi_tblNumRows(sourceTable)) do
             editMode := mgi_tblGetCell(sourceTable, row, sourceTable.editMode);
  
-            if (editMode = TBL_ROW_EMPTY) then
+            if (editMode != TBL_ROW_MODIFY) then
               break;
             end if;
  

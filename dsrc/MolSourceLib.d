@@ -546,17 +546,29 @@ rules:
 	    isAnon := NO;
 	  end if;
 
-	  top.sql := "exec PRB_processProbeSource " +
-	      probeKey + "," +
-	      top->SourceID->text.value + "," +
-	      isAnon + "," +
-	      top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
-	      top->Strain->StrainID->text.value + "," +
-	      top->Tissue->TissueID->text.value + "," +
-	      top->GenderMenu.menuHistory.defaultValue + "," +
-	      top->CellLine->CellLineID->text.value + "," +
-	      mgi_DBprstr(age) + "," +
-	      global_loginKey + "\n";
+	  if (top->SourceID->text.modified or
+	      top->ProbeOrganismMenu.menuHistory.modified or
+	      top->Strain->StrainID->text.modified or
+	      top->Tissue->TissueID->text.modified or
+	      top->GenderMenu.menuHistory.modified or
+	      top->CellLine->CellLineID->text.modified or
+	      top->AgeMenu.menuHistory.modified or
+	      top->Age->text.modified) then
+
+	      top.sql := "exec PRB_processProbeSource " +
+	          probeKey + "," +
+	          top->SourceID->text.value + "," +
+	          isAnon + "," +
+	          top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
+	          top->Strain->StrainID->text.value + "," +
+	          top->Tissue->TissueID->text.value + "," +
+	          top->GenderMenu.menuHistory.defaultValue + "," +
+	          top->CellLine->CellLineID->text.value + "," +
+	          mgi_DBprstr(age) + "," +
+	          global_loginKey + "\n";
+	  else
+	      top.sql := "";
+	  end if;
 
 	end does;
 

@@ -53,7 +53,7 @@ dmodule VocAnnot is
 devents:
 
 	INITIALLY [parent : widget;
-		   launchedFrom : widget;];			-- Initialize form
+		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];		-- Build Dynamic widget components
 	Delete :local [];				-- Delete record
@@ -64,7 +64,7 @@ devents:
 	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
 	SelectGOReferences :local [];			-- Select GO References
-	SetAnnotTypeDefaults :exported [];		-- Set Defaults based on Annotation Type
+	SetAnnotTypeDefaults :local [];			-- Set Defaults based on Annotation Type
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
@@ -104,17 +104,17 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
-	  -- Create the widget hierarchy in memory
-	  top := create widget("VocAnnotModule", nil, mgi);
-
-          -- Build Dynamic GUI Components
-          send(BuildDynamicComponents, 0);
- 
           -- Prevent multiple instances of the form
 	  -- Omit this line to allow multiple instances of forms
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 
+	  -- Create the widget hierarchy in memory
+	  top := create widget("VocAnnotModule", ab.name, mgi);
+
+          -- Build Dynamic GUI Components
+          send(BuildDynamicComponents, 0);
+ 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
 	  top.show;
@@ -165,7 +165,7 @@ rules:
 
         Init does
 	  tables := create list("widget");
-	  genotype : widget := mgi->GenotypeModule;
+	  genotype : widget := ab.root->GenotypeModule;
 	  gclipboardList : widget;
 	  i : integer := 0;
 	  gKey : string;
@@ -186,11 +186,11 @@ rules:
           send(Clear, 0);
 
 	  -- If launched from the Genotype Module...
-	  if (genotype != nil) then
+	  if (genotype != nil and ab.is_defined("annotTypeKey") != nil) then
 
 	    -- select the appropriate Annotation Type
             SetOption.source_widget := top->VocAnnotTypeMenu;
-            SetOption.value := (string) genotype->VocAnnotation.annotTypeKey;
+            SetOption.value := (string) ab.annotTypeKey;
             send(SetOption, 0);
 	    send(SetAnnotTypeDefaults, 0);
 

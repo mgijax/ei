@@ -737,32 +737,35 @@ rules:
 	  --
 
 	  i : integer := option.num_children;
+
 	  while (i > 0) do
-	    if (value = option.child(i).defaultValue or
-	       (value = "-1" and 
-		(option.child(i).defaultValue = "Not Specified" or
-		 option.child(i).defaultValue = "NULL"))) then
+	    if (option.child(i).is_defined("defaultValue") != nil) then
+	      if (value = option.child(i).defaultValue or
+	         (value = "-1" and 
+	         (option.child(i).defaultValue = "Not Specified" or
+		  option.child(i).defaultValue = "NULL"))) then
 
-	      -- Set the colors BEFORE assigning top.menuHistory...
+	        -- Set the colors BEFORE assigning top.menuHistory...
 
-	      if (top.name = "MarkerStatusMenu" or
-		  top.name = "AlleleStatusMenu") then
-		top.background := "Wheat";
-		option.background := "Wheat";
-		option.child(i).background := "Wheat";
-		top.menuHistory.background := "Wheat";
+	        if (top.name = "MarkerStatusMenu" or
+		    top.name = "AlleleStatusMenu") then
+		  top.background := "Wheat";
+		  option.background := "Wheat";
+		  option.child(i).background := "Wheat";
+		  top.menuHistory.background := "Wheat";
+  
+		  if (option.child(i).labelString = "Reserved") then
+		    top.background := "Yellow";
+		    option.background := "Yellow";
+		    option.child(i).background := "Yellow";
+		  end if;
+	        end if;
 
-		if (option.child(i).labelString = "Reserved") then
-		  top.background := "Yellow";
-		  option.background := "Yellow";
-		  option.child(i).background := "Yellow";
-		end if;
+	        option.child(i).set := true;
+	        option.child(i).modified := SetOption.modifiedFlag;
+	        top.menuHistory := option.child(i);
+	        break;
 	      end if;
-
-	      option.child(i).set := true;
-	      option.child(i).modified := SetOption.modifiedFlag;
-	      top.menuHistory := option.child(i);
-	      break;
 	    else
 	      option.child(i).set := false;
 	    end if;

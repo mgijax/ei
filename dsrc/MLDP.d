@@ -2903,7 +2903,7 @@ rules:
 	  end if;
 
 	  if (from_emarker) then
-	    from := from + "," + mgi_DBtable(MLD_EXPT_MARKER) + " eg";
+	    from := from + "," + mgi_DBtable(MLD_EXPT_MARKER_VIEW) + " eg";
 	    where := where + " and eg._Expt_key = e._Expt_key";
 	  end if;
 
