@@ -16,6 +16,11 @@
 --
 -- History
 --
+-- lec 04/16/2002
+--	- TR 3575; VerifyGelLaneControl; for Genotype, the genotype
+--	  field should contain the MGI Acc ID for Not Applicable, not
+--	  the words "Not Applicable"
+--
 -- lec 01/15/2002
 --	- TR 2867; VerifyVocabTermAccID, VerifyVocabEvidenceCode
 --
@@ -1136,7 +1141,7 @@ rules:
 	  if (mgi_tblGetCell(table, row, table.controlKey) != "1") then
 	    -- Genotype
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-2");
-	    (void) mgi_tblSetCell(table, row, table.genotype, "Not Applicable");
+	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166309");
 
 	    -- Age
 	    (void) mgi_tblSetCell(table, row, table.ageKey, 
