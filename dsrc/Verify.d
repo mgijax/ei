@@ -1907,7 +1907,8 @@ rules:
                       "and _Species_key != " + MOUSE + "\n" +
                       "select _Marker_key, accID, _Accession_key " +
                       "from MRK_NonMouse_View " +
-                      "where _Marker_key = " + whichMarker;
+                      "where _Marker_key = " + whichMarker +
+                      " and (_Species_key != 2 or LogicalDB = 'LocusLink')";
  
             dbproc := mgi_dbopen();
             (void) dbcmd(dbproc, select);
