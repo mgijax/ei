@@ -62,7 +62,7 @@ devents:
 
 	ModifyMarker :local [];
 	ModifyType :local [];
-	ModifyStrainNote :local [];
+	ModifyStrainNote :local [add : boolean := false;];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -193,6 +193,7 @@ rules:
 
 	  send(ModifyMarker, 0);
 	  send(ModifyType, 0);
+	  ModifyStrainNote.add := true;
 	  send(ModifyStrainNote, 0);
 
 	  --  Process Accession numbers
@@ -429,14 +430,25 @@ rules:
           note2 := mgi_tblGetCell(table, row, table.note2);
           note3 := mgi_tblGetCell(table, row, table.note3);
  
-          set := "andor = " + mgi_DBprstr(andor) +
-                 ",reference = " + mgi_DBprstr(reference) +
-                 ",dataset = " + mgi_DBprstr(dataset) +
-                 ",note1 = " + mgi_DBprstr(note1) +
-                 ",note2 = " + mgi_DBprstr(note2) +
-                 ",note3 = " + mgi_DBprstr(note3);
-          cmd := cmd + mgi_DBupdate(MLP_NOTES, currentRecordKey, set);
- 
+	  if (ModifyStrainNote.add) then
+	      cmd := cmd + mgi_DBinsert(MLP_NOTES, NOKEY) + 
+		     currentRecordKey + "," + 
+                     mgi_DBprstr(andor) + "," +
+                     mgi_DBprstr(reference) + "," +
+                     mgi_DBprstr(dataset) + "," +
+                     mgi_DBprstr(note1) + "," +
+                     mgi_DBprstr(note2) + "," +
+                     mgi_DBprstr(note3) + ")\n";
+	  else
+            set := "andor = " + mgi_DBprstr(andor) +
+                   ",reference = " + mgi_DBprstr(reference) +
+                   ",dataset = " + mgi_DBprstr(dataset) +
+                   ",note1 = " + mgi_DBprstr(note1) +
+                   ",note2 = " + mgi_DBprstr(note2) +
+                   ",note3 = " + mgi_DBprstr(note3);
+            cmd := cmd + mgi_DBupdate(MLP_NOTES, currentRecordKey, set);
+	  end if;
+
 	end does;
 
 --
