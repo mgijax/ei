@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	08/16/2001
+--	- TR 2850; Select; traverse to first blank row 
+--
 -- lec	07/24/2001
 --	- TR 2767; ExitDialog added; InSituResultExit added
 --
@@ -441,6 +444,7 @@ rules:
 
 	Select does
 	  row : integer := 0;
+	  resultsRow : integer := 0;
 	  results : integer := 1;
 	  table : widget := top->Results->Table;
 	  currentResult : string := "";
@@ -487,6 +491,7 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.pattern, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
+		resultsRow := row;	-- save for later
 	      elsif (results = 2) then
 		paneResult := mgi_getstr(dbproc, 1);
 
@@ -569,6 +574,11 @@ rules:
           Clear.source_widget := top;
           Clear.reset := true;
           send(Clear, 0);
+
+	  -- Traverse to first blank row
+	  TraverseToTableCell.table := table;
+	  TraverseToTableCell.row := resultsRow;
+	  send(TraverseToTableCell, 0);
 
           (void) reset_cursor(top.root);
 	end does;
