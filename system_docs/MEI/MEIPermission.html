@@ -32,7 +32,9 @@ Assume user needs insert, update and delete permissions for database tables list
 
 <TR><TD>Molecular Segments & Probes
     <TD>PRB_*, ACC_Accession*, strains..MLP_Strain, strains..MLP_Notes
-    <TD>insert only on strains tables
+    <TD><OL>
+	<LI>insert only on strains tables
+	</OL>
 
 <TR><TD>Mapping
     <TD>MLD_*, CRS_Cross, RI_RISet, MRK_Marker, ACC_Accession*, strains..MLP_Strain, strains..MLP_Notes
@@ -54,10 +56,10 @@ Assume user needs insert, update and delete permissions for database tables list
 	</OL>
 
 <TR><TD>GXD
-    <TD>GXD_*, IMG_*, PRB_Reference, PRB_Source, MRK_Allele, ACC_Accession*, strains..MLP_Strain, strains..MLP_Notes
+    <TD>GXD_*, IMG_*, PRB_Reference, PRB_Source, ALL_Allele, ALL_Allele_Mutation, ALL_Molecular_Note, ALL_Note, ALL_Synonym, ACC_Accession*, strains..MLP_Strain, strains..MLP_Notes
     <TD><OL>
 	<LI>Antigen entry requires PRB_Source;Trigger may insert records into PRB_Reference.
-	<LI>Assay Genotype dialog may insert records into MRK_Allele.
+	<LI>Assay Genotype dialog may insert records into ALL_Allele.
 	<LI>Insert only on strains tables.
 	</OL>
 
@@ -65,17 +67,13 @@ Assume user needs insert, update and delete permissions for database tables list
     <TD>MLC_*, MRK_Classes, MRK_Class, MRK_Reference
     <TD>&nbsp;
 
-<TR><TD>Marker Transfer
-    <TD>MRK_*, PRB_*, MLD_*, GXD_AntibodyMarker, GXD_Assay, GXD_Expression, GXD_Index
+<TR><TD>Marker Withdrawals
+    <TD>execute permission on MRK_simpleWithdrawal, MRK_mergeWithdrawal,
+	MRK_alleleWithdrawal, MRK_splitWithdrawal, MRK_deleteWithdrawal,
+	MRK_copyHistory, MRK_updateKeys, MRK_updateOffset
     <TD><OL>
-	<LI><CODE>transferMarker.py</CODE> initiated from editing interface.
-	<LI><B>disabled</B>
-	</OL>
-
-<TR><TD>Marker Broadcast
-    <TD>MRK_*, PRB_*, MLD_*, MLC_*, HMD_*
-    <TD><OL>
-	<LI><CODE>broadcast.py</CODE> initiated from editing interface.
+	<LI><B>no permissions on any tables are necessary</B>.
+	<LI><CODE>markerWithdrawal.py</CODE> initiated from editing interface.
 	</OL>
 
 <TR><TD>Marker Breakpoint Split
@@ -84,16 +82,18 @@ Assume user needs insert, update and delete permissions for database tables list
 	<LI><CODE>breakpointSplit.py</CODE> initiated from editing interface.
 	</OL>
 
-<TR><TD>Nomenclature
-    <TD>MRK_Nomen_*
+<TR><TD>Nomenclature Tier 2 or 3
+    <TD>ACC_Accession*, MRK_* <B>except</B> MRK_Status, MRK_GeneFamily
     <TD><OL>
-	<LI>Full permissions
+	<LI>in the "nomen" database
+	<LI>coordinate w/ Lori so the triggers, stored procedures, etc. can be modified
 	</OL>
 
-<TR><TD>Nomenclature
-    <TD>MRK_Nomen_Notes
+<TR><TD>Nomenclature Tier 4 (super-user)
+    <TD>ACC_Accession*, MRK_*
     <TD><OL>
-	<LI>If an Editor needs permissions to edit "Editor's Notes" only
+	<LI>in the "nomen" database
+	<LI>coordinate w/ Lori so the triggers, stored procedures, etc. can be modified
 	</OL>
 
 </TABLE>
