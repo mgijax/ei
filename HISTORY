@@ -1,4 +1,11 @@
-TAG: ei-6-0-13-patchBranch
+TAG: ei-6-0-13-patch-2
+DATE: 11/08/2001
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) remove bad strain types from Strains lookup
+
+TAG: ei-6-0-13-patch-1
 DATE: 10/29/2001
 STAFF: lec
 RELEASE: A
