@@ -14,7 +14,7 @@
 -- History
 --
 -- lec 02/28/2003
--	- JSAM; clearLists = 3; added mgiAccessionTable
+--	- JSAM; clearLists = 3; added mgiAccessionTable
 --
 -- lec 09/26/2001
 --      - TR 2714/Probe  Menu
