@@ -553,7 +553,8 @@ rules:
 	      top->GenderMenu.menuHistory.modified or
 	      top->CellLine->CellLineID->text.modified or
 	      top->AgeMenu.menuHistory.modified or
-	      top->Age->text.modified) then
+	      top->Age->text.modified or
+	      top->Description->text.modified) then
 
 	      top.sql := "exec PRB_processProbeSource " +
 	          probeKey + "," +
@@ -565,6 +566,7 @@ rules:
 	          top->GenderMenu.menuHistory.defaultValue + "," +
 	          top->CellLine->CellLineID->text.value + "," +
 	          mgi_DBprstr(age) + "," +
+		  mgi_DBprstr(top->Description->text.value) + "," +
 	          global_loginKey + "\n";
 	  else
 	      top.sql := "";
