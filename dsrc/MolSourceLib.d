@@ -260,10 +260,20 @@ rules:
 
 	  table : widget;
 	  results : integer := 1;
-          cmd :string := "select * from PRB_Source_View where _Source_key = " + key + "\n" +
-			 "select jnum, short_citation from PRB_SourceRef_View " +
-			 "where _Source_key = " + key;
- 
+          cmd :string := "select * from PRB_Source where _Source_key = " + key + "\n" +
+			 "select p._Strain_key, s.strain from PRB_Source p, PRB_Strain s " +
+			 "where p._Source_key = " + key + " and p._Strain_key = s._Strain_key " +
+			 "select p._Tissue_key, s.tissue from PRB_Source p, PRB_Tissue s " +
+			 "where p._Source_key = " + key + " and p._Tissue_key = s._Tissue_key " +
+			 "select p._CellLine_key, t.term from PRB_Source p, VOC_Term t " +
+			 "where p._Source_key = " + key + " and p._CellLine_key = t._Term_key " +
+			 "select p.creation_date, p.modification_date, u1.login, u2.login " +
+			 "from PRB_Source p, MGI_User u1, MGI_User u2 " +
+			 "where p._Source_key = " + key +
+			 " and p._CreatedBy_key = u1._User_key " +
+			 " and p._ModifiedBy_key = u2._User_key\n" +
+			 "select jnum, short_citation from PRB_SourceRef_View where _Source_key = " + key;
+
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -284,6 +294,12 @@ rules:
                   sourceForm->mgiCitation->Citation->text.value := "";
 		end if;
 
+                sourceForm->Description->text.value := mgi_getstr(dbproc, 11);
+ 
+		DisplayMolecularAge.source_widget := sourceForm->Age->text;
+		DisplayMolecularAge.age := mgi_getstr(dbproc, 12);
+		send(DisplayMolecularAge, 0);
+
 		if (sourceForm->SourceSegmentTypeMenu.managed) then
                   SetOption.source_widget := sourceForm->SourceSegmentTypeMenu;
                   SetOption.value := mgi_getstr(dbproc, 2);
@@ -296,21 +312,6 @@ rules:
                   send(SetOption, 0);
 		end if;
 
-	        if (DisplayMolecularSource.master) then
-		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 29));
-		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
-		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 30));
-		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 19));
-                end if;
-
-                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 21);
-                sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 5);
-                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 23);
-                sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 6);
-                sourceForm->CellLine->Verify->text.value := mgi_getstr(dbproc, 26);
-                sourceForm->CellLine->CellLineID->text.value := mgi_getstr(dbproc, 8);
-                sourceForm->Description->text.value := mgi_getstr(dbproc, 11);
- 
                 SetOption.source_widget := sourceForm->ProbeOrganismMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
@@ -319,11 +320,31 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 7);
                 send(SetOption, 0);
 
-		DisplayMolecularAge.source_widget := sourceForm->Age->text;
-		DisplayMolecularAge.age := mgi_getstr(dbproc, 12);
-		send(DisplayMolecularAge, 0);
-
 	      elsif (results = 2) then
+
+                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 2);
+                sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 1);
+
+	      elsif (results = 3) then
+
+                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 2);
+                sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 1);
+
+	      elsif (results = 4) then
+
+                sourceForm->CellLine->Verify->text.value := mgi_getstr(dbproc, 2);
+                sourceForm->CellLine->CellLineID->text.value := mgi_getstr(dbproc, 1);
+
+	      elsif (results = 5) then
+
+	        if (DisplayMolecularSource.master) then
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 1));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 2));
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 3));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 4));
+                end if;
+
+	      elsif (results = 6) then
 	        if (sourceForm->mgiCitation.managed) then
                   sourceForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 1);
                   sourceForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 2);
@@ -629,7 +650,6 @@ rules:
 	  fromStrain : boolean := false;
 	  fromTissue : boolean := false;
 	  fromCellLine : boolean:= false;
-	  i : integer;
 
 	  top.sqlFrom := "";
 	  top.sqlWhere := "";
