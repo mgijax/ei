@@ -15,8 +15,8 @@
 --
 -- History
 --
--- 03/20/2000
---	- tr 1291
+-- 03/20/2000 - ?
+--	- tr 1291, tr 1177
 --
 -- 12/09/1999
 --	- use markerType key value instead of name so that any new
@@ -109,15 +109,10 @@ devents:
 	Init :local [];
 
 	-- Process Marker Withdrawal Events
-	MarkerWithdrawalCancel : local [];
+	MarkerWithdrawalDone : local [];
 	MarkerWithdrawalInit :local [];
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;];
-	SetWithdrawalFields :exported [];
-
-	-- Process Marker Allele Events
-	MarkerAlleleMergeInit :local [];
-	MarkerAlleleMerge :local [];
 
 	-- Process Breakpoint Split Events
 	MarkerBreakpointSplitInit :local [];
@@ -126,7 +121,6 @@ devents:
 
 	Modify :local [];
 	ModifyAlias :local [];
-	ModifyAllele :local [];
 	ModifyChromosome :exported [];
 	ModifyCurrent :local [];
 	ModifyHistory :local [];
@@ -152,8 +146,6 @@ locals:
 	where : string;
 
 	tables : list;
-
-	new_symbols : string_list;    -- Hold list of new symbols used in Withdrawal process
 
 	currentChr : string;		-- current Chromosome of selected record
 
@@ -219,6 +211,18 @@ rules:
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->CVMarker->MarkerEventReasonMenu;
+	  send(InitOptionMenu, 0);
+
+	  top->WithdrawalDialog->MarkerEventMenu.subMenuId.sql := 
+	    "select * from " + mgi_DBtable(MRK_EVENT) + 
+	    " where " + mgi_DBkey(MRK_EVENT) + " in (2,3,4,5,6) order by " + mgi_DBcvname(MRK_EVENT);
+	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventMenu;
+	  send(InitOptionMenu, 0);
+
+          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := 
+            "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
+            " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
+	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
 
 	end does;
@@ -333,7 +337,6 @@ rules:
 
 	  send(ModifyOffset, 0);
 	  send(ModifyAlias, 0);
-	  send(ModifyAllele, 0);
 	  send(ModifyCurrent, 0);
 	  send(ModifyOtherReference, 0);
 
@@ -400,14 +403,14 @@ rules:
 	end does;
 
 --
--- MarkerWithdrawalCancel
+-- MarkerWithdrawalDone
 --
 -- Activated from:  widget top->WithdrawalDialog->Cancel
 --
--- If User cancels Withdrawal, re-select record and cancel dialog
+-- Re-select record and unmanage dialog
 --
 
-	MarkerWithdrawalCancel does
+	MarkerWithdrawalDone does
 	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	  top->WithdrawalDialog.managed := false;
 	end does;
@@ -429,18 +432,6 @@ rules:
 	    send(StatusReport);
 	    return;
 	  end if;
-
-	  dialog->MarkerEventMenu.subMenuId.sql := 
-	    "select * from " + mgi_DBtable(MRK_EVENT) + 
-	    " where " + mgi_DBkey(MRK_EVENT) + " in (2,3,4,5,6) order by " + mgi_DBcvname(MRK_EVENT);
-	  InitOptionMenu.option := dialog->MarkerEventMenu;
-	  send(InitOptionMenu, 0);
-
-          dialog->MarkerEventReasonMenu.subMenuId.sql := 
-            "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
-            " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
-	  InitOptionMenu.option := dialog->MarkerEventReasonMenu;
-	  send(InitOptionMenu, 0);
 
 	  SetOption.source_widget := dialog->MarkerEventMenu;
 	  SetOption.value := EVENT_WITHDRAWAL;
@@ -466,61 +457,6 @@ rules:
 	  dialog->mgiCitation->Jnum->text.value := "";
 	  dialog->mgiCitation->Citation->text.value := "";
 	  dialog.managed := true;
-	end does;
-
---
--- SetWithdrawalFields
---
--- Activated from:  widget top->WithdrawalDialog->MarkerEvent->toggle
---
--- Based on selected Marker Event, set some editing attributes within 
--- the Marker Withdrawal dialog.
---
-
-	SetWithdrawalFields does
-	  dialog : widget := top->WithdrawalDialog;
-
-	  --
-	  -- Don't do anything if de-selecting
-	  --
-
-	  if (not dialog->MarkerEventMenu.menuHistory.set) then
-	    return;
-	  end if;
-
-	  --
-	  -- Set number of rows, number of visible rows and callbacks depending
-	  -- on the event the user has selected
-	  --
-
-	  if (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_WITHDRAWAL) then
-
-	    mgi_tblSetNumRows(dialog->NewMarker, 1);  
-
-	  elsif (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_MERGE or
-	         dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_ALLELEOF) then
-
-	    mgi_tblSetNumRows(dialog->NewMarker, 1);  
-	    SetTableValidateCallback.table := dialog->NewMarker;
-	    SetTableValidateCallback.callback := "D:VerifyMarker,D:CommitTableCellEdit";
-	    send(SetTableValidateCallback, 0);
-
-	  elsif (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_SPLIT) then
-
-	    mgi_tblSetNumRows(dialog->NewMarker, 3);  
-	    SetTableValidateCallback.table := dialog->NewMarker;
-	    SetTableValidateCallback.callback := "D:CommitTableCellEdit";
-	    send(SetTableValidateCallback, 0);
-
-	  elsif (dialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_DELETED) then
-
-	    mgi_tblSetNumRows(dialog->NewMarker, 0);  
-	    SetTableValidateCallback.table := dialog->NewMarker;
-	    SetTableValidateCallback.callback := "D:CommitTableCellEdit";
-	    send(SetTableValidateCallback, 0);
-
-	  end if;
-
 	end does;
 
 --
@@ -571,7 +507,7 @@ rules:
 
 	  -- Insert new symbols into string list
 
-	  new_symbols := create string_list();
+	  new_symbols : string_list := create string_list();
 	  row : integer := 0;
 
 	  while (row < mgi_tblNumRows(table)) do
@@ -607,9 +543,11 @@ rules:
 	  cmds.insert("--eventReasonKey=" + eventReason, cmds.count + 1);
 	  cmds.insert("--oldKey=" + currentRecordKey, cmds.count + 1);
 	  cmds.insert("--refKey=" + dialog->mgiCitation->ObjectID->text.value, cmds.count + 1);
-	  cmds.insert("--newName=" + dialog->Name->text.value, cmds.count + 1);
 
-	  if (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
+	  if (event = EVENT_WITHDRAWAL) then
+	    cmds.insert("--newName=" + dialog->Name->text.value, cmds.count + 1);
+	    cmds.insert("--newSymbols=" + mgi_tblGetCell(table, 0, table.markerSymbol), cmds.count + 1);
+	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
 	    cmds.insert("--newKey=" + mgi_tblGetCell(table, 0, table.markerKey), cmds.count + 1);
 	  end if;
 
@@ -631,35 +569,36 @@ rules:
 	  buf := buf + "\n\n";
 	  (void) mgi_writeLog(buf);
 
-	  MarkerWithdrawalEnd.source_widget := dialog;
+          MarkerWithdrawalEnd.source_widget := dialog;
           proc_id : opaque := 
-	    tu_fork_process2(cmds[1], cmds, nil, nil, MarkerWithdrawalEnd);
-	    tu_fork_free(proc_id);
+	   tu_fork_process2(cmds[1], cmds, nil, nil, MarkerWithdrawalEnd);
+	  tu_fork_free(proc_id);
+
+--         exitStatus : integer :=
+--    tu_fork_execute(cmds[1], cmds, nil, nil, nil, nil, nil);
+
+--  if (exitStatus != 0) then
+--           StatusReport.source_widget := top;
+--           StatusReport.message := "An error occurred while processing this withdrawal.\n" +
+--	"Please contact a Software Engineer.";
+--           send(StatusReport);
+--    (void) reset_cursor(dialog);
+--    return;
+--  end if;
+
 	end does;
 
---
--- MarkerWithdrawalEnd
---
--- Activated from: child process forked from MarkerWithdrawal is finished
---
--- Queries for all new and old symbols
---
- 
-        MarkerWithdrawalEnd does
-	  dialog : widget := MarkerWithdrawalEnd.source_widget;
+	MarkerWithdrawalEnd does
+	  table : widget := top->WithdrawalDialog->NewMarker->Table;
 
-	  -- Query for All New Symbol(s) and Old Symbol
+	  -- Query for records
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Species_key = " + MOUSE + " and m.symbol in (";
-
-	  new_symbols.rewind;
-	  while (new_symbols.more) do
-	    where := where + "'" + new_symbols.next + "',";
-	  end while;
-	  destroy new_symbols;
-
-	  where := where + "'" + top->Symbol->text.value + "')";
+	  from := from + ",MRK_Current_View mu";
+	  where := "where m._Species_key = " + MOUSE;
+	  where := where + "\nand mu.current_symbol = '" + 
+		mgi_tblGetCell(table, 0, table.markerSymbol) + "'";
+	  where := where + "\nand m._Marker_key = mu._Marker_key";
 
 	  QueryNoInterrupt.source_widget := top;
 	  QueryNoInterrupt.select := "select distinct m._Marker_key, m.symbol\n" + from + "\n" + 
@@ -668,64 +607,6 @@ rules:
 	  send(QueryNoInterrupt, 0);
 
 	  (void) reset_cursor(top->WithdrawalDialog);
-        end does;
- 
---
--- MarkerAlleleMergeInit
---
--- Activated from:  top->Edit->Merge->AlleleMerge, activateCallback
---
--- Initialize Allele Merge Dialog fields
---
- 
-        MarkerAlleleMergeInit does
-          dialog : widget := top->AlleleMergeDialog;
-
-	  dialog->mgiMarker->ObjectID->text.value := "";
-	  dialog->mgiMarker->Marker->text.value := "";
-	  dialog->OldAllele->ObjectID->text.value := "";
-	  dialog->OldAllele->Allele->text.value := "";
-	  dialog->NewAllele->ObjectID->text.value := "";
-	  dialog->NewAllele->Allele->text.value := "";
-	  dialog.managed := true;
-	end does;
-
---
--- MarkerAlleleMerge
---
--- Activated from:  top->AlleleMergeDialog->Process
---
--- Execute the appropriate stored procedure to merge the entered Alleles.
---
- 
-        MarkerAlleleMerge does
-          dialog : widget := top->AlleleMergeDialog;
- 
-          if (dialog->OldAllele->ObjectID->text.value.length = 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Old Allele Symbol required during this merge";
-            send(StatusReport);
-            return;
-          end if;
- 
-          if (dialog->NewAllele->ObjectID->text.value.length = 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "New Allele Symbol required during this merge";
-            send(StatusReport);
-            return;
-          end if;
- 
-          (void) busy_cursor(dialog);
-
-	  cmd := "\nexec MRK_mergeAllele " +
-		dialog->OldAllele->ObjectID->text.value + "," +
-		dialog->NewAllele->ObjectID->text.value + "\n";
-
-	  ExecSQL.cmd := cmd;
-	  send(ExecSQL, 0);
-
-	  (void) reset_cursor(dialog);
-
 	end does;
 
 --
@@ -957,7 +838,6 @@ rules:
 
 	  send(ModifyHistory, 0);
 	  send(ModifyAlias, 0);
-	  send(ModifyAllele, 0);
 	  send(ModifyCurrent, 0);
 	  send(ModifyOffset, 0);
 	  send(ModifyOtherReference, 0);
@@ -1025,65 +905,6 @@ rules:
  
             row := row + 1;
           end while;
-	end does;
-
---
--- ModifyAllele
---
--- Activated from: devent Modify
---
--- Construct insert/update/delete for Marker Alleles
---
-
-	ModifyAllele does
-          table : widget := top->Allele->Table;
-          row : integer := 0;
-          editMode : string;
-          key : string;
-          symbol : string;
-          name : string;
-          set : string := "";
-	  keyName : string := "alleleKey";
-	  keysDeclared : boolean := false;
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            key := mgi_tblGetCell(table, row, table.alleleKey);
-            symbol := mgi_tblGetCell(table, row, table.alleleSymbol);
-            name := mgi_tblGetCell(table, row, table.alleleName);
- 
-            if (editMode = TBL_ROW_ADD) then
-
-              if (not keysDeclared) then
-                cmd := cmd + mgi_setDBkey(MRK_ALLELE, NEWKEY, keyName);
-                keysDeclared := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
-
-              cmd := cmd +
-                     mgi_DBinsert(MRK_ALLELE, keyName) +
-		     currentRecordKey + "," +
-		     mgi_DBprstr(symbol) + "," +
-		     mgi_DBprstr(name) + ")\n";
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "symbol = " + mgi_DBprstr(symbol) + "," +
-                     "name = " + mgi_DBprstr(name);
-              cmd := cmd + mgi_DBupdate(MRK_ALLELE, key, set);
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-               cmd := cmd + mgi_DBdelete(MRK_ALLELE, key);
-            end if;
- 
-            row := row + 1;
-	  end while;
 	end does;
 
 --
