@@ -771,9 +771,11 @@ rules:
 		 " order by a._Organism_key\n" +
 
 		 "select distinct hm._Marker_key, a.accID, a._Accession_key " +
-		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_Acc_View a" +
+		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Acc_View a" +
 		 classRefWhere +
 		 "and h._Homology_key = hm._Homology_key " +
+		 "and hm._Marker_key = m._Marker_key " +
+		 "and m._Organism_key != 1 " +
 		 "and hm._Marker_key = a._Object_key " +
 		 "and a._LogicalDB_key = 24 " +
 		 " order by a._Organism_key\n";
