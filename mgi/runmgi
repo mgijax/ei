@@ -1,4 +1,4 @@
-#!/bin/ksh
+#!/bin/csh
 
 #
 # Sets up appropriate ENV variables for running MEI in Production.
@@ -6,29 +6,8 @@
 # All SQL transactions logged to USERLOG.
 #
 
-unset TERM
-export APP USERLOG INSTALL_ROOT
-export OPENWINHOME
-export XKEYSYMDB TeleUSE XNLSPATH XUSERFILESEARCHPATH LD_LIBRARY_PATH PATH
-
-APP=mgi
-EIDEBUG=0
-
 cd `dirname $0`
-INSTALL_ROOT=`pwd`
 
-OPENWINHOME=/usr/openwin
-XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
+source Configuration
 
-USERLOG=$HOME/.mgi-log
-
-TeleUSE=/opt/teleuseXRT
-XNLSPATH=$TeleUSE/X11R5/lib/nls
-XUSERFILESEARCHPATH=%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-defaults/%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
-
-LD_LIBRARY_PATH=$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
-PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:/usr/ucb:/usr/local/bin
-
-umask 022
-
-exec $APP >> $USERLOG 2>&1
+exec $EIINSTALLDIR/$EIAPP/$EIAPP >>& $USERLOG

@@ -1,4 +1,4 @@
-#!/bin/ksh
+#!/bin/csh
 
 #
 # Sets up appropriate ENV variables for running MEI in Production.
@@ -6,47 +6,13 @@
 # All SQL transactions logged to USERLOG.
 #
 
-unset TERM
-export APP USERLOG DSQUERY MGD STRAINS NOMEN INSTALL_ROOT
-export SYBASE OPENWINHOME PYTHONPATH
-export XKEYSYMDB TeleUSE XNLSPATH XUSERFILESEARCHPATH LD_LIBRARY_PATH PATH
-export EIREPORTDIR EIARCHIVEDIR EIWITHDRAWALDIR EIBREAKSPLITDIR
-export EIDEBUG
-export REPORTUSER REPORTPASSWORD
-
-APP=mgd
-EIDEBUG=1
-
 cd `dirname $0`
-INSTALL_ROOT=`pwd`
 
-OPENWINHOME=/usr/openwin
-XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
-PYTHONPATH=/usr/local/mgi/lib/python
+source Configuration
 
-USERLOG=$HOME/.mgd_dev-log
+setenv DSQUERY	MGD_DEV
+setenv MGD	mgd_release
+setenv STRAINS	strains_release
+setenv NOMEN	nomen_release
 
-DSQUERY=MGD_DEV
-MGD=mgd_release
-STRAINS=strains_release
-NOMEN=nomen_release
-
-EIREPORTDIR=$HOME/mgireport
-EIARCHIVEDIR=$INSTALL_ROOT/mgireport
-EIWITHDRAWALDIR=$EIARCHIVEDIR/withdrawals
-EIBREAKSPLITDIR=$EIARCHIVEDIR/breakpointsplits
-
-REPORTUSER=mgd_public
-REPORTPASSWORD=mgdpub
-
-SYBASE=/opt/sybase
-TeleUSE=/opt/teleuseXRT
-XNLSPATH=$TeleUSE/X11R5/lib/nls
-XUSERFILESEARCHPATH=%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-defaults/%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
-
-LD_LIBRARY_PATH=$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
-PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
-
-umask 022
-
-exec $APP >> $USERLOG 2>&1
+exec $EIINSTALLDIR/$EIAPP/$EIAPP >>& $USERLOG

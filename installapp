@@ -34,6 +34,11 @@ endsw
 mkdir $EIINSTALLDIR/$APP >& /dev/null
 
 cd $APP
-source Configuration
+source Configuration	# application-specific configuration file
 uxb $OPTIONS -destdir $EIINSTALLDIR/$APP install
 cd ..
+
+#
+# Copy main Configuration file to installation directory
+#
+cp Configuration $EIINSTALLDIR

@@ -8,10 +8,13 @@
 #	ex. 	source Configuration.default
 #
 
-unsetenv TERM
+#unsetenv TERM
 
 # install directory
 setenv EIINSTALLDIR /usr/local/mgi/ei
+
+# build directory
+setenv EIBUILDDIR /home/lec/ei/ei
 
 # data directory
 setenv EIDATADIR /usr/local/mgi/ei_data
@@ -70,6 +73,12 @@ setenv EIBREAKSPLITDIR	$EIDATADIR/breakpointsplits
 
 setenv REPORTUSER	mgd_public
 setenv REPORTPASSWORD	mgdpub
+
+# X Resource file
+setenv XRES	$EIBUILDDIR/XRes.in
+
+# Make file for XRT Authorization
+setenv XRTMAKE	$EIBUILDDIR/Makefile.xrt
 
 # Set umask for permissions on files created
 umask 022

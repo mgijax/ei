@@ -19,6 +19,7 @@ rm -f $LOG
 
 foreach app ($EIAPPS)
    echo "INSTALLING $app"
+   cleanapp $app
    installapp $app compiled | tee >>& $LOG
 end
 
