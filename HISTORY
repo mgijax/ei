@@ -1,3 +1,10 @@
+TAG: ei-4-5-4
+DATE: 05/31/2001
+STAFF: jsb
+RELEASE: A
+CHANGES:
+1) TR2574 - removed Holder requirement, changed Mode of Inheritance default
+
 TAG: ei-4-5-2
 DATE: 05/09/2001
 STAFF: jsb
