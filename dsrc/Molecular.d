@@ -160,6 +160,7 @@ locals:
 	ref_modification_date : string;
 
 	origSegmentType : string;
+	primerVector : string;
 
 rules:
 
@@ -240,6 +241,7 @@ rules:
           -- Initialize global variables
 	   
           sourceKeyName := "maxSource";
+	  primerVector := mgi_sql1("select _Term_key from VOC_Term_SegVectorType_View where term = 'Not Applicable'");
 
 	  sourceOptions.append(top->MolDetailForm->ProbeOrganismMenu);
 	  sourceOptions.append(top->MolDetailForm->AgeMenu);
@@ -367,12 +369,8 @@ rules:
 	  -- Insert for Primers
 
 	  else
-            SetOption.source_widget := top->MolDetailForm->VectorTypeMenu;
-            SetOption.value := "Not Applicable";
-            send(SetOption, 0);
-
 	    cmd := cmd + "NULL,-2," +
-			 top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
+			 primerVector + "," +
                          top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
