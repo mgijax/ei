@@ -751,15 +751,16 @@ rules:
 
 	      elsif (results = 6) then
 
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLineKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLine, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.genderKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.gender, mgi_getstr(dbproc, 3));
 
 		nonRawRow := nonRawRow + 1;
 
 	      elsif (results = 7) then
 
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.genderKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.gender, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLineKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLine, mgi_getstr(dbproc, 3));
+
 
 		nonRawRow := nonRawRow + 1;
 
