@@ -238,7 +238,8 @@ rules:
                  mgi_DBprstr(top->Name->text.value) + "," +
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->NeedsReviewMenu.menuHistory.defaultValue + "," +
-                 top->PrivateMenu.menuHistory.defaultValue + ")\n";
+                 top->PrivateMenu.menuHistory.defaultValue + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
  
 	  send(ModifyType, 0);
 	  annotKey := NO;
