@@ -38,8 +38,8 @@ import os
 import string
 import regsub
 import getopt
-import mgdlib
-import accessionlib
+import db
+import mgi_utils
 
 def error(msg = None):
 	'''
@@ -111,8 +111,8 @@ def init():
 	except:
 		showUsage()
 
-	server = mgdlib.get_sqlServer()
-	database = mgdlib.get_sqlDatabase()
+	server = db.get_sqlServer()
+	database = db.get_sqlDatabase()
 	user = None
 	password = None
 
@@ -146,10 +146,10 @@ def init():
 		DEBUG = 1
 
         # Initialize DBMS parameters
-	mgdlib.set_sqlLogin(user, password, server, database)
+	db.set_sqlLogin(user, password, server, database)
 		 
 	# Log all SQL commands
-	mgdlib.set_sqlLogFunction(mgdlib.sqlLogAll)
+	db.set_sqlLogFunction(db.sqlLogAll)
 
 	exportDir = os.environ['EIBREAKSPLITDIR']
 
@@ -171,11 +171,11 @@ def init():
 		error('Could not open file %s.diagnostics' % FILENAME)
 
 	# Initialize logging file descriptor
-	mgdlib.set_sqlLogFD(diagFile)
+	db.set_sqlLogFD(diagFile)
 
-	printMsg(diagFile, 'Server:  %s\n' % mgdlib.get_sqlServer())
-	printMsg(diagFile, 'Database:  %s\n' % mgdlib.get_sqlDatabase())
-	printMsg(diagFile, 'User:  %s\n' % mgdlib.get_sqlUser())
+	printMsg(diagFile, 'Server:  %s\n' % db.get_sqlServer())
+	printMsg(diagFile, 'Database:  %s\n' % db.get_sqlDatabase())
+	printMsg(diagFile, 'User:  %s\n' % db.get_sqlUser())
 	printMsg(diagFile, 'Debug:  %s\n\n' % str(DEBUG))
 
 	# Create a lock file so that only one Split can execute at a time
@@ -197,9 +197,9 @@ def init():
 	# Open output file for writing
 
 	if DEBUG:
-		mailTo = '%s@jax.org, lec@jax.org' % mgdlib.user
+		mailTo = '%s@jax.org, lec@jax.org' % db.user
 	else:
-		mailTo = MAILLIST + ', %s@jax.org' % mgdlib.user
+		mailTo = MAILLIST + ', %s@jax.org' % db.user
 
 	try:
 		statsFile = open(FILENAME + '.stats', 'w')
@@ -210,7 +210,7 @@ def init():
 		      'Marker Breakpoint Split program (breakpointSplit.py), which was initiated\n' + \
 		      'by the sender from the Marker Editing Form.\n\n' + \
 		      'Please review the band and Mapping information for the proximal and distal symbols.\n\n' + \
-		      'Breakpoint Split Status Report - %s\n\n' % mgdlib.date()
+		      'Breakpoint Split Status Report - %s\n\n' % mgi_utils.date()
 		printMsg(statsFile, msg)
 	except:
 		finish()
@@ -282,15 +282,15 @@ def getKeys():
 
 	if ORIGMARKERKEY is None:
 		cmd = select + '"%s"' % ORIGMARKER
-		results = mgdlib.sql(cmd, 'auto')
+		results = db.sql(cmd, 'auto')
 
 		for result in results:
 			ORIGMARKERKEY = result['_Marker_key']
 
-	printMsg(diagFile, 'Original Marker:  %s\t%s\t(key=%s)\n' \
-		% (ORIGMARKER, accessionlib.get_accID(string.atoi(ORIGMARKERKEY), 'Marker', 'MGI'), ORIGMARKERKEY))
-	printMsg(statsFile, 'Original Marker:  %s\t%s\t(key=%s)\n' \
-		% (ORIGMARKER, accessionlib.get_accID(string.atoi(ORIGMARKERKEY), 'Marker', 'MGI'), ORIGMARKERKEY))
+	printMsg(diagFile, 'Original Marker:  %s\t(key=%s)\n' \
+		% (ORIGMARKER, ORIGMARKERKEY))
+	printMsg(statsFile, 'Original Marker:  %s\t(key=%s)\n' \
+		% (ORIGMARKER, ORIGMARKERKEY))
 
 def updateDB():
 	'''
@@ -309,7 +309,7 @@ def updateDB():
 	if DISTALBAND is not None:
 		cmd = cmd + ', "%s"' % (DISTALBAND)
 
-	mgdlib.sql(cmd, None)
+	db.sql(cmd, None)
 
 def printInfo():
 	'''
@@ -324,25 +324,25 @@ def printInfo():
 	'''
 
 	cmd = 'select _Marker_key, cytogeneticOffset from MRK_Marker where _Marker_key = %s' % (ORIGMARKERKEY)
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 	for r in results:
 		markerKey = r['_Marker_key']
-        	printMsg(statsFile, 'Proximal Symbol:  %s\t%s\t(key=%s)\n' \
-			% (PROXIMALMARKER, accessionlib.get_accID(markerKey, 'Marker', 'MGI'), markerKey))
+        	printMsg(statsFile, 'Proximal Symbol:  %s\t(key=%s)\n' \
+			% (PROXIMALMARKER, markerKey))
         	printMsg(statsFile, '  Proximal Band:  %s\n' % r['cytogeneticOffset'])
 
 	cmd = 'select _Marker_key, cytogeneticOffset from MRK_Marker where _Species_key = 1 and ' + \
 		'symbol = "%s"' % (DISTALMARKER)
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 	for r in results:
 		markerKey = r['_Marker_key']
 		if markerKey is not None:
-        		printMsg(statsFile, '  Distal Symbol:  %s\t%s\t(key=%d)\n' \
-				% (DISTALMARKER, accessionlib.get_accID(markerKey, 'Marker', 'MGI'), markerKey))
+        		printMsg(statsFile, '  Distal Symbol:  %s\t(key=%d)\n' \
+				% (DISTALMARKER, markerKey))
         		printMsg(statsFile, '    Distal Band:  %s\n' % r['cytogeneticOffset'])
 
 	cmd = 'select count(*) from MLD_Marker where _Marker_key = %s' % (ORIGMARKERKEY)
-	results = mgdlib.sql(cmd, 'auto')
+	results = db.sql(cmd, 'auto')
 	for r in results:
 		printMsg(statsFile, '       Mapping : %s records\n' % r[''])
 
