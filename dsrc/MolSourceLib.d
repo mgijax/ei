@@ -67,6 +67,8 @@ rules:
  
 	  add : string := "";
 	  age : string := "";
+	  segmentType : string := "";
+	  vectorType : string := "";
 
 	  top.sql := "";
 
@@ -78,9 +80,24 @@ rules:
                    mgi_DBinsert(PRB_SOURCE, keyLabel);
 	  end if;
 
+	  if (top->SegmentTypeMenu.menuHistory.defaultValue = "%") then
+	    segmentType := mgi_sql1("select _Term_key from VOC_Term_SegmentType_View " + 
+		"where term = \"Not Specified\"");
+	  else
+	    segmentType := top->SegmentTypeMenu.menuHistory.defaultValue;
+	  end if;
+
+	  if (top->VectorTypeMenu.menuHistory.defaultValue = "%") then
+	    vectorType := mgi_sql1("select _Term_key from VOC_Term_SegVectorType_View " + 
+		"where term = \"Not Specified\"");
+	    vectorType := NOTSPECIFIED;
+	  else
+	    vectorType := top->VectorTypeMenu.menuHistory.defaultValue;
+	  end if;
+
 	  add := add +
-                 top->SegmentTypeMenu.menuHistory.defaultValue + "," +
-                 top->VectorTypeMenu.menuHistory.defaultValue + "," +
+                 segmentType + "," +
+                 vectorType + "," +
                  top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
                  top->Tissue->TissueID->text.value + "," +
