@@ -8583,7 +8583,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 and allowOnlyOne = 0 order by referenceType";
+                                                sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 order by referenceType";
                                                 tableForm = Reference;
                                             }
                                       }
