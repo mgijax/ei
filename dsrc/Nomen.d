@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 09/05/2000
+--	- TR 1916
+--
 -- lec 07/19/2000
 --	- TR 1813; permissions change for tier4
 --
@@ -218,16 +221,6 @@ rules:
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
-	  top->SubmittedByMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_NOMEN_USER_VIEW) + " order by status, name";
-	  InitOptionMenu.option := top->SubmittedByMenu;
-	  send(InitOptionMenu, 0);
-
-	  top->BroadcastByMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_NOMEN_USER_VIEW) + " order by status, name";
-	  InitOptionMenu.option := top->BroadcastByMenu;
-	  send(InitOptionMenu, 0);
-
 	  top->GeneFamilyList.cmd :=
 		"select * from " + mgi_DBtable(MRK_GENEFAMILY) + " order by " + mgi_DBcvname(MRK_GENEFAMILY);
 	  LoadList.list := top->GeneFamilyList;
@@ -343,23 +336,7 @@ rules:
 	    return;
 	  end if;
 
-	  -- Use global_login value to set Submitted By
-
-	  suid := mgi_sql1("select suid from " + 
-		mgi_DBtable(MRK_NOMEN_USER_VIEW) + 
-		" where name = " 
-		+ mgi_DBprstr(global_login));
-          SetOption.source_widget := top->SubmittedByMenu;
-          SetOption.value := suid;
-          send(SetOption, 0);
-
-	  if (suid = "") then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Invalid Editor: " + global_login + "\n";
-            send(StatusReport);
-	    top->QueryList->List.sqlSuccessful := false;
-	    return;
-	  end if;
+	  top->SubmittedBy->text.value := global_login;
 
 	  (void) busy_cursor(top);
 
@@ -375,8 +352,8 @@ rules:
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
                  NOTSPECIFIED + "," +
-                 suid + "," +
-		 NOTSPECIFIED + "," +
+		 mgi_DBprstr(top->SubmittedBy->text.value) + "," +
+		 mgi_DBprstr(top->BroadcastBy->text.value) + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
@@ -512,16 +489,14 @@ rules:
 	    error := true;
 	  end if;
 
-          if (top->SubmittedByMenu.menuHistory.modified and
-	      top->SubmittedByMenu.menuHistory.searchValue != "%") then
+          if (top->SubmittedBy->text.modified) then
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to modify the Submitted By field.\n";
             send(StatusReport);
 	    error := true;
           end if;
 
-          if (top->BroadcastByMenu.menuHistory.modified and
-	      top->BroadcastByMenu.menuHistory.searchValue != "%") then
+          if (top->BroadcastBy->text.modified) then
             StatusReport.source_widget := top;
             StatusReport.message := "You do not have permission to modify the Broadcast By field.\n";
             send(StatusReport);
@@ -919,14 +894,14 @@ rules:
 	    printSelect := printSelect + "\nMarker Chromosome = " + top->ChromosomeMenu.menuHistory.labelString;
           end if;
 
-          if (top->SubmittedByMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._Suid_key = " + top->SubmittedByMenu.menuHistory.searchValue;
-	    printSelect := printSelect + "\nUser = " + top->SubmittedByMenu.menuHistory.labelString;
+          if (top->SubmittedBy->text.value.length > 0) then
+            where := where + "\nand m.submittedBy like " + mgi_DBprstr(top->SubmittedBy->text.value);
+	    printSelect := printSelect + "\nSubmitted By = " + top->SubmittedBy->text.value;
           end if;
 
-          if (top->BroadcastByMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._Suid_broadcast_key = " + top->BroadcastByMenu.menuHistory.searchValue;
-	    printSelect := printSelect + "\nUser = " + top->BroadcastByMenu.menuHistory.labelString;
+          if (top->BroadcastBy->text.value.length > 0) then
+            where := where + "\nand m.broadcastBy like " + mgi_DBprstr(top->BroadcastBy->text.value);
+	    printSelect := printSelect + "\nBroadcast By = " + top->BroadcastBy->text.value;
           end if;
 
           if (top->Symbol->text.value.length > 0) then
@@ -1216,6 +1191,8 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
+	        top->SubmittedBy->text.value    := mgi_getstr(dbproc, 6);
+	        top->BroadcastBy->text.value    := mgi_getstr(dbproc, 7);
 	        top->Symbol->text.value         := mgi_getstr(dbproc, 9);
 	        top->Name->text.value           := mgi_getstr(dbproc, 10);
 	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 12);
@@ -1235,14 +1212,6 @@ rules:
 
                 SetOption.source_widget := top->MarkerEventMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->SubmittedByMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->BroadcastByMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->ChromosomeMenu;
@@ -1476,10 +1445,9 @@ rules:
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(MRK_NOMEN) + " n," +
 		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r," +
-		  mgi_DBtable(MRK_NOMEN_USER_VIEW) + " u " +
 		  " where n._Marker_Status_key = " + STATUS_PENDING +
 		  " and n._Suid_key = u.suid" +
-		  " and u.name = (select user_name())" +
+		  " and n.submittedBy = user_name()" +
 		  " and n._Nomen_key = r._Nomen_key" +
 		  " and r.isPrimary = 1" +
 		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
