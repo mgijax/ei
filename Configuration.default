@@ -11,6 +11,10 @@
 # install directory
 setenv EIINSTALLDIR /usr/local/mgi/ei/prod
 
+# for MGI Menu, we can run both production and development versions
+setenv EIINSTALLDIRPROD /usr/local/mgi/ei/prod
+setenv EIINSTALLDIRDEV /usr/local/mgi/ei/dev
+
 # build directory
 setenv EIBUILDDIR /usr/local/mgi/ei/ei_build/?
 
