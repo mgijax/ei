@@ -1409,8 +1409,8 @@ rules:
 --
 -- SetBackground
 --
--- If fatnom.fantom1Clone = 1, then set to Thistle
--- If fatnom.fantom2Clone = 1, then set to PaleGreen
+-- If fantom.fantom1Clone = 1, then set to Thistle
+-- If fantom.fantom2Clone = 1, then set to PaleGreen
 -- If nonRIKEN clone (cloneID NULL and seqID -1), then set to SkyBlue
 -- If Seq Quality != zilch, then set to Red
 --
