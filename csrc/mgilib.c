@@ -2381,7 +2381,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_MARKER:
-            sprintf(buf, "insert %s (%s, _Strain_key, _Marker_key, _Allele_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Strain_key, _Marker_key, _Allele_key, _Qualifier_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_TYPE:
             sprintf(buf, "insert %s (%s, _Strain_key, _StrainType_key)", mgi_DBtable(table), mgi_DBkey(table));

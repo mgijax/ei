@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  8 08:51:40 2004";
+      lastWritten = "Fri Oct  8 08:53:19 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -10199,6 +10199,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          activateCallback = "D:AddStrainAlleleTypeRow";
                                         Group: Constraint
                                           leftAttachment = attach_widget;
                                           leftWidget = StrainAlleleTypeMenu;
