@@ -102,7 +102,6 @@ rules:
 	  envList.append("DSQUERY");
 	  envList.append("SYBASE");
 	  envList.append("MGD");
-	  envList.append("NOMEN");
 	  envList.append("EIDEBUG");
 
 	  envList.open;
