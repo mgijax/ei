@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jan  9 08:04:52 2004";
+      lastWritten = "Tue Jan 13 08:51:50 2004";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -2903,6 +2903,7 @@ Module: MGD
                       Group: Widget
                         xrtTblVisibleRows = 6;
                         xrtTblNumRows = 10;
+                        xrtTblCharWidthSeries = "(all 0 1) (all 3 20) (all 4 20)";
                     }
                     {
                       Add = TablePush;
