@@ -1715,13 +1715,13 @@ class Marker:
 
 		else:
                 	if orig.cyto is None:
-				orig.cyto = 'NULL'
+				cyto = 'NULL'
                 	else:
-                        	orig.cyto = '"' + orig.cyto + '"'
+                        	cyto = '"' + orig.cyto + '"'
 
 			cmd.append('%s values(%d,1,%s,"%s","%s","%s",%s) ' \
 	        	    % (INSERTMARKER, self.getKey(), self.getTypeKey(), self.getSymbol(), self.getName(), \
-			       self.getChr(), orig.cyto))
+			       self.getChr(), cyto))
 			cmd.append('%s values(%d,0,%f)' % (INSERTOFFSET, self.getKey(), orig.offset))
 			if not self.getSplit():
 				cmd.append('exec ACC_delete_byObject %d,"%s"' % (self.getKey(), MARKER))
