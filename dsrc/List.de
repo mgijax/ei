@@ -1,0 +1,40 @@
+--
+-- Name    : List.de
+-- Creator : lec
+-- List.de 08/04/98
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for List.d.
+--
+
+ClearList [source_widget : widget;		-- Clear LookupList
+	   clearkeys : boolean := true;];
+
+CopySelectionItem [];                           -- Copy Selected Item to Widget w/ Focus
+
+DeleteList [list : widget;];			-- Delete item from LookupList
+
+FindSelectionItem [];                           -- Find Selection Item in Selection List
+
+InsertKey [list : widget;			-- Insert key into LookupList
+           key : string;];
+
+InsertList [list : widget;			-- Insert item into LookupList
+            item : string;
+            key : string;];
+
+LoadList [list : widget;  			-- Load Lookup List; Allow Duplicate entries?
+	  allowDups : boolean := true;];
+
+ManageSelectionList [dialog : string;];		-- Manage Selection List Dialog
+	       
+UnManageSelectionList [dialog : widget;         -- UnManage Selection List Dialog
+                       top : widget;];
+	       
+SelectListItem [];			        -- Copy Selected List Item to Selection Text
+
+SelectLookupListItem [source_widget : widget;   -- LookupList Callback for Single Selection
+		      item_position : integer;  -- Copies Selected Item/Key to appropriate widget
+		      row : integer := -1;];    -- If row = -1 (default), then copy item to current row
+						-- If row = -2, then copy item to next available row

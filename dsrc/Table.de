@@ -1,0 +1,73 @@
+--
+-- Name    : Table.de
+-- Creator : lec
+-- Table.de 09/29/98
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for Table.d.
+--
+
+AddTableRow [table : widget;			-- Add Row to Table
+             position : integer := -1;
+	     numRows : integer := 1;];
+
+InsertTableRow [];				-- Add Row to Table based on current row
+
+AddTableColumn [table : widget;			-- Add Column to Table
+                position : integer := -1;
+	        numColumns : integer := 1;];
+
+ClearTable [table : widget;			-- Clear Table
+            clearCells : boolean := true;];
+
+CommitTableCellEdit [source_widget : widget;    -- Commit Table Cell Edit
+		     reason : integer := -1;
+                     row : integer;
+		     value_changed : boolean;];
+
+CopyOptionToTable [source_widget : widget;	-- Copy selected Option to Table Cell
+                   row : integer := -1;];
+
+DeleteTableRow [table : widget;		        -- Delete Row from Table
+                position : integer := -1;
+	        numRows : integer := 1;];
+
+DeleteTableColumn [table : widget;		-- Delete Column from Table
+                   position : integer := -1;
+	           numColumns : integer := 1;];
+
+DeleteLogicalTableRow [table : widget;];        -- Flag Current Row for Deletion
+
+DuplicateSeqNumInTable [table : widget;];	-- Detects if a duplicate Sequence Number exists in Table
+
+EditTableOrder [source_widget : widget;         -- Allows edit of Sequence Number in Table
+                traverse : boolean := true;];
+
+SetCellToX [source_widget : widget;		-- Set Table Cell Value to X
+            row : integer;
+	    column : integer;
+	    reason : integer;];
+
+SetXCellsToFlash [source_widget : widget;];	-- Set all X Cells to Flash
+
+TraverseToTableCell [table : widget;		-- Traverse To Cell
+		     row : integer := 0;
+		     column : integer := 0;];
+
+VerifyTable [source_widget : widget;];		-- Verify all required columns in Table are populated
+ 
+--
+-- Creating/Cloning Table cell/label widgets
+--
+
+CreateTableMenuWidget [menu : string;];  	-- CreateWidgetCallback for Option Menus
+ 
+DisplayTableMenuWidget [];			-- DisplayWidgetCallback for Option Menus
+ 
+SelectTableMenu [];				-- SelectCallback for Option Menus
+
+InsertTableLabelWidget [table : widget;         -- Insert Widget Template into Table Label
+                        template : string;
+		        column : integer;];
+

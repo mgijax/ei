@@ -1,0 +1,105 @@
+<HTML>
+<HEADER>
+<TITLE>
+Nomenclature Data Entry Documentation
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>
+Nomenclature Data Entry Documentation
+</H2>
+
+<H4>Introduction</H4>
+This document describes the procedures for entering records into the Nomenclature datatabase.
+<P>
+
+<H4>Entering a New Symbol</H4>
+<OL>
+<LI>Clear the form.
+<LI>Enter values using guidelines below.
+<LI>Click <I>Add</I>.
+</OL>
+<TABLE BORDER=1>
+<TR><ALIGN = left><TH>Field<TH>Value<TH>Notes
+<TR><TD>Event<TD><B>New</B><TD>required
+<TR><TD>Status<TD><B>Pending</B><TD>required; if this symbol is immediately ready for Broadcast, then Status = Approved
+<TR><TD>Marker Type<TD><B>Gene, DNA Segment, Cytogenetic Marker, QTL</B><TD>required
+<TR><TD>Chromosome<TD><B>a valid Mouse chromosome</B><TD>required
+<TR><TD>Proposed Symbol<TD><B>Proposed Symbol</B>
+    <TD>required; system will check if this symbol already exists in Nomenclature or MGD
+<TR><TD>Submitted by<TD><B>Editor who submitted this Nomenclature request</B><TD>required
+<TR><TD>Proposed Name<TD>Proposed Name<TD>&nbsp;
+<TR><TD>EC Number<TD>Enzyme Commission number<TD>if available
+<TR><TD>Human Symbol<TD>Approved Symbol used by the Human Database<TD>if available
+<TR><TD>Author Name<TD>Symbol given by Author<TD>&nbsp;
+<TR><TD>Other Names<TD>Other names by which this symbol is known<TD>&nbsp;
+<TR><TD>Primary Reference<TD>Primary reference of symbol<TD>&nbsp;
+<TR><TD>Related References<TD>References related to symbol<TD>&nbsp;
+<TR><TD>Nomenclature Assistant Notes<TD>Nomenclature Assistant notes<TD>&nbsp;
+<TR><TD>Creation Date<TD>Date the record was entered<TD>automatically assigned by the system using current date
+</TABLE>
+
+<H4>Entering a Reserved Symbol</H4>
+<OL>
+<LI>Clear the form.
+<LI>Enter values using guidelines below.
+<LI>Click <I>Add</I>.
+</OL>
+<TABLE BORDER=1>
+<TR><ALIGN = left><TH>Field<TH>Value<TH>Notes
+<TR><TD>Event<TD><B>New</B><TD>required
+<TR><TD>Status<TD><B>Reserved</B><TD>required
+<TR><TD>Marker Type<TD><B>Gene, DNA Segment, Cytogenetic Marker, QTL</B><TD>required
+<TR><TD>Chromosome<TD><B>a valid Mouse chromosome</B><TD>required
+<TR><TD>Proposed Symbol<TD><B>Proposed Symbol</B>
+    <TD>required; system will check if this symbol already exists in Nomenclature or MGD
+<TR><TD>Submitted by<TD><B>Editor who submitted this Nomenclature request</B><TD>required
+<TR><TD>Proposed Name<TD>Proposed Name<TD>&nbsp;
+<TR><TD>Human Symbol<TD>Approved Symbol used by the Human Database<TD>&nbsp;
+<TR><TD>Author Name<TD>Symbol given by Author<TD>&nbsp;
+<TR><TD>Other Names<TD>Other names by which this symbol is known<TD>&nbsp;
+<TR><TD>Primary Reference<TD>Primary reference of symbol<TD>&nbsp;
+<TR><TD>Related References<TD>References related to symbol<TD>&nbsp;
+<TR><TD>Nomenclature Assistant Notes<TD><B>"Reserved for " + Author's Name</B><TD>&nbsp;
+<TR><TD>Creation Date<TD>Date the record was entered<TD>automatically assigned by the system using current date
+</TABLE>
+
+<H4>Entering a Withdrawn Symbol</H4>
+<OL>
+<LI>Query for the original, approved Symbol.
+<LI>Modify the values using the guidelines below.
+<LI>Click <I>Modify</I>.
+<LI>If the new symbol(s) do not exist in MGD, then enter them into Nomen by following the
+    <I>Entering a New Symbol</I> procedures above.
+</OL>
+<TABLE BORDER=1>
+<TR><ALIGN = left><TH>Field<TH>Value<TH>Notes
+<TR><TD>Event<TD><B>Withdrawal</B><TD>required
+<TR><TD>Status<TD><B>Approved</B><TD>required
+<TR><TD>Marker Type<TD><B>Gene, DNA Segment, Cytogenetic Marker, QTL</B><TD>required
+<TR><TD>Chromosome<TD><B>a valid Mouse chromosome</B><TD>leave the Chromosome value alone
+<TR><TD>Proposed Symbol<TD><B>Proposed Symbol</B>
+    <TD>required; system will check if this symbol already exists in Nomenclature or MGD
+<TR><TD>Approved Symbol<TD><B>Symbol Approved by Nomenclature Committee</B><TD>required
+<TR><TD>Submitted by<TD><B>Editor who submitted this Nomenclature request</B><TD>required
+<TR><TD>Proposed Name<TD><B>Approved Name</B>
+     <TD>copy Approved Name into this field to save the original information
+<TR><TD>Approved Name<TD><B>withdrawn, = <I>new symbol</I></B>
+    <TD>if this is a split, then separate new symbols by comma + space (<I>withdrawn, = s1, s2, s3</I>)
+<TR><TD>Broadcast Date<TD><B>clear if a value currently exists</B>
+        <TD>this will be re-set when the symbol is Broadcast
+<TR><TD>EC Number<TD>Enzyme Commission number<TD>if available
+<TR><TD>Human Symbol<TD>Approved Symbol used by the Human Database<TD>&nbsp;
+<TR><TD>Author Name<TD>Symbol given by Author<TD>&nbsp;
+<TR><TD>Other Names<TD>Other names by which this symbol is known<TD>&nbsp;
+<TR><TD>Primary Reference<TD>Primary reference of symbol<TD>may stay the same or be changed
+<TR><TD>Related References<TD>References related to symbol<TD>&nbsp;
+<TR><TD>Nomenclature Assistant Notes<TD>Nomenclature Assistant notes<TD>&nbsp;
+<TR><TD>Creation Date<TD>Date the record was entered<TD>automatically assigned by the system using current date
+</TABLE>
+
+</BODY>
+</HTML>

@@ -1,0 +1,78 @@
+<HTML>
+<HEADER>
+<TITLE>
+GXD Expression Cache
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+ 
+<H2>GXD Expression Cache</H2>
+
+<H4>Introduction</H4>
+ 
+The GXD Expression Cache table (GXD_Expression) contains redundant information of expression 
+results which will be used to make the most common kinds of Web queries more efficient.
+<P>
+Every time an Assay record is modified (general Assay info, Probe/Antibody Preparation, In Situ 
+details, Gel details), the cache will be modified to reflect the changes in the given Assay.
+<P>
+
+<H4>The Algorithm</H4>
+The original algorithm is specified in the GXD Schema 1.0 document (1/22/1998), page 25.
+<P>
+<PRE>
+ If Assay is a Gel:
+   For each Gel Lane:
+     If Gel Lane is not a Control:
+       If any Gel Bands in the Gel Lane have strength != "Absent":
+         expressed = yes
+       Else:
+         expressed = no
+       For each Structure associated with Gel Lane:
+         Insert record into cache table
+ Else If Assay is InSitu:
+   For each Specimen:
+     For each Specimen Result:
+       For each Structure associated with Result:
+         If any Result has strength != "Absent" and != "Not Applicable":
+           expressed = yes
+         Else:
+           expressed = no
+         Insert record into cache table
+</PRE>
+
+<H4>Design & Implementation</H4>
+The load of the GXD Expression Cache table (GXD_Expression) will be handled by a stored procedure 
+executed from the insert/update trigger of the main Assay table (GXD_Assay). Every time an Assay 
+detail record is modified, the modification date of the main Assay table will be modified, which 
+will trigger the load of the Expression Cache table.
+<P>
+(The update of the main Assay table's modification date is not handled within individual 
+triggers because this would cause mulitiple calls to the main Assay table's triggers
+which are unnecessary. Instead, the Modify callback within the TeleUSE D code will handle this 
+update.)
+<P>
+The Assay detail tables which trigger an update to the Cache table are:
+<OL>
+<LI>GXD_AntibodyPrep 
+<LI>GXD_ProbePrep 
+<LI>GXD_Specimen 
+<LI>GXD_InSituResult 
+<LI>GXD_ISResultStructure 
+<LI>GXD_GelLane 
+<LI>GXD_GelRow 
+<LI>GXD_GelBand 
+<LI>GXD_GelLaneStructure 
+<LI>GXD_Genotype 
+</OL>
+<P>
+The stored procedure <I>GXD_loadCacheByAssay</I> will load the Expression cache table for a 
+given Assay key. 
+<P>
+The stored procedure <I>GXD_loadCacheAll</I> will load the Expression cache table for all 
+Assays in the database. 
+
+</BODY>
+</HTML>

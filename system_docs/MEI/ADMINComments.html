@@ -1,0 +1,52 @@
+<HTML>
+<HEADER>
+<TITLE>
+ADMINISTRATION EDITING INTERFACE: Design and Requirements - Table Comments
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+ 
+<H2>
+ADMINISTRATION EDITING INTERFACE: Design and Requirements - Table Comments
+</H2>
+
+<H4>Introduction</H4>
+The table and column comments are used to provide schema documentation for software engineers
+and other technical users of the database.  Some comments may include biological definitions, 
+but these are limited in scope.  Full biological documentation is available for GXD and will be 
+available for MGD in the future.
+<P>
+Table and column comments can also be viewed by using the
+<A HREF="http://kelso:4444/schema">MGI Schema Browser</A>.
+<P>
+
+<H4>Editing Form</H4>
+<A HREF="comments.gif">GIF image</A>
+
+<H4>Data Verifications</H4>
+<OL>
+</OL>
+ 
+<H4>Fields</H4>
+<OL>
+<LI>Table Name
+<LI>Table Description
+<LI>Column Name
+<LI>Column Description
+<LI>Column Example
+</OL>
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>All inserts and deletions to the Tables and Columns tables are performed by stored
+    procedures and triggers which are run nightly.  This is to insure these table records
+    are synchronized with the system <I>sysobjects</I> and <I>syscomments</I> tables.
+<P>
+<LI>Only modfications to Table Description, Column Description and Column Example are
+    allowed via the editing form.
+</OL>
+
+</BODY>
+</HTML>

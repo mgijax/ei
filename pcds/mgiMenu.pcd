@@ -1,0 +1,327 @@
+Module: mgiMenu
+{
+      autoCuil = False;
+      dDialogFile = "mgimenus_dlg.d";
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Tue Dec  8 14:01:46 1998";
+        {
+          MenuCascade = XmCascadeButton;
+          Group: Widget
+            background = Thistle;
+          Group: Control
+            vip_x = 135;
+            vip_y = 30;
+        }
+        {
+          MenuPulldown = XmPulldownMenu;
+          Group: Widget
+            background = Thistle;
+          Group: Control
+            vip_x = 45;
+            vip_y = 30;
+        }
+        {
+          MenuPush = XmPushButton;
+          Group: Widget
+            traversalOn = False;
+            background = Thistle;
+          Group: Control
+            vip_x = 45;
+            vip_y = 140;
+        }
+        {
+          MenuToggle = XmToggleButton;
+          Group: Widget
+            selectColor = Red;
+            visibleWhenOff = True;
+            background = Thistle;
+          Group: Control
+            vip_x = 135;
+            vip_y = 85;
+        }
+        {
+          MenuBar = XmMenuBar;
+          Group: Widget
+            spacing = 30;
+            background = Thistle;
+          Group: Control
+            vip_x = 45;
+            vip_y = 85;
+        }
+        {
+          File = MenuCascade;
+          Group: Control
+            vip_x = 135;
+            vip_y = 195;
+              Popups:
+              {
+                FilePulldown = MenuPulldown : mgiMenu;
+                    {
+                      Exit = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Exit";
+                        accelerator = "Ctrl<Key> x";
+                        mnemonic = x;
+                    }
+              }
+        }
+        {
+          MainMenu = MenuBar;
+          Group: Widget
+            menuHelpWidget = Help;
+          Group: Control
+            vip_x = 45;
+            vip_y = 250;
+              {
+                File = File : mgiMenu;
+              }
+              {
+                Commands = Commands : mgiMenu;
+              }
+              {
+                Edit = Edit : mgiMenu;
+              }
+              {
+                View = View : mgiMenu;
+              }
+              {
+                Reports = MenuCascade;
+                Group: Widget
+                  activateCallback = "C: TuManage(find = ReportDialog)";
+              }
+              {
+                Utilities = Utilities : mgiMenu;
+              }
+              {
+                Help = Help : mgiMenu;
+              }
+        }
+        {
+          View = MenuCascade;
+          Group: Control
+            vip_x = 135;
+            vip_y = 140;
+              Popups:
+              {
+                ViewPulldown = MenuPulldown : mgiMenu;
+                    {
+                      Strain = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "Strain Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"StrainDialog\")";
+                    }
+                    {
+                      Tissue = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "Tissue Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"TissueDialog\")";
+                    }
+                    {
+                      Cross = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "Cross Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"CrossDialog\")";
+                    }
+                    {
+                      RI = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "RI Set Listing";
+                        activateCallback = "D:ManageSelectionList(dialog = \"RIDialog\")";
+                    }
+              }
+        }
+        {
+          Commands = MenuCascade;
+          Group: Control
+            vip_x = 45;
+            vip_y = 195;
+              Popups:
+              {
+                CommandsPulldown = MenuPulldown : mgiMenu;
+                    {
+                      Search = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Search,\nD:GoHome";
+                        accelerator = " Ctrl<Key>s";
+                        mnemonic = S;
+                    }
+                    {
+                      Modify = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:VerifyEdit(mode = 1),\nD:Modify,\nD:GoHome";
+                        accelerator = " Ctrl<Key>m";
+                        mnemonic = M;
+                    }
+                    {
+                      Add = MenuPush : mgiMenu;
+                      Group: Widget
+                        accelerator = " Ctrl<Key>a";
+                        activateCallback = "D:VerifyEdit(mode = 2),\nD:Add,\nD:GoHome";
+                        mnemonic = A;
+                    }
+                    {
+                      Delete = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:VerifyEdit(mode = 3),\nD:GoHome";
+                        accelerator = " Ctrl<Key>d";
+                        mnemonic = D;
+                    }
+                    {
+                      separator1 = XmSeparator;
+                    }
+                    {
+                      Clear = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Clear";
+                        accelerator = " Ctrl<Key>c";
+                        mnemonic = C;
+                        labelString = "Clear All";
+                    }
+                    {
+                      Clear1 = MenuPush : mgiMenu;
+                      Group: Widget
+                        sensitive = False;
+                    }
+                    {
+                      Clear2 = MenuPush : mgiMenu;
+                      Group: Widget
+                        sensitive = False;
+                    }
+                    {
+                      separator2 = XmSeparator;
+                    }
+                    {
+                      Previous = MenuPush : mgiMenu;
+                      Group: Widget
+                        accelerator = " Ctrl<Key>p";
+                        activateCallback = "D:Previous,\nD:GoHome";
+                        mnemonic = P;
+                    }
+                    {
+                      Next = MenuPush : mgiMenu;
+                      Group: Widget
+                        accelerator = " Ctrl<Key>n";
+                        activateCallback = "D:Next,\nD:GoHome";
+                        mnemonic = N;
+                    }
+              }
+        }
+        {
+          GXDModules = MenuCascade;
+          Group: Widget
+            labelString = Modules;
+          Group: Control
+            vip_x = 135;
+            vip_y = 250;
+              Popups:
+              {
+                ModulesPulldown = MenuPulldown : mgiMenu;
+                    {
+                      Antigen = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Antigen";
+                        labelString = Antigens;
+                    }
+                    {
+                      Antibody = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Antibody";
+                        labelString = Antibodies;
+                    }
+                    {
+                      Image = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Image";
+                        labelString = Images;
+                    }
+                    {
+                      Assay = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Assay";
+                        labelString = Assays;
+                    }
+                    {
+                      IndexStage = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:IndexStage";
+                        labelString = "GXD Index/Stages";
+                    }
+              }
+        }
+        {
+          Edit = MenuCascade;
+          Group: Control
+            vip_x = 135;
+            vip_y = 305;
+              Popups:
+              {
+                EditPulldown = MenuPulldown : mgiMenu;
+              }
+        }
+        {
+          Help = MenuCascade;
+          Group: Control
+            vip_x = 45;
+            vip_y = 360;
+              Popups:
+              {
+                HelpPulldown = MenuPulldown : mgiMenu;
+              }
+        }
+        {
+          MGDModules = MenuCascade;
+          Group: Widget
+            labelString = Modules;
+          Group: Control
+            vip_x = 45;
+            vip_y = 305;
+              Popups:
+              {
+                ModulesPulldown = MenuPulldown : mgiMenu;
+                    {
+                      Reference = MenuPush : mgiMenu;
+                      Group: Widget
+                        activateCallback = "D:Reference";
+                        labelString = References;
+                    }
+                    {
+                      Marker = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = Markers;
+                        activateCallback = "D:Marker";
+                    }
+                    {
+                      MolecularSegment = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = "Molecular Segments";
+                    }
+                    {
+                      Homology = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = Homology;
+                        activateCallback = "D:Homology";
+                    }
+                    {
+                      MLDP = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = Mapping;
+                    }
+                    {
+                      MLC = MenuPush : mgiMenu;
+                      Group: Widget
+                        labelString = MLC;
+                    }
+              }
+        }
+        {
+          Utilities = MenuCascade;
+          Group: Control
+            vip_x = 129;
+            vip_y = 359;
+              Popups:
+              {
+                UtilitiesPulldown = MenuPulldown : mgiMenu;
+              }
+        }
+}
+

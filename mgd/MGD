@@ -1,0 +1,15 @@
+MGD*background:	Grey
+MGD*fontList:	"fixed"
+*XmText.translations: #override\n\
+ 	<Key>osfDelete:   delete-previous-character()\n\
+        <Key>F3:          copy-clipboard()\n\
+        <Key>F4:          paste-clipboard()\n\
+        <Key>L6:          copy-clipboard()\n\
+        <Key>L8:          paste-clipboard()\n
+*XmTextField.translations: #override\n\
+ 	<Key>osfDelete:   delete-previous-character()\n\
+        <Key>Delete:      delete-previous-character()\n\
+        <Key>F3:          copy-clipboard()\n\
+        <Key>F4:          paste-clipboard()\n\
+        <Key>L6:          copy-clipboard()\n\
+        <Key>L8:          paste-clipboard()\n

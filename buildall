@@ -1,0 +1,26 @@
+#!/bin/ksh
+#
+# Builds all EI apps as compiled applications
+# (as is typically done prior to a release). Progress of build
+# is sent to stdout and a logfile.
+#
+# Usage: buildall 
+# 
+# Assumes: Must be executed in the same directory as the application
+#          target directories, mgd, gxd, etc. 
+#
+# Output: buildall.log contains report of stdout messages
+#         buildall.errs contains report of stderr messages
+
+REMFILES="*.o *.c *.do *.ui"
+apps="mgd gxd mgiadmin nomen"
+
+for app in $apps 
+do
+   echo "BUILDING $app"
+   cd $app
+   uxb clean
+   \rm -f $REMFILES $app
+   buildapp compiled
+   cd ..
+done 1> buildall.log 2> buildall.errs

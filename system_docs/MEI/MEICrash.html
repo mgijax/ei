@@ -1,0 +1,192 @@
+<HTML><HEAD>
+<TITLE>MGI Editorial Interface Crash Tracking</TITLE>
+</HEAD>
+<BODY>
+
+<CENTER>
+<H1>MGI Editoral Interface Crash Tracking</H1>
+<H4>Click RELOAD on your browser to make sure you are looking at the latest version.</H4>
+</CENTER> <HR NOSHADE>
+
+<OL>
+<LI>01/13/1999
+    <P>Debbie informs me that Paul performed some hardware maintenance on her Mac
+       and her crashing problems have ceased.
+<P>
+<LI>01/21/1999
+    <P>Mike Sasner informs me that his Mac crashes even when he is not in the editorial
+       interface.  I opened up TR 292 to ask Paul to take a look at his MacIntosh.
+<P>
+</OL>
+
+<TABLE BORDER=1>
+<CAPTION>MGD Editorial Interface</CAPTION>
+<TR ALIGN=left><TH>Crash<TH>Date<TH>Notes
+
+<TR>
+<TD>User was tabbing thru Date field in Reference form.
+<TD>11/16/1998; mgm
+<TD>The mgi_year routine was passing a const char* which was then being modified within the routine. 
+    <BR><BR>Still crashing. Remove call to translation VerifyReferenceDate to see if problem goes away. 
+    <BR><BR>Removing callback VerifyReferenceDate seems to have fixed this problem. More investigation 
+        needed as to why this callback is causing a core dump. 
+
+<TR>
+<TD>User was clicking randomly in the Mapping form.
+<TD>11/??/1998; jjm
+<TD>Core shows crash during call to <CODE>XtSetValues</CODE>.
+
+<TR>
+<TD>User was entering a Marker symbol in the Marker form.
+<TD>11/23/1998; djr
+<TD>Core shows crash during call to <CODE>XtSetValues</CODE>.
+
+<TR>
+<TD>Homology form active; Marker form active;  
+    Query on symbol Cbr3, click in Chr Option list and scrolling down thru Chr options.
+<TD>11/25/1998; djr
+<TD>Core shows crash during call to <CODE>XtSetValues</CODE>.
+
+<TR>
+<TD>User was entering a Marker symbol in the Marker form and was scrolling in the Chr option menu.
+<TD>11/30/1998; djr
+<TD>Core shows crash during call to <CODE>XtIsSubClass</CODE>.
+
+<TR>
+<TD>User was scrolling in the Chr option menu.
+<TD>12/02/1998; djr
+<TD>Core shows crash during call to <CODE>find_widget</CODE>.
+
+<TR>
+<TD>User deleted a Parent Clone Accession ID and tabbed out of the field.
+<TD>12/03/1998; djr
+<TD>Core shows crash during call to <CODE>XtDisplay</CODE>.
+
+<TR>
+<TD>User was scrolling in the Chr option menu.
+<TD>12/04/1998; djr
+<TD>Core shows crash during call to <CODE>XtSetValues</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>12/09/1998; plg
+<TD>Core shows crash during call to <CODE>XtIsSubclass</CODE>.
+
+<TR>
+<TD>User was scrolling in the Chr option menu.
+<TD>12/09/1998; djr
+<TD>Core shows crash during call to <CODE>XtSetValues</CODE>.
+
+<TR>
+<TD>Selecting the JAX BSS cross from the cross list
+<TD>12/11/1998; plg
+<TD>Core shows crash during call to <CODE>XtDisplay</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>12/15/1998; plg
+<TD>Core shows crash during call to <CODE>dbcanquery</CODE>.
+
+<TR>
+<TD>New Chr option menu implementation...
+<TD>12/21/1998; djr
+<TD>Core shows crash during call to <CODE>XtIsSubclass</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>01/19/1999; mlp
+<TD>Core shows crash during call to <CODE>dbcanquery</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>02/03/1999; plg
+<TD>Core shows crash during call to <CODE>XtDisplay</CODE>.
+
+<TR>
+<TD>Had Mapping Cross1 of J:44483 open trying to repair an apparent broken link to 
+    the JAX BSS panel.  Selected cross field, selected JAX BSS cross from view list,
+    JAX BSS + JAX BSB**(??) briefly appeared in the cross box and then the
+    editing screen crashed.
+<TD>02/17/1999; jjm
+<TD>Core shows crash during call to <CODE>ConstraintGetValuesHook</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>03/08/1999; jjm
+<TD>Core shows crash during call to <CODE>XDefineCursor</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>03/08/1999; neb
+<TD>Core shows crash during call to <CODE>XDefineCursor</CODE>.
+
+<TR>
+<TD>Selecting cross from view list.
+<TD>03/08/1999; jjm
+<TD>Core shows crash during call to <CODE>XtDisplay</CODE>.
+
+<TR>
+<TD>Entering number into Parent Clone Accession ID on Molecular Segment form and TABBING...
+<TD>03/29/1999; neb
+<TD>Core shows crash during call to <CODE>XtDisplay</CODE>.
+
+</TABLE>
+
+<HR NOSHADE>
+<TABLE BORDER=1>
+<CAPTION>GXD Editorial Interface</CAPTION>
+<TR ALIGN=left><TH>Crash<TH>Date<TH>Notes
+
+<TR>
+<TD>&nbsp;
+<TD>11/24/1998; dab
+<TD>Core shows crash during call to <CODE>XtIsSubclass</CODE>.
+
+<TR>
+<TD>Was in the Assay form and tried to move over to an open Image form.
+<TD>11/30/1998; jms; 11:15AM
+<TD>Core shows crash during call to <CODE>XtIsSubclass</CODE>.
+
+<TR>
+<TD>Assay form; entered J:, tabbed; searching for Assay records
+<TD>11/30/1998; jms; 1:36PM
+<TD>Core shows crash during call to <CODE>XmListDeselectAllItems</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>12/04/1998; jms
+<TD>Core shows crash during call to <CODE>XmListDeselectAllItems</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>12/04/1998; jms
+<TD>Core shows crash during call to <CODE>XtIsSubClass</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>12/08/1998; jms
+<TD>Core shows crash during call to <CODE>XmListDeselectAllItems</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>01/20/1999; dab
+<TD>Core shows crash during call to <CODE>XmListDeselectAllItems</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>01/20/1999; jms
+<TD>Core shows crash during call to <CODE>_XmGetWidgetExtData</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>01/20/1999; dab
+<TD>Core shows crash during call to <CODE>XmListDeselectAllItems</CODE>.
+
+<TR>
+<TD>&nbsp;
+<TD>02/03/1999; dph
+<TD>Core shows crash during call to <CODE>XmListDeselectAllItems</CODE>.
+
+</TABLE>
+
+</BODY></HTML>

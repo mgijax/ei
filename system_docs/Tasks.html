@@ -1,0 +1,75 @@
+<HTML>
+<HEADER>
+<TITLE>
+Lori's Tasks
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H3>Lori's Tasks</H3>
+
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Task<TH>Documentation<TH>Backup
+
+<TR><TD>Editing Interfaces:
+    <UL>
+    <LI>MGD
+    <LI>GXD
+    <LI>MGI Admin
+    <LI>Nomen
+    </UL>
+<TD><UL>
+    <LI><A HREF="http://kelso:4444/~lec/development/MEI/MEI.html">MGI EDITING INTERFACE: Design and Requirements</A>
+    <LI><A HREF="http://kelso:4444/~lec/development/MGIREADME.html">MGI EDITING INTERFACE - Overview</A> (includes information on TeleUSE and XRT licensing)
+    <LI><A HREF="http://kelso:4444/~lec/development/TeleUSEXRT.html">TeleUSE/XRT Integration</A>
+    </UL>
+<TD>Geoff
+
+<TR><TD>SE Triage
+<TD><A HREF="http://kelso:4444/~lec/development/SETriage.html">SE Triage Procedures</A>
+<TD>Geoff, Jon
+
+<TR><TD>Custom SQL
+<TD><A HREF="http://kelso:4444/~lec/development/SQLRequests.html">Custom SQL Request Procedures</A>
+<TD>Rick, John
+
+<TR><TD>GDB/RatMap Accession Loads
+<TD><A HREF="http://kelso:4444/~lec/development/MEI/MEIHomologyLoad.html">MGI Homology Loads</A>
+<TD>Rick
+
+<TR><TD>Nomenclature Updates (Broadcast)
+<TD><A HREF="http://kelso:4444/~lec/development/MEI/MEIBroadcast.html">MGI: Marker Broadcast</A>
+<TD>Geoff
+
+<TR><TD>Reports
+<TD><A HREF="http://kelso:4444/~lec/development/MEI/MEIReports.html">MGI: Nightly Reports</A>
+<TD>Geoff
+
+<TR><TD>Report Maintainance
+<TD><A HREF="http://kelso:4444/~lec/development/ReportMaint.html">Report Maintenance</A>
+<TD>Geoff
+
+<TR><TD>Checking Titan Processes
+<TD><A HREF="http://kelso:4444/~lec/development/CheckTitan.html">Check Titan Processes</A>
+<TD>Geoff
+
+</TABLE>
+
+<H3>Some Common Bug Reports/Solutions</H3>
+
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Bug<TH>Solution
+<TR><TD>GXD Assays not displaying on the Web
+    <TD>Anatomical Structures probably not defined, therefore records are not loaded into 
+	GXD_Expression (cache table).  See QC report 
+	<A HREF="http://kelso:4444/~lec/mgireport/GXD_NotInCache.sql.rpt">GXD Assays missing from GXD Expression Cache Table</A> 
+
+<TR><TD>GDB or RATMAP Accession number not appearing on the Web
+    <TD>The Homology load has probably not been run since the Homology data was added to the database.
+	See <A HREF="http://kelso:4444/~lec/development/MEI/MEIHomologyLoad.html">MGI Homology Loads</A>.
+</TABLE>
+
+</BODY>
+</HTML>

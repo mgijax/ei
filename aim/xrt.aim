@@ -1,0 +1,28 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <Xm/XrtTable.h>
+	TYPE 
+	     "int"           <--> integer;
+	     "Widget"        <--> widget;
+	     "char *"        <--> string;
+             "char **"       <--> string_list;
+	     "Boolean"	     <--> boolean;
+	     "void **"	     <--> opaque;
+
+	ENTRY 
+
+	 XrtTblAddRows("Widget", "int", "int", "Boolean", "void **", "int")	: "Boolean";
+	 XrtTblAddColumns("Widget", "int", "int", "Boolean", "void **", "int")	: "Boolean";
+	 XrtTblCancelEdit("Widget", "Boolean")					: "Boolean";
+	 XrtTblCommitEdit("Widget", "Boolean")					: "Boolean";
+	 XrtTblDeleteRows("Widget", "int", "int", "Boolean")			: "Boolean";
+	 XrtTblDeleteColumns("Widget", "int", "int", "Boolean")			: "Boolean";
+	 XrtTblTraverseToCell("Widget", "int", "int", "Boolean")		: "Boolean";
+	 XrtTblIsCellTraversable("Widget", "int", "int")			: "Boolean";
+	 XrtTblIsCellVisible("Widget", "int", "int")				: "Boolean";
+	 XrtTblGetWidgetByRowCol("Widget", "int", "int")			: "Widget";
+	 XrtTblMakeCellVisible("Widget", "int", "int")				: "Boolean";
+  ENDL
+ENDC
+

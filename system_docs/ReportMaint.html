@@ -1,0 +1,175 @@
+<HTML>
+<HEADER>
+<TITLE>
+Report Maintenance
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>
+Report Maintenance
+</H2>
+
+Reports are generated Monday-Friday by a DBA cron (see John Gilbert) using the 
+<CODE>titan:/export/mgd/nightly_reports</CODE> script.  
+See <A HREF="MEI/MEIReports.html">MGI: Nightly Reports</A> document for more information.
+<P>
+Within <CODE>titan:/export/mgd/nightly_reports</CODE> are the definitions of the public
+($PUBLIC_RPTS) and private ($INTERNAL_RPTS) reports.
+<P>
+To check the internal Quality Control Reports (private):
+<OL>
+<LI>Go the the <CODE>~lec/public_html/mgireport</CODE> directory and list the files
+    sorting by time:
+    <PRE>
+    > cd ~lec/public_html/mgireport
+    > ls -lt
+    -rw-rw-r--   1 lec      progs      47205 Mar 26 22:22 NOMEN_NoPrimaryRef.sql.rpt
+    -rw-rw-r--   1 lec      progs      66756 Mar 26 22:22 NOMEN_Homology.sql.rpt
+    -rw-rw-r--   1 lec      progs       5757 Mar 26 22:22 NOMEN_CheckMGD.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    167095 Mar 26 22:22 PRB_TissueCell.sql.rpt
+    -rw-rw-r--   1 lec      progs        364 Mar 26 22:22 PRB_TissueNonStd.sql.rpt
+    -rw-rw-r--   1 sybase   sybase     27443 Mar 26 22:22 PRB_Tissue.sql.rpt
+    -rw-rw-r--   1 lec      progs       5414 Mar 26 22:22 PRB_StrainDup.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    171938 Mar 26 22:22 PRB_StrainNonStd.sql.rpt
+    -rw-rw-r--   1 lec      progs      69316 Mar 26 22:22 PRB_StrainNonStdUpdate.sql.rpt
+    -rw-rw-r--   1 sybase   sybase   2051702 Mar 26 22:22 PRB_Strain.sql.rpt
+    -rw-rw-r--   1 sybase   sybase       432 Mar 26 22:22 PRB_Reference.sql.rpt
+    -rw-rw-r--   1 lec      progs     488235 Mar 26 22:22 PRB_NoGenBank.sql.rpt
+    -rw-rw-r--   1 sybase   sybase      6631 Mar 26 22:19 PRB_Marker.sql.rpt
+    -rw-rw-r--   1 lec      progs     112871 Mar 26 22:17 PRB_CellLine.sql.rpt
+    -rw-rw-r--   1 lec      progs      10307 Mar 26 22:17 MRK_Withdrawn.sql.rpt
+    -rw-rw-r--   1 lec      progs       9540 Mar 26 22:17 MRK_Species.sql.rpt
+    -rw-rw-r--   1 lec      progs        825 Mar 26 22:17 MRK_Reserved.sql.rpt
+    -rw-rw-r--   1 lec      progs      32827 Mar 26 22:17 MRK_References.sql.rpt
+    -rw-rw-r--   1 lec      progs        925 Mar 26 22:16 MRK_RefNo15839.sql.rpt
+    -rw-rw-r--   1 lec      progs       8751 Mar 26 22:15 MRK_RefMLC.sql.rpt
+    -rw-rw-r--   1 lec      progs       3808 Mar 26 22:15 MRK_Ref15839.sql.rpt
+    -rw-rw-r--   1 lec      progs       4114 Mar 26 22:14 MRK_Re.sql.rpt
+    ...
+    -rw-rw-r--   1 sybase   sybase       347 Mar 25 22:12 MLC_Allele.sql032599.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 24 22:10 MLC_Allele.sql032499.rpt
+    -rw-rw-r--   1 sybase   sybase       388 Mar 23 22:11 MLC_Allele.sql032399.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 22 22:16 MLC_Allele.sql032299.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 19 23:01 MLC_Allele.sql031999.rpt
+    -rw-rw-r--   1 sybase   sybase       347 Mar 18 23:00 MLC_Allele.sql031899.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 17 22:53 MLC_Allele.sql031799.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 16 22:52 MLC_Allele.sql031699.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 15 22:58 MLC_Allele.sql031599.rpt
+    -rw-rw-r--   1 lec      progs        388 Mar 12 22:55 MLC_Allele.sql031299.rpt
+    ...
+    lrwxrwxrwx   1 lec      progs         29 Feb 25 08:47 NOMEN -> /export/nomen/mgireport/NOMEN
+    lrwxrwxrwx   1 lec      progs         37 Jan 22 15:40 src -> /home/lec/mgd/sybase/mgi_prod/reports
+    lrwxrwxrwx   1 lec      progs         28 Jan 22 15:40 SPLITS -> /export/mgd/mgireport/SPLITS
+    lrwxrwxrwx   1 lec      progs         30 Jan 22 15:40 TRANSFER -> /export/mgd/mgireport/TRANSFER
+    lrwxrwxrwx   1 lec      progs         31 Jan 22 15:40 BROADCAST -> /export/mgd/mgireport/BROADCAST
+    lrwxrwxrwx   1 lec      progs         30 Jan 22 15:40 HOMOLOGY -> /export/mgd/mgireport/HOMOLOGY
+    </PRE>
+<P>
+<LI>All reports, except for a grouping of <I>MLC_Allele.sql?????.rpt</I> reports and
+    the <I>src</I>, <I>NOMEN</I>, <I>SPLITS</I>, <I>TRANSFER</I>, <I>BROADCAST</I> and 
+    <I>HOMOLOGY</I> directories, should contain a recent time stamp.
+<P>
+<LI>At the beginning of a new month, remove the previous month's <I>MLC_Allele.sql?????.rpt</I> reports.
+    <PRE>
+    -rw-rw-r--   1 sybase   sybase       347 Mar 25 22:12 MLC_Allele.sql032599.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 24 22:10 MLC_Allele.sql032499.rpt
+    -rw-rw-r--   1 sybase   sybase       388 Mar 23 22:11 MLC_Allele.sql032399.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 22 22:16 MLC_Allele.sql032299.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 19 23:01 MLC_Allele.sql031999.rpt
+    -rw-rw-r--   1 sybase   sybase       347 Mar 18 23:00 MLC_Allele.sql031899.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 17 22:53 MLC_Allele.sql031799.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 16 22:52 MLC_Allele.sql031699.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar 15 22:58 MLC_Allele.sql031599.rpt
+    -rw-rw-r--   1 lec      progs        388 Mar 12 22:55 MLC_Allele.sql031299.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar  9 23:05 MLC_Allele.sql030999.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar  8 23:02 MLC_Allele.sql030899.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar  5 22:55 MLC_Allele.sql030599.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar  4 22:55 MLC_Allele.sql030499.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar  3 22:56 MLC_Allele.sql030399.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar  2 22:55 MLC_Allele.sql030299.rpt
+    -rw-rw-r--   1 sybase   sybase       308 Mar  1 23:01 MLC_Allele.sql030199.rpt
+    </PRE>
+<P>
+</OL>
+
+<HR>
+
+To check the public reports:
+<OL>
+<LI>Go the the <CODE>titan:/export/mgd/mgireport</CODE> directory and list the files
+    sorting by time (a copy of all of the *.rpt files should also exist in the
+    <CODE>hobbes:/export/ftp/pub/informatics/reports</CODE> directory):
+    <PRE>
+    drwxrwxr-x   2 lec      progs      12288 Mar 28 00:00 HOMOLOGY
+    -rw-rw-r--   1 sybase   sybase     25634 Mar 26 22:00 PRB_TissueMouse.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    572669 Mar 26 21:58 PRB_Strain2.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    572651 Mar 26 21:57 PRB_Strain1.sql.rpt
+    -rw-rw-r--   1 sybase   sybase     58874 Mar 26 21:55 MRK_Recent.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    286709 Mar 26 21:55 MRK_MLC.rpt
+    -rw-rw-r--   1 sybase   sybase     72757 Mar 26 21:55 MRK_Mutants3.sql.rpt
+    -rw-rw-r--   1 sybase   sybase     72757 Mar 26 21:55 MRK_Mutants1.sql.rpt
+    -rw-rw-r--   1 sybase   sybase     72754 Mar 26 21:55 MRK_Mutants2.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    223277 Mar 26 21:55 MRK_SwissProt.rpt
+    -rw-rw-r--   1 lec      progs     396276 Mar 26 21:55 MRK_Sequence.rpt
+    -rw-rw-r--   1 sybase   sybase   1892743 Mar 26 21:54 MRK_Dump2.rpt
+    -rw-rw-r--   1 sybase   sybase    461101 Mar 26 21:54 MRK_Dump1.rpt
+    -rw-rw-r--   1 sybase   sybase   1950778 Mar 26 21:54 MRK_List4.sql.rpt
+    -rw-rw-r--   1 sybase   sybase   2279080 Mar 26 21:54 MRK_List3.sql.rpt
+    -rw-rw-r--   1 sybase   sybase   1950600 Mar 26 21:54 MRK_List2.sql.rpt
+    -rw-rw-r--   1 sybase   sybase   2278902 Mar 26 21:53 MRK_List1.sql.rpt
+    -rw-rw-r--   1 sybase   sybase   2557420 Mar 26 21:53 MRK_JointATCC.rpt
+    -rw-rw-r--   1 sybase   sybase      1884 Mar 26 21:53 MGD_Stats.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    179329 Mar 26 21:52 HMD_Rat4.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    179327 Mar 26 21:51 HMD_Rat3.sql.rpt
+    -rw-rw-r--   1 lec      progs     254012 Mar 26 21:51 HMD_Rat2.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    253636 Mar 26 21:51 HMD_Rat1.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    544819 Mar 26 21:50 HMD_RatUnofficial.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    439767 Mar 26 21:50 HMD_Human4.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    439767 Mar 26 21:49 HMD_Human3.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    622591 Mar 26 21:49 HMD_Human2.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    622591 Mar 26 21:48 HMD_Human1.sql.rpt
+    -rw-rw-r--   1 sybase   sybase    210067 Mar 26 21:48 GDB_Accession.rpt
+    drwxrwxrwx   6 lec      progs       1536 Mar 26 08:29 BROADCAST
+    drwxrwxrwx   2 lec      progs       6656 Mar 10 13:21 TRANSFER
+    drwxrwxr-x   2 lec      progs        512 Dec 10 07:50 SPLITS
+    </PRE>
+<P>
+<LI>All reports, except perhaps for the <I>SPLITS</I>, <I>TRANSFER</I>, <I>BROADCAST</I> and 
+    <I>HOMOLOGY</I> directories, should contain a recent time stamp.
+<P>
+</OL>
+
+<HR>
+
+If any reports do not have a current time stamp, then they can be generated manually:
+<OL>
+<LI>Go to the Production installation directory and run the reports against the Production database:
+    <PRE>
+    titan> cd /export/mgd
+    titan> setenv DSQUERY MGD
+    titan> setenv MGD mgd
+    titan> report.sql $DSQUERY $MGD
+    titan> report.py
+    </PRE>
+<P>
+<LI>The output files will be placed in your $HOME/mgireport directory.  Move the output reports
+    for private reports to <CODE>~lec/public_html/mgireport</CODE>:
+    <PRE>
+    titan> chmod 664 $HOME/mgireport/*.rpt
+    titan> mv $HOME/mgireport/*.rpt ~lec/public_html/mgireport
+    </PRE>
+<P>
+<LI>The output files will be placed in your $HOME/mgireport directory.  Copy the output reports
+    for public reports to <CODE>hobbes:/export/ftp/pub/informatics/reports</CODE>:
+    <PRE>
+    titan> chmod 664 $HOME/mgireport/*.rpt
+    titan> rcp $HOME/mgireport/*.rpt hobbes:/export/ftp/pub/informatics/reports
+    </PRE>
+<P>
+</OL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,206 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGD EDITING INTERFACE: Design and Requirements - Markers
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>
+MGD EDITING INTERFACE: Design and Requirements - Markers
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+The Markers constitute one of the backbones of the MGD database.  Virtually no data is entered into
+the MGD database without a Marker of some kind associated with it.
+<P>
+Markers usually make their way into MGD via the Nomenclature process.  Markers are <I>broadcast</I> from 
+the Nomenclature database to MGD via a broadcast file which is processed upon user request.
+The broadcast file handles processing of new symbols, modified symbols, and withdrawn symbols (including splits).
+Withdrawals due to the discovery that one symbol is actually an allele of another symbol are usually processed directly
+within the Marker form, but can also be part of a broadcast file.  For more information regarding the
+Nomenclature database and the Broadcast process, refer to:
+	<UL>
+	<LI><A HREF="MEINomen.html">Nomenclature Requirements</A>
+	<LI><A HREF="MEIBroadcast.html">Broadcast Requirements</A>
+	</UL>
+<P>
+
+<H4>Editing Form</H4>
+<A HREF="marker.gif">GIF Image</A>
+
+<H4>Accession Numbers</H4>
+<OL>
+<LI>MGI:, system-generated
+<LI>EC, cross reference to Enzyme Commission number at ExPASy
+<LI>SWISS-PROT, cross reference to SWISS-PROT database
+<LI>MGD-MRK, old-style MGI Marker Accession Numbers; retained for backwards compatibility
+</OL>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
+<P>
+<LI>Markers/Genes (see <A HREF="MEI.html#dataVerMarker">Data Verifications section on Markers/Genes</A>)
+	<UL>
+	<LI>Marker Histories may include withdrawn symbols
+	</UL>
+<P>
+<LI>Aliases
+	<UL>
+	<LI>If the Chromosome values of the current Symbol and the Alias do not match, then
+	    a warning is displayed to the user and the entry of the Alias is disallowed.
+	</UL>
+<P>
+<LI>Marker Type (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+	<UL>
+	<LI>Gene
+	<LI>DNA segment
+	<LI>Cytogenetic Marker
+	<LI>QTL
+	</UL>
+<P>
+<LI>Chromosome (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+	<UL>
+	<LI>1-19
+	<LI>X
+	<LI>Y
+	<LI>XY
+	<LI>UN (<I>unknown</I>)
+	<LI>MT (<I>mitochondrial</I>)
+	<LI>W (<I>withdrawn</I>)
+	<LI>RE (<I>reserved; reserved symbols are no longer entered into MGD, but some may still exist</I>)
+	</UL>
+<P>
+<LI>History Dates (see <A HREF="MEI.html#dataVerDate">Data Verifications section on Dates</A>)
+        <UL>
+        <LI>The History Date field must contain a valid Year in the format YYYY.  
+            Modifications denied on invalid entries.
+        </UL>
+<P>
+</OL>
+<P>
+
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Marker Type; (Gene, DNA Segment, QTL, etc.)
+	<LI>Symbol
+	<LI>Chromosome
+	<LI>Current Symbol
+	<LI>Offset
+	<LI>Name
+	<LI>History; Nomenclature history of the Marker symbol
+	</OL>
+<P>
+<LI>Not Required
+	<OL>
+	<LI>Cytogenetic Band
+	<LI>Chromosome Committee (CC) Offset
+	<LI>MIT Offset
+	<LI>Notes
+	<LI>Aliases
+	<LI>Allele Symbol/Name
+	<LI>Other Names; synonyms for the symbol. Some come from the Nomen database
+	    but most are direct communications from the Data editors and are entered
+	    manually.  
+	<LI>References; these References are additional References for the Marker which are not
+	    cross-referenced to this Marker in any other place in the database (Experiments, Homology,
+	    Expression, etc.)
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+<OL>
+<LI>Current Symbol; default is <I>Symbol</I>
+<LI>Offset (on add)
+	<UL>
+	<LI>If no MGD Offset is entered and chromosome = <I>RE</I>, then default is <I>-999.0</I>
+	<LI>If no MGD Offset is entered and chromosome = <I>UN</I>, then default is <I>-1.0</I>
+	<LI>If no MGD Offset is entered and chromosome != <I>RE</I>, then default is <I>-1.0</I>
+	</UL>
+<LI>History (on add); default History event is <I>Assigned</I>
+</OL>
+
+<H4>Deletions</H4>
+A Marker cannot be deleted if it is referenced by a:
+<OL>
+<LI>Experiment
+<LI>Molecular Probe & Segment
+<LI>Homology
+<LI>MLC entry
+<LI>Expression Assay
+</OL>
+
+<H4>Marker Broadcast</H4>
+Refer to the <A HREF="MEIBroadcast.html">MGI Marker Broadcast</A> document for complete details on the
+Broadcast process.
+
+<H4>Marker Transfer</H4>
+Refer to the <A HREF="MEIMarkerTransfer.html">MGI Marker Transfer</A> document for complete details on the
+Transfer process.
+
+<H4>Marker Breakpoint Split</H4>
+Refer to the <A HREF="MEIBreakpointSplit.html">MGI Breakpoint Split</A> document for complete details on the
+Breakpoint Split process.
+
+<H4>Allele Merge</H4>
+The Allele Merge process allows the user to merge two pre-existing Marker Allele Symbol 
+records into one Marker Allele Symbol record.
+<OL>
+<LI>Click on <A HREF="markerallelemerge.gif"><I>Utilities->Allele Merge</I></A> to
+    bring up the Allele Merge dialog.
+<LI>Enter the Marker Symbol in the <I>Marker</I> dialog field.  This field will be
+    verified.
+<LI>Enter the Old Allele Symbol in the <I>Old Allele Symbol</I> dialog field.
+    The Old Allele Symbol must currently exist as an Allele Symbol for the Marker Symbol.
+<LI>Enter the New Allele Symbol in the <I>New Allele Symbol</I> dialog field.
+    The New Allele Symbol must currently exist as an Allele Symbol for the Marker Symbol.
+<LI>Click <I>Process Merge</I> to process the merge.
+<LI>Click <I>Done</I> to return to the Marker editing form.
+</OL>
+
+<H4>Modifying Chromosome Values</H4>
+When modifications are made to the Chromosome value of the Marker, certain rules apply:
+<OL>
+<LI>If the Chromosome is being changed to <I>RE</I>, then set the Offset to <I>-999.0</I>.
+<LI>If the Chromosome is being changed to <I>UN</I>, then set the Offset to <I>-999.0</I>.
+<LI>If the Chromosome is being changed to <I>W</I>, then manage the Withdrawal dialog.
+<LI>If the Chromosome was <I>RE</I> and is now assigned, then set the Offset to <I>-1.0</I>.
+<LI>If the Chromosome was known and is changed to another known, then set the MGD and CC Offsets to <I>-1.0</I>.
+    However, if the Marker is an Anchor Locus, then the Anchor record must be deleted before the
+    Chromosome value can be modified.
+</OL>
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>If the current Chromosome value of a record is <I>W</I>, then the Chromosome value cannot be modified.
+<P>
+<P>
+<LI>Editing of the <I>#</I> column is implemented for the following tables:
+	<UL>
+	<LI>Marker History
+	</UL>
+<P>
+</OL>
+
+<H4>Triggers/Views/Stored Procedures for Marker tables (<I>MRK_</I>)</H4>
+<OL>
+<LI>Triggers ($SYBASE/admin/triggers):  <I>MRK.tr</I>, <I>MRK.drop</I>
+<LI>Views ($SYBASE/admin/views):  <I>MRK.view</I>
+<LI>Stored Procedures ($SYBASE/admin/procedures):  <I>MRK.pr, MRKXfer.pr</I>
+</OL>
+
+<H4>Related Documents</H4>
+<OL>
+<LI><A HREF = "MEICV.html">Lookups (controlled vocabulary)</A>
+</OL>
+
+<HR>
+
+</BODY>
+</HTML>

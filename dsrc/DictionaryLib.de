@@ -1,0 +1,22 @@
+--
+-- Name    : DictionaryLib.de
+-- Creator : 05/04/98
+-- DictionaryLib.de 05/04/98
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for DictionaryLib.d.
+--
+
+ 
+LoadStructureList [source_widget : widget;];	-- Load AD Structure Lookup List
+ 
+ModifyStructure [source_widget : widget;	-- Modify Structure records
+		 primaryID : integer;
+		 key : string;
+		 row : integer;];
+
+SelectStructure [];				-- Select Structure from Lookup List
+
+SetStructure [];				-- Select Structure in Lookup List based on current row
+

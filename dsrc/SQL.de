@@ -1,0 +1,52 @@
+--
+-- Name    : SQL.de
+-- Creator : lec
+-- SQL.de 02/12/99
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for SQL.d.
+--
+
+AddSQL [tableID : integer := 0;			-- Execute an Add
+	transaction : boolean := true;
+	cmd : string;
+	list : widget;
+        item : string;
+        key : widget;
+	row : integer;
+	column : integer;];
+
+DeleteSQL [tableID : integer := 0;		-- Execute a Delete
+	   key : string;
+           list : widget;];
+ 
+ExecSQL [cmd : string;				-- Execute an SQL command
+	 list : widget;];
+
+ModifySQL [source_widget : widget;		-- Execute a Modification
+	   cmd : string;
+	   list : widget;
+	   transaction : boolean := false;
+	   reselect : boolean := true;];
+
+ModifyNotes [source_widget : widget;		-- Modify/Add Notes
+	     tableID : integer;
+	     key : string;];
+
+Query [source_widget : widget;			-- Query Database Allowing Interruption
+       list_w : widget;
+       select : string;
+       table : integer;
+       rowcount : string;];
+
+QueryNoInterrupt [source_widget : widget;	-- Query Database w/out Interruption
+                  list_w : widget;
+                  select : string;
+                  table : integer;];
+
+QueryEnd [];					-- Things to do after Query event completes
+
+QueryDate [source_widget : widget;		-- Construct where clause from Date template
+	   tag : string := "";];
+

@@ -1,0 +1,88 @@
+<HTML>
+<HEADER>
+<TITLE>
+GXD EDITING INTERFACE: Design and Requirements - Images
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+ 
+<H2>
+GXD EDITING INTERFACE: Design and Requirements - Images
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+ 
+(This information has been extracted from the GXD Schema document) 
+<P>
+An image is associated with a reference and figure number within the reference, describes its format
+and (x,y) dimensions.  An image may have a caption and/or a legend.
+<P>
+In a publication, images are usually grouped into panels, where each panel is one figure.  Individual
+images within a panel are referred to as "panes".  Panes are usually labelled A, B, C, etc.  One
+scanning operation captures the entire panel.  One figure (panel) in a reference equals one image
+in the database.
+<P>
+Actual images (pixels) are not stored in MGI but are stored in the Pixel Image Database and 
+referenced by a Pixel Image Accession number.
+
+<H4>Editing Form</H4>
+<A HREF="geiImages.gif">GIF Image</A>
+
+<H4>Accession Numbers</H4>
+<OL>
+<LI>MGI:, system-generated
+<LI>MGI Image, cross reference to Pixel Image Database
+   <BR>Additional constraints:
+    <UL>
+    <LI>MGI Image accession numbers can only be added via the Pixel Image Database entry form.
+    <LI>MGI Image accession numbers can be deleted but not modified via the GEI.
+    <LI>One and only one MGI Image accession number can be assigned per GXD Image record.
+    </UL>
+</OL>
+ 
+<H4>Data Verifications</H4>
+<OL>
+<LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
+</OL>
+ 
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>J Number
+	<LI>Figure Label
+	<LI>Pane Label Field Type
+	</OL>
+<P>
+<LI>Not Required
+	<OL>
+	<LI>X Dimension
+	<LI>Y Dimension
+	<LI>Note or Legend
+	<LI>Copyright Note
+	<LI>Pane Label
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+None
+ 
+<H4>Deletions</H4>
+An Image cannot be deleted if it is referenced by one of the following objects: 
+<OL>
+<LI>Assay
+</OL>
+  
+<H4>Miscellaneous</H4>
+<OL>
+<LI>An Image record must exist even if the actual image is never scanned into the database.
+<P>
+<LI>When an MGI Image accession number is deleted, the X Dimension and Y Dimension fields
+    are nullified.
+</OL>
+
+</BODY>
+</HTML>

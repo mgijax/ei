@@ -1,0 +1,35 @@
+
+--
+-- Name    : DynamicLib.de
+-- Creator : lec
+-- DynamicLib.de 09/18/98
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for DynamicLib.d.
+--
+
+-- Initialize Option Menu
+InitOptionMenu [option : widget;];		-- Option Menu
+
+-- Add Child to Option Menu
+AddOptionChild [pulldown : widget;		-- Option Pulldown
+                searchValue : string;		-- Search Value
+		defaultValue : string;		-- Default Value
+		labelString : string;];		-- Label
+
+-- Delete Child from Option Menu
+DeleteOptionChild [pulldown : widget;		-- Option Pulldown
+		   key : string;];		-- Key value
+
+-- Modify Child in Option Menu
+ModifyOptionChild [pulldown : widget;		-- Option Pulldown
+		   key : string;		-- Key value
+		   labelString : string;];	-- Label
+
+-- Initialize DataSets
+InitDataSets [source_widget : widget;];
+
+-- Initialize ComboBox Menu
+InitComboMenu [option : widget;];		-- Combo Menu
+

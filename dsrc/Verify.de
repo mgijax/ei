@@ -1,0 +1,65 @@
+--
+-- Name    : Verify.de
+-- Creator : lec
+-- Verify.de 12/31/98
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for Verify.d.
+--
+
+VerifyEdit [mode : integer := 0;];
+
+VerifyAge :translation [source_widget : widget;
+                        ageMenu : string := "";];
+
+VerifyAllele :translation [verifyAdd : boolean := false;];
+
+VerifyAlleleAdd [];
+
+VerifyAntibodyType [];
+
+VerifyDate :translation [];
+
+VerifyFloat [];
+
+VerifyGelLaneControl [];
+
+VerifyGelRowUnits [];
+
+VerifyGenotype [];
+
+VerifyItem : translation [];
+
+VerifyItemAdd [];
+
+-- Verify that Marker is considered valid for a breakpoint split
+VerifyBreakpointMarker :translation [];
+
+VerifyMarker :translation [source_widget : widget;
+			   allowWithdrawn : boolean := false;
+			   verifyOtherSpecies : boolean := false;];
+
+VerifyMarkerChromosome :translation [];
+
+VerifyMarkerInTable :translation [];
+
+VerifyProbeHolder :translation [];
+
+VerifyReference :translation [];
+
+VerifySpecies :translation [];
+
+VerifyStrains [];
+
+VerifyStrengthPattern [];
+
+VerifyTissueAge :translation [];
+
+VerifyWesternBlot :translation [];
+
+VerifyYesNo [];
+
+WhichItem [];
+ 
+

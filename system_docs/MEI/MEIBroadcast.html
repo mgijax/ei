@@ -1,0 +1,336 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI: Marker Broadcast
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>MGI: Marker Broadcast</H2>
+
+<H4>Introduction</H4>
+The MGD Mouse Nomenclature Committee tracks the process of proposing, assigning and publicizing novel mouse 
+symbols via the Nomenclature database.
+<P>
+This process involves:
+<OL>
+<LI>Proposing the symbol.
+<LI>Approving the symbol.
+<LI>Broadcasting the symbol to the public.
+<LI>Broadcasting the symbol to the MGD database.
+</OL>
+
+This document discusses Step 4, the process by which the approved nomenclature symbols are broadcast to
+the MGD database so that they are available for use.
+<P>
+<B>NOTE:</B> The user must have the proper permissions to process the broadcast.  Inadequate
+   permissions can cause <B>MASSIVE</B> inconsistencies in the database.  Please check with
+   Lori before processing the broadcast if you have never processed one before.  The Broadcast
+   does not currently check for proper permissions before it begins processing.
+<P>
+<H4>What does the Broadcast update do?</H4>
+The broadcast process updates the master Marker table and, in some instances, propagates changes 
+throughout the rest of the database.  There are three types of Nomenclature events which the
+broadcast process handles:
+<OL>
+<LI>Withdrawals
+<LI>New Symbols
+<LI>Changes to Pending Symbols
+</OL>
+
+<P>
+Withdrawals are special cases and have to be handled with care.  There are several types of withdrawals:
+	<UL>
+	<LI>A single withdrawal occurs when more information is discovered about a symbol 
+	    and Nomenclature rules dictate different symbol nomenclature. Changes in 
+	    Nomenclature rules can also drive a symbol withdrawal. 
+	<P>
+	<LI>A single withdrawal occurs when two previously defined symbols are discovered
+	    to be the same entity.  One of the symbols is chosen as the approved symbol and
+	    the other symbol is withdrawn from use.
+	<P>
+	<LI>A single allele withdrawal occurs when a previously defined symbol is discovered
+	    to be an allele of another symbol.  An example is the <I>c</I> albino "gene"
+	    which was eventually discovered to be an allele of <I>Tyr</I>.
+	<P>
+	<LI>A split occurs when a single symbol is discovered to be more than one physical
+	    entity.  In this case, the symbol is withdrawn and multiple new symbols are
+	    created.
+	</UL>
+<P>
+For each withdrawal event present in the broadcast file, there <B>MUST</B> be an event for the
+new symbol in the broadcast file if the new symbol does not already exist in MGD.
+<P>
+The Nomenclature history of a symbol is recorded with the gene symbol, gene name, J number, date
+of the nomenclature event, and a brief note describing the nomenclature event.  In this way, the
+Nomenclature Committee can trace the evolution of the symbol as nomenclature events are processed.
+<P>
+
+<UL>
+<LI>The <I>JNum</I> is validated against the master Reference table.  Transactions are disallowed
+    if an invalid <I>JNum</I> is given.
+<P>
+<LI>If no <I>Type</I> is specified for a <I>Symbol</I>, then the transaction is disallowed.
+<P>
+<LI>If the <I>Event</I> value is <I>Withdrawal</I>, then the transaction is a <I>Withdrawal</I>:
+	<UL>
+	<LI>If the <I>Symbol</I> does not exist in MGD or is already withdrawn, it is skipped.
+	<P>
+	<LI>If the chromosome values for the withdrawn <I>Symbol</I> and the new symbol(s) are not
+	    equal, then the transaction is disallowed.  However, if the chromosome of the new symbol(s)
+	    are <I>UN</I>, then the chromosome value of the new symbol(s) are updated to the
+	    chromosome value of the withdrawn <I>Symbol</I>.
+	<P>
+	<LI>If the offset, EC number and Cytogenetic Offset values of the withdrawn <I>Symbol</I> and
+	    the new symbol(s) are not equal, then inform the user but allow the transaction to continue.
+	<P>
+	<LI>A snapshot is taken of the state of the withdrawn <I>Symbol</I> prior to withdrawing it.
+	    This will aid in backing out the withdrawal if it was withdrawn in error.
+	    See the <I>Output from the Broadcast</I> section for more information about this file.
+	<P>
+	<LI>All Marker detail information is moved to the new symbol:
+		<UL>
+	    	<LI>Accession numbers; the new symbol MGI: accession number is the
+		    preferred accession number and all others are secondary.
+		<LI>Aliases
+		<LI>Anchors (for Web CMini-Maps)
+		<LI>Other Names
+		<LI>MLC Classes
+		<LI>Cytogenetic Offset; uses withdrawn <I>Symbol</I> value if new symbol has no value
+		<LI>cM Offsets; uses withdrawn <I>Symbol</I> values if new symbol has no values
+		</UL>
+	<P>
+	<LI>If alleles exist for the withdrawn <I>Symbol</I> they are converted and moved to
+	    the new symbol.
+		<UL>
+		<LI>If single withdrawal, then
+			<PRE>old symbol&lt;allele&gt; -> new symbol&lt;allele&gt;</PRE>
+			<PRE>old symbol -> new symbol</PRE>
+		<P>
+		<LI>If single allele withdrawal, then
+			<PRE>old symbol&lt;allele&gt; -> new symbol&lt;old symbol-allele&gt;</PRE>
+			<PRE>old symbol -> new symbol&lt;old symbol&gt;</PRE>
+		<P>
+		<LI>If single withdrawal and allele is wild type, then
+			<PRE>+&lt;old symbol&gt; -> +&lt;new symbol&gt;</PRE>
+		<P>
+		<LI>If single allele withdrawal and allele is wild type, then
+			<PRE>+&lt;old symbol&gt; -> new symbol&lt;old symbol&gt;</PRE>
+		<P>
+		</UL>
+	<P>
+	<LI>The chromosome of the withdrawn <I>Symbol</I> is changed to <I>W</I>.
+	<P>
+	<LI>The offset of the withdrawn <I>Symbol</I> is changed to <I>-999</I>.
+	<P>
+	<LI>The name of the withdrawn <I>Symbol</I> is changed to one of the following:
+		<UL>
+		<LI><I>withdrawn, = new symbol</I> if single withdrawal.
+	        <LI><I>withdrawn, allele of new symbol</I>, if single allele withdrawal.
+		<LI><I>withdrawn, = new symbol 1, new symbol 2, ...</I>, if split.
+		</UL>
+	<P>
+	<LI>A new History line is added to the new symbol to document the withdrawal event.
+	    This includes the old symbol, old symbol name, J#, event description.
+	<P>
+	<LI>The Current Symbol value(s) for the withdrawn <I>Symbol</I> are changed to the new symbol
+	    value(s).
+	<P>
+	<LI>Symbol changes are propagated to:
+		<UL>
+		<LI>Molecular Segments
+		<LI>Mapping
+		<LI>Homology
+		<LI>MLC
+		<LI>GXD
+		</UL>
+	    <B>except</B> if:
+	    <UL>
+	    <LI>the withdrawal is a split, then all symbol changes must be done manually.
+	    <LI>both the withdrawn <I>Symbol</I> and the new symbol have MLC records, then all
+		MLC changes must be done manually.
+	    </UL>
+	<P>
+	</UL>
+<P>
+<LI>If the <I>Event</I> is <I>New</I>, then the transaction is an <I>Add</I>:
+	<UL>
+	<LI>Add the <I>Symbol</I> to the master Marker table.
+	<LI>A new <I>Assigned</I> History line is added to the new symbol to document 
+	    this nomenclature event.
+	<LI>If the <I>Symbol</I> already exists in MGD, then abort the <I>Add</I>.
+	</UL>
+<P>
+<LI>If the <I>Event</I> is <I>New</I> and the <I>Proposed Symbol</I> contains the
+    <I>-pending</I> suffix, then the transaction is a <I>Modification to a Pending Symbol</I>:
+	<UL>
+	<LI>Search the master Marker table for the <I>-pending</I> symbol and update
+	    the Marker symbol with <I>Symbol</I>.
+	<LI>If the pending symbol cannot be found in MGD, then abort the <I>Modification</I>.
+	</UL>
+</UL>
+
+<H4>The Broadcast File</H4>
+The broadcast file is a tab-delimited file consisting of information used to process Nomenclature
+changes entered into the Nomenclature database to MGD.  The following fields are contained in the
+broadcast file:
+<UL>
+<LI><I>Chromosome</I>, the chromosome value of the marker.
+<LI><I>Symbol</I>, the approved symbol.
+<LI><I>Event</I>, the type of nomenclature event ('N' (New), 'W' (Withdrawal)).
+<LI><I>Type</I>, the type of marker ('D' (DNA Segment), 'G' (Gene), 'Q' (QTL), 'C' (Chromosomal Aberration)).
+<LI><I>Name</I>, the approved name of the symbol.
+<LI><I>JNum</I>, in the format <I>J:12345</I>.
+<LI><I>Proposed Symbol</I>, the Nomen proposed symbol.  This field is only relevant within the scope
+    of the Broadcast process if the proposed symbol has the suffix <I>-pending</I>.
+<LI><I>Other Names</I>, a list of synonyms for the symbol in the format <I>Name|Name|Name|...</I>
+</UL>
+
+<P>
+
+A broadcast file can be generated in two ways:
+<OL>
+<LI>From the Nomenclature Editing Form by using the <I>Broadcast to MGD</I> dialog.
+<P>
+<LI>From the Marker Editing Form by using the <I>Marker Withdrawal</I> dialog.
+</OL>
+
+<H4>Processing a Broadcast File from the Nomenclature Database</H4>
+Only symbols which are statused as <I>Approved</I> will be included in the Broadcast file.
+Dash pending (<I>-pending</I>) symbols will appear in the MGD Broadcast file but <B>not</B> 
+in the Broadcast Email file.
+<P>
+To generate a broadcast file from the Nomenclature database:
+<OL>
+<LI>Click <I>Utilities->Broadcast to MGD</I> to bring up the dialog.
+<LI>Choose <I>MGD Broadcast Preview (no database updates)</I>.  
+<LI>Click <I>Process</I> to generate the file.  This will create a .preview file
+    which you can use to verify the items for the Broadcast.  It will also serve as a backup
+    file in case you inadvertantly overwrite the actual Broadcast file created in the next step.
+<LI>Either use the <I>Broadcast Date</I> and <I>Preview File Name</I>
+    defaults or chose your own.  If files already exist
+    with the same  <I>Preview File Name</I>, then they
+    will be <B>overwritten</B> by this process.  Choose unique names if older files need to
+    be saved.
+<LI>A copy of the <I>Preview File Name</I> file will automatically be placed in 
+    Deb's report directory, <I>~djr/mgireport</I>.
+<LI>Now choose <I>MGD Broadcast and Email (updates Nomen Status and Broadcast Date)</I>.
+<LI>Either use the <I>Broadcast Date</I>, <I>Broadcast File Name</I> and
+    <I>Email File Name</I> defaults or chose your own.  If files already exist
+    with the same  <I>Broadcast File Name</I> or <I>Email File Name</I>, then they
+    will be <B>overwritten</B> by this process.  Choose unique names if older files need to
+    be saved.
+<LI>Click <I>Process</I> to generate the files.
+<LI>A copy of the <I>Broadcast File Name</I> file will automatically be
+    placed in Deb's report directory, <I>~djr/mgireport</I>.
+</OL>
+<P>
+During generation of a broadcast file from the Nomenclature database:
+<OL>
+<LI>The <I>Status</I> of each <I>Approved</I> symbol included in the broadcast file is 
+    automatically changed to <I>Broadcast</I>.
+<LI>The <I>Broadcast Date</I> of each symbol included in the broadcast file is
+    automatically changed to the  <I>Broadcast Date</I> entered in the dialog.
+</OL>
+<P>
+After a broadcast file has been created from the Nomenclature database:
+<OL>
+<LI>Bring up the MGD Marker Editing Form.
+<LI>Click <I>Reports</I> to bring up the Reports dialog.
+<LI>Choose report <I>Broadcast</I>.
+<LI>Enter the name of the broadcast file in the dialog <I>Selection</I> field.
+<LI>Click <I>Generate</I> to initiate the broadcast update.
+</OL>
+<P>
+To re-broadcast a symbol from the Nomenclature database which is statused as <I>Broadcast</I>
+and contains a <I>Broadcast Date</I>:
+<OL>
+<LI>Re-status the symbol as <I>Approved</I>.
+<LI>Remove the <I>Broadcast Date</I>.
+<LI>Follow the procedures to <I>Generate a broadcast file from the Nomenclature database</I>.
+</OL>
+
+<H4>Processing a Nomenclature Withdrawal Event from the Marker Editing Form</H4>
+Nomenclature withdrawal events can also be processed directly from the Marker Editing Form:
+<OL>
+<LI>Retrieve the marker symbol to be withdrawn
+<LI>Change the chromosome value to <I>W</I>.  This will cause a Marker Withdrawal dialog to
+    appear.
+<LI>Enter the New Symbol(s) and the J: relevant for this nomenclature event.
+    <BR><B>NOTE:  When entering New Symbols(s), use the correct case.</B>
+<LI>Click <I>Process Withdrawal</I>.
+</OL>
+
+<P>
+<B>Note:</B>  All of the <I>single allele withdrawals</I> are processed directly from the Marker Editing Form.
+
+<H4>Output from the Broadcast</H4>
+
+The broadcast process outputs several files.  These files are output into
+the user's <CODE>$HOME/mgireport</CODE> directory and are also archived at 
+<CODE>titan:/export/mgd/mgireport/BROADCAST</CODE>.
+
+<OL>
+<LI><I>&lt;broadcastfile&gt;.diagnostics</I>
+    <P>Diagnostic listing of all SQL generated during processing.
+       This file is for SEs to debug any problems.
+<P>
+<LI><I>&lt;broadcastfile&gt;.stats</I>
+     <P>Status file for initator of broadcast.  This file
+	informs the user of what happened to each Marker in the
+	broadcast.
+<P>
+<LI><I>&lt;broadcastfile&gt;.MLC.diagnostics</I>
+    <P>Diagnostic listing of all SQL generated during processing of MLC updates.
+       This file is for SEs to debug any problems.
+<P>
+<LI><I>&lt;broadcastfile&gt;.MLC.stats</I>
+     <P>Status file for MLC updates.  
+	This file informs the user of what happened to each Marker during
+	the MLC update.
+<P>
+<LI><I>MRK_Broadcast.sql.Gene.rpt</I>
+    <P>Output of snapshot taken of a given <I>Gene</I> prior to its withdrawal.
+       This file is for SEs to help in reversing an untended withdrawal.
+</OL>
+
+<H4>Consequences of a Withdrawal</H4>
+<OL>
+<LI>A withdrawn symbol can no longer be used during entry of MGD data.  
+    The user will be directed to the current, correct symbol instead.
+<P>
+<LI>A withdrawn symbol record cannot be reused because the withdrawn record no 
+    longer has an Accession number.  If the user wishes to reuse
+    the marker symbol, the user must create a brand new Marker record with an
+    new MGI: Accession number.
+<P>
+<LI>A withdrawn symbol cannot have its chromosome value modified.
+<P>
+<LI>If a symbol was withdrawn in error, see <A HREF="MEIReverseWithdrawal.html">Reversing
+    a Marker Withdrawal</A>.  The reversal of a withdrawal is a non-trivial process and 
+    requires manual editing to restore all of the affected symbols back to their original state.
+</OL>
+
+<H4>Source Code</H4>
+The broadcast source programs are:
+<OL>
+<LI>Production:  <CODE>titan:/export/mgd/broadcast.py</CODE>
+    <BR>
+    Development:  <CODE>/home/lec/mgd/sybase/mgi_dev/broadcast.py</CODE>
+    <P>
+    This is the main program.
+<P>
+<LI>Production:  <CODE>titan:/export/mgd/symbolchg.py</CODE>
+    <BR>
+    Development:  <CODE>/home/lec/mgd/sybase/mgi_dev/symbolchg.py</CODE>
+    <P>
+    This program processes the MLC data updates and is invoked from <CODE>broadcast.py</CODE>
+    if the Nomenclature symbol requires updates to MLC data.
+</OL>
+
+<HR>
+
+</BODY>
+</HTML>

@@ -1,0 +1,359 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGD EDITING INTERFACE: Design and Requirements - Nomenclature
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>
+MGD EDITING INTERFACE: Design and Requirements - Nomenclature
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+The MGI Informatics group and the MGD Mouse Nomenclature Committee must track the process of 
+proposing, assigning and publicizing novel mouse symbols.  
+<P>
+This process involves:
+<OL>
+<LI>Proposing the symbol.
+<LI>Approving the symbol.
+<LI>Broadcasting the symbol to the public.
+<LI>Broadcasting the symbol to the MGD database.
+<LI>Processing Nomenclature events (withdrawals, etc.) and propagating these events to MGD.
+</OL>
+<P>
+Detailed <A HREF="MEINomenEntry.html">Nomenclature Data Entry Documentation</A> is also available.
+
+<H4>Data Model (<A HREF="nomen_schema.gif">GIF Image)</A></H4>
+<OL>
+<LI>The Master Nomen table, <I>MRK_Nomen</I>, defines the primary Nomenclature record.
+    The definition of this table is consistent with the FileMaker Pro Nomen database record:
+    a Nomenclature record is created for each Nomenclature symbol.  Each Nomenclature event
+    which occurs for the symbol is recorded within the same Nomenclature record.  Only the
+    most recent Nomenclature event is recorded.  Historical record of Nomenclature events
+    are stored in the MGD Marker History records.
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key<TD>unique
+	<TR><TD>_Marker_Type_key<TD>int<TD>not null<TD>foreign key to MRK_Types<TD>non-unique
+	<TR><TD>_Marker_Status_key<TD>int<TD>not null<TD>foreign key to MRK_Status<TD>non-unique
+	<TR><TD>_Marker_Event_key<TD>int<TD>not null<TD>foreign key to MRK_Event<TD>non-unique
+	<TR><TD>_Suid_key<TD>int<TD>not null<TD>foreign key to sysusers<TD>non-unique
+	<TR><TD>proposedSymbol<TD>varchar(25)<TD>not null<TD>&nbsp;<TD>non-unique
+	<TR><TD>proposedName<TD>varchar(255)<TD>null<TD>&nbsp;<TD>none
+	<TR><TD>approvedSymbol<TD>varchar(25)<TD>not null<TD>&nbsp;<TD>non-unique
+	<TR><TD>approvedName<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
+	<TR><TD>chromosome<TD>varchar(8)<TD>not null<TD>&nbsp;<TD>non-unique
+	<TR><TD>humanSymbol<TD>varchar(25)<TD>null<TD>&nbsp;<TD>none
+	<TR><TD>ECNumber<TD>varchar(25)<TD>null<TD>&nbsp;<TD>none
+	<TR><TD>statusNote<TD>varchar(255)<TD>null<TD>&nbsp;<TD>none
+	<TR><TD>broadcast_date<TD>datetime<TD>null<TD>&nbsp;<TD>non-unique
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>The Marker Event table, <I>MRK_Event</I>, defines the controlled vocabulary for all of
+    the Marker events (New, Withdrawal, etc.)
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Marker_Event_key<TD>int<TD>not null<TD>primary key<TD>unique
+	<TR><TD>event<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>The Marker Status table, <I>MRK_Status</I>, defines the controlled vocabulary for all of
+    the Marker statuses (Pending, Approved, Broadcast, etc.)
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Marker_Status_key<TD>int<TD>not null<TD>primary key<TD>unique
+	<TR><TD>status<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>The Marker Type table, <I>MRK_Types</I>, which defines the controlled vocabulary for all
+    of the Marker types (Gene, DNA Segment, etc.) already exists in MGD.
+<P>
+<LI>The Marker Gene Family table, <I>MRK_GeneFamily</I>, defines the controlled vocabulary for all of
+    the Gene Families.
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Marker_Family_key<TD>int<TD>not null<TD>primary key<TD>unique
+	<TR><TD>name<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>The Marker Nomen Gene Family table, <I>MRK_Nomen_GeneFamily</I>, defines the list of all
+    Gene Families to which a specific symbol belongs.  A symbol can be associated with many
+    Gene Families.
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key w/ _Marker_Family_key; foreign key to MRK_Nomen<TD>non-unique
+	<TR><TD>_Marker_Family_key<TD>int<TD>not null<TD>primary key w/ _Nomen_key<TD>non-unique
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>The Marker Nomen Notes table, <I>MRK_Nomen_Notes</I>, defines all textual Editor
+    and Nomenclature Coordinator notes related to a symbol.  A symbol can contain many 
+    notes.
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key w/ sequenceNum and noteType; foreign key to MRK_Nomen<TD>non-unique
+	<TR><TD>sequenceNum<TD>int<TD>not null<TD>primary key w/ _Nomen_key and noteType<TD>none
+	<TR><TD>noteType<TD>char(1)<TD>not null<TD>E = Editor, C = Nomenclature Coordinator; bind a rule;primary key w/ _Nomen_key and sequenceNum<TD>non-unique
+	<TR><TD>note<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>The Marker Nomen Other Names table, <I>MRK_Nomen_Other</I>, defines a list of all other names
+    by which a symbol is known.  This includes the name given by the Author (if one exists) which
+    is clearly differentiated from the other synonyms.  A symbol can have many Other Names.
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Other_key<TD>int<TD>not null<TD>primary key<TD>unique
+	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>foreign key to MRK_Nomen<TD>non-unique & unique composite key with name
+	<TR><TD>name<TD>varchar(200)<TD>not null<TD>&nbsp;<TD>non-unique & unique composite index with _Nomen_key
+	<TR><TD>isAuthor<TD>bit<TD>not null<TD>if 1, then name is Author Name<TD>none
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>The Marker Nomen References table, <I>MRK_Nomen_Reference</I>, defines a list of references
+    which support the symbol nomenclature.  This includes the primary reference of the initial
+    nomenclature event, which is clearly differentiated from the other references.  A symbol can 
+    have many References.
+    <P>
+	<TABLE BORDER=1>
+	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
+	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key w/ _Refs_key; foreign key to MRK_Nomen<TD>non-unique
+	<TR><TD>_Refs_key<TD>int<TD>not null<TD>primary key w/ _Nomen_key; foreign key to BIB_Refs<TD>non-unique
+	<TR><TD>isPrimary<TD>bit<TD>not null<TD>if 1, then reference is Primary reference<TD>none
+	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
+	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
+	</TABLE>
+<P>
+<LI>All primary keys require a unique index.
+<P>
+<LI>Controlled vocabulary tables can be modified by privileged users.
+</OL>
+
+<H4>Editing Form</H4>
+<A HREF="nomen.gif">GIF Image</A>
+
+<H4>Accession Numbers</H4>
+<OL>
+<LI>EC, cross reference to Enzyme Commission number at ExPASy
+</OL>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Nomenclature Event (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+	<UL>
+	<LI>New
+	<LI>Withdrawal
+	</UL>
+<P>
+<LI>Marker Status (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+	<UL>
+	<LI>Pending; the symbol has not been approved by the Mouse Nomenclature Committee
+	<LI>Deleted; the symbol has been removed from the Nomenclature process
+	<LI>Reserved; the symbol has been reserved for the Author and is not to be publicized
+	<LI>Approved; the symbol has been approved by the Mouse Nomenclature Committee
+	    and is ready to broadcast to MGD
+	<LI>Broadcast; the symbol has been transferred to MGD
+	</UL>
+<P>
+<LI>J Numbers (see <A HREF="MEI.html#dataVerJnumber">Data Verifications section on J Numbers</A>)
+<P>
+<LI>Markers
+	<UL>
+	<LI>If the Proposed Marker symbol exists in MGD or exists in Nomen as a Proposed or
+	    Approved Symbol, then a warning is displayed to the user.  Modifications allowed.
+	<LI>If the Approved Marker symbol exists in MGD or exists in Nomen as a Proposed or
+	    Approved Symbol, then a warning is displayed to the user.  Modifications allowed.
+	</UL>
+<P>
+<LI>Marker Type (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+	<UL>
+	<LI>Gene
+	<LI>DNA segment
+	<LI>Cytogenetic Marker
+	<LI>QTL
+	</UL>
+<P>
+<LI>Chromosome (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+	<UL>
+	<LI>Chromosome <I>W</I> and <I>RE</I> are not valid during an add or modification.  However, 
+	    these values are used for historical data and entries exist which use these assignment
+	    values.
+	</UL>
+<P>
+<LI>Submitted By (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+    <P>
+    This option menu is dynamically created from the Nomenclature database <I>sysusers</I> table, 
+    which is maintained by the DBA (John Gilbert).  New editors will be automatically added to this
+    option menu when they receive their Sybase logins, are attached to the group <I>editors</I> and
+    are given access to the Nomenclature database.  Contact John Gilbert for further information.
+    <P>
+    The <I>retired_editors</I> user has been assigned to all historical data migrated from the
+    original FileMaker Pro database, since this database did not track the submitter information.
+    The <I>retired_editors</I> user cannot be selected for new entries and is only used in reference
+    to migrated data.
+    <P>
+    Inactive logins (editors who have left the group) must still be available for searching and
+    retrieving data, but are invalid for new entries.
+    <P>
+    Most data entry folks are excluded from this list even though they belong to the group <I>editors</I>,
+    since data entry folks, as a rule, do not submit Nomenclature requests.  Only data entry folks who
+    work directly with the Nomenclature database are included on the <I>Submitted By</I> listing.
+<P>
+<LI>Gene Family (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Lookup Lists</A>)
+<P>
+<LI>Dates (see <A HREF="MEI.html#dataVerDate">Data Verifications section on Dates</A>)
+	<UL>
+	<LI>Broadcast Date
+	</UL>
+<P>
+</OL>
+<P>
+
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Nomenclature Event
+	<LI>Marker Status
+	<LI>Marker Type
+	<LI>Chromosome
+	<LI>Proposed Symbol
+	<LI>Approved Symbol
+	<LI>Approved Name
+	<LI>Primary Reference (for non-Reserved status only)
+	</OL>
+<P>
+<LI>Not Required
+	<OL>
+	<LI>Proposed Name
+	<LI>Broadcast Date
+	<LI>EC Number
+	<LI>Human Symbol
+	<LI>Other Names
+	<LI>Gene Family
+	<LI>References
+	<LI>Nomenclature Assistant Notes
+	<LI>Editor's Notes
+	<LI>Nomenclature Coordinator Notes
+	<LI>Symbol/Name Search (<I>Special field; see Miscellaneous for description</I>)
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+<OL>
+<LI>Nomenclature Event; default is <I>New</I>
+<LI>Marker Status; default is <I>Pending</I>
+<LI>Submitted by; default is current user
+</OL>
+
+<H4>Duplicates</H4>
+(Remember:  Our database server is case-insensitive)
+<OL>
+<LI><I>Other Names</I> duplicates are disallowed.  Therefore, you cannot
+    enter both <I>DokR</I> and <I>Dokr</I> as <I>Other Names</I>.  Only
+    one of these values is allowed.
+</OL>
+
+<H4>Marker Broadcast</H4>
+Refer to the <A HREF="MEIBroadcast.html">MGI Marker Broadcast</A> document for complete details on
+broadcasting approved nomenclature symbols to MGD.
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>The <I>Find Duplicate Proposed Symbols</I> will return records with proposed symbols which are
+    equivalent, ignoring case.
+<P>
+<LI>The <I>Find Duplicate Approved Symbols</I> will return records with approved symbols which are
+    equivalent, ignoring case.
+<P>
+<LI>The <I>Approved Symbol</I> and <I>Approved Name</I> fields use a background of blue to visually
+    differentiate them from the <I>Proposed Symbol</I> and <I>Proposed Name</I> fields.
+<P>
+<LI>The <I>MGD Symbol</I> and <I>Accession #</I> values for the MGD Marker object are displayed if 
+    the <I>Approved Symbol</I> can be found in MGD.
+<P>
+<LI>The <I>Homology record(s) in MGD</I> toggle will be turned on (red) if the <I>Human Symbol</I>
+    exists in MGD and there is a defined MGD Homology which refers to the human symbol.
+<P>
+<LI>When the user adds either a <I>Primary</I> or <I>Related</I> Reference, the MGD Master 
+    Bibliography record for that Reference will be updated so that the <I>Nomenclature</I> data 
+    set is selected.
+<P>
+<LI>The <I>Symbol/Name Search</I> field is used for querying only.  When the user enters a value into
+    this field and clicks <I>Search</I>, the system will take the search criteria entered and search
+    the <I>Proposed Symbol</I>, <I>Proposed Name</I>, <I>Approved Symbol</I> and <I>Approved Name</I>
+    fields for the value.  Search criteria entered in other form fields are ignored when the 
+    <I>Symbol/Name Search</I> field is populated.
+    <P>
+    The search fields for <I>Symbol/Name Search</I> can be expanded to include Names and/or Notes.
+<P>
+<LI>The user cannot add a new record with a Status of <I>Broadcast</I>, or modify an existing 
+    record to a Status of <I>Broadcast</I>.  Only the <I>MGD Broadcast</I> process can apply the 
+    <I>Broadcast</I> Status.  However, if a <I>Broadcast Date</I> is entered and the Status is not 
+    <I>Broadcast</I> or <I>Deleted</I>, then the Status is automatically changed to 
+    <I>Broadcast</I>.
+	<PRE>
+	Cannot select status of 'Broadcast'.
+	</PRE>
+<P>
+<LI>If the user changes the Status from <I>Broadcast</I> to another value, then the 
+    <I>Broadcast Date</I> is nullified by the system after the user saves the modification.
+<P>
+<LI>If the <I>Broadcast Date</I> is removed and the Status is still <I>Broadcast</I>, then the 
+    update is denied.
+	<PRE>
+        Cannot remove Broadcast Date if status is Broadcast.
+	</PRE>
+<P>
+<LI>When tabbing thru the <I>Proposed Symbol</I> field, if the <I>Approved Symbol</I> field is blank,
+    then the <I>Approved Symbol</I> field will automatically be populated with the 
+    <I>Proposed Symbol</I> value.
+<P>
+<LI>To duplicate a record, select the record you want to duplicate and then de-select it.  The data
+    fields will remain populated.  Make the changes necessary for the <I>new</I> record and click
+    <I>Add</I>.  The new record will be added and will contain all of the information retained from
+    the original record.  <I>Editor's Notes</I> and <I>Nomenclature Coordinator Notes</I> are
+    <B>not</B> duplicated.
+<P>
+</OL>
+
+<!--<H4>Triggers/Views/Stored Procedures for Marker tables (<I>MRK_</I>)</H4>
+<OL>
+<LI>Triggers ($SYBASE/admin/triggers/nomen):  <I>NOMEN.tr</I>, <I>NOMEN.drop</I>
+<LI>Views ($SYBASE/admin/views/nomen):  <I>NOMEN.view</I>
+<LI>Stored Procedures ($SYBASE/admin/procedures/nomen):  <I>NOMEN.pr</I>
+</OL>
+-->
+
+<H3>RELATED DOCUMENTS</H3>
+<OL>
+<LI><A HREF = "MEICV.html">Lookups (controlled vocabulary)</A>
+</OL>
+
+<HR>
+
+</BODY>
+</HTML>

@@ -1,0 +1,199 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGD EDITING INTERFACE: Design and Requirements - Homology
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>
+MGD EDITING INTERFACE: Design and Requirements - Homology
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+Homology defines relationships of genes among different mammalian species.  This interface allows the
+user to define a Homology reported in a specific Reference.  Once that Homology has been entered, the
+interface will attempt to merge that Homology with other Homologies which have at least one of the
+symbol/species pairs in common.  This creates a Homology "class" thru transitivity:
+
+	<PRE>
+	If Mouse A is homologous to Human A and Human A is homologus to Rat A, 
+	then Mouse A is homologous to Rat A
+	</PRE>
+
+<P>
+Homologies are defined by the Assay(s) which were used to determine the homology.  Therefore, one
+Reference may report 3 different homologous relationships using 3 different assays.  The 3 homologies
+may fall under the same homology "class", or they may not.
+<P>
+In this interface, it is important to remember that one selected record is equivalent to one defined homology and
+not an entire homology class.
+<P>
+Downloads from Species-specific databases are used to update the Symbol attributes for non-mouse species on
+a regular basis (<A HREF="MEIHomologyLoad.html">MGI Homology Loads</A>).
+<P>
+
+<H4>Editing Form</H4>
+<A HREF="homology.gif">GIF image</A>
+
+<H4>Accession Numbers</H4>
+<OL>
+<LI>MGI:; system-generated
+<LI>GDB:; cross referenced to GDB
+<LI>RATMAP accession numbers have no prefix; cross referenced to RATMAP
+</OL>
+
+<H4>Data Verifications</H4>
+<OL>
+<LI>Species (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<P>
+<LI>Assays (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Lookup Lists</A>)
+<P>
+</OL>
+
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>J:
+	<LI>Species
+	<LI>Symbol
+	<LI>Chr
+	<LI>Name
+	<LI>Assay
+	</OL>
+<P>
+<LI>Not Required
+	<OL>
+	<LI>Cyto
+	<LI>Acc ID
+	<LI>Notes
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+The Marker table <B>always</B> displays the following species:
+<OL>
+<LI>mouse, laboratory
+<LI>human
+<LI>rat
+</OL>
+
+When a homology record is displayed, all of the default species plus all of the species
+defined in the homology are displayed.  If no Symbol is associated with a default species,
+then that species is not part of the homology record.
+<P>
+Default species values cannot be overwritten by any other species value.  The row of a
+default species value is reserved solely for that species.
+
+<H4>Searches</H4>
+All fields in the editing form are searchable with the following exceptions:
+<OL>
+<LI>Numbered columns in the Marker table
+<LI>Numbered columns in the Assay table
+</OL>
+
+<H4>Deletions</H4>
+There are no restrictions on deleting a Homology.
+
+<H4>Modifying Symbols</H4>
+Symbols for mouse can only be modified using the Marker form.
+<P>
+Symbols for non-mouse species can be modified/added by entering the Species/Symbol in the
+Symbol table and tabbing.  If the Species/Symbol does not exist in the database, the user
+will be informed that this Species/Symbol will be added during the next modification/add 
+of the Homology record.
+<P>
+If the Species/Symbol does exist, then the Chr, Cyto, Name, AccID will be displayed.  The
+user can modify any of these values for a non-mouse species, and these changes will be
+be propagated to all Homology records which refer to that Species/Symbol.
+<P>
+There is currently no way for a user to modify a non-mouse species symbol of an existing record.
+
+<H4>Adding/Modifying a Homology</H4>
+<OL>
+<LI>Enter all of the Species/Symbols in the Symbol table.
+<P>
+<LI>Select all of the Assays which are used in defining the homologies for the Symbols.
+<P>
+<LI>Enter all of the Notes which are available.
+<P>
+<LI>Select the Symbol/Assay combinations which define each homology by clicking in the
+    Assay column which corresponds to the <I>No.</I> column of the Symbol.
+<P>
+<LI>A Species/Symbol can belong to more than one Assay group, but must belong to at least one
+    Assay group or else it will be dropped from the homology.  Therefore, to delete a Symbol 
+    from a homology, de-select the Symbol from the Assay to which it is attached.
+    <P>
+    If a new Assay is to be assigned to a pre-existing Homology, insert the new Assay
+    adjacent to the pre-existing Homology.  This will ensure that the Assay groups are
+    assigned to the same Homology key.
+<P>
+<LI>After any add/modification, the system will attempt to "merge" the current homology record
+    with other homologies which belong to the same "class", based on the Symbols/Species defined.
+<P>
+<LI>As Species/Symbol are entered in the Symbol table, the system will detect any collisions,
+    i.e. the entry of a Species/Symbol which conflicts with a previously defined homology.
+    <P>
+    For example, if a homology class exists for <I>mouse, Ren1</I> and <I>human, REN</I> and
+    the user attempts to enter <I>mouse, Ren1</I> and <I>human, REN1</I> and the symbol
+    <I>human, REN1</I> exists in the database, then the system will detect a conflict and 
+    report this to the user.
+    <P>
+    <B>However</B>, if the symbol <I>human, REN1</I> does <B>not</B> exist in the database,
+    then the symbol is added and the modification <I>is</I> allowed.  This "back door" may
+    need to be shut at some point in time.
+<P>
+<LI>If a Species/Symbol needs to be replaced with a differenct symbol for a given Homology Class,
+    then the entire Homology Class must be deleted and re-added.
+<P>
+</OL>
+
+<H4>Notes</H4>
+Homology notes are attached to unique homology records.  A unique homology record is defined
+by the Species to which the Assay is assigned.
+<P>
+At the present time, the user cannot attach notes to a specific homology reference or to a
+specific homology marker symbol.
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>Setting the <I>Display Inferred Homologies</I> ON before a <I>Search</I> will retrieve all
+    Homology records belonging to the same Homology Class of the Homology record which matches
+    the user's search criteria.
+    <P>
+    For example, searching for <I>mouse, laboratory/Ren1</I> with the toggle OFF will retrieve
+    8 Homology records where <I>mouse, laboratory/Ren1</I> is a member of each Homology record.
+    <P>
+    Searching for <I>mouse, laboratory/Ren1</I> with the toggle ON will retrieve all of the
+    16 Homology records which belong to the Homology Class of which <I>mouse, laboratory/Ren1</I>
+    is a member.  <I>mouse, laboratory/Ren1</I> will not necessarily be a member of every
+    Homology record which is retrieved, however.
+<P>
+<LI>The <I>Class ID</I> for every Homology record is displayed for the user.  The user can also
+    search for a specific <I>Class ID</I>.  However, <I>Class IDs</I> are assigned by the system
+    and cannot be modified by the user.
+<P>
+<LI>Certain Species' Symbols are updated from data downloads of species-specific databases.
+    Refer to <A HREF="MEIHomologyLoad.html">MGI Homology Loads</A> for a complete 
+    description of how this data is used to update Symbols and Accession numbers in MGD.
+<P>
+</OL>
+
+<H4>Triggers/Views/Stored Procedures for Homology tables (<I>HMD_</I>)</H4>
+<OL>
+<LI>Triggers ($SYBASE/admin/triggers):  <I>HMD.tr</I>, <I>HMD.drop</I>
+<LI>Views ($SYBASE/admin/views):  <I>HMD.view</I>
+<LI>Stored Procedures ($SYBASE/admin/procedures):  <I>HMD.pr</I>
+</OL>
+
+<H3>RELATED DOCUMENTS</H3>
+<OL>
+<LI><A HREF = "MEICV.html">Lookups (controlled vocabulary)</A>
+</OL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,30 @@
+--
+-- Name    : MGILib.de
+-- Creator : lec
+-- MGILib.de 11/13/98
+--
+-- This module defines the Devents for MGI.d
+--
+--
+
+CreateMGIModule [name : string;];	-- Create instance of D Module
+
+ExitApplication [];			-- Exit the Application
+
+HidePassword [];			-- Hide the Password
+
+InitApplication [];			-- Initialize the Application
+
+Login [];				-- Login to the SQL Server
+
+SetServer [];                           -- Set Database Information for Form Banner
+ 
+SetTitle [source_widget : widget;];     -- Set Form Title for Form Banner
+  
+StatusReport [source_widget : widget;  	-- Display Status Report
+              message : string;];
+
+StatusReportFront [source_widget : widget;]; 	-- Set Status Report to front of stack
+
+StatusReportOK []; 			-- Unmanage Status Dialog and push MGI to back
+

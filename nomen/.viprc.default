@@ -1,0 +1,217 @@
+
+!
+! VIP init file
+! written: Tue Jan  5 07:58:37 1999
+!
+
+session_information {
+  x       = 446
+  y       = 226
+  width   = 814
+  height  = 750
+  display = ":0.0"
+}
+
+pcds
+{
+  load "/opt/teleuseXRT/lib/pcds/xm.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 228
+
+  load "/opt/teleuseXRT/lib/pcds/xrt.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 209
+
+  load "INSTALLDIR/pcds/MGI.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 121
+    vsb_pos     = 72
+
+  load "INSTALLDIR/pcds/GXD.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 396
+
+  load "INSTALLDIR/pcds/MGD.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 836
+
+  load "INSTALLDIR/pcds/mgiDialog.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 561
+    vsb_pos     = 1430
+
+  load "INSTALLDIR/pcds/mgiLookup.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 231
+
+  load "INSTALLDIR/pcds/mgiOption.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 3861
+
+  load "INSTALLDIR/pcds/mgiControl.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 121
+
+  load "INSTALLDIR/pcds/mgiMenu.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 396
+
+  load "INSTALLDIR/pcds/mgiTable.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 176
+    vsb_pos     = 74
+
+  load "INSTALLDIR/pcds/mgiDataTypes.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 1166
+
+  load "INSTALLDIR/pcds/gxdDictionary.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 671
+
+  load "INSTALLDIR/pcds/MGIAdmin.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 66
+    vsb_pos     = 55
+
+  load "INSTALLDIR/pcds/MGINomen.pcd"
+    floating    = false
+    opened      = true
+    show_names  = false
+    height      = 120
+
+}
+
+value_window_args Color
+{
+  opened     = false
+  iconic     = false
+  x          = 10
+  y          = 10
+  width      = 300
+  height     = 200
+}
+
+value_window_args Pixmap
+{
+  opened     = false
+  iconic     = false
+  x          = 10
+  y          = 10
+  width      = 300
+  height     = 200
+}
+
+value_window_args FontList
+{
+  opened     = false
+  iconic     = false
+  x          = 10
+  y          = 10
+  width      = 300
+  height     = 200
+}
+
+value_window_args Callback
+{
+  opened     = false
+  iconic     = false
+  x          = 10
+  y          = 10
+  width      = 300
+  height     = 200
+}
+
+value_window_args DBView
+{
+  opened     = false
+  iconic     = false
+  x          = 10
+  y          = 10
+  width      = 300
+  height     = 200
+}
+
+value_window FontList
+{
+	"fixed"
+	"6x13"
+	"*hel*-m*-r-*-12-*"
+	"*hel*-m*-r-*-14-*"
+	"*hel*-m*-r-*-18-*"
+	"*hel*-m*-r-*-24-*"
+	"9x15"
+	"*hel*-b*-r-*-12-*"
+	"*hel*-b*-r-*-14-*"
+	"*hel*-b*-r-*-18-*"
+	"*hel*-b*-r-*-24-*"
+}
+
+value_window Pixmap
+{
+	"vip.xbm"
+}
+
+value_window Color
+{
+	"Aquamarine"
+	"Black"
+	"Blue"
+	"CadetBlue"
+	"Cyan"
+	"DimGray"
+	"Firebrick"
+	"Goldenrod"
+	"Green"
+	"Red"
+	"SkyBlue"
+	"White"
+}
+
+value_window Callback
+{
+	"C: TuManage"
+	"C: TuUnmanage"
+	"C: TuExitProgram"
+}
+
+
+
+image_path  = "$TeleUSE/pixmaps"
+
+preferences
+{
+  attributeSetOrderSort = "True"
+  showStatusBox = "True"
+  attributeAlphabetic = "True"
+  useCDEInitial = "False"
+}
+

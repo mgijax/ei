@@ -1,0 +1,32 @@
+#!/bin/sh
+#
+# Builds a TeleUSE app using uxb.conf. 
+#
+# Usage:
+#
+#	buildapp [compiled] 
+#
+# Where 'compiled' specifies that a compiled application should be built.
+# Without this option, D modules are interpreted, which allows use of 
+# the TeleUSE debugger. 
+
+APP=$1
+
+if [ "$APP" != "" ]
+then
+	case "$APP" in
+		compiled) OPTIONS="-dmode compiled"
+			break;;
+		*)    echo "Usage: $0 [compiled]"
+		exit 1
+			break;;
+	esac
+else
+	OPTIONS=""
+fi
+
+#
+# uxb.conf is assumed...
+#
+
+uxb $OPTIONS

@@ -1,0 +1,22 @@
+#!/bin/ksh
+#
+# Does a 'uxb clean' on all EI apps directories, and removes
+# generated files not removed by this command. 
+#
+# Usage: cleanall 
+#
+# Assumes: Must be executed in the same directory as the application 
+#          target directories, mgd, gxd, etc.
+#
+
+REMFILES="*.o *.c *.do *.ui cderes*"
+apps="mgd gxd mgiadmin nomen"
+
+for app in $apps 
+do
+   echo "CLEANING $app"
+   cd $app
+   uxb clean
+   \rm -f $REMFILES $app
+   cd ..
+done

@@ -1,0 +1,42 @@
+#!/bin/ksh
+
+#
+# Sets up appropriate ENV variables for running MEI in Production.
+#
+# All SQL transactions logged to USERLOG.
+#
+
+unset TERM
+export APP USERLOG DSQUERY MGD SYBASE OPENWINHOME PYTHONPATH
+export XKEYSYMDB TeleUSE XNLSPATH XUSERFILESEARCHPATH LD_LIBRARY_PATH PATH
+
+OPENWINHOME=/usr/openwin
+XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
+PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
+
+APP=nomen
+USERLOG=$HOME/.nomen-log
+
+DSQUERY=MGD
+MGD=mgd
+
+SYBASE=/opt/sybase
+TeleUSE=/opt/teleuseXRT
+XNLSPATH=$TeleUSE/X11R5/lib/nls
+XUSERFILESEARCHPATH=%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-defaults/%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
+
+LD_LIBRARY_PATH=$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
+PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
+
+# determine script's installation directory and cd to it.
+BASENAME=`basename $0`; NOTBASENAME=`echo $0 | sed "s/$BASENAME$//"`
+[ "$NOTBASENAME" != "" ] && {
+   cd $NOTBASENAME
+}
+ 
+# export the root installation directory
+PWD=`pwd`
+INSTALL_ROOT=${PWD%/$APP}  # get the directory previous to this app's dir
+export INSTALL_ROOT
+
+exec $APP >> $USERLOG

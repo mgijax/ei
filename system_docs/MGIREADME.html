@@ -1,0 +1,934 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGI EDITING INTERFACE - Overview
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>
+MGI EDITING INTERFACE - Overview
+</H2>
+
+<H4>Purpose</H4>
+This document provides a technical overview on the implementation of the
+MGI Editing Interface Applications, MGD, GXD, Nomenclature and MGI Admin.  
+For more in-depth explanations of TeleUSE, XRT PDS and X concepts, refer to the 
+appropriate documentation manuals.
+
+<H4>Table of Contents</H4>
+<OL>
+<LI><A HREF="#definitions">Definitions</A>
+<LI><A HREF="#contact">Contact Information</A>
+<LI><A HREF="#license">License Information</A>
+<LI><A HREF="#teleuse">TeleUSE</A>
+<LI><A HREF="#xrt">XRT Widgets</A>
+<LI><A HREF="#pcds">TeleUSE Presentation Components</A>
+<LI><A HREF="#dmodules">TeleUSE Dialog Components</A>
+<LI><A HREF="#cmodules">TeleUSE C Components</A>
+<LI><A HREF="#config">Configuration</A>
+<LI><A HREF="#installsource">Install a copy of Production or Development Source</A>
+<LI><A HREF="#applconfig">Application Configuration Files</A>
+<LI><A HREF="#buildDev">Build/Install a Development copy of an MGI Application</A>
+<LI><A HREF="#buildProd">Build/Install a Production copy of an MGI Application</A>
+<LI><A HREF="#runMGI">Run an installed MGI Application</A>
+<LI><A HREF="#debug">Debug an installed MGI Application</A>
+<LI><A HREF="#exodus">Configuring eXodus Client</A>
+<LI><A HREF="#interface">Interface</A>
+	<OL>
+	<LI><A HREF="#designOverview">Interface Overview</A>
+	<LI><A HREF="#designInstantiation">Form Instantiation</A>
+	<LI><A HREF="#designPCD">Designing a Presentation Component</A>
+	<LI><A HREF="#designD">Designing a Dialog Component</A>
+	</OL>
+</OL>
+ 
+<HR>
+<A NAME="definitions"><H4>Definitions</H4></A>
+<OL>
+<LI>The prefix <I>MGI</I> is used to refer to the entire Mouse Genome Informatics (MGI)
+    editorial interface system. 
+    <P>
+    The term <I>MGD</I> is used to refer to the MGD database-specific components.
+    <P>
+    The term <I>GXD</I> is used to refer to the GXD database-specific components.
+    <P>
+    The term <I>NOMEN</I> is used to refer to the Nomenclature database-specific components.
+    <P>
+    The term <I>MGI Admin</I> is used to refer to the administrative-specific components
+    for any of the databases such as table comments.
+<P>
+<LI><CODE>$source_directory</CODE>
+	<P>
+	For the purposes of this document, a development directory of the MGI GUI source is located in:
+		<CODE>/home/lec/mgd/sybase/mgi_dev</CODE>
+<P>
+<LI><CODE>$application</CODE>
+	<P>
+	For the purposes of this document, a development subdirectory of the configuration file and 
+	build area for an MGI application is:
+		<CODE>/home/lec/mgd/sybase/mgi_dev/$application</CODE>
+	<P>
+	Currently defined applications:
+		<OL>
+		<LI><I>mgd</I>
+			<BR>Editing interface for the MGD database, excluding GXD tables.
+		<P>
+		<LI><I>gxd</I>
+			<BR>Editing interface for the GXD tables.
+		<P>
+		<LI><I>mgiadmin</I>
+			<BR>Editing interface for the administrative tables.
+		<P>
+		<LI><I>nomen</I>
+			<BR>Editing interface for the Nomenclature tables.
+		</OL>
+</OL>
+
+<HR>
+<A NAME="contact"><H4>Contact Information</H4></A>
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Software<TH>Technicial Support<TH>User Mailing List<TH>Sales<TH>Web Home Page
+<TR><TD>TeleUSE
+    <TD><A HREF="mailto:service@sd.aonix.com">service@sd.aonix.com</A>
+    <TD><A HREF="mailto:newtu@sd.aonix.com">newtu@sd.aonix.com</A>
+    <TD>Joe Reid (<A HREF="mailto:reid@aonix.com">reid@aonix.com</A>)
+    <TD><A HREF="http://www.aonix.com/">Aonix</A>
+<TR><TD>XRT
+    <TD><A HREF="mailto:support@klg.com">support@klg.com</A>
+    <TD><A HREF="mailto:xrt-forum@klg.com">xrt-forum@klg.com</A>
+    <TD>Mark Merson (<A HREF="mailto:mrm@klg.com">mrm@klg.com</A>)
+    <TD><A HREF="http://www.klg.com/">KL Group</A>
+</TABLE>
+
+<HR>
+<A NAME="license"><H4>License Information</H4></A>
+<OL>
+<LI>TeleUSE licenses are host-independent.  The license server is argus and
+    this <I>is</I> IP-dependent.  To change the license server, you must contact
+    TeleUSE Suport and obtain a Certificate of License Transfer.
+    All licenses expire <B>June 30 2000</B>.
+    If you have to process a renewal, make a copy of the renewal sent from Aonix, fill out 
+    a PO and send it down to Purchasing.  Purchasing will handle it from 
+    there.  You might want to request a copy of the PO from Purchasing.  All information 
+    is in the TeleUSE folder located in the lower drawer immediately to the right of 
+    Lori's chair.
+	<P>
+	<TABLE BORDER=1>
+	<TR ALIGN=left><TH>Serial #<TH>QTY<TH>Product Code<TH>Description
+	<TR><TD>21209<TD>1<TD>TU-SOLE-TLSG-RE<TD>Solaris2.5/TeleUSE Maint.
+	<TR><TD>31266<TD>2<TD>TU-SOLE-TLSG-RE<TD>Solaris2.5/TeleUSE Maint.
+	</TABLE>
+<P>
+<LI>XRT licenses are <B>not</B> host-independent.  Each license is tied to a specific CPU Id.
+    All licenses expire <B>September 30, 2000</B>.  
+    If you have to process a renewal, make a copy of the renewal sent from KL Group, fill out 
+    a PO and send it down to Purchasing.  Purchasing will handle it from 
+    there.  You might want to request a copy of the PO from Purchasing.  All information is in the XRT envelope 
+    behind the TELEUSE folder located in the lower drawer immediately to the right of Lori's chair.
+	<P>
+	<TABLE BORDER=1>
+	<TR ALIGN=left><TH>Serial #<TH>Host Name<TH>CPU Id<TH>Description<TH>Product Type<TH>Password information
+	<TR><TD>01-40632
+	    <TD>argus
+	    <TD>809b798f
+	    <TD>Lori's desktop machine
+	    <TD>XRT PDS 1.0.1
+	    <TD>1015654855
+	<TR><TD>01-40633
+	    <TD>mishka
+	    <TD>809d555b
+	    <TD>Geoff's desktop machine
+	    <TD>XRT PDS 1.0.1
+	    <TD>1762241823
+	<TR><TD>01-40634
+	    <TD>titan
+	    <TD>80880f07
+	    <TD>Production server
+	    <TD>XRT PDS 1.0.1
+	    <TD>0197761598
+	<TR><TD>01-62355
+	    <TD>junior
+	    <TD>808a2506
+	    <TD>Test server
+	    <TD>XRT PDS 1.0.1
+	    <TD>3192647138
+	<TR><TD>01-63286
+	    <TD>ceegee
+	    <TD>8085a1c6
+	    <TD>Lori's home machine
+	    <TD>XRT PDS 1.0.1
+	    <TD>1155649846  
+	</TABLE>
+<P>
+</OL>
+
+<HR>
+<A NAME="teleuse"><H4>TeleUSE (v 3.1)</H4></A>
+TeleUSE is a User Interface Management System (UIMS) for developing Motif-based
+graphical user interfaces (GUIS) in C or C++, supporting Motif 1.2 and X11R5.
+<P>
+(Refer to the <A HREF="http://www.aonix.com/Products/UIMS/tu_intro.html">About
+TeleUSE</A> page at <A HREF="http://www.aonix.com/">Aonix</A> for more information.)
+
+<HR>
+<A NAME="xrt"><H4>XRT Widgets (PDS v 1.0.1)</H4></A>
+XRT PDS provides additional widget products:
+	<OL>
+	<LI>XRT/table - tabular information
+	<LI>XRT/field - data-entry fields
+	<LI>XRT/gear - basic components including outliner/tree, progress, icons, etc.
+	<LI>XRT/3d - 3D charts and graphs
+	<LI>XRT/graph - 2D charts and graphs
+	</OL>
+<P>
+XRT PDS widget products are <A HREF="TeleUSEXRT.html">fully integrated</A> with the TeleUSE installation.
+<P>
+(Refer to the <A HREF="http://www.klg.com/xrt/overview.html">XRT Widgets for Motif</A>
+ page at <A HREF="http://www.klg.com/">KL Group</A> for more information.)
+
+<HR>
+<A NAME="pcds"><H4>TeleUSE Presentation Components (templates)</H4></A>
+TeleUSE provides a visual interface program call <CODE>vip</CODE> which allows you 
+to build an interface using OSF/Motif, X Toolkit Instrinsics and XRT PDS widget sets.
+<P>
+<CODE>vip</CODE> provides the capability to create templates of widgets and
+widget hierarchies which can be used repeatedly throughout the user interface.
+You can set the values of the widget attributes and create user-defined attributes
+(UDA) to further customize the interface.
+<P>
+For more information, refer to the TeleUSE Implementing Presentation Components manual.
+<P>
+Presentation components (templates) are generated by <CODE>vip</CODE> and
+stored in UNIX files with the extension <CODE>.pcd</CODE>
+in <CODE>$source_directory/pcds</CODE>.
+<P>
+Always execute <CODE>vip</CODE> from the <CODE>$source_directory/$application</CODE> directory.
+Refer to <A HREF="#applconfig">Application Configuration Files</A> for more information on <CODE>vip</CODE>
+and its configuration file <CODE>.viprc</CODE>.
+<P>
+The current set of PCDS for the MGI GUI:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>PCD file<TH>Description
+<TR><TD>MGI.pcd
+	<TD>defines application templates such as Login, Module, EditForm.
+<TR><TD>GXD.pcd
+	<TD>defines GXD application interfaces such as Assay, Antibody.
+<TR><TD>MGIAdmin.pcd
+	<TD>defines the MGI Administrative interface. (<I>new</I>)
+<TR><TD>MGINomen.pcd
+	<TD>defines the Nomenclature application interfaces. (<I>new</I>)
+<TR><TD>MGD.pcd
+	<TD>defines MGD application interfaces such as Reference, Marker.
+<TR><TD>mgiDialog.pcd
+	<TD>defines Dialog templates such as StatusDialog, DeleteDialog.
+<TR><TD>mgiLookup.pcd
+	<TD>defines Lookup List templates.  Lookup Lists are selection lists
+	   of controlled vocabulary used when the number of items is greater
+	   than 20.  The selection lists can be dynamically loaded at runtime.
+<TR><TD>mgiOption.pcd
+	<TD>defines Option Menu templates.  Option Menus are selection lists for
+	   controlled vocabulary used when the number of items is less than or
+	   equal to 20.  The selection items can be dynamically created at
+	   runtime.
+<TR><TD>mgiControl.pcd
+	<TD>defines the Control area of each Module.  The Control area contains
+	   the Search, Add, Modify, Delete buttons, the Creation and Modification
+	   date, Record Count, etc.
+<TR><TD>mgiMenu.pcd
+	<TD>defines the Main Menu bar of each Module.  This includes File, View,
+	   Commands, Edit, Help.
+<TR><TD>mgiTable.pcd
+	<TD>defines several Table templates derived from XRT/table.
+<TR><TD>mgiDataTypes.pcd
+	<TD>defines basic data entry field types.
+<TR><TD>gxdDictionary.pcd
+	<TD>defines the GXD Dictionary interface.
+</TABLE>
+
+<HR>
+<A NAME="dmodules"><H4>TeleUSE Dialog Components</H4></A>
+For every module (PCD file) in an interface, at least one Dialog Component
+is created to implement the callbacks in the interface module.  TeleUSE
+provides a language called <CODE>D</CODE> with which to create the
+Dialog Components.
+<P>
+For more information, refer to the TeleUSE Developoing Dialog Components manual.
+<P>
+Dialog components are stored in UNIX files with the extension <CODE>.d</CODE>
+or <CODE>.de</CODE> (depending on the scope of the event) 
+in <CODE>$source_directory/dsrc</CODE>.
+<P>
+In the MGI GUI, there are two types of D modules:
+<OL>
+<LI>Library modules define D events which are reused throughout the interface.
+    Library modules often have a header file associated with them (<CODE>.de</CODE>)
+    which contains the D event declarations for the D events defined in the
+    corresponding <CODE>.d</CODE> file.
+<P>
+<LI>Form modules correspond to a specific Module (ex. Reference or Marker) and
+    define local D events for the Form.  Form modules can call D events which
+    are defined in Library modules and within the form module itself.
+</OL>
+<P>
+The current set of Library Dialog Components for the MGI GUI:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Description
+<TR><TD>AccLib.d/AccLib.de
+	<TD>Interaction with Accession Numbers
+<TR><TD>DictionaryLib.d/DictionaryLib.de
+	<TD>Interaction with GXD Anatomical Dictionary Clipboard
+<TR><TD>DynamicLib.d/DynamicLib.de
+	<TD>Dynamic building of interface components (ex. Option Menus)
+<TR><TD>Lib.d/Lib.de
+	<TD>General functionality (ex. clearing forms, printing, exiting)
+<TR><TD>List.d/List.de
+	<TD>Interaction with Lookup Lists
+<TR><TD>MGILib.d/MGILib.de
+	<TD>Application login and initialization
+<TR><TD>MolSourceLib.d/MolSourceLib.de
+	<TD>Interaction with Molecular Source Form
+<TR><TD>Note.d
+	<TD>Interaction with NoteDialog
+<TR><TD>Report.d
+	<TD>Interaction with ReportDialog
+<TR><TD>SQL.d/SQL.de
+	<TD>Interaction with Sybase Server (ex. querying, adding, modifying)
+<TR><TD>Table.d/Table.de
+	<TD>Interaction with XRT/table widget
+<TR><TD>Transfer.d/Transfer.de
+	<TD>Interaction with Marker Transfer dialog.
+<TR><TD>Verify.d/Verify.de
+	<TD>Verification routines (ex. verifying Marker symbol, Reference, etc.)
+</TABLE>
+<P>
+The current set of Form Components for the MGD Application:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Corresponding PCD component
+<TR><TD>Cross.d
+	<TD>MGD.pcd:Cross
+<TR><TD>Homology.d
+	<TD>MGD.pcd:Homology
+<TR><TD>Lookups.d
+	<TD>MGI.pcd:Lookups
+<TR><TD>MGD.d
+	<TD>MGD.pcd:MGD
+<TR><TD>MLCED.d
+	<TD>MGD.pcd:MLC
+<TR><TD>MLDP.d
+	<TD>MGD.pcd:MLDP
+<TR><TD>Marker.d
+	<TD>MGD.pcd:Marker
+<TR><TD>Molecular.d
+	<TD>MGD.pcd:MolecularSegment
+<TR><TD>MolecularSource.d
+	<TD>MGD.pcd:MolecularSource
+<TR><TD>RI.d
+	<TD>MGD.pcd:RISet
+<TR><TD>Reference.d
+	<TD>MGD.pcd:Reference
+<TR><TD>Species.d
+	<TD>MGD.pcd:Species
+<TR><TD>Strains.d
+	<TD>MGD.pcd:Strains
+<TR><TD>Tissues.d
+	<TD>MGD.pcd:Tissues
+</TABLE>
+<P>
+The current set of Form Components for the GXD Application:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Corresponding PCD component
+<TR><TD>Antibody.d
+	<TD>GXD.pcd:Antibody
+<TR><TD>Antigen.d
+	<TD>GXD.pcd:Antigen
+<TR><TD>Assay.d
+	<TD>GXD.pcd:Assay
+<TR><TD>Dictionary.d
+	<TD>gxdDictionary.pcd:Dictionary
+<TR><TD>GXD.d
+	<TD>GXD.pcd:GXD
+<TR><TD>Genotype.d
+	<TD>mgiDialog.pcd:GenotypeDialog
+<TR><TD>Image.d
+	<TD>GXD.pcd:Image
+<TR><TD>InSituResult.d
+	<TD>mgiDialog.pcd:InSituResultDialog
+<TR><TD>IndexStage.d
+	<TD>GXD.pcd:IndexStage
+<TR><TD>Lookups.d
+	<TD>MGI.pcd:Lookups
+</TABLE>
+<P>
+The current set of Form Components for the MGI Admin Application:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Corresponding PCD component
+<TR><TD>ActualLogical.d
+	<TD>MGIAdmin.pcd:ActualLogical
+<TR><TD>MGIAdmin.d
+	<TD>MGIAdmin.pcd:MGIAdmin
+<TR><TD>MGDTables.d
+	<TD>GXD.pcd:MGDTables
+</TABLE>
+<P>
+The current set of Form Components for the Nomen Application:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Corresponding PCD component
+<TR><TD>Nomen.d
+	<TD>MGINomen.pcd:Nomen
+</TABLE>
+
+<HR>
+<A NAME="cmodules"><H4>TeleUSE C Components</H4></A>
+From within a D module, you can call C routines.  C routines are used in cases
+where the D language is insufficient and to provide wrappers to
+the Sybase DB-Library API, XRT/table routines, etc.  C library routines such
+as <CODE>strcmp</CODE>, <CODE>getenv</CODE>, etc. can also be called from within
+D modules.
+<P>
+For each function which is called, an entry must exist in an Application Interface
+Mapping (AIM) file.  AIM files contain declarations for application or library
+routines that are to be called from within D and provide information to the
+D language compiler.
+<P>
+C components are stored in UNIX files with the extension <CODE>.c</CODE>
+in <CODE>$source_directory/csrc</CODE>.
+<P>
+C include files are stored in UNIX files with the extension <CODE>.h</CODE>
+in <CODE>$source_directory/include</CODE>.
+<P>
+TeleUSE AIM files are stored in UNIX files with the extension <CODE>.aim</CODE>
+in <CODE>$source_directory/aim</CODE>.
+<P>
+The current set of C Source files for the MGI Application:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Description
+<TR><TD>dictionary.c
+	<TD>GXD Anatomical Dictionary
+<TR><TD>hashtbl.c
+	<TD>Hash Routines for GXD Anatomical Dictionary
+<TR><TD>mgilib.c
+	<TD>General routines for construction of SQL statements for MGI database tables
+<TR><TD>mlced_scan.c
+	<TD>Text scanning routines for MLC Text
+<TR><TD>mlced_util.c
+	<TD>MLC utility routines
+<TR><TD>stageicons.c
+	<TD>XPM data used by stagetrees.c
+<TR><TD>stagetrees.c
+	<TD>Routines for the stage tree management within the GXD Anatomical Dictionary interface.
+<TR><TD>syblib.c
+	<TD>Wrappers to Sybase DB-Library routines.
+<TR><TD>tables.c
+	<TD>Wrappers to XRT/table library routines.
+<TR><TD>utilities.c
+	<TD>General utility routines.
+<TR><TD>xrt_conv.c
+	<TD>Register converters for XRT; Tech support fix; see source for details
+</TABLE>
+<P>
+The current set of C Include files for the MGI Application:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Description
+<TR><TD>dictionary.h
+	<TD>GXD Anatomical Dictionary
+<TR><TD>hashtbl.h
+	<TD>Hash Routines for GXD Anatomical Dictionary
+<TR><TD>mgilib.h
+	<TD>General routines for construction SQL statements for MGI database tables
+<TR><TD>mlced.h
+	<TD>MLC routines
+<TR><TD>stagetrees.h
+	<TD>Routines for the stage tree management withing the GXD Anatomical Dictionary interface.
+<TR><TD>syblib.h
+	<TD>Wrappers to Sybase DB-Library routines.
+<TR><TD>tables.h
+	<TD>Wrappers to XRT/PDS library routines.
+<TR><TD>utilities.h
+	<TD>General utility routines.
+</TABLE>
+<P>
+The current set of AIM files for the MGI Application:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Description
+<OL>
+<TR><TD>dictionary.aim
+	<TD>GXD Anatomical Dictionary
+<TR><TD>mgilib.aim
+	<TD>General routines for construction SQL statements for MGI database tables
+<TR><TD>mlced.aim
+	<TD>MLC utility routines
+<TR><TD>mlced_scan.aim
+	<TD>Text scanning routines for MLC Text
+<TR><TD>sybase.aim
+	<TD>Sybase DB-Library routines.
+<TR><TD>tables.aim
+	<TD>XRT/PDS library routines.
+<TR><TD>utilities.aim
+	<TD>General utility routines.
+<TR><TD>xrt.aim
+	<TD>XRT/PDS library routines.
+</TABLE>
+<P>
+
+<HR>
+<A NAME="config"><H4>Configuration</H4></A>
+The SCCS source for all versions of GUI applications is located under the root directory:
+	<PRE>
+	/export/src/mgd/gui
+	</PRE>
+<P>
+There is always a symbolic link to the current production source root directory:
+	<PRE>
+	/export/src/mgd/gui/mgi_prod -> mgi_3
+	</PRE>
+<P>
+There is always a symbolic link to the current development source root directory:
+	<PRE>
+	/export/src/mgd/gui/mgi_dev -> mgi_4
+	</PRE>
+<P>
+After a version of the source is released into Production and you determine that the
+release is "stable", freeze the current Production source.  Make sure all source is
+checked back into SCCS before preparing a new Development copy of the source.
+	<PRE>
+	lec@argus> ls -l
+	drwxr-xr-x  14 lec      progs        512 Apr  9 09:48 mgi_3
+	drwxr-xr-x  14 lec      progs        512 Apr 13 07:59 mgi_4
+	lrwxrwxrwx   1 lec      progs          5 Apr 13 07:59 mgi_dev -> mgi_4
+	lrwxrwxrwx   1 lec      progs          5 Apr 13 07:58 mgi_prod -> mgi_3
+	lec@argus> cd /export/src/mgd/gui
+	lec@argus> rm mgi_prod
+	lec@argus> rm mgi_dev
+	lec@argus> ln -s mgi_4 mgi_prod
+	lec@argus> cp -r mgi_4 mgi_5		# create new copy of source for development
+	lec@argus> ln -s mgi_5 mgi_dev
+	</PRE>
+<P>
+The source root directory is sub-divided into several subdirectories.  The root and each subdirectory 
+contains an SCCS directory.
+<P>
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Sub-Directory<TH>Description
+<TR><TD>SCCS
+    <TD>Administrative scripts for installing a copy of Production or Development source
+<TR><TD>aim
+    <TD><A HREF="#cmodules">Application Interface Mapping files</A>
+<TR><TD>csrc
+    <TD><A HREF="#cmodules">Application C Source Files</A>
+<TR><TD>dsrc
+    <TD><A HREF="#dmodules">Application Dialog Source Files</A>
+<TR><TD>include
+    <TD>Header files for <A HREF="#cmodules">Application C Source Files</A>
+<TR><TD>pcds
+    <TD><A HREF="#pcds">Presentation Components</A>
+<TR><TD>reports
+    <TD>Report source files (see <A HREF="MEI/MEIReports.html">MGI Nightly Reports</A>)
+<TR><TD>utilities
+    <TD>Utility source files (see <A HREF="MEI/MEIUtilities.html">MGI Editorial Utilities</A>)
+<TR><TD>gxd
+    <TD><CODE>$application</CODE> directory for the GXD application.
+	This is where the <A HREF="#applconfig">application configuration files</A> reside.
+<TR><TD>mgd
+    <TD><CODE>$application</CODE> directory for the MGD application.
+	This is where the <A HREF="#applconfig">application configuration files</A> reside.
+<TR><TD>mgiadmin
+    <TD><CODE>$application</CODE> directory for the MGI Admin application.
+	This is where the <A HREF="#applconfig">application configuration files</A> reside.
+<TR><TD>nomen
+    <TD><CODE>$application</CODE> directory for the Nomenclature application.
+	This is where the <A HREF="#applconfig">application configuration files</A> reside.
+</TABLE>
+<P>
+Additional application subdirectories should be created under the root directory, as has been
+done for <I>gxd</I>, <I>mgd</I>, <I>nomen</I>, <I>mgiadmin</I>.
+<P>
+
+<HR>
+<A NAME="installsource"><H4>Install a copy of Production or Development Source</A></H4>
+To install a Production or Development copy of the GUI application source:
+<OL>
+<LI>Prepare a working directory for yourself:
+	<PRE>/home/lec/mgd/sybase</PRE>
+<P>
+<LI>Change to this directory:
+	<PRE>cd /home/lec/mgd/sybase</PRE>
+<P>
+<LI>Retrieve the admin scripts from the GUI source directory:
+	<PRE>sccs -d /export/src/mgd/gui get SCCS</PRE>
+    <P>
+    This will retrieve several files:
+	<TABLE BORDER=1>
+	<TR ALIGN=left><TH>File<TH>Description
+	<TR><TD>checkIn
+    	<TD>Script to check files in one directory at a time or all at once
+	<TR><TD>checkOut
+    	<TD>Script to check files out one directory at a time or all at once
+	<TR><TD>createDir
+    	<TD>Script to install a production or development copy of the source files locally
+	<TR><TD>createTar
+    	<TD>Script to create a tar file of production or development source
+	</TABLE>
+<P>
+<LI>Run <CODE>createDir</CODE> with the appropriate arguments (refer to the source file for more documentation):
+    <P>
+    To install a production copy of the source files:
+	<PRE>createDir prod &lt;directory&gt;</PRE>
+    <P>
+    To install a development copy of the source files:
+	<PRE>createDir dev &lt;directory&gt;</PRE>
+    <P>
+    After running <CODE>createDir</CODE>, the appropriate sub-directories and SCCS links will be installed
+    in the <CODE>&lt;directory&gt;</CODE> specified. 
+    <P>
+    A TeleUSE session initialization file called <CODE>.viprc</CODE> will also be created for each
+    application directory (<I>gxd</I>, <I>mgd</I>, etc.).  This file is discussed later on in more detail,
+    but it does contain hard-coded paths to your specific installation directory.  This path will be
+    set to your specific installation path by <CODE>createDir</CODE>.
+<P>
+<LI>The appropriate SYBASE and TeleUSE environment also needs to be configured:
+	<PRE>
+        OPENWINHOME=/usr/openwin
+        XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
+        PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
+        
+        DSQUERY=MGD
+        MGD=mgd
+        
+        SYBASE=/opt/sybase
+        TeleUSE=/opt/teleuseXRT
+        XNLSPATH=$TeleUSE/X11R5/lib/nls
+        XUSERFILESEARCHPATH=%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-defaults/%N:
+		$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:
+		/usr/lib/X11/app-defaults/%N
+        
+        LD_LIBRARY_PATH=$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
+        PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$TeleUSE/XRT/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
+	</PRE>
+<P>
+<LI>Refer to <A HREF="#applconfig">Application Configuration Files</A> for information on building the
+    installed applications.
+<P>
+<LI>Once you install a Production or Development copy, you can use basic SCCS commands to edit the
+    source files.  Once a Production copy is live (i.e. being used by the users), then only bug fixes
+    should be applied to a Production source.  All subsequent development work should be done using
+    the Development source.  The Production source should remain consistent with what the users are using
+    on the installed Production copy (<CODE>titan:/export</CODE>).
+</OL>
+
+<HR>
+<A NAME="applconfig"><H4>Application Configuration Files</H4></A>
+There are several files which are necessary for the application to build successfully.
+These files are located in <CODE>$source_directory/$application</CODE>:
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Source file<TH>Description
+<TR><TD>uxb.conf
+	<TD>TeleUSE configuration file for building and/or installing the application.
+	    See <CODE>buildapp</CODE> and <CODE>installapp</CODE> below.
+            For more information, refer to the Building the Application manual.
+<TR><TD>buildapp
+    <TD>Shell script to run <CODE>uxb</CODE> with the appropriate arguments in order to
+	build either a Production or Development copy of the application.
+<TR><TD>installapp
+    <TD>Shell script to run <CODE>uxb install</CODE> with the appropriate arguments in order to
+	install either a Production or Development copy of the application.
+	Defines the destination directory (<CODE>-destdir</CODE>) for the installed application.
+<TR><TD>Makefile.xrt
+	<TD>XRT-authorize the executable
+<TR><TD>run$application
+	<TD>Script to run the Production copy of the application.  Contains environment
+	    assignments for DSQUERY, MGD, SYBASE, TeleUSE, etc.
+	    This script must be edited to use the correct APP, INSTALLDIR, DSQUERY, MGD values
+	    for your production installation.
+<TR><TD>run$application-dev
+	<TD>Script to run the Development copy of the application.  Contains environment
+	    assignments for DSQUERY, MGD, SYBASE, TeleUSE, etc.
+	    This script must be edited to use the correct APP, INSTALLDIR, DSQUERY, MGD values
+	    for your development installation.
+<TR><TD>X Resource File (MGD.in, GXD.in, MGIADMIN.in, NOMEN.in)
+	<TD>Resource files which defines copy/paste function keys for Mac users,
+	    global font, background, etc.
+<TR><TD>.viprc
+        <TD>Not necessary for building the application, however this file is used by the 
+	    <A HREF="#pcds">TeleUSE Presentation Components</A> tool <CODE>vip</CODE> to store session 
+	    configuration information.  When <CODE>vip</CODE> is executed, this file will be used to determine
+	    which PCD files to load into the <CODE>vip</CODE> editor.  This file is edited by
+	    the <I>File->Include Module</I> option and saved through the <I>File->Session Initfile->Save</I> 
+	    option in the <CODE>vip</CODE> tool. For more information, see the Implementing Presentation
+	    Components manual pages 3-10 thru 3-11.
+</TABLE>
+<P>
+
+<HR>
+<A NAME="buildDev"><H4>Build a Development copy of an MGI Application</H4></A>
+Development copies of an MGI application contain interpreted D code.  Interpreted D code
+allows the debugger to be used.
+<OL>
+<LI>Go to the application directory: <CODE>cd $source_directory/$application</CODE>
+<P>
+<LI>Compile the application: <CODE>buildapp dev</CODE>
+<P>
+<LI>Verify that the INSTALLFILE configuration variable is defined in <CODE>uxb.conf</CODE>:
+	<PRE>
+	INSTALLFILE     MGD runmgd runmgd-dev runmgd-test
+	INSTALLFILE     ../reports/header.sh \
+	../reports/trailer \
+	../reports/ACC_Accession.sql \
+	../reports/BIB_InPress.sql \
+	../reports/BIB_NeedNLM.sql \
+	../reports/BIB_Null.sql \
+	../reports/BIB_NoAbstract.sql \
+	../reports/BIB_Submission.sql \
+	etc.
+	</PRE>
+<P>
+<LI>Install the application in the destination directory: <CODE>installapp dev</CODE>
+<P>
+<LI>Run the application from the destination directory: <CODE>cd DESTDIR;$application</CODE>
+    <BR>
+    OR
+    <BR>
+    Run the application using the <CODE>run$application-dev</CODE> script: <CODE>DESTIDR/run$application-dev</CODE>
+</OL>
+
+<HR>
+<A NAME="buildProd"><H4>Build a Production copy of an MGI Application</H4></A>
+Production copies of an MGI application translate D code into C code which is then compiled.
+<OL>
+<LI>Go to the application directory: <CODE>cd $source_directory/$application</CODE>
+<P>
+<LI>Compile the application: <CODE>buildapp prod</CODE>
+<P>
+<LI>Verify that the INSTALLFILE configuration variable is defined in <CODE>uxb.conf</CODE>:
+	<PRE>
+	INSTALLFILE     MGD runmgd runmgd-dev runmgd-test
+	INSTALLFILE     ../reports/header.sh \
+	../reports/trailer \
+	../reports/ACC_Accession.sql \
+	../reports/BIB_InPress.sql \
+	../reports/BIB_NeedNLM.sql \
+	../reports/BIB_Null.sql \
+	../reports/BIB_NoAbstract.sql \
+	../reports/BIB_Submission.sql \
+	etc.
+	</PRE>
+<P>
+<LI>Install the application in the destination directory: <CODE>installapp prod</CODE>
+<P>
+<LI>Run the application from the destination directory: <CODE>cd DESTDIR;$application</CODE>
+    <BR>
+    OR
+    <BR>
+    Run the application using the <CODE>run$application</CODE> script: <CODE>DESTDIR/run$application</CODE>
+</OL>
+
+<HR>
+<A NAME="runMGI"><H4>Run an installed MGI Application</H4></A>
+<CODE>DESTDIR/run$application</CODE>
+
+<HR>
+<A NAME="debug"><H4>Debug an installed Development MGI Application</H4></A>
+Development installations can be easily debugged using the TeleUSE <CODE>dbug</CODE> tool.
+Production installations cannot use this tool to step through D code since the D code is converted
+to C and compiled.
+<P>
+To debug a development installation:
+<OL>
+<LI>Execute the TeleUSE <CODE>dbug</CODE> tool.  This can be executed from within any directory:
+	<PRE>
+	dbug&
+	</PRE>
+<P>
+<LI>Open the application you wish to debug by selecting the destination directory 
+    (the -destdir defined in <CODE>installapp</CODE>) and the application executable
+    (the EXECUTABLE defined in <CODE>uxb.conf</CODE>):
+	<PRE>
+	File->Open->/home/lec/mgd/sybase/mgi_dev/mgd/test/mgd
+	</PRE>
+<P>
+<LI>The debugger will start execution at the INITIALLY event of the application.  Refer to
+    the Developing Dialog Components manual for more information about the debugger.
+</OL>
+
+<HR>
+<A NAME="exodus"><H4>Configuring eXodus Client</H4></A>
+An eXodus client is needed in order to run an editing interface from a MacIntosh.  See
+Paul Trepanier for help in installing eXodus on a MacIntosh.
+<P>
+Refer to <A HREF="MEI/MEI.html#runningProd">Running the Production Applications</A>
+and <A HREF="MEI/MEI.html#runningDev">Running the Development Applications</A>
+for more information.
+<P>
+Once eXodus has been successfully installed on the MacIntosh, Paul will provide a standard
+<CODE>eXodus Connections</CODE> menu from the Apple Menu on the Mac.  This menu should include:
+<P>
+<TABLE BORDER=1>
+<TR ALIGN=left><TH>Title<TH>Command
+<TR><TD>GXD
+    <TD>setenv DISPLAY $$M$$ && /export/gxd/rungxd
+<TR><TD>GXD Development
+    <TD>setenv DISPLAY $$M$$ && /export/mgd/rungxd-dev
+<TR><TD>GXD Test
+    <TD>setenv DISPLAY $$M$$ && /export/gxd/rungxd-test
+<TR><TD>MGD
+    <TD>setenv DISPLAY $$M$$ && /export/mgd/runmgd
+<TR><TD>MGD Development
+    <TD>setenv DISPLAY $$M$$ && /export/mgd/runmgd-dev
+<TR><TD>Nomenclature
+    <TD>setenv DISPLAY $$M$$ && /export/nomen/runnomen
+<TR><TD>Nomenclature Development
+    <TD>setenv DISPLAY $$M$$ && /export/nomen/runnomen-dev
+</TABLE>
+<P>
+To add or modify an eXodus client, choose the 
+<CODE>Connections->Connection Manager</CODE> menu selection from the eXodus application.
+Use eXodus help for instructions on adding a new client or modifying an existing client.
+<HR>
+<A NAME="interface"><H3>The Interface</H3></A>
+
+<A NAME="designOverview"><H4>Overview</H4></A>
+The basic paradigm of an MGI application consists of:
+<OL>
+<LI>Logging in to the Sybase Server/Database
+<LI>Selecting data entry forms from the Main Menu
+</OL>
+<P>
+Refer to the <A HREF="MEI/MEI.html#login">Logging In</A> section of the <A HREF="MEI/MEI.html">
+MGI Editing Interface Design and Requirements document</A> for full details of this process.
+
+<HR>
+<A NAME="designInstantiation"><H4>Form Instantiation</H4></A>
+A D object type <CODE>dmodule</CODE> is provided to enable you to create multiple instances
+of a D module, each of which can create instances of templates.  Each D module instance is
+separately created and destroyed, has its own data areas and maintains a correspondence to the
+templates it creates.
+<P>
+The <I>MGILib.d</I> library D module contains a D event rule which creates an instance of a
+given D module:
+	<PRE>
+--
+-- CreateMGIModule
+--
+-- Create and initialize a D module instance
+-- The INITIALLY event of the D module instance will be queued and executed
+-- after this rule has finished.
+--
+-- The "top" widget is a parameter to the INITIALLY rule in the D module instance.
+--
+ 
+        CreateMGIModule does
+          (void) create dmodule(CreateMGIModule.name, top);
+        end does;
+	</PRE>
+
+Each selection button in the Main Menu defines an <I>activateCallback</I> of:
+	<PRE>
+	D:CreateMGIModule(name = "ModuleName")
+	</PRE>
+where <I>ModuleName</I> is the name of the D module to instantiate.
+<P>
+The call of <I>create dmodule</I> from <I>CreateMGIModule</I> queues the <I>INITIALLY</I> event of 
+the D module to be instantiated (<I>CreateMGIModule.name</I>).  Therefore, within each D module
+an <I>INITIALLY</I> event must be declared and defined:
+	<PRE>
+	devents:
+		INITIALLY [parent : widget;];
+
+	locals:
+		mgi : widget;
+
+	--
+	-- Marker
+	--
+	-- Activated from:  widget mgi->mgiModules->Marker
+	--
+	-- Creates and manages Marker form
+	--
+ 
+        INITIALLY does
+          mgi := INITIALLY.parent;
+ 
+          (void) busy_cursor(mgi);
+ 
+          top := create widget("Marker", nil, mgi);
+ 
+          -- Prevent multiple instances of the Marker form
+          mgi->mgiModules->Marker.sensitive := false;
+          top.show;
+ 
+          (void) reset_cursor(mgi);
+        end does;
+	</PRE>
+Although multiple instances of D modules are currently disallowed by de-sensitizing the selection
+button after one instantiation, turning on this feature in the future will be trivial.  However,
+the editing interface should be carefully analyzed to ensure that this would not cause unitended
+side effects.
+<P>
+When the form is being exited, the D module instance must be destroyed.  A local <I>Exit</I> event
+must be declared and defined for each D module:
+	<PRE>
+	devents:
+        	Exit :local [];
+
+	--
+	-- Exit
+	--
+	-- Destroy D module instance and call ExitWindow to destroy widgets
+	--
+ 
+        Exit does
+          destroy self;
+          ExitWindow.source_widget := top;
+          send(ExitWindow, 0);
+        end does;
+	</PRE>
+<P>
+
+<HR>
+<A NAME="designPCD"><H4>Designing a Presentation Component</H4></A>
+Conventions and guidelines to use when designing a Presentation Component:
+<OL>
+<LI>Consistency, Consistency, Consistency.  Use behavior which is consistent
+    with the existing interface.
+<LI>Use existing templates whenever possible.  Build new templates from existing
+    templates to maintain consistency within the interface.
+<LI>Use Option Menus for controlled vocabulary when the number of items <= 20.
+    If the data is normalized in the database, then dynamically create the Option
+    Menu items at runtime.  Otherwise, statically define the Option Menu items.
+<LI>Use Lookup Lists for controlled vocabulary when the number of items > 20.
+    The Lookup Lists can be loaded dynamically at runtime whether or not the
+    data is normalized in the database.
+<LI>Be aware that many library D events assume the use of specific templates.
+<LI>Will the parts of the interface you're designing be used elsewhere?  If so, 
+    define a template for it in the appropriate PCD file so that others may use it.
+<LI>Always test the interface on the MacIntosh platform to check for differences
+    in behavior or presentation.
+</OL>
+
+<HR>
+<A NAME="designD"><H4>Designing a Dialog Component</H4></A>
+Conventions and guidelines to use when designing a Dialog Component:
+<OL>
+<LI>Consistency, Consistency, Consistency.  Use behavior which is consistent
+    with the existing interface whenever possible.
+<LI>Use <CODE>Template.d</CODE> if designing a D module which implements a
+    specific data entry form.  <CODE>Template.d</CODE> contains devent declarations
+    and definitions for the following:
+	<OL>
+	<LI><I>INITIALLY</I>, initialize form
+        <LI><I>Add</I>, add record
+        <LI><I>BuildDynamicComponents</I>, build dynamic widget components
+        <LI><I>Delete</I>, delete record
+        <LI><I>Exit</I>, destroys D module instance & cleans up
+        <LI><I>Init</I>, initialize globals, etc.
+        <LI><I>Modify</I>, modify record
+        <LI><I>PrepareSearch</I>, construct SQL search clause
+        <LI><I>Search</I>, execute SQL search clause
+        <LI><I>Select</I>, select record
+	</OL>
+</OL>
+
+</BODY>
+</HTML>

@@ -1,0 +1,42 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+      <utilities.h>,
+	  <teleuse/tu_runtime.h>,
+	  <math.h>,
+	  <string.h>;
+
+	TYPE 
+	     "int"           <--> integer;
+	     "Boolean"       <--> boolean;
+	     "char"          <--> char;
+	     "char *"        <--> string;
+	     "char **"       <--> string_list;
+	     "const char *"  <--> string;
+	     "double"        <--> real;
+	     "Widget"        <--> widget;
+             "FILE *"        <--> opaque;
+	     "XmTextVerifyCallbackStruct *" <--> opaque;
+             
+	ENTRY 
+	 keep_busy();
+	 busy_cursor("Widget");
+	 reset_cursor("Widget");
+	 get_time()                                 		  : "char *";
+	 get_date("char *")                                 	  : "char *";
+	 mgi_splitfields("char *", "char *")                      : "char **";
+	 mgi_hide_passwd("XmTextVerifyCallbackStruct *", "char *"): "char *";
+	 mgi_primary_author("const char *")                       : "char *";
+	 mgi_year("char *")                                 	  : "char *";
+	 mgi_writeFile("char *", "char *")                        : "int";
+	 mgi_writeLog("char *");
+	 allow_only_digits("char *")				  : "Boolean";
+	 allow_only_float("char *")				  : "Boolean";
+	 getenv("const char *")                                   : "char *";
+	 @sqrt("double")                                          : "double";
+	 strstr("const char *", "const char *")                   : "char *";
+
+  ENDL
+ENDC
+
+

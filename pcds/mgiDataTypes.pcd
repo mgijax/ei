@@ -1,0 +1,904 @@
+Module: mgiDataTypes
+{
+      autoCuil = False;
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Tue Mar 23 10:21:02 1999";
+        {
+          toggle = XmToggleButton;
+          Group: Widget
+            selectColor = Red;
+            userDefinedAttributes = "modified:Boolean(Boolean)=\"False\"\nkey:Int(Int)=\"0\"\nvalue:String(String)\nmgdTable:String(String)\n";
+            traversalOn = False;
+            valueChangedCallback = "D:SetModify";
+          Group: Control
+            vip_x = 155;
+            vip_y = 30;
+        }
+        {
+          text = XmTextField;
+          Group: Widget
+            background = Wheat;
+            userDefinedAttributes = "defaultValue:String(String)\nmodified:Boolean(Boolean)=\"False\"\nrequired:Boolean(Boolean)=\"False\"\ndefaultCmd:String(String)\n";
+            shadowThickness = 3;
+            translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SetDefault()";
+            valueChangedCallback = "D:SetModify";
+            inTabGroup = True;
+          Group: Control
+            vip_x = 50;
+            vip_y = 30;
+        }
+        {
+          scrolledText = XmScrolledText;
+          Group: Widget
+            background = Wheat;
+            shadowThickness = 3;
+            userDefinedAttributes = "defaultValue:String(String)\nmodified:Boolean(Boolean)=\"False\"\nrequired:Boolean(Boolean)=\"False\"\ndefaultCmd:String(String)\n";
+            inTabGroup = True;
+            blinkRate = 0;
+            translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SetDefault()";
+            valueChangedCallback = "D:SetModify";
+          Group: Control
+            vip_x = 50;
+            vip_y = 250;
+        }
+        {
+          list = XmScrolledList;
+          Group: Widget
+            selectionPolicy = single_select;
+            listSizePolicy = constant;
+            background = Wheat;
+            visibleItemCount = 5;
+            shadowThickness = 3;
+            userDefinedAttributes = "keys:StringTable(StringTable)\nmodified:Boolean(Boolean)=\"False\"\nsqlSuccessful:Boolean(Boolean)=\"True\"\nrow:Int(Int)\n";
+            scrollBarDisplayPolicy = static;
+            traversalOn = False;
+          Group: Control
+            vip_x = 155;
+            vip_y = 140;
+        }
+        {
+          aligner = XmXrtAligner;
+          Group: Control
+            vip_x = 50;
+            vip_y = 195;
+              {
+                label = XmLabel;
+              }
+        }
+        {
+          CharText = aligner : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 360;
+              {
+                label = XmLabel;
+                Group: Constraint
+                  xrtGearAlignBaseline = False;
+              }
+              {
+                text = text : mgiDataTypes;
+                Group: Widget
+                  maxLength = 255;
+              }
+        }
+        {
+          CharSText = aligner : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 305;
+              {
+                label = XmLabel;
+              }
+              {
+                text = scrolledText : mgiDataTypes;
+                Group: Widget
+                  maxLength = 255;
+              }
+        }
+        {
+          IntText = aligner : mgiDataTypes;
+          Group: Control
+            vip_x = 155;
+            vip_y = 305;
+              {
+                label = XmLabel;
+              }
+              {
+                text = text : mgiDataTypes;
+                Group: Widget
+                  columns = 10;
+                  maxLength = 10;
+              }
+        }
+        {
+          ListText = aligner : mgiDataTypes;
+          Group: Widget
+            xrtGearOrientation = vertical;
+          Group: Control
+            vip_x = 155;
+            vip_y = 250;
+              {
+                label = XmLabel;
+              }
+              {
+                list = list : mgiDataTypes;
+              }
+        }
+        {
+          Notes = aligner : mgiDataTypes;
+          Group: Widget
+            xrtGearOrientation = vertical;
+            userDefinedAttributes = "sql:String\n";
+          Group: Control
+            vip_x = 155;
+            vip_y = 360;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = Notes;
+              }
+              {
+                text = scrolledText : mgiDataTypes;
+                Group: Widget
+                  columns = 50;
+                  rows = 3;
+                  editMode = multi_line_edit;
+                  wordWrap = True;
+                  scrollHorizontal = False;
+              }
+        }
+        {
+          ID = IntText : mgiDataTypes;
+          Group: Widget
+            managed = False;
+          Group: Control
+            vip_x = 155;
+            vip_y = 415;
+              {
+                label = XmLabel;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                text = XmTextField;
+                Group: Widget
+                  inTabGroup = False;
+                  traversalOn = False;
+                  managed = False;
+                  userDefinedAttributes = "recordLock:Boolean=\"false\"\n";
+              }
+        }
+        {
+          Jnum = IntText : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 470;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = "J:";
+              }
+              {
+                text = XmTextField;
+                Group: Widget
+                  maxLength = 50;
+                Group: User
+                  required = True;
+              }
+        }
+        {
+          RefID = ID : mgiDataTypes;
+          Group: Control
+            vip_x = 155;
+            vip_y = 470;
+        }
+        {
+          Citation = CharText : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 525;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = Citation;
+              }
+              {
+                text = XmTextField;
+                Group: Widget
+                  maxLength = 255;
+                  columns = 75;
+                Group: User
+                  required = True;
+              }
+        }
+        {
+          Date = CharText : mgiDataTypes;
+          Group: Widget
+            userDefinedAttributes = "fieldName:String\nsql:String\n";
+          Group: Control
+            vip_x = 155;
+            vip_y = 525;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = Date;
+              }
+              {
+                text = XmTextField;
+                Group: Widget
+                  columns = 10;
+                  maxLength = 30;
+              }
+        }
+        {
+          CreationDate = Date : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 580;
+          Group: User
+            fieldName = creation_date;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = "Created\n(MM/DD/YYYY)";
+              }
+              {
+                text = XmTextField;
+                Group: Widget
+                  inTabGroup = False;
+              }
+        }
+        {
+          ModifiedDate = Date : mgiDataTypes;
+          Group: Control
+            vip_x = 155;
+            vip_y = 580;
+          Group: User
+            fieldName = modification_date;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = "Modified\n(MM/DD/YYYY)";
+              }
+              {
+                text = XmTextField;
+                Group: Widget
+                  inTabGroup = False;
+              }
+        }
+        {
+          Tissue = mgiVerify : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 635;
+          Group: User
+            verifyDialog = TissueDialog;
+            verifyTable = 323;
+            verifyKey = TissueID;
+              {
+                TissueID : VerifyID = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: User
+                        required = True;
+                        defaultValue = "-1";
+                    }
+              }
+              {
+                Verify = XmXrtAligner;
+                    {
+                      Tissue : label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 50;
+                    }
+              }
+        }
+        {
+          Strain = mgiVerify : mgiDataTypes;
+          Group: Control
+            vip_x = 155;
+            vip_y = 690;
+          Group: User
+            verifyDialog = StrainDialog;
+            verifyTable = 322;
+            verifyKey = StrainID;
+              {
+                StrainID : VerifyID = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: User
+                        required = True;
+                        defaultValue = "-1";
+                    }
+              }
+              {
+                Verify = XmXrtAligner;
+                    {
+                      Strain : label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 50;
+                    }
+              }
+        }
+        {
+          RecordCount = CharText : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 690;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = "# Records";
+              }
+              {
+                text = XmTextField;
+                Group: Widget
+                  traversalOn = False;
+                  editable = False;
+                  columns = 10;
+              }
+        }
+        {
+          SingleNote = aligner : mgiDataTypes;
+          Group: Widget
+            userDefinedAttributes = "sql:String\n";
+            xrtGearOrientation = vertical;
+          Group: Control
+            vip_x = 155;
+            vip_y = 635;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = Notes;
+              }
+              {
+                text = scrolledText : mgiDataTypes;
+                Group: Widget
+                  maxLength = 255;
+                  editMode = multi_line_edit;
+                  rows = 1;
+                  wordWrap = True;
+                  columns = 50;
+              }
+        }
+        {
+          NotePush = XmPushButton;
+          Group: Widget
+            activateCallback = "D:NoteInit";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int\n";
+            labelString = Notes;
+            traversalOn = False;
+          Group: Control
+            vip_x = 50;
+            vip_y = 965;
+        }
+        {
+          mgiNote = XmRowColumn;
+          Group: Control
+            vip_x = 50;
+            vip_y = 745;
+              {
+                Note = Notes : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                NotePush = NotePush : mgiDataTypes;
+              }
+        }
+        {
+          mgiAccession = XmRowColumn;
+          Group: Widget
+            userDefinedAttributes = "tableID:Int\n";
+          Group: Control
+            vip_x = 155;
+            vip_y = 745;
+              {
+                ObjectID = ID : mgiDataTypes;
+              }
+              {
+                AccessionID = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = "MGI Accession ID";
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 20;
+                        maxLength = 20;
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc()";
+                    }
+              }
+              {
+                AccessionName = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        inTabGroup = False;
+                        columns = 20;
+                    }
+              }
+        }
+        {
+          mgiCitation = XmRowColumn;
+          Group: Widget
+            orientation = horizontal;
+          Group: Control
+            vip_x = 50;
+            vip_y = 800;
+              {
+                ObjectID = ID : mgiDataTypes;
+              }
+              {
+                Jnum = Jnum : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyReference()";
+                    }
+              }
+              {
+                Citation = Citation : mgiDataTypes;
+              }
+        }
+        {
+          mgiObject = XmRowColumn;
+          Group: Widget
+            orientation = horizontal;
+            userDefinedAttributes = "tableID:Int\n";
+          Group: Control
+            vip_x = 50;
+            vip_y = 910;
+              {
+                ObjectID = ID : mgiDataTypes;
+              }
+              {
+                CharText = CharText : mgiDataTypes;
+              }
+        }
+        {
+          mgiMarker = mgiObject;
+          Group: Control
+            vip_x = 155;
+            vip_y = 800;
+          Group: User
+            tableID = 113;
+              {
+                ObjectID = XmXrtAligner;
+              }
+              {
+                Marker : CharText = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Marker;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMarker()";
+                        maxLength = 25;
+                        columns = 25;
+                      Group: User
+                        required = True;
+                    }
+              }
+        }
+        {
+          TableDialogPush = XmPushButton;
+          Group: Widget
+            userDefinedAttributes = "targetWidget:Widget\ntableColumn:Int(Int)\ntableKeyColumn:Int(Int)=\"-1\"\n";
+            activateCallback = "D:VerifyEdit(mode = 1)";
+          Group: Control
+            vip_x = 155;
+            vip_y = 910;
+        }
+        {
+          DataSets = XmFrame;
+          Group: Control
+            vip_x = 50;
+            vip_y = 1020;
+              {
+                DataSetsForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
+                    {
+                      RefDBSStatus = RefDBSStatus : mgiTable;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      RefDBSNonStatus = RefDBSNonStatus : mgiTable;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = RefDBSStatus;
+                        leftOffset = 5;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = RefDBSStatus;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      QueryLabel = label : mgiDataTypes;
+                      Group: Widget
+                        labelString = "Search Data Sets Using:";
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = RefDBSStatus;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topOffset = 5;
+                        topWidget = RefDBSStatus;
+                    }
+                    {
+                      Query = Choice : mgiDataTypes;
+                      Group: Widget
+                        shadowThickness = 0;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = QueryLabel;
+                        rightAttachment = attach_none;
+                        topAttachment = attach_widget;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topWidget = RefDBSStatus;
+                          {
+                            ChoiceBox = XmRowColumn;
+                                {
+                                  Equals = toggle : mgiDataTypes;
+                                }
+                                {
+                                  Contains = toggle : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Contains (default)";
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          Choice = XmFrame;
+          Group: Widget
+            shadowThickness = 0;
+          Group: Control
+            vip_x = 155;
+            vip_y = 965;
+              {
+                ChoiceBox = XmRowColumn;
+                Group: Widget
+                  orientation = horizontal;
+                  radioBehavior = True;
+                  packing = pack_tight;
+                  userDefinedAttributes = "modified:Boolean=\"False\"\n";
+              }
+        }
+        {
+          mgiJournal = mgiVerify : mgiDataTypes;
+          Group: Control
+            vip_x = 155;
+            vip_y = 855;
+          Group: User
+            verifyTable = 100;
+            verifyAdd = False;
+            verifyChars = 3;
+            verifyNotSpecified = False;
+              {
+                Verify = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Journal;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 95;
+                        maxLength = 100;
+                    }
+              }
+              {
+                VerifyID = XmXrtAligner;
+              }
+        }
+        {
+          push = XmPushButton;
+          Group: Widget
+            traversalOn = False;
+            activateCallback = "D:GoHome";
+          Group: Control
+            vip_x = 155;
+            vip_y = 85;
+        }
+        {
+          mgiRISet = mgiVerify : mgiDataTypes;
+          Group: Widget
+            orientation = horizontal;
+          Group: Control
+            vip_x = 155;
+            vip_y = 1020;
+          Group: User
+            verifyTable = 321;
+            verifyDialog = RIDialog;
+            verifyKey = RIID;
+              {
+                Verify = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Designation;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 15;
+                        translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SelectRILookup()";
+                        maxLength = 15;
+                    }
+              }
+              {
+                RIID : VerifyID = XmXrtAligner;
+              }
+              {
+                Origin = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Origin;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 25;
+                        maxLength = 35;
+                    }
+              }
+              {
+                Abbrev1 = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Abbrev1;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 2;
+                        maxLength = 4;
+                    }
+              }
+              {
+                Abbrev2 = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Abbrev2;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 2;
+                        maxLength = 4;
+                    }
+              }
+        }
+        {
+          mgiCross = mgiVerify : mgiDataTypes;
+          Group: Control
+            vip_x = 50;
+            vip_y = 1075;
+          Group: User
+            verifyDialog = CrossDialog;
+            verifyKey = CrossID;
+            verifyTable = 320;
+              {
+                CrossID : VerifyID = XmXrtAligner;
+              }
+              {
+                Verify = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Cross;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 30;
+                        translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab: SelectCrossLookup()";
+                        maxLength = 30;
+                    }
+              }
+        }
+        {
+          Text = aligner : mgiDataTypes;
+          Group: Widget
+            xrtGearOrientation = vertical;
+            userDefinedAttributes = "sql:String\n";
+          Group: Control
+            vip_x = 50;
+            vip_y = 415;
+              {
+                label = XmLabel;
+              }
+              {
+                text = scrolledText : mgiDataTypes;
+                Group: Widget
+                  editMode = multi_line_edit;
+                  rows = 3;
+                  scrollHorizontal = False;
+                  wordWrap = True;
+                  columns = 75;
+              }
+        }
+        {
+          mgiSpecies = mgiObject;
+          Group: Control
+            vip_x = 50;
+            vip_y = 855;
+          Group: User
+            tableID = 110;
+              {
+                ObjectID = XmXrtAligner;
+              }
+              {
+                Species : CharText = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = Species;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 50;
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifySpecies()";
+                    }
+              }
+        }
+        {
+          label = XmLabel;
+          Group: Control
+            vip_x = 50;
+            vip_y = 140;
+        }
+        {
+          mgiAllele = mgiObject;
+          Group: Control
+            vip_x = 155;
+            vip_y = 1130;
+          Group: User
+            tableID = 115;
+              {
+                ObjectID = XmXrtAligner;
+              }
+              {
+                Allele : CharText = XmXrtAligner;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = "Allele Symbol";
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        columns = 50;
+                        maxLength = 50;
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyAllele()";
+                    }
+              }
+        }
+        {
+          mgiVerify = XmRowColumn;
+          Group: Widget
+            userDefinedAttributes = "verifyDialog:String(String)\nverifyTable:Int(Int)\nverifyAdd:Boolean(Boolean)=\"True\"\nverifyChars:Int(Int)=\"-1\"\nverifyNotSpecified:Boolean(Boolean)=\"True\"\nverifyKey:Widget\n";
+          Group: Control
+            vip_x = 155;
+            vip_y = 1075;
+              {
+                Verify = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        maxLength = 255;
+                        translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyItem()";
+                    }
+              }
+              {
+                VerifyID = ID : mgiDataTypes;
+              }
+        }
+        {
+          mgiDate = XmRowColumn;
+          Group: Control
+            vip_x = 50;
+            vip_y = 1130;
+              {
+                Date = Date : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = XmTextField;
+                      Group: Widget
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyDate()";
+                    }
+              }
+        }
+        {
+          messageLabel = XmFrame;
+          Group: Control
+            vip_x = 155;
+            vip_y = 195;
+              {
+                label = XmLabel;
+              }
+        }
+        {
+          messageText = scrolledText : mgiDataTypes;
+          Group: Widget
+            editable = False;
+            inTabGroup = False;
+            traversalOn = False;
+            shadowThickness = 0;
+            cursorPositionVisible = False;
+            scrollHorizontal = False;
+            scrollVertical = False;
+          Group: Control
+            vip_x = 50;
+            vip_y = 85;
+        }
+}
+

@@ -1,0 +1,39 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <mgilib.h>
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+	     "Boolean"	     <--> boolean;
+
+	ENTRY 
+
+	 mgi_setDBkey("int", "int", "char *")		: "char *";
+	 mgi_DBprstr("char *")				: "char *";
+	 mgi_DBprkey("char *")				: "char *";
+	 mgi_DBincKey("char *")				: "char *";
+	 mgi_DBnextSeqKey("int", "char *", "char *")	: "char *";
+	 mgi_DBrecordCount("int")                       : "char *";
+	 mgi_DBaccKey("int")				: "char *";
+	 mgi_DBkey("int")				: "char *";
+	 mgi_DBaccTable("int")				: "char *";
+	 mgi_DBtable("int")				: "char *";
+	 mgi_DBtype("int")				: "char *";
+	 mgi_DBinsert("int", "char *")			: "char *";
+	 mgi_DBdelete("int", "char *")			: "char *";
+	 mgi_DBupdate("int", "char *", "char *")	: "char *";
+	 mgi_DBreport("int", "char *")			: "char *";
+	 mgi_DBaccSelect("int", "int")			: "char *";
+	 mgi_DBcvname("int")				: "char *";
+	 mgi_DBcvLoad("int")           			: "char *";
+	 mgi_DBrefstatus("int", "int")			: "char *";
+	 mgi_DBisAnchorMarker("char *")			: "Boolean";
+	 global_application                             : "char *";
+	 global_version                             	: "char *";
+
+  ENDL
+ENDC
+

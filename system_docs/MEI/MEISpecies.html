@@ -1,0 +1,80 @@
+<HTML>
+<HEADER>
+<TITLE>
+MGD EDITING INTERFACE: Design and Requirements - Species
+</TITLE>
+</HEADER>
+
+<BODY>
+<!--#include file="include.html"-->
+
+<H2>
+MGD EDITING INTERFACE: Design and Requirements - Species
+</H2>
+<BR>
+
+<H4>Introduction</H4>
+The master list of Species contains the Latin and common names for over 75 mammalian species.  Data sets
+which cross reference to the master Species list are:
+	<UL>
+	<LI>Molecular Probes & Segment Libraries (Sources)
+	<LI>Homology
+	</UL>
+<P>
+The master Species list also cross-references a Chromosome Order table.  This table provides an
+ordered list of all chromosomes for a given species.  Ordering of chromosomes is essential for 
+creating reports and constructing the Oxford Grid.
+<P>
+In addition, the Species <I>mouse, laboratory</I> cross-references a list of <I>Anchor loci</I>.
+<I>Anchor loci</I> are loci that have been well-defined and well-mapped on their chromosome. These loci 
+are used to construct the Web mini-maps on the Marker detail screen.
+<P>
+
+<H4>Editing Form</H4>
+<A HREF="species.gif">GIF image</A>
+
+<H4>Data Verifications</H4>
+<OL>
+</OL>
+
+<H4>Fields</H4>
+<UL>
+<LI>Required
+	<OL>
+	<LI>Species (Latin)
+	<LI>Common Name
+	<LI>Chromosome
+	</OL>
+</UL>
+
+<H4>Defaults</H4>
+None
+<OL>
+</OL>
+
+<H4>Deletions</H4>
+A Species cannot be deleted if it is referenced by a:
+<OL>
+<LI>Marker
+<LI>Molecular Probe & Segment
+<LI>Homology
+</OL>
+
+<H4>Miscellaneous</H4>
+<OL>
+<LI>Anchor Loci are only relevant for <I>mouse, laboratory</I>.
+</OL>
+
+<H4>Triggers/Views/Stored Procedures for Species tables (<I>MRK_</I>)</H4>
+<OL>
+<LI>Triggers ($SYBASE/admin/triggers):  <I>MRK.tr</I>, <I>MRK.drop</I>
+<LI>Views ($SYBASE/admin/views):  <I>MRK.view</I>
+<LI>Stored Procedures ($SYBASE/admin/procedures):  <I>MRK.pr</I>
+</OL>
+
+<H3>RELATED DOCUMENTS</H3>
+<OL>
+</OL>
+
+</BODY>
+</HTML>

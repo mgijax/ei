@@ -1,0 +1,65 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+             <sybfront.h>, <sybdb.h>, <syblib.h>
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"        <--> widget;
+             "char **"       <--> string_list;
+
+	     "RETCODE"     <--> integer;
+	     "STATUS"      <--> integer;
+	     "DBPROCESS *" <--> opaque;
+	     "LOGINREC *"  <--> opaque;
+             "DBTINYINT"   <--> char;   -- /* DataServer 1 byte integer */
+             "DBSMALLINT"  <--> integer;-- /* DataServer 2 byte integer */
+             "DBCHAR"      <--> char;   -- /* DataServer char type */
+             "DBBINARY"    <--> char;   -- /* DataServer binary type */
+             "DBBIT"       <--> char;   -- /* DataServer bit type */
+             "DBINT *"     <--> opaque; -- /* DataServer 4 byte integer */
+             "DBINT"       <--> integer; -- /* DataServer 4 byte integer */
+             "DBDATETIME *" <-->opaque; -- /* DataServer date type */
+             "DBMONEY *"   <--> opaque; -- /* DataServer money type */
+             "DBFLT8 *"    <--> opaque; -- /* DataServer float type */
+             
+	ENTRY 
+
+	 mgi_citation("DBPROCESS *", "int")              : "char *";
+	 mgi_dbinit("char *", "char *")                  : "int";
+	 mgi_dbopen()                                    : "DBPROCESS *";
+	 mgi_dbexit();
+	 mgi_execute_search("Widget", "Widget", "char *", "int", "char *");
+	 mgi_getstr("DBPROCESS *", "int")                : "char *";
+	 mgi_key("DBPROCESS *", "int")                   : "char *";
+	 mgi_sql1("char *")                              : "char *";
+
+	 global_login					 : "char *";
+	 global_passwd_file				 : "char *";
+	 global_passwd					 : "char *";
+	 global_reportdir				 : "char *";
+	 global_database				 : "char *";
+	 global_server  				 : "char *";
+
+         ------------------------------
+         -- Sybase Binding to Dialog --
+         ------------------------------
+	 dbcancel("DBPROCESS *")		  : "RETCODE";
+         dbcmd("DBPROCESS *", "char *")           : "RETCODE";
+	 dbclose("DBPROCESS *");
+         dbcolname("DBPROCESS *", "int")          : "char *";
+         dbcollen("DBPROCESS *", "int")           : "int";
+         dbcoltype("DBPROCESS *", "int")          : "int";
+         dbexit("DBPROCESS *");
+         dblogin()                                : "LOGINREC *";
+         dbloginfree("LOGINREC *");
+         dbinit()                                 : "RETCODE";
+	 dbname("DBPROCESS *")                    : "char *";
+         dbnextrow("DBPROCESS *")                 : "STATUS";
+         dbopen("LOGINREC *", "char *")           : "DBPROCESS *";
+         dbresults("DBPROCESS *")                 : "RETCODE";
+         dbsqlexec("DBPROCESS *")                 : "RETCODE";
+         dbuse("DBPROCESS *","char *")            : "RETCODE";
+  ENDL
+ENDC
+

@@ -1,0 +1,25 @@
+CALLS
+    LANGUAGE C 
+    INCLUDE
+       <sybfront.h>, <sybdb.h>,
+       <teleuse/teleuse.h>,
+       <mlced.h>
+    TYPE
+      "int" <--> integer;
+      "char *" <--> string;
+      "long" <--> integer;
+      "Boolean" <--> boolean;
+      "DBPROCESS *" <--> opaque;
+      "Widget"      <--> widget;
+    ENTRY
+       mlced_gettext("DBPROCESS *", "int") : "char *";
+       strpos("char *","char *", "long") : "long";
+       getIdbySymbol("char *","Boolean") : "char *";
+       symbolinMLC("char *") : "Boolean";
+       obtain_mlc_lock("char *") : "Boolean";
+       release_mlc_lock("char *") : "Boolean";
+       cleanup_handler("Widget") : "Boolean";
+       remove("char *") : "int";
+       set_textlimit("DBPROCESS *", "long");
+  ENDL
+ENDC

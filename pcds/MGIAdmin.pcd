@@ -1,0 +1,580 @@
+Module: MGIAdmin
+{
+      autoCuil = False;
+      release = "TeleUSE v3.1 / Solaris 2.5";
+      lastWritten = "Fri Apr  9 11:10:17 1999";
+        {
+          MGIAdmin = Application : MGI;
+          Group: Control
+            vip_x = 40;
+            vip_y = 30;
+              {
+                MGIForm = XmForm;
+                    {
+                      MGIMenu = MenuBar : mgiMenu;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = XmPulldownMenu;
+                                      {
+                                        Exit = XmPushButton;
+                                        Group: Widget
+                                          activateCallback = "D:ExitApplication";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      MGIFrame = XmFrame;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = MGIMenu;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = MGIMenu;
+                        bottomAttachment = attach_form;
+                        resizable = true;
+                          {
+                            mgiModules = XmRowColumn;
+                            Group: Widget
+                              entryAlignment = alignment_center;
+                              spacing = 5;
+                                {
+                                  ActualLogical = XmPushButton;
+                                  Group: Widget
+                                    labelString = "Actual/Logical DBs";
+                                    activateCallback = "D:CreateMGIModule(name = \"ActualLogical\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                }
+                                {
+                                  TablesColumns = XmPushButton;
+                                  Group: Widget
+                                    labelString = "Table/Column Comments";
+                                    activateCallback = "D:CreateMGIModule(name = \"TablesColumns\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                }
+                          }
+                    }
+              }
+              Popups:
+              {
+                StatusDialog = XmWarningDialog;
+              }
+              {
+                WorkingDialog = XmWorkingDialog;
+              }
+        }
+        {
+          ActualLogical = Module : MGI;
+          Group: Widget
+            title = "Actual/Logical Databases";
+          Group: Control
+            vip_x = 125;
+            vip_y = 30;
+          Group: User
+            homeWidget = Name;
+              {
+                MainForm = XmForm;
+                    {
+                      MainMenu = XmMenuBar;
+                          {
+                            File = XmCascadeButton;
+                          }
+                          {
+                            Commands = XmCascadeButton;
+                          }
+                          {
+                            Edit = XmCascadeButton;
+                          }
+                          {
+                            View = XmCascadeButton;
+                            Group: Widget
+                              managed = False;
+                          }
+                          {
+                            Reports = XmCascadeButton;
+                          }
+                          {
+                            Utilities = XmCascadeButton;
+                          }
+                          {
+                            Help = XmCascadeButton;
+                          }
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = XmXrtAligner;
+                                }
+                                {
+                                  Name = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Name;
+                                      }
+                                      {
+                                        text = XmTextField;
+                                        Group: Widget
+                                          maxLength = 80;
+                                          columns = 80;
+                                      }
+                                }
+                                {
+                                  Description = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Description;
+                                      }
+                                      {
+                                        text = XmTextField;
+                                        Group: Widget
+                                          columns = 100;
+                                      }
+                                }
+                                {
+                                  mgiSpecies = mgiSpecies : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Description;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Description;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  URLNote = label : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Within the URL, use a place holder of '@@@@' to designate where the Accession number needs to be substituted.";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiSpecies;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiSpecies;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  ActualDB = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = URLNote;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = URLNote;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      {
+                                        Table = XtXrtTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 9;
+                                          xrtTblColumnLabels = "Mode,Actual Key,Active Key,Multiple Key,Name,URL,Active?,Multiple?,Delimiter";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 4 20)(all 5 80)(all 6 7)(all 7 9)(all 8 9)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblMaxLengthSeries = "(all 4 80)(all 5 255)(all 8 8)";
+                                          userDefinedAttributes = "actualKey:Int(Int)=\"1\"\nactualName:Int(Int)=\"4\"\nurl:Int(Int)=\"5\"\nactive:Int(Int)=\"6\"\nmultiple:Int(Int)=\"7\"\ndelimiter:Int(Int)=\"8\"\nactiveKey:Int(Int)=\"2\"\nmultipleKey:Int(Int)=\"3\"\n";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "Actual Databases";
+                                            }
+                                      }
+                                      {
+                                        AddRow = XmPushButton;
+                                      }
+                                      {
+                                        DeleteRow = XmPushButton;
+                                      }
+                                }
+                                {
+                                  ActiveMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "URL is Active?";
+                                    subMenuId = ActivePulldown;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = ActualDB;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      Popups:
+                                      {
+                                        ActivePulldown : YesNoPulldown = XmPulldownMenu;
+                                        Group: User
+                                          tableForm = ActualDB;
+                                          tableOptionKey = 2;
+                                          tableOption = 6;
+                                      }
+                                }
+                                {
+                                  MultipleMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = MultiplePulldown;
+                                    labelString = "URL Allows Multiple \nAccession Numbers?";
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = ActiveMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      Popups:
+                                      {
+                                        MultiplePulldown : YesNoPulldown = XmPulldownMenu;
+                                        Group: User
+                                          tableForm = ActualDB;
+                                          tableOptionKey = 3;
+                                          tableOption = 7;
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = XmFrame;
+                    }
+                    {
+                      Lookup = XmFrame;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  QueryList = XmForm;
+                                }
+                                {
+                                  SpeciesList = SpeciesList : mgiLookup;
+                                  Group: User
+                                    cmd = "select _Species_key, name from MRK_Species where _Species_key <= 2 order by _Species_key\nselect _Species_key, name from MRK_Species where _Species_key > 2 order by name\n";
+                                      {
+                                        Label = XmPushButton;
+                                      }
+                                      {
+                                        List = XmScrolledList;
+                                        Group: User
+                                          targetText = Species;
+                                          targetKey = ObjectID;
+                                          targetWidget = mgiSpecies;
+                                      }
+                                }
+                          }
+                    }
+                    Popups:
+                    {
+                      StatusDialog = XmWarningDialog;
+                    }
+                    {
+                      DeleteDialog = XmQuestionDialog;
+                    }
+                    {
+                      ReportDialog = XmFormDialog;
+                    }
+                    {
+                      SearchDialog = XmWorkingDialog;
+                    }
+                    {
+                      WhichItem = XmFormDialog;
+                    }
+                    {
+                      VerifyItemAdd = XmQuestionDialog;
+                    }
+                    {
+                      WorkingDialog = XmWorkingDialog;
+                    }
+                    {
+                      NoteDialog = XmFormDialog;
+                    }
+              }
+        }
+        {
+          TablesColumns = Module : MGI;
+          Group: Control
+            vip_x = 40;
+            vip_y = 85;
+          Group: User
+            homeWidget = Name;
+              {
+                MainForm = XmForm;
+                    {
+                      MainMenu = XmMenuBar;
+                          {
+                            File = XmCascadeButton;
+                          }
+                          {
+                            Commands = XmCascadeButton;
+                          }
+                          {
+                            Edit = XmCascadeButton;
+                          }
+                          {
+                            View = XmCascadeButton;
+                            Group: Widget
+                              managed = False;
+                          }
+                          {
+                            Reports = XmCascadeButton;
+                          }
+                          {
+                            Utilities = XmCascadeButton;
+                          }
+                          {
+                            Help = XmCascadeButton;
+                          }
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = XmXrtAligner;
+                                }
+                                {
+                                  LoginServer = LoginServer : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      Popups:
+                                      {
+                                        LoginServerPulldown = XmPulldownMenu;
+                                            {
+                                              Production = XmToggleButton;
+                                              Group: Widget
+                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
+                                            }
+                                            {
+                                              Development = XmToggleButton;
+                                              Group: Widget
+                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
+                                            }
+                                            {
+                                              Public = XmToggleButton;
+                                              Group: Widget
+                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
+                                            }
+                                            {
+                                              Junior = XmToggleButton;
+                                              Group: Widget
+                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
+                                            }
+                                      }
+                                }
+                                {
+                                  DatabaseMenu = DatabaseMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftOffset = 25;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = LoginServer;
+                                    topWidget = LoginServer;
+                                }
+                                {
+                                  Name = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftOffset = 25;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = DatabaseMenu;
+                                    topOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Table;
+                                      }
+                                      {
+                                        text = XmTextField;
+                                        Group: Widget
+                                          maxLength = 50;
+                                          columns = 50;
+                                      }
+                                }
+                                {
+                                  Description = Text : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = LoginServer;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = DatabaseMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Description;
+                                      }
+                                      {
+                                        text = XmScrolledText;
+                                        Group: Widget
+                                          rows = 15;
+                                          columns = 125;
+                                      }
+                                }
+                                {
+                                  Columns = Table : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Description;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Description;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    bottomOffset = 5;
+                                      {
+                                        Table = XtXrtTable;
+                                        Group: Widget
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)";
+                                          xrtTblColumnLabels = "Mode,Key,Column,Description,Example";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 2 20)(all 3-4 51)";
+                                          xrtTblCharHeightSeries = "(allcells all 5)";
+                                          xrtTblMaxLengthSeries = "(all 2 20)(all 3-4 255)";
+                                          xrtTblEditableSeries = "(all 0-1 False)";
+                                          xrtTblTraversableSeries = "(all 0-1 False)";
+                                          userDefinedAttributes = "columnKey:Int(Int)=\"1\"\ncolumnName:Int(Int)=\"2\"\ndescription:Int(Int)=\"3\"\nexample:Int(Int)=\"4\"\n";
+                                          xrtTblWordWrapSeries = "(allcells 3-4 True)";
+                                      }
+                                      {
+                                        AddRow = XmPushButton;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        DeleteRow = XmPushButton;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = XmFrame;
+                          {
+                            ControlForm = XmForm;
+                                {
+                                  Search = XmPushButton;
+                                }
+                                {
+                                  Clear = XmPushButton;
+                                }
+                                {
+                                  Modify = XmPushButton;
+                                }
+                                {
+                                  Add = XmPushButton;
+                                  Group: Widget
+                                    sensitive = False;
+                                }
+                                {
+                                  Delete = XmPushButton;
+                                  Group: Widget
+                                    sensitive = False;
+                                }
+                                {
+                                  Previous = XmArrowButton;
+                                }
+                                {
+                                  Next = XmArrowButton;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = XmXrtAligner;
+                                }
+                                {
+                                  CreationDate = XmXrtAligner : mgiDataTypes;
+                                }
+                                {
+                                  ModifiedDate = XmXrtAligner : mgiDataTypes;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = XmFrame;
+                    }
+                    Popups:
+                    {
+                      StatusDialog = XmWarningDialog;
+                    }
+                    {
+                      DeleteDialog = XmQuestionDialog;
+                    }
+                    {
+                      ReportDialog = XmFormDialog;
+                    }
+                    {
+                      SearchDialog = XmWorkingDialog;
+                    }
+                    {
+                      WhichItem = XmFormDialog;
+                    }
+                    {
+                      VerifyItemAdd = XmQuestionDialog;
+                    }
+                    {
+                      WorkingDialog = XmWorkingDialog;
+                    }
+                    {
+                      NoteDialog = XmFormDialog;
+                    }
+              }
+        }
+}
+

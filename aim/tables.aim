@@ -1,0 +1,50 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+          <tables.h>;
+
+	TYPE 
+	     "int"           <--> integer;
+	     "char *"        <--> string;
+	     "Widget"	     <--> widget;
+	     "String"        <--> string;
+	     "Boolean"       <--> boolean;
+	     "XrtTblCreateWidgetCallbackStruct" <--> opaque;
+             
+	ENTRY 
+	 mgi_tblSetReasonValues();
+	 mgi_tblSetCell("Widget", "int", "int", "char *");
+
+	-- Note: I've added the '&' to transfer ownership of the allocated
+	-- memory in the return string to D. This was a memory leak prior - gld.
+	 mgi_tblGetCell("Widget", "int", "int")			:& "char *";
+
+	 mgi_tblGetCurrentColumn("Widget")			: "int";
+	 mgi_tblGetCurrentRow("Widget")				: "int";
+	 mgi_tblNumRows("Widget")				: "int";
+	 mgi_tblNumColumns("Widget")				: "int";
+	 mgi_tblGetCallbackParent("XrtTblCreateWidgetCallbackStruct"): "Widget";
+	 mgi_tblIsTable("Widget")				: "Boolean";
+	 mgi_tblIsCellVisible("Widget", "int", "int")		: "Boolean";
+	 mgi_tblIsCellTraversable("Widget", "int", "int")	: "Boolean";
+	 mgi_tblMakeCellVisible("Widget", "int", "int")		: "Boolean";
+	 mgi_tblStartFlash("Widget", "int", "int");
+	 mgi_tblStopFlash("Widget", "int", "int");
+	 mgi_tblStopFlashAll("Widget");
+
+	 TBL_REASON_ENTER_CELL_BEGIN				: "int";
+	 TBL_REASON_ENTER_CELL_END				: "int";
+	 TBL_REASON_VALIDATE_CELL_BEGIN				: "int";
+	 TBL_REASON_VALIDATE_CELL_END				: "int";
+	 TBL_REASON_CREATE_WIDGET_BEGIN				: "int";
+	 TBL_REASON_CREATE_WIDGET_END				: "int";
+	 TBL_REASON_SETVALUE_BEGIN				: "int";
+	 TBL_REASON_SETVALUE_END				: "int";
+	 TBL_REASON_SELECT_BEGIN				: "int";
+	 TBL_REASON_SELECT_END					: "int";
+	 TBL_REASON_SCROLL_BEGIN				: "int";
+	 TBL_REASON_SCROLL_END					: "int";
+  ENDL
+ENDC
+
+
