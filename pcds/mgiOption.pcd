@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Oct 24 13:00:58 2000";
+      lastWritten = "Fri Nov  3 13:28:30 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -463,6 +463,13 @@ Module: mgiOption
                         labelString = "RIKEN Cluster";
                       Group: User
                         defaultValue = 25;
+                    }
+                    {
+                      RIKENClone = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "RIKEN Clone";
+                      Group: User
+                        defaultValue = 26;
                     }
               }
         }
