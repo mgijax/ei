@@ -372,9 +372,6 @@ rules:
             SetOption.source_widget := top->MarkerStatusMenu;
             SetOption.value := STATUS_PENDING;
             send(SetOption, 0);
-
-	    top->BroadcastBy->text.value := "";
-	    top->BroadcastDate->text.value := "";
 	  end if;
 
 	  if ((Add.broadcast or top->MarkerStatusMenu.menuHistory.labelString != STATUS_RESERVED) and
