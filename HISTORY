@@ -1,5 +1,17 @@
+TAG: ei-1-5-14
+DATE: 03/08/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.3.2/TR 1223; added MRK_UniGeneClusterDiscrep.sql
+
+TAG: ei-1-5-13
+DATE: 03/02/2000
+STAFF: lec
+RELEASE: A
+CHANGES: MGI 2.3.2/TR 1223; removed obsolete report MLC_Allele.sql
+
 TAG: ei-1-5-12
-DATE: 02/23/2000
+DATE: 03/02/2000
 STAFF: lec
 RELEASE: A
 CHANGES: MGI 2.3.2/TR 1223; removed obsolete reports HMD_References1.sql and MLC_Allele.sql
