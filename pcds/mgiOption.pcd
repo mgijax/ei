@@ -555,7 +555,7 @@ Module: mgiOption
                     {
                       Production = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = PROD_MGI
+                        defaultValue = PROD_MGI;
                         development = False;
                     }
                     {
