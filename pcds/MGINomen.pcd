@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb  3 13:13:35 2004";
+      lastWritten = "Wed Feb  4 10:29:58 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -654,24 +654,6 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     labelString = "Broadcast Interim Symbol to MGD";
                                     activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
-                                }
-                                {
-                                  BroadcastBatch = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Broadcast by Batch to MGD";
-                                    activateCallback = "D:Broadcast(type = 5),\nD:GoHome";
-                                }
-                                {
-                                  BroadcastReference = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Broadcast by Reference to MGD\n(Editors only)";
-                                    activateCallback = "D:Broadcast(type = 6),\nD:GoHome";
-                                }
-                                {
-                                  BroadcastReference1 = ControlPush : mgiControl;
-                                  Group: Widget
-                                    labelString = "Broadcast by Reference to MGD\n(Nomen Coordinator only)";
-                                    activateCallback = "D:Broadcast(type = 7),\nD:GoHome";
                                 }
                           }
                     }
