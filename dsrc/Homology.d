@@ -127,6 +127,8 @@ locals:
 	defaultSpecies : integer := 3;		   -- Number of default Species
 	defaultSpeciesKeys : string := "(1,2,40)"; -- _Species_key for default Species
 
+	errorDetected : boolean;
+
 rules:
 
 --
@@ -237,6 +239,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  errorDetected := false;
 	  currentRecordKey := "";
 	  classKey := "@" + KEYNAME;
 	  refKey := top->mgiCitation->ObjectID->text.value;
@@ -248,6 +251,11 @@ rules:
 	  ModifyHomology.add := true;
 	  send(ModifyHomology, 0);
                                  
+	  if (errorDetected) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
 	  AddSQL.tableID := HMD_CLASS;
 	  AddSQL.transaction := false;
 	  AddSQL.cmd := cmd + "\nexec HMD_updateClass " + classKey + "," + refKey + "\n";
@@ -301,8 +309,15 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
+	  errorDetected := false;
+
 	  send(ModifyMarker, 0);
 	  send(ModifyHomology, 0);
+
+	  if (errorDetected) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -379,6 +394,7 @@ rules:
 	    StatusReport.message := "An Assay has been detected which contains only one Species.\n" + 
 			"Correct the data and try again.";
 	    send(StatusReport, 0);
+	    errorDetected := true;
 	    return;
 	  end if;
 
