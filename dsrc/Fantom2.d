@@ -549,6 +549,7 @@ rules:
 	  row : integer := 0;
 	  orderByGBA : boolean := false;
 	  clusterSearch : boolean := false;
+	  searchNote : boolean := false;
 
 	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " +
 	       "and f._Fantom2_key = n._Fantom2_key";
@@ -752,8 +753,28 @@ rules:
 	    where := where + " and f.modifiedBy like " + mgi_DBprstr(value);
 	  end if;
 
-	  -- Creation/Modification By/Date
-	  -- Notes
+	  value := mgi_tblGetCell(fantom, 0, fantom.nomenNote);
+	  if (value.length > 0) then
+	    where := where + " and sn.note like " + mgi_DBprstr(value);
+	    searchNote := true;
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, 0, fantom.rikenNote);
+	  if (value.length > 0) then
+	    where := where + " and sn.note like " + mgi_DBprstr(value);
+	    searchNote := true;
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, 0, fantom.curatorNote);
+	  if (value.length > 0) then
+	    where := where + " and sn.note like " + mgi_DBprstr(value);
+	    searchNote := true;
+	  end if;
+
+	  if (searchNote) then
+	    from := from + "," + mgi_DBtable(MGI_FANTOM2NOTES) + " sn ";
+	    where1 := where1 + " and f._Fantom2_key = sn._Fantom2_key";
+	  end if;
 
 	  --
 	  -- If performing a search by Riken Cluster and no other
