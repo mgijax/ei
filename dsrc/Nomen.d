@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 08/26/2003
+--	- TR 4708; -pending
+--
 -- lec 04/24/2003
 --	- TR 4752; added rjc
 --
@@ -147,8 +150,10 @@ devents:
 	-- Process Broadcast Events
 	Broadcast :local [type : integer;];
 	BroadcastExec :local [];
-	AddBroadcast :local [];
-	BroadcastSymbol :local [];
+	AddBroadcastOfficial :local [];
+	AddBroadcastInterim :local [];
+	BroadcastSymbolOfficial :local [];
+	BroadcastSymbolInterim :local [];
 	BroadcastBatch :local [];
 	BroadcastReferenceEditor :local [];
 	BroadcastReferenceCoord :local [];
@@ -250,8 +255,10 @@ rules:
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
+--	  top->MarkerStatusMenu.subMenuId.sql := 
+--		"select * from " + mgi_DBtable(MRK_NOMENSTATUS) + " order by " + mgi_DBkey(MRK_NOMENSTATUS);
 	  top->MarkerStatusMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_NOMENSTATUS) + " order by " + mgi_DBkey(MRK_NOMENSTATUS);
+		"select * from " + mgi_DBtable(MRK_NOMENSTATUS) + " order by status";
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
@@ -358,7 +365,8 @@ rules:
 	  -- Set Status to Pending if set to Broadcast...this can happen
 	  -- if they user is duplicating a broadcast record
 
-	  if (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCAST) then
+	  if (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTOFF or
+	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT) then
             SetOption.source_widget := top->MarkerStatusMenu;
             SetOption.value := STATUS_PENDING;
             send(SetOption, 0);
@@ -513,9 +521,15 @@ rules:
 	    error := true;
 	  end if;
 
-	  if (not (global_login = "ljm" or global_login = "lmm" or 
-		   global_login = "rjc" or global_login = "cml" or 
-		   global_login = "bobs" or global_login = "tier4") and
+	  if (not (global_login = "bobs" or 
+		   global_login = "cml" or 
+		   global_login = "csmith" or
+		   global_login = "djr" or
+		   global_login = "ljm" or 
+		   global_login = "ln" or 
+		   global_login = "rjc" or 
+		   global_login = "rmb" or
+		   global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
@@ -525,7 +539,8 @@ rules:
 	  end if;
 
           if (top->MarkerStatusMenu.menuHistory.modified and
-	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCAST) then
+	      (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTOFF or
+	      top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_BROADCASTINT)) then
             StatusReport.source_widget := top;
             StatusReport.message := "You cannot modify status to Broadcast.\n";
             send(StatusReport);
@@ -1428,21 +1443,21 @@ rules:
 	  -- For Add, allow (D:Verify) to test for required fields, etc.
 	  -- If the Add verifications pass, continue
 
-	  if (broadcastType = 1 and not top.allowEdit) then
+	  if ((broadcastType = 1 or broadcastType = 2) and not top.allowEdit) then
 	    return;
 	  end if;
 
-	  if (broadcastType = 1) then
+	  if (broadcastType = 1 or broadcastType = 2) then
 	    message := message + "\n" + top->Symbol->text.value;
 	    recordCount := 1;
 	    broadcastOK := true;
-	  elsif (broadcastType = 2) then
+	  elsif (broadcastType = 3 or broadcastType = 4) then
 	    message := message + "\n" + top->Symbol->text.value;
 	    if (currentNomenKey.length > 0) then
 	      recordCount := 1;
 	      broadcastOK := true;
 	    end if;
-	  elsif (broadcastType = 3) then
+	  elsif (broadcastType = 5) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select symbol from " + mgi_DBtable(MRK_NOMEN) + 
 		  " where _Marker_Status_key = " + STATUS_NAPPROVED;
@@ -1460,7 +1475,7 @@ rules:
 	      end while;
 	      (void) dbclose(dbproc);
 	    end if;
-	  elsif (broadcastType = 4) then
+	  elsif (broadcastType = 6) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(MRK_NOMEN) + " n," +
@@ -1482,7 +1497,7 @@ rules:
 	      end while;
 	      (void) dbclose(dbproc);
 	    end if;
-	  elsif (broadcastType = 5) then
+	  elsif (broadcastType = 7) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(MRK_NOMEN) + " n," +
@@ -1514,7 +1529,7 @@ rules:
 
 	  -- Check for Primary Reference
 
-	  if ((broadcastType = 1 or broadcastType = 2 or broadcastType = 4 or broadcastType = 5)
+	  if ((broadcastType <= 4 or broadcastType >= 6)
 	      and
 	      ((mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                 mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE))) then
@@ -1544,14 +1559,18 @@ rules:
 	  BroadcastEvent : devent;
 
 	  if (broadcastType = 1) then
-	    BroadcastEvent := AddBroadcast;
+	    BroadcastEvent := AddBroadcastOfficial;
 	  elsif (broadcastType = 2) then
-	    BroadcastEvent := BroadcastSymbol;
+	    BroadcastEvent := AddBroadcastInterim;
 	  elsif (broadcastType = 3) then
-	    BroadcastEvent := BroadcastBatch;
+	    BroadcastEvent := BroadcastSymbolOfficial;
 	  elsif (broadcastType = 4) then
-	    BroadcastEvent := BroadcastReferenceEditor;
+	    BroadcastEvent := BroadcastSymbolInterim;
 	  elsif (broadcastType = 5) then
+	    BroadcastEvent := BroadcastBatch;
+	  elsif (broadcastType = 6) then
+	    BroadcastEvent := BroadcastReferenceEditor;
+	  elsif (broadcastType = 7) then
 	    BroadcastEvent := BroadcastReferenceCoord;
 	  end if;
 
@@ -1567,12 +1586,12 @@ rules:
 	end does;
 
 --
--- AddBroadcast
+-- AddBroadcastOfficial
 --
 -- Adds symbol to Nomen and broadcasts to MGD in one step
 --
 
-	AddBroadcast does
+	AddBroadcastOfficial does
 
 	  -- add the Nomen record
 
@@ -1582,7 +1601,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey;
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1590,14 +1609,50 @@ rules:
 	end does;
 
 --
--- BroadcastSymbol
+-- AddBroadcastInterim
+--
+-- Adds symbol to Nomen and broadcasts to MGD in one step
+--
+
+	AddBroadcastInterim does
+
+	  -- add the Nomen record
+
+	  Add.broadcast := true;
+	  send(Add, 0);
+
+	  -- if Add was successful, broadcast to Nomen
+	  if (top->QueryList->List.sqlSuccessful) then
+	    (void) busy_cursor(top);
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
+	    send(ExecSQL, 0);
+	    (void) reset_cursor(top);
+	  end if;
+
+	end does;
+
+--
+-- BroadcastSymbolOfficial
 --
 -- Broadcast selected symbol to MGD
 --
 
-	BroadcastSymbol does
+	BroadcastSymbolOfficial does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey;
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTOFFICIAL);
+	  send(ExecSQL, 0);
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- BroadcastSymbolInterim
+--
+-- Broadcast selected symbol to MGD
+--
+
+	BroadcastSymbolInterim does
+	  (void) busy_cursor(top);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey + "," + mgi_DBprstr(BROADCASTINTERIM);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

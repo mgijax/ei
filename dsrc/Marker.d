@@ -1038,11 +1038,10 @@ rules:
             set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-	  -- Don't allow modifications to Marker Status; maybe in the future...
---          if (top->MarkerStatusMenu.menuHistory.modified and
---	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
---            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
---          end if;
+          if (top->MarkerStatusMenu.menuHistory.modified and
+	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
+            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
+          end if;
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
