@@ -16,6 +16,7 @@
  *
  * lec 08/15/2002
  *	- TR 1463/SAO; SPECIES to ORGANISM
+ *	- update "modifiedBy" for appropriate tables
  *
  * lec 05/2002
  *	- TR 1463/SAO; nomen tables, seq tables, mgi tables
@@ -2287,9 +2288,11 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_REFERENCE_ASSOC:
       case MGI_ORGANISM:
       case MGI_ORGANISMTYPE:
+      case MRK_MARKER:
       case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
+      case PRB_SOURCE:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
