@@ -919,9 +919,6 @@ char *mgi_DBkey(int table)
     case PRB_STRAIN_MARKER:
             strcpy(buf, "_StrainMarker_key");
 	    break;
-    case PRB_STRAIN_SYNONYM:
-            strcpy(buf, "_Synonym_key");
-	    break;
     case PRB_STRAIN_TYPE:
             strcpy(buf, "_Type_key");
 	    break;
@@ -1696,9 +1693,6 @@ char *mgi_DBtable(int table)
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
 	    break;
-    case PRB_STRAIN_SYNONYM:
-            strcpy(buf, "PRB_Strain_Synonym");
-	    break;
     case PRB_STRAIN_TYPE:
             strcpy(buf, "PRB_Strain_Type");
 	    break;
@@ -1973,7 +1967,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_RFLV:
     case PRB_SOURCE:
     case PRB_STRAIN_MARKER:
-    case PRB_STRAIN_SYNONYM:
     case PRB_STRAIN_TYPE:
     case VOC_ANNOT:
     case VOC_TEXT:
@@ -2392,9 +2385,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_STRAIN_MARKER:
             sprintf(buf, "insert %s (%s, _Strain_key, _Marker_key, _Allele_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case PRB_STRAIN_SYNONYM:
-            sprintf(buf, "insert %s (%s, _Strain_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_TYPE:
             sprintf(buf, "insert %s (%s, _Strain_key, _StrainType_key)", mgi_DBtable(table), mgi_DBkey(table));

@@ -275,9 +275,8 @@ extern char *global_version;
 #define PRB_STRAIN_MARKER_VIEW	701
 #define PRB_STRAIN_TYPE		702
 #define PRB_STRAIN_TYPE_VIEW	703
-#define PRB_STRAIN_SYNONYM	704
-#define STRAIN_MERGE		705
-#define STRAIN_VIEW		706
+#define STRAIN_MERGE		704
+#define STRAIN_VIEW		705
 
 /* VOC & DAG Tables */
 
