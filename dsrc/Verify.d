@@ -1782,7 +1782,7 @@ rules:
 
 	  if (VerifyMarker.allowNomen) then
 	    select := select + "union\n" +
-		"select null, _Marker_Status_key, symbol, chromosome, null " +
+		"select -1, _Marker_Status_key, symbol, chromosome, null " +
 		"\nfrom " + getenv("NOMEN") + " ..MRK_Nomen " +
 		"\nwhere symbol = " + mgi_DBprstr(value) + 
 		"\nand _Marker_Status_key in (" + STATUS_PENDING + "," + STATUS_RESERVED + ")\n";
