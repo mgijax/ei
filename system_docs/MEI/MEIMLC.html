@@ -121,17 +121,18 @@ dialog to unlock a specific MLC record.  Records will not be unlocked if the use
 or click in the <I>close window key</I> in the upper left hand corner of the MLC editing form window.
 
 <H4>Description Field</H4>
-The <I>Description</I> field can contain cross references to valid Marker symbols
-and References:
+<OL>
+<LI>The <I>Description</I> field can contain cross references to valid Marker symbols
+    and References:
 <UL>
 <LI>To designate a Marker:
-	<PRE>\L{symbol}</PRE>
+	<PRE>\L(symbol)</PRE>
     <P>
     Markers are verified upon modification.  Modifications are denied on invalid
     entries.
 <P>
 <LI>To designate an Allele:
-	<PRE>\L{symbol}{&lt;allele&gt;}</PRE>
+	<PRE>\L(symbol)(&lt;allele&gt;)</PRE>
 <P>
 <LI>To designate a Reference:
 	<PRE>\R(reference tag #)</PRE>
@@ -139,17 +140,52 @@ and References:
     <P>
     Reference tags correspond to the <I>Ref #</I> in the <I>Reference</I> table.
 <P>
+<LI>To designate headings on the Web, use &lt;H?&gt; where ? is a number from 1 to 6.
+	<PRE>
+	&lt;H1&gt;This text is heading 1&lt;/H1&gt;
+	</PRE>
+<P>
 <LI>To designate pre-formatted text on the Web:
 	<PRE>
-	\beginpre
-	here is some text which will be rendered as pre-formatted on the Web
-	\endpre
+	&lt;PRE&gt;This text should be preformatted&lt;/PRE&gt;
+	</PRE>
+<P>
+<LI>To designate <CODE>fixed-width font</CODE> within a paragraph:
+	<PRE>
+	&lt;CODE&gt;This text should be preformatted&lt;/CODE&gt;
+	</PRE>
+<P>
+<LI>To designate <B>bold</B> text use the following tags:
+	<PRE>
+	&lt;B&gt;This text should be bold&lt;/B&gt;
+	</PRE>
+<P>
+<LI>To designate <U>underlined</U> text use the following tags:
+	<PRE>
+	&lt;U&gt;This text should be underlined&lt;/U&gt;
+	</PRE>
+<P>
+<LI>To designate <I>italicized</I> text use the following tags:
+	<PRE>
+	&lt;I&gt;This text should be italicized&lt;/I&gt;
+	</PRE>
+<P>
+<LI>To designate <SUP>superscript</SUP> text use the following tags:
+	<PRE>
+	&lt;SUP&gt;This text should be superscript&lt;/SUP&gt;
+	</PRE>
+<P>
+<LI>To designate <SUB>subscript</SUB> text use the following tags:
+	<PRE>
+	&lt;SUB&gt;This text should be subscript&lt;/SUB&gt;
 	</PRE>
 <P>
 </UL>
-
-To import a text description from another Marker symbol into the current record, use the
-<I>Utilities->Import Description</I> dialog.
+<P>
+<LI>To import a text description from another Marker symbol into the current record, use the
+    <I>Utilities->Import Description</I> dialog.
+<P>
+</OL>
 
 <H4>Transferring to Production</H4>
 <I>After</I> Adding or Modifying an MLC edit record, the record can be 
