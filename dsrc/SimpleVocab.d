@@ -558,10 +558,10 @@ rules:
 		(void) mgi_tblSetCell(termTable, row, termTable.seqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(termTable, row, termTable.termKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(termTable, row, termTable.term, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(termTable, row, termTable.mgiID, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(termTable, row, termTable.mgiID, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(termTable, row, termTable.abbreviation, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(termTable, row, termTable.obsoleteKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 11));
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      elsif (results = 3) then
