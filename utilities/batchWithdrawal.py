@@ -9,6 +9,7 @@
 #
 #	old MGI Acc ID
 #	new MGI Acc ID
+#	new symbol
 # 
 # This wrapper will execute markerWithdrawal.py for each row in the
 # input file.
@@ -165,21 +166,26 @@ except:
 #
 
 for line in inputFile.readlines():
-	[oldID, newID] = string.splitfields(string.rstrip(line), '\t')
 
-	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s"' % (oldID), 'auto')
+	errorFound = 0
 
-	if results[0]['_Object_key'] is not None:
+	[oldID, newID, newSymbol] = string.splitfields(string.rstrip(line), '\t')
+
+	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s" and preferred = 1' % (oldID), 'auto')
+
+	if len(results) > 0:
 		oldKey = results[0]['_Object_key']
 	else:
 		error('Invalid Old Marker Acc ID %s' % (oldID), 0)
+		errorFound = 1
 
-	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s"' % (newID), 'auto')
+	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s" and preferred = 1' % (newID), 'auto')
 
-	if results[0]['_Object_key'] is not None:
+	if len(results) > 0:
 		newKey = results[0]['_Object_key']
 	else:
 		error('Invalid New Marker Acc ID %s' % (newID), 0)
+		errorFound = 1
 
 	results = db.sql('select symbol, name from MRK_Marker where _Marker_key = %s' % (newKey), 'auto')
 
@@ -188,16 +194,18 @@ for line in inputFile.readlines():
 		newName = results[0]['name']
 	else:
 		error('Invalid New Marker Name/Symbol %s' % (newID), 0)
+		errorFound = 1
 
-	cmd = '%s ' % (WITHDRAWALPROG) + \
-		'-S%s -D%s ' % (server, database) + \
-		'-U%s -P%s ' % (user, passwordFile) + \
-		'--eventKey=%s --eventReasonKey=%s ' % (eventKey, eventReasonKey) + \
-		'--oldKey=%s --newKey=%s ' % (oldKey, newKey) + \
-		'--refKey=%s ' % (refKey) + \
-		'--newName="%s" --newSymbol="%s" ' % (newName, newSymbol)
+	if not errorFound:
+		cmd = '%s ' % (WITHDRAWALPROG) + \
+			'-S%s -D%s ' % (server, database) + \
+			'-U%s -P%s ' % (user, passwordFile) + \
+			'--eventKey=%s --eventReasonKey=%s ' % (eventKey, eventReasonKey) + \
+			'--oldKey=%s --newKey=%s ' % (oldKey, newKey) + \
+			'--refKey=%s ' % (refKey) + \
+			'--newName="%s" --newSymbol="%s" ' % (newName, newSymbol)
 
-	diagFile.write(cmd + '\n')
+		diagFile.write(cmd + '\n')
 
-	os.system(cmd)
+		os.system(cmd)
 
