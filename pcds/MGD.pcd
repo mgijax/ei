@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  4 13:47:20 2001";
+      lastWritten = "Wed Apr  4 15:10:45 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -9022,6 +9022,18 @@ Shift<Key>Tab: prev-tab-group()
                                                 translations = "#override
  Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyItem() DisplayESCellLine()";
+                                            }
+                                      }
+                                      {
+                                        VerifyID = ID : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                defaultValue = "-1";
+                                                required = True;
                                             }
                                       }
                                 }
