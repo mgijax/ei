@@ -11,7 +11,7 @@
 --
 -- Module controls edits of Controlled Vocabulary tables:
 --
--- Orthology Assays, Mapping Assays, Marker MLC Classes,
+-- Orthology Assays, Mapping Assays, 
 -- Marker Types, Molecuar Segment Vector Types,
 -- Antibody Classes, Antibody Types, Assay Types, Expression Patterns,
 -- Expression Strengths, Gel RNA Types, Gel Units, Image Field Types,

@@ -97,7 +97,6 @@ locals:
 	allelePairString : string;
 	alleleStateOK : boolean;
 
-
 rules:
 
 --
@@ -114,6 +113,12 @@ rules:
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
+
+	  InitOptionMenu.option := top->AllelePairStateMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->AlleleCompoundMenu;
+	  send(InitOptionMenu, 0);
 
           LoadList.list := top->ESCellLineList;
 	  send(LoadList, 0);
@@ -348,8 +353,8 @@ rules:
           markerKey : string;
           alleleKey1 : string;
           alleleKey2 : string;
-	  alleleState : string;
-	  isUnknown : string;
+	  stateKey : string;
+	  compoundKey : string;
 	  keysDeclared : boolean := false;
 	  set : string;
 	  reordering : boolean := false;
@@ -375,26 +380,14 @@ rules:
               break;
             end if;
  
-	    VerifyAllelePairState.source_widget := table;
-	    VerifyAllelePairState.column := table.alleleState;
-	    VerifyAllelePairState.row := row;
-	    VerifyAllelePairState.reason := TBL_REASON_VALIDATE_CELL_END;
-	    send(VerifyAllelePairState, 0);
-
-	    if (not alleleStateOK) then
-              StatusReport.source_widget := top;
-              StatusReport.message := "Invalid Allele State";
-              send(StatusReport);
-	      return;
-	    end if;
-
             key := mgi_tblGetCell(table, row, table.pairKey);
             currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
             newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
             markerKey := mgi_tblGetCell(table, row, table.markerKey);
             alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
             alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
-            alleleState := mgi_tblGetCell(table, row, table.alleleState);
+            stateKey := mgi_tblGetCell(table, row, table.stateKey);
+            compoundKey := mgi_tblGetCell(table, row, table.compoundKey);
  
 	    if (row = 0) then
 	      allelePairString := mgi_tblGetCell(table, row, (integer) table.alleleSymbol[1]) + "," 
@@ -409,12 +402,6 @@ rules:
 	      alleleKey2 := "NULL";
 	    end if;
 
-	    if (alleleState = "Unknown") then
-	      isUnknown := "1";
-	    else
-	      isUnknown := "0";
-	    end if;
-
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
@@ -427,11 +414,13 @@ rules:
               localCmd := localCmd +
                      mgi_DBinsert(GXD_ALLELEPAIR, keyName) +
 		     currentRecordKey + "," +
-		     newSeqNum + "," +
 		     alleleKey1 + "," +
 		     alleleKey2 + "," +
 		     markerKey + "," +
-		     isUnknown + ")\n";
+		     stateKey + "," +
+		     compoundKey + "," +
+		     newSeqNum + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -448,7 +437,8 @@ rules:
                 set := "_Allele_key_1 = " + alleleKey1 + "," +
                        "_Allele_key_2 = " + alleleKey2 + "," +
                        "_Marker_key = " + markerKey + "," +
-		       "isUnknown = " + isUnknown;
+		       "_PairState_key = " + stateKey + "," +
+		       "_Compound_key = " + compoundKey;
                 localCmd := localCmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
 	      end if;
 
@@ -462,7 +452,6 @@ rules:
           end while;
 
 	  cmd := cmd + localCmd;
---	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_ALLELEPAIR) + "'," + currentRecordKey + "\n";
 	  if (not reordering) then
 	    cmd := cmd + "exec GXD_orderAllelePairs " + currentRecordKey + "\n";
 	  end if;
@@ -568,9 +557,15 @@ rules:
 	    end if;
 	  end if;
 
-          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.alleleState);
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.stateKey);
 	  if (value.length > 0 and value != "%") then
-	      where := where + "\nand ap.alleleState = " + mgi_DBprstr(value);
+	      where := where + "\nand ap._PairState_key = " + value;
+	      from_allele := true;
+	  end if;
+
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.compoundKey);
+	  if (value.length > 0 and value != "%") then
+	      where := where + "\nand ap._Compound_key = " + value;
 	      from_allele := true;
 	  end if;
 
@@ -758,15 +753,18 @@ rules:
 	      else
 	  	table := top->AllelePair->Table;
 	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
-	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 11));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, row, table.alleleState, mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 13));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 15));
+		(void) mgi_tblSetCell(table, row, table.stateKey, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, row, table.state, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(table, row, table.compoundKey, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, row, table.compound, mgi_getstr(dbproc, 19));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      end if;
@@ -851,7 +849,11 @@ rules:
 	  end if;
 
           SetOption.source_widget := top->AllelePairStateMenu;
-          SetOption.value := mgi_tblGetCell(table, row, table.alleleState);
+          SetOption.value := mgi_tblGetCell(table, row, table.stateKey);
+          send(SetOption, 0);
+
+          SetOption.source_widget := top->AlleleCompoundMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.compoundKey);
           send(SetOption, 0);
         end does;
 
