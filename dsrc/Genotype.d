@@ -945,7 +945,7 @@ rules:
 
 	GenotypeExit does
 
-	  if (mgi->VocAnnotModule != nil) then
+	  if (mgi->PSAnnotation != nil) then
 	    send(VocAnnotExit, 0);
 	  end if;
 

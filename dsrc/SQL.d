@@ -206,6 +206,7 @@ rules:
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, ExecSQL.cmd);
           (void) dbsqlexec(dbproc);
+	  (void) mgi_writeLog("CMD END:  " + get_time() + "\n");
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      newID := mgi_getstr(dbproc, 1);
