@@ -1498,6 +1498,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case HMD_NOTES:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
+    case PRB_ALIAS:
     case PRB_MARKER:
     case PRB_NOTES:
     case PRB_REF_NOTES:
