@@ -78,7 +78,7 @@ and ma.accID = a.accID)
 order by c.maccID
 go
 
-setnocount on
+set nocount on
 go
 
 drop table #clone
