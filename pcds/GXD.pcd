@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 25 08:22:48 2005";
+      lastWritten = "Fri Mar 25 10:57:13 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1340,7 +1340,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                   Group: User
-                                    note = "Reprinted with permission from Elsevier from \\DXDOI(,,) \\Elsevier(,,)";
+                                    note = "Reprinted with permission from Elsevier from \\DXDOI(||) \\Elsevier(||)";
                                     noteWidget = CopyrightNote;
                                 }
                                 {
