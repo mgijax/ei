@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan  5 14:10:44 2004";
+      lastWritten = "Wed Apr 28 14:43:50 2004";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -244,22 +244,6 @@ Module: mgiCV
                               orientation = horizontal;
                               numColumns = 2;
                                 {
-                                  AgeNote = NotePushShort : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Age Notes";
-                                  Group: User
-                                    targetWidget = GelLane;
-                                    targetColumn = 20;
-                                }
-                                {
-                                  LaneNote = NotePushShort : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Lane Notes";
-                                  Group: User
-                                    targetWidget = GelLane;
-                                    targetColumn = 22;
-                                }
-                                {
                                   RowNote = NotePushShort : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Row Notes";
@@ -390,22 +374,6 @@ Module: mgiCV
                                     tableOptionKey = 11;
                                     tableForm = Specimen;
                                 }
-                          }
-                          {
-                            AgeNote = NotePushShort : mgiDataTypes;
-                            Group: Widget
-                              labelString = "Age Notes";
-                            Group: User
-                              targetWidget = Specimen;
-                              targetColumn = 16;
-                          }
-                          {
-                            SpecimenNotes = NotePushShort : mgiDataTypes;
-                            Group: Widget
-                              labelString = "Specimen Notes";
-                            Group: User
-                              targetWidget = Specimen;
-                              targetColumn = 22;
                           }
                           {
                             ResultsPush = TableDialogPush : mgiDataTypes;

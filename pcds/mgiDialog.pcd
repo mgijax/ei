@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun 27 12:50:29 2003";
+      lastWritten = "Thu Apr 29 11:32:31 2004";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -816,7 +816,8 @@ Module: mgiDialog
                 EditForm = EditForm : MGI;
                 Group: Widget
                   rubberPositioning = False;
-                  resizePolicy = resize_any;
+                  resizePolicy = resize_none;
+                  width = 700;
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
@@ -840,20 +841,25 @@ Module: mgiDialog
                             Table = mgiTable;
                             Group: Widget
                               userDefinedAttributes = "resultKey:Int(Int)=\"3\"\nstrengthKey:Int(Int)=\"5\"\npatternKey:Int(Int)=\"6\"\nimagePaneKeys:Int(Int)=\"7\"\nstructures:Int(Int)=\"8\"\nstrength:Int(Int)=\"9\"\npattern:Int(Int)=\"10\"\nimagePanes:Int(Int)=\"11\"\nnotes:Int(Int)=\"12\"\nstructureKeys:Int(Int)=\"4\"\nclipboard:String=\"Lookup\"\n";
-                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9-11 15)";
+                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9 11)(all 10-11 15)(all 12 100)";
                               xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,Structures,Strength,Pattern,Image Panes,Notes";
                               xrtTblNumColumns = 13;
-                              xrtTblEditableSeries = "(all 0-2 False)(all 8-12 false)";
+                              xrtTblEditableSeries = "(all 0-2 False)(all 8-11 False)";
                               xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
                               xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
                               xrtTblTraversableSeries = "(all 0-7 False)";
                               xrtTblValidateCellCallback = "D:VerifyStrengthPattern,\nD:CopyInSituRow,\nD:CommitTableCellEdit";
                               xrtTblNumRows = 11;
                               xrtTblVisibleRows = 10;
+                              xrtTblMaxLengthSeries = "(all 12 255)";
+                              xrtTblAllowCellResize = resize_horizontal;
+                              xrtTblDisplayHorizScrollBar = dispsb_always;
+                              xrtTblFrozenColumns = 9;
+                              xrtTblMinCellVisibility = 0;
                             Group: User
                               requiredColumns = "5\n9";
                               saveTraversableSeries = "(all 0-7 False)";
-                              saveEditableSeries = "(all 0-2 False)(all 8-12 False)";
+                              saveEditableSeries = "(all 0-2 False)(all 8-11 False)";
                                 {
                                   label = XtXrtLabel;
                                   Group: Widget
