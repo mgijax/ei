@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 28 09:13:36 2005";
+      lastWritten = "Wed Mar 16 13:39:53 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8583,7 +8583,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 order by referenceType";
+                                                sql = "select _RefsType_key, referenceType, seq = 1 from ALL_ReferenceType where referenceType = \"Indexed\"\nunion\nselect _RefsType_key, referenceType, seq = 2 from ALL_ReferenceType where referenceType != \"Indexed\"\norder by seq, referenceType\n";
                                                 tableForm = Reference;
                                             }
                                       }
