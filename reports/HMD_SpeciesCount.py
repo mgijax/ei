@@ -58,7 +58,7 @@ speciesResults.sort()
 for s in speciesResults:
 	fp.write(string.ljust(s[1], 50))
 	fp.write(str(s[0]) + TAB)
-	fp.write(str(s[2]) + CRT)
+	fp.write('(key = ' + str(s[2]) + ')' + CRT)
 
 reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
