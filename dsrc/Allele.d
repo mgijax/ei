@@ -236,6 +236,12 @@ rules:
 	  Clear.reset := ClearAllele.reset;
 	  send(Clear, 0);
 
+	  if (not ClearAllele.reset) then
+	    InitRefTypeTable.table := top->Reference->Table;
+	    InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
+	    send(InitRefTypeTable, 0);
+	  end if;
+
 	  -- Set Note button
           SetNotesDisplay.note := top->markerDescription->Note;
           send(SetNotesDisplay, 0);
@@ -255,6 +261,10 @@ rules:
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
 	  statusKey : string;
+	  inheritanceKey : string;
+	  esCellLineKey : string;
+	  strainKey : string;
+	  mutantesCellLineKey : string;
 	  approvalLoginDate : string;
 
 	  if (not top.allowEdit) then
@@ -289,20 +299,47 @@ rules:
           if (top->AlleleTypeMenu.menuHistory.labelString = TRANSGENIC_REPORTER) then
 	    statusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
 	    approvalLoginDate := "NULL,NULL)\n";
-	  else
+          elsif (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := global_loginKey + ",getdate())\n";
+	  else
+	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
+	    approvalLoginDate := "NULL,NULL)\n";
+	  end if;
+
+	  if (top->InheritanceModeMenu.menuHistory.defaultValue = "%") then
+	    inheritanceKey := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
+		"where term = " + mgi_DBprstr(top->InheritanceModeMenu.defaultValue));
+	  else
+	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
+	  end if;
+
+	  if (top->EditForm->mgiParentalESCellLine->ObjectID->text.value.length = 0) then
+	    esCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 0 " +
+		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
+	    strainKey := mgi_sql1("select _Strain_key from ALL_CellLine where isMutant = 0 " +
+		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiParentalESCellLine->CellLine->text.defaultValue));
+	  else
+	    esCellLineKey := top->EditForm->mgiParentalESCellLine->ObjectID->text.value;
+	    strainKey := top->EditForm->mgiParentalESCellLine->StrainID->text.value;
+	  end if;
+
+	  if (top->EditForm->mgiMutantESCellLine->ObjectID->text.value.length = 0) then
+	    mutantesCellLineKey := mgi_sql1("select _CellLine_key from ALL_CellLine where isMutant = 1 " +
+		"and cellLine = " + mgi_DBprstr(top->EditForm->mgiMutantESCellLine->CellLine->text.defaultValue));
+	  else
+	    mutantesCellLineKey := top->EditForm->mgiMutantESCellLine->ObjectID->text.value;
 	  end if;
 
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
 		 top->mgiMarker->ObjectID->text.value + "," +
-		 top->EditForm->Strain->StrainID->text.value + "," +
-                 top->InheritanceModeMenu.menuHistory.defaultValue + "," +
+		 strainKey + "," +
+                 inheritanceKey + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  statusKey + "," +
-                 top->EditForm->mgiParentalESCellLine->ObjectID->text.value + "," +
-                 top->EditForm->mgiMutantESCellLine->ObjectID->text.value + "," +
+                 esCellLineKey + "," +
+                 mutantesCellLineKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
