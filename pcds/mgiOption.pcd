@@ -335,7 +335,6 @@ Module: mgiOption
                     {
                       LocusLink = AccToggle : mgiOption;
                       Group: User
-                        private = True;
                         defaultValue = 24;
                     }
                     {
