@@ -584,7 +584,7 @@ rules:
 
           if (top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
-            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
+            set := set + "_NomenStatus_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
           end if;
 
           if (top->MarkerTypeMenu.menuHistory.modified and
@@ -867,7 +867,7 @@ rules:
           end if;
 
           if (top->MarkerStatusMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._Marker_Status_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
+            where := where + "\nand m._NomenStatus_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
 	    printSelect := printSelect + "\nMarker Status = " + top->MarkerStatusMenu.menuHistory.labelString;
           end if;
 
@@ -1232,7 +1232,7 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
-	  (void) mgi_sql1("exec " + getenv("NOMEN") + "..NOMEN_verifyMarker " + mgi_DBprstr(value));
+	  (void) mgi_sql1("exec " + "NOM_verifyMarker " + mgi_DBprstr(value));
 
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
@@ -1282,7 +1282,7 @@ rules:
 	  elsif (broadcastType = 3) then
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select symbol from " + mgi_DBtable(NOM_MARKER) + 
-		  " where _Marker_Status_key = " + STATUS_NAPPROVED;
+		  " where _NomenStatus_key = " + STATUS_NAPPROVED;
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
               (void) dbsqlexec(dbproc);
@@ -1301,11 +1301,11 @@ rules:
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(NOM_MARKER) + " n," +
-		  mgi_DBtable(MGI_REFERENCE_ASSOC) + " r " +
-		  " where n._Marker_Status_key = " + STATUS_PENDING +
-		  " and n.submittedBy = user_name()" +
-		  " and n._Nomen_key = r._Nomen_key" +
-		  " and r.isPrimary = 1" +
+		  mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) + " r " +
+		  " where n._NomenStatus_key = " + STATUS_PENDING +
+		  " and n.createdBy = user_name()" +
+		  " and n._Nomen_key = r._Object_key" +
+		  " and r.assocType = 'Primary'" +
 		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
@@ -1323,10 +1323,10 @@ rules:
 	    if (currentNomenKey.length > 0) then
 	      cmd := "select n.symbol from " + 
 		  mgi_DBtable(NOM_MARKER) + " n," +
-		  mgi_DBtable(MGI_REFERENCE_ASSOC) + " r" +
-		  " where n._Marker_Status_key = " + STATUS_NAPPROVED +
-		  " and n._Nomen_key = r._Nomen_key" +
-		  " and r.isPrimary = 1" +
+		  mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) + " r" +
+		  " where n._NomenStatus_key = " + STATUS_NAPPROVED +
+		  " and n._Nomen_key = r._Object_key" +
+		  " and r.assocType = 'Primary'" +
 		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
@@ -1419,7 +1419,7 @@ rules:
 	  -- if Add was successful, broadcast to Nomen
 	  if (top->QueryList->List.sqlSuccessful) then
 	    (void) busy_cursor(top);
-	    ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey;
+	    ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey;
 	    send(ExecSQL, 0);
 	    (void) reset_cursor(top);
 	  end if;
@@ -1434,7 +1434,7 @@ rules:
 
 	BroadcastSymbol does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERSYMBOL) + " " + currentNomenKey;
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERSYMBOL) + " " + currentNomenKey;
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1447,7 +1447,7 @@ rules:
 
 	BroadcastBatch does
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERBATCH);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERBATCH);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1462,7 +1462,7 @@ rules:
 	  table : widget := top->Reference->Table;
 
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREFEDITOR) + " " + mgi_tblGetCell(table, 0, table.refsKey);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERREFEDITOR) + " " + mgi_tblGetCell(table, 0, table.refsKey);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -1477,7 +1477,7 @@ rules:
 	  table : widget := top->Reference->Table;
 
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREFCOORD) + " " + mgi_tblGetCell(table, 0, table.refsKey);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOM_TRANSFERREFCOORD) + " " + mgi_tblGetCell(table, 0, table.refsKey);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

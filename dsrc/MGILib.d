@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- 05/29/2002 lec
+--	- SAO; removed NOMEN environment variable
+--
 -- 07/11/2001 lec
 --	- APP changed to EIAPP
 --
@@ -101,7 +104,6 @@ rules:
 	  envList.append("DSQUERY");
 	  envList.append("SYBASE");
 	  envList.append("MGD");
-	  envList.append("NOMEN");
 	  envList.append("EIDEBUG");
 
 	  envList.open;

@@ -230,6 +230,7 @@ extern char *global_version;
 #define NOM_GENEFAMILY_VIEW      	504
 #define NOM_ACC_REFERENCE		505
 #define NOM_SYNONYM_VIEW     		506
+#define NOM_MARKER_VALID_VIEW		507
 
 /* MGI Tables */
 
@@ -289,10 +290,10 @@ extern char *global_version;
 
 /* Stored procedures */
 
-#define NOMEN_TRANSFERSYMBOL	1000
-#define NOMEN_TRANSFERBATCH	1001
-#define NOMEN_TRANSFERREFEDITOR	1002
-#define NOMEN_TRANSFERREFCOORD	1003
+#define NOM_TRANSFERSYMBOL	1000
+#define NOM_TRANSFERBATCH	1001
+#define NOM_TRANSFERREFEDITOR	1002
+#define NOM_TRANSFERREFCOORD	1003
 
 #define	MOUSE		"1"
 #define HUMAN		"2"
@@ -324,11 +325,11 @@ extern char *global_version;
 
 /* Nomen */
 
-#define STATUS_PENDING		"1"
-#define STATUS_NDELETED		"2"
-#define STATUS_RESERVED		"3"
-#define STATUS_NAPPROVED	"4"
-#define STATUS_BROADCAST	"5"
+#define STATUS_PENDING		"11371"
+#define STATUS_NDELETED		"11372"
+#define STATUS_RESERVED		"11373"
+#define STATUS_NAPPROVED	"11374"
+#define STATUS_BROADCAST	"11375"
 
 /* Allele Nomen */
 

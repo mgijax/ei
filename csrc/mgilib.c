@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 05/2002
+ *	- TR 1463/SAO; nomen tables, seq tables, mgi tables
+ *
  * lec 12/2001-01/2002
  *	- TR 2867/2239:  VOC
  *
@@ -1399,6 +1402,9 @@ char *mgi_DBtable(int table)
     case NOM_MARKER_VIEW:
 	    strcpy(buf, "NOM_Marker_View");
 	    break;
+    case NOM_MARKER_VALID_VIEW:
+	    strcpy(buf, "NOM_Marker_Valid_View");
+	    break;
     case NOM_GENEFAMILY:
 	    strcpy(buf, "VOC_Term_GeneFamily_View");
 	    break;
@@ -1414,17 +1420,17 @@ char *mgi_DBtable(int table)
     case NOM_SYNONYM_VIEW:
 	    strcpy(buf, "NOM_Synonym_View");
 	    break;
-    case NOMEN_TRANSFERSYMBOL:
-	    strcpy(buf, "Nomen_transferToMGD");
+    case NOM_TRANSFERSYMBOL:
+	    strcpy(buf, "NOM_transferToMGD");
 	    break;
-    case NOMEN_TRANSFERBATCH:
-	    strcpy(buf, "Nomen_transferAllToMGD");
+    case NOM_TRANSFERBATCH:
+	    strcpy(buf, "NOM_transferAllToMGD");
 	    break;
-    case NOMEN_TRANSFERREFEDITOR:
-	    strcpy(buf, "Nomen_transferEditorRefToMGD");
+    case NOM_TRANSFERREFEDITOR:
+	    strcpy(buf, "NOM_transferEditorRefToMGD");
 	    break;
-    case NOMEN_TRANSFERREFCOORD:
-	    strcpy(buf, "Nomen_transferCoordRefToMGD");
+    case NOM_TRANSFERREFCOORD:
+	    strcpy(buf, "NOM_transferCoordRefToMGD");
 	    break;
     case PRB_ALIAS:
             strcpy(buf, "PRB_Alias");

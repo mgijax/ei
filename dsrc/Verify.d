@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 05/29/2002
+--	- SAO; removed NOMEN environment variable
+--
 -- lec 05/16/2002
 --	- TR 1463/SAO; MRK_Species replaced with MGI_Species
 --
@@ -1836,10 +1839,9 @@ rules:
 
 	  if (VerifyMarker.allowNomen) then
 	    select := select + "union\n" +
-		"select -1, _Marker_Status_key, symbol, chromosome, null " +
-		"\nfrom " + getenv("NOMEN") + " ..MRK_Nomen " +
-		"\nwhere symbol = " + mgi_DBprstr(value) + 
-		"\nand _Marker_Status_key in (" + STATUS_PENDING + "," + STATUS_RESERVED + ")\n";
+		"select -1, " + STATUS_APPROVED + ", symbol, chromosome, null " +
+		"\nfrom " + mgi_DBtable(NOM_MARKER_VALID_VIEW) +
+		"\nwhere symbol = " + mgi_DBprstr(value) +  "\n";
 	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list

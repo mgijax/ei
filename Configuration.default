@@ -55,7 +55,6 @@ setenv DSQUERY MGD
 
 # DB instance names
 setenv MGD mgd
-setenv NOMEN nomen
 
 # Database User
 setenv DBUSER mgd_dbo
