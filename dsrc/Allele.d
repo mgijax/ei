@@ -294,6 +294,13 @@ rules:
 	  end if;
 
 	  send(ModifyMolecularMutation, 0);
+
+	  -- TR 5672
+	  -- always set note modified = true so if user has used
+	  -- another allele as a template for the new allele,
+	  -- the marker clip of the template allele is preserved
+
+	  top->markerDescription->Note->text.modified := true;
 	  send(ModifyAlleleNotes, 0);
 
 	  if (not top.allowEdit) then
@@ -932,8 +939,6 @@ rules:
 	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
 	  send(InitRefTypeTable, 0);
 
-	  top->markerDescription->Note->text.value := "";
-
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -942,6 +947,13 @@ rules:
           end if;
 
           (void) busy_cursor(top);
+
+	  -- TR 5672
+	  -- don't wipe out the Marker Clip if the record is de-selected, so if user has used
+	  -- another allele as a template for the new allele,
+	  -- the marker clip of the template allele is preserved
+
+	  top->markerDescription->Note->text.value := "";
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
