@@ -37,6 +37,7 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
+	SetBackground :local [];
 	SortTable :local [];
 	VerifyFinalMGIID :local [];
 
@@ -369,7 +370,7 @@ rules:
 		     cloneID + "," +
 		     locusID + "," +
 		     clusterID + "," +
-		     mgi_DBprstr(genbankID) + "," +
+		     mgi_DBprstr(genbankID) + ",0," +
 		     tigerID + "," +
 		     unigeneID + "," +
 		     seqLength + "," +
@@ -695,37 +696,38 @@ rules:
 	        (void) mgi_tblSetCell(fantom, row, fantom.seqID, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(fantom, row, fantom.cloneID, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(fantom, row, fantom.genbankID, mgi_getstr(dbproc, 6));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqLength, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqNote, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqQuality, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(fantom, row, fantom.genbankInMGI, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqLength, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqNote, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqQuality, mgi_getstr(dbproc, 12));
 	        (void) mgi_tblSetCell(fantom, row, fantom.locusID, mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(fantom, row, fantom.tigerID, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(fantom, row, fantom.unigeneID, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(fantom, row, fantom.tigerID, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(fantom, row, fantom.unigeneID, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(fantom, row, fantom.clusterID, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(fantom, row, fantom.locusStatus, mgi_getstr(dbproc, 12));
-	        (void) mgi_tblSetCell(fantom, row, fantom.mgiStatus, mgi_getstr(dbproc, 13));
-	        (void) mgi_tblSetCell(fantom, row, fantom.mgiNumber, mgi_getstr(dbproc, 14));
-	        (void) mgi_tblSetCell(fantom, row, fantom.blastHit, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(fantom, row, fantom.blastExpect, mgi_getstr(dbproc, 16));
-	        (void) mgi_tblSetCell(fantom, row, fantom.autoAnnot, mgi_getstr(dbproc, 17));
-	        (void) mgi_tblSetCell(fantom, row, fantom.infoAnnot, mgi_getstr(dbproc, 18));
-	        (void) mgi_tblSetCell(fantom, row, fantom.catID, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_getstr(dbproc, 20));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 21));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 23));
-	        (void) mgi_tblSetCell(fantom, row, fantom.nomenDetail, mgi_getstr(dbproc, 24));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 25));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 27));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 26));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 28));
+	        (void) mgi_tblSetCell(fantom, row, fantom.locusStatus, mgi_getstr(dbproc, 13));
+	        (void) mgi_tblSetCell(fantom, row, fantom.mgiStatus, mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(fantom, row, fantom.mgiNumber, mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(fantom, row, fantom.blastHit, mgi_getstr(dbproc, 16));
+	        (void) mgi_tblSetCell(fantom, row, fantom.blastExpect, mgi_getstr(dbproc, 17));
+	        (void) mgi_tblSetCell(fantom, row, fantom.autoAnnot, mgi_getstr(dbproc, 18));
+	        (void) mgi_tblSetCell(fantom, row, fantom.infoAnnot, mgi_getstr(dbproc, 19));
+	        (void) mgi_tblSetCell(fantom, row, fantom.catID, mgi_getstr(dbproc, 20));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_getstr(dbproc, 21));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 22));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 23));
+	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 24));
+	        (void) mgi_tblSetCell(fantom, row, fantom.nomenDetail, mgi_getstr(dbproc, 25));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 26));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 28));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 27));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 29));
 
 		-- data from cache tables
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, mgi_getstr(dbproc, 29));
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 30));
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 31));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol1, mgi_getstr(dbproc, 32));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalName1, mgi_getstr(dbproc, 33));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, mgi_getstr(dbproc, 30));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 31));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 32));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol1, mgi_getstr(dbproc, 33));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalName1, mgi_getstr(dbproc, 34));
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.editMode, TBL_ROW_NOCHG);
 
@@ -739,6 +741,8 @@ rules:
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  send(SetBackground, 0);
 
 	  -- Initialize Option Menus for row 0
 
@@ -818,6 +822,8 @@ rules:
        i := i + 1;
      end while;
 
+     send(SetBackground, 0);
+
      top->numRows.value := (string) i + " Results";
      ClearFantom2.reset := true;
      send(ClearFantom2, 0);
@@ -843,6 +849,40 @@ rules:
 	  CommitTableCellEdit.row := mgi_tblGetCurrentRow(fantom);
 	  CommitTableCellEdit.value_changed := true;
 	  send(CommitTableCellEdit, 0);
+	end does;
+
+--
+-- SetBackground
+--
+-- If fatnom.genbankInMGI = 0, then set to Thistle
+-- If Seq Quality != zilch, then set to Red
+--
+
+	SetBackground does
+	  newBackground : string;
+	  i : integer := 0;
+
+	  newBackground := fantom.saveBackgroundSeries;
+
+	  while (i < mgi_tblNumRows(fantom)) do
+
+	    -- break when empty row is found
+            if (mgi_tblGetCell(fantom, i, fantom.editMode) = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+
+	    if (mgi_tblGetCell(fantom, i, fantom.genbankInMGI) = "0") then
+	      newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT1 + ")";
+	    end if;
+
+	    if (mgi_tblGetCell(fantom, i, fantom.seqQuality) != "zilch") then
+	      newBackground := newBackground + "(" + (string) i + " all " + BACKGROUNDALT2 + ")";
+	    end if;
+
+	    i := i + 1;
+	  end while;
+
+	  fantom.xrtTblBackgroundSeries := newBackground;
 	end does;
 
 --
@@ -887,6 +927,25 @@ rules:
           SetOption.value := mgi_tblGetCell(table, row, table.nomenEvent);
           send(SetOption, 0);
         end does;
+
+--
+-- SortTable
+--
+--
+	SortTable does
+	  sortColumn : integer := top->sortOptions->sortMenu1.menuHistory.columnValue;
+	  (void) mgi_tblSort(fantom, sortColumn);
+
+	  sortColumn := top->sortOptions->sortMenu2.menuHistory.columnValue;
+	  if (sortColumn > 0) then
+	    (void) mgi_tblSort(fantom, sortColumn);
+	  end if;
+
+	  sortColumn := top->sortOptions->sortMenu3.menuHistory.columnValue;
+	  if (sortColumn > 0) then
+	    (void) mgi_tblSort(fantom, sortColumn);
+	  end if;
+	end does;
 
 --
 -- VerifyFinalMGIID
@@ -944,25 +1003,6 @@ rules:
  
           (void) reset_cursor(top);
         end does;
-
---
--- SortTable
---
---
-	SortTable does
-	  sortColumn : integer := top->sortOptions->sortMenu1.menuHistory.columnValue;
-	  (void) mgi_tblSort(fantom, sortColumn);
-
-	  sortColumn := top->sortOptions->sortMenu2.menuHistory.columnValue;
-	  if (sortColumn > 0) then
-	    (void) mgi_tblSort(fantom, sortColumn);
-	  end if;
-
-	  sortColumn := top->sortOptions->sortMenu3.menuHistory.columnValue;
-	  if (sortColumn > 0) then
-	    (void) mgi_tblSort(fantom, sortColumn);
-	  end if;
-	end does;
 
 --
 -- Add
