@@ -29,7 +29,7 @@
 -- History
 --
 -- lec	06/03/2003
---	- TR 4603; DuplicatePartial and DuplicateAll
+--	- TR 4603; DuplicateAssay
 --	- TR 4610; added Insert Row to Gel Lane table
 --
 -- lec	05/07/2003
@@ -204,8 +204,7 @@ devents:
 	Delete :local [];
 	DeleteGelBand :local [];
 	DetectISResultModification :local [];
-	DuplicateAll :local [];
-	DuplicatePartial :local [];
+	DuplicateAssay :local [dupAll : integer := 1;];
 
 	GenotypeExit :global [];	-- defined in Genotype.d
 	Exit :local [];
@@ -1089,46 +1088,28 @@ rules:
 	end does;
 
 --
--- DuplicateAll
+-- DuplicateAssay
 --
--- Duplicates the entire current InSitu or Gel Assay record
+-- Duplicates the current InSitu or Gel Assay record
+-- If partial:
+-- 	For InSitu Assays, duplicates all details except for Results
+-- 	For Gel Assays, duplicates all details except for Gel Rows/Bands
 --
 
-        DuplicateAll does
+        DuplicateAssay does
 	  newAssayKey : string;
+	  dupAll : integer := DuplicateAssay.dupAll;
 
-	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + ",1");
-	  from := "from " + mgi_DBtable(GXD_ASSAY) + "_View" + " g";
-	  where := "where g._Assay_key = " + newAssayKey;
-	  Query.source_widget := top;
-	  Query.select := "select distinct g._Assay_key, " + 
-			"g.jnumID + \";\" + g.assayType + \";\" + g.symbol\n" + 
-			from + "\n" + where + "\norder by g.jnumID\n";
-	  Query.table := GXD_ASSAY;
-	  send(Query, 0);
-	  return;
-        end does;
+	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + "," + (string) dupAll);
 
---
--- DuplicatePartial
---
--- Duplicates the partial current InSitu or Gel Assay record
--- For InSitu Assays, duplicates all details except for Results
--- For Gel Assays, duplicates all details except for Gel Rows/Bands
---
-
-        DuplicatePartial does
-	  newAssayKey : string;
-
-	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay);
-	  from := "from " + mgi_DBtable(GXD_ASSAY) + "_View" + " g";
-	  where := "where g._Assay_key = " + newAssayKey;
-	  Query.source_widget := top;
-	  Query.select := "select distinct g._Assay_key, " + 
-			"g.jnumID + \";\" + g.assayType + \";\" + g.symbol\n" + 
-			from + "\n" + where + "\norder by g.jnumID\n";
-	  Query.table := GXD_ASSAY;
-	  send(Query, 0);
+          InsertList.list := top->QueryList;
+          InsertList.item := "J:" + top->Jnum->text.value + ";" + 
+			top->AssayTypeMenu.menuHistory.labelString + ";" +
+		        top->mgiMarker->Marker->text.value;
+          InsertList.key := newAssayKey;
+          send(InsertList, 0);
+	  top->RecordCount->text.value := mgi_DBrecordCount(GXD_ASSAY);
+          (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	  return;
         end does;
 
