@@ -193,7 +193,6 @@ extern char *global_version;
 #define MLD_ASSAY		316
 #define MRK_CLASS    		317
 #define MRK_TYPE		318
-#define PRB_VECTOR_TYPE		319
 #define CROSS      		320
 #define RISET  			321
 #define STRAIN     		322

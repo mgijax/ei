@@ -824,9 +824,6 @@ char *mgi_DBkey(int table)
     case PRB_SOURCE_MASTER:
             strcpy(buf, "_Source_key");
 	    break;
-    case PRB_VECTOR_TYPE:
-            strcpy(buf, "_Vector_key");
-	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "_StrainMarker_key");
 	    break;
@@ -1578,9 +1575,6 @@ char *mgi_DBtable(int table)
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
             strcpy(buf, "PRB_Source");
-	    break;
-    case PRB_VECTOR_TYPE:
-            strcpy(buf, "PRB_Vector_Types");
 	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
@@ -2834,9 +2828,6 @@ char *mgi_DBcvname(int table)
 	    break;
     case MRK_STATUS:
             strcpy(buf, "status");
-	    break;
-    case PRB_VECTOR_TYPE:
-            strcpy(buf, "vectorType");
 	    break;
     case RISET:
             strcpy(buf, "designation");
