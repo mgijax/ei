@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  06/13/2001
+--	- TR 2589; added ClearAntibody
+--
 -- lec  08/29/2000
 --	- TR 1003; GXD_AntibodySpecies
 --
@@ -41,6 +44,10 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
+
+	ClearAntibody :local [clearKeys : boolean := true;
+			      reset : boolean := false;];
+
 	Delete :local [];
 	DisplayAntigenSource : translation [];
 	Exit :local [];
@@ -59,6 +66,7 @@ locals:
 
 	options : list;		-- List of Option Menus
 	tables : list;		-- List of Tables
+	notes : list;           -- List of Notes
 
 	currentRecordKey : string;	-- Primary Key value of currently selected record
 					-- Initialized in Select[] and Add[] events
@@ -97,12 +105,6 @@ rules:
 	  SetRowCount.tableID := GXD_ANTIBODY;
 	  send(SetRowCount, 0);
 
-	  -- Clear form
-
-	  Clear.source_widget := top;
-	  Clear.clearLists := 3;
-	  send(Clear, 0);
- 
 	  (void) reset_cursor(mgi);
 	end does;
 
@@ -111,6 +113,7 @@ rules:
 --
 -- Initializes list of Option Menus (options)
 -- Initializes list of Tables (tables)
+-- Initializes list of Notes (notes)
 -- Initializes global accTable
 -- Creates dynamic option menus
 -- Initializes global variables
@@ -119,6 +122,7 @@ rules:
 	Init does
 	  options := create list("widget");
 	  tables := create list("widget");
+	  notes := create list("widget");
 
 	  options.append(top->AntibodyTypeMenu);
 	  options.append(top->AntibodyClassMenu);
@@ -132,6 +136,9 @@ rules:
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Alias->Table);
 
+	  notes.append(top->AntibodyNote->Note);
+	  notes.append(top->AntigenNote->Note);
+
 	  accTable := top->mgiAccessionTable->Table;
 
           -- Dynamically create option menus
@@ -143,6 +150,28 @@ rules:
           end while;
 	  options.close;
 				
+	end does;
+
+--
+-- ClearAntibody
+-- 
+-- Local Clear
+--
+
+	ClearAntibody does
+
+	  Clear.source_widget := top;
+	  Clear.clearLists := 3;
+	  Clear.clearKeys := ClearAntibody.clearKeys;
+	  Clear.reset := ClearAntibody.reset;
+	  send(Clear, 0);
+
+	  notes.open;
+	  while (notes.more) do
+	    SetNotesDisplay.note := notes.next;
+	    send(SetNotesDisplay, 0);
+	  end while;
+	  notes.close;
 	end does;
 
 --
@@ -217,10 +246,8 @@ rules:
 	    SetReportSelect.tableID := GXD_ANTIBODY;
 	    send(SetReportSelect, 0);
 
-            Clear.source_widget := top;
-            Clear.clearKeys := false;
-	    Clear.clearLists := 3;
-            send(Clear, 0);
+            ClearAntibody.clearKeys := false;
+            send(ClearAntibody, 0);
 	  end if;
 
           (void) reset_cursor(top);
@@ -241,9 +268,8 @@ rules:
           send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-            Clear.source_widget := top;
-            Clear.clearKeys := false;
-            send(Clear, 0);
+            ClearAntibody.clearKeys := false;
+            send(ClearAntibody, 0);
           end if;
  
           (void) reset_cursor(top);
@@ -801,9 +827,15 @@ rules:
           send(LoadAcc, 0);
  
           top->QueryList->List.row := Select.item_position;
-	  Clear.source_widget := top;
-          Clear.reset := true;
-          send(Clear, 0);
+          ClearAntibody.reset := true;
+          send(ClearAntibody, 0);
+
+	  notes.open;
+	  while (notes.more) do
+	    SetNotesDisplay.note := notes.next;
+	    send(SetNotesDisplay, 0);
+	  end while;
+	  notes.close;
 
 	  (void) reset_cursor(top);
 	end does;
