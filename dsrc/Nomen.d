@@ -281,6 +281,8 @@ rules:
           top->MarkerStatusPulldown.background := "Wheat";
           top->MarkerStatusPulldown->SearchAll.background := "Wheat";
           top->MarkerStatusMenu.menuHistory.background := "Wheat";
+	  top->EditorNote->NotePush.background := "Wheat";
+	  top->CoordNote->NotePush.background := "Wheat";
 	  Clear.source_widget := top;
 	  Clear.clearLists := 3;
 	  Clear.clearKeys := ClearNomen.clearKeys;
