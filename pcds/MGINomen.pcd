@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 12:02:15 2005";
+      lastWritten = "Wed Feb 23 13:01:22 2005";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -300,7 +300,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Nomen_View where allowOnlyOne = 0 order by _RefAssocType_key";
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Nomen_View order by _RefAssocType_key";
                                                 tableOption = 7;
                                             }
                                       }
