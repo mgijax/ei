@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 17 13:41:25 2003";
+      lastWritten = "Wed Nov  5 11:44:49 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -733,34 +733,7 @@ Module: MGI
                       Group: Widget
                         columns = 20;
                         maxLength = 50;
-                        translations = "#override
- Shift<Key>Tab: prev-tab-group()
-<Key>Tab: SetDefault() VerifyAge()";
                     }
-              }
-              {
-                AgeMin = ID : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = SexMenu;
-                  leftOffset = 5;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Age;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                AgeMax = ID : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = AgeMin;
-                  leftOffset = 5;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = AgeMin;
-                  bottomAttachment = attach_none;
-                  resizable = true;
               }
               {
                 SexMenu = SexMenu : mgiOption;
@@ -1143,375 +1116,6 @@ Module: MGI
           Group: Control
             vip_x = 70;
             vip_y = 360;
-        }
-        {
-          VocAnnotModule = Module : MGI;
-          Group: Widget
-            width = 1200;
-            height = 825;
-            closeWindowCallback = "D:VocAnnotExit";
-          Group: Control
-            vip_x = 70;
-            vip_y = 580;
-          Group: User
-            activateButtonName = VocAnnot;
-            homeWidget = mgiAccession;
-              {
-                MainForm = XmForm;
-                Group: Widget
-                  rubberPositioning = False;
-                  resizePolicy = resize_any;
-                    {
-                      MainMenu = MainMenu : mgiMenu;
-                          {
-                            File = File : mgiMenu;
-                                Popups:
-                                {
-                                  FilePulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Exit = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:VocAnnotExit";
-                                      }
-                                }
-                          }
-                    }
-                    {
-                      Edit = XmFrame;
-                          {
-                            EditForm = EditForm : MGI;
-                            Group: Widget
-                              rubberPositioning = False;
-                              resizePolicy = resize_any;
-                                {
-                                  ID = ID : mgiDataTypes;
-                                }
-                                {
-                                  VocAnnotTypeMenu = VocAnnotTypeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_form;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  mgiAccession = mgiAccession : mgiDataTypes;
-                                  Group: Widget
-                                    orientation = horizontal;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = VocAnnotTypeMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = VocAnnotTypeMenu;
-                                    topOffset = 10;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        ObjectID = ID : mgiDataTypes;
-                                      }
-                                      {
-                                        AccessionID = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        AccessionName = CharSText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = Object;
-                                            }
-                                            {
-                                              text = scrolledText : mgiDataTypes;
-                                              Group: Widget
-                                                columns = 75;
-                                                scrollHorizontal = True;
-                                            }
-                                      }
-                                }
-                                {
-                                  Annotation = Table : mgiTable;
-                                  Group: Widget
-                                    rubberPositioning = False;
-                                    resizePolicy = resize_any;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiAccession;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    topWidget = mgiAccession;
-                                    topOffset = 10;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblNumRows = 20;
-                                          xrtTblVisibleRows = 15;
-                                          xrtTblNumColumns = 23;
-                                          xrtTblColumnLabels = "Mode,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Modified By,Date,Notes,Created By,Date";
-                                          xrtTblPixelWidthSeries = "(all 0-9 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-9 10)(all 10 15)(all 11 5)(all 12 25)(all 13 3)(all 15 10)(all 16 10)(all 17 20)(all 18 11)(all 19 10)(all 20 20)(all 22 10)";
-                                          xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nnotKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"10\"\ndag:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\ninferredFrom:Int(Int)=\"17\"\neditor:Int(Int)=\"18\"\nmodifiedDate:Int(Int)=\"19\"\nnotes:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"6\"\ncurrentEvidenceKey:Int(Int)=\"8\"\ntermSeqNum:Int(Int)=\"3\"\nevidenceSeqNum:Int(Int)=\"9\"\nannotVocab:String(String)\ncreatedBy:Int=\"21\"\ncreatedDate:Int=\"22\"\n";
-                                          xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0-9 False)(all 11-13 False)(all 15 False)";
-                                          xrtTblEnterCellCallback = "D:SetOptions";
-                                          xrtTblFrozenColumns = 11;
-                                          xrtTblAllowCellResize = resize_horizontal;
-                                          width = 950;
-                                        Group: User
-                                          requiredColumns = "2\n5\n7";
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        EditTerm = toggle : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Edit Term";
-                                        Group: Constraint
-                                          leftAttachment = attach_widget;
-                                          leftWidget = DeleteRow;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_opposite_widget;
-                                          topWidget = DeleteRow;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
-                                      }
-                                }
-                                {
-                                  Reference = ReferenceTable : mgiTable;
-                                  Group: Widget
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Annotation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Annotation;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
-                                    leftOffset = 300;
-                                    bottomOffset = 5;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblNumRows = 20;
-                                          xrtTblVisibleRows = 9;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                                {
-                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
-                                  Group: Widget
-                                    orientation = horizontal;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = VocAnnotTypeMenu;
-                                    leftOffset = 30;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = VocAnnotTypeMenu;
-                                    topOffset = "-5";
-                                }
-                          }
-                    }
-                    {
-                      Control = Control : mgiControl;
-                          {
-                            ControlForm = XmForm;
-                            Group: Widget
-                              rubberPositioning = False;
-                              resizePolicy = resize_any;
-                                {
-                                  Search = ControlPush;
-                                }
-                                {
-                                  Clear = ControlPush;
-                                }
-                                {
-                                  Modify = ControlPush;
-                                  Group: Widget
-                                    labelString = Save;
-                                }
-                                {
-                                  Add = ControlPush;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  Delete = ControlPush;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  Previous = ControlArrow;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  Next = ControlArrow;
-                                  Group: Widget
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
-                                    rightWidget = Modify;
-                                    topAttachment = attach_widget;
-                                    topWidget = Modify;
-                                    topOffset = 2;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  Clear1 = XmMenuBar;
-                                }
-                                {
-                                  RecordCount = RecordCount : mgiDataTypes;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  CreationDate = CreationDate : mgiDataTypes;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                                {
-                                  ModifiedDate = ModifiedDate : mgiDataTypes;
-                                  Group: Widget
-                                    managed = False;
-                                }
-                          }
-                    }
-                    {
-                      Lookup = Lookup : mgiLookup;
-                      Group: Constraint
-                        leftAttachment = attach_widget;
-                        leftWidget = Edit;
-                        rightAttachment = attach_form;
-                        topAttachment = attach_widget;
-                        topWidget = Control;
-                        bottomAttachment = attach_none;
-                        resizable = true;
-                          {
-                            panedWindow = XmPanedWindow;
-                                {
-                                  QueryList = QueryList : mgiLookup;
-                                      {
-                                        Label = LookupLabel;
-                                      }
-                                      {
-                                        List = list;
-                                        Group: Widget
-                                          visibleItemCount = 5;
-                                      }
-                                }
-                                {
-                                  NotMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = NotPulldown;
-                                    labelString = NOT;
-                                  Group: User
-                                    defaultOption = No;
-                                      Popups:
-                                      {
-                                        NotPulldown : YesNoPulldown = OptionPulldown;
-                                        Group: User
-                                          tableForm = Annotation;
-                                          tableOption = 13;
-                                          tableOptionKey = 4;
-                                      }
-                                }
-                                {
-                                  NotePushShort = NotePushShort : mgiDataTypes;
-                                  Group: User
-                                    targetColumn = 20;
-                                    targetWidget = Annotation;
-                                }
-                                {
-                                  EvidenceCodeList = EvidenceCodeList : mgiLookup;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: User
-                                          targetWidget = Annotation;
-                                          targetKey = 7;
-                                          targetText = 16;
-                                      }
-                                }
-                                {
-                                  PhenoSlimList = PhenoSlimList : mgiLookup;
-                                  Group: Widget
-                                    managed = False;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: Widget
-                                          visibleItemCount = 25;
-                                        Group: User
-                                          targetKey = 2;
-                                          targetWidget = Annotation;
-                                          targetText = 12;
-                                          targetAccID = 10;
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = "Potential GO References";
-                                              Group: User
-                                                keys = "GORefs.py";
-                                            }
-                                      }
-                                }
-                          }
-                    }
-              }
         }
         {
           GenotypeModule = Module : MGI;
@@ -2401,6 +2005,375 @@ Module: MGI
                                         List = list;
                                         Group: Widget
                                           visibleItemCount = 25;
+                                      }
+                                }
+                          }
+                    }
+                    Popups:
+                    {
+                      StatusDialog = StatusDialog : mgiDialog;
+                    }
+                    {
+                      DeleteDialog = DeleteDialog : mgiDialog;
+                    }
+                    {
+                      ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                              Group: Widget
+                                                items = "Potential GO References";
+                                              Group: User
+                                                keys = "GORefs.py";
+                                            }
+                                      }
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          VocAnnotModule = Module : MGI;
+          Group: Widget
+            width = 1200;
+            height = 825;
+            closeWindowCallback = "D:VocAnnotExit";
+          Group: Control
+            vip_x = 70;
+            vip_y = 580;
+          Group: User
+            activateButtonName = VocAnnot;
+            homeWidget = mgiAccession;
+              {
+                MainForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:VocAnnotExit";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                }
+                                {
+                                  VocAnnotTypeMenu = VocAnnotTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  mgiAccession = mgiAccession : mgiDataTypes;
+                                  Group: Widget
+                                    orientation = horizontal;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = VocAnnotTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = VocAnnotTypeMenu;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        AccessionID = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        AccessionName = CharSText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = Object;
+                                            }
+                                            {
+                                              text = scrolledText : mgiDataTypes;
+                                              Group: Widget
+                                                columns = 75;
+                                                scrollHorizontal = True;
+                                            }
+                                      }
+                                }
+                                {
+                                  Annotation = Table : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiAccession;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiAccession;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumRows = 20;
+                                          xrtTblVisibleRows = 15;
+                                          xrtTblNumColumns = 25;
+                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Note key,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evidence,Inferred From,Modified By,Date,Notes,Created By,Date";
+                                          xrtTblPixelWidthSeries = "(all 0-11 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-11 10)(all 12 15)(all 13 5)(all 14 25)(all 15 3)(all 17 10)(all 18 10)(all 19 20)(all 20 11)(all 21 10)(all 22 20)(all 24 10)";
+                                          xrtTblDisplayHorizScrollBar = dispsb_always;
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"12\"\ndag:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\ninferredFrom:Int(Int)=\"19\"\neditor:Int(Int)=\"20\"\nmodifiedDate:Int(Int)=\"21\"\nnotes:Int(Int)=\"22\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\ntermSeqNum:Int(Int)=\"4\"\nevidenceSeqNum:Int(Int)=\"10\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"23\"\ncreatedDate:Int(Int)=\"24\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"24\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int=\"11\"\n";
+                                          xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
+                                          xrtTblTraversableSeries = "(all 0-11 False)(all 13-15 False)(all 17 False)";
+                                          xrtTblEnterCellCallback = "D:SetOptions";
+                                          xrtTblFrozenColumns = 12;
+                                          xrtTblAllowCellResize = resize_horizontal;
+                                          width = 950;
+                                        Group: User
+                                          requiredColumns = "3\n6\n8";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        EditTerm = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Edit Term";
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = DeleteRow;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = DeleteRow;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                }
+                                {
+                                  Reference = ReferenceTable : mgiTable;
+                                  Group: Widget
+                                    managed = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Annotation;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Annotation;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    leftOffset = 300;
+                                    bottomOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblNumRows = 20;
+                                          xrtTblVisibleRows = 9;
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                                {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Widget
+                                    orientation = horizontal;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = VocAnnotTypeMenu;
+                                    leftOffset = 30;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = VocAnnotTypeMenu;
+                                    topOffset = "-5";
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                }
+                                {
+                                  Modify = ControlPush;
+                                  Group: Widget
+                                    labelString = Save;
+                                }
+                                {
+                                  Add = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                  Group: Widget
+                                    managed = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    rightWidget = Modify;
+                                    topAttachment = attach_widget;
+                                    topWidget = Modify;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Edit;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = Control;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: Widget
+                                          visibleItemCount = 5;
+                                      }
+                                }
+                                {
+                                  NotMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = NotPulldown;
+                                    labelString = NOT;
+                                  Group: User
+                                    defaultOption = No;
+                                      Popups:
+                                      {
+                                        NotPulldown : YesNoPulldown = OptionPulldown;
+                                        Group: User
+                                          tableForm = Annotation;
+                                          tableOption = 15;
+                                          tableOptionKey = 5;
+                                      }
+                                }
+                                {
+                                  NotePush = NotePush : mgiDataTypes;
+                                  Group: User
+                                    targetColumn = 22;
+                                    targetWidget = Annotation;
+                                }
+                                {
+                                  EvidenceCodeList = EvidenceCodeList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetWidget = Annotation;
+                                          targetKey = 8;
+                                          targetText = 18;
+                                      }
+                                }
+                                {
+                                  PhenoSlimList = PhenoSlimList : mgiLookup;
+                                  Group: Widget
+                                    managed = False;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: Widget
+                                          visibleItemCount = 25;
+                                        Group: User
+                                          targetKey = 3;
+                                          targetWidget = Annotation;
+                                          targetText = 14;
+                                          targetAccID = 12;
                                       }
                                 }
                           }

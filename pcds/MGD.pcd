@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 17 12:39:32 2003";
+      lastWritten = "Wed Nov  5 10:19:39 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8364,12 +8364,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       Age = CharText : mgiDataTypes;
-                    }
-                    {
-                      AgeMin = ID : mgiDataTypes;
-                    }
-                    {
-                      AgeMax = ID : mgiDataTypes;
                     }
                     {
                       SexMenu = SexMenu : mgiOption;

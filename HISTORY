@@ -1,3 +1,14 @@
+TAG: ei-10-0-0
+DATE: 11/10/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 2.98
+2) TR 4579; increase note field length in Annotation EI
+3) TR 4826; move age verification out of EI & into stored procedure
+4) TR 5259; marker history "modified by" not preserved during merge
+5) TR 5260; duplicate GXD index records
+
 TAG: ei-9-0-17
 TAG: ei-9-0-16
 DATE: 11/03/2003

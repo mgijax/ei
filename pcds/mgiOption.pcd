@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 29 10:00:29 2003";
+      lastWritten = "Wed Nov  5 13:08:40 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -488,8 +488,6 @@ Module: mgiOption
                       Group: User
                         searchValue = embryonic;
                         defaultValue = embryonic;
-                        ageMax = "21.0";
-                        ageMin = "0.0";
                     }
                     {
                       embryonicDay = AgeToggle : mgiOption;
@@ -506,8 +504,6 @@ Module: mgiOption
                       Group: User
                         searchValue = perinatal;
                         defaultValue = perinatal;
-                        ageMin = "17.0";
-                        ageMax = "22.0";
                     }
                     {
                       postnatal = AgeToggle : mgiOption;
@@ -516,8 +512,6 @@ Module: mgiOption
                       Group: User
                         searchValue = postnatal;
                         defaultValue = postnatal;
-                        ageMin = "21.01";
-                        ageMax = "1846.0";
                     }
                     {
                       postnatalDay = AgeToggle : mgiOption;
@@ -526,8 +520,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal day";
                         defaultValue = "postnatal day";
-                        ageMin = "21.01";
-                        ageMax = "21.01";
                     }
                     {
                       postnatalWeek = AgeToggle : mgiOption;
@@ -536,9 +528,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal week";
                         defaultValue = "postnatal week";
-                        ageMin = "21.01";
-                        ageMax = "21.01";
-                        ageMultiply = 7;
                     }
                     {
                       postnatalMonth = AgeToggle : mgiOption;
@@ -547,9 +536,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal month";
                         defaultValue = "postnatal month";
-                        ageMin = "21.01";
-                        ageMax = "21.01";
-                        ageMultiply = 30;
                     }
                     {
                       postnatalYear = AgeToggle : mgiOption;
@@ -558,9 +544,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal year";
                         defaultValue = "postnatal year";
-                        ageMin = "21.01";
-                        ageMax = "21.01";
-                        ageMultiply = 365;
                     }
                     {
                       postnatalAdult = AgeToggle : mgiOption;
@@ -569,8 +552,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal adult";
                         defaultValue = "postnatal adult";
-                        ageMin = "42.01";
-                        ageMax = "1846.0";
                     }
                     {
                       postnatalImmature = AgeToggle : mgiOption;
@@ -579,8 +560,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal immature";
                         defaultValue = "postnatal immature";
-                        ageMin = "25.01";
-                        ageMax = "42.0";
                     }
                     {
                       postnatalNewborn = AgeToggle : mgiOption;
@@ -589,8 +568,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal newborn";
                         defaultValue = "postnatal newborn";
-                        ageMin = "21.01";
-                        ageMax = "25.0";
                     }
                     {
                       NotSpecified = AgeToggle : mgiOption;
@@ -714,9 +691,6 @@ Module: mgiOption
         }
         {
           AgeToggle = OptionToggle;
-          Group: Widget
-            userDefinedAttributes = "ageMin:Float(Float)=\"0.0\"\nageMax:Float(Float)=\"0.0\"\nageMultiply:Float(Float)=\"1.0\"\n";
-            valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyAge,\nD:SetModify";
           Group: Control
             vip_x = 80;
             vip_y = 1130;
@@ -2434,6 +2408,8 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 4705;
+          Group: User
+            required = False;
               Popups:
               {
                 GXDIndexPriorityPulldown : OptionPulldown = OptionPulldown : mgiOption;
