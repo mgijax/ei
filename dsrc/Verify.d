@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 08/09/99
+--	- TR 839; added VerifyChromosome
+--
 -- lec 02/01/99
 --	- VerifyStrains; not attaching ", " to strainKeys when adding new strain (TR#316)
 --
@@ -939,6 +942,68 @@ rules:
             SetOption.source_widget := top->AntibodyClassMenu;
             SetOption.value := top->AntibodyClassPulldown->NotApplicable.defaultValue;
             send(SetOption, 0);
+	  end if;
+	end does;
+
+--
+--
+--
+-- VerifyChromosome
+--
+-- Activated from:  Table ValidateCellCallback
+-- Checks if Chromosome value for Species exists in Marker Chromosome table.
+-- If not, then alerts user that value will be added to Marker Chromosome table
+-- when transaction is executed.
+--
+-- 	UDAs required:  speciesKey (unique identifier of marker species)
+-- 	UDAs required:  markerChr (column of chromosome value in table)
+--
+
+	VerifyChromosome does
+          sourceWidget : widget := VerifyChromosome.source_widget;
+          top : widget := sourceWidget.top;
+	  value : string;
+	  speciesKey : string;
+	  isTable : boolean;
+
+	  -- Relevant for Tables only
+	  row : integer := 0;
+	  column : integer := 0;
+	  reason : integer := 0;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  -- Determine Table processing vs. Text processing
+
+	  if (isTable) then
+	    row := VerifyChromosome.row;
+	    column := VerifyChromosome.column;
+	    reason := VerifyChromosome.reason;
+	    value := VerifyChromosome.value;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+
+	    if (column != sourceWidget.markerChr) then
+	      return;
+	    end if;
+	  else
+	    return;
+	  end if;
+
+          speciesKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.speciesKey);
+	  select : string := "select count(*) from MRK_Chromosome ";
+	  where : string := " where _Species_key = " + speciesKey +
+		" and chromosome = " + mgi_DBprstr(value) + "\n";
+
+	  if ((integer) mgi_sql1(select + where) > 0) then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value +
+		"\n\nThis value will be added to Species/Chromosome lookup table\n" +
+		"when the current transaction is executed,\n" +
+		"unless it is relaced with a valid value.\n";
+            send(StatusReport);
 	  end if;
 	end does;
 

@@ -19,6 +19,8 @@ VerifyAlleleAdd [];
 
 VerifyAntibodyType [];
 
+VerifyChromosome [];
+
 VerifyDate :translation [];
 
 VerifyFloat [];
