@@ -419,7 +419,7 @@ rules:
 
 	      -- If accession table contains a reference column, use it
 
-	      if (table.is_defined("refsKey") != nil) then
+	      if (editMode != TBL_ROW_DELETE and table.is_defined("refsKey") != nil) then
                 refsKey := mgi_tblGetCell(table, r, table.refsKey);
 	        origRefsKey := mgi_tblGetCell(table, r, table.refsCurrentKey);
 		if (refsKey.length = 0 or refsKey = "NULL") then
