@@ -12,7 +12,7 @@
 # as a compiled application, rather than an interpreted D app.
 #
 
-source ../Configuration
+source Configuration
 
 setenv APP	$1
 setenv MODE	$2
