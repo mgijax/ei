@@ -19,9 +19,7 @@ rm -f $LOG
 
 foreach app ($EIAPPS)
    echo "INSTALLING $app"
-   cd $app
-   installapp compiled | tee >>& $LOG
-   cd ..
+   installapp $app compiled | tee >>& $LOG
 end
 
 cp -r system_docs $EIINSTALLDIR

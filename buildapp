@@ -5,13 +5,16 @@
 #
 # Usage:
 #
-#	buildapp [compiled] 
+#	buildapp applicationdirectory [compiled] 
 #
 # Where 'compiled' specifies that a compiled application should be built.
 # Without this option, D modules are interpreted, which allows use of 
 # the TeleUSE debugger. 
 
-setenv MODE	$1
+source Configuration
+
+setenv APP	$1
+setenv MODE	$2
 
 switch ("$MODE")
 	case compiled:	
@@ -26,4 +29,5 @@ endsw
 # uxb.conf is assumed...
 #
 
+cd $APP
 uxb $OPTIONS

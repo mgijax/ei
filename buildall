@@ -15,17 +15,12 @@
 
 source Configuration
 
-setenv REMFILES "*.o *.c *.do *.ui"
 setenv LOG `pwd`/buildall.log
 
 rm -f $LOG
 
 foreach app ($EIAPPS)
    echo "BUILDING $app"
-   cd $app
-   uxb clean
-   rm -f $REMFILES $app
-   buildapp compiled | tee >>& $LOG
-   cd ..
+   buildapp $app compiled | tee >>& $LOG
 end
 
