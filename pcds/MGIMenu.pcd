@@ -2,7 +2,7 @@ Module: MGIMenu
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 11 10:27:06 2001";
+      lastWritten = "Tue Feb 12 14:35:01 2002";
         {
           MGIMenu = TopLevelShell;
           Group: Widget
@@ -83,6 +83,14 @@ Module: MGIMenu
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "GXD Development";
+                                }
+                                {
+                                  FANTOMDEV = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:ForkIt(app = \"runapp fantom\", path = \"dev\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                    labelString = "Fantom Development";
                                 }
                                 {
                                   separatorGadget1 = XmSeparatorGadget;

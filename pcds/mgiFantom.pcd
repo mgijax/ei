@@ -1,0 +1,1032 @@
+Module: mgiFantom
+{
+      autoCuil = False;
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Fri Feb 22 10:11:37 2002";
+        {
+          Fantom2 = Module : MGI;
+          Group: Control
+            vip_x = 45;
+            vip_y = 140;
+          Group: User
+            activateButtonName = Fantom2;
+              {
+                MainForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:SearchLittle,\nD:GoHome";
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:Modify,\nD:GoHome";
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:ClearFantom2";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                }
+                                {
+                                  numRows = messageText : mgiDataTypes;
+                                  Group: Widget
+                                    columns = 20;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Fantom = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                    leftWidget = numRows;
+                                    topWidget = numRows;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumRows = 70000;
+                                          xrtTblVisibleRows = 50;
+                                          xrtTblNumColumns = 38;
+                                          xrtTblColumnLabels = "Mode,Key,RA Name,RA in MGI,SeqID,Clone ID,GenBank ID,RA MGI ID, RA Symbol,Seq Length,Seq Note,Seq Qual,Locus ID,TIGR TC,UniGene ID,R Cluster,Locus Status,MGI Status,MGI #,BLAST Hit,BLAST Expect,Auto Annot,Info Annot,Cat ID,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Detail,Nomen Notes,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
+                                          xrtTblDisplayHorizScrollBar = dispsb_always;
+                                          width = 1000;
+                                          height = 800;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3 1)(all 4 5)(all 5-6 10)(all 7-8 15)(all 9 10)(all 10 15)(all 11 10) (all 12 10)(all 13-17 10)(all 18 5)(all 19-20 20)(all 21-22 25)(all 24 20)(all 25-27 25)(all 28 50)(all 29 6)(all 30 25)(all 31-32 25)(all 34-37 10)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblTraversableSeries = "(all 0-3 False)";
+                                          xrtTblEditableSeries = "(all 0-3 False)";
+                                          xrtTblFrozenColumns = 8;
+                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"4\"\ncloneID:Int(Int)=\"5\"\ngenbankID:Int(Int)=\"6\"\nseqLength:Int(Int)=\"9\"\nseqNote:Int(Int)=\"10\"\nseqQuality:Int(Int)=\"11\"\nlocusID:Int(Int)=\"12\"\ntigerID:Int(Int)=\"13\"\nunigeneID:Int(Int)=\"14\"\nclusterID:Int(Int)=\"15\"\nlocusStatus:Int(Int)=\"16\"\nmgiStatus:Int(Int)=\"17\"\nmgiNumber:Int(Int)=\"18\"\nblastHit:Int(Int)=\"19\"\nblastExpect:Int(Int)=\"20\"\nautoAnnot:Int(Int)=\"21\"\ninfoAnnot:Int(Int)=\"22\"\ncatID:Int(Int)=\"23\"\ngbaMGIID:Int(Int)=\"7\"\ngbaSymbol:Int(Int)=\"8\"\nfinalMGIID:Int(Int)=\"24\"\nfinalSymbol1:Int(Int)=\"25\"\nfinalName1:Int(Int)=\"26\"\nfinalSymbol2:Int(Int)=\"27\"\nfinalName2:Int(Int)=\"28\"\nnomenEvent:Int(Int)=\"29\"\nnomenDetail:Int(Int)=\"30\"\nnomenNote:Int(Int)=\"31\"\nrikenNote:Int(Int)=\"32\"\ncuratorNote:Int(Int)=\"33\"\ncreatedBy:Int(Int)=\"34\"\ncreatedDate:Int(Int)=\"35\"\nmodifiedBy:Int(Int)=\"36\"\nmodifiedDate:Int(Int)=\"37\"\ngenbankInMGI:Int=\"3\"\n";
+                                          xrtTblEnterCellCallback = "D:SetOptions";
+                                          xrtTblValidateCellCallback = "D:VerifyFinalMGIID,\nD:CommitTableCellEdit";
+                                          xrtTblJumpScroll = jump_none;
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "MGI Fantom2";
+                                            }
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  Search = ControlPush;
+                                  Group: Widget
+                                    labelString = "Little\nSearch";
+                                    activateCallback = "D:SearchLittle,\nD:GoHome";
+                                }
+                                {
+                                  Search1 = ControlPush;
+                                  Group: Widget
+                                    labelString = "Big\nSearch";
+                                    activateCallback = "D:SearchBig,\nD:GoHome";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Search;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = Search;
+                                    leftOffset = 2;
+                                }
+                                {
+                                  Search2 = ControlPush;
+                                  Group: Widget
+                                    labelString = "Record\nCount";
+                                    activateCallback = "D:SearchCount,\nD:GoHome";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Search;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = Search1;
+                                    leftOffset = 2;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:ClearFantom2";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Search2;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Search2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Modify = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Modify,\nD:GoHome";
+                                }
+                                {
+                                  Add = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                  Group: Constraint
+                                    leftWidget = Modify;
+                                    topWidget = Modify;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = Edit;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = Control;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  SeqNoteMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = SeqNotePulldown;
+                                    labelString = "Seq Note";
+                                  Group: User
+                                    defaultOption = zilch;
+                                      Popups:
+                                      {
+                                        SeqNotePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Fantom;
+                                          tableOption = 10;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              R = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = Representative;
+                                              Group: User
+                                                defaultValue = Representative;
+                                                searchValue = Representative;
+                                            }
+                                            {
+                                              F = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "5' truncated";
+                                              Group: User
+                                                defaultValue = "5' truncated";
+                                                searchValue = "5' truncated";
+                                            }
+                                            {
+                                              T = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "3' truncated";
+                                              Group: User
+                                                defaultValue = "3' truncated";
+                                                searchValue = "3' truncated";
+                                            }
+                                            {
+                                              zilch = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = zilch;
+                                              Group: User
+                                                searchValue = zilch;
+                                                defaultValue = zilch;
+                                            }
+                                      }
+                                }
+                                {
+                                  SeqQualityMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = SeqQualityPulldown;
+                                    labelString = "Seq Quality";
+                                  Group: User
+                                    defaultOption = zilch;
+                                      Popups:
+                                      {
+                                        SeqQualityPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Fantom;
+                                          tableOption = 11;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              UN = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Problem-un";
+                                              Group: User
+                                                defaultValue = "Problem-un";
+                                                searchValue = "Problem-un";
+                                            }
+                                            {
+                                              IN = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Problem-in";
+                                              Group: User
+                                                defaultValue = "Problem-in";
+                                                searchValue = "Problem-in";
+                                            }
+                                            {
+                                              CH = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Problem-ch";
+                                              Group: User
+                                                defaultValue = "Problem-ch";
+                                                searchValue = "Problem-ch";
+                                            }
+                                            {
+                                              FS = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Problem-fs";
+                                              Group: User
+                                                defaultValue = "Problem-fs";
+                                                searchValue = "Problem-fs";
+                                            }
+                                            {
+                                              zilch = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = zilch;
+                                              Group: User
+                                                searchValue = zilch;
+                                                defaultValue = zilch;
+                                            }
+                                      }
+                                }
+                                {
+                                  LocusStatusMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = LocusStatusPulldown;
+                                    labelString = "Locus Status";
+                                  Group: User
+                                    defaultOption = zilch;
+                                      Popups:
+                                      {
+                                        LocusStatusPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Fantom;
+                                          tableOption = 16;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              RNT = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = RNT;
+                                              Group: User
+                                                defaultValue = RNT;
+                                                searchValue = RNT;
+                                            }
+                                            {
+                                              NT = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "-NT";
+                                              Group: User
+                                                defaultValue = "-NT";
+                                                searchValue = "-NT";
+                                            }
+                                            {
+                                              RN = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "RN-";
+                                              Group: User
+                                                defaultValue = "RN-";
+                                                searchValue = "RN-";
+                                            }
+                                            {
+                                              RT = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "R-T";
+                                              Group: User
+                                                defaultValue = "R-T";
+                                                searchValue = "R-T";
+                                            }
+                                            {
+                                              Neither = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "---";
+                                              Group: User
+                                                defaultValue = "---";
+                                                searchValue = "---";
+                                            }
+                                            {
+                                              zilch = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = zilch;
+                                              Group: User
+                                                searchValue = zilch;
+                                                defaultValue = zilch;
+                                            }
+                                      }
+                                }
+                                {
+                                  MGIStatusMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = MGIStatusPulldown;
+                                    labelString = "MGI Status";
+                                  Group: User
+                                    defaultOption = zilch;
+                                      Popups:
+                                      {
+                                        MGIStatusPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Fantom;
+                                          tableOption = 17;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              RNT = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = RNT;
+                                              Group: User
+                                                defaultValue = RNT;
+                                                searchValue = RNT;
+                                            }
+                                            {
+                                              NT = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "-NT";
+                                              Group: User
+                                                defaultValue = "-NT";
+                                                searchValue = "-NT";
+                                            }
+                                            {
+                                              RN = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "RN-";
+                                              Group: User
+                                                defaultValue = "RN-";
+                                                searchValue = "RN-";
+                                            }
+                                            {
+                                              RT = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "R-T";
+                                              Group: User
+                                                defaultValue = "R-T";
+                                                searchValue = "R-T";
+                                            }
+                                            {
+                                              Neither = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "---";
+                                              Group: User
+                                                defaultValue = "---";
+                                                searchValue = "---";
+                                            }
+                                            {
+                                              zilch = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = zilch;
+                                              Group: User
+                                                searchValue = zilch;
+                                                defaultValue = zilch;
+                                            }
+                                      }
+                                }
+                                {
+                                  CatIDMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = CatIDPulldown;
+                                    labelString = "Category \nIdentifier";
+                                  Group: User
+                                    defaultOption = zilch;
+                                      Popups:
+                                      {
+                                        CatIDPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Fantom;
+                                          tableOption = 23;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              A1 = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = A1;
+                                              Group: User
+                                                defaultValue = A1;
+                                                searchValue = A1;
+                                            }
+                                            {
+                                              A2 = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = A2;
+                                              Group: User
+                                                defaultValue = A2;
+                                                searchValue = A2;
+                                            }
+                                            {
+                                              A3 = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = A3;
+                                              Group: User
+                                                defaultValue = A3;
+                                                searchValue = A3;
+                                            }
+                                            {
+                                              A4 = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = A4;
+                                              Group: User
+                                                defaultValue = A4;
+                                                searchValue = A4;
+                                            }
+                                            {
+                                              A5 = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = A5;
+                                              Group: User
+                                                defaultValue = A5;
+                                                searchValue = A5;
+                                            }
+                                            {
+                                              zilch = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = zilch;
+                                              Group: User
+                                                searchValue = zilch;
+                                                defaultValue = zilch;
+                                            }
+                                      }
+                                }
+                                {
+                                  NomenEventMenu = OptionMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = NomenEventPulldown;
+                                    labelString = "Nomen\nEvent";
+                                  Group: User
+                                    defaultOption = zilch;
+                                      Popups:
+                                      {
+                                        NomenEventPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                                        Group: User
+                                          tableForm = Fantom;
+                                          tableOption = 29;
+                                          tableOptionKey = "-1";
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              Merge = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = Merge;
+                                              Group: User
+                                                defaultValue = Merge;
+                                                searchValue = Merge;
+                                            }
+                                            {
+                                              Split = OptionToggle : mgiOption;
+                                              Group: User
+                                                defaultValue = Split;
+                                                searchValue = Split;
+                                            }
+                                            {
+                                              Rename = OptionToggle : mgiOption;
+                                              Group: User
+                                                defaultValue = Rename;
+                                                searchValue = Rename;
+                                            }
+                                            {
+                                              New = OptionToggle : mgiOption;
+                                              Group: User
+                                                defaultValue = New;
+                                                searchValue = New;
+                                            }
+                                            {
+                                              zilch = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = zilch;
+                                              Group: User
+                                                searchValue = zilch;
+                                                defaultValue = zilch;
+                                            }
+                                      }
+                                }
+                                {
+                                  AutoAnnot = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Auto Pipelne Result";
+                                  Group: User
+                                    targetColumn = 21;
+                                    targetWidget = Fantom;
+                                }
+                                {
+                                  InfoAnnot = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Info Pipeline Result";
+                                  Group: User
+                                    targetColumn = 22;
+                                    targetWidget = Fantom;
+                                }
+                                {
+                                  NomenDetail = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Nomen Detail";
+                                  Group: User
+                                    targetColumn = 30;
+                                    targetWidget = Fantom;
+                                }
+                                {
+                                  NomenNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Nomen Notes";
+                                  Group: User
+                                    targetWidget = Fantom;
+                                    targetColumn = 31;
+                                }
+                                {
+                                  RIKENNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "RIKEN Notes";
+                                  Group: User
+                                    targetColumn = 32;
+                                    targetWidget = Fantom;
+                                }
+                                {
+                                  CuratorNote = NotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Curator Notes";
+                                  Group: User
+                                    targetColumn = 33;
+                                    targetWidget = Fantom;
+                                }
+                                {
+                                  notSearch = toggle : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "NOT search";
+                                }
+                                {
+                                  copyGBAtoFinal = push : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Copy RA MGI ID\nto Final MGI ID";
+                                    activateCallback = "D:CopyGBAtoFinal\nD:GoHome";
+                                }
+                                {
+                                  sortOptions = sortOptions : mgiFantom;
+                                }
+                          }
+                    }
+                    Popups:
+                    {
+                      StatusDialog = StatusDialog : mgiDialog;
+                    }
+                    {
+                      DeleteDialog = DeleteDialog : mgiDialog;
+                    }
+                    {
+                      ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                              Group: Widget
+                                                items = "Full Cluster Report\nStatus Report\nNomen Report\nRIKEN Report\nFull Report";
+                                              Group: User
+                                                keys = "fantom2_report.py fullcluster\nfantom2_report.py status\nfantom2_report.py nomen\nfantom2_report.py riken\nfantom2_report.py full";
+                                            }
+                                      }
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          FANTOM = Application : MGI;
+          Group: Control
+            vip_x = 45;
+            vip_y = 85;
+              {
+                FantomForm = XmForm;
+                    {
+                      FantomMenu = MenuBar : mgiMenu;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown;
+                                      {
+                                        Exit = MenuPush;
+                                        Group: Widget
+                                          activateCallback = "D:ExitApplication";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      FantomFrame = XmFrame;
+                      Group: Constraint
+                        leftAttachment = attach_opposite_widget;
+                        leftWidget = FantomMenu;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = FantomMenu;
+                        bottomAttachment = attach_form;
+                        resizable = true;
+                          {
+                            FantomModules = XmRowColumn;
+                            Group: Widget
+                              entryAlignment = alignment_center;
+                              spacing = 5;
+                                {
+                                  Fantom2 = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Fantom2\")";
+                                    labelString = Fantom2;
+                                    traversalOn = False;
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          sortOptions = XmRowColumn;
+          Group: Control
+            vipComment = "";
+            vip_x = 45;
+            vip_y = 30;
+              {
+                sortMenu1 = sortMenu : mgiFantom;
+                Group: Widget
+                  subMenuId = sortMenu1Pulldown;
+                  labelString = "Sort Field 1";
+                    Popups:
+                    {
+                      sortMenu1Pulldown : sortMenuPulldown = OptionPulldown : mgiOption;
+                    }
+              }
+              {
+                sortMenu2 = sortMenu : mgiFantom;
+                Group: Widget
+                  subMenuId = sortMenu2Pulldown;
+                  labelString = "Sort Field 2";
+                    Popups:
+                    {
+                      sortMenu2Pulldown : sortMenuPulldown = OptionPulldown : mgiOption;
+                          {
+                            nocolumn = ColumnToggle : mgiFantom;
+                          }
+                    }
+              }
+              {
+                sortMenu3 = sortMenu : mgiFantom;
+                Group: Widget
+                  subMenuId = sortMenu3Pulldown;
+                  labelString = "Sort Field 3";
+                    Popups:
+                    {
+                      sortMenu3Pulldown : sortMenuPulldown = OptionPulldown : mgiOption;
+                          {
+                            nocolumn = ColumnToggle : mgiFantom;
+                            Group: User
+                              columnValue = "-1";
+                          }
+                    }
+              }
+              {
+                resort = push : mgiDataTypes;
+                Group: Widget
+                  labelString = "re-sort table";
+                  activateCallback = "D:SortTable";
+              }
+        }
+        {
+          sortMenu = OptionMenu : mgiOption;
+          Group: Widget
+            subMenuId = sortMenuPulldown;
+          Group: Control
+            vip_x = 135;
+            vip_y = 30;
+              Popups:
+              {
+                sortMenuPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                    {
+                      column4 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Riken Seq ID";
+                      Group: User
+                        dbField = riken_seqid;
+                        columnValue = 4;
+                    }
+                    {
+                      column5 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Riken Clone ID";
+                      Group: User
+                        dbField = riken_cloneid;
+                        columnValue = 5;
+                    }
+                    {
+                      column6 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "GenBank ID";
+                      Group: User
+                        dbField = genbank_id;
+                        columnValue = 6;
+                    }
+                    {
+                      column7 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "GBA MGI ID";
+                      Group: User
+                        dbField = gba_mgiID;
+                        columnValue = 7;
+                    }
+                    {
+                      column8 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "GBA Symbol";
+                      Group: User
+                        dbField = gba_symbol;
+                        columnValue = 8;
+                    }
+                    {
+                      column9 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Seq Length";
+                      Group: User
+                        dbField = seq_length;
+                        columnValue = 9;
+                    }
+                    {
+                      column10 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Seq Note";
+                      Group: User
+                        dbField = seq_note;
+                        columnValue = 10;
+                    }
+                    {
+                      column11 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Seq Quality";
+                      Group: User
+                        dbField = seq_quality;
+                        columnValue = 11;
+                    }
+                    {
+                      column12 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Locus ID";
+                      Group: User
+                        dbField = riken_locusid;
+                        columnValue = 12;
+                    }
+                    {
+                      column13 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "TIGER TC";
+                      Group: User
+                        dbField = tiger_tc;
+                        columnValue = 13;
+                    }
+                    {
+                      column14 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Unigene ID";
+                      Group: User
+                        dbField = unigene_id;
+                        columnValue = 14;
+                    }
+                    {
+                      column15 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Riken Cluster ID";
+                      Group: User
+                        dbField = riken_cluster;
+                        columnValue = 15;
+                    }
+                    {
+                      column16 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Locus Status";
+                      Group: User
+                        dbField = riken_locusStatus;
+                        columnValue = 16;
+                    }
+                    {
+                      column17 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "MGI Status";
+                      Group: User
+                        dbField = mgi_statusCode;
+                        columnValue = 17;
+                    }
+                    {
+                      column18 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "MGI #";
+                      Group: User
+                        dbField = mgi_numberCode;
+                        columnValue = 18;
+                    }
+                    {
+                      column19 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "BLAST Hit";
+                      Group: User
+                        dbField = blast_hit;
+                        columnValue = 19;
+                    }
+                    {
+                      column20 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "BLAST Expect";
+                      Group: User
+                        dbField = blast_expect;
+                        columnValue = 20;
+                    }
+                    {
+                      column21 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Auto Annotation";
+                      Group: User
+                        dbField = auto_annot;
+                        columnValue = 21;
+                    }
+                    {
+                      column22 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Info Annotation";
+                      Group: User
+                        dbField = info_annot;
+                        columnValue = 22;
+                    }
+                    {
+                      column23 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Cat ID";
+                      Group: User
+                        dbField = cat_id;
+                        columnValue = 23;
+                    }
+                    {
+                      column24 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Final MGI ID";
+                      Group: User
+                        dbField = final_mgiID;
+                        columnValue = 24;
+                    }
+                    {
+                      column25 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Final Symbol 1";
+                      Group: User
+                        dbField = final_symbol1;
+                        columnValue = 25;
+                    }
+                    {
+                      column26 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Final Name 1";
+                      Group: User
+                        dbField = final_name1;
+                        columnValue = 26;
+                    }
+                    {
+                      column27 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Final Symbol 2";
+                      Group: User
+                        dbField = final_symbol2;
+                        columnValue = 27;
+                    }
+                    {
+                      column28 = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = "Final Name 2";
+                      Group: User
+                        dbField = final_name2;
+                        columnValue = 28;
+                    }
+                    {
+                      nocolumn = ColumnToggle : mgiFantom;
+                      Group: Widget
+                        labelString = None;
+                      Group: User
+                        columnValue = "-1";
+                    }
+              }
+        }
+        {
+          ColumnToggle = OptionToggle : mgiOption;
+          Group: Widget
+            userDefinedAttributes = "dbField:String\ncolumnValue:Int\n";
+          Group: Control
+            vip_x = 135;
+            vip_y = 85;
+        }
+}
+

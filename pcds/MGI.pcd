@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Feb 11 09:48:30 2002";
+      lastWritten = "Fri Feb 22 12:58:01 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1001,9 +1001,9 @@ Module: MGI
                                     leftWidget = Name;
                                 }
                                 {
-                                  AllowOnlyOne = OptionMenu;
+                                  AllowOnlyOne = YesNoMenu : mgiOption;
                                   Group: Widget
-                                    subMenuId = YesNoPulldown;
+                                    subMenuId = YY;
                                     labelString = "Allow Only One";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -1017,36 +1017,14 @@ Module: MGI
                                   Group: Control
                                     vip_x = 80;
                                     vip_y = 4100;
+                                    vipComment = "";
                                   Group: User
                                     defaultOption = Yes;
-                                      Popups:
-                                      {
-                                        YesNoPulldown : OptionPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                              Group: Widget
-                                                labelString = Yes;
-                                              Group: User
-                                                searchValue = 1;
-                                                defaultValue = 1;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                              Group: Widget
-                                                labelString = No;
-                                              Group: User
-                                                searchValue = 0;
-                                                defaultValue = 0;
-                                            }
-                                      }
                                 }
                                 {
-                                  Private = OptionMenu;
+                                  Private = YesNoMenu : mgiOption;
                                   Group: Widget
-                                    subMenuId = YesNoPulldown;
+                                    subMenuId = YY;
                                     labelString = Private;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -1060,31 +1038,9 @@ Module: MGI
                                   Group: Control
                                     vip_x = 80;
                                     vip_y = 4100;
+                                    vipComment = "";
                                   Group: User
                                     defaultOption = No;
-                                      Popups:
-                                      {
-                                        YesNoPulldown : OptionPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                              Group: Widget
-                                                labelString = Yes;
-                                              Group: User
-                                                searchValue = 1;
-                                                defaultValue = 1;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                              Group: Widget
-                                                labelString = No;
-                                              Group: User
-                                                searchValue = 0;
-                                                defaultValue = 0;
-                                            }
-                                      }
                                 }
                           }
                     }
@@ -1576,6 +1532,20 @@ Module: MGI
                                     rightOffset = 5;
                                     topOffset = 5;
                                     leftOffset = 5;
+                                      {
+                                        StrainID = ID;
+                                      }
+                                      {
+                                        Verify = CharText;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 75;
+                                            }
+                                      }
                                 }
                                 {
                                   AllelePair = OrderedTableLabel : mgiTable;
