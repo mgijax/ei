@@ -30,11 +30,15 @@ devents:
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
-	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
+	SearchLittle :local [prepareSearch : boolean := true;];-- Execute SQL search clause
+	SearchBig :local [prepareSearch : boolean := true;];-- Execute SQL search clause
+	SearchBigEnd :local [status : integer;];	-- End of SearchBig
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
+	SortTable :local [];
 	VerifyFinalMGIID :local [];
+	VerifyGenBankID :local [];
 
 	-- Not Used; they're defined so errors don't appear
 	Add :local [];
@@ -52,6 +56,8 @@ locals:
 	menus : list;
 
         ab : widget;
+
+	searchEvent : devent;
 
 rules:
 
@@ -126,7 +132,7 @@ rules:
 
 	  if (not ClearFantom2.reset) then
 	    top->RecordCount->text.value := "";
-	    top->numRows.value := "0 Record(s) Displayed";
+	    top->numRows.value := "0 Results";
 	  end if;
 
           ClearTable.table := fantom;
@@ -194,6 +200,9 @@ rules:
 	  finalName2 : string;
 	  nomenEvent : string;
 	  nomenDetail : string;
+	  gbaMGIID : string;
+	  gbaSymbol : string;
+	  gbaName : string;
 
 	  (void) busy_cursor(top);
 
@@ -232,6 +241,9 @@ rules:
 	    finalName2 := mgi_tblGetCell(fantom, row, fantom.finalName2);
 	    nomenEvent := mgi_tblGetCell(fantom, row, fantom.nomenEvent);
 	    nomenDetail := mgi_tblGetCell(fantom, row, fantom.nomenDetail);
+	    gbaMGIID := mgi_tblGetCell(fantom, row, fantom.gbaMGIID);
+	    gbaSymbol := mgi_tblGetCell(fantom, row, fantom.gbaSymbol);
+	    gbaName := mgi_tblGetCell(fantom, row, fantom.gbaName);
 
 	    if (seqID.length = 0) then
 	      seqID := "NULL";
@@ -329,6 +341,24 @@ rules:
 	      nomenDetail := mgi_DBprstr(nomenDetail);
 	    end if;
  
+	    if (gbaMGIID.length = 0) then
+	      gbaMGIID := "NULL";
+	    else
+	      gbaMGIID := mgi_DBprstr(gbaMGIID);
+	    end if;
+
+	    if (gbaSymbol.length = 0) then
+	      gbaSymbol := "NULL";
+	    else
+	      gbaSymbol := mgi_DBprstr(gbaSymbol);
+	    end if;
+
+	    if (gbaName.length = 0) then
+	      gbaName := "NULL";
+	    else
+	      gbaName := mgi_DBprstr(gbaName);
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
               key := KEYNAME;
 	      cmd := mgi_setDBkey(MGI_FANTOM2, NEWKEY, KEYNAME) +
@@ -358,6 +388,13 @@ rules:
 		     nomenDetail + "," +
 		     mgi_DBprstr(global_login) + "," +
 		     mgi_DBprstr(global_login) + "," + ")\n";
+
+              cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHEFINAL, KEYNAME) +
+			finalSymbol1 + "," + finalName1 + ")\n";
+
+              cmd := cmd + mgi_DBinsert(MGI_FANTOM2CACHEGBA, KEYNAME) +
+			gbaMGIID + "," + gbaSymbol + "," + gbaName + ")\n";
+
             elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "riken_seqid = " + seqID + "," +
 		     "riken_cloneid = " + cloneID + "," +
@@ -389,8 +426,17 @@ rules:
 	      set := "final_symbol1 = " + finalSymbol1 + "," +
 		     "final_name1 = " + finalName1;
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHEFINAL, key, set);
+
+	      -- Update GBA Cache Table
+	      set := "gba_mgiID = " + gbaMGIID + "," +
+		     "gba_symbol = " + gbaSymbol + "," +
+		     "gba_name = " + gbaName;
+              cmd := cmd + mgi_DBupdate(MGI_FANTOM2CACHEGBA, key, set);
+
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(MGI_FANTOM2, key);
+               cmd := cmd + mgi_DBdelete(MGI_FANTOM2CACHEFINAL, key);
+               cmd := cmd + mgi_DBdelete(MGI_FANTOM2CACHEGBA, key);
             end if;
  
             row := row + 1;
@@ -400,8 +446,8 @@ rules:
 	  ModifySQL.cmd := cmd;
 	  send(ModifySQL, 0);
 
-	  Search.prepareSearch := false;
-	  send(Search, 0);
+	  searchEvent.prepareSearch := false;
+	  send(searchEvent, 0);
 
 	  (void) reset_cursor(top);
 	end does;
@@ -415,149 +461,149 @@ rules:
 	PrepareSearch does
 	  value : string;
 	  row : integer := 0;
-	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key\n" +
-		"and f._Fantom2_key = c2._Fantom2_key";
+	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " + 
+	       "and f._Fantom2_key = c2._Fantom2_key";
 
 	  from := "from " + mgi_DBtable(MGI_FANTOM2) + " f, MGI_Fantom2CacheGBA c1, MGI_Fantom2CacheFinal c2 ";
 	  where := "";
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.riken_seqid = " + value;
+	    where := where + " and f.riken_seqid = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.locusID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.riken_locusid = " + value;
+	    where := where + " and f.riken_locusid = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.clusterID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.riken_cluster = " + value;
+	    where := where + " and f.riken_cluster = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqLength);
 	  if (value.length > 0) then
-	    where := where + "\nand f.seq_length = " + value;
+	    where := where + " and f.seq_length = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.cloneID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.riken_cloneid like " + mgi_DBprstr(value);
+	    where := where + " and f.riken_cloneid like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.genbankID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.genbank_id like " + mgi_DBprstr(value);
+	    where := where + " and f.genbank_id like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.tigerID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.tiger_tc like " + mgi_DBprstr(value);
+	    where := where + " and f.tiger_tc like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.unigeneID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.unigene_id like " + mgi_DBprstr(value);
+	    where := where + " and f.unigene_id like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqNote);
 	  if (value.length > 0) then
-	    where := where + "\nand f.seq_note like " + mgi_DBprstr(value);
+	    where := where + " and f.seq_note like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqQuality);
 	  if (value.length > 0) then
-	    where := where + "\nand f.seq_quality like " + mgi_DBprstr(value);
+	    where := where + " and f.seq_quality like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.blastExpect);
 	  if (value.length > 0) then
-	    where := where + "\nand f.blast_expect like " + mgi_DBprstr(value);
+	    where := where + " and f.blast_expect like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.blastHit);
 	  if (value.length > 0) then
-	    where := where + "\nand f.blast_hit like " + mgi_DBprstr(value);
+	    where := where + " and f.blast_hit like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.catID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.cat_id like " + mgi_DBprstr(value);
+	    where := where + " and f.cat_id like " + mgi_DBprstr(value);
 	  end if;
 	  value := mgi_tblGetCell(fantom, row, fantom.finalMGIID);
 	  if (value.length > 0) then
-	    where := where + "\nand f.final_mgiID like " + mgi_DBprstr(value);
+	    where := where + " and f.final_mgiID like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalName2);
 	  if (value.length > 0) then
-	    where := where + "\nand f.final_name2 like " + mgi_DBprstr(value);
+	    where := where + " and f.final_name2 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalSymbol2);
 	  if (value.length > 0) then
-	    where := where + "\nand f.final_symbol2 like " + mgi_DBprstr(value);
+	    where := where + " and f.final_symbol2 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.autoAnnot);
 	  if (value.length > 0) then
-	    where := where + "\nand f.auto_annot like " + mgi_DBprstr(value);
+	    where := where + " and f.auto_annot like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.infoAnnot);
 	  if (value.length > 0) then
-	    where := where + "\nand f.info_annot like " + mgi_DBprstr(value);
+	    where := where + " and f.info_annot like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.locusStatus);
 	  if (value.length > 0) then
-	    where := where + "\nand f.riken_locusStatus like " + mgi_DBprstr(value);
+	    where := where + " and f.riken_locusStatus like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.mgiStatus);
 	  if (value.length > 0) then
-	    where := where + "\nand f.mgi_statusCode like " + mgi_DBprstr(value);
+	    where := where + " and f.mgi_statusCode like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.mgiNumber);
 	  if (value.length > 0) then
-	    where := where + "\nand f.mgi_numberCode like " + mgi_DBprstr(value);
+	    where := where + " and f.mgi_numberCode like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.nomenDetail);
 	  if (value.length > 0) then
-	    where := where + "\nand f.nomen_detail like " + mgi_DBprstr(value);
+	    where := where + " and f.nomen_detail like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.nomenEvent);
 	  if (value.length > 0) then
-	    where := where + "\nand f.nomen_event like " + mgi_DBprstr(value);
+	    where := where + " and f.nomen_event like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaMGIID);
 	  if (value.length > 0) then
-	    where := where + "\nand c1.gba_mgiID like " + mgi_DBprstr(value);
+	    where := where + " and c1.gba_mgiID like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaSymbol);
 	  if (value.length > 0) then
-	    where := where + "\nand c1.gba_symbol like " + mgi_DBprstr(value);
+	    where := where + " and c1.gba_symbol like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaName);
 	  if (value.length > 0) then
-	    where := where + "\nand c1.gba_name like " + mgi_DBprstr(value);
+	    where := where + " and c1.gba_name like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalSymbol1);
 	  if (value.length > 0) then
-	    where := where + "\nand c2.final_symbol1 like " + mgi_DBprstr(value);
+	    where := where + " and c2.final_symbol1 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalName1);
 	  if (value.length > 0) then
-	    where := where + "\nand c2.final_name1 like " + mgi_DBprstr(value);
+	    where := where + " and c2.final_name1 like " + mgi_DBprstr(value);
 	  end if;
 
 	  -- Creation/Modification By/Date
@@ -565,47 +611,55 @@ rules:
 
           if (where.length > 0) then
 	    if (top->notSearch.set) then
-              where := "not (" + where->substr(5, where.length) + ")";
+              where := " not (" + where->substr(5, where.length) + ")";
             else
 	      where := where->substr(5, where.length);
 	    end if;
 
-	    where := where1 + "\nand" + where;
+	    where := where1 + " and" + where;
 	  else
 	    where := where1;
           end if;
 	end does;
 
 --
--- Search
+-- SearchLittle
 --
--- Activated from:	top->Control->Search
---			top->MainMenu->Commands->Search
+-- Activated from:	top->Control->SearchLittle
 --
 -- Prepare and execute search
 --
 
-	Search does
+	SearchLittle does
 	  cmd : string;
 	  results : integer := 1;
 	  row : integer := 0;
 
           (void) busy_cursor(top);
---          send(ClearFantom2, 0);
---	  fantom.xrtTblCellValues := "fantom2.ascii";
---         (void) reset_cursor(top);
---	  return;
 
-	  if (Search.prepareSearch) then
+	  if (SearchLittle.prepareSearch) then
  	    send(PrepareSearch, 0);
 	  end if;
 
           send(ClearFantom2, 0);
  
-	  cmd := "select f.*, c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1\n" + 
-		from + "\n" + where + "\norder by riken_seqid\n";
+	  cmd := "select f.*, " +
+		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
+		"cDate = convert(char(10), f.creation_date, 101), " +
+		"mDate = convert(char(10), f.modification_date, 101) " +
+		from + " " + where + 
+		" order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
 		
+	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
+	    cmd := cmd + "," + top->sortOptions->sortMenu2.menuHistory.dbField;
+	  end if;
+
+	  if (top->sortOptions->sortMenu3.menuHistory.dbField.length > 0) then
+	    cmd := cmd + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
+	  end if;
+
 	  (void) mgi_writeLog(cmd + "\n");
+
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -670,12 +724,100 @@ rules:
 	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
 	  send(SetOptions, 0);
 
-	  top->numRows.value := (string) row + " Record(s) Displayed";
+	  top->numRows.value := (string) row + " Results";
           ClearFantom2.reset := true;
           send(ClearFantom2, 0);
 
+	  searchEvent := SearchLittle;
+
 	  (void) reset_cursor(top);
 	end does;
+
+--
+-- SearchBig
+--
+-- Activated from:	top->Control->SearchBig
+--
+-- Prepare and execute search by creating a file or results and loading
+--
+
+	SearchBig does
+	  cmd : string;
+
+          (void) busy_cursor(top);
+
+	  if (SearchBig.prepareSearch) then
+ 	    send(PrepareSearch, 0);
+	  end if;
+
+          send(ClearFantom2, 0);
+ 
+	  cmd := "select f.*, " +
+		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
+		"cDate = convert(char(10), f.creation_date, 101), " +
+		"mDate = convert(char(10), f.modification_date, 101) " +
+		from + " " + where + 
+		" order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
+		
+	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
+	    cmd := cmd + "," + top->sortOptions->sortMenu2.menuHistory.dbField;
+	  end if;
+
+	  if (top->sortOptions->sortMenu3.menuHistory.dbField.length > 0) then
+	    cmd := cmd + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
+	  end if;
+
+	  (void) mgi_writeLog(cmd + "\n");
+
+          commands : string_list := create string_list();
+	  commands.insert("fantom2.py", commands.count + 1);
+          commands.insert("-U" + global_login, commands.count + 1);
+          commands.insert("-P" + global_passwd_file, commands.count + 1);
+          commands.insert("-C'" + cmd + "'", commands.count + 1);
+
+	  tu_printf("%s\n", commands[4]);
+          proc_p : opaque := tu_fork_process(commands[1], commands, nil, SearchBigEnd);
+          tu_fork_free(proc_p);
+	end does;
+
+--
+-- SearchBigEnd
+--
+
+   SearchBigEnd does
+
+     if (SearchBigEnd.status != 0) then
+        StatusReport.source_widget := top;
+        StatusReport.message := "Could Not Generate Report.";
+        send(StatusReport);
+     end if;
+
+     send(ClearFantom2, 0);
+     fantom.xrtTblCellValues := global_login + ".ascii";
+
+     -- Initialize Option Menus for row 0
+
+     SetOptions.source_widget := fantom;
+     SetOptions.row := 0;
+     SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+     send(SetOptions, 0);
+
+     i : integer := 0;
+     while (i < mgi_tblNumRows(fantom)) do
+       if (mgi_tblGetCell(fantom, i, fantom.editMode) = TBL_ROW_EMPTY) then
+	 break;
+       end if;
+       i := i + 1;
+     end while;
+
+     top->numRows.value := (string) i + " Results";
+     ClearFantom2.reset := true;
+     send(ClearFantom2, 0);
+
+     searchEvent := SearchBig;
+
+     (void) reset_cursor(top);
+  end does;
 
 --
 -- CopyGBAtoFinal
@@ -759,7 +901,7 @@ rules:
 	    return;
 	  end if;
 
-	  if (accID.length = 0) then
+	  if (accID.length = 0 or strstr(accID, "%") != nil) then
 	    return;
 	  end if;
 
@@ -785,11 +927,80 @@ rules:
             StatusReport.message := "Invalid MGI Accession ID For This Field";
             send(StatusReport);
 	  else
+	    CommitTableCellEdit.source_widget := fantom;
+	    CommitTableCellEdit.row := mgi_tblGetCurrentRow(fantom);
+	    CommitTableCellEdit.value_changed := true;
+	    send(CommitTableCellEdit, 0);
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
           end if;
  
           (void) reset_cursor(top);
         end does;
+
+--
+-- VerifyGenBankID
+--
+--      Verify Marker MGI Accession number (MGI:)
+--
+ 
+        VerifyGenBankID does
+	  column : integer := VerifyGenBankID.column;
+	  row : integer := VerifyGenBankID.row;
+	  reason : integer := VerifyGenBankID.reason;
+	  accID : string := VerifyGenBankID.value;
+	  mgiTypeKey : integer := 2;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  if (column != fantom.gbaMGIID) then
+	    return;
+	  end if;
+
+	  if (accID.length = 0 or strstr(accID, "%") != nil) then
+	    return;
+	  end if;
+
+          (void) busy_cursor(top);
+ 
+          mgi_tblSetCell(fantom, row, fantom.gbaSymbol, "");
+          mgi_tblSetCell(fantom, row, fantom.gbaName, "");
+
+	  cmd : string := "select symbol, name from MRK_Mouse_View where mgiID = " + mgi_DBprstr(accID);
+          dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 1));
+	      mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 2));
+            end while;
+          end while;
+          (void) dbclose(dbproc);
+ 
+          (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+          (void) reset_cursor(top);
+        end does;
+
+--
+-- SortTable
+--
+--
+	SortTable does
+	  sortColumn : integer := top->sortOptions->sortMenu1.menuHistory.columnValue;
+	  (void) mgi_tblSort(fantom, sortColumn);
+
+	  sortColumn := top->sortOptions->sortMenu2.menuHistory.columnValue;
+	  if (sortColumn > 0) then
+	    (void) mgi_tblSort(fantom, sortColumn);
+	  end if;
+
+	  sortColumn := top->sortOptions->sortMenu3.menuHistory.columnValue;
+	  if (sortColumn > 0) then
+	    (void) mgi_tblSort(fantom, sortColumn);
+	  end if;
+	end does;
 
 --
 -- Add
