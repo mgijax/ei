@@ -646,6 +646,8 @@ rules:
 	  dialog : widget := top->WithdrawalDialog;
 	  table : widget := dialog->NewMarker->Table;
 	  event : string := dialog->MarkerEventMenu.menuHistory.defaultValue;
+	  row : integer;
+	  symbol : string;
 
 	  if (MarkerWithdrawalEnd.status != 0) then
             StatusReport.source_widget := top;
@@ -660,7 +662,7 @@ rules:
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
 	  from := from + ",MRK_Current_View mu";
 	  where := "where m._Species_key = " + MOUSE;
-	  where := where + "\nand mu.current_symbol =";
+	  where := where + "\nand mu.current_symbol in (";
 
 	  if (event = EVENT_WITHDRAWAL) then
 	    where := where + mgi_DBprstr(dialog->nonVerified->Marker->text.value);
@@ -668,11 +670,21 @@ rules:
 	    where := where + mgi_DBprstr(dialog->mgiMarker->Marker->text.value);
 	  elsif (event = EVENT_SPLIT) then
 	    where := where + mgi_DBprstr(mgi_tblGetCell(table, 0, table.markerSymbol));
+	    row := 1;
+	    while (row < mgi_tblNumRows(table)) do
+	      symbol := mgi_tblGetCell(table, row, table.markerSymbol);
+	      if (symbol.length > 0) then
+	        where := where + "," + mgi_DBprstr(symbol);
+	      else
+		break;
+	      end if;
+	      row := row + 1;
+	    end while;
 	  elsif (event = EVENT_DELETED) then
 	    where := where + mgi_DBprstr(dialog->currentMarker->Marker->text.value);
 	  end if;
 
-	  where := where + "\nand m._Marker_key = mu._Marker_key";
+	  where := where + ")\nand m._Marker_key = mu._Marker_key";
 
 	  QueryNoInterrupt.source_widget := top;
 	  QueryNoInterrupt.select := "select distinct m._Marker_key, m.symbol\n" + from + "\n" + 
