@@ -16,15 +16,11 @@ MGD EDITING INTERFACE: Design and Requirements - Markers
 The Markers constitute one of the backbones of the MGD database.  Virtually no data is entered into
 the MGD database without a Marker of some kind associated with it.
 <P>
-Markers usually make their way into MGD via the Nomenclature process.  Markers are <I>broadcast</I> from 
-the Nomenclature database to MGD via a broadcast file which is processed upon user request.
-The broadcast file handles processing of new symbols, modified symbols, and withdrawn symbols (including splits).
-Withdrawals due to the discovery that one symbol is actually an allele of another symbol are usually processed directly
-within the Marker form, but can also be part of a broadcast file.  For more information regarding the
-Nomenclature database and the Broadcast process, refer to:
+Markers make their way into MGD via the Nomenclature process.  Novel and Reserved Markers are 
+<I>broadcast</I> from the Nomenclature database to MGD by Nomen editors via a broadcast process.
+For more information regarding the Nomenclature database and the Broadcast process, refer to:
 	<UL>
 	<LI><A HREF="MEINomen.html">Nomenclature Requirements</A>
-	<LI><A HREF="MEIBroadcast.html">Broadcast Requirements</A>
 	</UL>
 <P>
 
@@ -56,6 +52,8 @@ Nomenclature database and the Broadcast process, refer to:
 	    a warning is displayed to the user and the entry of the Alias is disallowed.
 	</UL>
 <P>
+<LI>Status (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<P>
 <LI>Marker Type (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 	<UL>
 	<LI>Gene
@@ -82,6 +80,10 @@ Nomenclature database and the Broadcast process, refer to:
             Modifications denied on invalid entries.
         </UL>
 <P>
+<LI>Marker Event (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<P>
+<LI>Marker Event Reason (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<P>
 </OL>
 <P>
 
@@ -90,6 +92,7 @@ Nomenclature database and the Broadcast process, refer to:
 <LI>Required
 	<OL>
 	<LI>Marker Type; (Gene, DNA Segment, QTL, etc.)
+	<LI>Status
 	<LI>Symbol
 	<LI>Chromosome
 	<LI>Current Symbol
@@ -113,12 +116,13 @@ Nomenclature database and the Broadcast process, refer to:
 
 <H4>Defaults</H4>
 <OL>
+<LI>Status; default is <I>approved</I>
 <LI>Current Symbol; default is <I>Symbol</I>
 <LI>Offset (on add)
 	<UL>
 	<LI>If no MGD Offset is entered, then default is <I>-1.0</I>
 	</UL>
-<LI>History (on add); default History event is <I>Assigned</I>
+<LI>History (on add); default History event is <I>assigned</I>, event reason is <I>Not Specified</I>
 </OL>
 
 <H4>Deletions</H4>
@@ -129,11 +133,14 @@ A Marker cannot be deleted if it is referenced by a:
 <LI>Homology
 <LI>MLC entry
 <LI>Expression Assay
+<LI>Another Marker's History
+<LI>Another Marker's Current
 </OL>
 
-<H4>Marker Broadcast</H4>
-Refer to the <A HREF="MEIBroadcast.html">MGI Marker Broadcast</A> document for complete details on the
-Broadcast process.
+<H4>Marker Withdrawal</H4>
+Refer to <A HREF="http://titan/wts_projects/1200/1291/userrequirements.pdf">TR 1291 Requirements</A>
+and <A HREF="http://titan/wts_projects/1200/1291/design.pdf">TR 1291 Design</A> document
+for complete details on the Withdrawal process.
 
 <H4>Marker Transfer Report</H4>
 Refer to the <A HREF="MEIMarkerTransfer.html">MGI Marker Transfer Report</A> document for complete details on the
@@ -165,7 +172,6 @@ records into one Marker Allele Symbol record.
 When modifications are made to the Chromosome value of the Marker, certain rules apply:
 <OL>
 <LI>If the Chromosome is being changed to <I>UN</I>, then set the Offset to <I>-999.0</I>.
-<LI>If the Chromosome is being changed to <I>W</I>, then manage the Withdrawal dialog.
 <LI>If the Chromosome was known and is changed to another known, then set the MGD and CC Offsets to <I>-1.0</I>.
     However, if the Marker is an Anchor Locus, then the Anchor record must be deleted before the
     Chromosome value can be modified.
@@ -204,7 +210,8 @@ To do so:
 
 <H4>Miscellaneous</H4>
 <OL>
-<LI>If the current Chromosome value of a record is <I>W</I>, then the Chromosome value cannot be modified.
+<LI>The <I>Status</I> of a Marker cannot be modified by any user.  The Withdrawal process will
+    modify the <I>Status</I> to <I>withdrawn</I>.
 <P>
 <LI>Editing of the <I>#</I> column is implemented for the following tables:
 	<UL>

@@ -13,17 +13,11 @@ MGD EDITING INTERFACE: Design and Requirements - Nomenclature
 <BR>
 
 <H4>Introduction</H4>
-The MGI Informatics group and the MGD Mouse Nomenclature Committee must track the process of 
-proposing, assigning and publicizing novel mouse symbols.  
+The Nomen DB is used by the MGI informatics group to enter novel and reserved mouse gene
+symbols and to broadcast these symbols to MGD.
 <P>
-This process involves:
-<OL>
-<LI>Proposing the symbol.
-<LI>Approving the symbol.
-<LI>Broadcasting the symbol to the public.
-<LI>Broadcasting the symbol to the MGD database.
-<LI>Processing Nomenclature events (withdrawals, etc.) and propagating these events to MGD.
-</OL>
+Refer to <A HREF="http://titan/wts_projects/1200/1291/userrequirements.pdf">TR 1291 Requirements</A>
+for more information.
 <P>
 
 <H4>Editing Form</H4>
@@ -37,13 +31,16 @@ This process involves:
 
 <H4>Data Verifications</H4>
 <OL>
-<LI>Nomenclature Event (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<LI>Event (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 	<UL>
-	<LI>New
-	<LI>Withdrawal
+	<LI>The event <I>withdrawal</I> is not valid during an add or modification.  However, 
+	    this value is used for historical data and entries exist which use this assignment
+	    value.
 	</UL>
 <P>
-<LI>Marker Status (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<LI>Event Reason (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<P>
+<LI>Status (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 	<UL>
 	<LI>Pending; the symbol has not been approved by the Mouse Nomenclature Committee
 	<LI>Deleted; the symbol has been removed from the Nomenclature process
@@ -57,20 +54,13 @@ This process involves:
 <P>
 <LI>Markers
 	<UL>
-	<LI>If the Proposed Marker symbol exists in MGD or exists in Nomen as a Proposed or
-	    Approved Symbol, then a warning is displayed to the user.  Modifications allowed.
-	<LI>If the Approved Marker symbol exists in MGD or exists in Nomen as a Proposed or
-	    Approved Symbol, then a warning is displayed to the user.  Modifications allowed.
+	<LI>If the Marker symbol exists in MGD or Nomen, then a warning is displayed to the user.  
+	    Modifications allowed.
+	<LI>If the Marker symbol exists in MGD with the "-pending" suffix,
+	    then a warning is displayed to the user.  Modifications allowed.
 	</UL>
 <P>
 <LI>Marker Type (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
-	<UL>
-	<LI>Gene
-	<LI>DNA segment
-	<LI>Cytogenetic Marker
-	<LI>QTL
-	<LI>etc.
-	</UL>
 <P>
 <LI>Chromosome (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
 	<UL>
@@ -79,12 +69,16 @@ This process involves:
 	    values.
 	</UL>
 <P>
-<LI>Submitted By (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
+<LI>Submitted By <I>and</I> Broadcast By 
+    (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
     <P>
-    This option menu is dynamically created from the Nomenclature database <I>sysusers</I> table, 
-    which is maintained by the DBA (John Gilbert).  New editors will be automatically added to this
-    option menu when they receive their Sybase logins, are attached to the group <I>editors</I> and
-    are given access to the Nomenclature database.  Contact John Gilbert for further information.
+    These option menus are dynamically created from the Nomenclature database <I>sysusers</I> table. 
+    To be added to the lists:
+	<UL>
+	<LI>Contact John Gilbert (DBA) and request a Sybase login (if you do not already have one).
+	<LI>Contact Lori Corbani (SE) and ask to be included in the lists (this involves a modification
+	    to the Nomen User view and permissions on stored procedures).
+	</UL>
     <P>
     The <I>retired_editors</I> user has been assigned to all historical data migrated from the
     original FileMaker Pro database, since this database did not track the submitter information.
@@ -94,9 +88,6 @@ This process involves:
     Inactive logins (editors who have left the group) must still be available for searching and
     retrieving data, but are invalid for new entries.
     <P>
-    Most data entry folks are excluded from this list even though they belong to the group <I>editors</I>,
-    since data entry folks, as a rule, do not submit Nomenclature requests.  Only data entry folks who
-    work directly with the Nomenclature database are included on the <I>Submitted By</I> listing.
 <P>
 <LI>Gene Family (see <A HREF="MEI.html#dataVerLookup">Data Verifications section on Lookup Lists</A>)
 <P>
@@ -112,26 +103,27 @@ This process involves:
 <UL>
 <LI>Required
 	<OL>
-	<LI>Nomenclature Event
-	<LI>Marker Status
 	<LI>Marker Type
 	<LI>Chromosome
-	<LI>Proposed Symbol
-	<LI>Approved Symbol
-	<LI>Approved Name
+	<LI>Symbol
+	<LI>Name
 	<LI>Primary Reference (for non-Reserved status only)
 	</OL>
 <P>
 <LI>Not Required
 	<OL>
-	<LI>Proposed Name
-	<LI>Broadcast Date
-	<LI>EC Number
+	<LI>Event
+	<LI>Event Reason
+	<LI>Status
 	<LI>Human Symbol
+	<LI>Broadcast By
+	<LI>Broadcast Date
+	<LI>MGI Accession ID
 	<LI>Other Names
+	<LI>Other Name References
 	<LI>Gene Family
 	<LI>References
-	<LI>Nomenclature Assistant Notes
+	<LI>Nomenclature Notes
 	<LI>Editor's Notes
 	<LI>Nomenclature Coordinator Notes
 	<LI>Symbol/Name Search (<I>Special field; see Miscellaneous for description</I>)
@@ -140,9 +132,12 @@ This process involves:
 
 <H4>Defaults</H4>
 <OL>
-<LI>Nomenclature Event; default is <I>New</I>
-<LI>Marker Status; default is <I>Pending</I>
+<LI>Event; default is <I>assigned</I>
+<LI>Event Reason; default is <I>Not Specified</I>
+<LI>Status; default is <I>Pending</I>
 <LI>Submitted by; default is current user
+<LI>Broadcast by; default is current user when user broadcasts symbol
+<LI>Broadcast Date = today when user broadcasts symbol
 </OL>
 
 <H4>Duplicates</H4>
@@ -153,60 +148,45 @@ This process involves:
     one of these values is allowed.
 </OL>
 
-<H4>Marker Broadcast</H4>
-Refer to the <A HREF="MEIBroadcast.html">MGI Marker Broadcast</A> document for complete details on
-broadcasting approved nomenclature symbols to MGD.
+<H4>Broadcasts to MGD</H4>
+(Note:  Refer to <A HREF="http://titan/wts_projects/1200/1291/userrequirements.pdf">TR 1291 Requirements</A>
+for definitions of Tier 3 and Tier 4 users and more details on each type of Broadcast.)
+<P>
+Tier 3 users can only broadcast symbols which they have submitted and which
+have a status of <I>Pending</I>.  Tier 4 users may broadcast any symbol <B>except</B>
+a symbol with a status of <I>Broadcast</I> or <I>Deleted</I>.
+<P>
+For a <I>batch</I> broadcast, if any errors are detected during the broadcast, the
+entire batch fails and no symbols will be broadcast.
+<P>
+For the <I>add and broadcast</I>, if any errors are detected during the broadcast,
+the symbol will still be added to Nomen.
+<P>
+When a broadcast to MGD is successful, the <I>Status</I>, <I>Broadcast by</I>,
+<I>Broadcast Date</I>, and <I>MGI Accession ID</I> fields are automatically populated.  No
+user can edit these fields manually.
+<P>
+<OL>
+<LI><I>Add and Broadcast to MGD</I> - add symbol to Nomen and broadcast to MGD in one step
+<LI><I>Broadcast by Symbol to MGD</I> - broadcast one symbol to MGD
+<LI><I>Broadcast by Batch to MGD</I> - broadcast all <I>Approved</I> symbols to MGD (Tier 4 only)
+<LI><I>Broadcast by Reference to MGD</I> - broadcast all <I>Pending</I> (if Tier 3) or
+	<I>Approved</I> (if Tier 4) symbols which contain the specified <I>primary reference</I>
+	to MGD
+</OL>
 
 <H4>Miscellaneous</H4>
 <OL>
-<LI>The <I>Find Duplicate Proposed Symbols</I> will return records with proposed symbols which are
-    equivalent, ignoring case.
-<P>
-<LI>The <I>Find Duplicate Approved Symbols</I> will return records with approved symbols which are
-    equivalent, ignoring case.
-<P>
-<LI>The <I>Approved Symbol</I> and <I>Approved Name</I> fields use a background of blue to visually
-    differentiate them from the <I>Proposed Symbol</I> and <I>Proposed Name</I> fields.
-<P>
-<LI>The <I>MGD Symbol</I> and <I>Accession #</I> values for the MGD Marker object are displayed if 
-    the <I>Approved Symbol</I> can be found in MGD.
-<P>
-<LI>The <I>Homology record(s) in MGD</I> toggle will be turned on (red) if the <I>Human Symbol</I>
-    exists in MGD and there is a defined MGD Homology which refers to the human symbol.
-<P>
 <LI>When the user adds either a <I>Primary</I> or <I>Related</I> Reference, the MGD Master 
     Bibliography record for that Reference will be updated so that the <I>Nomenclature</I> data 
     set is selected.
 <P>
 <LI>The <I>Symbol/Name Search</I> field is used for querying only.  When the user enters a value into
     this field and clicks <I>Search</I>, the system will take the search criteria entered and search
-    the <I>Proposed Symbol</I>, <I>Proposed Name</I>, <I>Approved Symbol</I> and <I>Approved Name</I>
-    fields for the value.  Search criteria entered in other form fields are ignored when the 
-    <I>Symbol/Name Search</I> field is populated.
+    the <I>Symbol</I> and <I>Name</I> fields for the value.  Search criteria entered in other form 
+    fields are ignored when the <I>Symbol/Name Search</I> field is populated.
     <P>
     The search fields for <I>Symbol/Name Search</I> can be expanded to include Names and/or Notes.
-<P>
-<LI>The user cannot add a new record with a Status of <I>Broadcast</I>, or modify an existing 
-    record to a Status of <I>Broadcast</I>.  Only the <I>MGD Broadcast</I> process can apply the 
-    <I>Broadcast</I> Status.  However, if a <I>Broadcast Date</I> is entered and the Status is not 
-    <I>Broadcast</I> or <I>Deleted</I>, then the Status is automatically changed to 
-    <I>Broadcast</I>.
-	<PRE>
-	Cannot select status of 'Broadcast'.
-	</PRE>
-<P>
-<LI>If the user changes the Status from <I>Broadcast</I> to another value, then the 
-    <I>Broadcast Date</I> is nullified by the system after the user saves the modification.
-<P>
-<LI>If the <I>Broadcast Date</I> is removed and the Status is still <I>Broadcast</I>, then the 
-    update is denied.
-	<PRE>
-        Cannot remove Broadcast Date if status is Broadcast.
-	</PRE>
-<P>
-<LI>When tabbing thru the <I>Proposed Symbol</I> field, if the <I>Approved Symbol</I> field is blank,
-    then the <I>Approved Symbol</I> field will automatically be populated with the 
-    <I>Proposed Symbol</I> value.
 <P>
 <LI>To duplicate a record, select the record you want to duplicate and then de-select it.  The data
     fields will remain populated.  Make the changes necessary for the <I>new</I> record and click

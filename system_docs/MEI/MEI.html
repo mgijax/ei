@@ -18,7 +18,6 @@ There are currently four MGI Editorial Interface applications:
 <LI>MGD Editing Interface
 <LI>GXD Editing Interface
 <LI>MGI Admin Editing Interface
-<LI>Nomenclature Editing Interface
 </OL>
 <P>
 These interfaces are independent applications which share template components and D code.
@@ -41,7 +40,7 @@ These interfaces are independent applications which share template components an
 <LI><A HREF="#duplicates">Duplicate Names</A>
 <LI><A HREF="#deletions">Deletions of Cross-Referenced Objects</A>
 <LI><A HREF="MEIReports.html">Nightly Reports</A>
-<LI><A HREF="MEIUtilities.html">Editorial Utilities (Broadcast, NLM update, etc.)</A>
+<LI><A HREF="MEIUtilities.html">Editorial Utilities</A>
 <LI><A HREF="#logs">Logs</A>
 <LI><A HREF="#runningProd">Running the Production Applications</A>
 <LI><A HREF="#runningDev">Running the Development Applications</A>
@@ -98,6 +97,7 @@ There is one entry form for each main component of MGI:
 	<LI><A HREF = "MEIHomology.html">Homology</A>
 	<LI><A HREF = "MEIMapping.html">Mapping</A>
 	<LI><A HREF = "MEIMLC.html">MLC</A>
+	<LI><A HREF = "MEINomen.html">Nomenclature</A>
 	<LI><A HREF = "MEISpecies.html">Species</A>
 	<LI><A HREF = "MEIStrain.html">Strains</A>
 	<LI><A HREF = "MEITissue.html">Tissues</A>
@@ -118,19 +118,13 @@ There is one entry form for each main component of MGI:
         <LI><A HREF = "GEIImage.html">Images</A>
         <LI><A HREF = "GEIadi.html">Anatomical Dictionary</A>
 	<LI><A HREF = "GEIIndex.html">Index/Stages</A>
+	<LI><A HREF = "MEINomen.html">Nomenclature</A>
 	<LI><A HREF = "MEICV.html">Lookups (controlled vocabulary)</A>
 	</OL>
 <H4>Administration (<A HREF="mgiadmin.gif">Main Menu</A>)</H4>
 	<OL>
 	<LI><A HREF = "ADMINActualLogical.html">Actual/Logical DB</A>
 	<LI><A HREF = "ADMINComments.html">Table/Column Comments</A>
-	</OL>
-<H4>Nomenclature (<A HREF="nomenmenu.gif">Main Menu</A>)</H4>
-	<OL>
-	<LI><A HREF = "MEINomen.html">Nomenclature</A>
-	<LI><A HREF = "MEIReference.html">References</A>
-	<LI><A HREF = "MEIMarker.html">Markers</A>
-	<LI><A HREF = "MEICV.html">Lookups (controlled vocabulary)</A>
 	</OL>
 Each entry form enables the user to perform the following functions:
 	<OL>
@@ -457,6 +451,7 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>Mapping Assays
 	<LI>MLC Classes
 	<LI>Marker Types
+	<LI>Marker Event Reasons
 	<LI>Reference Review Status
 	<LI>Molecular Segment Vector Types
         <LI>Antibody Types 
@@ -496,6 +491,8 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>Antibody Recognizes Product in Immunoprecipitation
 	<LI>Probe Prep Type
 	<LI>Specimen Hybridization
+	<LI>Marker Events
+	<LI>Marker Status
 	</OL>
 <P>
 <A NAME="dataVerLookup"><LI>Lookup Lists</A>
@@ -618,11 +615,9 @@ for the SE staff when debugging any problems which may arise with the applicatio
 <TR><TD>MGD Production<TD><CODE>$HOME/.mgd-log</CODE> and <CODE>$HOME/.mgd_stats_log</CODE>
 <TR><TD>GXD Production<TD><CODE>$HOME/.gxd-log</CODE>
 <TR><TD>Administration Production<TD><CODE>$HOME/.mgiadmin-log</CODE>
-<TR><TD>Nomenclature Production<TD><CODE>$HOME/.nomen-log</CODE>
 <TR><TD>MGD Development<TD><CODE>$HOME/.mgd_dev-log</CODE> and <CODE>$HOME/.mgd_dev_stats_log</CODE>
 <TR><TD>GXD Development<TD><CODE>$HOME/.gxd_dev-log</CODE>
 <TR><TD>Administration Development<TD><CODE>$HOME/.mgiadmin_dev-log</CODE>
-<TR><TD>Nomenclature Development<TD><CODE>$HOME/.nomen_dev-log</CODE>
 </TABLE>
 
 <HR>
@@ -639,7 +634,6 @@ To run the Production Applications from a Solaris Workstation:
 	    <TR><TD>MGD<TD><CODE>/usr/local/mgi/ei/mgd/runmgd&</CODE>
 	    <TR><TD>GXD<TD><CODE>/usr/local/mgi/ei/gxd/rungxd&</CODE>
 	    <TR><TD>MGI Admin<TD><CODE>/usr/local/mgi/ei/mgiadmin/runmgiadmin&</CODE>
-	    <TR><TD>Nomenclature<TD><CODE>/usr/local/mgi/ei/nomen/runnomen&</CODE>
 	    </TABLE>
 	<LI>At the application login screen, type in your SYBASE login and password.
 	</OL>
@@ -651,7 +645,6 @@ To run the Production Applications from a MacIntosh:
 	    <TR><TD>MGD<TD>MGD
 	    <TR><TD>GXD<TD>GXD
 	    <TR><TD>MGI Admin<TD>MGI Admin
-	    <TR><TD>Nomenclature<TD>Nomenclature
 	    </TABLE>
 	<LI>At the first login screen, type in your UNIX login and password
 	<LI>At the application login screen, type in your SYBASE login and password.
@@ -672,7 +665,6 @@ To run the Development Applications from a Solaris Workstation:
 	    <TR><TD>MGD<TD><CODE>/usr/local/mgi/ei/mgd/runmgd-dev&</CODE>
 	    <TR><TD>GXD<TD><CODE>/usr/local/mgi/ei/gxd/rungxd-dev&</CODE>
 	    <TR><TD>MGI Admin<TD><CODE>/usr/local/mgi/ei/mgiadmin/runmgiadmin-dev&</CODE>
-	    <TR><TD>Nomenclature<TD><CODE>/usr/local/mgi/ei/nomen/runnomen-dev&</CODE>
 	    </TABLE>
 	<LI>At the application login screen, type in your SYBASE login and password.
 	</OL>
@@ -685,7 +677,6 @@ To run the Development MGD from a MacIntosh:
 	    <TR><TD>MGD<TD>MGD Development
 	    <TR><TD>GXD<TD>GXD Development
 	    <TR><TD>MGI Admin<TD>MGI Admin Development
-	    <TR><TD>Nomenclature<TD>Nomenclature Development
 	    </TABLE>
 	<LI>At the first login screen, type in your UNIX login and password
 	<LI>At the application login screen, type in your SYBASE login and password.
