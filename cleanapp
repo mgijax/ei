@@ -1,0 +1,20 @@
+#!/bin/csh
+
+#
+# Cleans a TeleUSE Application using uxb.conf. 
+#
+# Usage:
+#
+#	cleanapp applicationdirectory
+#
+
+source Configuration
+
+setenv APP	$1
+setenv REMFILES	"*.o *.c *.do *.ui cderes*"
+
+cd $APP
+source Configuration
+uxb clean
+rm -f $REMFILES $APP
+cd ..

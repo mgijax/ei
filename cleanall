@@ -12,12 +12,7 @@
 
 source Configuration
 
-setenv REMFILES	"*.o *.c *.do *.ui cderes*"
-
 foreach app ($EIAPPS)
    echo "CLEANING $app"
-   cd $app
-   uxb clean
-   rm -f $REMFILES $app
-   cd ..
+   cleanapp $app
 end
