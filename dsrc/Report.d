@@ -52,6 +52,7 @@ rules:
      -- Retrieve program and parameters for selected Report
 
      commands : string_list;
+     commands := create string_list();
      program : string := dialog->ReportList->List.keys[dialog->ReportList->List.row];
 
      if (program = "nlm.py") then      -- NLM program
