@@ -40,7 +40,7 @@ for s in strains:
 		reportName = regsub.gsub(' ', '', s['strain'])
 		reportName = regsub.gsub('/', '', reportName)
 		reportName = 'StrainList.%s.rpt' % reportName
-		fp = reportlib.init(reportName, 'Strain Listing', os.environ['EIREPORTDIR'])
+		fp = reportlib.init(reportName, 'Strain Listing', os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 
 	fp.write(s['strain'])
 	fp.write(CRT)

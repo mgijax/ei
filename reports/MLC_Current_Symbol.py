@@ -151,7 +151,7 @@ def parse_symbol_name_chr(t):
 
 	if fp is None:
 		reportName = symbol + '-' + mgi_utils.date('%m%d%Y') + '-MLC'
-		fp = reportlib.init(reportName, 'MLC Symbol Report', os.environ['EIREPORTDIR'])
+		fp = reportlib.init(reportName, 'MLC Symbol Report', os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 
 def parse_classes(t):
 	global classes

@@ -41,7 +41,7 @@ TAB = reportlib.TAB
 
 def open_file(name):
 
-	fp = reportlib.init(name, printHeading = 0, outputdir = os.environ['EIREPORTDIR'])
+	fp = reportlib.init(name, printHeading = 0, outputdir = os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 
 	i1 = string.find(sqlCmd, 'where')
 	i2 = string.find(sqlCmd, 'union')

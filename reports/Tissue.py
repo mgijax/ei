@@ -41,7 +41,7 @@ for s in tissues:
 		reportName = regsub.gsub(' ', '', s['tissue'])
 		reportName = regsub.gsub('/', '', reportName)
 		reportName = 'Tissue.%s.rpt' % reportName
-		fp = reportlib.init(reportName, 'Tissues', os.environ['EIREPORTDIR'])
+		fp = reportlib.init(reportName, 'Tissues', os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 
 	results = db.sql('PRB_getTissueDataSets %s' % s['_Tissue_key'], 'auto')
 

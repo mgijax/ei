@@ -89,7 +89,7 @@ tokens = string.split(description, ', ')
 symbol = tokens[0]
 
 # initialize report output file
-fp = reportlib.init('GO%s' % (symbol), printHeading = 0, isHTML = 1, outputdir = os.environ['EIREPORTDIR'])
+fp = reportlib.init('GO%s' % (symbol), printHeading = 0, isHTML = 1, outputdir = os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 fp.write(TITLE + 'Potential New GO References' + EOTITLE + CRT)
 fp.write(H + 'Potential New GO References' + EOH + CRT)
 fp.write(H + 'Symbol: %s' % (description) + EOH + CRT)

@@ -151,7 +151,7 @@ for s in strains:
 			reportName = regsub.gsub(' ', '', s['strain'])
 			reportName = regsub.gsub('/', '', reportName)
 			reportName = 'Strain.%s.rpt' % reportName
-			fp = reportlib.init(reportName, 'Strains', os.environ['EIREPORTDIR'])
+			fp = reportlib.init(reportName, 'Strains', os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 
 			if retrieveProbes:
 				fp.write(CRT)

@@ -55,7 +55,7 @@ for r in results:
 
 	if fp is None:  
 		reportName = 'Nomen.%s.rpt' % r['symbol']
-		fp = reportlib.init(reportName, 'Nomenclature Record', os.environ['EIREPORTDIR'])
+		fp = reportlib.init(reportName, 'Nomenclature Record', os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 
 	dcmd = 'select n.*, a.accID, ' + \
 	       'bdate = convert(char(25), n.broadcast_date), ' + \
