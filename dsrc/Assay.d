@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 08/28/2001
+--	- TR 2869
+--
 -- lec 08/16/2001
 --	- TR 2855; CopyGelLane; don't copy Age Range during Age Prefix copy
 --	- TR 2847; Set Note color appropriately
@@ -1189,6 +1192,15 @@ rules:
 	  keyName : string := "specimenKey";
 	  keysDeclared : boolean := false;
 	  update : string := "";
+ 
+	  -- Check for duplicate Seq # assignments
+
+          DuplicateSeqNumInTable.table := table;
+          send(DuplicateSeqNumInTable, 0);
+ 
+          if (table.duplicateSeqNum) then
+            return;
+          end if;
  
           -- Process while non-empty rows are found
  

@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	08/28/2001
+--	- TR 2869
+--
 -- lec	08/16/2001
 --	- TR 2850; Select; traverse to first blank row 
 --
@@ -280,6 +283,15 @@ rules:
 	  resultNote : string;
 	  paneList : string_list;
 	  keysDeclared : boolean := false;
+ 
+	  -- Check for duplicate Seq # assignments
+
+          DuplicateSeqNumInTable.table := table;
+          send(DuplicateSeqNumInTable, 0);
+ 
+          if (table.duplicateSeqNum) then
+            return;
+          end if;
  
           top.root.allowEdit := true;
 
