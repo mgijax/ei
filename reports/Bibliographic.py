@@ -147,7 +147,7 @@ elif reportType == "dupall":
 	'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
 	'order by _primary, journal, year'
 
-fp = reportlib.init(name, title, os.environ['EIREPORTDIR'])
+fp = reportlib.init(name, title, os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 process_ref(fp, cmd, format)
 reportlib.trailer(fp)
 reportlib.finish_nonps(fp)

@@ -105,7 +105,7 @@ def parse_reference(reference):
 # Main
 #
 
-fp = reportlib.init(sys.argv[0], 'Orthology', os.environ['EIREPORTDIR'])
+fp = reportlib.init(sys.argv[0], 'Orthology', os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 db.sql(sys.argv[1], parse_reference)
 reportlib.trailer(fp)
 reportlib.finish_ps(fp)

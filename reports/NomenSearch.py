@@ -54,7 +54,7 @@ for r in results:
 
 	if fp is None:  
 		reportName = 'NomenSearch.%s.rpt' % r['symbol']
-		fp = reportlib.init(reportName, 'Nomenclature Search Results', os.environ['EIREPORTDIR'])
+		fp = reportlib.init(reportName, 'Nomenclature Search Results', os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 		printHeader()
 
 	fp.write(string.ljust(r['symbol'], 25))
