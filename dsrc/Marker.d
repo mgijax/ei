@@ -1771,6 +1771,7 @@ rules:
 
 	  results : integer := 1;
 	  row : integer := 0;
+	  otherRefRow : integer := 0;
 	  source : string;
 	  seqRow : integer := 0;
 	  seqNum1, seqNum2 : string;
@@ -1905,6 +1906,7 @@ rules:
           	  send(SetOptions, 0);
 		end if;
 
+		otherRefRow := otherRefRow + 1;
 	      end if;
 	      row := row + 1;
 	    end while;
@@ -1913,8 +1915,10 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  if (row > 5) then
-	    top->OtherReference->Table.xrtTblNumRows := row + 1;
+	  if (otherRefRow > 5) then
+	    top->OtherReference->Table.xrtTblNumRows := otherRefRow + 1;
+	  else
+	    top->OtherReference->Table.xrtTblNumRows := 6;
 	  end if;
 
 	  -- Initialize Offset rows which do not exist
