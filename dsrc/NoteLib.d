@@ -487,9 +487,11 @@ rules:
 --
 -- Construct command for deleting/re-inserting Notes
 --
---	source_widget	: Note Source Widget using template mgiDataTypes:mgiNote
+--	source_widget	: Note Source Widget using template mgiDataTypes:mgiNote or mgiTable
 --	tableID		: table ID of database Note table
 --	key		: primary key of object being modified
+--	row             : row ID of Note if source_widget is a Table
+--	column          : column ID of Note if source_widget is a Table
 --
 -- Appends sql commands to Note Source Widget UDA 'sql'.
 --
@@ -498,49 +500,63 @@ rules:
 	  noteWidget : widget := ModifyNotes.source_widget;
 	  tableID : integer := ModifyNotes.tableID;
 	  key : string := ModifyNotes.key;
-          note : string := noteWidget->text.value;
+	  row : integer := ModifyNotes.row;
+	  column : integer := ModifyNotes.column;
+          note : string;
 	  noteType : string;
+	  isTable : boolean;
+	  isModified : boolean;
           i : integer := 1;
+	  cmd : string := "";
  
+	  isTable := mgi_tblIsTable(noteWidget);
+
+	  if (isTable) then
+	    note := mgi_tblGetCell(noteWidget, row, column);
+	    noteWidget.sqlCmd := "";
+	    isModified := true;
+	  else
+	    note := noteWidget->text.value;
+	    noteWidget.sql := "";
+	    isModified := noteWidget->text.modified;
+	  end if;
+
+	  if (not isModified) then
+	    return;
+	  end if;
+
 	  -- If the noteWidget has a valid noteTypeKey, use it
 	  -- Else if the noteWidget has a valid noteType (string), use it
 
-	  if (noteWidget.noteTypeKey > 0) then
+	  if (isTable) then
+	    noteType := "";
+	  elsif (noteWidget.noteTypeKey > 0) then
 	    noteType := (string) noteWidget.noteTypeKey + "," + (string) noteWidget.private;
 	  elsif (noteWidget.noteType.length > 0) then
 	    noteType := mgi_DBprstr(noteWidget.noteType);
 	  end if;
 
-	  noteWidget.sql := "";
+          cmd := mgi_DBdelete(tableID, key);
 
-	  if (noteWidget->text.modified) then
-            noteWidget.sql := mgi_DBdelete(tableID, key);
-
+	  if (noteWidget.is_defined("noteTypeKey") != nil) then
 	    if (noteWidget.noteTypeKey > 0) then
-	        noteWidget.sql := noteWidget.sql + 
-			" and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
+	        cmd := cmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
 	    elsif (noteWidget.noteType.length > 0) then
-	      noteWidget.sql := noteWidget.sql + " and noteType = " + noteType + "\n";
+	      cmd := cmd + " and noteType = " + noteType + "\n";
 	    end if;
-	  else
-	    return;
 	  end if;
 
-          if (note.length = 0) then
-            return;
-          end if;
- 
           -- Break notes up into segments of 255
  
           while (note.length > 255) do
 	    if (noteType.length > 0) then
-	        noteWidget.sql := noteWidget.sql + 
+	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
 		     noteType + "," +
                      mgi_DBprstr(note->substr(1, 255)) + ")\n";
             else
-	      noteWidget.sql := noteWidget.sql + 
+	      cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
                    mgi_DBprstr(note->substr(1, 255)) + ")\n";
@@ -551,16 +567,22 @@ rules:
  
 	  if (mgi_DBprstr(note) != "NULL") then
 	    if (noteType.length > 0) then
-              noteWidget.sql := noteWidget.sql + 
+              cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
 		   noteType + "," +
                    mgi_DBprstr(note) + ")\n";
             else
-              noteWidget.sql := noteWidget.sql + 
+              cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + (string) i + "," + 
                    mgi_DBprstr(note) + ")\n";
 	    end if;
+	  end if;
+
+	  if (isTable) then
+	    noteWidget.sqlCmd := cmd;
+	  else
+	    noteWidget.sql := cmd;
 	  end if;
         end does;
  

@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- lec  12/19/2001
+--	- MGI 2.8/TR 2867/TR 2239
+--	  added Conditional, Allele State, Notes
+--
 -- lec	11/05/2001
 --	- implement normal searching in Genotype Module
 --
@@ -39,7 +43,14 @@ devents:
 
 	PrepareSearch :local [];
 	Select :local [item_position : integer;];
+	SetOptions :local [source_widget : widget;
+			   row : integer;
+			   reason : integer;];
 
+	VerifyAllelePairState :local [source_widget : widget;
+				      column : integer;
+				      row : integer;
+				      reason : integer;];
 
 locals:
 	mgi : widget;
@@ -50,16 +61,18 @@ locals:
 	cmd : string;
 	from : string;
 	where : string;
-	set : string;
 	manualSearch : boolean := false;
 
 	assayTable : widget;
 	assayPush : widget;
 
+	tables : list;
+
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
 	allelePairString : string;
+	alleleStateOK : boolean;
 
 rules:
 
@@ -97,13 +110,21 @@ rules:
 --
 
 	Init does
+	  tables := create list("widget");
 
-	  if (mgi->AssayModule->InSituForm.managed) then
-	    assayTable := mgi->AssayModule->Specimen->Table;
-	    assayPush := mgi->AssayModule->Lookup->CVSpecimen->GenotypePush;
-	  elsif (mgi->AssayModule->GelForm.managed) then
-	    assayTable := mgi->AssayModule->GelLane->Table;
-	    assayPush := mgi->AssayModule->Lookup->CVGel->GenotypePush;
+	  -- List of all Table widgets used in form
+
+	  tables.append(top->AllelePair->Table);
+	  tables.append(top->Control->ModificationHistory->Table);
+
+	  if (mgi->AssayModule != nil) then
+	    if (mgi->AssayModule->InSituForm.managed) then
+	      assayTable := mgi->AssayModule->Specimen->Table;
+	      assayPush := mgi->AssayModule->Lookup->CVSpecimen->GenotypePush;
+	    elsif (mgi->AssayModule->GelForm.managed) then
+	      assayTable := mgi->AssayModule->GelLane->Table;
+	      assayPush := mgi->AssayModule->Lookup->CVGel->GenotypePush;
+	    end if;
 	  end if;
 
 	  accTable := top->mgiAccessionTable->Table;
@@ -118,8 +139,10 @@ rules:
 
 	  -- if an Assay record has been selected, then select
 	  -- the Genotype records for the Assay
-	  SearchGenotype.assayKey := mgi->AssayModule->EditForm->ID->text.value;
-	  send(SearchGenotype, 0);
+	  if (mgi->AssayModule != nil) then
+	    SearchGenotype.assayKey := mgi->AssayModule->EditForm->ID->text.value;
+	    send(SearchGenotype, 0);
+	  end if;
 	end does;
 
 --
@@ -130,9 +153,9 @@ rules:
 
         Add does
 
-	  if (mgi->AssayModule = nil) then
-	    send(Exit, 0);
-	  end if;
+--	  if (mgi->AssayModule = nil) then
+--	    send(Exit, 0);
+--	  end if;
 
           if (not top.allowEdit) then
             return;
@@ -148,19 +171,23 @@ rules:
                  mgi_DBinsert(GXD_GENOTYPE, KEYNAME);
  
 	  if (top->EditForm->Strain->StrainID->text.value.length = 0) then
-            cmd := cmd + top->EditForm->Strain->StrainID->text.defaultValue + ")\n";
+            cmd := cmd + top->EditForm->Strain->StrainID->text.defaultValue + ",";
 	  else
-            cmd := cmd + top->EditForm->Strain->StrainID->text.value + ")\n";
+            cmd := cmd + top->EditForm->Strain->StrainID->text.value + ",";
 	  end if;
  
+	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
+		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ")\n";
+
 	  send(ModifyAllelePair, 0);
+	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
 
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
-	  AddSQL.appendKeyToItem := true;
+--	  AddSQL.appendKeyToItem := true;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
@@ -214,6 +241,7 @@ rules:
 --
 
 	Modify does
+	  set : string;
 
           if (not top.allowEdit) then
             return;
@@ -236,11 +264,21 @@ rules:
             set := "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
           end if;
 
-	  if (set.length > 0) then
-            cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set);
-	  end if;
+          if (top->ConditionalMenu.menuHistory.modified and
+	      top->ConditionalMenu.menuHistory.searchValue != "%") then
+            set := set + "isConditional = " + top->ConditionalMenu.menuHistory.defaultValue + ",";
+          end if;
+
+          if (top->Note->text.modified) then
+            set := set + "note = " + mgi_DBprstr(top->Note->text.value) + ",";
+          end if;
 
 	  send(ModifyAllelePair, 0);
+
+	  if (set.length > 0 or cmd.length > 0) then
+            cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
+--		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
+	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -257,6 +295,7 @@ rules:
 --
  
         ModifyAllelePair does
+	  localCmd : string := "";
           table : widget := top->AllelePair->Table;
           row : integer := 0;
           editMode : string;
@@ -265,7 +304,10 @@ rules:
           markerKey : string;
           alleleKey1 : string;
           alleleKey2 : string;
+	  alleleState : string;
+	  isUnknown : string;
 	  keysDeclared : boolean := false;
+	  set : string;
  
 	  keyName := "allele" + KEYNAME;
 	  allelePairString := "";
@@ -279,10 +321,24 @@ rules:
               break;
             end if;
  
+	    VerifyAllelePairState.source_widget := table;
+	    VerifyAllelePairState.column := table.alleleState;
+	    VerifyAllelePairState.row := row;
+	    VerifyAllelePairState.reason := TBL_REASON_VALIDATE_CELL_END;
+	    send(VerifyAllelePairState, 0);
+
+	    if (not alleleStateOK) then
+              StatusReport.source_widget := top;
+              StatusReport.message := "Invalid Allele State";
+              send(StatusReport);
+	      return;
+	    end if;
+
             key := mgi_tblGetCell(table, row, table.pairKey);
             markerKey := mgi_tblGetCell(table, row, table.markerKey);
             alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
             alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
+            alleleState := mgi_tblGetCell(table, row, table.alleleState);
  
 	    if (row = 0) then
 	      allelePairString := mgi_tblGetCell(table, row, (integer) table.alleleSymbol[1]) + "," 
@@ -297,43 +353,50 @@ rules:
 	      alleleKey2 := "NULL";
 	    end if;
 
-	    -- Marker keys cannot be null
-	    -- Allele 1 keys cannot be null
+	    if (alleleState = "Unknown") then
+	      isUnknown := "1";
+	    else
+	      isUnknown := "0";
+	    end if;
 
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
-                cmd := cmd +
+                localCmd := localCmd +
                        mgi_setDBkey(GXD_ALLELEPAIR, NEWKEY, keyName) +
 		       mgi_DBnextSeqKey(GXD_ALLELEPAIR, currentRecordKey, SEQKEYNAME);
 		keysDeclared := true;
 	      else
-		cmd := cmd + 
+		localCmd := localCmd + 
 		       mgi_DBincKey(keyName) +
 		       mgi_DBincKey(SEQKEYNAME);
 	      end if;
 
-              cmd := cmd +
+              localCmd := localCmd +
                      mgi_DBinsert(GXD_ALLELEPAIR, keyName) +
 		     currentRecordKey + "," +
 		     "@" + SEQKEYNAME + "," +
 		     alleleKey1 + "," +
 		     alleleKey2 + "," +
-		     markerKey + ")\n";
+		     markerKey + "," +
+		     isUnknown + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "_Allele_key_1 = " + alleleKey1 + "," +
                      "_Allele_key_2 = " + alleleKey2 + "," +
-                     "_Marker_key = " + markerKey;
-              cmd := cmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
+                     "_Marker_key = " + markerKey + "," +
+		     "isUnknown = " + isUnknown;
+              localCmd := localCmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
             end if;
  
             if (editMode = TBL_ROW_DELETE and key.length > 0) then
-              cmd := cmd + mgi_DBdelete(GXD_ALLELEPAIR, key);
+              localCmd := localCmd + mgi_DBdelete(GXD_ALLELEPAIR, key);
             end if;
  
             row := row + 1;
           end while;
+
+	  cmd := cmd + localCmd;
         end does;
 
 --
@@ -364,15 +427,10 @@ rules:
 	    where := where + accTable.sqlWhere;
 	  end if;
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "g";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "g";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "a";
+	  send(QueryModificationHistory, 0);
+          where := where + top->ModificationHistory->Table.sqlCmd;
  
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	    where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
@@ -385,6 +443,16 @@ rules:
 	    end if;
 	  end if;
 	    
+          if (top->ConditionalMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand g.isConditional = " + top->ConditionalMenu.menuHistory.searchValue;
+	    manualSearch := true;
+          end if;
+
+	  if (top->Note->text.value.length > 0) then
+            where := where + "\nand g.note like " + mgi_DBprstr(top->Note->text.value);
+	    manualSearch := true;
+	  end if;
+
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
 
           if (value.length > 0 and value != "NULL") then
@@ -394,6 +462,32 @@ rules:
             value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
             if (value.length > 0) then
 	      where := where + "\nand ap.symbol like " + mgi_DBprstr(value);
+	      from_allele := true;
+	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[1]);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand ap._Allele_key_1 = " + value;
+	    from_allele := true;
+	  else
+            value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[1]);
+            if (value.length > 0) then
+	      where := where + "\nand ap.allele1 like " + mgi_DBprstr(value);
+	      from_allele := true;
+	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleKey[2]);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand ap._Allele_key_2 = " + value;
+	    from_allele := true;
+	  else
+            value := mgi_tblGetCell(top->AllelePair->Table, 0, (integer) top->AllelePair->Table.alleleSymbol[2]);
+            if (value.length > 0) then
+	      where := where + "\nand ap.allele2 like " + mgi_DBprstr(value);
 	      from_allele := true;
 	    end if;
 	  end if;
@@ -455,7 +549,7 @@ rules:
 
 	  select := "select distinct g._Genotype_key, " +
 	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
-	     from + "\n" + where;
+	     from + "\n" + where + "\nand ap.sequenceNum = 1";
 
           notExists := "select distinct g._Genotype_key, " +
 		"'*' + g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
@@ -527,8 +621,14 @@ rules:
 	  InitAcc.table := accTable;
 	  send(InitAcc, 0);
 	  
-          ClearTable.table := top->AllelePair->Table;
-          send(ClearTable, 0);
+	  tables.open;
+	  while (tables.more) do
+	    ClearTable.table := tables.next;
+	    send(ClearTable, 0);
+	  end while;
+	  tables.close;
+
+	  top->EditForm->Note->text.value := "";
 
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
@@ -559,19 +659,28 @@ rules:
 	      if (results = 1) then
                 top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
-                top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 5);
-                top->CreationDate->text.value := mgi_getstr(dbproc, 3);
-                top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
+                top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 9);
+                top->EditForm->Note->text.value := mgi_getstr(dbproc, 6);
+		table := top->Control->ModificationHistory->Table;
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 8));
+
+                SetOption.source_widget := top->ConditionalMenu;
+                SetOption.value := mgi_getstr(dbproc, 3);
+                send(SetOption, 0);
 	      else
-	        table := top->AllelePair->Table;
+	  	table := top->AllelePair->Table;
 	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
-	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[2], mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[2], mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(table, row, table.alleleState, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      end if;
@@ -586,6 +695,13 @@ rules:
 	  LoadAcc.tableID := GXD_GENOTYPE;
 	  send(LoadAcc, 0);
 
+	  -- Initialize Option Menus for row 0
+
+	  SetOptions.source_widget := top->AllelePair->Table;
+	  SetOptions.row := 0;
+	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+	  send(SetOptions, 0);
+
           top->QueryList->List.row := Select.item_position;
 
 	  Clear.source_widget := top;
@@ -596,6 +712,92 @@ rules:
 	end does;
 
 --
+-- SetOptions
+--
+-- Each time a row is entered, set the option menus based on the values in the appropriate column.
+--
+-- EnterCellCallback for table.
+--
+ 
+        SetOptions does
+          table : widget := SetOptions.source_widget;
+          row : integer := SetOptions.row;
+	  reason : integer := SetOptions.reason;
+ 
+	  if (reason != TBL_REASON_ENTER_CELL_END) then
+	    return;
+	  end if;
+
+          SetOption.source_widget := top->AllelePairStateMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.alleleState);
+          send(SetOption, 0);
+        end does;
+
+--
+-- VerifyAllelePairState
+--
+-- Verifies Allele Pair State vs. Allele Pairs.
+-- Sets global alleleStateOK = 1 if Allele Pair State is okay, else 0.
+--
+	VerifyAllelePairState does
+	  table : widget := VerifyAllelePairState.source_widget;
+	  column : integer := VerifyAllelePairState.column;
+	  row : integer := VerifyAllelePairState.row;
+	  reason : integer := VerifyAllelePairState.reason;
+          alleleKey1 : string;
+          alleleKey2 : string;
+	  alleleState : string;
+
+	  alleleStateOK := true;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  if (column != table.alleleState and column != (integer) table.alleleSymbol[2]) then
+	    return;
+	  end if;
+
+          alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
+          alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
+          alleleState := mgi_tblGetCell(table, row, table.alleleState);
+ 
+	  if (alleleKey1.length = 0) then
+	    return;
+	  end if;
+
+	  if (alleleKey2.length = 0) then
+	    alleleKey2 := "NULL";
+	  end if;
+
+	  -- If the Allele State is provided, then verify
+
+	  if (alleleState != "") then
+	    if (alleleState = "Homozygous" and alleleKey1 != alleleKey2) then
+	      alleleStateOK := false;
+	    elsif (alleleState = "Heterozygous" and (alleleKey1 = alleleKey2 or alleleKey2 = "NULL")) then
+	      alleleStateOK := false;
+	    elsif (alleleState = "Hemizygous" and alleleKey2 != "NULL") then
+	      alleleStateOK := false;
+	    elsif (alleleState = "Unknown" and alleleKey2 != "NULL") then
+	      alleleStateOK := false;
+	    end if;
+	  else
+	    -- If the Allele State was not entered, then set it
+	    if (alleleKey2 != "NULL" and alleleKey1 = alleleKey2) then
+	      alleleState := "Homozygous";
+	    elsif (alleleKey2 != "NULL" and alleleKey1 != alleleKey2) then
+	      alleleState := "Heterozygous";
+	    elsif (alleleKey2 = "NULL") then
+	      alleleState := "Hemizygous";
+	    end if;
+
+	    mgi_tblSetCell(table, row, table.alleleState, alleleState);
+	  end if;
+
+	end does;
+
+--
 -- Exit
 --
 -- Destroy D module instance and call ExitWindow to destroy widgets
@@ -603,9 +805,9 @@ rules:
 
 	Exit does
 
-	  if (mgi->AssayModule != nil) then
+--	  if (mgi->AssayModule != nil) then
 	    ab.sensitive := true;
-	  end if;
+--	  end if;
 
 	  destroy self;
 	  ExitWindow.source_widget := top;

@@ -1245,10 +1245,12 @@ rules:
 --
 
 	VerifyGenotype does
+	  top : widget := VerifyGenotype.source_widget.top;
 	  table : widget := VerifyGenotype.source_widget;
 	  row : integer := VerifyGenotype.row;
 	  column : integer := VerifyGenotype.column;
 	  reason : integer := VerifyGenotype.reason;
+	  genotypeKey : string;
 
 	  if (reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
 	    return;
@@ -1260,10 +1262,24 @@ rules:
 	    return;
 	  end if;
 
+	  (void) busy_cursor(top);
+
 	  if (mgi_tblGetCell(table, row, table.genotype) = "") then
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
 	    (void) mgi_tblSetCell(table, row, table.genotype, "-1");
+	  else
+	    genotypeKey := mgi_sql1("select _Object_key from GXD_Genotype_Acc_View " +
+		"where accID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)));
+	    if (genotypeKey.length > 0) then
+	      (void) mgi_tblSetCell(table, row, table.genotypeKey, genotypeKey);
+	    else
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "Invalid Genotype.\n";
+	      send(StatusReport, 0);
+	    end if;
 	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --
