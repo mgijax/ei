@@ -128,6 +128,7 @@ rules:
 	  menus.append(top->SeqQualityMenu);
 	  menus.append(top->LocusStatusMenu);
 	  menus.append(top->MGIStatusMenu);
+	  menus.append(top->CDSMenu);
 	  menus.append(top->NomenEventMenu);
 
 	  fantom := top->Fantom->Table;
@@ -1226,6 +1227,10 @@ rules:
 
           SetOption.source_widget := top->MGIStatusMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.mgiStatus);
+          send(SetOption, 0);
+
+          SetOption.source_widget := top->CDSMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.cds);
           send(SetOption, 0);
 
           SetOption.source_widget := top->NomenEventMenu;

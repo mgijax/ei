@@ -322,6 +322,7 @@ rules:
 	  isUnknown : string;
 	  keysDeclared : boolean := false;
 	  set : string;
+	  reordering : boolean := false;
  
 	  keyName := "allele" + KEYNAME;
 	  allelePairString := "";
@@ -400,6 +401,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
 		set := "sequenceNum = " + newSeqNum;
                 cmd := cmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
+		reordering := true;
 
               -- Else, a simple update
  
@@ -422,7 +424,9 @@ rules:
 
 	  cmd := cmd + localCmd;
 --	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_ALLELEPAIR) + "'," + currentRecordKey + "\n";
-	  cmd := cmd + "exec GXD_orderAllelePairs " + currentRecordKey + "\n";
+	  if (not reordering) then
+	    cmd := cmd + "exec GXD_orderAllelePairs " + currentRecordKey + "\n";
+	  end if;
         end does;
 
 --
@@ -522,6 +526,12 @@ rules:
 	      where := where + "\nand ap.allele2 like " + mgi_DBprstr(value);
 	      from_allele := true;
 	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.alleleState);
+	  if (value.length > 0 and value != "%") then
+	      where := where + "\nand ap.alleleState = " + mgi_DBprstr(value);
+	      from_allele := true;
 	  end if;
 
 	  -- If no manual search constraints entered...
