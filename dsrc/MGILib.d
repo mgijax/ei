@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- 07/11/2001 lec
+--	- APP changed to EIAPP
+--
 -- 12/29/98 lec
 --	- InitApplication; modify check for development server
 --
@@ -94,7 +97,7 @@ rules:
 	  top.show;
 
 	  envList := create list("string");
-	  envList.append("APP");
+	  envList.append("EIAPP");
 	  envList.append("DSQUERY");
 	  envList.append("SYBASE");
 	  envList.append("MGD");
