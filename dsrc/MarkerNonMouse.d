@@ -52,7 +52,7 @@ devents:
 
 	Search :local [];
 	Select :local [item_position : integer;];
-	SetLocusLink :local [];
+	SetEntrezGene :local [];
 
 locals:
 	mgi : widget;
@@ -175,7 +175,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  send(SetLocusLink, 0);
+	  send(SetEntrezGene, 0);
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
@@ -281,7 +281,7 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  send(SetLocusLink, 0);
+	  send(SetEntrezGene, 0);
 
 	  cmd := "";
 	  set : string := "";
@@ -520,16 +520,16 @@ rules:
 	end does;
 
 --
--- SetLocusLink
+-- SetEntrezGene
 --
--- Set the required flag for the LocusLink ID
+-- Set the required flag for the EntrezGene ID
 --
 
-        SetLocusLink does
+        SetEntrezGene does
 	  if (top->mgiOrganism->ObjectID->text.value = HUMAN) then
-	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := true;
+	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := true;
 	  else
-	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := false;
+	    top->Lookup->mgiAccessionTable->AccSourcePulldown->EntrezGene.required := false;
 	  end if;
 	end does;
 
