@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Oct 31 08:40:34 2001";
+      lastWritten = "Fri Nov  2 13:44:51 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1497,7 +1497,7 @@ Module: MGI
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 15;
                                           xrtTblNumColumns = 18;
-                                          xrtTblColumnLabels = "Mode,Anot key,Vocab key,Term key,Not key, Refs key,Evidence key,WITH key,Term Accession ID,Vocabulary DAG,Vocabulary Term,NOT,J:,Evidence,WITH,Editor,Date,Notes";
+                                          xrtTblColumnLabels = "Mode,Anot key,Vocab key,Term key,Not key, Refs key,Evidence key,WITH key,Term Accession ID,Vocabulary DAG,Vocabulary Term,NOT,J:,Evidence,Inferred From,Editor,Date,Notes";
                                           xrtTblPixelWidthSeries = "(all 0-7 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 20)(all 9-10 25)(all 11 3)(all 12 10)(all 13 10)(all 14 20)(all 15 6)(all 16 10)(all 17 5)";
                                           xrtTblBackgroundSeries = "(all all Wheat)(0 all Red)(4-5 all Gray)(8 all Red) (label all Thistle)(all label Thistle)";

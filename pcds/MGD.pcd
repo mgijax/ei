@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Oct 31 08:40:28 2001";
+      lastWritten = "Thu Nov  1 08:04:46 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -934,7 +934,7 @@ Module: MGD
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 75;
+                                          columns = 95;
                                         Group: User
                                           required = True;
                                       }
@@ -957,14 +957,14 @@ Module: MGD
                                     subMenuId = PrivatePulldown;
                                     labelString = "Private?";
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mlpSpecies;
+                                    leftAttachment = attach_form;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = mlpSpecies;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftOffset = 55;
                                   Group: User
                                     defaultOption = No;
                                       Popups:
@@ -1017,14 +1017,14 @@ Module: MGD
                                 {
                                   StrainType = Table : mgiTable;
                                   Group: Constraint
-                                    leftAttachment = attach_form;
+                                    leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = PrivateMenu;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 55;
+                                    leftWidget = PrivateMenu;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
@@ -1493,6 +1493,11 @@ Module: MGD
                     }
                     {
                       StrainMergeDialog = StrainMergeDialog : mgiDialog;
+                    }
+                    {
+                      VerifyValueChange = VerifyValueChange : mgiDialog;
+                      Group: Widget
+                        messageString = "Are you sure you want to change the Private flag?";
                     }
               }
         }
@@ -3074,6 +3079,7 @@ Module: MGD
                         xrtTblVisibleRows = 10;
                         xrtTblPixelWidthSeries = "(all 0-4 0)";
                         xrtTblTraversableSeries = "(all 0-4 False)";
+                        xrtTblDisplayHorizScrollBar = dispsb_always;
                     }
                     {
                       AddRow = TablePush;

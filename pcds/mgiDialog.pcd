@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Oct 31 08:58:18 2001";
+      lastWritten = "Wed Oct 31 10:54:39 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -155,7 +155,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 965;
+            vip_y = 1020;
               {
                 FileSelection = FileSelection : mgiDialog;
                 Group: Constraint
@@ -341,7 +341,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1075;
+            vip_y = 1130;
         }
         {
           WorkingDialog = XmWorkingDialog;
@@ -366,7 +366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 910;
+            vip_y = 965;
           Group: User
             useReportDir = False;
               {
@@ -476,7 +476,7 @@ Module: mgiDialog
             cancelLabelString = No;
           Group: Control
             vip_x = 80;
-            vip_y = 1020;
+            vip_y = 1075;
         }
         {
           SelectDialog = XmFormDialog;
@@ -488,7 +488,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1130;
+            vip_y = 1185;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -576,7 +576,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1240;
+            vip_y = 1295;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -615,7 +615,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1185;
+            vip_y = 1240;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -656,7 +656,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 1350;
               {
                 label = XmLabel;
                 Group: Widget
@@ -740,7 +740,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1405;
               {
                 OK = DialogPush : mgiDialog;
               }
@@ -761,7 +761,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1515;
               {
                 EditForm = EditForm : MGI;
                 Group: Constraint
@@ -811,7 +811,7 @@ Module: mgiDialog
             closeWindowCallback = "D:InSituResultCancel";
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1460;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -975,7 +975,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1570;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -1018,7 +1018,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1625;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -1064,7 +1064,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1735;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1171,7 +1171,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1790;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1298,7 +1298,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1845;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1735,7 +1735,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1680;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1864,7 +1864,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1955;
               {
                 Lookup = XmFrame;
                 Group: Widget
@@ -2083,7 +2083,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1900;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2168,6 +2168,16 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 80;
             vip_y = 305;
+        }
+        {
+          VerifyValueChange = VerifyDialog;
+          Group: Widget
+            dialogTitle = "Change Value?";
+            messageString = "Are you sure you want to change this value?";
+            cancelCallback = "D:ResetModificationFlags";
+          Group: Control
+            vip_x = 80;
+            vip_y = 910;
         }
 }
 

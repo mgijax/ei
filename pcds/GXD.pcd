@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Oct 31 08:40:32 2001";
+      lastWritten = "Mon Nov  5 09:53:11 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1523,8 +1523,8 @@ Shift<Key>Tab: prev-tab-group()
                       Table = mgiTable;
                       Group: Widget
                         userDefinedAttributes = "genotypeKey:Int(Int)=\"4\"\ngenotype:Int(Int)=\"13\"\nageKey:Int(Int)=\"5\"\nagePrefix:Int(Int)=\"14\"\nageRange:Int(Int)=\"15\"\nsexKey:Int(Int)=\"8\"\nsex:Int(Int)=\"17\"\nfixationKey:Int(Int)=\"9\"\nfixation:Int(Int)=\"18\"\nembeddingKey:Int(Int)=\"10\"\nembedding:Int(Int)=\"19\"\nhybridizationKey:Int(Int)=\"11\"\nhybridization:Int(Int)=\"20\"\nageMin:Int(Int)=\"6\"\nageMax:Int(Int)=\"7\"\nageNote:Int(Int)=\"16\"\nspecimenNote:Int(Int)=\"22\"\nspecimenKey:Int(Int)=\"3\"\nresults:Int(Int)=\"21\"\nspecimenLabel:Int(Int)=\"12\"\n";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 12 16)(all 13 10)(all 17 8)(all 18 10)(all 19 11)(all 20 15)(all 21 9)(all 22 7)";
-                        xrtTblColumnLabels = "Mode,Current Order,#,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,Results,Notes";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 12 16)(all 13 15)(all 17 8)(all 18 10)(all 19 11)(all 20 15)(all 21 3)(all 22 7)";
+                        xrtTblColumnLabels = "Mode,Current Order,#,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,R,Notes";
                         xrtTblEditableSeries = "(all 0-2 False) (all 14-22 False)  (all 15 True)";
                         xrtTblEnterCellCallback = "D:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblMaxLengthSeries = "(all 12 255)(all 16 255)(all 22 255)";
@@ -2023,7 +2023,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblTraversableSeries = "(all 0-10 False)";
                         xrtTblEditableSeries = "(all all False) (all 11 True) (all 13 True) (all 15 True) (all 18 True)";
                         userDefinedAttributes = "laneKey:Int(Int)=\"1\"\ncontrolKey:Int(Int)=\"2\"\ngenotypeKey:Int(Int)=\"3\"\nrnaKey:Int(Int)=\"5\"\nageKey:Int(Int)=\"6\"\nageMin:Int(Int)=\"7\"\nageMax:Int(Int)=\"8\"\nsexKey:Int(Int)=\"9\"\nseqNum:Int(Int)=\"10\"\nlabel:Int(Int)=\"11\"\ncontrol:Int(Int)=\"12\"\ngenotype:Int(Int)=\"13\"\nstructures:Int(Int)=\"14\"\nsampleAmt:Int(Int)=\"15\"\nrna:Int(Int)=\"16\"\nagePrefix:Int(Int)=\"17\"\nageRange:Int(Int)=\"18\"\nageNote:Int(Int)=\"19\"\nsex:Int(Int)=\"20\"\nlaneNote:Int(Int)=\"21\"\nstructureKeys:Int(Int)=\"4\"\nverifyFloat:StringTable=\"15\"\n";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 10 4)(all 11 5)(all 12 7)(all 13 8)(all 14 10)(all 16 8)(all 18 9)(all 19 8)(all 20 6)(all 21 5)";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 10 4)(all 11 5)(all 12 7)(all 13 15)(all 14 10)(all 16 8)(all 18 9)(all 19 8)(all 20 6)(all 21 5)";
                         xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVGel\"),\nD:CommitTableCellEdit";
                         xrtTblMaxLengthSeries = "(all 11 255)(all 19 255)(all 21 255)";
@@ -2736,6 +2736,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:Clear(clearLists = 3)";
                                       }
                                       {
                                         Clear1 = MenuPush : mgiMenu;
@@ -2759,8 +2761,6 @@ Shift<Key>Tab: prev-tab-group()
                               resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
-                                  Group: Widget
-                                    managed = True;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -2783,15 +2783,14 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Strain = Strain : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_form;
                                     rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_form;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 5;
-                                    leftWidget = ID;
-                                    topWidget = ID;
                                     topOffset = 5;
+                                    leftOffset = 5;
                                 }
                                 {
                                   AllelePair = TableLabel : mgiTable;
@@ -2844,6 +2843,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Clear(clearLists = 3)";
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftOffset = 2;
@@ -2953,13 +2954,26 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             panedWindow = XmPanedWindow;
                                 {
-                                  QueryList = QueryList : mgiLookup;
+                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
-                                        Label = LookupLabel;
+                                        Table = mgiTable;
                                         Group: Widget
-                                          labelString = "0 Available Assay Genotypes";
-                                        Group: User
-                                          defaultLabel = "Available Assay Genotypes";
+                                          xrtTblVisibleRows = 1;
+                                      }
+                                      {
+                                        Add = TablePush;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Delete = TablePush;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                           }
