@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Aug 29 10:37:58 2001";
+      lastWritten = "Thu Aug 30 09:34:54 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1324,6 +1324,12 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       MRKTransferDialog = MRKTransferDialog : mgiDialog;
                     }
+                    {
+                      NextRecordDialog = NextRecordDialog : mgiDialog;
+                      Group: Widget
+                        okCallback = "D:NextISResult";
+                        cancelCallback = "D:NextISResult(answer = false)";
+                    }
               }
         }
         {
@@ -1575,6 +1581,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblTraversableSeries = "(all 0-11 False)";
                         xrtTblValidateCellCallback = "D:CopySpecimen,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVSpecimen\"),\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 10;
+                        xrtTblTraverseCellCallback = "D:DetectISResultModification";
                       Group: User
                         saveEditableSeries = "(all 0-2 False)(all 13-22 False)(all 15 True)";
                         saveTraversableSeries = "(all 0-11 False)";
@@ -1816,7 +1823,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                   Group: User
                                     noteWidget = CopyrightNote;
-                                    note = "This image is from * and is displayed with the permission of The Company of Developmental Biologists who owns the Copyright.";
+                                    note = "This image is from * and is displayed with the permission of The Company of Biologists who owns the Copyright.";
                                 }
                                 {
                                   DevBiolNote = AppendNotePush : mgiDataTypes;
@@ -2850,22 +2857,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Allele Pairs";
                                             }
                                       }
-                                }
-                                {
-                                  AssignGenotype = push : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Assign Current Genotype To Assay";
-                                    activateCallback = "D:AssignGenotypeToAssay";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = AllelePair;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AllelePair;
-                                    topOffset = 20;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 150;
                                 }
                           }
                     }

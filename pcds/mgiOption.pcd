@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 28 14:20:25 2001";
+      lastWritten = "Thu Aug 30 08:16:17 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1535,16 +1535,6 @@ Module: mgiOption
                 GenotypeSpecimenClipboard = GenotypeSpecimenClipboard : mgiLookup;
               }
               {
-                GenotypePush = TableDialogPush : mgiDataTypes;
-                Group: Widget
-                  activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
-                  labelString = "Edit Genotypes";
-                Group: User
-                  tableColumn = 13;
-                  tableKeyColumn = 4;
-                  targetWidget = Specimen;
-              }
-              {
                 AgeMenu = AgeMenu : mgiOption;
                     Popups:
                     {
@@ -1752,18 +1742,6 @@ Module: mgiOption
                       Group: Widget
                         visibleItemCount = 3;
                     }
-              }
-              {
-                GenotypePush = TableDialogPush : mgiDataTypes;
-                Group: Widget
-                  activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
-                  labelString = "Edit Genotypes";
-                Group: Control
-                  vipComment = "";
-                Group: User
-                  tableColumn = 13;
-                  tableKeyColumn = 3;
-                  targetWidget = GelLane;
               }
               {
                 GelControlMenu = GelControlMenu : mgiOption;

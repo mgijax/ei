@@ -42,11 +42,7 @@ These interfaces are independent applications which share template components an
 <LI><A HREF="#deletions">Deletions of Cross-Referenced Objects</A>
 <LI><A HREF="MEIUtilities.html">Editorial Utilities</A>
 <LI><A HREF="#logs">Logs</A>
-<LI><A HREF="#runningProd">Running the Production Applications</A>
-<LI><A HREF="#runningDev">Running the Development Applications</A>
-<LI><A HREF="#triggers">Triggers</A>
-<LI><A HREF="#views">Views</A>
-<LI><A HREF="#procedures">Stored Procedures</A>
+<LI><A HREF="#runningApps">Running the Applications</A>
 <LI><A HREF="MEIRelease.html">Release Process</A>
 <LI><A HREF="MEIPermission.html">Editing Scope and Table Permissions</A>
 </OL>
@@ -618,202 +614,44 @@ for the SE staff when debugging any problems which may arise with the applicatio
 <P>
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Application<TH>Log File
-<TR><TD>MGD Production<TD><CODE>$HOME/.mgd-log</CODE> and <CODE>$HOME/.mgd_stats_log</CODE>
-<TR><TD>GXD Production<TD><CODE>$HOME/.gxd-log</CODE>
-<TR><TD>Administration Production<TD><CODE>$HOME/.mgiadmin-log</CODE>
-<TR><TD>MGD Development<TD><CODE>$HOME/.mgd_dev-log</CODE> and <CODE>$HOME/.mgd_dev_stats_log</CODE>
-<TR><TD>GXD Development<TD><CODE>$HOME/.gxd_dev-log</CODE>
-<TR><TD>Administration Development<TD><CODE>$HOME/.mgiadmin_dev-log</CODE>
+<TR><TD>MGD Production<TD><CODE>$HOME/.ei-log</CODE> and <CODE>$HOME/.mgd_stats_log</CODE>
+<TR><TD>GXD Production<TD><CODE>$HOME/.ei-log</CODE>
+<TR><TD>Administration Production<TD><CODE>$HOME/.ei-log</CODE>
+<TR><TD>MGD Development<TD><CODE>$HOME/.eidev-log</CODE> and <CODE>$HOME/.mgd_dev_stats_log</CODE>
+<TR><TD>GXD Development<TD><CODE>$HOME/.eidev-log</CODE>
+<TR><TD>Administration Development<TD><CODE>$HOME/.eidev-log</CODE>
 </TABLE>
 
 <HR>
-<A NAME="runningProd"><H4>Running the Production Applications</H4></A>
-All Production applications can be run from a either a Solaris Workstation or a MacIntosh.
+<A NAME="runningApps"><H4>Running the Applications</H4></A>
+All applications can be run from a either a Solaris Workstation or a MacIntosh.
 <P>
-To run the Production Applications from a Solaris Workstation:
+To run the Applications from a Solaris Workstation:
 	<OL>
 	<LI><CODE>xhost +</CODE>
 	<LI><CODE>rsh titan</CODE>
 	<LI><CODE>setenv DISPLAY &lt;your hostname&gt;:0</CODE>
 	<LI><TABLE BORDER=1>
 	    <TR ALIGN=left><TH>Application<TH>Script
-	    <TR><TD>MGD<TD><CODE>/usr/local/mgi/ei/mgd/runmgd&</CODE>
-	    <TR><TD>GXD<TD><CODE>/usr/local/mgi/ei/gxd/rungxd&</CODE>
-	    <TR><TD>MGI Admin<TD><CODE>/usr/local/mgi/ei/mgiadmin/runmgiadmin&</CODE>
+	    <TR><TD>Production MGI Menu<TD><CODE>/usr/local/mgi/ei/prod/mgi/runmgi&</CODE>
+	    <TR><TD>Production MGI Admin<TD><CODE>/usr/local/mgi/ei/prod/runapp mgiadmin&</CODE>
+	    <TR><TD>Development MGI Menu<TD><CODE>/usr/local/mgi/ei/dev/mgi/runmgi&</CODE>
+	    <TR><TD>Development MGI Admin<TD><CODE>/usr/local/mgi/ei/dev/runapp mgiadmin&</CODE>
 	    </TABLE>
 	<LI>At the application login screen, type in your SYBASE login and password.
 	</OL>
 <P>
-To run the Production Applications from a MacIntosh:
+To run the Applications from a MacIntosh:
 	<OL>
 	<LI><TABLE BORDER=1>
 	    <TR ALIGN=left><TH>Application<TH>eXodus connections->
-	    <TR><TD>MGD<TD>MGD
-	    <TR><TD>GXD<TD>GXD
-	    <TR><TD>MGI Admin<TD>MGI Admin
+	    <TR><TD>Production MGI Menu<TD>MGI menu - production
+	    <TR><TD>Development MGI Menu<TD>MGI menu - development
 	    </TABLE>
 	<LI>At the first login screen, type in your UNIX login and password
 	<LI>At the application login screen, type in your SYBASE login and password.
 	</OL>
 <P>
-
-<HR>
-<A NAME="runningDev"><H4>Running the Development Applications</H4></A>
-All Development applications can be run from a either a Solaris Workstation or a MacIntosh.
-<P>
-To run the Development Applications from a Solaris Workstation:
-	<OL>
-	<LI><CODE>xhost +</CODE>
-	<LI><CODE>rsh kelso</CODE>
-	<LI><CODE>setenv DISPLAY &lt;your hostname&gt;:0</CODE>
-	<LI><TABLE BORDER=1>
-	    <TR ALIGN=left><TH>Application<TH>Script
-	    <TR><TD>MGD<TD><CODE>/usr/local/mgi/ei/mgd/runmgd-dev&</CODE>
-	    <TR><TD>GXD<TD><CODE>/usr/local/mgi/ei/gxd/rungxd-dev&</CODE>
-	    <TR><TD>MGI Admin<TD><CODE>/usr/local/mgi/ei/mgiadmin/runmgiadmin-dev&</CODE>
-	    </TABLE>
-	<LI>At the application login screen, type in your SYBASE login and password.
-	</OL>
-
-<P>
-To run the Development MGD from a MacIntosh:
-	<OL>
-	<LI><TABLE BORDER=1>
-	    <TR ALIGN=left><TH>Application<TH>eXodus connections->
-	    <TR><TD>MGD<TD>MGD Development
-	    <TR><TD>GXD<TD>GXD Development
-	    <TR><TD>MGI Admin<TD>MGI Admin Development
-	    </TABLE>
-	<LI>At the first login screen, type in your UNIX login and password
-	<LI>At the application login screen, type in your SYBASE login and password.
-	</OL>
-<P>
-
-<HR>
-<A NAME="triggers"><H4>Triggers</H4></A>
-<PRE>(dbschema/triggers/mgd)</PRE>
-<OL>
-<LI><I>ACC.tr</I>, <I>ACC.drop</I>
-<BR>Contains trigger definitions for Accession tables.
-<LI><I>ALL.tr</I>, <I>ALL.drop</I>
-<BR>Contains trigger definitions for Allele tables.
-<LI><I>BIB.tr</I>, <I>BIB.drop</I>
-<BR>Contains trigger definitions for Reference tables.
-<LI><I>CRS.tr</I>, <I>CRS.drop</I>
-<BR>Contains trigger definitions for Cross Lookup tables.
-<LI><I>HMD.tr</I>, <I>HMD.drop</I>
-<BR>Contains trigger definitions for Homology tables.
-<LI><I>MLD.tr</I>, <I>MLD.drop</I>
-<BR>Contains trigger definitions for Experiment tables.
-<LI><I>MRK.tr</I>, <I>MRK.drop</I>
-<BR>Contains trigger definitions for Marker tables.
-<LI><I>PRB.tr</I>, <I>PRB.drop</I>
-<BR>Contains trigger definitions for Molecular Probe & Segment tables.
-<LI><I>RI.tr</I>, <I>RI.drop</I>
-<BR>Contains trigger definitions for RI Set Lookup tables.
-<LI><I>GXD_CV.tr</I>, <I>GXD_CV.drop</I>
-<BR>Contains trigger definitions for Controlled Vocabulary tables.
-<LI><I>IMG.tr</I>, <I>IMG.drop</I>
-<BR>Contains trigger definitions for Image tables (<I>IMG_</I>).
-<LI><I>GXD.tr</I>, <I>GXD.drop</I>
-<BR>Contains trigger definitions for all other GXD tables.
-</OL>
-
-<PRE>(dbschema/triggers/nomen)</PRE>
-<OL>
-<LI><I>NOMEN.tr</I>, <I>NOMEN.drop</I>
-<BR>Contains trigger definitions for Nomenclature tables.
-</OL>
-
-<PRE>(dbschema/triggers/strains)</PRE>
-<OL>
-<LI><I>MLP.tr</I>, <I>MLP.drop</I>
-<BR>Contains trigger definitions for Strains tables.
-</OL>
-
-<HR>
-<A NAME="views"><H4>Views</H4></A>
-<PRE>(dbschema/views/mgd)</PRE>
-<OL>
-<LI><I>ACC.view</I>
-<BR>Contains view definitions for Accession tables.
-<LI><I>ALL.view</I>
-<BR>Contains view definitions for Allele tables.
-<LI><I>BIB.view</I>
-<BR>Contains view definitions for Reference tables.
-<LI><I>CRS.view</I>
-<BR>Contains view definitions for Cross Lookup tables.
-<LI><I>HMD.view</I>
-<BR>Contains view definitions for Homology tables.
-<LI><I>MLD.view</I>
-<BR>Contains view definitions for Experiment tables.
-<LI><I>MRK.view</I>
-<BR>Contains view definitions for Marker tables.
-<LI><I>PRB.view</I>
-<BR>Contains view definitions for Molecular Probe & Segment tables.
-<LI><I>SUM.view</I>
-<BR>Contains summary view definitions for Web Accession number query form.
-<LI><I>IMG.view</I>
-<BR>Contains view definitions for Image tables (<I>IMG_</I>).
-<LI><I>GXD.view</I>
-<BR>Contains view definitions for GXD tables (<I>GXD_</I>).
-<LI><I>SUM.view</I>
-<BR>Contains summary view definitions for Web Accession number query form.
-</OL>
-
-<PRE>(dbschema/views/nomen)</PRE>
-<OL>
-<LI><I>NOMEN.view</I>
-<BR>Contains view definitions for Nomenclature tables.
-</OL>
-
-<PRE>(dbschema/views/strains)</PRE>
-<OL>
-<LI><I>MLP.view</I>
-<BR>Contains view definitions for Strain tables.
-</OL>
-
-<HR>
-<A NAME="procedures"><H4>Stored Procedures</H4></A>
-<PRE>(dbschema/procedures/mgd)</PRE>
-<OL>
-<LI><I>ACC.pr</I>
-<BR>Contains stored procedure definitions for Accession tables.
-<LI><I>ALL.pr</I>
-<BR>Contains stored procedure definitions for Allele tables.
-<LI><I>BIB.pr</I>
-<BR>Contains stored procedure definitions for Reference tables.
-<LI><I>HMD.pr</I>
-<BR>Contains stored procedure definitions for Homology tables.
-<LI><I>MISC.pr</I>
-<BR>Contains stored procedure definitions for Miscellaneous things.
-<LI><I>MLC.pr</I>
-<BR>Contains stored procedure definitions for MLC tables.
-<LI><I>MLD.pr</I>
-<BR>Contains stored procedure definitions for Experiment tables.
-<LI><I>MRK.pr</I>
-<BR>Contains stored procedure definitions for Marker tables.
-<LI><I>MRKXfer.pr</I>
-<BR>Contains stored procedure definitions for Marker Transfer utility.
-<LI><I>MRKwithdrawal.pr</I>
-<BR>Contains stored procedure definitions for Marker Withdrawals utility.
-<LI><I>PRB.pr</I>
-<BR>Contains stored procedure definitions for Molecular Probe & Segment tables.
-<LI><I>GXD.pr</I>
-<BR>Contains stored procedure definitions for GXD tables.
-</OL>
-
-<PRE>(dbschema/procedures/nomen)</PRE>
-<OL>
-<LI><I>NOMEN.pr</I>
-<BR>Contains stored procedure definitions for Nomenclature tables.
-</OL>
-
-<PRE>(dbschema/procedures/strains)</PRE>
-<OL>
-<LI><I>MLP.pr</I> and <I>MISC.pr</I>
-<BR>Contains stored procedure definitions for Strains tables.
-</OL>
 
 <HR>
 
