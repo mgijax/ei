@@ -1,3 +1,9 @@
+TAG: ei-1-5-18-patch-4
+DATE: 04/20/2000
+STAFF: lec
+RELEASE: A
+CHANGES: Fix insert allele in broadcast.py
+
 TAG: ei-1-5-18-patch-3
 DATE: 04/05/2000
 STAFF: lec
