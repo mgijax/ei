@@ -1876,7 +1876,7 @@ rules:
                       "select _Marker_key, accID, _Accession_key " +
                       "from MRK_NonMouse_View " +
                       "where _Marker_key = " + whichMarker +
-                      " and LogicalDB = 'LocusLink'";
+                      " and LogicalDB = 'Entrez Gene'";
  
             dbproc := mgi_dbopen();
             (void) dbcmd(dbproc, select);
