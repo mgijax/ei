@@ -2525,6 +2525,7 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(table, row, table.rnaKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.rna, mgi_getstr(dbproc, 17));
+	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.label, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.sampleAmt, mgi_getstr(dbproc, 8));
