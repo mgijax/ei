@@ -1,3 +1,10 @@
+TAG: ei-8-0-14
+DATE: 11/22/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) utilities/*.py; db.useOneConnection()
+
 TAG: ei-8-0-13
 DATE: 11/20/2002
 STAFF: lec
