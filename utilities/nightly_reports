@@ -94,6 +94,7 @@ MRK_Mutants3.sql \
 MRK_MLC.py \
 MRK_Recent.sql \
 PRB_AltTranscripts.py \
+PRB_PrimerSeq.py \
 PRB_Strain1.sql \
 PRB_Strain2.sql \
 PRB_TissueMouse.sql"
