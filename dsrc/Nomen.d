@@ -345,17 +345,6 @@ rules:
 	  Clear.clearKeys := ClearNomen.clearKeys;
 	  Clear.reset := ClearNomen.reset;
 	  send(Clear, 0);
-
-	  -- Initialize Reference table
-
-	  if (not ClearNomen.reset) then
-	    InitRefTypeTable.table := top->Reference->Table;
-	    InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
-	    send(InitRefTypeTable, 0);
-	    InitSynTypeTable.table := top->Synonym->Table;
-	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
-	    send(InitSynTypeTable, 0);
-	  end if;
 	end does;
 
 --
@@ -893,14 +882,6 @@ rules:
 	    send(ClearTable, 0);
 	  end while;
 	  tables.close;
-
-	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
-	  send(InitRefTypeTable, 0);
-
-	  InitSynTypeTable.table := top->Synonym->Table;
-	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
-	  send(InitSynTypeTable, 0);
 
           (void) busy_cursor(top);
 

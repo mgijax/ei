@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 14 09:29:37 2005";
+      lastWritten = "Tue Mar 15 14:12:34 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -524,23 +524,23 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"5\"\nrefsCurrentTypeKey:Int(Int)=\"4\"\nreviewKey:Int(Int)=\"6\"\nreview:Int(Int)=\"10\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\n";
-                  xrtTblNumColumns = 11;
-                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Type key,Review key,Type,J#,Citation,Review?";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 60)";
-                  xrtTblMaxLengthSeries = "(all 9 255)";
-                  xrtTblPixelWidthSeries = "(all 0-6 0)(all 10 0)";
-                  xrtTblEditableSeries = "(all 0-7 False)(all 9-10 False)";
-                  xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)";
+                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"4\"\nreviewKey:Int(Int)=\"5\"\nreview:Int(Int)=\"9\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\n";
+                  xrtTblNumColumns = 10;
+                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Review key,Type,J#,Citation,Review?";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 60)";
+                  xrtTblMaxLengthSeries = "(all 8 255)";
+                  xrtTblPixelWidthSeries = "(all 0-5 0)(all 9 0)";
+                  xrtTblEditableSeries = "(all 0-6 False)(all 8-9 False)";
+                  xrtTblTraversableSeries = "(all 0-6 False)(all 8-9 False)";
                 Group: User
-                  citation = 9;
-                  jnum = 8;
+                  citation = 8;
+                  jnum = 7;
                   refsKey = 3;
                   refsCurrentKey = 2;
-                  requiredColumns = "3\n5";
-                  refsType = 7;
-                  saveEditableSeries = "(all 0-7 False)(all 9-10 False)";
-                  saveTraversableSeries = "(all 0-7 False)(all 9-10 False)";
+                  requiredColumns = "3\n4";
+                  refsType = 6;
+                  saveEditableSeries = "(all 0-6 False)(all 8-9 False)";
+                  saveTraversableSeries = "(all 0-6 False)(all 8-9 False)";
               }
               {
                 AddRow = TablePush : mgiTable;

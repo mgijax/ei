@@ -198,20 +198,11 @@ rules:
 --
 
 	ClearSequence does
-
 	  Clear.source_widget := top;
 --	  Clear.clearLists := 3;
 	  Clear.clearKeys := ClearSequence.clearKeys;
 	  Clear.reset := ClearSequence.reset;
 	  send(Clear, 0);
-
-	  -- Initialize Reference table
-
-	  if (not ClearSequence.reset) then
-	    InitRefTypeTable.table := top->Reference->Table;
-	    InitRefTypeTable.tableID := MGI_REFTYPE_SEQUENCE_VIEW;
-	    send(InitRefTypeTable, 0);
-	  end if;
 	end does;
 
 --

@@ -349,17 +349,6 @@ rules:
 	  Clear.clearKeys := ClearMarker.clearKeys;
 	  Clear.reset := ClearMarker.reset;
 	  send(Clear, 0);
-
-	  -- Initialize Synonym table
-
-	  if (not ClearMarker.reset) then
-	    InitRefTypeTable.table := top->Reference->Table;
-	    InitRefTypeTable.tableID := MGI_REFTYPE_MARKER_VIEW;
-	    send(InitRefTypeTable, 0);
-	    InitSynTypeTable.table := top->Synonym->Table;
-	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
-	    send(InitSynTypeTable, 0);
-	  end if;
 	end does;
 
 --

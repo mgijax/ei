@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 15:27:59 2005";
+      lastWritten = "Tue Mar 15 14:25:47 2005";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -274,7 +274,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-6 0)";
+                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -288,7 +288,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Nomen_View order by _RefAssocType_key";
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Nomen_View order by assocType";
                                             }
                                       }
                                       {

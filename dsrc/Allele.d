@@ -236,17 +236,6 @@ rules:
 	  Clear.reset := ClearAllele.reset;
 	  send(Clear, 0);
 
-	  -- Initialize Reference table
-
-	  if (not ClearAllele.reset) then
-	    InitRefTypeTable.table := top->Reference->Table;
-	    InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
-	    send(InitRefTypeTable, 0);
-	    InitSynTypeTable.table := top->Synonym->Table;
-	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_ALLELE_VIEW;
-	    send(InitSynTypeTable, 0);
-	  end if;
-
 	  -- Set Note button
           SetNotesDisplay.note := top->markerDescription->Note;
           send(SetNotesDisplay, 0);
@@ -982,10 +971,6 @@ rules:
 	  InitAcc.table := accTable;
           send(InitAcc, 0);
  
-	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
-	  send(InitRefTypeTable, 0);
-
 	  tables.open;
 	  while (tables.more) do
 	    ClearTable.table := tables.next;
