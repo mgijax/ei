@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 28 15:28:30 2002";
+      lastWritten = "Thu Apr  4 12:45:15 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -645,13 +645,19 @@ Module: mgiFantom
                                 {
                                   copyGBAtoFinal = push : mgiDataTypes;
                                   Group: Widget
-                                    labelString = "Copy RA MGI ID\nto Final MGI ID";
+                                    labelString = "Copy RA MGI ID to Final MGI ID";
                                     activateCallback = "D:CopyGBAtoFinal\nD:GoHome";
+                                }
+                                {
+                                  copyClonetoFinal = push : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Copy Clone ID to Final MGI ID";
+                                    activateCallback = "D:CopyClonetoFinal\nD:GoHome";
                                 }
                                 {
                                   copyColumn = push : mgiDataTypes;
                                   Group: Widget
-                                    labelString = "Copy Column Value\nTo All Zilch Rows";
+                                    labelString = "Copy Column Value To All Zilch Rows";
                                     activateCallback = "D:CopyColumn\nD:GoHome";
                                 }
                                 {
