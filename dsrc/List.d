@@ -422,6 +422,8 @@ rules:
 	  textWidget : widget;
 	  keyWidget : widget;
 
+	  list_w.row := SelectLookupListItem.item_position;
+
 	  -- If no target specified or no item selected, return
 
 	  if (targetWidget = nil or list_w.selectedItemCount = 0) then
