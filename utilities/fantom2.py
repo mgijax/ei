@@ -66,70 +66,119 @@ except:
 		
 results = db.sql(sqlCmd, 'auto')
 
+fantomKey = -1
+createdBy = ''
+cDate = ''
+modifiedBy = ''
+mDate = ''
+nomennote = ''
+rikennote = ''
+curatornote = ''
+
 # Escape all commas embedded in text fields (since comma is the field delimiter)
 
 for r in results:
-	fp.write('X' + DELIM + \
-	         `r['_Fantom2_key']` + DELIM)
 
-	printIt = mgi_utils.prvalue(r['gba_name'])
-	if len(printIt) > 0:
-		printIt = regsub.gsub(',', '\,', r['gba_name'])
-	fp.write(printIt + DELIM)
+	noteType = r['noteType']
+	note = mgi_utils.prvalue(r['note'])
+	if len(note) > 0:
+		note = regsub.gsub(',', '\,', note)
+		note = regsub.gsub('\n', '\\n', note)
 
-	fp.write(`r['riken_seqid']` + DELIM + \
-	         mgi_utils.prvalue(r['riken_cloneid']) + DELIM + \
-	         mgi_utils.prvalue(r['genbank_id']) + DELIM + \
-	         `r['seq_length']` + DELIM + \
-	         mgi_utils.prvalue(r['seq_note']) + DELIM + \
-	         mgi_utils.prvalue(r['seq_quality']) + DELIM + \
-	         mgi_utils.prvalue(r['riken_locusid']) + DELIM + \
-	         mgi_utils.prvalue(r['tiger_tc']) + DELIM + \
-	         mgi_utils.prvalue(r['unigene_id']) + DELIM + \
-	         mgi_utils.prvalue(r['riken_cluster']) + DELIM + \
-	         mgi_utils.prvalue(r['riken_locusStatus']) + DELIM + \
-	         mgi_utils.prvalue(r['mgi_statusCode']) + DELIM + \
-	         mgi_utils.prvalue(r['mgi_numberCode']) + DELIM + \
-	         mgi_utils.prvalue(r['blast_hit']) + DELIM + \
-	         mgi_utils.prvalue(r['blast_expect']) + DELIM)
+	if r['_Fantom2_key'] != fantomKey:
 
-	printIt = mgi_utils.prvalue(r['auto_annot'])
-	if len(printIt) > 0:
-		printIt = regsub.gsub(',', '\,', r['auto_annot'])
-	fp.write(printIt + DELIM)
+		if fantomKey != -1:
+			fp.write(mgi_utils.prvalue(nomennote) + DELIM + \
+			         mgi_utils.prvalue(rikennote) + DELIM + \
+			         mgi_utils.prvalue(curatornote) + DELIM + \
+	         	         createdBy + DELIM + \
+	         	         cDate + DELIM + \
+	         	         modifiedBy + DELIM + \
+	         	         mDate + DELIM + CRT)
+		
+		fantomKey = r['_Fantom2_key']
+		createdBy = r['createdBy']
+		cDate = r['cDate']
+		modifiedBy = r['modifiedBy']
+		mDate = r['mDate']
 
-	printIt = mgi_utils.prvalue(r['info_annot'])
-	if len(printIt) > 0:
-		printIt = regsub.gsub(',', '\,', r['info_annot'])
-	fp.write(printIt + DELIM)
+		fp.write('X' + DELIM + \
+	         	`fantomKey` + DELIM)
 
-	fp.write(mgi_utils.prvalue(r['cat_id']) + DELIM + \
-	         mgi_utils.prvalue(r['gba_mgiID']) + DELIM +
-	         mgi_utils.prvalue(r['gba_symbol']) + DELIM +
-	         mgi_utils.prvalue(r['final_mgiID']) + DELIM + \
-	         mgi_utils.prvalue(r['final_symbol1']) + DELIM)
+		printIt = mgi_utils.prvalue(r['gba_name'])
+		if len(printIt) > 0:
+			printIt = regsub.gsub(',', '\,', r['gba_name'])
+		fp.write(printIt + DELIM + \
+	         	`r['genbank_id_inMGI']` + DELIM)
 
-	printIt = mgi_utils.prvalue(r['final_name1'])
-	if len(printIt) > 0:
-		printIt = regsub.gsub(',', '\,', r['final_name1'])
-	fp.write(printIt + DELIM)
+		fp.write(`r['riken_seqid']` + DELIM + \
+	         	mgi_utils.prvalue(r['riken_cloneid']) + DELIM + \
+	         	mgi_utils.prvalue(r['genbank_id']) + DELIM + \
+	         	mgi_utils.prvalue(r['gba_mgiID']) + DELIM +
+	         	mgi_utils.prvalue(r['gba_symbol']) + DELIM +
+	         	`r['seq_length']` + DELIM + \
+	         	mgi_utils.prvalue(r['seq_note']) + DELIM + \
+	         	mgi_utils.prvalue(r['seq_quality']) + DELIM + \
+	         	mgi_utils.prvalue(r['riken_locusid']) + DELIM + \
+	         	mgi_utils.prvalue(r['tiger_tc']) + DELIM + \
+	         	mgi_utils.prvalue(r['unigene_id']) + DELIM + \
+	         	mgi_utils.prvalue(r['riken_cluster']) + DELIM + \
+	         	mgi_utils.prvalue(r['riken_locusStatus']) + DELIM + \
+	         	mgi_utils.prvalue(r['mgi_statusCode']) + DELIM + \
+	         	mgi_utils.prvalue(r['mgi_numberCode']) + DELIM + \
+	         	mgi_utils.prvalue(r['blast_hit']) + DELIM + \
+	         	mgi_utils.prvalue(r['blast_expect']) + DELIM)
 
-	fp.write(mgi_utils.prvalue(r['final_symbol2']) + DELIM)
+		printIt = mgi_utils.prvalue(r['auto_annot'])
+		if len(printIt) > 0:
+			printIt = regsub.gsub(',', '\,', r['auto_annot'])
+		fp.write(printIt + DELIM)
 
-	printIt = mgi_utils.prvalue(r['final_name2'])
-	if len(printIt) > 0:
-		printIt = regsub.gsub(',', '\,', r['final_name2'])
-	fp.write(printIt + DELIM)
+		printIt = mgi_utils.prvalue(r['info_annot'])
+		if len(printIt) > 0:
+			printIt = regsub.gsub(',', '\,', r['info_annot'])
+		fp.write(printIt + DELIM)
 
-	fp.write(mgi_utils.prvalue(r['nomen_event']) + DELIM + \
-	         mgi_utils.prvalue(r['nomen_detail']) + DELIM + \
-	         DELIM + \
-	         DELIM + \
-	         DELIM + \
-	         r['createdBy'] + DELIM + \
-	         r['cDate'] + DELIM + \
-	         r['modifiedBy'] + DELIM + \
-	         r['mDate'] + DELIM + \
-	         CRT)
+		fp.write(mgi_utils.prvalue(r['cat_id']) + DELIM + \
+	         	mgi_utils.prvalue(r['final_mgiID']) + DELIM + \
+	         	mgi_utils.prvalue(r['final_symbol1']) + DELIM)
+
+		printIt = mgi_utils.prvalue(r['final_name1'])
+		if len(printIt) > 0:
+			printIt = regsub.gsub(',', '\,', r['final_name1'])
+		fp.write(printIt + DELIM)
+
+		fp.write(mgi_utils.prvalue(r['final_symbol2']) + DELIM)
+
+		printIt = mgi_utils.prvalue(r['final_name2'])
+		if len(printIt) > 0:
+			printIt = regsub.gsub(',', '\,', r['final_name2'])
+		fp.write(printIt + DELIM)
+
+		fp.write(mgi_utils.prvalue(r['nomen_event']) + DELIM + \
+	         	mgi_utils.prvalue(r['nomen_detail']) + DELIM)
+
+		if noteType == 'N':
+			nomennote = note
+		elif noteType == 'R':
+			rikennote = note
+		elif noteType == 'C':
+			curatornote = note
+	else:
+		if noteType == 'N':
+			nomennote = nomennote + note
+		elif noteType == 'R':
+			rikennote = rikennote + note
+		elif noteType == 'C':
+			curatornote = curatornote + note
+# last record
+
+fp.write(mgi_utils.prvalue(nomennote) + DELIM + \
+         mgi_utils.prvalue(rikennote) + DELIM + \
+         mgi_utils.prvalue(curatornote) + DELIM + \
+	 createdBy + DELIM + \
+	 cDate + DELIM + \
+	 modifiedBy + DELIM + \
+	 mDate + DELIM + CRT)
 
 fp.close()		
