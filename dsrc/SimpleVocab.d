@@ -168,8 +168,8 @@ rules:
           cmd := mgi_setDBkey(VOC_VOCAB, NEWKEY, KEYNAME) +
                  mgi_DBinsert(VOC_VOCAB, KEYNAME) +
 		 top->mgiCitation->ObjectID->text.value + "," +
-		 top->ACCLogicalMenu.menuHistory.defaultValue + "," +
-		 top->ACCPrivateMenu.menuHistory.defaultValue + ",1," +
+		 top->ACCLogicalMenu.menuHistory.defaultValue + ",1" +
+		 top->ACCPrivateMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(top->Name->text.value) + ")\n";
 
 	  send(ModifyTerm, 0);

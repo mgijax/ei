@@ -418,7 +418,8 @@ rules:
           end while;
 
 	  cmd := cmd + localCmd;
-	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_ALLELEPAIR) + "'," + currentRecordKey + "\n";
+--	  cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(GXD_ALLELEPAIR) + "'," + currentRecordKey + "\n";
+	  cmd := cmd + "exec GXD_orderAllelePairs " + currentRecordKey + "\n";
         end does;
 
 --
