@@ -150,9 +150,17 @@ rules:
 		  end if;
 		  clearForm.child(i).modified := false;
 
+		-- For mgiNoteForm
+
+		elsif (clearForm.child(i).name = "mgiNoteForm") then
+	          -- Clear/Set Notes
+	          ClearSetNoteForm.notew := clearForm.child(i);
+	          ClearSetNoteForm.clearNote := not Clear.reset;
+	          send(ClearSetNoteForm, 0);
+
 		-- For XmOption menus (except the ControlForm and Lookups)...
 
-		elsif (clearForm.name != "ControlForm" and clearForm.child(i).name != "mgiNoteForm" and class = "XmRowColumn") then
+		elsif (clearForm.name != "ControlForm" and class = "XmRowColumn") then
 
 		  -- Not an XmOptionMenu
 
