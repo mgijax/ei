@@ -81,7 +81,7 @@ for i in $PUBLIC_RPTS
 do
 $i $DSQUERY $MGD
 done
-cp $HOME/mgireport/*.html $FTP
+cp $HOME/mgireport/Nomenclature-$DATETAG.html $FTP
 
 # Copy & link current report
 cd $FTP
