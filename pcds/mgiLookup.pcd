@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  2 10:26:40 2005";
+      lastWritten = "Thu Mar 17 12:41:24 2005";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -105,7 +105,7 @@ Module: mgiLookup
           LibraryList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 800;
+            vip_y = 855;
           Group: User
             cmd = "select _Source_key, name from PRB_Source where name is not null and _Source_key > 0 order by name";
               {
@@ -153,7 +153,7 @@ Module: mgiLookup
           ClassList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 855;
+            vip_y = 910;
           Group: User
             cmd = "select * from MRK_Class order by name";
               {
@@ -173,7 +173,7 @@ Module: mgiLookup
           OrthologyAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 745;
+            vip_y = 800;
           Group: User
             cmd = "select * from HMD_Assay where _Assay_key not in (7, 15) order by assay";
               {
@@ -213,7 +213,7 @@ Module: mgiLookup
           MarkerList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 910;
+            vip_y = 965;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -231,7 +231,7 @@ Module: mgiLookup
           MappingAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1185;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -251,7 +251,7 @@ Module: mgiLookup
           StrainTypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1075;
+            vip_y = 1130;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_StrainType_View order by term";
               {
@@ -271,7 +271,7 @@ Module: mgiLookup
           ESCellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1020;
+            vip_y = 1075;
           Group: User
             cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View where isMutant = 0 order by cellLine";
               {
@@ -444,7 +444,7 @@ Module: mgiLookup
           PhenoSlimList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1295;
           Group: User
             cmd = "select _Term_key, term, accID from VOC_Term_View where vocabName = \"PhenoSlim\" order by sequenceNum";
               {
@@ -465,7 +465,7 @@ Module: mgiLookup
           EvidenceCodeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1240;
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -501,7 +501,7 @@ Module: mgiLookup
           OrganismMGITypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1405;
           Group: User
             cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,18,19) order by name";
               {
@@ -521,7 +521,7 @@ Module: mgiLookup
           CloneLibrarySetList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1350;
           Group: User
             cmd = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
               {
@@ -536,7 +536,7 @@ Module: mgiLookup
           CellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1460;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_CellLine_View order by term";
               {
@@ -556,7 +556,7 @@ Module: mgiLookup
           OrganismSequenceList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1515;
           Group: User
             cmd = "select _Organism_key, commonName from MGI_Organism_Sequence_View order by commonName";
               {
@@ -576,7 +576,7 @@ Module: mgiLookup
           MutantESCellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 965;
+            vip_y = 1020;
           Group: User
             cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View where isMutant = 1 order by cellLine";
               {
@@ -590,6 +590,89 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          MPAnnotClipboard = ClipboardEditList;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 90;
+            vip_y = 745;
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "0 Annotation Clipboard Items";
+                Group: User
+                  defaultLabel = "Annotation Clipboard Items";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  visibleItemCount = 10;
+              }
+              {
+                Add = TablePush : mgiTable;
+                Group: Widget
+                  labelString = "Add Selected Annotation To Clipboard";
+              }
+              {
+                AddAll = TablePush : mgiTable;
+                Group: Widget
+                  labelString = "Add All Annotations To Clipboard";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Add;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Add;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Delete = TablePush : mgiTable;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Copy;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Copy;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                Clear = TablePush : mgiTable;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Delete;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = Delete;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Sort = TablePush : mgiTable;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                Copy = TablePush : mgiTable;
+                Group: Widget
+                  labelString = "Copy Clipboard Annotations To Table";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = AddAll;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topWidget = AddAll;
+                  topOffset = 5;
               }
         }
 }
