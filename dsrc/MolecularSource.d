@@ -72,9 +72,6 @@ rules:
 
 	  top := create widget("MolecularSourceModule", nil, mgi);
 
-          InitOptionMenu.option := top->ProbeOrganismMenu;
-          send(InitOptionMenu, 0);
-
 	  InitMolecularSource.source_widget := top;
 	  send(InitMolecularSource, 0);
 
@@ -231,7 +228,9 @@ rules:
           send(SelectMolecularSource, 0);
 
           from := top->SourceForm.sqlFrom;
-          where := top->SourceForm.sqlWhere;
+
+	  -- only allow this form to search for Named (non-Anonymous) libraries
+          where := top->SourceForm.sqlWhere + "\nand s.name != null";
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "s." + mgi_DBkey(PRB_SOURCE_MASTER);

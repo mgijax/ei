@@ -409,11 +409,11 @@ rules:
 	  InitNoteForm.tableID := MGI_NOTETYPE_SOURCE_VIEW;
 	  send(InitNoteForm, 0);
 
---	  InitOptionMenu.option := top->SourceSegmentTypeMenu;
---	  send(InitOptionMenu, 0);
+	  InitOptionMenu.option := top->SourceSegmentTypeMenu;
+	  send(InitOptionMenu, 0);
 
---	  InitOptionMenu.option := top->SourceVectorTypeMenu;
---	  send(InitOptionMenu, 0);
+	  InitOptionMenu.option := top->SourceVectorTypeMenu;
+	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->ProbeOrganismMenu;
 	  send(InitOptionMenu, 0);
