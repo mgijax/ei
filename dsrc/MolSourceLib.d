@@ -830,8 +830,8 @@ rules:
           (void) dbsqlexec(dbproc);
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := -1;
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	       row := -1;
 	       if (mgi_getstr(dbproc, 1) = "name") then
 		 row := historyTable.library;
 	       elsif (mgi_getstr(dbproc, 1) = "_Organism_key") then

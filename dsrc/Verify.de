@@ -16,6 +16,8 @@ VerifyAntibodyType [];
 
 VerifyChromosome :translation [];
 
+VerifyCellLine [ignoreRow : integer := -1;];
+
 VerifyDate :translation [];
 
 VerifyFloat [];
