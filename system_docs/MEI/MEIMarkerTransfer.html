@@ -1,45 +1,25 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGI: Marker Transfer
+MGI: Marker Transfer Report
 </TITLE>
 </HEADER>
 
 <BODY>
 
-<H2>MGI: Marker Transfer</H2>
+<H2>MGI: Marker Transfer Report</H2>
 
 <H4>Introduction</H4>
 
-<B>NOTE:</B><EM>The Marker Transfer can no longer be initiated from the EI.</EM>
-See TR809 for the rationale. The Marker Transfer form only reports on 
-which datasets would need to be transferred. This document needs to be updated
-accordingly, but for now remember that the Marker Transfer does not actually
-move any data, it just gives suggestions on what should be moved. 
-<P> 
-The Marker Transfer process allows the user to transfer data associated with one Marker Symbol/J: pair to 
-another symbol.  This is <I>not</I> equivalent to a Marker Withdrawal.
+The Marker Transfer Report tells the user which datasets are involved in a transfer
+from one Marker Symbol/J: pair to another symbol.  This process does not actually 
+transfer any data.
 
-<H4>Initiating the Transfer</H4>
-Before a Marker Transfer is initiated, the user should review the Editorial procedure for
-Marker Transfers.
-<P>
-The user should also verify with Lori Corbani or John Gilbert that she/he has permissions to 
-update all of the Data Sets involved in the transfer process.  If the user does not have all 
-of the necessary permissions, then data inconsistency will result.
-<OL>
-<LI>Homology
-<LI>MLC
-<LI>Marker Accession IDs
-<LI>GXD Assay
-<LI>GXD Antibody Marker
-<LI>Mapping
-<LI>GXD Index
-<LI>Probes
-</OL>
+<H4>Initiating the Marker Transfer Report</H4>
 
-A Marker Transfer is initiated from the MGD Editorial Interface's Marker form using the 
-<A HREF="markertransfer.gif"><I>Utilities->Marker Transfer</I></A> menu item in the top menu bar.
+A Marker Transfer Report is initiated from the MGD Editorial Interface's Marker form using the 
+<A HREF="markertransfer.gif"><I>Utilities->Marker Transfer Report</I></A> menu item in the top 
+menu bar.
 <P>
 The user is required to enter:
 <OL>
@@ -62,132 +42,8 @@ This data is validated before processing can continue.
     is displayed.
 <P>
 <LI>If there is data to transfer, the toggle buttons will indicate which datasets contain data to be transferred. 
-    Some data are transferred automatically and require no manual intervention.  Other data must be reviewed
-    by an Editor and manually migrated.
-	<P>
-	<TABLE BORDER=1>
-	<TR ALIGN=left><TH>Data Set<TH>Transfer Method<TH>MGI Accession Numbers Displayed?
-	<TR><TD>Homology<TD>Manual<TD>No
-	<TR><TD>MLC<TD>Manual<TD>No
-	<TR><TD>Marker Accession IDs<TD>Manual<TD>No
-	<TR><TD>Mapping<TD>Automatic<TD>Yes
-	<TR><TD>GXD Index<TD>Automatic<TD>No
-	<TR><TD>GXD Assay<TD>Automatic<TD>Yes
-	<TR><TD>GXD Antibody<TD>Automatic<TD>Yes
-	<TR><TD>Probes<TD>Automatic<TD>Yes
-	</TABLE>
-<P>
-<LI>The user clicks the <I>Process Transfer</I> button to process the transfer.
 <P>
 <LI>The user clicks the <I>Done</I> button to return to the main Marker form.
-</OL>
-
-<H4>Output from the Marker Transfer</H4>
-
-The transfer process outputs two files per Symbol/J: transfer.  These files are:
-<OL>
-<LI>Output to the user's <CODE>$HOME/mgireport</CODE> directory 
-<LI>Archived at <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/TRANSFER</CODE> where they are
-    available from the <A HREF="http://kelso:4444/qcr.html">Quality Control Reports</A> page.
-</OL>
-
-The output files are:
-<OL>
-<LI><I>&lt;transferMarker&gt;&lt;old symbol&gt;&lt;new symbol&gt;&lt;J#&gt;.diagnostics</I>
-    <P>Diagnostic listing of all SQL generated during processing.
-       This file is for SEs to debug any problems.
-<P>
-<LI><I>&lt;transferMarker&gt;&lt;old symbol&gt;&lt;new symbol&gt;&lt;J#&gt;.stats</I>
-     <P>Status file of transfer.  This file
-	informs the user of when the transfer was processed and what
-	records were involved in the transfer.
-	<P>
-	The status report is mailed to:
-	<UL>
-	<LI>The initiator of the transfer
-	<LI>Steve Rockwood (Probes and Homology Editor)
-	<LI>Laura Taylor (GXD Editor)
-	<LI>Richard Baldarelli (MLC Editor)
-	<LI>Lois Maltais (Nomenclature Coordinator)
-	<LI>Dirck Bradt (Mapping Editor)
-	</UL>
-     <P>An example status report:
-     <PRE>
-	To: sfr@jax.org, let@jax.org, rmb@jax.org, dbradt@jax.org, ljm@jax.org djr@jax.org
-        Subject: Transfer Crabp2.Crabp1.23773
- 
-        This message has been automatically forwarded to you by the
-        Marker Transfer program (transferMarker.py), which was initiated
-        by the sender from the Marker Editing Form.
- 
-        All Homology, MLC and Accession number references edits must be performed MANUALLY.
-        Mapping, GXD Index, GXD Antibody, GXD Assay and Probe changes
-        were processed automatically by the program.
- 
-        Please verify any changes which may affect your area of responsibility.
- 
-        Transfer Status Report - Wed Dec 02 08:42:45 1998
- 
-        Old Marker:  Crabp2 (1132)
-        New Marker:  Crabp1 (1131)
-        Reference:  J:23773 (23767)
- 
-        Manual Transfers
-        ================
- 
-        Homology : 0 records
-        MLC (From Symbol) : 0 records
-        MLC (To Symbol) : 0 records
-	Accession Numbers: 0 records
- 
-        Automatic Transfers
-        ===================
- 
-        Mapping : 0 records
- 
-        GXD Index: 1 records
- 
-        GXD Antibody: 0 records
- 
-        GXD Antibody: 1 records
-        MGI:1277580
- 
-        GXD Assays which use above Antibodies to detect the Marker: 1 records
-        MGI:1277581
- 
-        GXD Assay: 2 records
-        MGI:1277570
-        MGI:1277581
- 
-        Probes: 1 records
-        CRABP-II probe (key=721443) 
- 
-        Probes w/ >1 Reference: 0 records
-         
-        GXD Assays which use above Probes to detect the Marker: 1 records
-        MGI:1277570
-
-     </PRE>
-<P>
-</OL>
-
-<H4>Consequences of a Transfer</H4>
-<OL>
-<LI>When a Probe record is involved in a transfer, the entire Probe record is transferred to the
-    new Marker symbol.  This includes all other Reference information which may be attached to the
-    Probe.
-<P>
-</OL>
-
-<H4>Source Code</H4>
-The transfer source programs are:
-<OL>
-<LI>Production:  <CODE>titan:/usr/local/mgi/ei/mgd/transferMarker.py</CODE>
-    <BR>
-    Development:  <CODE>/home/lec/mgd/sybase/mgi_dev/utilities/transferMarker.py</CODE>
-    <P>
-    Main program.
-<P>
 </OL>
 
 <H4>Related Documents</H4>
