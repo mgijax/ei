@@ -38,7 +38,6 @@ fp = reportlib.init(sys.argv[0])
 cmd = 'select m._Marker_key, m.symbol, m.name, c._Current_key, o.offset, m.chromosome, a.accID, isPrimary = 1 ' + \
   'from MRK_Marker m, MRK_Offset o, MRK_Current c, MRK_Acc_View a ' + \
   'where m._Species_key = 1 ' + \
-  'and m.chromosome not in ("RE") ' + \
   'and m._Marker_key = o._Marker_key ' + \
   'and o.source = 0 ' + \
   'and m._Marker_key = c._Marker_key ' + \
@@ -49,7 +48,6 @@ cmd = 'select m._Marker_key, m.symbol, m.name, c._Current_key, o.offset, m.chrom
   'select m._Marker_key, m.symbol, m.name, c._Current_key, offset = null, m.chromosome, a.accID, isPrimary = 0 ' + \
   'from MRK_Marker m, MRK_Current c, MRK_Acc_View a ' + \
   'where m._Species_key = 1 ' + \
-  'and m.chromosome not in ("RE") ' + \
   'and m._Marker_key = c._Marker_key ' + \
   'and c._Current_key = a._Object_key ' + \
   'and a.prefixPart = "MGI:" ' + \

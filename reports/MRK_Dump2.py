@@ -6,7 +6,7 @@
 #
 # Report:
 #       Tab-delimited file of MGI Mouse Markers
-#       excluding Withdrawns and Reserved Symbols
+#       excluding Withdrawns Symbols
 #
 # Usage:
 #       MRK_Dump2.py
@@ -36,7 +36,7 @@ fp = reportlib.init(sys.argv[0])
 
 command = 'select symbol, name, offset_str, chromosome, mgiID ' + \
 	  'from MRK_Mouse_View ' + \
-	  'where chromosome not in ("W","RE") ' + \
+	  'where chromosome != "W" ' + \
 	  'order by symbol'
 results = mgdlib.sql(command, 'auto')
 

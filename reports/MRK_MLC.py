@@ -38,7 +38,7 @@ fp = reportlib.init(sys.argv[0])
 
 command = 'select m.mgiID, m.symbol, l.name ' + \
 	  'from MRK_Mouse_View m, MRK_Classes c, MRK_Class l ' + \
-	  'where m.chromosome not in ("W","RE") ' + \
+	  'where m.chromosome != "W" ' + \
 	  'and m._Marker_key = c._Marker_key ' + \
 	  'and c._Class_key = l._Class_key ' + \
 	  'order by m.symbol'
