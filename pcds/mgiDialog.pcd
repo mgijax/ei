@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Dec 13 08:22:18 1999";
+      lastWritten = "Thu Jan 27 10:33:47 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -327,97 +327,6 @@ Module: mgiDialog
           Group: Control
             vip_x = 80;
             vip_y = 305;
-        }
-        {
-          NLMDialog = ReportDialog : mgiDialog;
-          Group: Widget
-            dialogTitle = "NLM/Current Contents Update";
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 80;
-            vip_y = 800;
-          Group: User
-            useReportDir = False;
-              {
-                FileSelection = FileSelection;
-                Group: Widget
-                  okCallback = "D:ReportGenerate(nlmMode = 1)";
-                  okLabelString = "Update\nNLM";
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      filler = XmSeparator;
-                    }
-                    {
-                      AddNLM = XmPushButton;
-                      Group: Widget
-                        activateCallback = "D:ReportGenerate(nlmMode = 2)";
-                        labelString = "Add\nNLM";
-                    }
-                    {
-                      CurrentContents = XmPushButton;
-                      Group: Widget
-                        activateCallback = "D:ReportGenerate(nlmMode = 3)";
-                        labelString = "Update\nCurrent\nContents";
-                    }
-                    {
-                      AddCurrentContents = XmPushButton;
-                      Group: Widget
-                        activateCallback = "D:ReportGenerate(nlmMode = 4)";
-                        labelString = "Add\nCurrent\nContents";
-                    }
-              }
-              {
-                Lookup = XmFrame;
-                    {
-                      panedWindow = XmPanedWindow;
-                          {
-                            ReportList = LookupList;
-                                {
-                                  Label = LookupLabel;
-                                }
-                                {
-                                  List = list;
-                                  Group: Widget
-                                    items = "NLM/Current Contents Updates/Adds";
-                                  Group: User
-                                    keys = "nlmcc.py";
-                                }
-                          }
-                          {
-                            PrinterList = LookupList;
-                          }
-                          {
-                            PrintOrient = Choice : mgiDataTypes;
-                          }
-                          {
-                            PrintColumn = Choice : mgiDataTypes;
-                          }
-                    }
-              }
-              {
-                Jnum = Jnum : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = FileSelection;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = FileSelection;
-                  topOffset = 2;
-                  bottomAttachment = attach_form;
-                  bottomOffset = 2;
-                  resizable = true;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Starting J: (for Add only)";
-                    }
-              }
         }
         {
           VerifyItemAdd = VerifyDialog : mgiDialog;
@@ -2538,6 +2447,121 @@ Shift<Key>Tab: prev-tab-group()
               Popups:
               {
                 WhichItem = WhichItem : mgiDialog;
+              }
+        }
+        {
+          NLMDialog = ReportDialog : mgiDialog;
+          Group: Widget
+            dialogTitle = "NLM Update";
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 80;
+            vip_y = 800;
+          Group: User
+            useReportDir = False;
+              {
+                FileSelection = FileSelection;
+                Group: Widget
+                  okCallback = "D:ReportGenerate(nlmMode = 1)";
+                  okLabelString = "Update\nNLM";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    {
+                      filler = XmSeparator;
+                    }
+                    {
+                      AddNLM = XmPushButton;
+                      Group: Widget
+                        activateCallback = "D:ReportGenerate(nlmMode = 2)";
+                        labelString = "Add\nNLM";
+                    }
+                    {
+                      Print = XmPushButton;
+                    }
+                    {
+                      Delete = XmPushButton;
+                    }
+              }
+              {
+                Lookup = XmFrame;
+                    {
+                      panedWindow = XmPanedWindow;
+                          {
+                            ReportList = LookupList;
+                                {
+                                  Label = LookupLabel;
+                                }
+                                {
+                                  List = list;
+                                  Group: Widget
+                                    items = "NLM Updates/Adds";
+                                  Group: User
+                                    keys = "nlm.py";
+                                }
+                          }
+                          {
+                            PrinterList = LookupList;
+                                {
+                                  Label = LookupLabel;
+                                }
+                                {
+                                  List = list;
+                                }
+                          }
+                          {
+                            PrintOrient = Choice : mgiDataTypes;
+                                {
+                                  PrintOrientBox = XmRowColumn;
+                                      {
+                                        Portrait = toggle : mgiDataTypes;
+                                      }
+                                      {
+                                        Landscape = toggle : mgiDataTypes;
+                                      }
+                                }
+                          }
+                          {
+                            PrintColumn = Choice : mgiDataTypes;
+                                {
+                                  PrintColumnBox = XmRowColumn;
+                                      {
+                                        OneColumn = toggle : mgiDataTypes;
+                                      }
+                                      {
+                                        TwoColumn = toggle : mgiDataTypes;
+                                      }
+                                }
+                          }
+                          {
+                            Output = XmScrolledText;
+                          }
+                    }
+              }
+              {
+                Jnum = Jnum : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = FileSelection;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = FileSelection;
+                  topOffset = 2;
+                  bottomAttachment = attach_form;
+                  bottomOffset = 2;
+                  resizable = true;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = "Starting J: (for Add only)";
+                    }
+                    {
+                      text = text;
+                    }
               }
         }
 }

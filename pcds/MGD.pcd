@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Dec 10 14:55:36 1999";
+      lastWritten = "Thu Jan 27 10:34:59 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -6371,7 +6371,7 @@ Shift<Key>Tab: prev-tab-group()
                             NLM = MenuCascade : mgiMenu;
                             Group: Widget
                               activateCallback = "C: TuManage(find = NLMDialog)";
-                              labelString = "NLM/Current Contents";
+                              labelString = NLM;
                           }
                     }
                     {
