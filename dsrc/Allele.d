@@ -210,6 +210,15 @@ rules:
 	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
 	  send(InitRefTypeTable, 0);
 
+	  -- Clear/Set Notes
+	  ClearSetNoteForm.notew := top->mgiNoteForm;
+
+	  if (ClearAllele.reset) then
+	    ClearSetNoteForm.clearNote := false;
+	  end if;
+
+	  send(ClearSetNoteForm, 0);
+
 	end does;
 
 --
@@ -723,6 +732,9 @@ rules:
 	  where := where + top->Reference->Table.sqlWhere;
 
 	  -- To search each note type individually...
+	  -- remove noteTypeKey and just have one call to SearchNoteForm
+	  -- to search all note types
+
 	  i : integer := 1;
 	  while (i <= top->mgiNoteForm.numChildren) do
 	    SearchNoteForm.notew := top->mgiNoteForm;
