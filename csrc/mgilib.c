@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 07/22/2004
+ * 	- TR 6042/mgi_DBprstr/get rid of trailing and leading spaces
+ *
  * lec 05/23/2003
  *	- SAO; modifiedBy changed to _ModifiedBy_key
  *	- added global_loginKey
@@ -148,11 +151,13 @@ char *global_loginKey;        /* Set in Application dModule; holds login key val
 char *mgi_DBprstr(char *value)
 {
   static char buf[BUFSIZ];
+  char newValue[BUFSIZ];
   int allSpaces = 1;
   int i;
   char *s;
 
   memset(buf, '\0', sizeof(buf));
+  memset(newValue, '\0', sizeof(buf));
 
   for (s = value; *s != '\0'; s++)
   {
@@ -169,12 +174,24 @@ char *mgi_DBprstr(char *value)
   {
     /* replace newlines with spaces */
 
+    i = 0;
     for (s = value; *s != '\0'; s++)
     {
+      /* get rid of leading space */
+      if (i == 0 && isspace(*s))
+	  s++;
+
       if (*s == '\n')
-	*s = ' ';
+	newValue[i++] = ' ';
+      else
+	newValue[i++] = *s;
     }
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+
+    /* get rid of trailing space */
+    if (newValue[--i] == ' ')
+      newValue[i] = '\0';
+
+    sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
   }
 
   return(buf);
