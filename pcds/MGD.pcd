@@ -953,7 +953,7 @@ Module: MGD
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 25)";
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyStrainMarker,\nD:CommitTableCellEdit";
                                           xrtTblMaxLengthSeries = "(all 3 25)";
                                           userDefinedAttributes = "markerColumns:Int=\"1\"\nmarkerCurrentKey:Int=\"1\"\nmarkerKey:Int=\"2\"\nmarkerSymbol:Int=\"3\"\n";
                                           xrtTblVisibleRows = 3;
