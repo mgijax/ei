@@ -43,15 +43,14 @@ VerifyMarker :translation [source_widget : widget;
 			   allowNomen : boolean := false;
 			   verifyOtherSpecies : boolean := false;];
 
-VerifyMarkerChromosome :translation [allowMismatch : boolean := true;];
+VerifyMarkerChromosome :translation [source_widget : widget;
+				     allowMismatch : boolean := true;];
 
 VerifyMarkerInTable :translation [];
 
 VerifyMarkerAlleles : translation [];
 
 VerifyNomenMarker : translation [];
-
-VerifyProbeHolder :translation [];
 
 VerifyReference :translation [];
 

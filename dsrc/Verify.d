@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 06/14/2001
+--	- TR 2547; remove VerifyProbeHolder
+--
 -- lec 04/13/2001
 --	- VerifyMarkerAlleles; added
 --
@@ -2293,51 +2296,6 @@ rules:
 	  VerifyMarker.source_widget := VerifyNomenMarker.source_widget;
 	  VerifyMarker.allowNomen := true;
 	  send(VerifyMarker, 0);
-	end does;
-
---
--- VerifyProbeHolder
---
--- If mgiCitation and ProbeAccession keys exist, then try to get the Holder
--- from the PRB_REFERENCE table.
---
--- Assumes use of mgiCitation and mgiAccession templates.
--- Assumes mgiAccession name is ProbeAccession
--- Assumes use of Holder
---
-
-	VerifyProbeHolder does
-	  sourceWidget : widget := VerifyProbeHolder.source_widget;
-	  accTop : widget := VerifyProbeHolder.source_widget.ancestor_by_class("XmRowColumn");
-	  top : widget := accTop.top;
-
-	  top->Holder->text.value := "";
-
-	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
-	    return;
-	  end if;
-
-	  if (accTop->ObjectID->text.value.length = 0) then
-	    return;
-	  end if;
-
-	  (void) busy_cursor(top);
-
-	  select : string := "select holder from " + mgi_DBtable(PRB_REFERENCE) +
-	     " where _Refs_key = " + top->mgiCitation->ObjectID->text.value +
-	     " and _Probe_key = " + accTop->ObjectID->text.value;
-
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->Holder->text.value := mgi_getstr(dbproc, 1);
-	    end while;
-	  end while;
-	  (void) dbclose(dbproc);
-
-	  (void) reset_cursor(top);
 	end does;
 
 --
