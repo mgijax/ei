@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 22 09:48:27 2001";
+      lastWritten = "Thu Jun 14 09:48:56 2001";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -309,12 +309,10 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "Nomenclature Notes";
                                       }
                                       {
-                                        text = scrolledText;
+                                        text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           columns = 100;
-                                          editMode = multi_line_edit;
                                           rows = 3;
-                                          wordWrap = True;
                                           scrollHorizontal = False;
                                       }
                                 }

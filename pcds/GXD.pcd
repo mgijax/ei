@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Mar 27 10:57:59 2001";
+      lastWritten = "Thu Jun 14 11:33:45 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -324,7 +324,7 @@ Module: GXD
                                       {
                                         Clear = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:Clear(clearLists = 3)";
+                                          activateCallback = "D:ClearAntibody";
                                       }
                                 }
                           }
@@ -585,6 +585,14 @@ Shift<Key>Tab: prev-tab-group()
                                     rightOffset = 10;
                                       {
                                         Note = Notes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = scrolledText : mgiDataTypes;
+                                              Group: Widget
+                                                maxLength = 255;
+                                            }
                                       }
                                       {
                                         NotePush = NotePush;
@@ -605,6 +613,14 @@ Shift<Key>Tab: prev-tab-group()
                                     rightWidget = AntibodyNote;
                                       {
                                         Note = Notes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = scrolledText : mgiDataTypes;
+                                              Group: Widget
+                                                maxLength = 255;
+                                            }
                                       }
                                       {
                                         NotePush = NotePush;
@@ -624,7 +640,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:Clear(clearLists = 3)";
+                                    activateCallback = "D:ClearAntibody";
                                 }
                           }
                     }
@@ -752,6 +768,35 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                       }
+                                }
+                          }
+                    }
+                    {
+                      SearchDialog = SearchDialog : mgiDialog;
+                    }
+                    {
+                      WhichItem = WhichItem : mgiDialog;
+                    }
+                    {
+                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                    }
+                    {
+                      WorkingDialog = WorkingDialog : mgiDialog;
+                    }
+                    {
+                      NoteDialog = NoteDialog : mgiDialog;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            Note = Notes : mgiDataTypes;
+                                {
+                                  label = XmLabel;
+                                }
+                                {
+                                  text = scrolledText;
+                                  Group: Widget
+                                    maxLength = 255;
                                 }
                           }
                     }
@@ -1333,7 +1378,7 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable() VerifyProbeHolder()";
+<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable()";
                             Group: User
                               required = True;
                           }
@@ -1345,28 +1390,6 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               labelString = "Probe Name";
                           }
-                    }
-              }
-              {
-                Holder = CharText : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = ProbeAccession;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = ProbeAccession;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Probe Holder";
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 20;
-                        maxLength = 40;
                     }
               }
         }
@@ -1670,11 +1693,10 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "Copyright Notes";
                                       }
                                       {
-                                        text = scrolledText;
+                                        text = scrolledText : mgiDataTypes;
                                         Group: Widget
-                                          columns = 100;
                                           rows = 2;
-                                          editMode = multi_line_edit;
+                                          columns = 100;
                                       }
                                 }
                                 {
@@ -2046,6 +2068,36 @@ Shift<Key>Tab: prev-tab-group()
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:ClearIndex";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2097,12 +2149,26 @@ Shift<Key>Tab: prev-tab-group()
                                         label = XmLabel;
                                       }
                                       {
-                                        text = scrolledText;
+                                        text = scrolledText : mgiDataTypes;
                                         Group: Widget
-                                          columns = 75;
                                           rows = 2;
-                                          editMode = multi_line_edit;
+                                          columns = 100;
                                       }
+                                }
+                                {
+                                  StagingNotNormalized = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:StagingNotNormalized";
+                                    labelString = "Staging Not Normalized";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Note;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Note;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   Stage = TableLabel : mgiTable;
@@ -2111,7 +2177,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = Note;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = Note;
+                                    topWidget = StagingNotNormalized;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2122,10 +2188,10 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumRows = 11;
                                           xrtTblVisibleRows = 11;
                                           xrtTblNumColumns = 43;
-                                          xrtTblCharWidthSeries = "(all label 30) (all 0 1)(all 1-42 4)";
+                                          xrtTblCharWidthSeries = "(all label 10) (all 0 1)(all 1-42 4)";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          xrtTblRowLabels = "In situ protein (section),In situ RNA (section),In situ protein (whole mount),In situ RNA (whole mount),Northern blot,Western blot,RT-PCR,cDNA clones,RNase protection,Nuclease S1,Primer Extension";
-                                          xrtTblVisibleColumns = 15;
+                                          xrtTblRowLabels = "Prot-sxn,RNA-sxn,Prot-WM,RNA-WM,Northern,Western,RT-PCR,cDNA,RNase prot,S1 nuc,Primer ex";
+                                          xrtTblVisibleColumns = 19;
                                           xrtTblColumnLabels = "Mode,0.5,1,1.5,2,2.5,3,3.5,4,4.5,5,5.5,6,6.5,7,7.5,8,8.5,9,9.5,10,10.5,11,11.5,12,12.5,13,13.5,14,14.5,15,15.5,16,16.5,17,17.5,18,18.5,19,19.5,20,E,A";
                                           xrtTblEditableSeries = "(all all False)";
                                           xrtTblSelectionPolicy = select_single;
@@ -2133,6 +2199,8 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblSelectedBackground = None;
                                           xrtTblSelectedForeground = None;
                                           userDefinedAttributes = "beginX:Int=\"1\"\nendX:Int=\"42\"\n";
+                                          xrtTblBackgroundSeries = "(0-2 all Wheat) (3-5 all Gray) (6-8 all Wheat) (9-10 all Gray)(label all Thistle) (all label Thistle)";
+                                          xrtTblLeftColumn = 14;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -2149,6 +2217,20 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           managed = False;
                                       }
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:ClearIndex";
                                 }
                           }
                     }

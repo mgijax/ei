@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed May  9 09:36:24 2001";
+      lastWritten = "Wed Jun 13 14:21:53 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -2956,9 +2956,8 @@ Module: MGD
                       label = XmLabel;
                     }
                     {
-                      text = scrolledText;
+                      text = scrolledText : mgiDataTypes;
                       Group: Widget
-                        editMode = multi_line_edit;
                         rows = 2;
                         columns = 90;
                     }

@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 10 09:00:44 2001";
+      lastWritten = "Wed Jun 13 14:04:39 2001";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -355,29 +355,6 @@ Shift<Key>Tab: prev-tab-group()
                   traversalOn = False;
                   editable = False;
                   columns = 10;
-              }
-        }
-        {
-          SingleNote = aligner : mgiDataTypes;
-          Group: Widget
-            userDefinedAttributes = "sql:String\n";
-            xrtGearOrientation = vertical;
-          Group: Control
-            vip_x = 50;
-            vip_y = 690;
-              {
-                label = XmLabel;
-                Group: Widget
-                  labelString = Notes;
-              }
-              {
-                text = scrolledText : mgiDataTypes;
-                Group: Widget
-                  maxLength = 255;
-                  editMode = multi_line_edit;
-                  rows = 1;
-                  wordWrap = True;
-                  columns = 50;
               }
         }
         {
@@ -982,6 +959,21 @@ Shift<Key>Tab: prev-tab-group()
             vipComment = "";
             vip_x = 155;
             vip_y = 1240;
+        }
+        {
+          SingleNote = Notes;
+          Group: Control
+            vip_x = 56;
+            vip_y = 694;
+              {
+                label = XmLabel;
+              }
+              {
+                text = scrolledText : mgiDataTypes;
+                Group: Widget
+                  rows = 1;
+                  scrollHorizontal = True;
+              }
         }
 }
 

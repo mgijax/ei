@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 06/14/2001
+--	- TR 2547; remove Holder
+--
 -- lec	01/16/2001
 --	- TR 2194; newRequiredColumns for Gel Band Table
 --
@@ -1897,15 +1900,6 @@ rules:
 	    end while;
           end while;
 	  (void) dbclose(dbproc);
-
-	  -- Display Holder name for Probe Preps
-
-	  if (prepDetailForm.name = "ProbePrepForm") then
-	    prepDetailForm->Holder->text.value := 
-	    	mgi_sql1("select holder from " + mgi_DBtable(PRB_REFERENCE) +
-			" where _Refs_key = " + top->mgiCitation->ObjectID->text.value +
-			" and _Probe_key = " + top->ProbeAccession->ObjectID->text.value);
-	  end if;
 
 	  -- Select InSitu information
 

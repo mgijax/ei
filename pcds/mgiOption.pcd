@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Mar 20 11:10:15 2001";
+      lastWritten = "Wed Jun 13 14:16:01 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -11,7 +11,7 @@ Module: mgiOption
           Group: Widget
             subMenuId = OptionPulldown;
             background = Wheat;
-            userDefinedAttributes = "defaultOption:Widget(Widget)\nmodified:Boolean(Boolean)=\"False\"\nrequired:Boolean(Boolean)=\"False\"\nclear:Boolean(Boolean)=\"True\"\ndefaultChild:Int(Int)=\"0\"\n";
+            userDefinedAttributes = "defaultOption:Widget(Widget)\nmodified:Boolean(Boolean)=\"False\"\nrequired:Boolean(Boolean)=\"False\"\nclear:Boolean(Boolean)=\"True\"\ndefaultChild:Int(Int)=\"0\"\ndefaultValue:String=\"-1\"\n";
             marginWidth = 0;
             marginHeight = 0;
             spacing = 0;
@@ -20,6 +20,7 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 85;
+            vipComment = "XmOptionMenu is a special configuration of XmRowColumn used in conjunction with XmPulldownMenu so as to display the last choice of a menu item.";
           Group: User
             required = True;
               Popups:
@@ -2775,6 +2776,8 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 4320;
+          Group: User
+            defaultValue = "-2";
               Popups:
               {
                 InheritanceModePulldown : OptionPulldown = OptionPulldown : mgiOption;
