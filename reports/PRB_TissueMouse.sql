@@ -16,7 +16,7 @@ go
 select distinct _Tissue_key
 into #tissues
 from PRB_Probe p, PRB_Source s
-where p.DNAType in ('EST', 'cDNA')
+where p.DNAType in ('cDNA')
 and p._Source_key = s._Source_key
 and s.species = 'mouse, laboratory'
 go
