@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May 14 12:50:51 2004";
+      lastWritten = "Mon May 24 10:56:41 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2512,7 +2512,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list;
                                         Group: Widget
-                                          visibleItemCount = 20;
+                                          visibleItemCount = 15;
                                       }
                                 }
                                 {
@@ -2562,7 +2562,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list : mgiDataTypes;
                                         Group: Widget
-                                          visibleItemCount = 25;
+                                          visibleItemCount = 15;
                                         Group: User
                                           targetKey = 3;
                                           targetWidget = Annotation;
