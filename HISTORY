@@ -5,12 +5,20 @@ RELEASE: A
 CHANGES:
 1) TR 3802 - Look & Feel
 
+TAG: ei-7-0-30
+DATE: 08/20/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) fixed reports/Strain.py
+
 TAG: ei-7-0-29
 DATE: 08/19/2002
 STAFF: lec
 RELEASE: A
 CHANGES:
-1) TR 3802 - Look & Feel
+1) add dbsetversion to syblib.c
+2) removed D:InitAcc from Reference and Antigen Clear
 
 TAG: ei-7-0-27, ei-7-0-28
 DATE: 06/26/2002
