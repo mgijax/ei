@@ -1701,6 +1701,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_NOTE_VIEW:
     case ALL_REFERENCE:
     case ALL_SYNONYM:
+    case VOC_ANNOT:
     case VOC_TEXT:
     case VOC_EVIDENCE:
 	selectKey = 0;
