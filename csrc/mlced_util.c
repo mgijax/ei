@@ -5,7 +5,6 @@
  *
  * Utility routines for the MLC editor
  *
- * mlced_gettext:	retrieves a text object from a database column as a string
  * strpos:			used to find integer offset of a substring in text 
  * getIdbySymbol:	get a markerkey associated with a symbol
  * symbolinMLC:		determine if a symbol has information in MLC database
@@ -28,34 +27,6 @@
 
 static Atom wm_delete_window;  /* X variables needed for graceful shutdown */
 static Widget toplevel;
-
-/* mlced_gettext
- *
- * gets a "text" object from column 'column' and returns
- * it as a character * to a static buffer within the function.
- *
- */
-
-char *mlced_gettext(dbproc, column)
-DBPROCESS *dbproc;
-int column;
-{
-	static char buf[TEXTBUFSIZ];
-	int coltype = dbcoltype(dbproc, column);
-	DBINT len;
-
-	if(coltype != SYBTEXT) return NULL; 
-
-  	len = dbdatlen(dbproc, column);
- 
-	memset(buf, NULL, sizeof(buf));
-
-	strncpy(buf, (char *) dbdata(dbproc, column), (int) len);
-	buf[len] = NULL; 
-
-	return(buf);
-}
-
 
 /* strpos
  *

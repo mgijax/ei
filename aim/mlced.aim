@@ -12,7 +12,6 @@ CALLS
       "DBPROCESS *" <--> opaque;
       "Widget"      <--> widget;
     ENTRY
-       mlced_gettext("DBPROCESS *", "int") : "char *";
        strpos("char *","char *", "long") : "long";
        getIdbySymbol("char *","Boolean") : "char *";
        symbolinMLC("char *") : "Boolean";

@@ -5,13 +5,10 @@
 
 #include <syblib.h>
 
-#define TEXTBUFSIZ 200000
-
 #if defined(__cplusplus) || defined(c_plusplus)
    extern "C" {
 #endif
 
-	char *mlced_gettext(DBPROCESS *,int);
 	int strpos(char *, char *, long);
 	char *getIdbySymbol(char *, Boolean);
 	Boolean symbolinMLC(char *);
