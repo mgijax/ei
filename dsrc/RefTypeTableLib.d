@@ -94,7 +94,6 @@ rules:
 	  end if;
 
 	  source : widget := table.parent.child_by_class("XmRowColumn");
-	  refsType : string;
 
 	  source := source.menuHistory;
 	  row := mgi_tblGetCurrentRow(table);

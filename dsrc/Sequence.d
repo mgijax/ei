@@ -295,7 +295,7 @@ rules:
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
 
-	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or set.length > 0) then
+	  if (cmd.length > 0 or set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(SEQ_SEQUENCE, currentKey, set);
 	  end if;
 
@@ -396,8 +396,13 @@ rules:
             where := where + "\nand s._SequenceStatus_key = " + top->SequenceStatusMenu.menuHistory.searchValue;
           end if;
 
-          if (top->SequenceProviderMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand s._SequenceProvider_key = " + top->SequenceProviderMenu.menuHistory.searchValue;
+	  value := top->SequenceProviderMenu.menuHistory.searchValue;
+          if (value != "%") then
+	    if (value[value.length] = '%') then
+              where := where + "\nand s.sequenceProvider like " + mgi_DBprstr(value);
+	    else
+              where := where + "\nand s._SequenceProvider_key = " + value;
+	    end if;
           end if;
 
           if (top->VirtualMenu.menuHistory.searchValue != "%") then
@@ -617,8 +622,8 @@ rules:
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 24));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 31));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 25));
-		(void) mgi_tblSetCell(table, table.seqRecordDate, table.byDate, mgi_getstr(dbproc, 22));
-		(void) mgi_tblSetCell(table, table.sequenceDate, table.byDate, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(table, table.seqRecordDate, table.byDate, mgi_getstr(dbproc, 20));
+		(void) mgi_tblSetCell(table, table.sequenceDate, table.byDate, mgi_getstr(dbproc, 21));
 
                 SetOption.source_widget := top->SequenceTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -680,9 +685,10 @@ rules:
 
 	      elsif (results = 3 or results = 4) then
 		table := top->ObjectAssociation->Table;
-		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.objectName, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, row, table.objectName, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 6));
 		row := row + 1;
 	      end if;
             end while;

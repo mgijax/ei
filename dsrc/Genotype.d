@@ -176,6 +176,7 @@ rules:
 --
 
         Add does
+	  note : string;
 
 --	  if (mgi->AssayModule = nil) then
 --	    send(Exit, 0);
@@ -200,8 +201,14 @@ rules:
             cmd := cmd + top->EditForm->Strain->StrainID->text.value + ",";
 	  end if;
  
+	  if (top->Note->text.value.length > 0) then
+	    note := mgi_DBprstr(top->Note->text.value);
+	  else
+	    note := "NULL";
+	  end if;
+
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
-		 global_loginKey + "," + global_loginKey + ")\n";
+		 note + "," + global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
