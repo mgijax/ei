@@ -32,6 +32,7 @@
 
 import sys
 import os
+import string
 import db
 import mgi_utils
 import reportlib
@@ -66,8 +67,17 @@ def process_ref(fp, cmd, format = 1):
 	results = db.sql(cmd, 'auto')
 
 	for result in results:
+
 		cmd = 'select * from BIB_All_View where _Refs_key = %d' % result['_Refs_key']
 		references = db.sql(cmd, 'auto')
+
+		cmd = 'select d.abbreviation from BIB_DataSet d, BIB_DataSet_Assoc a ' + \
+			'where a._Refs_key = %d ' % (result['_Refs_key']) + \
+			'and a._DataSet_key = d._DataSet_key'
+		datasets = []
+		results = db.sql(cmd, 'auto')
+		for r in results:
+		    datasets.append(r['abbreviation'])
 
 		for ref in references:	# Should be only one
 
@@ -83,10 +93,10 @@ def process_ref(fp, cmd, format = 1):
  
         		citation = TAB + mgi_utils.prvalue(ref['citation']) + CRT
        			jnum = TAB + mgi_utils.prvalue(ref['jnumID']) + CRT
-       			dbs = TAB + mgi_utils.prvalue(ref['dbs']) + CRT
+       			dbs = TAB + mgi_utils.prvalue(string.join(datasets, '/')) + CRT
 
 			accID = ''
-			cmd = 'select accID from BIB_Acc_View where _Object_key = %d and LogicalDB = "MEDLINE"' % ref['_Refs_key']
+			cmd = 'select accID from BIB_Acc_View where _Object_key = %d and LogicalDB = "PubMed"' % ref['_Refs_key']
         		accResult = db.sql(cmd, 'auto')
 
 			for a in accResult:
