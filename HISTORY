@@ -1,8 +1,14 @@
-TAG: ei-1-3-20
+TAG: ei-1-3-30
+DATE: 11/19/1999
+STAFF: lec
+RELEASE: A
+CHANGES:  MGI 2.3/TR 467; Production Release
+
+TAG: ei-1-3-??
 DATE: 11/08/1999
 STAFF: lec
 RELEASE: ?
-CHANGES:  MGI 2.3/TR 467
+CHANGES:  MGI 2.3/TR 467; testing...
 
 TAG: ei1-1 
 DATE: 08/05/1999
