@@ -1054,6 +1054,7 @@ rules:
 	  from_rflvs : boolean := false;
 	  from_rmarker : boolean := false;
 	  from_strain : boolean := false;
+	  from_user : boolean := false;
 
 	  value : string;
 	  tag : string;
@@ -1189,7 +1190,6 @@ rules:
           end if;
 
           value := mgi_tblGetCell(table, 0, table.refsKey);
-
           if (value.length > 0 and value != "NULL") then
 	    where := where + " and g._Refs_key = " + value;
 	    from_marker := true;
@@ -1200,6 +1200,19 @@ rules:
 --	      from_marker := true;
 --	    end if;
 	  end if;
+
+          value := mgi_tblGetCell(table, 0, table.modifiedBy);
+          if (value.length > 0) then
+            where := where + "\nand u.login like " + mgi_DBprstr(value);
+            from_marker := true;
+            from_user := true;
+          end if;
+
+          value := mgi_tblGetCell(table, 0, table.modifiedDate);
+          if (value.length > 0) then
+            where := where + "\nand convert(char(10), g.modification_date, 101) = " + mgi_DBprstr(value);
+            from_marker := true;
+          end if;
 
           if (top->MolMarkerForm->MolNote->text.value.length > 0) then
 	    where := where + "\nand n.note like " + mgi_DBprstr(top->MolMarkerForm->MolNote->text.value);
@@ -1310,6 +1323,11 @@ rules:
           if (from_marker) then
 	    from := from + "," + mgi_DBtable(PRB_MARKER) + " g";
 	    where := "\nand g." + mgi_DBkey(PRB_PROBE) + " = p." + mgi_DBkey(PRB_PROBE) + where;
+	  end if;
+
+          if (from_user) then
+	    from := from + "," + mgi_DBtable(MGI_USER) + " u";
+	    where := "\nand g._ModifiedBy_key = u." + mgi_DBkey(MGI_USER) + where;
 	  end if;
 
           if (from_gmarker) then
@@ -1528,6 +1546,8 @@ rules:
 		mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 7));
 		mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 8));
 		mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 9));
+		mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
+		mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
 		mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	        row := row + 1;
 	      end if;
