@@ -119,6 +119,8 @@ extern char *global_version;
 #define MLD_RI2POINT		179
 #define MLD_STATISTICS		180
 
+#define MLC_MARKER_EDIT_VIEW	181
+
 #define GBASE			190
 #define GBASEEDIT		191
 

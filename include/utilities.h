@@ -23,6 +23,7 @@ extern char *mgi_primary_author(const char *);
 extern char *mgi_hide_passwd(XmTextVerifyCallbackStruct *, char *);
 extern char *mgi_primary_author(const char *);
 extern char *mgi_year(char *);
+extern char *mgi_simplesub(char *, char *, char *);
 extern int mgi_writeFile(const char *, const char *);
 extern void mgi_writeLog(const char *);
 extern Boolean allow_only_digits(char *);

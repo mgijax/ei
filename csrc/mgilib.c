@@ -1065,6 +1065,9 @@ char *mgi_DBtable(int table)
     case MLC_MARKER_EDIT:
             strcpy(buf, "MLC_Marker_edit");
 	    break;
+    case MLC_MARKER_EDIT_VIEW:
+            strcpy(buf, "MLC_Marker_edit_View");
+	    break;
     case MLC_REFERENCE_EDIT:
             strcpy(buf, "MLC_Reference_edit");
 	    break;

@@ -573,23 +573,23 @@ rules:
           proc_id : opaque := 
 	   tu_fork_process2(cmds[1], cmds, nil, nil, MarkerWithdrawalEnd);
 	  tu_fork_free(proc_id);
-
---         exitStatus : integer :=
---    tu_fork_execute(cmds[1], cmds, nil, nil, nil, nil, nil);
-
---  if (exitStatus != 0) then
---           StatusReport.source_widget := top;
---           StatusReport.message := "An error occurred while processing this withdrawal.\n" +
---	"Please contact a Software Engineer.";
---           send(StatusReport);
---    (void) reset_cursor(dialog);
---    return;
---  end if;
-
 	end does;
 
+--
+-- MarkerWithdrawalEnd
+--
+-- Activated from: child process forked from MarkerWithdrawal is finished
+--
+ 
 	MarkerWithdrawalEnd does
 	  table : widget := top->WithdrawalDialog->NewMarker->Table;
+
+	  if (MarkerWithdrawalEnd.status != 0) then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "The Withdrawal Process terminated with an error.\n" +
+		"Please contact a Software Engineer to help diagnose the problem.\n";
+	    send(StatusReport);
+	  end if;
 
 	  -- Query for records
 
@@ -1783,7 +1783,7 @@ rules:
 
 	  -- Withdrawn markers will not have MGI accession IDs
 
-	  if (top->MarkerTypeMenu.menuHistory.defaultValue = STATUS_WITHDRAWN) then
+	  if (top->MarkerStatusMenu.menuHistory.defaultValue = STATUS_WITHDRAWN) then
 	    LoadAcc.reportError := false;
 	  end if;
 

@@ -6,6 +6,9 @@
  * Sybase DB-Library routines for User Interface
  * Needs to be converted to use CT-Library
  *
+ * lec	04/17/2000
+ *	- TR 1177; TEXTBUF replacing BUFSIZ
+ *
  * lec	04/21/1999
  *	- mgi_cancel_search; set search_proc to NULL after deallocation
  *	- mgi_process_results; if search_proc is NULL, return
@@ -47,10 +50,10 @@ char *global_server;    	/* Set in Application dModule; holds server value */
 
 int mgi_dbinit(char *user, char *pwd)
 {
-  static char server[BUFSIZ];
-  static char database[BUFSIZ];
-  static char passwdfile[BUFSIZ];
-  static char reportdir[BUFSIZ];
+  static char server[TEXTBUFSIZ];
+  static char database[TEXTBUFSIZ];
+  static char passwdfile[TEXTBUFSIZ];
+  static char reportdir[TEXTBUFSIZ];
 
   int mgi_err_handler();
   int mgi_msg_handler();
@@ -206,7 +209,7 @@ char *mgi_getstr(DBPROCESS *dbproc, int column)
  
 char *mgi_citation(DBPROCESS *dbproc, int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
   int len;
  
   memset(buf, '\0', sizeof(buf));
@@ -246,7 +249,7 @@ char *mgi_citation(DBPROCESS *dbproc, int table)
  
 char *mgi_key(DBPROCESS *dbproc, int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
  
   memset(buf, '\0', sizeof(buf));
  
@@ -264,7 +267,7 @@ char *mgi_key(DBPROCESS *dbproc, int table)
 
 char *mgi_sql1(char *cmd)
 {
-  static char buf[BUFSIZ * 100];
+  static char buf[TEXTBUFSIZ];
   DBPROCESS *dbproc = mgi_dbopen();
 
   memset(buf, '\0', sizeof(buf));

@@ -1,7 +1,7 @@
 CALLS
   LANGUAGE C 
         INCLUDE
-      <utilities.h>,
+          <utilities.h>,
 	  <teleuse/tu_runtime.h>,
 	  <math.h>,
 	  <string.h>;
@@ -30,6 +30,7 @@ CALLS
 	 mgi_year("char *")                                 	  : "char *";
 	 mgi_writeFile("char *", "char *")                        : "int";
 	 mgi_writeLog("char *");
+	 mgi_simplesub("char *", "char *", "char *")              : "char *";
 	 allow_only_digits("char *")				  : "Boolean";
 	 allow_only_float("char *")				  : "Boolean";
 	 getenv("const char *")                                   : "char *";
