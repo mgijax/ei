@@ -674,13 +674,29 @@ rules:
 --
 
 	AddToEditClipboard does
+	  clipboard : widget;
 
-	  if (assayDetailForm.name = "GelForm") then
-	    EditClipboardLoad.source_widget := top->CVGel->ADClipboard;
-	  else
-	    EditClipboardLoad.source_widget := top->InSituResultDialog->ADClipboard;
+	  if (currentAssay = "") then
+	    StatusReport.source_widget := top;
+            StatusReport.message := "An Assay record must be selected in order to use this function.\n";
+            send(StatusReport, 0);
+            return;
 	  end if;
 
+	  if (assayDetailForm.name = "GelForm") then
+	    clipboard := top->CVGel->ADClipboard;
+	  else
+	    clipboard := top->InSituResultDialog->ADClipboard;
+	  end if;
+
+	  if (top.parent->(clipboard.editClipboard) = nil) then
+	    StatusReport.source_widget := top;
+            StatusReport.message := "The Anatomical Dictionary Module must be open in order to use this function.\n";
+            send(StatusReport, 0);
+            return;
+	  end if;
+
+	  EditClipboardLoad.source_widget := clipboard;
 	  send(EditClipboardLoad, 0);
 	  send(AssayClear, 0);
 	end does;
