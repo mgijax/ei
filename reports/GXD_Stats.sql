@@ -85,6 +85,15 @@ union all
 select "Putative Genes", count(distinct _Marker_key)
 from PRB_Marker
 where relationship = 'P'
+
+/* distinct cDNAs w/ relationships to Genes */
+union all
+select "cDNAs with Putative Relationships",
+count (distinct pm._Probe_key)
+from PRB_Marker pm, PRB_Probe p
+where relationship = "P"
+and p._Probe_key = pm._Probe_key
+and p.DNAType = "cDNA"
 go
 
 
