@@ -680,7 +680,7 @@ rules:
 
           Query.source_widget := top;
           Query.select := "select distinct s._Structure_key, t.stage, s.printName " 
-                          + from + where + "\norder by s.printName asc";
+                          + from + where + "\norder by s.printName asc, t.stage";
           Query.table := GXD_STRUCTURE;
 	  Query.rowcount := NOROWLIMIT;
           send(Query, 0);
