@@ -1,9 +1,9 @@
 --
--- Name    : VocAnnot.d
+-- Name    : GOVocAnnot.d
 -- Creator : 
--- VocAnnot.d 01/02/2002
+-- GOVocAnnot.d 01/02/2002
 --
--- TopLevelShell:		VocAnnotModule
+-- TopLevelShell:		GOVocAnnotModule
 -- Database Tables Affected:	Voc_Annot, VOC_Evidence
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -56,7 +56,7 @@
 --	- created; TR 2867, TR 2239
 --
 
-dmodule VocAnnot is
+dmodule GOVocAnnot is
 
 #include <mgilib.h>
 #include <syblib.h>
@@ -68,7 +68,7 @@ devents:
 		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
 	Delete :local [];				-- Delete record
-	VocAnnotExit :local [];				-- Destroys D module instance & cleans up
+	GOVocAnnotExit :local [];				-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	NotePreCancel :local [];			-- Pre-cancellation of Note Dialog
@@ -111,7 +111,7 @@ rules:
 --
 -- Activated from:  MGI:CreateMGIModule
 --
--- Creates and manages D Module "VocAnnot"
+-- Creates and manages D Module "GOVocAnnot"
 --
 
 	INITIALLY does
@@ -125,7 +125,7 @@ rules:
           ab.sensitive := false;
 
 	  -- Create the widget hierarchy in memory
-	  top := create widget("VocAnnotModule", ab.name, mgi);
+	  top := create widget("GOVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
@@ -874,6 +874,7 @@ rules:
 
 --	TR 6036; exclude any reference which has a GO annotation
 --			" where a._Object_key = r._Marker_key " +
+
 	  cmd : string;
 	  cmd := "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r " + 
 		 "where r._Marker_key = " + currentRecordKey + 
@@ -881,7 +882,6 @@ rules:
 			mgi_DBtable(VOC_ANNOT) + " a," +
 			mgi_DBtable(VOC_EVIDENCE) + " e" +
 			" where a._AnnotType_key = " + annotTypeKey +
-			" and a._Object_key = " + currentRecordKey +
 			" and a._Annot_key = e._Annot_key " +
 			" and e._Refs_key = r._Refs_key) " +
 		" order by r.jnum desc\n";
@@ -1011,7 +1011,7 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
  
-        VocAnnotExit does
+        GOVocAnnotExit does
 	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;
