@@ -2969,7 +2969,7 @@ Module: MGD
                                 {
                                   EditPulldown = XmPulldownMenu;
                                       {
-                                        MarkerInfo = MenuPush : mgiMenu;
+                                        MarkerNonMouse = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
                                           labelString = "Marker Information";
