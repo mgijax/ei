@@ -285,16 +285,25 @@ rules:
 	  accID : string := InsertList.accID;
 	  allowDups : boolean := InsertList.allowDups;
 	  dupFound : boolean := false;
+	  pos : integer;
 
 	  if (not allowDups) then
 	    if (list_w.keys = nil) then
 	      dupFound := false;
-	    elsif (list_w.keys.find(key) != -1) then
-	      dupFound := true;
+	    else
+	      pos := list_w.keys.find(key);
+	      if (pos != -1) then
+	        dupFound := true;
+	      end if;
 	    end if;
 	  end if;
 
-	  if ((not allowDups and not dupFound) or allowDups) then
+	  if (not allowDups and dupFound) then
+	    item := list_w.items[pos];
+	    item := item + "...";
+	    (void) XmListDeleteItemsPos(list_w, 1, pos);
+	    (void) XmListAddItem(list_w, xm_xmstring(item), pos);
+	  else
 	    (void) XmListAddItem(list_w, xm_xmstring(item), 0);
 	    InsertKey.list := list_w;
 	    InsertKey.key := key;
@@ -320,6 +329,7 @@ rules:
           results : xm_string_list := create xm_string_list();
           keys : string_list := create string_list();
           accIDs : string_list := create string_list();
+	  item : string;
  
           if (LoadList.source_widget != nil) then
             (void) busy_cursor(LoadList.source_widget.top);
@@ -354,6 +364,12 @@ rules:
                   keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
                   results.insert(mgi_getstr(dbproc, 2), results.count + 1);
                   accIDs.insert(mgi_getstr(dbproc, 3), accIDs.count + 1);
+
+		-- else, add an ellipsis to the result w/ the same key 
+		-- to indicate there are more records
+		else
+		  item := results[results.count];
+		  results.insert(item + "...", results.count);
 		end if;
 
 	      -- Dups allowed
