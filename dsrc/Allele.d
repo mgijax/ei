@@ -46,6 +46,8 @@ devents:
 	AlleleMergeInit :local [];
 	AlleleMerge :local [];
 
+	DisplayESCellLine :local [];
+
 	Modify :local [];
 	ModifyAlleleNotes :local [];
 	ModifyMolecularMutation :local [];
@@ -337,31 +339,6 @@ rules:
 	end does;
 
 --
--- Delete
---
--- Activated from:  widget top->Control->Delete
--- Activated from:  widget top->MainMenu->Commands->Delete
---
--- Construct and execute record deletion
---
-
-	Delete does
-	  (void) busy_cursor(top);
-
-	  DeleteSQL.tableID := ALL_ALLELE;
-	  DeleteSQL.key := currentRecordKey;
-	  DeleteSQL.list := top->QueryList;
-	  send(DeleteSQL, 0);
-
-          if (top->QueryList->List.row = 0) then
-	    ClearAllele.clearKeys := false;
-	    send(ClearAllele, 0);
-	  end if;
-
-	  (void) reset_cursor(top);
-	end does;
-
---
 -- AlleleMergeInit
 --
 -- Activated from:  top->Edit->Merge->AlleleMerge, activateCallback
@@ -417,6 +394,61 @@ rules:
 
 	  (void) reset_cursor(dialog);
 
+	end does;
+
+--
+-- Delete
+--
+-- Activated from:  widget top->Control->Delete
+-- Activated from:  widget top->MainMenu->Commands->Delete
+--
+-- Construct and execute record deletion
+--
+
+	Delete does
+	  (void) busy_cursor(top);
+
+	  DeleteSQL.tableID := ALL_ALLELE;
+	  DeleteSQL.key := currentRecordKey;
+	  DeleteSQL.list := top->QueryList;
+	  send(DeleteSQL, 0);
+
+          if (top->QueryList->List.row = 0) then
+	    ClearAllele.clearKeys := false;
+	    send(ClearAllele, 0);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- DisplayESCellLine
+--
+-- Activated from:  widget top->ESCellLineList->List.singleSelectionCallback
+--
+-- Display ES Cell Line information
+--
+
+	DisplayESCellLine does
+
+	  cmd := "select cellLine, _Strain_key, cellLineStrain from " + 
+		mgi_DBtable(ALL_CELLLINE_VIEW) +
+		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
+		" = " + top->EditForm->ESCellLine->ObjectID->text.value;
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+
+	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	         top->ESCellLine->CharText->text.value := mgi_getstr(dbproc, 1);
+		 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
+		 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 3);
+	    end while;
+	  end while;
+
+	  (void) dbclose(dbproc);
 	end does;
 
 --
