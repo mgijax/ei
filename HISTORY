@@ -1,5 +1,5 @@
-TAG: ?
-DATE: 06/18/2004
+TAG: ei-12-0-0
+DATE: 06/29/2004
 STAFF: lec
 RELEASE: A
 CHANGES:
@@ -8,6 +8,7 @@ CHANGES:
 3) TR 5750/Allele Types (new sort)
 4) GXD EI; added ADClipboardAddAll to AD EI
 5) Genotype EI: TR 5907
+6) TR 326/normalize BIB_Refs.dbs
 
 TAG: ei-11-0-64
 TAG: ei-11-0-63
