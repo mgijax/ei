@@ -56,7 +56,7 @@ rules:
 	  -- Traverse thru table and find first empty row
 	  row : integer := 0;
 	  while (row < mgi_tblNumRows(table)) do
-	    refsType := mgi_tblGetCell(table, row, table.refsCurrentType);
+	    refsType := mgi_tblGetCell(table, row, table.refsTypeKey);
 	    if (refsType.length = 0) then
 	      break;
 	    end if;
@@ -65,7 +65,6 @@ rules:
 
 	  -- Set RefType, Label for row
 
-	  (void) mgi_tblSetCell(table, row, table.refsCurrentTypeKey, source.defaultValue);
 	  (void) mgi_tblSetCell(table, row, table.refsTypeKey, source.defaultValue);
 	  (void) mgi_tblSetCell(table, row, table.refsType, source.labelString);
 	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
@@ -165,7 +164,6 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
 	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.refsCurrentTypeKey, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 3));
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 5));
@@ -211,7 +209,6 @@ rules:
           assocKey : string;
           refsCurrentKey : string;
           refsKey : string;
-	  refsCurrentTypeKey : string;
 	  refsTypeKey : string;
 	  mgiTypeKey : string;
 	  isReviewArticle : string;
@@ -233,7 +230,6 @@ rules:
             assocKey := mgi_tblGetCell(table, row, table.assocKey);
             refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
             refsKey := mgi_tblGetCell(table, row, table.refsKey);
-	    refsCurrentTypeKey := mgi_tblGetCell(table, row, table.refsCurrentTypeKey);
 	    mgiTypeKey := (string) table.mgiTypeKey;
             isReviewArticle := mgi_tblGetCell(table, row, table.reviewKey);
  
@@ -275,10 +271,6 @@ rules:
             elsif (editMode = TBL_ROW_DELETE and assocKey.length > 0) then
               cmd := cmd + mgi_DBdelete(reftableID, assocKey);
 
-            elsif (editMode = TBL_ROW_DELETE and refsKey.length > 0) then
-              cmd := cmd + mgi_DBdelete(reftableID, objectKey) + 
-                     "and _Refs_key = " + refsCurrentKey + 
-		     " and _RefsType_key = " + refsCurrentTypeKey + "\n";
             end if;
  
             row := row + 1;
