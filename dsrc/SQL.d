@@ -326,7 +326,7 @@ rules:
 			" and noteType = " + noteType + "\n";
 	      elsif (tableID = ALL_NOTE) then
 	        noteWidget.sql := noteWidget.sql + 
-			" and " +  mgi_DBkey(ALL_NOTETYPE) + " = " + noteType + "\n";
+			" and " +  mgi_DBkey(ALL_NOTETYPE) + " = " + ModifyNotes.noteType + "\n";
 	      end if;
 	    end if;
 	  else
