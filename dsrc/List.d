@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	04/20/2000
+--	FindSelectionItem; do not select item when found, just position cursor
+--
 -- lec	11/10/98
 --	SelectListItem; scroll to current row if copying item to next available row
 --
@@ -181,9 +184,10 @@ rules:
 	  pos := XmListItemPos(list_w, xm_xmstring(item.value));
 
 	  -- Found exact match
+	  -- Do not select item
 
 	  if (pos > 0) then
-	    XmListSelectPos(list_w, pos, true);
+--	    XmListSelectPos(list_w, pos, true);
 	    XmListSetPos(list_w, pos);
 
 	  -- Did not find exact match
