@@ -168,7 +168,7 @@ DBPROCESS *mgi_dbopen()
 
 char *mgi_getstr(DBPROCESS *dbproc, int column)
 {
-  static char buf[BUFSIZ * 100];
+  static char buf[TEXTBUFSIZ];
   int coltype = dbcoltype(dbproc, column);
   DBINT len = dbdatlen(dbproc, column);
 
