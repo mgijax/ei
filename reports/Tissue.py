@@ -65,6 +65,7 @@ for s in tissues:
 			fp.write(CRT + string.ljust(r['dataSet'], 20))
 			fp.write(r['accID'])
 
+fp.write(2*CRT)
 reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 
