@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 30 15:32:54 2004";
+      lastWritten = "Tue Oct  5 12:26:11 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -335,7 +335,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               SynonymTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Nomen_View order by _SynonymType_key";
+                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Nomen_View where allowOnlyOne = 0 order by _SynonymType_key";
                                             }
                                       }
                                 }

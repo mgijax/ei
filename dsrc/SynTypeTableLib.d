@@ -121,8 +121,8 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  cmd := "select _SynonymType_key, _MGIType_key, synonymType from " + mgi_DBtable(tableID) + 
-		  "\norder by _SynonymType_key";
+	  cmd := "select _SynonymType_key, _MGIType_key, synonymType, allowOnlyOne from " + mgi_DBtable(tableID) + 
+		  "\norder by allowOnlyOne desc, _SynonymType_key";
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -165,7 +165,7 @@ rules:
 	  objectKey : string := LoadSynTypeTable.objectKey;
 	  cmd : string;
 
-          cmd := "select _Synonym_key, _SynonymType_key, synonymType, synonym";
+          cmd := "select _Synonym_key, _SynonymType_key, synonymType, synonym, allowOnlyOne";
 
 	  if (tableID = MGI_SYNONYM_NOMEN_VIEW) then
 	      cmd := cmd + " , _Refs_key, jnum, short_citation";
@@ -173,7 +173,7 @@ rules:
 
 	  cmd := cmd + " from " + mgi_DBtable(tableID) +
 		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by  _Synonym_key";
+		 " order by  allowOnlyOne desc, _Synonym_key";
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
