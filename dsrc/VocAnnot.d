@@ -67,7 +67,7 @@ devents:
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
-	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
+	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
 	SelectGOReferences :local [];			-- Select GO References
 	SetAnnotTypeDefaults :local [];			-- Set Defaults based on Annotation Type
@@ -632,6 +632,10 @@ rules:
 --
 
 	Search does
+
+          if (top->QueryList->List.selectedItemCount = 1) then
+	    return;
+	  end if;
 
           (void) busy_cursor(top);
 
