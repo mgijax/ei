@@ -270,6 +270,8 @@ rules:
           row : integer := 0;
           editMode : string;
           key : string;
+          currentSeqNum : string;
+          newSeqNum : string;
 	  strengthKey : string;
 	  patternKey : string;
 	  resultNote : string;
@@ -300,6 +302,8 @@ rules:
             end if;
  
             key := mgi_tblGetCell(table, row, table.resultKey);
+            currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
+            newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
             strengthKey := mgi_tblGetCell(table, row, table.strengthKey);
             patternKey := mgi_tblGetCell(table, row, table.patternKey);
             resultNote := mgi_tblGetCell(table, row, table.notes);
@@ -312,14 +316,10 @@ rules:
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
-                cmd := cmd +
-                       mgi_setDBkey(primaryID, NEWKEY, KEYNAME) +
-		       mgi_DBnextSeqKey(primaryID, specimenKey, SEQKEYNAME);
+                cmd := cmd + mgi_setDBkey(primaryID, NEWKEY, KEYNAME);
 		keysDeclared := true;
 	      else
-		cmd := cmd + 
-		       mgi_DBincKey(KEYNAME) +
-		       mgi_DBincKey(SEQKEYNAME);
+		cmd := cmd + mgi_DBincKey(KEYNAME);
 	      end if;
 
               cmd := cmd +
@@ -327,7 +327,7 @@ rules:
 		     specimenKey + "," +
 		     strengthKey + "," +
 		     patternKey + "," +
-		     "@" + SEQKEYNAME + "," +
+		     newSeqNum + "," +
 		     mgi_DBprstr(resultNote) + ")\n";
 
 	      -- Add Image Panes
@@ -348,28 +348,36 @@ rules:
 	      cmd := cmd + top->StructureList.updateCmd;
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Strength_key = " + strengthKey + "," +
-		     "_Pattern_key = " + patternKey + "," +
-		     "resultNote = " + mgi_DBprstr(resultNote);
-              cmd := cmd + mgi_DBupdate(primaryID, key, set);
 
-	      -- Delete all Image Panes and re-add
-	      cmd := cmd + mgi_DBdelete(imageID, key);
-	      paneList.rewind;
-	      while paneList.more do
-		cmd := cmd + mgi_DBinsert(imageID, NOKEY) +
-		       key + "," +
-		       paneList.next + ")\n";
-	      end while;
+              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
+ 
+              if (currentSeqNum != newSeqNum) then
+		set := "sequenceNum = " + newSeqNum;
+                cmd := cmd + mgi_DBupdate(primaryID, key, set);
+              else
+		set := "_Strength_key = " + strengthKey + "," +
+		       "_Pattern_key = " + patternKey + "," +
+		       "resultNote = " + mgi_DBprstr(resultNote);
+                cmd := cmd + mgi_DBupdate(primaryID, key, set);
 
-	      -- Process Structures
+	        -- Delete all Image Panes and re-add
+	        cmd := cmd + mgi_DBdelete(imageID, key);
+	        paneList.rewind;
+	        while paneList.more do
+		  cmd := cmd + mgi_DBinsert(imageID, NOKEY) +
+		         key + "," +
+		         paneList.next + ")\n";
+	        end while;
 
-	      ModifyStructure.source_widget := top;
-	      ModifyStructure.primaryID := structureID;
-	      ModifyStructure.key := key;
-	      ModifyStructure.row := row;
-	      send(ModifyStructure, 0);
-	      cmd := cmd + top->StructureList.updateCmd;
+	        -- Process Structures
+
+	        ModifyStructure.source_widget := top;
+	        ModifyStructure.primaryID := structureID;
+	        ModifyStructure.key := key;
+	        ModifyStructure.row := row;
+	        send(ModifyStructure, 0);
+	        cmd := cmd + top->StructureList.updateCmd;
+	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(primaryID, key);
@@ -472,6 +480,7 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.resultKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.strengthKey, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.patternKey, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.notes, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(table, row, table.strength, mgi_getstr(dbproc, 9));
@@ -600,6 +609,10 @@ rules:
 	  (void) mgi_tblSetCell(table, row, table.imagePanes, labels);
 	  (void) mgi_tblSetCell(table, row, table.imagePaneKeys, keys);
 
+	  CommitTableCellEdit.source_widget := table;
+	  CommitTableCellEdit.row := row;
+	  CommitTableCellEdit.value_changed := (boolean) true;
+	  send(CommitTableCellEdit, 0);
 	end does;
 
 --
@@ -625,11 +638,6 @@ rules:
 	    pane := paneList.next;
 	    (void) XmListSelectItem(top->ImagePaneList->List, xm_xmstring(pane), notify);
 	  end while;
-
-	  CommitTableCellEdit.source_widget := table;
-	  CommitTableCellEdit.row := row;
-	  CommitTableCellEdit.value_changed := (boolean) true;
-	  send(CommitTableCellEdit, 0);
 	end does;
 
 --

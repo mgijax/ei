@@ -1130,6 +1130,8 @@ rules:
           editMode : string;
           key : string;
 	  label : string;
+          currentSeqNum : string;
+          newSeqNum : string;
 	  genotypeKey : string;
 	  ageKey : string;
 	  ageRange : string;
@@ -1156,6 +1158,8 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.specimenKey);
 	    label := mgi_tblGetCell(table, row, table.specimenLabel);
+            currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
+            newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
 	    genotypeKey := mgi_tblGetCell(table, row, table.genotypeKey);
 	    ageKey := mgi_tblGetCell(table, row, table.ageKey);
 	    ageMin := mgi_tblGetCell(table, row, table.ageMin);
@@ -1209,14 +1213,11 @@ rules:
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keysDeclared) then
-                cmd := cmd + 
-		       mgi_setDBkey(GXD_SPECIMEN, NEWKEY, keyName) +
-		       mgi_DBnextSeqKey(GXD_SPECIMEN, currentAssay, SEQKEYNAME);
+                cmd := cmd + mgi_setDBkey(GXD_SPECIMEN, NEWKEY, keyName);
 		keysDeclared := true;
 	      else
 		cmd := cmd + 
-		       mgi_DBincKey(keyName) +
-		       mgi_DBincKey(SEQKEYNAME);
+		       mgi_DBincKey(keyName);
 	      end if;
 
               cmd := cmd +
@@ -1225,7 +1226,7 @@ rules:
 		     embeddingKey + "," +
 		     fixationKey + "," +
 		     genotypeKey + "," +
-		     "@" + SEQKEYNAME + "," +
+		     newSeqNum + "," +
 		     mgi_DBprstr(label) + "," +
 		     mgi_DBprstr(sexKey) + "," +
 		     mgi_DBprstr(ageKey) + "," +
@@ -1237,19 +1238,28 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
-              update := "_Embedding_key = " + embeddingKey + "," +
-                        "_Fixation_key = " + fixationKey + "," +
-                        "_Genotype_key = " + genotypeKey + "," +
-                        "specimenLabel = " + mgi_DBprstr(label) + "," +
-                        "sex = " + mgi_DBprstr(sexKey) + "," +
-                        "age = " + mgi_DBprstr(ageKey) + "," +
-                        "ageMin = " + ageMin + "," +
-                        "ageMax = " + ageMax + "," +
-                        "ageNote = " + mgi_DBprstr(ageNote) + "," +
-                        "hybridization = " + mgi_DBprstr(hybridizationKey) + "," +
-                        "specimenNote = " + mgi_DBprstr(specimenNote);
-              cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
+              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
+ 
+              if (currentSeqNum != newSeqNum) then
+		update := "sequenceNum = " + newSeqNum;
+                cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
 
+              -- Else, a simple update
+ 
+              else
+                update := "_Embedding_key = " + embeddingKey + "," +
+                          "_Fixation_key = " + fixationKey + "," +
+                          "_Genotype_key = " + genotypeKey + "," +
+                          "specimenLabel = " + mgi_DBprstr(label) + "," +
+                          "sex = " + mgi_DBprstr(sexKey) + "," +
+                          "age = " + mgi_DBprstr(ageKey) + "," +
+                          "ageMin = " + ageMin + "," +
+                          "ageMax = " + ageMax + "," +
+                          "ageNote = " + mgi_DBprstr(ageNote) + "," +
+                          "hybridization = " + mgi_DBprstr(hybridizationKey) + "," +
+                          "specimenNote = " + mgi_DBprstr(specimenNote);
+                cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
+	      end if;
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_SPECIMEN, key);
             end if;
@@ -1977,6 +1987,8 @@ rules:
 		  send(AddTableRow, 0);
 		end if;
 	      else
+	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.specimenKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.specimenLabel, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 5));
