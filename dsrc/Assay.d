@@ -2133,7 +2133,7 @@ rules:
 	  Query.source_widget := top;
 	  Query.select := "select distinct g._Assay_key, " + 
 			"g.jnumID + \";\" + g.assayType + \";\" + g.symbol\n" + 
-			from + "\n" + where + "\norder by g.jnumID\n";
+			from + "\n" + where + "\norder by g.jnumID, g.assayType, g.symbol\n";
 	  Query.table := GXD_ASSAY;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
