@@ -410,7 +410,7 @@ rules:
           where := where + top->ModifiedDate.sql;
  
 	  value := top->mgiAccession->ObjectID->text.value;
-	  if (value.length > 0) then
+	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand v._Object_key = " + value;
 	  else
 	    value := top->mgiAccession->AccessionName->text.value;
@@ -424,13 +424,13 @@ rules:
 	  -- Annotations
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.termKey);
-	  if (value.length > 0) then
+	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand a._Term_key = " + value;
 	    from_annot := true;
 	  end if;
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.notKey);
-	  if (value.length > 0) then
+	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand a.isNot = " + value;
 	    from_annot := true;
 	  end if;
@@ -438,13 +438,13 @@ rules:
 	  -- Evidence
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.evidenceKey);
-	  if (value.length > 0) then
+	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand e._EvidenceTerm_key = " + value;
 	    from_evidence := true;
 	  end if;
 
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.refsKey);
-	  if (value.length > 0) then
+	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand e._Refs_key = " + value;
 	    from_evidence := true;
 	  end if;
