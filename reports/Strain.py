@@ -17,6 +17,9 @@
 #
 # History:
 #
+# lec	04/27/2000
+#	- TR 1177; added Alleles
+#
 # lec	06/09/98
 #	- added Expression results
 #	- added message indicating if Molecular Segments are included
@@ -97,7 +100,11 @@ for s in strains:
                   'where r._Reference_key = v._Reference_key ' + \
                   'and v._RFLV_key = a._RFLV_key ' + \
                   'and a._Allele_key = s._Allele_key ' + \
-                  'and s._Strain_key = %s' % s['_Strain_key'])
+                  'and s._Strain_key = %s' % s['_Strain_key'] ' + \
+                  ' union ' + \
+                  'select distinct _Refs_key, _Allele_key, dataSet = "Allele" ' + \
+                  'from ALL_Allele ' + \
+                  'where _Strain_key = %s' % s['_Strain_key'])
 
 	lastCmd = 'select a.accID, a.prefixPart, a.numericPart, r.dataSet, r._Probe_key ' + \
                   'from #references r, BIB_Acc_View a ' + \
