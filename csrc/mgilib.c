@@ -14,6 +14,11 @@
  *
  * History:
  *
+ * lec 03/20/2000
+ *	- TR 1291
+ *	- removed MRK_NOMEN_MARKER_VIEW
+ *	- removed MRK_NOMEN_HOMOLOGY_VIEW
+ *
  * lec 10/18/1999
  *  - TR 204
  *
@@ -332,8 +337,7 @@ char *mgi_DBrecordCount(int table)
 	    break;
     case MRK_NOMEN:
     case MRK_GENEFAMILY:
-    case MRK_EVENT:
-    case MRK_STATUS:
+    case MRK_NOMENSTATUS:
             sprintf(cmd, "select count(*) from %s", mgi_DBtable(table));
 	    break;
     case MLP_STRAINTYPE:
@@ -533,6 +537,15 @@ char *mgi_DBkey(int table)
     case MRK_TYPE:
             strcpy(buf, "_Marker_Type_key");
 	    break;
+    case MRK_EVENT:
+            strcpy(buf, "_Marker_Event_key");
+	    break;
+    case MRK_EVENTREASON:
+            strcpy(buf, "_Marker_EventReason_key");
+	    break;
+    case MRK_STATUS:
+            strcpy(buf, "_Marker_Status_key");
+	    break;
     case PRB_VECTOR_TYPE:
             strcpy(buf, "_Vector_key");
 	    break;
@@ -671,10 +684,7 @@ char *mgi_DBkey(int table)
     case MRK_GENEFAMILY:
             strcpy(buf, "_Marker_Family_key");
 	    break;
-    case MRK_EVENT:
-            strcpy(buf, "_Marker_Event_key");
-	    break;
-    case MRK_STATUS:
+    case MRK_NOMENSTATUS:
             strcpy(buf, "_Marker_Status_key");
 	    break;
     case MLP_STRAIN:
@@ -975,6 +985,15 @@ char *mgi_DBtable(int table)
     case MRK_TYPE:
             strcpy(buf, "MRK_Types");
 	    break;
+    case MRK_EVENT:
+	    sprintf(buf, "MRK_Event");
+	    break;
+    case MRK_EVENTREASON:
+	    sprintf(buf, "MRK_EventReason");
+	    break;
+    case MRK_STATUS:
+	    sprintf(buf, "MRK_Status");
+	    break;
     case PRB_VECTOR_TYPE:
             strcpy(buf, "PRB_Vector_Types");
 	    break;
@@ -1229,17 +1248,14 @@ char *mgi_DBtable(int table)
     case MRK_NOMEN_OTHER:
 	    sprintf(buf, "%s..MRK_Nomen_Other", getenv("NOMEN"));
 	    break;
+    case MRK_NOMEN_OTHER_VIEW:
+	    sprintf(buf, "%s..MRK_Nomen_Other_View", getenv("NOMEN"));
+	    break;
     case MRK_NOMEN_REFERENCE:
 	    sprintf(buf, "%s..MRK_Nomen_Reference", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_REFERENCE_VIEW:
 	    sprintf(buf, "%s..MRK_Nomen_Reference_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_MARKER_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_Marker_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_HOMOLOGY_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_Homology_View", getenv("NOMEN"));
 	    break;
     case MRK_NOMEN_USER_VIEW:
 	    sprintf(buf, "%s..MRK_Nomen_User_View", getenv("NOMEN"));
@@ -1250,10 +1266,7 @@ char *mgi_DBtable(int table)
     case MRK_NOMEN_GENEFAMILY_VIEW:
 	    sprintf(buf, "%s..MRK_Nomen_GeneFamily_View", getenv("NOMEN"));
 	    break;
-    case MRK_EVENT:
-	    sprintf(buf, "%s..MRK_Event", getenv("NOMEN"));
-	    break;
-    case MRK_STATUS:
+    case MRK_NOMENSTATUS:
 	    sprintf(buf, "%s..MRK_Status", getenv("NOMEN"));
 	    break;
     case PRB_STRAIN_MARKER:
@@ -1288,6 +1301,15 @@ char *mgi_DBtable(int table)
 	    break;
     case STRAIN_MERGE2:
 	    sprintf(buf, "%s..MLP_mergeStrain", getenv("STRAINS"));
+	    break;
+    case NOMEN_TRANSFERSYMBOL:
+	    sprintf(buf, "%s..Nomen_transferToMGD", getenv("NOMEN"));
+	    break;
+    case NOMEN_TRANSFERBATCH:
+	    sprintf(buf, "%s..Nomen_transferAllToMGD", getenv("NOMEN"));
+	    break;
+    case NOMEN_TRANSFERREF:
+	    sprintf(buf, "%s..Nomen_transferRefToMGD", getenv("NOMEN"));
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1546,7 +1568,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_MARKER:
-	    sprintf(buf, "insert %s (%s, _Species_key, _Marker_Type_key, symbol, name, chromosome, cytogeneticOffset)",
+	    sprintf(buf, "insert %s (%s, _Species_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, cytogeneticOffset)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_ALIAS:
@@ -1566,7 +1588,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_HISTORY:
-	    sprintf(buf, "insert %s (%s, _History_key, _Refs_key, sequenceNum, name, note, event_date)",
+	    sprintf(buf, "insert %s (%s, _History_key, _Refs_key, _Marker_Event_key, _Marker_EventReason_key, sequenceNum, name, event_date)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case MRK_OFFSET:
@@ -1760,7 +1782,7 @@ mgi_DBtable(table));
             sprintf(buf, "insert %s (_Table_id, _Column_id, description, example)", mgi_DBtable(table));
 	    break;
     case MRK_NOMEN:
-            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Suid_key, proposedSymbol, proposedName, approvedSymbol, approvedName, chromosome, humanSymbol, statusNote, broadcast_date)",
+            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, _Suid_key, _Suid_broadcast_key, symbol, name, chromosome, humanSymbol, mgiAccID, statusNote, broadcast_date)",
 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -1777,10 +1799,10 @@ mgi_DBtable(table));
             sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_NOMEN_OTHER:
-            sprintf(buf, "insert %s (%s, _Nomen_key, name, isAuthor)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_NOMEN_REFERENCE:
-            sprintf(buf, "insert %s (%s, _Refs_key, isPrimary)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Refs_key, isPrimary, broadcastToMGD)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLP_STRAIN:
             sprintf(buf, "insert %s (%s, _Species_key, userDefined1, userDefined2)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2225,7 +2247,11 @@ char *mgi_DBcvname(int table)
     case MRK_EVENT:
             strcpy(buf, "event");
 	    break;
+    case MRK_EVENTREASON:
+            strcpy(buf, "eventReason");
+	    break;
     case MRK_STATUS:
+    case MRK_NOMENSTATUS:
             strcpy(buf, "status");
 	    break;
     case MLP_SPECIES:
