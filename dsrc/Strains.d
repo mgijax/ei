@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec  12/01/2004
+--	- TR 6349; annotKey not initialized in Add
+--
 -- lec	02/04/2003
 --	- TR 4298; added Allele
 --
@@ -235,7 +238,8 @@ rules:
                  mgi_DBprstr(top->Name->text.value) + "," +
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->NeedsReviewMenu.menuHistory.defaultValue + "," +
-                 top->PrivateMenu.menuHistory.defaultValue + ")\n";
+                 top->PrivateMenu.menuHistory.defaultValue + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
  
 	  send(ModifyType, 0);
 	  annotKey := NO;
@@ -501,7 +505,7 @@ rules:
 	  where := "";
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "m";
+	  QueryModificationHistory.tag := "s";
 	  send(QueryModificationHistory, 0);
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
