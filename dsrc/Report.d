@@ -21,7 +21,8 @@ dmodule Report is
 devents:
 
    ReportGenerate [nlmMode : integer := 0;];
-   ReportEnd [dialog : widget;];
+   ReportEnd [dialog : widget;
+	      status : integer;];
    ReportInit [];
    ReportSelect [];
 
@@ -52,10 +53,9 @@ rules:
      -- Retrieve program and parameters for selected Report
 
      commands : string_list;
-     commands := create string_list();
-     program : string := dialog->ReportList->List.keys[dialog->ReportList->List.row];
+     commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
 
-     if (program = "nlm.py") then      -- NLM program
+     if (commands[1] = "nlm.py") then      -- NLM program
 
        -- NLM Mode = 1 is the NLM Update
        -- NLM Mode = 2 is the NLM Add and requires a starting J#
@@ -70,7 +70,6 @@ rules:
          return;
        end if;
  
-       commands.insert(program, commands.count + 1);
        commands.insert("-U" + global_login, commands.count + 1);
        commands.insert("-P" + global_passwd_file, commands.count + 1);
  
@@ -95,8 +94,7 @@ rules:
      -- Other Python scripts are not user-dependent and can execute using the public login
      -- These programs rely on the last search the User performed from within the form
 
-     elsif (strstr(program, ".py") != nil) then
-       commands.insert(program, commands.count + 1);
+     elsif (strstr(commands[1], ".py") != nil) then
 
        if (dialog->ReportList->List.row = 1 and select.length = 0) then
          StatusReport.source_widget := top;
@@ -111,13 +109,6 @@ rules:
        if (printSelect.length != 0) then
          commands.insert(printSelect, commands.count + 1);
        end if;
-
-     -- SQL commands will be executed by the "sql.sh" wrapper
-
-     elsif (strstr(program, ".sql") != nil) then
-       commands.insert("sql.sh", commands.count + 1);
-       commands.insert(getenv("MGD"), commands.count + 1);
-       commands.insert(program, commands.count + 1);
      end if;
  
      -- Print some diagnostics for the User
@@ -138,18 +129,8 @@ rules:
 
      ReportEnd.dialog := dialog;
 
-     proc_p : opaque 
-	:= tu_fork_process(program, commands, dialog->Output, ReportEnd);
-
-     -- check to see if we could exec the script 
-     if (tu_fork_status(proc_p) = 2) then 
-        StatusReport.source_widget := top;
-        StatusReport.message := "Invalid Status.  Cannot Generate Report.";
-        send(StatusReport);
-     end if;      
-
-     -- free the allocated proc_p pointer
-      tu_fork_free(proc_p);
+     proc_p : opaque := tu_fork_process(commands[1], commands, dialog->Output, ReportEnd);
+     tu_fork_free(proc_p);
    end does;
 
 --
@@ -159,6 +140,12 @@ rules:
    ReportEnd does
      top : widget := ReportEnd.dialog.root;
      dialog : widget := ReportEnd.dialog;
+
+     if (ReportEnd.status != 0) then
+        StatusReport.source_widget := top;
+        StatusReport.message := "Could Not Generate Report.";
+        send(StatusReport);
+     end if;
 
      -- Re-set base directory so that dir list is refreshed
 
