@@ -365,6 +365,7 @@ rules:
 	  homologyModified : boolean := false;
 	  numAssays : integer := 0;
 	  invalidAssay : boolean := false;
+	  reloadCmd : string := "";
 
 	  -- Determine if any Assay row contains less than 2 Species selected
 
@@ -504,7 +505,7 @@ rules:
 
 			if (markerKey != "") then
 	                  cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_MARKER, homologyKeyName) + markerKey + ")\n";
-	  		  cmd := cmd + "\nexec MRK_reloadLabel " + markerKey + "\n";
+	  		  reloadCmd := reloadCmd + "\nexec MRK_reloadLabel " + markerKey + "\n";
 			end if;
 		      end if;
 		    end if;
@@ -522,6 +523,8 @@ rules:
 	    end if;	-- if (editMode != TBL_ROW_DELETE)
             row := row + 1;
           end while;
+
+	  cmd := cmd + reloadCmd;
         end
 
 --
