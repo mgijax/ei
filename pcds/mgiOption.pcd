@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 19 13:38:49 2004";
+      lastWritten = "Thu Feb 19 09:27:04 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2326,13 +2326,10 @@ Module: mgiOption
             labelString = "Annotation Type";
           Group: Control
             vip_x = 80;
-            vip_y = 4650;
+            vip_y = 4595;
               Popups:
               {
                 VocAnnotTypePulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  sql = "select _AnnotType_key, name, _EvidenceVocab_key, _MGIType_key, _Vocab_key, vocab from VOC_AnnotType_View where name not in (\"InterPro/Marker\", \"Strain/Super Standard\") order by name";
-                  childTemplate = AnnotTypeToggle;
               }
         }
         {
@@ -2352,22 +2349,13 @@ Module: mgiOption
               }
         }
         {
-          AnnotTypeToggle = OptionToggle;
-          Group: Widget
-            valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
-            userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\n";
-          Group: Control
-            vip_x = 80;
-            vip_y = 4540;
-        }
-        {
           RefTypeMenu = OptionMenu;
           Group: Widget
             subMenuId = RefTypePulldown;
             labelString = Type;
           Group: Control
             vip_x = 80;
-            vip_y = 4595;
+            vip_y = 4540;
           Group: User
             defaultOption = Article;
               Popups:
@@ -2419,7 +2407,7 @@ Module: mgiOption
             labelString = Priority;
           Group: Control
             vip_x = 80;
-            vip_y = 4705;
+            vip_y = 4650;
           Group: User
             required = False;
               Popups:
@@ -2439,7 +2427,7 @@ Module: mgiOption
             labelString = "Reporter \nGene";
           Group: Control
             vip_x = 80;
-            vip_y = 4760;
+            vip_y = 4705;
               Popups:
               {
                 GXDReporterGenePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2457,7 +2445,7 @@ Module: mgiOption
             labelString = "Detection\nMethod";
           Group: Control
             vip_x = 80;
-            vip_y = 4815;
+            vip_y = 4760;
           Group: User
             defaultOption = nucleotide;
               Popups:
@@ -2519,7 +2507,7 @@ Module: mgiOption
             labelString = "Curation State";
           Group: Control
             vip_x = 80;
-            vip_y = 4870;
+            vip_y = 4815;
               Popups:
               {
                 CurationStatePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2536,7 +2524,7 @@ Module: mgiOption
             subMenuId = NotePulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 4925;
+            vip_y = 4870;
               Popups:
               {
                 NotePulldown : OptionPulldown = OptionPulldown : mgiOption;
