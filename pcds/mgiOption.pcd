@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr 17 13:55:16 2000";
+      lastWritten = "Mon Apr 24 11:21:17 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -1696,6 +1696,7 @@ Module: mgiOption
                         tableOption = 8;
                         tableOptionKey = 3;
                         tableForm = Results;
+                        sql = "select * from GXD_Strength where _Strength_key > -1 order by strength";
                     }
               }
               {

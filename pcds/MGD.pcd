@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 19 08:55:12 2000";
+      lastWritten = "Mon Apr 24 14:35:59 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -8072,6 +8072,16 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblVisibleRows = 2;
                                           xrtTblTraversableSeries = "(all 0-1 False)";
                                       }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
+                                      }
                                 }
                                 {
                                   OtherReference = ReferenceTable : mgiTable;
@@ -8743,6 +8753,7 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "mutationCurrentKey:Int=\"1\"\nmutationKey:Int=\"2\"\nmutation:Int=\"3\"\n";
                                           xrtTblVisibleRows = 3;
                                           xrtTblEnterCellCallback = "D:SetOptions";
+                                          xrtTblTraversableSeries = "(all 0-2 False)";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
