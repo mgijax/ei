@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Sep 12 09:41:15 2001";
+      lastWritten = "Wed Sep 12 12:51:27 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1285,9 +1285,6 @@ Shift<Key>Tab: prev-tab-group()
                         okCallback = "D:NextISResult";
                         cancelCallback = "D:NextISResult(answer = false)";
                     }
-                    {
-                      AgeNoteDialog = AgeNoteDialog : mgiDialog;
-                    }
               }
         }
         {
@@ -2225,25 +2222,13 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AppendNotes = AppendNotes : GXD;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Note;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Note;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
                                   Stage = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Note;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = AppendNotes;
+                                    topWidget = Note;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2695,31 +2680,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                           }
                     }
-              }
-        }
-        {
-          AppendNotes = XmRowColumn;
-          Group: Widget
-            orientation = horizontal;
-          Group: Control
-            vipComment = "";
-            vip_x = 175;
-            vip_y = 360;
-              {
-                AppendNotePush1 = AppendNotePush : mgiDataTypes;
-                Group: Widget
-                  labelString = "Staging Not Specified";
-                Group: User
-                  note = "Staging criteria not specified in reference.";
-                  noteWidget = Note;
-              }
-              {
-                AppendNotePush2 = AppendNotePush : mgiDataTypes;
-                Group: Widget
-                  labelString = "Staging Normalized";
-                Group: User
-                  noteWidget = Note;
-                  note = "Staging normalized so that noon of plug day = E0.5.";
               }
         }
         {

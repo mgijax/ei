@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 23 13:37:48 2001";
+      lastWritten = "Wed Sep 12 14:05:53 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -2753,6 +2753,23 @@ Module: MGD
                   resizable = true;
                 Group: User
                   note = "This clone was used to generate a riboprobe.";
+                  noteWidget = MolNote;
+              }
+              {
+                ProblemSequence = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Problem Sequence";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Riboprobe;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = Riboprobe;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  note = "MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. The artifact may have been introduced during the cloning process, or may be due to unreliable sequence data.";
                   noteWidget = MolNote;
               }
         }

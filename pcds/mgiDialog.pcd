@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 11 14:45:27 2001";
+      lastWritten = "Wed Sep 12 12:51:16 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -726,7 +726,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1350;
               {
                 OK = DialogPush : mgiDialog;
               }
@@ -747,7 +747,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1460;
               {
                 EditForm = EditForm : MGI;
                 Group: Constraint
@@ -797,7 +797,7 @@ Module: mgiDialog
             closeWindowCallback = "D:InSituResultCancel";
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1405;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -958,7 +958,7 @@ Module: mgiDialog
           RIDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1515;
               {
                 ItemList = LookupList;
                 Group: User
@@ -989,7 +989,7 @@ Module: mgiDialog
           CrossDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1570;
               {
                 ItemList = LookupList;
                 Group: User
@@ -1026,7 +1026,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1680;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1158,7 +1158,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1285,7 +1285,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 frame = XmFrame;
                 Group: Constraint
@@ -1591,7 +1591,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2028,7 +2028,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2157,7 +2157,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 Lookup = XmFrame;
                 Group: Widget
@@ -2376,7 +2376,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2461,46 +2461,6 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 80;
             vip_y = 305;
-        }
-        {
-          AgeNoteDialog = NoteDialog;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 80;
-            vip_y = 1350;
-              {
-                label = XmLabel;
-              }
-              {
-                Note = Notes : mgiDataTypes;
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = AppendNotes;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                Buttons = Buttons : mgiDialog;
-              }
-              {
-                AppendNotes = AppendNotes : GXD;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Note;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Note;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
         }
 }
 
