@@ -58,7 +58,7 @@ rules:
 	  launchTop : widget;
 	  
 	  launchedFrom := CreateMGIModule.source_widget;
-	  launchTop := launchedFrom.top;
+	  launchTop := launchedFrom.root;
 
 	  -- if the parent is set properly, then when the parent dies, the child will die
 	  (void) create dmodule(CreateMGIModule.name, launchTop, launchedFrom);
