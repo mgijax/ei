@@ -1,3 +1,13 @@
+TAG: ei-3-0-0
+DATE: 12/29/2000-01/08/2001
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) TR 1971 - duplicate Seq IDs on Marker form
+2) TR 1467 - added RefSeq ID to Marker form
+3) TR 1869 - added InterPro ID to Marker form; restricted
+(for TR 2107, MGI 2.6 Release)
+
 TAG: ei-2-8-10
 DATE: 12/26/2000
 STAFF: lec
