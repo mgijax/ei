@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May  6 12:08:34 2004";
+      lastWritten = "Tue May 25 10:57:59 2004";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -805,8 +805,9 @@ Module: mgiDialog
             dialogTitle = "InSitu Results";
             dialogStyle = dialog_modeless;
             rubberPositioning = False;
-            resizePolicy = resize_any;
             closeWindowCallback = "D:InSituResultCancel";
+            resizePolicy = resize_any;
+            height = 350;
           Group: Control
             vip_x = 120;
             vip_y = 1515;
@@ -847,13 +848,14 @@ Module: mgiDialog
                               xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
                               xrtTblTraversableSeries = "(all 0-7 False)";
                               xrtTblValidateCellCallback = "D:VerifyStrengthPattern,\nD:CopyInSituRow,\nD:CommitTableCellEdit";
-                              xrtTblNumRows = 18;
-                              xrtTblVisibleRows = 17;
+                              xrtTblNumRows = 10;
+                              xrtTblVisibleRows = 8;
                               xrtTblMaxLengthSeries = "(all 12 255)";
                               xrtTblAllowCellResize = resize_horizontal;
                               xrtTblFrozenColumns = 9;
                               xrtTblDisplayHorizScrollBar = dispsb_always;
                               xrtTblMinCellVisibility = 0;
+                              xrtTblDisplayVertScrollBar = dispsb_always;
                             Group: User
                               requiredColumns = "5\n9";
                               saveTraversableSeries = "(all 0-7 False)";
@@ -887,9 +889,9 @@ Module: mgiDialog
                   bottomAttachment = attach_form;
                   resizable = true;
                   leftPosition = 10;
-                  bottomOffset = 5;
                   topWidget = separator;
                   topOffset = 5;
+                  bottomOffset = 5;
                     {
                       OK = DialogPush;
                       Group: Widget
@@ -945,7 +947,7 @@ Module: mgiDialog
                                   Group: Widget
                                     selectionPolicy = multiple_select;
                                     multipleSelectionCallback = "D:SelectImagePane";
-                                    visibleItemCount = 10;
+                                    visibleItemCount = 5;
                                 }
                           }
                           {
