@@ -59,7 +59,7 @@ rules:
 
 	  top := create widget("MolecularSourceModule", nil, mgi);
 
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab : widget := mgi->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
