@@ -840,7 +840,9 @@ rules:
 
 	  -- Changing from one known chromosome to another, change MGD and CC Offsets to -1
 
-	  elsif (top->QueryList->List.selectedItemCount != 0 and currentChr != "UN" and
+	  elsif (top->QueryList->List.selectedItemCount != 0 and 
+		 currentChr != top->ChromosomeMenu.menuHistory.defaultValue and
+		 currentChr != "UN" and
 		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
 
 	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
@@ -854,6 +856,7 @@ rules:
 	    end if;
 
 	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-1.00");
+
 	    if (mgi_tblGetCell(top->Offset->Table, 1, top->Offset->Table.offset) != "") then
 	      (void) mgi_tblSetCell(top->Offset->Table, 1, top->Offset->Table.offset, "-1.00");
               CommitTableCellEdit.source_widget := top->Offset->Table;
