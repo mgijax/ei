@@ -4458,6 +4458,13 @@ rules:
           end if;
  
 	  if (NewForm != ExptForm) then
+
+	    if (NewForm.name = "ExptTextForm") then
+	      mgi_tblSetVisibleRows(top->ExptMarker->Table, 10);
+	    else
+	      mgi_tblSetVisibleRows(top->ExptMarker->Table, 5);
+	    end if;
+
             NewForm.managed := true;
             ExptForm.managed := false;
             ExptForm := NewForm;
