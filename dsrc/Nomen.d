@@ -915,7 +915,6 @@ rules:
 	  cmd := "select * from NOM_Marker_View " +
 		 " where _Nomen_key = " + currentNomenKey + "\n";
 
-	  results : integer := 1;
 	  row : integer := 0;
 
 	  dbproc : opaque := mgi_dbopen();
@@ -925,45 +924,42 @@ rules:
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    row := 0;
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value         := mgi_getstr(dbproc, 7);
-	        top->Name->text.value           := mgi_getstr(dbproc, 8);
-	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 10);
-	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 11);
+	      top->ID->text.value             := mgi_getstr(dbproc, 1);
+	      top->Symbol->text.value         := mgi_getstr(dbproc, 7);
+	      top->Name->text.value           := mgi_getstr(dbproc, 8);
+	      top->HumanSymbol->text.value    := mgi_getstr(dbproc, 10);
+	      top->StatusNotes->text.value    := mgi_getstr(dbproc, 11);
 
-	        table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 25));
-		(void) mgi_tblSetCell(table, table.broadcastBy, table.byDate, mgi_getstr(dbproc, 12));
+	      table := top->ModificationHistory->Table;
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
+	      (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
+	      (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
+	      (void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 25));
+	      (void) mgi_tblSetCell(table, table.broadcastBy, table.byDate, mgi_getstr(dbproc, 12));
 
-                SetOption.source_widget := top->MarkerTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
-                send(SetOption, 0);
+              SetOption.source_widget := top->MarkerTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 2);
+              send(SetOption, 0);
 
-                SetOption.source_widget := top->MarkerStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
+              SetOption.source_widget := top->MarkerStatusMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
 
-                SetOption.source_widget := top->MarkerEventMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
-                send(SetOption, 0);
+              SetOption.source_widget := top->MarkerEventMenu;
+              SetOption.value := mgi_getstr(dbproc, 4);
+              send(SetOption, 0);
 
---                SetOption.source_widget := top->CurationStateMenu;
---                SetOption.value := mgi_getstr(dbproc, 6);
---                send(SetOption, 0);
+--              SetOption.source_widget := top->CurationStateMenu;
+--              SetOption.value := mgi_getstr(dbproc, 6);
+--              send(SetOption, 0);
 
-                SetOption.source_widget := top->ChromosomeMenu;
-                SetOption.value := mgi_getstr(dbproc, 9);
-                send(SetOption, 0);
-	      end if;
+              SetOption.source_widget := top->ChromosomeMenu;
+              SetOption.value := mgi_getstr(dbproc, 9);
+              send(SetOption, 0);
 
 	      row := row + 1;
 	    end while;
-	    results := results + 1;
 	  end while;
 	  (void) dbclose(dbproc);
 
