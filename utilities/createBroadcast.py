@@ -23,9 +23,8 @@
 #	-D database
 #	-U user
 #	-P password file
-#	-F format (preview, broadcast or email)
+#	-F format (preview, broadcast)
 #	--BFILE broadcast file name
-#	--EFILE email file name
 #	--BDATE broadcast date in MM-DD-YY format
 #
 # Notes:
@@ -66,11 +65,9 @@
 #
 # AND MAYBE
 #
-# 3. <email file> ($HOME/mgireport/Broadcast-MM-DD-YYYY.email unless user overrides)
+# 3. <diagnostics file> ($HOME/mgireport/Broadcast-MM-DD-YYYY.diagnostics)
 #
-# 4. <diagnostics file> ($HOME/mgireport/Broadcast-MM-DD-YYYY.diagnostics)
-#
-# 5. <status file> ($HOME/mgireport/Broadcast-MM-DD-YYYY.stats)
+# 4. <status file> ($HOME/mgireport/Broadcast-MM-DD-YYYY.stats)
 #
 #
 # REQUIRES: INSTALL_ROOT and APP env variables are set appropriately to the
@@ -135,9 +132,7 @@ class Broadcast:
 		self.statsFile = None
 		self.statsFileName = None
 		self.broadcastFileName = None
-		self.emailFileName = None
 		self.broadcastFile = None
-		self.emailFile = None
 		self.broadcastDate = None
 		self.lockFile = None
 		self.reportDir = os.environ['HOME'] + '/mgireport/'
@@ -150,17 +145,6 @@ class Broadcast:
       			'n._Marker_Type_key, n.proposedSymbol, r.jnumID ' + \
       			'from MRK_Nomen_View n, MRK_Nomen_Reference_View r ' + \
       			'where n.status = "Approved" ' + \
-      			'and n._Nomen_key = r._Nomen_key ' + \
-      			'and r.isPrimary = 1 ' + \
-			'order by n.approvedSymbol'
-
-		# For email, exclude '-pending' symbols
-
-		self.emailCmd = 'select n._Nomen_key, n.approvedSymbol, n.approvedName, n.chromosome, n.event, ' + \
-      			'n._Marker_Type_key, r.jnumID, r.firstAuthor ' + \
-      			'from MRK_Nomen_View n, MRK_Nomen_Reference_View r ' + \
-      			'where n.status = "Approved" ' + \
-			'and n.approvedSymbol not like "%-pending" ' + \
       			'and n._Nomen_key = r._Nomen_key ' + \
       			'and r.isPrimary = 1 ' + \
 			'order by n.approvedSymbol'
@@ -192,8 +176,6 @@ class Broadcast:
 				self.format = opt[1]
 			elif opt[0] == '--BFILE':
 				self.broadcastFileName = self.reportDir + opt[1]
-			elif opt[0] == '--EFILE':
-				self.emailFileName = self.reportDir + opt[1]
 			elif opt[0] == '--BDATE':
 				self.broadcastDate = opt[1]
 			elif opt[0] == '-d':
@@ -207,11 +189,10 @@ class Broadcast:
 		   self.password is None or \
 		   self.format is None or \
 		   self.broadcastFileName is None or \
-		   self.emailFileName is None or \
 		   self.broadcastDate is None:
 			self.showUsage()
 
-		if self.format not in ['preview', 'broadcast', 'email']:
+		if self.format not in ['preview', 'broadcast']:
 			self.showUsage()
 
 		# If testing, auto-set DEBUG mode
@@ -245,7 +226,6 @@ class Broadcast:
 		self.printMsg(self.diagFile, 'Database:  %s\n' % mgdlib.get_sqlDatabase())
 		self.printMsg(self.diagFile, 'User:  %s\n' % mgdlib.get_sqlUser())
 		self.printMsg(self.diagFile, 'Broadcast File:  %s\n' % self.broadcastFileName)
-		self.printMsg(self.diagFile, 'Email File:  %s\n' % self.emailFileName)
 		self.printMsg(self.diagFile, 'Broadcast Date:  %s\n' % self.broadcastDate)
 		self.printMsg(self.diagFile, 'Debug:  %s\n\n' % str(self.DEBUG))
 
@@ -308,8 +288,8 @@ class Broadcast:
 		'''
  
 		usage = 'usage: %s [-S server] [-D database] [-U user] [-P password file]' % sys.argv[0] + \
-			' [-F format (broadcast or email)' + \
-			' [--BFILE broadcast file] [--EFILE email file]' + \
+			' [-F format (broadcast)' + \
+			' [--BFILE broadcast file]' + \
 			' [--BDATE broadcast date (MM/DD/YYYY)] -d'
 		self.error(usage)
  
@@ -328,11 +308,6 @@ class Broadcast:
 
 		try:
 			self.broadcastFile.close()
-		except:
-			pass
-
-		try:
-			self.emailFile.close()
 		except:
 			pass
 
@@ -355,7 +330,7 @@ class Broadcast:
 		#
 		'''
 
-		toCopy = [self.broadcastFileName, self.diagFileName, self.statsFileName, self.emailFileName]
+		toCopy = [self.broadcastFileName, self.diagFileName, self.statsFileName]
 
 		for f in toCopy:
 			if os.path.isfile(f):
@@ -375,7 +350,7 @@ class Broadcast:
 		'''
 
 		if not self.DEBUG:
-			toCopy = [self.broadcastFileName, self.diagFileName, self.statsFileName, self.emailFileName]
+			toCopy = [self.broadcastFileName, self.diagFileName, self.statsFileName]
 
 			for f in toCopy:
 				args = 'cp %s %s' % (f, self.archiveDir)
@@ -421,64 +396,6 @@ class Broadcast:
 		'''
 
 		return (self.format)
-
-	def createEmailFile(self):
-		'''
-		# requires:
-		#
-		# effects:
-		#	Creates Email report
-		#
-		# returns:
-		#
-		'''
-
-		try:
-			self.emailFile = open(self.emailFileName, 'w')
-		except:
-			self.finish()
-			self.error('Could not create file %s' % self.emailFileName)
-
-		self.printMsg(self.statsFile, 'Email Report Generated:\n\t%s\n\n' % self.emailFileName)
-
-		self.emailFile.write('''This email list is an update to The Jackson Laboratory locus information
-data.  The nomenclature changes and additions specified here will be
-incorporated into all electronic databases maintained by our staff.  The
-list includes both new locus assignments and nomenclature changes.
- 
-Note: Each entry has the following parts:
-Chromosome, Locus Symbol, Type (N=new, W=withdrawal),
-Marker type (G=Gene, Q=QTL, D=DNA Segment, C=Chromosomal Aberration),
-Gene Name, J# (internal filing number), First Author, Other Names.
-''')
-
-		self.emailFile.write(self.CRT)
-		self.emailFile.write(string.ljust('Chr', 5)) 
-		self.emailFile.write(string.ljust('Symbol', 26)) 
-		self.emailFile.write(string.ljust('Type', 5)) 
-		self.emailFile.write(string.ljust('Gene Name', 51)) 
-		self.emailFile.write(string.ljust('J#', 9)) 
-		self.emailFile.write(string.ljust('First Author', 21)) 
-		self.emailFile.write(string.ljust('Other Names', 11)) 
-		self.emailFile.write(2*self.CRT)
-
-		results = mgdlib.sql(self.emailCmd, 'auto')
-
-		for r in results:
-			self.emailFile.write(string.ljust(r['chromosome'], 5))
-			self.emailFile.write(string.ljust(r['approvedSymbol'], 26))
-			self.emailFile.write(string.ljust(r['event'][0] + ' ' + str(r['_Marker_Type_key']), 5)) 
-			self.emailFile.write(string.ljust(r['approvedName'][:50], 51)) 
-
-			if r['jnumID'] is not None:
-				self.emailFile.write(string.ljust(mgdlib.prvalue(r['jnumID']), 9)) 
-				self.emailFile.write(string.ljust(mgdlib.prvalue(r['firstAuthor'][:20]), 21)) 
-			else:
-				self.emailFile.write(string.ljust('', 9))
-				self.emailFile.write(string.ljust('', 21))
-
-			self.otherNames(r['_Nomen_key'], self.emailFile)
-			self.emailFile.write(self.CRT)
 
 	def createBroadcastFile(self, updateDB = 0):
 		'''
@@ -595,10 +512,6 @@ if broadcast.getFormat() == 'preview':
 	broadcast.createBroadcastFile(0)
 
 elif broadcast.getFormat() == 'broadcast':
-	broadcast.createEmailFile()
 	broadcast.createBroadcastFile(1)
-
-elif broadcast.getFormat() == 'email':
-	broadcast.createEmailFile()
 
 broadcast.finish()

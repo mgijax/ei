@@ -805,6 +805,7 @@ class Marker:
 		self.hasAllele = 0
 		self.jnum = jnum
 		self.mode = mode
+		self.typeKey = type
                 self.name = name
                 self.proposedSymbol = proposedSymbol
 		self.refKey = None
@@ -821,21 +822,6 @@ class Marker:
 			self.offset = -1.0
 		else:
 			self.offset = offset
-
-		if self.type == 'G':
-			self.typeKey = 1	# Gene
-		elif self.type == 'D':
-			self.typeKey = 2	# DNA Segment
-		elif self.type == 'C':
-			self.typeKey = 3	# Chromosomal Aberration
-		elif self.type == 'Q':
-			self.typeKey = 6	# QTL
-		elif self.type == 'P':
-			self.typeKey = 7	# Pseudogene
-		elif self.type == 'B':
-			self.typeKey = 8	# BAC/YAC end
-		else:
-			self.typeKey = 1	# Gene (default)
 
 		if self.jnum != None:
 			# Get the _Refs_key for the J number, format is J:#####
@@ -1651,7 +1637,7 @@ class Marker:
 		# This is an entirely new symbol
 
 		if orig is None:
-			cmd.append('%s values(%d,1,%d,"%s","%s","%s",NULL)' \
+			cmd.append('%s values(%d,1,%s,"%s","%s","%s",NULL)' \
 	        	    % (INSERTMARKER, self.getKey(), self.getTypeKey(), self.getSymbol(), self.getName(), self.getChr()))
 			cmd.append('%s values(%d,0,%f)' % (INSERTOFFSET, self.getKey(), self.getOffset()))
 			cmd.append('execute MRK_insertHistory %d,%d,%d,"%s","Assigned"\n' \
@@ -1672,7 +1658,7 @@ class Marker:
                 	else:
                         	orig.cyto = '"' + orig.cyto + '"'
 
-			cmd.append('%s values(%d,1,%d,"%s","%s","%s",%s) ' \
+			cmd.append('%s values(%d,1,%s,"%s","%s","%s",%s) ' \
 	        	    % (INSERTMARKER, self.getKey(), self.getTypeKey(), self.getSymbol(), self.getName(), \
 			       self.getChr(), orig.cyto))
 			cmd.append('%s values(%d,0,%f)' % (INSERTOFFSET, self.getKey(), orig.offset))
