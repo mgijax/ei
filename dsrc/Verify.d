@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	01/02/2003
+--	- TR 4272; VerifyVocabEvidence; default for Mammalian Phenotype
+--
 -- lec	12/12/2002
 --	- TR 4326; VerifyVocabEvidence; default for PhenoSlim
 --
@@ -3187,7 +3190,8 @@ rules:
 
 	  if (value.length = 0) then
 	    if (isTable) then
-	      if (sourceWidget.annotVocab = "PhenoSlim") then
+	      if (sourceWidget.annotVocab = "PhenoSlim" or
+		  sourceWidget.annotVocab = "Mammalian Phenotype") then
 		evidence := "TAS";
 	        pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring(evidence));
 		evidenceKey := top->EvidenceCodeList->List.keys[pos];
