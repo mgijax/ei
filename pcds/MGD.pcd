@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jan 24 15:25:03 2003";
+      lastWritten = "Wed Jan 29 10:02:05 2003";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1530,6 +1530,8 @@ Module: MGD
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 5;
                                       }
                                       {
                                         Add = TablePush;
@@ -1621,6 +1623,50 @@ Module: MGD
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    RIKENCluster = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    InterPro = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Taxon = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Ensembl = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TIGR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DOTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMMA = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    Harwell = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    ORNL = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
