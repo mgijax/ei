@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 07/12/2001
+--	- TR 2715; Notes required when Other species selected
+--
 -- lec 09/23/1999
 --	- TR 940; Age verification
 --
@@ -34,6 +37,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
+	CheckNote :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -113,6 +117,8 @@ rules:
 
         Add does
 
+	  send(CheckNote, 0);
+
           if (not top.allowEdit) then
             return;
           end if;
@@ -174,6 +180,23 @@ rules:
 	end does;
 
 --
+-- CheckNote
+--
+-- Checks that Note has been entered if Species = "Other"
+--
+
+	CheckNote does
+
+	  if (top->SpeciesMenu.menuHistory.labelString = OTHERNOTES and
+	      top->Note->text.value.length = 0) then
+                StatusReport.source_widget := top;
+                StatusReport.message := "Antigen Notes are Required.";
+                send(StatusReport, 0);
+	        top.allowEdit := false;
+	  end if;
+
+	end does;
+--
 -- Delete
 --
 -- Deletes current record
@@ -203,6 +226,8 @@ rules:
 --
 
 	Modify does
+
+	  send(CheckNote, 0);
 
           if (not top.allowEdit) then 
             return; 
