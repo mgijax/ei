@@ -35,6 +35,7 @@ CALLS
 	 mgi_sql1("char *")                              : "char *";
 
 	 global_login					 : "char *";
+	 global_loginKey				 : "char *";
 	 global_passwd_file				 : "char *";
 	 global_passwd					 : "char *";
 	 global_reportdir				 : "char *";

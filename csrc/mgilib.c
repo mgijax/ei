@@ -14,6 +14,10 @@
  *
  * History:
  *
+ * lec 05/23/2003
+ *	- SAO; modifiedBy changed to _ModifiedBy_key
+ *	- added global_loginKey
+ *
  * lec 08/15/2002
  *	- TR 1463/SAO; SPECIES to ORGANISM
  *	- update "modifiedBy" for appropriate tables
@@ -108,6 +112,7 @@
 
 char *global_application;     /* Set in Application dModule; holds main application value */
 char *global_version;         /* Set in Application dModule; holds main application version value */
+char *global_loginKey;        /* Set in Application dModule; holds login key value */
 
 /*
    Compose a string SQL value for a given value.
@@ -2069,7 +2074,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _MGIType_key, translationType, compressionChars, regularExpression)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_USER:
-	    sprintf(buf, "insert %s (%s, _UserType_key, _UserStatus_key, login, fullName, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    sprintf(buf, "insert %s (%s, _UserType_key, _UserStatus_key, login, fullName)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_LOCK_EDIT:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
@@ -2391,7 +2396,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_FANTOM2:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
@@ -2416,6 +2420,10 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_SOURCE:
       case VOC_EVIDENCE:
       case VOC_TERM:
+              sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
+		  mgi_DBtable(table), str, global_loginKey, mgi_DBkey(table), key);
+	      break;
+      case MGI_FANTOM2:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
@@ -2433,7 +2441,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
-      case MGI_FANTOM2:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
@@ -2458,6 +2465,10 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_SOURCE:
       case VOC_EVIDENCE:
       case VOC_TERM:
+              sprintf(buf, "update %s set _ModifiedBy_key = global_loginKey, modification_date = getdate() where %s = %s\n", 
+		  mgi_DBtable(table), global_loginKey, mgi_DBkey(table), key);
+	      break;
+      case MGI_FANTOM2:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);
 	      break;

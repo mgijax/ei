@@ -12,10 +12,6 @@
 #include <X11/cursorfont.h>
 #include <X11/Intrinsic.h>
 
-#if defined(__cplusplus) || defined(c_plusplus)
-	extern "C" {
-#endif
-
 extern int mgi_err_handler(DBPROCESS *, int, int, int, char *, char *);
 extern int mgi_msg_handler(DBPROCESS *, DBINT, int, int, char *, char *, char *, DBUSMALLINT);
 extern int mgi_dbinit(char *, char *);
@@ -30,13 +26,9 @@ extern XtCallbackProc mgi_cancel_search(Widget);
 extern int mgi_process_results(Widget);
 extern int mgi_process_sql(Widget);
 
-#if defined(__cplusplus) || defined(c_plusplus)
-	} 
-#endif
-
 extern LOGINREC *loginrec;
 extern char *global_login;
-extern int globa_loginKey;
+extern char *global_loginKey;
 extern char *global_passwd_file;
 extern char *global_passwd;
 extern char *global_reportdir;

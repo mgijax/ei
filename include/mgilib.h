@@ -5,10 +5,6 @@
 #include <string.h>
 #include <syblib.h>
 
-#if defined(__cplusplus) || defined(c_plusplus)
-          extern "C" {
-#endif
- 
 extern char *mgi_setDBkey(int, int, char *);
 extern char *mgi_DBprstr(char *);
 extern char *mgi_DBprnotestr(char *);
@@ -33,10 +29,6 @@ extern char *mgi_DBrefstatus(int, int);
 extern Boolean mgi_DBisAnchorMarker(char *);
 extern char *mgi_escape_quotes(char *);
 
-#if defined(__cplusplus) || defined(c_plusplus)
-       } 
-#endif
- 
 extern char *global_application;
 extern char *global_version;
 

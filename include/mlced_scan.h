@@ -64,10 +64,6 @@ typedef struct _tag_rec {
 }tag_rec, *tag_ptr; 
 
 
-#if defined(__cplusplus) || defined(c_plusplus)
-	extern "C" {
-#endif
-
 	int renumberRefs(char *txt, xrtlist reflist);
 	/* renumberRefs
 	 *
@@ -397,9 +393,5 @@ typedef struct _tag_rec {
      * effects: deallocates all items on the list, then deallocates list.
      * returns: nothing. 
      */ 
-
-#if defined(__cplusplus) || defined(c_plusplus)
-	}
-#endif
 
 #endif
