@@ -229,6 +229,7 @@ rules:
 --
 
 	Exit does
+          mgi->MolecularSource.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);
