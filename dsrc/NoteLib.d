@@ -84,6 +84,7 @@ rules:
 	      notew.child(i)->Note->text.value := "";
 	      notew.child(i)->Note->text.modified := false;
 	      notew.child(i)->Note->text.required := false;
+	      notew.child(i)->Note.noteKey := -1;
 	    end if;
 	    SetNotesDisplay.note := notew.child(i)->Note;
 	    send(SetNotesDisplay, 0);
@@ -186,8 +187,12 @@ rules:
 	  ClearSetNoteForm.notew := notew;
 	  send(ClearSetNoteForm, 0);
 
-	  if (tableID = MGI_NOTE_MRKGO_VIEW or tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW
-	      or tableID = MGI_NOTE_SEQUENCE_VIEW or tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
+	  if (tableID = MGI_NOTE_MRKGO_VIEW or 
+	      tableID = MGI_NOTE_NOMEN_VIEW or 
+	      tableID = MGI_NOTE_SOURCE_VIEW or 
+	      tableID = MGI_NOTE_SEQUENCE_VIEW or 
+	      tableID = MGI_NOTE_STRAIN_VIEW or 
+	      tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
             cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
 	  	  " from " + mgi_DBtable(tableID) +
 		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
@@ -208,8 +213,12 @@ rules:
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
 
-	      if (tableID = MGI_NOTE_MRKGO_VIEW or tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW
-		  or tableID = MGI_NOTE_SEQUENCE_VIEW or tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
+	      if (tableID = MGI_NOTE_MRKGO_VIEW or 
+		  tableID = MGI_NOTE_NOMEN_VIEW or 
+		  tableID = MGI_NOTE_SOURCE_VIEW or 
+		  tableID = MGI_NOTE_SEQUENCE_VIEW or 
+		  tableID = MGI_NOTE_STRAIN_VIEW or 
+		  tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
 	        noteKey := mgi_getstr(dbproc, 4);
 	      end if;
 
