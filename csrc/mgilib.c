@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 09/25/2000
+ *	- TR 1966; Nomen
+ *
  * lec 09/05/2000
  *	- TR 1916; Nomen
  *
@@ -1866,7 +1869,7 @@ mgi_DBtable(table));
             sprintf(buf, "insert %s (_Table_id, _Column_id, description, example)", mgi_DBtable(table));
 	    break;
     case MRK_NOMEN:
-            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, submittedBy, broadcastBy, symbol, name, chromosome, humanSymbol, mgiAccID, statusNote, broadcast_date)",
+            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, submittedBy, broadcastBy, symbol, name, chromosome, humanSymbol, statusNote, broadcast_date)",
 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
