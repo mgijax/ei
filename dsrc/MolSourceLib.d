@@ -578,15 +578,21 @@ rules:
 	  top : widget := ModifyProbeSource.source_widget->SourceForm;
 	  probeKey : string :=  ModifyProbeSource.probeKey;
 	  age : string := "";
+	  isAnon : string := YES;
 
 	  age := top->AgeMenu.menuHistory.defaultValue;
 	  if (top->Age->text.value.length > 0) then
 	    age := age + " " + top->Age->text.value;
 	  end if;
 
-	  top.sql := "exec PRB_processPrbAnonSource " +
+	  if (top->Library->text.value.length > 0) then
+	    isAnon := NO;
+	  end if;
+
+	  top.sql := "exec PRB_processProbeSource " +
 	      probeKey + "," +
 	      top->SourceID->text.value + "," +
+	      isAnon + "," +
 	      top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
 	      top->Strain->StrainID->text.value + "," +
 	      top->Tissue->TissueID->text.value + "," +
@@ -610,13 +616,20 @@ rules:
 	  sequenceKey : string :=  ModifySequenceSource.sequenceKey;
 	  row : integer := ModifySequenceSource.row;
 	  age : string := "";
+	  isAnon : string := YES;
 
 	  age := mgi_tblGetCell(table, row, table.agePrefix);
 	  if (mgi_tblGetCell(table, row, table.ageRange) != "") then
 	    age := age + " " + mgi_tblGetCell(table, row, table.ageRange);
 	  end if;
 
-	  table.sqlCmd := "exec PRB_processSeqAnonSource " +
+	  if (mgi_tblGetCell(table, row, table.library) != "") then
+	    isAnon := NO;
+	  end if;
+
+	  table.sqlCmd := "exec PRB_processSequenceSource " +
+	      isAnon + "," +
+	      mgi_tblGetCell(table, row, table.assocKey) + "," +
 	      sequenceKey + "," +
 	      mgi_tblGetCell(table, row, table.sourceKey) + "," +
 	      mgi_tblGetCell(table, row, table.organismKey) + "," +
