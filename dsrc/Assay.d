@@ -259,7 +259,7 @@ locals:
 	prepForms : list;               -- List of Prep Forms
 	tables : list;			-- List of Tables
 
-	clearAssay : integer := 255;	-- Value for Clear.clearForms
+	clearAssay : integer := 511;	-- Value for Clear.clearForms
 
 	currentAssay : string;      	-- Primary Key value of currently selected record
 				    	-- Set in Add[] and Select[]
@@ -2374,9 +2374,11 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
-          AssayClear.reset := true;
-	  AssayClear.select := true;
-          send(AssayClear, 0);
+	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
+
+--          AssayClear.reset := true;
+--	  AssayClear.select := true;
+--          send(AssayClear, 0);
 
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);
@@ -2699,7 +2701,7 @@ rules:
 		",Mode,Lane key,Band key,Strength key," + (string) b + "; " + laneLabel + ",Note";
 	    newPixelWidthSeries := newPixelWidthSeries +
 		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
---	    newPixelWidthSeries := "";
+	    newPixelWidthSeries := "";
 	    newCharWidthSeries := newCharWidthSeries +
 		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)";
 	    newTraverseSeries := newTraverseSeries + 
