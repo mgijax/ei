@@ -32,6 +32,7 @@ appropriate documentation manuals.
 <LI><A HREF="#installsource">Install a copy of Production or Development Source</A>
 <LI><A HREF="#installdocs">Install system documentation</A>
 <LI><A HREF="#applconfig">Application Configuration Files</A>
+<LI><A HREF="#cvsExport">Export a CVS Tagged EI Version</A>
 <LI><A HREF="#buildInter">Build/Install an Interpreted copy of an EI Application</A>
 <LI><A HREF="#buildComp">Build/Install a Compiled copy of an EI Application</A>
 <LI><A HREF="#buildAll">Build/Install all EI Applications</A>
@@ -639,23 +640,38 @@ that only reflect the different SE's source installation.
 <P>
 
 <HR>
+<A NAME="cvsExport"><H4>Export a CVS Tagged EI Version</H4></A>
+<OL>
+<LI>Go to a directory in which you wish to export the EI for a build.  This
+    should not be the directory into which you will install the product.
+<P>
+<LI>Export the version you want to build:
+	<PRE>
+	cvs export -r ei-4-0-0 -d ei-4-0-0 ei
+	</PRE>
+<P>
+<LI>Build and install the application (interpreted or compiled).
+<P>
+</OL>
+
+<HR>
 <A NAME="buildInter"><H4>Build an Interpreted copy of an EI Application</H4></A>
 Development copies of an EI application contain interpreted D code.  Interpreted D code
 allows the debugger to be used.
 <OL>
 <LI>Ensure that the EIINSTALLDIR variable in your environment is set to
-    the directory that holds the  mgd, gxd, and mgiadmin directories
-   (e.g., '/usr/local/mgi/ei'). 
+the directory that holds the  mgd, gxd, and mgiadmin directories
+(e.g., '/usr/local/mgi/ei'). 
 <P>
 <LI>Go to the application directory
 <P>
 <LI>Compile the application: <CODE>buildapp</CODE>
 <P>
 <LI>Verify that the INSTALLFILE configuration variable is defined in <CODE>uxb.conf</CODE>:
-	<PRE>
-	INSTALLFILE     MGD runmgd runmgd-dev
-	etc.
-	</PRE>
+    <PRE>
+    INSTALLFILE     MGD runmgd runmgd-dev
+    etc.
+    </PRE>
 <P>
 <LI>Install the application in the destination directory: <CODE>installapp</CODE>
 <P>
