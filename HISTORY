@@ -1,9 +1,17 @@
+TAG: ei-6-0-0
+DATE: 08/29/2001
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) TR 2770
+
 TAG: ei-5-2-0
 DATE: 08/01/2001
 STAFF: lec
 RELEASE: A
 CHANGES:
 1) added Clipboard.d, Clipboard.de
+2) added Duplicate function to Index/Stage
 
 TAG: ei-5-1-0
 DATE: 07/25/2001
