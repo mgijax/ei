@@ -40,6 +40,7 @@ uxb $OPTIONS -destdir $EIINSTALLDIR/$APP install
 cd ..
 
 #
-# Copy main Configuration file to installation directory
+# Copy main files to installation directory
 #
 cp Configuration $EIINSTALLDIR
+cp runapp $EIINSTALLDIR
