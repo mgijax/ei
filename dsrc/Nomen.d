@@ -191,12 +191,14 @@ rules:
 	  -- Type and Chromosome Menus
 
 	  top->MarkerEventMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_EVENT) + " order by " + mgi_DBkey(MRK_EVENT);
+		"select * from " + mgi_DBtable(MRK_EVENT) + 
+		" where " + mgi_DBkey(MRK_EVENT) + " in (1,2) order by " + mgi_DBcvname(MRK_EVENT);
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
 	  top->MarkerEventReasonMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_EVENTREASON) + " order by " + mgi_DBkey(MRK_EVENTREASON);
+		"select * from " + mgi_DBtable(MRK_EVENTREASON) + 
+		" where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
 	  InitOptionMenu.option := top->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
 
@@ -493,6 +495,16 @@ rules:
             set := set + "chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + ",";
           end if;
 
+          if (top->SubmittedByMenu.menuHistory.modified and
+	      top->SubmittedByMenu.menuHistory.searchValue != "%") then
+            set := set + "_Suid_key = "  + top->SubmittedByMenu.menuHistory.defaultValue + ",";
+          end if;
+
+          if (top->BroadcastByMenu.menuHistory.modified and
+	      top->BroadcastByMenu.menuHistory.searchValue != "%") then
+            set := set + "_Suid_broadcast_key = "  + top->BroadcastByMenu.menuHistory.defaultValue + ",";
+          end if;
+
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
 	  end if;
@@ -511,6 +523,10 @@ rules:
 
 	  if (top->BroadcastDate->text.modified) then
 	    set := set + "broadcast_date = " + mgi_DBprstr(top->BroadcastDate->text.value) + ",";
+	  end if;
+
+	  if (top->AccessionID->text.modified) then
+	    set := set + "mgiAccID = " + mgi_DBprstr(top->AccessionID->text.value) + ",";
 	  end if;
 
 	  ModifyNotes.source_widget := top->EditorNote->Note;
@@ -1124,7 +1140,7 @@ rules:
 	         "select * from " + mgi_DBtable(MRK_NOMEN_OTHER_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey + 
 		 " order by isAuthor desc, name\n" +
-	         "select isPrimary, broadcastToMGD, _Refs_key, jnum, short_citation, isReviewArticle from " +
+	         "select isPrimary, _Refs_key, jnum, short_citation, isReviewArticle, broadcastToMGD from " +
 		  mgi_DBtable(MRK_NOMEN_REFERENCE_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey +
 		 " order by isPrimary desc, short_citation\n" +
@@ -1145,14 +1161,14 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value := mgi_getstr(dbproc, 6);
-	        top->Name->text.value   := mgi_getstr(dbproc, 7);
-	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 11);
-	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
-	        top->AccessionID->text.value    := mgi_getstr(dbproc, 12);
-	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
+	        top->Symbol->text.value         := mgi_getstr(dbproc, 9);
+	        top->Name->text.value           := mgi_getstr(dbproc, 10);
+	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 12);
+	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 17);
+	        top->AccessionID->text.value    := mgi_getstr(dbproc, 8);
+	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 14);
+	        top->CreationDate->text.value   := mgi_getstr(dbproc, 15);
+	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 16);
 
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -1167,7 +1183,7 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->MarkerEventReasonMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
+                SetOption.value := mgi_getstr(dbproc, 7);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->SubmittedByMenu;
@@ -1175,11 +1191,11 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->BroadcastByMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
+                SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->ChromosomeMenu;
-                SetOption.value := mgi_getstr(dbproc, 10);
+                SetOption.value := mgi_getstr(dbproc, 11);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
@@ -1219,19 +1235,25 @@ rules:
 		  row := row + 1;
 		end if;
 
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.broadcastKey, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
-                SetOption.source_widget := top->BroadcastMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
-                send(SetOption, 0);
+                if (mgi_getstr(dbproc, 5) = "1") then
+                  (void) mgi_tblSetCell(table, row, table.broadcast, "Yes");
+                else
+                  (void) mgi_tblSetCell(table, row, table.broadcast, "No");
+                end if;
 
-                SetOption.source_widget := top->ReviewMenu;
-                SetOption.value := mgi_getstr(dbproc, 6);
-                send(SetOption, 0);
+                if (mgi_getstr(dbproc, 6) = "1") then
+                  (void) mgi_tblSetCell(table, row, table.review, "Yes");
+                else
+                  (void) mgi_tblSetCell(table, row, table.review, "No");
+                end if;
 
           	-- Initialize Option Menus for row 0
 

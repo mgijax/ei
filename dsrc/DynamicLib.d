@@ -86,9 +86,6 @@ rules:
 		elsif (label = "Not Applicable") then
 		  instance := "NotApplicable";
 
-		-- Does this help the crashing problem when
-		-- scrolling thru the option menu?
-
 		elsif (option.name = "ChromosomeMenu") then
 		  instance := "Chr" + label;
 
