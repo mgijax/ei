@@ -79,6 +79,9 @@
 #
 # History:
 #
+# lec	08/16/1999
+#	- TR518; added Accession numbers for New symbols
+#
 # gld   06/25/1999
 #   - WTS TR#718; removed hardcoded paths to "/export/mgd"
 #
@@ -145,7 +148,7 @@ class Broadcast:
 
 		self.broadcastCmd = 'select n._Nomen_key, n.approvedSymbol, n.approvedName, n.chromosome, n.event, ' + \
       			'n.markerType, n.proposedSymbol, r.jnumID ' + \
-      			'from nomen..MRK_Nomen_View n, nomen..MRK_Nomen_Reference_View r ' + \
+      			'from MRK_Nomen_View n, MRK_Nomen_Reference_View r ' + \
       			'where n.status = "Approved" ' + \
       			'and n._Nomen_key = r._Nomen_key ' + \
       			'and r.isPrimary = 1 ' + \
@@ -155,7 +158,7 @@ class Broadcast:
 
 		self.emailCmd = 'select n._Nomen_key, n.approvedSymbol, n.approvedName, n.chromosome, n.event, ' + \
       			'n.markerType, r.jnumID, r.firstAuthor ' + \
-      			'from nomen..MRK_Nomen_View n, nomen..MRK_Nomen_Reference_View r ' + \
+      			'from MRK_Nomen_View n, MRK_Nomen_Reference_View r ' + \
       			'where n.status = "Approved" ' + \
 			'and n.approvedSymbol not like "%-pending" ' + \
       			'and n._Nomen_key = r._Nomen_key ' + \
@@ -508,9 +511,15 @@ Gene Name, J# (internal filing number), First Author, Other Names.
 
 			self.otherNames(r['_Nomen_key'], self.broadcastFile)
 
+			# attach accession numbers for New events
+			if r['event'] == 'New':
+				self.accessionNumbers(r['_Nomen_key'], self.broadcastFile)
+
+			self.broadcastFile.write(self.CRT)
+
 			# update Marker Status and Broadcast Date
 			if updateDB:
-				cmd = 'exec nomen..NOMEN_updateBroadcastStatus %s, "%s"' \
+				cmd = 'exec NOMEN_updateBroadcastStatus %s, "%s"' \
 					% (r['_Nomen_key'], self.broadcastDate)
 				mgdlib.sql(cmd, None)
 
@@ -527,7 +536,7 @@ Gene Name, J# (internal filing number), First Author, Other Names.
 		#
 		'''
 
-		cmd = 'select name from nomen..MRK_Nomen_Other ' + \
+		cmd = 'select name from MRK_Nomen_Other ' + \
 	      	      'where _Nomen_key = %d ' % (nomenKey) + \
 	      	      'order by name'
 
@@ -536,7 +545,41 @@ Gene Name, J# (internal filing number), First Author, Other Names.
 		for o in others:
 			ostr = ostr + o['name'] + '|'
 
-		fp.write(ostr[:len(ostr) - 1] + self.CRT)
+		fp.write(ostr[:len(ostr) - 1])
+
+	def accessionNumbers(self, nomenKey, fp):
+		'''
+		# requires:
+		#	nomenKey, the record key for the Nomen Symbol
+		#	fp, the file descriptor for the output file
+		#
+		# effects:
+		#	Writes the Accession numbers for the Marker to the output file
+		#
+		# returns:
+		#
+		'''
+
+		cmd = 'select hasAcc = count(*) from ACC_Accession where _Object_key = %d' % (nomenKey)
+		results = mgdlib.sql(cmd, 'auto')
+		if results[0]['hasAcc'] == 0:
+			return
+
+		fp.write(self.TAB)
+
+		cmd = 'select accID, _Refs_key, _LogicalDB_key from MRK_Nomen_AccRef_View ' + \
+		      'where _Object_key = %d' % (nomenKey)
+
+		results = mgdlib.sql(cmd, 'auto')
+		for r in results:
+			fp.write('%s&%d&%d|' % (r['accID'], r['_Refs_key'], r['_LogicalDB_key']))
+
+		cmd = 'select accID, _LogicalDB_key from MRK_Nomen_AccNoRef_View ' + \
+		      'where _Object_key = %d' % (nomenKey)
+
+		results = mgdlib.sql(cmd, 'auto')
+		for r in results:
+			fp.write('%s&&%d|' % (r['accID'], r['_LogicalDB_key']))
 
 #
 # Main Routine
