@@ -1,8 +1,10 @@
-TAG: ei-2-5-1
+TAG: ei-2-5-1, -2
 DATE: 08/24/2000
 STAFF: lec
 RELEASE: A
-CHANGES: TR 868; need Makefile.xrt
+CHANGES: 
+1) TR 868; need Makefile.xrt
+2) update MGILib.d w/ new CVS tag
 
 TAG: ei-2-5-0
 DATE: 08/24/2000
