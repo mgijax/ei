@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	06/18/2004
+--	- TR 5702; remove RepeatUnit and MoreProduct
+--
 -- lec	02/19/2004
 --	- TR 5523; remove Holder
 --
@@ -363,8 +366,7 @@ rules:
 
 	    cmd := cmd + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + "," +
 	                 mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + "," +
-	                 "NULL," +	-- repeatUnit
-	                 "NULL,0,";	-- productSize, moreProduct
+	                 "NULL,";	-- productSize
 
 	  -- Insert for Primers
 
@@ -383,9 +385,7 @@ rules:
             end if;
 
 	    cmd := cmd + "NULL,NULL," +	-- insertSite, insertSize
-	           mgi_DBprstr(top->MolPrimerForm->Repeat->text.value) + "," +
-	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + "," +
-	           (string)((integer) top->MolPrimerForm->More.set) + ",";
+	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + ",";
 
 	  end if;
 
@@ -662,16 +662,8 @@ rules:
 	      set := set + "primer2sequence = " + mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
 	    end if;
 
-            if (top->MolPrimerForm->Repeat->text.modified) then
-	      set := set + "repeatUnit = " + mgi_DBprstr(top->MolPrimerForm->Repeat->text.value) + ",";
-	    end if;
-
             if (top->MolPrimerForm->ProductSize->text.modified) then
 	      set := set + "productSize = " + mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + ",";
-	    end if;
-
-	    if (top->MolPrimerForm->More.modified) then
-              set := set + "moreProduct = " + (string)((integer) top->MolPrimerForm->More.set) + ",";
 	    end if;
 	  end if;
 
@@ -1157,16 +1149,8 @@ rules:
 	      where := where + "\nand p.primer2sequence like " + mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value);
 	    end if;
 
-            if (top->MolPrimerForm->Repeat->text.value.length > 0) then
-	      where := where + "\nand p.repeatUnit like " + mgi_DBprstr(top->MolPrimerForm->Repeat->text.value);
-	    end if;
-
             if (top->MolPrimerForm->ProductSize->text.value.length > 0) then
 	      where := where + "\nand p.productSize like " + mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value);
-	    end if;
-
-	    if (top->MolPrimerForm->More.set) then
-	      where := where + "\nand p.moreProduct = 1";
 	    end if;
 	  end if;
 
@@ -1507,18 +1491,16 @@ rules:
                 top->MolMasterForm->MJnum->Jnum->text.value := "";
                 top->MolMasterForm->MJnum->ObjectID->text.value := "";
                 top->MolMasterForm->MJnum->Citation->text.value := "";
-		prb_createdBy := mgi_getstr(dbproc, 23);
-		prb_modifiedBy := mgi_getstr(dbproc, 24);
-		prb_creation_date := mgi_getstr(dbproc, 18);
-		prb_modification_date := mgi_getstr(dbproc, 19);
+		prb_createdBy := mgi_getstr(dbproc, 21);
+		prb_modifiedBy := mgi_getstr(dbproc, 22);
+		prb_creation_date := mgi_getstr(dbproc, 16);
+		prb_modification_date := mgi_getstr(dbproc, 17);
 
 		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 11);
 	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 12);
 	        top->MolPrimerForm->Sequence1->text.value   := mgi_getstr(dbproc, 7);
 	        top->MolPrimerForm->Sequence2->text.value   := mgi_getstr(dbproc, 8);
-	        top->MolPrimerForm->Repeat->text.value      := mgi_getstr(dbproc, 13);
-	        top->MolPrimerForm->ProductSize->text.value := mgi_getstr(dbproc, 14);
-	        top->MolPrimerForm->More.set                := (boolean)((integer) mgi_getstr(dbproc, 15));
+	        top->MolPrimerForm->ProductSize->text.value := mgi_getstr(dbproc, 13);
 	
                 SetOption.source_widget := top->MolDetailForm->VectorTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
