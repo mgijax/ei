@@ -483,7 +483,11 @@ rules:
 	  --
 
 	  elsif (ageRange.length > 0) then
-	    if (not allow_only_digits(ageRange)) then
+
+	    if (not allow_only_digits(ageRange) or
+	        ageRange[ageRange.length] = ',' or
+	        ageRange[ageRange.length] = '-' or
+	        ageRange[ageRange.length] = ' ') then
 	      error := true;
 	      prmessage := true;
 	    else
