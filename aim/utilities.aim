@@ -33,6 +33,7 @@ CALLS
 	 allow_only_digits("char *")				  : "Boolean";
 	 allow_only_float("char *")				  : "Boolean";
 	 getenv("const char *")                                   : "char *";
+	 putenv("const char *")                                   : "int";
 	 @sqrt("double")                                          : "double";
 	 strstr("const char *", "const char *")                   : "char *";
 
