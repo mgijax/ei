@@ -49,7 +49,7 @@ for r in results:
 
 	if fp is None:  
 		reportName = 'Nomen.%s.rpt' % r['symbol']
-		fp = reportlib.init(reportName, 'Nomenclature Record')
+		fp = reportlib.init(reportName, 'Nomenclature Record', os.environ['EIREPORTDIR'])
 
 	dcmd = 'select *, ' + \
 	       'bdate = convert(char(25), broadcast_date), ' + \

@@ -379,7 +379,7 @@ def parse_ref_key(mldpref_key):
 
 	if fp is None:
 		reportName = 'Mldp.J:%s.rpt' % mldpref_key['jnum']
-		fp = reportlib.init(reportName, 'MLDP')
+		fp = reportlib.init(reportName, 'MLDP', os.environ['EIREPORTDIR'])
 
 	fp.write('Reference: ' + mgi_utils.prvalue(mldpref_key['jnum']) + \
 		 '  ' + mgi_utils.prvalue(mldpref_key['short_citation']) + CRT)

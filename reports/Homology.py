@@ -105,7 +105,7 @@ def parse_reference(reference):
 # Main
 #
 
-fp = reportlib.init(sys.argv[0], 'Homology')
+fp = reportlib.init(sys.argv[0], 'Homology', os.environ['EIREPORTDIR'])
 db.sql(sys.argv[1], parse_reference)
 reportlib.finish_ps(fp)
 

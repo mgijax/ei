@@ -51,7 +51,7 @@ for r in results:
 
 	if fp is None:  
 		reportName = 'NomenSearch.%s.rpt' % r['symbol']
-		fp = reportlib.init(reportName, 'Nomenclature Search Results')
+		fp = reportlib.init(reportName, 'Nomenclature Search Results', os.environ['EIREPORTDIR'])
 		printHeader()
 
 	fp.write(string.ljust(r['symbol'], 25))
