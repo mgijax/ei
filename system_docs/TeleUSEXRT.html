@@ -137,41 +137,6 @@ a previously built TeleUSE/XRT integration.
 	cp $TeleUSE/conf/xrt/XrtExtra.h $XRTHOME/include/Xm
 	</PRE>
 <P>
-<LI>As of 02/03/1999, there were missing definitions in the <CODE>xrt_table.res</CODE>
-    for XmRxrtLblBorderType.  TeleUSE support has issued PR 5658 to fix this omission
-    in the release for XRT Vol. 13.  See <CODE>junior:$TeleUSE/conf/xrt/xrt_table.res</CODE>.  
-    In the meantime, these definitions should be placed after the <CODE>XmRxrtTblWidgetSeries</CODE> 
-    definitions around line 1221:
-    <PRE>
-	! =============================================== XmRxrtLblBorderType
-	 
-	Name            XmRxrtLblBorderType
-	!Size            sizeof(unsigned\ char)
-	!CType           unsigned\ char
-	Size            sizeof(XrtLblBorderType)
-	CType           XrtLblBorderType
-	AWType          Enum
-	ValidateFunc    vpk_enum_validate
-	CPrintFunc      tk_c_print_enum
-	UILPrintFunc    tk_uil_print_enum
-	EnumMacro       XRTLBL_BORDER_NONE
-	EnumValue       border_none
-	EnumMacro       XRTLBL_BORDER_ETCHED_IN
-	EnumValue       border_etched_in
-	EnumMacro       XRTLBL_BORDER_ETCHED_OUT
-	EnumValue       border_etched_out
-	EnumMacro       XRTLBL_BORDER_IN
-	EnumValue       border_in
-	EnumMacro       XRTLBL_BORDER_OUT
-	EnumValue       border_out
-	EnumMacro       XRTLBL_BORDER_BEZEL
-	EnumValue       border_bezel
-	EnumMacro       XRTLBL_BORDER_SHADOW
-	EnumValue       border_shadow
-	EnumMacro       XRTLBL_BORDER_PLAIN
-	EnumValue       border_plain
-    </PRE>
-<P>
 <LI>Run <CODE>make clean</CODE> from <CODE>$TeleUSE/conf/xrt</CODE> if you are re-building
     a previously built intergration.
 	<PRE>
