@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 18 15:17:27 2005";
+      lastWritten = "Thu Feb 10 11:41:19 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9352,6 +9352,8 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           xrtTblVisibleRows = 3;
                                           xrtTblPixelWidthSeries = "(all 0-3 0)(all 6-9 0)";
+                                        Group: User
+                                          requiredColumns = 5;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
