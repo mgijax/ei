@@ -30,6 +30,7 @@
 --
 -- lec	06/03/2003
 --	- TR 4603; DuplicatePartial and DuplicateAll
+--	- TR 4610; added Insert Row to Gel Lane table
 --
 -- lec	05/07/2003
 --	- TR 3710; added Knock In Assay Type
@@ -1503,6 +1504,8 @@ rules:
           row : integer := 0;
           editMode : string;
           key : string;
+          currentSeqNum : string;
+          newSeqNum : string;
 	  controlKey : string;
 	  genotypeKey : string;
 	  rnaKey : string;
@@ -1516,6 +1519,15 @@ rules:
 	  keysDeclared : boolean := false;
 	  update : string := "";
  
+	  -- Check for duplicate Seq # assignments
+
+          DuplicateSeqNumInTable.table := table;
+          send(DuplicateSeqNumInTable, 0);
+ 
+          if (table.duplicateSeqNum) then
+            return;
+          end if;
+ 
           -- Process while non-empty rows are found
  
           while (row < mgi_tblNumRows(table)) do
@@ -1526,6 +1538,8 @@ rules:
             end if;
  
             key := mgi_tblGetCell(table, row, table.laneKey);
+            currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
+            newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
 	    genotypeKey := mgi_tblGetCell(table, row, table.genotypeKey);
             controlKey := mgi_tblGetCell(table, row, table.controlKey);
             rnaKey := mgi_tblGetCell(table, row, table.rnaKey);
@@ -1610,30 +1624,40 @@ rules:
               send(ModifyStructure, 0);
               cmd := cmd + top->ADClipboard.updateCmd;
  
-            elsif (editMode = TBL_ROW_MODIFY) then
+            elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
-              update := "_Genotype_key = " + genotypeKey + "," +
-		        "_GelRNAType_key = " + rnaKey + "," +
-                        "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
-		        "_GelControl_key = " + controlKey + "," +
-		        "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
-                        "sex = " + mgi_DBprstr(sexKey) + "," +
-                        "age = " + mgi_DBprstr(ageKey) + "," +
-                        "ageMin = " + ageMin + "," +
-                        "ageMax = " + ageMax + "," +
-	    	        "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	        "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
-              cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
-
-              -- Process Gel Lane Structures
-
-              ModifyStructure.source_widget := top;
-              ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-              ModifyStructure.key := key;
-              ModifyStructure.row := row;
-              send(ModifyStructure, 0);
-              cmd := cmd + top->ADClipboard.updateCmd;
+              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
  
+              if (currentSeqNum != newSeqNum) then
+		update := "sequenceNum = " + newSeqNum;
+                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
+
+              -- Else, a simple update
+ 
+              else
+                update := "_Genotype_key = " + genotypeKey + "," +
+		          "_GelRNAType_key = " + rnaKey + "," +
+                          "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
+		          "_GelControl_key = " + controlKey + "," +
+		          "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
+                          "sex = " + mgi_DBprstr(sexKey) + "," +
+                          "age = " + mgi_DBprstr(ageKey) + "," +
+                          "ageMin = " + ageMin + "," +
+                          "ageMax = " + ageMax + "," +
+	    	          "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
+	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
+                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
+
+                -- Process Gel Lane Structures
+  
+                ModifyStructure.source_widget := top;
+                ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
+                ModifyStructure.key := key;
+                ModifyStructure.row := row;
+                send(ModifyStructure, 0);
+                cmd := cmd + top->ADClipboard.updateCmd;
+	      end if;
+
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_GELLANE, key);
             end if;
