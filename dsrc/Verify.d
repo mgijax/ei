@@ -48,7 +48,7 @@
 --	  items cannot be used.
 --
 -- lec 08/16/2001
---	- TR 2846; VerifyAlleleMarker; don't launch Allele module upon invalid entry
+--	- TR 2846; VerifyAllele; don't launch Allele module upon invalid entry
 --	- TR 2849; VerifyGelLaneControl; remove defaults for Control = 'No'
 --
 -- lec 06/27/2001
@@ -98,7 +98,7 @@
 --	- VerifyGelLaneControl; modify for additional values of Control (TR#135)
 --
 -- lec 12/10/98
---	- VerifyAlleleMarker; restrict Allele add to symbols which
+--	- VerifyAllele; restrict Allele add to symbols which
 --	  contain Marker symbol string.
 --
 -- lec 12/08/98
@@ -109,7 +109,7 @@
 --	- VerifyStrain; was not declaring KEYNAME
 --
 -- lec 11/18/98
---	- VerifyAlleleMarker; do not traverse to next tab group if table
+--	- VerifyAllele; do not traverse to next tab group if table
 --	- VerifyItem; modify behavior for non-selected/found/add item
 --
 -- lec 11/12/98
@@ -120,13 +120,13 @@
 --	  Offset value has been removed per user request.
 --
 -- lec 11/04/98
---	- VerifyAlleleMarker; capture Allele Name
+--	- VerifyAllele; capture Allele Name
 --
 -- lec 11/03/98
 --	- VerifyReference; create refTop as XmRowColumn ancestor of source widget
 --
 -- lec 10/20/98
---	- VerifyAlleleMarker now can process as Text translation
+--	- VerifyAllele now can process as Text translation
 --
 -- lec 10/16/98
 --	- add ability to add Allele in VerifyAllele
@@ -679,7 +679,7 @@ rules:
 	end does;
 
 --
--- VerifyAlleleMarker
+-- VerifyAllele
 --
 -- Activated from:  Table ValidateCellCallback
 --	then the Marker info is entered in the appropriate columns based on
@@ -688,13 +688,13 @@ rules:
 --	Assumes use of mgiMarker, mgiAllele templates if text translation processing
 --
  
-        VerifyAlleleMarker does
-          sourceWidget : widget := VerifyAlleleMarker.source_widget;
+        VerifyAllele does
+          sourceWidget : widget := VerifyAllele.source_widget;
           top : widget := sourceWidget.top;
           root : widget := sourceWidget.root;
 	  alleleWidget : widget;
 	  value : string;
-	  verifyAdd : boolean := VerifyAlleleMarker.verifyAdd;
+	  verifyAdd : boolean := VerifyAllele.verifyAdd;
 	  isTable : boolean;
 
 	  -- Relevant for Tables only
@@ -707,10 +707,10 @@ rules:
 	  -- Determine Table processing vs. Text processing
 
 	  if (isTable) then
-	    row := VerifyAlleleMarker.row;
-	    column := VerifyAlleleMarker.column;
-	    reason := VerifyAlleleMarker.reason;
-	    value := VerifyAlleleMarker.value;
+	    row := VerifyAllele.row;
+	    column := VerifyAllele.column;
+	    reason := VerifyAllele.reason;
+	    value := VerifyAllele.value;
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	      return;
@@ -830,7 +830,7 @@ rules:
                     message := "The allele... \n\n'" + value + 
                                "'\n\ndoes not exist for symbol '" + markerSymbol + "'.\n";
                   else
-                    message := "The allele... \n\n'" + VerifyAlleleMarker.value +  "'\n\ndoes not exist.\n";
+                    message := "The allele... \n\n'" + VerifyAllele.value +  "'\n\ndoes not exist.\n";
                   end if;
 
                   StatusReport.source_widget := root;
@@ -839,7 +839,7 @@ rules:
 
                   if (isTable) then
                     (void) mgi_tblSetCell(sourceWidget, row, alleleKey, "NULL");
-                    VerifyAlleleMarker.doit := (integer) false;
+                    VerifyAllele.doit := (integer) false;
                   end if;
 
                   (void) reset_cursor(top);
