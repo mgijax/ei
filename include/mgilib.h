@@ -205,6 +205,7 @@ extern char *global_version;
 #define MRK_NOMEN_COORDNOTES		512
 #define MRK_NOMEN_EDITORNOTES		513
 #define MRK_NOMEN_ACC_REFERENCE		514
+#define MRK_NOMEN_USER_VIEW		515
 
 /* MGI Admin Tables */
 
