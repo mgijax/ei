@@ -35,24 +35,15 @@ and m._Marker_key = mm._Marker_key
 and mm._Species_key in (1,2,9,11,35,40,44)
 go
 
-/* Select the non-single homologies from this set */
-
-select distinct _Homology_key
-into #homology2
-from #homology
-group by _Homology_key
-having count(*) > 1
-go
-
 set nocount off
 go
 
 print ""
-print "Homologies for Oxford Grid Species w/ Unreviewed Assay - excluding single homology entries"
+print "Homologies for Oxford Grid Species w/ Unreviewed Assay"
 print ""
 
 select r.jnumID, r.symbol, r.commonName, a.assay
-from #homology2 s, HMD_Homology_View r, HMD_Homology_Assay_View a
+from #homology s, HMD_Homology_View r, HMD_Homology_Assay_View a
 where s._Homology_key = r._Homology_key
 and r._Homology_key = a._Homology_key
 order by r.jnum, s._Homology_key
