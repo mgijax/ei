@@ -141,6 +141,7 @@ void mgi_tblSetCell(Widget table, int row, int column, char *value)
   Boolean shift_labels = False;
   int num_rows = 1;
   int num_values = 0;
+  XmString xm_value;
 
   /* Add empty new row if necessary */
 
@@ -154,9 +155,11 @@ void mgi_tblSetCell(Widget table, int row, int column, char *value)
     result = XrtTblAddRows(table, rows, num_rows, shift_labels, values, num_values);
   }
 
+  xm_value = XrtTblCvtStringToXmString(value);
+
   XtVaSetValues(table, 
 		XmNxrtTblContext, XrtTblSetContext(row, column),
-		XmNxrtTblCellValueContext, value,
+		XmNxrtTblCellValueContext, xm_value,
 		NULL);
 }
 
