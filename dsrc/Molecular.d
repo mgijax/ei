@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 01/15/2001
+--	- TR 2192 ; change KFMemorial to append rather than replace
+--
 -- lec 09/27/1999
 --	- TR 611
 --
@@ -490,11 +493,11 @@ rules:
 --
 -- KFMemorialMolSeg
 --
--- Place special text in the Notes field
+-- Append special text in the Notes field
 --
 
 	KFMemorialMolSeg does
-	  top->MolNote->text.value := 
+	  top->MolNote->text.value := top->MolNote->text.value + "  " +
 		"This clone is derived from a gene that produces alternate transcripts.";
 	end does;
 
