@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 04/10/2001
+--	- VerifyMarker;  added processing for Accession widget
+--
 -- lec 04/04/2001
 --	- VerifyItem; added ALL_CELLLINE
 --	- added VerifyAnyMarker
@@ -1694,6 +1697,8 @@ rules:
 	  reason : integer;
 	  markerKey : integer;
 	  markerSymbol : integer;
+	  markerMGIAccID : string;
+	  accessionWidget : widget := nil;
 
 	  isTable := mgi_tblIsTable(sourceWidget);
 
@@ -1727,6 +1732,9 @@ rules:
 
 	  else
 	    value := top->mgiMarker->Marker->text.value;
+	    if (top->mgiMarker.accessionWidget != "") then
+	      accessionWidget := top->(top->mgiMarker.accessionWidget);
+	    end if;
 	  end if;
 
 	  -- If no value entered, return
@@ -1736,6 +1744,9 @@ rules:
               (void) mgi_tblSetCell(sourceWidget, row, markerKey, "NULL");
 	    else
 	      top->mgiMarker->ObjectID->text.value := "NULL";
+	      if (accessionWidget != nil) then
+	        accessionWidget->AccessionID->text.value := "";
+	      end if;
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    end if;
 	    return;
@@ -1749,6 +1760,9 @@ rules:
               (void) mgi_tblSetCell(sourceWidget, row, markerKey, "NULL");
 	    else
 	      top->mgiMarker->ObjectID->text.value := "NULL";
+	      if (accessionWidget != nil) then
+	        accessionWidget->AccessionID->text.value := "";
+	      end if;
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    end if;
 	    return;
@@ -1769,7 +1783,7 @@ rules:
 	  chromosome : string_list := create string_list();
 	  status : string_list := create string_list();
 	  band : string_list := create string_list();
-	  speciesKey : string := "1";
+	  speciesKey : string := MOUSE;
 
           if (isTable and VerifyMarker.verifyOtherSpecies) then
             speciesKey := mgi_tblGetCell(sourceWidget, VerifyMarker.row, sourceWidget.speciesKey);
@@ -1849,6 +1863,9 @@ rules:
 	      VerifyMarker.doit := (integer) false;
 	    else
 	      top->mgiMarker->ObjectID->text.value := "NULL";
+	      if (accessionWidget != nil) then
+	        accessionWidget->AccessionID->text.value := "";
+	      end if;
 	    end if;
 
 	    (void) reset_cursor(top);
@@ -1905,6 +1922,9 @@ rules:
 	      VerifyMarker.doit := (integer) false;
 	    else
 	      top->mgiMarker->ObjectID->text.value := "NULL";
+	      if (accessionWidget != nil) then
+	        accessionWidget->AccessionID->text.value := "";
+	      end if;
 	    end if;
 
 	    (void) reset_cursor(top);
@@ -1995,6 +2015,14 @@ rules:
 	  else
 	    top->mgiMarker->ObjectID->text.value := whichMarker;
 	    top->mgiMarker->Marker->text.value := whichSymbol;
+
+	    -- Get MGI Acc ID if Mouse and Accession Widget defined
+	    if (speciesKey = MOUSE and accessionWidget != nil) then
+	      markerMGIAccID := mgi_sql1("select mgiID from MRK_Mouse_View " +
+		"where _Marker_key = " + whichMarker);
+	      accessionWidget->AccessionID->text.value := markerMGIAccID;
+	    end if;
+
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
 
