@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec	10/31/2003
+--	- TR 5271
+--
 -- lec  05/05/2003
 --	- TR 2459, 3711
 --
@@ -435,6 +438,7 @@ rules:
 --
 
 	PrepareSearch does
+	  value : string;
 
 	  from := "from GXD_Index_View i";
 	  where := "";
@@ -455,9 +459,19 @@ rules:
             where := where + "\nand i.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
           end if;
  
-          if (top->mgiCitation->ObjectID->text.value.length > 0 and
-	      top->mgiCitation->ObjectID->text.value != "NULL") then
-            where := where + "\nand i._Refs_key = " + top->mgiCitation->ObjectID->text.value;
+	  value := top->mgiCitation->ObjectID->text.value;
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand i._Refs_key = " + value;
+	  else
+	    value :=  top->mgiCitation->Jnum->text.value;
+	    if (value.length > 0) then
+	      where := where + "\nand i.jnum = " + value;
+	    else
+	      value :=  top->mgiCitation->Citation->text.value;
+	      if (value.length > 0) then
+	        where := where + "\nand i.short_citation like " + mgi_DBprstr(value);
+	      end if;
+	    end if;
 	  end if;
 
           if (top->Note->text.value.length > 0) then
