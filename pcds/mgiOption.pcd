@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  5 13:08:40 2003";
+      lastWritten = "Mon Nov 10 10:32:47 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -2442,7 +2442,7 @@ Module: mgiOption
           GXDKnockInMenu = OptionMenu;
           Group: Widget
             subMenuId = GXDKnockInPulldown;
-            labelString = "Knock In\nType";
+            labelString = "Detection\nMethod";
           Group: Control
             vip_x = 80;
             vip_y = 4815;

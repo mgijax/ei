@@ -1,3 +1,10 @@
+TAG: ei-10-0-1
+DATE: 12/03/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 2.98
+
 TAG: ei-10-0-0
 DATE: 11/10/2003
 STAFF: lec
@@ -8,6 +15,7 @@ CHANGES:
 3) TR 4826; move age verification out of EI & into stored procedure
 4) TR 5259; marker history "modified by" not preserved during merge
 5) TR 5260; duplicate GXD index records
+6) TR 5299; modification of reporter gene (installed in production)
 
 TAG: ei-9-0-17
 TAG: ei-9-0-16
