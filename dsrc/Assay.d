@@ -151,7 +151,8 @@ devents:
 	AddProbeReference :local [];
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
-		    reset : boolean := false;];
+		    reset : boolean := false;
+		    select: boolean := true;];
 
 	CopySpecimen :local [];
 	CopyGelLane :local [];
@@ -259,16 +260,17 @@ rules:
 	  Clear.clearKeys := AssayClear.clearKeys;
 	  Clear.reset := AssayClear.reset;
 	  send(Clear, 0);
-	  currentAssay := "";
 
           SetNotesDisplay.note := top->AssayNote->Note;
           send(SetNotesDisplay, 0);
 
-          LoadStructureList.source_widget := top;
-	  send(LoadStructureList, 0);
-
-	  send(InitImagePane, 0);
-	  send(CreateGelBandColumns, 0);
+	  if (not AssayClear.select) then
+            LoadStructureList.source_widget := top;
+	    send(LoadStructureList, 0);
+	    send(InitImagePane, 0);
+	    send(CreateGelBandColumns, 0);
+	    currentAssay := "";
+	  end if;
 	end does;
 
 -- 
@@ -1947,8 +1949,8 @@ rules:
  
           top->QueryList->List.row := Select.item_position;
 
-	  AssayClear.source_widget := top;
           AssayClear.reset := true;
+	  AssayClear.select := true;
           send(AssayClear, 0);
 
 	  -- Make the selected item the first visible item in the list
