@@ -214,6 +214,7 @@ rules:
 	  clearLists := 3;
           Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
+	  Clear.reset := true;
           send(Clear, 0);
 	end does;
 

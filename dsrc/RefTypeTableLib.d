@@ -162,7 +162,6 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
-	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsTypeKey, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 3));
@@ -207,7 +206,6 @@ rules:
           row : integer := 0;
           editMode : string;
           assocKey : string;
-          refsCurrentKey : string;
           refsKey : string;
 	  refsTypeKey : string;
 	  mgiTypeKey : string;
@@ -228,7 +226,6 @@ rules:
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
             assocKey := mgi_tblGetCell(table, row, table.assocKey);
-            refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
             refsKey := mgi_tblGetCell(table, row, table.refsKey);
 	    mgiTypeKey := (string) table.mgiTypeKey;
             isReviewArticle := mgi_tblGetCell(table, row, table.reviewKey);

@@ -333,18 +333,25 @@ rules:
 
 	ClearNomen does
 
-	  if (not ClearNomen.reset) then
-	    top->MarkerStatusMenu.background := "Wheat";
-            top->MarkerStatusPulldown.background := "Wheat";
-            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
-            top->MarkerStatusMenu.menuHistory.background := "Wheat";
-	  end if;
-
 	  Clear.source_widget := top;
 	  Clear.clearLists := 3;
 	  Clear.clearKeys := ClearNomen.clearKeys;
 	  Clear.reset := ClearNomen.reset;
 	  send(Clear, 0);
+
+	  if (not ClearNomen.reset) then
+	    top->MarkerStatusMenu.background := "Wheat";
+            top->MarkerStatusPulldown.background := "Wheat";
+            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
+            top->MarkerStatusMenu.menuHistory.background := "Wheat";
+	    InitRefTypeTable.table := top->Reference->Table;
+	    InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
+	    send(InitRefTypeTable, 0);
+	    InitSynTypeTable.table := top->Synonym->Table;
+	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
+	    send(InitSynTypeTable, 0);
+	  end if;
+
 	end does;
 
 --

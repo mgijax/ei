@@ -271,13 +271,13 @@ rules:
 	    return;
 	  end if;
 
-	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
-	  if (refsKey.length = 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "An Original Reference is required.";
-            send(StatusReport);
-            return;
-	  end if;
+--	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
+--	  if (refsKey.length = 0) then
+ --           StatusReport.source_widget := top;
+  --          StatusReport.message := "An Original Reference is required.";
+   --         send(StatusReport);
+    --        return;
+--	  end if;
 
 	  (void) busy_cursor(top);
 
@@ -543,17 +543,17 @@ rules:
 	    return;
 	  end if;
 
-	  refsCurrentKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsCurrentKey);
-	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
-	  if (refsCurrentKey.length > 0 and 
-		(refsKey = "NULL" or refsKey.length = 0 or 
-		 mgi_tblGetCell(table, table.origRefsKey, table.editMode) = TBL_ROW_DELETE)) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "An Original Reference is required.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-            return;
-	  end if;
+--	  refsCurrentKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsCurrentKey);
+--	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
+--	  if (refsCurrentKey.length > 0 and 
+--		(refsKey = "NULL" or refsKey.length = 0 or 
+--		 mgi_tblGetCell(table, table.origRefsKey, table.editMode) = TBL_ROW_DELETE)) then
+ --           StatusReport.source_widget := top;
+  --          StatusReport.message := "An Original Reference is required.";
+   --         send(StatusReport);
+--	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+ --           return;
+--	  end if;
 
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
 	      (top->mgiParentalESCellLine->ObjectID->text.modified or 
