@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	12/19/2000
+--	- TR 2130;  Add; prepDetailForm
+--
 -- lec	04/20/1999
 --	- TR 543; implement Duplicate function of InSitu Assays
 --
@@ -386,12 +389,13 @@ rules:
 
         Add does
 
-	  if (prepDetailForm.name = "ProbePrepForm" and
-	      prepDetailForm->Holder->text.value.length = 0) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Required Field\n\n'Probe Holder'";
-	    send(StatusReport, 0);
-	    top.allowEdit := false;
+	  if (prepDetailForm.name = "ProbePrepForm") then
+	    if (prepDetailForm->Holder->text.value.length = 0) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "Required Field\n\n'Probe Holder'";
+	      send(StatusReport, 0);
+	      top.allowEdit := false;
+	    end if;
 	  end if;
 
           if (not top.allowEdit) then
