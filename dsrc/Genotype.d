@@ -372,6 +372,7 @@ rules:
 	  set : string;
 	  reordering : boolean := false;
 	  ordergenotypes : boolean := false;
+	  alleleList : string_list := create string_list();
  
 	  keyName := "allele" + KEYNAME;
 	  allelePairString := "";
@@ -468,20 +469,34 @@ rules:
 	      ordergenotypes := true;
             end if;
 
+	    -- keep track of list of alleles to process later
+
 	    if (ordergenotypes) then
-	      localCmd := localCmd + "exec GXD_orderGenotypes " +  alleleKey1 + "\n";
-	      if (alleleKey1 != alleleKey2 and alleleKey2 != "NULL") then
-	        localCmd := localCmd + "exec GXD_orderGenotypes " +  alleleKey2 + "\n";
+	      if (alleleKey1 != "NULL") then
+	        alleleList.insert(alleleKey1, alleleList.count + 1);
+	      end if;
+
+	      if (alleleKey2 != "NULL") then
+	        alleleList.insert(alleleKey2, alleleList.count + 1);
 	      end if;
             end if;
 
             row := row + 1;
           end while;
 
+	  -- process distinct alleles
+	  alleleList.reduce;
+	  alleleList.rewind;
+	  while alleleList.more do
+	    localCmd := localCmd + "exec GXD_orderGenotypes " +  alleleList.next + "\n";
+	  end while;
+
 	  cmd := cmd + localCmd;
+
 	  if (not reordering) then
 	    cmd := cmd + "exec GXD_orderAllelePairs " + currentRecordKey + "\n";
 	  end if;
+
         end does;
 
 --
