@@ -431,7 +431,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentNomenKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -609,7 +608,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentNomenKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;

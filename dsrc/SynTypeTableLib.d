@@ -214,7 +214,7 @@ rules:
  
 	  syntableID : integer := MGI_SYNONYM;
 
-	  if (table.useDefaultSynType = 1) then
+	  if (table.useDefaultSynType) then
 	    synTypeKey := mgi_sql1("select _SynonymType_key from " + mgi_DBtable(tableID));
 	  end if;
 
@@ -225,7 +225,7 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.synKey);
 
-	    if (table.useDefaultSynType = 0) then
+	    if (not table.useDefaultSynType) then
 	      synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
 	    end if;
 

@@ -157,9 +157,6 @@ rules:
 	  InitOptionMenu.option := top->MolecularMutationMenu;
 	  send(InitOptionMenu, 0);
 
-          LoadList.list := top->MutantESCellLineList;
-	  send(LoadList, 0);
-
           LoadList.list := top->ESCellLineList;
 	  send(LoadList, 0);
 
@@ -315,8 +312,8 @@ rules:
                  top->InheritanceModeMenu.menuHistory.defaultValue + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  statusKey + "," +
-                 top->EditForm->ESCellLine->VerifyID->text.value + "," +
-                 top->EditForm->MutantESCellLine->VerifyID->text.value + "," +
+                 top->EditForm->mgiParentalESCellLine->ObjectID->text.value + "," +
+                 top->EditForm->mgiMutantESCellLine->ObjectID->text.value + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
@@ -346,7 +343,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -355,7 +351,7 @@ rules:
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM_ALLELE_VIEW;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYMTYPE_ALLELE_VIEW;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
@@ -482,10 +478,10 @@ rules:
 
 	DisplayESCellLine does
 
-	  cmd := "select cellLine, _Strain_key, cellLineStrain from " + 
+	  cmd := "select _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
-		" = " + top->EditForm->ESCellLine->VerifyID->text.value;
+		" = " + top->mgiParentalESCellLine->ObjectID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -493,9 +489,10 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	         top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 1);
-		 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
-		 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 3);
+	         top->mgiParentalESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	         top->mgiParentalESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+		 top->mgiParentalESCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+		 top->mgiParentalESCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
 	    end while;
 	  end while;
 
@@ -533,14 +530,12 @@ rules:
 	  end if;
 
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
-	      (top->ESCellLine->VerifyID->text.modified or 
-	       top->MutantESCellLine->VerifyID->text.modified or 
+	      (top->mgiParentalESCellLine->ObjectID->text.modified or 
+	       top->mgiMutantESCellLine->ObjectID->text.modified or 
 	       top->EditForm->Strain->StrainID->text.modified)) then
 
 	    top->VerifyESStrain.doModify := false;
             top->VerifyESStrain.managed := true;
-	    top->VerifyMutantESStrain.doModify := false;
-            top->VerifyMutantESStrain.managed := true;
  
             -- Keep busy while user verifies the modification is okay
  
@@ -600,12 +595,12 @@ rules:
 	    end if;
           end if;
 
-	  if (top->ESCellLine->VerifyID->text.modified) then
-	    set := set + "_ESCellLine_key = " + mgi_DBprkey(top->ESCellLine->VerifyID->text.value) + ",";
+	  if (top->mgiParentalESCellLine->ObjectID->text.modified) then
+	    set := set + "_ESCellLine_key = " + mgi_DBprkey(top->mgiParentalESCellLine->ObjectID->text.value) + ",";
 	  end if;
 
-	  if (top->MutantESCellLine->VerifyID->text.modified) then
-	    set := set + "_MutantESCellLine_key = " + mgi_DBprkey(top->MutantESCellLine->VerifyID->text.value) + ",";
+	  if (top->mgiMutantESCellLine->ObjectID->text.modified) then
+	    set := set + "_MutantESCellLine_key = " + mgi_DBprkey(top->mgiMutantESCellLine->ObjectID->text.value) + ",";
 	  end if;
 
 	  if (top->Symbol->text.modified) then
@@ -632,7 +627,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -641,7 +635,7 @@ rules:
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM_ALLELE_VIEW;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYMTYPE_ALLELE_VIEW;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
@@ -877,17 +871,17 @@ rules:
             where := where + "\nand a._Allele_Status_key = " + top->AlleleStatusMenu.menuHistory.searchValue;
           end if;
 
-          if (top->ESCellLine->VerifyID->text.value.length > 0) then
-            where := where + "\nand a._ESCellLine_key = " + top->ESCellLine->VerifyID->text.value;
-          elsif (top->ESCellLine->Verify->text.value.length > 0) then
-            where := where + "\nand c1.cellLine like " + mgi_DBprstr(top->ESCellLine->Verify->text.value);
+          if (top->mgiParentalESCellLine->ObjectID->text.value.length > 0) then
+            where := where + "\nand a._ESCellLine_key = " + top->mgiParentalESCellLine->ObjectID->text.value;
+          elsif (top->mgiParentalESCellLine->CellLine->text.value.length > 0) then
+            where := where + "\nand c1.cellLine like " + mgi_DBprstr(top->mgiParentalESCellLine->CellLine->text.value);
 	    from_cellline1 := true;
           end if;
 
-          if (top->MutantESCellLine->VerifyID->text.value.length > 0) then
-            where := where + "\nand a._MutantESCellLine_key = " + top->MutantESCellLine->VerifyID->text.value;
-          elsif (top->MutantESCellLine->Verify->text.value.length > 0) then
-            where := where + "\nand c2.cellLine like " + mgi_DBprstr(top->MutantESCellLine->Verify->text.value);
+          if (top->mgiMutantESCellLine->ObjectID->text.value.length > 0) then
+            where := where + "\nand a._MutantESCellLine_key = " + top->mgiMutantESCellLine->ObjectID->text.value;
+          elsif (top->mgiMutantESCellLine->CellLine->text.value.length > 0) then
+            where := where + "\nand c2.cellLine like " + mgi_DBprstr(top->mgiMutantESCellLine->CellLine->text.value);
 	    from_cellline2 := true;
           end if;
 
@@ -1047,9 +1041,9 @@ rules:
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 17));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 18));
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 25));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 26));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 27));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 26));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 27));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 28));
 
 		-- If the Marker key is null, then use the Nomen Symbol field
 		if (mgi_getstr(dbproc, 2) = "") then
@@ -1060,13 +1054,14 @@ rules:
 		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 19);
 		end if;
 
-		top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 20);
+		top->mgiParentalESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 7);
+		top->mgiParentalESCellLine->CellLine->text.value := mgi_getstr(dbproc, 21);
+		top->mgiParentalESCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+		top->mgiParentalESCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 20);
 
-		top->ESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 7);
-		top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 22);
-		top->MutantESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 8);
-		top->MutantESCellLine->Verify->text.value := mgi_getstr(dbproc, 24);
+		top->mgiMutantESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 8);
+		top->mgiMutantESCellLine->CellLine->text.value := mgi_getstr(dbproc, 23);
+		top->mgiMutantESCellLine->Provider->text.value := mgi_getstr(dbproc, 25);
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);

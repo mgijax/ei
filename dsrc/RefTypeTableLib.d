@@ -96,19 +96,9 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-	  if (tableID = MGI_REFTYPE_ALLELE_VIEW or 
-	      tableID = MGI_REFTYPE_NOMEN_VIEW or 
-	      tableID = MGI_REFTYPE_SEQUENCE_VIEW or 
-	      tableID = MGI_REFTYPE_STRAIN_VIEW) then
-	    cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
+	  cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
 		  mgi_DBtable(tableID) + 
 		  "\norder by allowOnlyOne desc, _RefAssocType_key";
-	  else
-	    cmd := "select _RefsType_key, referenceType, allowOnlyOne from " + 
-		  mgi_DBtable(tableID) + 
-		  "\nwhere _RefsType_key > 0" +
-		  "\norder by allowOnlyOne desc, _RefsType_key";
-	  end if;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -120,15 +110,9 @@ rules:
 	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
 
-	       if (tableID = MGI_REFTYPE_ALLELE_VIEW or 
-	           tableID = MGI_REFTYPE_NOMEN_VIEW or 
-	           tableID = MGI_REFTYPE_SEQUENCE_VIEW or 
-	           tableID = MGI_REFTYPE_STRAIN_VIEW) then
-	         table.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
-	       end if;
+	       table.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
 
-	       if (mgi_getstr(dbproc, 2) = "Original" 
-			and table.is_defined("origRefsKey") != nil) then
+	       if (mgi_getstr(dbproc, 2) = "Original" and table.is_defined("origRefsKey") != nil) then
 		 table.origRefsKey := row;
 	       end if;
 	       row := row + 1;
@@ -165,22 +149,11 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-	  if (tableID = MGI_REFERENCE_ALLELE_VIEW or 
-	      tableID = MGI_REFERENCE_NOMEN_VIEW or 
-	      tableID = MGI_REFERENCE_SEQUENCE_VIEW or 
-	      tableID = MGI_REFERENCE_STRAIN_VIEW) then
-            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
+          cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
 		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
 		  " where " + mgi_DBkey(tableID) + " = " + objectKey +
 		  " order by allowOnlyOne desc, _RefAssocType_key";
-	  else
-            cmd := "select _Refs_key, _RefsType_key, referenceType, allowOnlyOne, " +
-		  "jnum, short_citation" +
-	  	  " from " + mgi_DBtable(tableID) +
-		  " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		  " order by allowOnlyOne desc, _RefsType_key";
-	  end if;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
@@ -189,6 +162,7 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
 	      (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsCurrentTypeKey, mgi_getstr(dbproc, 2));
@@ -197,16 +171,9 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 6));
 
-	      if (tableID = MGI_REFERENCE_ALLELE_VIEW or 
-	          tableID = MGI_REFERENCE_NOMEN_VIEW or 
-	          tableID = MGI_REFERENCE_SEQUENCE_VIEW or 
-	          tableID = MGI_REFERENCE_STRAIN_VIEW) then
-	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
-
-	        if (table.is_defined("reviewKey") != nil) then
-	          (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 8));
-	          (void) mgi_tblSetCell(table, row, table.review, mgi_getstr(dbproc, 9));
-		end if;
+	      if (table.is_defined("reviewKey") != nil) then
+	        (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(table, row, table.review, mgi_getstr(dbproc, 9));
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -231,7 +198,12 @@ rules:
 
 	ProcessRefTypeTable does
           table : widget := ProcessRefTypeTable.table;
+	  
+	  -- temporary id for table that has only one
+	  -- referenc type (like Markers) that the user doesn't even see
+
 	  tableID : integer := ProcessRefTypeTable.tableID;
+
 	  objectKey : string := ProcessRefTypeTable.objectKey;
 	  cmd : string;
           row : integer := 0;
@@ -247,6 +219,12 @@ rules:
 	  keyName : string := "refassocKey";
 	  keyDefined : boolean := false;
  
+	  reftableID : integer := MGI_REFERENCE_ASSOC;
+
+	  if (table.useDefaultRefType) then
+	    refsTypeKey := mgi_sql1("select _RefAssocType_key from " + mgi_DBtable(tableID));
+	  end if;
+
           -- Process 
  
           while (row < mgi_tblNumRows(table)) do
@@ -256,32 +234,27 @@ rules:
             refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
             refsKey := mgi_tblGetCell(table, row, table.refsKey);
 	    refsCurrentTypeKey := mgi_tblGetCell(table, row, table.refsCurrentTypeKey);
-	    refsTypeKey := mgi_tblGetCell(table, row, table.refsTypeKey);
 	    mgiTypeKey := (string) table.mgiTypeKey;
             isReviewArticle := mgi_tblGetCell(table, row, table.reviewKey);
  
+	    if (not table.useDefaultRefType) then
+	      refsTypeKey := mgi_tblGetCell(table, row, table.refsTypeKey);
+	    end if;
             if (editMode = TBL_ROW_ADD) then
-	      if (tableID = MGI_REFERENCE_ASSOC) then
 
-		if (not keyDefined) then
-		  cmd := cmd + mgi_setDBkey(tableID, NEWKEY, keyName);
-		  keyDefined := true;
-		else
-		  cmd := cmd + mgi_DBincKey(keyName);
-		end if;
-
-		cmd := cmd + mgi_DBinsert(tableID, keyName) +
-		       refsKey + "," +
-		       objectKey + "," +
-		       mgiTypeKey + "," +
-		       refsTypeKey + "," +
-		       global_loginKey + "," + global_loginKey + ")\n";
-              else 
-		cmd := cmd + mgi_DBinsert(tableID, NOKEY) + 
-		     objectKey + "," + 
-		     refsKey + "," +
-		     refsTypeKey + ")\n";
+	      if (not keyDefined) then
+		cmd := cmd + mgi_setDBkey(reftableID, NEWKEY, keyName);
+		keyDefined := true;
+	      else
+		cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
+
+	      cmd := cmd + mgi_DBinsert(reftableID, keyName) +
+		     refsKey + "," +
+		     objectKey + "," +
+		     mgiTypeKey + "," +
+		     refsTypeKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
 
 	      if (isReviewArticle.length > 0) then
                 set := "isReviewArticle = " + isReviewArticle;
@@ -290,17 +263,9 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
-	      if (tableID = MGI_REFERENCE_ASSOC) then
-                set := "_Refs_key = " + refsKey + "," +
-		       "_RefAssocType_key = " + refsTypeKey;
-                cmd := cmd + mgi_DBupdate(tableID, assocKey, set);
-	      else
-                set := "_Refs_key = " + refsKey + "," +
-		       "_RefsType_key = " + refsTypeKey;
-                cmd := cmd + mgi_DBupdate(tableID, objectKey, set) + 
-                       "and _Refs_key = " + refsCurrentKey + 
-		       " and _RefsType_key = " + refsCurrentTypeKey + "\n";
-	      end if;
+              set := "_Refs_key = " + refsKey + "," +
+		     "_RefAssocType_key = " + refsTypeKey;
+              cmd := cmd + mgi_DBupdate(reftableID, assocKey, set);
 
 	      if (isReviewArticle.length > 0) then
                 set := "isReviewArticle = " + isReviewArticle;
@@ -308,10 +273,10 @@ rules:
 	      end if;
 
             elsif (editMode = TBL_ROW_DELETE and assocKey.length > 0) then
-              cmd := cmd + mgi_DBdelete(tableID, assocKey);
+              cmd := cmd + mgi_DBdelete(reftableID, assocKey);
 
             elsif (editMode = TBL_ROW_DELETE and refsKey.length > 0) then
-              cmd := cmd + mgi_DBdelete(tableID, objectKey) + 
+              cmd := cmd + mgi_DBdelete(reftableID, objectKey) + 
                      "and _Refs_key = " + refsCurrentKey + 
 		     " and _RefsType_key = " + refsCurrentTypeKey + "\n";
             end if;

@@ -1265,7 +1265,7 @@ rules:
 	    end if;
 	  else
 	    StatusReport.source_widget := top;
-	    StatusReport.message := "Invalid Genotype.\n";
+	    StatusReport.message := "Invalid Genotype.";
 	    send(StatusReport, 0);
 	  end if;
 
@@ -1397,6 +1397,7 @@ rules:
 	    select := "select _RISet_key, designation, standard = 1 from " + table + " where ";
 	  elsif (tableID = ALL_CELLLINE) then
 	    select := "select _CellLine_key, cellLine, standard = 1 from " + table + " where ";
+	    where := where + " and isMutant = " + verify.isMutantESCellLine;
 	  else
 	    select := "select _Term_key, term, standard = 1 from " + table + " where ";
 	  end if;
@@ -1562,6 +1563,11 @@ rules:
 	  -- No value found/selected, cannot add
 
 	  elsif (selectedItem < 0 and not verify.verifyAdd) then
+	    key.value := "";
+	    item.value := "";
+            StatusReport.source_widget := root;
+	    StatusReport.message := "Invalid Value.";
+            send(StatusReport);
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
 
@@ -2282,6 +2288,132 @@ rules:
             StatusReport.source_widget := top.root;
             StatusReport.message := "\nWARNING:  This Marker is not a Gene.";
             send(StatusReport);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyMutantESCellLine
+--
+--	Verify MutantESCellLine entered by User.
+-- 	Uses mgiMutantESCellLine template.
+--
+
+	VerifyMutantESCellLine does
+	  sourceWidget : widget := VerifyMutantESCellLine.source_widget;
+	  top : widget := sourceWidget.top;
+	  value : string;
+
+	  value := top->mgiMutantESCellLine->CellLine->text.value;
+	  top->mgiMutantESCellLine->ObjectID->text.value := "NULL";
+	  top->mgiMutantESCellLine->CellLine->text.value := "";
+	  top->mgiMutantESCellLine->Provider->text.value := "";
+
+	  -- If a wildcard '%' appears in the field,,
+
+	  if (strstr(value, "%") != nil) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  -- If no value entered, use default
+	  if (value.length = 0) then
+	    value := top->mgiMutantESCellLine->CellLine->text.defaultValue;
+	  end if;
+
+	  -- Search for value in the database
+
+	  select : string := "select _CellLine_key, cellLine, provider from " + 
+		mgi_DBtable(ALL_CELLLINE_VIEW) +
+		" where isMutant = 1 and cellLine = " + mgi_DBprstr(value);
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->mgiMutantESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiMutantESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiMutantESCellLine->Provider->text.value := mgi_getstr(dbproc, 3);
+            end while;
+          end while;
+	  (void) dbclose(dbproc);
+
+	  -- If ID is null, then value is invalid
+
+	  if (top->mgiMutantESCellLine->ObjectID->text.value = "NULL") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Mutant ES CellLine '" + value + "' is invalid.";
+            send(StatusReport);
+	  else
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyParentalESCellLine
+--
+--	Verify ParentalESCellLine entered by User.
+-- 	Uses mgiParentalESCellLine template.
+--
+
+	VerifyParentalESCellLine does
+	  sourceWidget : widget := VerifyParentalESCellLine.source_widget;
+	  top : widget := sourceWidget.top;
+	  value : string;
+
+	  value := top->mgiParentalESCellLine->CellLine->text.value;
+	  top->mgiParentalESCellLine->ObjectID->text.value := "NULL";
+	  top->mgiParentalESCellLine->CellLine->text.value := "";
+	  top->mgiParentalESCellLine->Strain->StrainID->text.value := "";
+	  top->mgiParentalESCellLine->Strain->Verify->text.value := "";
+
+	  -- If a wildcard '%' appears in the field,,
+
+	  if (strstr(value, "%") != nil) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  -- If no value entered, use default
+	  if (value.length = 0) then
+	    value := top->mgiParentalESCellLine->CellLine->text.defaultValue;
+	  end if;
+
+	  -- Search for value in the database
+
+	  select : string := "select _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
+		mgi_DBtable(ALL_CELLLINE_VIEW) +
+		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->mgiParentalESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiParentalESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiParentalESCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+	      top->mgiParentalESCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+            end while;
+          end while;
+	  (void) dbclose(dbproc);
+
+	  -- If ID is null, then value is invalid
+
+	  if (top->mgiParentalESCellLine->ObjectID->text.value = "NULL") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Parental ES CellLine '" + value + "' is invalid.";
+            send(StatusReport);
+	  else
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
 
 	  (void) reset_cursor(top);
