@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  4 12:48:08 2003";
+      lastWritten = "Wed Dec 17 14:33:37 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -9221,74 +9221,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          NomenModule = NomenModule : MGINomen;
-          Group: Control
-            vip_x = 80;
-            vip_y = 470;
-              {
-                MainForm = XmForm;
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
-              }
-        }
-        {
           AlleleModule = Module : MGI;
           Group: Control
             vip_x = 80;
@@ -9488,8 +9420,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         Table = mgiTable;
-                                        Group: Widget
-                                          userDefinedAttributes = "origRefsKey:Int\n";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -9499,8 +9429,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         EditRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = True;
                                       }
                                       {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
@@ -9957,6 +9885,12 @@ Shift<Key>Tab: prev-tab-group()
                       AlleleMergeDialog = AlleleMergeDialog : mgiDialog;
                     }
               }
+        }
+        {
+          NomenModule = NomenModule : MGINomen;
+          Group: Control
+            vip_x = 80;
+            vip_y = 470;
         }
 }
 

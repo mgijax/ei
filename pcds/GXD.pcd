@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  5 10:20:18 2003";
+      lastWritten = "Tue Dec 16 11:12:39 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -2459,127 +2459,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          NomenModule = NomenModule : MGINomen;
-          Group: Control
-            vip_x = 75;
-            vip_y = 690;
-              {
-                MainForm = XmForm;
-                    {
-                      MainMenu = MainMenu;
-                    }
-                    {
-                      Edit = XmFrame;
-                    }
-                    {
-                      Control = Control;
-                    }
-                    {
-                      BroadcastToMenu = XmFrame;
-                    }
-                    {
-                      CVNomen = CVNomen : mgiCV;
-                          {
-                            ReviewMenu = YesNoMenu : mgiOption;
-                                Popups:
-                                {
-                                  ReviewPulldown = OptionPulldown : mgiOption;
-                                }
-                                {
-                                  YesNoPulldown = OptionPulldown;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                      }
-                                      {
-                                        Yes = Yes : mgiOption;
-                                      }
-                                      {
-                                        No = No : mgiOption;
-                                      }
-                                }
-                          }
-                          {
-                            BroadcastMenu = YesNoMenu : mgiOption;
-                                Popups:
-                                {
-                                  BroadcastPulldown = OptionPulldown : mgiOption;
-                                }
-                                {
-                                  YesNoPulldown = OptionPulldown;
-                                      {
-                                        SearchAll = SearchAll : mgiOption;
-                                      }
-                                      {
-                                        Yes = Yes : mgiOption;
-                                      }
-                                      {
-                                        No = No : mgiOption;
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
-              }
-        }
-        {
           AlleleModule = AlleleModule : MGD;
           Group: Control
             vip_x = 75;
@@ -3116,6 +2995,12 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
               }
+        }
+        {
+          NomenModule = NomenModule : MGINomen;
+          Group: Control
+            vip_x = 75;
+            vip_y = 690;
         }
 }
 

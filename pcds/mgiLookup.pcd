@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun  3 15:14:35 2003";
+      lastWritten = "Wed Dec 17 14:33:52 2003";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -246,28 +246,6 @@ Module: mgiLookup
                 List = list;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
-              }
-        }
-        {
-          GeneFamilyList = LookupList;
-          Group: Control
-            vip_x = 90;
-            vip_y = 965;
-              {
-                Label = LookupLabel;
-                Group: Widget
-                  labelString = "0 Gene Families";
-                Group: User
-                  defaultLabel = "Gene Families";
-              }
-              {
-                List = list;
-                Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem";
-                Group: User
-                  targetWidget = GeneFamily;
-                  targetText = 3;
-                  targetKey = 2;
               }
         }
         {
@@ -518,6 +496,28 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   visibleItemCount = 10;
+              }
+        }
+        {
+          GeneFamilyList = LookupList;
+          Group: Control
+            vip_x = 95;
+            vip_y = 968;
+              {
+                Label = LookupLabel;
+                Group: Widget
+                  labelString = "0 Gene Families";
+                Group: User
+                  defaultLabel = "Gene Families";
+              }
+              {
+                List = list;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+                Group: User
+                  targetWidget = GeneFamily;
+                  targetText = 3;
+                  targetKey = 2;
               }
         }
 }

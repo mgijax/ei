@@ -58,7 +58,6 @@ setenv DSQUERY PROD_MGI
 
 # DB instance names
 setenv MGD mgd
-setenv NOMEN nomen
 
 # Database User
 setenv DBUSER mgd_dbo
