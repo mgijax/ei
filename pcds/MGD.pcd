@@ -5056,9 +5056,9 @@ Module: MGD
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "MLDP\nCrosses in Lookup List\nInvalid Markers\nInvalid Chromosomes\nInvalid 2 Point\nInvalid Cross\nMissing Statistics";
+                                                items = "MLDP\nCrosses in Lookup List\nInvalid Markers\nInvalid 2 Point\nInvalid Cross\nMissing Statistics";
                                               Group: User
-                                                keys = "Mldp.py\nMLD_Crosses.sql\nMLD_Marker.sql\nMLD_Chromosome.sql\nMLD_2Point.sql\nMLD_Cross.sql\nMLD_Statistics.sql";
+                                                keys = "Mldp.py\nMLD_Crosses.sql\nMLD_Marker.sql\nMLD_2Point.sql\nMLD_Cross.sql\nMLD_Statistics.sql";
                                             }
                                       }
                                 }
