@@ -328,12 +328,7 @@ rules:
             editMode := mgi_tblGetCell(sourceTable, row, sourceTable.editMode);
  
             if (editMode != TBL_ROW_MODIFY) then
-              break;
-            end if;
- 
-            key := mgi_tblGetCell(sourceTable, row, sourceTable.sourceKey);
- 
-            if (editMode = TBL_ROW_MODIFY) then
+              key := mgi_tblGetCell(sourceTable, row, sourceTable.sourceKey);
 	      ModifySequenceSource.source_widget := sourceTable;
 	      ModifySequenceSource.row := row;
 	      ModifySequenceSource.sequenceKey := currentKey;
