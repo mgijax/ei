@@ -371,7 +371,6 @@ rules:
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + "," +
                          mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",";
-            end if;
 
 	    cmd := cmd + "NULL,NULL," +	-- insertSite, insertSize
 	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + ",";
