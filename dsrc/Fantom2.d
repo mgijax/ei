@@ -682,10 +682,24 @@ rules:
 	  -- Creation/Modification By/Date
 	  -- Notes
 
+	  --
+	  -- If performing a search by Riken Cluster and no other
+	  -- query fields are specified, then do a special query
+	  -- whereby not only are the records which contain that Riken Cluster
+	  -- returned, but also records which contain either the UniGene or Tiger
+	  -- clusters which appear with that Riken Cluster.
+	  --
+
 	  value := mgi_tblGetCell(fantom, row, fantom.clusterID);
 	  if (value.length > 0) then
+
+	    -- if other query fields have been specified, then do the normal thing
+
 	    if (where.length > 0) then
 	      where := where + " and f.riken_cluster = " + value;
+
+	    -- else, do the special query
+
 	    else
 	      where := " and f.riken_cluster = " + value +
 	               " union " + select + from + where1 + 
@@ -698,8 +712,13 @@ rules:
 	    end if;
 	  end if;
 
+	  -- if doing the special Riken Cluster query...
+
 	  if (clusterSearch) then
 	    where := where1 + where;
+
+	  -- else, normal processing
+
           elsif (where.length > 0) then
 	    if (top->notSearch.set) then
               where := " not (" + where->substr(5, where.length) + ")";
