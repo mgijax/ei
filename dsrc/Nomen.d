@@ -311,7 +311,6 @@ rules:
 
 	  -- List of all Table widgets used in Reset
 
-	  resettables.append(top->Synonym->Table);
 	  resettables.append(top->AccessionReference->Table);
 
 	  curationState := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = " + mgi_DBprstr(INTERNALCURATIONSTATE));
