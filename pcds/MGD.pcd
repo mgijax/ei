@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr 22 07:55:57 2003";
+      lastWritten = "Tue Apr 22 08:34:23 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8531,15 +8531,15 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)";
-                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Event Reason";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)(all 14 12)";
+                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
                                           xrtTblEditableSeries = "(all 0-6 False)";
                                           xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 25)(all 8 255)(all 9-10 10)(all 11-13 255)";
-                                          xrtTblNumColumns = 14;
+                                          xrtTblNumColumns = 15;
                                           xrtTblPixelWidthSeries = "(all 0-5 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int=\"4\"\neventReasonKey:Int=\"5\"\neventReason:Int=\"13\"\n";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
                                           xrtTblVisibleRows = 4;
                                           xrtTblAllowCellResize = resize_horizontal;
                                           xrtTblEnterCellCallback = "D:SetOptions";
