@@ -637,9 +637,12 @@ rules:
                 ModifyProbeSource.source_widget := detailForm;
 	        ModifyProbeSource.probeKey := currentMasterKey;
                 send(ModifyProbeSource, 0);
---	      else
---                ModifyNamedMolecularSource.source_widget := detailForm;
---                send(ModifyNamedMolecularSource, 0);
+	      else
+	        StatusReport.source_widget := top;
+	        StatusReport.message := "Cannot modify Clone Library attributes in this form.";
+	        send(StatusReport);
+	        (void) reset_cursor(top);
+	        return;
 	      end if;
 
               cmd := cmd + detailForm->SourceForm.sql;

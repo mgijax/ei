@@ -665,8 +665,10 @@ rules:
 	  -- If field value is blank...
 
 	  if (SetDefault.source_widget.value.length = 0) then
-	    if (SetDefault.source_widget.defaultValue.length > 0) then	-- If defaultValue exists...
-	      SetDefault.source_widget.value := SetDefault.source_widget.defaultValue;
+	    if (SetDefault.source_widget.is_defined("defaultValue") != nil) then
+	      if (SetDefault.source_widget.defaultValue.length > 0) then	-- If defaultValue exists...
+	        SetDefault.source_widget.value := SetDefault.source_widget.defaultValue;
+	      end if;
 	    end if;
 
 	  -- This code was added for the Physical mapping stuff
