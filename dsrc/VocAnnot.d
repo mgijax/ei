@@ -836,10 +836,12 @@ rules:
             LoadList.list := top->PhenoSlimList;
 	    send(LoadList, 0);
 	    top->Reference.managed := false;
-	  elsif (annotTable.annotVocab = "GO" or
-		 annotTable.annotVocab = "Mammalian Phenotype") then
+	  elsif (annotTable.annotVocab = "GO") then
 	    top->PhenoSlimList.managed := false;
 	    top->Reference.managed := true;
+	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	    top->PhenoSlimList.managed := false;
+	    top->Reference.managed := false;
 	  end if;
 
 	  (void) reset_cursor(mgi);
