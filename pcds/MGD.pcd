@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 16 13:39:53 2005";
+      lastWritten = "Fri Mar 25 08:38:04 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -12757,6 +12757,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          activateCallback = "D:AddTableRow";
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
                                           leftWidget = Table;
