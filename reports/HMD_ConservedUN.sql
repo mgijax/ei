@@ -28,7 +28,7 @@ print ""
 print "Homologies w/ Conserved Map Location and Chromosome = UN"
 print ""
 
-select h.symbol, h.species, h.chromosome
+select h.symbol, h.species, h.jnum
 from HMD_Homology_View h, HMD_Homology_Assay a
 where h._Homology_key = a._Homology_key
 and a._Assay_key = 14
