@@ -435,8 +435,10 @@ rules:
 	      ModifyNotes.column := annotTable.notes;
 	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
-	      notesModified := true;
 	      cmd := cmd + annotTable.sqlCmd;
+	      if (annotTable.sqlCmd.length > 0) then
+	        notesModified := true;
+	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -461,8 +463,10 @@ rules:
 	      ModifyNotes.column := annotTable.notes;
 	      ModifyNotes.keyDeclared := notesModified;
 	      send(ModifyNotes, 0);
-	      notesModified := true;
 	      cmd := cmd + annotTable.sqlCmd;
+	      if (annotTable.sqlCmd.length > 0) then
+	        notesModified := true;
+	      end if;
 
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
