@@ -475,6 +475,7 @@ int mgi_msg_handler(DBPROCESS *dbproc, DBINT msgno, int msgstate, int severity, 
 
   if (severity > 0 || msgno == 0)
     (void) send_status(msgtext, appendMsg);
+    (void) mgi_writeLog(msgtext);
 
   return(FAIL);
 }
