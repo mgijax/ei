@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Feb 26 14:08:37 2002";
+      lastWritten = "Wed Mar  6 12:56:53 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -91,17 +91,17 @@ Module: mgiFantom
                                         Group: Widget
                                           xrtTblNumRows = 70000;
                                           xrtTblVisibleRows = 50;
-                                          xrtTblNumColumns = 39;
-                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID, RA Symbol,Seq Length,Seq Note,Seq Qual,Locus ID,TIGR TC,UniGene ID,R Cluster,Locus Status,MGI Status,MGI #,BLAST Hit,BLAST Expect,Auto Annot,Info Annot,Cat ID,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Notes,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
+                                          xrtTblNumColumns = 40;
+                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID, RA Symbol,Seq Length,Seq Note,Seq Qual,Locus ID,UniGene ID,TIGR TC,R Cluster,Locus Status,MGI Status,MGI #,BLAST Hit,BLAST Expect,Auto Annot,Info Annot,Final Cluster,Cat ID,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Notes,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
                                           width = 1000;
                                           height = 800;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3-4 1)(all 5-6 5)(all 7-8 10)(all 9-10 15)(all 11 10)(all 12 15)(all 13-19 10)(all 20 5)(all 21-22 20)(all 23-24 25)(all 26 20)(all 27-29 25)(all 30 50)(all 31 6)(all 32 25)(all 33-34 25)(all 36-39 10)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3-4 1)(all 5-6 5)(all 7-8 10)(all 9-10 15)(all 11 10)(all 12 15)(all 13-19 10)(all 20 5)(all 21-22 20)(all 23-24 25)(all 25 15)(all 27 20)(all 28-30 25)(all 31 50)(all 32 6)(all 33 25)(all 34-35 25)(all 36-39 10)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           xrtTblTraversableSeries = "(all 0-5 False)";
                                           xrtTblEditableSeries = "(all 0-5 False)";
                                           xrtTblFrozenColumns = 10;
-                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"12\"\nseqQuality:Int(Int)=\"13\"\nlocusID:Int(Int)=\"14\"\ntigerID:Int(Int)=\"15\"\nunigeneID:Int(Int)=\"16\"\nclusterID:Int(Int)=\"17\"\nlocusStatus:Int(Int)=\"18\"\nmgiStatus:Int(Int)=\"19\"\nmgiNumber:Int(Int)=\"20\"\nblastHit:Int(Int)=\"21\"\nblastExpect:Int(Int)=\"22\"\nautoAnnot:Int(Int)=\"23\"\ninfoAnnot:Int(Int)=\"24\"\ncatID:Int(Int)=\"25\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"26\"\nfinalSymbol1:Int(Int)=\"27\"\nfinalName1:Int(Int)=\"28\"\nfinalSymbol2:Int(Int)=\"29\"\nfinalName2:Int(Int)=\"30\"\nnomenEvent:Int(Int)=\"31\"\nnomenNote:Int(Int)=\"32\"\nrikenNote:Int(Int)=\"33\"\ncuratorNote:Int(Int)=\"34\"\ncreatedBy:Int(Int)=\"35\"\ncreatedDate:Int(Int)=\"36\"\nmodifiedBy:Int(Int)=\"37\"\nmodifiedDate:Int(Int)=\"38\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int=\"4\"\n";
+                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"12\"\nseqQuality:Int(Int)=\"13\"\nlocusID:Int(Int)=\"14\"\ntigerID:Int(Int)=\"16\"\nunigeneID:Int(Int)=\"15\"\nclusterID:Int(Int)=\"17\"\nlocusStatus:Int(Int)=\"18\"\nmgiStatus:Int(Int)=\"19\"\nmgiNumber:Int(Int)=\"20\"\nblastHit:Int(Int)=\"21\"\nblastExpect:Int(Int)=\"22\"\nautoAnnot:Int(Int)=\"23\"\ninfoAnnot:Int(Int)=\"24\"\ncatID:Int(Int)=\"26\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"27\"\nfinalSymbol1:Int(Int)=\"28\"\nfinalName1:Int(Int)=\"29\"\nfinalSymbol2:Int(Int)=\"30\"\nfinalName2:Int(Int)=\"31\"\nnomenEvent:Int(Int)=\"32\"\nnomenNote:Int(Int)=\"33\"\nrikenNote:Int(Int)=\"34\"\ncuratorNote:Int(Int)=\"35\"\ncreatedBy:Int(Int)=\"36\"\ncreatedDate:Int(Int)=\"37\"\nmodifiedBy:Int(Int)=\"38\"\nmodifiedDate:Int(Int)=\"39\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int(Int)=\"4\"\nfinalCluster:Int(Int)=\"25\"\n";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblValidateCellCallback = "D:VerifyFinalMGIID,\nD:CommitTableCellEdit";
                                           xrtTblJumpScroll = jump_none;
@@ -490,7 +490,7 @@ Module: mgiFantom
                                         CatIDPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 25;
+                                          tableOption = 26;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -557,7 +557,7 @@ Module: mgiFantom
                                         NomenEventPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 31;
+                                          tableOption = 32;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -620,14 +620,14 @@ Module: mgiFantom
                                     labelString = "Nomen Notes";
                                   Group: User
                                     targetWidget = Fantom;
-                                    targetColumn = 32;
+                                    targetColumn = 33;
                                 }
                                 {
                                   RIKENNote = NotePush : mgiDataTypes;
                                   Group: Widget
                                     labelString = "RIKEN Notes";
                                   Group: User
-                                    targetColumn = 33;
+                                    targetColumn = 34;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -635,7 +635,7 @@ Module: mgiFantom
                                   Group: Widget
                                     labelString = "Curator Notes";
                                   Group: User
-                                    targetColumn = 34;
+                                    targetColumn = 35;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -654,6 +654,12 @@ Module: mgiFantom
                                   Group: Widget
                                     labelString = "Copy RA MGI ID\nto Final MGI ID";
                                     activateCallback = "D:CopyGBAtoFinal\nD:GoHome";
+                                }
+                                {
+                                  copyColumn = push : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Copy Column Value\nTo All Zilch Rows";
+                                    activateCallback = "D:CopyColumn\nD:GoHome";
                                 }
                                 {
                                   sortOptions = sortOptions : mgiFantom;
@@ -839,7 +845,7 @@ Module: mgiFantom
                     {
                       column9 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "GBA MGI ID";
+                        labelString = "RA MGI ID";
                       Group: User
                         dbField = gba_mgiID;
                         columnValue = 9;
@@ -847,7 +853,7 @@ Module: mgiFantom
                     {
                       column10 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "GBA Symbol";
+                        labelString = "RA Symbol";
                       Group: User
                         dbField = gba_symbol;
                         columnValue = 10;
@@ -887,17 +893,17 @@ Module: mgiFantom
                     {
                       column15 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "TIGER TC";
+                        labelString = "Unigene ID";
                       Group: User
-                        dbField = tiger_tc;
+                        dbField = unigene_id;
                         columnValue = 15;
                     }
                     {
                       column16 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Unigene ID";
+                        labelString = "TIGER TC";
                       Group: User
-                        dbField = unigene_id;
+                        dbField = tiger_tc;
                         columnValue = 16;
                     }
                     {
@@ -967,50 +973,58 @@ Module: mgiFantom
                     {
                       column25 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Cat ID";
+                        labelString = "Final Cluster";
                       Group: User
-                        dbField = cat_id;
+                        dbField = final_cluster;
                         columnValue = 25;
                     }
                     {
                       column26 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final MGI ID";
+                        labelString = "Cat ID";
                       Group: User
-                        dbField = final_mgiID;
+                        dbField = cat_id;
                         columnValue = 26;
                     }
                     {
                       column27 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Symbol 1";
+                        labelString = "Final MGI ID";
                       Group: User
-                        dbField = final_symbol1;
+                        dbField = final_mgiID;
                         columnValue = 27;
                     }
                     {
                       column28 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Name 1";
+                        labelString = "Final Symbol 1";
                       Group: User
-                        dbField = final_name1;
+                        dbField = final_symbol1;
                         columnValue = 28;
                     }
                     {
                       column29 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Symbol 2";
+                        labelString = "Final Name 1";
                       Group: User
-                        dbField = final_symbol2;
+                        dbField = final_name1;
                         columnValue = 29;
                     }
                     {
                       column30 = ColumnToggle : mgiFantom;
                       Group: Widget
+                        labelString = "Final Symbol 2";
+                      Group: User
+                        dbField = final_symbol2;
+                        columnValue = 30;
+                    }
+                    {
+                      column31 = ColumnToggle : mgiFantom;
+                      Group: Widget
                         labelString = "Final Name 2";
                       Group: User
                         dbField = final_name2;
-                        columnValue = 30;
+                        columnValue = 31;
                     }
                     {
                       column5 = ColumnToggle : mgiFantom;
