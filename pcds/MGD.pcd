@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 11 09:21:47 2005";
+      lastWritten = "Tue Mar 15 11:32:12 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8556,7 +8556,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Table = mgiTable;
+                                        Table = XtXrtTable;
                                         Group: Widget
                                           userDefinedAttributes = "origRefsKey:Int\n";
                                           xrtTblVisibleRows = 10;
@@ -8727,155 +8727,28 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  MutantESCellLine = mgiVerify : mgiDataTypes;
+                                  mgiMutantESCellLine = mgiMutantESCellLine : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MolecularMutation;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = MolecularMutation;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
                                     topOffset = 5;
-                                  Group: User
-                                    verifyAdd = False;
-                                    verifyTable = 336;
-                                    verifyKey = VerifyID;
-                                      {
-                                        Verify = CharText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Mutant ES Cell Line";
-                                            }
-                                            {
-                                              text = text;
-                                              Group: Widget
-                                                columns = 30;
-                                                translations = "#override
- Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyItem()";
-                                              Group: User
-                                                defaultValue = "Not Applicable";
-                                            }
-                                      }
-                                      {
-                                        VerifyID = ID : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                defaultValue = "-2";
-                                                required = True;
-                                            }
-                                      }
-                                }
-                                {
-                                  MutantProvider = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = MutantESCellLine;
-                                    leftOffset = 10;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = MutantESCellLine;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = Provider;
-                                      }
-                                      {
-                                        text = text : mgiDataTypes;
-                                        Group: Widget
-                                          columns = 30;
-                                          inTabGroup = False;
-                                      }
                                 }
                                 {
-                                  ESCellLine = mgiVerify : mgiDataTypes;
+                                  mgiParentalESCellLine = mgiParentalESCellLine : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = MutantESCellLine;
+                                    leftWidget = mgiMutantESCellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = MutantESCellLine;
+                                    topWidget = mgiMutantESCellLine;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                  Group: User
-                                    verifyAdd = False;
-                                    verifyTable = 336;
-                                    verifyKey = VerifyID;
-                                      {
-                                        Verify = CharText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "ES Cell Line";
-                                            }
-                                            {
-                                              text = text;
-                                              Group: Widget
-                                                columns = 30;
-                                                translations = "#override
- Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyItem()";
-                                              Group: User
-                                                defaultValue = "Not Applicable";
-                                            }
-                                      }
-                                      {
-                                        VerifyID = ID : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                defaultValue = "-2";
-                                                required = True;
-                                            }
-                                      }
-                                }
-                                {
-                                  Strain = Strain : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = ESCellLine;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = ESCellLine;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 5;
-                                      {
-                                        StrainID = ID;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                defaultValue = "-2";
-                                            }
-                                      }
-                                      {
-                                        Verify = CharText;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Strain of \nOrigin";
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                defaultValue = "Not Applicable";
-                                            }
-                                      }
                                 }
                                 {
                                   Synonym = SynonymTypeTable : mgiTable;
@@ -8884,10 +8757,10 @@ Shift<Key>Tab: prev-tab-group()
                                     resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ESCellLine;
+                                    leftWidget = mgiParentalESCellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ESCellLine;
+                                    topWidget = mgiParentalESCellLine;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
@@ -8900,7 +8773,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblVisibleRows = 5;
                                         Group: User
                                           requiredColumns = "3\n5";
-                                          useDefaultSynType = 1;
+                                          useDefaultSynType = True;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -9096,19 +8969,6 @@ Shift<Key>Tab: prev-tab-group()
                                   QueryList = QueryList : mgiLookup;
                                 }
                                 {
-                                  MutantESCellLineList = MutantESCellLineList : mgiLookup;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: User
-                                          targetWidget = MutantESCellLine;
-                                          targetKey = VerifyID;
-                                          targetText = Verify;
-                                      }
-                                }
-                                {
                                   ESCellLineList = ESCellLineList : mgiLookup;
                                       {
                                         Label = LookupLabel : mgiLookup;
@@ -9116,9 +8976,9 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list : mgiDataTypes;
                                         Group: User
-                                          targetKey = VerifyID;
-                                          targetText = Verify;
-                                          targetWidget = ESCellLine;
+                                          targetKey = ObjectID;
+                                          targetText = CellLine;
+                                          targetWidget = mgiParentalESCellLine;
                                       }
                                 }
                           }
@@ -13028,9 +12888,13 @@ Shift<Key>Tab: prev-tab-group()
                                           resizable = true;
                                         Group: User
                                           requiredColumns = 3;
+                                          useDefaultRefType = True;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          labelString = "Add Row";
+                                          activateCallback = "D:AddTableRow";
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
                                           leftWidget = Table;
@@ -13048,6 +12912,12 @@ Shift<Key>Tab: prev-tab-group()
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                                         Group: Widget
                                           managed = False;
+                                            Popups:
+                                            {
+                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                sql = "select _RefAssocType_key, assocType from MGI_RefType_Marker_View order by _RefAssocType_key";
+                                            }
                                       }
                                       {
                                         ReviewMenu = YesNoMenu : mgiOption;

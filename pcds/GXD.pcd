@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar  4 16:05:24 2005";
+      lastWritten = "Tue Mar 15 11:32:09 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2266,7 +2266,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Reference = ReferenceTypeTable : mgiTable;
                                       {
-                                        Table = mgiTable;
+                                        Table = XtXrtTable;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -2297,49 +2297,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     No = No : mgiOption;
                                                   }
-                                            }
-                                      }
-                                }
-                                {
-                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
-                                }
-                                {
-                                  AlleleTypeMenu = AlleleTypeMenu : mgiOption;
-                                }
-                                {
-                                  InheritanceModeMenu = InheritanceModeMenu : mgiOption;
-                                }
-                                {
-                                  MolecularMutation = TableLabel : mgiTable;
-                                }
-                                {
-                                  MutantESCellLine = mgiVerify : mgiDataTypes;
-                                      {
-                                        Verify = CharText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: Widget
-                                                columns = 30;
-                                                translations = "#override
- Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyItem()";
-                                              Group: User
-                                                defaultValue = "Not Applicable";
-                                            }
-                                      }
-                                      {
-                                        VerifyID = ID : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                defaultValue = "-2";
-                                                required = True;
                                             }
                                       }
                                 }

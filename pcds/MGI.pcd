@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 11 15:23:14 2005";
+      lastWritten = "Mon Mar 14 15:45:10 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1418,7 +1418,7 @@ Module: MGI
                                         text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           rows = 5;
-                                          columns = 60;
+                                          columns = 70;
                                           editable = False;
                                       }
                                 }

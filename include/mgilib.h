@@ -72,7 +72,6 @@ extern char *global_version;
 #define MRK_NOTES		119
 #define MRK_OFFSET		120
 #define MRK_OTHER		121
-#define MRK_REFERENCE		122
 #define MRK_MOUSE  		123
 #define MRK_ACC_REFERENCE	124
 #define MLC_LOCK		125
@@ -269,6 +268,8 @@ extern char *global_version;
 #define MGI_SYNONYMTYPE_ALLELE_VIEW	647
 #define MGI_NOTE_GENOTYPE_VIEW		648
 #define MGI_NOTETYPE_GENOTYPE_VIEW	649
+#define MGI_REFERENCE_MARKER_VIEW	650
+#define MGI_REFTYPE_MARKER_VIEW		651
 
 
 /* Strains Tables */

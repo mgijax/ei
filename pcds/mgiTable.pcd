@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 11 12:18:20 2005";
+      lastWritten = "Mon Mar 14 09:29:37 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -524,7 +524,7 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"5\"\nrefsCurrentTypeKey:Int(Int)=\"4\"\nreviewKey:Int=\"6\"\nreview:Int=\"10\"\n";
+                  userDefinedAttributes = "refsType:Int(Int)=\"6\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\norigRefsKey:Int(Int)=\"0\"\nrefsTypeKey:Int(Int)=\"5\"\nrefsCurrentTypeKey:Int(Int)=\"4\"\nreviewKey:Int(Int)=\"6\"\nreview:Int(Int)=\"10\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\n";
                   xrtTblNumColumns = 11;
                   xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Ref key,Type key,Type key,Review key,Type,J#,Citation,Review?";
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-8 10)(all 9 60)";
@@ -704,7 +704,7 @@ Module: mgiTable
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
                   xrtTblEditableSeries = "(all 0-4 False)";
                   xrtTblTraversableSeries = "(all 0-4 False)";
-                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int(Int)=\"3\"\njnum:Int(Int)=\"6\"\ncitation:Int(Int)=\"7\"\nmodifiedBy:Int(Int)=\"8\"\nmodifiedDate:Int(Int)=\"9\"\nuseDefaultSynType:Int=\"0\"\n";
+                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int(Int)=\"3\"\njnum:Int(Int)=\"6\"\ncitation:Int(Int)=\"7\"\nmodifiedBy:Int(Int)=\"8\"\nmodifiedDate:Int(Int)=\"9\"\nuseDefaultSynType:Boolean(Boolean)=\"False\"\n";
                   xrtTblNumColumns = 10;
                   xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                   xrtTblMaxLengthSeries = "(all 5 255)";

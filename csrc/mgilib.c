@@ -763,6 +763,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_RefAssocType_key");
 	    break;
     case MGI_REFERENCE_ALLELE_VIEW:
+    case MGI_REFERENCE_MARKER_VIEW:
     case MGI_REFERENCE_NOMEN_VIEW:
     case MGI_REFERENCE_SEQUENCE_VIEW:
     case MGI_REFERENCE_STRAIN_VIEW:
@@ -838,7 +839,6 @@ char *mgi_DBkey(int table)
     case MRK_HISTORY:
     case MRK_NOTES:
     case MRK_OFFSET:
-    case MRK_REFERENCE:
     case MLC_LOCK:
     case MLC_MARKER:
     case MLC_REFERENCE:
@@ -1427,6 +1427,9 @@ char *mgi_DBtable(int table)
     case MGI_REFERENCE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_Reference_Allele_View");
 	    break;
+    case MGI_REFERENCE_MARKER_VIEW:
+	    strcpy(buf, "MGI_Reference_Marker_View");
+	    break;
     case MGI_REFERENCE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_Reference_Nomen_View");
 	    break;
@@ -1438,6 +1441,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_REFTYPE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_RefType_Allele_View");
+	    break;
+    case MGI_REFTYPE_MARKER_VIEW:
+	    strcpy(buf, "MGI_RefType_Marker_View");
 	    break;
     case MGI_REFTYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_RefType_Nomen_View");
@@ -1609,9 +1615,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MRK_OTHER:
             strcpy(buf, "MRK_Other");
-	    break;
-    case MRK_REFERENCE:
-            strcpy(buf, "MRK_Reference");
 	    break;
     case MRK_MOUSE:
             strcpy(buf, "MRK_Mouse_View");
@@ -1962,7 +1965,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_HISTORY:
     case MRK_NOTES:
     case MRK_OFFSET:
-    case MRK_REFERENCE:
     case PRB_ALLELE:
     case PRB_ALLELE_STRAIN:
     case PRB_ALIAS:
@@ -2331,10 +2333,6 @@ char *mgi_DBinsert(int table, char *keyName)
  	    break;
     case MRK_OTHER:
 	    sprintf(buf, "insert %s (%s, _Marker_key, name, _Refs_key)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_REFERENCE:
-	    sprintf(buf, "insert %s (%s, _Refs_key, auto)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case NOM_MARKER:
@@ -2870,6 +2868,9 @@ char *mgi_DBcvname(int table)
 
   switch (table)
   {
+    case ALL_CELLLINE:
+            strcpy(buf, "cellLine");
+	    break;
     case BIB_REFS:
             strcpy(buf, "journal");
 	    break;
