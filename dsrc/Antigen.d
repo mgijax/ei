@@ -401,7 +401,7 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from GXD_Antigen_View where _Antigen_key = " + currentRecordKey + "\n" +
-		"select antibodyName from GXD_Antibody where _Antigen_key = " + currentRecordKey + " order by antibodyName\n";
+		"select mgiID, antibodyName from GXD_Antibody_View where _Antigen_key = " + currentRecordKey + " order by antibodyName\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -424,7 +424,8 @@ rules:
 	        DisplayMolecularSource.source_widget := top;
 	        send(DisplayMolecularSource, 0);
 	      elsif (results = 2) then
-		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      end if;
