@@ -343,7 +343,7 @@ rules:
 	    end if;
 
             cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
-                         top->MolDetailForm->SeqTypeMenu.menuHistory.defaultValue + "," +
+                         top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL,NULL,";	-- primer1sequence, primer2sequence
 
             if (top->MolMasterForm->Region->text.value.length <= 255) then
