@@ -1,3 +1,11 @@
+TAG: ei-8-3-14
+DATE: 04/28/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) NoteLib.d; tab to next cell after commit
+2) Clipboard.c; bug fix in ClipboardSetItems
+
 TAG: ei-8-3-13
 DATE: 04/28/2003
 STAFF: lec
