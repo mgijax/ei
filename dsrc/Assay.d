@@ -959,6 +959,8 @@ rules:
 --
 -- NextISResult
 --
+-- Set global "continueWithNextRecord".
+-- Called from NextRecordDialog.okCallback or NextRecordDialog.cancelCallback.
 --
 	NextISResult does
 	  continueWithNextRecord := NextISResult.answer;
