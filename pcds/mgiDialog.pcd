@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 10:48:27 1999";
+      lastWritten = "Thu Nov  4 11:01:04 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -380,6 +380,27 @@ Module: mgiDialog
                                     items = "NLM/CC Updates";
                                   Group: User
                                     keys = "nlm.py";
+                                }
+                          }
+                          {
+                            PrinterList = LookupList;
+                          }
+                          {
+                            PrintOrient = Choice : mgiDataTypes;
+                                {
+                                  PrintOrientBox = XmRowColumn;
+                                }
+                                {
+                                  ChoiceBox = XmRowColumn;
+                                }
+                          }
+                          {
+                            PrintColumn = Choice : mgiDataTypes;
+                                {
+                                  PrintColumnBox = XmRowColumn;
+                                }
+                                {
+                                  ChoiceBox = XmRowColumn;
                                 }
                           }
                     }
@@ -1574,7 +1595,7 @@ Module: mgiDialog
                       Group: Widget
                         activateCallback = "C: TuManage(find = VerifyTransferDialog)";
                         labelString = "Process Transfer";
-                        managed = False;
+                        sensitive = False;
                     }
                     {
                       Cancel = DialogPush;

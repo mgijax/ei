@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 28 10:07:28 1999";
+      lastWritten = "Thu Nov  4 11:03:02 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -7310,7 +7310,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Transfer = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:MarkerTransferInit()";
-                                          labelString = "Marker Transfer";
+                                          labelString = "Marker Transfer Report";
                                       }
                                       {
                                         BreakpointSplit = MenuPush : mgiMenu;
