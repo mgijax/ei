@@ -723,11 +723,13 @@ rules:
 
 	  -- If the Acc ID equals the Acc ID of the current object, then return
 
-          if ((string) accNumeric = mgi_tblGetCell(accTable, 0, accTable.accID)) then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "Accession ID cannot equal Accession ID of current object.";
-            send(StatusReport);
-	    return;
+	  if (accTable != nil) then
+            if ((string) accNumeric = mgi_tblGetCell(accTable, 0, accTable.accID)) then
+              StatusReport.source_widget := top.root;
+              StatusReport.message := "Accession ID cannot equal Accession ID of current object.";
+              send(StatusReport);
+	      return;
+	    end if;
 	  end if;
 
           (void) busy_cursor(top);

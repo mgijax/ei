@@ -52,10 +52,10 @@ locals:
  
 	tables : list;
 
-	annotTypeKey : string;
-	annotType : string;
-	mgiTypeKey : string;
-	dbView : string;
+	annotTypeKey : string;		-- Annotation Type key
+	annotType : string;		-- Annotation Type Description
+	mgiTypeKey : string;		-- MGI Type key (of Annotation Type)
+	dbView : string;		-- DB View Table (of ACC_MGIType._MGIType_key)
 
 	annotTable : widget;
 
@@ -411,14 +411,11 @@ rules:
 	  value := top->mgiAccession->ObjectID->text.value;
 	  if (value.length > 0) then
 	    where := where + "\nand v._Object_key = " + value;
-
---	This query takes too long, so we'll disallow it
---
---	  else
---	    value := top->mgiAccession->AccessionName->text.value;
---	    if (value.length > 0) then
---	      where := where + "\nand v.description like " + mgi_DBprstr(value);
---	    end if;
+	  else
+	    value := top->mgiAccession->AccessionName->text.value;
+	    if (value.length > 0) then
+	      where := where + "\nand v.description like " + mgi_DBprstr(value);
+	    end if;
 	  end if;
 
 	  -- Annotations
