@@ -485,6 +485,8 @@ rules:
 	PrepareSearch does
 	  value : string;
 	  row : integer := 0;
+	  orderByGBA : boolean := false;
+
 	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " +
 	       "and f._Fantom2_key = n._Fantom2_key";
 
@@ -499,6 +501,21 @@ rules:
 	  where := "";
 
 	  -- Construct Order By
+
+	  -- If "gba_mgiID" is selected by the user, then we'll need to not include it later
+
+	  if (top->sortOptions->sortMenu1.menuHistory.dbField = "gba_mgiID") then
+	    orderByGBA := true;
+	  end if;
+
+	  if (top->sortOptions->sortMenu2.menuHistory.dbField = "gba_mgiID") then
+	    orderByGBA := true;
+	  end if;
+
+	  if (top->sortOptions->sortMenu3.menuHistory.dbField = "gba_mgiID") then
+	    orderByGBA := true;
+	  end if;
+
 	  orderBy := " order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
 		
 	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
@@ -509,7 +526,11 @@ rules:
 	    orderBy := orderBy + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
 	  end if;
 
-	  orderBy := orderBy + ", f._Fantom2_key, c1.gba_mgiID, n.noteType, n.sequenceNum";
+	  if (not orderByGBA) then
+	    orderBy := orderBy + ", f._Fantom2_key, c1.gba_mgiID, n.noteType, n.sequenceNum";
+	  else
+	    orderBy := orderBy + ", f._Fantom2_key, n.noteType, n.sequenceNum";
+	  end if;
 
 	  -- Build Where Clause
 
