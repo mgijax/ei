@@ -705,7 +705,6 @@ rules:
 --
 
 	DoStatistics does
-
           cmd_str : string_list := create string_list();
           cmd_str.insert("statistics.py", cmd_str.count + 1);
           cmd_str.insert("-U" + global_login, cmd_str.count + 1);
@@ -725,7 +724,7 @@ rules:
 	  top->WorkingDialog.managed := true;
 
           proc_id : opaque := tu_fork_process(cmd_str[1], cmd_str, nil, DoStatisticsEnd);
-
+	  tu_fork_free(proc_id);
         end does;
 
 --

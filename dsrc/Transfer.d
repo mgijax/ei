@@ -306,6 +306,7 @@ rules:
           MarkerTransferEnd.source_widget := dialog;
          proc_id : opaque := 
 	   tu_fork_process2(cmds[1], cmds, dialog->Output, dialog->Output, MarkerTransferEnd);
+	   tu_fork_free(proc_id);
 
 	end does;
 

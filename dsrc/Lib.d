@@ -356,6 +356,7 @@ rules:
 
 	  DeleteEnd.dialog := dialog;
           proc_id : opaque := tu_fork_process2(cmd[1], cmd, dialog->Output, dialog->Output, DeleteEnd);
+	  tu_fork_free(proc_id);
         end does;
 
 --
@@ -583,6 +584,7 @@ rules:
 	  PrintEnd.dialog := dialog;
 
           proc_id : opaque := tu_fork_process2(print[1], print, dialog->Output, dialog->Output, PrintEnd);
+	  tu_fork_free(proc_id);
         end does;
 
 --

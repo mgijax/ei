@@ -156,12 +156,7 @@ rules:
 
      ReportEnd.dialog := dialog;
 
-     -- I replaced fork_process2 with fork_process, since stderr and stdout
-     -- were being merged anyway -gld
-     -- Used fork_process2 so that we could send stderr somewhere else, 
-     -- if we wanted to - lec
-
-     proc_p : opaque := tu_fork_process(program, commands, dialog->Output, ReportEnd);
+     proc_p : opaque := tu_fork_process2(program, commands, dialog->Output, dialog->Output, ReportEnd);
 
      -- check to see if we could exec the script 
      if (tu_fork_status(proc_p) = 2) then 
