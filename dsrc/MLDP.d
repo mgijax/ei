@@ -802,13 +802,6 @@ rules:
 
 	ModifyExpt does
 
-          if (origExptType != top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Cannot Modify Experiment Type";
-            send(StatusReport);
-	    return;
-          end if;
-
           if (not top.allowEdit) then
 	    return;
           end if;
@@ -817,6 +810,11 @@ rules:
 
           cmd := "";
 	  set : string := "";
+
+          if (origExptType != top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue) then
+	    set := set + "exptType = " + 
+	      mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue) + ",";
+	  end if;
 
           if (top->ExptDetailForm->ChromosomeMenu.menuHistory.modified) then
             set := set + "chromosome = " + 
@@ -4336,6 +4334,7 @@ rules:
 
 	ViewExpt does
           NewForm : widget := top->(ViewExpt.source_widget.form);
+	  modifyExptType : boolean := true;
  
 	  -- Reset origExptType if no record is currently selected
 
@@ -4343,9 +4342,22 @@ rules:
 	    origExptType := "";
 	  end if;
 
+	  -- Can modify Experiment Types of TEXT to other Experiment Types of TEXT
+
 	  if (origExptType.length > 0 and 
 	      origExptType != ViewExpt.source_widget.defaultValue and
 	      currentExptKey.length > 0) then
+            modifyExptType := false;
+
+	    if (origExptType.length >= 4 and ViewExpt.source_widget.defaultValue.length >= 4) then
+	      if (origExptType->substr(1,4) = "TEXT" and
+	          ViewExpt.source_widget.defaultValue->substr(1,4) = "TEXT") then
+                modifyExptType := true;
+	      end if;
+	    end if;
+          end if;
+
+	  if (not modifyExptType) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot Modify Experiment Type";
             send(StatusReport);
