@@ -3548,7 +3548,7 @@ rules:
 	      if (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554") then
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "74750");
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.jnum, "73796");
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "108");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "118");
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "ND");
 	      end if;
 	       
