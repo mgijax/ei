@@ -209,9 +209,9 @@ rules:
 --
  
         SetServer does
-          SetServer.source_widget.dbInfo := "  User:  " + global_login +
-                                            "  Server:  " + global_server + 
-                                            "  DB:  " + global_database;
+          SetServer.source_widget.dbInfo := "  (" + global_login +
+                                            ", " + global_server + 
+                                            ", " + global_database + ")";
         end does;
  
 --
@@ -223,8 +223,7 @@ rules:
         SetTitle does
           root : widget := SetTitle.source_widget.find_ancestor(global_application);
  
-          SetTitle.source_widget.title := "App:  " + global_application + 
-                                          "  Ver:  " + global_version +
+          SetTitle.source_widget.title := global_application + " " + global_version +
                                           "  Form:  " + SetTitle.source_widget.title;
  
           if (root != nil) then
