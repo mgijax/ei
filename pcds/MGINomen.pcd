@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 21 11:21:03 2003";
+      lastWritten = "Wed Mar 26 13:47:45 2003";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -559,6 +559,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    PDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
@@ -811,6 +814,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle : mgiOption;

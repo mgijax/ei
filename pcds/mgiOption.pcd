@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 21 11:19:50 2003";
+      lastWritten = "Wed Mar 26 13:47:40 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -130,6 +130,13 @@ Module: mgiOption
                         labelString = TrEMBL;
                       Group: User
                         defaultValue = 41;
+                    }
+                    {
+                      PDB = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = PDB;
+                      Group: User
+                        defaultValue = 45;
                     }
                     {
                       IMAGE = AccToggle : mgiOption;

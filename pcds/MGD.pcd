@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 21 11:22:33 2003";
+      lastWritten = "Wed Mar 26 13:49:37 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1338,6 +1338,9 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    PDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2485,6 +2488,9 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    PDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     IMAGE = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -2982,6 +2988,9 @@ Module: MGD
                                 }
                                 {
                                   TrEMBL = AccToggle : mgiOption;
+                                }
+                                {
+                                  PDB = AccToggle : mgiOption;
                                 }
                                 {
                                   IMAGE = AccToggle;
@@ -5508,6 +5517,9 @@ Module: MGD
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    PDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
@@ -6859,6 +6871,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    PDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -7013,6 +7028,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
@@ -8538,6 +8556,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    PDB = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
@@ -8748,6 +8771,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
