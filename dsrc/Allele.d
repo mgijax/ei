@@ -231,16 +231,6 @@ rules:
 	  -- Set Note button
           SetNotesDisplay.note := top->markerDescription->Note;
           send(SetNotesDisplay, 0);
-
-	  -- Clear/Set Notes
-	  ClearSetNoteForm.notew := top->mgiNoteForm;
-
-	  if (ClearAllele.reset) then
-	    ClearSetNoteForm.clearNote := false;
-	  end if;
-
-	  send(ClearSetNoteForm, 0);
-
 	end does;
 
 --

@@ -348,13 +348,6 @@ rules:
 	    InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
 	    send(InitRefTypeTable, 0);
 	  end if;
-
-	  -- Clear/Set Notes
-	  ClearSetNoteForm.notew := top->mgiNoteForm;
-	  if (ClearNomen.reset) then
-	    ClearSetNoteForm.clearNote := false;
-	  end if;
-	  send(ClearSetNoteForm, 0);
 	end does;
 
 --
