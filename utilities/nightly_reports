@@ -137,7 +137,6 @@ MLC_References.sql \
 MLC_TransferStats.py \
 MLD_2Point.sql \
 MLD_Assays.sql \
-MLD_Chromosome.sql \
 MLD_Cross.sql \
 MLD_Crosses.sql \
 MLD_DupMarker.sql \
