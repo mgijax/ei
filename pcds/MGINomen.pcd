@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 17 08:32:28 2003";
+      lastWritten = "Tue Aug 26 08:05:04 2003";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -722,34 +722,46 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               spacing = 15;
                                 {
-                                  AddandSymbol = ControlPush : mgiControl;
+                                  AddBroadcastOfficial = ControlPush : mgiControl;
                                   Group: Widget
-                                    labelString = "Add and Broadcast to MGD";
+                                    labelString = "Add and Broadcast Official to MGD";
                                     activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 1),\nD:GoHome";
                                 }
                                 {
-                                  BroadcastSymbol = ControlPush : mgiControl;
+                                  AddBroadcastInterim = ControlPush : mgiControl;
                                   Group: Widget
-                                    labelString = "Broadcast Symbol to MGD";
-                                    activateCallback = "D:Broadcast(type = 2),\nD:GoHome";
+                                    labelString = "Add and Broadcast Interim to MGD";
+                                    activateCallback = "D:VerifyEdit(mode = 2),\nD:Broadcast (type = 2),\nD:GoHome";
+                                }
+                                {
+                                  BroadcastOfficial = ControlPush : mgiControl;
+                                  Group: Widget
+                                    labelString = "Broadcast Official Symbol to MGD";
+                                    activateCallback = "D:Broadcast(type = 3),\nD:GoHome";
+                                }
+                                {
+                                  BroadcastInterim = ControlPush : mgiControl;
+                                  Group: Widget
+                                    labelString = "Broadcast Interim Symbol to MGD";
+                                    activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
                                 }
                                 {
                                   BroadcastBatch = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Batch to MGD";
-                                    activateCallback = "D:Broadcast(type = 3),\nD:GoHome";
+                                    activateCallback = "D:Broadcast(type = 5),\nD:GoHome";
                                 }
                                 {
                                   BroadcastReference = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Reference to MGD\n(Editors only)";
-                                    activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
+                                    activateCallback = "D:Broadcast(type = 6),\nD:GoHome";
                                 }
                                 {
                                   BroadcastReference1 = ControlPush : mgiControl;
                                   Group: Widget
                                     labelString = "Broadcast by Reference to MGD\n(Nomen Coordinator only)";
-                                    activateCallback = "D:Broadcast(type = 5),\nD:GoHome";
+                                    activateCallback = "D:Broadcast(type = 7),\nD:GoHome";
                                 }
                           }
                     }
