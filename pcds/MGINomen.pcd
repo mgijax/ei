@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Sep 25 13:46:39 2000";
+      lastWritten = "Tue Sep 26 09:24:26 2000";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -714,8 +714,6 @@ Shift<Key>Tab: prev-tab-group()
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
-                                        Group: User
-                                          showMGI = False;
                                       }
                                       {
                                         Add = TablePush;
