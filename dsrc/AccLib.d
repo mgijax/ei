@@ -311,6 +311,7 @@ rules:
                 accID := mgi_getstr(dbproc, 3); -- concatenated acc#
 	      else
                 accID := mgi_getstr(dbproc, 5); -- numeric part only
+	        (void) mgi_tblSetCell(table, row, table.accName, mgi_getstr(dbproc, 4));
 	      end if;
 
 	      -- Set the Accession ID
