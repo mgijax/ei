@@ -545,7 +545,8 @@ rules:
 
 	  if (agePrefix.name = "SearchAll" or 
 	      agePrefix.name = "NotSpecified" or 
-	      agePrefix.name = "NotApplicable") then
+	      agePrefix.name = "NotApplicable" or
+	      agePrefix.name = "NotResolved") then
 
 	    finalAgeMin := "NULL";
 	    finalAgeMax := "NULL";

@@ -544,10 +544,11 @@ rules:
 	    return;
 	  end if;
 
-	  table := targetWidget.child_by_class(TABLE_CLASS);
+--	  table := targetWidget.child_by_class(TABLE_CLASS);
 
-	  if (table != nil) then
-	    isTable := true;
+          isTable := mgi_tblIsTable(targetWidget);
+	  if (not isTable) then
+            isTable := mgi_tblIsTable(targetWidget.child(1));
 	  end if;
 
 	  if (isTable) then
@@ -620,6 +621,11 @@ rules:
 		column := (integer) list_w.targetAccID;
 	      end if;
 	    else
+
+	      if (list_w.selectedItemCount = 0) then
+	        return;
+	      end if;
+
 	      item := list_w.selectedItems[0];
 
 	      if (item.length > cbPrefix.length) then
@@ -668,6 +674,11 @@ rules:
 	  -- Non-table text widget
 
 	  else
+
+	    if (list_w.selectedItemCount = 0) then
+	      return;
+	    end if;
+
 	    -- If text widget is specified, copy the text
 
 	    if (list_w.targetText.length > 0) then

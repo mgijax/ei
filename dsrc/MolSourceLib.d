@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 09/15/2003
+--	- SAO; added table processing to ModifyMolecularSource
+--
 -- 07/25/2003
 --	- JSAM
 --
@@ -434,101 +437,131 @@ rules:
 --
  
         ModifyMolecularSource does
-	  top : widget := ModifyMolecularSource.source_widget->SourceForm;
+	  top : widget;
           set : string := "";
 	  age : string := "";
+	  isTable : boolean;
+	  row : integer;
 
-	  top.sql := "";
- 
-	  -- If no Source record to modify, then return
+	  isTable := mgi_tblIsTable(ModifyMolecularSource.source_widget);
 
-          if (top->SourceID->text.value.length = 0) then
-	    return;
-	  end if;
+	  if (isTable) then
+	    top := ModifyMolecularSource.source_widget;
+	    row := ModifyMolecularSource.row;
+	    top.sqlCmd := "";
 
-	  if (top->Library.managed) then
-	    if (top->Library->text.modified) then
-              set := set + "name = " + mgi_DBprstr(top->Library->text.value) + ",";
-	    end if;
-	  end if;
+            set := set + "_Organism_key = " + mgi_tblGetCell(top, row, top.organismKey) + ",";
+            set := set + "_Strain_key = " + mgi_tblGetCell(top, row, top.strainKeys) + ",";
+            set := set + "_Tissue_key = " + mgi_tblGetCell(top, row, top.tissueKey) + ",";
+            set := set + "_Gender_key = " + mgi_tblGetCell(top, row, top.genderKey) + ",";
+            set := set + "_CellLine_key = " + mgi_tblGetCell(top, row, top.cellLineKey) + ",";
 
-	  if (top->mgiCitation.managed) then
-	    if (top->mgiCitation->ObjectID->text.modified) then
-	      set := set + "_Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + ",";
-	    end if;
-	  end if;
+	    age := mgi_tblGetCell(top, row, top.agePrefix) + " " + mgi_tblGetCell(top, row, top.ageRange);
 
-          if (top->SourceSegmentTypeMenu.managed) then
-            if (top->SourceSegmentTypeMenu.menuHistory.modified) then
-              set := set + "_SegmentType_key = " + top->SourceSegmentTypeMenu.menuHistory.defaultValue + ",";
-            end if;
-          end if;
-
-          if (top->SourceVectorTypeMenu.managed) then
-            if (top->SourceVectorTypeMenu.menuHistory.modified) then
-              set := set + "_Vector_key = " + top->SourceVectorTypeMenu.menuHistory.defaultValue + ",";
-            end if;
-          end if;
-
-          if (top->ProbeOrganismMenu.menuHistory.modified) then
-            set := set + "_Organism_key = " + top->ProbeOrganismMenu.menuHistory.defaultValue + ",";
-          end if;
- 
-          if (top->Strain->StrainID->text.modified) then
-            set := set + "_Strain_key = " + top->Strain->StrainID->text.value + ",";
-          end if;
- 
-          if (top->Tissue->TissueID->text.modified) then
-            set := set + "_Tissue_key = " + top->Tissue->TissueID->text.value + ",";
-          end if;
- 
-          if (top->GenderMenu.menuHistory.modified) then
-            set := set + "_Gender_key = " + top->GenderMenu.menuHistory.defaultValue + ",";
-          end if;
- 
-          if (top->CellLine->CellLineID->text.modified) then
-            set := set + "_CellLine_key = " + top->CellLine->CellLineID->text.value + ",";
-          end if;
-
-          if (top->Description->text.modified) then
-            set := set + "description = " + mgi_DBprstr(top->Description->text.value) + ",";
-          end if;
- 
-          if (top->AgeMenu.menuHistory.modified or top->Age->text.modified) then
-	    age := top->AgeMenu.menuHistory.defaultValue;
-
-            if (top->Age->text.value.length > 0) then
-              age := age + " " + top->Age->text.value;
-            end if;
-
-	    VerifyAge.source_widget := top->Age->text;
-	    send(VerifyAge, 0);
-
-	    if (top->AgeMin->text.value.length > 0 and
-	        top->AgeMax->text.value.length > 0) then
+	    if (mgi_tblGetCell(top, row, top.ageMin).length > 0 and
+	        mgi_tblGetCell(top, row, top.ageMax).length > 0) then
 	      set := set + "age = " + mgi_DBprstr(age) + "," +
-                           "ageMin = " + top->AgeMin->text.value + "," +
-                           "ageMax = " + top->AgeMax->text.value + ",";
-	    else
-	      set := "";
-	    end if;
-          end if;
- 
-	  if (top->Library.managed) then
-	    ProcessNoteForm.notew := top->mgiNoteForm;
-	    ProcessNoteForm.tableID := MGI_NOTE;
-	    ProcessNoteForm.objectKey := top->SourceID->text.value;
-	    send(ProcessNoteForm, 0);
-	    top.sql := top.sql + top->mgiNoteForm.sql;
-	  end if;
+                            "ageMin = " + mgi_tblGetCell(top, row, top.ageMin) + "," +
+                            "ageMax = " + mgi_tblGetCell(top, row, top.ageMax) + ",";
+            end if;
 
-	  if (set.length > 0) then
 	    set := set + "isCuratorEdited = " + isCuratorEdited + ",";
-	  end if;
+            top.sqlCmd := mgi_DBupdate(PRB_SOURCE, mgi_tblGetCell(top, row, top.sourceKey), set);
+	  else
+
+	    top := ModifyMolecularSource.source_widget->SourceForm;
+	    top.sql := "";
+ 
+	    -- If no Source record to modify, then return
+
+            if (top->SourceID->text.value.length = 0) then
+	      return;
+	    end if;
+
+	    if (top->Library.managed) then
+	      if (top->Library->text.modified) then
+                set := set + "name = " + mgi_DBprstr(top->Library->text.value) + ",";
+	      end if;
+	    end if;
+
+	    if (top->mgiCitation.managed) then
+	      if (top->mgiCitation->ObjectID->text.modified) then
+	        set := set + "_Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + ",";
+	      end if;
+	    end if;
+
+            if (top->SourceSegmentTypeMenu.managed) then
+              if (top->SourceSegmentTypeMenu.menuHistory.modified) then
+                set := set + "_SegmentType_key = " + top->SourceSegmentTypeMenu.menuHistory.defaultValue + ",";
+              end if;
+            end if;
+
+            if (top->SourceVectorTypeMenu.managed) then
+              if (top->SourceVectorTypeMenu.menuHistory.modified) then
+                set := set + "_Vector_key = " + top->SourceVectorTypeMenu.menuHistory.defaultValue + ",";
+              end if;
+            end if;
+
+            if (top->ProbeOrganismMenu.menuHistory.modified) then
+              set := set + "_Organism_key = " + top->ProbeOrganismMenu.menuHistory.defaultValue + ",";
+            end if;
+   
+            if (top->Strain->StrainID->text.modified) then
+              set := set + "_Strain_key = " + top->Strain->StrainID->text.value + ",";
+            end if;
+ 
+            if (top->Tissue->TissueID->text.modified) then
+              set := set + "_Tissue_key = " + top->Tissue->TissueID->text.value + ",";
+            end if;
+ 
+            if (top->GenderMenu.menuHistory.modified) then
+              set := set + "_Gender_key = " + top->GenderMenu.menuHistory.defaultValue + ",";
+            end if;
+ 
+            if (top->CellLine->CellLineID->text.modified) then
+              set := set + "_CellLine_key = " + top->CellLine->CellLineID->text.value + ",";
+            end if;
+
+            if (top->Description->text.modified) then
+              set := set + "description = " + mgi_DBprstr(top->Description->text.value) + ",";
+            end if;
+ 
+            if (top->AgeMenu.menuHistory.modified or top->Age->text.modified) then
+	      age := top->AgeMenu.menuHistory.defaultValue;
+
+              if (top->Age->text.value.length > 0) then
+                age := age + " " + top->Age->text.value;
+              end if;
+
+	      VerifyAge.source_widget := top->Age->text;
+	      send(VerifyAge, 0);
+
+	      if (top->AgeMin->text.value.length > 0 and
+	          top->AgeMax->text.value.length > 0) then
+	        set := set + "age = " + mgi_DBprstr(age) + "," +
+                             "ageMin = " + top->AgeMin->text.value + "," +
+                             "ageMax = " + top->AgeMax->text.value + ",";
+	      else
+	        set := "";
+	      end if;
+            end if;
+ 
+	    if (top->Library.managed) then
+	      ProcessNoteForm.notew := top->mgiNoteForm;
+	      ProcessNoteForm.tableID := MGI_NOTE;
+	      ProcessNoteForm.objectKey := top->SourceID->text.value;
+	      send(ProcessNoteForm, 0);
+	      top.sql := top.sql + top->mgiNoteForm.sql;
+	    end if;
+
+	    if (set.length > 0) then
+	      set := set + "isCuratorEdited = " + isCuratorEdited + ",";
+	    end if;
   
-          if (top.sql.length > 0 or set.length > 0) then
-            top.sql := top.sql + mgi_DBupdate(PRB_SOURCE, top->SourceID->text.value, set);
-          end if;
+            if (top.sql.length > 0 or set.length > 0) then
+              top.sql := top.sql + mgi_DBupdate(PRB_SOURCE, top->SourceID->text.value, set);
+            end if;
+	  end if;
  
         end does;
  
@@ -764,9 +797,67 @@ rules:
  
         ViewMolecularSourceAttributeHistory does
 	  top : widget := ViewMolecularSourceAttributeHistory.source_widget.top;
+	  sourceForm : widget;
+	  historyTable : widget := top->MolecularSourceAttributeHistoryDialog->AttributeHistoryTable->Table;
+	  row : integer;
+	  sourceKey : string;
+	  cmd : string;
+	  sourceTable : widget;
 
---	  if (top->SourceID->text.value.length > 0) then
---	  end if;
+	  if (ViewMolecularSourceAttributeHistory.sourceForm != nil) then
+	    sourceForm := top->(ViewMolecularSourceAttributeHistory.sourceForm);
+	    if (sourceForm->Table != nil) then
+	      sourceTable := sourceForm->Table;
+	      row := mgi_tblGetCurrentRow(sourceTable);
+	      sourceKey := mgi_tblGetCell(sourceTable, row, sourceTable.sourceKey);
+	    else
+	      sourceKey := top->SourceID->text.value;
+            end if;
+	  else
+	    sourceKey := top->SourceID->text.value;
+          end if;
+
+	  if (sourceKey.length = 0) then
+	    return;
+          end if;
+
+	  cmd := "select columnName, modifiedBy, modification_date " +
+	      "from MGI_AttrHistory_Source_View where _Object_key = " + sourceKey;
+
+          dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+ 
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := -1;
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	       if (mgi_getstr(dbproc, 1) = "name") then
+		 row := historyTable.library;
+	       elsif (mgi_getstr(dbproc, 1) = "_Organism_key") then
+		 row := historyTable.organism;
+	       elsif (mgi_getstr(dbproc, 1) = "_Strain_key") then
+		 row := historyTable.strain;
+	       elsif (mgi_getstr(dbproc, 1) = "_Tissue_key") then
+		 row := historyTable.tissue;
+	       elsif (mgi_getstr(dbproc, 1) = "_CellLine_key") then
+		 row := historyTable.cellLine;
+	       elsif (mgi_getstr(dbproc, 1) = "_Gender_key") then
+		 row := historyTable.gender;
+	       elsif (mgi_getstr(dbproc, 1) = "_SegmentType_key") then
+		 row := historyTable.segmentType;
+	       elsif (mgi_getstr(dbproc, 1) = "_Vector_key") then
+		 row := historyTable.vectorType;
+	       elsif (mgi_getstr(dbproc, 1) = "age") then
+		 row := historyTable.age;
+	       end if;
+
+	       if (row >= 0) then
+	         (void) mgi_tblSetCell(historyTable, row, historyTable.modifiedBy, mgi_getstr(dbproc, 2));
+	         (void) mgi_tblSetCell(historyTable, row, historyTable.modifiedDate, mgi_getstr(dbproc, 3));
+	       end if;
+	    end while;
+	  end while;
+          (void) dbclose(dbproc);
 
 	  top->MolecularSourceAttributeHistoryDialog.managed := true;
 	end does;

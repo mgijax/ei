@@ -35,6 +35,7 @@ devents:
 	Init :local [];
 
 	Modify :local [];
+	ModifySequenceSource :local [];
 
 	PrepareSearch :local [];
 
@@ -263,7 +264,82 @@ rules:
           cmd := "";
 	  set : string := "";
 
+	  -- main attributes
+
+          if (top->SequenceTypeMenu.menuHistory.modified and
+	      top->SequenceTypeMenu.menuHistory.searchValue != "%") then
+            set := set + "_SequenceType_key = "  + top->SequenceTypeMenu.menuHistory.defaultValue + ",";
+          end if;
+
+          if (top->SequenceQualityMenu.menuHistory.modified and
+	      top->SequenceQualityMenu.menuHistory.searchValue != "%") then
+            set := set + "_SequenceQuality_key = "  + top->SequenceQualityMenu.menuHistory.defaultValue + ",";
+          end if;
+
+	  -- Source
+	  send(ModifySequenceSource, 0);
+
+	  -- Notes
+
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or set.length > 0) then
+	    cmd := cmd + mgi_DBupdate(SEQ_SEQUENCE, currentKey, set);
+	  end if;
+
+	  ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  send(ModifySQL, 0);
+
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- ModifySequenceSource
+--
+-- Activated from: devent Modify
+--
+-- Construct update for Sequence Source records
+--
+
+
+	ModifySequenceSource does
+          row : integer := 0;
+          editMode : string;
+          key : string;
+ 
+          -- Process while non-empty rows are found
+ 
+          while (row < mgi_tblNumRows(sourceTable)) do
+            editMode := mgi_tblGetCell(sourceTable, row, sourceTable.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+ 
+            key := mgi_tblGetCell(sourceTable, row, sourceTable.sourceKey);
+ 
+            if (editMode = TBL_ROW_MODIFY) then
+	      ModifyMolecularSource.source_widget := sourceTable;
+	      ModifyMolecularSource.row := row;
+	      send(ModifyMolecularSource, 0);
+	      cmd := cmd + sourceTable.sqlCmd;
+            end if;
+ 
+            row := row + 1;
+          end while;
 	end does;
 
 --
@@ -381,7 +457,7 @@ rules:
 	    where := where + "\nand s.rawOrganism like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.strain);
+	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.strains);
 	  if (value.length > 0) then
 	    where := where + "\nand s.rawStrain like " + mgi_DBprstr(value);
 	  end if;
@@ -420,7 +496,7 @@ rules:
 	    from_source := true;
 	  end if;
 
-          value := mgi_tblGetCell(sourceTable, 1, sourceTable.strainKey);
+          value := mgi_tblGetCell(sourceTable, 1, sourceTable.strainKeys);
           if (value.length > 0) then
 	    where := where + "\nand ps._Strain_key = " + value;
 	    from_source := true;
@@ -565,7 +641,7 @@ rules:
 
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.library, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.organism, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.strain, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.strains, mgi_getstr(dbproc, 14));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.tissue, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.cellLine, mgi_getstr(dbproc, 18));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.agePrefix, mgi_getstr(dbproc, 16));
@@ -580,8 +656,8 @@ rules:
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organismKey, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organism, mgi_getstr(dbproc, 21));
 
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strainKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strain, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strainKeys, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strains, mgi_getstr(dbproc, 22));
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissueKey, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissue, mgi_getstr(dbproc, 24));
@@ -614,7 +690,7 @@ rules:
 
 	  (void) dbclose(dbproc);
  
-	  table := top->SourceInfo->Table;
+	  table := sourceTable;
 	  row := 0;
 	  while (row < mgi_tblNumRows(table)) do
 	    (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -627,6 +703,11 @@ rules:
 	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_SEQUENCE_VIEW;
+	  LoadNoteForm.objectKey := currentKey;
+	  send(LoadNoteForm, 0);
+
           LoadRefTypeTable.table := top->Reference->Table;
 	  LoadRefTypeTable.tableID := MGI_REFERENCE_SEQUENCE_VIEW;
           LoadRefTypeTable.objectKey := currentKey;
