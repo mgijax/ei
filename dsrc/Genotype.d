@@ -500,8 +500,9 @@ rules:
 	  QueryModificationHistory.tag := "g";
 	  send(QueryModificationHistory, 0);
 
-	  if (top->ModificationHistory->Table.sqlCmd.length > 0) then
-            where := where + top->ModificationHistory->Table.sqlCmd;
+	  if (top->ModificationHistory->Table.sqlWhere.length > 0) then
+            where := where + top->ModificationHistory->Table.sqlWhere;
+            from:= from+ top->ModificationHistory->Table.sqlFrom;
 	  end if;
 
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
