@@ -300,4 +300,8 @@ extern char *global_version;
 
 #define OTHERNOTES		"Other (see notes)"
 
+/* Allele Notes - Note Keys */
+#define ALL_GENERAL_NOTES	1
+#define ALL_MOLECULAR_NOTES	2
+
 #endif
