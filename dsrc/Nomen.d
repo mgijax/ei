@@ -202,9 +202,6 @@ rules:
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->MarkerEventReasonMenu;
-	  send(InitOptionMenu, 0);
-
 	  top->MarkerStatusMenu.subMenuId.sql := 
 		"select * from " + mgi_DBtable(MRK_NOMENSTATUS) + " order by " + mgi_DBkey(MRK_NOMENSTATUS);
 	  InitOptionMenu.option := top->MarkerStatusMenu;
@@ -368,7 +365,7 @@ rules:
                  top->MarkerTypeMenu.menuHistory.defaultValue + "," +
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
-                 top->MarkerEventReasonMenu.menuHistory.defaultValue + "," +
+                 NOTSPECIFIED + "," +
                  suid + "," +
 		 NOTSPECIFIED + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
@@ -533,11 +530,6 @@ rules:
           if (top->MarkerEventMenu.menuHistory.modified and
 	      top->MarkerEventMenu.menuHistory.searchValue != "%") then
             set := set + "_Marker_Event_key = "  + top->MarkerEventMenu.menuHistory.defaultValue + ",";
-          end if;
-
-          if (top->MarkerEventReasonMenu.menuHistory.modified and
-	      top->MarkerEventReasonMenu.menuHistory.searchValue != "%") then
-            set := set + "_Marker_EventReason_key = "  + top->MarkerEventReasonMenu.menuHistory.defaultValue + ",";
           end if;
 
           if (top->MarkerStatusMenu.menuHistory.modified and
@@ -887,11 +879,6 @@ rules:
 	    printSelect := printSelect + "\nMarker Event = " + top->MarkerEventMenu.menuHistory.labelString;
           end if;
 
-          if (top->MarkerEventReasonMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._Marker_EventReason_key = " + top->MarkerEventReasonMenu.menuHistory.searchValue;
-	    printSelect := printSelect + "\nMarker Event Reason = " + top->MarkerEventReasonMenu.menuHistory.labelString;
-          end if;
-
           if (top->MarkerStatusMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Status_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
 	    printSelect := printSelect + "\nMarker Status = " + top->MarkerStatusMenu.menuHistory.labelString;
@@ -1223,10 +1210,6 @@ rules:
 
                 SetOption.source_widget := top->MarkerEventMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
-                send(SetOption, 0);
-
-                SetOption.source_widget := top->MarkerEventReasonMenu;
-                SetOption.value := mgi_getstr(dbproc, 7);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->SubmittedByMenu;
