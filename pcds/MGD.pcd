@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 29 08:15:22 2004";
+      lastWritten = "Mon Nov 29 08:17:15 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2568,7 +2568,7 @@ Module: MGD
                             Group: Widget
                               labelString = "Sequence Source Difference";
                             Group: User
-                              note = "The source of the material used to create this cDNA probe was different than \nthat used to create the Genbank sequence record.";
+                              note = "The source of the material used to create this cDNA probe was different than that used to create the Genbank sequence record.";
                               noteWidget = MolNote;
                           }
                     }
