@@ -2032,7 +2032,7 @@ rules:
 
 	  -- If no Marker value exists, return
 
-	  if (value.length = 0) then
+	  if (value.length = 0 or valueKey = "NULL") then
 	    return;
 	  end if;
 
