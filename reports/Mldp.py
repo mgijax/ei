@@ -339,7 +339,7 @@ def parse_expts(expts):
 
 	elif (type == 'RI'):
 		command = 'select r.origin, r.designation, r.abbrev1, r.abbrev2, m.RI_IdList ' + \
-			  'from RI_RISet r, MLD_RI m ' + \
+			  'from RI_RISet_View r, MLD_RI m ' + \
 			  'where m._Expt_key = '+ `expts['_Expt_key']` + \
 			  ' and m._RISet_key *= r._RISet_key'
         	db.sql(command, parse_ri)
