@@ -367,7 +367,12 @@ rules:
              stagetrees_deleteStructureByKey((integer)(top->ID->text.value));
 
              -- delete the structure from the clipboard, if present
-	     clipboard->List.row := clipboard->List.keys.find(top->ID->text.value);
+	     if (clipboard->List.keys != nil) then
+	       clipboard->List.row := clipboard->List.keys.find(top->ID->text.value);
+	     else
+	       clipboard->List.row := 0;
+	     end if;
+	     
 	     if (clipboard->List.row > 0) then
 	       DeleteList.list := clipboard;
 	       send(DeleteList, 0);
