@@ -997,7 +997,7 @@ rules:
 	  where : string := " where _Species_key = " + speciesKey +
 		" and chromosome = " + mgi_DBprstr(value) + "\n";
 
-	  if ((integer) mgi_sql1(select + where) > 0) then
+	  if ((integer) mgi_sql1(select + where) = 0) then
             StatusReport.source_widget := top;
 	    StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value +
 		"\n\nThis value will be added to Species/Chromosome lookup table\n" +
