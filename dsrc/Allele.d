@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 10/08/2002 lec
+--	- TR 3516; added markerDescription
+--
 -- 05/30/2002 lec
 --	- TR 3677; item 3
 --
@@ -221,6 +224,10 @@ rules:
 	    InitRefTypeTable.tableID := ALL_REFERENCETYPE;
 	    send(InitRefTypeTable, 0);
 	  end if;
+
+	  -- Set Note button
+          SetNotesDisplay.note := top->markerDescription->Note;
+          send(SetNotesDisplay, 0);
 
 	  -- Clear/Set Notes
 	  ClearSetNoteForm.notew := top->mgiNoteForm;
@@ -573,6 +580,14 @@ rules:
  
 	ModifyAlleleNotes does
 
+	  -- Modify Marker Description
+
+          ModifyNotes.source_widget := top->markerDescription->Note;
+          ModifyNotes.tableID := MRK_NOTES;
+          ModifyNotes.key := top->mgiMarker->ObjectID->text.value;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->markerDescription->Note.sql;
+
 	  -- Set required field for General Notes
 
 	  if (top->InheritanceModeMenu.menuHistory.labelString = OTHERNOTES or
@@ -730,6 +745,7 @@ rules:
 	PrepareSearch does
 	  from_mutation   : boolean := false;
 	  from_synonym    : boolean := false;
+	  from_notes      : boolean := false;
 
 	  value : string;
 
@@ -846,6 +862,11 @@ rules:
 	    end if;
 	  end if;
 
+          if (top->markerDescription->Note->text.value.length > 0) then
+            where := where + "\nand m.note like " + mgi_DBprstr(top->markerDescription->Note->text.value);
+            from_notes := true;
+          end if;
+      
 	  if (from_mutation) then
 	    from := from + "," + mgi_DBtable(ALL_MUTATION_VIEW) + " m";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = m." + mgi_DBkey(ALL_ALLELE);
@@ -854,6 +875,11 @@ rules:
 	  if (from_synonym) then
 	    from := from + "," + mgi_DBtable(ALL_SYNONYM_VIEW) + " s";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = s." + mgi_DBkey(ALL_ALLELE);
+	  end if;
+
+	  if (from_notes) then
+	    from := from + "," + mgi_DBtable(MRK_NOTES) + " m";
+	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = m." + mgi_DBkey(MRK_MARKER);
 	  end if;
 
           if (where.length > 0) then
@@ -908,6 +934,8 @@ rules:
 	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
 	  send(InitRefTypeTable, 0);
 
+	  top->markerDescription->Note->text.value := "";
+
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -925,7 +953,12 @@ rules:
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 	         "select _Synonym_key, synonym, _Refs_key, jnum, short_citation from " + 
 		 mgi_DBtable(ALL_SYNONYM_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n";
+		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
+                 "select rtrim(m.note) from " + mgi_DBtable(ALL_ALLELE) + " a, " +
+		 mgi_DBtable(MRK_NOTES) + " m " +
+                 " where a." + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + 
+                 " and a." + mgi_DBkey(MRK_MARKER) + " = m." + mgi_DBkey(MRK_MARKER) +
+		 " order by m.sequenceNum\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -992,6 +1025,10 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
+	      elsif (results = 4) then
+                top->markerDescription->Note->text.value := 
+			top->markerDescription->Note->text.value + mgi_getstr(dbproc, 1);
 	      end if;
 	      row := row + 1;
 	    end while;
