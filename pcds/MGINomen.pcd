@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Fri Apr  9 11:10:18 1999";
+      lastWritten = "Fri Aug  6 09:12:17 1999";
         {
           MGINomen = Application : MGI;
           Group: Control
@@ -411,36 +411,13 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  ECNumber = CharText : mgiDataTypes;
+                                  HumanSymbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = BroadcastDate;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = BroadcastDate;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 5;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "EC\nNumber";
-                                      }
-                                      {
-                                        text = XmTextField;
-                                        Group: Widget
-                                          columns = 25;
-                                          maxLength = 25;
-                                      }
-                                }
-                                {
-                                  HumanSymbol = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = ECNumber;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = ECNumber;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
@@ -475,10 +452,10 @@ Shift<Key>Tab: prev-tab-group()
                                   StatusNotes = SingleNote : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Reference;
+                                    leftWidget = AccessionReference;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Reference;
+                                    topWidget = AccessionReference;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -522,15 +499,15 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   CoordNote = mgiNote : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
                                     topWidget = EditorNote;
                                     bottomAttachment = attach_form;
                                     resizable = true;
-                                    topOffset = 2;
-                                    leftWidget = StatusNotes;
+                                    leftWidget = EditorNote;
                                     bottomOffset = 5;
+                                    leftOffset = 5;
                                       {
                                         Note = XmXrtAligner;
                                       }
@@ -563,6 +540,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblColumnLabels = "Mode,Key,Name";
                                           userDefinedAttributes = "otherKey:Int=\"1\"\notherName:Int=\"2\"\n";
                                           xrtTblRowLabels = "Author,Other,Other,Other,Other,Other";
+                                          xrtTblVisibleRows = 3;
                                       }
                                       {
                                         AddRow = XmPushButton;
@@ -587,7 +565,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           xrtTblRowLabels = "Primary,Related,Related,Related,Related,Related";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 50)(all label 7)";
-                                          xrtTblVisibleRows = 5;
                                       }
                                       {
                                         AddRow = XmPushButton;
@@ -619,6 +596,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblMaxLengthSeries = "(all 3 255)";
                                           xrtTblColumnLabels = "Mode,Current Key,Key,Gene Family";
                                           userDefinedAttributes = "familyCurrentKey:Int(Int)=\"1\"\nfamilyKey:Int(Int)=\"2\"\nfamilyName:Int=\"3\"\n";
+                                          xrtTblVisibleRows = 3;
                                       }
                                       {
                                         AddRow = XmPushButton;
@@ -647,6 +625,7 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "markerSymbol:Int=\"1\"\naccID:Int=\"2\"\n";
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblTraversableSeries = "(all 0-2 False)";
+                                          xrtTblVisibleRows = 3;
                                       }
                                       {
                                         AddRow = XmPushButton;
@@ -676,6 +655,106 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     leftWidget = SymbolName;
                                     leftOffset = 30;
+                                }
+                                {
+                                  AccessionReference = AccessionReference : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Reference;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Reference;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = XtXrtTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 3;
+                                      }
+                                      {
+                                        Add = XmPushButton;
+                                      }
+                                      {
+                                        Delete = XmPushButton;
+                                      }
+                                      {
+                                        AccSourceMenu = XmOptionMenu;
+                                        Group: User
+                                          defaultOption = Sequence;
+                                            Popups:
+                                            {
+                                              AccSourcePulldown = XmPulldownMenu;
+                                                  {
+                                                    MGI = XmToggleButton;
+                                                  }
+                                                  {
+                                                    J = XmToggleButton;
+                                                  }
+                                                  {
+                                                    Medline = XmToggleButton;
+                                                  }
+                                                  {
+                                                    EC = XmToggleButton;
+                                                  }
+                                                  {
+                                                    SWISSPROT = XmToggleButton;
+                                                  }
+                                                  {
+                                                    dbEST = XmToggleButton;
+                                                  }
+                                                  {
+                                                    WashU = XmToggleButton;
+                                                  }
+                                                  {
+                                                    IMAGE = XmToggleButton;
+                                                  }
+                                                  {
+                                                    Sequence = XmToggleButton;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    SequencePID = XmToggleButton;
+                                                  }
+                                                  {
+                                                    ATCC = XmToggleButton;
+                                                  }
+                                                  {
+                                                    MRK = XmToggleButton;
+                                                  }
+                                                  {
+                                                    MGIImage = XmToggleButton;
+                                                  }
+                                                  {
+                                                    CREX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    HYEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    INEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    FSEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    RIEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    TEXT = XmToggleButton;
+                                                  }
+                                                  {
+                                                    TXEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    PMEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    E = XmToggleButton;
+                                                  }
+                                            }
+                                      }
                                 }
                           }
                     }
@@ -774,6 +853,95 @@ Shift<Key>Tab: prev-tab-group()
                       Lookup = XmFrame;
                           {
                             panedWindow = XmPanedWindow;
+                                {
+                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                      {
+                                        Table = XtXrtTable;
+                                      }
+                                      {
+                                        Add = XmPushButton;
+                                      }
+                                      {
+                                        Delete = XmPushButton;
+                                      }
+                                      {
+                                        AccSourceMenu = XmOptionMenu;
+                                        Group: User
+                                          defaultOption = EC;
+                                            Popups:
+                                            {
+                                              AccSourcePulldown = XmPulldownMenu;
+                                                  {
+                                                    MGI = XmToggleButton;
+                                                  }
+                                                  {
+                                                    J = XmToggleButton;
+                                                  }
+                                                  {
+                                                    Medline = XmToggleButton;
+                                                  }
+                                                  {
+                                                    EC = XmToggleButton;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    SWISSPROT = XmToggleButton;
+                                                  }
+                                                  {
+                                                    dbEST = XmToggleButton;
+                                                  }
+                                                  {
+                                                    WashU = XmToggleButton;
+                                                  }
+                                                  {
+                                                    IMAGE = XmToggleButton;
+                                                  }
+                                                  {
+                                                    Sequence = XmToggleButton;
+                                                  }
+                                                  {
+                                                    SequencePID = XmToggleButton;
+                                                  }
+                                                  {
+                                                    ATCC = XmToggleButton;
+                                                  }
+                                                  {
+                                                    MRK = XmToggleButton;
+                                                  }
+                                                  {
+                                                    MGIImage = XmToggleButton;
+                                                  }
+                                                  {
+                                                    CREX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    HYEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    INEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    FSEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    RIEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    TEXT = XmToggleButton;
+                                                  }
+                                                  {
+                                                    TXEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    PMEX = XmToggleButton;
+                                                  }
+                                                  {
+                                                    E = XmToggleButton;
+                                                  }
+                                            }
+                                      }
+                                }
                                 {
                                   QueryList = XmForm;
                                       {

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Wed Jul 21 09:35:33 1999";
+      lastWritten = "Fri Aug  6 09:04:28 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -609,7 +609,7 @@ Module: mgiDialog
           NoteDialog = XmFormDialog;
           Group: Widget
             managed = False;
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\n";
             rubberPositioning = False;
             resizePolicy = resize_any;
             dialogTitle = "Notes Dialog";
@@ -649,6 +649,7 @@ Module: mgiDialog
                       Group: Widget
                         rows = 15;
                         columns = 75;
+                        userDefinedAttributes = "saveMaxNoteLength:Int=\"0\"\nshortMaxNoteLength:Int=\"255\"\n";
                     }
               }
               {

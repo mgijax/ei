@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Thu Jun 10 16:51:03 1999";
+      lastWritten = "Fri Aug  6 09:12:09 1999";
         {
           Reference = Module : MGI;
           Group: Widget

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Mon Apr  5 09:32:55 1999";
+      lastWritten = "Fri Aug  6 08:10:11 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -1697,7 +1697,7 @@ Module: mgiOption
                     }
               }
               {
-                NotePush = NotePush : mgiDataTypes;
+                NotePush = NotePushShort : mgiDataTypes;
                 Group: User
                   targetWidget = Results;
                   targetColumn = 11;

@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Mar 23 10:21:02 1999";
+      lastWritten = "Fri Aug  6 08:04:45 1999";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -526,7 +526,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           DataSets = XmFrame;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1020;
               {
                 DataSetsForm = XmForm;
@@ -652,8 +652,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             orientation = horizontal;
           Group: Control
-            vip_x = 155;
-            vip_y = 1020;
+            vip_x = 50;
+            vip_y = 1075;
           Group: User
             verifyTable = 321;
             verifyDialog = RIDialog;
@@ -724,7 +724,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiCross = mgiVerify : mgiDataTypes;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1075;
           Group: User
             verifyDialog = CrossDialog;
@@ -808,8 +808,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiAllele = mgiObject;
           Group: Control
-            vip_x = 155;
-            vip_y = 1130;
+            vip_x = 50;
+            vip_y = 1185;
           Group: User
             tableID = 115;
               {
@@ -838,8 +838,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             userDefinedAttributes = "verifyDialog:String(String)\nverifyTable:Int(Int)\nverifyAdd:Boolean(Boolean)=\"True\"\nverifyChars:Int(Int)=\"-1\"\nverifyNotSpecified:Boolean(Boolean)=\"True\"\nverifyKey:Widget\n";
           Group: Control
-            vip_x = 155;
-            vip_y = 1075;
+            vip_x = 50;
+            vip_y = 1130;
               {
                 Verify = CharText : mgiDataTypes;
                     {
@@ -861,7 +861,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiDate = XmRowColumn;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1130;
               {
                 Date = Date : mgiDataTypes;
@@ -899,6 +899,17 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 50;
             vip_y = 85;
+        }
+        {
+          NotePushShort = XmPushButton;
+          Group: Widget
+            activateCallback = "D:NoteInit(shortNote = true)";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int\n";
+            labelString = Notes;
+            traversalOn = False;
+          Group: Control
+            vip_x = 50;
+            vip_y = 1020;
         }
 }
 
