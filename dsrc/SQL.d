@@ -14,9 +14,10 @@
 --
 -- History
 --
--- lec 03/08/2001-3/15/2001
+-- lec 03/08/2001-3/19/2001
 --	- TR 2217/1939; ModifyNotes
---	- moved ModifyNotes to Note.d
+--	- moved ModifyNotes to NoteLib.d
+--	- moved QueryDate to DateLib.d
 --
 -- lec 08/11/99
 --	- TR 812; added printSelect to Query event
