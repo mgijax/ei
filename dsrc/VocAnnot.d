@@ -11,6 +11,12 @@
 --
 -- History
 --
+-- 02/25/2003 lec
+--      - TR 4553; added created by/date to table
+--
+-- 02/04/2003 lec
+--      - TR 3853; annotation for OMIM/Genotype
+--
 -- 01/02/2003 lec
 --	- TR 4272; annotation for Mammalian Phenotype
 --
@@ -490,6 +496,12 @@ rules:
 	    from_evidence := true;
 	  end if;
 
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.createdBy);
+	  if (value.length > 0) then
+	    where := where + "\nand e.createdBy like " + mgi_DBprstr(value);
+	    from_evidence := true;
+	  end if;
+
 	  -- Modification date
 
 	  top->Annotation->Table.sqlCmd := "";
@@ -497,6 +509,20 @@ rules:
 	  QueryDate.row := 0;
 	  QueryDate.column := annotTable.modifiedDate;
 	  QueryDate.fieldName := "modification_date";
+	  QueryDate.tag := "e";
+          send(QueryDate, 0);
+	  if (annotTable.sqlCmd.length > 0) then
+	    where := where + annotTable.sqlCmd;
+	    from_evidence := true;
+	  end if;
+
+	  -- Creation date
+
+	  top->Annotation->Table.sqlCmd := "";
+          QueryDate.source_widget := top->Annotation->Table;
+	  QueryDate.row := 0;
+	  QueryDate.column := annotTable.createdDate;
+	  QueryDate.fieldName := "creation_date";
 	  QueryDate.tag := "e";
           send(QueryDate, 0);
 	  if (annotTable.sqlCmd.length > 0) then
@@ -664,6 +690,8 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 12));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
