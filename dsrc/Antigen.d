@@ -10,11 +10,11 @@
 --
 -- History
 --
--- lec 08/15/2002
---	- TR 1463/SAO; Species replaced with Organism
+-- lec 02/18/2003
+--	- TR 4489; display Antibodies for selected Antigen
 --
 -- lec 09/26/2001
---	- TR 2714/Probe Species Menu
+--	- TR 2714/Probe Organism Menu
 --
 -- lec 07/12/2001
 --	- TR 2715; Notes required when Other species selected
@@ -37,6 +37,7 @@ dmodule Antigen is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <tables.h>
 
 devents:
 
@@ -290,6 +291,9 @@ rules:
 --
 
 	PrepareSearch does
+	  from_antibody : boolean := false;
+	  value : string;
+	  table : widget;
 
 	  from := "from " + mgi_DBtable(GXD_ANTIGEN) + " g";
 	  where := "";
@@ -334,6 +338,19 @@ rules:
           from := from + top->SourceForm.sqlFrom;
           where := where + top->SourceForm.sqlWhere;
  
+	  table := top->Antibody->Table;
+
+          value := mgi_tblGetCell(table, 0, table.antibody);
+          if (value.length > 0) then
+            where := where + " and a.antibodyName like " + mgi_DBprstr(value);
+            from_antibody := true;
+	  end if;
+
+	  if (from_antibody) then
+	    from := from + ", " + mgi_DBtable(GXD_ANTIBODY) + " a";
+	    where := where + " and g._Antigen_key = a._Antigen_key";
+	  end if;
+
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
           end if;
@@ -369,6 +386,9 @@ rules:
           InitAcc.table := accTable;
           send(InitAcc, 0);
 
+          ClearTable.table := top->Antibody->Table;
+          send(ClearTable, 0);
+
           if (top->QueryList->List.selectedItemCount = 0) then
             top->QueryList->List.row := 0;
             top->ID->text.value := "";
@@ -380,7 +400,12 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Antigen_View where _Antigen_key = " + currentRecordKey + "\n";
+	  cmd := "select * from GXD_Antigen_View where _Antigen_key = " + currentRecordKey + "\n" +
+		"select antibodyName from GXD_Antibody where _Antigen_key = " + currentRecordKey + " order by antibodyName\n";
+
+	  results : integer := 1;
+	  row : integer := 0;
+	  table : widget := top->Antibody->Table;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -388,16 +413,23 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->ID->text.value             := mgi_getstr(dbproc, 1);
-	      top->Name->text.value           := mgi_getstr(dbproc, 3);
-	      top->Region->text.value         := mgi_getstr(dbproc, 4);
-	      top->Note->text.value           := mgi_getstr(dbproc, 5);
-	      top->CreationDate->text.value   := mgi_getstr(dbproc, 6);
-	      top->ModifiedDate->text.value   := mgi_getstr(dbproc, 7);
-	      top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
-	      DisplayMolecularSource.source_widget := top;
-	      send(DisplayMolecularSource, 0);
+	      if (results = 1) then
+	        top->ID->text.value             := mgi_getstr(dbproc, 1);
+	        top->Name->text.value           := mgi_getstr(dbproc, 3);
+	        top->Region->text.value         := mgi_getstr(dbproc, 4);
+	        top->Note->text.value           := mgi_getstr(dbproc, 5);
+	        top->CreationDate->text.value   := mgi_getstr(dbproc, 6);
+	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 7);
+	        top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
+	        DisplayMolecularSource.source_widget := top;
+	        send(DisplayMolecularSource, 0);
+	      elsif (results = 2) then
+		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		row := row + 1;
+	      end if;
 	    end while;
+	    results := results + 1;
           end while;
 
 	  (void) dbclose(dbproc);
