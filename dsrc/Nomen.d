@@ -1021,7 +1021,7 @@ rules:
 	    return;
 	  end if;
 
-          SetOption.source_widget := top->CVNomen->ReviewMenu;
+          SetOption.source_widget := top->ReviewMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.reviewKey);
           send(SetOption, 0);
         end does;

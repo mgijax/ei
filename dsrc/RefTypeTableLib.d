@@ -298,8 +298,6 @@ rules:
               refsKey := mgi_tblGetCell(table, r, table.refsKey);
               citation := mgi_tblGetCell(table, r, table.citation);
  
-	      table.sqlFrom := "," + mgi_DBtable(tableID) + " " + tableTag;
-
 	      if (refsKey.length > 0) then
 	        table.sqlWhere := table.sqlWhere + "\nand " + 
 			tableTag + "._Refs_key = " + refsKey;
@@ -314,6 +312,7 @@ rules:
 	  end while;
 
 	  if (table.sqlWhere.length > 0) then
+	    table.sqlFrom := "," + mgi_DBtable(tableID) + " " + tableTag;
 	    table.sqlWhere := table.sqlWhere + "\nand " + tableTag + "." + 
 		mgi_DBkey(tableID) + " = " + join;
 	  end if;
