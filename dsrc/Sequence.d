@@ -359,7 +359,10 @@ rules:
 	  fromProbe : string := "";
 
 	  from := "from SEQ_Sequence s, VOC_Term v1, VOC_Term v2";
-	  where := "ac.preferred = 1 and s._SequenceType_key = v1._Term_key and s._SequenceProvider_key = v2._Term_key";
+	  where := "ac._MGIType_key = 19 " +
+		   "and ac.preferred = 1 " +
+		   "and s._SequenceType_key = v1._Term_key " +
+		   "and s._SequenceProvider_key = v2._Term_key";
 	  union := "";
 
 	  -- Common Stuff
@@ -375,7 +378,7 @@ rules:
 	    from_acc := true;
 	  else
 	    where := where + "\nand ac._Object_key = s._Sequence_key";
-	    from := from + ", Seq_Sequence_Acc_View ac";
+	    from := from + ", ACC_Accession ac";
           end if;
  
 	  QueryModificationHistory.table := modTable;
@@ -624,10 +627,35 @@ rules:
 	  currentKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from SEQ_Sequence_View where _Sequence_key = " + currentKey + "\n" +
-		"select s._Assoc_key, v.* from SEQ_Source_Assoc s, PRB_Source_View v\n" +
+		"select s._Assoc_key, p._Source_key, p.name, p.age from SEQ_Source_Assoc s, PRB_Source p\n" +
 		"where s._Sequence_key = " + currentKey + "\n" +
-		"and s._Source_key = v._Source_key\n" +
-		"order by v._Organism_key\n" +
+		"and s._Source_key = p._Source_key\n" +
+		"order by p._Organism_key\n" +
+		"select s._Assoc_key, p._Organism_key, t.commonName from SEQ_Source_Assoc s, PRB_Source p, MGI_Organism t " +
+		"where s._Sequence_key = " + currentKey + "\n" +
+		"and s._Source_key = p._Source_key\n" +
+		"and p._Organism_key = t._Organism_key " +
+		"order by p._Organism_key\n" +
+		"select s._Assoc_key, p._Strain_key, t.strain from SEQ_Source_Assoc s, PRB_Source p, PRB_Strain t " +
+		"where s._Sequence_key = " + currentKey + "\n" +
+		"and s._Source_key = p._Source_key\n" +
+		"and p._Strain_key = t._Strain_key " +
+		"order by p._Organism_key\n" +
+		"select s._Assoc_key, p._Tissue_key, t.tissue from SEQ_Source_Assoc s, PRB_Source p, PRB_Tissue t " +
+		"where s._Sequence_key = " + currentKey + "\n" +
+		"and s._Source_key = p._Source_key\n" +
+		"and p._Tissue_key = t._Tissue_key " +
+		"order by p._Organism_key\n" +
+		"select s._Assoc_key, p._Gender_key, t.term from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t " +
+		"where s._Sequence_key = " + currentKey + "\n" +
+		"and s._Source_key = p._Source_key\n" +
+		"and p._Gender_key = t._Term_key " +
+		"order by p._Organism_key\n" +
+		"select s._Assoc_key, p._CellLine_key, t.term from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t " +
+		"where s._Sequence_key = " + currentKey + "\n" +
+		"and s._Source_key = p._Source_key\n" +
+		"and p._CellLine_key = t._Term_key " +
+		"order by p._Organism_key\n" +
 		"select distinct mgiType, jnum, markerID, symbol from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
 		"select distinct mgiType, jnum, probeID, name from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n";
 
@@ -692,31 +720,51 @@ rules:
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.assocKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.sourceKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.library, mgi_getstr(dbproc, 11));
-
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organismKey, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organism, mgi_getstr(dbproc, 21));
-
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strainKeys, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strains, mgi_getstr(dbproc, 22));
-
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissueKey, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissue, mgi_getstr(dbproc, 24));
-
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLineKey, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLine, mgi_getstr(dbproc, 27));
-
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.genderKey, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.gender, mgi_getstr(dbproc, 26));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.library, mgi_getstr(dbproc, 3));
 
 	        DisplayMolecularAge.source_widget := sourceTable;
 	        DisplayMolecularAge.row := nonRawRow;
-	        DisplayMolecularAge.age := mgi_getstr(dbproc, 13);
+	        DisplayMolecularAge.age := mgi_getstr(dbproc, 4);
 	        send(DisplayMolecularAge, 0);
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 3 or results = 4) then
+	      elsif (results = 3) then
+
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organismKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organism, mgi_getstr(dbproc, 3));
+
+		nonRawRow := nonRawRow + 1;
+
+	      elsif (results = 4) then
+
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strainKeys, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strains, mgi_getstr(dbproc, 3));
+
+		nonRawRow := nonRawRow + 1;
+
+	      elsif (results = 5) then
+
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissueKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissue, mgi_getstr(dbproc, 3));
+
+		nonRawRow := nonRawRow + 1;
+
+	      elsif (results = 6) then
+
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLineKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLine, mgi_getstr(dbproc, 3));
+
+		nonRawRow := nonRawRow + 1;
+
+	      elsif (results = 7) then
+
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.genderKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.gender, mgi_getstr(dbproc, 3));
+
+		nonRawRow := nonRawRow + 1;
+
+	      elsif (results = 8 or results = 9) then
 		table := top->ObjectAssociation->Table;
 		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));
@@ -726,6 +774,7 @@ rules:
 	      end if;
             end while;
 	    results := results + 1;
+	    nonRawRow := 1;
           end while;
 
 	  (void) dbclose(dbproc);
