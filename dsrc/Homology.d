@@ -344,6 +344,64 @@ rules:
 	  editMode : string;
 	  table : widget;
 	  homologyModified : boolean := false;
+	  numSpecies : integer;
+	  numAssays : integer;
+	  invalidAssay : boolean := false;
+	  invalidSpecies : boolean := false;
+
+	  -- Determine if any Assay row contains less than 2 Species selected
+
+	  numSpecies := 0;
+	  i := 0;
+	  while (i < mgi_tblNumRows(markerTable)) do
+	    editMode := mgi_tblGetCell(markerTable, i, markerTable.editMode);
+	    if (editMode != TBL_ROW_EMPTY and 
+		editMode != TBL_ROW_DELETE) then
+	      if (mgi_tblGetCell(markerTable, i, markerTable.markerKey) != "") then
+		numSpecies := numSpecies + 1;
+	      end if;
+	    end if;
+	    i := i + 1;
+	  end while;
+
+	  i := 0;
+	  while (i < mgi_tblNumRows(assayTable)) do
+	    editMode := mgi_tblGetCell(assayTable, i, assayTable.editMode);
+	    if (editMode != TBL_ROW_EMPTY and 
+		editMode != TBL_ROW_DELETE) then
+	      numAssays := 0;
+	      j := assayTable.beginX;
+	      while (j <= assayTable.endX) do
+	        if (mgi_tblGetCell(assayTable, i, j) = "X") then
+		  numAssays := numAssays + 1;
+		end if;
+		j := j + 1;
+	      end while;
+	    end if;
+	    if (numAssays < 2) then
+	      invalidAssay := true;
+	    end if;
+	    if (numAssays > numSpecies) then
+	      invalidSpecies := true;
+	    end if;
+	    i := i + 1;
+	  end while;
+
+	  if (invalidAssay) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "\nAn Assay has been detected which contains only one Species.\n" + 
+			"\nCorrect the data and try again.\n\n";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
+
+	  if (invalidSpecies) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "\nA Species has been detected for which there is no Symbol.\n" +
+			"\nCorrect the data and try again.\n\n";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
 
 	  if (not ModifyHomology.add) then
 
@@ -460,7 +518,9 @@ rules:
 		          end if;
 		        end if;
 
-	                cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_MARKER, homologyKeyName) + markerKey + ")\n";
+			if (markerKey != "") then
+	                  cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_MARKER, homologyKeyName) + markerKey + ")\n";
+			end if;
 		      end if;
 		    end if;
 		    i := i + 1;
