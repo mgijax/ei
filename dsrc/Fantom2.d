@@ -1118,8 +1118,8 @@ rules:
 	        (void) mgi_tblSetCell(fantom, i, column, value);
 
 	        if (column = fantom.finalMGIID) then
-	          (void) mgi_tblSetCell(fantom, i, fantom.finalSymbol1, mgi_tblGetCell(fantom, row, fantom.gbaSymbol));
-	          (void) mgi_tblSetCell(fantom, i, fantom.finalName1, mgi_tblGetCell(fantom, row, fantom.gbaName));
+	          (void) mgi_tblSetCell(fantom, i, fantom.finalSymbol1, mgi_tblGetCell(fantom, row, fantom.finalSymbol1));
+	          (void) mgi_tblSetCell(fantom, i, fantom.finalName1, mgi_tblGetCell(fantom, row, fantom.finalName1));
 	        end if;
 
 	        CommitTableCellEdit.source_widget := fantom;
