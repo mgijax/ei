@@ -13,7 +13,11 @@
 -- History
 --
 -- lec 08/13/2002
---	- TR 3988; renamed "dialogName" to "mgiDialogName" per TeleUSE 3.2.3 bug
+--	- TR 3988; changed "dialogName" to "mgiDialogName"
+--
+-- lec 05/24/2002
+--	- TR 1463; added processing for MGI_NOTE/MGI_NOTECHUNK
+--	  in InitNoteForm and ModifyNotes
 --
 -- lec 09/11/2001
 --	- TR 2860; moved AppendNote buttons to Age Notes
@@ -100,9 +104,14 @@ rules:
 	  label : string;
 	  k : integer;
 
-	  cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
-		"\nwhere _NoteType_key > 0 " +
-		"\norder by _NoteType_key";
+	  if (tableID = MGI_NOTETYPE_NOMEN_VIEW or tableID = MGI_NOTETYPE_SOURCE_VIEW) then
+	    cmd := "select _NoteType_key, noteType, private, _MGIType_key from " + mgi_DBtable(tableID) +
+		  "\norder by _NoteType_key";
+	  else
+	    cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
+		  "\nwhere _NoteType_key > 0 " +
+		  "\norder by _NoteType_key";
+	  end if;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -127,6 +136,9 @@ rules:
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
+	        if (tableID = MGI_NOTETYPE_NOMEN_VIEW or tableID = MGI_NOTETYPE_SOURCE_VIEW) then
+		  x->Note.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
+		end if;
 		x.unbatch;
 		x->NotePush.labelString := label + " Notes";
 	    end while;
@@ -151,15 +163,24 @@ rules:
 	  childnote : widget := nil;
 	  notecontinuation : boolean := false;
 	  note : string;
+	  noteKey : string := "";
 	  i : integer;
+	  cmd : string;
 
 	  ClearSetNoteForm.notew := notew;
 	  send(ClearSetNoteForm, 0);
 
-          cmd : string := "select _NoteType_key, note, sequenceNum" +
-	  	" from " + mgi_DBtable(tableID) +
-		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by _NoteType_key, sequenceNum";
+	  if (tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW) then
+            cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
+	  	  " from " + mgi_DBtable(tableID) +
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		   " order by _NoteType_key, sequenceNum";
+	  else
+            cmd := "select _NoteType_key, note, sequenceNum" +
+	  	  " from " + mgi_DBtable(tableID) +
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		   " order by _NoteType_key, sequenceNum";
+	  end if;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -169,6 +190,10 @@ rules:
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
+
+	      if (tableID = MGI_NOTE_NOMEN_VIEW or tableID = MGI_NOTE_SOURCE_VIEW) then
+	        noteKey := mgi_getstr(dbproc, 4);
+	      end if;
 
 	      -- check if this a continuation of the same note type
 
@@ -202,6 +227,11 @@ rules:
 		  childnote->Note->text.value := childnote->Note->text.value + note;
 		end if;
 	        childnote->Note->text.modified := false;
+		if (noteKey.length > 0) then
+	          childnote->Note.noteKey := (integer) noteKey;
+		else
+	          childnote->Note.noteKey := -1;
+		end if;
 	      else
                 StatusReport.source_widget := notew.top;
                 StatusReport.message := "Cannot determine Note Type\n";
@@ -235,6 +265,7 @@ rules:
 	  tableID : integer := ProcessNoteForm.tableID;
 	  objectKey : string := ProcessNoteForm.objectKey;
 	  textw : widget;
+	  keyDeclared : boolean := false;
 
 	  notew.sql := "";
 
@@ -253,8 +284,14 @@ rules:
 	    ModifyNotes.source_widget := textw->Note;
 	    ModifyNotes.tableID := tableID;
 	    ModifyNotes.key := objectKey;
+	    ModifyNotes.keyDeclared := keyDeclared;
 	    send(ModifyNotes, 0);
-	    notew.sql := notew.sql + textw->Note.sql;
+
+	    if (textw->Note.sql.length > 0) then
+	      notew.sql := notew.sql + textw->Note.sql;
+	      keyDeclared := true;
+	    end if;
+
 	    i := i + 1;
 	  end while;
 	end does;
@@ -505,12 +542,17 @@ rules:
 	  key : string := ModifyNotes.key;
 	  row : integer := ModifyNotes.row;
 	  column : integer := ModifyNotes.column;
+	  keyDeclared : boolean := ModifyNotes.keyDeclared;
           note : string;
 	  noteType : string;
+	  mgiType : string;
+	  noteKey : string;
 	  isTable : boolean;
 	  isModified : boolean;
           i : integer := 1;
 	  cmd : string := "";
+	  deleteCmd : string := "";
+	  masterCmd : string := "";
  
 	  isTable := mgi_tblIsTable(noteWidget);
 
@@ -539,22 +581,58 @@ rules:
 	    noteType := mgi_DBprstr(noteWidget.noteType);
 	  end if;
 
-          cmd := mgi_DBdelete(tableID, key);
-
-	  if (isTable and noteType.length > 0) then
-	    cmd := cmd + " and noteType = " + mgi_DBprstr(noteType) + "\n";
-	  elsif (noteWidget.is_defined("noteTypeKey") != nil) then
-	    if (noteWidget.noteTypeKey > 0) then
-	        cmd := cmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
-	    elsif (noteWidget.noteType.length > 0) then
-	      cmd := cmd + " and noteType = " + noteType + "\n";
+	  if (noteWidget.is_defined("mgiTypeKey") != nil) then
+	    if (noteWidget.mgiTypeKey > 0) then
+	      mgiType := (string) noteWidget.mgiTypeKey;
 	    end if;
+	  end if;
+
+	  if (noteWidget.is_defined("noteKey") != nil) then
+	    if (noteWidget.noteKey > 0) then
+	      noteKey := (string) noteWidget.noteKey;
+              deleteCmd := mgi_DBdelete(tableID, noteKey);
+	    end if;
+	  end if;
+
+	  if (tableID != MGI_NOTE) then
+            deleteCmd := mgi_DBdelete(tableID, key);
+
+	    if (isTable and noteType.length > 0) then
+	      deleteCmd := deleteCmd + " and noteType = " + mgi_DBprstr(noteType) + "\n";
+	    elsif (noteWidget.is_defined("noteTypeKey") != nil) then
+	      if (noteWidget.noteTypeKey > 0) then
+	          deleteCmd := deleteCmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
+	      elsif (noteWidget.noteType.length > 0) then
+	        deleteCmd := deleteCmd + " and noteType = " + noteType + "\n";
+	      end if;
+	    end if;
+	  end if;
+
+	  -- for MGI_Note, first add a record for the MGI_Note object
+
+	  if (tableID = MGI_NOTE) then
+	    if (not keyDeclared) then
+	      masterCmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME);
+	    else
+	      masterCmd := mgi_DBincKey(KEYNAME);
+	    end if;
+
+	    masterCmd := masterCmd +
+	           mgi_DBinsert(tableID, KEYNAME) +
+		   key + "," +
+		   mgiType + "," +
+		   noteType + ")\n";
 	  end if;
 
           -- Break notes up into segments of 255
  
           while (note.length > 255) do
-	    if (isTable and noteType.length > 0) then
+	    if (tableID = MGI_NOTE) then
+	      cmd := cmd +
+		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + KEYNAME + "," +
+		     (string) i + "," + 
+                     mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
+	    elsif (isTable and noteType.length > 0) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
@@ -576,8 +654,15 @@ rules:
             i := i + 1;
           end while;
  
+	  -- Process the last remaining chunk of note
+
 	  if (mgi_DBprnotestr(note) != "NULL" or ModifyNotes.allowBlank) then
-	    if (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
+	    if (tableID = MGI_NOTE) then
+	      cmd := cmd +
+		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + KEYNAME + "," +
+		     (string) i + "," + 
+                     mgi_DBprnotestr(note) + ")\n";
+	    elsif (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
@@ -604,9 +689,19 @@ rules:
                    mgi_DBprnotestr(note) + ")\n";
             else
               cmd := cmd + 
-		   mgi_DBinsert(tableID, NOKEY) + key + "," + (string) i + "," + 
+		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		   (string) i + "," + 
                    mgi_DBprnotestr(note) + ")\n";
 	    end if;
+	  end if;
+
+	  -- if notes are being added, then include 'masterCmd'
+	  -- else just include the 'deleteCmd'
+
+	  if (cmd.length > 0) then
+	    cmd := deleteCmd + masterCmd + cmd;
+	  else
+	    cmd := deleteCmd + cmd;
 	  end if;
 
 	  if (isTable) then

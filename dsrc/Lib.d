@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- lec 04/03/2003
+--	- TR 3608/mgiNoteForm
+--
 -- lec 10/24/2002
 --      - TR 4184; ExitWindow; check if top is realized (not managed).
 --        if window is iconified, then it is not currently managed
@@ -149,7 +152,7 @@ rules:
 
 		-- For XmOption menus (except the ControlForm and Lookups)...
 
-		elsif (clearForm.name != "ControlForm" and class = "XmRowColumn") then
+		elsif (clearForm.name != "ControlForm" and clearForm.child(i).name != "mgiNoteForm" and class = "XmRowColumn") then
 
 		  -- Not an XmOptionMenu
 
