@@ -128,6 +128,13 @@ rules:
 	  (void) mgi_tblSetCell(table, row, table.logicalKey, source.defaultValue);
 	  (void) mgi_tblSetCell(table, row, table.accName, source.labelString);
 	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+          -- Traverse to new table row
+
+          TraverseToTableCell.table := table;
+          TraverseToTableCell.row := row;
+          TraverseToTableCell.column := 0;
+          send(TraverseToTableCell, 0);
 	end does;
 
 --
