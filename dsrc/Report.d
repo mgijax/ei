@@ -59,18 +59,20 @@ rules:
      -- If program is the Broadcast, then send User login and Password file
 
      if (program = "broadcast.py") then      -- Broadcast (user dependent)
-        commands.insert("-U" + global_login, commands.count + 1);
-        commands.insert("-P" + global_passwd_file, commands.count + 1);
-        commands.insert(dialog->FileSelection.textString, commands.count + 1);
-        bfilename := dialog->FileSelection.textString;
-        basename := tu_base_name(bfilename);
-        if (bfilename.length = 0 or basename.length = 0) then
-          (void) reset_cursor(dialog.top);
-           StatusReport.source_widget := top;
-           StatusReport.message := "Invalid broadcast file";
-           send(StatusReport);
-           return;
-         end if;
+       commands.insert("-U" + global_login, commands.count + 1);
+       commands.insert("-P" + global_passwd_file, commands.count + 1);
+       commands.insert(dialog->FileSelection.textString, commands.count + 1);
+
+       bfilename := dialog->FileSelection.textString;
+       basename := tu_base_name(bfilename);
+
+       if (bfilename.length = 0 or basename.length = 0) then
+         StatusReport.source_widget := top;
+         StatusReport.message := "Invalid Broadcast File";
+         send(StatusReport);
+         (void) reset_cursor(dialog.top);
+         return;
+        end if;
 
      elsif (program = "nlm.py") then      -- NLM program
 
@@ -79,11 +81,12 @@ rules:
        -- NLM Mode = 3 is an NLM or CC Add and requires a starting J#
 
        if (ReportGenerate.nlmMode = 3 and
-         (dialog->Jnum->text.value.length = 0 or
-         (integer) dialog->Jnum->text.value <= (integer) top->NextJnum->text.value)) then
+           (dialog->Jnum->text.value.length = 0 or
+           (integer) dialog->Jnum->text.value <= (integer) top->NextJnum->text.value)) then
          StatusReport.source_widget := top;
          StatusReport.message := "Invalid J#";
          send(StatusReport);
+         (void) reset_cursor(dialog.top);
          return;
        end if;
  
@@ -156,7 +159,8 @@ rules:
 
      ReportEnd.dialog := dialog;
 
-     proc_p : opaque := tu_fork_process2(program, commands, dialog->Output, dialog->Output, ReportEnd);
+     proc_p : opaque 
+	:= tu_fork_process2(program, commands, dialog->Output, dialog->Output, ReportEnd);
 
      -- check to see if we could exec the script 
      if (tu_fork_status(proc_p) = 2) then 
