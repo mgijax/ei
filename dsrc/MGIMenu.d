@@ -8,6 +8,8 @@
 
 dmodule MGIMenu is
 
+#include <utilities.h>
+
 devents:
 
 	ForkIt :local [app : string;];
@@ -36,9 +38,9 @@ rules:
 	end does;
 
 	ForkIt does
-	  cmd_str : string_list := create string_list();
+	  cmd_str : string_list;
 
-	  cmd_str.insert(ForkIt.app, cmd_str.count + 1);
+	  cmd_str := mgi_splitfields(ForkIt.app, " ");
 	  proc_id : opaque := tu_fork_process(cmd_str[1], cmd_str, nil, ForkEnd);
 	  subprocs.append(proc_id);
 	  tu_fork_close_io(proc_id);
