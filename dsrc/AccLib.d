@@ -222,6 +222,10 @@ rules:
                 i := i + 1;
               end while;
 
+	      if ((integer) logicalDBkey > 1 and row = 0) then 	-- Not MGI
+		row := 1;
+	      end if;
+
 	      -- Set the _LogicalDB_key, _Accession_key and Logical DB Name
 
 	      (void) mgi_tblSetCell(table, row, table.logicalKey, logicalDBkey);
@@ -289,6 +293,7 @@ rules:
 	  objectKey : string := ProcessAcc.objectKey;
 	  refsKey : string := ProcessAcc.refsKey;
 	  tableID : integer := ProcessAcc.tableID;
+	  db : string := ProcessAcc.db;
 
           r : integer := 0;
 	  i : integer := 0;
@@ -301,6 +306,13 @@ rules:
 	  origRefsKey : string;
 	  cmd : string := "";
 	  preferred : string := "";
+	  exec : string := "exec ";
+
+	  if (db.length = 0) then
+	    exec := "exec " + getenv("MGD") + "..";
+	  else
+	    exec := "exec " + db + "..";
+	  end if;
  
 	  -- For each modified row in the Accession Table...
 
@@ -393,23 +405,23 @@ rules:
 	        -- If refsKey is given, then use a different process
 
                 if (accName != "J:" and refsKey = "-1") then
-                  cmd := cmd + "exec ACC_insert " + objectKey + "," + 
+                  cmd := cmd + exec + " ACC_insert " + objectKey + "," + 
 		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"," +
 			 refsKey + "," + preferred + "\n";
 	        elsif (accName != "J:") then
-                  cmd := cmd + "exec ACCRef_process " + objectKey + "," + refsKey + "," +
+                  cmd := cmd + exec + " ACCRef_process " + objectKey + "," + refsKey + "," +
 		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"\n";
 		end if;
 
 	      elsif (source.menuHistory.allowModify and 
 		     editMode = TBL_ROW_MODIFY) then
-                cmd := cmd + "exec ACC_update " + accKey + "," + accID + "," + 
+                cmd := cmd + exec + " ACC_update " + accKey + "," + accID + "," + 
 				origRefsKey + "," + refsKey + "\n";
 
 	      elsif (source.menuHistory.allowDelete and 
 		     editMode = TBL_ROW_DELETE and
 		     accKey.length > 0) then
-                cmd := cmd + "exec ACC_delete_byAccKey " + accKey + "," + refsKey + "\n";
+                cmd := cmd + exec + " ACC_delete_byAccKey " + accKey + "," + refsKey + "\n";
 
 	      elsif (not source.menuHistory.allowAdd and 
 		     editMode = TBL_ROW_ADD) then
