@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  12/31/2002
+--	- TR 4187; CreateGelBandColumns; default Strength = Not Applicable for Lane Control != No
+--
 -- lec  12/30/2002
 --	- TR 4339; AppendToAgeNote should append
 --
@@ -2621,7 +2624,8 @@ rules:
 
 	  row : integer := 0;
 	  i : integer := 0;
-	  x : integer;
+	  x : integer := 0;
+	  controlKey : string;
 
 	  while (row < mgi_tblNumRows(table)) do
 	    i := 0;
@@ -2630,6 +2634,16 @@ rules:
                x := i * table.bandIncrement;
               (void) mgi_tblSetCell(table, row, table.laneKey + x, lanes.next);
 	      (void) mgi_tblSetCell(table, row, table.bandMode + x, TBL_ROW_NOCHG);
+
+	      -- For first row, if Lane Control != No then Strength = Not Applicable
+	      if (row = 0) then
+	        controlKey := mgi_tblGetCell(laneTable, i, laneTable.controlKey);
+		if (controlKey != "1") then
+                  (void) mgi_tblSetCell(table, row, table.strengthKey + x, NOTAPPLICABLE);
+	          (void) mgi_tblSetCell(table, row, table.strength + x, "Not Applicable");
+		end if;
+	      end if;
+
 	      i := i + 1;
 	    end while;
 	    row := row + 1;
