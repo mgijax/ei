@@ -803,10 +803,15 @@ rules:
 
 		  if (root.parent->mgiModules->Allele.sensitive = true) then
 		    (void) create dmodule("Allele", root.parent, top);
+		    alleletop := root.parent->AlleleModule;
+		  else
+		    alleletop := root.parent->AlleleModule;
+		    -- for some reason, this does not work properly on the Mac....
+		    -- alleletop.front := true;
+		    -- so we unmanage, then manage...
+		    alleletop.managed := false;
+		    alleletop.managed := true;
 		  end if;
-
-		  alleletop := root.parent->AlleleModule;
-		  alleletop.front;
 
 		  -- If no item is selected, then default the fields
 		  if (alleletop->QueryList->List.selectedItemCount = 0 and

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 19 08:55:05 2000";
+      lastWritten = "Tue Apr 25 14:29:11 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget

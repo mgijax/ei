@@ -33,7 +33,7 @@ devents:
 
 	GenotypeCancel [source_widget : widget;];
 	GenotypeCommit [];
-	GenotypeInit [manage : boolean := true;];
+	GenotypeInit [];
 	Add :local [];
 	Modify :local [];
 	ModifyAllelePair :local [];
@@ -50,7 +50,7 @@ rules:
 --
 -- GenotypeInit
 --
--- When Genotype is activated by push button:
+-- When Genotype is acitivated by push button:
 --	Initialize Genotype Dialog targetWidget, targetColumn, targetKeyColumn
 --		attributes from push button
 --	Clear the form
@@ -60,30 +60,23 @@ rules:
 --
 
         GenotypeInit does
-	  root : widget := GenotypeInit.source_widget.root;
-	  isTable : boolean;
-	  manage : boolean := GenotypeInit.manage;
+	  push : widget := GenotypeInit.source_widget;
+	  root : widget := push.root;
 
 	  top := root->GenotypeDialog;
 
+	  -- unmanage (if already managed) so that it will "float" to the top
+	  -- top.front does not work on the Mac
+	  top.managed := false;
+
 	  -- Set the target widget, column, key column values
 
-	  isTable := mgi_tblIsTable(GenotypeInit.source_widget);
-
-	  if (isTable) then
-	    if (GenotypeInit.reason != TBL_REASON_ENTER_CELL_END) then
-	      return;
-	    end if;
-	    top.targetWidget := GenotypeInit.source_widget;
-	    top.targetColumn := top.targetWidget->Table.genotype;
-	    top.targetKeyColumn := top.targetWidget->Table.genotypeKey;
-	  else
-	    top.targetWidget := GenotypeInit.source_widget.targetWidget;
-	    top.targetColumn := GenotypeInit.source_widget.tableColumn;
-	    top.targetKeyColumn := GenotypeInit.source_widget.tableKeyColumn;
-	  end if;
+	  top.targetWidget := push.targetWidget;
+	  top.targetColumn := push.tableColumn;
+	  top.targetKeyColumn := push.tableKeyColumn;
 
 	  -- Clear the dialog form
+
           Clear.source_widget := top;
           Clear.clearLists := 0;
           send(Clear, 0);
@@ -135,15 +128,7 @@ rules:
           Clear.reset := true;
           send(Clear, 0);
 
-	  top.batch;
-	  -- If already managed, unmanage, so that dialog will be moved to the front
-	  if (top.managed) then
-	    top.managed := false;
-	    manage := true;	-- continue to manage...
-	  end if;
-
-	  top.managed := manage;
-	  top.unbatch;
+	  top.managed := true;
         end does;
 
 --
