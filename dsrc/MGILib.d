@@ -269,7 +269,8 @@ rules:
 --
 
         StatusReportOK does
-	  if (StatusReportOK.source_widget = top->StatusDialog) then
+	  if (StatusReportOK.source_widget = top->StatusDialog and
+	      top.name != "Login") then
 	    top.back;
 	  end if;
 
