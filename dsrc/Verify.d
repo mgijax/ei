@@ -1395,9 +1395,6 @@ rules:
 	    select := "select _Cross_key, display, standard = 1 from " + table + " where ";
 	  elsif (tableID = RISET) then
 	    select := "select _RISet_key, designation, standard = 1 from " + table + " where ";
-	  elsif (tableID = ALL_CELLLINE) then
-	    select := "select _CellLine_key, cellLine, standard = 1 from " + table + " where ";
-	    where := where + " and isMutant = " + verify.isMutantESCellLine;
 	  else
 	    select := "select _Term_key, term, standard = 1 from " + table + " where ";
 	  end if;
