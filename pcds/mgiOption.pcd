@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 29 15:28:35 2004";
+      lastWritten = "Thu Oct  7 13:35:48 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2643,7 +2643,7 @@ Module: mgiOption
               {
                 SequenceProviderPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_SequenceProvider_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term_SequenceProvider_View order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

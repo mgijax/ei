@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 30 15:33:09 2004";
+      lastWritten = "Fri Oct  8 08:51:40 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -10191,7 +10191,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
                                           xrtTblNumColumns = 9;
                                           xrtTblColumnLabels = "Mode,Key,Key,Key,Key,Type,Chr,Marker,Allele";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 20)(all 6 3)(all 7 30)(all 8 30)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 25)(all 6 3)(all 7 30)(all 8 30)";
                                           xrtTblEditableSeries = "(all 0-4 False)";
                                           xrtTblTraversableSeries = "(all 0-4 False)";
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";

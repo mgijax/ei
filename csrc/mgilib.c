@@ -1700,6 +1700,9 @@ char *mgi_DBtable(int table)
     case PRB_STRAIN_TYPE_VIEW:
 	    strcpy(buf, "PRB_Strain_Type_View");
 	    break;
+    case VOC_TERM_STRAINALLELE_VIEW:
+            strcpy(buf, "VOC_Term_StrainAllele_View");
+	    break;
     case RISET:
             strcpy(buf, "RI_RISet");
 	    break;
