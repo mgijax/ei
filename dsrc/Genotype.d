@@ -201,7 +201,6 @@ rules:
 	  end if;
  
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + ")\n";
---		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ")\n";
 
 	  send(ModifyAllelePair, 0);
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +

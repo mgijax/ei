@@ -34,6 +34,7 @@
 dmodule MGILib is
 
 #include <mgilib.h>
+#include <syblib.h>
 
 locals:
 	top : widget;
@@ -71,7 +72,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS 9-0-0";
+	  global_version := "CVS 10-0-0";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -159,6 +160,17 @@ rules:
 	  if (mgi_dbinit(global_login, global_passwd) = 1) then
 	    title := top->LoginServer.menuHistory.name;
 	    mgi := top;
+
+	    global_loginKey := 
+		mgi_sql1("select _User_key from MGI_User_Active_View where login = '" + global_login + "'");
+
+            if (global_loginKey.length = 0) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "\nERROR:  Login " + global_login + " is not defined in the MGI User Table.";
+	      send(StatusReport, 0);
+	      (void) reset_cursor(top);
+	      return;
+	    end if;
 
 	    -- Create top menu
 

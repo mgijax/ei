@@ -350,7 +350,8 @@ rules:
 			mgi_DBprstr(term) + "," +
 			mgi_DBprstr(abbrev) + "," +
 			newSeqNum + "," +
-			isObsolete + ")\n";
+			isObsolete + "," +
+			global_loginKey + "," + global_loginKey + ")\n";
 
 	      ModifyNotes.source_widget := termTable;
 	      ModifyNotes.tableID := VOC_TEXT;

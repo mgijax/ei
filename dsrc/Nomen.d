@@ -415,13 +415,13 @@ rules:
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
                  NOTSPECIFIED + "," +
-		 mgi_DBprstr(top->BroadcastBy->text.value) + "," +
+                 top->CurationStateMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
-	         mgi_DBprstr(top->StatusNotes->text.value) + ",NULL)\n";
-
+	         mgi_DBprstr(top->StatusNotes->text.value) + ",NULL,NULL," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyNomenNotes, 0);
 	  send(ModifyGeneFamily, 0);
@@ -529,7 +529,7 @@ rules:
 
 	  if (not (global_login = "ljm" or global_login = "lmm" or 
 		   global_login = "cml" or global_login = "rjc" or
-		   global_login = "tier4") and
+		   global_login = "bobs" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
@@ -682,7 +682,8 @@ rules:
             if (editMode = TBL_ROW_ADD and newKey.length > 0) then
               cmd := cmd + mgi_DBinsert(NOM_GENEFAMILY, NOKEY) + 
 		     currentNomenKey + "," + 
-		     newKey + ")\n";
+		     newKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
               set := "_GeneFamily_key = " + newKey;
               cmd := cmd + mgi_DBupdate(NOM_GENEFAMILY, currentNomenKey, set) + 
@@ -773,7 +774,8 @@ rules:
 		     currentNomenKey + "," +
 		     refsKey + "," +
 		     mgi_DBprstr(name) + "," +
-		     isAuthor + ")\n";
+		     isAuthor + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               set := "name = " + mgi_DBprstr(name) +

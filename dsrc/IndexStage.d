@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec	05/05/2003
+--	- TR 2459, 3711
+--
 -- lec  03/12/2003
 --	- TR 4601
 --
@@ -246,7 +249,8 @@ rules:
                  top->mgiCitation->ObjectID->text.value + "," +
                  top->mgiMarker->ObjectID->text.value + "," +
 		 top->GXDIndexPriorityMenu.menuHistory.defaultValue + "," +
-		 mgi_DBprstr(top->Note->text.value) + ")\n";
+		 mgi_DBprstr(top->Note->text.value) + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyStage, 0);
 
@@ -365,7 +369,7 @@ rules:
 	  send(ModifyStage, 0);
 
 	  if (set.length > 0 or cmd.length > 0) then
-	    cmd := mgi_DBupdate(GXD_INDEX, currentRecordKey, set);
+	    cmd := cmd + mgi_DBupdate(GXD_INDEX, currentRecordKey, set);
 	  end if;
 
           ModifySQL.cmd := cmd;
@@ -406,7 +410,8 @@ rules:
 		cmd := cmd + mgi_DBinsert(GXD_INDEXSTAGES, NOKEY) + 
 			currentRecordKey + "," +
 			assayKey + "," +
-			stageKeys[column] + ")\n";
+			stageKeys[column] + "," +
+			global_loginKey + "," + global_loginKey + ")\n";
 		dpcsExist := true;
 	      end if;
 
@@ -525,7 +530,7 @@ rules:
 
 	  cmd := "select * from GXD_Index_View where _Index_key = " + currentRecordKey + "\n" +
 		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
-			" order by _Assay_key, _StageID_key\n" +
+			" order by _IndexAssay_key, _StageID_key\n" +
 		 "select assays = count(distinct a._Assay_key) from GXD_Index i, GXD_Assay a, GXD_Expression e " +
 		 "where i._Index_key = " + currentRecordKey + 
 		 " and i._Refs_key = a._Refs_key" +

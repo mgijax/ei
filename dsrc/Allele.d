@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 05/23/2003 lec
+--	- replaced global_login with global_loginKey
+--
 -- 02/14/2003 lec
 --	- TR 1892; added "exec MRK_reloadLabel"
 --
@@ -280,10 +283,12 @@ rules:
                  top->AlleleStatusMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
-		 mgi_DBprstr(nomenSymbol) + ",";
+		 mgi_DBprstr(nomenSymbol) + "," +
+		 global_loginKey + "," +
+		 global_loginKey + ",";
 
 	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
-	    cmd := cmd + mgi_DBprstr(global_login) + ",getdate())\n";
+	    cmd := cmd + global_loginKey + ",getdate())\n";
 	  else
 	    cmd := cmd + "NULL,NULL)\n";
 	  end if;
@@ -512,7 +517,7 @@ rules:
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
-	      set := set + "approvedBy = " + mgi_DBprstr(global_login) + ",approval_date = getdate(),";
+	      set := set + "approvedBy = " + global_loginKey + ",approval_date = getdate(),";
 	    end if;
           end if;
 

@@ -152,7 +152,8 @@ rules:
           cmd := mgi_setDBkey(MGI_ORGANISM, NEWKEY, KEYNAME) +
 		 mgi_DBinsert(MGI_ORGANISM, KEYNAME) +
                  mgi_DBprstr(top->Common->text.value) + "," +
-                 mgi_DBprstr(top->Latin->text.value) + ")\n";
+                 mgi_DBprstr(top->Latin->text.value) + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAnchor, 0);
 	  send(ModifyChromosome, 0);

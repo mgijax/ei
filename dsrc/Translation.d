@@ -246,7 +246,8 @@ rules:
 		       currentRecordKey + "," +
 		       objectKey + "," +
 		       mgi_DBprstr(nonmgiTerm) + "," + 
-		       newSeqNum + ")\n";
+		       newSeqNum + "," +
+		       global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place

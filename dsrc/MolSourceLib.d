@@ -117,7 +117,8 @@ rules:
                          top->AgeMin->text.value + "," +
                          top->AgeMax->text.value + "," +
                          mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + "," +
-            	         mgi_DBprstr(top->CellLine->text.value) + ")\n";
+            	         mgi_DBprstr(top->CellLine->text.value) + "," +
+			 global_loginKey + "," + global_loginKey + ")\n";
  
 	    top.sql := add;
 	  end if;

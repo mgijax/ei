@@ -551,7 +551,7 @@ rules:
 	    cmd := cmd + top->GXDReporterGeneMenu.menuHistory.defaultValue;
 	  end if;
 
-	  cmd := cmd + ")\n";
+	  cmd := global_loginKey + "," + global_loginKey + ")\n";
 
 	  -- Probe Reference
 

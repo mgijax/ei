@@ -527,9 +527,15 @@ rules:
 
 	  -- For short notes (max 255)
 	  if (NoteInit.shortNote) then
-	    dialog->label.labelString := dialog->label.labelString + " (max 255 characters)";
-	    dialog->Note->text.rows := 4;
-	    dialog->Note->text.maxLength := dialog->Note->text.shortMaxNoteLength;
+	    if (target.is_defined("maxLength") != nil) then
+              dialog->label.labelString := dialog->label.labelString + " (max " + (string)target.maxLength + " characters)";
+              dialog->text.rows := target.rows;
+              dialog->Note->text.maxLength := target.maxLength;
+	    else
+	      dialog->label.labelString := dialog->label.labelString + " (max 255 characters)";
+	      dialog->Note->text.rows := 4;
+	      dialog->Note->text.maxLength := dialog->Note->text.shortMaxNoteLength;
+            end if;
 	  end if;
 
 	  dialog.targetWidget := target;
@@ -636,9 +642,10 @@ rules:
 
 	    masterCmd := masterCmd +
 	           mgi_DBinsert(tableID, KEYNAME) +
-		   key + "," +
+	           key + "," +
 		   mgiType + "," +
-		   noteType + ")\n";
+		   noteType + "," +
+		   global_loginKey + "," + global_loginKey + ")\n";
 	  end if;
 
           -- Break notes up into segments of 255
@@ -648,7 +655,8 @@ rules:
 	      cmd := cmd +
 		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + KEYNAME + "," +
 		     (string) i + "," + 
-                     mgi_DBprnotestr(note->substr(1, 255)) + ")\n";
+                     mgi_DBprnotestr(note->substr(1, 255)) + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
 	    elsif (isTable and noteType.length > 0) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
@@ -678,7 +686,8 @@ rules:
 	      cmd := cmd +
 		     mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + KEYNAME + "," +
 		     (string) i + "," + 
-                     mgi_DBprnotestr(note) + ")\n";
+                     mgi_DBprnotestr(note) + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
 	    elsif (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
