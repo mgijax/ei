@@ -89,7 +89,7 @@ pcds
     show_names  = false
     height      = 1166
 
-  load "/home/lec/ei/ei/pcds/gxdDictionary.pcd"
+  load "/home/lec/ei/ei/pcds/mgiAnatDictionary.pcd"
     floating    = false
     opened      = false
     show_names  = false
