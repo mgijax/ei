@@ -1020,9 +1020,9 @@ rules:
 
 	  if (pos < 0) then
 	    top->EditForm->UndoReplace.sensitive := false;
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Position cursor BEFORE text which is being searched/replaced.";
-	    send(StatusReport);
+--	    StatusReport.source_widget := top;
+--	    StatusReport.message := "Position cursor BEFORE text which is being searched/replaced.";
+--	    send(StatusReport);
 	    return;
 	  end if;    
 
