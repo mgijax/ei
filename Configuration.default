@@ -11,7 +11,7 @@
 #unsetenv TERM
 
 # install directory
-setenv EIINSTALLDIR /usr/local/mgi/ei/?
+setenv EIINSTALLDIR /usr/local/mgi/ei/prod
 
 # build directory
 setenv EIBUILDDIR /usr/local/mgi/ei/ei_build/?
