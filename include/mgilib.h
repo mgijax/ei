@@ -245,6 +245,7 @@ extern char *global_version;
 #define MGI_SPECIESTYPE			609
 #define MGI_NOTE_NOMEN_VIEW		610
 #define MGI_NOTETYPE_NOMEN_VIEW		611
+#define MGI_REFTYPE_NOMEN_VIEW		612
 
 /* Strains Tables */
 

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue May 21 14:38:45 2002";
+      lastWritten = "Fri May 24 09:58:08 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1045,20 +1045,6 @@ Module: mgiOption
                         dbTable = 316;
                     }
                     {
-                      MLCClass = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "MLC Classes";
-                      Group: User
-                        dbTable = 317;
-                    }
-                    {
-                      MarkerType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Marker Types";
-                      Group: User
-                        dbTable = 318;
-                    }
-                    {
                       EventReason = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Marker Event Reason";
@@ -1072,6 +1058,20 @@ Module: mgiOption
                         labelString = "Reference Review Status";
                       Group: User
                         dbTable = 324;
+                    }
+                    {
+                      NoteType = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "MGI Note Type";
+                      Group: User
+                        dbTable = 604;
+                    }
+                    {
+                      RefAssocType = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "MGI Reference Association Type";
+                      Group: User
+                        dbTable = 606;
                     }
                     {
                       AlleleType = ControlledVocabToggle : mgiOption;
@@ -1135,13 +1135,6 @@ Module: mgiOption
                         labelString = "Strain Species";
                       Group: User
                         dbTable = 703;
-                    }
-                    {
-                      MolecularSourceSpecies = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Molecular Source Species";
-                      Group: User
-                        dbTable = 340;
                     }
                     {
                       separator = XmSeparator;
@@ -1277,6 +1270,13 @@ Module: mgiOption
                         managed = False;
                       Group: User
                         dbTable = 326;
+                    }
+                    {
+                      MLCClass = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "MLC Classes";
+                      Group: User
+                        dbTable = 317;
                     }
               }
         }

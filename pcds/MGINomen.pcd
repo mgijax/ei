@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri May 24 08:41:46 2002";
+      lastWritten = "Tue May 28 10:37:23 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -68,6 +68,24 @@ Module: MGINomen
                               resizePolicy = resize_any;
                                 {
                                   ID = ID;
+                                }
+                                {
+                                  messageText = messageText : mgiDataTypes;
+                                  Group: Widget
+                                    background = Yellow;
+                                    value = "All information associated with a \nRESERVED symbol is strictly CONFIDENTIAL";
+                                    columns = 40;
+                                    rows = 2;
+                                    editMode = multi_line_edit;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = SymbolName;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = SymbolName;
+                                    leftOffset = 30;
                                 }
                                 {
                                   SymbolName = CharText : mgiDataTypes;
@@ -238,6 +256,72 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  Reference = ReferenceTypeTable : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = SymbolName;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = XtXrtTable;
+                                        Group: Widget
+                                          xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Type,Reference Type,J#,Citation";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 5 20)(all 7 60)";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Nomen_View where allowOnlyOne = 0 order by _RefAssocType_key";
+                                            }
+                                      }
+                                }
+                                {
+                                  SynonymReference = ReferenceTable : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = Reference;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = Reference;
+                                    topOffset = 5;
+                                    rightOffset = 2;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 3;
+                                          xrtTblNumColumns = 7;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 30)(all 5 10)(all 6 60)(all label 6)";
+                                          xrtTblColumnLabels = "Mode,Other Key,Current Key,New Key,Synonym,J#,Citation";
+                                          xrtTblMaxLengthSeries = "(all 4 255)(all 6 255)";
+                                          xrtTblNumRows = 6;
+                                          xrtTblEditableSeries = "(all 0-3 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          userDefinedAttributes = "synonym:Int(Int)=\"4\"\nsynKey:Int(Int)=\"1\"\n";
+                                          xrtTblRowLabels = "Author,Other,Other,Other,Other,Other";
+                                          xrtTblTraversableSeries = "(all 0-3 False)";
+                                        Group: User
+                                          jnum = 5;
+                                          citation = 6;
+                                          refsCurrentKey = 2;
+                                          refsKey = 3;
+                                      }
+                                }
+                                {
                                   StatusNotes = SingleNote : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -274,147 +358,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                }
-                                {
-                                  SynonymReference = ReferenceTable : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    topWidget = Reference;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = Reference;
-                                    topOffset = 2;
-                                    rightOffset = 2;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblVisibleRows = 3;
-                                          xrtTblNumColumns = 7;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 30)(all 5 10)(all 6 60)(all label 6)";
-                                          xrtTblColumnLabels = "Mode,Other Key,Current Key,New Key,Synonym,J#,Citation";
-                                          xrtTblMaxLengthSeries = "(all 4 255)(all 6 255)";
-                                          xrtTblNumRows = 6;
-                                          xrtTblEditableSeries = "(all 0-3 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          userDefinedAttributes = "synonym:Int(Int)=\"4\"\nsynKey:Int(Int)=\"1\"\n";
-                                          xrtTblRowLabels = "Author,Other,Other,Other,Other,Other";
-                                          xrtTblTraversableSeries = "(all 0-3 False)";
-                                        Group: User
-                                          jnum = 5;
-                                          citation = 6;
-                                          refsCurrentKey = 2;
-                                          refsKey = 3;
-                                      }
-                                }
-                                {
-                                  Reference = ReferenceTable : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = SymbolName;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Name;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblRowLabels = "Primary,Related,Related,Related,Related,Related";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-5 10)(all 6 30)(all 7 7)(all 8 10)(all label 7)";
-                                          xrtTblNumColumns = 9;
-                                          xrtTblColumnLabels = "Mode,Current Key,New Key,Review Key,Broadcast Key,J#,Citation,Review?,Broadcast?";
-                                          xrtTblEditableSeries = "(all 0-4 False)";
-                                          xrtTblMaxLengthSeries = "(all 6 255)";
-                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
-                                          userDefinedAttributes = "reviewKey:Int=\"3\"\nreview:Int=\"7\"\nbroadcastKey:Int=\"4\"\nbroadcast:Int=\"8\"\n";
-                                          xrtTblEnterCellCallback = "D:SetOptions";
-                                        Group: User
-                                          citation = 6;
-                                          jnum = 5;
-                                      }
-                                }
-                                {
-                                  GeneFamily = Table : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Reference;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = Reference;
-                                    rightOffset = 2;
-                                    leftOffset = 10;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblNumColumns = 4;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 30)";
-                                          xrtTblEditableSeries = "(all 0-2 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblTraversableSeries = "(all 0-2 False)";
-                                          xrtTblMaxLengthSeries = "(all 3 255)";
-                                          xrtTblColumnLabels = "Mode,Current Key,Key,Gene Family";
-                                          userDefinedAttributes = "familyCurrentKey:Int(Int)=\"1\"\nfamilyKey:Int(Int)=\"2\"\nfamilyName:Int=\"3\"\n";
-                                          xrtTblVisibleRows = 3;
-                                      }
-                                }
-                                {
-                                  Marker = Table : mgiTable;
-                                  Group: Widget
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Symbol;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = Symbol;
-                                    leftOffset = 10;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblNumColumns = 3;
-                                          xrtTblColumnLabels = "Mode,MGD Symbol,Accession #";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 15)(all 2 20)";
-                                          userDefinedAttributes = "markerSymbol:Int=\"1\"\naccID:Int=\"2\"\n";
-                                          xrtTblEditableSeries = "(all 0-2 False)";
-                                          xrtTblTraversableSeries = "(all 0-2 False)";
-                                          xrtTblVisibleRows = 1;
-                                      }
-                                      {
-                                        AddRow = TablePush;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        DeleteRow = TablePush;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                                {
-                                  messageText = messageText : mgiDataTypes;
-                                  Group: Widget
-                                    background = Yellow;
-                                    value = "All information associated with a \nRESERVED symbol is strictly CONFIDENTIAL";
-                                    columns = 40;
-                                    rows = 2;
-                                    editMode = multi_line_edit;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = SymbolName;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = SymbolName;
-                                    leftOffset = 30;
                                 }
                                 {
                                   AccessionReference = AccessionReference : mgiTable;
@@ -535,6 +478,32 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                             }
+                                      }
+                                }
+                                {
+                                  GeneFamily = Table : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiNoteForm;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    leftWidget = mgiNoteForm;
+                                    topOffset = 5;
+                                    bottomOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 4;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 30)";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          xrtTblTraversableSeries = "(all 0-2 False)";
+                                          xrtTblMaxLengthSeries = "(all 3 255)";
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Gene Family";
+                                          userDefinedAttributes = "familyCurrentKey:Int(Int)=\"1\"\nfamilyKey:Int(Int)=\"2\"\nfamilyName:Int=\"3\"\n";
+                                          xrtTblVisibleRows = 3;
                                       }
                                 }
                           }

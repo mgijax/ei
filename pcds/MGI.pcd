@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu May 16 15:22:55 2002";
+      lastWritten = "Fri May 24 09:58:12 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -808,18 +808,18 @@ Module: MGI
                                               MappingAssay = ControlledVocabToggle;
                                             }
                                             {
-                                              MLCClass = ControlledVocabToggle;
-                                            }
-                                            {
-                                              MarkerType = ControlledVocabToggle;
-                                            }
-                                            {
                                               EventReason = ControlledVocabToggle;
                                               Group: Widget
                                                 managed = True;
                                             }
                                             {
                                               ReviewStatus = ControlledVocabToggle;
+                                            }
+                                            {
+                                              NoteType = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
+                                              RefAssocType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               AlleleType = ControlledVocabToggle : mgiOption;
@@ -847,9 +847,6 @@ Module: MGI
                                             }
                                             {
                                               StrainSpecies = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              MolecularSourceSpecies = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               separator = XmSeparator;
@@ -1001,9 +998,9 @@ Module: MGI
                                     leftWidget = Name;
                                 }
                                 {
-                                  AllowOnlyOne = YesNoMenu : mgiOption;
+                                  AllowOnlyOneMenu = YesNoMenu : mgiOption;
                                   Group: Widget
-                                    subMenuId = YY;
+                                    subMenuId = AllowOnlyOnePulldown;
                                     labelString = "Allow Only One";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -1020,17 +1017,21 @@ Module: MGI
                                     vipComment = "";
                                   Group: User
                                     defaultOption = Yes;
+                                      Popups:
+                                      {
+                                        AllowOnlyOnePulldown : YesNoPulldown = OptionPulldown;
+                                      }
                                 }
                                 {
-                                  Private = YesNoMenu : mgiOption;
+                                  PrivateMenu = YesNoMenu : mgiOption;
                                   Group: Widget
-                                    subMenuId = YY;
+                                    subMenuId = PrivatePulldown;
                                     labelString = Private;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AllowOnlyOne;
+                                    topWidget = AllowOnlyOneMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = Name;
@@ -1041,6 +1042,37 @@ Module: MGI
                                     vipComment = "";
                                   Group: User
                                     defaultOption = No;
+                                      Popups:
+                                      {
+                                        PrivatePulldown : YesNoPulldown = OptionPulldown;
+                                      }
+                                }
+                                {
+                                  MGITypeMenu = MGITypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = PrivateMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    required = False;
+                                      Popups:
+                                      {
+                                        MGITypePulldown = OptionPulldown;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              NotSpecified = NotSpecified : mgiOption;
+                                              Group: User
+                                                defaultValue = NULL;
+                                                searchValue = NULL;
+                                            }
+                                      }
                                 }
                           }
                     }

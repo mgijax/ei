@@ -804,6 +804,7 @@ rules:
 	  ProcessRefTypeTable.objectKey := currentNomenKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+	  return;
 
 	  -- Process updates to Review Status
  
@@ -840,7 +841,6 @@ rules:
 
 	PrepareSearch does
 	  from_other       : boolean := false;
-	  from_reference   : boolean := false;
 	  from_genefamily  : boolean := false;
 
 	  printSelect := "";
@@ -967,40 +967,6 @@ rules:
 	    i := i + 1;
 	  end while;
 
-	  table := top->Reference->Table;
-	  i := 0;
-	  while (not from_reference and i <= 1) do
-            value := mgi_tblGetCell(table, i, table.refsKey);
-            if (value.length > 0 and value != "NULL") then
-	      where := where + "\nand mr._Refs_key = " + value;
-	      printSelect := printSelect + "\nReference = J:" + mgi_tblGetCell(table, i, table.jnum);
-	      from_reference := true;
-	    else
-              value := mgi_tblGetCell(table, i, table.citation);
-              if (value.length > 0) then
-	        where := where + "\nand mr.short_citation like " + mgi_DBprstr(value);
-	        printSelect := printSelect + "\nReference = " + value;
-	        from_reference := true;
-	      end if;
-	    end if;
-
-            value := mgi_tblGetCell(table, i, table.reviewKey);
-            if (value.length > 0 and value != "NULL") then
-	      where := where + "\nand mr.isReviewArticle = " + value;
-	      printSelect := printSelect + "\nReference Review Article? = " + value;
-	      from_reference := true;
-	    end if;
-
-            value := mgi_tblGetCell(table, i, table.broadcastKey);
-            if (value.length > 0 and value != "NULL") then
-	      where := where + "\nand mr.broadcastToMGD = " + value;
-	      printSelect := printSelect + "\nReference Broadcast to MGD? = " + value;
-	      from_reference := true;
-	    end if;
-
-	    i := i + 1;
-	  end while;
-
 	  table := top->GeneFamily->Table;
           value := mgi_tblGetCell(table, 0, table.familyKey);
           if (value.length > 0) then
@@ -1016,17 +982,11 @@ rules:
 	             "\nor m.name like " + mgi_DBprstr(top->SymbolName->text.value) + ")";
 	    printSelect := printSelect + "\nSymbol/Name = \n" + top->SymbolName->text.value;
 	    from_other := false;
-	    from_reference := false;
 	  end if;
 	    
 	  if (from_other) then
 	    from := from + "," + mgi_DBtable(NOM_SYNONYM) + " mo";
 	    where := where + "\nand m._Nomen_key = mo._Nomen_key";
-	  end if;
-
-	  if (from_reference) then
-	    from := from + "," + mgi_DBtable(MGI_REFERENCE_NOMEN_VIEW) + " mr";
-	    where := where + "\nand m._Nomen_key = mr._Object_key";
 	  end if;
 
 	  if (from_genefamily) then
@@ -1284,10 +1244,6 @@ rules:
 
           SetOption.source_widget := top->CVNomen->ReviewMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.reviewKey);
-          send(SetOption, 0);
-
-          SetOption.source_widget := top->CVNomen->BroadcastMenu;
-          SetOption.value := mgi_tblGetCell(table, row, table.broadcastKey);
           send(SetOption, 0);
         end does;
 

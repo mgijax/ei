@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu May 16 15:22:44 2002";
+      lastWritten = "Fri May 24 10:58:19 2002";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -495,17 +495,19 @@ Module: mgiTable
               {
                 Table = mgiTable;
                 Group: Widget
-                  userDefinedAttributes = "refsType:Int(Int)=\"3\"\nrefsName:Int(Int)=\"4\"\n";
-                  xrtTblNumColumns = 7;
-                  xrtTblColumnLabels = "Mode,Current Key,New Key,Type,Ref Type,J#,Citation";
-                  xrtTblCharWidthSeries = "(all 0 1)(all 1-5 10)(all 6 60)";
-                  xrtTblMaxLengthSeries = "(all 6 255)";
-                  xrtTblPixelWidthSeries = "(all 0-3 0)";
-                  xrtTblEditableSeries = "(all 0-4 False)";
-                  xrtTblTraversableSeries = "(all 0-4 False)";
+                  userDefinedAttributes = "refsType:Int(Int)=\"4\"\nrefsName:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:String(String)=\"-1\"\n";
+                  xrtTblNumColumns = 8;
+                  xrtTblColumnLabels = "Mode,Assoc Key,Current Key,New Key,Type,Ref Type,J#,Citation";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 60)";
+                  xrtTblMaxLengthSeries = "(all 7 255)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblEditableSeries = "(all 0-5 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)";
                 Group: User
-                  citation = 6;
-                  jnum = 5;
+                  citation = 7;
+                  jnum = 6;
+                  refsCurrentKey = 2;
+                  refsKey = 3;
               }
               {
                 AddRow = TablePush : mgiTable;

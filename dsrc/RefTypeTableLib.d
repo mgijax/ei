@@ -90,11 +90,11 @@ rules:
 	  row : integer := 0;
 
 	  if (tableID = MGI_REFTYPE_NOMEN_VIEW) then
-	    cmd := "select _RefAssocType_key, assocType from " + 
+	    cmd := "select _RefAssocType_key, assocType, allowOnlyOne from " + 
 		  mgi_DBtable(tableID) + 
 		  "\norder by allowOnlyOne desc, _RefAssocType_key";
 	  else
-	    cmd := "select _RefsType_key, referenceType from " + 
+	    cmd := "select _RefsType_key, referenceType, allowOnlyOne from " + 
 		  mgi_DBtable(tableID) + 
 		  "\nwhere _RefsType_key > 0" +
 		  "\norder by allowOnlyOne desc, _RefsType_key";
@@ -146,16 +146,17 @@ rules:
 	  cmd : string;
 
 	  if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
-            cmd := "select _Refs_key, _RefAssocType_key, assocType, " +
+            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
 		  "jnum, short_citation, _Assoc_key, _MGIType_key" +
 	  	  " from " + mgi_DBtable(tableID) +
-		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		   " order by allowOnlyOne desc, _RefAssocType_key";
+		  " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		  " order by allowOnlyOne desc, _RefAssocType_key";
 	  else
-            cmd := "select _Refs_key, _RefsType_key, referenceType, jnum, short_citation" +
+            cmd := "select _Refs_key, _RefsType_key, referenceType, allowOnlyOne, " +
+		  "jnum, short_citation" +
 	  	  " from " + mgi_DBtable(tableID) +
-		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		   " order by allowOnlyOne desc, _RefsType_key";
+		  " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		  " order by allowOnlyOne desc, _RefsType_key";
 	  end if;
 
 	  row : integer := 0;
@@ -175,12 +176,12 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(table, row, table.refsName, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 6));
 
 	      if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
-	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 6));
-		table.mgiTypeKey := mgi_getstr(dbproc, 7);
+	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
+		table.mgiTypeKey := mgi_getstr(dbproc, 8);
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
