@@ -14,8 +14,12 @@
 --
 -- History
 --
+-- 06/14/2001
+--	- TR 2461; add MGI Acc# to Withdrawal Dialog
+--
 -- 04/09/2001
 --	- TR 2237; added addAsSynonym option to Withdrawal dialog/processing
+--
 -- 03/26/2001
 --	- markerWithdrawal.py; added -S and -D parameters
 --
@@ -437,6 +441,8 @@ rules:
             top->mgiMarker->Marker->text.value := 
 		mgi_sql1("select symbol from MRK_Mouse_View " +
 		"where mgiID = " + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
+	    VerifyMarkerChromosome.source_widget := top->mgiMarker->Marker->text;
+	    send(VerifyMarkerChromosome, 0);
 	  else
             top->mgiMarker->ObjectID->text.value := "";
             top->mgiMarker->Marker->text.value := "";
@@ -537,9 +543,7 @@ rules:
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := false;
 	    dialog->mgiMarker.managed := true;
-	    dialog->markerAccession.managed := false;
--- when ready to implement, remove the false and uncomnent the true
---	    dialog->markerAccession.managed := true;
+	    dialog->markerAccession.managed := true;
 	    dialog->NewMarker.sensitive := false;
 	  elsif (event = EVENT_SPLIT) then
 	    dialog->nonVerified.managed := true;
