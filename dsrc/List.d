@@ -525,8 +525,11 @@ rules:
 	  list_w.row := SelectLookupListItem.item_position;
 
 	  -- If no target specified or no item selected, return
+	  -- (in order to remove *all* anatomical structures
+	  --  a de-selection must proceed)
 
-	  if (targetWidget = nil or list_w.selectedItemCount = 0) then
+--	  if (targetWidget = nil or list_w.selectedItemCount = 0) then
+	  if (targetWidget = nil) then
 	    return;
 	  end if;
 
