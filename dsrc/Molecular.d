@@ -114,7 +114,7 @@ devents:
 	Select :local [item_position : integer;];
 	SelectReference :local [item_position : integer;];
 
-	ViewMolSegDetail :local [source_widget : widget;];
+	ViewMolSegDetail :exported [source_widget : widget;];
 	ViewMolSegForm :local [source_widget : widget;];
 
 locals:
@@ -362,7 +362,7 @@ rules:
 
 	  else
 	    cmd := cmd + "NULL,-2,-2," +
-                         top->MolDetailForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
+                         top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
 
@@ -1676,10 +1676,6 @@ rules:
         ViewMolSegDetail does
           NewForm : widget;
  
-	  if (not ViewMolSegDetail.source_widget.set) then
-	    return;
-	  end if;
-
 	  if (ViewMolSegDetail.source_widget.labelString = "primer") then
 		NewForm := top->MolPrimerForm;
 	  else
