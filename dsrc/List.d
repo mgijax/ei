@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	01/18/2001
+--	Fixed LoadList; if cmd length = 0, return
+--
 -- lec	04/20/2000
 --	FindSelectionItem; do not select item when found, just position cursor
 --
@@ -256,7 +259,7 @@ rules:
 	    list_w := LoadList.source_widget.parent;
 	  end if;
 
-          if (list_w.name = "QueryList") then
+          if (list_w.cmd.length = 0) then
             (void) reset_cursor(LoadList.source_widget.top);
 	    return;
 	  end if;
