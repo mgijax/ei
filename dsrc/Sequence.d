@@ -54,8 +54,10 @@ locals:
 --	clearLists : integer := 7;
 
 	cmd : string;
+	select : string := "select ac._Object_key, ac.accID + ',' + s.sequenceType + ',' + s.sequenceProvider, s.sequenceType, ac.accID\n";
 	from : string;
 	where : string;
+	union : string;
 	rawRow : integer := 0;
 
 	accTable : widget;
@@ -351,14 +353,19 @@ rules:
 
 	  from_acc : boolean := false;
 	  from_source : boolean := false;
-	  from_marker : boolean := false;
+	  from_object : boolean := false;
 	  value : string;
 	  value2 : string;
 	  tag : string := "s";
 	  table : widget;
+	  whereMarker : string := "";
+	  whereProbe : string := "";
+	  fromMarker : string := "";
+	  fromProbe : string := "";
 
-	  from := "from SEQ_Sequence_Acc_View a, SEQ_Sequence_View s";
-	  where := "where a._Object_key = s._Sequence_key";
+	  from := "from SEQ_Sequence_View s";
+	  where := "";
+	  union := "";
 
 	  -- Common Stuff
 
@@ -371,6 +378,9 @@ rules:
             from := from + accTable.sqlFrom;
             where := where + accTable.sqlWhere;
 	    from_acc := true;
+	  else
+	    where := "\nand ac._Object_key = s._Sequence_key";
+	    from := from + ", Seq_Sequence_Acc_View ac";
           end if;
  
 	  QueryModificationHistory.table := modTable;
@@ -542,8 +552,9 @@ rules:
 
 	  value := mgi_tblGetCell(table, 0, table.objectName);
           if (value.length > 0) then
-	    where := where + "\nand m.symbol like " + mgi_DBprstr(value);
-	    from_marker := true;
+	    whereMarker := where + "\nand m.symbol like " + mgi_DBprstr(value);
+	    whereProbe := where + "\nand p.name like " + mgi_DBprstr(value);
+	    from_object := true;
 	  end if;
 
 	  -- References
@@ -554,11 +565,19 @@ rules:
 		"\nand ssa._Source_key = ps._Source_key";
 	  end if;
 
-	  if (from_marker) then
-	    from := from + ",SEQ_Marker_Cache_View m";
-	    where := where + "\nand s._Sequence_key = m._Sequence_key";
+	  if (from_object) then
+	    fromMarker := from + ", SEQ_Marker_Cache_View m";
+	    whereMarker := whereMarker + "\nand s._Sequence_key = m._Sequence_key";
+	    fromProbe := from + ", SEQ_Probe_Cache_View p";
+	    whereProbe := whereProbe + "\nand s._Sequence_key = p._Sequence_key";
+	    union := "union\n" + select + fromProbe + "\n" + "where" + whereProbe->substr(5, whereProbe.length);
+	    from := fromMarker;
+	    where := whereMarker;
 	  end if;
 
+	  if (where.length > 0) then
+	    where := "where" + where->substr(5, where.length);
+	  end if;
 	end does;
 
 --
@@ -569,8 +588,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select a._Object_key, a.accID + ',' + s.sequenceType + ',' + s.sequenceProvider\n" + 
-	      from + "\n" + where + "\norder by s.sequenceType, a.accID\n";
+	  Query.select := select + from + "\n" + where + "\n" + union + "\norder by s.sequenceType, ac.accID\n";
 	  Query.table := SEQ_SEQUENCE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
@@ -614,7 +632,7 @@ rules:
 		"and s._Source_key = v._Source_key\n" +
 		"order by v._Organism_key\n" +
 		"select * from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
-		"select * from SEQ_MolecularSegment_View where sequencekey = " + currentKey + "\n";
+		"select * from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n";
 
 	  results : integer := 1;
 	  nonRawRow : integer := 1;
