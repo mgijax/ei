@@ -1434,18 +1434,6 @@ rules:
 	    return;
 	  end if;
 
-	  -- Check for Primary Reference
-
-	  if ((broadcastType = 1 or broadcastType = 2 or broadcastType = 4 or broadcastType = 5)
-	      and
-	      ((mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
-                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE))) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Primary Reference Required.";
-            send(StatusReport);
-            return;
-	  end if;
-
 	  if (broadcastType = 1) then
 	    message := message + "\n" + top->Symbol->text.value;
 	    recordCount := 1;
@@ -1524,6 +1512,18 @@ rules:
 	  if (not broadcastOK) then
             StatusReport.source_widget := top;
             StatusReport.message := "There are no records to broadcast.";
+            send(StatusReport);
+            return;
+	  end if;
+
+	  -- Check for Primary Reference
+
+	  if ((broadcastType = 1 or broadcastType = 2 or broadcastType = 4 or broadcastType = 5)
+	      and
+	      ((mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
+                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE))) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Primary Reference Required.";
             send(StatusReport);
             return;
 	  end if;
