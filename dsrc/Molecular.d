@@ -1429,6 +1429,8 @@ rules:
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
 	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 8) + mgi_getstr(dbproc, 9);
+		prb_createdBy := mgi_getstr(dbproc, 16);
+		prb_modifiedBy := mgi_getstr(dbproc, 17);
 		prb_creation_date := mgi_getstr(dbproc, 18);
 		prb_modification_date := mgi_getstr(dbproc, 19);
 
@@ -1487,7 +1489,7 @@ rules:
 	  (void) dbclose(dbproc);
  
           if (not top->Control->References.set) then
-	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdBy);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, prb_modifiedBy);
 	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, prb_creation_date);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, prb_modification_date);
@@ -1641,7 +1643,7 @@ rules:
           send(LoadAcc, 0);
 
           if (top->Control->References.set) then
-	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdBy);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, ref_modifiedBy);
 	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, ref_creation_date);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, ref_modification_date);
@@ -1700,7 +1702,7 @@ rules:
 	      prb_creation_date := "";
 	      prb_modification_date := "";
 	    end if;
-	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdBy);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, prb_modifiedBy);
 	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, prb_creation_date);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, prb_modification_date);
@@ -1712,7 +1714,7 @@ rules:
 	      ref_creation_date := "";
 	      ref_modification_date := "";
 	    end if;
-	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdBy);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, ref_modifiedBy);
 	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, ref_creation_date);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, ref_modification_date);
