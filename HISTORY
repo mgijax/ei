@@ -1,3 +1,12 @@
+TAG: ei-12-0-30-patch01-1
+DATE: 10/04/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) fixed NoteLib. bug
+3) added APP_JobStream check
+
 TAG: ei-12-0-30
 DATE: 09/20/2004
 STAFF: lec
