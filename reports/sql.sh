@@ -24,7 +24,7 @@ Date Generated:  `date`
 
 END
 
-isql -S$DSQUERY -D$DATABASE -U$USER -P$PASSWORD -w200 -i $SQL >> $OUTPUT
+isql -S$DSQUERY -D$DATABASE -U$REPORTUSER -P$REPORTPASSWORD -w200 -i $SQL >> $OUTPUT
 
 cat >> $OUTPUT <<END
 
