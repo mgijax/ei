@@ -349,9 +349,13 @@ rules:
 
           (void) busy_cursor(top);
 
+	  if (assayKey.length = 0) then
+	    assayKey := mgi->AssayModule->ID->text.value;
+	  end if;
+
 	  if (assayKey.length > 0) then
 	    from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
-		  ", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
+	  	  ", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
 	    where := "where g._Genotype_key = a._Genotype_key " +
 		  "and a._Assay_key = " + assayKey + 
 		  " and g._Genotype_key *= ap._Genotype_key";
@@ -363,9 +367,9 @@ rules:
 	    end if;
 
 	    assayExists := "select distinct g._Genotype_key, " +
-		  "g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
+	 	  "g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
 		  from + "\n" + where;
- 	  end if;
+	  end if;
 
           notExists := "select distinct g._Genotype_key, " +
 		"g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
