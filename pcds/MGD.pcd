@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 14 11:11:50 2004";
+      lastWritten = "Fri Jan 16 14:02:39 2004";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1415,7 +1415,10 @@ Module: MGD
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RPCI = AccToggle : mgiOption;
+                                                    RPCI23 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI24 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
@@ -3078,7 +3081,12 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
-                                  RPCI = AccToggle : mgiOption;
+                                  RPCI23 = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                                {
+                                  RPCI24 = AccToggle : mgiOption;
                                   Group: Widget
                                     managed = True;
                                 }
@@ -3636,7 +3644,10 @@ Module: MGD
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RPCI = AccToggle : mgiOption;
+                                                    RPCI23 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI24 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
@@ -7210,7 +7221,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RPCI = AccToggle : mgiOption;
+                                                    RPCI23 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI24 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
@@ -8983,7 +8997,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RPCI = AccToggle : mgiOption;
+                                                    RPCI23 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI24 = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
