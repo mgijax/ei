@@ -117,6 +117,9 @@ for r in results:
 		cDate = r['cDate']
 		modifiedBy = r['modifiedBy']
 		mDate = r['mDate']
+		nomennote = ''
+		rikennote = ''
+		curatornote = ''
 
 		fp.write('X' + DELIM + \
 	         	mgi_utils.prvalue(fantomKey) + DELIM)
