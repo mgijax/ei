@@ -127,6 +127,10 @@ rules:
 	  -- Create the widget hierarchy in memory
 	  top := create widget("VocAnnotModule", ab.name, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
 	  top.show;

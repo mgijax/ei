@@ -111,6 +111,10 @@ rules:
 
 	  top := create widget("GenotypeModule", nil, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
           LoadList.list := top->ESCellLineList;
 	  send(LoadList, 0);
 
