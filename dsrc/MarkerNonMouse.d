@@ -295,7 +295,7 @@ rules:
 	  end if;
 
           if (top->Chromosome->text.modified) then
-            set := set + "chromosome  " + mgi_DBprstr(top->Chromosome->text.value) + ",";
+            set := set + "chromosome = " + mgi_DBprstr(top->Chromosome->text.value) + ",";
           end if;
 
 	  if (top->Cyto->text.modified) then
