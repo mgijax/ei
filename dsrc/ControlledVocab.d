@@ -11,7 +11,7 @@
 --
 -- Module controls edits of Controlled Vocabulary tables:
 --
--- Homology Assays, Mapping Assays, Marker MLC Classes,
+-- Orthology Assays, Mapping Assays, Marker MLC Classes,
 -- Marker Types, Molecuar Segment Vector Types,
 -- Antibody Classes, Antibody Types, Assay Types, Expression Patterns,
 -- Expression Strengths, Gel RNA Types, Gel Units, Image Field Types,
@@ -27,7 +27,7 @@
 --	- TR 2217; new handling for ES Cell Lines, Reference Types, Note Types
 --
 -- lec 10/12/1999
---	- TR 153; new attribute for Homology Assays
+--	- TR 153; new attribute for Orthology Assays
 --
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
