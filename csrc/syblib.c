@@ -102,7 +102,7 @@ int mgi_dbinit(char *user, char *pwd)
   /* Write the password */
   /* Close file and set permissions rw to owner */
 
-  fwrite(pwd, strlen(pwd), 1, pf);
+  fwrite(pwd, strlen(pwd) + '\n', 1, pf);
   fclose(pf);
   chmod(passwdfile, 0600);
 
