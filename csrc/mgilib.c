@@ -839,7 +839,6 @@ char *mgi_DBkey(int table)
     case MRK_HISTORY:
     case MRK_NOTES:
     case MRK_OFFSET:
-    case MLC_LOCK:
     case MLC_MARKER:
     case MLC_REFERENCE:
     case MLC_TEXT:
@@ -1511,9 +1510,6 @@ char *mgi_DBtable(int table)
     case MGI_USERROLE_VIEW:
 	    strcpy(buf, "MGI_UserRole_View");
 	    break;
-    case MLC_LOCK:
-            strcpy(buf, "MLC_Lock");
-	    break;
     case MLC_MARKER:
             strcpy(buf, "MLC_Marker");
 	    break;
@@ -1939,7 +1935,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_SYNONYM:
     case MGI_USER:
     case MGI_USERROLE:
-    case MLC_LOCK:
     case MLC_MARKER:
     case MLC_REFERENCE:
     case MLC_TEXT:
@@ -2214,10 +2209,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MGI_USERROLE:
 	    sprintf(buf, "insert %s (%s, _Role_key, _User_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MLC_LOCK:
-	    sprintf(buf, "insert %s (time, %s, checkedOut)",
-	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_MARKER:
 	    sprintf(buf, "insert %s (%s, tag, _Marker_key_2)",

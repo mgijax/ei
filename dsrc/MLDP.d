@@ -1995,7 +1995,7 @@ rules:
 --
 -- ModifyRI
 --
--- Construct update statements for MLD_RI, MLC_RIHAPLOTYPE, MLD_RI2POINT
+-- Construct update statements for MLD_RI, MLD_RIHAPLOTYPE, MLD_RI2POINT
 -- Appends to global "cmd" string.
 --
 

@@ -15,8 +15,6 @@ CALLS
        strpos("char *","char *", "long") : "long";
        getIdbySymbol("char *","Boolean") : "char *";
        symbolinMLC("char *") : "Boolean";
-       obtain_mlc_lock("char *") : "Boolean";
-       release_mlc_lock("char *") : "Boolean";
        cleanup_handler("Widget") : "Boolean";
        remove("char *") : "int";
   ENDL

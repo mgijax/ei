@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 29 13:39:03 2005";
+      lastWritten = "Tue Apr  5 13:48:18 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -5868,12 +5868,6 @@ Module: MGD
                                           labelString = "Import Description";
                                           activateCallback = "C: TuManage(find = ImportMLCTextDialog)";
                                       }
-                                      {
-                                        Unlock = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          labelString = "Unlock Record";
-                                          activateCallback = "D:UnlockInit";
-                                      }
                                 }
                           }
                     }
@@ -6452,9 +6446,6 @@ Shift<Key>Tab: prev-tab-group()
                       ClearDialog = ClearDialog : mgiDialog;
                       Group: Widget
                         okCallback = "D:ClearMLC";
-                    }
-                    {
-                      MLCUnlockDialog = MLCUnlockDialog : mgiDialog;
                     }
               }
         }

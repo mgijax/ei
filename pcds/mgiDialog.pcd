@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 15 10:05:25 2005";
+      lastWritten = "Tue Apr  5 13:48:28 2005";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1387,79 +1387,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          MLCUnlockDialog = XmFormDialog;
-          Group: Widget
-            dialogStyle = dialog_primary_application_modal;
-            dialogTitle = "Unlock Record";
-            managed = False;
-            fractionBase = 3;
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 120;
-            vip_y = 1900;
-              {
-                mgiMarker = mgiMarker : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 5;
-                  topOffset = 5;
-                    {
-                      ObjectID = ID;
-                    }
-                    {
-                      Marker = CharText;
-                      Group: Widget
-                        xrtGearOrientation = vertical;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Marker\n(TAB after entering symbol)";
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyAnyMarker()";
-                          }
-                    }
-              }
-              {
-                Buttons = Buttons : mgiDialog;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 15;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_form;
-                  bottomOffset = 2;
-                  resizable = true;
-                  topWidget = mgiMarker;
-                  topOffset = 5;
-                    {
-                      OK = DialogPush;
-                      Group: Widget
-                        activateCallback = "D:Unlock";
-                        labelString = Process;
-                    }
-                    {
-                      Cancel = DialogPush;
-                      Group: Widget
-                        activateCallback = "C: TuUnmanage";
-                        labelString = Done;
-                    }
-              }
-              Popups:
-              {
-                WhichItem = WhichItem : mgiDialog;
-              }
-        }
-        {
           BroadcastDialog = XmQuestionDialog;
           Group: Widget
             showHelpButton = False;
@@ -1503,7 +1430,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2010;
+            vip_y = 1955;
             vipComment = "";
               {
                 AttributeHistoryTable = Table : mgiTable;
@@ -1580,7 +1507,7 @@ Shift<Key>Tab: prev-tab-group()
           MolecularSourceAttributeHistoryDialog = AttributeHistoryDialog;
           Group: Control
             vip_x = 120;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 AttributeHistoryTable = Table : mgiTable;
                     {
