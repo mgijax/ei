@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 02/25/2003 lec
+--	- TR 4553; added created by/date to table
+--
 -- 02/04/2003 lec
 --	- TR 3853; annotation for OMIM/Genotype
 --
@@ -670,6 +673,8 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 12));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 13));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
