@@ -1,3 +1,9 @@
+TAG: ei-2-1-2
+DATE: 06/07/2000
+STAFF: lec
+RELEASE: A
+CHANGES: copy system documentation to EIINSTALLDIR (installall)
+
 TAG: ei-2-1-1
 DATE: 05/30/2000
 STAFF: lec
