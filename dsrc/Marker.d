@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 04/18/2003
+--	- TR 4728; set addAsSynonym = true in MarkerWithdrawalInit
+--
 -- 10/01/2002
 --	- TR 3516; move Marker Notes to Allele Module
 --
@@ -504,6 +507,7 @@ rules:
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
 	  dialog->hasAlleles.set := hasAlleles;
+	  dialog->addAsSynonym.set := true;
 
 	  dialog->nonVerified->ObjectID->text.value := "";
 	  dialog->nonVerified->Marker->text.value := "";
