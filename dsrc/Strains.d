@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec	02/03/2003
+--	- TR 4378; added Super Standard
+--
 -- lec	04/17/2002
 --	- TR 3333;  added query by J:
 --	- TR 3587;  added chromosome to Symbol table
@@ -82,6 +85,7 @@ devents:
 	ModifySynonym :local [];
 	ModifyType :local [];
 	ModifyStrainExtra :local [];
+	ModifySuperStandard :local [];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -112,6 +116,9 @@ locals:
                                         -- Initialized in Select[] and Add[] events
  
 	origStrainName : string;	-- original strain name
+	superStandardKey : string;
+	annotKey : string;
+	annotTypeKey : string := "1003";
 
 	tables : list;
 
@@ -167,6 +174,8 @@ rules:
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
 
+	  superStandardKey := mgi_sql1("select _Term_key from VOC_Term where term = 'super standard'");
+
           -- Set Row Count
           SetRowCount.source_widget := top;
           SetRowCount.tableID := MLP_STRAIN;
@@ -216,6 +225,7 @@ rules:
 	  send(ModifySynonym, 0);
 	  send(ModifyType, 0);
 	  send(ModifyStrainExtra, 0);
+	  send(ModifySuperStandard, 0);
 
           ModifyNotes.source_widget := top->Notes;
           ModifyNotes.tableID := MLP_NOTES;
@@ -334,6 +344,7 @@ rules:
 	  send(ModifySynonym, 0);
 	  send(ModifyType, 0);
 	  send(ModifyStrainExtra, 0);
+	  send(ModifySuperStandard, 0);
 
           ModifyNotes.source_widget := top->Notes;
           ModifyNotes.tableID := MLP_NOTES;
@@ -529,6 +540,34 @@ rules:
                  mgi_DBprstr(dataset) + "," +
                  mgi_DBprstr(note1) + "," +
                  mgi_DBprstr(note2) + ")\n";
+	end does;
+
+--
+-- ModifySuperStandard
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/delete for Super Standard Info (Annotation)
+-- Appends to global "cmd" string
+--
+
+	ModifySuperStandard does
+
+	  -- add a new Annotation record if set and one does not already exist
+
+	  if (annotKey = NO and top->SuperStandardMenu.menuHistory.defaultValue = YES) then
+		cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, "annotKey") +
+		      mgi_DBinsert(VOC_ANNOT, "annotKey") +
+		      annotTypeKey + "," +
+		      currentRecordKey + "," +
+		      superStandardKey + ",0)\n";
+
+	  -- remove Annotation record if not set and one does already exist
+
+	  elsif (annotKey != NO and top->SuperStandardMenu.menuHistory.defaultValue = NO) then
+		cmd := cmd + mgi_DBdelete(VOC_ANNOT, annotKey);
+	  end if;
+
 	end does;
 
 --
@@ -761,6 +800,7 @@ rules:
           end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
+	  annotKey := NO;
 	  results : integer := 1;
 	  row : integer;
 	  table : widget;
@@ -777,7 +817,9 @@ rules:
 		 "select * from " + mgi_DBtable(PRB_STRAIN_SYNONYM) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
                  "select rtrim(note) from " + mgi_DBtable(MLP_NOTES) +
-                 " where " + mgi_DBkey(MLP_NOTES) + " = " + currentRecordKey + " order by sequenceNum\n";
+                 " where " + mgi_DBkey(MLP_NOTES) + " = " + currentRecordKey + " order by sequenceNum\n" +
+		 "select _Annot_key from VOC_Annot where _AnnotType_key = " + annotTypeKey +
+		 "and _Object_key = " + currentRecordKey + "\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -830,6 +872,8 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 6) then
                 top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
+	      elsif (results = 7) then
+		annotKey := mgi_getstr(dbproc, 1);
 	      end if;
 	      row := row + 1;
             end while;
@@ -837,6 +881,14 @@ rules:
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  if (annotKey = NO) then
+            SetOption.value := NO;
+	  else
+            SetOption.value := YES;
+	  end if;
+          SetOption.source_widget := top->SuperStandardMenu;
+          send(SetOption, 0);
 
 	  LoadAcc.table := accTable;
 	  LoadAcc.objectKey := currentRecordKey;

@@ -1,8 +1,8 @@
 Module: mgiDataTypes
 {
       autoCuil = False;
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Jan 15 10:18:47 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Mon Feb  3 09:31:06 2003";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -418,12 +418,12 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = text;
+                      text = scrolledText;
                       Group: Widget
                         inTabGroup = False;
                         columns = 20;
-			scrollHorizontal = False;
-			scrollVertical = False;
+                        scrollHorizontal = False;
+                        scrollVertical = False;
                     }
               }
         }
@@ -1072,7 +1072,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Strain;
                     }
                     {
-                      text = text;
+                      text = scrolledText;
                       Group: Widget
                         columns = 50;
                     }

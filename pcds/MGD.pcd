@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 29 09:58:55 2003";
+      lastWritten = "Mon Feb  3 09:37:13 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -957,14 +957,14 @@ Module: MGD
                                     subMenuId = PrivatePulldown;
                                     labelString = "Private?";
                                   Group: Constraint
-                                    leftAttachment = attach_form;
+                                    leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = mlpSpecies;
-                                    topOffset = 5;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = StrainType;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 55;
+                                    leftOffset = 20;
+                                    leftWidget = StrainType;
                                   Group: User
                                     defaultOption = No;
                                       Popups:
@@ -975,14 +975,33 @@ Module: MGD
                                 {
                                   StandardMenu = StandardMenu : mgiOption;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
+                                    leftAttachment = attach_opposite_widget;
                                     leftWidget = PrivateMenu;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
+                                    topAttachment = attach_widget;
                                     topWidget = PrivateMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 25;
+                                    topOffset = 5;
+                                }
+                                {
+                                  SuperStandardMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = SuperStandardPulldown;
+                                    labelString = "Super Standard?";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = StandardMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = StandardMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                      Popups:
+                                      {
+                                        SuperStandardPulldown : YesNoPulldown = OptionPulldown;
+                                      }
                                 }
                                 {
                                   NeedsReviewMenu = YesNoMenu : mgiOption;
@@ -990,14 +1009,14 @@ Module: MGD
                                     subMenuId = NeedsReviewPulldown;
                                     labelString = "Needs Review?";
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = StandardMenu;
-                                    leftOffset = 25;
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = SuperStandardMenu;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = StandardMenu;
+                                    topAttachment = attach_widget;
+                                    topWidget = SuperStandardMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    topOffset = 5;
                                   Group: User
                                     defaultOption = NoReview;
                                       Popups:
@@ -1020,11 +1039,12 @@ Module: MGD
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = PrivateMenu;
+                                    topWidget = mlpSpecies;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = PrivateMenu;
+                                    leftWidget = mlpSpecies;
+                                    leftOffset = 25;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
