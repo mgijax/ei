@@ -533,7 +533,7 @@ rules:
 		"c1.gba_mgiID, c1.gba_symbol, c1.gba_name, c2.final_symbol1, c2.final_name1, " + 
 		"cDate = convert(char(10), f.creation_date, 101), " +
 		"mDate = convert(char(10), f.modification_date, 101), " +
-		"n.noteType, rtrim(n.note), n.sequenceNum ";
+		"n.noteType, note = rtrim(n.note), n.sequenceNum ";
 	  from := "from " + mgi_DBtable(MGI_FANTOM2) + " f, " +
 		"MGI_Fantom2CacheGBA c1, " +
 		"MGI_Fantom2CacheFinal c2, " +
@@ -916,7 +916,7 @@ rules:
      end if;
 
      send(ClearFantom2, 0);
-     fantom.xrtTblCellValues := global_login + ".ascii";
+     fantom.xrtTblCellValues := getenv("EIREPORTDIR") + "/" + global_login + ".ascii";
 
      -- Initialize Option Menus for row 0
 

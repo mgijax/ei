@@ -57,7 +57,7 @@ password = string.strip(open(passwordFileName, 'r').readline())
 db.set_sqlUser(user)
 db.set_sqlPassword(password)
  
-outputFileName = user + '.ascii'
+outputFileName = os.environ['EIREPORTDIR'] + '/' + user + '.ascii'
 
 try:
 	fp = open(outputFileName, 'w')
