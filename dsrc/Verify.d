@@ -1102,6 +1102,8 @@ rules:
 --			ageRange, sexKey, sex, rnaKey, rna, sampleAmt (integer)
 --
 --  If Control != 'No', set Genotype, Sample, RNA, Age, Sex to Not Applicable
+--  If Control = 'No', then set to blank
+--
 
 	VerifyGelLaneControl does
 	  sourceWidget : widget := VerifyGelLaneControl.source_widget;
@@ -1124,7 +1126,7 @@ rules:
 	  (void) mgi_tblSetCell(table, row, table.ageRange, "");
 
 	  -- If "No" is not selected
-	  if (sourceWidget.defaultValue != "1") then
+	  if (mgi_tblGetCell(table, row, table.controlKey) != "1") then
 	    -- Genotype
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-2");
 	    (void) mgi_tblSetCell(table, row, table.genotype, "Not Applicable");
@@ -1146,19 +1148,35 @@ rules:
 	           top->CVGel->GelRNATypePulldown->NotApplicable.defaultValue);
 	    (void) mgi_tblSetCell(table, row, table.rna,
 	           top->CVGel->GelRNATypePulldown->NotApplicable.labelString);
-      end if;
+	  else
+	    -- Genotype
+	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "");
+	    (void) mgi_tblSetCell(table, row, table.genotype, "");
 
-      SetOption.source_widget := top->CVGel->AgeMenu;
-      SetOption.value := mgi_tblGetCell(table, row, table.ageKey);
-      send(SetOption, 0);
+	    -- Age
+	    (void) mgi_tblSetCell(table, row, table.ageKey, "");
+	    (void) mgi_tblSetCell(table, row, table.agePrefix, "");
+
+            -- Sex
+	    (void) mgi_tblSetCell(table, row, table.sexKey, "");
+	    (void) mgi_tblSetCell(table, row, table.sex, "");
+
+	    -- RNA
+	    (void) mgi_tblSetCell(table, row, table.rnaKey,"");
+	    (void) mgi_tblSetCell(table, row, table.rna, "");
+        end if;
+
+        SetOption.source_widget := top->CVGel->AgeMenu;
+        SetOption.value := mgi_tblGetCell(table, row, table.ageKey);
+        send(SetOption, 0);
  
-      SetOption.source_widget := top->CVGel->SexMenu;
-      SetOption.value := mgi_tblGetCell(table, row, table.sexKey);
-      send(SetOption, 0);
+        SetOption.source_widget := top->CVGel->SexMenu;
+        SetOption.value := mgi_tblGetCell(table, row, table.sexKey);
+        send(SetOption, 0);
  
-      SetOption.source_widget := top->CVGel->GelRNATypeMenu;
-      SetOption.value := mgi_tblGetCell(table, row, table.rnaKey);
-      send(SetOption, 0);
+        SetOption.source_widget := top->CVGel->GelRNATypeMenu;
+        SetOption.value := mgi_tblGetCell(table, row, table.rnaKey);
+        send(SetOption, 0);
 
 	end does;
 
