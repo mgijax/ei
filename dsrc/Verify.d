@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	12/17/2003
+--	- TR 5327; nomen merge
+--
 -- lec	11/05/2003
 --	- TR 4826; remove VerifyAge; using stored procedure PRB_ageMinMax now
 --
@@ -1566,7 +1569,7 @@ rules:
 		"select -1, _Marker_Status_key, symbol, chromosome, null " +
 		"\nfrom " + mgi_DBtable(NOM_MARKER_VALID_VIEW) +
 		"\nwhere symbol = " + mgi_DBprstr(value) + 
-		"\nand _Marker_Status_key in (" + STATUS_PENDING + "," + STATUS_RESERVED + ")\n";
+		"\nand _NomenStatus_key in (" + STATUS_PENDING + "," + STATUS_RESERVED + ")\n";
 	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list
