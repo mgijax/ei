@@ -208,6 +208,15 @@ extern char *global_version;
 #define MGI_TABLES			600
 #define MGI_COLUMNS			601
 
+/* Strains Tables */
+
+#define MLP_STRAIN		700
+#define MLP_STRAINTYPE		701
+#define MLP_STRAINTYPES		702
+#define MLP_SPECIES		703
+#define MLP_NOTES		704
+#define PRB_STRAIN_MARKER	705
+
 /* End of Table Definitions */
 
 #define	MOUSE		"1"

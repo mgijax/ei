@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 10/18/1999
+ *  - TR 204
+ *
  * lec 08/04/1999
  *  - TR 518; removed reference to MRK_NOMEN.ECNumber
  *  - mgi_DBtype; added def for MRK_Nomen & MRK_NOMEN_ACC_REFERENCE
@@ -669,6 +672,18 @@ char *mgi_DBkey(int table)
     case MRK_STATUS:
             strcpy(buf, "_Marker_Status_key");
 	    break;
+    case MLP_STRAIN:
+    case MLP_STRAINTYPES:
+    case MLP_NOTES:
+    case PRB_STRAIN_MARKER:
+            strcpy(buf, "_Strain_key");
+	    break;
+    case MLP_STRAINTYPE:
+            strcpy(buf, "_StrainType_key");
+	    break;
+    case MLP_SPECIES:
+            strcpy(buf, "_Species_key");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -730,6 +745,10 @@ char *mgi_DBtype(int table)
     case MRK_NOMEN:
     case MRK_NOMEN_ACC_REFERENCE:
             strcpy(buf, "Nomenclature");
+            break;
+    case STRAIN:
+    case MLP_STRAIN:
+            strcpy(buf, "Strain");
             break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
@@ -1222,6 +1241,24 @@ char *mgi_DBtable(int table)
     case MRK_STATUS:
 	    sprintf(buf, "%s..MRK_Status", getenv("NOMEN"));
 	    break;
+    case PRB_STRAIN_MARKER:
+            strcpy(buf, "PRB_Strain_Marker");
+	    break;
+    case MLP_STRAIN:
+	    sprintf(buf, "%s..MLP_Strain", getenv("STRAINS"));
+	    break;
+    case MLP_SPECIES:
+	    sprintf(buf, "%s..MLP_Species", getenv("STRAINS"));
+	    break;
+    case MLP_NOTES:
+	    sprintf(buf, "%s..MLP_Notes", getenv("STRAINS"));
+	    break;
+    case MLP_STRAINTYPE:
+	    sprintf(buf, "%s..MLP_StrainType", getenv("STRAINS"));
+	    break;
+    case MLP_STRAINTYPES:
+	    sprintf(buf, "%s..MLP_StrainTypes", getenv("STRAINS"));
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -1346,6 +1383,8 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOMEN_EDITORNOTES:
     case MRK_NOMEN_OTHER:
     case MRK_NOMEN_REFERENCE:
+    case MLP_STRAIN:
+    case MLP_SPECIES:
     case MGI_TABLES:
     case MGI_COLUMNS:
 	selectKey = 0;
@@ -1710,6 +1749,24 @@ mgi_DBtable(table));
 	    break;
     case MRK_NOMEN_REFERENCE:
             sprintf(buf, "insert %s (%s, _Refs_key, isPrimary)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLP_STRAIN:
+            sprintf(buf, "insert %s (%s, _Species_key, userDefined1, userDefined2)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLP_STRAINTYPE:
+            sprintf(buf, "insert %s (%s, strainType)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLP_STRAINTYPES:
+            sprintf(buf, "insert %s (%s, _StrainType_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLP_SPECIES:
+            sprintf(buf, "insert %s (%s, species)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MLP_NOTES:
+            sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case PRB_STRAIN_MARKER:
+            sprintf(buf, "insert %s (%s, _Marker_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
@@ -2138,6 +2195,12 @@ char *mgi_DBcvname(int table)
 	    break;
     case MRK_STATUS:
             strcpy(buf, "status");
+	    break;
+    case MLP_SPECIES:
+            strcpy(buf, "species");
+	    break;
+    case MLP_STRAINTYPE:
+            strcpy(buf, "strainType");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
