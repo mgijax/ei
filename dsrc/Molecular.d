@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 09/27/1999
+--	- TR 611
+--
 -- lec 09/23/1999
 --	- TR 940; Age verification
 --
@@ -205,7 +208,7 @@ rules:
 
 	  prbTables.append(top->MolMarkerForm->Marker->Table);
 
-	  refTables.append(top->MolReferenceForm->SequenceAcc->Table);
+	  refTables.append(top->MolReferenceForm->AccRef->Table);
 	  refTables.append(top->MolReferenceForm->Alias->Table);
 	  refTables.append(top->MolReferenceForm->RFLV->Table);
 
@@ -342,11 +345,11 @@ rules:
 
 	  -- Process Notes
 
-          ModifyNotes.source_widget := top->MolMarkerForm->Notes;
+          ModifyNotes.source_widget := top->MolMarkerForm->MolNote;
           ModifyNotes.tableID := PRB_NOTES;
           ModifyNotes.key := currentMasterKey;
           send(ModifyNotes, 0);
-          cmd := cmd + top->MolMarkerForm->Notes.sql;
+          cmd := cmd + top->MolMarkerForm->MolNote.sql;
 
 	  -- Process Accession numbers
 
@@ -416,7 +419,7 @@ rules:
 
 	  -- Process Accession numbers
 
-          table : widget := top->MolReferenceForm->SequenceAcc->Table;
+          table : widget := top->MolReferenceForm->AccRef->Table;
           ProcessAcc.table := table;
           ProcessAcc.objectKey := currentMasterKey;
           ProcessAcc.refsKey := top->MolReferenceForm->mgiCitation->ObjectID->text.value;
@@ -486,10 +489,8 @@ rules:
 --
 
 	KFMemorialMolSeg does
-	  top->MolMarkerForm->Notes->text.value := 
+	  top->MolNote->text.value := 
 		"This clone is derived from a gene that produces alternate transcripts.";
-	  SetModify.source_widget := top->MolMarkerForm->Notes->text;
-	  send(SetModify, 0);
 	end does;
 
 --
@@ -629,11 +630,11 @@ rules:
 
 	  send(ModifyMarker, 0);
 
-          ModifyNotes.source_widget := top->MolMarkerForm->Notes;
+          ModifyNotes.source_widget := top->MolMarkerForm->MolNote;
           ModifyNotes.tableID := PRB_NOTES;
           ModifyNotes.key := currentMasterKey;
           send(ModifyNotes, 0);
-          cmd := cmd + top->MolMarkerForm->Notes.sql;
+          cmd := cmd + top->MolMarkerForm->MolNote.sql;
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentMasterKey;
@@ -746,7 +747,7 @@ rules:
 
 	  -- Process Accession numbers
 
-          table :widget := top->MolReferenceForm->SequenceAcc->Table;
+          table :widget := top->MolReferenceForm->AccRef->Table;
           ProcessAcc.table := table;
           ProcessAcc.objectKey := currentMasterKey;
           ProcessAcc.refsKey := top->MolReferenceForm->mgiCitation->ObjectID->text.value;
@@ -1106,14 +1107,14 @@ rules:
             from_marker := true;
           end if;
 
-          if (top->MolMarkerForm->Notes->text.value.length > 0) then
-	    where := where + "\nand n.note like " + mgi_DBprstr(top->MolMarkerForm->Notes->text.value);
+          if (top->MolMarkerForm->MolNote->text.value.length > 0) then
+	    where := where + "\nand n.note like " + mgi_DBprstr(top->MolMarkerForm->MolNote->text.value);
 	    from_note := true;
 	  end if;
 
 	  -- Reference-specific stuff
 
-	  table := top->MolReferenceForm->SequenceAcc->Table;
+	  table := top->MolReferenceForm->AccRef->Table;
 	  if (not from_acc) then
             SearchAcc.table := table;
             SearchAcc.objectKey := "r." + mgi_DBkey(PRB_REFERENCE);
@@ -1393,7 +1394,7 @@ rules:
 		ViewMolSegDetail.source_widget := top->MolMasterForm->SeqTypeMenu.menuHistory;
 		send(ViewMolSegDetail, 0);
 
-	        top->MolMarkerForm->Notes->text.value := "";
+	        top->MolMarkerForm->MolNote->text.value := "";
 	        top->MolDetailForm->ParentClone->ObjectID->text.value := "";
 	        top->MolDetailForm->ParentClone->AccessionID->text.value := "";
 	        top->MolDetailForm->ParentClone->AccessionName->text.value := "";
@@ -1408,7 +1409,7 @@ rules:
 	        top->MolDetailForm->ParentClone->AccessionID->text.value := mgi_getstr(dbproc, 3);
 
 	      elsif (results = 3) then
-	        top->MolMarkerForm->Notes->text.value := top->MolMarkerForm->Notes->text.value + mgi_getstr(dbproc, 1);
+	        top->MolMarkerForm->MolNote->text.value := top->MolMarkerForm->MolNote->text.value + mgi_getstr(dbproc, 1);
 	      elsif (results = 4) then
 		mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 3));
 		mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
@@ -1566,7 +1567,7 @@ rules:
             mgi_tblSetCell(table, row, table.strainKeys, strainKeys);	-- Don't forget last record
 	  end if;
 
-          LoadAcc.table := top->MolReferenceForm->SequenceAcc->Table;
+          LoadAcc.table := top->MolReferenceForm->AccRef->Table;
           LoadAcc.objectKey := currentReferenceKey;
 	  LoadAcc.tableID := PRB_REFERENCE;
 	  LoadAcc.reportError := false;
