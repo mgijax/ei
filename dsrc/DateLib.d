@@ -138,6 +138,26 @@ rules:
             where := where + table.sqlCmd;
 	  end if;
 
+	  if (table.is_defined("seqRecordDate") != nil) then
+            QueryDate.source_widget := table;
+	    QueryDate.row := table.seqRecordDate;
+	    QueryDate.column := table.byDate;
+            QueryDate.tag := tag;
+            QueryDate.fieldName := table.seqRecordFieldName;
+            send(QueryDate, 0);
+            where := where + table.sqlCmd;
+	  end if;
+
+	  if (table.is_defined("sequenceDate") != nil) then
+            QueryDate.source_widget := table;
+	    QueryDate.row := table.sequenceDate;
+	    QueryDate.column := table.byDate;
+            QueryDate.tag := tag;
+            QueryDate.fieldName := table.sequenceFieldName;
+            send(QueryDate, 0);
+            where := where + table.sqlCmd;
+	  end if;
+
 	  value := mgi_tblGetCell(table, table.createdBy, table.byUser);
 	  if (value.length > 0) then
 	    where := where + "\nand " + tag + "._CreatedBy_key = u1._User_key" +

@@ -2376,15 +2376,21 @@ rules:
 	  displayMarker := "";
 
           QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "g";
+          QueryDate.tag := "e";
           send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
+          if (top->CreationDate.sql.length > 0) then
+            where := where + top->CreationDate.sql;
+	    from_expt := true;
+          end if;
  
           QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "g";
+          QueryDate.tag := "e";
           send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
- 
+          if (top->ModifiedDate.sql.length > 0) then
+            where := where + top->ModifiedDate.sql;
+	    from_expt := true;
+          end if; 
+
           if (top->ExptMasterForm->mgiCitation->Jnum->text.value.length > 0) then
 	    where := where + " and g.jnum = " + top->ExptMasterForm->mgiCitation->Jnum->text.value + "\n";
           elsif (top->ExptDetailForm->Jnum->text.value.length > 0) then
