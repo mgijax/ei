@@ -8,7 +8,7 @@
 #    if the DNAtype and species of the probes are different
 #    So, group the probes by symbol, DNAtype and species
 #
-#    Exclude dbEST ESTs and I.M.A.G.E. clones
+#    Exclude I.M.A.G.E. clones
 #
 #
 
@@ -28,8 +28,7 @@ go
 select _Probe_key, name, DNAtype, _Source_key, modification_date
 into #preprobe
 from PRB_Probe
-where DNAtype != "EST"
-and DNAtype != "primer"
+where DNAtype != "primer"
 and _Source_key != 30040
 and name != 'I.M.A.G.E. clone'
 go
@@ -90,13 +89,12 @@ drop table #probe
 go
 
 print ""
-print "Probes - No Markers (excluding dbEST ESTs and I.M.A.G.E. clones)"
+print "Probes - No Markers (excluding I.M.A.G.E. clones)"
 print ""
 
 select p.name 
 from PRB_Probe p 
-where p.DNAtype != "EST"
-and p.DNAtype != "primer"
+where p.DNAtype != "primer"
 and p._Source_key != 30040
 and p.name != 'I.M.A.G.E. clone'
 and not exists (select m.* from PRB_Marker m where p._Probe_key = m._Probe_key)
