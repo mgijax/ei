@@ -130,7 +130,6 @@ extern char *global_version;
 #define GXD_ANTIBODY		201
 #define GXD_ANTIBODYMARKER	202
 #define GXD_ANTIBODYALIAS	203
-#define GXD_ANTIBODYALIAS	203
 #define GXD_ASSAY   		204
 #define GXD_ASSAYNOTE 		205
 #define GXD_ANTIBODYPREP	206
