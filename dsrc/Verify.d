@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 12/06/2002
+--	- TR 4262; for Unknown GO ID terms, fill in J: and Evidence code (VerifyVocabTermAccID)
+--
 -- lec 04/25/2002
 --	- TR3627 (VerifyStrains); fix insert of new Strain
 --
@@ -3323,6 +3326,15 @@ rules:
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, termKey);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, term);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, dag);
+
+	      -- TR 4262
+	      if (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554") then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "74750");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.jnum, "73796");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "108");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "ND");
+	      end if;
+	       
 	    end if;
 	  else
 	    if (isTable) then
