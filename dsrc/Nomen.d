@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 11/13/2001
+--	- TR 3099; always update modification date
+--
 -- lec 06/21/2001
 --	- revised code in Modify so that you can modify notes
 --	  even if you don't have permission to modify the rest
@@ -185,8 +188,6 @@ locals:
 
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
-
-	updateModificationDate : boolean;
 
 rules:
 
@@ -486,8 +487,6 @@ rules:
 	  table : widget := top->Reference->Table;
 	  error : boolean := false;
 
-	  updateModificationDate := true;
-
 	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
@@ -615,11 +614,7 @@ rules:
 
 	  send(ModifyNomenNotes, 0);
 
-	  if (set.length > 0) then
-	    updateModificationDate := true;
-	  end if;
-
-	  if (updateModificationDate and (cmd.length > 0 or set.length > 0)) then
+	  if (cmd.length > 0 or set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(MRK_NOMEN, currentNomenKey, set);
 	  end if;
 
@@ -685,10 +680,6 @@ rules:
  
 	ModifyNomenNotes does
 	  notew: widget;
-
-	  if (cmd.length = 0) then
-		updateModificationDate := false;
-	  end if;
 
 	  notes.open;
 	  while (notes.more) do
