@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jun 13 14:04:39 2001";
+      lastWritten = "Wed Jun 27 13:41:27 2001";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -832,10 +832,20 @@ Shift<Key>Tab: prev-tab-group()
                         translations = "#override
  Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyItem()";
+                      Group: User
+                        defaultValue = "Not Specified";
                     }
               }
               {
                 VerifyID = ID : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = text;
+                      Group: User
+                        defaultValue = "-1";
+                    }
               }
         }
         {

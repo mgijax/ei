@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jun 13 14:21:53 2001";
+      lastWritten = "Wed Jun 27 13:52:08 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -9021,6 +9021,8 @@ Shift<Key>Tab: prev-tab-group()
                                                 translations = "#override
  Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyItem() DisplayESCellLine()";
+                                              Group: User
+                                                defaultValue = "Not Applicable";
                                             }
                                       }
                                       {
@@ -9049,6 +9051,14 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         StrainID = ID;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                defaultValue = "-2";
+                                            }
                                       }
                                       {
                                         Verify = CharText;
@@ -9056,6 +9066,11 @@ Shift<Key>Tab: prev-tab-group()
                                               label = XmLabel;
                                               Group: Widget
                                                 labelString = "Strain of \nOrigin";
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                defaultValue = "Not Applicable";
                                             }
                                       }
                                 }
