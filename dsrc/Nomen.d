@@ -750,7 +750,6 @@ rules:
 
 	PrepareSearch does
 	  from_other       : boolean := false;
-	  from_genefamily  : boolean := false;
 
 	  printSelect := "";
 
@@ -889,11 +888,6 @@ rules:
 	  if (from_other) then
 	    from := from + "," + mgi_DBtable(NOM_SYNONYM) + " mo";
 	    where := where + "\nand m._Nomen_key = mo._Nomen_key";
-	  end if;
-
-	  if (from_genefamily) then
-	    from := from + "," + mgi_DBtable(NOM_GENEFAMILY_VIEW) + " mf";
-	    where := where + "\nand m._Nomen_key = mf._Nomen_key";
 	  end if;
 
           if (where.length > 0) then
@@ -1180,10 +1174,8 @@ rules:
 --
 
 	Broadcast does
-	  message : string := "Are you sure you want to broadcast these records?\n";
 	  broadcastOK : boolean := false;
 	  table : widget := top->Reference->Table;
-	  recordCount : integer := 0;
 
 	  broadcastType := Broadcast.type;
 
@@ -1201,13 +1193,9 @@ rules:
 	  end if;
 
 	  if (broadcastType = 1 or broadcastType = 2) then
-	    message := message + "\n" + top->Symbol->text.value;
-	    recordCount := 1;
 	    broadcastOK := true;
 	  elsif (broadcastType = 3 or broadcastType = 4) then
-	    message := message + "\n" + top->Symbol->text.value;
 	    if (currentNomenKey.length > 0) then
-	      recordCount := 1;
 	      broadcastOK := true;
 	    end if;
 	  end if;
@@ -1219,8 +1207,6 @@ rules:
             return;
 	  end if;
 
-	  message := message + "\n\nTotal # of symbols to broadcast:  " + (string) recordCount;
-	  top->BroadcastDialog.messageString := message;
 	  top->BroadcastDialog.managed := true;
 	end does;
 
