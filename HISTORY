@@ -1,3 +1,10 @@
+TAG: ei-3-1-1-19
+DATE: 03/08/2005
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) Verify.d/VerifyGenotype; speed it up
+
 TAG: ei-3-1-1-18
 DATE: 03/07/2005
 STAFF: lec
