@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 11/29/2001
+--	- TR 3148; when Name is modified, modify all corresponding History names too
+--
 -- 06/14/2001
 --	- TR 2461; add MGI Acc# to Withdrawal Dialog
 --
@@ -167,6 +170,7 @@ locals:
 	tables : list;
 
 	currentChr : string;		-- current Chromosome of selected record
+	currentName : string;		-- current Name of selected record
 	hasAlleles : boolean;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
@@ -954,6 +958,7 @@ rules:
 --
 
 	Modify does
+	  modifyName : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -981,6 +986,7 @@ rules:
 
 	  if (top->Name->text.modified) then
 	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
+	    modifyName := true;
 	  end if;
 
           if (top->ChromosomeMenu.menuHistory.modified and
@@ -1015,6 +1021,16 @@ rules:
           ProcessAcc.tableID := MRK_ACC_REFERENCE;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
+
+	  --
+	  -- If modifying name, then also modify all corresponding History records
+	  --
+
+	  if (modifyName) then
+	    cmd := cmd + mgi_DBupdate(MRK_HISTORY, currentRecordKey, 
+			"name = " +  mgi_DBprstr(top->Name->text.value) + ",") +
+                        "and name = " + mgi_DBprstr(currentName) + "\n";
+	  end if;
 
 	  if ((cmd.length > 0 and cmd != accRefTable.sqlCmd and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
@@ -1932,6 +1948,7 @@ rules:
 	  end while;
 
 	  currentChr := top->ChromosomeMenu.menuHistory.defaultValue;
+	  currentName := top->Name->text.value;
 
 	  -- Withdrawn markers will not have MGI accession IDs
 
