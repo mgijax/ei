@@ -198,6 +198,14 @@ rules:
 --
 
 	ClearAllele does
+
+	  if (not ClearAllele.reset) then
+	    top->AlleleStatusMenu.background := "Wheat";
+            top->AlleleStatusPulldown.background := "Wheat";
+            top->AlleleStatusPulldown->SearchAll.background := "Wheat";
+            top->AlleleStatusMenu.menuHistory.background := "Wheat";
+	  end if;
+
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
 	  Clear.clearKeys := ClearAllele.clearKeys;
