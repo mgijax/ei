@@ -38,7 +38,7 @@ devents:
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
-	SetMGIType [];					-- Set MGI Type and DB View
+	SetMGIType [source_widget;];			-- Set MGI Type and DB View
 	SortTable :local [];				-- Sort Rows
 	StripeRows :local [];				-- Strip Rows
 	VerifyTransMGITermAccID :local [];		-- Verify MGI Term
@@ -484,6 +484,8 @@ rules:
               SetOption.source_widget := top->MGITypeMenu;
               SetOption.value := mgi_getstr(dbproc, 2);
               send(SetOption, 0);
+	      SetMGIType.source_widget := top->MGITypeMenu;
+	      send(SetMGIType, 0);
 	    end while;
 	  end while;
 
@@ -561,18 +563,23 @@ rules:
 
         SetMGIType does
  
-          if (not SetMGIType.source_widget.set) then
-            return;
+	  if (SetMGIType.source_widget.is_defined("set") != nil) then
+            if (not SetMGIType.source_widget.set) then
+              return;
+	    end if;
           end if;
  
-	  mgiTypeKey := SetMGIType.source_widget.searchValue;
-	  translationTypeKey := top->TranslationTypeMenu.menuHistory.searchValue;
+	  if (SetMGIType.source_widget.is_defined("searchValue") != nil) then
+	    mgiTypeKey := SetMGIType.source_widget.searchValue;
 
-	  if (mgiTypeKey != "%") then
-	    dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
-	  else
-	    dbView := "";
+	    if (mgiTypeKey != "%") then
+	      dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
+	    else
+	      dbView := "";
+	    end if;
 	  end if;
+
+	  translationTypeKey := top->TranslationTypeMenu.menuHistory.searchValue;
 
 	end does;
 
