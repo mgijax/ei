@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 11 12:55:04 2001";
+      lastWritten = "Wed Sep 12 14:30:34 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -317,17 +317,32 @@ Module: gxdDictionary
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    managed = False;
+                                    activateCallback = "D:DictionaryClear";
+                                    labelString = "Clear Form Only";
+                                }
+                                {
+                                  ClearFormAndStages = XmPushButton;
+                                  Group: Widget
+                                    labelString = "Clear Form and Stages";
+                                    activateCallback = "D:DictionaryClear(clearStages = true)";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Clear;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Clear;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   Modify = ControlPush;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = Clear1;
+                                    leftWidget = Clear;
                                     leftOffset = 2;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = Clear1;
+                                    topWidget = Clear;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = "-1";
@@ -375,27 +390,6 @@ Module: gxdDictionary
                                 }
                                 {
                                   Clear1 = XmMenuBar;
-                                  Group: Widget
-                                    managed = True;
-                                      {
-                                        Clear = XmCascadeButton;
-                                            Popups:
-                                            {
-                                              ClearPulldown = XmPulldownMenu;
-                                                  {
-                                                    FormOnly = XmPushButton;
-                                                    Group: Widget
-                                                      activateCallback = "D:DictionaryClear";
-                                                      labelString = "Clear Form Only";
-                                                  }
-                                                  {
-                                                    FormAndStages = XmPushButton;
-                                                    Group: Widget
-                                                      labelString = "Clear Form and Stages";
-                                                      activateCallback = "D:DictionaryClear(clearStages = true)";
-                                                  }
-                                            }
-                                      }
                                 }
                                 {
                                   RecordCount = RecordCount;
