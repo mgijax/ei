@@ -250,6 +250,9 @@ extern char *global_version;
 #define MGI_NOTETYPE                    604
 #define MGI_NOTETYPE_MRKGO_VIEW		605
 #define MGI_NOTE_MRKGO_VIEW		606
+#define MGI_TRANSLATION                 613
+#define MGI_TRANSLATIONTYPE             614
+#define MGI_TRANSLATIONSTRAIN_VIEW      615
 
 /* Strains Tables */
 
