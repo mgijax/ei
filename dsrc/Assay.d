@@ -2806,22 +2806,34 @@ rules:
 	      end if;
 
 	      x := lane * gelTable.bandIncrement;
-	      lane := lane + 1;
-	      prev_row := row;
+
+	      -- If the Gel Lane key from the query is the same as the Gel Lane key in the Gel Row table...
+	      --	then we're okay
+	      -- else
+	      --	skip to the appropriate Gel Lane in the Gel Row table
+	      --        flag Gel Band for Add
+
+	      while (mgi_getstr(dbproc, 2) != mgi_tblGetCell(gelTable, row, gelTable.laneKey + x)) do
+		(void) mgi_tblSetCell(gelTable, row, gelTable.bandMode + x, TBL_ROW_ADD);
+		lane := lane + 1;
+	        x := lane * gelTable.bandIncrement;
+	      end while;
 
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandKey + x, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.strengthKey + x, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandNotes + x, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.strength + x, mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandMode + x, TBL_ROW_NOCHG);
-	      (void) mgi_tblSetCell(gelTable, row, gelTable.editMode, TBL_ROW_NOCHG);
+
+	      lane := lane + 1;
+	      prev_row := row;
+
 	    end while;
           end while;
 	  (void) dbclose(dbproc);
 
 	  -- For first row, if Lane Control != No and no Strength, then Strength = Not Applicable
 	  i := 0;
-	  lanes.rewind;
 	  while (i < lanes.count) do
             x := i * gelTable.bandIncrement;
 	    controlKey := mgi_tblGetCell(laneTable, i, laneTable.controlKey);
@@ -2829,18 +2841,37 @@ rules:
               (void) mgi_tblSetCell(gelTable, 0, gelTable.strengthKey + x, NOTAPPLICABLE);
 	      (void) mgi_tblSetCell(gelTable, 0, gelTable.strength + x, "Not Applicable");
 	      (void) mgi_tblSetCell(gelTable, 0, gelTable.bandMode + x, TBL_ROW_ADD);
-
-	      -- If existing key exists, then flag for modification, else flag for add
-
-	      if (mgi_tblGetCell(gelTable, 0, gelTable.editMode) = TBL_ROW_NOCHG) then
-	        (void) mgi_tblSetCell(gelTable, 0, gelTable.editMode, TBL_ROW_MODIFY);
-	      else
-	        (void) mgi_tblSetCell(gelTable, 0, gelTable.editMode, TBL_ROW_ADD);
-	      end if;
 	    end if;
 	    i := i + 1;
 	  end while;
 
+	  row := 0;
+	  i := 0;
+	  while (row < mgi_tblNumRows(gelTable)) do
+	    while (i < lanes.count) do
+              x := i * gelTable.bandIncrement;
+
+	      -- If existing row and bandMode is empty, flag band as an add
+
+	      if (mgi_tblGetCell(gelTable, row, gelTable.rowKey) != "" and
+	          mgi_tblGetCell(gelTable, row, gelTable.bandMode + x) = TBL_ROW_EMPTY) then
+	        (void) mgi_tblSetCell(gelTable, 0, gelTable.bandMode + x, TBL_ROW_ADD);
+	      end if;
+
+	      -- If band as been flagged for add, set row flag accordingly
+
+	      if (mgi_tblGetCell(gelTable, row, gelTable.bandMode + x) = TBL_ROW_ADD) then
+	        if (mgi_tblGetCell(gelTable, row, gelTable.rowKey) != "") then
+	          (void) mgi_tblSetCell(gelTable, row, gelTable.editMode, TBL_ROW_MODIFY);
+	        else
+	          (void) mgi_tblSetCell(gelTable, row, gelTable.editMode, TBL_ROW_ADD);
+	        end if;
+	      end if;
+
+              i := i + 1;
+	    end while;
+	    row := row + 1;
+          end while;
 	end does;
 
 --
