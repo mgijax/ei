@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 31 14:20:55 1999";
+      lastWritten = "Thu Sep  2 08:21:57 1999";
         {
           Reference = Module : MGI;
           Group: Widget
@@ -1064,7 +1064,7 @@ Module: MGD
                                       {
                                         Verify = CharText;
                                             {
-                                              Strain = XmLabel;
+                                              Strain : label = XmLabel;
                                               Group: Widget
                                                 labelString = "Female Strain";
                                             }
@@ -1088,7 +1088,7 @@ Module: MGD
                                       {
                                         Verify = CharText;
                                             {
-                                              Strain = XmLabel;
+                                              Strain : label = XmLabel;
                                               Group: Widget
                                                 labelString = "Male Strain";
                                             }
@@ -1135,7 +1135,7 @@ Module: MGD
                                       {
                                         Verify = CharText;
                                             {
-                                              Strain = XmLabel;
+                                              Strain : label = XmLabel;
                                               Group: Widget
                                                 labelString = designates;
                                             }
@@ -1177,7 +1177,7 @@ Module: MGD
                                       {
                                         Verify = CharText;
                                             {
-                                              Strain = XmLabel;
+                                              Strain : label = XmLabel;
                                               Group: Widget
                                                 labelString = designates;
                                             }
@@ -1589,13 +1589,10 @@ Module: MGD
                                 {
                                   Verify = CharText;
                                       {
-                                        Strain = XmLabel;
+                                        Strain : label = XmLabel;
                                       }
                                       {
                                         text = text;
-                                      }
-                                      {
-                                        label = XmLabel;
                                       }
                                 }
                           }
@@ -1604,13 +1601,10 @@ Module: MGD
                                 {
                                   Verify = CharText;
                                       {
-                                        Strain = XmLabel;
+                                        Strain : label = XmLabel;
                                       }
                                       {
                                         text = text;
-                                      }
-                                      {
-                                        label = XmLabel;
                                       }
                                 }
                           }
@@ -4280,9 +4274,12 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
+                      StrainID : VerifyID = ID;
+                    }
+                    {
                       Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            Strain : label = XmLabel;
                           }
                           {
                             text = text;
@@ -4543,9 +4540,12 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
+                      StrainID : VerifyID = ID;
+                    }
+                    {
                       Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            Strain : label = XmLabel;
                           }
                           {
                             text = text;
@@ -4986,14 +4986,17 @@ Shift<Key>Tab: prev-tab-group()
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
                   topWidget = Female;
+                  topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
                   rightOffset = 2;
-                  topOffset = 2;
+                    {
+                      StrainID : VerifyID = ID;
+                    }
                     {
                       Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            Strain : label = XmLabel;
                             Group: Widget
                               labelString = "Female Strain";
                           }
@@ -5034,16 +5037,19 @@ Shift<Key>Tab: prev-tab-group()
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Notes;
                   rightAttachment = attach_form;
+                  rightOffset = 2;
                   topAttachment = attach_widget;
                   topWidget = Male;
+                  topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  rightOffset = 2;
-                  topOffset = 2;
+                    {
+                      StrainID : VerifyID = ID;
+                    }
                     {
                       Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            Strain : label = XmLabel;
                             Group: Widget
                               labelString = "Male Strain";
                           }
@@ -5088,9 +5094,12 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
                   topOffset = "-5";
                     {
+                      StrainID : VerifyID = ID;
+                    }
+                    {
                       Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            Strain : label = XmLabel;
                           }
                           {
                             text = text;
@@ -5134,9 +5143,12 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
                   topOffset = "-5";
                     {
+                      StrainID : VerifyID = ID;
+                    }
+                    {
                       Verify = CharText;
                           {
-                            Strain = XmLabel;
+                            Strain : label = XmLabel;
                           }
                           {
                             text = text;
@@ -5642,19 +5654,7 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_form;
                   resizable = true;
                     {
-                      Strain = Strain;
-                          {
-                            Verify = CharText;
-                                {
-                                  Strain = XmLabel;
-                                }
-                                {
-                                  text = text;
-                                }
-                                {
-                                  label = XmLabel;
-                                }
-                          }
+                      Strain = Strain : mgiDataTypes;
                     }
                     {
                       CellOrigin = CharText;
@@ -5693,19 +5693,7 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_form;
                   resizable = true;
                     {
-                      Strain = Strain;
-                          {
-                            Verify = CharText;
-                                {
-                                  Strain = XmLabel;
-                                }
-                                {
-                                  text = text;
-                                }
-                                {
-                                  label = XmLabel;
-                                }
-                          }
+                      Strain = Strain : mgiDataTypes;
                     }
                     {
                       CellOrigin = CharText;
@@ -5744,37 +5732,13 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_form;
                   resizable = true;
                     {
-                      FStrain = Strain;
-                          {
-                            Verify = CharText;
-                                {
-                                  Strain = XmLabel;
-                                }
-                                {
-                                  text = text;
-                                }
-                                {
-                                  label = XmLabel;
-                                }
-                          }
+                      FStrain = Strain : mgiDataTypes;
                     }
                     {
                       Male = CharText;
                     }
                     {
-                      MStrain = Strain;
-                          {
-                            Verify = CharText;
-                                {
-                                  Strain = XmLabel;
-                                }
-                                {
-                                  text = text;
-                                }
-                                {
-                                  label = XmLabel;
-                                }
-                          }
+                      MStrain = Strain : mgiDataTypes;
                     }
                     {
                       Abbrev1 = CharText;
@@ -5784,13 +5748,10 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             Verify = CharText;
                                 {
-                                  Strain = XmLabel;
+                                  Strain : label = XmLabel;
                                 }
                                 {
                                   text = text;
-                                }
-                                {
-                                  label = XmLabel;
                                 }
                           }
                     }
@@ -5802,13 +5763,10 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             Verify = CharText;
                                 {
-                                  Strain = XmLabel;
+                                  Strain : label = XmLabel;
                                 }
                                 {
                                   text = text;
-                                }
-                                {
-                                  label = XmLabel;
                                 }
                           }
                     }
