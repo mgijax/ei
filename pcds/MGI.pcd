@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 23 12:39:23 2002";
+      lastWritten = "Mon Nov 25 09:27:26 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1229,7 +1229,7 @@ Module: MGI
                                           xrtTblTraversableSeries = "(all 0-9 False)(all 11-13 False)(all 15 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
-                                          requiredColumns = "2\n5";
+                                          requiredColumns = "2\n5\n7";
                                       }
                                 }
                                 {
