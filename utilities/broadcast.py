@@ -1718,6 +1718,9 @@ class Marker:
 			if otherName == self.getSymbol():
 				continue
 
+			if len(otherName) == 0:
+				continue
+
 			select = 'select @nextOkey = max(_Other_key) + 1 from MRK_Other'
 
 			if not declared:
