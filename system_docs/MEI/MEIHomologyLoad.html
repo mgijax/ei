@@ -31,16 +31,16 @@ which uses data dumps provided by the SSDBs.
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>SSDB<TH>Data File<TH>Contact<TH>Frequency of Data Load
 <TR><TD>LocusLink
-    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/LL.out">LL.out</A>
+    <TD><A HREF="http://prodwww/~lec/mgireport/locuslinkload/output/LL.out">LL.out</A>
 	<BR>Data file is automatically extracted from the FTP site <CODE>ftp.ncbi.nlm.nih.gov</CODE>
-	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
+	    to <CODE>titan:/usr/local/mgi/locuslinkload/output/</CODE>.
     <TD>Donna Maglott <BR>(maglott@ncbi.nlm.nih.gov)
     <TD>Daily
 
 <TR><TD>RATMAP
-    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/RatURL.txt">RatURL.txt</A>
+    <TD><A HREF="http://prodwww/~lec/mgireport/ratmapload/RatURL.txt">RatURL.txt</A>
 	<BR>Data file is automatically extracted from the FTP site <CODE>genmac17.gen.gu.se</CODE>
-	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
+	    to <CODE>titan:/usr/local/mgi/ratmapload/output/</CODE>.
     <TD>Fredrik Stahl <BR>(Fredrik.Stahl@gen.gu.se)
     <TD>Daily (TR 555; RATMAP file is only updated once a month)
 
@@ -79,7 +79,7 @@ We are only loading the GDB ID from the LocusLink file.
 <P>
 <LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
 	<PRE>
-	$SYBASE/admin/utilities/LocusLink/LLupdate.sh MGD mgd -l
+	/usr/local/mgi/locuslink/LLupdate.sh -l
 	</PRE>
 </OL>
 
@@ -114,7 +114,7 @@ We are not updating MGD Rat symbols from RATMAP.
 <P>
 <LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
 	<PRE>
-	$SYBASE/admin/utilities/RATMAP/RATMAPupdate.sh MGD mgd -l
+	/usr/local/mgi/ratmapload/RATMAPupdate.sh -l
 	</PRE>
 </OL>
 
@@ -133,7 +133,7 @@ ortholog exists in MGD.
 <P>
 <LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
 	<PRE>
-	$SYBASE/admin/utilities/GDB/GDBreport.sh MGD mgd
+	/usr/local/mgi/qcreports_db/GDBreport.sh -f
 	</PRE>
 </OL>
 
