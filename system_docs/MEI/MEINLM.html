@@ -73,8 +73,16 @@ There are 2 modes defined for processing NLM data files:
         <LI>First Page
         </UL>
 <P>
-<LI>If a match is found and the Medline UI, Title or Abstract is blank, then the MGD record 
-    is updated with the full NLM Reference information:
+<LI>If one match is found, then the database is also searched for a possible Submission reference
+    using:
+    <UL>
+    <LI>Journal = Submission
+    <LI>Primary Author
+    <LI>first 25 characters of Title
+    </UL>
+<P>
+<LI>If one match is found and no Submission reference is found and the Medline UI, Title or 
+    Abstract is blank, then the MGD record is updated with the full NLM Reference information:
     <UL>
     <LI>Authors
     <LI>Title
@@ -84,14 +92,6 @@ There are 2 modes defined for processing NLM data files:
     <LI>Volume
     <LI>Issue
     <LI>Pages
-    </UL>
-<P>
-<LI>If no match is found, then the database is searched for a possible Submission reference
-    using:
-    <UL>
-    <LI>Journal = Submission
-    <LI>Primary Author
-    <LI>first 25 characters of Title
     </UL>
 <P>
 <LI>If more than one match is found, then the NLM reference is reported as a "duplicate".
