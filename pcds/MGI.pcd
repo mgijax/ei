@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Jun 10 10:00:31 2002";
+      lastWritten = "Wed Aug 21 13:16:11 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -182,7 +182,7 @@ Module: MGI
           Module = TopLevelShell;
           Group: Widget
             userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
-            destroyCallback = "D:Exit";
+            closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
             vip_x = 70;
@@ -364,7 +364,7 @@ Module: MGI
           Module1 = TopLevelShell;
           Group: Widget
             userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
-            destroyCallback = "D:Exit";
+            closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
             vip_x = 70;
@@ -1168,6 +1168,7 @@ Module: MGI
           Group: Widget
             width = 1200;
             height = 825;
+            closeWindowCallback = "D:VocAnnotExit";
           Group: Control
             vip_x = 70;
             vip_y = 580;
@@ -1181,6 +1182,18 @@ Module: MGI
                   resizePolicy = resize_any;
                     {
                       MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:VocAnnotExit";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1483,6 +1496,8 @@ Module: MGI
         }
         {
           GenotypeModule = Module : MGI;
+          Group: Widget
+            closeWindowCallback = "D:GenotypeExit";
           Group: Control
             vip_x = 70;
             vip_y = 470;
@@ -1495,6 +1510,15 @@ Module: MGI
                       MainMenu = MainMenu : mgiMenu;
                           {
                             File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:GenotypeExit";
+                                      }
+                                }
                           }
                           {
                             Commands = Commands : mgiMenu;

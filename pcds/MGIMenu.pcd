@@ -6,7 +6,7 @@ Module: MGIMenu
         {
           MGIMenu = TopLevelShell;
           Group: Widget
-            destroyCallback = "D:Exit";
+            closeWindowCallback = "D:Exit";
           Group: Control
             vipComment = "";
             vip_x = 30;
