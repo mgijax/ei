@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jan 16 14:02:17 2004";
+      lastWritten = "Mon Jan 19 13:39:33 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -133,6 +133,8 @@ Module: MGINomen
                                     topWidget = MarkerEventMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    defaultChild = 2;
                                 }
                                 {
                                   MarkerTypeMenu = MarkerTypeMenu : mgiOption;
