@@ -496,9 +496,10 @@ rules:
 		  "from MGI_Translation_View t, " + dbView + " v" +
 		  " where v._Object_key = t._Object_key" + 
 		  " and t._TranslationType_key = " + currentRecordKey +
-		  " order by v.description\n";
+		  " order by v.description, t._Translation_key\n";
 
 	  row : integer := 0;
+	  isDuplicate : boolean := false;
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -506,23 +507,34 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.transKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.objectKey, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.nonmgiTerm, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.mgiTerm, mgi_getstr(dbproc, 7));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.currentSeqNum, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.seqNum, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.modifiedBy, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.modifiedDate, mgi_getstr(dbproc, 6));
-	      (void) mgi_tblSetCell(translationTable, row, translationTable.editMode, TBL_ROW_NOCHG);
+	      isDuplicate := false;
 
-	      if (mgi_getstr(dbproc, 9).length > 0) then
-	        (void) mgi_tblSetCell(translationTable, row, translationTable.accID, mgi_getstr(dbproc, 9));
-	      else
-	        (void) mgi_tblSetCell(translationTable, row, translationTable.accID, mgi_getstr(dbproc, 8));
+	      if (row > 0) then
+		if (mgi_tblGetCell(translationTable, row - 1, translationTable.transKey) = mgi_getstr(dbproc, 1)) then
+		  isDuplicate := true;
+	        end if;
 	      end if;
 
-	      row := row + 1;
+	      if (not isDuplicate) then
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.transKey, mgi_getstr(dbproc, 1));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.objectKey, mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.nonmgiTerm, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.mgiTerm, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.currentSeqNum, mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.seqNum, mgi_getstr(dbproc, 4));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.modifiedBy, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.modifiedDate, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(translationTable, row, translationTable.editMode, TBL_ROW_NOCHG);
+  
+	        if (mgi_getstr(dbproc, 9).length > 0) then
+	          (void) mgi_tblSetCell(translationTable, row, translationTable.accID, mgi_getstr(dbproc, 9));
+	        else
+	          (void) mgi_tblSetCell(translationTable, row, translationTable.accID, mgi_getstr(dbproc, 8));
+	        end if;
+
+	        row := row + 1;
+	      end if;
+
             end while;
           end while;
  
