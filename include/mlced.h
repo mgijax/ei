@@ -15,7 +15,6 @@
 	Boolean obtain_mlc_lock(char *mk);
 	Boolean release_mlc_lock(char *mk);
 	Boolean cleanup_handler(Widget toplevel);
-    void set_textlimit(DBPROCESS *, long);
 #if defined(__cplusplus) || defined(c_plusplus)
    } 
 #endif

@@ -335,10 +335,3 @@ char *print_entry(char *symbol, char *name, char *chr, char *mode,
 } 
 */
 
-void set_textlimit ( DBPROCESS *dbproc, long limit )
-{
-    char slimit[40];
-	sprintf(slimit,"%ld",limit);
-	dbsetopt(dbproc, DBTEXTSIZE, slimit, -1);
-    /* dbsetopt(dbproc ,DBTEXTLIMIT, slimit, -1); */
-}
