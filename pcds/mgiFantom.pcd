@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Mar 13 08:15:39 2002";
+      lastWritten = "Wed Mar 27 09:07:25 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -630,6 +630,12 @@ Module: mgiFantom
                                     labelString = "Paste \"Done\" in Cell";
                                 }
                                 {
+                                  done2 = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:PasteDoneCuration,\nD:GoHome";
+                                    labelString = "Paste \"Done\" in Cluster Analysis,\nGene Name Curation, CDS/GO Curation";
+                                }
+                                {
                                   copyGBAtoFinal = push : mgiDataTypes;
                                   Group: Widget
                                     labelString = "Copy RA MGI ID\nto Final MGI ID";
@@ -730,6 +736,41 @@ Module: mgiFantom
                               bottomAttachment = attach_none;
                               resizable = true;
                               rightOffset = 5;
+                                {
+                                  Intial = FantomNotePush : mgiFantom;
+                                }
+                                {
+                                  ProbOrtholog = FantomNotePush : mgiFantom;
+                                }
+                                {
+                                  PosOrtholog = FantomNotePush : mgiFantom;
+                                }
+                                {
+                                  ProbParalog = FantomNotePush : mgiFantom;
+                                }
+                                {
+                                  SymbolName = FantomNotePush : mgiFantom;
+                                }
+                                {
+                                  separatorGadget = XmSeparatorGadget;
+                                }
+                                {
+                                  BetterRefSeq = FantomNotePush : mgiFantom;
+                                }
+                                {
+                                  Mismatch1 = FantomNotePush : mgiFantom;
+                                  Group: Widget
+                                    labelString = "5' end mismatch";
+                                  Group: User
+                                    defaultValue = "5' end mismatch";
+                                }
+                                {
+                                  Mismatch2 = FantomNotePush : mgiFantom;
+                                  Group: Widget
+                                    labelString = "3' end mismatch";
+                                  Group: User
+                                    defaultValue = "3' end mismatch";
+                                }
                           }
                     }
               }
