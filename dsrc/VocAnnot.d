@@ -565,13 +565,15 @@ rules:
 	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.* " +
 			  "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-		          " where a._Object_key = " + currentRecordKey + 
+		          " where a._AnnotType_key = " + annotTypeKey +
+			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Annot_key = e._Annot_key " +
 			  " order by " + orderBy +
 			  "select distinct a._Annot_key, v.dagAbbrev " +
 			  "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			  	mgi_DBtable(DAG_NODE_VIEW) + " v" +
-		          " where a._Object_key = " + currentRecordKey + 
+		          " where a._AnnotType_key = " + annotTypeKey +
+			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Vocab_key = v._Vocab_key" +
 			  " and a._Term_key = v._Object_key\n";
 
