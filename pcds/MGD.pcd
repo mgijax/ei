@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 28 08:55:02 2005";
+      lastWritten = "Mon Feb 28 09:13:36 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9448,6 +9448,8 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "strainGenotypeKey:Int(Int)=\"1\"\ngenotypeKey:Int(Int)=\"2\"\nqualifierKey:Int(Int)=\"3\"\ngenotype:Int(Int)=\"5\"\ngenotypeName:Int(Int)=\"6\"\nqualifier:Int(Int)=\"4\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyGenotype\nD:CommitTableCellEdit";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
+                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          xrtTblEditableSeries = "(all 0-4 False)";
                                         Group: User
                                           requiredColumns = "2\n3";
                                       }
