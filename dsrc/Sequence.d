@@ -572,8 +572,19 @@ rules:
 
 	  value := mgi_tblGetCell(table, 0, table.refsKey);
 	  if (value.length > 0) then
-	    whereMarker := where + "\nand m._Refs_key = " + mgi_DBprstr(value);
-	    whereProbe := where + "\nand p._Ref_key = " + mgi_DBprstr(value);
+
+	    if (whereMarker.length > 0) then
+	      whereMarker := whereMarker + "\nand m._Refs_key = " + value;
+	    else
+	      whereMarker := where + "\nand m._Refs_key = " + value;
+	    end if;
+
+	    if (whereProbe.length > 0) then
+	      whereProbe := whereProbe + "\nand p._Refs_key = " + value;
+	    else
+	      whereProbe := where + "\nand p._Refs_key = " + value;
+	    end if;
+
 	    from_object := true;
 	  end if;
 
@@ -594,14 +605,22 @@ rules:
 	  end if;
 
 	  if (from_objectacc) then
-	    fromMarker := from + ", ACC_Accession ma, SEQ_Marker_Cache m";
+	    fromMarker := fromMarker + ", ACC_Accession ma";
+	    fromProbe := fromProbe + ", ACC_Accession pa";
+	    
+	    if (not from_object) then
+	      fromMarker := fromMarker + ", SEQ_Marker_Cache m";
+	      fromProbe := fromProbe + ", SEQ_Probe_Cache p";
+	    end if;
+
 	    whereMarker := whereMarker + "\nand s._Sequence_key = m._Sequence_key" +
 		"\nand m._Marker_key = ma._Object_key" +
 		"\nand ma._MGIType_key = 2";
-	    fromProbe := from + ", ACC_Accession pa, SEQ_Probe_Cache p";
+
 	    whereProbe := whereProbe + "\nand s._Sequence_key = p._Sequence_key" +
 		"\nand p._Probe_key = pa._Object_key" +
 		"\nand pa._MGIType_key = 3";
+
 	    union := "union\n" + select + fromProbe + "\n" + "where " + whereProbe;
 	    from := fromMarker;
 	    where := whereMarker;
