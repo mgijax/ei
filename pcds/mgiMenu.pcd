@@ -60,7 +60,7 @@ Module: mgiMenu
                       Exit = MenuPush : mgiMenu;
                       Group: Widget
                         activateCallback = "D:Exit";
-                        accelerator = "Ctrl<Key> x";
+                        accelerator = "Ctrl<Key>x";
                         mnemonic = x;
                     }
               }
