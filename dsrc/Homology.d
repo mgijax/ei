@@ -554,6 +554,10 @@ rules:
 	    cyto := mgi_tblGetCell(table, row, table.markerCyto);
 	    name := mgi_tblGetCell(table, row, table.markerName);
 	    accID := mgi_tblGetCell(table, row, table.accID);
+
+	    if (accID = "GDB:") then
+		accID = "";
+	    end if;
  
             if (editMode = TBL_ROW_ADD or editMode = TBL_ROW_MODIFY) then
 
