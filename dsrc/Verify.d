@@ -1569,7 +1569,7 @@ rules:
 		"select -1, _NomenStatus_key, symbol, chromosome, null " +
 		"\nfrom " + mgi_DBtable(NOM_MARKER_VALID_VIEW) +
 		"\nwhere symbol = " + mgi_DBprstr(value) + 
-		"\nand _NomenStatus_key in (" + STATUS_PENDING + "," + STATUS_RESERVED + ")\n";
+		"\nand status in ('" + STATUS_PENDING + "','" + STATUS_RESERVED + "')\n";
 	  end if;
 
 	  -- Insert results into string list for loading into Marker selection list
