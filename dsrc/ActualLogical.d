@@ -400,9 +400,9 @@ rules:
                 top->Name->text.value         := mgi_getstr(dbproc, 2);
                 top->Description->text.value  := mgi_getstr(dbproc, 3);
 		top->mgiOrganism->ObjectID->text.value := mgi_getstr(dbproc, 4);
-		top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 8);
-                top->CreationDate->text.value := mgi_getstr(dbproc, 5);
-                top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
+		top->mgiOrganism->Organism->text.value := mgi_getstr(dbproc, 9);
+                top->CreationDate->text.value := mgi_getstr(dbproc, 7);
+                top->ModifiedDate->text.value := mgi_getstr(dbproc, 8);
 	      elsif (results = 2) then
                 table := top->ActualDB->Table;
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);

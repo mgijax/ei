@@ -541,6 +541,7 @@ rules:
 	      top->GenderMenu.menuHistory.defaultValue + "," +
 	      top->CellLine->CellLineID->text.value + "," +
 	      mgi_DBprstr(age) + "," +
+	      mgi_DBprstr(top->Description->text.value) + "," +
 	      global_loginKey + "\n";
 
 	end does;
