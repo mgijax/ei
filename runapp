@@ -9,7 +9,7 @@
 setenv EIAPP $1
 
 cd `dirname $0`
-
 source Configuration
+cd $EIAPP
 
 exec $EIINSTALLDIR/$EIAPP/$EIAPP >>& $USERLOG
