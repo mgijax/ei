@@ -442,12 +442,24 @@ rules:
 	    end if;
 	  end if;
 
+	  if (top.top.name = "MolecularSourceModule") then
+            QueryDate.source_widget := top.top->ControlForm->CreationDate;
+	    QueryDate.tag := "s";
+            send(QueryDate, 0);
+            where := where + top.top->ControlForm->CreationDate.sql;
+ 
+            QueryDate.source_widget := top.top->ControlForm->ModifiedDate;
+	    QueryDate.tag := "s";
+            send(QueryDate, 0);
+            where := where + top.top->ControlForm->ModifiedDate.sql;
+	  end if;
+
 	  if (top->Library->text.value.length > 0) then
 	    where := where + " and s.name like " + mgi_DBprstr(top->Library->text.value);
 	  end if;
 
 	  if (top->mgiCitation->ObjectID->text.value.length > 0 and top->mgiCitation->ObjectID->text.value != "NULL") then
-	    where := where + " and _Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value);
+	    where := where + " and s._Refs_key = " + mgi_DBprkey(top->mgiCitation->ObjectID->text.value);
 	  end if;
 
           if (top->ProbeSpeciesMenu.menuHistory.searchValue != "%") then
