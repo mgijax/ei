@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec	04/17/2002
+--	- TR 3333;  added query by J:
+--
 -- lec	01/32/2002
 --	- detect changes to Strain Name and record previous and new strain name in ei log file
 --
@@ -101,6 +104,7 @@ locals:
 	cmd : string;
 	from : string;
 	where : string;
+	from_reference : boolean;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
@@ -540,6 +544,7 @@ rules:
 	  value : string;
 
 	  from := "from " + mgi_DBtable(MLP_STRAIN_VIEW) + " s";
+	  from_reference := false;
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -642,6 +647,12 @@ rules:
             from_notes := true;
           end if;
       
+	  if (top->mgiCitation->ObjectID->text.value.length > 0 and
+	      top->mgiCitation->ObjectID->text.value != "NULL") then
+	    where := top->mgiCitation->ObjectID->text.value;
+	    from_reference := true;
+	  end if;
+
 	  if (from_extra) then
 	    from := from + "," + mgi_DBtable(MLP_EXTRA) + " n";
 	    where := where + "\nand s._Strain_key = n._Strain_key";
@@ -666,7 +677,7 @@ rules:
 	    where := where + "\nand s._Strain_key = st._Strain_key";
 	  end if;
 
-          if (where.length > 0) then
+	  if (not from_reference and where.length > 0) then
             where := "where" + where->substr(5, where.length);
           end if;
 	end does;
@@ -681,8 +692,14 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct s._Strain_key, s.strain\n" + 
-		from + "\n" + where + "\norder by s.strain\n";
+
+	  if (from_reference) then
+	    Query.select := "exec PRB_getStrainByReference " + where;
+	  else
+	    Query.select := "select distinct s._Strain_key, s.strain\n" + 
+		  from + "\n" + where + "\norder by s.strain\n";
+	  end if;
+
 	  Query.table := STRAIN;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
