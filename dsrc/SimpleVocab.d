@@ -245,9 +245,12 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
-	  if (top->Name->text.modified) then
-	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
-	  end if;
+	  -- You can't modify the Name, Private Flag of a Vocabulary once it
+	  -- has been defined.
+
+--	  if (top->Name->text.modified) then
+--	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
+--	  end if;
 
 	  if (top->mgiCitation->ObjectID->text.modified) then
 	    set := set + "_Refs_key = " + top->mgiCitation->ObjectID->text.value + ",";
