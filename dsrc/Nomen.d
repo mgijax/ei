@@ -92,7 +92,7 @@ devents:
 	Exit :local [];
 	Init :local [];
 
-	ClearNomen :local [];
+	ClearNomen :local [clearKeys : boolean := true;];
 
 	-- Process Broadcast Events
 	BroadcastChangeFileNames :translation [];
@@ -254,6 +254,7 @@ rules:
           top->MarkerStatusMenu.menuHistory.background := "Wheat";
 	  Clear.source_widget := top;
 	  Clear.clearLists := 3;
+	  Clear.clearKeys := ClearNomen.clearKeys;
 	  send(Clear, 0);
 	end does;
 
@@ -383,6 +384,7 @@ rules:
 	  -- If add was sucessful, re-initialize the form
 
 	  if (top->QueryList->List.sqlSuccessful) then
+	    ClearNomen.clearKeys := false;
 	    send(ClearNomen, 0);
 	  end if;
 
