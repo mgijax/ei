@@ -79,13 +79,13 @@ HMD_Rat2.sql \
 HMD_Rat3.sql \
 HMD_Rat4.sql \
 MGD_Stats.sql \
-MRK_JointATCC.py \
 MRK_List1.sql \
 MRK_List2.sql \
 MRK_List3.sql \
 MRK_List4.sql \
 MRK_Dump1.py \
 MRK_Dump2.py \
+MRK_LocusLink.py \
 MRK_Sequence.py \
 MRK_SwissProt.py \
 MRK_SwissProt_Sequence.py \
