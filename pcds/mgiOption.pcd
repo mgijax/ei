@@ -569,9 +569,9 @@ Module: mgiOption
                         development = False;
                     }
                     {
-                      Junior = ServerToggle : mgiOption;
+                      NEOJunior = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = MGI_DEV;
+                        defaultValue = NEO_MGD;
                     }
               }
         }
