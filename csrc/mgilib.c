@@ -2362,7 +2362,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_REFERENCE:
-            sprintf(buf, "insert %s (%s, _Probe_key, _Refs_key, holder, hasRmap, hasSequence, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, _Probe_key, _Refs_key, hasRmap, hasSequence, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_RFLV:
