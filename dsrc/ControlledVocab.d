@@ -167,7 +167,7 @@ rules:
 	  elsif (tableID = HMD_ASSAY) then
 	    cmd := cmd + "," + mgi_DBprstr(top->AssayAbbrev->text.value);
 	  elsif (tableID = ALL_CELLLINE) then
-	    cmd := cmd + "," + top->Strain->StrainID->text.value;
+	    cmd := cmd + "," + top->EditForm->Strain->StrainID->text.value;
 	  elsif (tableID = ALL_NOTETYPE) then
 	    cmd := cmd + "," + top->PrivateMenu.menuHistory.defaultValue;
 	  elsif (tableID = ALL_REFERENCETYPE) then
@@ -283,8 +283,8 @@ rules:
 	  end if;
 
 	  if (tableID = ALL_CELLLINE) then
-	    if (top->Strain->StrainID->text.modified) then
-	      set := set + "_Strain_key = " + mgi_DBprkey(top->Strain->StrainID->text.value) + ",";
+	    if (top->EditForm->Strain->StrainID->text.modified) then
+	      set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
 	    end if;
 	  end if;
 
@@ -359,12 +359,12 @@ rules:
 	  end if;
 
 	  if (tableID = ALL_CELLLINE) then
-	    if (top->Strain->StrainID->text.value.length > 0) then
+	    if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	      -- we have a strain key
-	      where := where + "\nand _Strain_key = " + top->Strain->StrainID->text.value;
-	    elsif (top->Strain->Verify->text.value.length > 0) then
+	      where := where + "\nand _Strain_key = " + top->EditForm->Strain->StrainID->text.value;
+	    elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
 	      -- we have no strain key, but we do have a text strain
-	      where := where + "\nand cellLineStrain like " + mgi_DBprstr(top->Strain->Verify->text.value);
+	      where := where + "\nand cellLineStrain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
 	    end if;
 	  end if;
 
@@ -477,12 +477,10 @@ rules:
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      elsif (tableID = ALL_CELLLINE) then
-	        top->Strain->StrainID->text.value := mgi_getstr(
-		  dbproc, 3);
+	        top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-	        top->Strain->Verify->text.value := mgi_getstr(
-		  dbproc, 6);
+	        top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 6);
 	      elsif (tableID = ALL_NOTETYPE) then
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
