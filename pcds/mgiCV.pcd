@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 28 14:25:49 2004";
+      lastWritten = "Thu Apr 29 10:00:14 2004";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -323,6 +323,14 @@ Module: mgiCV
                           }
                           {
                             SexMenu = SexMenu : mgiOption;
+                                Popups:
+                                {
+                                  SexPulldown = OptionPulldown;
+                                  Group: User
+                                    tableForm = Specimen;
+                                    tableOption = 17;
+                                    tableOptionKey = 8;
+                                }
                           }
                           {
                             FixationMenu = FixationMenu : mgiOption;

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 29 07:52:27 2004";
+      lastWritten = "Thu Apr 29 10:34:17 2004";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -855,6 +855,7 @@ Module: mgiDialog
                               xrtTblAllowCellResize = resize_horizontal;
                               xrtTblFrozenColumns = 9;
                               xrtTblDisplayHorizScrollBar = dispsb_always;
+                              xrtTblMinCellVisibility = 0;
                             Group: User
                               requiredColumns = "5\n9";
                               saveTraversableSeries = "(all 0-7 False)";

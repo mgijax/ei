@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 23 09:02:47 2004";
+      lastWritten = "Thu Apr 29 08:25:45 2004";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -12,7 +12,7 @@ Module: mgiTable
             xrtTblBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)";
             xrtTblVisibleRows = 5;
             xrtTblMarginHeight = 4;
-            userDefinedAttributes = "requiredColumns:StringTable(StringTable)\nrequired:Boolean(Boolean)=\"False\"\nsqlCmd:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\neditMode:Int(Int)=\"0\"\naddSeqNum:Boolean(Boolean)=\"False\"\nduplicateSeqNum:Boolean(Boolean)=\"False\"\nsaveBackgroundSeries:String(String)=\"(all all Wheat) (label all Thistle)(all label Thistle)\"\nmodified:Boolean(Boolean)=\"False\"\n";
+            userDefinedAttributes = "requiredColumns:StringTable(StringTable)\nrequired:Boolean(Boolean)=\"False\"\nsqlCmd:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\neditMode:Int(Int)=\"0\"\naddSeqNum:Boolean(Boolean)=\"False\"\nduplicateSeqNum:Boolean(Boolean)=\"False\"\nsaveBackgroundSeries:String(String)=\"(all all Wheat) (label all Thistle)(all label Thistle)\"\nmodified:Boolean(Boolean)=\"False\"\nsaveEditableSeries:String(String)\nsaveTraversableSeries:String(String)\n";
             xrtTblEditableSeries = "(all 0 False)";
             xrtTblTraversableSeries = "(all 0 False)";
             xrtTblPixelWidthSeries = "(all 0 0)";
@@ -278,10 +278,12 @@ Module: mgiTable
                   xrtTblTraversableSeries = "(all 0-2 False)";
                   xrtTblNumColumns = 3;
                   xrtTblColumnLabels = "Mode,Current Order,#";
-                  userDefinedAttributes = "currentSeqNum:Int(Int)=\"1\"\nseqNum:Int(Int)=\"2\"\nsaveTraversableSeries:String(String)=\"(all 0-2 False)\"\nsaveEditableSeries:String(String)=\"(all 0-2 False)\"\n";
+                  userDefinedAttributes = "currentSeqNum:Int(Int)=\"1\"\nseqNum:Int(Int)=\"2\"\n";
                   xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)";
                 Group: User
                   addSeqNum = True;
+                  saveTraversableSeries = "(all 0-2 False)";
+                  saveEditableSeries = "(all 0-2 False)";
               }
               {
                 AddRow = TablePush;
