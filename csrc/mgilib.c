@@ -684,10 +684,10 @@ char *mgi_DBkey(int table)
             strcpy(buf, "index_id");
 	    break;
     case MGI_TABLES:
-            strcpy(buf, "_Table_id");
+            strcpy(buf, "table_name");
 	    break;
     case MGI_COLUMNS:
-            strcpy(buf, "_Column_id");
+            strcpy(buf, "column_name");
 	    break;
     case MRK_NOMEN:
     case MRK_NOMEN_GENEFAMILY:
@@ -1902,10 +1902,10 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case MGI_TABLES:
-            sprintf(buf, "insert %s (_Table_id, description)", mgi_DBtable(table));
+            sprintf(buf, "insert %s (table_name, description)", mgi_DBtable(table));
 	    break;
     case MGI_COLUMNS:
-            sprintf(buf, "insert %s (_Table_id, _Column_id, description, example)", mgi_DBtable(table));
+            sprintf(buf, "insert %s (table_name, column_name, description, example)", mgi_DBtable(table));
 	    break;
     case MRK_NOMEN:
             sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, submittedBy, broadcastBy, symbol, name, chromosome, humanSymbol, statusNote, broadcast_date)",
@@ -2045,8 +2045,12 @@ char *mgi_DBupdate(int table, char *key, char *str)
     {
       case MGI_COLUMNS:
 	      tokens = (char **) mgi_splitfields(key, ":");
-              sprintf(buf, "update %s set %s, modification_date = getdate() where _Table_id = %s and _Column_id = %s\n", 
+              sprintf(buf, "update %s set %s, modification_date = getdate() where table_name = '%s' and column_name = '%s'\n", 
 		mgi_DBtable(table), str, tokens[0], tokens[1]);
+	      break;
+      case MGI_TABLES:
+              sprintf(buf, "update %s set %s, modification_date = getdate() where %s = '%s'\n", 
+		mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
       default:
               sprintf(buf, "update %s set %s, modification_date = getdate() where %s = %s\n", 
