@@ -7,14 +7,19 @@
 #
 
 unset TERM
-export APP USERLOG DSQUERY MGD STRAINS NOMEN REPORTDIR SYBASE OPENWINHOME PYTHONPATH
+export APP USERLOG DSQUERY MGD STRAINS NOMEN REPORTDIR ARCHIVEDIR INSTALL_ROOT
+export SYBASE OPENWINHOME PYTHONPATH
 export XKEYSYMDB TeleUSE XNLSPATH XUSERFILESEARCHPATH LD_LIBRARY_PATH PATH
+
+APP=mgd
+
+cd `dirname $0`
+INSTALL_ROOT=`pwd`
 
 OPENWINHOME=/usr/openwin
 XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
 PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
 
-APP=mgd
 USERLOG=$HOME/.mgd-log
 
 DSQUERY=MGD
@@ -23,8 +28,7 @@ STRAINS=strains
 NOMEN=nomen
 
 REPORTDIR=$HOME/mgireport
-
-umask 022
+ARCHIVEDIR=$INSTALL_ROOT/$APP/mgireport
 
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
@@ -34,12 +38,6 @@ XUSERFILESEARCHPATH=%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-
 LD_LIBRARY_PATH=$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
 PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
 
-# determine script's installation directory and cd to it.
-cd `dirname $0`
- 
-# export the root installation directory
-PWD=`pwd`
-INSTALL_ROOT=${PWD%/$APP}  # get the directory previous to this app's dir
-export INSTALL_ROOT
+umask 022
 
 exec $APP >> $USERLOG

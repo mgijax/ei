@@ -1,28 +1,34 @@
 #!/bin/ksh
 
 #
-# Sets up appropriate ENV variables for running MEI for testing.
+# Sets up appropriate ENV variables for running MEI in Production.
 #
 # All SQL transactions logged to USERLOG.
 #
 
 unset TERM
-export APP USERLOG DSQUERY MGD STRAINS NOMEN SYBASE OPENWINHOME PYTHONPATH
+export APP USERLOG DSQUERY MGD STRAINS NOMEN REPORTDIR ARCHIVEDIR INSTALL_ROOT
+export SYBASE OPENWINHOME PYTHONPATH
 export XKEYSYMDB TeleUSE XNLSPATH XUSERFILESEARCHPATH LD_LIBRARY_PATH PATH
+
+APP=gxd
+
+cd `dirname $0`
+INSTALL_ROOT=`pwd`
 
 OPENWINHOME=/usr/openwin
 XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
-PYTHONPATH=$PYTHONPATH:/usr/local/lib/python1.4:/usr/local/etc/httpd/python
+PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
 
-APP=gxd
-USERLOG=$HOME/.gxd_dev-log
+USERLOG=$HOME/.gxd-log
 
 DSQUERY=MGD_DEV
 MGD=mgd_release
 STRAINS=strains_dev
 NOMEN=nomen_dev
 
-umask 022
+REPORTDIR=$HOME/mgireport
+ARCHIVEDIR=$INSTALL_ROOT/$APP/mgireport
 
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
@@ -32,12 +38,6 @@ XUSERFILESEARCHPATH=%N:$OPENWINHOME/lib/app-defaults/%L/%N:$OPENWINHOME/lib/app-
 LD_LIBRARY_PATH=$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
 PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
 
-# determine script's installation directory and cd to it.
-cd `dirname $0`
- 
-# export the root installation directory
-PWD=`pwd`
-INSTALL_ROOT=${PWD%/$APP}  # get the directory previous to this app's dir
-export INSTALL_ROOT
+umask 022
 
 exec $APP >> $USERLOG
