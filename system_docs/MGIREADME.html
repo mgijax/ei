@@ -643,12 +643,19 @@ that only reflect the different SE's source installation.
 <A NAME="cvsExport"><H4>Export a CVS Tagged EI Version</H4></A>
 <OL>
 <LI>Go to a directory in which you wish to export the EI for a build.  This
-    should not be the directory into which you will install the product.
+    can NOT be the directory into which you will install the product.
+    <PRE>
+    cd /usr/local/mgi/ei/ei_build
+    </PRE>
 <P>
 <LI>Export the version you want to build:
 	<PRE>
 	cvs export -r ei-4-0-0 -d ei-4-0-0 ei
 	</PRE>
+<P>
+<LI>Copy the <CODE>Configuration.default</CODE> file to <CODE>Configuration</CODE>
+	and edit appropriately.  Make sure you the EIINSTALLDIR and EIBUILDDIR
+	values correctly.
 <P>
 <LI>Build and install the application (interpreted or compiled).
 <P>
@@ -665,7 +672,7 @@ allows the debugger to be used.
 <P>
 <LI>Install the application in the destination directory: <CODE>installapp $application</CODE>
 <P>
-<LI>Run the application using the <CODE>run$application-dev</CODE> script: <CODE>DESTDIR/run$application-dev</CODE>
+<LI>Run the application using the <CODE>run$application</CODE> script: <CODE>DESTDIR/run$application</CODE>
 </OL>
 
 <HR>
@@ -684,10 +691,6 @@ Production copies of an MGI application translate D code into C code which is th
 <HR>
 <A NAME="buildAll"><H4>Build/Install All EI Applications</H4></A>
 <OL>
-<LI>Ensure that the EIINSTALLDIR variable in your environment is set to
-    the directory that holds the  mgd, gxd, and mgiadmin directories
-       (e.g., '/usr/local/mgi/ei'). 
-<P>
 <LI>Go to the main EI directory: <CODE>cd $source_directory</CODE>
 <P>
 <LI>Build/Install all applications: <CODE>installall [compiled]</CODE>
@@ -737,14 +740,10 @@ Once eXodus has been successfully installed on the MacIntosh, a system administr
 <P>
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>Title<TH>Command
-<TR><TD>GXD
-    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/gxd/rungxd
-<TR><TD>GXD Development
-    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/gxd/rungxd-dev
-<TR><TD>MGD
-    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runmgd
-<TR><TD>MGD Development
-    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/mgd/runmgd-dev
+<TR><TD>MGI Menu - development
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/dev/mgi/runmgi
+<TR><TD>MGI Menu - production
+    <TD>setenv DISPLAY $$ME$$;/usr/local/mgi/ei/prod/mgi/runmgi
 </TABLE>
 <P>
 To add or modify an eXodus client, choose the 
