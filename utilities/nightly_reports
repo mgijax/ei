@@ -158,6 +158,7 @@ MRK_Ref15839.sql \
 MRK_RefMLC.sql \
 MRK_RefNo15839.sql \
 MRK_References.sql \
+MRK_UniGeneClusterDiscrep.sql \
 MRK_Species.sql \
 MRK_Withdrawn.sql \
 PRB_AltTranscripts.sql \
