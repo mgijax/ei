@@ -110,9 +110,10 @@ reportlib.finish_nonps(fp)	# non-postscript file
 #
 
 #RECEPIENT="mgi-list"
+FROM="webmaster.informatics.jax.org"
 RECEPIENT="lec@informatics.jax.org"
 
-msg = 'From: webmaster@informatics.jax.org\n' + \
+msg = 'From: %s\n' % (FROM) + \
       'To:  %s\n' % (RECEPIENT) + \
       'Subject:  MGI Nomenclature Updates\n\n' + \
       '%s:  %d nomenclature changes processed.\n\n' % (currentDate, rows) + \
