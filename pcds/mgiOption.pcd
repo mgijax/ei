@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:48:03 2005";
+      lastWritten = "Tue Mar  1 15:32:09 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1230,48 +1230,6 @@ Module: mgiOption
                         dbTable = 630;
                     }
                     {
-                      AlleleType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Allele Type";
-                      Group: User
-                        dbTable = 332;
-                    }
-                    {
-                      InheritanceMode = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Inheritance Mode";
-                      Group: User
-                        dbTable = 333;
-                    }
-                    {
-                      MolecularMutation = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Molecular Mutation";
-                      Group: User
-                        dbTable = 334;
-                    }
-                    {
-                      ESCellLine = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "ES Cell Line";
-                      Group: User
-                        dbTable = 336;
-                    }
-                    {
-                      AlleleNoteType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Allele Note Type";
-                      Group: User
-                        dbTable = 338;
-                    }
-                    {
-                      AlleleReferenceType = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Allele Reference Type";
-                      Group: User
-                        dbTable = 339;
-                    }
-                    {
                       separator = XmSeparator;
                     }
                     {
@@ -2152,7 +2110,7 @@ Module: mgiOption
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from ALL_Type order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term_ALLType_View order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2172,7 +2130,7 @@ Module: mgiOption
               {
                 InheritanceModePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from ALL_Inheritance_mode order by mode";
+                  sql = "select _Term_key, term from VOC_Term_ALLInheritMode_View order by term";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2182,7 +2140,7 @@ Module: mgiOption
           MolecularMutationMenu = OptionMenu;
           Group: Widget
             subMenuId = MolecularMutationPulldown;
-            labelString = "Molecular\nMutation";
+            labelString = "Molecular Mutation";
           Group: Control
             vip_x = 80;
             vip_y = 3990;
@@ -2190,7 +2148,7 @@ Module: mgiOption
               {
                 MolecularMutationPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from ALL_Molecular_Mutation order by mutation";
+                  sql = "select _Term_key, term from VOC_Term_ALLMolMutation_View order by term";
               }
         }
         {
@@ -2213,7 +2171,7 @@ Module: mgiOption
               {
                 AlleleStatusPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from ALL_Status where _Allele_Status_key > 0 order by _Allele_Status_key";
+                  sql = "select _Term_key, term from VOC_Term_ALLStatus_View order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

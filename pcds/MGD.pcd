@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 28 09:13:36 2005";
+      lastWritten = "Wed Mar  2 08:35:15 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8583,7 +8583,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
-                                                sql = "select _RefsType_key, referenceType from ALL_ReferenceType where _RefsType_key > 0 and allowOnlyOne = 0 order by referenceType";
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Allele_View where allowOnlyOne = 0 order by _RefAssocType_key";
                                                 tableForm = Reference;
                                             }
                                       }
@@ -8638,6 +8638,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   MolecularMutation = TableLabel : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Reference;
@@ -8654,7 +8657,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblColumnLabels = "Mode,Current Key,Key,Molecular Mutation";
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 60)";
                                           userDefinedAttributes = "mutationCurrentKey:Int=\"1\"\nmutationKey:Int=\"2\"\nmutation:Int=\"3\"\n";
                                           xrtTblVisibleRows = 3;
                                           xrtTblEnterCellCallback = "D:SetOptions";
@@ -8665,15 +8668,87 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Molecular Characterization";
                                             }
                                       }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        MolecularMutationMenu = MolecularMutationMenu : mgiOption;
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          rightWidget = Table;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                            Popups:
+                                            {
+                                              MolecularMutationPulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = MolecularMutation;
+                                                tableOptionKey = 2;
+                                                tableOption = 3;
+                                            }
+                                      }
                                 }
                                 {
-                                  ESCellLine = mgiVerify : mgiDataTypes;
+                                  MutantESCellLine = mgiVerify : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = MolecularMutation;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = MolecularMutation;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                  Group: User
+                                    verifyAdd = False;
+                                    verifyTable = 336;
+                                    verifyKey = VerifyID;
+                                      {
+                                        Verify = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Mutant ES Cell Line";
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 30;
+                                                translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyItem()";
+                                              Group: User
+                                                defaultValue = "Not Applicable";
+                                            }
+                                      }
+                                      {
+                                        VerifyID = ID : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                defaultValue = "-2";
+                                                required = True;
+                                            }
+                                      }
+                                }
+                                {
+                                  HostESCellLine = mgiVerify : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = MutantESCellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = MutantESCellLine;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -8686,7 +8761,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               label = XmLabel;
                                               Group: Widget
-                                                labelString = "ES Cell Line";
+                                                labelString = "Host ES Cell Line";
                                             }
                                             {
                                               text = text;
@@ -8716,10 +8791,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Strain = Strain : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ESCellLine;
+                                    leftWidget = HostESCellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ESCellLine;
+                                    topWidget = HostESCellLine;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -8749,7 +8824,10 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Synonym = ReferenceTable : mgiTable;
+                                  Synonym = SynonymTypeTable : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Strain;
@@ -8761,16 +8839,30 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     bottomOffset = 5;
                                       {
-                                        Table = mgiTable;
+                                        Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Syn Key,Refs Key,Synonym,J#,Citation";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 30)(all 4 10)(all 5 50)";
-                                          xrtTblMaxLengthSeries = "(all 3 255)(all 5 255)";
-                                          xrtTblNumColumns = 6;
-                                          userDefinedAttributes = "synonymKey:Int=\"1\"\nsynonym:Int=\"3\"\n";
-                                        Group: User
-                                          citation = 5;
-                                          jnum = 4;
+                                          xrtTblPixelWidthSeries = "(all 0-4 0)(all 8-9 0)";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Constraint
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          leftOffset = 0;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        SynonymTypeMenu = SynonymTypeMenu : mgiOption;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                 }
                                 {
@@ -8936,21 +9028,20 @@ Shift<Key>Tab: prev-tab-group()
                                   QueryList = QueryList : mgiLookup;
                                 }
                                 {
-                                  CVAllele = CVAllele : mgiCV;
+                                  MutantESCellLineList = MutantESCellLineList : mgiLookup;
                                       {
-                                        MolecularMutationMenu = MolecularMutationMenu : mgiOption;
-                                            Popups:
-                                            {
-                                              MolecularMutationPulldown = OptionPulldown : mgiOption;
-                                              Group: User
-                                                tableForm = MolecularMutation;
-                                                tableOption = 3;
-                                                tableOptionKey = 2;
-                                            }
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetWidget = MutantESCellLine;
+                                          targetKey = VerifyID;
+                                          targetText = Verify;
                                       }
                                 }
                                 {
-                                  ESCellLineList = ESCellLineList : mgiLookup;
+                                  HostESCellLineList = HostESCellLineList : mgiLookup;
                                       {
                                         Label = LookupLabel : mgiLookup;
                                       }
@@ -8959,7 +9050,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           targetKey = VerifyID;
                                           targetText = Verify;
-                                          targetWidget = ESCellLine;
+                                          targetWidget = HostESCellLine;
                                       }
                                 }
                           }

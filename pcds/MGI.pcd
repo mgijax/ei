@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 24 11:50:55 2005";
+      lastWritten = "Tue Mar  1 15:34:30 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -897,24 +897,6 @@ Module: MGI
                                               SynType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
-                                              AlleleType = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              InheritanceMode = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              MolecularMutation = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              ESCellLine = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              AlleleNoteType = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
-                                              AlleleReferenceType = ControlledVocabToggle : mgiOption;
-                                            }
-                                            {
                                               separator = XmSeparator;
                                             }
                                             {
@@ -1041,18 +1023,6 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  Strain = Strain : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AssayAbbrev;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                    leftWidget = Name;
-                                }
-                                {
                                   AllowOnlyOneMenu = YesNoMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = AllowOnlyOnePulldown;
@@ -1061,7 +1031,7 @@ Module: MGI
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Strain;
+                                    topWidget = AssayAbbrev;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = Name;
@@ -1689,7 +1659,7 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  ESCellLineList = ESCellLineList : mgiLookup;
+                                  ESCellLineList = HostESCellLineList : mgiLookup;
                                 }
                           }
                     }

@@ -61,12 +61,11 @@ devents:
 	AlleleMergeInit :local [];
 	AlleleMerge :local [];
 
-	DisplayESCellLine :translation [];
+	DisplayHostESCellLine :translation [];
 
 	Modify :local [];
 	ModifyAlleleNotes :local [];
 	ModifyMolecularMutation :local [];
-	ModifySynonym :local [];
 
 	PrepareSearch :local [];
 
@@ -155,23 +154,33 @@ rules:
 	  InitOptionMenu.option := top->InheritanceModeMenu;
 	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->CVAllele->MolecularMutationMenu;
+	  InitOptionMenu.option := top->MolecularMutationMenu;
 	  send(InitOptionMenu, 0);
 
-          LoadList.list := top->ESCellLineList;
+          LoadList.list := top->MutantESCellLineList;
+	  send(LoadList, 0);
+
+          LoadList.list := top->HostESCellLineList;
 	  send(LoadList, 0);
 
 	  -- Initialize Reference table
 
 	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
 	  send(InitRefTypeTable, 0);
 
 	  -- Initialize Notes form
 
 	  InitNoteForm.notew := top->mgiNoteForm;
-	  InitNoteForm.tableID := ALL_NOTETYPE;
+	  InitNoteForm.tableID := MGI_NOTETYPE_ALLELE_VIEW;
 	  send(InitNoteForm, 0);
+
+	  -- Initialize Synonym table
+
+	  InitSynTypeTable.table := top->Synonym->Table;
+	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_ALLELE_VIEW;
+	  send(InitSynTypeTable, 0);
+
 	end does;
 
 --
@@ -236,8 +245,11 @@ rules:
 
 	  if (not ClearAllele.reset) then
 	    InitRefTypeTable.table := top->Reference->Table;
-	    InitRefTypeTable.tableID := ALL_REFERENCETYPE;
+	    InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
 	    send(InitRefTypeTable, 0);
+	    InitSynTypeTable.table := top->Synonym->Table;
+	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_ALLELE_VIEW;
+	    send(InitSynTypeTable, 0);
 	  end if;
 
 	  -- Set Note button
@@ -256,6 +268,7 @@ rules:
 
 	Add does
 	  table : widget := top->Reference->Table;
+	  isWildType : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -282,21 +295,27 @@ rules:
 	        top->mgiMarker->ObjectID->text.value := "NULL";
 	  end if;
 
+	  if (top->Name->text.value = "wild type") then
+	    isWildType := 1;
+	  end if;
+
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
 		 top->mgiMarker->ObjectID->text.value + "," +
 		 top->EditForm->Strain->StrainID->text.value + "," +
                  top->InheritanceModeMenu.menuHistory.defaultValue + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
-                 top->EditForm->ESCellLine->VerifyID->text.value + "," +
                  top->AlleleStatusMenu.menuHistory.defaultValue + "," +
+                 top->EditForm->HostESCellLine->VerifyID->text.value + "," +
+                 top->EditForm->MutantESCellLine->VerifyID->text.value + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
+		 (string) isWildType + "," +
 		 global_loginKey + "," +
 		 global_loginKey + ",";
 
-	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	    cmd := cmd + global_loginKey + ",getdate())\n";
 	  else
 	    cmd := cmd + "NULL,NULL)\n";
@@ -319,15 +338,21 @@ rules:
 	    return;
 	  end if;
 
-	  send(ModifySynonym, 0);
-
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := ALL_REFERENCE;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  --  Process Synonyms
+
+	  ProcessSynTypeTable.table := top->Synonym->Table;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
+	  ProcessSynTypeTable.objectKey := currentRecordKey;
+	  send(ProcessSynTypeTable, 0);
+          cmd := cmd + top->Synonym->Table.sqlCmd;
 
 	  --  Process Accession numbers
 
@@ -440,19 +465,19 @@ rules:
 	end does;
 
 --
--- DisplayESCellLine
+-- DisplayHostESCellLine
 --
--- Activated from:  widget top->ESCellLineList->List.singleSelectionCallback
+-- Activated from:  widget top->HostESCellLineList->List.singleSelectionCallback
 --
--- Display ES Cell Line information
+-- Display Host ES Cell Line information
 --
 
-	DisplayESCellLine does
+	DisplayHostESCellLine does
 
 	  cmd := "select cellLine, _Strain_key, cellLineStrain from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
-		" = " + top->EditForm->ESCellLine->VerifyID->text.value;
+		" = " + top->EditForm->HostESCellLine->VerifyID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -460,7 +485,7 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	         top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 1);
+	         top->HostESCellLine->Verify->text.value := mgi_getstr(dbproc, 1);
 		 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
 		 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 3);
 	    end while;
@@ -480,6 +505,7 @@ rules:
 
 	Modify does
 	  table : widget := top->Reference->Table;
+	  isWildType : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -497,20 +523,24 @@ rules:
             return;
 	  end if;
 
-	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED and
-	      (top->ESCellLine->VerifyID->text.modified or top->EditForm->Strain->StrainID->text.modified)) then
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
+	      (top->HostESCellLine->VerifyID->text.modified or 
+	       top->MutantESCellLine->VerifyID->text.modified or 
+	       top->EditForm->Strain->StrainID->text.modified)) then
 
-	    top->VerifyESStrain.doModify := false;
-            top->VerifyESStrain.managed := true;
+	    top->VerifyHostESStrain.doModify := false;
+            top->VerifyHostESStrain.managed := true;
+	    top->VerifyMutantESStrain.doModify := false;
+            top->VerifyMutantESStrain.managed := true;
  
             -- Keep busy while user verifies the modification is okay
  
-            while (top->VerifyESStrain.managed = true) do
+            while (top->VerifyHostESStrain.managed = true) do
               (void) keep_busy();
             end while;
  
 --            (void) XmUpdateDisplay(top);
-            if (not top->VerifyESStrain.doModify) then
+            if (not top->VerifyHostESStrain.doModify) then
 	      return;
 	    end if;
 	  end if;
@@ -545,24 +575,33 @@ rules:
             set := set + "_Allele_Type_key = "  + top->AlleleTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-	  if (top->ESCellLine->VerifyID->text.modified) then
-	    set := set + "_CellLine_key = " + mgi_DBprkey(top->ESCellLine->VerifyID->text.value) + ",";
-	  end if;
-
           if (top->AlleleStatusMenu.menuHistory.modified and
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
-	    if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
+	    if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	      set := set + "_ApprovedBy_key = " + global_loginKey + ",approval_date = getdate(),";
 	    end if;
           end if;
+
+	  if (top->HostESCellLine->VerifyID->text.modified) then
+	    set := set + "_HostESCellLine_key = " + mgi_DBprkey(top->HostESCellLine->VerifyID->text.value) + ",";
+	  end if;
+
+	  if (top->MutantESCellLine->VerifyID->text.modified) then
+	    set := set + "_MutantESCellLine_key = " + mgi_DBprkey(top->MutantESCellLine->VerifyID->text.value) + ",";
+	  end if;
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
 	  end if;
 
+	  if (top->Name->text.value = "wild type") then
+	    isWildType := 1;
+	  end if;
+
 	  if (top->Name->text.modified) then
 	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
+	    set := set + "isWildType = " + (string) isWildType + ",";
 	  end if;
 
 	  send(ModifyMolecularMutation, 0);
@@ -573,15 +612,21 @@ rules:
 	    return;
 	  end if;
 
-	  send(ModifySynonym, 0);
-
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := ALL_REFERENCE;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  --  Process Synonyms
+
+	  ProcessSynTypeTable.table := top->Synonym->Table;
+	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
+	  ProcessSynTypeTable.objectKey := currentRecordKey;
+	  send(ProcessSynTypeTable, 0);
+          cmd := cmd + top->Synonym->Table.sqlCmd;
 
 	  -- Process Accession Numbers
 
@@ -636,7 +681,7 @@ rules:
 	  end if;
 
 	  SetNotesRequired.notew := top->mgiNoteForm;
-	  SetNotesRequired.noteTypeKey := ALL_GENERAL_NOTES;
+	  SetNotesRequired.noteType := ALL_GENERAL_NOTES;
 	  send(SetNotesRequired, 0);
 
 	  -- Set required field for Molecular Notes
@@ -648,11 +693,11 @@ rules:
 	  end if;
 
 	  SetNotesRequired.notew := top->mgiNoteForm;
-	  SetNotesRequired.noteTypeKey := ALL_MOLECULAR_NOTES;
+	  SetNotesRequired.noteType := ALL_MOLECULAR_NOTES;
 	  send(SetNotesRequired, 0);
 
 	  ProcessNoteForm.notew := top->mgiNoteForm;
-	  ProcessNoteForm.tableID := ALL_NOTE;
+	  ProcessNoteForm.tableID := MGI_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
@@ -712,67 +757,6 @@ rules:
 	end does;
  
 --
--- ModifySynonym
---
--- Activated from: devent Modify
---
--- Construct insert/update/delete for Synonyms
--- Appends to global "cmd" string
---
-
-	ModifySynonym does
-          table : widget := top->Synonym->Table;
-          row : integer := 0;
-          editMode : string;
-          synKey : string;
-          synonym : string;
-	  refsKey : string;
-          set : string := "";
-	  keyName : string := "synKey";
-	  keysDeclared : boolean := false;
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            synKey := mgi_tblGetCell(table, row, table.synonymKey);
-            synonym := mgi_tblGetCell(table, row, table.synonym);
-            refsKey := mgi_tblGetCell(table, row, table.refsKey);
- 
-            if (editMode = TBL_ROW_ADD) then
-	      
-              if (not keysDeclared) then
-                cmd := cmd + mgi_setDBkey(ALL_SYNONYM, NEWKEY, keyName);
-                keysDeclared := true;
-              else
-                cmd := cmd + mgi_DBincKey(keyName);
-              end if;
-
-              cmd := cmd +
-                     mgi_DBinsert(ALL_SYNONYM, keyName) +
-		     currentRecordKey + "," +
-		     refsKey + "," +
-		     mgi_DBprstr(synonym) + ")\n";
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "synonym = " + mgi_DBprstr(synonym) + 
-	             ",_Refs_key = " + refsKey;
-              cmd := cmd + mgi_DBupdate(ALL_SYNONYM, synKey, set);
-
-            elsif (editMode = TBL_ROW_DELETE) then
-               cmd := cmd + mgi_DBdelete(ALL_SYNONYM, synKey);
-            end if;
- 
-            row := row + 1;
-	  end while;
-	end does;
-
---
 -- PrepareSearch
 --
 -- Activated from:  devent Search
@@ -782,13 +766,15 @@ rules:
 
 	PrepareSearch does
 	  from_mutation   : boolean := false;
-	  from_synonym    : boolean := false;
 	  from_notes      : boolean := false;
+	  from_strain     : boolean := false;
+	  from_cellline1  : boolean := false;
+	  from_cellline2  : boolean := false;
 
 	  value : string;
 
-	  from := " from " + mgi_DBtable(ALL_ALLELE_VIEW) + " a";
-	  where := "";
+	  from := " from " + mgi_DBtable(ALL_ALLELE) + " a," + mgi_DBtable(MRK_MARKER) + " mk";
+	  where := "where a." + mgi_DBkey(MRK_MARKER) + " *= mk." + mgi_DBkey(MRK_MARKER);
 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "a." + mgi_DBkey(ALL_ALLELE);
@@ -798,11 +784,18 @@ rules:
 	  where := where + accTable.sqlWhere;
 
 	  SearchRefTypeTable.table := top->Reference->Table;
-	  SearchRefTypeTable.tableID := ALL_REFERENCE_VIEW;
+	  SearchRefTypeTable.tableID := MGI_REFERENCE_ALLELE_VIEW;
           SearchRefTypeTable.join := "a." + mgi_DBkey(ALL_ALLELE);
 	  send(SearchRefTypeTable, 0);
 	  from := from + top->Reference->Table.sqlFrom;
 	  where := where + top->Reference->Table.sqlWhere;
+
+	  SearchSynTypeTable.table := top->Synonym->Table;
+	  SearchSynTypeTable.tableID := MGI_SYNONYM_ALLELE_VIEW;
+          SearchSynTypeTable.join := "a." + mgi_DBkey(ALL_ALLELE);
+	  send(SearchSynTypeTable, 0);
+	  from := from + top->Synonym->Table.sqlFrom;
+	  where := where + top->Synonym->Table.sqlWhere;
 
 	  -- To search each note type individually...
 	  -- remove noteTypeKey and just have one call to SearchNoteForm
@@ -812,7 +805,7 @@ rules:
 	  while (i <= top->mgiNoteForm.numChildren) do
 	    SearchNoteForm.notew := top->mgiNoteForm;
 	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
-	    SearchNoteForm.tableID := ALL_NOTE_VIEW;
+	    SearchNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
             SearchNoteForm.join := "a." + mgi_DBkey(ALL_ALLELE);
 	    send(SearchNoteForm, 0);
 	    from := from + top->mgiNoteForm.sqlFrom;
@@ -830,7 +823,7 @@ rules:
 	  if (value.length > 0 and value != "NULL" and value != "-1") then
 	    where := where + "\nand a._Marker_key = " + top->mgiMarker->ObjectID->text.value;
 	  elsif (top->mgiMarker->Marker->text.value.length > 0) then
-	    where := where + "\nand (a.markerSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) +
+	    where := where + "\nand (mk.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) +
 		"\nor a.nomenSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) + ")";
 	  end if;
 
@@ -854,16 +847,25 @@ rules:
             where := where + "\nand a._Allele_Status_key = " + top->AlleleStatusMenu.menuHistory.searchValue;
           end if;
 
-          if (top->ESCellLine->VerifyID->text.value.length > 0) then
-            where := where + "\nand a._CellLine_key = " + top->ESCellLine->VerifyID->text.value;
-          elsif (top->ESCellLine->Verify->text.value.length > 0) then
-            where := where + "\nand a.cellLine like " + mgi_DBprstr(top->ESCellLine->Verify->text.value);
+          if (top->HostESCellLine->VerifyID->text.value.length > 0) then
+            where := where + "\nand a._HostESCellLine_key = " + top->HostESCellLine->VerifyID->text.value;
+          elsif (top->HostESCellLine->Verify->text.value.length > 0) then
+            where := where + "\nand c1.cellLine like " + mgi_DBprstr(top->HostESCellLine->Verify->text.value);
+	    from_cellline1 := true;
+          end if;
+
+          if (top->MutantESCellLine->VerifyID->text.value.length > 0) then
+            where := where + "\nand a._MutantESCellLine_key = " + top->MutantESCellLine->VerifyID->text.value;
+          elsif (top->MutantESCellLine->Verify->text.value.length > 0) then
+            where := where + "\nand c2.cellLine like " + mgi_DBprstr(top->MutantESCellLine->Verify->text.value);
+	    from_cellline2 := true;
           end if;
 
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->EditForm->Strain->StrainID->text.value;;
 	  elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
-            where := where + "\nand a.strain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
+            where := where + "\nand s.strain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
+	    from_strain := true;
 	  end if;
 
 	  value := mgi_tblGetCell(top->MolecularMutation->Table, 0, top->MolecularMutation->Table.mutationKey);
@@ -878,52 +880,35 @@ rules:
 	    end if;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Synonym->Table, 0, top->Synonym->Table.synonym);
-	  if (value.length > 0) then
-	    where := where + "\nand s.synonym like " + mgi_DBprstr(value);
-	    from_synonym := true;
-	  end if;
-
-	  value := mgi_tblGetCell(top->Synonym->Table, 0, top->Synonym->Table.refsKey);
-	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand s._Refs_key = " + value;
-	  else
-	    value :=  mgi_tblGetCell(top->Synonym->Table, 0, top->Synonym->Table.jnum);
-	    if (value.length > 0) then
-	      where := where + "\nand s.jnum = " + value;
-	      from_synonym := true;
-	    else
-	      value :=  mgi_tblGetCell(top->Synonym->Table, 0, top->Synonym->Table.citation);
-	      if (value.length > 0) then
-	        where := where + "\nand s.short_citation like " + mgi_DBprstr(value);
-	        from_synonym := true;
-	      end if;
-	    end if;
-	  end if;
-
           if (top->markerDescription->Note->text.value.length > 0) then
-            where := where + "\nand m.note like " + mgi_DBprstr(top->markerDescription->Note->text.value);
+            where := where + "\nand mn.note like " + mgi_DBprstr(top->markerDescription->Note->text.value);
             from_notes := true;
           end if;
       
+	  if (from_cellline1) then
+	    from := from + "," + mgi_DBtable(ALL_CELLLINE) + " c1";
+	    where := where + "\nand a." + mgi_DBkey(ALL_CELLLINE) + " = c1." + mgi_DBkey(ALL_CELLLINE);
+	  end if;
+
+	  if (from_cellline2) then
+	    from := from + "," + mgi_DBtable(ALL_CELLLINE) + " c2";
+	    where := where + "\nand a." + mgi_DBkey(ALL_CELLLINE) + " = c2." + mgi_DBkey(ALL_CELLLINE);
+	  end if;
+
 	  if (from_mutation) then
 	    from := from + "," + mgi_DBtable(ALL_MUTATION_VIEW) + " m";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = m." + mgi_DBkey(ALL_ALLELE);
 	  end if;
 
-	  if (from_synonym) then
-	    from := from + "," + mgi_DBtable(ALL_SYNONYM_VIEW) + " s";
-	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = s." + mgi_DBkey(ALL_ALLELE);
-	  end if;
-
 	  if (from_notes) then
-	    from := from + "," + mgi_DBtable(MRK_NOTES) + " m";
-	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = m." + mgi_DBkey(MRK_MARKER);
+	    from := from + "," + mgi_DBtable(MRK_NOTES) + " mn";
+	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = mn." + mgi_DBkey(MRK_MARKER);
 	  end if;
 
-          if (where.length > 0) then
-            where := "where" + where->substr(5, where.length);
-          end if;
+	  if (from_strain) then
+	    from := from + "," + mgi_DBtable(STRAIN) + " s";
+	    where := where + "\nand a." + mgi_DBkey(STRAIN) + " = s." + mgi_DBkey(STRAIN);
+	  end if;
 	end does;
 
 --
@@ -940,8 +925,8 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct a._Allele_key, a.symbol\n" + from + "\n" + 
-			  where + "\norder by a.markerSymbol, a.symbol\n";
-	  Query.table := ALL_ALLELE_VIEW;
+			  where + "\norder by mk.symbol, a.symbol\n";
+	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);
         end does;
@@ -970,7 +955,7 @@ rules:
 	  tables.close;
 
 	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
 	  send(InitRefTypeTable, 0);
 
           if (top->QueryList->List.selectedItemCount = 0) then
@@ -995,9 +980,6 @@ rules:
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 	         "select _Mutation_key, mutation from " + mgi_DBtable(ALL_MUTATION_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
-	         "select _Synonym_key, synonym, _Refs_key, jnum, short_citation from " + 
-		 mgi_DBtable(ALL_SYNONYM_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
                  "select rtrim(m.note) from " + mgi_DBtable(ALL_ALLELE) + " a, " +
 		 mgi_DBtable(MRK_NOTES) + " m " +
                  " where a." + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + 
@@ -1017,30 +999,32 @@ rules:
 	      if (results = 1) then
 		table := top->Control->ModificationHistory->Table;
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 8);
-	        top->Name->text.value         := mgi_getstr(dbproc, 9);
+	        top->Symbol->text.value       := mgi_getstr(dbproc, 9);
+	        top->Name->text.value         := mgi_getstr(dbproc, 10);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 27));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 15));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 28));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 29));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 31));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 32));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 33));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 16));
 
 		-- If the Marker key is null, then use the Nomen Symbol field
 		if (mgi_getstr(dbproc, 2) = "") then
 		  top->mgiMarker->ObjectID->text.value := "";
-		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 10);
+		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 11);
 		else
 		  top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 17);
+		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 19);
 		end if;
 
 		top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);
+		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 20);
 
-		top->ESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 6);
-		top->ESCellLine->Verify->text.value := mgi_getstr(dbproc, 21);
+		top->HostESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 7);
+		top->HostESCellLine->Verify->text.value := mgi_getstr(dbproc, 24);
+		top->MutantESCellLine->VerifyID->text.value := mgi_getstr(dbproc, 8);
+		top->MutantESCellLine->Verify->text.value := mgi_getstr(dbproc, 26);
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
@@ -1051,7 +1035,7 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->AlleleStatusMenu;
-                SetOption.value := mgi_getstr(dbproc, 7);
+                SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
@@ -1062,15 +1046,6 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 3) then
-		table := top->Synonym->Table;
-		(void) mgi_tblSetCell(table, row, table.synonymKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.synonym, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-	      elsif (results = 4) then
                 top->markerDescription->Note->text.value := 
 			top->markerDescription->Note->text.value + mgi_getstr(dbproc, 1);
 	      end if;
@@ -1082,12 +1057,17 @@ rules:
 	  (void) dbclose(dbproc);
 
           LoadRefTypeTable.table := top->Reference->Table;
-	  LoadRefTypeTable.tableID := ALL_REFERENCE_VIEW;
+	  LoadRefTypeTable.tableID := MGI_REFERENCE_ALLELE_VIEW;
           LoadRefTypeTable.objectKey := currentRecordKey;
           send(LoadRefTypeTable, 0);
  
+          LoadSynTypeTable.table := top->Synonym->Table;
+	  LoadSynTypeTable.tableID := MGI_SYNONYM_ALLELE_VIEW;
+          LoadSynTypeTable.objectKey := currentRecordKey;
+          send(LoadSynTypeTable, 0);
+
 	  LoadNoteForm.notew := top->mgiNoteForm;
-	  LoadNoteForm.tableID := ALL_NOTE_VIEW;
+	  LoadNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
 	  LoadNoteForm.objectKey := currentRecordKey;
 	  send(LoadNoteForm, 0);
 
@@ -1122,7 +1102,7 @@ rules:
 	  end if;
 
 	  if (table.parent.name = "MolecularMutation") then
-            SetOption.source_widget := top->CVAllele->MolecularMutationMenu;
+            SetOption.source_widget := top->MolecularMutationMenu;
             SetOption.value := mgi_tblGetCell(table, row, table.mutationKey);
             send(SetOption, 0);
 	  end if;

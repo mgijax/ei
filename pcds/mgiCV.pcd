@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:51:51 2005";
+      lastWritten = "Tue Mar  1 15:30:32 2005";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -277,19 +277,10 @@ Module: mgiCV
               }
         }
         {
-          CVAllele = CVMenu;
+          CVSpecimen = XmFrame;
           Group: Control
             vip_x = 145;
             vip_y = 140;
-              {
-                MolecularMutationMenu = MolecularMutationMenu : mgiOption;
-              }
-        }
-        {
-          CVSpecimen = XmFrame;
-          Group: Control
-            vip_x = 50;
-            vip_y = 195;
             vipComment = "";
               {
                 panedWindow = XmPanedWindow;
@@ -472,7 +463,7 @@ Module: mgiCV
           CVSequence = XmRowColumn;
           Group: Control
             vipComment = "";
-            vip_x = 145;
+            vip_x = 50;
             vip_y = 195;
               {
                 AgeMenu = AgeMenu : mgiOption;

@@ -111,7 +111,8 @@ rules:
 	  label : string;
 	  k : integer;
 
-	  if (tableID = MGI_NOTETYPE_MRKGO_VIEW or 
+	  if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	      tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 	      tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 	      tableID = MGI_NOTETYPE_SOURCE_VIEW or
 	      tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
@@ -148,7 +149,8 @@ rules:
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
-	        if (tableID = MGI_NOTETYPE_MRKGO_VIEW or 
+	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	            tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 		    tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 		    tableID = MGI_NOTETYPE_SOURCE_VIEW or 
 		    tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
@@ -187,7 +189,8 @@ rules:
 	  ClearSetNoteForm.notew := notew;
 	  send(ClearSetNoteForm, 0);
 
-	  if (tableID = MGI_NOTE_MRKGO_VIEW or 
+	  if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	      tableID = MGI_NOTE_MRKGO_VIEW or 
 	      tableID = MGI_NOTE_NOMEN_VIEW or 
 	      tableID = MGI_NOTE_SOURCE_VIEW or 
 	      tableID = MGI_NOTE_SEQUENCE_VIEW or 
@@ -213,7 +216,8 @@ rules:
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
 
-	      if (tableID = MGI_NOTE_MRKGO_VIEW or 
+	      if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	          tableID = MGI_NOTE_MRKGO_VIEW or 
 		  tableID = MGI_NOTE_NOMEN_VIEW or 
 		  tableID = MGI_NOTE_SOURCE_VIEW or 
 		  tableID = MGI_NOTE_SEQUENCE_VIEW or 
@@ -799,12 +803,12 @@ rules:
 
 	SetNotesRequired does
 	  notew : widget := SetNotesRequired.notew;
-	  noteTypeKey : integer := SetNotesRequired.noteTypeKey;
+	  noteType : string := SetNotesRequired.noteType;
 	  required : boolean := SetNotesRequired.required;
 
 	  i : integer := 1;
 	  while (i <= notew.numChildren) do
-	    if (notew.child(i)->Note.noteTypeKey = noteTypeKey) then
+	    if (notew.child(i)->Note.noteType = noteType) then
 	      notew.child(i)->Note->text.required := required;
 	    end if;
 	    i := i + 1;

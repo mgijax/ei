@@ -160,15 +160,10 @@ extern char *global_version;
 
 #define ALL_ALLELE		230
 #define ALL_ALLELE_MUTATION	231
-#define ALL_NOTE		233
-#define ALL_SYNONYM		234
-#define ALL_ALLELE_VIEW		235
-#define ALL_SYNONYM_VIEW	236
-#define ALL_MUTATION_VIEW	237
-#define ALL_REFERENCE		238
-#define ALL_REFERENCE_VIEW	239
-#define ALL_NOTE_VIEW		240
-#define ALL_CELLLINE_VIEW	246
+#define ALL_ALLELE_VIEW		232
+#define ALL_CELLLINE		234
+#define ALL_CELLLINE_VIEW	235
+#define ALL_MUTATION_VIEW	236
 
 /* Annotation Tables */
 #define GO_DATAEVIDENCE		247
@@ -203,15 +198,8 @@ extern char *global_version;
 #define GXD_GELCONTROL		329
 #define MRK_EVENTREASON		330
 #define MRK_STATUS		331
-#define ALL_TYPE		332
-#define ALL_INHERITANCE_MODE	333
-#define ALL_MOLECULAR_MUTATION	334
-#define ALL_CELLLINE		336
-#define ALL_STATUS		337
-#define ALL_NOTETYPE		338
-#define ALL_REFERENCETYPE	339
-#define RISET_VIEW		341
-#define VOC_CELLLINE_VIEW	343
+#define RISET_VIEW		332
+#define VOC_CELLLINE_VIEW	333
 
 /* Accession Tables */
 
@@ -273,6 +261,12 @@ extern char *global_version;
 #define MGI_USER			639
 #define MGI_USERROLE			640
 #define MGI_USERROLE_VIEW		641
+#define MGI_NOTE_ALLELE_VIEW		642
+#define MGI_NOTETYPE_ALLELE_VIEW	643
+#define MGI_REFERENCE_ALLELE_VIEW	644
+#define MGI_REFTYPE_ALLELE_VIEW		645
+#define MGI_SYNONYM_ALLELE_VIEW		646
+#define MGI_SYNONYMTYPE_ALLELE_VIEW	647
 
 
 /* Strains Tables */
@@ -359,17 +353,17 @@ extern char *global_version;
 
 /* Allele Nomen */
 
-#define ALL_STATUS_PENDING	"1"
-#define ALL_STATUS_DELETED	"2"
-#define ALL_STATUS_RESERVED	"3"
-#define ALL_STATUS_APPROVED	"4"
+#define ALL_STATUS_PENDING	"In Progress"
+#define ALL_STATUS_DELETED	"Deleted"
+#define ALL_STATUS_RESERVED	"Reserved"
+#define ALL_STATUS_APPROVED	"Approved"
 
 /* This CV term requires Notes */
 
 #define OTHERNOTES		"Other (see notes)"
 
 /* Allele Notes - Note Keys */
-#define ALL_GENERAL_NOTES	1
-#define ALL_MOLECULAR_NOTES	2
+#define ALL_GENERAL_NOTES	"General"
+#define ALL_MOLECULAR_NOTES	"Molecular"
 
 #endif

@@ -552,7 +552,7 @@ rules:
                 select := "select _Allele_key, _Marker_key, symbol, markerSymbol " +
 			  "from " + mgi_DBtable(ALL_ALLELE_VIEW) +
                           " where symbol = " + mgi_DBprstr(value) +
-			  " and _Allele_Status_key = " + ALL_STATUS_APPROVED;
+			  " and status = " + mgi_DBprstr(ALL_STATUS_APPROVED);
 
 	        if (markerKey.length > 0 and markerKey != "NULL") then
                   select := select + " and _Marker_key = " + markerKey;
@@ -2215,9 +2215,9 @@ rules:
 	    return;
 	  end if;
 
-	  select := "select count(*) from " + mgi_DBtable(ALL_ALLELE) +
+	  select := "select count(*) from " + mgi_DBtable(ALL_ALLELE_VIEW) +
 		" where _Marker_key = " + value +
-		" and _Allele_Status_key != " + ALL_STATUS_APPROVED;
+		" and status != " + mgi_DBprstr(ALL_STATUS_APPROVED);
 
           if ((integer) mgi_sql1(select) > 0) then
                 StatusReport.source_widget := top.root;

@@ -132,7 +132,8 @@ rules:
 
           cmd := "select _Synonym_key, _SynonymType_key, synonymType, synonym, allowOnlyOne, modification_date, modifiedBy";
 
-	  if (tableID = MGI_SYNONYM_NOMEN_VIEW or 
+	  if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
+	      tableID = MGI_SYNONYM_NOMEN_VIEW or 
 	      tableID = MGI_SYNONYM_MUSMARKER_VIEW) then
 	      cmd := cmd + " , _Refs_key, jnum, short_citation";
           end if;
@@ -156,7 +157,8 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
 
-	      if (tableID = MGI_SYNONYM_NOMEN_VIEW or
+	      if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
+	          tableID = MGI_SYNONYM_NOMEN_VIEW or
 	          tableID = MGI_SYNONYM_MUSMARKER_VIEW) then
 	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 9));

@@ -188,7 +188,6 @@ rules:
 	  tables.append(top->Reference->Table);
 	  tables.append(top->ReferenceMGI->Table);
 	  tables.append(top->DataSets->Table);
-	  tables.append(top->Synonym->Table);
 
 	  -- Global Accession number Tables
 

@@ -65,7 +65,7 @@ SetNotesDisplay [note : widget;];
 
 -- Set required field for specific noteTypeKey
 SetNotesRequired [notew : widget;                -- mgiNoteForm widget
-		  noteTypeKey : integer;         -- noteTypeKey to set
+		  noteType : string;             -- noteType to set
 		  required : boolean := true;];  -- value of "required"
 
 -- Events which handle AppendNotePush template
