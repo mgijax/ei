@@ -8,6 +8,9 @@
 -- This is the companion D event declarations file for RefTypeTableLib.d.
 --
 
+-- Add Row to Reference Type Table
+AddRefTypeRow [table : widget;];	 -- Reference Type Table
+
 -- Initialize Reference Type Table
 InitRefTypeTable [table : widget;        -- Reference Type Table
 	 tableID : integer;

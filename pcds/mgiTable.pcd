@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 24 15:32:36 2005";
+      lastWritten = "Thu Feb 24 15:48:17 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -543,6 +543,8 @@ Module: mgiTable
               }
               {
                 AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddRefTypeRow";
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = ReferenceTypeMenu;

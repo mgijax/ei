@@ -224,6 +224,7 @@ rules:
 	  refsCurrentTypeKey : string;
 	  refsTypeKey : string;
 	  mgiTypeKey : string;
+	  isReviewArticle : string;
 	  set : string := "";
 	  keyName : string := "refassocKey";
 	  keyDefined : boolean := false;
@@ -239,6 +240,7 @@ rules:
 	    refsCurrentTypeKey := mgi_tblGetCell(table, row, table.refsCurrentTypeKey);
 	    refsTypeKey := mgi_tblGetCell(table, row, table.refsTypeKey);
 	    mgiTypeKey := (string) table.mgiTypeKey;
+            isReviewArticle := mgi_tblGetCell(table, row, table.reviewKey);
  
             if (editMode = TBL_ROW_ADD) then
 	      if (tableID = MGI_REFERENCE_ASSOC) then
@@ -263,8 +265,8 @@ rules:
 		     refsTypeKey + ")\n";
 	      end if;
 
-	      if (table.is_defined("reviewKey") != nil) then
-                set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+	      if (isReviewArticle.length > 0) then
+                set := "isReviewArticle = " + isReviewArticle;
                 cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
 	      end if;
 
@@ -282,8 +284,8 @@ rules:
 		       " and _RefsType_key = " + refsCurrentTypeKey + "\n";
 	      end if;
 
-	      if (table.is_defined("reviewKey") != nil) then
-                set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+	      if (isReviewArticle.length > 0) then
+                set := "isReviewArticle = " + isReviewArticle;
                 cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
 	      end if;
 
