@@ -214,9 +214,11 @@ rules:
 
 	  -- Initialize Reference table
 
-	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
-	  send(InitRefTypeTable, 0);
+	  if (not ClearAllele.reset) then
+	    InitRefTypeTable.table := top->Reference->Table;
+	    InitRefTypeTable.tableID := ALL_REFERENCETYPE;
+	    send(InitRefTypeTable, 0);
+	  end if;
 
 	  -- Clear/Set Notes
 	  ClearSetNoteForm.notew := top->mgiNoteForm;
