@@ -587,6 +587,7 @@ rules:
 
 	PrepareSearch does
 	  value : string;
+	  from_straingenotype : boolean := false;
 
 	  from := "from " + mgi_DBtable(STRAIN_VIEW) + " s";
 	  from_reference := false;
@@ -688,6 +689,17 @@ rules:
 	    from_reference := true;
 	  end if;
 
+          value := mgi_tblGetCell(top->Genotype->Table, 0, top->Genotype->Table.qualifierKey);
+          if (value.length > 0) then
+            where := where + "\nand sg._Qualifier_key = " + value;
+	    from_straingenotype := true;
+          end if;
+
+	  if (from_straingenotype) then
+	    where := where + "\nand s._Strain_key = sg._Strain_key";
+	    from := from + "," + mgi_DBtable(PRB_STRAIN_GENOTYPE) + " sg";
+	  end if;
+
 	  if (not from_reference) then
 	    if (where.length > 0) then
               where := "where" + where->substr(5, where.length);
@@ -756,17 +768,17 @@ rules:
           end while;
           tables.close;
 
-	  InitStrainAlleleTypeTable.table := top->Marker->Table;
-	  InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
-	  send(InitStrainAlleleTypeTable, 0);
+--	  InitStrainAlleleTypeTable.table := top->Marker->Table;
+--	  InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
+--	  send(InitStrainAlleleTypeTable, 0);
 
-	  InitSynTypeTable.table := top->Synonym->Table;
-	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
-	  send(InitSynTypeTable, 0);
+--	  InitSynTypeTable.table := top->Synonym->Table;
+--	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
+--	  send(InitSynTypeTable, 0);
 
-	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := MGI_REFTYPE_STRAIN_VIEW;
-	  send(InitRefTypeTable, 0);
+--	  InitRefTypeTable.table := top->Reference->Table;
+--	  InitRefTypeTable.tableID := MGI_REFTYPE_STRAIN_VIEW;
+--	  send(InitRefTypeTable, 0);
 
 	  top->ReferenceMGI->Records.labelString := "0 Records";
 	  top->DataSets->Records.labelString := "0 Records";

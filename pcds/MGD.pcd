@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb 22 11:48:49 2005";
+      lastWritten = "Wed Feb 23 10:33:07 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9359,8 +9359,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          activateCallback = "D:AddStrainAlleleTypeRow";
                                         Group: Constraint
                                           leftAttachment = attach_widget;
                                           leftWidget = StrainAlleleTypeMenu;
@@ -9378,6 +9376,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:EditStrainAlleleType";
                                           labelString = "Edit Type";
+                                          managed = False;
                                         Group: Constraint
                                           leftAttachment = attach_widget;
                                           leftWidget = DeleteRow;
@@ -9398,6 +9397,14 @@ Shift<Key>Tab: prev-tab-group()
                                           topOffset = 2;
                                           bottomAttachment = attach_none;
                                           resizable = true;
+                                            Popups:
+                                            {
+                                              StrainAlleleTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = Marker;
+                                                tableOptionKey = 4;
+                                                tableOption = 5;
+                                            }
                                       }
                                 }
                                 {
@@ -9421,12 +9428,16 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          activateCallback = "D:AddTableRow";
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
                                       }
                                       {
                                         EditRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          managed = False;
                                       }
                                       {
                                         SynonymTypeMenu = SynonymTypeMenu : mgiOption;
@@ -9435,6 +9446,9 @@ Shift<Key>Tab: prev-tab-group()
                                               SynonymTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Strain_View order by _SynonymType_key";
+                                                tableForm = Synonym;
+                                                tableOption = 4;
+                                                tableOptionKey = 2;
                                             }
                                       }
                                 }
@@ -9454,6 +9468,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          activateCallback = "D:AddTableRow";
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
@@ -9468,6 +9484,9 @@ Shift<Key>Tab: prev-tab-group()
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Strain_View where allowOnlyOne = 0 order by _RefAssocType_key";
+                                                tableForm = Reference;
+                                                tableOption = 6;
+                                                tableOptionKey = 5;
                                             }
                                       }
                                 }
@@ -9493,11 +9512,12 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 7;
                                           xrtTblColumnLabels = "Mode,Key,G Key,Q Key,Qualifier,MGI ID,Genotype";
                                           xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 15)(all 6 50)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 15)(all 6 60)";
                                           userDefinedAttributes = "strainGenotypeKey:Int(Int)=\"1\"\ngenotypeKey:Int(Int)=\"2\"\nqualifierKey:Int(Int)=\"3\"\ngenotype:Int(Int)=\"5\"\ngenotypeName:Int(Int)=\"6\"\nqualifier:Int(Int)=\"4\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyGenotype\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0 False)(all 6 False)";
-                                          xrtTblEditableSeries = "(all 0 False)(all 6 False)";
+                                          xrtTblDisplayHorizScrollBar = dispsb_never;
+                                        Group: User
+                                          requiredColumns = "2\n3";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
