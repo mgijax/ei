@@ -773,7 +773,7 @@ rules:
 	      noteType := mgi_getstr(dbproc, 37);
 	      note := mgi_getstr(dbproc, 38);
 
-	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 32) != gbaMGIID) then
+	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 33) != gbaMGIID) then
 
 		if (fantomKey != "-1") then
 	          (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
