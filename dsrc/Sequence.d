@@ -327,7 +327,7 @@ rules:
           while (row < mgi_tblNumRows(sourceTable)) do
             editMode := mgi_tblGetCell(sourceTable, row, sourceTable.editMode);
  
-            if (editMode = TBL_ROW_MODIFY) then
+            if (editMode = TBL_ROW_MODIFY and sourceTable.sourceKey != "") then
               key := mgi_tblGetCell(sourceTable, row, sourceTable.sourceKey);
 	      ModifySequenceSource.source_widget := sourceTable;
 	      ModifySequenceSource.row := row;
