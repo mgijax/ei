@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:59:33 2005";
+      lastWritten = "Mon Feb 28 15:05:30 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1186,8 +1186,11 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         text = scrolledText : mgiDataTypes;
                                         Group: Widget
-                                          rows = 2;
+                                          rows = 3;
                                           columns = 100;
+                                          scrollHorizontal = False;
+                                          scrollVertical = False;
+                                          maxLength = 255;
                                       }
                                 }
                                 {
@@ -1321,6 +1324,23 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                   Group: User
                                     note = "This image is from *, an open-access article, licensee BioMed Central Ltd.";
+                                    noteWidget = CopyrightNote;
+                                }
+                                {
+                                  Elsevier = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = Elsevier;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = BMC;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = BMC;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    note = "Reprinted with permission from Elsevier from \\DXDOI() \\Elsevier()";
                                     noteWidget = CopyrightNote;
                                 }
                                 {
