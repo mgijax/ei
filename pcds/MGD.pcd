@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jan 16 14:02:39 2004";
+      lastWritten = "Thu Feb 19 15:17:59 2004";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -3129,31 +3129,6 @@ Module: MGD
                     }
               }
               {
-                Holder = CharText : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = AccRef;
-                  leftOffset = 25;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topWidget = mgiCitation;
-                  topOffset = 5;
-                  rightOffset = 2;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Holder;
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 40;
-                        maxLength = 40;
-                    }
-              }
-              {
                 Notes = SingleNote : mgiDataTypes;
                 Group: Widget
                   xrtGearOrientation = vertical;
@@ -3162,7 +3137,7 @@ Module: MGD
                   leftWidget = AccRef;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
-                  topWidget = Alias;
+                  topWidget = AccRef;
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
@@ -3180,14 +3155,15 @@ Module: MGD
                 Group: Widget
                   labelString = "Has Sequence Presented";
                 Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Holder;
+                  leftAttachment = attach_widget;
+                  leftWidget = AccRef;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = Holder;
-                  topOffset = 2;
+                  topWidget = mgiCitation;
+                  topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 25;
               }
               {
                 RMAP = toggle : mgiDataTypes;
@@ -3273,7 +3249,7 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-1 0)";
                         xrtTblTraversableSeries = "(all 0-1 False)";
                         userDefinedAttributes = "aliasKey:Int=\"1\"\nalias:Int=\"2\"\n";
-                        xrtTblVisibleRows = 2;
+                        xrtTblVisibleRows = 3;
                     }
               }
         }
