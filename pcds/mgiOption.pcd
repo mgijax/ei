@@ -254,10 +254,10 @@ Module: mgiOption
                     {
                       other = OptionToggle : mgiOption;
                       Group: Widget
-                        labelString = "Other-See note";
+                        labelString = "Other (see notes)";
                       Group: User
-                        searchValue = "Other-See note";
-                        defaultValue = "Other-See note";
+                        searchValue = "Other (see notes)";
+                        defaultValue = "Other (see notes)";
                     }
                     {
                       NotSpecified = NotSpecified : mgiOption;
