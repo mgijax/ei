@@ -721,7 +721,7 @@ rules:
 	  table : widget := top->Reference->Table;
 
 	  cmd : string;
-	  cmd := "select r.* from BIB_GOXRef_View r " + 
+	  cmd := "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r " + 
 		 "where r._Marker_key = " + currentRecordKey + 
 		 " and not exists (select 1 from " +
 			mgi_DBtable(VOC_ANNOT) + " a," +
@@ -739,8 +739,8 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 23));
-	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 24));
+	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 3));
 	      row := row + 1;
 	    end while;
           end while;
