@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Dec 29 11:06:39 2000";
+      lastWritten = "Mon Jan  8 11:01:06 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -487,6 +487,9 @@ Module: mgiOption
                         labelString = InterPro;
                       Group: User
                         defaultValue = 28;
+                        allowAdd = False;
+                        allowDelete = False;
+                        allowModify = False;
                     }
               }
         }
