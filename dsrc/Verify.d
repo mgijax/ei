@@ -16,6 +16,10 @@
 --
 -- History
 --
+-- lec 04/13/2001
+--	- VerifyMarker; added displayAlleleMessage parameter
+--	- VerifyMarkerAlleles; added
+--
 -- lec 04/10/2001
 --	- VerifyMarker;  added processing for Accession widget
 --
@@ -2213,6 +2217,71 @@ rules:
 		"' is not cross-referenced to this " + accLabel + "\n\n";
             send(StatusReport);
 	  end if;
+	end does;
+
+--
+-- VerifyMarkerAlleles
+--
+-- Determines is Marker contains non-Approved Alleles
+-- Displays message if it does
+--
+-- If Text, assumes use of mgiMarker template
+-- If Table, assumes table.markerKey, table.markerSymbol are defined
+--
+
+	VerifyMarkerAlleles does
+	  sourceWidget : widget := VerifyMarkerAlleles.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+	  select : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  -- Processing for Table
+
+	  if (isTable) then
+	    row := VerifyMarkerAlleles.row;
+	    column := VerifyMarkerAlleles.column;
+	    reason := VerifyMarkerAlleles.reason;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+					   
+	    -- If not in the marker column, return
+
+            if (column != sourceWidget.markerSymbol) then
+              return;
+            end if;
+
+	    value := mgi_tblGetCell(sourceWidget, row, sourceWidget.markerKey);
+
+	  -- Processing for Text
+
+	  else
+	    value := top->mgiMarker->ObjectID->text.value;
+	  end if;
+
+	  if (value.length = 0 or value = "NULL") then
+	    return;
+	  end if;
+
+	  select := "select count(*) from " + mgi_DBtable(ALL_ALLELE) +
+		" where _Marker_key = " + value +
+		" and _Allele_Status_key != " + ALL_STATUS_APPROVED;
+
+          if ((integer) mgi_sql1(select) > 0) then
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "This Marker has non-Approved Allele Symbols.\n" +
+			"Please check these records before entering your new Allele Symbol.\n";
+                send(StatusReport);
+          end if;
 	end does;
 
 --

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 10 09:54:42 2001";
+      lastWritten = "Fri Apr 13 12:07:11 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -761,7 +761,7 @@ Module: mgiDialog
                               xrtTblPixelWidthSeries = "(all 0-5 0)";
                               xrtTblCharWidthSeries = "(all 6-8 20)";
                               xrtTblMaxLengthSeries = "(all 6 25) (all 7-8 50)";
-                              xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele (verifyAdd = true),\nD:CommitTableCellEdit";
+                              xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerAlleles,\nD:VerifyAllele (verifyAdd = true),\nD:CommitTableCellEdit";
                               userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"6\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\nseqNum:Int(Int)=\"5\"\npairKey:Int(Int)=\"1\"\nmarkerColumns:Int=\"1\"\n";
                               xrtTblTraversableSeries = "(all 0-5 False)";
                               xrtTblEditableSeries = "(all 0-5 False)";
