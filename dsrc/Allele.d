@@ -517,7 +517,7 @@ rules:
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
-	      set := set + "approvedBy = " + global_loginKey + ",approval_date = getdate(),";
+	      set := set + "_ApprovedBy_key = " + global_loginKey + ",approval_date = getdate(),";
 	    end if;
           end if;
 

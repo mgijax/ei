@@ -274,9 +274,9 @@ rules:
 		if (sourceForm->Library.managed) then
                   sourceForm->Library->text.value := mgi_getstr(dbproc, 2);
 		  table := top->Control->ModificationHistory->Table;
-		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
+		  (void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
 		  (void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 15));
-		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
+		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
 		  (void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 16));
 		end if;
 
@@ -506,8 +506,8 @@ rules:
 	    QueryModificationHistory.table := top.top->ControlForm->ModificationHistory->Table;
 	    QueryModificationHistory.tag := "s";
 	    send(QueryModificationHistory, 0);
-            from := from + top->ModificationHistory->Table.sqlFrom;
-            where := where + top->ModificationHistory->Table.sqlWhere;
+            from := from + top.top->ControlForm->ModificationHistory->Table.sqlFrom;
+            where := where + top.top->ControlForm->ModificationHistory->Table.sqlWhere;
 	  end if;
 
 	  -- To search each note type individually...

@@ -256,8 +256,7 @@ rules:
 		cmd := cmd + mgi_DBinsert(tableID, NOKEY) + 
 		     objectKey + "," + 
 		     newKey + "," +
-		     refsType + "," +
-		     global_loginKey + "," + global_loginKey + ")\n";
+		     refsType + ")\n";
 	      end if;
 
 	      if (table.is_defined("reviewKey") != nil) then
