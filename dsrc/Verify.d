@@ -1346,6 +1346,7 @@ rules:
 	  table : string := mgi_DBtable(tableID);
 	  name : string := mgi_DBcvname(tableID);
 	  verifyChars : integer := verify.verifyChars;
+	  nextSeqNum : string;
 
 	  -- If cannot find key widget, do nothing
 
@@ -1440,6 +1441,8 @@ rules:
 	    select := "select _RISet_key, designation, standard = 1 from " + table + " where ";
 	  elsif (tableID = ALL_CELLLINE) then
 	    select := "select _CellLine_key, cellLine, standard = 1 from " + table + " where ";
+	  else
+	    select := "select _Term_key, term, standard = 1 from " + table + " where ";
 	  end if;
 
 	  dbproc : opaque := mgi_dbopen();
@@ -1564,6 +1567,15 @@ rules:
 		       mgi_DBprstr(item.value) + ",0,0,0)\n" +
 		       mgi_DBinsert(MLP_STRAIN, NOKEY) + "@" + KEYNAME + ",-1,NULL,NULL)\n" +
 		       mgi_DBinsert(MLP_EXTRA, NOKEY) + "@" + KEYNAME + ",NULL,NULL,NULL,NULL)\n";
+	      elsif (tableID = VOC_CELLLINE_VIEW) then
+		nextSeqNum := mgi_sql1("select max(sequenceNum) + 1 from " + 
+			mgi_DBtable(VOC_TERM) + " where _Vocab_key = " + (string) verify.vocabKey);
+	        cmd := mgi_setDBkey(VOC_TERM, NEWKEY, KEYNAME) +
+		       mgi_DBinsert(VOC_TERM, KEYNAME) +
+		       (string) verify.vocabKey + "," +
+		       mgi_DBprstr(item.value) + ",NULL," +
+		       nextSeqNum + ",0," +
+		       global_loginKey + "," + global_loginKey + ")\n";
 	      else
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +

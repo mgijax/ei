@@ -118,8 +118,7 @@ char *symidtext;
     int foundit = 0;
  
  
-    sprintf(cmd, "select _Marker_key from MLC_Text where _Marker_key = 
-				 %s", symidtext);
+    sprintf(cmd, "select _Marker_key from MLC_Text where _Marker_key = %s", symidtext);
  
     dbcmd(dbproc, cmd);
     dbsqlexec(dbproc);
@@ -183,8 +182,7 @@ Boolean obtain_mlc_lock(char *mk)
 	DBINT checked_out;
 	int i;
  
-    sprintf(cmd, "select time, checkedOut from MLC_Lock_edit holdlock "
-	 			 " where _Marker_key = %s\n", mk); 
+    sprintf(cmd, "select time, checkedOut from MLC_Lock_edit holdlock where _Marker_key = %s\n", mk); 
 
     cursor = dbcursoropen(dbproc,cmd,CUR_KEYSET,CUR_LOCKCC,NROWS,pstatus); 
 

@@ -196,6 +196,63 @@ char *mgi_DBprstr(char *value)
 
    example:
 
+	buf = mgi_DBprstr("")
+	the value of buf is: NULL
+
+	buf = mgi_DBprstr("Cook")
+	the value of buf is: \"Cook\"
+
+	buf = mgi_DBprstr("NULL")
+	the value of buf is: NULL
+
+	buf = mgi_DBprstr("    ")
+	the value of buf is: NULL
+*/
+
+char *mgi_DBprstr2(char *value)
+{
+  static char buf[BUFSIZ];
+  int allSpaces = 1;
+  int i;
+  char *s;
+
+  memset(buf, '\0', sizeof(buf));
+
+  for (s = value; *s != '\0'; s++)
+  {
+    allSpaces = isspace(*s);
+    if (!allSpaces)
+      break;
+  }
+
+  if (strlen(value) == 0 || strcmp(value, "NULL") == 0 || allSpaces)
+  {
+    strcpy(buf, "NULL");
+  }
+  else
+  {
+    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+  }
+
+  return(buf);
+}
+
+/*
+   Compose a string SQL value for a given value.
+   If the value is not null, then enclose in escaped quotes so
+   that SQL will accept it.
+   If the value is null, return NULL.
+   If the value = "NULL", return NULL.
+   If the value is a string of blanks, return NULL.
+
+   requires:	
+	value (char *), the value
+
+   returns:
+	a string buffer containing the new string
+
+   example:
+
 	buf = mgi_DBprnotestr("")
 	the value of buf is: NULL
 
@@ -862,6 +919,9 @@ char *mgi_DBkey(int table)
     case VOC_EVIDENCE:
 	    strcpy(buf, "_Annot_key");
 	    break;
+    case VOC_CELLLINE_VIEW:
+	    strcpy(buf, "_Term_key");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -927,6 +987,9 @@ char *mgi_DBtype(int table)
     case PRB_PROBE:
             strcpy(buf, "Segment");
 	    break;
+    case PRB_SOURCE_MASTER:
+            strcpy(buf, "Source");
+            break;
     case STRAIN:
     case MLP_STRAIN:
             strcpy(buf, "Strain");
@@ -1639,6 +1702,9 @@ char *mgi_DBtable(int table)
     case VOC_ANNOT_VIEW:
             strcpy(buf, "VOC_Annot_View");
 	    break;
+    case VOC_CELLLINE_VIEW:
+	    strcpy(buf, "VOC_Term_CellLine_View");
+	    break;
     case VOC_EVIDENCE:
             strcpy(buf, "VOC_Evidence");
 	    break;
@@ -2266,7 +2332,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, age, ageMin, ageMax, cellLine, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, _CellLine_key, age, ageMin, ageMax, isCuratorEdited, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_MARKER:
@@ -2289,7 +2355,8 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Refs_key, _LogicalDB_key, isSimple, isPrivate, name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_TERM:
-            sprintf(buf, "insert %s (%s, _Vocab_key, term, abbreviation, sequenceNum, isObsolete, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+    case VOC_CELLLINE_VIEW:
+            sprintf(buf, "insert %s (%s, _Vocab_key, term, abbreviation, sequenceNum, isObsolete, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(VOC_TERM), mgi_DBkey(VOC_TERM));
 	    break;
     case VOC_TEXT:
             sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2852,6 +2919,9 @@ char *mgi_DBcvname(int table)
 	    break;
     case TISSUE:
             strcpy(buf, "tissue");
+	    break;
+    case VOC_CELLLINE_VIEW:
+	    strcpy(buf, "term");
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);

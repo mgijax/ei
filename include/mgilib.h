@@ -7,6 +7,7 @@
 
 extern char *mgi_setDBkey(int, int, char *);
 extern char *mgi_DBprstr(char *);
+extern char *mgi_DBprstr2(char *);
 extern char *mgi_DBprnotestr(char *);
 extern char *mgi_DBprkey(char *);
 extern char *mgi_DBincKey(char *);
@@ -68,11 +69,11 @@ extern char *global_version;
 #define MRK_REFERENCE		122
 #define MRK_MOUSE  		123
 #define MRK_ACC_REFERENCE	124
-#define MLC_LOCK_EDIT		125
-#define MLC_MARKER_EDIT		126
-#define MLC_REFERENCE_EDIT	127
-#define MLC_TEXT_EDIT		128
-#define MLC_TEXT_EDIT_ALL	129
+#define MLC_LOCK		125
+#define MLC_MARKER		126
+#define MLC_REFERENCE		127
+#define MLC_TEXT		128
+#define MLC_TEXT_ALL		129
 
 #define PRB_ALIAS		130
 #define PRB_ALLELE		131
@@ -114,7 +115,7 @@ extern char *global_version;
 #define MLD_RIHAPLOTYPE		178
 #define MLD_RI2POINT		179
 #define MLD_STATISTICS		180
-#define MLC_MARKER_EDIT_VIEW	181
+#define MLC_MARKER_VIEW		181
 
 /* GXD Tables */
 
@@ -204,6 +205,7 @@ extern char *global_version;
 #define ALL_REFERENCETYPE	339
 #define RISET_VIEW		341
 #define MGI_USER		342
+#define VOC_CELLLINE_VIEW	343
 
 /* Accession Tables */
 
