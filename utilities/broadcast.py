@@ -1767,7 +1767,7 @@ class Marker:
 			cmd.append('exec ACC_insert %d, "%s", %s, "%s", %s' \
 				% (self.getKey(), accId, logicalDBKey, MARKER, refKey))
 
-		if len(cmd) > 1:
+		if len(cmd) >= 1:
 			return cmd
 		else:
 			return []
