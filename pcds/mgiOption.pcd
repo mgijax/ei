@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May 28 11:01:39 2004";
+      lastWritten = "Wed Jun  2 15:24:31 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2217,6 +2217,8 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 1460;
+          Group: User
+            defaultValue = "Not Specified";
               Popups:
               {
                 ProbeOrganismPulldown : OptionPulldown = OptionPulldown;
