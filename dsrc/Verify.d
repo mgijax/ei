@@ -18,6 +18,7 @@
 --
 -- lec 08/16/2001
 --	- TR 2846; VerifyAllele; don't launch Allele module upon invalid entry
+--	- TR 2849; VerifyGelLaneControl; remove defaults for Control = 'No'
 --
 -- lec 06/27/2001
 --	- TR 2671; use key.defaultValue and item.defaultValue
@@ -1100,8 +1101,7 @@ rules:
 --	UDAs required:  genotypeKey, genotype, ageKey, agePrefix, ageMin, ageMax,
 --			ageRange, sexKey, sex, rnaKey, rna, sampleAmt (integer)
 --
---	If Control != 'No', set Genotype, Sample, RNA, Age, Sex to Not Applicable
---  If Control = 'No', set Genotype, Sample, RNA, Age, Sex to Not Specified.
+--  If Control != 'No', set Genotype, Sample, RNA, Age, Sex to Not Applicable
 
 	VerifyGelLaneControl does
 	  sourceWidget : widget := VerifyGelLaneControl.source_widget;
@@ -1117,59 +1117,36 @@ rules:
 
 	  -- Sample amount
 	  (void) mgi_tblSetCell(table, row, table.sampleAmt, "");
-      -- Age range
+
+          -- Age range
 	  (void) mgi_tblSetCell(table, row, table.ageMin, "NULL");
 	  (void) mgi_tblSetCell(table, row, table.ageMax, "NULL");
 	  (void) mgi_tblSetCell(table, row, table.ageRange, "");
 
-	  -- If "No" selected
-	  if (sourceWidget.defaultValue = "1") then
-		-- Genotype
-		(void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
-		(void) mgi_tblSetCell(table, row, table.genotype, "Not Specified");
-
-		-- Age
-		(void) mgi_tblSetCell(table, row, table.ageKey, 
-		top->CVGel->AgePulldown->NotSpecified.defaultValue);
-	    (void) mgi_tblSetCell(table, row, table.agePrefix, 
-	  	top->CVGel->AgePulldown->NotSpecified.labelString);
-
-		-- Sex
-	    (void) mgi_tblSetCell(table, row, table.sexKey,
-	           top->CVGel->SexPulldown->NotSpecified.defaultValue);
-	    (void) mgi_tblSetCell(table, row, table.sex,
-	           top->CVGel->SexPulldown->NotSpecified.labelString);
-
-		-- RNA
-	    (void) mgi_tblSetCell(table, row, table.rnaKey,
-	           top->CVGel->GelRNATypePulldown->NotSpecified.defaultValue);
-	    (void) mgi_tblSetCell(table, row, table.rna,
-	           top->CVGel->GelRNATypePulldown->NotSpecified.labelString);
-	  else
-
-		-- Genotype
+	  -- If "No" is not selected
+	  if (sourceWidget.defaultValue != "1") then
+	    -- Genotype
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-2");
 	    (void) mgi_tblSetCell(table, row, table.genotype, "Not Applicable");
 
-		-- Age
+	    -- Age
 	    (void) mgi_tblSetCell(table, row, table.ageKey, 
 	  	       top->CVGel->AgePulldown->NotApplicable.defaultValue);
 	    (void) mgi_tblSetCell(table, row, table.agePrefix, 
 	           top->CVGel->AgePulldown->NotApplicable.labelString);
 
-        -- Sex
+            -- Sex
 	    (void) mgi_tblSetCell(table, row, table.sexKey,
 	           top->CVGel->SexPulldown->NotApplicable.defaultValue);
 	    (void) mgi_tblSetCell(table, row, table.sex,
 	           top->CVGel->SexPulldown->NotApplicable.labelString);
 
-		-- RNA
+	    -- RNA
 	    (void) mgi_tblSetCell(table, row, table.rnaKey,
 	           top->CVGel->GelRNATypePulldown->NotApplicable.defaultValue);
 	    (void) mgi_tblSetCell(table, row, table.rna,
 	           top->CVGel->GelRNATypePulldown->NotApplicable.labelString);
       end if;
-
 
       SetOption.source_widget := top->CVGel->AgeMenu;
       SetOption.value := mgi_tblGetCell(table, row, table.ageKey);
