@@ -413,7 +413,6 @@ rules:
         Select does
 
 	  InitAcc.table := accTable;
-	  InitAcc.showMGI := false;
           send(InitAcc, 0);
  
 	  InitAcc.table := accRefTable;

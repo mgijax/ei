@@ -566,6 +566,7 @@ rules:
 	  LoadAcc.table := accTable;
 	  LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := STRAIN;
+	  LoadAcc.reportError := false;
 	  send(LoadAcc, 0);
 
           top->QueryList->List.row := Select.item_position;
