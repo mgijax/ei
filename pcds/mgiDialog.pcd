@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr 10 10:22:44 2000";
+      lastWritten = "Mon Apr 10 15:19:28 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -312,7 +312,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1075;
+            vip_y = 1020;
         }
         {
           WorkingDialog = XmWorkingDialog;
@@ -443,7 +443,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1130;
+            vip_y = 1075;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -533,7 +533,7 @@ Module: mgiDialog
           StrainDialog = SelectDialog : mgiDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1240;
+            vip_y = 1185;
               {
                 ItemList = LookupList;
                 Group: User
@@ -563,7 +563,7 @@ Module: mgiDialog
             dialogTitle = Tissues;
           Group: Control
             vip_x = 80;
-            vip_y = 1185;
+            vip_y = 1130;
               {
                 ItemList = LookupList;
                 Group: User
@@ -597,7 +597,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 1240;
               {
                 label = XmLabel;
                 Group: Widget
@@ -678,7 +678,7 @@ Module: mgiDialog
             userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ntargetKeyColumn:Int(Int)\nclearForms:StringTable(StringTable)=\"EditForm\"\nhomeWidget:StringTable(StringTable)\n";
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1350;
           Group: User
             homeWidget = "Strain\nMarkerAllele";
               {
@@ -777,7 +777,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1295;
               {
                 OK = DialogPush : mgiDialog;
               }
@@ -797,7 +797,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1460;
               {
                 EditForm = EditForm : MGI;
                 Group: Constraint
@@ -846,7 +846,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1405;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -988,7 +988,7 @@ Module: mgiDialog
           RIDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1515;
               {
                 ItemList = LookupList;
                 Group: User
@@ -1019,7 +1019,7 @@ Module: mgiDialog
           CrossDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1570;
               {
                 ItemList = LookupList;
                 Group: User
@@ -1056,7 +1056,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1680;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1188,7 +1188,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1315,7 +1315,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 frame = XmFrame;
                 Group: Constraint
@@ -1621,7 +1621,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1921,7 +1921,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2040,31 +2040,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          VerifyAlleleAdd = VerifyItemAdd;
-          Group: Widget
-            dialogTitle = "Add Allele?";
-            messageString = "This allele does not exist in the database.\nDo you want to ADD this allele?";
-            okCallback = "D:VerifyAlleleAdd";
-          Group: Control
-            vip_x = 80;
-            vip_y = 1020;
-              {
-                AlleleName = CharText : mgiDataTypes;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Allele Name";
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 50;
-                      Group: User
-                        defaultValue = "allele name in progress";
-                    }
-              }
-        }
-        {
           MRKBreakpointSplitDialog = XmFormDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
@@ -2075,7 +2050,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 Lookup = XmFrame;
                 Group: Widget
@@ -2294,7 +2269,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Apr  7 08:32:32 2000";
+      lastWritten = "Mon Apr 10 15:30:13 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -1036,9 +1036,6 @@ Shift<Key>Tab: prev-tab-group()
                       InSituResultDialog = InSituResultDialog : mgiDialog;
                     }
                     {
-                      VerifyAlleleAdd = VerifyAlleleAdd : mgiDialog;
-                    }
-                    {
                       MRKTransferDialog = MRKTransferDialog : mgiDialog;
                     }
               }
@@ -1999,6 +1996,12 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = "GXD Index/Stages";
                                 }
                                 {
+                                  Allele = XmPushButton;
+                                  Group: Widget
+                                    labelString = Alleles;
+                                    activateCallback = "D:CreateMGIModule(name = \"Allele\")";
+                                }
+                                {
                                   Nomen = XmPushButton;
                                   Group: Widget
                                     labelString = Nomenclature;
@@ -2059,6 +2062,12 @@ Shift<Key>Tab: prev-tab-group()
           Nomen = Nomen : MGINomen;
           Group: Control
             vip_x = 60;
+            vip_y = 305;
+        }
+        {
+          Allele = Allele : MGD;
+          Group: Control
+            vip_x = 175;
             vip_y = 305;
         }
 }

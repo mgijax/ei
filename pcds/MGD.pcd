@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr 10 13:20:45 2000";
+      lastWritten = "Tue Apr 11 09:59:22 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -7925,7 +7925,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Name = CharSText : mgiDataTypes;
+                                  Name = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Symbol;
@@ -7938,15 +7938,41 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = Name;
+                                          labelString = "Allele Name";
                                       }
                                       {
-                                        text = scrolledText : mgiDataTypes;
+                                        text = text : mgiDataTypes;
                                         Group: Widget
-                                          columns = 75;
+                                          columns = 85;
                                         Group: User
                                           required = True;
                                       }
+                                }
+                                {
+                                  label = label : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Original Reference";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  mgiCitation = mgiCitation : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = label;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = label;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   ReviewedMenu = YesNoMenu : mgiOption;
@@ -7997,10 +8023,10 @@ Shift<Key>Tab: prev-tab-group()
                                   MolecularMutation = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
+                                    leftWidget = mgiCitation;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Name;
+                                    topWidget = mgiCitation;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -8035,41 +8061,15 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  label = label : mgiDataTypes;
+                                  label1 = label : mgiDataTypes;
                                   Group: Widget
-                                    labelString = "Original Reference";
+                                    labelString = "Reference which characterizes allele at the molecular level";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Strain;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Strain;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  mgiCitation = mgiCitation : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = label;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = label;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  label1 = label : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Reference which characterizes allele at the molecular level";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = mgiCitation;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
