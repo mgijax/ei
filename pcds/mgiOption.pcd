@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 23 11:24:30 2004";
+      lastWritten = "Thu Aug 26 09:45:03 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -178,14 +178,14 @@ Module: mgiOption
                       Group: Widget
                         labelString = "NCBI Gene Model";
                       Group: User
-                        defaultValue = 56;
+                        defaultValue = 59;
                     }
                     {
                       EnsemblGeneModel = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Ensembl Gene Model";
                       Group: User
-                        defaultValue = 57;
+                        defaultValue = 60;
                     }
                     {
                       UniGene = AccToggle : mgiOption;
