@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 06/27/2003
+--	- TR 4872; Marker Withdrawals
+--
 -- 04/22/2003
 --	- TR 4705; added modifiedBy to Marker history
 --
@@ -142,11 +145,14 @@ devents:
 	DisplayMarker : translation [];
 	MarkerWithdrawalCancel : local [];
 	MarkerWithdrawalInit :local [];
+	MarkerWithdrawalRename :local [];
+	MarkerWithdrawalMerge :local [];
+	MarkerWithdrawalAlleleOf :local [];
+	MarkerWithdrawalSplit :local [];
+	MarkerWithdrawalDelete :local [];
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;
 				    status : integer;];
-	SetMarkerWithdrawalFields :exported [];	-- exported so that EventReasonToggle can use it
-
 	-- Process Breakpoint Split Events
 	MarkerBreakpointSplitInit :local [];
 	MarkerBreakpointSplit :local [];
@@ -252,12 +258,6 @@ rules:
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->WithdrawalDialog->ChromosomeMenu;
-	  send(InitOptionMenu, 0);
-
-	  top->WithdrawalDialog->MarkerEventMenu.subMenuId.sql := 
-	    "select * from " + mgi_DBtable(MRK_EVENT) + 
-	    " where " + mgi_DBkey(MRK_EVENT) + " in (2,3,4,5,6) order by " + mgi_DBcvname(MRK_EVENT);
-	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
           top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := 
@@ -476,6 +476,86 @@ rules:
 	end does;
 
 --
+-- MarkerWithdrawalRename
+--
+-- Activated from:  widget top->Utilities->MarkerWithdrawalRename
+--
+-- Initializes Withdrawal Dialog fields for a Rename
+--
+
+	MarkerWithdrawalRename does
+	  dialog : widget := top->WithdrawalDialog;
+
+	  dialog.eventKey := EVENT_RENAME;
+	  dialog.eventLabel := MarkerWithdrawalRename.source_widget.labelString;
+	  send(MarkerWithdrawalInit, 0);
+	end does;
+
+--
+-- MarkerWithdrawalMerge
+--
+-- Activated from:  widget top->Utilities->MarkerWithdrawalMerge
+--
+-- Initializes Withdrawal Dialog fields for a Merge
+--
+
+	MarkerWithdrawalMerge does
+	  dialog : widget := top->WithdrawalDialog;
+
+	  dialog.eventKey := EVENT_MERGE;
+	  dialog.eventLabel := MarkerWithdrawalMerge.source_widget.labelString;
+	  send(MarkerWithdrawalInit, 0);
+	end does;
+
+--
+-- MarkerWithdrawalAlleleOf
+--
+-- Activated from:  widget top->Utilities->MarkerWithdrawalAlleleOf
+--
+-- Initializes Withdrawal Dialog fields for a AlleleOf
+--
+
+	MarkerWithdrawalAlleleOf does
+	  dialog : widget := top->WithdrawalDialog;
+
+	  dialog.eventKey := EVENT_ALLELEOF;
+	  dialog.eventLabel := MarkerWithdrawalAlleleOf.source_widget.labelString;
+	  send(MarkerWithdrawalInit, 0);
+	end does;
+
+--
+-- MarkerWithdrawalSplit
+--
+-- Activated from:  widget top->Utilities->MarkerWithdrawalSplit
+--
+-- Initializes Withdrawal Dialog fields for a Split
+--
+
+	MarkerWithdrawalSplit does
+	  dialog : widget := top->WithdrawalDialog;
+
+	  dialog.eventKey := EVENT_SPLIT;
+	  dialog.eventLabel := MarkerWithdrawalSplit.source_widget.labelString;
+	  send(MarkerWithdrawalInit, 0);
+	end does;
+
+--
+-- MarkerWithdrawalDelete
+--
+-- Activated from:  widget top->Utilities->MarkerWithdrawalDelete
+--
+-- Initializes Withdrawal Dialog fields for a Delete
+--
+
+	MarkerWithdrawalDelete does
+	  dialog : widget := top->WithdrawalDialog;
+
+	  dialog.eventKey := EVENT_DELETED;
+	  dialog.eventLabel := MarkerWithdrawalDelete.source_widget.labelString;
+	  send(MarkerWithdrawalInit, 0);
+	end does;
+
+--
 -- MarkerWithdrawalInit
 --
 -- Activated from:  widget top->Utilities->MarkerWithdrawal
@@ -496,9 +576,37 @@ rules:
 	  ClearTable.table := dialog->NewMarker->Table;
 	  send(ClearTable, 0);
 
-	  SetOption.source_widget := dialog->MarkerEventMenu;
-	  SetOption.value := EVENT_RENAME;
-	  send(SetOption, 0);
+	  dialog.dialogTitle := "Marker Withdrawal: " + dialog.eventLabel;
+
+	  if (dialog.eventKey = EVENT_RENAME) then
+	    dialog->nonVerified.managed := true;
+	    dialog->nonVerified.sensitive := true;
+	    dialog->Name.sensitive := true;
+	    dialog->mgiMarker.managed := false;
+	    dialog->markerAccession.managed := false;
+	    dialog->NewMarker.sensitive := false;
+	  elsif (dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) then
+	    dialog->nonVerified.managed := false;
+	    dialog->nonVerified.sensitive := true;
+	    dialog->Name.sensitive := false;
+	    dialog->mgiMarker.managed := true;
+	    dialog->markerAccession.managed := true;
+	    dialog->NewMarker.sensitive := false;
+	  elsif (dialog.eventKey = EVENT_SPLIT) then
+	    dialog->nonVerified.managed := true;
+	    dialog->nonVerified.sensitive := false;
+	    dialog->Name.sensitive := false;
+	    dialog->mgiMarker.managed := false;
+	    dialog->markerAccession.managed := false;
+	    dialog->NewMarker.sensitive := true;
+	  elsif (dialog.eventKey = EVENT_DELETED) then
+	    dialog->nonVerified.managed := false;
+	    dialog->nonVerified.sensitive := true;
+	    dialog->Name.sensitive := false;
+	    dialog->mgiMarker.managed := false;
+	    dialog->markerAccession.managed := false;
+	    dialog->NewMarker.sensitive := false;
+	  end if;
 
 	  SetOption.source_widget := dialog->MarkerEventReasonMenu;
 	  SetOption.value := NOTSPECIFIED;
@@ -523,55 +631,8 @@ rules:
 	  dialog->mgiCitation->Citation->text.value := "";
 	  dialog->Output.value := "";
 
-	  dialog->nonVerified.managed := true;
-	  dialog->nonVerified.sensitive := true;
-	  dialog->Name.sensitive := true;
-	  dialog->mgiMarker.managed := false;
-	  dialog->markerAccession.managed := false;
-	  dialog->NewMarker.sensitive := false;
 	  dialog.managed := true;
-	end does;
 
---
--- SetMarkerWithdrawalFields
---
--- Activated from:  Marker Event toggle in Withdrawal Dialog
--- Sensitize appropriate New Symbol field based on Event selected.
---
-
-	SetMarkerWithdrawalFields does
-	  dialog : widget := top->WithdrawalDialog;
-	  event : string := dialog->MarkerEventMenu.menuHistory.defaultValue;
-
-	  if (event = EVENT_RENAME) then
-	    dialog->nonVerified.managed := true;
-	    dialog->nonVerified.sensitive := true;
-	    dialog->Name.sensitive := true;
-	    dialog->mgiMarker.managed := false;
-	    dialog->markerAccession.managed := false;
-	    dialog->NewMarker.sensitive := false;
-	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
-	    dialog->nonVerified.managed := false;
-	    dialog->nonVerified.sensitive := true;
-	    dialog->Name.sensitive := false;
-	    dialog->mgiMarker.managed := true;
-	    dialog->markerAccession.managed := true;
-	    dialog->NewMarker.sensitive := false;
-	  elsif (event = EVENT_SPLIT) then
-	    dialog->nonVerified.managed := true;
-	    dialog->nonVerified.sensitive := false;
-	    dialog->Name.sensitive := false;
-	    dialog->mgiMarker.managed := false;
-	    dialog->markerAccession.managed := false;
-	    dialog->NewMarker.sensitive := true;
-	  elsif (event = EVENT_DELETED) then
-	    dialog->nonVerified.managed := false;
-	    dialog->nonVerified.sensitive := true;
-	    dialog->Name.sensitive := false;
-	    dialog->mgiMarker.managed := false;
-	    dialog->markerAccession.managed := false;
-	    dialog->NewMarker.sensitive := false;
-	  end if;
 	end does;
 
 --
@@ -584,17 +645,10 @@ rules:
 	  dialog : widget := top->WithdrawalDialog;
 	  table : widget := dialog->NewMarker->Table;
 	  symbol : string;
-	  event : string;
 	  eventReason : string;
 	  ok : boolean := true;
 	  buf : string;
 	  row : integer;
-
-	  if (dialog->MarkerEventMenu.menuHistory.defaultValue = "%") then
-	    SetOption.source_widget := top->MarkerEventMenu;
-	    SetOption.value := EVENT_RENAME;
-	    send(SetOption, 0);
-	  end if;
 
 	  if (dialog->MarkerEventReasonMenu.menuHistory.defaultValue = "%") then
 	    SetOption.source_widget := top->MarkerEventReasonMenu;
@@ -602,17 +656,16 @@ rules:
 	    send(SetOption, 0);
 	  end if;
 
-	  event := dialog->MarkerEventMenu.menuHistory.defaultValue;
 	  eventReason := dialog->MarkerEventReasonMenu.menuHistory.defaultValue;
 
-	  if (event = EVENT_RENAME and 
+	  if (dialog.eventKey = EVENT_RENAME and 
 	      dialog->nonVerified->Marker->text.value.length = 0) then
 	    ok := false;
-	  elsif ((event = EVENT_MERGE or event = EVENT_ALLELEOF) and
+	  elsif ((dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) and
 	       (dialog->mgiMarker->ObjectID->text.value.length = 0 or
 	        dialog->mgiMarker->ObjectID->text.value = "NULL")) then
 	    ok := false;
-	  elsif (event = EVENT_SPLIT and mgi_tblGetCell(table, 0, table.markerSymbol) = "") then
+	  elsif (dialog.eventKey = EVENT_SPLIT and mgi_tblGetCell(table, 0, table.markerSymbol) = "") then
 	    ok := false;
 	  end if;
 
@@ -632,13 +685,13 @@ rules:
 	  end if;
 
 	  ok := true;
-	  if (event = EVENT_RENAME and
+	  if (dialog.eventKey = EVENT_RENAME and
 	      dialog->nonVerified->Marker->text.value = dialog->currentMarker->Marker->text.value) then
 	    ok := false;
-	  elsif ((event = EVENT_MERGE or event = EVENT_ALLELEOF) and
+	  elsif ((dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) and
 	      dialog->mgiMarker->Marker->text.value = dialog->currentMarker->Marker->text.value) then
 	    ok := false;
-	  elsif (event = EVENT_SPLIT) then
+	  elsif (dialog.eventKey = EVENT_SPLIT) then
 	    row := 0;
 	    while (row < mgi_tblNumRows(table)) do
 	      symbol := mgi_tblGetCell(table, row, table.markerSymbol);
@@ -666,18 +719,18 @@ rules:
 	  cmds.insert("-D" + getenv("MGD"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("--eventKey=" + event, cmds.count + 1);
+	  cmds.insert("--eventKey=" + dialog.eventKey, cmds.count + 1);
 	  cmds.insert("--eventReasonKey=" + eventReason, cmds.count + 1);
 	  cmds.insert("--oldKey=" + currentRecordKey, cmds.count + 1);
 	  cmds.insert("--refKey=" + dialog->mgiCitation->ObjectID->text.value, cmds.count + 1);
 	  cmds.insert("--addAsSynonym=" + (string) ((integer) dialog->addAsSynonym.set), cmds.count + 1);
 
-	  if (event = EVENT_RENAME) then
+	  if (dialog.eventKey = EVENT_RENAME) then
 	    cmds.insert("--newName=" + mgi_DBprstr(dialog->Name->text.value), cmds.count + 1);
 	    cmds.insert("--newSymbols=" + mgi_DBprstr(dialog->nonVerified->Marker->text.value), cmds.count + 1);
-	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
+	  elsif (dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) then
 	    cmds.insert("--newKey=" + dialog->mgiMarker->ObjectID->text.value, cmds.count + 1);
-	  elsif (event = EVENT_SPLIT) then
+	  elsif (dialog.eventKey = EVENT_SPLIT) then
 	    row := 0;
 	    buf := "";
 	    while (row < mgi_tblNumRows(table)) do
@@ -715,7 +768,6 @@ rules:
 	MarkerWithdrawalEnd does
 	  dialog : widget := top->WithdrawalDialog;
 	  table : widget := dialog->NewMarker->Table;
-	  event : string := dialog->MarkerEventMenu.menuHistory.defaultValue;
 	  row : integer;
 	  symbol : string;
 
@@ -734,11 +786,11 @@ rules:
 	  where := "where m._Species_key = " + MOUSE;
 	  where := where + "\nand mu.current_symbol in (";
 
-	  if (event = EVENT_RENAME) then
+	  if (dialog.eventKey = EVENT_RENAME) then
 	    where := where + mgi_DBprstr(dialog->nonVerified->Marker->text.value);
-	  elsif (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
+	  elsif (dialog.eventKey = EVENT_MERGE or dialog.eventKey = EVENT_ALLELEOF) then
 	    where := where + mgi_DBprstr(dialog->mgiMarker->Marker->text.value);
-	  elsif (event = EVENT_SPLIT) then
+	  elsif (dialog.eventKey = EVENT_SPLIT) then
 	    where := where + mgi_DBprstr(mgi_tblGetCell(table, 0, table.markerSymbol));
 	    row := 1;
 	    while (row < mgi_tblNumRows(table)) do
@@ -750,7 +802,7 @@ rules:
 	      end if;
 	      row := row + 1;
 	    end while;
-	  elsif (event = EVENT_DELETED) then
+	  elsif (dialog.eventKey = EVENT_DELETED) then
 	    where := where + mgi_DBprstr(dialog->currentMarker->Marker->text.value);
 	  end if;
 

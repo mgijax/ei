@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 17 08:32:58 2003";
+      lastWritten = "Fri Jun 27 12:41:36 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8356,10 +8356,29 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   UtilitiesPulldown = MenuPulldown;
                                       {
-                                        MarkerWithdrawal = MenuPush : mgiMenu;
+                                        Rename = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:MarkerWithdrawalInit";
-                                          labelString = "Marker Withdrawal";
+                                          activateCallback = "D:MarkerWithdrawalRename";
+                                      }
+                                      {
+                                        Merge = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:MarkerWithdrawalMerge";
+                                      }
+                                      {
+                                        AlleleOf = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:MarkerWithdrawalAlleleOf";
+                                      }
+                                      {
+                                        Split = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:MarkerWithdrawalSplit";
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:MarkerWithdrawalDelete";
                                       }
                                       {
                                         BreakpointSplit = MenuPush : mgiMenu;

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 12 08:32:06 2003";
+      lastWritten = "Fri Jun 27 12:50:29 2003";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1296,9 +1296,11 @@ Module: mgiDialog
             fractionBase = 3;
             rubberPositioning = False;
             resizePolicy = resize_any;
+            userDefinedAttributes = "eventKey:String(String)\neventLabel:String\n";
           Group: Control
             vip_x = 80;
             vip_y = 1845;
+            vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1368,41 +1370,22 @@ Module: mgiDialog
                   topOffset = 5;
               }
               {
-                MarkerEventMenu = MarkerEventMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftWidget = addAsSynonym;
-                  topWidget = addAsSynonym;
-                    Popups:
-                    {
-                      MarkerEventPulldown = OptionPulldown;
-                      Group: User
-                        sql = "select * from MRK_Event where _Marker_Event_key > 1 order by _Marker_Event_key";
-                        childTemplate = EventToggle;
-                    }
-              }
-              {
                 MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
                 Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = MarkerEventMenu;
-                  leftOffset = 10;
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = addAsSynonym;
                   rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = MarkerEventMenu;
+                  topAttachment = attach_widget;
+                  topWidget = addAsSynonym;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  topOffset = 5;
               }
               {
                 nonVerified = mgiMarker : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = MarkerEventMenu;
+                  leftWidget = MarkerEventReasonMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   topWidget = MarkerEventReasonMenu;
@@ -1454,7 +1437,7 @@ Shift<Key>Tab: prev-tab-group()";
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = MarkerEventMenu;
+                  leftWidget = MarkerEventReasonMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   topWidget = MarkerEventReasonMenu;
@@ -1566,7 +1549,7 @@ Shift<Key>Tab: prev-tab-group()
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = MarkerEventMenu;
+                  leftWidget = MarkerEventReasonMenu;
                     {
                       ObjectID = ID;
                     }
