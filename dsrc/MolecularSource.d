@@ -124,7 +124,7 @@ rules:
 	  -- Use Molecular Source library
 
 	  AddMolecularSource.source_widget := top;
-	  AddMolecularSource.keyLabel := "key";
+	  AddMolecularSource.keyLabel := KEYNAME;
 	  AddMolecularSource.master := true;
 	  send(AddMolecularSource, 0);
 
@@ -138,7 +138,7 @@ rules:
 	  --  Process Accession numbers
 
           ProcessAcc.table := accTable;
-          ProcessAcc.objectKey := "key";
+          ProcessAcc.objectKey := KEYNAME;
           ProcessAcc.tableID := PRB_SOURCE_MASTER;
           send(ProcessAcc, 0);
 
@@ -354,7 +354,7 @@ rules:
 
 	  -- Select Clone Library Sets
 
-	  cmd := "select m._Set_key, m._SetMember_key, v.name " + 
+	  scmd :string := "select m._Set_key, m._SetMember_key, v.name " + 
 	      "from MGI_Set_CloneLibrary_View v, MGI_SetMember m " +
 	      "where v._Set_key = m._Set_key " +
 	      "and m._Object_key = " + currentRecordKey +
@@ -363,7 +363,7 @@ rules:
 	  table : widget := top->CloneLibrarySet->Table;
 	  row : integer := 0;
 	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
+          (void) dbcmd(dbproc, scmd);
           (void) dbsqlexec(dbproc);
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
