@@ -1,3 +1,18 @@
+TAG: ei-5-0-0
+DATE: 06/28/2001
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) moved resource in files to main dir (XRes.in)
+2) moved buildapp and installapp to main dir
+3) created Configuration files
+4) moved Makefile.xrt to main dir
+5) modified uxb.conf files accordingly
+6) modified run files accordingly
+7) converted all scripts to csh
+8) added cleanapp; modified cleanall
+9) all log files are .ei-log
+
 TAG: ei-4-6-3
 DATE: 06/27/2001
 STAFF: lec
