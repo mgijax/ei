@@ -497,7 +497,13 @@ rules:
 --
 
 	KFMemorialMolSeg does
-	  top->MolNote->text.value := top->MolNote->text.value + "  " +
+	  oldValue : string := "";
+
+	  if (top->MolNote->text.value.length > 0) then
+		oldValue := top->MolNote->text.value + "  ";
+	  end if;
+
+	  top->MolNote->text.value := oldValue +
 		"This clone is derived from a gene that produces alternate transcripts.";
 	end does;
 
@@ -1364,7 +1370,7 @@ rules:
 	  cmd := "select * from PRB_View where _Probe_key = " + currentMasterKey + "\n" +
 		 "select parentKey, parentClone, parentNumeric from PRB_Parent_View " +
 		 "where _Probe_key = " + currentMasterKey + "\n" +
-		 "select note from PRB_Notes where _Probe_key = " + currentMasterKey + " order by sequenceNum\n" +
+		 "select rtrim(note) from PRB_Notes where _Probe_key = " + currentMasterKey + " order by sequenceNum\n" +
 	         "select * from PRB_Marker_View where _Probe_key = " + currentMasterKey;
 
 	  results : integer := 1;
