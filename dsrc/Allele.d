@@ -301,7 +301,7 @@ rules:
 
 	  send(ModifyMolecularMutation, 0);
 
-	  top->markerDescription->Note->text.modified := true;
+--	  top->markerDescription->Note->text.modified := true;
 	  send(ModifyAlleleNotes, 0);
 
 	  if (not top.allowEdit) then
