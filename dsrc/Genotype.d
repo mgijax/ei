@@ -12,7 +12,7 @@
 --
 -- History
 --
--- lec	08/22/2001-09/13/2001
+-- lec	08/22/2001-09/18/2001
 --	- TR 2844
 --
 
@@ -387,11 +387,8 @@ rules:
 
 	  QueryNoInterrupt.source_widget := top;
 	  QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
+	  QueryNoInterrupt.selectItem := false;
 	  send(QueryNoInterrupt, 0);
-
-	  if (SearchGenotype.selectGenotypeRecord) then
-	    send(SelectGenotypeRecord, 0);
-	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
