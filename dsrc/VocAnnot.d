@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec  05/30/2002
+--	- TR 3677; item 3
+--
 -- lec	01/02/2002
 --	- created; TR 2867, TR 2239
 --
@@ -364,8 +367,7 @@ rules:
 	      set := "_EvidenceTerm_key = " + evidenceKey + "," +
                      "_Refs_key = " + refsKey + "," +
 		     "inferredFrom = " + mgi_DBprstr(inferredFrom) + "," +
-		     "notes = " + mgi_DBprstr(notes) + "," +
-		     "modifiedBy = " + mgi_DBprstr(global_login);
+		     "notes = " + mgi_DBprstr(notes);
 
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, annotKey, set) + 
 		" and _EvidenceTerm_key = " + currentEvidenceKey +
