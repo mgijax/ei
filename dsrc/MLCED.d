@@ -834,6 +834,7 @@ rules:
 --
 
 	Select does
+		MLCexists : boolean := false;
 
 	--
 	-- If lockon is set, then a record is active, and needs to be
@@ -974,6 +975,7 @@ rules:
 			top->CreationDate->text.value := mgi_getstr(dbproc, 3);
 			top->ModifiedDate->text.value := mgi_getstr(dbproc, 4);
 			top->ModifiedBy->text.value   := mgi_getstr(dbproc, 5);
+			MLCexists := true;
 		end if;
 			
 		row := row + 1;
@@ -988,9 +990,15 @@ rules:
 		Clear.reset := true;
 		send(Clear, 0);
 
-		if (top->Description->text.value.length = 0) then
+		if (not MLCexists) then
 			StatusReport.source_widget := top;
 			StatusReport.message := "Symbol does not have an MLC entry.";
+			send(StatusReport);
+		elsif (top->Description->text.value.length = 0) then
+			StatusReport.source_widget := top;
+			StatusReport.message := "Symbol has BLANK MLC description.\n" +
+				"Either insert some text or DELETE the MLC entry.\n" +
+				"Blank text will cause a display error in the WI.";
 			send(StatusReport);
 		end if;
 
