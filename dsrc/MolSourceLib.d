@@ -409,6 +409,9 @@ rules:
 	  InitNoteForm.tableID := MGI_NOTETYPE_SOURCE_VIEW;
 	  send(InitNoteForm, 0);
 
+	  LoadList.list := top.root->CloneLibrarySetList;
+	  send(LoadList, 0);
+
 	  InitOptionMenu.option := top->SourceSegmentTypeMenu;
 	  send(InitOptionMenu, 0);
 
@@ -753,3 +756,18 @@ rules:
 	  top.sqlWhere := where;
  
         end does;
+--
+-- ViewMolecularSourceAttributeHistory
+--
+-- Display the Molecular Source Attribute History for the currently selected Source record
+--
+ 
+        ViewMolecularSourceAttributeHistory does
+	  top : widget := ViewMolecularSourceAttributeHistory.source_widget.top;
+
+--	  if (top->SourceID->text.value.length > 0) then
+--	  end if;
+
+	  top->MolecularSourceAttributeHistoryDialog.managed := true;
+	end does;
+
