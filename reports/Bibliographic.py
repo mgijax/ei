@@ -11,7 +11,7 @@
 #	Bibliographic.py reportType format [sql command]
 #
 #     reportType =:
-#	generated => uses argument 4 as SQL command
+#	dynamic => uses argument as SQL command
 #	dup => all duplicates excluding Mouse News Letter & Guidi's
 #	dupall => all duplicates
 #
@@ -32,31 +32,9 @@
 
 import sys
 import os
+import db
+import mgi_utils
 import reportlib
-
-reportType = sys.argv[1]
-format = sys.argv[2]
-
-if reportType = "generated":
-	title = 'Bibliographic References'
-	cmd = sys.argv[3]
-
-else if reportType = "dup":
-	title = 'Duplicate References excluding Mouse News Letter & Guidi'
-	cmd = 'select _Refs_key from BIB_All_View ' + \
-	'where (jnum < 5001 or jnum > 11810) and journal != "Mouse News Lett" ' + \
-	'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
-	'order by _primary, journal, year'
-
-else if reportType = "dupall":
-	title = 'All Duplicate References'
-	cmd = 'select _Refs_key from BIB_All_View ' + \
-	'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
-	'order by _primary, journal, year'
-
-fp = reportlib.init(sys.argv[0], title)
-process_ref(fp, cmd, format)
-reportlib.finish_nonps(fp)
 
 def process_ref(fp, cmd, format = 1):
 	'''
@@ -78,6 +56,7 @@ def process_ref(fp, cmd, format = 1):
 	#
 	'''
 
+	column_width = reportlib.column_width
 	CRT = reportlib.CRT
 	TAB = reportlib.TAB
 
@@ -106,12 +85,12 @@ def process_ref(fp, cmd, format = 1):
        			jnum = TAB + mgi_utils.prvalue(ref['jnumID']) + CRT
        			dbs = TAB + mgi_utils.prvalue(ref['dbs']) + CRT
 
+			accID = ''
 			cmd = 'select accID from BIB_Acc_View where _Object_key = %d and LogicalDB = "MEDLINE"' % ref['_Refs_key']
+        		accResult = db.sql(cmd, 'auto')
 
-			if accID is None:
-				accID = ''
-			else:
-				accID = TAB + accID + CRT
+			for a in accResult:
+				accID = TAB + a['accID'] + CRT
 
 			if format == '1':
 				fp.write(authors + citation + title + jnum + accID + dbs + CRT)
@@ -141,3 +120,31 @@ def process_ref(fp, cmd, format = 1):
  
         		row = row + 1
  
+#
+# Main
+#
+
+reportType = sys.argv[1]
+format = sys.argv[2]
+
+if reportType == "dynamic":
+	title = 'Bibliographic References'
+	cmd = sys.argv[3]
+
+elif reportType == "dup":
+	title = 'Duplicate References excluding Mouse News Letter & Guidi'
+	cmd = 'select _Refs_key from BIB_All_View ' + \
+	'where (jnum < 5001 or jnum > 11810) and journal != "Mouse News Lett" ' + \
+	'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
+	'order by _primary, journal, year'
+
+elif reportType == "dupall":
+	title = 'All Duplicate References'
+	cmd = 'select _Refs_key from BIB_All_View ' + \
+	'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
+	'order by _primary, journal, year'
+
+fp = reportlib.init(sys.argv[0], title, os.environ['EIREPORTDIR'])
+process_ref(fp, cmd, format)
+reportlib.finish_nonps(fp)
+
