@@ -915,7 +915,7 @@ rules:
       
 	  if (from_marker) then
 	    from := from + "," + mgi_DBtable(MRK_MARKER) + " mk";
-	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = mk." + mgi_DBkey(MRK_MARKER);
+	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " *= mk." + mgi_DBkey(MRK_MARKER);
 	  end if;
 
 	  if (from_cellline1) then
