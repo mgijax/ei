@@ -314,7 +314,7 @@ rules:
           send(ModifyAliases, 0);
 
           if (set.length > 0) then
-              cmd := cmd + mgi_DBupdate(GXD_STRUCTURE, "@" + skeyName, set);
+              cmd := cmd + mgi_DBupdate(GXD_STRUCTURE, skeyName, set);
           end if;
 
 	  -- Execute the add
@@ -470,12 +470,12 @@ rules:
                   end if;
 
                   if not ModifyAliases.addStructureMode then
-                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, keyName) +
+                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + keyName) +
                          top->ID->text.value + "," +
                          mgi_DBprstr(structure) + "," +
                          "1)\n";
                   else -- modify is against the newly-added structure
-                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, keyName) +
+                     cmd := cmd + mgi_DBinsert(GXD_STRUCTURENAME, "@" + keyName) +
                          "@" + mgi_DBkey(GXD_STRUCTURE) + "," +
                          mgi_DBprstr(structure) + "," +
                          "1)\n";
