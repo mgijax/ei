@@ -14,21 +14,19 @@ set nocount on
 go
 
 /* select markers which contain references */
-/* exclude withdrawn (W) or reserved (RE) */
+/* exclude withdrawn (W) */
 
 select distinct m._Marker_key, m.symbol
 into #markers
 from MRK_Marker m, MRK_Reference r
 where m._Species_key = 1
 and m.chromosome != 'W'
-and m.chromosome != 'RE'
 and m._Marker_key = r._Marker_key
 union
 select distinct m._Marker_key, m.symbol
 from MRK_Marker m, MLC_Reference r
 where m._Species_key = 1
 and m.chromosome != 'W'
-and m.chromosome != 'RE'
 and m._Marker_key = r._Marker_key
 go
 
@@ -36,7 +34,7 @@ set nocount off
 go
 
 print ""
-print "Markers (excluding W/RE) Without History References or History"
+print "Markers (excluding W) Without History References or History"
 print ""
 
 select distinct m.symbol
