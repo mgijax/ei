@@ -1,3 +1,11 @@
+TAG: ei-3-1-0
+DATE: 02/16/2001
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) TR 2290 - nlm.py; new PMID added to PubMed files
+2) TR - nlm.py; add PMID to Reference form/NLM processing
+
 TAG: ei-3-0-4, 5, 6, 7, 8, 9, 10, 11, 12
 DATE: 01/15/2001, 01/16/2001, 01/18/2001, 01/25/2001, 01/29/2001, 01/31/2001
 DATE: 02/01/2001
