@@ -15,6 +15,9 @@
 --
 -- History:
 --
+--	lec	05/04/2000
+--	TR 1549; change labels for Probes and MLC in Ref Data Sets
+--
 --	lec	03/25/1999
 --	InitOption; "instance := label->substr(1,k);"
 --	was "instance := instance + label->substr(1,k);"
@@ -289,9 +292,9 @@ rules:
 	  row : integer;
 
 	  -- Row Labels which appear in Table
-	  statusLabels.insert("Probes", statusLabels.count + 1);
+	  statusLabels.insert("Probes/Seqs", statusLabels.count + 1);
 	  statusLabels.insert("Mapping", statusLabels.count + 1);
-	  statusLabels.insert("MLC", statusLabels.count + 1);
+	  statusLabels.insert("MLC/Alleles", statusLabels.count + 1);
 	  statusLabels.insert("Homology", statusLabels.count + 1);
 	  statusLabels.insert("Expression", statusLabels.count + 1);
 
