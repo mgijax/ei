@@ -17,7 +17,6 @@
 -- History
 --
 -- lec 04/13/2001
---	- VerifyMarker; added displayAlleleMessage parameter
 --	- VerifyMarkerAlleles; added
 --
 -- lec 04/10/2001
