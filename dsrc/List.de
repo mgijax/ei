@@ -21,9 +21,13 @@ FindSelectionItem [];                           -- Find Selection Item in Select
 InsertKey [list : widget;			-- Insert key into LookupList
            key : string;];
 
+InsertAccID [list : widget;			-- Insert accID into LookupList
+             accID : string;];
+
 InsertList [list : widget;			-- Insert item into LookupList
             item : string;
-            key : string;];
+            key : string;
+	    accID : string;];
 
 LoadList [list : widget;  			-- Load Lookup List; Allow Duplicate entries?
 	  allowDups : boolean := true;];

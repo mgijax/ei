@@ -11,6 +11,10 @@
 --
 -- History
 --
+-- lec	01/03/2002
+--	Added attributes "accIDs" and "targetAccID" to LookupList template
+--	Added InsertAccID event
+--
 -- lec	12/10/2001
 --	SelectLookupListItem; check list_w.selectionPolicy to determine if list 
 --	is a multiple selection list or not.
@@ -74,6 +78,8 @@ rules:
 	    (void) XmListDeleteAllItems(top->List);
 	    destroy top->List.keys;
 	    top->List.keys := nil;
+	    destroy top->List.accIDs;
+	    top->List.accIDs := nil;
 	    top->Label.labelString := "0 " + top->Label.defaultLabel;
 	  end if;
 	end does;
@@ -178,6 +184,12 @@ rules:
 	  tmp.remove(list_w.keys[list_w.row]);
 	  list_w.keys := tmp;
 
+	  -- Use tmp string list when manipulating list_w.accIDs
+
+	  tmp := list_w.accIDs;
+	  tmp.remove(list_w.accIDs[list_w.row]);
+	  list_w.accIDs := tmp;
+
 	  label_w.labelString := (string) list_w.itemCount + " " + label_w.defaultLabel;
 
 	  if (DeleteList.resetRow) then
@@ -235,9 +247,27 @@ rules:
         end does;
 
 --
+-- InsertAccID
+--
+--	Insert new accID into List.accIDs string list
+--
+
+        InsertAccID does
+          tmp : string_list := create string_list();
+
+          if (InsertAccID.list.accIDs = nil) then
+            InsertAccID.list.accIDs := create string_list();
+          end if;
+
+          tmp := InsertAccID.list.accIDs;
+          tmp.insert(InsertAccID.accID, tmp.count + 1);
+          InsertAccID.list.accIDs := tmp;
+        end does;
+
+--
 -- InsertList
 --
---	Insert new item & key into selection list
+--	Insert new item & key & accID into selection list
 --	Reset list label
 --
 
@@ -249,6 +279,9 @@ rules:
 	  InsertKey.list := list_w;
 	  InsertKey.key := InsertList.key;
 	  send(InsertKey, 0);
+	  InsertAccID.list := list_w;
+	  InsertAccID.accID := InsertList.accID;
+	  send(InsertAccID, 0);
 	  label_w.labelString := (string) list_w.itemCount + " " + label_w.defaultLabel;
 	  list_w.row := list_w.itemCount;
 	end does;
@@ -265,6 +298,7 @@ rules:
 	  allowDups : boolean := LoadList.allowDups;
           results : xm_string_list := create xm_string_list();
           keys : string_list := create string_list();
+          accIDs : string_list := create string_list();
  
           if (LoadList.source_widget != nil) then
             (void) busy_cursor(LoadList.source_widget.top);
@@ -298,6 +332,7 @@ rules:
 		if (keys.find(mgi_getstr(dbproc, 1)) = -1) then
                   keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
                   results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+                  accIDs.insert(mgi_getstr(dbproc, 3), accIDs.count + 1);
 		end if;
 
 	      -- Dups allowed
@@ -305,6 +340,7 @@ rules:
 	      else
                 keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
                 results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+                accIDs.insert(mgi_getstr(dbproc, 3), accIDs.count + 1);
 	      end if;
             end while;
           end while;
@@ -318,8 +354,13 @@ rules:
             list_w->List.keys := create string_list();
           end if;
 
+          if (list_w->List.accIDs = nil) then
+            list_w->List.accIDs := create string_list();
+          end if;
+
           if (results.count > 0) then
 	    list_w->List.keys := keys;
+	    list_w->List.accIDs := accIDs;
 
             (void) XmListAddItems(list_w->List, results, results.count, 0);
             list_w->Label.labelString := (string) results.count + " " + 
@@ -420,16 +461,19 @@ rules:
 	  pos : integer;
 	  item : string;
 	  keys : string := "";
+	  accIDs : string := "";
 	  cbPrefix : string := "[Clipboard]:  ";
 
 	  -- These variables are only relevant for Tables
 	  table : widget;
 	  row : integer := -1;
 	  key : string;
+	  accID : string;
 
 	  -- These variables are only relevant for non-Tables
 	  textWidget : widget;
 	  keyWidget : widget;
+	  accIDWidget : widget;
 
 	  list_w.row := SelectLookupListItem.item_position;
 
@@ -489,6 +533,7 @@ rules:
                 item := SelectLookupListItem.selected_items[i];
                 pos := XmListItemPos(list_w, xm_xmstring(item));
                 keys := keys + list_w.keys[pos] + ",";
+                accIDs := accIDs + list_w.accIDs[pos] + ",";
                 i := i + 1;
               end while;
 
@@ -498,9 +543,17 @@ rules:
                 keys := keys->substr(1, keys.length - 1);
               end if;
  
+              if (accIDs.length > 0) then
+                accIDs := accIDs->substr(1, accIDs.length - 1);
+              end if;
+ 
               (void) mgi_tblSetCell(table, row, (integer) list_w.targetText,
                             (string) SelectLookupListItem.selected_items.count);
               (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, keys);
+
+	      if ((integer) list_w.targetAccID > 0) then
+                (void) mgi_tblSetCell(table, row, (integer) list_w.targetAccID, accIDs);
+	      end if;
 	    else
 	      item := list_w.selectedItems[0];
 
@@ -517,6 +570,11 @@ rules:
 	      if ((integer) list_w.targetKey >= 0) then
 	        key := list_w.keys[SelectLookupListItem.item_position];
 	        (void) mgi_tblSetCell(table, row, (integer) list_w.targetKey, key);
+	      end if;
+
+	      if ((integer) list_w.targetAccID >= 0) then
+	        accID := list_w.accIDs[SelectLookupListItem.item_position];
+	        (void) mgi_tblSetCell(table, row, (integer) list_w.targetAccID, accID);
 	      end if;
 	    end if;
 
@@ -546,6 +604,14 @@ rules:
 	      keyWidget := targetWidget->(list_w.targetKey);
 	      keyWidget->text.value := list_w.keys[SelectLookupListItem.item_position];
 	      keyWidget->text.modified := true;
+	    end if; 
+
+	    -- If accID widget is specified, copy the accID
+
+	    if (list_w.targetAccID.length > 0) then
+	      accIDWidget := targetWidget->(list_w.targetAccID);
+	      accIDWidget->text.value := list_w.accIDs[SelectLookupListItem.item_position];
+	      accIDWidget->text.modified := true;
 	    end if; 
 	  end if;
 
