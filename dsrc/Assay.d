@@ -1454,7 +1454,7 @@ rules:
 		     mgi_DBprstr(ageNote) + "," +
 		     mgi_DBprstr(hybridizationKey) + "," +
 		     mgi_DBprstr(specimenNote) + ")\n" +
-		     "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_SPECIMEN) + ", @" + keyName + "\n";
+		     "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_SPECIMEN) + "', @" + keyName + "\n";
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1475,9 +1475,9 @@ rules:
                           "age = " + mgi_DBprstr(ageKey) + "," +
                           "ageNote = " + mgi_DBprstr(ageNote) + "," +
                           "hybridization = " + mgi_DBprstr(hybridizationKey) + "," +
-                          "specimenNote = " + mgi_DBprstr(specimenNote) +
-		          "exec MGI_resetAgeMinMax " + mgi_DBtable(GXD_SPECIMEN) + "," + key + "\n";
-                cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
+                          "specimenNote = " + mgi_DBprstr(specimenNote);
+                cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update) + "\n" +
+		          "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_SPECIMEN) + "'," + key + "\n";
 	      end if;
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_SPECIMEN, key);
