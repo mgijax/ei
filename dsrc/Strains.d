@@ -60,7 +60,7 @@
 --	- convert to XRT/API
 --
 -- lec	06/10/98
---	- SelectReferences uses 'exec PRB_getStrainReferences'
+--	- SelectReferenceMGI uses 'exec PRB_getStrainReferenceMGI'
 --	- SelectDataSets uses 'exec PRB_getStrainProbes'
 --
 -- lec	06/09/98
@@ -97,7 +97,7 @@ devents:
 	Search :local [];
 	SearchDuplicates :local [];
 	Select :local [item_position : integer;];
-	SelectReferences :local [doCount : boolean := false;];
+	SelectReferenceMGI :local [doCount : boolean := false;];
 	SelectDataSets :local [doCount : boolean := false;];
 
 	ResetModificationFlags :local [];
@@ -152,6 +152,12 @@ rules:
 	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
 	  send(InitSynTypeTable, 0);
 
+	  -- Initialize Reference table
+
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_STRAIN_VIEW;
+	  send(InitRefTypeTable, 0);
+
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
@@ -175,7 +181,7 @@ rules:
 	  tables.append(top->StrainType->Table);
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Synonym->Table);
-	  tables.append(top->References->Table);
+	  tables.append(top->ReferenceMGI->Table);
 	  tables.append(top->DataSets->Table);
 	  tables.append(top->Synonym->Table);
 
@@ -260,6 +266,14 @@ rules:
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
+
+	  --  Process ReferenceMGI
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
 	  ProcessNoteForm.notew := top->mgiNoteForm;
 	  ProcessNoteForm.tableID := MGI_NOTE;
@@ -388,6 +402,14 @@ rules:
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
+
+	  --  Process ReferenceMGI
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
 	  ProcessNoteForm.notew := top->mgiNoteForm;
 	  ProcessNoteForm.tableID := MGI_NOTE;
@@ -531,6 +553,13 @@ rules:
 	  from := from + top->Synonym->Table.sqlFrom;
 	  where := where + top->Synonym->Table.sqlWhere;
 
+	  SearchRefTypeTable.table := top->Reference->Table;
+	  SearchRefTypeTable.tableID := MGI_REFERENCE_STRAIN_VIEW;
+          SearchRefTypeTable.join := "m." + mgi_DBkey(NOM_MARKER);
+	  send(SearchRefTypeTable, 0);
+	  from := from + top->Reference->Table.sqlFrom;
+	  where := where + top->Reference->Table.sqlWhere;
+
 	  SearchNoteForm.notew := top->mgiNoteForm;
 	  SearchNoteForm.tableID := MGI_NOTE_STRAIN_VIEW;
           SearchNoteForm.join := "n." + mgi_DBkey(STRAIN);
@@ -587,7 +616,7 @@ rules:
 	    row := row + 1;
 	  end while;
 
-          value := mgi_tblGetCell(top->References->Table, 0, top->References->Table.refsKey);
+          value := mgi_tblGetCell(top->ReferenceMGI->Table, 0, top->ReferenceMGI->Table.refsKey);
 	  if (value.length > 0 and value != "NULL") then
 	    where := value;
 	    from_reference := true;
@@ -669,7 +698,11 @@ rules:
 	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
 	  send(InitSynTypeTable, 0);
 
-	  top->References->Records.labelString := "0 Records";
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_STRAIN_VIEW;
+	  send(InitRefTypeTable, 0);
+
+	  top->ReferenceMGI->Records.labelString := "0 Records";
 	  top->DataSets->Records.labelString := "0 Records";
  
           if (top->QueryList->List.selectedItemCount = 0) then
@@ -759,6 +792,11 @@ rules:
           LoadSynTypeTable.objectKey := currentRecordKey;
           send(LoadSynTypeTable, 0);
 
+          LoadRefTypeTable.table := top->Reference->Table;
+	  LoadRefTypeTable.tableID := MGI_REFERENCE_STRAIN_VIEW;
+          LoadRefTypeTable.objectKey := currentRecordKey;
+          send(LoadRefTypeTable, 0);
+ 
 	  LoadNoteForm.notew := top->mgiNoteForm;
 	  LoadNoteForm.tableID := MGI_NOTE_STRAIN_VIEW;
 	  LoadNoteForm.objectKey := currentRecordKey;
@@ -780,15 +818,15 @@ rules:
 	end does;
 
 --
--- SelectReferences
+-- SelectReferenceMGI
 --
--- Activated from:  top->References->Retrieve
+-- Activated from:  top->ReferenceMGI->Retrieve
 --
--- Retrieves References which contain cross-references to selected Strain
+-- Retrieves ReferenceMGI which contain cross-references to selected Strain
 --
  
-        SelectReferences does
-	  table : widget := top->References->Table;
+        SelectReferenceMGI does
+	  table : widget := top->ReferenceMGI->Table;
  
           (void) busy_cursor(top);
  
@@ -805,10 +843,10 @@ rules:
 
           row : integer := 0;
  
-	  if (SelectReferences.doCount) then
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + ",1\n";
+	  if (SelectReferenceMGI.doCount) then
+	    cmd := "execute PRB_getStrainReferenceMGI " + currentRecordKey + ",1\n";
 	  else
-	    cmd := "execute PRB_getStrainReferences " + currentRecordKey + "\n";
+	    cmd := "execute PRB_getStrainReferenceMGI " + currentRecordKey + "\n";
 	  end if;
 
           dbproc : opaque := mgi_dbopen();
@@ -817,7 +855,7 @@ rules:
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (SelectReferences.doCount) then
+	      if (SelectReferenceMGI.doCount) then
 		row := (integer) mgi_getstr(dbproc, 1);
               else
                 (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
@@ -829,7 +867,7 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  top->References->Records.labelString := (string) row + " Records";
+	  top->ReferenceMGI->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
 	end does;
 
