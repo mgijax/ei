@@ -5,6 +5,13 @@ RELEASE: A
 CHANGES:
 1) TR 3802 - Look & Feel
 
+TAG: ei-7-0-34
+DATE: 08/21/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) fix Exit (Assay.d, MolecularSource.d)
+
 TAG: ei-7-0-33
 DATE: 08/21/2002
 STAFF: lec
