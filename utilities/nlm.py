@@ -15,12 +15,12 @@
 # This program is normally executed from the Editing Interface/Reference form/NLM dialog,
 # but can be executed from the command line.
 #
-# Triage Process:  {put in link to document for this process}
+# Triage Process:  SEE TR 1227
 #
 # Matches are performed on Journal, Year, Volume, First Page
 # Updates are performed iff Medline UI, Title or Abstract is NULL
 #
-# Duplicates are reported in '.duplicates' file
+# Duplicates and Submission References are reported in '.duplicates' file
 # No Matches are reported in '.nomatch' file
 # Diagnostics are reported in '.diagnostics' file
 # Adds are reported in '.added' file
@@ -33,9 +33,8 @@
 # 1) Mode "nlm": Updates BIB_Refs from NLM download file
 # 2) Mode "addnlm" (starting J: mandatory): Adds NLM records from file into BIB_Refs
 #
-# Input File
+# NLM Input File
 #
-# NLM:
 #	The NLM input file contains records in the following format:
 #	(a record ID, list of export tags and data)
 #
@@ -86,6 +85,8 @@
 #	lec	01/06/2000
 #	- TR 1227; no more Current Contents; no more nlm.journals.seen;
 #	  no more cc.journals
+#	  small changes to use NLM export tags VI, IP, DP, PG instead of 
+#	  parsing the SO field (removed processSO routine).
 #
 #	lec	12/10/99
 #	- TR 1160; new Current Contents format
@@ -388,6 +389,8 @@ def getRec(rec, rectags, maxCount = 1):
 	      ' and (pgs = "' + pgs + '" or pgs like "' + pgs + '-%")'
 	results = mgdlib.sql(cmd, 'auto')
 
+	# If duplicate is found, report it and skip
+
 	if len(results) > maxCount:
 		printRec(dupsFile, rec, rectags, "DUPLICATE FOUND IN MGD")
 		ok = 0
@@ -398,6 +401,8 @@ def getRec(rec, rectags, maxCount = 1):
 		      'or authors2 like "%s" ' % rec['AU2'] + \
 		      'or substring(title,1,25) = "%s") ' % rec['TISHORT']
 		submission = mgdlib.sql(cmd, 'auto')
+
+		# If a Submission reference is found, report it and skip
 
 		if len(submission) > maxCount:
 			printRec(dupsFile, rec, rectags, "SUBMISSION FOUND IN MGD")
