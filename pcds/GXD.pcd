@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep  9 14:18:34 2004";
+      lastWritten = "Wed Oct 27 08:32:46 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2880,6 +2880,15 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RPCI23 = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2926,9 +2935,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA15K = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     dbESTLibrary = AccToggle : mgiOption;
