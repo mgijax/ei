@@ -2352,7 +2352,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_PROBE:
-            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, _SegmentType_key, primer1sequence, primer2sequence, regionCovered, regionCovered2, insertSite, insertSize, productSize, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, _SegmentType_key, primer1sequence, primer2sequence, regionCovered, insertSite, insertSize, productSize, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_REFERENCE:

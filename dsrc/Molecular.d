@@ -356,16 +356,9 @@ rules:
 
 	    cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
 			 top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
-	                 "NULL,NULL,";	-- primer1sequence, primer2sequence
-
-            if (top->MolMasterForm->Region->text.value.length <= 255) then
-              cmd := cmd + mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",NULL,";
-            else
-              cmd := cmd + mgi_DBprstr(top->MolMasterForm->Region->text.value->substr(1, 255)) + "," +
-                     mgi_DBprstr(top->MolMasterForm->Region->text.value->substr(256, top->MolMasterForm->Region->text.value.length)) + ",";
-            end if;
-
-	    cmd := cmd + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + "," +
+	                 "NULL,NULL," +	-- primer1sequence, primer2sequence
+                         mgi_DBprstr(top->MolMasterForm->Region->text.value) + "," +
+	                 mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + "," +
 	                 mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + "," +
 	                 "NULL,";	-- productSize
 
