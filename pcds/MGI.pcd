@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 19 15:44:20 2004";
+      lastWritten = "Mon Feb 23 10:42:35 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -2291,7 +2291,7 @@ Module: MGI
                                               Group: Widget
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc() Search() GoHome()";
+<Key>Tab: VerifyMGIAcc() Search()";
                                             }
                                       }
                                       {
@@ -2308,7 +2308,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 scrollHorizontal = True;
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: SetDefault() Search() GoHome()";
+<Key>Tab: SetDefault() Search()";
                                             }
                                       }
                                 }
