@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  7 11:38:06 2004";
+      lastWritten = "Fri Jan  9 08:04:52 2004";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1413,6 +1413,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
@@ -3026,6 +3029,11 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
+                                  RPCI = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                                {
                                   RefSeq = AccToggle : mgiOption;
                                 }
                                 {
@@ -3577,6 +3585,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
@@ -7150,6 +7161,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RPCI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RefSeq = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -8918,6 +8932,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;

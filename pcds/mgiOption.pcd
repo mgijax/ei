@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 16 08:27:29 2003";
+      lastWritten = "Fri Jan  9 08:04:06 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -306,6 +306,13 @@ Module: mgiOption
                         labelString = "RIKEN Clone";
                       Group: User
                         defaultValue = 26;
+                    }
+                    {
+                      RPCI = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "RPCI Clone";
+                      Group: User
+                        defaultValue = 48;
                     }
                     {
                       RefSeq = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  7 13:17:35 2004";
+      lastWritten = "Fri Jan  9 08:04:16 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -518,6 +518,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RPCI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RefSeq = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -805,6 +808,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
