@@ -190,7 +190,7 @@ only allow adds, modifications and searches for a specific set of Accession numb
 Curation process.
 <P>
 The Accession Table of the Marker form is displayed below.  The set of Accession numbers
-for Markers is limited to MGI, EC (Enzyme Commission), SWISS-PROT and MGD-MRK (old-style MGI Accession 
+for Markers is limited to MGI, EC (Enzyme Commission), and MGD-MRK (old-style MGI Accession 
 numbers).
 <P>
 <IMG SRC="accessionTable.gif" ALT="Accession Table">
@@ -211,16 +211,16 @@ Marker form, only Marker Accession numbers can be modified or searched.
 	    Others, such as EC numbers of Markers, have no Reference associated with the
 	    object/Accession number relationship.
 	<P>
-	<LI>If the Accession number is entered in a row with a label (ex. MGD, EC, SWISS-PROT), then
+	<LI>If the Accession number is entered in a row with a label (ex. MGD, EC), then
 	    only that subset of Accession numbers will be searched for the entered value.  For example,
-	    search constraints of "SWISS-PROT" and "q61726" entered in the Marker form Accession Table will
-	    search for "q61726" within the SWISS-PROT subset only.
+	    search constraints of "EC" and "3.1.1.5" entered in the Marker form Accession Table will
+	    search for "3.1.1.5" within the EC subset only.
 	    <BR><BR><IMG SRC="accessionSearch1.gif" ALT="Accession Table"></BR>
 	<P>
 	<LI>If the Accession number is entered in a row without a label, then all subsets of
 	    Accession numbers will be searched for the entered value.
-	    For example, a search constraint of "q61726" entered in the Marker form 
-	    Accession Table in a row without a label will search for "q61726" within all Marker subsets.
+	    For example, a search constraint of "3.1.1.5" entered in the Marker form 
+	    Accession Table in a row without a label will search for "3.1.1.5" within all Marker subsets.
 	    This search may or may not return more results than the previous search, depending on whether
 	    or not different Accession number sources use identical Accession numbers.
 	    <BR><BR><IMG SRC="accessionSearch2.gif" ALT="Accession Table"></BR>
@@ -306,7 +306,7 @@ a mouse click to another cell in the table also invokes the validation.
 	<LI>Modifications denied on invalid entries.
 	</OL>
 <P>
-<A NAME="dataVerMarker"><LI>Markers/Genes</A>
+<A NAME="dataVerMarker"><LI>Markers</A>
 	<OL>
 	<LI>All Markers are validated against the Marker table.
 	<LI>All Markers must be Mouse Markers.
