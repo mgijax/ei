@@ -265,7 +265,7 @@ rules:
 	  send(InitOptionMenu, 0);
 
 	  top->GeneFamilyList.cmd :=
-		"select _Term_key, term from " + mgi_DBtable(NOM_GENEFAMILY) + " order by term";
+		"select _Term_key, term from " + mgi_DBtable(VOC_NOMGENEFAMILY) + " order by term";
 	  LoadList.list := top->GeneFamilyList;
 	  send(LoadList, 0);
 

@@ -800,6 +800,7 @@ char *mgi_DBkey(int table)
 	    break;
     case NOM_MARKER:
     case NOM_GENEFAMILY:
+    case VOC_NOMGENEFAMILY:
             strcpy(buf, "_Nomen_key");
 	    break;
     case NOM_SYNONYM:
@@ -1521,10 +1522,13 @@ char *mgi_DBtable(int table)
 	    strcpy(buf, "NOM_Marker_Valid_View");
 	    break;
     case NOM_GENEFAMILY:
-	    strcpy(buf, "VOC_Term_GeneFamily_View");
+	    strcpy(buf, "NOM_GeneFamily");
 	    break;
     case NOM_GENEFAMILY_VIEW:
 	    strcpy(buf, "NOM_GeneFamily_View");
+	    break;
+    case VOC_NOMGENEFAMILY:
+	    strcpy(buf, "VOC_Term_GeneFamily_View");
 	    break;
     case NOM_STATUS:
 	    strcpy(buf, "VOC_Term_NomenStatus_View");

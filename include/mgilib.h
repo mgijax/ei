@@ -224,6 +224,7 @@ extern char *global_version;
 #define NOM_ACC_REFERENCE		505
 #define NOM_SYNONYM_VIEW     		506
 #define NOM_MARKER_VALID_VIEW		507
+#define VOC_NOMGENEFAMILY      		508
 
 /* MGI Tables */
 
