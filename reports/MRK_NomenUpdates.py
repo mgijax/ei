@@ -43,40 +43,39 @@ bdate = results[0]['']
 results = mgdlib.sql('select convert(varchar(25), dateadd(day, 0, "%s"))' % (currentDate), 'auto')
 edate = results[0]['']
 
-title = 'Updates to Mouse Nomenclature from %s to $s' % (bdate, edate)
+title = 'Updates to Mouse Nomenclature from %s to %s' % (bdate, edate)
 fp = reportlib.init(reportName, title, isHTML = 1)
 
 cmd = []
 
-cmd.append('select m._Marker_key, m.mgiID, c.sequenceNum, b.jnum, b._primary, b.jnumID ' + \
+cmd.append('select m._Marker_key, m.mgiID, c.sequenceNum, h._Refs_key ' + \
 'into #m1 ' + \
-'from MRK_Mouse_View m, MRK_History h, BIB_All_View b, MRK_Chromosome c ' + \
+'from MRK_Mouse_View m, MRK_History h, MRK_Chromosome c ' + \
 'where m.creation_date between dateadd(day, -7, "%s") ' % (currentDate) + \
 'and "%s" ' % (currentDate) + \
 'and m._Marker_key = h._Marker_key ' + \
 'and m._Marker_key = h._History_key ' + \
 'and h.note = "Assigned" ' + \
-'and h._Refs_key = b._Refs_key ' + \
 'and m.chromosome = c.chromosome ' + \
 'and m._Species_key = c._Species_key ' + \
 'union ' + \
-'select h._History_key, m.mgiID, sequenceNum = 100, b.jnum, b._primary, b.jnumID ' + \
-'from MRK_History h, MRK_Mouse_View m, BIB_All_View b ' + \
+'select h._History_key, m.mgiID, sequenceNum = 100, h._Refs_key ' + \
+'from MRK_History h, MRK_Mouse_View m ' + \
 'where h.event_date between dateadd(day, -7, "%s") ' % (currentDate) + \
 'and "%s" ' % (currentDate) + \
 'and h._Marker_key = m._Marker_key ' + \
-'and h.note like "withdrawn%" ' + \
-'and h._Refs_key = b._Refs_key '
+'and h.note like "withdrawn%" '
 )
 
 cmd.append('select ' + \
 'chr = substring(r.chromosome,1,2), ' + \
 'm.mgiID, r.symbol,  ' + \
 'name = substring(r.name,1,25),  ' + \
-'m.jnumID, jnum = convert(char(6), m.jnum), ' + \
-'author = substring(m._primary, 1, 16) ' + \
-'from #m1 m, MRK_Marker r ' + \
+'b.jnumID, jnum = convert(char(6), b.jnum), ' + \
+'author = substring(b._primary, 1, 16) ' + \
+'from #m1 m, MRK_Marker r, BIB_All_View b ' + \
 'where m._Marker_key = r._Marker_key ' + \
+'and m._Refs_key = b._Refs_key ' + \
 'order by m.sequenceNum, r.symbol'
 )
 

@@ -21,23 +21,34 @@
 #
 #
 
-export DSQUERY MGD HOME FTP PYTHONPATH SYBASE PATH PUBLIC_RPTS
+export DSQUERY MGD INTERNAL_RPTS_DIR FTP_RPTS_DIR 
+export HOME FTP PYTHONPATH SYBASE PATH DATETAG
 
 if [ "$#" -ne 4 ]
 then
     echo usage: "$0 <dbserver> <database> <internal_reports_directory> <ftp_reports_directory>"
-    echo '(<internal_reports_directory> should have a "mgireport" subdirectory'
+    echo '(<internal_reports_directory> should have a "mgireport/weekly" subdirectory'
     echo '<ftp_reports_directory> is the target directory for ftp site reports)'
     exit 1
 fi
 
+DSQUERY=$1
+MGD=$2
 INTERNAL_RPTS_DIR=$3
 FTP_RPTS_DIR=$4
 
+FTP=$FTP_RPTS_DIR
+PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
+SYBASE=/opt/sybase
+PATH=$PATH:$SYBASE/bin
+DATETAG=`date '+%Y-%m-%d'`
+
+umask 002
+
 # check command-line arguments for validity
-if [ ! -d $INTERNAL_RPTS_DIR/mgireport ]
+if [ ! -d $INTERNAL_RPTS_DIR/mgireport/weekly ]
 then
-    echo "$INTERNAL_RPTS_DIR/mgireport does not exist."
+    echo "$INTERNAL_RPTS_DIR/mgireport/weekly does not exist."
 	exit 1
 fi
 
@@ -54,20 +65,10 @@ BASENAME=`basename $0`; NOTBASENAME=`echo $0 | sed "s/$BASENAME$//"`
    cd $NOTBASENAME
 }
  
-DSQUERY=$1
-MGD=$2
 HOME=`pwd`
-FTP=$FTP_RPTS_DIR
-PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
-SYBASE=/opt/sybase
-PATH=$PATH:$SYBASE/bin
-DATETAG=`date '+%m-%d-%Y'`
-
-umask 002
-
 cd $HOME
 
-PUBLIC_RPTS="MRK_NomenUpdates.sql"
+PUBLIC_RPTS="MRK_NomenUpdates.py"
 
 # Copy all of the generated reports from the EI installation filesystem
 # to the FTP site.
@@ -76,15 +77,10 @@ for i in $PUBLIC_RPTS
 do
 $i $DSQUERY $MGD
 done
-mv $FTP/Nomenclature-[0-9]*.rpt $FTP/archive/nomenclature
-cp $HOME/mgireport/*.rpt $FTP
-ln -s $FTP/Nomenclature-$DATETAG.rpt $FTP/Nomenclature-current.rpt
+cp $HOME/mgireport/weekly/*.rpt $FTP
 
-HOME=$INTERNAL_RPTS_DIR
-INTERNAL_RPTS=""
-
-for i in $INTERNAL_RPTS
-do
-$i $DSQUERY $MGD $NOMEN
-done
+# Move Nomenclature report to archive; copy & link current report
+mv $FTP/Nomenclature-$DATETAG.html $FTP/archive/nomen
+cp $HOME/mgireport/Nomenclature-$DATETAG.html $FTP
+ln -s $FTP/Nomenclature-$DATETAG.html $FTP/Nomenclature-current.html
 
