@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 07/11/2000
+--	- TR 1773; VerifyMarker; same for all species
+--
 -- lec 03/22/2000
 --	- TR 1291; VerifyMarker; use status instead of chromosome
 --
@@ -1788,11 +1791,11 @@ rules:
           whichItem->ItemList->List.keys := keys;
 	  (void) XmListAddItems(whichItem->ItemList->List, results, results.count, 0);
 
-	  -- If Species is Mouse and results is empty, then symbol is invalid
+	  -- If results are empty, then symbol is invalid
 
-	  if (speciesKey = "1" and results.count = 0) then
+	  if (results.count = 0) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Mouse Symbol '" + value + "'\n\n" + "Invalid Symbol";
+            StatusReport.message := "Symbol '" + value + "'\n\n" + "Invalid Symbol";
             send(StatusReport);
 
 	    if (isTable) then
@@ -1804,19 +1807,6 @@ rules:
 
 	    (void) reset_cursor(top);
 	    return;
-
-	  -- If Species is not Mouse and results is empty, then flag for add and return
-
-	  elsif (speciesKey != "1" and results.count = 0) then
-            StatusReport.source_widget := VerifyMarker.source_widget.root;
-            StatusReport.message := 
-		"Species '" + mgi_tblGetCell(sourceWidget, VerifyMarker.row, sourceWidget.species) + "'\n\n" +
-                "Symbol '" + VerifyMarker.value + "'\n\n" +
-                "Invalid Symbol - Symbol Will Be Added When Record is Modified";
-            send(StatusReport);
-            (void) mgi_tblSetCell(sourceWidget, VerifyMarker.row, markerKey, "-1");
-            (void) reset_cursor(top);
-            return;
 
 	  -- If more than one result is found, set Table widget and manage 'WhichItem' dialog
 

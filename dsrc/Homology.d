@@ -31,6 +31,9 @@
 --
 -- History
 --
+-- lec 07/11/2000
+--	- TR 1773; turn off editing of non-mouse markers; must use non-mouse marker info screen
+--
 -- lec 11/15/1999
 --	- TR 1075; added restriction on entering single homologies
 --
@@ -93,7 +96,6 @@ devents:
 
 	Modify :local [];
 	ModifyHomology :local [add : boolean := false;];
-	ModifyMarker :local [];
 
 	PrepareSearch :local [];
 
@@ -118,11 +120,9 @@ locals:
 	classKey : string;	   -- _Class_key of current record
 	refKey : string;	   -- _Refs_key of current record
 	classRefWhere : string;	   -- where _Class_key = ?? and _Refs_key = ??
-	declaredKey : string_list; -- list of declared marker key variables
 
 	-- Variable names for keys used during insertions
 	homologyKeyName : string;
-	markerKeyName : string;
 
 	defaultSpecies : integer := 3;		   -- Number of default Species
 	defaultSpeciesKeys : string := "(1,2,40)"; -- _Species_key for default Species
@@ -190,14 +190,11 @@ rules:
 	  tables := create list("widget");
 
 	  homologyKeyName := "maxHomology";
-	  markerKeyName := "maxMarker";
 
     	  -- List of all Table widgets used in form
 
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Assay->Table);
-
-	  declaredKey := create string_list();
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -247,7 +244,6 @@ rules:
 	  cmd := mgi_setDBkey(HMD_CLASS, NEWKEY, KEYNAME) +
 		 mgi_DBinsert(HMD_CLASS, KEYNAME);
 
-	  send(ModifyMarker, 0);
 	  ModifyHomology.add := true;
 	  send(ModifyHomology, 0);
                                  
@@ -311,7 +307,6 @@ rules:
 
 	  errorDetected := false;
 
-	  send(ModifyMarker, 0);
 	  send(ModifyHomology, 0);
 
 	  if (errorDetected) then
@@ -360,7 +355,6 @@ rules:
 	  note : string := "";
 	  speciesPrev : string := "";
 	  markerKey : string := "";
-	  maxMarker : integer := 1;
 	  editMode : string;
 	  table : widget;
 	  homologyModified : boolean := false;
@@ -503,16 +497,6 @@ rules:
 		      if (speciesList[j] = "X") then
 	                markerKey := mgi_tblGetCell(markerTable, i, markerTable.markerKey);
 
-		        -- Check if new Marker
-		        if (markerKey = "-1") then
-		          if (declaredKey.find((string) maxMarker) > -1) then
-			    markerKey := "@" + markerKeyName + (string) maxMarker;
-			    maxMarker := maxMarker + 1;
-		          else
-			    break;
-		          end if;
-		        end if;
-
 			if (markerKey != "") then
 	                  cmd := cmd + mgi_DBinsert(HMD_HOMOLOGY_MARKER, homologyKeyName) + markerKey + ")\n";
 			end if;
@@ -534,116 +518,6 @@ rules:
           end while;
         end
 
---
--- ModifyMarker
---
--- Handles modifications or additions of non-Mouse Markers
---
-
-	ModifyMarker does
-	  table : widget := top->Marker->Table;
-	  editMode : string;
-	  markerKey : string;
-	  speciesKey : string;
-	  marker : string;
-	  chrom : string;
-	  cyto : string;
-	  name : string;
-	  accID : string;
-	  accKey : string;
-	  insertMrk : string;
-	  insertAcc : string;
-	  maxMarker : integer := 1;
-	  row : integer := 0;
-	  set : string;
-	  keys : string_list := create string_list();
-
-	  -- Reset the list of declared maxMarker keys
-	  declaredKey.reset;
-
-	  while (row <= mgi_tblNumRows(table)) do
-	    editMode := mgi_tblGetCell(table, row, table.editMode);
-
-	    markerKey := mgi_tblGetCell(table, row, table.markerKey);
-	    accKey := mgi_tblGetCell(table, row, table.accKey);
-	    speciesKey := mgi_tblGetCell(table, row, table.speciesKey);
-	    marker := mgi_tblGetCell(table, row, table.markerSymbol);
-	    chrom := mgi_tblGetCell(table, row, table.markerChr);
-	    cyto := mgi_tblGetCell(table, row, table.markerCyto);
-	    name := mgi_tblGetCell(table, row, table.markerName);
-	    accID := mgi_tblGetCell(table, row, table.accID);
-
-	    if (accID = "GDB:") then
-		accID := "";
-	    end if;
- 
-            if (editMode = TBL_ROW_ADD or editMode = TBL_ROW_MODIFY) then
-
-	      if (speciesKey = HUMAN) then
-	    	-- Force Human symbols to upper case
-		marker := marker.raise_case;
-	      end if;
-
-	      if (chrom.length = 0) then
-	        chrom := "UN";
-	      end if;
-
-	      insertMrk := mgi_setDBkey(MRK_MARKER, NEWKEY, markerKeyName + (string) maxMarker) +
-			   mgi_DBinsert(MRK_MARKER, markerKeyName + (string) maxMarker) +
-			   speciesKey + ",1," + 
-			   NOTAPPLICABLE + "," +
-			   mgi_DBprstr(marker) + "," + 
-			   mgi_DBprstr(name) + "," + 
-			   mgi_DBprstr(chrom) + "," + 
-			   mgi_DBprstr(cyto) + ")\n" +
-			   "exec ACC_insert_bySpecies @" + markerKeyName + (string) maxMarker + 
-				"," + mgi_DBprstr(accID) + "," + speciesKey + "\n";
-
-	      -- Keep track of those markerKeyName variables which have actually been declared
-
-	      declaredKey.insert((string) maxMarker, declaredKey.count + 1);
-
-	      -- Don't update Mouse Marker Acc IDs
-	      -- For non-Mouse markers,
-	      --   If accKey exists, update
-	      --   Else if accID exists, insert
-	      --   Else, do nothing
-
-	      if (speciesKey != MOUSE) then
-	        if (accKey.length > 0) then
-	          insertAcc := "exec ACC_update " + accKey + "," + mgi_DBprstr(accID) + "\n";
-	        elsif (accID.length > 0) then
-	          insertAcc := "exec ACC_insert_bySpecies " + 
-			        markerKey + "," + mgi_DBprstr(accID) + "," + speciesKey + "\n";
-	        else
-	          insertAcc := "";
-	        end if;
-	      else
-	        insertAcc := "";
-	      end if;
-
-	      -- If non-Mouse marker and a New Marker, perform an insert
-
-	      if (speciesKey.length > 0 and markerKey = "-1" and speciesKey != MOUSE) then
-	        cmd := cmd + insertMrk;
-		maxMarker := maxMarker + 1;
-
-	      -- If non-Mouse marker and an Exisiting Marker, perform an update
-
-	      elsif (speciesKey.length > 0 and markerKey != "-1" and speciesKey != MOUSE) then
-		set := "symbol = " + mgi_DBprstr(marker) + 
-		       ",chromosome = " + mgi_DBprstr(chrom) +
-		       ",cytogeneticOffset = " + mgi_DBprstr(cyto) + 
-		       ",name = " + mgi_DBprstr(name);
-	        cmd := cmd + mgi_DBupdate(MRK_MARKER, markerKey, set) + insertAcc;
-	      end if;
-	    end if;
-
-	    row := row + 1;
-	  end while;
-
-	end
-                                 
 --
 -- PrepareSearch
 --
@@ -727,7 +601,7 @@ rules:
 	    end if;
 
             value := mgi_tblGetCell(top->Marker->Table, row, top->Marker->Table.accID);
-            if (not enough and value.length > 0 and value != "GDB:") then
+            if (not enough and value.length > 0) then
 	      where := where + "\nand ac.accID = " + mgi_DBprstr(value);
 	      from_accession := true;
 	    end if;
@@ -1082,11 +956,6 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
               mgi_tblSetCell(table, row, table.speciesKey, mgi_getstr(dbproc, 1));
               mgi_tblSetCell(table, row, table.species, mgi_getstr(dbproc, 2));
-
-	      if (mgi_tblGetCell(table, row, table.speciesKey) = "2") then
-                mgi_tblSetCell(table, row, table.accID, "GDB:");
-	      end if;
-
 	      row := row + 1;
 	    end while;
 	  end while;
