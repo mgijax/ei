@@ -1,110 +1,110 @@
 
 !
 ! VIP init file
-! written: Fri Jul  2 10:48:22 1999
+! written: Tue Jan  5 07:58:37 1999
 !
 
 session_information {
-  x       = 468
-  y       = 58
-  width   = 800
-  height  = 550
-  display = "mishka:0.0"
+  x       = 446
+  y       = 226
+  width   = 814
+  height  = 750
+  display = ":0.0"
 }
 
 pcds
 {
   load "/opt/teleuseXRT/lib/pcds/xm.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 228
 
   load "/opt/teleuseXRT/lib/pcds/xrt.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 209
 
-  load "/home/gld/projects/ei/work/./dev/pcds/MGI.pcd"
+  load "/home/lec/ei/ei/pcds/MGI.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 121
     vsb_pos     = 72
 
-  load "/home/gld/projects/ei/work/./dev/pcds/GXD.pcd"
+  load "/home/lec/ei/ei/pcds/GXD.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 396
 
-  load "/home/gld/projects/ei/work/./dev/pcds/MGD.pcd"
+  load "/home/lec/ei/ei/pcds/MGD.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 836
 
-  load "/home/gld/projects/ei/work/./dev/pcds/mgiDialog.pcd"
+  load "/home/lec/ei/ei/pcds/mgiDialog.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 561
     vsb_pos     = 1430
 
-  load "/home/gld/projects/ei/work/./dev/pcds/mgiLookup.pcd"
+  load "/home/lec/ei/ei/pcds/mgiLookup.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 231
 
-  load "/home/gld/projects/ei/work/./dev/pcds/mgiOption.pcd"
+  load "/home/lec/ei/ei/pcds/mgiOption.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 3861
 
-  load "/home/gld/projects/ei/work/./dev/pcds/mgiControl.pcd"
+  load "/home/lec/ei/ei/pcds/mgiControl.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 121
 
-  load "/home/gld/projects/ei/work/./dev/pcds/mgiMenu.pcd"
+  load "/home/lec/ei/ei/pcds/mgiMenu.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 396
 
-  load "/home/gld/projects/ei/work/./dev/pcds/mgiTable.pcd"
+  load "/home/lec/ei/ei/pcds/mgiTable.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 176
-    vsb_pos     = 9
+    vsb_pos     = 74
 
-  load "/home/gld/projects/ei/work/./dev/pcds/mgiDataTypes.pcd"
+  load "/home/lec/ei/ei/pcds/mgiDataTypes.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 1166
 
-  load "/home/gld/projects/ei/work/./dev/pcds/gxdDictionary.pcd"
+  load "/home/lec/ei/ei/pcds/gxdDictionary.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 671
 
-  load "/home/gld/projects/ei/work/./dev/pcds/MGIAdmin.pcd"
+  load "/home/lec/ei/ei/pcds/MGIAdmin.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 66
     vsb_pos     = 55
 
-  load "/home/gld/projects/ei/work/./dev/pcds/MGINomen.pcd"
+  load "/home/lec/ei/ei/pcds/MGINomen.pcd"
     floating    = false
-    opened      = false
+    opened      = true
     show_names  = false
     height      = 120
 

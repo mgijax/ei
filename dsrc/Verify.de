@@ -19,7 +19,7 @@ VerifyAlleleAdd [];
 
 VerifyAntibodyType [];
 
-VerifyChromosome [];
+VerifyChromosome :translation [];
 
 VerifyDate :translation [];
 
