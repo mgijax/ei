@@ -23,6 +23,10 @@
 --
 -- History:
 --
+-- lec	08/18/1999
+--	TR 104; ProcessAcc; preferred & private are now attributes of the
+--		AccToggle template so they can be set specifically.
+--
 -- lec	03/09/1999
 --	ProcessAcc; add origRefsKey parameter to ACC_update
 --
@@ -303,6 +307,7 @@ rules:
 	  origRefsKey : string;
 	  cmd : string := "";
 	  preferred : string := "";
+	  private : string := "";
 	  exec : string := "exec ";
 
 	  if (db.length = 0) then
@@ -367,18 +372,9 @@ rules:
                 i := i + 1;
               end while;
 
-	      -- Set the preferred bit
-
-	      if (accName = "MGD-MRK-" or
-		  accName = "MGD-CREX-" or accName = "MGD-RIEX-" or
-                  accName = "MGD-HYEX-" or accName = "MGD-FSEX-" or
-                  accName = "MGD-INEX-" or accName = "MGD-TEXT-" or
-		  accName = "MGD-TXEX-" or accName = "MGD-PMEX-" or
-		  accName = "E") then
-		preferred := "0";
-	      else
-		preferred := "1";
-	      end if;
+	      -- Set the preferred and private bits
+	      preferred := (string) (integer) source.menuHistory.preferred;
+	      private := (string) (integer) source.menuHistory.private;
 
 	      if (accID.length > 0) then
 	        if (accName = "MGD-MRK-" or
@@ -404,10 +400,11 @@ rules:
                 if (accName != "J:" and refsKey = "-1") then
                   cmd := cmd + exec + " ACC_insert " + objectKey + "," + 
 		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"," +
-			 refsKey + "," + preferred + "\n";
+			 refsKey + "," + preferred + "," + private + "\n";
 	        elsif (accName != "J:") then
                   cmd := cmd + exec + " ACCRef_process " + objectKey + "," + refsKey + "," +
-		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"\n";
+		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"" +
+			 "," + preferred + "," + private + "\n";
 		end if;
 
 	      elsif (source.menuHistory.allowModify and 
