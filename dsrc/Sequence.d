@@ -41,6 +41,9 @@ devents:
 	Search :local [];
 
 	Select :local [item_position : integer;];
+	SetOptions :local [source_widget : widget;
+			   row : integer;
+			   reason : integer;];
 
 locals:
 	mgi : widget;
@@ -159,6 +162,10 @@ rules:
 	  accTable := top->AccessionReference->Table;
 	  modTable := top->Control->ModificationHistory->Table;
 	  sourceTable := top->SourceInfo->Table;
+--	  mgi->TissueDialog->ItemList->List.singleSelectionCallback := "D:SelectLookupListItem";
+--	  mgi->TissueDialog->ItemList->List.targetWidget := sourceTable;
+--	  mgi->TissueDialog->ItemList->List.targetKey := "5";
+--	  mgi->TissueDialog->ItemList->List.targetText := "13";
 
 	  -- List of all Table widgets used in form
 
@@ -621,12 +628,45 @@ rules:
           LoadRefTypeTable.objectKey := currentKey;
           send(LoadRefTypeTable, 0);
  
+	  SetOptions.source_widget := sourceTable;
+	  SetOptions.row := 1;
+	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+	  send(SetOptions, 0);
+
           top->QueryList->List.row := Select.item_position;
           ClearSequence.reset := true;
           send(ClearSequence, 0);
 
 	  (void) reset_cursor(top);
 	end does;
+
+--
+-- SetOptions
+--
+-- Each time a row is entered, set the option menus based on the values
+-- in the appropriate column.
+--
+-- EnterCellCallback for table.
+--
+ 
+        SetOptions does
+          table : widget := SetOptions.source_widget;
+          row : integer := SetOptions.row;
+	  reason : integer := SetOptions.reason;
+ 
+	  if (reason != TBL_REASON_ENTER_CELL_END) then
+	    return;
+	  end if;
+
+          SetOption.source_widget := top->CVSequence->AgeMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.ageKey);
+          send(SetOption, 0);
+
+          SetOption.source_widget := top->CVSequence->GenderMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.genderKey);
+          send(SetOption, 0);
+
+        end does;
 
 --
 -- Exit
