@@ -1,32 +1,21 @@
 --
--- Name    : Template.d
+-- Name    : VocAnnot.d
 -- Creator : 
--- Template.d 11/05/98
+-- VocAnnot.d 02/20/2002
 --
--- TopLevelShell:		(name of top level shell)
--- Database Tables Affected:	(database tables directly modified by this module)
--- Cross Reference Tables:	(database table indirectly modified by this module)
+-- TopLevelShell:		VocAnnotModule
+-- Database Tables Affected:	Voc_Annot, VOC_Evidence
 -- Actions Allowed:		Add, Modify, Delete
---
--- Module to process edits for (table).
---
--- This template provides a basic outline for designing MGI Modules.
--- It should be used in conjunction with the MGI:Module PCD template to
--- implement the callbacks in the interface module.
---
--- "Template" name does not have to be the same as the D module file name.
--- "TemplateShell" is the name of the top-level shell to create for this module.
--- "TABLE" is the #define variable in mgilib.h of the primary database table.
 --
 -- To invoke an instance of this module, see MGI.d:CreateMGIModule.
 --
 -- History
 --
--- (user)	(date)
---	- (what?)
+-- lec	02/02/2002
+--	- created
 --
 
-dmodule Template is
+dmodule VocAnnot is
 
 #include <mgilib.h>
 #include <syblib.h>
@@ -45,11 +34,11 @@ devents:
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [];				-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
+	SetAnnotTypeDefaults :exported [];		-- Set Defaults based on Annotation Type
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
 	top : widget;			-- Top-level shell of Module
-	accTable : widget;		-- Accession Table widget (optional)
 
 	from : string;			-- global SQL from clause
 	where : string;			-- global SQL where clause
@@ -57,6 +46,7 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
+	tables : list;
 
 rules:
 
@@ -65,7 +55,7 @@ rules:
 --
 -- Activated from:  MGI:CreateMGIModule
 --
--- Creates and manages D Module "Template"
+-- Creates and manages D Module "VocAnnot"
 --
 
 	INITIALLY does
@@ -74,7 +64,7 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  -- Create the widget hierarchy in memory
-	  top := create widget("TemplateModule", nil, mgi);
+	  top := create widget("VocAnnotModule", nil, mgi);
 
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
@@ -107,6 +97,10 @@ rules:
 --
  
         BuildDynamicComponents does
+
+	  InitOptionMenu.option := top->VocAnnotTypeMenu;
+	  send(InitOptionMenu, 0);
+
         end does;
  
 --
@@ -123,14 +117,25 @@ rules:
 --
 
         Init does
+	  tables := create list("widget");
+
+	  -- List of all Table widgets used in form
+
+	  tables.append(top->Annotation->Table);
+	  tables.append(top->Reference->Table);
+
           -- Set Row Count
           SetRowCount.source_widget := top;
-          SetRowCount.tableID := TABLE;
+          SetRowCount.tableID := VOC_ANNOT;
           send(SetRowCount, 0);
  
           -- Clear form
           Clear.source_widget := top;
           send(Clear, 0);
+
+	  -- Set Defaults
+	  send(SetAnnotTypeDefaults, 0);
+
 	end does;
 
 --
@@ -140,43 +145,10 @@ rules:
 --			top->MainMenu->Commands->Add
 --
 -- Construct and execute commands for record insertion
+-- Not used in this module.
 --
 
         Add does
-
-          if (not top.allowEdit) then
-            return;
-          end if;
-
-          (void) busy_cursor(top);
-
-          -- If adding, then @KEYNAME must be used in all Modify events
- 
-          currentRecordKey := "@" + KEYNAME;
- 
-          cmd : string := mgi_setDBkey(TABLE, NEWKEY, KEYNAME) +
-                          mgi_DBinsert(TABLE, KEYNAME);
-
-	  AddSQL.tableID := TABLE;
-          AddSQL.cmd := cmd;
-	  AddSQL.list := top->QueryList;
-          AddSQL.item := (what field attribute will appear in the Search Results);
-          AddSQL.key := top->ID->text;
-          send(AddSQL, 0);
-
-	  -- Set the Report dialog select and clear record if Add successful
-
-	  if (top->QueryList->List.sqlSuccessful) then
-            SetReportSelect.source_widget := top;
-            SetReportSelect.tableID := TABLE;
-            send(SetReportSelect, 0);
-
-	    Clear.source_widget := top;
-            Clear.clearKeys := false;
-            send(Clear, 0);
-	  end if;
-
-          (void) reset_cursor(top);
 	end does;
 
 --
@@ -186,13 +158,14 @@ rules:
 --			top->MainMenu->Commands->Delete
 --
 -- Constructs and executes command for record deletion
+-- Not used in this module.
 --
 
         Delete does
 
           (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := TABLE;
+	  DeleteSQL.tableID := VOC_ANNOT;
           DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
@@ -227,7 +200,7 @@ rules:
 
 	  set : string := "";
 
-          ModifySQL.cmd := mgi_DBupdate(TABLE, currentRecordKey, set);
+          ModifySQL.cmd := mgi_DBupdate(VOC_ANNOT, currentRecordKey, set);
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
@@ -241,7 +214,7 @@ rules:
 --
 
 	PrepareSearch does
-	  from := "from " + mgi_DBtable(TABLE) + " ";
+	  from := "from " + mgi_DBtable(VOC_ANNOT_VIEW) + " ";
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -270,8 +243,9 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by\n";
-	  Query.table := TABLE;
+	  Query.select := "select distinct _AnnotType_key, objectName\n" + 
+	  	from + "\n" + where + "\norder by objectName\n";
+	  Query.table := VOC_ANNOT_VIEW;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
 	end does;
@@ -287,14 +261,13 @@ rules:
 
           (void) busy_cursor(top);
 
-	  -- Clear Table widgets
-          tables.open;
-          while (tables.more) do
-            ClearTable.table := tables.next;
-            send(ClearTable, 0);
-          end while;
-          tables.close;
- 
+	  tables.open;
+	  while (tables.more) do
+	    ClearTable.table := tables.next;
+	    send(ClearTable, 0);
+	  end while;
+	  tables.close;
+
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -305,8 +278,8 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd : string := "select * from " + mgi_DBtable(TABLE) + 
-		          " where " + mgi_DBkey(TABLE) + " = " + currentRecordKey + "\n";
+	  cmd : string := "select * from " + mgi_DBtable(VOC_ANNOT) + 
+		          " where " + mgi_DBkey(VOC_ANNOT) + " = " + currentRecordKey + "\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -326,6 +299,24 @@ rules:
           send(Clear, 0);
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- SetAnnotTypeDefaults
+--
+-- Set defaults based on Annotation Type selected
+--
+-- Display based on Annotation Type
+--
+--
+
+	SetAnnotTypeDefaults does
+	  evidenceKey : integer := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
+
+	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
+		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
+          LoadList.list := top->EvidenceCodeList;
+	  send(LoadList, 0);
 	end does;
 
 --

@@ -504,8 +504,10 @@ rules:
 	    else
 	      item := list_w.selectedItems[0];
 
-	      if (item->substr(1, cbPrefix.length) = cbPrefix) then
-		item := item->substr(cbPrefix.length + 1, item.length);
+	      if (item.length > cbPrefix.length) then
+	        if (item->substr(1, cbPrefix.length) = cbPrefix) then
+		  item := item->substr(cbPrefix.length + 1, item.length);
+	        end if;
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, (integer) list_w.targetText, item);

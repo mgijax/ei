@@ -155,6 +155,10 @@ rules:
 		  end if;
 		end if;
 
+		if (option.name = "VocAnnotTypeMenu") then
+		  x.evidenceKey := mgi_getstr(dbproc, 3);
+		end if;
+
 		x.unbatch;
 
 		if (option.defaultValue = x.defaultValue) then
