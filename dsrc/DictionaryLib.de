@@ -14,5 +14,3 @@ ModifyStructure [source_widget : widget;	-- Modify Structure records
 		 key : string;
 		 row : integer;];
 
-SetADClipboard [];				-- Select Item in Lookup List based on current row
-

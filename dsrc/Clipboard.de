@@ -1,6 +1,5 @@
 --
--- Name    : Clipboard.de
--- Creator : lec
+-- Name    : Clipboard.de -- Creator : lec
 -- Date	   : 07/26/2001
 --
 -- Purpose:
@@ -19,4 +18,14 @@ ClipboardDelete [source_widget : widget;];
 ClipboardSort [source_widget : widget;];
 
 ClipboardLoad [source_widget : widget;];
+
+ClipboardSetItems [table : widget;
+		   clipboard : widget;
+		   row : integer;
+		   column : integer;
+		   reason : integer;];
+
+ADClipboardSetItems [source_widget : widget;];
+
+GenotypeClipboardSetItems [source_widget : widget;];
 

@@ -31,14 +31,13 @@ rules:
        clipboard : widget := ClipboardAdd.clipboard;
        item : string := ClipboardAdd.item;
        key : string := ClipboardAdd.key;
-       pos : integer;
 
-       pos := XmListItemPos(clipboard->List, xm_xmstring(item));
+       -- don't add duplicates; use keys to determine duplicates
 
-       -- don't add duplicates
-
-       if (pos > 0) then
-	 return;
+       if (clipboard->List.keys != nil) then
+	 if (clipboard->List.keys.find(key) >= 0) then
+	   return;
+	 end if;
        end if;
 
        InsertList.list := clipboard;

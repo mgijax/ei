@@ -52,9 +52,15 @@ locals:
 	where : string;
 	set : string;
 
+	assayModule : widget;
+	assayTable : widget;
+	assayPush : widget;
+
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
+	allelePairString : string;
+
 rules:
 
 --
@@ -91,6 +97,17 @@ rules:
 --
 
 	Init does
+
+	  assayModule := mgi->AssayModule;
+
+	  if (assayModule->InSituForm.managed) then
+	    assayTable := assayModule->Specimen->Table;
+	    assayPush := assayModule->Lookup->CVSpecimen->GenotypePush;
+	  elsif (assayModule->GelForm.managed) then
+	    assayTable := assayModule->GelLane->Table;
+	    assayPush := assayModule->Lookup->CVGel->GenotypePush;
+	  end if;
+
           -- Set Row Count
           SetRowCount.source_widget := top;
           SetRowCount.tableID := GXD_GENOTYPE;
@@ -101,7 +118,7 @@ rules:
 
 	  -- if an Assay record has been selected, then select
 	  -- the Genotype records for the Assay
-	  SelectGenotypeByAssay.assayKey := mgi->AssayModule->EditForm->ID->text.value;
+	  SelectGenotypeByAssay.assayKey := assayModule->EditForm->ID->text.value;
 	  send(SelectGenotypeByAssay, 0);
 	end does;
 
@@ -137,12 +154,14 @@ rules:
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
-	  AddSQL.selectNewListItem := false;
-          AddSQL.item := top->EditForm->Strain->Verify->text.value;
+--	  AddSQL.selectNewListItem := false;
+          AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
+	    send(GenotypeClipboardAdd, 0);
+	    (void) XmListDeselectAllItems(top->QueryList->List);
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
             send(Clear, 0);
@@ -245,6 +264,12 @@ rules:
             alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
             alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
  
+	    if (row = 0) then
+	      allelePairString := mgi_tblGetCell(table, row, table.markerSymbol) + "," +
+			    mgi_tblGetCell(table, row, (integer) table.alleleSymbol[1]) + "," +	
+			    mgi_tblGetCell(table, row, (integer) table.alleleSymbol[2]);
+	    end if;
+
 	    if (alleleKey1.length = 0) then
 	      alleleKey1 := "NULL";
 	    end if;
@@ -299,11 +324,11 @@ rules:
 --
 
 	PrepareSearch does
-	  from_allele : boolean;
 	  value : string;
 
-	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
-	  where := "";
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
+	    "," + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
+	  where := "where g._Genotype_key *= ap._Genotype_key";
 
           QueryDate.source_widget := top->CreationDate;
           send(QueryDate, 0);
@@ -313,6 +338,10 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
+	  if (top->EditForm->ID->text.value.length > 0) then
+	    where := where + "\nand g._Genotype_key = " + top->EditForm->ID->text.value;
+	  end if;
+
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	       where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
 	  elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
@@ -322,24 +351,13 @@ rules:
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
 
           if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand a._Marker_key = " + value;
-	    from_allele := true;
+	    where := where + "\nand ap._Marker_key = " + value;
 	  else
             value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
             if (value.length > 0) then
-	      where := where + "\nand a.symbol like " + mgi_DBprstr(value);
-	      from_allele := true;
+	      where := where + "\nand ap.symbol like " + mgi_DBprstr(value);
 	    end if;
 	  end if;
-
-	  if (from_allele) then
-	    from := from + "," + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " a";
-	    where := where + "\nand g._Genotype_key = a._Genotype_key";
-	  end if;
-
-          if (where.length > 0) then
-            where := "where" + where->substr(5, where.length);
-          end if;
 	end does;
 
 --
@@ -353,7 +371,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct g._Genotype_key, " +
-		"g.strain + ',' + g.marker + ',' + g.allele1\n" + 
+		"g.strain + ',' + ap.symbol + ',' + ap.allele1\n" + 
 		from + "\n" + where + "\norder by g.strain\n";
 	  Query.table := GXD_GENOTYPE_VIEW;
 	  send(Query, 0);
@@ -381,7 +399,7 @@ rules:
 		"and a._Assay_key = " + assayKey + 
 		" and g._Genotype_key *= ap._Genotype_key";
 
-	  if (mgi->AssayModule->InSituForm.managed) then
+	  if (assayModule->InSituForm.managed) then
 	    from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
 	  else
 	    from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
@@ -389,10 +407,19 @@ rules:
 
 	  QueryNoInterrupt.source_widget := top;
 	  QueryNoInterrupt.select := "select distinct g._Genotype_key, " +
-		"g.strain + ',' + ap.symbol + ',' + ap.allele1\n" + 
-		from + "\n" + where + "\norder by g.strain\n";
+		"convert(varchar(3), a.sequenceNum) + ':' + g.strain + ',' + ap.symbol + ',' + ap.allele1\n" + 
+		from + "\n" + where + "\norder by a.sequenceNum\n";
 	  QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
 	  send(QueryNoInterrupt, 0);
+
+	  -- Select Genotype record of currently selected Specimen/Gel Row
+	  row : integer := mgi_tblGetCurrentRow(assayTable);
+	  genotypeKey : string := mgi_tblGetCell(assayTable, row, assayTable.genotypeKey);
+	  pos : integer := top->QueryList->List.keys.find(genotypeKey);
+	  if (pos > 0) then
+	    (void) XmListSelectPos(top->QueryList->List, pos, true);
+	  end if;
+
 
 	  (void) reset_cursor(top);
 	end does;
@@ -492,12 +519,7 @@ rules:
             return;
           end if;
 
-	  if (mgi->AssayModule->InSituForm.managed) then
-	    push := mgi->AssayModule->Lookup->CVSpecimen->GenotypePush;
-          else
-	    push := mgi->AssayModule->Lookup->CVGel->GenotypePush;
-	  end if;
-
+	  push := assayPush;
 	  table := push.targetWidget->Table;
 	  row := mgi_tblGetCurrentRow(table);
 
@@ -522,7 +544,7 @@ rules:
 	end if;
 
 	ClipboardAdd.clipboard := top->GenotypeEditClipboard;
-	ClipboardAdd.item := top->EditForm->Strain->Verify->text.value;
+	ClipboardAdd.item := top->QueryList->List.items[top->QueryList->List.row];
 	ClipboardAdd.key := top->ID->text.value;
 	send(ClipboardAdd, 0);
    end does;
