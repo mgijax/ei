@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Nov  8 12:02:15 1999";
+      lastWritten = "Mon Dec  6 08:10:12 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -6959,6 +6959,39 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NLMDialog = NLMDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList;
+                                      }
+                                      {
+                                        PrinterList = LookupList;
+                                      }
+                                      {
+                                        PrintOrient = Choice : mgiDataTypes;
+                                            {
+                                              PrintOrientBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                      {
+                                        PrintColumn = Choice : mgiDataTypes;
+                                            {
+                                              PrintColumnBox = XmRowColumn;
+                                            }
+                                            {
+                                              ChoiceBox = XmRowColumn;
+                                            }
+                                      }
+                                }
+                          }
                     }
               }
         }
@@ -7767,6 +7800,11 @@ Shift<Key>Tab: prev-tab-group()
                                           tableForm = OtherReference;
                                           tableOptionKey = 4;
                                           tableOption = 8;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                              Group: Widget
+                                                managed = False;
+                                            }
                                       }
                                 }
                           }
