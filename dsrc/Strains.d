@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec	10/29/2001
+--	- TR 2541; Synonyms
+--
 -- lec	09/26/2001
 --	- TR 2541; add MGI Accession IDs; Private attribute
 --	- TR 2358; moved Strains DB into MGD
@@ -66,6 +69,7 @@ devents:
 	Modify :local [];
 
 	ModifyMarker :local [];
+	ModifySynonym :local [];
 	ModifyType :local [];
 	ModifyStrainExtra :local [];
 
@@ -134,6 +138,7 @@ rules:
 
 	  tables.append(top->StrainType->Table);
 	  tables.append(top->Marker->Table);
+	  tables.append(top->Synonym->Table);
 	  tables.append(top->Extra->Table);
 	  tables.append(top->References->Table);
 	  tables.append(top->DataSets->Table);
@@ -191,11 +196,10 @@ rules:
  
           cmd := cmd + mgi_DBinsert(MLP_STRAIN, NOKEY) +
 		 currentRecordKey + "," +
-		 top->mlpSpecies->ObjectID->text.value + "," +
-		 mgi_DBprstr(top->User1->text.value) + "," +
-		 mgi_DBprstr(top->User2->text.value) + ")\n";
+		 top->mlpSpecies->ObjectID->text.value + ",NULL,NULL)\n";
 
 	  send(ModifyMarker, 0);
+	  send(ModifySynonym, 0);
 	  send(ModifyType, 0);
 	  send(ModifyStrainExtra, 0);
 
@@ -300,17 +304,10 @@ rules:
 	    set := set + "_Species_key = " + top->mlpSpecies->ObjectID->text.value + ",";
 	  end if;
 
-	  if (top->User1->text.modified) then
-	    set := set + "userDefined1 = " + mgi_DBprstr(top->User1->text.value) + ",";
-	  end if;
-
-	  if (top->User2->text.modified) then
-	    set := set + "userDefined2 = " + mgi_DBprstr(top->User2->text.value) + ",";
-	  end if;
-
           cmd := cmd + mgi_DBupdate(MLP_STRAIN, currentRecordKey, set);
 
 	  send(ModifyMarker, 0);
+	  send(ModifySynonym, 0);
 	  send(ModifyType, 0);
 	  send(ModifyStrainExtra, 0);
 
@@ -378,6 +375,60 @@ rules:
 	end does;
 
 --
+-- ModifySynonym
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Strain Synonyms
+-- Appends to global "cmd" string
+--
+
+	ModifySynonym does
+          table : widget := top->Synonym->Table;
+          row : integer := 0;
+          editMode : string;
+          key : string;
+          synonym : string;
+	  set : string := "";
+	  keyDeclared : boolean := false;
+	  keyName : string := "synonymKey";
+ 
+          -- Process while non-empty rows are found
+ 
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+ 
+            key := mgi_tblGetCell(table, row, table.synonymKey);
+            synonym := mgi_tblGetCell(table, row, table.synonym);
+ 
+            if (editMode = TBL_ROW_ADD) then
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(PRB_STRAIN_SYNONYM, NEWKEY, keyName);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+
+              cmd := cmd + mgi_DBinsert(PRB_STRAIN_SYNONYM, keyName) + 
+		currentRecordKey + "," + 
+		mgi_DBprstr(synonym) + ")\n";
+
+            elsif (editMode = TBL_ROW_MODIFY) then
+              set := "synonym = " + mgi_DBprstr(synonym);
+              cmd := cmd + mgi_DBupdate(PRB_STRAIN_SYNONYM, key, set);
+            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+               cmd := cmd + mgi_DBdelete(PRB_STRAIN_SYNONYM, key);
+            end if;
+ 
+            row := row + 1;
+          end while;
+	end does;
+
+--
 -- ModifyType
 --
 -- Activated from: devent Modify
@@ -435,37 +486,25 @@ rules:
 	ModifyStrainExtra does
           table : widget := top->Extra->Table;
           row : integer := 0;
-          andor : string;
           reference : string;
           dataset : string;
-          note1, note2, note3 : string;
+          note1, note2 : string;
 	  set : string := "";
  
           -- Process one and only row
  
-          andor := mgi_tblGetCell(table, row, table.andor);
           reference := mgi_tblGetCell(table, row, table.reference);
           dataset := mgi_tblGetCell(table, row, table.dataset);
           note1 := mgi_tblGetCell(table, row, table.note1);
           note2 := mgi_tblGetCell(table, row, table.note2);
-          note3 := mgi_tblGetCell(table, row, table.note3);
  
-	  if (not allow_only_digits(reference)) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Reference column only accepts numerical value.";
-            send(StatusReport);
-            return;
-	  end if;
-
 	  cmd := cmd + mgi_DBdelete(MLP_EXTRA, currentRecordKey) +
 	         mgi_DBinsert(MLP_EXTRA, NOKEY) + 
 		 currentRecordKey + "," + 
-                 mgi_DBprstr(andor) + "," +
-                 mgi_DBprkey(reference) + "," +
+                 mgi_DBprstr(reference) + "," +
                  mgi_DBprstr(dataset) + "," +
                  mgi_DBprstr(note1) + "," +
-                 mgi_DBprstr(note2) + "," +
-                 mgi_DBprstr(note3) + ")\n";
+                 mgi_DBprstr(note2) + ")\n";
 	end does;
 
 --
@@ -478,6 +517,7 @@ rules:
 	  from_extra : boolean := false;
 	  from_notes : boolean := false;
 	  from_marker : boolean := false;
+	  from_synonym : boolean := false;
 	  from_types : boolean := false;
 	  value : string;
 
@@ -519,14 +559,6 @@ rules:
 	    where := where + "\nand s.species like " + mgi_DBprstr(top->mlpSpecies->Species->text.value);
 	  end if;
 
-	  if (top->User1->text.value.length > 0) then
-	    where := where + "\nand s.userDefined1 like " + mgi_DBprstr(top->User1->text.value);
-	  end if;
-
-	  if (top->User2->text.value.length > 0) then
-	    where := where + "\nand s.userDefined2 like " + mgi_DBprstr(top->User2->text.value);
-	  end if;
-
           value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.markerKey);
 
           if (value.length > 0 and value != "NULL") then
@@ -538,6 +570,12 @@ rules:
 	      where := where + "\nand sm.symbol like " + mgi_DBprstr(value);
 	      from_marker := true;
 	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(top->Synonym->Table, 0, top->Synonym->Table.synonym);
+          if (value.length > 0) then
+	    where := where + "\nand ss.synonym like " + mgi_DBprstr(value);
+	    from_synonym := true;
 	  end if;
 
           value := mgi_tblGetCell(top->StrainType->Table, 0, top->StrainType->Table.strainTypeKey);
@@ -553,15 +591,9 @@ rules:
 	    end if;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.andor);
-	  if (value.length > 0) then
-	    where := where + "\nand n.andor like " + mgi_DBprstr(value);
-	    from_extra := true;
-	  end if;
-
 	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.reference);
 	  if (value.length > 0) then
-	    where := where + "\nand n.reference = " + mgi_DBprkey(value);
+	    where := where + "\nand n.reference like " + mgi_DBprstr(value);
 	    from_extra := true;
 	  end if;
 
@@ -583,12 +615,6 @@ rules:
 	    from_extra := true;
 	  end if;
 
-	  value := mgi_tblGetCell(top->Extra->Table, 0, top->Extra->Table.note3);
-	  if (value.length > 0) then
-	    where := where + "\nand n.note3 like " + mgi_DBprstr(value);
-	    from_extra := true;
-	  end if;
-
           if (top->Notes->text.value.length > 0) then
             where := where + "\nand sn.note like " + mgi_DBprstr(top->Notes->text.value);
             from_notes := true;
@@ -604,6 +630,10 @@ rules:
 	    where := where + "\nand s._Strain_key = sn._Strain_key";
 	  end if;
 
+	  if (from_synonym) then
+	    from := from + "," + mgi_DBtable(PRB_STRAIN_SYNONYM) + " ss";
+	    where := where + "\nand s._Strain_key = ss._Strain_key";
+	  end if;
 	  if (from_marker) then
 	    from := from + "," + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) + " sm";
 	    where := where + "\nand s._Strain_key = sm._Strain_key";
@@ -699,6 +729,8 @@ rules:
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
 		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
+		 "select * from " + mgi_DBtable(PRB_STRAIN_SYNONYM) +
+		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
                  "select rtrim(note) from " + mgi_DBtable(MLP_NOTES) +
                  " where " + mgi_DBkey(MLP_NOTES) + " = " + currentRecordKey + " order by sequenceNum\n";
 
@@ -716,8 +748,6 @@ rules:
                 top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 		top->mlpSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
 		top->mlpSpecies->Species->text.value := mgi_getstr(dbproc, 7);
-		top->User1->text.value := mgi_getstr(dbproc, 3);
-		top->User2->text.value := mgi_getstr(dbproc, 4);
                 SetOption.source_widget := top->StandardMenu;
                 SetOption.value := mgi_getstr(dbproc, 9);
                 send(SetOption, 0);
@@ -729,12 +759,10 @@ rules:
                 send(SetOption, 0);
 	      elsif (results = 2) then
 		table := top->Extra->Table;
-		(void) mgi_tblSetCell(table, row, table.andor, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.reference, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.dataset, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.note1, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.note2, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.note3, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, row, table.reference, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(table, row, table.dataset, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.note1, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.note2, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
 		table := top->Marker->Table;
@@ -749,6 +777,11 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.strainType, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 5) then
+		table := top->Synonym->Table;
+                (void) mgi_tblSetCell(table, row, table.synonymKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.synonym, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      elsif (results = 6) then
                 top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
 	      end if;
 	      row := row + 1;
