@@ -37,17 +37,24 @@ which uses data dumps provided by the SSDBs.
     <TD>Donna Maglott <BR>(maglott@ncbi.nlm.nih.gov)
     <TD>Daily
 
+<TR><TD>GDB
+    <TD><A HREF="http://prodwww/~lec/mgireport/gdbload/output/GeneByAlpha.tab">GeneByAlpha.tab</A>
+	<BR>Data file is automatically extracted from the FTP site <CODE>syb.hsc.gdb.org</CODE>
+	    to <CODE>titan:/usr/local/mgi/gdbload/output</CODE>.
+    <TD>Connie Talbot <BR>(cct@gdb.org)
+    <TD>Daily
+
 <TR><TD>RATMAP
-    <TD><A HREF="http://prodwww/~lec/mgireport/ratmapload/RatURL.txt">RatURL.txt</A>
+    <TD><A HREF="http://prodwww/~lec/mgireport/ratmapload/output/RatURL.txt">RatURL.txt</A>
 	<BR>Data file is automatically extracted from the FTP site <CODE>genmac17.gen.gu.se</CODE>
 	    to <CODE>titan:/usr/local/mgi/ratmapload/output/</CODE>.
     <TD>Fredrik Stahl <BR>(Fredrik.Stahl@gen.gu.se)
     <TD>Daily (TR 555; RATMAP file is only updated once a month)
 
 <TR><TD>GDB
-    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/Gene.medlineid.tab">Gene.medlineid.tab</A>
+    <TD><A HREF="http://prodwww/~lec/mgireport/qcreports/Gene.medlineid.tab">Gene.medlineid.tab</A>
 	<BR>Data file is automatically extracted from the FTP site <CODE>syb.hsc.gdb.org</CODE>
-	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
+	    to <CODE>titan:/usr/local/mgi/qcreports_db/output</CODE>.
     <TD>Connie Talbot <BR>(cct@gdb.org)
     <TD>Daily (GDB file is only updated once a month)
 
@@ -55,32 +62,24 @@ which uses data dumps provided by the SSDBs.
 
 <H4>LocusLink</H4>
 
-We are currently using LocusLink to update MGD human symbols, mapping and accession information.
-We are only loading the GDB ID from the LocusLink file.
+We are currently using LocusLink to update MGD human symbols/names and GDB accession ids.
 
 <OL>
-<LI>All MGD Human symbols which do not contain a GDB ID are updated with the correct
-    GDB ID based on a symbol match between MGD and the LocusLink symbol (official or interim).
+<LI><A HREF="http://prodwww/~lec/mgireport/locuslinkload/system_docs/locuslinkload.pdf">Requirements Document</A>
 <P>
-<LI>All MGD Human symbols are updated from the LocusLink file based on a GDB ID match
-    between MGD and LocusLink. The fields which are updated are:
-	<UL>
-	<LI>symbol
-	<LI>name
-	<LI>chromosome
-	<LI>offset
-	</UL>
+<LI><A HREF="http://prodwww/~lec/mgireport/locuslinkload/LLindex.html">LocusLink Data & QC Reports</A>
 <P>
-<LI>We output the following:
-	<UL>
-	<LI>MGD Human Symbols updated today (LL.found.sql.rpt)
-	<LI>MGD Human Symbols w/out a match in LocusLink (LL.notfound.sql.rpt)
-	</UL>
+</OL>
+
+<H4>GDB</H4>
+
+We are currently using GDB to update MGD human mapping information.
+
+<OL>
+<LI><A HREF="http://prodwww/~lec/mgireport/gdbload/system_docs/gdbload.pdf">Requirements Document</A>
 <P>
-<LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
-	<PRE>
-	/usr/local/mgi/locuslink/LLupdate.sh -l
-	</PRE>
+<LI><A HREF="http://prodwww/~lec/mgireport/gdbload/GDBindex.html">GDB Data & QC Reports</A>
+<P>
 </OL>
 
 <H4>RATMAP</H4>
@@ -99,14 +98,7 @@ We are not updating MGD Rat symbols from RATMAP.
 	<LI>offset
 	</UL>
 <P>
-<LI>We output the following:
-	<UL>
-	<LI>MGD Rat Symbols updated today (RATMAP.found.sql.rpt)
-	<LI>MGD Rat Symbols w/out a match in RATMAP (RATMAP.notfound.sql.rpt)
-	<LI>Conflicts between MGD Rat Symbols and RATMAP Symbols (RATMAP.conflicts.sql.rpt)
-	<LI>Potential Mouse/Rat Matches (RATMAP.potentials.sql.rpt)
-	<LI>RATMAP Symbols and GenBankIDs (RATMAP.genbankIDs.sql.rpt)
-	</UL>
+<LI><A HREF="http://prodwww/~lec/mgireport/ratmapload/RATMAPindex.html">RATMAP Data & QC Reports</A>
 <P>
 <LI>In addition, we retrieve the following files from the RATMAP ftp site:
 	<UL>
@@ -115,7 +107,7 @@ We are not updating MGD Rat symbols from RATMAP.
 <P>
 <LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
 	<PRE>
-	/usr/local/mgi/ratmapload/RATMAPupdate.sh -l
+	/usr/local/mgi/dataload/ratmapload/RATMAPupdate.sh -l
 	</PRE>
 </OL>
 
@@ -127,10 +119,7 @@ ortholog exists in MGD.
 
 <OL>
 <P>
-<LI>We output the following:
-	<UL>
-	<LI>MGD Entries with Potential Human Homologies (HMD_Potentials.rpt)
-	</UL>
+<LI><A HREF="http://devwww/~lec/mgireport/qcreports/HMD_Potentials.rpt">MGD Entries with Potential Human Homologies</A>
 <P>
 <LI>Executed from a <CODE>sybase</CODE> cron on <CODE>titan</CODE>:
 	<PRE>
