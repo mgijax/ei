@@ -30,6 +30,7 @@
 --
 -- lec 08/16/2001
 --	- TR 2849; CopyGelLane; don't copy Age Range during Age Prefix copy
+--	- TR 2847; Set Note color appropriately
 --
 -- lec 07/11/2001
 --	- TR 2709; add Symbol to Search Results text
@@ -149,7 +150,8 @@ devents:
 	AddProbePrep :local [];
 	AddProbeReference :local [];
 	Assay [];
-	AssayClear [];
+	AssayClear [clearKeys : boolean := true;
+		    reset : boolean := false;];
 
 	CopySpecimen :local [];
 	CopyGelLane :local [];
@@ -239,10 +241,7 @@ rules:
 	  SetRowCount.tableID := GXD_ASSAY;
 	  send(SetRowCount, 0);
 
-	  Clear.source_widget := top;
-	  Clear.clearForms := clearAssay;
-	  Clear.clearLists := 3;
-	  send(Clear, 0);
+	  send(AssayClear, 0);
  
 	  (void) reset_cursor(mgi);
 	end does;
@@ -257,8 +256,13 @@ rules:
 	  Clear.source_widget := top;
 	  Clear.clearForms := clearAssay;
 	  Clear.clearLists := 3;
+	  Clear.clearKeys := AssayClear.clearKeys;
+	  Clear.reset := AssayClear.reset;
 	  send(Clear, 0);
 	  currentAssay := "";
+
+          SetNotesDisplay.note := top->AssayNote->Note;
+          send(SetNotesDisplay, 0);
 
           LoadStructureList.source_widget := top;
 	  send(LoadStructureList, 0);
@@ -850,10 +854,8 @@ rules:
           send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-            Clear.source_widget := top;
-            Clear.clearKeys := false;
-	    Clear.clearForms := clearAssay;
-            send(Clear, 0);
+            AssayClear.clearKeys := false;
+            send(AssayClear, 0);
           end if;
  
 	  currentAssay := "";
@@ -1945,10 +1947,9 @@ rules:
  
           top->QueryList->List.row := Select.item_position;
 
-	  Clear.source_widget := top;
-          Clear.reset := true;
-	  Clear.clearForms := clearAssay;
-          send(Clear, 0);
+	  AssayClear.source_widget := top;
+          AssayClear.reset := true;
+          send(AssayClear, 0);
 
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);
