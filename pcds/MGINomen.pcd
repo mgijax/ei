@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr  3 14:10:12 2000";
+      lastWritten = "Tue Apr  4 13:33:45 2000";
         {
           Nomen = Module : MGI;
           Group: Control
@@ -701,8 +701,14 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   BroadcastReference = ControlPush : mgiControl;
                                   Group: Widget
-                                    labelString = "Broadcast by Reference to MGD";
+                                    labelString = "Broadcast by Reference to MGD\n(Editors only)";
                                     activateCallback = "D:Broadcast(type = 4),\nD:GoHome";
+                                }
+                                {
+                                  BroadcastReference1 = ControlPush : mgiControl;
+                                  Group: Widget
+                                    labelString = "Broadcast by Reference to MGD\n(Nomen Coordinator only)";
+                                    activateCallback = "D:Broadcast(type = 5),\nD:GoHome";
                                 }
                           }
                     }

@@ -233,7 +233,8 @@ extern char *global_version;
 
 #define NOMEN_TRANSFERSYMBOL	1000
 #define NOMEN_TRANSFERBATCH	1001
-#define NOMEN_TRANSFERREF	1002
+#define NOMEN_TRANSFERREFEDITOR	1002
+#define NOMEN_TRANSFERREFCOORD	1003
 
 #define	MOUSE		"1"
 #define HUMAN		"2"
@@ -254,6 +255,7 @@ extern char *global_version;
 
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
+#define STATUS_PENDING		"1"
 #define STATUS_RESERVED		"3"
 #define STATUS_BROADCAST	"5"
 

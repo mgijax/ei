@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr  3 15:01:22 2000";
+      lastWritten = "Tue Apr  4 15:00:00 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -6840,7 +6840,7 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: Widget
                                                 items = "Bibliography (format 1)\nBibliography (Moyha)\nBibliography (Moyha) w/ Abstracts\nDuplicate References excluding Mouse News Letter & Guidis\nAll Duplicate References";
                                               Group: User
-                                                keys = "Bibliographic.py 1\nBibliographic.py 2\nBibliographic.py 3\nDupref.py\nDuprefAll.py";
+                                                keys = "Bibliographic.py dynamic 1\nBibliographic.py dynamic 2\nBibliographic.py dynamic 3\nBibliographic.py dup 1\nBibliographic.py dupall 1";
                                             }
                                       }
                                 }
@@ -7588,6 +7588,9 @@ Shift<Key>Tab: prev-tab-group()
                       Control = Control;
                           {
                             ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
                                 {
                                   Search = ControlPush;
                                 }
@@ -7603,6 +7606,33 @@ Shift<Key>Tab: prev-tab-group()
                                   Add = ControlPush;
                                   Group: Widget
                                     sensitive = False;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Add;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Add;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    rightWidget = Delete;
+                                    topAttachment = attach_widget;
+                                    topWidget = Delete;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                           }
                     }

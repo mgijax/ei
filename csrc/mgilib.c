@@ -1308,8 +1308,11 @@ char *mgi_DBtable(int table)
     case NOMEN_TRANSFERBATCH:
 	    sprintf(buf, "%s..Nomen_transferAllToMGD", getenv("NOMEN"));
 	    break;
-    case NOMEN_TRANSFERREF:
-	    sprintf(buf, "%s..Nomen_transferRefToMGD", getenv("NOMEN"));
+    case NOMEN_TRANSFERREFEDITOR:
+	    sprintf(buf, "%s..Nomen_transferEditorRefToMGD", getenv("NOMEN"));
+	    break;
+    case NOMEN_TRANSFERREFCOORD:
+	    sprintf(buf, "%s..Nomen_transferCoordRefToMGD", getenv("NOMEN"));
 	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
