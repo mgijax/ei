@@ -92,14 +92,14 @@ rules:
 
 	  if (top->SourceSegmentTypeMenu.menuHistory.defaultValue = "%") then
 	    segmentType := mgi_sql1("select _Term_key from VOC_Term_SegmentType_View " + 
-		"where term = \"Not Specified\"");
+		"where term = \"" + top->SourceSegmentTypeMenu.defaultValue + "\"");
 	  else
 	    segmentType := top->SourceSegmentTypeMenu.menuHistory.defaultValue;
 	  end if;
 
 	  if (top->SourceVectorTypeMenu.menuHistory.defaultValue = "%") then
 	    vectorType := mgi_sql1("select _Term_key from VOC_Term_SegVectorType_View " + 
-		"where term = \"Not Specified\"");
+		"where term = \"" + top->SourceVectorTypeMenu.defaultValue + "\"");
 	  else
 	    vectorType := top->SourceVectorTypeMenu.menuHistory.defaultValue;
 	  end if;
