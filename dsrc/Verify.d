@@ -1558,7 +1558,8 @@ rules:
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
 	               "\"" + item.value + "\",0,0)\n" +
-		       mgi_DBinsert(MLP_STRAIN, KEYNAME) + "-1,NULL,NULL)\n";
+		       mgi_DBinsert(MLP_STRAIN, KEYNAME) + "-1,NULL,NULL)\n" +
+		       mgi_DBinsert(MLP_NOTES, KEYNAME) + "NULL,NULL,NULL,NULL,NULL,NULL)\n";
 	      else
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
