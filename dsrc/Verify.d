@@ -3147,23 +3147,35 @@ rules:
 	  termKey : string;
 	  term : string;
 	  dag : string;
+	  results : integer := 1;
 
-	  select : string := "select t.accID, t._Term_key, t.term, d.dagAbbrev " +
-		"from VOC_Term_View t, VOC_VocabDAG_View d " +
+	  select : string := "select t.accID, t._Term_key, t.term " +
+		"from VOC_Term_View t " +
 		"where t.accID = " + mgi_DBprstr(value) + 
+		" and t.isObsolete = 0 " +
+		" and t._Vocab_key = " + (string) sourceWidget.vocabKey + "\n" +
+	  	"select d.dagAbbrev " +
+		"from VOC_Term_View t, DAG_Node_View d " +
+		"where t.accID = " + mgi_DBprstr(value) + 
+		" and t.isObsolete = 0 " +
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
-		" and t._Vocab_key *= d._Vocab_key";
+		" and t._Vocab_key = d._Vocab_key" +
+		" and t._Term_key = d._Object_key";
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      termAcc := mgi_getstr(dbproc, 1);
-	      termKey := mgi_getstr(dbproc, 2);
-	      term    := mgi_getstr(dbproc, 3);
-	      dag     := mgi_getstr(dbproc, 4);
+	      if (results = 1) then
+	        termAcc := mgi_getstr(dbproc, 1);
+	        termKey := mgi_getstr(dbproc, 2);
+	        term    := mgi_getstr(dbproc, 3);
+	      elsif (results = 2) then
+	        dag := mgi_getstr(dbproc, 1);
+	      end if;
 	    end while;
+	    results := results + 1;
 	  end while;
 	  (void) dbclose(dbproc);
 
