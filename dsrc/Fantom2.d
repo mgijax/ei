@@ -40,7 +40,7 @@ devents:
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PasteValue :local [value : string;];            -- Paste value in current cell
-	PrepareSearch :local [];			-- Construct SQL search clause
+	PrepareSearch :local [doCount : boolean := false;];-- Construct SQL search clause
 	SearchCount :local [];				-- Return Count only
 	SearchLittle :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	SearchBig :local [prepareSearch : boolean := true;];-- Execute SQL search clause
@@ -813,7 +813,7 @@ rules:
 
 	    -- if other query fields have been specified, then do the normal thing
 
-	    if (where.length > 0) then
+	    if (where.length > 0 or PrepareSearch.doCount) then
 	      where := where + " and f.riken_cluster = " + value;
 
 	    -- else, do the special query
@@ -864,6 +864,7 @@ rules:
 	  cmd : string;
 
           (void) busy_cursor(top);
+ 	  PrepareSearch.doCount := true;
  	  send(PrepareSearch, 0);
 	  cmd := "select count(distinct f._Fantom2_key) " + from + where;
 	  (void) mgi_writeLog(cmd + "\n");
