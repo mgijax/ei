@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 12/19/2000
+--	- TR 2128; VerifyChromosome; raise case
+--
 -- lec 07/11/2000
 --	- TR 1773; VerifyMarker; same for all species
 --
@@ -912,6 +915,8 @@ rules:
 -- If not, then alerts user that value will be added to Marker Chromosome table
 -- when transaction is executed.
 --
+-- Also, raises the case of the Chromosome value so it is in upper case.
+--
 -- 	UDAs required:  speciesKey (unique identifier of marker species)
 -- 	UDAs required:  markerChr (column of chromosome value in table)
 --
@@ -939,6 +944,8 @@ rules:
 	    column := VerifyChromosome.column;
 	    reason := VerifyChromosome.reason;
 	    value := VerifyChromosome.value;
+	    value := value.raise_case;
+	    mgi_tblSetCell(sourceWidget, row, column, value);
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	      return;
@@ -949,6 +956,8 @@ rules:
 	    end if;
 	  else
 	    value := top->Chromosome->text.value;
+	    value := value.raise_case;
+	    top->Chromosome->text.value := value;
 	  end if;
 
 	  (void) busy_cursor(top);
