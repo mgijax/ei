@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 06/04/2002
+--      - TR 3750; set OtherReference->Table.xrtTblNumRows
+--
 -- 11/29/2001
 --	- TR 3148; when Name is modified, modify all corresponding History names too
 --
@@ -1934,6 +1937,8 @@ rules:
 	  end while;
 
 	  (void) dbclose(dbproc);
+
+	  top->OtherReference->Table.xrtTblNumRows := row + 1;
 
 	  -- Initialize Offset rows which do not exist
 	  row := 0;
