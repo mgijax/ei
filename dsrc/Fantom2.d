@@ -11,7 +11,7 @@
 -- History
 --
 -- 03/07/2002	lec
---	- added CopyToNomenNote
+--	- added CopyToNote
 --	- modified VerifyFinalMGIID to only verify if the prefix "MGI:" exists
 --
 -- 03/06/2002	lec
@@ -35,11 +35,11 @@ devents:
 	ClearFantom2 :local [reset : boolean := false;];-- Local Clear 
 	CopyColumn :local [];				-- Copies Select Column to all Rows
 	CopyGBAtoFinal :local [];			-- Copies GBA MGI ID fields to Final
-	CopyToNomenNote :local [];			-- Copies Option to Nomen Note
+	CopyToNote :local [];			-- Copies Option to Nomen Note
 	Exit :local [];					-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
-	PasteZilch :local [];                           -- Paste "zilch" in current cell
+	PasteValue :local [value : string;];            -- Paste value in current cell
 	PrepareSearch :local [];			-- Construct SQL search clause
 	SearchCount :local [];				-- Return Count only
 	SearchLittle :local [prepareSearch : boolean := true;];-- Execute SQL search clause
@@ -128,7 +128,6 @@ rules:
 	  menus.append(top->SeqQualityMenu);
 	  menus.append(top->LocusStatusMenu);
 	  menus.append(top->MGIStatusMenu);
-	  menus.append(top->CatIDMenu);
 	  menus.append(top->NomenEventMenu);
 
 	  fantom := top->Fantom->Table;
@@ -202,11 +201,8 @@ rules:
 	  locusStatus : string;
 	  mgiStatus : string;
 	  mgiNumber : string;
-	  blastHit : string;
-	  blastExpect : string;
-	  autoAnnot : string;
-	  infoAnnot : string;
-	  catID : string;
+	  blastGroupID : string;
+	  blastMGIIDs : string;
 	  finalMGIID : string;
 	  finalSymbol1 : string;
 	  finalName1 : string;
@@ -217,6 +213,11 @@ rules:
 	  gbaSymbol : string;
 	  gbaName : string;
 	  finalCluster : string;
+	  rikenNumber : string;
+	  cds : string;
+	  clusterAnal : string;
+	  geneNameCuration : string;
+	  cdsGOCuration : string;
 
 	  (void) busy_cursor(top);
 
@@ -243,11 +244,8 @@ rules:
 	    locusStatus := mgi_tblGetCell(fantom, row, fantom.locusStatus);
 	    mgiStatus := mgi_tblGetCell(fantom, row, fantom.mgiStatus);
 	    mgiNumber := mgi_tblGetCell(fantom, row, fantom.mgiNumber);
-	    blastHit := mgi_tblGetCell(fantom, row, fantom.blastHit);
-	    blastExpect := mgi_tblGetCell(fantom, row, fantom.blastExpect);
-	    autoAnnot := mgi_tblGetCell(fantom, row, fantom.autoAnnot);
-	    infoAnnot := mgi_tblGetCell(fantom, row, fantom.infoAnnot);
-	    catID := mgi_tblGetCell(fantom, row, fantom.catID);
+	    blastGroupID := mgi_tblGetCell(fantom, row, fantom.blastGroupID);
+	    blastMGIIDs := mgi_tblGetCell(fantom, row, fantom.blastMGIIDs);
 	    finalMGIID := mgi_tblGetCell(fantom, row, fantom.finalMGIID);
 	    finalSymbol1 := mgi_tblGetCell(fantom, row, fantom.finalSymbol1);
 	    finalName1 := mgi_tblGetCell(fantom, row, fantom.finalName1);
@@ -258,6 +256,11 @@ rules:
 	    gbaMGIID := mgi_tblGetCell(fantom, row, fantom.gbaMGIID);
 	    gbaSymbol := mgi_tblGetCell(fantom, row, fantom.gbaSymbol);
 	    gbaName := mgi_tblGetCell(fantom, row, fantom.gbaName);
+	    rikenNumber := mgi_tblGetCell(fantom, row, fantom.rikenNumber);
+	    cds := mgi_tblGetCell(fantom, row, fantom.cds);
+	    clusterAnal := mgi_tblGetCell(fantom, row, fantom.clusterAnal);
+	    geneNameCuration := mgi_tblGetCell(fantom, row, fantom.geneNameCuration);
+	    cdsGOCuration := mgi_tblGetCell(fantom, row, fantom.cdsGOCuration);
 
 	    if (seqID.length = 0) then
 	      seqID := "-1";
@@ -277,6 +280,10 @@ rules:
 
 	    if (finalCluster.length = 0) then
 	      finalCluster := "-1";
+	    end if;
+
+	    if (cds.length = 0) then
+	      cds := "-1";
 	    end if;
 
 	    if (cloneID.length = 0) then
@@ -315,24 +322,16 @@ rules:
 	      mgiNumber := "zilch";
 	    end if;
 
-	    if (blastHit.length = 0) then
-	      blastHit := "zilch";
+	    if (rikenNumber.length = 0) then
+	      rikenNumber := "zilch";
 	    end if;
 
-	    if (blastExpect.length = 0) then
-	      blastExpect := "zilch";
+	    if (blastGroupID.length = 0) then
+	      blastGroupID := "zilch";
 	    end if;
 
-	    if (autoAnnot.length = 0) then
-	      autoAnnot := "zilch";
-	    end if;
-
-	    if (infoAnnot.length = 0) then
-	      infoAnnot := "zilch";
-	    end if;
-
-	    if (catID.length = 0) then
-	      catID := "zilch";
+	    if (blastMGIIDs.length = 0) then
+	      blastMGIIDs := "zilch";
 	    end if;
 
 	    if (finalMGIID.length = 0) then
@@ -359,6 +358,18 @@ rules:
 	      nomenEvent := "zilch";
 	    end if;
 
+	    if (clusterAnal.length = 0) then
+	      clusterAnal := "zilch";
+	    end if;
+
+	    if (geneNameCuration.length = 0) then
+	      geneNameCuration := "zilch";
+	    end if;
+
+	    if (cdsGOCuration.length = 0) then
+	      cdsGOCuration := "zilch";
+	    end if;
+
 	    if (gbaMGIID.length = 0) then
 	      gbaMGIID := "zilch";
 	    end if;
@@ -379,6 +390,7 @@ rules:
 		     mgi_DBprstr(cloneID) + "," +
 		     locusID + "," +
 		     clusterID + "," +
+		     finalCluster + "," +
 		     mgi_DBprstr(genbankID) + ",0,1," +
 		     mgi_DBprstr(tigerID) + "," +
 		     mgi_DBprstr(unigeneID) + "," +
@@ -388,18 +400,19 @@ rules:
 		     mgi_DBprstr(locusStatus) + "," +
 		     mgi_DBprstr(mgiStatus) + "," +
 		     mgi_DBprstr(mgiNumber) + "," +
-		     mgi_DBprstr(blastHit) + "," +
-		     mgi_DBprstr(blastExpect) + "," +
-		     mgi_DBprstr(autoAnnot) + "," +
-		     mgi_DBprstr(infoAnnot) + "," +
-		     mgi_DBprstr(catID) + "," +
+		     mgi_DBprstr(rikenNumber) + "," +
+		     mgi_DBprstr(cds) + "," +
+		     mgi_DBprstr(clusterAnal) + "," +
+		     mgi_DBprstr(geneNameCuration) + "," +
+		     mgi_DBprstr(cdsGOCuration) + "," +
+		     mgi_DBprstr(blastGroupID) + "," +
+		     mgi_DBprstr(blastMGIIDs) + "," +
 		     mgi_DBprstr(finalMGIID) + "," +
 		     mgi_DBprstr(finalSymbol1) + "," +
 		     mgi_DBprstr(finalName1) + "," +
 		     mgi_DBprstr(finalSymbol2) + "," +
 		     mgi_DBprstr(finalName2) + "," +
 		     mgi_DBprstr(nomenEvent) + "," +
-		     finalCluster + "," +
 		     mgi_DBprstr(global_login) + "," +
 		     mgi_DBprstr(global_login) + ")\n";
 
@@ -443,6 +456,7 @@ rules:
 		     "riken_cloneid = " + mgi_DBprstr(cloneID) + "," +
 		     "riken_locusid = " + locusID + "," +
 		     "riken_cluster = " + clusterID + "," +
+		     "final_cluster = " + finalCluster + "," +
 		     "genbank_id = " + mgi_DBprstr(genbankID) + "," +
 		     "tiger_tc = " + mgi_DBprstr(tigerID) + "," +
 		     "unigene_id = " + mgi_DBprstr(unigeneID) + "," +
@@ -452,18 +466,19 @@ rules:
 		     "riken_locusStatus = " + mgi_DBprstr(locusStatus) + "," +
 		     "mgi_statusCode = " + mgi_DBprstr(mgiStatus) + "," +
 		     "mgi_numberCode = " + mgi_DBprstr(mgiNumber) + "," +
-		     "blast_hit = " + mgi_DBprstr(blastHit) + "," +
-		     "blast_expect = " + mgi_DBprstr(blastExpect) + "," +
-		     "auto_annot = " + mgi_DBprstr(autoAnnot) + "," +
-		     "info_annot = " + mgi_DBprstr(infoAnnot) + "," +
-		     "cat_id = " + mgi_DBprstr(catID) + "," +
+		     "riken_numberCode = " + mgi_DBprstr(rikenNumber) + "," +
+		     "cds_category = " + mgi_DBprstr(cds) + "," +
+		     "cluster_analysis = " + mgi_DBprstr(clusterAnal) + "," +
+		     "gene_name_curation = " + mgi_DBprstr(geneNameCuration) + "," +
+		     "cds_go_curation = " + mgi_DBprstr(cdsGOCuration) + "," +
+		     "blast_groupID = " + mgi_DBprstr(blastGroupID) + "," +
+		     "blast_mgiIDs = " + mgi_DBprstr(blastMGIIDs) + "," +
 		     "final_mgiID = " + mgi_DBprstr(finalMGIID) + "," +
 		     "final_symbol1 = " + mgi_DBprstr(finalSymbol1) + "," +
 		     "final_name1 = " + mgi_DBprstr(finalName1) + "," +
 		     "final_symbol2 = " + mgi_DBprstr(finalSymbol2) + "," +
 		     "final_name2 = " + mgi_DBprstr(finalName2) + "," +
 		     "nomen_event = " + mgi_DBprstr(nomenEvent) + "," +
-		     "final_cluster = " + finalCluster + "," +
 		     "modifiedBy = " + mgi_DBprstr(global_login);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
@@ -626,20 +641,16 @@ rules:
 	    where := where + " and f.seq_quality like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(fantom, row, fantom.blastExpect);
+	  value := mgi_tblGetCell(fantom, row, fantom.blastMGIIDs);
 	  if (value.length > 0) then
-	    where := where + " and f.blast_expect like " + mgi_DBprstr(value);
+	    where := where + " and f.blast_mgiIDs like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(fantom, row, fantom.blastHit);
+	  value := mgi_tblGetCell(fantom, row, fantom.blastGroupID);
 	  if (value.length > 0) then
-	    where := where + " and f.blast_hit like " + mgi_DBprstr(value);
+	    where := where + " and f.blast_groupID like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(fantom, row, fantom.catID);
-	  if (value.length > 0) then
-	    where := where + " and f.cat_id like " + mgi_DBprstr(value);
-	  end if;
 	  value := mgi_tblGetCell(fantom, row, fantom.finalMGIID);
 	  if (value.length > 0) then
 	    where := where + " and f.final_mgiID like " + mgi_DBprstr(value);
@@ -665,16 +676,6 @@ rules:
 	    where := where + " and f.final_name2 like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(fantom, row, fantom.autoAnnot);
-	  if (value.length > 0) then
-	    where := where + " and f.auto_annot like " + mgi_DBprstr(value);
-	  end if;
-
-	  value := mgi_tblGetCell(fantom, row, fantom.infoAnnot);
-	  if (value.length > 0) then
-	    where := where + " and f.info_annot like " + mgi_DBprstr(value);
-	  end if;
-
 	  value := mgi_tblGetCell(fantom, row, fantom.locusStatus);
 	  if (value.length > 0) then
 	    where := where + " and f.riken_locusStatus like " + mgi_DBprstr(value);
@@ -688,6 +689,36 @@ rules:
 	  value := mgi_tblGetCell(fantom, row, fantom.mgiNumber);
 	  if (value.length > 0) then
 	    where := where + " and f.mgi_numberCode like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.rikenNumber);
+	  if (value.length > 0) then
+	    where := where + " and f.riken_numberCode like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.cds);
+	  if (value.length > 0) then
+	    where := where + " and f.cds_category = " + value;
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.clusterAnal);
+	  if (value.length > 0) then
+	    where := where + " and f.cluster_analysis like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.geneNameCuration);
+	  if (value.length > 0) then
+	    where := where + " and f.gene_name_curation like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.cdsGOCuration);
+	  if (value.length > 0) then
+	    where := where + " and f.cds_go_curation like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.finalCluster);
+	  if (value.length > 0) then
+	    where := where + " and f.final_cluster like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.nomenEvent);
@@ -830,10 +861,10 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      noteType := mgi_getstr(dbproc, 38);
-	      note := mgi_getstr(dbproc, 39);
+	      noteType := mgi_getstr(dbproc, 40);
+	      note := mgi_getstr(dbproc, 41);
 
-	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 33) != gbaMGIID) then
+	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 35) != gbaMGIID) then
 
 		if (fantomKey != "-1") then
 	          (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
@@ -843,7 +874,7 @@ rules:
 
 		row := row + 1;
 	        fantomKey := mgi_getstr(dbproc, 1);
-	        gbaMGIID := mgi_getstr(dbproc, 33);
+	        gbaMGIID := mgi_getstr(dbproc, 35);
 		nomennote := "";
 		rikennote := "";
 		curatornote := "";
@@ -852,40 +883,42 @@ rules:
 	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, fantomKey);
 	        (void) mgi_tblSetCell(fantom, row, fantom.seqID, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(fantom, row, fantom.cloneID, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(fantom, row, fantom.genbankID, mgi_getstr(dbproc, 6));
-	        (void) mgi_tblSetCell(fantom, row, fantom.fantom1Clone, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(fantom, row, fantom.fantom2Clone, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqLength, mgi_getstr(dbproc, 11));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqNote, mgi_getstr(dbproc, 12));
-	        (void) mgi_tblSetCell(fantom, row, fantom.seqQuality, mgi_getstr(dbproc, 13));
 	        (void) mgi_tblSetCell(fantom, row, fantom.locusID, mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(fantom, row, fantom.tigerID, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(fantom, row, fantom.unigeneID, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(fantom, row, fantom.clusterID, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(fantom, row, fantom.locusStatus, mgi_getstr(dbproc, 14));
-	        (void) mgi_tblSetCell(fantom, row, fantom.mgiStatus, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(fantom, row, fantom.mgiNumber, mgi_getstr(dbproc, 16));
-	        (void) mgi_tblSetCell(fantom, row, fantom.blastHit, mgi_getstr(dbproc, 17));
-	        (void) mgi_tblSetCell(fantom, row, fantom.blastExpect, mgi_getstr(dbproc, 18));
-	        (void) mgi_tblSetCell(fantom, row, fantom.autoAnnot, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(fantom, row, fantom.infoAnnot, mgi_getstr(dbproc, 20));
-	        (void) mgi_tblSetCell(fantom, row, fantom.catID, mgi_getstr(dbproc, 21));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol1, mgi_getstr(dbproc, 23));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalName1, mgi_getstr(dbproc, 24));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 25));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 26));
-	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 27));
-	        (void) mgi_tblSetCell(fantom, row, fantom.finalCluster, mgi_getstr(dbproc, 28));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 29));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 31));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 30));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 32));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalCluster, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(fantom, row, fantom.genbankID, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(fantom, row, fantom.fantom1Clone, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(fantom, row, fantom.fantom2Clone, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(fantom, row, fantom.tigerID, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(fantom, row, fantom.unigeneID, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqLength, mgi_getstr(dbproc, 12));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqNote, mgi_getstr(dbproc, 13));
+	        (void) mgi_tblSetCell(fantom, row, fantom.seqQuality, mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(fantom, row, fantom.locusStatus, mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(fantom, row, fantom.mgiStatus, mgi_getstr(dbproc, 16));
+	        (void) mgi_tblSetCell(fantom, row, fantom.mgiNumber, mgi_getstr(dbproc, 17));
+	        (void) mgi_tblSetCell(fantom, row, fantom.rikenNumber, mgi_getstr(dbproc, 18));
+	        (void) mgi_tblSetCell(fantom, row, fantom.cds, mgi_getstr(dbproc, 19));
+	        (void) mgi_tblSetCell(fantom, row, fantom.clusterAnal, mgi_getstr(dbproc, 20));
+	        (void) mgi_tblSetCell(fantom, row, fantom.geneNameCuration, mgi_getstr(dbproc, 21));
+	        (void) mgi_tblSetCell(fantom, row, fantom.cdsGOCuration, mgi_getstr(dbproc, 22));
+	        (void) mgi_tblSetCell(fantom, row, fantom.blastGroupID, mgi_getstr(dbproc, 23));
+	        (void) mgi_tblSetCell(fantom, row, fantom.blastMGIIDs, mgi_getstr(dbproc, 24));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_getstr(dbproc, 25));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol1, mgi_getstr(dbproc, 26));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalName1, mgi_getstr(dbproc, 27));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 28));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 29));
+	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 30));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 31));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 33));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 32));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 34));
 
 		-- data from cache tables
 	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, gbaMGIID);
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 34));
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 35));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 36));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 37));
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.editMode, TBL_ROW_NOCHG);
 
@@ -1069,34 +1102,42 @@ rules:
 	end does;
 
 --
--- CopyToNomenNote
+-- CopyToNote
 --
--- Copies Option to beginning of Nomen Note
+-- Copies Option to beginning/end of Note
 --
 --
  
-        CopyToNomenNote does
+        CopyToNote does
 	  value : string;
 
 	  -- only process if setting to true
-	  if (CopyToNomenNote.set = 1) then
+	  if (CopyToNote.set = 1) then
 	    value := top->NoteDialog->Note->text.value;
-	    top->NoteDialog->Note->text.value := top->NomenNoteMenu.menuHistory.defaultValue + value;
+
+	    if (CopyToNote.source_widget.placeBefore) then
+	      top->NoteDialog->Note->text.value := 
+		CopyToNote.source_widget.defaultValue + value;
+	    else
+	      top->NoteDialog->Note->text.value := 
+		value + CopyToNote.source_widget.defaultValue;
+	    end if;
 	  end if;
 	end does;
 
 --
--- PasteZilch
+-- PasteValue
 --
--- Paste the string "zilch" into the current cell
+-- Paste the "value" into the current cell
 --
 --
  
-        PasteZilch does
+        PasteValue does
 	  row : integer := mgi_tblGetCurrentRow(fantom);
 	  column : integer := mgi_tblGetCurrentColumn(fantom);
+	  value : string := PasteValue.value;
 
-	  (void) mgi_tblSetCell(fantom, row, column, "zilch");
+	  (void) mgi_tblSetCell(fantom, row, column, value);
 	  CommitTableCellEdit.source_widget := fantom;
 	  CommitTableCellEdit.row := row;
 	  CommitTableCellEdit.value_changed := true;
@@ -1185,10 +1226,6 @@ rules:
 
           SetOption.source_widget := top->MGIStatusMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.mgiStatus);
-          send(SetOption, 0);
-
-          SetOption.source_widget := top->CatIDMenu;
-          SetOption.value := mgi_tblGetCell(table, row, table.catID);
           send(SetOption, 0);
 
           SetOption.source_widget := top->NomenEventMenu;

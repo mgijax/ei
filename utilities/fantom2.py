@@ -74,6 +74,10 @@ createdBy = ''
 cDate = ''
 modifiedBy = ''
 mDate = ''
+clusterAnal = ''
+geneNameCuration = ''
+cdsGOCuration = ''
+finalCluster = ''
 nomennote = ''
 rikennote = ''
 curatornote = ''
@@ -92,6 +96,10 @@ for r in results:
 
 		if fantomKey != -1:
 			fp.write(mgi_utils.prvalue(nomennote) + DELIM + \
+			         mgi_utils.prvalue(clusterAnal) + DELIM + \
+			         mgi_utils.prvalue(geneNameCuration) + DELIM + \
+			         mgi_utils.prvalue(cdsGOCuration) + DELIM + \
+			         mgi_utils.prvalue(finalCluster) + DELIM + \
 			         mgi_utils.prvalue(rikennote) + DELIM + \
 			         mgi_utils.prvalue(curatornote) + DELIM + \
 	         	         createdBy + DELIM + \
@@ -101,6 +109,10 @@ for r in results:
 		
 		fantomKey = r['_Fantom2_key']
 		gbaMGIID = r['gba_mgiID']
+		clusterAnal = r['cluster_analysis']
+		geneNameCuration = r['gene_name_curation']
+		cdsGOCuration = r['cds_go_curation']
+		finalCluster = r['final_cluster']
 		createdBy = r['createdBy']
 		cDate = r['cDate']
 		modifiedBy = r['modifiedBy']
@@ -123,30 +135,29 @@ for r in results:
 	         	mgi_utils.prvalue(r['gba_mgiID']) + DELIM +
 	         	mgi_utils.prvalue(r['gba_symbol']) + DELIM +
 	         	mgi_utils.prvalue(r['seq_length']) + DELIM + \
-	         	mgi_utils.prvalue(r['seq_note']) + DELIM + \
-	         	mgi_utils.prvalue(r['seq_quality']) + DELIM + \
 	         	mgi_utils.prvalue(r['riken_locusid']) + DELIM + \
 	         	mgi_utils.prvalue(r['unigene_id']) + DELIM + \
 	         	mgi_utils.prvalue(r['tiger_tc']) + DELIM + \
 	         	mgi_utils.prvalue(r['riken_cluster']) + DELIM + \
-	         	mgi_utils.prvalue(r['riken_locusStatus']) + DELIM + \
-	         	mgi_utils.prvalue(r['mgi_statusCode']) + DELIM + \
-	         	mgi_utils.prvalue(r['mgi_numberCode']) + DELIM + \
-	         	mgi_utils.prvalue(r['blast_hit']) + DELIM + \
-	         	mgi_utils.prvalue(r['blast_expect']) + DELIM)
+	         	mgi_utils.prvalue(r['riken_locusStatus']) + DELIM)
 
-		printIt = mgi_utils.prvalue(r['auto_annot'])
+		printIt = mgi_utils.prvalue(r['riken_numberCode'])
 		if len(printIt) > 0:
-			printIt = regsub.gsub(',', '\,', r['auto_annot'])
-		fp.write(printIt + DELIM)
+			printIt = regsub.gsub(',', '\,', r['riken_numberCode'])
 
-		printIt = mgi_utils.prvalue(r['info_annot'])
+		fp.write(printIt + DELIM + \
+	         	mgi_utils.prvalue(r['mgi_statusCode']) + DELIM)
+
+		printIt = mgi_utils.prvalue(r['mgi_numberCode'])
 		if len(printIt) > 0:
-			printIt = regsub.gsub(',', '\,', r['info_annot'])
-		fp.write(printIt + DELIM)
+			printIt = regsub.gsub(',', '\,', r['mgi_numberCode'])
 
-		fp.write(mgi_utils.prvalue(r['final_cluster']) + DELIM + \
-		        mgi_utils.prvalue(r['cat_id']) + DELIM + \
+		fp.write(printIt + DELIM + \
+	         	mgi_utils.prvalue(r['blast_groupID']) + DELIM + \
+	         	mgi_utils.prvalue(r['blast_mgiIDs']) + DELIM + \
+	         	mgi_utils.prvalue(r['cds_category']) + DELIM + \
+	         	mgi_utils.prvalue(r['seq_quality']) + DELIM + \
+	         	mgi_utils.prvalue(r['seq_note']) + DELIM + \
 	         	mgi_utils.prvalue(r['final_mgiID']) + DELIM + \
 	         	mgi_utils.prvalue(r['final_symbol1']) + DELIM)
 
@@ -179,9 +190,14 @@ for r in results:
 			rikennote = rikennote + note
 		elif noteType == 'C':
 			curatornote = curatornote + note
+
 # last record
 
 fp.write(mgi_utils.prvalue(nomennote) + DELIM + \
+	 mgi_utils.prvalue(clusterAnal) + DELIM + \
+	 mgi_utils.prvalue(geneNameCuration) + DELIM + \
+	 mgi_utils.prvalue(cdsGOCuration) + DELIM + \
+	 mgi_utils.prvalue(finalCluster) + DELIM + \
          mgi_utils.prvalue(rikennote) + DELIM + \
          mgi_utils.prvalue(curatornote) + DELIM + \
 	 createdBy + DELIM + \
