@@ -5,7 +5,7 @@
 #
 
 setenv SYBASE /opt/sybase
-setenv PYTHONPATH /usr/local/mgi/lib/python:/usr/local/etc/httpd/python
+setenv PYTHONPATH /usr/local/mgi/lib/python
 
 setenv DSQUERY $1
 setenv MGD $2
