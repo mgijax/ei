@@ -104,13 +104,7 @@ rules:
 	  envList.append("NOMEN");
 	  envList.append("EIDEBUG");
 
-	  if (global_application = "MGD" or
-	      global_application = "GXD") then
-	    envList.append("STRAINS");
-	  end if;
-
 	  envList.open;
-
 	  while envList.more do;
 	    env := envList.next;
 	    if (getenv(env) = nil) then
