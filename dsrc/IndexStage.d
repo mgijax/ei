@@ -76,7 +76,7 @@ devents:
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [];
-	SetPriority :translation [];
+	SetPriority :local [];
 
 locals:
 	mgi : widget;		-- Main Application Widget
@@ -240,6 +240,18 @@ rules:
           if (not top.allowEdit) then
             return;
           end if;
+
+	  if (top->GXDIndexPriorityMenu.menuHistory.defaultValue = "%") then
+	    send(SetPriority, 0);
+	  end if;
+
+	  if (top->GXDIndexPriorityMenu.menuHistory.defaultValue = "%") then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Priority Required.";
+            send(StatusReport);
+	    top->QueryList->List.sqlSuccessful := false;
+            return;
+	  end if;
 
           (void) busy_cursor(top);
 
