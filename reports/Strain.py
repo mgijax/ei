@@ -95,16 +95,16 @@ for s in strains:
                   'and s._Genotype_key = x._Genotype_key ' + \
                   'and x._Assay_key = a._Assay_key ' + \
                   ' union ' + \
+                  'select distinct _Refs_key, _Probe_key = NULL, dataSet = "Allele" ' + \
+                  'from ALL_Allele ' + \
+                  'where _Strain_key = %s' % s['_Strain_key'] + \
+                  ' union ' + \
                   'select distinct r._Refs_key, r._Probe_key, dataSet = "RFLP" ' + \
                   'from PRB_Reference r, PRB_RFLV v, PRB_Allele a, PRB_Allele_Strain s ' + \
                   'where r._Reference_key = v._Reference_key ' + \
                   'and v._RFLV_key = a._RFLV_key ' + \
                   'and a._Allele_key = s._Allele_key ' + \
-                  'and s._Strain_key = %s' % s['_Strain_key'] ' + \
-                  ' union ' + \
-                  'select distinct _Refs_key, _Allele_key, dataSet = "Allele" ' + \
-                  'from ALL_Allele ' + \
-                  'where _Strain_key = %s' % s['_Strain_key'])
+                  'and s._Strain_key = %s' % s['_Strain_key'])
 
 	lastCmd = 'select a.accID, a.prefixPart, a.numericPart, r.dataSet, r._Probe_key ' + \
                   'from #references r, BIB_Acc_View a ' + \
@@ -137,7 +137,7 @@ for s in strains:
                    'and a.prefixPart = "MGI:" ' + \
                    'and a.preferred = 1\n'
 
-	lastCmd = lastCmd + 'order by _Probe_key'
+	lastCmd = lastCmd + 'order by _Probe_key, prefixPart, numericPart'
 	cmds.append(lastCmd)
 
 	references = db.sql(cmds, 'auto')
@@ -169,7 +169,6 @@ for s in strains:
 			fp.write(string.ljust('-------', 20))
 			fp.write('-----------')
 			fp.write(CRT)
-			prevStrain = s['strain']
 
 		# For same RFLP Probe, print all Accession numbers on one line
 
@@ -177,12 +176,15 @@ for s in strains:
 			if prevProbe != r['_Probe_key']:
 				fp.write(CRT + string.ljust(r['dataSet'], 20))
 				fp.write(r['accID'])
-				prevProbe = r['_Probe_key']
 			else:
 				fp.write(',' + r['accID'])
+
 		else:
 			fp.write(CRT + string.ljust(r['dataSet'], 20))
 			fp.write(r['accID'])
+
+		prevStrain = s['strain']
+		prevProbe = r['_Probe_key']
 
 reportlib.finish_nonps(fp)
 
