@@ -83,7 +83,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-11-0-36";
+	  global_version := "CVS ei-11-0-37";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -312,6 +312,8 @@ rules:
 
         StatusReportFront does
 	  status : widget := StatusReportFront.source_widget.top;
+
+	  return;
 
 	  if (status->StatusDialog != nil) then
             if (status->StatusDialog.managed) then
