@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar  4 14:42:47 2004";
+      lastWritten = "Mon Mar 22 11:38:06 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11275,6 +11275,11 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               DOTS = AccToggle : mgiOption;
+                                              Group: Widget
+                                                managed = True;
+                                            }
+                                            {
+                                              NIAGeneIndex = AccToggle : mgiOption;
                                               Group: Widget
                                                 managed = True;
                                             }
