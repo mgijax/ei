@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Apr  3 15:01:14 2000";
+      lastWritten = "Fri Apr  7 10:08:38 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -745,9 +745,9 @@ Module: MGI
               }
         }
         {
-          Lookups = Module;
+          ControlledVocab = Module;
           Group: Widget
-            title = "MGI Lookups";
+            title = "MGI Controlled Vocabulary";
           Group: Control
             vip_x = 200;
             vip_y = 140;
@@ -769,7 +769,7 @@ Module: MGI
                                   ID = ID;
                                 }
                                 {
-                                  LookupMenu = LookupMenu : mgiOption;
+                                  ControlledVocabMenu = ControlledVocabMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -780,86 +780,95 @@ Module: MGI
                                     resizable = true;
                                       Popups:
                                       {
-                                        LookupPulldown = OptionPulldown;
+                                        ControlledVocabPulldown = OptionPulldown;
                                             {
-                                              HomologyAssay = LookupToggle;
+                                              HomologyAssay = ControlledVocabToggle;
                                             }
                                             {
-                                              MappingAssay = LookupToggle;
+                                              MappingAssay = ControlledVocabToggle;
                                             }
                                             {
-                                              MLCClass = LookupToggle;
+                                              MLCClass = ControlledVocabToggle;
                                             }
                                             {
-                                              MarkerType = LookupToggle;
+                                              MarkerType = ControlledVocabToggle;
                                             }
                                             {
-                                              EventReason = LookupToggle;
+                                              EventReason = ControlledVocabToggle;
                                               Group: Widget
                                                 managed = True;
                                             }
                                             {
-                                              ReviewStatus = LookupToggle;
+                                              ReviewStatus = ControlledVocabToggle;
                                             }
                                             {
-                                              VectorType = LookupToggle;
+                                              AlleleType = ControlledVocabToggle : mgiOption;
                                             }
                                             {
-                                              StrainType = LookupToggle : mgiOption;
+                                              InheritanceMode = ControlledVocabToggle : mgiOption;
                                             }
                                             {
-                                              StrainSpecies = LookupToggle : mgiOption;
+                                              MolecularMutation = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
+                                              VectorType = ControlledVocabToggle;
+                                            }
+                                            {
+                                              StrainType = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
+                                              StrainSpecies = ControlledVocabToggle : mgiOption;
                                             }
                                             {
                                               separator = XmSeparator;
                                             }
                                             {
-                                              AntibodyClass = LookupToggle;
+                                              AntibodyClass = ControlledVocabToggle;
                                             }
                                             {
-                                              AntibodyType = LookupToggle;
+                                              AntibodyType = ControlledVocabToggle;
                                             }
                                             {
-                                              AssayType = LookupToggle;
+                                              AssayType = ControlledVocabToggle;
                                             }
                                             {
-                                              ExpPattern = LookupToggle;
+                                              ExpPattern = ControlledVocabToggle;
                                             }
                                             {
-                                              ExpStrength = LookupToggle;
+                                              ExpStrength = ControlledVocabToggle;
                                             }
                                             {
-                                              GelRNAType = LookupToggle;
+                                              GelRNAType = ControlledVocabToggle;
                                             }
                                             {
-                                              GelUnit = LookupToggle;
+                                              GelUnit = ControlledVocabToggle;
                                             }
                                             {
-                                              GelControl = LookupToggle;
+                                              GelControl = ControlledVocabToggle;
                                             }
                                             {
-                                              ImageFieldType = LookupToggle;
+                                              ImageFieldType = ControlledVocabToggle;
                                             }
                                             {
-                                              Labels = LookupToggle;
+                                              Labels = ControlledVocabToggle;
                                             }
                                             {
-                                              ProbeLabelCoverage = LookupToggle;
+                                              ProbeLabelCoverage = ControlledVocabToggle;
                                             }
                                             {
-                                              ProbeSense = LookupToggle;
+                                              ProbeSense = ControlledVocabToggle;
                                             }
                                             {
-                                              ProbeVisualization = LookupToggle;
+                                              ProbeVisualization = ControlledVocabToggle;
                                             }
                                             {
-                                              Secondary = LookupToggle;
+                                              Secondary = ControlledVocabToggle;
                                             }
                                             {
-                                              EmbeddingMethod = LookupToggle;
+                                              EmbeddingMethod = ControlledVocabToggle;
                                             }
                                             {
-                                              FixationMethod = LookupToggle;
+                                              FixationMethod = ControlledVocabToggle;
                                             }
                                             {
                                               separator1 = XmSeparator;
@@ -867,7 +876,7 @@ Module: MGI
                                                 managed = True;
                                             }
                                             {
-                                              GeneFamily = LookupToggle;
+                                              GeneFamily = ControlledVocabToggle;
                                               Group: Widget
                                                 managed = True;
                                             }
@@ -880,7 +889,7 @@ Module: MGI
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = LookupMenu;
+                                    topWidget = ControlledVocabMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;

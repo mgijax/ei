@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  5 09:44:13 2000";
+      lastWritten = "Fri Apr  7 11:20:16 2000";
         {
           Nomen = Module : MGI;
           Group: Control
@@ -140,7 +140,7 @@ Module: MGINomen
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = MarkerEventMenu;
-                                    topWidget = MarkerEventMenu;
+                                    topWidget = MarkerEventReasonMenu;
                                     topOffset = 5;
                                   Group: User
                                     defaultChild = 1;
@@ -402,10 +402,10 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = BroadcastDate;
+                                    topWidget = Reference;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = BroadcastByMenu;
+                                    leftWidget = Reference;
                                     topOffset = 2;
                                     rightOffset = 2;
                                       {
@@ -433,10 +433,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Reference = ReferenceTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = OtherReference;
+                                    leftWidget = BroadcastByMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = OtherReference;
+                                    topWidget = BroadcastDate;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -541,10 +541,10 @@ Shift<Key>Tab: prev-tab-group()
                                   AccessionReference = AccessionReference : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Reference;
+                                    leftWidget = OtherReference;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Reference;
+                                    topWidget = OtherReference;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  5 10:02:28 2000";
+      lastWritten = "Mon Apr 10 13:20:45 2000";
         {
           Species = Module : MGI;
           Group: Control
@@ -308,7 +308,7 @@ Module: MGD
         {
           Cross = Module : MGI;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 305;
           Group: User
             homeWidget = Name;
@@ -1786,8 +1786,8 @@ Module: MGD
         {
           MolecularSegment = Module1 : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 305;
+            vip_x = 60;
+            vip_y = 360;
           Group: User
             homeWidget = Name;
             editForms = "ControlForm\nMolMasterForm\nMolDetailForm\nMolMarkerForm\nMolPrimerForm\nSourceForm\nMolReferenceForm";
@@ -2167,8 +2167,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 180;
-            vip_y = 415;
+            vip_x = 60;
+            vip_y = 470;
               {
                 ID = ID;
               }
@@ -2335,7 +2335,7 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 470;
               {
                 Marker = Table : mgiTable;
@@ -2404,7 +2404,7 @@ Module: MGD
             width = 600;
             managed = False;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 525;
           Group: User
             homeWidget = Jnum;
@@ -2669,8 +2669,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 180;
-            vip_y = 525;
+            vip_x = 60;
+            vip_y = 580;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -2781,8 +2781,8 @@ Module: MGD
         {
           MolecularSource = Module : MGI;
           Group: Control
-            vip_x = 180;
-            vip_y = 360;
+            vip_x = 60;
+            vip_y = 415;
           Group: User
             editForms = "ControlForm\nEditForm\nSourceForm";
             clearForms = "ControlForm\nEditForm\nSourceForm";
@@ -2849,7 +2849,7 @@ Module: MGD
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 580;
               {
                 ID = ID;
@@ -2874,8 +2874,8 @@ Module: MGD
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 180;
-            vip_y = 580;
+            vip_x = 60;
+            vip_y = 635;
               {
                 ID = ID;
               }
@@ -2910,8 +2910,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 635;
+            vip_x = 60;
+            vip_y = 690;
               {
                 ID = ID;
               }
@@ -2986,7 +2986,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 635;
               {
                 ID = ID;
@@ -3255,7 +3255,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 690;
               {
                 ID = ID;
@@ -3507,8 +3507,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 690;
+            vip_x = 60;
+            vip_y = 745;
               {
                 ID = ID;
               }
@@ -3681,7 +3681,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 745;
               {
                 ID = ID;
@@ -4051,8 +4051,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 700;
           Group: Control
-            vip_x = 180;
-            vip_y = 745;
+            vip_x = 60;
+            vip_y = 800;
               {
                 ID = ID;
               }
@@ -4203,8 +4203,8 @@ Module: MGD
             resizePolicy = resize_any;
             height = 750;
           Group: Control
-            vip_x = 180;
-            vip_y = 800;
+            vip_x = 60;
+            vip_y = 855;
           Group: User
             homeWidget = Jnum;
               {
@@ -4298,7 +4298,7 @@ Module: MGD
             resizePolicy = resize_any;
             height = 750;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 800;
           Group: User
             homeWidget = Chromosome;
@@ -4568,7 +4568,7 @@ Module: MGD
         {
           MLDP = Module1 : MGI;
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 360;
           Group: User
             homeWidget = Jnum;
@@ -5008,7 +5008,7 @@ Module: MGD
           Group: Widget
             destroyCallback = "D:ExitMLCED";
           Group: Control
-            vip_x = 60;
+            vip_x = 180;
             vip_y = 415;
           Group: User
             homeWidget = Marker;
@@ -5522,7 +5522,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  ModifiedBy = CharText : mgiDataTypes;
+                                  ModifiedBy = ModifiedBy : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = ModifiedDate;
@@ -5531,17 +5531,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = ModifiedDate;
                                     bottomAttachment = attach_form;
                                     resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Modified By";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          maxLength = 30;
-                                          columns = 10;
-                                      }
                                 }
                           }
                     }
@@ -5734,6 +5723,13 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  Allele = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Allele\")";
+                                    labelString = Alleles;
+                                    traversalOn = False;
+                                }
+                                {
                                   MolecularSegment = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
@@ -5773,10 +5769,10 @@ Shift<Key>Tab: prev-tab-group()
                                     shadowThickness = 5;
                                 }
                                 {
-                                  Lookups = XmPushButton;
+                                  ControlledVocab = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Lookups\")";
-                                    labelString = Lookups;
+                                    activateCallback = "D:CreateMGIModule(name = \"ControlledVocab\")";
+                                    labelString = "Controlled Vocab";
                                     traversalOn = False;
                                 }
                                 {
@@ -6874,8 +6870,8 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 180;
-            vip_y = 470;
+            vip_x = 60;
+            vip_y = 525;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -7174,12 +7170,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:MarkerWithdrawalInit";
                                           labelString = "Marker Withdrawal";
-                                      }
-                                      {
-                                        AlleleMerge = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:MarkerAlleleMergeInit";
-                                          labelString = "Allele Merge";
                                       }
                                       {
                                         Transfer = MenuPush : mgiMenu;
@@ -7800,9 +7790,6 @@ Shift<Key>Tab: prev-tab-group()
                       WithdrawalDialog = WithdrawalDialog : mgiDialog;
                     }
                     {
-                      AlleleMergeDialog = AlleleMergeDialog : mgiDialog;
-                    }
-                    {
                       MRKBreakpointSplitDialog = MRKBreakpointSplitDialog : mgiDialog;
                     }
                     {
@@ -7815,6 +7802,540 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 60;
             vip_y = 250;
+        }
+        {
+          Allele = Module : MGI;
+          Group: Control
+            vip_x = 60;
+            vip_y = 305;
+          Group: User
+            homeWidget = Marker;
+              {
+                MainForm = XmForm;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:Clear (clearLists = 3)";
+                                      }
+                                }
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                          }
+                          {
+                            Reports = MenuCascade;
+                          }
+                          {
+                            Utilities = Utilities : mgiMenu;
+                                Popups:
+                                {
+                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        AlleleMerge = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:AlleleMergeInit";
+                                          labelString = "Allele Merge";
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                }
+                                {
+                                  mgiMarker = mgiMarker : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                      {
+                                        ObjectID = ID;
+                                      }
+                                      {
+                                        Marker = CharText;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Marker Symbol";
+                                            }
+                                      }
+                                }
+                                {
+                                  Symbol = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = mgiMarker;
+                                    topWidget = mgiMarker;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Allele Symbol";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 50;
+                                          maxLength = 50;
+                                        Group: User
+                                          required = True;
+                                      }
+                                }
+                                {
+                                  Name = CharSText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Symbol;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Symbol;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Name;
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 75;
+                                        Group: User
+                                          required = True;
+                                      }
+                                }
+                                {
+                                  ReviewedMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = ReviewedPulldown;
+                                    labelString = "Nomenclature Reviewed?";
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = mgiMarker;
+                                    topOffset = 5;
+                                    rightOffset = 10;
+                                      Popups:
+                                      {
+                                        ReviewedPulldown : YesNoPulldown = OptionPulldown;
+                                      }
+                                }
+                                {
+                                  AlleleTypeMenu = AlleleTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = MolecularMutation;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = MolecularMutation;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 25;
+                                    topOffset = 20;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  InheritanceModeMenu = InheritanceModeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleTypeMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  MolecularMutation = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 4;
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Molecular Mutation";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                          userDefinedAttributes = "mutationCurrentKey:Int=\"1\"\nmutationKey:Int=\"2\"\nmutation:Int=\"3\"\n";
+                                          xrtTblVisibleRows = 3;
+                                          xrtTblEnterCellCallback = "D:SetOptions";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "Molecular Characterization";
+                                            }
+                                      }
+                                }
+                                {
+                                  Strain = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = MolecularMutation;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = MolecularMutation;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  label = label : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Original Reference";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Strain;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Strain;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  mgiCitation = mgiCitation : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = label;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = label;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  label1 = label : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Reference which characterizes allele at the molecular level";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiCitation;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiCitation;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  mgiCitation1 = mgiCitation : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = label1;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = label1;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        Jnum = Jnum : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = False;
+                                            }
+                                      }
+                                      {
+                                        Citation = Citation : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = False;
+                                            }
+                                      }
+                                }
+                                {
+                                  MolecularNote = mgiNote : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = InheritanceModeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = InheritanceModeMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: Control
+                                    vipComment = "XmPushButton issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButton differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButton.";
+                                      {
+                                        Note = Notes : mgiDataTypes;
+                                      }
+                                      {
+                                        NotePush = NotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Molecular Notes";
+                                      }
+                                }
+                                {
+                                  AlleleNote = mgiNote : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = MolecularNote;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = MolecularNote;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: Control
+                                    vipComment = "XmPushButton issues commands within an application. It consists of a text label or pixmap surrounded by a border shadow. The behavior of XmPushButton differs, depending on the active mouse button. The active mouse button is determined by the parent widget. Normally, mouse button 1 is used to arm and activate the XmPushButton.";
+                                      {
+                                        Note = Notes : mgiDataTypes;
+                                      }
+                                      {
+                                        NotePush = NotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Allele Notes";
+                                      }
+                                }
+                                {
+                                  Synonym = ReferenceTable : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiCitation1;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiCitation1;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    bottomOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblColumnLabels = "Mode,Syn Key,Refs Key,Synonym,J#,Citation";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 30)(all 4 10)(all 5 50)";
+                                          xrtTblMaxLengthSeries = "(all 3 255)(all 5 255)";
+                                          xrtTblNumColumns = 6;
+                                          userDefinedAttributes = "synonymKey:Int=\"1\"\nsynonym:Int=\"3\"\n";
+                                        Group: User
+                                          citation = 5;
+                                          jnum = 4;
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Clear(clearLists = 3)";
+                                }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Add;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Add;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    rightWidget = Delete;
+                                    topAttachment = attach_widget;
+                                    topWidget = Delete;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CreationDate;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = CreationDate;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  ModifiedBy = ModifiedBy : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = ModifiedDate;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = ModifiedDate;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                      }
+                                      {
+                                        Add = TablePush;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        Delete = TablePush;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                }
+                                {
+                                  CVAllele = CVAllele : mgiOption;
+                                      {
+                                        MolecularMutationMenu = MolecularMutationMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              MolecularMutationPulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = MolecularMutation;
+                                                tableOption = 3;
+                                                tableOptionKey = 2;
+                                            }
+                                      }
+                                }
+                          }
+                    }
+                    Popups:
+                    {
+                      StatusDialog = StatusDialog : mgiDialog;
+                    }
+                    {
+                      DeleteDialog = DeleteDialog : mgiDialog;
+                    }
+                    {
+                      ReportDialog = ReportDialog : mgiDialog;
+                    }
+                    {
+                      SearchDialog = SearchDialog : mgiDialog;
+                    }
+                    {
+                      WhichItem = WhichItem : mgiDialog;
+                    }
+                    {
+                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                    }
+                    {
+                      WorkingDialog = WorkingDialog : mgiDialog;
+                    }
+                    {
+                      NoteDialog = NoteDialog : mgiDialog;
+                    }
+                    {
+                      AlleleMergeDialog = AlleleMergeDialog : mgiDialog;
+                    }
+              }
         }
 }
 

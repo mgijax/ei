@@ -66,7 +66,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS 2-0-2";
+	  global_version := "CVS 2-0-3";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -167,12 +167,12 @@ rules:
 	    mgi->WorkingDialog.managed := true;
 	    XmUpdateDisplay(mgi->WorkingDialog);
 
---	    while (i <= top.initDialog.count) do
---	      dialog := top->(top.initDialog[i]);
---	      LoadList.list := dialog->ItemList;
---	      send(LoadList, 0);
---	      i := i + 1;
---	    end while;
+	    while (i <= top.initDialog.count) do
+	      dialog := top->(top.initDialog[i]);
+	      LoadList.list := dialog->ItemList;
+	      send(LoadList, 0);
+	      i := i + 1;
+	    end while;
 
 	    mgi->WorkingDialog.managed := false;
 	    destroy mgi;

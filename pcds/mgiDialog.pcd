@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr  4 15:18:04 2000";
+      lastWritten = "Mon Apr 10 10:22:44 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1679,7 +1679,6 @@ Module: mgiDialog
                       MarkerEventPulldown = OptionPulldown;
                       Group: User
                         sql = "select * from MRK_Event where _Marker_Event_key > 1 order by _Marker_Event_key";
-                        childTemplate = EventWithdrawalToggle;
                     }
               }
               {
@@ -1703,7 +1702,7 @@ Module: mgiDialog
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftWidget = MarkerEventMenu;
-                  topWidget = MarkerEventMenu;
+                  topWidget = MarkerEventReasonMenu;
                   topOffset = 10;
                   leftOffset = 100;
                     {
@@ -1717,8 +1716,8 @@ Module: mgiDialog
                         xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 25)";
                         xrtTblMaxLengthSeries = "(all 2 25)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"1\"\nmarkerSymbol:Int(Int)=\"2\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\n";
-                        xrtTblVisibleRows = 1;
-                        xrtTblNumRows = 1;
+                        xrtTblVisibleRows = 4;
+                        xrtTblNumRows = 4;
                     }
                     {
                       AddRow = TablePush;
@@ -1817,12 +1816,8 @@ Module: mgiDialog
                     {
                       Cancel = DialogPush;
                       Group: Widget
-                        activateCallback = "D:MarkerWithdrawalCancel";
-                    }
-                    {
-                      Done = DialogPush : mgiDialog;
-                      Group: Widget
-                        activateCallback = "C: TuUnmanage";
+                        activateCallback = "D:MarkerWithdrawalDone";
+                        labelString = Done;
                     }
               }
         }
@@ -2033,7 +2028,7 @@ Shift<Key>Tab: prev-tab-group()
                       Process = DialogPush : mgiDialog;
                       Group: Widget
                         labelString = "Process Merge";
-                        activateCallback = "D:MarkerAlleleMerge";
+                        activateCallback = "D:AlleleMerge";
                         traversalOn = False;
                     }
                     {

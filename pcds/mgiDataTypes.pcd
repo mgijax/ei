@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar 16 08:07:22 2000";
+      lastWritten = "Thu Apr  6 15:04:29 2000";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -236,7 +236,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           CreationDate = Date : mgiDataTypes;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 580;
           Group: User
             fieldName = creation_date;
@@ -254,8 +254,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           ModifiedDate = Date : mgiDataTypes;
           Group: Control
-            vip_x = 155;
-            vip_y = 580;
+            vip_x = 50;
+            vip_y = 635;
           Group: User
             fieldName = modification_date;
               {
@@ -272,7 +272,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           Tissue = mgiVerify : mgiDataTypes;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 635;
           Group: User
             verifyDialog = TissueDialog;
@@ -307,7 +307,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           Strain = mgiVerify : mgiDataTypes;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 745;
           Group: User
             verifyDialog = StrainDialog;
@@ -342,8 +342,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           RecordCount = CharText : mgiDataTypes;
           Group: Control
-            vip_x = 155;
-            vip_y = 690;
+            vip_x = 50;
+            vip_y = 745;
               {
                 label = XmLabel;
                 Group: Widget
@@ -363,8 +363,8 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "sql:String\n";
             xrtGearOrientation = vertical;
           Group: Control
-            vip_x = 155;
-            vip_y = 635;
+            vip_x = 50;
+            vip_y = 690;
               {
                 label = XmLabel;
                 Group: Widget
@@ -388,14 +388,14 @@ Shift<Key>Tab: prev-tab-group()
             labelString = Notes;
             traversalOn = False;
           Group: Control
-            vip_x = 155;
-            vip_y = 965;
+            vip_x = 50;
+            vip_y = 1020;
         }
         {
           mgiNote = XmRowColumn;
           Group: Control
-            vip_x = 155;
-            vip_y = 745;
+            vip_x = 50;
+            vip_y = 800;
               {
                 Note = Notes : mgiDataTypes;
                 Group: Widget
@@ -410,7 +410,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             userDefinedAttributes = "tableID:Int\n";
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 800;
               {
                 ObjectID = ID : mgiDataTypes;
@@ -450,8 +450,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             orientation = horizontal;
           Group: Control
-            vip_x = 155;
-            vip_y = 800;
+            vip_x = 50;
+            vip_y = 855;
               {
                 ObjectID = ID : mgiDataTypes;
               }
@@ -478,8 +478,8 @@ Shift<Key>Tab: prev-tab-group()
             orientation = horizontal;
             userDefinedAttributes = "tableID:Int\n";
           Group: Control
-            vip_x = 155;
-            vip_y = 910;
+            vip_x = 50;
+            vip_y = 965;
               {
                 ObjectID = ID : mgiDataTypes;
               }
@@ -490,7 +490,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiMarker = mgiObject;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 855;
           Group: User
             tableID = 113;
@@ -523,14 +523,14 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "targetWidget:Widget\ntableColumn:Int(Int)\ntableKeyColumn:Int(Int)=\"-1\"\n";
             activateCallback = "D:VerifyEdit(mode = 1)";
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 965;
         }
         {
           DataSets = XmFrame;
           Group: Control
-            vip_x = 155;
-            vip_y = 1075;
+            vip_x = 50;
+            vip_y = 1130;
               {
                 DataSetsForm = XmForm;
                 Group: Widget
@@ -602,7 +602,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             shadowThickness = 0;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1020;
               {
                 ChoiceBox = XmRowColumn;
@@ -616,7 +616,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiJournal = mgiVerify : mgiDataTypes;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 910;
           Group: User
             verifyTable = 100;
@@ -652,7 +652,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             orientation = horizontal;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1130;
           Group: User
             verifyTable = 321;
@@ -724,8 +724,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiCross = mgiVerify : mgiDataTypes;
           Group: Control
-            vip_x = 155;
-            vip_y = 1130;
+            vip_x = 50;
+            vip_y = 1185;
           Group: User
             verifyDialog = CrossDialog;
             verifyKey = CrossID;
@@ -775,8 +775,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiSpecies = mgiObject;
           Group: Control
-            vip_x = 155;
-            vip_y = 855;
+            vip_x = 50;
+            vip_y = 910;
           Group: User
             tableID = 110;
               {
@@ -808,7 +808,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiAllele = mgiObject;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1240;
           Group: User
             tableID = 115;
@@ -838,7 +838,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             userDefinedAttributes = "verifyDialog:String(String)\nverifyTable:Int(Int)\nverifyAdd:Boolean(Boolean)=\"True\"\nverifyChars:Int(Int)=\"-1\"\nverifyNotSpecified:Boolean(Boolean)=\"True\"\nverifyKey:Widget\n";
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1185;
               {
                 Verify = CharText : mgiDataTypes;
@@ -861,8 +861,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           mgiDate = XmRowColumn;
           Group: Control
-            vip_x = 155;
-            vip_y = 1185;
+            vip_x = 50;
+            vip_y = 1240;
               {
                 Date = Date : mgiDataTypes;
                     {
@@ -908,14 +908,14 @@ Shift<Key>Tab: prev-tab-group()
             labelString = Notes;
             traversalOn = False;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 1075;
         }
         {
           mlpSpecies = mgiObject;
           Group: Control
-            vip_x = 155;
-            vip_y = 1020;
+            vip_x = 50;
+            vip_y = 1075;
               {
                 ObjectID = ID : mgiDataTypes;
               }
@@ -939,7 +939,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           AccessionID = CharText : mgiDataTypes;
           Group: Control
-            vip_x = 50;
+            vip_x = 155;
             vip_y = 690;
               {
                 label = XmLabel;
@@ -954,24 +954,21 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          label1 = XmLabel;
-          Group: Widget
-            labelString = "MGI Accession ID";
-          Group: Control
-            vip_x = 155;
-            vip_y = 1240;
-        }
-        {
-          text1 = text;
-          Group: Widget
-            columns = 20;
-            maxLength = 20;
-            translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc()";
+          ModifiedBy = CharText : mgiDataTypes;
           Group: Control
             vip_x = 50;
-            vip_y = 1295;
+            vip_y = 580;
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = "Modified By";
+              }
+              {
+                text = text;
+                Group: Widget
+                  maxLength = 30;
+                  columns = 10;
+              }
         }
 }
 

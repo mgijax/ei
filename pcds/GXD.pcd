@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr  5 09:35:23 2000";
+      lastWritten = "Fri Apr  7 08:32:32 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -2008,11 +2008,11 @@ Shift<Key>Tab: prev-tab-group()
                                   separator = XmSeparator;
                                 }
                                 {
-                                  Lookups = XmPushButton;
+                                  ControlledVocab = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Lookups\")";
+                                    activateCallback = "D:CreateMGIModule(name = \"ControlledVocab\")";
+                                    labelString = "Controlled Vocab";
                                     traversalOn = False;
-                                    labelString = Lookups;
                                 }
                           }
                     }
