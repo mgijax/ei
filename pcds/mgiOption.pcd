@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 11 15:15:56 2000";
+      lastWritten = "Tue Apr 11 15:18:54 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -2811,7 +2811,7 @@ Module: mgiOption
           MolecularMutationMenu = OptionMenu;
           Group: Widget
             subMenuId = MolecularMutationPulldown;
-            labelString = "Molecular \nMutation";
+            labelString = "Molecular\nMutation";
           Group: Control
             vip_x = 80;
             vip_y = 4155;
