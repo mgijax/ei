@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Jul 11 11:12:29 2000";
+      lastWritten = "Wed Jul 12 09:50:45 2000";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1292,6 +1292,9 @@ Module: MGD
                                                     SequencePID = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2380,6 +2383,9 @@ Module: MGD
                                                     SequencePID = AccToggle;
                                                   }
                                                   {
+                                                    LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2833,6 +2839,9 @@ Module: MGD
                                 }
                                 {
                                   SequencePID = AccToggle;
+                                }
+                                {
+                                  LocusLink = AccToggle : mgiOption;
                                 }
                                 {
                                   UniGene = AccToggle : mgiOption;
@@ -5242,6 +5251,9 @@ Module: MGD
                                                   }
                                                   {
                                                     SequencePID = AccToggle;
+                                                  }
+                                                  {
+                                                    LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -8194,6 +8206,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     SequencePID = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    LocusLink = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -8315,6 +8332,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     SequencePID = AccToggle;
+                                                  }
+                                                  {
+                                                    LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
