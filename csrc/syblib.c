@@ -64,6 +64,7 @@ int mgi_dbinit(char *user, char *pwd)
   if (dbinit() == FAIL)
     exit(ERREXIT);
 
+  dbsetversion(DBVERSION_100);
   dberrhandle(mgi_err_handler);
   dbmsghandle(mgi_msg_handler);
 
@@ -225,7 +226,7 @@ char *mgi_citation(DBPROCESS *dbproc, int table)
          strcat(buf, mgi_getstr(dbproc, 4));
          break;
  
-    case MGI_SPECIES:
+    case MGI_ORGANISM:
          strcpy(buf, mgi_getstr(dbproc, 2));
          strcat(buf, " (");
          strcat(buf, mgi_getstr(dbproc, 3));

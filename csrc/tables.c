@@ -8,9 +8,6 @@
  *
  * History:
  *
- * lec  05/29/2002
- *	- TR 3730/mgi_tblSetCell; use XmString conversion
- *
  * lec  03/12/98
  *      - created library
  *
