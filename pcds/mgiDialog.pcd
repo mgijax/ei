@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Jul 24 12:49:39 2001";
+      lastWritten = "Wed Jul 25 11:29:10 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -910,29 +910,23 @@ Module: mgiDialog
                       ID = ID;
                     }
                     {
-                      Results = TableLabel : mgiTable;
-                      Group: Constraint
-                        leftAttachment = attach_form;
-                        leftOffset = 5;
-                        rightAttachment = attach_none;
-                        topAttachment = attach_form;
-                        topOffset = 5;
-                        bottomAttachment = attach_none;
-                        resizable = true;
+                      Results = OrderedTableLabel : mgiTable;
                           {
                             Table = mgiTable;
                             Group: Widget
-                              xrtTblNumColumns = 12;
-                              xrtTblColumnLabels = "Mode,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,SeqNum,Structures,Strength,Pattern,Image Panes,Notes";
-                              xrtTblEditableSeries = "(all all False)";
-                              xrtTblPixelWidthSeries = "(all 0-6 0)";
-                              xrtTblTraversableSeries = "(all 0-6 False)";
-                              userDefinedAttributes = "resultKey:Int(Int)=\"1\"\nstrengthKey:Int(Int)=\"3\"\npatternKey:Int(Int)=\"4\"\nimagePaneKeys:Int(Int)=\"5\"\nseqNum:Int(Int)=\"6\"\nstructures:Int(Int)=\"7\"\nstrength:Int(Int)=\"8\"\npattern:Int(Int)=\"9\"\nimagePanes:Int(Int)=\"10\"\nnotes:Int(Int)=\"11\"\nstructureKeys:Int(Int)=\"2\"\n";
-                              xrtTblCharWidthSeries = "(all 0 1)(all 7 10)(all 8-10 15)";
+                              userDefinedAttributes = "resultKey:Int(Int)=\"3\"\nstrengthKey:Int(Int)=\"5\"\npatternKey:Int(Int)=\"6\"\nimagePaneKeys:Int(Int)=\"7\"\nstructures:Int(Int)=\"8\"\nstrength:Int(Int)=\"9\"\npattern:Int(Int)=\"10\"\nimagePanes:Int(Int)=\"11\"\nnotes:Int(Int)=\"12\"\nstructureKeys:Int(Int)=\"4\"\n";
+                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9-11 15)";
+                              xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,Structures,Strength,Pattern,Image Panes,Notes";
+                              xrtTblNumColumns = 13;
+                              xrtTblEditableSeries = "(all 0-2 False)(all 8-12 false)";
                               xrtTblEnterCellCallback = "D:SetStructure,\nD:SetImageResultOptions,\nD:SetImagePane";
+                              xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
+                              xrtTblTraversableSeries = "(all 0-7 False)";
                               xrtTblValidateCellCallback = "D:VerifyStrengthPattern,\nD:CopyInSituRow,\nD:CommitTableCellEdit";
                             Group: User
-                              requiredColumns = "3\n8";
+                              requiredColumns = "5\n9";
+                              saveTraversableSeries = "(all 0-7 False)";
+                              saveEditableSeries = "(all 0-2 False)(all 8-12 False)";
                                 {
                                   label = XtXrtLabel;
                                   Group: Widget

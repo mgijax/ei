@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 18 13:23:09 2001";
+      lastWritten = "Wed Jul 25 11:09:39 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -157,6 +157,33 @@ Module: GXD
                                         SpeciesMenu = SpeciesMenu : mgiOption;
                                         Group: User
                                           defaultOption = NotSpecified;
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                      }
+                                      {
+                                        Tissue = Tissue : mgiDataTypes;
+                                      }
+                                      {
+                                        Description = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        CellLine = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        AgeMenu = AgeMenu : mgiOption;
+                                      }
+                                      {
+                                        Age = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        AgeMin = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        AgeMax = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        SexMenu = SexMenu : mgiOption;
                                       }
                                 }
                           }
@@ -896,7 +923,7 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             EditForm = EditForm : MGI;
                             Group: Widget
-                              width = 800;
+                              width = 900;
                                 {
                                   ID = ID;
                                 }
@@ -1508,27 +1535,30 @@ Shift<Key>Tab: prev-tab-group()
           InSituForm = SubEditForm : MGI;
           Group: Widget
             rubberPositioning = False;
-            width = 800;
+            width = 900;
           Group: Control
             vip_x = 60;
             vip_y = 195;
               {
-                Specimen = TableLabel : mgiTable;
+                Specimen = OrderedTableLabel : mgiTable;
                     {
                       Table = mgiTable;
                       Group: Widget
-                        xrtTblColumnLabels = "Mode,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,Results,Notes";
-                        xrtTblNumColumns = 21;
-                        xrtTblPixelWidthSeries = "(all 0-9 0)";
-                        xrtTblEditableSeries = "(all 0 False) (all 11-20 False) (all 13 True)";
-                        userDefinedAttributes = "genotypeKey:Int(Int)=\"2\"\ngenotype:Int(Int)=\"11\"\nageKey:Int(Int)=\"3\"\nagePrefix:Int(Int)=\"12\"\nageRange:Int(Int)=\"13\"\nsexKey:Int(Int)=\"6\"\nsex:Int(Int)=\"15\"\nfixationKey:Int(Int)=\"7\"\nfixation:Int(Int)=\"16\"\nembeddingKey:Int(Int)=\"8\"\nembedding:Int(Int)=\"17\"\nhybridizationKey:Int(Int)=\"9\"\nhybridization:Int(Int)=\"18\"\nageMin:Int(Int)=\"4\"\nageMax:Int(Int)=\"5\"\nageNote:Int(Int)=\"14\"\nspecimenNote:Int(Int)=\"20\"\nspecimenKey:Int(Int)=\"1\"\nresults:Int(Int)=\"19\"\nspecimenLabel:Int(Int)=\"10\"\n";
-                        xrtTblNumRows = 11;
-                        xrtTblVisibleRows = 10;
+                        userDefinedAttributes = "genotypeKey:Int(Int)=\"4\"\ngenotype:Int(Int)=\"13\"\nageKey:Int(Int)=\"5\"\nagePrefix:Int(Int)=\"14\"\nageRange:Int(Int)=\"15\"\nsexKey:Int(Int)=\"8\"\nsex:Int(Int)=\"17\"\nfixationKey:Int(Int)=\"9\"\nfixation:Int(Int)=\"18\"\nembeddingKey:Int(Int)=\"10\"\nembedding:Int(Int)=\"19\"\nhybridizationKey:Int(Int)=\"11\"\nhybridization:Int(Int)=\"20\"\nageMin:Int(Int)=\"6\"\nageMax:Int(Int)=\"7\"\nageNote:Int(Int)=\"16\"\nspecimenNote:Int(Int)=\"22\"\nspecimenKey:Int(Int)=\"3\"\nresults:Int(Int)=\"21\"\nspecimenLabel:Int(Int)=\"12\"\n";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 12 16)(all 13 10)(all 17 8)(all 18 10)(all 19 11)(all 20 15)(all 21 9)(all 22 7)";
+                        xrtTblColumnLabels = "Mode,Current Order,#,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,Results,Notes";
+                        xrtTblEditableSeries = "(all 0-2 False) (all 13-22 False) (all 15 True)";
                         xrtTblEnterCellCallback = "D:SetOptions";
+                        xrtTblMaxLengthSeries = "(all 12 255)(all 16 255)(all 22 255)";
+                        xrtTblNumColumns = 23;
+                        xrtTblNumRows = 11;
+                        xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-11 0)";
+                        xrtTblTraversableSeries = "(all 0-11 False)";
                         xrtTblValidateCellCallback = "D:CopySpecimen,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVSpecimen\"),\nD:CommitTableCellEdit";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 10 14)(all 11 8)(all 15 6)(all 16 8)(all 17 9)(all 18 13)(all 19 7)(all 20 5)";
-                        xrtTblTraversableSeries = "(all 0-9 False)";
-                        xrtTblMaxLengthSeries = "(all 10 255)(all 14 255)(all 20 255)";
+                        xrtTblVisibleRows = 10;
+                      Group: User
+                        saveEditableSeries = "(all 0-2 False)(all 13-22 False)(all 15 True)";
+                        saveTraversableSeries = "(all 0-11 False)";
                           {
                             label = XtXrtLabel;
                             Group: Widget

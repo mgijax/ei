@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jun 13 14:16:01 2001";
+      lastWritten = "Wed Jul 25 11:22:24 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1537,8 +1537,8 @@ Module: mgiOption
                   activateCallback = "D:GenotypeInit";
                   labelString = Genotype;
                 Group: User
-                  tableColumn = 11;
-                  tableKeyColumn = 2;
+                  tableColumn = 13;
+                  tableKeyColumn = 4;
                   targetWidget = Specimen;
               }
               {
@@ -1548,8 +1548,8 @@ Module: mgiOption
                       AgePulldown = OptionPulldown;
                       Group: User
                         tableForm = Specimen;
-                        tableOption = 12;
-                        tableOptionKey = 3;
+                        tableOption = 14;
+                        tableOptionKey = 5;
                           {
                             SearchAll = SearchAll;
                             Group: Widget
@@ -1563,8 +1563,8 @@ Module: mgiOption
                     {
                       SexPulldown = OptionPulldown;
                       Group: User
-                        tableOption = 15;
-                        tableOptionKey = 6;
+                        tableOption = 17;
+                        tableOptionKey = 8;
                         tableForm = Specimen;
                           {
                             SearchAll = SearchAll;
@@ -1579,8 +1579,8 @@ Module: mgiOption
                     {
                       FixationPulldown = OptionPulldown;
                       Group: User
-                        tableOption = 16;
-                        tableOptionKey = 7;
+                        tableOption = 18;
+                        tableOptionKey = 9;
                         tableForm = Specimen;
                     }
               }
@@ -1590,8 +1590,8 @@ Module: mgiOption
                     {
                       EmbeddingPulldown = OptionPulldown;
                       Group: User
-                        tableOption = 17;
-                        tableOptionKey = 8;
+                        tableOption = 19;
+                        tableOptionKey = 10;
                         tableForm = Specimen;
                     }
               }
@@ -1601,8 +1601,8 @@ Module: mgiOption
                     {
                       HybridizationPulldown = OptionPulldown;
                       Group: User
-                        tableOption = 18;
-                        tableOptionKey = 9;
+                        tableOption = 20;
+                        tableOptionKey = 11;
                         tableForm = Specimen;
                     }
               }
@@ -1612,7 +1612,7 @@ Module: mgiOption
                   labelString = "Age Notes";
                 Group: User
                   targetWidget = Specimen;
-                  targetColumn = 14;
+                  targetColumn = 16;
               }
               {
                 SpecimenNotes = NotePush : mgiDataTypes;
@@ -1620,7 +1620,7 @@ Module: mgiOption
                   labelString = "Specimen Notes";
                 Group: User
                   targetWidget = Specimen;
-                  targetColumn = 20;
+                  targetColumn = 22;
               }
               {
                 ResultsPush = TableDialogPush : mgiDataTypes;
@@ -1629,8 +1629,8 @@ Module: mgiOption
                   labelString = Results;
                 Group: User
                   targetWidget = Specimen;
-                  tableColumn = 19;
-                  tableKeyColumn = 1;
+                  tableColumn = 21;
+                  tableKeyColumn = 3;
               }
         }
         {
@@ -1691,8 +1691,8 @@ Module: mgiOption
                     {
                       StrengthPulldown = OptionPulldown;
                       Group: User
-                        tableOption = 8;
-                        tableOptionKey = 3;
+                        tableOption = 9;
+                        tableOptionKey = 5;
                         tableForm = Results;
                         sql = "select * from GXD_Strength where _Strength_key > -1 order by strength";
                     }
@@ -1704,15 +1704,15 @@ Module: mgiOption
                       PatternPulldown = OptionPulldown;
                       Group: User
                         tableForm = Results;
-                        tableOption = 9;
-                        tableOptionKey = 4;
+                        tableOption = 10;
+                        tableOptionKey = 6;
                     }
               }
               {
                 NotePush = NotePushShort : mgiDataTypes;
                 Group: User
                   targetWidget = Results;
-                  targetColumn = 11;
+                  targetColumn = 12;
               }
         }
         {
