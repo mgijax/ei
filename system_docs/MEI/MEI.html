@@ -305,10 +305,12 @@ a mouse click to another cell in the table also invokes the validation.
 	<OL>
 	<LI>All Markers are validated against the Marker table.
 	<LI>All Markers must be Mouse Markers.
-	<LI>All Markers must be current (i.e. not withdrawn).  Exceptions:
+	<LI>All Markers must be <I>approved</I>.  Exceptions:
 		<OL>
-		<LI>Marker Histories may include withdrawn symbols.
-		<LI>MLC queries may include withdrawn symbols.
+		<LI>Marker Histories may include <I>withdrawn</I> symbols.
+		<LI>MLC queries may include <I>withdrawn</I> symbols.
+		<LI>Non-Approved Allele symbols may refer to non-approved Markers 
+		    which only exist in NomenDB.
 		</OL>
 	<LI>In some instances, additional information such as the chromosome or name of the Marker
 	    is displayed.
@@ -325,6 +327,7 @@ a mouse click to another cell in the table also invokes the validation.
 	<LI>The Allele must be defined for the given Marker.  In some instances,
 	    if the Allele does not exist then the Allele form is launched so
 	    that the user can immediately add the new Allele.
+	<LI>All Alleles must be <I>Approved</I>.
 	<LI>If no Marker is entered and the Allele is unique, then the Marker
 	    associated with the Allele is entered automatically.
 	<LI>Modifications denied on invalid entries.
@@ -434,12 +437,12 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>A date must contain the year in the format YYYY.
 	</OL>
 <P>
-<A NAME="dataVerOption"><LI>Option Menus</A>
+<A NAME="dataVerPulldown"><LI>Pulldown Menus</A>
 	<P>
-	Option Menus provide data verification by default, since they provide the user with a single set
-	of pre-defined selections.  Option Menus which correlate to normalized tables in the database are
+	Pulldown Menus provide data verification by default, since they provide the user with a single set
+	of pre-defined selections.  Pulldown Menus which correlate to normalized tables in the database are
 	dynamically built at runtime whenever a form is instantiated.  The user must exit and re-enter
-	the form after any modification is made to the controlled vocabulary of the Option Menu to
+	the form after any modification is made to the controlled vocabulary of the Pulldown Menu to
 	view the recent modification.
 	<P>
 	Most controlled vocabulary is available to the user for editing:
@@ -500,7 +503,7 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 <A NAME="dataVerLookup"><LI>Controlled Vocabulary Lists</A>
 	<P>
 	Lists are another way to implement controlled vocabulary and provide 
-	data verification when an Option Menu does not suffice.  When the number of selections is 
+	data verification when an Pulldown Menu does not suffice.  When the number of selections is 
 	greater than 20, a List is used.  The user must <B>always</B> use the List, if one is supplied.
 	The user can refresh, or reload, the List by clicking on the <I>Label</I> of the List.
 	The List must be refreshed after any modification is made to the controlled vocabulary of
@@ -512,10 +515,10 @@ MGI Accession Number of the Parent Clone used during entry of a Molecular Probe 
 	<LI>Mapping Assays*
 	<LI>Homology Assays*
 	<LI>Homology Species
-	<LI>Allele ES Cell Lines
+	<LI>Allele ES Cell Lines*
 	</OL>
 	<P>
-	* signifies that this controlled vocabulary list can be modified using the Controlled Vocab form.
+	* this controlled vocabulary list can be modified using the Controlled Vocab form.
 </OL>
 
 <HR>
