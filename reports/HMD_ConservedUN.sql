@@ -19,7 +19,7 @@ setenv MGD $2
 
 header.sh $0
 
-isql -S$DSQUERY -Umgd_public -Pmgdpub -w200 <<END >> $0.rpt
+isql -S$DSQUERY -Umgd_public -Pmgdpub -w200 <<END >> $HOME/mgireport/$0.rpt
 
 use $MGD
 go
