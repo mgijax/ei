@@ -9,6 +9,9 @@
 --
 -- History
 --
+-- lec	06/10/2003
+--	TR 4669
+--
 -- lec	01/04/2002
 --	- TR 2867/2239 - support for Acc IDs in List template
 --
