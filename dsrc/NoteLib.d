@@ -526,9 +526,15 @@ rules:
 
 	  -- For short notes (max 255)
 	  if (NoteInit.shortNote) then
-	    dialog->label.labelString := dialog->label.labelString + " (max 255 characters)";
-	    dialog->Note->text.rows := 4;
-	    dialog->Note->text.maxLength := dialog->Note->text.shortMaxNoteLength;
+	    if (target.is_defined("maxLength") != nil) then
+              dialog->label.labelString := dialog->label.labelString + " (max " + (string)target.maxLength + " characters)";
+              dialog->text.rows := target.rows;
+              dialog->Note->text.maxLength := target.maxLength;
+	    else
+	      dialog->label.labelString := dialog->label.labelString + " (max 255 characters)";
+	      dialog->Note->text.rows := 4;
+	      dialog->Note->text.maxLength := dialog->Note->text.shortMaxNoteLength;
+            end if;
 	  end if;
 
 	  dialog.targetWidget := target;

@@ -134,8 +134,9 @@ rules:
 
 		--
 		-- For GXD Assay Types
-		-- 	if isRNAAssay = 0, then set child.prepForm = AntibodyPrepForm
-		-- 	if isRNAAssay = 1, then set child.prepForm = ProbePrepForm
+		--	if Assay Type = knock-in, then set childprepForm = ProbePrepForm
+		-- 	if isRNAAssay = 0, then set child.prepForm = AntibodyPrepVerifyForm
+		-- 	if isRNAAssay = 1, then set child.prepForm = ProbePrepVerifyForm
 		-- 	if isGelAssay = 0, then set child.assayForm = InSituForm
 		-- 	if isGelAssay = 1, then set child.assayForm = GelForm
 		--
@@ -145,10 +146,13 @@ rules:
 		  x.isRNAAssay := (integer) mgi_getstr(dbproc, 3);
 		  x.isGelAssay := (integer) mgi_getstr(dbproc, 4);
 
-		  if (mgi_getstr(dbproc, 3) = "0") then
-		    x.prepForm := "AntibodyPrepForm";
+		  if (mgi_getstr(dbproc, 1) = "9") then
+		    -- no default for knock in
+		    x.prepForm := "";
+		  elsif (mgi_getstr(dbproc, 3) = "0") then
+		    x.prepForm := "AntibodyPrepVerifyForm";
 		  else
-		    x.prepForm := "ProbePrepForm";
+		    x.prepForm := "ProbePrepVerifyForm";
 		  end if;
 
 		  if (mgi_getstr(dbproc, 4) = "0") then

@@ -11,7 +11,7 @@
 # Without this option, D modules are interpreted, which allows use of 
 # the TeleUSE debugger. 
 
-source Configuration
+source ./Configuration
 
 setenv EIAPP	$1
 setenv MODE	$2

@@ -278,7 +278,7 @@ rules:
 
 	    -- If edit form is managed AND parent form is managed, check required fields/matrices
 
-	    if (editForm.managed and editForm.parent.managed) then
+	    if (editForm.managed and editForm.sensitive and editForm.parent.managed) then
 	      i := 1;
 
 	      while (i <= editForm.num_children) do
@@ -2186,6 +2186,9 @@ rules:
  
           if (VerifyMarkerInTable.source_widget = top->mgiMarker->Marker->text) then
             accTop := VerifyMarkerInTable.source_widget.verifyAccessionID;
+	    if (accTop = nil) then
+	      return;
+	    end if;
           else
             accTop := VerifyMarkerInTable.source_widget.ancestor_by_class("XmRowColumn");
           end if;

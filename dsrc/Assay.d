@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	05/07/2003
+--	- TR 3710; added Knock In Assay Type
+--
 -- lec  12/31/2002
 --	- TR 4187; CreateGelBandColumns; default Strength = Not Applicable for Lane Control != No
 --
@@ -183,6 +186,7 @@ devents:
 	AppendToAgeNote :local [];
 	Assay [];
 	AssayClear [clearKeys : boolean := true;
+		    clearLists : integer := 3;
 		    reset : boolean := false;
 		    select: boolean := false;];
 	BuildDynamicComponents :local [];
@@ -247,12 +251,16 @@ locals:
 	where : string;
 
         options : list;         	-- List of Option Menus
+	prepForms : list;               -- List of Prep Forms
 	tables : list;			-- List of Tables
 
-	clearAssay : integer := 63;	-- Value for Clear.clearForms
+	clearAssay : integer := 255;	-- Value for Clear.clearForms
 
 	currentAssay : string;      	-- Primary Key value of currently selected record
 				    	-- Set in Add[] and Select[]
+
+	probePrep : boolean;
+	antibodyPrep : boolean;
 
 	antibodyPrepLabel : string := "maxAntibodyPrep";
 	probePrepLabel : string := "maxProbePrep";
@@ -299,17 +307,26 @@ rules:
 
 	BuildDynamicComponents does
           options := create list("widget");
+	  prepForms := create list("string");
 
 	  -- Initialize Option Menus
 
           options.append(top->AssayTypeMenu);
+          options.append(top->GXDReporterGeneMenu);
           options.append(top->ProbePrepForm->PrepTypeMenu);
           options.append(top->ProbePrepForm->SenseMenu);
           options.append(top->ProbePrepForm->LabelTypeMenu);
           options.append(top->ProbePrepForm->CoverageMenu);
           options.append(top->ProbePrepForm->VisualizationMenu);
+          options.append(top->ProbePrepVerifyForm->PrepTypeMenu);
+          options.append(top->ProbePrepVerifyForm->SenseMenu);
+          options.append(top->ProbePrepVerifyForm->LabelTypeMenu);
+          options.append(top->ProbePrepVerifyForm->CoverageMenu);
+          options.append(top->ProbePrepVerifyForm->VisualizationMenu);
           options.append(top->AntibodyPrepForm->SecondaryMenu);
           options.append(top->AntibodyPrepForm->LabelTypeMenu);
+          options.append(top->AntibodyPrepVerifyForm->SecondaryMenu);
+          options.append(top->AntibodyPrepVerifyForm->LabelTypeMenu);
           options.append(top->CVSpecimen->AgeMenu);
           options.append(top->CVSpecimen->SexMenu);
           options.append(top->CVSpecimen->FixationMenu);
@@ -332,6 +349,13 @@ rules:
             send(InitOptionMenu, 0);
           end while;
           options.close;
+
+	  prepForms.append("KnockInForm");
+	  prepForms.append("AntibodyPrepForm");
+	  prepForms.append("AntibodyPrepVerifyForm");
+	  prepForms.append("ProbePrepForm");
+	  prepForms.append("ProbePrepVerifyForm");
+
 	end does;
 
 --
@@ -343,7 +367,7 @@ rules:
 
 	  Clear.source_widget := top;
 	  Clear.clearForms := clearAssay;
-	  Clear.clearLists := 3;
+	  Clear.clearLists := AssayClear.clearLists;
 	  Clear.clearKeys := AssayClear.clearKeys;
 	  Clear.reset := AssayClear.reset;
 	  send(Clear, 0);
@@ -355,6 +379,10 @@ rules:
 	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
+	    prepDetailForm.sensitive := true;
+	    top->KnockInForm.sensitive := false;
+	    top->GXDReporterGeneMenu.required := false;
+	    top->GXDKnockInMenu.required := false;
 	    currentAssay := "";
 	  end if;
 	end does;
@@ -372,8 +400,10 @@ rules:
           tables := create list("widget");
 
 	  accTable := top->mgiAccessionTable->Table;
-          prepDetailForm := top->ProbePrepForm;
+          prepDetailForm := top->ProbePrepVerifyForm;
           assayDetailForm := top->InSituForm;
+	  antibodyPrep := false;
+	  probePrep := true;
 
 	  -- Initialize Tables
 
@@ -473,10 +503,12 @@ rules:
 
 	  currentAssay := "@" + KEYNAME;
 
-	  if (prepDetailForm.name = "AntibodyPrepForm") then
+	  if (antibodyPrep) then
 	    send(AddAntibodyPrep, 0);
-	  else
+	  elsif (probePrep) then
 	    send(AddProbePrep, 0);
+	  else
+	    prepDetailForm.sql := "";
 	  end if;
 
 	  -- Prepend Prep insert statements to Assay insert statement
@@ -488,10 +520,12 @@ rules:
                  top->mgiCitation->ObjectID->text.value + "," +
                  top->mgiMarker->ObjectID->text.value + ",";
 
-	  if (prepDetailForm.name = "AntibodyPrepForm") then
+	  if (antibodyPrep) then
 	    cmd := cmd + "NULL,@" + antibodyPrepLabel + ",";
-	  else
+	  elsif (probePrep) then
 	    cmd := cmd + "@" + probePrepLabel + ",NULL,";
+	  else
+	    cmd := cmd + "NULL,NULL,";
 	  end if;
 
 	  -- Image pane is always NULL for non-Gels
@@ -499,20 +533,29 @@ rules:
 	  pos : integer;
 	  if (assayDetailForm.name = "GelForm") then
 	    if (assayDetailForm->ImagePaneList->List.selectedItemCount = 0) then
-	      cmd := cmd + "NULL";
+	      cmd := cmd + "NULL,";
 	    else
 	      pos := XmListItemPos(assayDetailForm->ImagePaneList->List, 
 			xm_xmstring(assayDetailForm->ImagePaneList->List.selectedItems[0]));
-	      cmd := cmd + assayDetailForm->ImagePaneList->List.keys[pos];
+	      cmd := cmd + assayDetailForm->ImagePaneList->List.keys[pos] + ",";
 	    end if;
 	  else
-	    cmd := cmd + "NULL";
+	    cmd := cmd + "NULL,";
 	  end if;
+
+	  -- Reporter Gene is only valid for knock in
+
+	  if (top->GXDReporterGeneMenu.menuHistory.defaultValue = "%") then
+	    cmd := cmd + "NULL";
+	  else
+	    cmd := cmd + top->GXDReporterGeneMenu.menuHistory.defaultValue;
+	  end if;
+
 	  cmd := cmd + ")\n";
 
 	  -- Probe Reference
 
-	  if (prepDetailForm.name = "ProbePrepForm") then
+	  if (probePrep) then
 	    send(AddProbeReference, 0);
 	  end if;
 
@@ -1144,11 +1187,13 @@ rules:
 	    end if;
 	  end if;
 
-	  if (prepDetailForm.name = "AntibodyPrepForm") then
+	  if (antibodyPrep) then
 	    send(ModifyAntibodyPrep, 0);
-	  else
+	  elsif (probePrep) then
 	    send(AddProbeReference, 0);
 	    send(ModifyProbePrep, 0);
+	  else
+	    prepDetailForm.sql := "";
 	  end if;
 	  cmd := cmd + prepDetailForm.sql;
 
@@ -1837,7 +1882,7 @@ rules:
 						       
 	  -- From Antibody Prep
 
-	  if (prepDetailForm.name = "AntibodyPrepForm") then
+	  if (antibodyPrep) then
             if (prepDetailForm->AntibodyAccession->ObjectID->text.value.length > 0) then
               where := where + " and ap._Antibody_key = " + prepDetailForm->AntibodyAccession->ObjectID->text.value;
 	      from_antibodyPrep := true;
@@ -1857,7 +1902,7 @@ rules:
               where := where + " and ap._Label_key = " + prepDetailForm->LabelTypeMenu.menuHistory.searchValue;
 	      from_antibodyPrep := true;
             end if;
-	  else
+	  elsif (probePrep) then
 	    -- From Probe Prep
 
             if (prepDetailForm->ProbeAccession->ObjectID->text.value.length > 0) then
@@ -2095,6 +2140,15 @@ rules:
           end while;
           tables.close;
  
+	  -- Clear Prep forms
+	  prepForms.open;
+	  while (prepForms.more) do
+	    ClearForm.source_widget := top;
+	    ClearForm.form := prepForms.next;
+	    send(ClearForm, 0);
+          end while;
+	  prepForms.close;
+
 	  -- Clear out the Notes
 
           top->AssayNote->Note->text.value := "";
@@ -2125,6 +2179,8 @@ rules:
 			"\norder by sequenceNum\n";
 
 	  results : integer := 1;
+	  reporterGene : string;
+	  knockInPrep : string;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2134,24 +2190,63 @@ rules:
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 3);
-                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 20);
-                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 21);
+                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 23);
+                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 24);
                 top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 4);
-                top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 16);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 8);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 9);
+                top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 19);
+	        top->CreationDate->text.value   := mgi_getstr(dbproc, 11);
+	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 12);
 
                 SetOption.source_widget := top->AssayTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
                 send(SetOption, 0);
  
-		send(InitImagePane, 0);
+		-- Reporter Gene; only applicable for knockin
 
-	        ViewPrepDetail.source_widget := top->AssayTypeMenu.menuHistory;
+		reporterGene := mgi_getstr(dbproc, 8);
+
+	        if (reporterGene.length > 0) then
+
+		  -- determine if prep based on _AntibodyPrep_key, _ProbePrep_key
+
+		  if (mgi_getstr(dbproc, 6) != "") then
+		    antibodyPrep := true;
+		    probePrep := false;
+	            knockInPrep := "antibody";
+		  elsif (mgi_getstr(dbproc, 5) != "") then
+		    antibodyPrep := false;
+		    probePrep := true;
+	            knockInPrep := "nucleotide";
+		  else
+		    antibodyPrep := false;
+		    probePrep := false;
+	            knockInPrep := "direct detection";
+		  end if;
+
+		  -- Set Reporter Gene
+                  SetOption.source_widget := top->GXDReporterGeneMenu;
+                  SetOption.value := reporterGene;
+                  send(SetOption, 0);
+
+		  -- Set Knock In Type
+	          SetOption.source_widget := top->GXDKnockInMenu;
+	          SetOption.value := knockInPrep;
+	          send(SetOption, 0);
+
+		  -- Set ViewPrepDetail source widget based on Knock In Type
+	          ViewPrepDetail.source_widget := top->GXDKnockInMenu.menuHistory;
+		else
+		  -- Set ViewPrepDetail source widget based on Assay Type
+	          ViewPrepDetail.source_widget := top->AssayTypeMenu.menuHistory;
+	        end if;
+
 	        send(ViewPrepDetail, 0);
+
+		send(InitImagePane, 0);
 
 	        ViewAssayDetail.source_widget := top->AssayTypeMenu.menuHistory;
 	        send(ViewAssayDetail, 0);
+
 	      elsif (results = 2) then
                 top->AssayNote->Note->text.value := 
 			top->AssayNote->Note->text.value + mgi_getstr(dbproc, 1);
@@ -2160,61 +2255,63 @@ rules:
 	    results := results + 1;
           end while;
 
-	  if (prepDetailForm.name = "AntibodyPrepForm") then
+	  if (antibodyPrep) then
 	    select := "select * from GXD_AntibodyPrep_View " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n";
-	  else
+	  elsif (probePrep) then
 	    select := "select * from GXD_ProbePrep_View " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n";
 	  end if;
 
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
+	  if (antibodyPrep or probePrep) then
+            (void) dbcmd(dbproc, select);
+            (void) dbsqlexec(dbproc);
  
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (prepDetailForm.name = "AntibodyPrepForm") then
-	        prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
-	        prepDetailForm->AntibodyAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
-	        prepDetailForm->AntibodyAccession->AccessionID->text.value := mgi_getstr(dbproc, 11);
-	        prepDetailForm->AntibodyAccession->AccessionName->text.value := mgi_getstr(dbproc, 10);
+            while (dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	        if (antibodyPrep) then
+	          prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
+	          prepDetailForm->AntibodyAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
+	          prepDetailForm->AntibodyAccession->AccessionID->text.value := mgi_getstr(dbproc, 11);
+	          prepDetailForm->AntibodyAccession->AccessionName->text.value := mgi_getstr(dbproc, 10);
 
-	        SetOption.source_widget := prepDetailForm->SecondaryMenu;
-		SetOption.value := mgi_getstr(dbproc, 4);
-		send(SetOption, 0);
+	          SetOption.source_widget := prepDetailForm->SecondaryMenu;
+		  SetOption.value := mgi_getstr(dbproc, 4);
+		  send(SetOption, 0);
 
-		SetOption.source_widget := prepDetailForm->LabelTypeMenu;
-		SetOption.value := mgi_getstr(dbproc, 5);
-		send(SetOption, 0);
-	      else
-	        prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
-	        prepDetailForm->ProbeAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
-	        prepDetailForm->ProbeAccession->AccessionID->text.value := mgi_getstr(dbproc, 16);
-	        prepDetailForm->ProbeAccession->AccessionName->text.value := mgi_getstr(dbproc, 15);
+		  SetOption.source_widget := prepDetailForm->LabelTypeMenu;
+		  SetOption.value := mgi_getstr(dbproc, 5);
+		  send(SetOption, 0);
+	        elsif (probePrep) then
+	          prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
+	          prepDetailForm->ProbeAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
+	          prepDetailForm->ProbeAccession->AccessionID->text.value := mgi_getstr(dbproc, 16);
+	          prepDetailForm->ProbeAccession->AccessionName->text.value := mgi_getstr(dbproc, 15);
 
-		SetOption.source_widget := prepDetailForm->SenseMenu;
-		SetOption.value := mgi_getstr(dbproc, 4);
-		send(SetOption, 0);
+		  SetOption.source_widget := prepDetailForm->SenseMenu;
+		  SetOption.value := mgi_getstr(dbproc, 4);
+		  send(SetOption, 0);
 
-		SetOption.source_widget := prepDetailForm->LabelTypeMenu;
-		SetOption.value := mgi_getstr(dbproc, 5);
-		send(SetOption, 0);
+		  SetOption.source_widget := prepDetailForm->LabelTypeMenu;
+		  SetOption.value := mgi_getstr(dbproc, 5);
+		  send(SetOption, 0);
 
-		SetOption.source_widget := prepDetailForm->CoverageMenu;
-		SetOption.value := mgi_getstr(dbproc, 6);
-		send(SetOption, 0);
+		  SetOption.source_widget := prepDetailForm->CoverageMenu;
+		  SetOption.value := mgi_getstr(dbproc, 6);
+		  send(SetOption, 0);
 
-		SetOption.source_widget := prepDetailForm->VisualizationMenu;
-		SetOption.value := mgi_getstr(dbproc, 7);
-		send(SetOption, 0);
+		  SetOption.source_widget := prepDetailForm->VisualizationMenu;
+		  SetOption.value := mgi_getstr(dbproc, 7);
+		  send(SetOption, 0);
 
-		SetOption.source_widget := prepDetailForm->PrepTypeMenu;
-		SetOption.value := mgi_getstr(dbproc, 8);
-		send(SetOption, 0);
-	      end if;
-	    end while;
-          end while;
-	  (void) dbclose(dbproc);
+		  SetOption.source_widget := prepDetailForm->PrepTypeMenu;
+		  SetOption.value := mgi_getstr(dbproc, 8);
+		  send(SetOption, 0);
+	        end if;
+	      end while;
+            end while;
+	    (void) dbclose(dbproc);
+	  end if;
 
 	  -- Select InSitu information
 
@@ -2812,6 +2909,15 @@ rules:
 	    top->CVSpecimen.managed := false;
 	    top->CVGel.managed := true;
 	  end if;
+
+	  -- if not assay record selected, then re-set the knock-in menu values
+
+	  if (currentAssay.length = 0) then
+	    -- Clear Knockin specific form
+	    ClearForm.source_widget := top;
+	    ClearForm.form := "KnockInForm";
+	    send(ClearForm, 0);
+	  end if;
         end
  
 --
@@ -2830,12 +2936,42 @@ rules:
 --
  
         ViewPrepDetail does
-          NewForm : widget := top->(ViewPrepDetail.source_widget.prepForm);
- 
+          NewForm : widget;
+	  
+	  -- GXDReporterGeneMenu and GXDKnockInMenu are only valid for Knock In Assay
+
+	  top->KnockInForm.sensitive := false;
+	  top->GXDReporterGeneMenu.required := false;
+	  top->GXDKnockInMenu.required := false;
+
+	  -- If Knock In Assay...
+	  if (top->AssayTypeMenu.menuHistory.defaultValue= "9") then
+	    top->mgiMarker->Marker->text.verifyAccessionID := nil;
+	    top->KnockInForm.sensitive := true;
+	    top->GXDReporterGeneMenu.required := true;
+	    top->GXDKnockInMenu.required := true;
+	  end if;
+
+	  -- if prepForm is null (which could happen for a knockin), 
+	  -- then de-sensitive current prepDetailForm and return
+
+	  if ((ViewPrepDetail.source_widget.prepForm).length > 0) then
+	    NewForm := top->(ViewPrepDetail.source_widget.prepForm);
+	    NewForm.sensitive := true;
+          else
+	    prepDetailForm.sensitive := false;
+	    antibodyPrep := false;
+	    probePrep := false;
+	    return;
+	  end if;
+
+	  -- only continue if selecting (not de-selecting) the toggle
+
           if (not ViewPrepDetail.source_widget.set) then
             return;
           end if;
  
+	  -- form changed; manage new form and unmanage old form
           if (NewForm != prepDetailForm) then
             NewForm.managed := true;
 	    prepDetailForm->AccessionID->text.required := false;
@@ -2845,11 +2981,28 @@ rules:
             top->AssayTypeMenu.modified := true;
           end if;
 
-	  if (NewForm = top->ProbePrepForm) then
+	  -- set the antibodyPrep, probePrep booleans based on NewForm
+
+	  if (NewForm = top->AntibodyPrepForm or NewForm = top->AntibodyPrepVerifyForm) then
+	    antibodyPrep := true;
+	    probePrep := false;
+	  elsif (NewForm = top->ProbePrepForm or NewForm = top->ProbePrepVerifyForm) then
+	    antibodyPrep := false;
+	    probePrep := true;
+--	  else
+--	    antibodyPrep := false;
+--	    probePrep := false;
+	  end if;
+
+	  -- set the value for verifying the MGI Marker based on NewForm
+	  -- for Knockins, no verification is done
+
+	  if (NewForm = top->ProbePrepVerifyForm) then
 	    top->mgiMarker->Marker->text.verifyAccessionID := NewForm->ProbeAccession;
-	  else
+	  elsif (NewForm = top->AntibodyPrepVerifyForm) then
 	    top->mgiMarker->Marker->text.verifyAccessionID := NewForm->AntibodyAccession;
 	  end if;
+
         end
 
 --

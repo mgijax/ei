@@ -13,7 +13,7 @@
 #
 # Output: buildall.log contains report of stdout and stderr messages
 
-source Configuration
+source ./Configuration
 
 setenv LOG `pwd`/buildall.log
 

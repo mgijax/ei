@@ -761,10 +761,8 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_StructureName_key");
             break;
     case GXD_INDEX:
-            strcpy(buf, "index_id");
-	    break;
     case GXD_INDEXSTAGES:
-            strcpy(buf, "index_id");
+            strcpy(buf, "_Index_key");
 	    break;
     case MGI_TABLES:
             strcpy(buf, "table_name");
@@ -2070,7 +2068,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAY:
-            sprintf(buf, "insert %s (%s, _AssayType_key, _Refs_key, _Marker_key, _ProbePrep_key, _AntibodyPrep_key, _ImagePane_key)", 
+            sprintf(buf, "insert %s (%s, _AssayType_key, _Refs_key, _Marker_key, _ProbePrep_key, _AntibodyPrep_key, _ImagePane_key, _ReporterGene_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYNOTE:
@@ -2134,16 +2132,16 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (_GelLane_key, _Structure_key)", mgi_DBtable(table));
 	    break;
     case GXD_STRUCTURE:
-	    sprintf(buf, "insert %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, edinburghKey, printName, treeDepth, printStop, structureNote)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, edinburghKey, printName, treeDepth, printStop, topoSort, structureNote)", mgi_DBtable(table));
 	    break;
     case GXD_STRUCTURENAME:
 	    sprintf(buf, "insert %s (_StructureName_key, _Structure_key, structure, mgiAdded)", mgi_DBtable(table));
 	    break;
     case GXD_INDEX:
-	    sprintf(buf, "insert %s (index_id, _Refs_key, _Marker_key, comments)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, comments)", mgi_DBtable(table));
 	    break;
     case GXD_INDEXSTAGES:
-	    sprintf(buf, "insert %s (index_id, stage_id, insitu_protein_section, insitu_rna_section, insitu_protein_mount, insitu_rna_mount, northern, western, rt_pcr, clones, rnase, nuclease, primer_extension)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Index_key, _IndexAssay_key, _StageID_key)", mgi_DBtable(table));
 	    break;
     case MRK_SPECIES:
             sprintf(buf, "insert %s (%s, name, species)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2360,6 +2358,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
 	      break;
       case ALL_ALLELE:
       case GXD_GENOTYPE:
+      case GXD_INDEX:
+      case GXD_INDEXSTAGES:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
@@ -2380,6 +2380,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
     {
       case ALL_ALLELE:
       case GXD_GENOTYPE:
+      case GXD_INDEX:
+      case GXD_INDEXSTAGES:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:

@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 13 10:13:35 2003";
+      lastWritten = "Mon May  5 15:16:50 2003";
         {
           CVMenu = XmRowColumn;
           Group: Widget
