@@ -356,7 +356,7 @@ rules:
             end if;
 
 	    cmd := cmd + "NULL,NULL," +	-- insertSite, insertSize
-                   mgi_DBprstr(top->SegmentTypePulldown->primer.defaultValue) + "," +
+                   mgi_DBprstr(top->MolMasterForm->OldSegmentTypeMenu.menuHistory.defaultValue) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->Repeat->text.value) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + "," +
 	           (string)((integer) top->MolPrimerForm->More.set);
