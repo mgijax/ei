@@ -30,6 +30,7 @@ devents:
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
+	SearchCount :local [];				-- Return Count only
 	SearchLittle :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	SearchBig :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	SearchBigEnd :local [status : integer;];	-- End of SearchBig
@@ -641,6 +642,25 @@ rules:
           end if;
 
 	end does;
+
+--
+-- SearchCount
+--
+-- Activated from:	top->Control->SearchCount
+--
+-- Prepare and execute search
+--
+
+	SearchCount does
+	  cmd : string;
+
+          (void) busy_cursor(top);
+ 	  send(PrepareSearch, 0);
+	  cmd := "select count(f._Fantom2_key) " + from + where;
+	  (void) mgi_writeLog(cmd + "\n");
+	  top->numRows.value := mgi_sql1(cmd) + " Results";
+          (void) reset_cursor(top);
+	  end does;
 
 --
 -- SearchLittle
