@@ -19,6 +19,5 @@ CALLS
        release_mlc_lock("char *") : "Boolean";
        cleanup_handler("Widget") : "Boolean";
        remove("char *") : "int";
-       set_textlimit("DBPROCESS *", "long");
   ENDL
 ENDC
