@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 11 13:12:10 2001";
+      lastWritten = "Tue Sep 11 14:49:21 2001";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1016,8 +1016,18 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                NotePushShort = NotePushShort : mgiDataTypes;
+                NotePush = NotePushShort : mgiDataTypes;
               }
+        }
+        {
+          AgeNotePush = NotePushShort;
+          Group: Widget
+            labelString = "Age Notes";
+          Group: Control
+            vip_x = 160;
+            vip_y = 1350;
+          Group: User
+            dialogName = AgeNoteDialog;
         }
 }
 

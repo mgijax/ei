@@ -397,7 +397,7 @@ rules:
         NoteInit does
 	  push : widget := NoteInit.source_widget;
 	  top : widget := push.root;
-	  dialog : widget := top->(push.dialogName);
+	  dialog : widget;
 	  table : widget := push.targetWidget.child_by_class(TABLE_CLASS);
 	  commit : boolean := NoteInit.commit;
 	  target : widget;
@@ -406,6 +406,12 @@ rules:
 	  -- Commit changes if re-selecting dialog and within the same record.
 	  -- Unmanage, then re-manage later so that dialog is popped back up to the front.
 	  -- However, if not committing changes, unmanage and return.
+
+	  if (push.is_defined("dialogName") = nil) then
+	    dialog := top->NoteDialog;
+	  else
+	    dialog := top->(push.dialogName);
+	  end if;
 
 	  if (dialog = nil) then
 	    return;

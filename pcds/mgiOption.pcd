@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 11 13:00:10 2001";
+      lastWritten = "Tue Sep 11 14:32:35 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1605,7 +1605,7 @@ Module: mgiOption
                                 }
                           }
                           {
-                            AgeNote = NotePushShort : mgiDataTypes;
+                            AgeNote = AgeNotePush : mgiDataTypes;
                             Group: Widget
                               labelString = "Age Notes";
                             Group: User

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 11 13:11:44 2001";
+      lastWritten = "Tue Sep 11 14:49:25 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -641,7 +641,7 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                       {
-                                        NotePushShort = NotePushShort : mgiDataTypes;
+                                        NotePush = NotePushShort : mgiDataTypes;
                                         Group: Widget
                                           labelString = "Antibody Notes";
                                       }
@@ -668,7 +668,7 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                       {
-                                        NotePushShort = NotePushShort : mgiDataTypes;
+                                        NotePush = NotePushShort : mgiDataTypes;
                                         Group: Widget
                                           labelString = "Antigen Recognition Notes";
                                       }
@@ -1033,36 +1033,12 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AppendNotes = AppendNotes : GXD;
-                                  Group: Widget
-                                    orientation = vertical;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = AssayNote;
-                                    leftOffset = 5;
-                                    topWidget = AssayNote;
-                                      {
-                                        AppendNotePush1 = AppendNotePush : mgiDataTypes;
-                                        Group: User
-                                          noteWidget = AssayNote;
-                                      }
-                                      {
-                                        AppendNotePush2 = AppendNotePush : mgiDataTypes;
-                                        Group: User
-                                          noteWidget = AssayNote;
-                                      }
-                                }
-                                {
                                   separator = XmSeparator;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = AppendNotes;
+                                    topWidget = AssayNote;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -1308,6 +1284,9 @@ Shift<Key>Tab: prev-tab-group()
                       Group: Widget
                         okCallback = "D:NextISResult";
                         cancelCallback = "D:NextISResult(answer = false)";
+                    }
+                    {
+                      AgeNoteDialog = AgeNoteDialog : mgiDialog;
                     }
               }
         }
