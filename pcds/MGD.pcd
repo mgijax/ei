@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Sep 17 10:42:37 2004";
+      lastWritten = "Wed Sep 29 11:16:18 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -10053,7 +10053,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  mlpSpecies = mlpSpecies : mgiDataTypes;
+                                  strainSpecies = strainSpecies : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
@@ -10152,11 +10152,11 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = mlpSpecies;
+                                    topWidget = strainSpecies;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = mlpSpecies;
+                                    leftWidget = strainSpecies;
                                     leftOffset = 25;
                                       {
                                         Table = mgiTable : mgiTable;
@@ -10196,26 +10196,36 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Synonym = Table : mgiTable;
+                                  Synonym = SynonymTypeTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
+                                    leftWidget = Marker;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Marker;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Marker;
-                                    topOffset = 5;
                                       {
-                                        Table = mgiTable : mgiTable;
+                                        Table = XtXrtTable : mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)";
-                                          xrtTblNumColumns = 3;
-                                          xrtTblColumnLabels = "Mode,Key,Synonym";
-                                          userDefinedAttributes = "synonym:Int(Int)=\"2\"\nsynonymKey:Int(Int)=\"1\"\n";
                                           xrtTblVisibleRows = 3;
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)";
-                                          xrtTblTraversableSeries = "(all 0-1 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)(all 6-7 0)";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        SynonymTypeMenu = SynonymTypeMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              SynonymTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Strain_View order by _SynonymType_key";
+                                            }
                                       }
                                 }
                                 {
@@ -10228,7 +10238,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     topWidget = Synonym;
                                     topOffset = 5;
-                                    leftWidget = Synonym;
+                                    leftWidget = Name;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -10280,60 +10290,18 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Extra = Table : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = References;
-                                    rightAttachment = attach_form;
-                                    rightOffset = 5;
-                                    topAttachment = attach_widget;
-                                    topWidget = References;
-                                    topOffset = 10;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblNumColumns = 5;
-                                          xrtTblNumRows = 1;
-                                          xrtTblVisibleRows = 1;
-                                          xrtTblColumnLabels = "Mode,Reference,Dataset,Note 1,Curatorial";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 10)(all 3 30)(all 4 15)";
-                                          userDefinedAttributes = "reference:Int(Int)=\"1\"\ndataset:Int(Int)=\"2\"\nnote1:Int(Int)=\"3\"\nnote2:Int(Int)=\"4\"\n";
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                                {
-                                  Notes = Notes : mgiDataTypes;
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Widget
+                                    orientation = horizontal;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Extra;
+                                    topWidget = DataSets;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Strain Origin";
-                                      }
-                                      {
-                                        text = scrolledText : mgiDataTypes;
-                                        Group: Widget
-                                          columns = 100;
-                                          rows = 10;
-                                      }
                                 }
                           }
                     }
@@ -10384,9 +10352,13 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   Duplicates = ControlPush : mgiControl;
@@ -10402,6 +10374,16 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumRows = 2;
+                                      }
                                 }
                           }
                     }
@@ -10609,7 +10591,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   SpeciesList = OrganismList : mgiLookup;
                                   Group: User
-                                    cmd = "select * from MLP_Species order by species";
+                                    cmd = "select _Term_key, term from VOC_Term_StrainSpecies_View order by term";
                                       {
                                         Label = LookupLabel;
                                         Group: Widget
@@ -10622,7 +10604,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           targetKey = ObjectID;
                                           targetText = Species;
-                                          targetWidget = mlpSpecies;
+                                          targetWidget = strainSpecies;
                                       }
                                 }
                                 {
@@ -10801,7 +10783,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       EditForm = EditForm : MGI;
                       Group: Widget
-                        width = 950;
+                        width = 875;
                         rubberPositioning = False;
                         resizePolicy = resize_any;
                       Group: User
@@ -11023,13 +11005,13 @@ Shift<Key>Tab: prev-tab-group()
                             Accession = Accession : mgiTable;
                             Group: Constraint
                               leftAttachment = attach_form;
-                              leftOffset = 250;
                               rightAttachment = attach_none;
                               topAttachment = attach_widget;
                               topWidget = separatorGadget;
                               bottomAttachment = attach_none;
                               resizable = true;
                               topOffset = 5;
+                              leftOffset = 20;
                                 {
                                   Table = mgiTable;
                                   Group: Widget
@@ -11222,6 +11204,126 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                           }
                           {
+                            SequenceNote = Notes : mgiDataTypes;
+                            Group: Constraint
+                              leftAttachment = attach_widget;
+                              rightAttachment = attach_none;
+                              topAttachment = attach_opposite_widget;
+                              bottomAttachment = attach_none;
+                              resizable = true;
+                              topWidget = Accession;
+                              leftOffset = 10;
+                              leftWidget = Accession;
+                                {
+                                  label = XmLabel;
+                                }
+                                {
+                                  text = scrolledText;
+                                  Group: Widget
+                                    columns = 75;
+                                    rows = 7;
+                                }
+                          }
+                          {
+                            SeqNoteMenu = NoteMenu : mgiOption;
+                            Group: Widget
+                              labelString = "Pick List of Sequence Notes";
+                              subMenuId = SeqNotePulldown;
+                            Group: Constraint
+                              leftAttachment = attach_opposite_widget;
+                              leftWidget = SequenceNote;
+                              rightAttachment = attach_none;
+                              topAttachment = attach_widget;
+                              topWidget = SequenceNote;
+                              topOffset = 5;
+                              bottomAttachment = attach_none;
+                              resizable = true;
+                                Popups:
+                                {
+                                  SeqNotePulldown : NotePulldown = OptionPulldown : mgiOption;
+                                      {
+                                        Chimeric = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = Chimeric;
+                                        Group: User
+                                          note = "Chimeric:  This sequence appears to be chimeric.";
+                                          noteWidget = SequenceNote;
+                                      }
+                                      {
+                                        Intronic = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = Intronic;
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "Intronic: This cDNA sequence appears to be intronic region of a gene.";
+                                      }
+                                      {
+                                        IntronContaining = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Intron-Containing";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "Intron-Containing:  This cDNA sequence appears to contain intronic sequence.";
+                                      }
+                                      {
+                                        FrameShift = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Frame-Shift";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "Frame-Shift:  Conceptual translation of this sequence reveals framerrors in the presumed coding region.e shift ";
+                                      }
+                                      {
+                                        ReverseC = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Reverse complement";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "Reverse complement:  This cDNA sequence appears to be reverse complement of another transcript.";
+                                      }
+                                      {
+                                        Same5 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "5'-overlap same strand";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "5'-overlap same strand:  This sequence is derived from a transcript for a gene that initiates at a site within a upstream gene, where the upstream gene is transcribed in the same direction.";
+                                      }
+                                      {
+                                        Same3 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "3'-overlap same strand";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "3'-overlap same strand:  This sequence is derived from a transcript for a gene that extends (reads-through) into a downstream gene, where the downstream gene is transcribed in the same direction.";
+                                      }
+                                      {
+                                        Opposite5 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "5'-overlap opposite strand";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "5'-overlap opposite strand:  This sequence is derived from a transcript for a gene that initiates at a site within a upstream gene, where the upstream gene is transcribed in the opposite direction.";
+                                      }
+                                      {
+                                        Opposite3 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "3'-overlap opposite strand";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "3'-overlap opposite strand:  This sequence is derived from a transcript for a gene that extends (reads-through) into a downstream gene, where thedownstream gene is transcribed in the opposite direction. ";
+                                      }
+                                      {
+                                        Low = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Low-quality";
+                                        Group: User
+                                          noteWidget = SequenceNote;
+                                          note = "Low-quality:  The sequence quality is low.";
+                                      }
+                                }
+                          }
+                          {
                             separatorGadget1 = XmSeparatorGadget;
                             Group: Constraint
                               leftAttachment = attach_form;
@@ -11260,6 +11362,7 @@ Shift<Key>Tab: prev-tab-group()
                               bottomAttachment = attach_none;
                               resizable = true;
                               leftOffset = 5;
+                              rightOffset = 5;
                                 {
                                   Table = mgiTable : mgiTable;
                                   Group: Widget
@@ -11276,6 +11379,7 @@ Shift<Key>Tab: prev-tab-group()
                                     xrtTblValidateCellCallback = "D:VerifyOrganism (ignoreRow = 0),\nD:VerifyStrains (ignoreRow = 0),\nD:VerifyTissue (ignoreRow = 0),\nD:VerifyCellLine (ignoreRow = 0),\nD:CommitTableCellEdit";
                                     xrtTblPixelWidthSeries = "(all 0-10 0)";
                                     xrtTblAllowCellResize = resize_all;
+                                    xrtTblFrozenColumns = 12;
                                   Group: User
                                     saveBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
                                       {
@@ -11370,7 +11474,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     xrtTblNumRows = 15;
                                     xrtTblVisibleRows = 15;
-                                    xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 20)(all 5 30)(all 6 10)";
+                                    xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 15)(all 5 25)(all 6 10)";
                                     xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                                     xrtTblColumnLabels = "Mode,Object key,Refs key,Type,MGI ID,Symbol or Name,J#";
                                       {

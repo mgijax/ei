@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Aug  6 15:07:05 2004";
+      lastWritten = "Mon Sep 27 15:09:41 2004";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -930,7 +930,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 2285;
         }
         {
-          mlpSpecies = mgiObject;
+          strainSpecies = mgiObject;
           Group: Control
             vip_x = 60;
             vip_y = 2230;
@@ -950,7 +950,7 @@ Shift<Key>Tab: prev-tab-group()
                         columns = 50;
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifySpeciesMLP()";
+<Key>Tab: VerifyStrainSpecies()";
                     }
               }
         }

@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 23 11:24:35 2004";
+      lastWritten = "Wed Sep 29 11:29:02 2004";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -445,7 +445,7 @@ Module: mgiTable
           AccessionReference = mgiAccessionTable : mgiTable;
           Group: Control
             vip_x = 75;
-            vip_y = 745;
+            vip_y = 800;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -468,7 +468,7 @@ Module: mgiTable
           ModificationHistory = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 855;
+            vip_y = 910;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -564,7 +564,7 @@ Module: mgiTable
           ObjectAssociationTable = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 910;
+            vip_y = 965;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -598,7 +598,7 @@ Module: mgiTable
           Accession = mgiAccessionTable : mgiTable;
           Group: Control
             vip_x = 75;
-            vip_y = 800;
+            vip_y = 855;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -619,6 +619,58 @@ Module: mgiTable
                       Group: Constraint
                         xrtTblLocation = location_top;
                     }
+              }
+        }
+        {
+          SynonymTypeTable = Table : mgiTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 745;
+              {
+                Table = mgiTable : mgiTable;
+                Group: Widget
+                  xrtTblColumnLabels = "Mode,Key,Type key,Ref key,Synonym Type,Synonym,J#,Citation";
+                  xrtTblPixelWidthSeries = "(all 0-3 0)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 60)(all 6 10)(all 7 30)";
+                  xrtTblEditableSeries = "(all 0-4 False)";
+                  xrtTblTraversableSeries = "(all 0-4 False)";
+                  userDefinedAttributes = "synKey:Int(Int)=\"1\"\nsynTypeKey:Int(Int)=\"2\"\nsynType:Int(Int)=\"4\"\nsynName:Int(Int)=\"5\"\nmgiTypeKey:String(String)\nrefsKey:Int=\"3\"\njnum:Int=\"6\"\ncitation:Int=\"7\"\n";
+                  xrtTblNumColumns = 8;
+                  xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                  xrtTblMaxLengthSeries = "(all 5 255)";
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddSynTypeRow";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = SynonymTypeMenu;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = SynonymTypeMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 2;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+              }
+              {
+                SynonymTypeMenu = SynonymTypeMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topWidget = Table;
+                  topOffset = 2;
               }
         }
 }

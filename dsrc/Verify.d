@@ -1310,6 +1310,7 @@ rules:
 	  order : string;
 	  selectedItem : integer;
 	  found : boolean := false;
+	  defaultSpecies : string;
 
 	  select := "select count(*) from " + table + " where ";
 	  where := name + " = \"" + item.value + "\"";
@@ -1350,8 +1351,11 @@ rules:
             end if;
 	  end if;
 
-	  if (tableID = STRAIN or tableID = TISSUE) then
-	    select := "select * from " + table + " where ";
+	  if (tableID = STRAIN) then
+	    select := "select _Strain_key, strain, standard from " + table + " where ";
+	    defaultSpecies := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'laboratory mouse'");
+	  elsif (tableID = TISSUE) then
+	    select := "select _Tissue_key, tissue, standard from " + table + " where ";
 	  elsif (tableID = BIB_REFS) then
 	    select := "select distinct id = 0, journal, standard = 1 from " + table + " where ";
 	  elsif (tableID = CROSS) then
@@ -1483,9 +1487,7 @@ rules:
 	      if (tableID = STRAIN) then
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
-		       mgi_DBprstr(item.value) + ",0,0,0)\n" +
-		       mgi_DBinsert(MLP_STRAIN, NOKEY) + "@" + KEYNAME + ",-1,NULL,NULL)\n" +
-		       mgi_DBinsert(MLP_EXTRA, NOKEY) + "@" + KEYNAME + ",NULL,NULL,NULL,NULL)\n";
+		       defaultSpecies + "," + mgi_DBprstr(item.value) + ",0,0,0)\n";
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
 		nextSeqNum := mgi_sql1("select max(sequenceNum) + 1 from " + 
 			mgi_DBtable(VOC_TERM) + " where _Vocab_key = " + (string) verify.vocabKey);
@@ -2662,18 +2664,18 @@ rules:
 	end does;
 
 --
--- VerifySpeciesMLP
+-- VerifyStrainSpecies
 --
---	Verify MLP Species entered in TextField or Table
+--	Verify Strain Species entered in TextField or Table
 --
---	If Text, assumes use of mlpSpecies template
+--	If Text, assumes use of strainSpecies template
 --	If Table, assumes table.speciesKey, table.species
 --
 --	Copy Unique Key into Appropriate widget/column
 --
 
-	VerifySpeciesMLP does
-	  sourceWidget : widget := VerifySpeciesMLP.source_widget;
+	VerifyStrainSpecies does
+	  sourceWidget : widget := VerifyStrainSpecies.source_widget;
 	  top : widget := sourceWidget.top;
 	  isTable : boolean;
 	  value : string;
@@ -2691,10 +2693,10 @@ rules:
 	  -- Processing for Table
 
 	  if (isTable) then
-	    row := VerifySpeciesMLP.row;
-	    column := VerifySpeciesMLP.column;
-	    reason := VerifySpeciesMLP.reason;
-	    value := VerifySpeciesMLP.value;
+	    row := VerifyStrainSpecies.row;
+	    column := VerifyStrainSpecies.column;
+	    reason := VerifyStrainSpecies.reason;
+	    value := VerifyStrainSpecies.value;
 	    speciesKey := sourceWidget.speciesKey;
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
@@ -2713,7 +2715,7 @@ rules:
 	  -- Processing for Text
 
 	  else
-	    value := top->mlpSpecies->Species->text.value;
+	    value := top->strainSpecies->Species->text.value;
 	  end if;
 
 	  -- If no value entered, return
@@ -2722,7 +2724,7 @@ rules:
 	    if (isTable) then
               (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
 	    else
-	      top->mlpSpecies->ObjectID->text.value := "NULL";
+	      top->strainSpecies->ObjectID->text.value := "NULL";
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    end if;
 	    return;
@@ -2735,7 +2737,7 @@ rules:
 	    if (isTable) then
               (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
 	    else
-	      top->mlpSpecies->ObjectID->text.value := "NULL";
+	      top->strainSpecies->ObjectID->text.value := "NULL";
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    end if;
 	    return;
@@ -2758,9 +2760,9 @@ rules:
 
 	  -- Search for Species in the database
 
-	  select : string := "select _Species_key, species " +
-			     "from " + mgi_DBtable(MLP_SPECIES) +
-			     " where species = " + mgi_DBprstr(value) + "\n";
+	  select : string := "select _Term_key, term " +
+			     "from VOC_Term_StrainSpecies_View " +
+			     "where term = " + mgi_DBprstr(value) + "\n";
 
 	  -- Insert results into string list for loading into Species selection list
 
@@ -2794,9 +2796,9 @@ rules:
 
 	    if (isTable) then
               (void) mgi_tblSetCell(sourceWidget, row, speciesKey, "NULL");
-	      VerifySpeciesMLP.doit := (integer) false;
+	      VerifyStrainSpecies.doit := (integer) false;
 	    else
-	      top->mlpSpecies->ObjectID->text.value := "NULL";
+	      top->strainSpecies->ObjectID->text.value := "NULL";
 	    end if;
 
 	    (void) reset_cursor(top);
@@ -2829,8 +2831,8 @@ rules:
             (void) mgi_tblSetCell(sourceWidget, row, speciesKey, whichSpecies);
             (void) mgi_tblSetCell(sourceWidget, row, speciesName, whichName);
 	  else
-	    top->mlpSpecies->ObjectID->text.value := whichSpecies;
-	    top->mlpSpecies->Species->text.value := whichName;
+	    top->strainSpecies->ObjectID->text.value := whichSpecies;
+	    top->strainSpecies->Species->text.value := whichName;
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
 
@@ -2893,7 +2895,10 @@ rules:
           added : string := "";
           s : string;
 	  sUpper : string;
+	  defaultSpecies : string;
           i : integer;
+
+	  defaultSpecies := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'laboratory mouse'");
  
           -- Parse Strains
  
@@ -2957,9 +2962,7 @@ rules:
               if (top->VerifyItemAdd.doAdd) then
                 ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
                                mgi_DBinsert(STRAIN, KEYNAME) +
-                               mgi_DBprstr(s) + ",0,0,0)\n" +
-                               mgi_DBinsert(MLP_STRAIN, NOKEY) + "@" + KEYNAME + ",-1,NULL,NULL)\n" +
-                               mgi_DBinsert(MLP_EXTRA, NOKEY) + "@" + KEYNAME + ",NULL,NULL,NULL,NULL)\n";
+                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0)\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
                 strainKeys := strainKeys + 

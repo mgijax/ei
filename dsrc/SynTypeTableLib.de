@@ -1,0 +1,37 @@
+--
+-- Name    : SynTypeTableLib.de
+-- Creator : lec
+-- Date	   : 03/12/2001
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for SynTypeTableLib.d.
+--
+
+-- Add Row to Synonym Type Table
+AddSynTypeRow [table : widget;];	 -- Synonym Type Table
+
+-- Edit Synonym Type of current Table Row
+EditSynType [table : widget;];	 	 -- Synonym Type Table
+
+-- Initialize Synonym Type Table
+InitSynTypeTable [table : widget;        -- Synonym Type Table
+	 tableID : integer;
+         clearCells : boolean := true;]; -- Clear Cells flag
+
+-- Load Synonym Type Table
+LoadSynTypeTable [table : widget;        -- Synonym Type Table
+            tableID : integer;           -- ID of table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Process Synonym Type Table; Sets table.sqlcmd 
+ProcessSynTypeTable [table : widget;     -- Synonym Type Table
+            tableID : integer;           -- ID of table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Search Synonym Type Table
+SearchSynTypeTable [table : widget;      -- Synonym Type Table
+            tableID : integer;           -- ID of table
+            tableTag : string := "syn";  -- Table Alias Tag for Query
+            join : string;];             -- Join command
+
