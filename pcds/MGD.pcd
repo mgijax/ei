@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 16 09:11:07 2001";
+      lastWritten = "Thu Aug 23 13:37:48 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -6174,6 +6174,8 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       ExitDialog = ExitDialog : mgiDialog;
+                      Group: Widget
+                        okCallback = "D:UncondExit";
                     }
                     {
                       SymbolErrorDialog = SelectionDialog : mgiDialog;

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 21 10:30:36 2001";
+      lastWritten = "Thu Aug 23 14:46:49 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -901,10 +901,10 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   EditPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Clipboard = MenuPush : mgiMenu;
+                                        Genotype = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:ManageSelectionList(dialog = \"ClipboardDialog\")";
-                                          labelString = Clipboard;
+                                          activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
+                                          labelString = Genotypes;
                                       }
                                 }
                           }
@@ -1241,17 +1241,6 @@ Shift<Key>Tab: prev-tab-group()
                                   CVGel = CVGel : mgiOption;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        StructureList = StructureList : mgiLookup;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: User
-                                                targetWidget = GelLane;
-                                            }
-                                      }
                                 }
                           }
                     }
@@ -1330,45 +1319,10 @@ Shift<Key>Tab: prev-tab-group()
                       NoteDialog = NoteDialog : mgiDialog;
                     }
                     {
-                      GenotypeDialog = GenotypeDialog : mgiDialog;
-                          {
-                            EditForm = EditForm : MGI;
-                                {
-                                  ID = ID;
-                                }
-                                {
-                                  Strain = Strain : mgiDataTypes;
-                                }
-                                {
-                                  AllelePair = TableLabel : mgiTable;
-                                }
-                                {
-                                  AlleleName = CharText : mgiDataTypes;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Allele Name";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 50;
-                                        Group: User
-                                          defaultValue = "allele name in progress";
-                                      }
-                                }
-                          }
-                    }
-                    {
                       InSituResultDialog = InSituResultDialog : mgiDialog;
                     }
                     {
                       MRKTransferDialog = MRKTransferDialog : mgiDialog;
-                    }
-                    {
-                      ClipboardDialog = ClipboardDialog : mgiDialog;
-                      Group: User
-                        editForm = AssayModule;
                     }
               }
         }
@@ -1613,7 +1567,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 12 16)(all 13 10)(all 17 8)(all 18 10)(all 19 11)(all 20 15)(all 21 9)(all 22 7)";
                         xrtTblColumnLabels = "Mode,Current Order,#,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,Results,Notes";
                         xrtTblEditableSeries = "(all 0-2 False) (all 13-22 False) (all 15 True)";
-                        xrtTblEnterCellCallback = "D:SetOptions";
+                        xrtTblEnterCellCallback = "D:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblMaxLengthSeries = "(all 12 255)(all 16 255)(all 22 255)";
                         xrtTblNumColumns = 23;
                         xrtTblNumRows = 11;
@@ -2110,7 +2064,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblEditableSeries = "(all all False) (all 11 True) (all 15 True) (all 18 True)";
                         userDefinedAttributes = "laneKey:Int(Int)=\"1\"\ncontrolKey:Int(Int)=\"2\"\ngenotypeKey:Int(Int)=\"3\"\nrnaKey:Int(Int)=\"5\"\nageKey:Int(Int)=\"6\"\nageMin:Int(Int)=\"7\"\nageMax:Int(Int)=\"8\"\nsexKey:Int(Int)=\"9\"\nseqNum:Int(Int)=\"10\"\nlabel:Int(Int)=\"11\"\ncontrol:Int(Int)=\"12\"\ngenotype:Int(Int)=\"13\"\nstructures:Int(Int)=\"14\"\nsampleAmt:Int(Int)=\"15\"\nrna:Int(Int)=\"16\"\nagePrefix:Int(Int)=\"17\"\nageRange:Int(Int)=\"18\"\nageNote:Int(Int)=\"19\"\nsex:Int(Int)=\"20\"\nlaneNote:Int(Int)=\"21\"\nstructureKeys:Int(Int)=\"4\"\nverifyFloat:StringTable=\"15\"\n";
                         xrtTblCharWidthSeries = "(all 0 1)(all 10 4)(all 11 5)(all 12 7)(all 13 8)(all 14 10)(all 16 8)(all 18 9)(all 19 8)(all 20 6)(all 21 5)";
-                        xrtTblEnterCellCallback = "D:SetStructure,\nD:SetOptions";
+                        xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVGel\"),\nD:CommitTableCellEdit";
                         xrtTblMaxLengthSeries = "(all 11 255)(all 19 255)(all 21 255)";
                       Group: User
@@ -2395,6 +2349,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Duplicate = ControlPush : mgiControl;
                                   Group: Widget
                                     activateCallback = "D:VerifyEdit(mode = 4),\nD:Duplicate,\nD:GoHome";
+                                    labelString = "Add Copy";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Search;
@@ -2783,12 +2738,12 @@ Shift<Key>Tab: prev-tab-group()
             orientation = horizontal;
           Group: Control
             vipComment = "";
-            vip_x = 57;
-            vip_y = 358;
+            vip_x = 175;
+            vip_y = 360;
               {
                 AppendNotePush1 = AppendNotePush : mgiDataTypes;
                 Group: Widget
-                  labelString = "Staging Criteria Not Specified";
+                  labelString = "Staging Not Specified";
                 Group: User
                   note = "Staging criteria not specified in reference.";
                   noteWidget = Note;
@@ -2796,10 +2751,117 @@ Shift<Key>Tab: prev-tab-group()
               {
                 AppendNotePush2 = AppendNotePush : mgiDataTypes;
                 Group: Widget
-                  labelString = "Staging Normalized/Plug Day = E0.5";
+                  labelString = "Staging Normalized";
                 Group: User
                   noteWidget = Note;
                   note = "Staging normalized so that noon of plug day = E0.5.";
+              }
+        }
+        {
+          GenotypeModule = Module : MGI;
+          Group: Widget
+            iconName = "D:CreateMGIModule(name = \"Genotype\")";
+          Group: Control
+            vip_x = 60;
+            vip_y = 360;
+          Group: User
+            homeWidget = Verify;
+            activateButtonName = GenotypePush;
+              {
+                MainForm = XmForm;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                }
+                                {
+                                  Strain = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  AllelePair = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = Strain;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    rightOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 9;
+                                          xrtTblColumnLabels = "Mode, Key, M Key, A1 Key, A2 Key,Seq #,Marker,Allele 1,Allele2";
+                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                          xrtTblCharWidthSeries = "(all 6-8 20)";
+                                          xrtTblMaxLengthSeries = "(all 6 25) (all 7-8 50)";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerAlleles,\nD:VerifyAllele,\nD:CommitTableCellEdit";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"6\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\nseqNum:Int(Int)=\"5\"\npairKey:Int(Int)=\"1\"\nmarkerColumns:Int=\"1\"\n";
+                                          xrtTblTraversableSeries = "(all 0-5 False)";
+                                          xrtTblEditableSeries = "(all 0-5 False)";
+                                        Group: User
+                                          alleleSymbol = "7\n8";
+                                          alleleKey = "3\n4";
+                                          requiredColumns = "6\n7";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "Allele Pairs";
+                                            }
+                                      }
+                                }
+                                {
+                                  AssignGenotype = push : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Assign Current Genotype To Assay";
+                                    activateCallback = "D:AssignGenotypeToAssay";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AllelePair;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AllelePair;
+                                    topOffset = 20;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 150;
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                }
+                                {
+                                  GenotypeEditClipboard = GenotypeEditClipboard : mgiLookup;
+                                }
+                          }
+                    }
               }
         }
 }

@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 23 14:33:02 2001";
+      lastWritten = "Thu Aug 23 15:05:51 2001";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -11,7 +11,7 @@ Module: mgiLookup
             activateCallback = "D:LoadList";
             traversalOn = False;
           Group: Control
-            vip_x = 60;
+            vip_x = 90;
             vip_y = 30;
         }
         {
@@ -22,7 +22,7 @@ Module: mgiLookup
             userDefinedAttributes = "cmd:String(String)\n";
             traversalOn = False;
           Group: Control
-            vip_x = 60;
+            vip_x = 90;
             vip_y = 85;
               {
                 Label = LookupLabel : mgiLookup;
@@ -53,7 +53,7 @@ Module: mgiLookup
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
+            vip_x = 90;
             vip_y = 195;
               {
                 Label = LookupLabel;
@@ -80,7 +80,7 @@ Module: mgiLookup
         {
           Lookup = XmFrame;
           Group: Control
-            vip_x = 60;
+            vip_x = 90;
             vip_y = 305;
               {
                 panedWindow = XmPanedWindow;
@@ -98,14 +98,14 @@ Module: mgiLookup
             valueChangedCallback = "D:ViewList";
             traversalOn = False;
           Group: Control
-            vip_x = 60;
+            vip_x = 90;
             vip_y = 140;
         }
         {
           LibraryList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 470;
+            vip_x = 90;
+            vip_y = 800;
           Group: User
             cmd = "select -1, name = \"Anonymous\"\nselect _Source_key, name from PRB_Source\nwhere name is not null and name != \"Anonymous\" and _Source_key > 0\norder by name";
               {
@@ -128,33 +128,33 @@ Module: mgiLookup
               }
         }
         {
-          StructureList = LookupList : mgiLookup;
+          ADClipboard = ClipboardList : mgiLookup;
           Group: Widget
             userDefinedAttributes = "updateCmd:String\n";
           Group: Control
-            vip_x = 60;
+            vip_x = 90;
             vip_y = 360;
+          Group: User
+            clipboardModule = DictionaryModule;
+            editClipboard = ADEditClipboard;
               {
-                Label = LookupLabel;
+                Label = LookupLabel : mgiLookup;
                 Group: Widget
                   labelString = "Anatomical Structures";
-                  activateCallback = "D:LoadStructureList";
                 Group: User
                   defaultLabel = "Anatomical Structures";
               }
               {
-                List = list;
+                List = list : mgiDataTypes;
                 Group: Widget
                   selectionPolicy = multiple_select;
-                  multipleSelectionCallback = "D:SelectStructure";
-                  userDefinedAttributes = "targetWidget:Widget\n";
               }
         }
         {
           ClassList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 525;
+            vip_x = 90;
+            vip_y = 855;
           Group: User
             cmd = "select * from MRK_Class order by name";
               {
@@ -173,8 +173,8 @@ Module: mgiLookup
         {
           HomologyAssayList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 415;
+            vip_x = 90;
+            vip_y = 745;
           Group: User
             cmd = "select * from HMD_Assay where _Assay_key != 15 order by assay";
               {
@@ -193,7 +193,7 @@ Module: mgiLookup
         {
           SpeciesList = LookupList;
           Group: Control
-            vip_x = 60;
+            vip_x = 90;
             vip_y = 250;
           Group: User
             cmd = "select _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key <= 2 order by _Species_key\nselect _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key > 2 order by name\n";
@@ -213,8 +213,8 @@ Module: mgiLookup
         {
           MarkerList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 580;
+            vip_x = 90;
+            vip_y = 910;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -231,8 +231,8 @@ Module: mgiLookup
         {
           MappingAssayList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 800;
+            vip_x = 90;
+            vip_y = 1130;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -251,8 +251,8 @@ Module: mgiLookup
         {
           GeneFamilyList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 635;
+            vip_x = 90;
+            vip_y = 965;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -273,8 +273,8 @@ Module: mgiLookup
         {
           StrainTypeList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 745;
+            vip_x = 90;
+            vip_y = 1075;
               {
                 Label = LookupLabel;
                 Group: Widget
@@ -291,8 +291,8 @@ Module: mgiLookup
         {
           ESCellLineList = LookupList;
           Group: Control
-            vip_x = 60;
-            vip_y = 690;
+            vip_x = 90;
+            vip_y = 1020;
           Group: User
             cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View order by cellLine";
               {
@@ -306,6 +306,180 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayESCellLine";
+              }
+        }
+        {
+          ClipboardEditList = LookupList;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 90;
+            vip_y = 690;
+              {
+                Label = LookupLabel : mgiLookup;
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Label;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Add = TablePush : mgiTable;
+                Group: Widget
+                  labelString = "Add Current";
+                  activateCallback = "D:ClipboardAdd";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = List;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 2;
+              }
+              {
+                Delete = TablePush : mgiTable;
+                Group: Widget
+                  labelString = Delete;
+                  activateCallback = "D:ClipboardDelete";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Add;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = Add;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Clear = TablePush : mgiTable;
+                Group: Widget
+                  labelString = Clear;
+                  activateCallback = "D:ClipboardClear";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Delete;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = Delete;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Sort = TablePush : mgiTable;
+                Group: Widget
+                  labelString = Sort;
+                  activateCallback = "D:ClipboardSort";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = Clear;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = Clear;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+        }
+        {
+          ClipboardList = LookupList;
+          Group: Widget
+            userDefinedAttributes = "orderBy:String(String)\nclipboardModule:String(String)\neditClipboard:String\n";
+          Group: Control
+            vip_x = 90;
+            vip_y = 525;
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  activateCallback = "D:ClipboardLoad";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+                  multipleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          GenotypeEditClipboard = ClipboardEditList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 635;
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = Genotypes;
+                Group: User
+                  defaultLabel = Genotypes;
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  visibleItemCount = 10;
+              }
+              {
+                Add = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:GenotypeClipboardAdd";
+              }
+        }
+        {
+          GenotypeClipboard = ClipboardList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 415;
+          Group: User
+            orderBy = "g.strain";
+            clipboardModule = GenotypeModule;
+            editClipboard = GenotypeEditClipboard;
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = Genotypes;
+                Group: User
+                  defaultLabel = Genotypes;
+              }
+        }
+        {
+          GenotypeSpecimenClipboard = GenotypeClipboard;
+          Group: Control
+            vip_x = 90;
+            vip_y = 470;
+          Group: User
+            cmd = "select g._Genotype_key, g.strain + \",\" + ap.symbol + \",\" + ap.allele1 from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+              {
+                Label = LookupLabel : mgiLookup;
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: User
+                  targetKey = 4;
+                  targetText = 13;
+                  targetWidget = Specimen;
+              }
+        }
+        {
+          GenotypeGelClipboard = GenotypeClipboard;
+          Group: Control
+            vip_x = 90;
+            vip_y = 580;
+          Group: User
+            cmd = "select g._Genotype_key, g.strain + \",\" + ap.symbol + \",\" + ap.allele1  from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+              {
+                Label = LookupLabel : mgiLookup;
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: User
+                  targetKey = 3;
+                  targetText = 13;
+                  targetWidget = GelLane;
               }
         }
 }

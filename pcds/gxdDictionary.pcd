@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Aug 22 11:01:44 2001";
+      lastWritten = "Thu Aug 23 09:47:46 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -439,7 +439,7 @@ Module: gxdDictionary
                                   QueryList = QueryList;
                                 }
                                 {
-                                  structureClipboard = structureClipboard : gxdDictionary;
+                                  ADEditClipboard = ADEditClipboard : gxdDictionary;
                                 }
                           }
                     }
@@ -556,7 +556,7 @@ Module: gxdDictionary
               }
         }
         {
-          structureClipboard = LookupList : mgiLookup;
+          ADEditClipboard = ClipboardEditList : mgiLookup;
           Group: Widget
             rubberPositioning = False;
             resizePolicy = resize_any;
@@ -567,62 +567,6 @@ Module: gxdDictionary
             vip_y = 85;
             vipComment = "XmForm is a container widget with no input semantics. Constraints are placed on its children to define attachments for each of the child's four sides. These attachments can be to the XmForm, to another child, to a relative position or to the initial position of the child. The attachments determine the layout behavior of XmForm when resizing occurs.";
               {
-                Add = TablePush : mgiTable;
-                Group: Widget
-                  labelString = "Add Current";
-                  activateCallback = "D:ClipboardAddCurrent";
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = List;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topOffset = 2;
-              }
-              {
-                Delete = TablePush : mgiTable;
-                Group: Widget
-                  labelString = Delete;
-                  activateCallback = "D:ClipboardDelete";
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = Add;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = Add;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                Clear = TablePush : mgiTable;
-                Group: Widget
-                  labelString = Clear;
-                  activateCallback = "D:ClipboardClear";
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = Delete;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = Delete;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                Sort = TablePush : mgiTable;
-                Group: Widget
-                  labelString = Sort;
-                  activateCallback = "D:ClipboardSort";
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = Clear;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = Clear;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
                   labelString = "Anatomical Structures";
@@ -631,16 +575,11 @@ Module: gxdDictionary
               }
               {
                 List = list : mgiDataTypes;
+              }
+              {
+                Add = TablePush : mgiTable;
                 Group: Widget
-                  visibleItemCount = 10;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Label;
-                  topOffset = 2;
-                  bottomAttachment = attach_none;
-                  resizable = true;
+                  activateCallback = "D:ADClipboardAdd";
               }
         }
         {

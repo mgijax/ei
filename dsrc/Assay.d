@@ -168,6 +168,8 @@ devents:
 	Init :local [];
 	InitImagePane :translation [];
 
+	LoadClipboards :local [];
+
 	Modify :local [];
 	ModifyAntibodyPrep :local [];
 	ModifyProbePrep :local [];
@@ -310,8 +312,7 @@ rules:
           send(SetNotesDisplay, 0);
 
 	  if (not AssayClear.select) then
-            ClipboardLoad.source_widget := top->ADClipboard->Label;
-	    send(ClipboardLoad, 0);
+	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
 	    currentAssay := "";
@@ -961,6 +962,25 @@ rules:
 
 	  send(Add, 0);
         end does;
+
+--
+-- LoadClipboards
+--
+
+	LoadClipboards does
+
+          ClipboardLoad.source_widget := top->ADClipboard->Label;
+          send(ClipboardLoad, 0);
+
+	  if (assayDetailForm.name = "InSituForm") then
+            ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
+            send(ClipboardLoad, 0);
+	  elsif (assayDetailForm.name = "GelForm") then
+            ClipboardLoad.source_widget := top->CVGel->GenotypeGelClipboard->Label;
+            send(ClipboardLoad, 0);
+	  end if;
+ 
+	end does;
 
 --
 -- Modify
@@ -1823,9 +1843,7 @@ rules:
 	    currentAssay := "";
             top->QueryList->List.row := 0;
             top->ID->text.value := "";
-            -- Re-Load the Anatomical Clipboard
-            ClipboardLoad.source_widget := top->ADClipboard->Label;
-            send(ClipboardLoad, 0);
+	    send(LoadClipboards, 0);
             return;
           end if;
 
@@ -1959,10 +1977,9 @@ rules:
           LoadAcc.tableID := GXD_ASSAY;
           send(LoadAcc, 0);
  
-          -- Load the Anatomical Clipboard
-          ClipboardLoad.source_widget := top->ADClipboard->Label;
-          send(ClipboardLoad, 0);
- 
+          -- Load the Clipboards
+	  send(LoadClipboards, 0);
+
           top->QueryList->List.row := Select.item_position;
 
           AssayClear.reset := true;
@@ -2426,6 +2443,20 @@ rules:
 	  end if;
 
 	  if (table.parent.name = "Specimen") then
+
+	    -- If InSitu Dialog is already displayed...
+	    if (top->InSituResultDialog.managed) then
+	      -- If current InSitu results have been modified and not saved...
+	      if (top->InSituResultDialog->Results->Table.modified) then
+		StatusReport.source_widget := top;
+		StatusReport.message := "Changes made to previous results were not saved and have been lost.";
+		send(StatusReport, 0);
+	      end if;
+
+	      InSituResultInit.source_widget := top->CVSpecimen->ResultsPush;
+	      send(InSituResultInit, 0);
+	    end if;
+
             SetOption.source_widget := top->CVSpecimen->AgeMenu;
             SetOption.value := mgi_tblGetCell(table, row, table.ageKey);
             send(SetOption, 0);
@@ -2445,13 +2476,6 @@ rules:
             SetOption.source_widget := top->CVSpecimen->HybridizationMenu;
             SetOption.value := mgi_tblGetCell(table, row, table.hybridizationKey);
             send(SetOption, 0);
-
-	    -- If In Situ Results dialog is managed, re-initialize it for the current Specimen
-
-	    if (top->InSituResultDialog.managed) then
-	      InSituResultInit.source_widget := top->CVSpecimen->ResultsPush;
-	      send(InSituResultInit, 0);
-	    end if;
 
 	  elsif (table.parent.name = "GelLane") then
             SetOption.source_widget := top->CVGel->AgeMenu;

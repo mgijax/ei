@@ -352,7 +352,8 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct g._Genotype_key, g.strain\n" + 
+	  Query.select := "select distinct g._Genotype_key, " +
+		"g.strain + ',' + g.marker + ',' + g.allele1\n" + 
 		from + "\n" + where + "\norder by g.strain\n";
 	  Query.table := GXD_GENOTYPE_VIEW;
 	  send(Query, 0);
@@ -374,8 +375,11 @@ rules:
 
           (void) busy_cursor(top);
 
-	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g";
-	  where := "where g._Genotype_key = a._Genotype_key " + "and a._Assay_key = " + assayKey;
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
+		", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
+	  where := "where g._Genotype_key = a._Genotype_key " +
+		"and a._Assay_key = " + assayKey + 
+		" and g._Genotype_key *= ap._Genotype_key";
 
 	  if (mgi->AssayModule->InSituForm.managed) then
 	    from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
@@ -384,7 +388,8 @@ rules:
 	  end if;
 
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct g._Genotype_key, g.strain\n" + 
+	  QueryNoInterrupt.select := "select distinct g._Genotype_key, " +
+		"g.strain + ',' + ap.symbol + ',' + ap.allele1\n" + 
 		from + "\n" + where + "\norder by g.strain\n";
 	  QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
 	  send(QueryNoInterrupt, 0);

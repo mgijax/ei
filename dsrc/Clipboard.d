@@ -241,4 +241,104 @@ rules:
 
 	end does;
 
+--
+-- ClipboardSetItems
+--
+-- Each time a row is entered, set the Clipboard selections based on the values
+-- in the appropriate column.
+--
+-- Assumes use of LookupList template
+--
+ 
+        ClipboardSetItems does
+	  table : widget := ClipboardSetItems.table;
+	  clipboard : widget := ClipboardSetItems.clipboard;
+          row : integer := ClipboardSetItems.row;
+          column : integer := ClipboardSetItems.column;
+	  reason : integer := ClipboardSetItems.reason;
+          itemList : string_list;
+          item : string;
+          notify : boolean := false;
+	  key : integer;
+	  setFirst : boolean := false;
+ 
+          if (reason != TBL_REASON_ENTER_CELL_END) then
+            return;
+          end if;
+ 
+          (void) XmListDeselectAllItems(clipboard->List);
+
+          itemList := mgi_splitfields(mgi_tblGetCell(table, row, column), ",");
+          itemList.rewind;
+          while (itemList.more) do
+            item := itemList.next;
+	    key := clipboard->List.keys.find(item);
+            (void) XmListSelectPos(clipboard->List, key, notify);
+
+	    -- Set the first item as the first visible position in the list
+
+	    if (not setFirst) then
+	      (void) XmListSetPos(clipboard->List, key);
+	      setFirst := true;
+	    end if;
+          end while;
+        end does;
+ 
+--
+-- ADClipboardSetItems
+--
+-- EnterCellCallback for table.
+-- UDAs required:  structureKeys
+-- 
+
+	ADClipboardSetItems does
+	  table : widget := ADClipboardSetItems.source_widget;
+	  top : widget :=  table.top;
+	  reason : integer := ADClipboardSetItems.reason;
+	  row : integer := ADClipboardSetItems.row;
+
+          if (reason != TBL_REASON_ENTER_CELL_END) then
+            return;
+          end if;
+ 
+	  ClipboardSetItems.table := table;
+	  ClipboardSetItems.clipboard := top->ADClipboard;
+	  ClipboardSetItems.row := row;
+	  ClipboardSetItems.column := table.structureKeys;
+	  ClipboardSetItems.reason := reason;
+	  send(ClipboardSetItems, 0);
+	end does;
+
+--
+-- GenotypeClipboardSetItems
+--
+-- EnterCellCallback for table.
+-- UDAs required:  genotypeKey
+-- 
+
+	GenotypeClipboardSetItems does
+	  table : widget := GenotypeClipboardSetItems.source_widget;
+	  top : widget :=  table.top;
+	  reason : integer := GenotypeClipboardSetItems.reason;
+	  row : integer := GenotypeClipboardSetItems.row;
+	  clipboard : widget;
+
+          if (reason != TBL_REASON_ENTER_CELL_END) then
+            return;
+          end if;
+ 
+	  if (top->InSituForm.managed) then
+	    clipboard := top->CVSpecimen->GenotypeSpecimenClipboard;
+	  elsif (top->GelForm.managed) then
+	    clipboard := top->CVGel->GenotypeGelClipboard;
+	  end if;
+
+	  ClipboardSetItems.table := table;
+	  ClipboardSetItems.clipboard := clipboard;
+	  ClipboardSetItems.row := row;
+	  ClipboardSetItems.column := table.genotypeKey;
+	  ClipboardSetItems.reason := reason;
+	  send(ClipboardSetItems, 0);
+	end does;
+
 end dmodule;

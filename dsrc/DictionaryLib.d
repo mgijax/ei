@@ -15,6 +15,9 @@
 --
 -- History
 --
+-- lec	08/23/2001
+--	- Moved all but ModifyStructure to Clipboard.d
+--
 -- lec	05/21/98
 --	- LoadADClipboard; LoadList should not allow dups
 --
@@ -93,50 +96,5 @@ rules:
 
 	end does;
 
---
--- SetADClipboard
---
--- Each time a row is entered, set the structure selections based on the values
--- in the appropriate column.
---
--- EnterCellCallback for table.
--- Assumes use of LookupList template
--- UDAs required:  structureKeys
---
- 
-        SetADClipboard does
-	  table : widget := SetADClipboard.source_widget;
-	  reason : integer := SetADClipboard.reason;
-          row : integer := SetADClipboard.row;
-	  top : widget := table.top;
-          structureList : string_list;
-          structure : string;
-          notify : boolean := false;
-	  key : integer;
-	  setFirst : boolean := false;
- 
-          if (reason != TBL_REASON_ENTER_CELL_END) then
-            return;
-          end if;
- 
-          (void) XmListDeselectAllItems(top->ADClipboard->List);
-
-          structureList := mgi_splitfields(mgi_tblGetCell(table, row, table.structureKeys), ",");
-          structureList.rewind;
-          while (structureList.more) do
-            structure := structureList.next;
-	    key := top->ADClipboard->List.keys.find(structure);
-            (void) XmListSelectPos(top->ADClipboard->List, key, notify);
-
-	    -- Set the first Structure as the first visible position in the list
-
-	    if (not setFirst) then
-	      (void) XmListSetPos(top->ADClipboard->List, key);
-	      setFirst := true;
-	    end if;
-          end while;
- 
-        end does;
- 
 end dmodule;
 

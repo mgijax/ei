@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 16 10:07:56 2001";
+      lastWritten = "Thu Aug 23 14:51:22 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1532,15 +1532,17 @@ Module: mgiOption
             vip_x = 80;
             vip_y = 3330;
               {
+                GenotypeSpecimenClipboard = GenotypeSpecimenClipboard : mgiLookup;
+              }
+              {
                 GenotypePush = TableDialogPush : mgiDataTypes;
                 Group: Widget
-                  activateCallback = "D:GenotypeInit";
+                  activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
                   labelString = Genotype;
                 Group: User
                   tableColumn = 13;
                   tableKeyColumn = 4;
                   targetWidget = Specimen;
-                  dialogName = GenotypeDialog;
               }
               {
                 AgeMenu = AgeMenu : mgiOption;
@@ -1723,9 +1725,10 @@ Module: mgiOption
             vip_x = 80;
             vip_y = 3165;
               {
-                StructureList = StructureList : mgiLookup;
+                ADClipboard = ADClipboard : mgiLookup;
                 Group: User
                   cmd = "select distinct _Structure_key, dbName from GXD_GelLaneStructure_View where _Assay_key = ";
+                  orderBy = sequenceNum;
                     {
                       Label = LookupLabel;
                     }
@@ -1733,18 +1736,24 @@ Module: mgiOption
                       List = list;
                       Group: User
                         targetWidget = GelLane;
+                        targetKey = 4;
+                        targetText = 14;
                     }
+              }
+              {
+                GenotypeGelClipboard = GenotypeGelClipboard : mgiLookup;
               }
               {
                 GenotypePush = TableDialogPush : mgiDataTypes;
                 Group: Widget
-                  activateCallback = "D:GenotypeInit";
-                  labelString = Genotype;
+                  activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
+                  labelString = Genotypes;
+                Group: Control
+                  vipComment = "";
                 Group: User
-                  targetWidget = GelLane;
                   tableColumn = 13;
                   tableKeyColumn = 3;
-                  dialogName = GenotypeDialog;
+                  targetWidget = GelLane;
               }
               {
                 GelControlMenu = GelControlMenu : mgiOption;

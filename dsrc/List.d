@@ -411,6 +411,7 @@ rules:
 	  pos : integer;
 	  item : string;
 	  keys : string := "";
+	  cbPrefix : string := "[Clipboard]:  ";
 
 	  -- These variables are only relevant for Tables
 	  table : widget;
@@ -492,6 +493,11 @@ rules:
 	    else
 
 	      item := list_w.selectedItems[0];
+
+	      if (item->substr(1, cbPrefix.length) = cbPrefix) then
+		item := item->substr(cbPrefix.length + 1, item.length);
+	      end if;
+
 	      (void) mgi_tblSetCell(table, row, (integer) list_w.targetText, item);
 
 	      -- If table key column specified, copy the key

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 16 09:11:03 2001";
+      lastWritten = "Thu Aug 23 14:48:06 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -15,7 +15,7 @@ Module: mgiDialog
             okCallback = "D:StatusReportOK";
           Group: Control
             vip_x = 80;
-            vip_y = 470;
+            vip_y = 415;
         }
         {
           DeleteDialog = XmQuestionDialog;
@@ -40,7 +40,7 @@ Module: mgiDialog
             showHelpButton = False;
           Group: Control
             vip_x = 80;
-            vip_y = 745;
+            vip_y = 690;
               {
                 filler = XmSeparator;
                 Group: Widget
@@ -60,7 +60,7 @@ Module: mgiDialog
             autoUnmanage = False;
           Group: Control
             vip_x = 80;
-            vip_y = 525;
+            vip_y = 470;
         }
         {
           ReportDialog = FileDialog : mgiDialog;
@@ -71,7 +71,7 @@ Module: mgiDialog
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 360;
+            vip_y = 305;
               {
                 FileSelection = FileSelection;
                 Group: Widget
@@ -155,7 +155,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 965;
+            vip_y = 910;
               {
                 FileSelection = FileSelection : mgiDialog;
                 Group: Constraint
@@ -261,7 +261,7 @@ Module: mgiDialog
             okLabelString = Yes;
           Group: Control
             vip_x = 80;
-            vip_y = 635;
+            vip_y = 580;
         }
         {
           WhichItem = XmFormDialog;
@@ -273,7 +273,7 @@ Module: mgiDialog
             dialogTitle = "Which Item?";
           Group: Control
             vip_x = 80;
-            vip_y = 855;
+            vip_y = 800;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -341,7 +341,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1075;
+            vip_y = 1020;
         }
         {
           WorkingDialog = XmWorkingDialog;
@@ -356,7 +356,7 @@ Module: mgiDialog
             dialogTitle = "Working Dialog";
           Group: Control
             vip_x = 80;
-            vip_y = 415;
+            vip_y = 360;
         }
         {
           NLMDialog = ReportDialog : mgiDialog;
@@ -366,7 +366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 910;
+            vip_y = 855;
           Group: User
             useReportDir = False;
               {
@@ -476,7 +476,7 @@ Module: mgiDialog
             cancelLabelString = No;
           Group: Control
             vip_x = 80;
-            vip_y = 1020;
+            vip_y = 965;
         }
         {
           SelectDialog = XmFormDialog;
@@ -488,7 +488,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1130;
+            vip_y = 1075;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -578,7 +578,7 @@ Module: mgiDialog
           StrainDialog = SelectDialog : mgiDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1240;
+            vip_y = 1185;
               {
                 ItemList = LookupList;
                 Group: User
@@ -608,7 +608,7 @@ Module: mgiDialog
             dialogTitle = Tissues;
           Group: Control
             vip_x = 80;
-            vip_y = 1185;
+            vip_y = 1130;
               {
                 ItemList = LookupList;
                 Group: User
@@ -642,7 +642,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 1240;
               {
                 label = XmLabel;
                 Group: Widget
@@ -723,7 +723,7 @@ Module: mgiDialog
             userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ntargetKeyColumn:Int(Int)\nclearForms:StringTable(StringTable)=\"EditForm\"\nhomeWidget:StringTable(StringTable)\n";
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1350;
           Group: User
             homeWidget = "Strain\nMarkerAllele";
               {
@@ -761,7 +761,7 @@ Module: mgiDialog
                               xrtTblPixelWidthSeries = "(all 0-5 0)";
                               xrtTblCharWidthSeries = "(all 6-8 20)";
                               xrtTblMaxLengthSeries = "(all 6 25) (all 7-8 50)";
-                              xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerAlleles,\nD:VerifyAllele (verifyAdd = true),\nD:CommitTableCellEdit";
+                              xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerAlleles,\nD:VerifyAllele,\nD:CommitTableCellEdit";
                               userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"6\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\nseqNum:Int(Int)=\"5\"\npairKey:Int(Int)=\"1\"\nmarkerColumns:Int=\"1\"\n";
                               xrtTblTraversableSeries = "(all 0-5 False)";
                               xrtTblEditableSeries = "(all 0-5 False)";
@@ -774,23 +774,6 @@ Module: mgiDialog
                                   Group: Widget
                                     labelString = "Allele Pairs";
                                 }
-                          }
-                    }
-                    {
-                      AlleleName = CharText : mgiDataTypes;
-                      Group: Widget
-                        managed = False;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Allele Name";
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              columns = 50;
-                            Group: User
-                              defaultValue = "allele name in progress";
                           }
                     }
               }
@@ -824,7 +807,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1295;
               {
                 OK = DialogPush : mgiDialog;
               }
@@ -845,7 +828,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1460;
               {
                 EditForm = EditForm : MGI;
                 Group: Constraint
@@ -895,7 +878,7 @@ Module: mgiDialog
             closeWindowCallback = "D:InSituResultCancel";
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1405;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -928,7 +911,7 @@ Module: mgiDialog
                               xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,Structures,Strength,Pattern,Image Panes,Notes";
                               xrtTblNumColumns = 13;
                               xrtTblEditableSeries = "(all 0-2 False)(all 8-12 false)";
-                              xrtTblEnterCellCallback = "D:SetStructure,\nD:SetImageResultOptions,\nD:SetImagePane";
+                              xrtTblEnterCellCallback = "D:ADClipboardSetItems,\nD:SetImageResultOptions,\nD:SetImagePane";
                               xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
                               xrtTblTraversableSeries = "(all 0-7 False)";
                               xrtTblValidateCellCallback = "D:VerifyStrengthPattern,\nD:CopyInSituRow,\nD:CommitTableCellEdit";
@@ -1028,9 +1011,10 @@ Module: mgiDialog
                                 }
                           }
                           {
-                            StructureList = StructureList : mgiLookup;
+                            ADClipboard = ADClipboard : mgiLookup;
                             Group: User
                               cmd = "select distinct _Structure_key, dbName from GXD_ISResultStructure_View where _Specimen_key = ";
+                              orderBy = sequenceNum;
                                 {
                                   Label = LookupLabel;
                                 }
@@ -1038,6 +1022,8 @@ Module: mgiDialog
                                   List = list;
                                   Group: User
                                     targetWidget = Results;
+                                    targetKey = 4;
+                                    targetText = 8;
                                 }
                           }
                     }
@@ -1053,7 +1039,7 @@ Module: mgiDialog
           RIDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1515;
               {
                 ItemList = LookupList;
                 Group: User
@@ -1084,7 +1070,7 @@ Module: mgiDialog
           CrossDialog = SelectDialog;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1570;
               {
                 ItemList = LookupList;
                 Group: User
@@ -1121,7 +1107,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1680;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1253,7 +1239,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 Mode = XmRadioBox;
                 Group: Constraint
@@ -1380,7 +1366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 frame = XmFrame;
                 Group: Constraint
@@ -1686,7 +1672,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2031,7 +2017,7 @@ Shift<Key>Tab: prev-tab-group()
             showHelpButton = False;
           Group: Control
             vip_x = 80;
-            vip_y = 305;
+            vip_y = 250;
         }
         {
           ImportMLCTextDialog = PromptDialog : mgiDialog;
@@ -2043,7 +2029,7 @@ Shift<Key>Tab: prev-tab-group()
             navigationType = none;
           Group: Control
             vip_x = 80;
-            vip_y = 800;
+            vip_y = 745;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                     {
@@ -2077,10 +2063,9 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             dialogTitle = "Exiting Form";
             messageString = "Changes have not been saved!\nAre you sure you want to exit this form?";
-            okCallback = "D:UncondExit";
           Group: Control
             vip_x = 80;
-            vip_y = 580;
+            vip_y = 525;
         }
         {
           VerifyRecord = VerifyDialog;
@@ -2090,7 +2075,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "C: TuUnmanage";
           Group: Control
             vip_x = 80;
-            vip_y = 690;
+            vip_y = 635;
         }
         {
           SelectionDialog = XmSelectionDialog;
@@ -2102,7 +2087,7 @@ Shift<Key>Tab: prev-tab-group()
             cancelLabelString = Close;
           Group: Control
             vip_x = 80;
-            vip_y = 195;
+            vip_y = 140;
         }
         {
           ClearDialog = VerifyDialog;
@@ -2112,7 +2097,7 @@ Shift<Key>Tab: prev-tab-group()
             cancelCallback = "C: TuUnmanage";
           Group: Control
             vip_x = 80;
-            vip_y = 250;
+            vip_y = 195;
         }
         {
           AlleleMergeDialog = XmFormDialog;
@@ -2124,7 +2109,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2253,7 +2238,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 Lookup = XmFrame;
                 Group: Widget
@@ -2472,7 +2457,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -2548,130 +2533,6 @@ Shift<Key>Tab: prev-tab-group()
             vipComment = "";
             vip_x = 80;
             vip_y = 85;
-        }
-        {
-          ClipboardDialog = XmFormDialog;
-          Group: Widget
-            managed = False;
-            dialogTitle = Clipboard;
-            userDefinedAttributes = "editForm:Widget\n";
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-            defaultButton = Add;
-          Group: Control
-            vip_x = 80;
-            vip_y = 140;
-            vipComment = "";
-              {
-                ItemList = LookupList : mgiLookup;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 2;
-                  rightOffset = 2;
-                  topOffset = 2;
-                    {
-                      Label = LookupLabel;
-                      Group: Widget
-                        labelString = "0 Items";
-                      Group: User
-                        defaultLabel = Items;
-                    }
-                    {
-                      List = list;
-                      Group: Widget
-                        width = 250;
-                        visibleItemCount = 10;
-                        singleSelectionCallback = "D:SelectListItem(deselect = false),\nD:CopyClipboard";
-                    }
-              }
-              {
-                Selection = CharText : mgiDataTypes;
-                Group: Widget
-                  xrtGearOrientation = vertical;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 2;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = ItemList;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  rightOffset = 2;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Selection;
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 55;
-                        maxLength = 255;
-                    }
-              }
-              {
-                SelectionKey = ID : mgiDataTypes;
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Selection;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topOffset = 5;
-              }
-              {
-                Buttons = XmRowColumn;
-                Group: Widget
-                  orientation = horizontal;
-                  entryAlignment = alignment_center;
-                  inTabGroup = True;
-                  packing = pack_column;
-                  spacing = 25;
-                  traversalOn = False;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_form;
-                  resizable = true;
-                  topWidget = separator;
-                  bottomOffset = 2;
-                  leftOffset = 10;
-                  rightOffset = 5;
-                    {
-                      Add = DialogPush : mgiDialog;
-                      Group: Widget
-                        labelString = Add;
-                        activateCallback = "D:AddToClipboard";
-                    }
-                    {
-                      Delete = DialogPush : mgiDialog;
-                      Group: Widget
-                        activateCallback = "D:DeleteFromClipboard";
-                        labelString = Delete;
-                    }
-                    {
-                      Clear = DialogPush : mgiDialog;
-                      Group: Widget
-                        activateCallback = "D:ClearClipboard";
-                        labelString = Clear;
-                    }
-                    {
-                      Close = DialogPush : mgiDialog;
-                      Group: Widget
-                        activateCallback = "C: TuUnmanage";
-                        labelString = Close;
-                    }
-              }
         }
 }
 
