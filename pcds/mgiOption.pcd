@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Wed Aug 11 14:02:04 1999";
+      lastWritten = "Wed Aug 18 07:33:37 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -346,6 +346,7 @@ Module: mgiOption
                         labelString = "MGD-MRK-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       MGIImage = AccToggle : mgiOption;
@@ -362,6 +363,7 @@ Module: mgiOption
                         labelString = "MGD-CREX-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       HYEX = AccToggle : mgiOption;
@@ -369,6 +371,7 @@ Module: mgiOption
                         labelString = "MGD-HYEX-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       INEX = AccToggle : mgiOption;
@@ -376,6 +379,7 @@ Module: mgiOption
                         labelString = "MGD-INEX-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       FSEX = AccToggle : mgiOption;
@@ -383,6 +387,7 @@ Module: mgiOption
                         labelString = "MGD-FSEX-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       RIEX = AccToggle : mgiOption;
@@ -390,6 +395,7 @@ Module: mgiOption
                         labelString = "MGD-RIEX-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       TEXT = AccToggle : mgiOption;
@@ -397,6 +403,7 @@ Module: mgiOption
                         labelString = "MGD-TEXT-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       TXEX = AccToggle : mgiOption;
@@ -404,6 +411,7 @@ Module: mgiOption
                         labelString = "MGD-TXEX-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       PMEX = AccToggle : mgiOption;
@@ -411,6 +419,7 @@ Module: mgiOption
                         labelString = "MGD-PMEX-";
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       E = AccToggle : mgiOption;
@@ -418,6 +427,7 @@ Module: mgiOption
                         labelString = E;
                       Group: User
                         defaultValue = 1;
+                        preferred = False;
                     }
                     {
                       GDB = AccToggle : mgiOption;
@@ -435,7 +445,7 @@ Module: mgiOption
           AccToggle = OptionToggle;
           Group: Widget
             managed = False;
-            userDefinedAttributes = "allowAdd:Boolean=\"True\"\nallowModify:Boolean=\"True\"\nallowDelete:Boolean=\"True\"\n";
+            userDefinedAttributes = "allowAdd:Boolean(Boolean)=\"True\"\nallowModify:Boolean(Boolean)=\"True\"\nallowDelete:Boolean(Boolean)=\"True\"\npreferred:Boolean=\"True\"\nprivate:Boolean=\"False\"\n";
           Group: Control
             vip_x = 70;
             vip_y = 1130;
