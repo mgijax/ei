@@ -994,7 +994,7 @@ rules:
 -- (TR 5693)
 --
 -- Activated From:  NotePush.activateCallback
--- Does:            If current row note is blank and annotation is GO/Marker,
+-- Does:            If current row note is blank,
 --		    then initialize row note with GO note template.
 --
 

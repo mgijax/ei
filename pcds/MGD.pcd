@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 28 14:52:01 2005";
+      lastWritten = "Tue Mar 29 13:39:03 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1298,16 +1298,6 @@ Module: MGD
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = Tissue;
-                                              Group: User
-                                                keys = "Tissue.py";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
@@ -1666,16 +1656,6 @@ Module: MGD
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = "Orthology\nLoad Bulk Orthology";
-                                              Group: User
-                                                keys = "Orthology.py\nloadBulkOrthology.csh";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
@@ -2114,16 +2094,6 @@ Module: MGD
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = Probe;
-                                              Group: User
-                                                keys = "Probe.py";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
@@ -6403,16 +6373,6 @@ Shift<Key>Tab: prev-tab-group()
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = "Current Symbol";
-                                              Group: User
-                                                keys = "MLC_Current_Symbol.py";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
@@ -7919,9 +7879,9 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "Bibliography (format 1)\nBibliography (Moyha)\nBibliography (Moyha) w/ Abstracts\nDuplicate References excluding Mouse News Letter & Guidis\nAll Duplicate References";
+                                                items = "Bibliography\nAll Duplicate References";
                                               Group: User
-                                                keys = "Bibliographic.py dynamic 1\nBibliographic.py dynamic 2\nBibliographic.py dynamic 3\nBibliographic.py dup 1\nBibliographic.py dupall 1";
+                                                keys = "Bibliographic.py dynamic\nBibliographic.py dupall";
                                             }
                                       }
                                       {
@@ -9957,16 +9917,6 @@ Shift<Key>Tab: prev-tab-group()
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = "Strain\nStrain List";
-                                              Group: User
-                                                keys = "Strain.py\nStrainList.py";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
@@ -12503,16 +12453,6 @@ Shift<Key>Tab: prev-tab-group()
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = Marker;
-                                              Group: User
-                                                keys = "Marker.py";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
@@ -13414,16 +13354,6 @@ Shift<Key>Tab: prev-tab-group()
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = Marker;
-                                              Group: User
-                                                keys = "Marker.py";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
