@@ -277,6 +277,13 @@ extern char *global_version;
 #define VOC_VOCABDAG_VIEW	812
 #define DAG_NODE_VIEW		813
 
+/* Fantom2 Tables */
+
+#define MGI_FANTOM2		900
+#define MGI_FANTOM2NOTES	901
+#define MGI_FANTOM2CACHEGBA	902
+#define MGI_FANTOM2CACHEFINAL	903
+
 /* End of Table Definitions */
 
 /* Stored procedures */

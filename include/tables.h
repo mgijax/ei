@@ -25,6 +25,7 @@ extern void mgi_tblStartFlash(Widget, int, int);
 extern void mgi_tblStopFlash(Widget, int, int);
 extern void mgi_tblStopFlashAll(Widget);
 extern Boolean mgi_tblSort(Widget, int);
+extern void mgi_tblDestroyCellValues(Widget);
 
 #if defined(__cplusplus) || defined(c_plusplus)
 	} 

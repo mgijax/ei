@@ -403,3 +403,15 @@ Boolean mgi_tblSort(Widget table, int column)
   return (XrtTblSortTable(table, column, NULL));
 }
 
+
+void mgi_tblDestroyCellValues(Widget table)
+{
+  XrtTblCellValues *values;
+
+  XtVaGetValues(table,
+		XmNxrtTblCellValues, &values,
+		NULL);
+
+  (void) XrtTblDestroyCellValues(values);
+}
+
