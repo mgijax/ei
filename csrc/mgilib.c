@@ -688,6 +688,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_NoteType_key");
 	    break;
     case MGI_NOTE_NOMEN_VIEW:
+    case MGI_NOTE_SOURCE_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
     case MGI_ORGANISM:
@@ -1305,6 +1306,12 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_NOTETYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_NoteType_Nomen_View");
+	    break;
+    case MGI_NOTE_SOURCE_VIEW:
+	    strcpy(buf, "MGI_Note_Source_View");
+	    break;
+    case MGI_NOTETYPE_SOURCE_VIEW:
+	    strcpy(buf, "MGI_NoteType_Source_View");
 	    break;
     case MGI_ORGANISM:
             strcpy(buf, "MGI_Organism");
@@ -2229,7 +2236,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_PROBE:
-            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, primer1sequence, primer2sequence, regionCovered, regionCovered2, insertSite, insertSize, DNAtype, repeatUnit, productSize, moreProduct)",
+            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, _SegmentType_key, primer1sequence, primer2sequence, regionCovered, regionCovered2, insertSite, insertSize, repeatUnit, productSize, moreProduct)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_REFERENCE:
@@ -2242,7 +2249,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
-            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _Organism_key, _Strain_key, _Tissue_key, age, ageMin, ageMax, sex, cellLine)",
+            sprintf(buf, "insert %s (%s, name, description, _Refs_key, _Organism_key, _Strain_key, _Tissue_key, _Gender_key, age, ageMin, ageMax, cellLine)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_MARKER:
