@@ -558,7 +558,7 @@ rules:
 	  cmd := "select * from GXD_Index_View where _Index_key = " + currentRecordKey + "\n" +
 		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
 			" order by _IndexAssay_key, _StageID_key\n" +
-		 "select assays = count(distinct a._Assay_key) from GXD_Index i, GXD_Expression e " +
+		 "select assays = count(distinct e._Assay_key) from GXD_Index i, GXD_Expression e " +
 		 "where i._Index_key = " + currentRecordKey + 
 		 " and i._Refs_key = e._Refs_key";
 
