@@ -20,7 +20,7 @@
 # Triage Process:  SEE TR 1227
 #
 # Matches are performed on Journal, Year, Volume, First Page
-# Updates are performed iff Medline UI, PubMed ID, Title or Abstract is NULL
+# Updates are performed iff PubMed ID, Title or Abstract is NULL
 #
 # Duplicates References are reported in '.duplicates' file
 # Submission References are reported in '.submission' file
@@ -41,9 +41,7 @@
 #	The NLM input file contains records in the following format:
 #	(a record ID, list of export tags and data)
 #
-#	PMID- PubMed unique identifier	(their format)
-#	PMID  - PubMed unique identifier (our format)
-#	UI  - Medline unique identifier
+#	PMID- PubMed unique identifier
 #	AU  - list of authors in format (NAME II; NAME II; ...)
 #	TI  - title of article
 #	TA  - journal
@@ -56,11 +54,11 @@
 #
 # File Processing
 #
-# Each input file contains some export tags (ex. UI, AU, TI, etc.).  A dictionary
-# (rec{}) is used to stored the tag:value pairs (ex. rec['UI'] = 99210772).  However, we
+# Each input file contains some export tags (ex. PMID, AU, TI, etc.).  A dictionary
+# (rec{}) is used to stored the tag:value pairs (ex. rec['PMID'] = 99210772).  However, we
 # also need to print out the record in the correct order.  Since dictionary key:value pairs
 # are stored in random order, we create a list (rectags[]) to store the ordered export tags
-# (ex. rectags = ['UI', 'AU', 'TI', 'TA', 'PG', 'DP', 'IP', 'VI', 'AB'] for an NLM file). See
+# (ex. rectags = ['PMID', 'AU', 'TI', 'TA', 'PG', 'DP', 'IP', 'VI', 'AB'] for an NLM file). See
 # printRec().
 #
 # We use the export tags to retrieve information about the record when updating/adding the
@@ -87,7 +85,10 @@
 #
 # History
 #
-#	lec	-9/17/2003
+#	lec	12/04/2003
+#	- UI is no longer included in NLM file
+#
+#	lec	09/17/2003
 #	- TR 5148; format changed PMID is listed before UI
 #
 #	lec	03/27/2001
@@ -200,8 +201,6 @@ def printRec(fd, rec, rectags, msg = None):
 		fd.write(msg + '\n')
 
 	# Print every tagged field except if value is NULL
-	# note that we print the tag + 2 spaces
-	# the NLM-generated file has PMID with no spaces
 
 	for t in rectags:
 		if rec[t] != 'NULL':
@@ -523,14 +522,13 @@ def doUpdate(rec, rectags):
 		abstract = result['abstract']
 		jnum = result['jnum']
 
-	# Get UI Accession key(s)
+	# Get PMID Accession key
 
-	uiKey = accessionlib.get_Accession_key(refKey, 'Reference', MEDLINESTR)
 	pmidKey = accessionlib.get_Accession_key(refKey, 'Reference', PUBMEDSTR)
 
-	# Update existing entry if ui, pmid, title or abstract is NULL
+	# Update existing entry if pmid, title or abstract is NULL
  
-	if uiKey is None or pmidKey is None or title is None or abstract is None:
+	if pmidKey is None or title is None or abstract is None:
 
 		attachQuotes(rec)
 		cmd = []
@@ -558,15 +556,6 @@ def doUpdate(rec, rectags):
         	update.append('modification_date = getdate() where _Refs_key = %d' % refKey)
 		cmd.append(string.join(update, ','))
 
-		# Update/Add Medline UI
-
-        	if rec.has_key('UI'):
-			if uiKey is not None:
-          			cmd.append('exec ACC_update %s,%s' % (uiKey, rec['UI']))
-			else:	
-          			cmd.append('exec ACC_insert %d,%s,%d,%s' \
-				     	% (refKey, rec['UI'], MEDLINEKEY, MGITYPE))
- 
 		# Update/Add PubMed ID
 
 		if rec.has_key('PMID'):
@@ -636,10 +625,6 @@ def doAdd(rec, rectags):
 		cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
 			% (rec['PMID'], PUBMEDKEY, MGITYPE))
 
-	if rec.has_key('UI'):
-        	cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
-			% (rec['UI'], MEDLINEKEY, MGITYPE))
- 
 	cmd.append('commit transaction')
 	db.sql(cmd, [None] * len(cmd))
         nextJnum = nextJnum + 1;	# Increment next J#
@@ -681,7 +666,7 @@ def processRec(rec, rectags):
 		rectags.append('IP')
 
 	# If record missing any required field, skip
-	for t in ('UI', 'AU', 'TI', 'TA', 'DP', 'YR', 'PG', 'IP', 'VI'):
+	for t in ('PMID', 'AU', 'TI', 'TA', 'DP', 'YR', 'PG', 'IP', 'VI'):
 		if not rec.has_key(t):
 			printRec(nomatchFile, rec, rectags, 'Record missing (%s) Field' % (t))
 			return
@@ -756,8 +741,6 @@ def processFile():
 	while line:
 
 		# Find start of new record by looking for line containing 'PMID  -'
-		# or 'PMID-'.  Our printRec routine uses 'PMID  -' format,
-		# but NLM uses 'PMID-' format.
 
 		if regex.match('PMID-', line) > 0 or regex.match('PMID  -', line) > 0:
 			if newRec:	# Found new record, process current one
@@ -810,8 +793,6 @@ def processFile():
 
 # Fields present in NLM/Current Contents text files
 
-MEDLINESTR = 'MEDLINE'
-MEDLINEKEY = 7
 PUBMEDSTR = 'PubMed'
 PUBMEDKEY = 29
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
