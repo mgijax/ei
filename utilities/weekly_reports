@@ -84,5 +84,6 @@ done
 cp $HOME/mgireport/*.html $FTP
 
 # Copy & link current report
-ln -s $FTP/Nomenclature-$DATETAG.html $FTP/Nomenclature-current.html
+cd $FTP
+ln -s Nomenclature-$DATETAG.html Nomenclature-current.html
 
