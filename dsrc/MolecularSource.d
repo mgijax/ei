@@ -281,6 +281,25 @@ rules:
 	  DisplayMolecularSource.master := true;
 	  send(DisplayMolecularSource, 0);
 
+	  cmd : string;
+	  cmd := "select m._Set_key, m._SetMember_key, v.name " + 
+	      "from MGI_Set_CloneLibrary_View v, MGI_SetMember m " +
+	      "where v._Set_key = m._Set_key " +
+	      "and m._Object_key = " + top->SourceForm->SourceID->text.value;
+
+	  row : integer := 0;
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+
+--	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+--	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+ --             (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
+--	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+--	    end while;
+ --         end while;
+--	  (void) dbclose(dbproc);
+
           top->QueryList->List.row := Select.item_position;
 
           LoadAcc.table := accTable;

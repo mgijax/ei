@@ -344,14 +344,14 @@ rules:
 	  -- Row Labels which appear in Table
 	  nonstatusLabels.insert("Tumor", nonstatusLabels.count + 1);
 	  nonstatusLabels.insert("SCC", nonstatusLabels.count + 1);
-	  nonstatusLabels.insert("Matrix", nonstatusLabels.count + 1);
-	  nonstatusLabels.insert("Chromosome Committee", nonstatusLabels.count + 1);
+--	  nonstatusLabels.insert("Matrix", nonstatusLabels.count + 1);
+--	  nonstatusLabels.insert("Chromosome Committee", nonstatusLabels.count + 1);
 
 	  -- Values used in Reference "dbs" string
 	  nonstatusDBS.insert("Tumor", nonstatusDBS.count + 1);
 	  nonstatusDBS.insert("SCC", nonstatusDBS.count + 1);
-	  nonstatusDBS.insert("Matrix", nonstatusDBS.count + 1);
-	  nonstatusDBS.insert("CC", nonstatusDBS.count + 1);
+--	  nonstatusDBS.insert("Matrix", nonstatusDBS.count + 1);
+--	  nonstatusDBS.insert("CC", nonstatusDBS.count + 1);
 
 	  -- Construct Row labels string, data set string and table ID string
 	  -- for Statused Data Sets
