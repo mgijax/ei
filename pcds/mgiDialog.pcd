@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 28 12:56:37 1999";
+      lastWritten = "Thu Oct 14 08:26:27 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -66,8 +66,6 @@ Module: mgiDialog
           ReportDialog = FileDialog : mgiDialog;
           Group: Widget
             userDefinedAttributes = "select:String(String)\nuseReportDir:Boolean(Boolean)=\"True\"\nprintSelect:String\n";
-            rubberPositioning = False;
-            resizePolicy = resize_any;
             dialogTitle = Reports;
             mapCallback = "D:ReportInit";
           Group: Control
