@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 05/05/2004 lec
+--      - TR 5673; prevent accidental changes to ES Cell Line/Strain of Origin
+--
 -- 02/14/2003 lec
 --	- TR 1892; added "exec MRK_reloadLabel"
 --
@@ -69,6 +72,8 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
+
+	VerifyESStrain :local [];
 
 locals:
 	mgi : widget;
@@ -489,6 +494,23 @@ rules:
             return;
 	  end if;
 
+	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED and
+	      (top->ESCellLine->VerifyID->text.modified or top->EditForm->Strain->StrainID->text.modified)) then
+
+	    top->VerifyESStrain.doModify := false;
+            top->VerifyESStrain.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyESStrain.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyESStrain.doModify) then
+	      return;
+	    end if;
+	  end if;
+
 	  (void) busy_cursor(top);
 
 	  cmd := "";
@@ -505,10 +527,6 @@ rules:
 	    end if;
 	  end if;
 
-	  if (top->EditForm->Strain->StrainID->text.modified) then
-	    set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
-	  end if;
-
           if (top->InheritanceModeMenu.menuHistory.modified and
 	      top->InheritanceModeMenu.menuHistory.searchValue != "%") then
             set := set + "_Mode_key = "  + top->InheritanceModeMenu.menuHistory.defaultValue + ",";
@@ -521,6 +539,10 @@ rules:
 
 	  if (top->ESCellLine->VerifyID->text.modified) then
 	    set := set + "_CellLine_key = " + mgi_DBprkey(top->ESCellLine->VerifyID->text.value) + ",";
+	  end if;
+
+	  if (top->EditForm->Strain->StrainID->text.modified) then
+	    set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
 	  end if;
 
           if (top->AlleleStatusMenu.menuHistory.modified and
@@ -567,8 +589,11 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set) +
-		"\nexec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value;
+	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
+
+	    if (top->mgiMarker->ObjectID->text.value != "") then
+		cmd := cmd + "exec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value;
+	    end if;
 	  end if;
 
 	  ModifySQL.cmd := cmd;
@@ -1093,6 +1118,17 @@ rules:
 	  end if;
 
         end does;
+
+--
+-- VerifyESStrain
+--
+--	Called when user chooses YES from VerifyESStrain dialog
+--
+
+	VerifyESStrain does
+	  top->VerifyESStrain.doModify := true;
+	  top->VerifyESStrain.managed := false;
+	end does;
 
 --
 -- Exit
