@@ -254,7 +254,7 @@ def init():
 	global mode, nextJnum
  
         try:
-                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:j', ['mode='])
+                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:j:', ['mode='])
         except:
                 showUsage()
  
@@ -887,6 +887,11 @@ def processRec(rec, rectags):
 		else:
 			rec[newField] = 'NULL'
 
+	# Replace double quotes w/ single quotes in Abstract
+	if rec.has_key('AB'):
+		newAbstract = regsub.gsub('"', '\'', rec['AB'])
+		rec['AB'] = newAbstract
+
 	# Short title for Submission matches
 	rec['TISHORT'] = rec['TI'][:25]
 
@@ -999,23 +1004,24 @@ def processCCFile():
 	rec = {}	# dictionary which will store processed record
 	rectags = []	# list of ordered field tags
 
-	newRec = 0
 	prevfield = ''
 	field = ''
 
 	while line:
 
-		# Find start of new record by looking for line containing "PT"
+		# Find end of record by looking for line containing "ER"
 
-		if regex.match('PT ', line) > 0:
-			if newRec:	# Found new record, process current one
+		if regex.match('ER', line) > 0:
+			rec['ER'] = ''
+			rectags.append('ER')
+
+			if len(rec) > 0:
 				processRec(rec, rectags)
 				rec = {}	# re-set the dictionary
 				rectags = []	# re-set the tag list
-			newRec = 1
 
 		# Line contains a label in format 'PT '
-		if regex.match('.. ', line) > 0:
+		elif regex.match('.. ', line) > 0:
 			[field, value] = string.split(line, ' ', 1)
 			field = string.strip(field)
 			value = string.strip(value)
@@ -1034,19 +1040,19 @@ def processCCFile():
 				rec[field] = value
 				rectags.append(field)
 
-		elif regex.match('..', line) > 0:
-			field = string.strip(line)
-			if len(field) > 0:
-				value = ''
-				rec[field] = value
-				rectags.append(field)
+#		elif regex.match('..', line) > 0:
+#			field = string.strip(line)
+#			if len(field) > 0:
+#				value = ''
+#				rec[field] = value
+#				rectags.append(field)
 
 		if len(field) > 0:
 			prevfield = field
 
 		line = nlmccFile.readline()
 
-	if newRec:
+	if len(rec) > 0:
 		processRec(rec, rectags)	# Process last record
 
 #
