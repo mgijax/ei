@@ -37,7 +37,7 @@ extern char *global_server;
 
 #define TEXTBUFSIZ      200000
 #define PASSWDFILE	".mgi_password"
-#define ROWLIMIT 	"1000"
+#define ROWLIMIT 	"2000"
 #define NOROWLIMIT 	"0"
 
 #endif
