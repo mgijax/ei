@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Dec 29 11:10:39 2000";
+      lastWritten = "Fri Feb 16 12:32:03 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1274,6 +1274,9 @@ Module: MGD
                                                     Medline = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2359,6 +2362,9 @@ Module: MGD
                                                     Medline = AccToggle;
                                                   }
                                                   {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                   }
                                                   {
@@ -2814,6 +2820,9 @@ Module: MGD
                                 }
                                 {
                                   Medline = AccToggle;
+                                }
+                                {
+                                  PubMed = AccToggle : mgiOption;
                                 }
                                 {
                                   EC = AccToggle;
@@ -5287,6 +5296,9 @@ Module: MGD
                                                     Medline = AccToggle;
                                                   }
                                                   {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                   }
                                                   {
@@ -6631,6 +6643,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     Medline = AccToggle;
                                                   }
                                                   {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                   }
                                                   {
@@ -6712,6 +6727,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Medline = AccToggle;
+                                                  }
+                                                  {
+                                                    PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;
@@ -7400,6 +7418,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Medline = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    PubMed = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -8250,6 +8273,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     Medline = AccToggle;
                                                   }
                                                   {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -8443,6 +8469,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Medline = AccToggle;
+                                                  }
+                                                  {
+                                                    PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;

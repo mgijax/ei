@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Jan  8 11:01:06 2001";
+      lastWritten = "Fri Feb 16 12:31:23 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -293,6 +293,13 @@ Module: mgiOption
                       Medline = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 7;
+                    }
+                    {
+                      PubMed = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = PubMed;
+                      Group: User
+                        defaultValue = 29;
                     }
                     {
                       EC = AccToggle : mgiOption;
