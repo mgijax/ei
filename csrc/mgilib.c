@@ -2249,8 +2249,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
 	      break;
       case ALL_ALLELE:
       case GXD_GENOTYPE:
-      case GXD_INDEX:
-      case GXD_INDEXSTAGES:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
@@ -2267,8 +2265,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
     {
       case ALL_ALLELE:
       case GXD_GENOTYPE:
-      case GXD_INDEX:
-      case GXD_INDEXSTAGES:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);
