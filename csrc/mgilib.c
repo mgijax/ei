@@ -1279,9 +1279,6 @@ char *mgi_DBtable(int table)
     case GXD_PATTERN:
             strcpy(buf, "GXD_Pattern");
 	    break;
-    case GXD_FIELDTYPE:
-            strcpy(buf, "IMG_FieldType");
-	    break;
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "GXD_AntibodyType");
 	    break;
@@ -2133,7 +2130,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE:
-            sprintf(buf, "insert %s (%s, _Image_key, _FieldType_key, paneLabel)", 
+            sprintf(buf, "insert %s (%s, _Image_key, paneLabel)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGENOTE:
@@ -2358,7 +2355,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_PROBE:
-            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, _SegmentType_key, primer1sequence, primer2sequence, regionCovered, regionCovered2, insertSite, insertSize, repeatUnit, productSize, moreProduct, _CreatedBy_key, _ModifiedBy_key)",
+            sprintf(buf, "insert %s (%s, name, derivedFrom, _Source_key, _Vector_key, _SegmentType_key, primer1sequence, primer2sequence, regionCovered, regionCovered2, insertSite, insertSize, productSize, _CreatedBy_key, _ModifiedBy_key)",
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_REFERENCE:
@@ -2757,13 +2754,13 @@ char *mgi_DBaccSelect(int table, int mgiTypeKey, int key)
 	a string which contains the CV select statement for the table.
 
    example:
-	buf := mgi_DBcvLoad(GXD_FIELDTYPE)
+	buf := mgi_DBcvLoad(FOO)
 
 	buf contains:
 
-            select _FieldType_key, fieldType
-	    from IMG_FieldType
-	    order by fieldType
+            select _Foo_key, foo
+	    from FOO
+	    order by foo
 */
 
 char *mgi_DBcvLoad(int table)
@@ -2794,13 +2791,13 @@ char *mgi_DBcvLoad(int table)
 	a string which contains the CV key for the given value.
 
    example:
-	buf := mgi_DBcvKey(GXD_FIELDTYPE, "Confocal")
+	buf := mgi_DBcvLoad(FOO)
 
 	buf contains:
 
-            select _FieldType_key
-	    from IMG_FieldType
-	    where fieldType = "Confocal"
+            select _Foo_key, foo
+	    from FOO
+	    where foo = "foo"
 */
 
 /*
