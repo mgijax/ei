@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec  07/23/2002
+--	- TR 3802; added call to GXD_loadGenoCacheByGenotype
+--
 -- lec  06/05/2002
 --	- TR 3677; ResetEditMode; don't clear fields on de-select
 --
@@ -198,7 +201,8 @@ rules:
 		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ")\n";
 
 	  send(ModifyAllelePair, 0);
-	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
+	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
+	               "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
 
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
@@ -294,7 +298,8 @@ rules:
 
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
-		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
+		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
+	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
 	  end if;
 
           ModifySQL.cmd := cmd;
