@@ -1467,7 +1467,7 @@ rules:
 	    if (verify.verifyPrivate and private.count > 0) then
 	      if (private[selectedItem] = "1") then
                 StatusReport.source_widget := root;
-	        StatusReport.message := "This value is designated as 'private' and cannot be used.\n\n";
+	        StatusReport.message := "\nThis value is designated as 'private' and cannot be used.\n";
                 send(StatusReport);
 	        (void) reset_cursor(top);
 	        return;
