@@ -327,8 +327,7 @@ rules:
 	  newMarker := mgi_tblGetCell(table, 0, table.markerSymbol + 1);
 	  jnum := mgi_tblGetCell(table, 0, table.jnum);
 
-          oFile : string :=  getenv("INSTALL_ROOT") + "/" + 
-                             getenv("APP") + "/" + REPORTDIR + 
+          oFile : string :=  getenv("ARCHIVEDIR") + "/" + 
                              "/TRANSFER/transferMarker." + 
 			    oldMarker + "." + newMarker + "." + jnum;
 

@@ -106,7 +106,8 @@ devents:
 	AddBroadcast :local [];
 	BroadcastSymbol :local [];
 	BroadcastBatch :local [];
-	BroadcastReference :local [];
+	BroadcastReferenceEditor :local [];
+	BroadcastReferenceCoord :local [];
 
 	Modify :local [];
 	ModifyGeneFamily :local [];
@@ -1214,7 +1215,7 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->MarkerEventMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
+                SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->MarkerEventReasonMenu;
@@ -1222,7 +1223,7 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->SubmittedByMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
+                SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->BroadcastByMenu;
@@ -1409,6 +1410,8 @@ rules:
 	  message : string := "Are you sure you want to broadcast these records?\n";
 	  broadcastOK : boolean := false;
 	  dbproc : opaque;
+	  table : widget := top->Reference->Table;
+	  recordCount : integer := 0;
 
 	  broadcastType := Broadcast.type;
 
@@ -1421,10 +1424,12 @@ rules:
 
 	  if (broadcastType = 1) then
 	    message := message + "\n" + top->Symbol->text.value;
+	    recordCount := 1;
 	    broadcastOK := true;
 	  elsif (broadcastType = 2) then
 	    message := message + "\n" + top->Symbol->text.value;
 	    if (currentNomenKey.length > 0) then
+	      recordCount := 1;
 	      broadcastOK := true;
 	    end if;
 	  elsif (broadcastType = 3) then
@@ -1436,7 +1441,10 @@ rules:
               (void) dbsqlexec(dbproc);
 	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		  message := message + "\n" + mgi_getstr(dbproc, 1);
+		  if (recordCount <= 25) then
+		    message := message + "\n" + mgi_getstr(dbproc, 1);
+		  end if;
+	          recordCount := recordCount + 1;
 		  broadcastOK := true;
 	        end while;
 	      end while;
@@ -1444,14 +1452,44 @@ rules:
 	    end if;
 	  elsif (broadcastType = 4) then
 	    if (currentNomenKey.length > 0) then
-	      cmd := "select symbol from " + mgi_DBtable(MRK_NOMEN) + 
-		  " where _Marker_Status_key = 4";
+	      cmd := "select n.symbol from " + 
+		  mgi_DBtable(MRK_NOMEN) + " n," +
+		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r," +
+		  mgi_DBtable(MRK_NOMEN_USER_VIEW) + " u " +
+		  " where n._Marker_Status_key = 1" +
+		  " and n._Suid_key = u.suid" +
+		  " and u.name = (select user_name())" +
+		  " and n._Nomen_key = r._Nomen_key" +
+		  " and r.isPrimary = 1" +
+		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
 	      dbproc := mgi_dbopen();
               (void) dbcmd(dbproc, cmd);
               (void) dbsqlexec(dbproc);
 	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 		  message := message + "\n" + mgi_getstr(dbproc, 1);
+	          recordCount := recordCount + 1;
+		  broadcastOK := true;
+	        end while;
+	      end while;
+	      (void) dbclose(dbproc);
+	    end if;
+	  elsif (broadcastType = 5) then
+	    if (currentNomenKey.length > 0) then
+	      cmd := "select n.symbol from " + 
+		  mgi_DBtable(MRK_NOMEN) + " n," +
+		  mgi_DBtable(MRK_NOMEN_REFERENCE) + " r" +
+		  " where n._Marker_Status_key = 4" +
+		  " and n._Nomen_key = r._Nomen_key" +
+		  " and r.isPrimary = 1" +
+		  " and r._Refs_key = " + mgi_tblGetCell(table, 0, table.refsKey);
+	      dbproc := mgi_dbopen();
+              (void) dbcmd(dbproc, cmd);
+              (void) dbsqlexec(dbproc);
+	      while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	        while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+		  message := message + "\n" + mgi_getstr(dbproc, 1);
+	          recordCount := recordCount + 1;
 		  broadcastOK := true;
 	        end while;
 	      end while;
@@ -1466,6 +1504,11 @@ rules:
             return;
 	  end if;
 
+	  if (recordCount > 25) then
+	    message := message + "\n\nNOTE:  Only the first 25 symbols are listed here.";
+	  end if;
+
+	  message := message + "\n\nTotal # of symbols to broadcast:  " + (string) recordCount;
 	  top->BroadcastDialog.messageString := message;
 	  top->BroadcastDialog.managed := true;
 	end does;
@@ -1487,7 +1530,9 @@ rules:
 	  elsif (broadcastType = 3) then
 	    BroadcastEvent := BroadcastBatch;
 	  elsif (broadcastType = 4) then
-	    BroadcastEvent := BroadcastReference;
+	    BroadcastEvent := BroadcastReferenceEditor;
+	  elsif (broadcastType = 5) then
+	    BroadcastEvent := BroadcastReferenceCoord;
 	  end if;
 
 	  -- Send appropriate Broadcast event
@@ -1549,17 +1594,31 @@ rules:
 	end does;
 
 --
--- BroadcastReference
+-- BroadcastReferenceEditor
 --
--- If Tier 3:  Broadcast all Pending symbols w/ currently selected Primary reference
--- If Tier 4:  Broadcast all Approved symbols w/ currently selected Primary reference
+-- Broadcast all Pending symbols w/ currently selected Primary reference
 --
 
-	BroadcastReference does
+	BroadcastReferenceEditor does
 	  table : widget := top->Reference->Table;
 
 	  (void) busy_cursor(top);
-	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREF) + " " + mgi_tblGetCell(table, 0, table.refsKey);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREFEDITOR) + " " + mgi_tblGetCell(table, 0, table.refsKey);
+	  send(ExecSQL, 0);
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- BroadcastReferenceCoord
+--
+-- Broadcast all Approved symbols w/ currently selected Primary reference
+--
+
+	BroadcastReferenceCoord does
+	  table : widget := top->Reference->Table;
+
+	  (void) busy_cursor(top);
+	  ExecSQL.cmd := "exec " + mgi_DBtable(NOMEN_TRANSFERREFCOORD) + " " + mgi_tblGetCell(table, 0, table.refsKey);
 	  send(ExecSQL, 0);
 	  (void) reset_cursor(top);
 	end does;

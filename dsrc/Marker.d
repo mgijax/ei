@@ -799,8 +799,7 @@ rules:
         MarkerBreakpointSplitEnd does
           dialog : widget := MarkerBreakpointSplitEnd.source_widget;
  
-          oFile : string := getenv("INSTALL_ROOT") + "/" + 
-                            getenv("APP") + "/" + getenv("REPORTDIR") + 
+          oFile : string := getenv("ARCHIVEDIR") + "/" + 
                             "/EVENT_SPLITS/breakpointSplit." + 
 			    dialog->mgiMarker->Marker->text.value;
 
