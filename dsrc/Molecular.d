@@ -1025,15 +1025,10 @@ rules:
             tag := "p";
 	  end if;
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := tag;
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := tag;
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  QueryModificationHistory.table := modTable;
+	  QueryModificationHistory.tag := tag;
+	  send(QueryModificationHistory, 0);
+          where := where + top->ModificationHistory->Table.sqlCmd;
  
           if (top->Control->References.set and
 	      (top->CreationDate.sql.length > 0 or
