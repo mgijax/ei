@@ -433,7 +433,7 @@ rules:
 --
 -- PrepareSearch
 --
-e- Construct SQL Select statement based on user input
+-- Construct SQL Select statement based on user input
 --
 
 	PrepareSearch does

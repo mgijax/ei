@@ -366,7 +366,7 @@ rules:
 
 	  cmd := "select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, " +
 		  "t.modifiedBy, t.modification_date, v.description, v.accID, v.mgiID " +
-		  "from " + mgi_DBtable(MGI_TRANSLATION) + " t, " + dbView + " v" +
+		  "from MGI_Translation_View t, " + dbView + " v" +
 		  " where v._Object_key = t._Object_key" + 
 		  " and t._TranslationType_key = " + currentRecordKey +
 		  " order by t.sequenceNum\n";
