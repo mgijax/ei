@@ -562,6 +562,10 @@ rules:
 	  orderBy : string;
           annotKey : string;
 
+          if (not top.allowSelect) then
+            return;
+          end if;
+
           (void) busy_cursor(top);
 
 	  tables.open;

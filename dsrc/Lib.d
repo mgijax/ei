@@ -101,6 +101,10 @@ rules:
 
           (void) busy_cursor(root);
 
+	  if (top.is_defined("allowSelect") != nil) then
+	    top.allowSelect := true;
+	  end if;
+
 	  -- First, clear out all fields on designated clear forms
 
 	  j := 1;
@@ -705,7 +709,13 @@ rules:
 --
 
 	SetModify does
+	  top : widget := SetModify.source_widget.top;
+
 	  SetModify.source_widget.modified := SetModify.flag;
+
+	  if (top.is_defined("allowSelect") != nil) then
+	    top.allowSelect := false;
+	  end if;
 	end does;
 
 --

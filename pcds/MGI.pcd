@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri May 24 09:58:12 2002";
+      lastWritten = "Mon Jun 10 10:00:31 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -181,7 +181,7 @@ Module: MGI
         {
           Module = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\n";
+            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
             destroyCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
@@ -363,7 +363,7 @@ Module: MGI
         {
           Module1 = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String\n";
+            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
             destroyCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
@@ -1221,27 +1221,19 @@ Module: MGI
                                       }
                                       {
                                         AccessionID = CharText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: Widget
-                                                value = "MGI:97490";
-                                            }
                                       }
                                       {
-                                        AccessionName = CharText : mgiDataTypes;
+                                        AccessionName = CharSText : mgiDataTypes;
                                             {
                                               label = XmLabel;
                                               Group: Widget
                                                 labelString = Object;
                                             }
                                             {
-                                              text = text;
+                                              text = scrolledText : mgiDataTypes;
                                               Group: Widget
+                                                scrollHorizontal = True;
                                                 columns = 75;
-                                                value = Pax6;
                                             }
                                       }
                                 }
@@ -1397,6 +1389,7 @@ Module: MGI
                                         List = list;
                                         Group: Widget
                                           visibleItemCount = 5;
+                                          singleSelectionCallback = "D:VerifyEdit(mode = 5),\nD:NoteInit(commit = false),\nD:Select,\nD:GoHome";
                                       }
                                 }
                                 {

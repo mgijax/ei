@@ -290,6 +290,10 @@ rules:
 	  ExecSQL.list := ModifySQL.list;
 	  send(ExecSQL, 0);
  
+	  if (top.is_defined("allowSelect") != nil) then
+	    top.allowSelect := true;
+	  end if;
+
 	  -- Re-select record
 
 	  if (ModifySQL.list != nil and ModifySQL.reselect) then
@@ -360,6 +364,11 @@ rules:
 --
 
 	QueryEnd does
+	  top : widget := queryList.top;
+
+	  if (top.is_defined("allowSelect") != nil) then
+	    top.allowSelect := true;
+	  end if;
 
           if (queryList->List.itemCount > 0) then
             queryList->List.row := 1;
@@ -367,6 +376,7 @@ rules:
             queryList->Label.labelString := (string) queryList->List.itemCount + " " + 
 					    queryList->Label.defaultLabel;
           end if;
+
 	end does;
 
 --
@@ -378,6 +388,7 @@ rules:
 
         QueryNoInterrupt does
           list_w : widget;
+	  top : widget;
 
           if (QueryNoInterrupt.list_w = nil) then
             list_w := QueryNoInterrupt.source_widget->QueryList;
@@ -395,6 +406,11 @@ rules:
 	  list_w.cmd := QueryNoInterrupt.select;
 	  LoadList.list := list_w;
 	  send(LoadList, 0);
+
+	  top := list_w.top;
+	  if (top.is_defined("allowSelect") != nil) then
+	    top.allowSelect := true;
+	  end if;
 
 	  if (list_w->List.itemCount > 0) then
             list_w->List.row := 1;

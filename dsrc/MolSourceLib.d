@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 06/05/2002
+--	- set "Anonymous" or "Not Specified" Library to NULL
+--
 -- lec 05/16/2002
 --	- TR 1463 SAO; _ProbeSpecies_key replaced with _Species_key
 --
@@ -57,6 +60,7 @@ rules:
  
 	  add : string := "";
 	  age : string := "";
+	  library : string := "";
 
 	  top.sql := "";
 
@@ -68,8 +72,15 @@ rules:
                    mgi_DBinsert(PRB_SOURCE, keyLabel);
 	  end if;
 
+	  if (top->Library->text.value = "Anonymous" or
+	      top->Library->text.value = "Not Specified") then
+	    library := "NULL";
+	  else
+	    library := mgi_DBprstr(top->Library->text.value);
+	  end if;
+
 	  add := add +
-	         mgi_DBprstr(top->Library->text.value) + "," +
+	         library + "," +
                  mgi_DBprstr(top->Description->text.value) + "," +
                  mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
                  top->ProbeSpeciesMenu.menuHistory.defaultValue + "," +
@@ -347,7 +358,12 @@ rules:
 
 	  if (top->Library.managed) then
 	    if (top->Library->text.modified) then
-              set := set + "name = " + mgi_DBprstr(top->Library->text.value) + ",";
+	      if (top->Library->text.value = "Anonymous" or
+		  top->Library->text.value = "Not Specified") then
+                set := set + "name = NULL,";
+	      else
+                set := set + "name = " + mgi_DBprstr(top->Library->text.value) + ",";
+	      end if;
 	    end if;
 	  end if;
 

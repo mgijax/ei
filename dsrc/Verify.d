@@ -183,6 +183,7 @@ rules:
 --	mode : integer := 2	;	Add
 --	mode : integer := 3	;	Delete
 --	mode : integer := 4	;	Duplicate
+--	mode : integer := 5	;	Do we allow Select?
 --
 
 	VerifyEdit does
@@ -190,6 +191,20 @@ rules:
 	  editForm, queryList, conditionalForm, conditionalList, child : widget;
 	  caption : string;
 	  i, j, l : integer;
+
+	  if (VerifyEdit.mode = 5) then	-- Selecting
+	    if (top.is_defined("allowSelect") != nil) then
+              if (not top.allowSelect) then
+                StatusReport.source_widget := top;
+                StatusReport.message := "\nYou have not saved the changes made to this record.\n" +
+		  "Save the changes to the currently selected record or clear the form.";
+                send(StatusReport);
+	        -- Re-select record
+	        (void)XmListSelectPos(top->QueryList->List, top->QueryList->List.row, false);
+                return;
+	      end if;
+            end if;
+	  end if;
 
 	  -- Find first managed edit form w/ managed parent and set list widgets
 	  -- Set Conditional form to first edit form

@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri May 24 11:07:10 2002";
+      lastWritten = "Wed Jun  5 12:58:19 2002";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -414,15 +414,17 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                AccessionName = CharText : mgiDataTypes;
+                AccessionName = CharSText : mgiDataTypes;
                     {
                       label = XmLabel;
                     }
                     {
-                      text = text;
+                      text = scrolledText : mgiDataTypes;
                       Group: Widget
                         inTabGroup = False;
                         columns = 20;
+                        scrollHorizontal = False;
+                        scrollVertical = False;
                     }
               }
         }
@@ -1061,19 +1063,6 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                       Group: Widget
                         labelString = "MGI Acc ID";
-                    }
-              }
-              {
-                AccessionName = CharText : mgiDataTypes;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = Strain;
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 50;
                     }
               }
         }

@@ -311,6 +311,7 @@ rules:
         CommitTableCellEdit does
 	  table : widget := CommitTableCellEdit.source_widget;
 	  row : integer := CommitTableCellEdit.row;
+	  top : widget := table.top;
 	  currentEditMode : string := mgi_tblGetCell(table, row, table.editMode);
 	  newEditMode : string;
 
@@ -343,6 +344,9 @@ rules:
 	  if (currentEditMode != newEditMode) then
 	    (void) mgi_tblSetCell(table, row, table.editMode, newEditMode);
 	    table.modified := true;
+	    if (top.is_defined("allowSelect") != nil) then
+	      top.allowSelect := false;
+	    end if;
 	  end if;
 
 	end does;
