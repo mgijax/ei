@@ -267,6 +267,8 @@ locals:
 
 	continueWithNextRecord : boolean;
 
+	lanes : string_list;            -- String List of Gel Lanes
+
 rules:
 
 --
@@ -2702,7 +2704,7 @@ rules:
 	    return;
 	  end if;
 
-	  lanes : string_list := create string_list();
+	  lanes := create string_list();
 
 	  select := "select _GelLane_key from " + mgi_DBtable(GXD_GELLANE) +
                 " where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
@@ -2723,7 +2725,6 @@ rules:
 	  row : integer := 0;
 	  i : integer := 0;
 	  x : integer := 0;
-	  controlKey : string;
 
 	  while (row < mgi_tblNumRows(table)) do
 	    i := 0;
@@ -2731,17 +2732,6 @@ rules:
 	    while (lanes.more) do
                x := i * table.bandIncrement;
               (void) mgi_tblSetCell(table, row, table.laneKey + x, lanes.next);
-	      (void) mgi_tblSetCell(table, row, table.bandMode + x, TBL_ROW_EMPTY);
-
-	      -- For first row, if Lane Control != No then Strength = Not Applicable
-	      if (row = 0) then
-	        controlKey := mgi_tblGetCell(laneTable, i, laneTable.controlKey);
-		if (controlKey != "1") then
-                  (void) mgi_tblSetCell(table, row, table.strengthKey + x, NOTAPPLICABLE);
-	          (void) mgi_tblSetCell(table, row, table.strength + x, "Not Applicable");
-		end if;
-	      end if;
-
 	      i := i + 1;
 	    end while;
 	    row := row + 1;
@@ -2756,8 +2746,14 @@ rules:
 --
 
 	SelectGelBand does
-	  table : widget := top->GelForm->GelRow->Table;
+	  gelTable : widget := top->GelForm->GelRow->Table;
+	  laneTable : widget := top->GelForm->GelLane->Table;
 	  reason : integer := SelectGelBand.reason;
+	  row : integer := 0;
+	  prev_row : integer := 0;
+	  lane : integer := 0;
+	  x, i : integer;
+	  controlKey : string;
  
 	  if (reason != TBL_REASON_ENTER_CELL_END) then
 	    return;
@@ -2768,11 +2764,6 @@ rules:
 	  end if;
 
 	  send(CreateGelBandColumns, 0);
-
-	  row : integer := 0;
-	  prev_row : integer := 0;
-	  lane : integer := 0;
-	  x : integer;
 
 	  select := "select * from GXD_GelBand_View " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
@@ -2789,18 +2780,42 @@ rules:
 		lane := 0;
 	      end if;
 
-	      x := lane * table.bandIncrement;
+	      x := lane * gelTable.bandIncrement;
 	      lane := lane + 1;
 	      prev_row := row;
 
-	      (void) mgi_tblSetCell(table, row, table.bandKey + x, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(table, row, table.strengthKey + x, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(table, row, table.bandNotes + x, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(table, row, table.strength + x, mgi_getstr(dbproc, 8));
-	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandKey + x, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(gelTable, row, gelTable.strengthKey + x, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandNotes + x, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(gelTable, row, gelTable.strength + x, mgi_getstr(dbproc, 8));
+	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandMode + x, TBL_ROW_NOCHG);
+	      (void) mgi_tblSetCell(gelTable, row, gelTable.editMode, TBL_ROW_NOCHG);
 	    end while;
           end while;
 	  (void) dbclose(dbproc);
+
+	  -- For first row, if Lane Control != No and no Strength, then Strength = Not Applicable
+	  i := 0;
+	  lanes.rewind;
+	  while (i < lanes.count) do
+            x := i * gelTable.bandIncrement;
+	    controlKey := mgi_tblGetCell(laneTable, i, laneTable.controlKey);
+	    if (controlKey != "1" and mgi_tblGetCell(gelTable, 0, gelTable.strengthKey + x) = "") then
+              (void) mgi_tblSetCell(gelTable, 0, gelTable.strengthKey + x, NOTAPPLICABLE);
+	      (void) mgi_tblSetCell(gelTable, 0, gelTable.strength + x, "Not Applicable");
+	      (void) mgi_tblSetCell(gelTable, 0, gelTable.bandMode + x, TBL_ROW_ADD);
+
+	      -- If existing key exists, then flag for modification, else flag for add
+
+	      if (mgi_tblGetCell(gelTable, 0, gelTable.editMode) = TBL_ROW_NOCHG) then
+	        (void) mgi_tblSetCell(gelTable, 0, gelTable.editMode, TBL_ROW_MODIFY);
+	      else
+	        (void) mgi_tblSetCell(gelTable, 0, gelTable.editMode, TBL_ROW_ADD);
+	      end if;
+	    end if;
+	    i := i + 1;
+	  end while;
+
 	end does;
 
 --
