@@ -15,6 +15,9 @@
 --
 -- History:
 --
+--	lec	05/31/2002
+--	TR 1463; SAO; Nomen status can now be accessed 
+--
 --	lec	01/15/2002
 --	TR 2867; added mgiTypeKey, vocabKey to VOCAnnotTypeMenu
 --
@@ -309,6 +312,7 @@ rules:
 	  statusLabels.insert("Homology", statusLabels.count + 1);
 	  statusLabels.insert("Expression", statusLabels.count + 1);
 	  statusLabels.insert("GO", statusLabels.count + 1);
+	  statusLabels.insert("Nomen", statusLabels.count + 1);
 
 	  -- Values used in Reference "dbs" string
 	  statusDBS.insert("Probes", statusDBS.count + 1);
@@ -317,6 +321,7 @@ rules:
 	  statusDBS.insert("Homology", statusDBS.count + 1);
 	  statusDBS.insert("Expression", statusDBS.count + 1);
 	  statusDBS.insert("GO", statusDBS.count + 1);
+	  statusDBS.insert("Nomen", statusDBS.count + 1);
 
 	  -- Table IDs for establishing status of Reference
 	  tableID.insert((string) PRB_REFERENCE, tableID.count + 1);
@@ -325,20 +330,18 @@ rules:
 	  tableID.insert((string) HMD_HOMOLOGY, tableID.count + 1);
 	  tableID.insert((string) GXD_INDEX, tableID.count + 1);
 	  tableID.insert((string) GO_DATAEVIDENCE, tableID.count + 1);
+	  tableID.insert((string) MGI_REFERENCE_NOMEN_VIEW, tableID.count + 1);
 
 	  -- Row Labels which appear in Table
 	  nonstatusLabels.insert("Tumor", nonstatusLabels.count + 1);
 	  nonstatusLabels.insert("SCC", nonstatusLabels.count + 1);
-	  nonstatusLabels.insert("Matrix", nonstatusLabels.count + 1);
 	  nonstatusLabels.insert("Chromosome Committee", nonstatusLabels.count + 1);
-	  nonstatusLabels.insert("Nomenclature", nonstatusLabels.count + 1);
 
 	  -- Values used in Reference "dbs" string
 	  nonstatusDBS.insert("Tumor", nonstatusDBS.count + 1);
 	  nonstatusDBS.insert("SCC", nonstatusDBS.count + 1);
 	  nonstatusDBS.insert("Matrix", nonstatusDBS.count + 1);
 	  nonstatusDBS.insert("CC", nonstatusDBS.count + 1);
-	  nonstatusDBS.insert("Nomen", nonstatusDBS.count + 1);
 
 	  -- Construct Row labels string, data set string and table ID string
 	  -- for Statused Data Sets
@@ -358,9 +361,12 @@ rules:
 	  end while;
 
 	  -- Set appropriate table attritbutes
+	  table.batch;
 	  table.xrtTblRowLabels := labels->substr(1, labels.length - 1);
+	  table.xrtTblVisibleRows := row;
 	  table.dataSets := dbs->substr(1, dbs.length - 1);
 	  table.tableIDs := ids->substr(1, ids.length - 1);
+	  table.unbatch;
 
 	  -- Construct Row labels string, data set string and table ID string
 	  -- for Non-Statused Data Sets
@@ -378,8 +384,11 @@ rules:
 	  end while;
 
 	  -- Set appropriate table attritbutes
+	  table.batch;
 	  table.xrtTblRowLabels := labels->substr(1, labels.length - 1);
+	  table.xrtTblVisibleRows := row;
 	  table.dataSets := dbs->substr(1, dbs.length - 1);
+	  table.unbatch;
 	end does;
 
 end dmodule;
