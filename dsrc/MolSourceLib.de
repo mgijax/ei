@@ -14,9 +14,7 @@ AddMolecularSource [source_widget : widget;		-- Construct insert statement for n
 
 DisplayMolecularAge [source_widget : widget;		-- Display Molecular Age info
 		     row : integer := -1;
-	    	     age : string;
-		     ageMin : string;
-		     ageMax : string;];
+	    	     age : string;];
 
 DisplayMolecularSource [source_widget : widget;		-- Display Molecular Source info for key record
 		        key : string;			-- Record key

@@ -12,7 +12,10 @@
 --
 -- History
 --
--- lec 04/28/2003
+-- lec 09/18/2003
+--	- TR 4579
+--
+-- lec 04/29/2003
 --	- TR 4756; tab to next cell after committing note
 --
 -- lec 08/13/2002
@@ -107,7 +110,7 @@ rules:
 	  label : string;
 	  k : integer;
 
-	  if (tableID = MGI_NOTETYPE_MRKGO_VIEW) then
+	  if (tableID = MGI_NOTETYPE_MRKGO_VIEW or tableID = MGI_NOTETYPE_VOCEVIDENCE_VIEW) then
 	    cmd := "select _NoteType_key, noteType, private = -1, _MGIType_key from " + mgi_DBtable(tableID) +
 		  "\norder by _NoteType_key";
 	  else
@@ -139,7 +142,7 @@ rules:
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
-	        if (tableID = MGI_NOTETYPE_MRKGO_VIEW) then
+	        if (tableID = MGI_NOTETYPE_MRKGO_VIEW or tableID = MGI_NOTETYPE_VOCEVIDENCE_VIEW) then
 		  x->Note.mgiTypeKey := (integer) mgi_getstr(dbproc, 4);
 		end if;
 		x.unbatch;
@@ -173,7 +176,7 @@ rules:
 	  ClearSetNoteForm.notew := notew;
 	  send(ClearSetNoteForm, 0);
 
-	  if (tableID = MGI_NOTE_MRKGO_VIEW) then
+	  if (tableID = MGI_NOTE_MRKGO_VIEW or tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
             cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
 	  	  " from " + mgi_DBtable(tableID) +
 		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
@@ -194,7 +197,7 @@ rules:
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
 
-	      if (tableID = MGI_NOTE_MRKGO_VIEW) then
+	      if (tableID = MGI_NOTE_MRKGO_VIEW or tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
 	        noteKey := mgi_getstr(dbproc, 4);
 	      end if;
 
@@ -594,7 +597,11 @@ rules:
 	  -- Else if the noteWidget has a valid noteType (string), use it
 
 	  if (isTable) then
-	    noteType := ModifyNotes.noteType;
+	    if (noteWidget.is_defined("mgiTypeKey") != nil) then
+	      noteType := (string) noteWidget.noteTypeKey;
+	    else
+	      noteType := ModifyNotes.noteType;
+	    end if;
 	  elsif (noteWidget.noteTypeKey > 0) then
 	    noteType := (string) noteWidget.noteTypeKey;
 	    if (noteWidget.private >= 0) then
@@ -611,8 +618,13 @@ rules:
 	  end if;
 
 	  if (noteWidget.is_defined("noteKey") != nil) then
-	    if (noteWidget.noteKey > 0) then
+	    if (isTable) then
+	      noteKey := mgi_tblGetCell(noteWidget, row, noteWidget.noteKey);
+	    elsif (noteWidget.noteKey > 0) then
 	      noteKey := (string) noteWidget.noteKey;
+	    end if;
+
+	    if (noteKey.length > 0) then
               deleteCmd := mgi_DBdelete(tableID, noteKey);
 	    end if;
 	  end if;
@@ -642,7 +654,7 @@ rules:
 
 	    masterCmd := masterCmd +
 	           mgi_DBinsert(tableID, keyName) +
-		   key + "," +
+	           key + "," +
 		   mgiType + "," +
 		   noteType + ")\n";
 	  end if;
