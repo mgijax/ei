@@ -356,7 +356,7 @@ rules:
 	                 mgi_DBprstr(top->MolDetailForm->InsertSize->text.value) + "," +
                          top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL," +	-- repeatUnit
-	                 "NULL,0";	-- productSize, moreProduct
+	                 "NULL,0,";	-- productSize, moreProduct
 
 	  -- Insert for Primers
 
@@ -376,7 +376,7 @@ rules:
                    mgi_DBprstr(top->SeqTypePulldown->primer.defaultValue) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->Repeat->text.value) + "," +
 	           mgi_DBprstr(top->MolPrimerForm->ProductSize->text.value) + "," +
-	           (string)((integer) top->MolPrimerForm->More.set);
+	           (string)((integer) top->MolPrimerForm->More.set) + ",";
 
 	  end if;
 

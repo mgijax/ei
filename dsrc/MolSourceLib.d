@@ -20,7 +20,7 @@
 --	- set "Anonymous" or "Not Specified" Library to NULL
 --
 -- lec 05/16/2002
---	- TR 1463 SAO; _ProbeSpecies_key replaced with _Species_key
+--	- TR 1463 SAO; _ProbeOrganism_key replaced with _Species_key
 --
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
@@ -81,7 +81,7 @@ rules:
 	         mgi_DBprstr(top->Library->text.value) + "," +
                  mgi_DBprstr(top->Description->text.value) + "," +
                  mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
-                 top->ProbeSpeciesMenu.menuHistory.defaultValue + "," +
+                 top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
                  top->Tissue->TissueID->text.value + ",";
 
