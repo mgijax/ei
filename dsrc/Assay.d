@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 10/22/2001
+--	- added Search for Genotype
+--
 -- lec 09/26/2001
 --	- TR 2916; new datatype for sampleAmt in Gel Lane table
 --
@@ -1727,6 +1730,10 @@ rules:
 	  from_note : boolean := false;
 	  from_probe : boolean := false;
 	  from_antibody : boolean := false;
+	  from_specimen : boolean := false;
+	  from_gel : boolean := false;
+	  table : widget;
+	  value : string;
 
 	  from := "from " + mgi_DBtable(GXD_ASSAY) + "_View" + " g";
 	  where := "";
@@ -1835,7 +1842,22 @@ rules:
             end if;
 	  end if;
 
-	  -- From Image Pane
+	  -- From InSitu Form
+	  if (assayDetailForm.name = "InSituForm") then
+	    table := top->InSituForm->Specimen->Table;
+	    value := mgi_tblGetCell(table, 0, table.genotype);
+	    if (value.length > 0) then
+	      where := where + " and ig._Genotype_key = " + value;
+	      from_specimen := true;
+	    end if;
+	  elsif (assayDetailForm.name = "GelForm") then
+	    table := top->GelForm->GelLane->Table;
+	    value := mgi_tblGetCell(table, 0, table.genotype);
+	    if (value.length > 0) then
+	      where := where + " and gg._Genotype_key = " + value;
+	      from_gel := true;
+	    end if;
+	  end if;
 
 	  if (from_note) then
 	    from := from + "," + mgi_DBtable(GXD_ASSAYNOTE) + " n";
@@ -1858,6 +1880,16 @@ rules:
 	  if (from_probe) then
             from := from + "," + mgi_DBtable(PRB_PROBE) + " p";
             where := where + " and p._Probe_key = pp._Probe_key";
+	  end if;
+
+	  if (from_specimen) then
+	    from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " ig";
+            where := where + " and ig._Assay_key = g._Assay_key";
+	  end if;
+
+	  if (from_gel) then
+	    from := from + "," + mgi_DBtable(GXD_GELLANE) + " gg";
+            where := where + " and gg._Assay_key = g._Assay_key";
 	  end if;
 
           if (where.length > 0) then
