@@ -604,9 +604,11 @@ char *mgi_DBkey(int table)
 	    strcpy(buf, "_NoteType_key");
 	    break;
     case MGI_NOTETYPE_MRKGO_VIEW:
+    case MGI_NOTETYPE_VOCEVIDENCE_VIEW:
 	    strcpy(buf, "_Object_key");
 	    break;
     case MGI_NOTE_MRKGO_VIEW:
+    case MGI_NOTE_VOCEVIDENCE_VIEW:
 	    strcpy(buf, "_Object_key");
 	    break;
     case MGI_TRANSLATION:
@@ -909,8 +911,10 @@ char *mgi_DBkey(int table)
 	    strcpy(buf, "_AnnotType_key");
 	    break;
     case VOC_ANNOT:
-    case VOC_EVIDENCE:
 	    strcpy(buf, "_Annot_key");
+	    break;
+    case VOC_EVIDENCE:
+	    strcpy(buf, "_AnnotEvidence_key");
 	    break;
     case MGI_FANTOM2:
     case MGI_FANTOM2NOTES:
@@ -1186,6 +1190,12 @@ char *mgi_DBtable(int table)
             break;
     case MGI_NOTETYPE_MRKGO_VIEW:
             strcpy(buf, "MGI_NoteType_MRKGO_View");
+            break;
+    case MGI_NOTE_VOCEVIDENCE_VIEW:
+	    strcpy(buf, "MGI_Note_VocEvidence_View");
+	    break;
+    case MGI_NOTETYPE_VOCEVIDENCE_VIEW:
+            strcpy(buf, "MGI_NoteType_VocEvidence_View");
             break;
     case MRK_MOUSE:
             strcpy(buf, "MRK_Mouse_View");
@@ -2336,7 +2346,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_EVIDENCE:
-            sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy, notes)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_FANTOM2:
             sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupID, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, cluster_evidence, load_mgiid, nonmgi_rep, approved_symbol, approved_name, chromosome, createdBy, modifiedBy)", mgi_DBtable(table), mgi_DBkey(table));

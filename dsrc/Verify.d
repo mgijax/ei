@@ -849,7 +849,7 @@ rules:
 -- VerifyGelLaneControl
 --
 -- Activated from:  GelControlMenu->GelControlPulldown->GelControlToggle:valueChangedCallback
---	UDAs required:  genotypeKey, genotype, ageKey, agePrefix, ageMin, ageMax,
+--	UDAs required:  genotypeKey, genotype, ageKey, agePrefix,
 --			ageRange, sexKey, sex, rnaKey, rna, sampleAmt (integer)
 --
 --  If Control != 'No', set Genotype, Sample, RNA, Age, Sex to Not Applicable
@@ -872,8 +872,6 @@ rules:
 	  (void) mgi_tblSetCell(table, row, table.sampleAmt, "");
 
           -- Age range
-	  (void) mgi_tblSetCell(table, row, table.ageMin, "NULL");
-	  (void) mgi_tblSetCell(table, row, table.ageMax, "NULL");
 	  (void) mgi_tblSetCell(table, row, table.ageRange, "");
 
 	  -- If "No" is not selected

@@ -256,6 +256,8 @@ extern char *global_version;
 #define MGI_TRANSLATION                 613
 #define MGI_TRANSLATIONTYPE             614
 #define MGI_TRANSLATIONSTRAIN_VIEW      615
+#define MGI_NOTE_VOCEVIDENCE_VIEW       624
+#define MGI_NOTETYPE_VOCEVIDENCE_VIEW   625
 
 /* Strains Tables */
 
