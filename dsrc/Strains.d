@@ -863,7 +863,7 @@ rules:
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_MARKER_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + 
-		 " order by sequenceNum\n" +
+		 " order by symbol, sequenceNum\n" +
 		 "select * from " + mgi_DBtable(MLP_STRAINTYPES_VIEW) +
 		 " where " + mgi_DBkey(MLP_STRAIN) + " = " + currentRecordKey + "\n" +
 		 "select * from " + mgi_DBtable(PRB_STRAIN_SYNONYM) +

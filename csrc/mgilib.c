@@ -713,8 +713,10 @@ char *mgi_DBkey(int table)
     case MLP_STRAINTYPES:
     case MLP_NOTES:
     case MLP_EXTRA:
-    case PRB_STRAIN_MARKER:
             strcpy(buf, "_Strain_key");
+	    break;
+    case PRB_STRAIN_MARKER:
+            strcpy(buf, "_StrainMarker_key");
 	    break;
     case PRB_STRAIN_SYNONYM:
             strcpy(buf, "_Synonym_key");
@@ -2096,7 +2098,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, reference, dataset, note1, note2)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_MARKER:
-            sprintf(buf, "insert %s (%s, _Marker_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Strain_key, _Marker_key, _Allele_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case PRB_STRAIN_SYNONYM:
             sprintf(buf, "insert %s (%s, _Strain_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
