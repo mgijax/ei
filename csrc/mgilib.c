@@ -1418,7 +1418,7 @@ char *mgi_DBtable(int table)
 	    strcpy(buf, "MGI_User");
 	    break;
     case MLC_LOCK:
-            strcpy(buf, "MLC_Lock_edit");
+            strcpy(buf, "MLC_Lock");
 	    break;
     case MLC_MARKER:
             strcpy(buf, "MLC_Marker");

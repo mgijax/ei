@@ -138,7 +138,7 @@ char *symidtext;
 /* release_mlc_lock
  *  
  * Releases the "lock" on a particular MLC symbol (with markerkey 'mk') by 
- * appending a check-in row to the MLC_Lock_edit table
+ * appending a check-in row to the MLC_Lock table
  *
  * Returns true if lock has been released, false otherwise
  */
@@ -149,8 +149,7 @@ Boolean release_mlc_lock(char *mk)
     char cmd[BUFSIZ];
 	RETCODE rc;
 
-	sprintf(cmd,"insert MLC_Lock_edit (_Marker_key,time,checkedOut) "
-				" values(%s,getdate(),%d)\n",mk,0);
+	sprintf(cmd,"insert MLC_Lock (_Marker_key,time,checkedOut) values(%s,getdate(),%d)\n",mk,0);
 	dbcmd(dbproc,cmd);
 	rc = dbsqlexec(dbproc);
 	dbclose(dbproc);
@@ -160,7 +159,7 @@ Boolean release_mlc_lock(char *mk)
 
 /* obtain_mlc_lock
  *
- * Obtains an exclusive lock on MLC_Lock_edit (isolation-level 3) while 
+ * Obtains an exclusive lock on MLC_Lock (isolation-level 3) while 
  * reading the rows.  No insertions can be performed by any other clients,
  * so no one else can obtain the MLC "lock" until the transaction is 
  * committed, and then only if the last check-in record for symbol (with
@@ -182,7 +181,7 @@ Boolean obtain_mlc_lock(char *mk)
 	DBINT checked_out;
 	int i;
  
-    sprintf(cmd, "select time, checkedOut from MLC_Lock_edit holdlock where _Marker_key = %s\n", mk); 
+    sprintf(cmd, "select time, checkedOut from MLC_Lock holdlock where _Marker_key = %s\n", mk); 
 
     cursor = dbcursoropen(dbproc,cmd,CUR_KEYSET,CUR_LOCKCC,NROWS,pstatus); 
 
@@ -224,8 +223,7 @@ Boolean obtain_mlc_lock(char *mk)
 						/* there has got to be a better way, but for now..*/
 
 	if(!checked_out) {  /* check in */
-		sprintf(cmd,"insert MLC_Lock_edit (_Marker_key,time,checkedOut) "
-					" values(%s,getdate(),%d)\n",mk,1);
+		sprintf(cmd,"insert MLC_Lock (_Marker_key,time,checkedOut) values(%s,getdate(),%d)\n",mk,1);
 		dbcmd(dbproc,cmd);
 		rc = dbsqlexec(dbproc);
 		if(!rc) { dbclose(dbproc); if(cursor) dbcursorclose(cursor); 
