@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  10/24/2002
+--      - TR 4187; use Gel Lane Labels in Gel Row table row labels
+--
 -- lec 04/09/2002
 --	- TR 2860; added CVStagingNotes to module;added AppendToAgeNote Devent
 --
@@ -2501,6 +2504,7 @@ rules:
 
 	CreateGelBandColumns does
 	  table : widget := top->GelForm->GelRow->Table;
+	  laneTable : widget := top->GelForm->GelLane->Table;
 
 	  numLanes : integer := 0;
 	  hasLanes : integer := 0;
@@ -2548,13 +2552,15 @@ rules:
 	  newRequiredColumns : string_list := create string_list();
 
 	  b : integer := 1;
+	  laneLabel : string;
 	  while (b <= hasLanes) do
+	    laneLabel := mgi_simplesub(",", "\\,", mgi_tblGetCell(laneTable, b - 1, laneTable.label));
 	    newColLabels := newColLabels + 
-		",Mode,Lane key,Band key,Strength key,Lane " + (string) b + ",Note";
+		",Mode,Lane key,Band key,Strength key," + (string) b + ";" + laneLabel + ",Note";
 	    newPixelWidthSeries := newPixelWidthSeries +
 		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
 	    newCharWidthSeries := newCharWidthSeries +
-		" (all " + (string) noteCol + " 4)";
+		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)";
 	    newTraverseSeries := newTraverseSeries + 
 		" (all " + (string) begCol + "-" + (string) endCol + " False)";
 	    newEditableSeries := newEditableSeries + 
