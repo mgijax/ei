@@ -338,12 +338,7 @@ rules:
 	    isWildType := 1;
 	  end if;
 
-	  -- if allele is transgenic (reporter) then status is "in progress"
-
-          if (top->AlleleTypeMenu.menuHistory.labelString = TRANSGENIC_REPORTER) then
-	    statusKey := pendingStatusKey;
-	    approvalLoginDate := "NULL,NULL)\n";
-          elsif (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
+          if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then
 	    statusKey := top->AlleleStatusMenu.menuHistory.defaultValue;
 	    approvalLoginDate := global_loginKey + ",getdate())\n";
 	  else
@@ -577,7 +572,6 @@ rules:
 	Modify does
 	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
-	  statusKey : string;
 	  editMode : string;
 	  refsKey : string;
 	  refsType : string;
@@ -663,13 +657,7 @@ rules:
             set := set + "_Allele_Type_key = "  + top->AlleleTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-	  -- if allele is transgenic (reporter) then status is "in progress"
-
-          if (top->AlleleTypeMenu.menuHistory.labelString = TRANSGENIC_REPORTER) then
-	    statusKey := pendingStatusKey;
-            set := set + "_Allele_Status_key = "  + statusKey + ",";
-	    set := set + "_ApprovedBy_key = null,approval_date = null,";
-          elsif (top->AlleleStatusMenu.menuHistory.modified and
+          if (top->AlleleStatusMenu.menuHistory.modified and
 	      top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             set := set + "_Allele_Status_key = "  + top->AlleleStatusMenu.menuHistory.defaultValue + ",";
 	    if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED) then

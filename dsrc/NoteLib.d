@@ -427,6 +427,7 @@ rules:
 
 	NoteCommit does
 	  dialog : widget := NoteCommit.source_widget.ancestor_by_class("XmForm");
+	  traverseToNextCell : boolean := NoteCommit.traverseToNextCell;
 	  table : widget := dialog.targetWidget.child_by_class(TABLE_CLASS);
 	  note : widget := dialog->Note->text;
 	  isTable : boolean := false;
@@ -449,15 +450,17 @@ rules:
 	    CommitTableCellEdit.value_changed := true;
 	    send(CommitTableCellEdit, 0);
 
-	    TraverseToTableCell.table := table;
-	    if (mgi_tblGetCurrentColumn(table) = mgi_tblNumColumns(table) - 1) then
-	      TraverseToTableCell.row := mgi_tblGetCurrentRow(table) + 1;
-	      -- use first traversable column in table
-            else
-	      TraverseToTableCell.row := mgi_tblGetCurrentRow(table);
-	      TraverseToTableCell.column := column + 1;
+	    if (traverseToNextCell) then
+	      TraverseToTableCell.table := table;
+	      if (mgi_tblGetCurrentColumn(table) = mgi_tblNumColumns(table) - 1) then
+	        TraverseToTableCell.row := mgi_tblGetCurrentRow(table) + 1;
+	        -- use first traversable column in table
+              else
+	        TraverseToTableCell.row := mgi_tblGetCurrentRow(table);
+	        TraverseToTableCell.column := column + 1;
+	      end if;
+	      send(TraverseToTableCell, 0);
 	    end if;
-	    send(TraverseToTableCell, 0);
 	  else
 	    dialog.targetWidget.value := note.value;
 	  end if;

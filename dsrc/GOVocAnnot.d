@@ -1032,9 +1032,10 @@ rules:
 	    send(GONoteInit, 0);
 	  end if;
 
-	  if (column = annotTable.editor) then
+	  if (column = annotTable.notes) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
-	      row := -1;
+	      AddTableRow.table := annotTable;
+	      send(AddTableRow, 0);
 	    end if;
 	    GOTraverse.next_row := row + 1;
 	    GOTraverse.next_column := annotTable.termAccID;

@@ -42,7 +42,8 @@ SearchNoteForm [notew : widget;              -- mgiNoteForm widget
 NoteCancel [source_widget : widget;];
 
 -- Saves changes entered into NoteDialog to source_widget->text widget
-NoteCommit [source_widget : widget;]; 
+NoteCommit [source_widget : widget;
+	    traverseToNextCell : boolean := true;]; 
 
 -- Initializes NoteDialog
 NoteInit [source_widget : widget;
