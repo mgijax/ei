@@ -1,3 +1,10 @@
+TAG: ei-4-3-0
+DATE: 04/13/2001
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) TR 2217; added VerifyMarkerAlleles check
+
 TAG: ei-4-2-0, -1
 DATE: 04/10/2001
 STAFF: lec, jsb
