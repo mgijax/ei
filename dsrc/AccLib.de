@@ -19,6 +19,7 @@ InitAcc [table : widget;  	         -- Accession Table
 LoadAcc [table : widget;		-- Accession Table
          tableID : integer;	        -- ID of table
          objectKey : string;  		-- Unique identifier of Accessionable Object
+	 sortColumn : integer := -1;    -- Sort column
 	 reportError : boolean := true;]; -- Report if no MGI Accession numbers found
 
 -- Process Accession Table

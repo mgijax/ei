@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 25 10:43:01 2003";
+      lastWritten = "Tue Nov 18 08:59:38 2003";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -464,7 +464,7 @@ Module: mgiTable
           ModificationHistory = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 800;
+            vip_y = 855;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -560,7 +560,7 @@ Module: mgiTable
           ObjectAssociationTable = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 855;
+            vip_y = 910;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -588,6 +588,33 @@ Module: mgiTable
                 DeleteRow = TablePush : mgiTable;
                 Group: Widget
                   managed = False;
+              }
+        }
+        {
+          Accession = mgiAccessionTable : mgiTable;
+          Group: Control
+            vip_x = 75;
+            vip_y = 800;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 5;
+                  xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Acc Name,Acc ID";
+                  xrtTblCharWidthSeries = "(all 0 1) (all 3 30) (all 4 30)";
+                  xrtTblEditableSeries = "(all 0 False) (all 3 False)";
+                  xrtTblPixelWidthSeries = "(all 0-2 0)";
+                  xrtTblTraversableSeries = "(all 0 False) (all 3 False)";
+                  xrtTblVisibleRows = 5;
+                Group: User
+                  requiredColumns = 4;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        xrtLblBorderType = border_none;
+                        marginHeight = 0;
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
               }
         }
 }

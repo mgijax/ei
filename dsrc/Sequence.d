@@ -160,7 +160,7 @@ rules:
 	Init does
 	  tables := create list("widget");
 
-	  accTable := top->AccessionReference->Table;
+	  accTable := top->Accession->Table;
 	  modTable := top->Control->ModificationHistory->Table;
 	  sourceTable := top->SourceInfo->Table;
 
@@ -351,9 +351,11 @@ rules:
 
 	  from_acc : boolean := false;
 	  from_source : boolean := false;
+	  from_marker : boolean := false;
 	  value : string;
 	  value2 : string;
 	  tag : string := "s";
+	  table : widget;
 
 	  from := "from SEQ_Sequence_Acc_View a, SEQ_Sequence_View s";
 	  where := "where a._Object_key = s._Sequence_key";
@@ -488,7 +490,7 @@ rules:
 	    where := where + "\nand s.rawSex like " + mgi_DBprstr(value);
 	  end if;
 
-	  -- Search for Source Attributes
+	  -- Source Attributes
 
 	  value := mgi_tblGetCell(sourceTable, 1, sourceTable.library);
 	  if (value.length) > 0 then
@@ -534,10 +536,27 @@ rules:
 	    from_source := true;
 	  end if;
 
+	  table := top->ObjectAssociation->Table;
+
+	  -- Markers & Molecular Segments
+
+	  value := mgi_tblGetCell(table, 0, table.objectName);
+          if (value.length > 0) then
+	    where := where + "\nand m.symbol like " + mgi_DBprstr(value);
+	    from_marker := true;
+	  end if;
+
+	  -- References
+
 	  if (from_source) then
 	    from := from + ",SEQ_Source_Assoc ssa, PRB_Source ps";
 	    where := where + "\nand s._Sequence_key = ssa._Sequence_key" +
 		"\nand ssa._Source_key = ps._Source_key";
+	  end if;
+
+	  if (from_marker) then
+	    from := from + ",SEQ_Marker_Cache_View m";
+	    where := where + "\nand s._Sequence_key = m._Sequence_key";
 	  end if;
 
 	end does;
@@ -594,7 +613,7 @@ rules:
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = v._Source_key\n" +
 		"order by v._Organism_key\n" +
-		"select * from SEQ_Marker_View where sequencekey = " + currentKey + "\n" +
+		"select * from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
 		"select * from SEQ_MolecularSegment_View where sequencekey = " + currentKey + "\n";
 
 	  results : integer := 1;
@@ -706,6 +725,7 @@ rules:
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentKey;
 	  LoadAcc.tableID := SEQ_SEQUENCE;
+	  LoadAcc.sortColumn := accTable.accID;
 	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  

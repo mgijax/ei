@@ -1180,6 +1180,10 @@ rules:
             set := set + "_Marker_key = " + top->mgiMarker->ObjectID->text.value + ",";
           end if;
  
+          if (top->GXDReporterGeneMenu.menuHistory.modified and top->GXDReporterGeneMenu.menuHistory.defaultValue != "%") then
+            set := set + "_ReporterGene_key = " + top->GXDReporterGeneMenu.menuHistory.defaultValue + ",";
+          end if;
+
 	  pos : integer;
 	  if (assayDetailForm.name = "GelForm") then
 	    if (assayDetailForm->ImagePaneList->List.selectedItemCount = 0) then

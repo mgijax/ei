@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 18 15:24:46 2003";
+      lastWritten = "Mon Nov 17 13:07:28 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -777,34 +777,7 @@ Module: MGI
                       Group: Widget
                         columns = 20;
                         maxLength = 50;
-                        translations = "#override
- Shift<Key>Tab: prev-tab-group()
-<Key>Tab: SetDefault() VerifyAge()";
                     }
-              }
-              {
-                AgeMin = ID : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = GenderMenu;
-                  leftOffset = 5;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Age;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                AgeMax = ID : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = AgeMin;
-                  leftOffset = 5;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = AgeMin;
-                  bottomAttachment = attach_none;
-                  resizable = true;
               }
               {
                 GenderMenu = GenderMenu : mgiOption;
@@ -846,12 +819,12 @@ Module: MGI
                     {
                       Table = mgiTable : mgiTable;
                       Group: Widget
-                        xrtTblColumnLabels = "Mode,Current Key,Key,Clone Library Set";
+                        xrtTblColumnLabels = "Mode,Member key,Set key,Clone Library Set";
                         xrtTblNumColumns = 4;
                         xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
                         xrtTblEditableSeries = "(all 0-2 False)";
                         xrtTblPixelWidthSeries = "(all 0-2 0)";
-                        userDefinedAttributes = "cloneLibraryCurrent:Int(Int)=\"1\"\ncloneLibraryKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
+                        userDefinedAttributes = "memberKey:Int(Int)=\"1\"\nsetKey:Int(Int)=\"2\"\ncloneLibrary:Int(Int)=\"3\"\n";
                         xrtTblVisibleRows = 3;
                     }
               }

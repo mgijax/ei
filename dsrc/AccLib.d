@@ -201,6 +201,7 @@ rules:
 	  table : widget := LoadAcc.table;
 	  source : widget := table.parent.child_by_class("XmRowColumn");
 	  tableID : integer := LoadAcc.tableID;
+	  sortColumn : integer := LoadAcc.sortColumn;
 	  logicalDBkey : string;
 	  prefix : string;
 	  accID : string;
@@ -292,6 +293,12 @@ rules:
             end while;
           end while;
           (void) dbclose(dbproc);
+
+	  -- If sort column is specified, sort it
+
+	  if (sortColumn >= 0) then
+	      (void) mgi_tblSort(table, sortColumn);
+	  end if;
 
 	  -- Re-set the form
 

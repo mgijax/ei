@@ -26,101 +26,101 @@ pcds
     show_names  = false
     height      = 209
 
-  load "/home/lec/ei/sao/pcds/MGI.pcd"
+  load "/home/lec/ei/jsam/pcds/MGI.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 561
 
-  load "/home/lec/ei/sao/pcds/GXD.pcd"
+  load "/home/lec/ei/jsam/pcds/GXD.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 396
 
-  load "/home/lec/ei/sao/pcds/MGD.pcd"
+  load "/home/lec/ei/jsam/pcds/MGD.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 836
 
-  load "/home/lec/ei/sao/pcds/mgiDialog.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiDialog.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 561
     vsb_pos     = 1430
 
-  load "/home/lec/ei/sao/pcds/mgiLookup.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiLookup.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 231
     vsb_pos     = 608
 
-  load "/home/lec/ei/sao/pcds/mgiOption.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiOption.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 3861
 
-  load "/home/lec/ei/sao/pcds/mgiControl.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiControl.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 121
 
-  load "/home/lec/ei/sao/pcds/mgiMenu.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiMenu.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 396
 
-  load "/home/lec/ei/sao/pcds/mgiTable.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiTable.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 176
     vsb_pos     = 74
 
-  load "/home/lec/ei/sao/pcds/mgiDataTypes.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiDataTypes.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 1166
 
-  load "/home/lec/ei/sao/pcds/mgiAnatDictionary.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiAnatDictionary.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 671
 
-  load "/home/lec/ei/sao/pcds/MGIAdmin.pcd"
+  load "/home/lec/ei/jsam/pcds/MGIAdmin.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 66
     vsb_pos     = 55
 
-  load "/home/lec/ei/sao/pcds/MGINomen.pcd"
+  load "/home/lec/ei/jsam/pcds/MGINomen.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 120
 
-  load "/home/lec/ei/sao/pcds/MGIMenu.pcd"
+  load "/home/lec/ei/jsam/pcds/MGIMenu.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 120
 
-  load "/home/lec/ei/sao/pcds/mgiCV.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiCV.pcd"
     floating    = false
     opened      = false
     show_names  = false
     height      = 231
 
-  load "/home/lec/ei/sao/pcds/mgiFantom.pcd"
+  load "/home/lec/ei/jsam/pcds/mgiFantom.pcd"
     floating    = false
     opened      = false
     show_names  = false

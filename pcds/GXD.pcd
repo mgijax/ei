@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 17 12:39:02 2003";
+      lastWritten = "Mon Nov 17 13:07:25 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -192,12 +192,6 @@ Module: GXD
                                       }
                                       {
                                         Age = CharText : mgiDataTypes;
-                                      }
-                                      {
-                                        AgeMin = ID : mgiDataTypes;
-                                      }
-                                      {
-                                        AgeMax = ID : mgiDataTypes;
                                       }
                                       {
                                         GenderMenu = GenderMenu : mgiOption;
@@ -638,12 +632,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Age = CharText : mgiDataTypes;
                                       }
                                       {
-                                        AgeMin = ID : mgiDataTypes;
-                                      }
-                                      {
-                                        AgeMax = ID : mgiDataTypes;
-                                      }
-                                      {
                                         GenderMenu = GenderMenu : mgiOption;
                                       }
                                       {
@@ -986,11 +974,11 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblEnterCellCallback = "D:GenotypeClipboardSetItems,\nD:SetOptions";
                         xrtTblMaxLengthSeries = "(all 12 255)(all 16 255)(all 22 255)";
                         xrtTblNumColumns = 23;
-                        xrtTblNumRows = 11;
+                        xrtTblNumRows = 21;
                         xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-11 0)";
                         xrtTblTraversableSeries = "(all 0-11 False)";
-                        xrtTblValidateCellCallback = "D:CopySpecimen,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVSpecimen\"),\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 10;
+                        xrtTblValidateCellCallback = "D:CopySpecimen,\nD:VerifyGenotype,\nD:CommitTableCellEdit";
+                        xrtTblVisibleRows = 20;
                         xrtTblTraverseCellCallback = "D:DetectISResultModification";
                       Group: User
                         saveEditableSeries = "(all 0-2 False)(all 14-22 False)(all 15 True)";
@@ -1514,7 +1502,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)";
                         xrtTblNumRows = 11;
                         xrtTblPixelWidthSeries = "(all 0-10 0)";
-                        xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVGel\"),\nD:CommitTableCellEdit";
+                        xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 10;
                         userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\nclipboard:String=\"CVGel\"\n";
                         xrtTblTraversableSeries = "(all 0-11 False)";
@@ -1592,7 +1580,8 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblFrozenColumns = 6;
                         xrtTblEnterCellCallback = "D:SetOptions";
                         xrtTblValidateCellCallback = "D:CopyGelRow,\nD:VerifyFloat,\nD:VerifyGelRowUnits,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 4;
+                        xrtTblVisibleRows = 10;
+                        xrtTblNumRows = 11;
                       Group: Control
                         lockedResources = xrtTblColumnLabels;
                       Group: User
@@ -1718,22 +1707,6 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = mgiMarker;
-                                      {
-                                        ObjectID = ID : mgiDataTypes;
-                                      }
-                                      {
-                                        Jnum = Jnum : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: Widget
-                                                translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyReference() SetPriority()";
-                                            }
-                                      }
                                 }
                                 {
                                   GXDIndexPriorityMenu = GXDIndexPriorityMenu : mgiOption;
@@ -2541,7 +2514,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)";
                                                 xrtTblNumRows = 11;
                                                 xrtTblPixelWidthSeries = "(all 0-10 0)";
-                                                xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyAge(ageMenu = \"CVGel\"),\nD:CommitTableCellEdit";
                                                 xrtTblVisibleRows = 10;
                                                 userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\n";
                                                 xrtTblTraversableSeries = "(all 0-11 False)";

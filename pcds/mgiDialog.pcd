@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 16 10:20:41 2003";
+      lastWritten = "Thu Sep 25 13:57:21 2003";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -848,8 +848,8 @@ Module: mgiDialog
                               xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-7 0)";
                               xrtTblTraversableSeries = "(all 0-7 False)";
                               xrtTblValidateCellCallback = "D:VerifyStrengthPattern,\nD:CopyInSituRow,\nD:CommitTableCellEdit";
-                              xrtTblNumRows = 11;
-                              xrtTblVisibleRows = 10;
+                              xrtTblNumRows = 18;
+                              xrtTblVisibleRows = 17;
                             Group: User
                               requiredColumns = "5\n9";
                               saveTraversableSeries = "(all 0-7 False)";
@@ -879,13 +879,11 @@ Module: mgiDialog
                 Group: Constraint
                   leftAttachment = attach_position;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
+                  topAttachment = attach_none;
                   bottomAttachment = attach_form;
                   resizable = true;
-                  bottomOffset = 5;
                   leftPosition = 10;
-                  topWidget = separator;
-                  topOffset = 5;
+                  bottomOffset = 5;
                     {
                       OK = DialogPush;
                       Group: Widget
@@ -941,6 +939,7 @@ Module: mgiDialog
                                   Group: Widget
                                     selectionPolicy = multiple_select;
                                     multipleSelectionCallback = "D:SelectImagePane";
+                                    visibleItemCount = 10;
                                 }
                           }
                           {
@@ -953,6 +952,8 @@ Module: mgiDialog
                                 }
                                 {
                                   List = list;
+                                  Group: Widget
+                                    visibleItemCount = 15;
                                   Group: User
                                     targetWidget = Results;
                                     targetKey = 4;
