@@ -67,6 +67,7 @@ devents:
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [];
+	SetPriority :translation [];
 
 locals:
 	mgi : widget;		-- Main Application Widget
@@ -597,6 +598,30 @@ rules:
 	  send(SetXCellsToFlash, 0);
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- SetPriority
+--
+-- Sets Priority if an existing Index record for the Reference already exists
+-- Translation of top->mgiCitation->Jnum->text.
+--
+
+	SetPriority does
+	  priority : string;
+
+	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
+	    return;
+	  end if;
+
+	  priority := mgi_sql1("select _Priority_key from GXD_Index where _Refs_key = " + top->mgiCitation->ObjectID->text.value);
+		
+	  if (priority.length > 0) then
+            SetOption.source_widget := top->GXDIndexPriorityMenu;
+            SetOption.value := priority;
+            send(SetOption, 0);
+	  end if;
+
 	end does;
 
 --
