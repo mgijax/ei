@@ -467,16 +467,19 @@ rules:
 
 	  Clear.source_widget := top;
  
-	  if (top->QueryList->List.row = 0 and 
-              not top->Control->References.set) then
-            Clear.clearForms := clearAll;
-	    Clear.clearLists := clearRefLists;
-            send(Clear, 0);
+	  if (not top->Control->References.set) then
+	    if (top->QueryList->List.row = 0) then
+              Clear.clearForms := clearAll;
+	      Clear.clearLists := clearRefLists;
+              send(Clear, 0);
+	    end if;
 	  else
-            Clear.clearForms := clearReference;
-            Clear.clearLists := clearRefLists;
-            Clear.clearKeys := false;
-            send(Clear, 0);
+	    if (top->ReferenceList->List.row = 0) then
+              Clear.clearForms := clearReference;
+	      Clear.clearLists := clearRefLists;
+              Clear.clearKeys := false;
+              send(Clear, 0);
+	    end if;
 	  end if;
 
           (void) reset_cursor(top);
