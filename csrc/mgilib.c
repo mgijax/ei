@@ -687,6 +687,7 @@ char *mgi_DBkey(int table)
     case MGI_NOTETYPE:
             strcpy(buf, "_NoteType_key");
 	    break;
+    case MGI_NOTE_MRKGO_VIEW:
     case MGI_NOTE_NOMEN_VIEW:
     case MGI_NOTE_SOURCE_VIEW:
             strcpy(buf, "_Object_key");
@@ -709,6 +710,9 @@ char *mgi_DBkey(int table)
 	    break;
     case MGI_TRANSLATIONTYPE:
             strcpy(buf, "_TranslationType_key");
+	    break;
+    case MGI_USER:
+	    strcpy(buf, "_User_key");
 	    break;
     case MLD_ASSAY:
             strcpy(buf, "_Assay_Type_key");
@@ -1301,6 +1305,12 @@ char *mgi_DBtable(int table)
     case MGI_NOTETYPE:
 	    strcpy(buf, "MGI_NoteType");
 	    break;
+    case MGI_NOTE_MRKGO_VIEW:
+	    strcpy(buf, "MGI_Note_MRKGO_View");
+	    break;
+    case MGI_NOTETYPE_MRKGO_VIEW:
+	    strcpy(buf, "MGI_NoteType_MRKGO_View");
+	    break;
     case MGI_NOTE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_Note_Nomen_View");
 	    break;
@@ -1339,6 +1349,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_TRANSLATIONSTRAIN_VIEW:
             strcpy(buf, "MGI_TranslationStrain_View");
+	    break;
+    case MGI_USER:
+	    strcpy(buf, "MGI_User");
 	    break;
     case MLC_LOCK_EDIT:
             strcpy(buf, "MLC_Lock_edit");
@@ -2037,7 +2050,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, gba_mgiID, gba_symbol, gba_name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_NOTE:
-            sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _NoteType_key, private)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _NoteType_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_NOTECHUNK:
             sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2062,6 +2075,9 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MGI_TRANSLATIONTYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, translationType, compressionChars, regularExpression)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_USER:
+	    sprintf(buf, "insert %s (%s, _UserType_key, _UserStatus_key, login, fullName, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MLC_LOCK_EDIT:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
@@ -2393,6 +2409,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_REFERENCE_ASSOC:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
+      case MRK_HISTORY:
       case MRK_MARKER:
       case NOM_GENEFAMILY:
       case NOM_MARKER:
@@ -2434,6 +2451,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_REFERENCE_ASSOC:
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
+      case MRK_HISTORY:
       case MRK_MARKER:
       case NOM_GENEFAMILY:
       case NOM_MARKER:
