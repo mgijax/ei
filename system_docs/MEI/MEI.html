@@ -151,6 +151,7 @@ The system generates MGI Accession Numbers for the following objects:
 	<LI>Antibodies
 	<LI>Assays
 	<LI>Images
+	<LI>Alleles
 	</OL>
 <P>
 An additional internal Accession Number, the <I>J number</I>, is generated for all
@@ -681,7 +682,7 @@ To run the Development MGD from a MacIntosh:
 
 <HR>
 <A NAME="triggers"><H4>Triggers</H4></A>
-<PRE>(kelso:$SYBASE/admin/triggers)</PRE>
+<PRE>(kelso:$SYBASE/admin/triggers/mgd)</PRE>
 <OL>
 <LI><I>ACC.tr</I>, <I>ACC.drop</I>
 <BR>Contains trigger definitions for Accession tables.
@@ -705,13 +706,23 @@ To run the Development MGD from a MacIntosh:
 <BR>Contains trigger definitions for Image tables (<I>IMG_</I>).
 <LI><I>GXD.tr</I>, <I>GXD.drop</I>
 <BR>Contains trigger definitions for all other GXD tables.
-<LI><I>nomen/NOMEN.tr</I>, <I>nomen/NOMEN.drop</I>
+</OL>
+
+<PRE>(kelso:$SYBASE/admin/triggers/nomen)</PRE>
+<OL>
+<LI><I>NOMEN.tr</I>, <I>NOMEN.drop</I>
 <BR>Contains trigger definitions for Nomenclature tables.
+</OL>
+
+<PRE>(kelso:$SYBASE/admin/triggers/strains)</PRE>
+<OL>
+<LI><I>MLP.tr</I>, <I>MLP.drop</I>
+<BR>Contains trigger definitions for Strains tables.
 </OL>
 
 <HR>
 <A NAME="views"><H4>Views</H4></A>
-<PRE>(kelso:$SYBASE/admin/views)</PRE>
+<PRE>(kelso:$SYBASE/admin/views/mgd)</PRE>
 <OL>
 <LI><I>ACC.view</I>
 <BR>Contains view definitions for Accession tables.
@@ -735,13 +746,23 @@ To run the Development MGD from a MacIntosh:
 <BR>Contains view definitions for GXD tables (<I>GXD_</I>).
 <LI><I>SUM.view</I>
 <BR>Contains summary view definitions for Web Accession number query form.
-<LI><I>nomen/NOMEN.view</I>
-<BR>Contains view definitions for Nomenclature tables (<I>nomen..</I>).
+</OL>
+
+<PRE>(kelso:$SYBASE/admin/views/nomen)</PRE>
+<OL>
+<LI><I>NOMEN.view</I>
+<BR>Contains view definitions for Nomenclature tables.
+</OL>
+
+<PRE>(kelso:$SYBASE/admin/views/strains)</PRE>
+<OL>
+<LI><I>MLP.view</I>
+<BR>Contains view definitions for Strain tables.
 </OL>
 
 <HR>
 <A NAME="procedures"><H4>Stored Procedures</H4></A>
-<PRE>(kelso:$SYBASE/admin/procedures)</PRE>
+<PRE>(kelso:$SYBASE/admin/procedures/mgd)</PRE>
 <OL>
 <LI><I>ACC.pr</I>
 <BR>Contains stored procedure definitions for Accession tables.
@@ -763,8 +784,18 @@ To run the Development MGD from a MacIntosh:
 <BR>Contains stored procedure definitions for Molecular Probe & Segment tables.
 <LI><I>GXD.pr</I>
 <BR>Contains stored procedure definitions for GXD tables.
-<LI><I>nomen/NOMEN.pr</I>
+</OL>
+
+<PRE>(kelso:$SYBASE/admin/procedures/nomen)</PRE>
+<OL>
+<LI><I>NOMEN.pr</I>
 <BR>Contains stored procedure definitions for Nomenclature tables.
+</OL>
+
+<PRE>(kelso:$SYBASE/admin/procedures/strains)</PRE>
+<OL>
+<LI><I>MLP.pr</I> and <I>MISC.pr</I>
+<BR>Contains stored procedure definitions for Strains tables.
 </OL>
 
 <HR>
