@@ -1,0 +1,90 @@
+#!/bin/sh
+
+#
+# weekly_reports 12/03/1999
+#
+# Script to generate weekly reports.
+#
+# Usage: weekly_reports <DBServer> <database> 
+#                       <internal_reports_directory_root> <ftp_reports_dir>
+# (where <internal_reports_directory_root> is a directory which contains
+#  a 'mgireport' target subdirectory, and <ftp_reports_dir> is the target 
+#  directory on the ftp site for the generated reports).
+#
+# Public reports are generated in <current_working_directory>/mgireport
+# and are copied to <ftp_reports_dir>. 
+#
+# Private reports are sent to <internal_reports_directory_root>/mgireport and 
+# are accessible via the QCR page (http://kelso:4444/qcr.html) when in 
+# Production mode. Alternative locations will be set up for testing 
+# report generation on Development.
+#
+#
+
+export DSQUERY MGD HOME FTP PYTHONPATH SYBASE PATH PUBLIC_RPTS
+
+if [ "$#" -ne 4 ]
+then
+    echo usage: "$0 <dbserver> <database> <internal_reports_directory> <ftp_reports_directory>"
+    echo '(<internal_reports_directory> should have a "mgireport" subdirectory'
+    echo '<ftp_reports_directory> is the target directory for ftp site reports)'
+    exit 1
+fi
+
+INTERNAL_RPTS_DIR=$3
+FTP_RPTS_DIR=$4
+
+# check command-line arguments for validity
+if [ ! -d $INTERNAL_RPTS_DIR/mgireport ]
+then
+    echo "$INTERNAL_RPTS_DIR/mgireport does not exist."
+	exit 1
+fi
+
+if [ ! -d $FTP_RPTS_DIR ]
+then
+    echo "$FTP_RPTS_DIR is not a directory."
+	exit 1
+fi
+
+# determine script's installation directory and cd to it.
+# mgireport directory is relative to installation directory.
+BASENAME=`basename $0`; NOTBASENAME=`echo $0 | sed "s/$BASENAME$//"`
+[ "$NOTBASENAME" != "" ] && {
+   cd $NOTBASENAME
+}
+ 
+DSQUERY=$1
+MGD=$2
+HOME=`pwd`
+FTP=$FTP_RPTS_DIR
+PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
+SYBASE=/opt/sybase
+PATH=$PATH:$SYBASE/bin
+DATETAG=`date '+%m-%d-%Y'`
+
+umask 002
+
+cd $HOME
+
+PUBLIC_RPTS="NOMEN_Tracking.sql"
+
+# Copy all of the generated reports from the EI installation filesystem
+# to the FTP site.
+
+for i in $PUBLIC_RPTS
+do
+$i $DSQUERY $MGD
+done
+mv $FTP/Nomenclature-[0-9]*.rpt $FTP/archive/nomenclature
+cp $HOME/mgireport/*.rpt $FTP
+ln -s $FTP/Nomenclature-$DATETAG.rpt $FTP/Nomenclature-current.rpt
+
+HOME=$INTERNAL_RPTS_DIR
+INTERNAL_RPTS=""
+
+for i in $INTERNAL_RPTS
+do
+$i $DSQUERY $MGD $NOMEN
+done
+
