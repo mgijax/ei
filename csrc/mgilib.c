@@ -990,6 +990,9 @@ char *mgi_DBtype(int table)
     case IMG_IMAGE:
             strcpy(buf, "Image");
 	    break;
+    case MGI_ORGANISM:
+            strcpy(buf, "Organism");
+	    break;
     case MLD_EXPTS:
             strcpy(buf, "Experiment");
 	    break;
