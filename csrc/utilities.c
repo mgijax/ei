@@ -17,6 +17,7 @@
  */
 
 #include <utilities.h>
+#include <syblib.h>
 
 /* keep_busy
  *
@@ -74,7 +75,7 @@ void reset_cursor(Widget w)
 
 char *get_time()
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   long time(), current;
   char *ctime();
@@ -93,8 +94,8 @@ char *get_time()
 
 char *get_date(char *format)
 {
-  static char buf[BUFSIZ];
-  char tmpFormat[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
+  char tmpFormat[TEXTBUFSIZ];
   long time(), current;
   struct tm *localtime(), *tmptr;
 
@@ -109,7 +110,7 @@ char *get_date(char *format)
 
   time(&current);
   tmptr = localtime(&current);
-  strftime(buf, BUFSIZ, tmpFormat, tmptr);
+  strftime(buf, TEXTBUFSIZ, tmpFormat, tmptr);
   return(buf);
 }
 
@@ -122,7 +123,7 @@ char *get_date(char *format)
 
 char *mgi_primary_author(const char *authors)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
   char *tokptr;
 
   strcpy(buf, authors);
@@ -138,8 +139,8 @@ char *mgi_primary_author(const char *authors)
 
 char *mgi_year(char *date)
 {
-  static char buf[BUFSIZ];
-  char cmd[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
+  char cmd[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
   memset(cmd, '\0', sizeof(buf));
@@ -286,7 +287,7 @@ Boolean allow_only(char *text, char *charset)
 
 char *mgi_hide_passwd(XmTextVerifyCallbackStruct *cbs, char *passwd)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -349,3 +350,65 @@ void mgi_writeLog(const char *buf)
   printf("%s", buf);
 }
  
+/* mgi_simplesub
+ *
+ * Simple Substitution
+ * substitutes 'repl' for 'pat' in 'str'.
+ * returns:  new string
+ *
+ */
+
+char *mgi_simplesub(char *pat, char *repl, char *str)
+{
+  static char newstr[TEXTBUFSIZ];
+  char *s1, *s2, *n, *r;
+  int plen = strlen(pat);
+
+  memset(newstr, '\0', sizeof(newstr));
+
+  s1 = str;
+  n = newstr;
+
+  /* repeat pattern scan/replacement while string is not null */
+
+  while (*s1 != '\0')
+  {
+    /* set r to start of replacement string */
+    r = repl;
+
+    /* find pattern */
+    s2 = strstr(s1, pat);
+
+    /* if pattern is found */
+    if (s2 != '\0')
+    {
+      /* copy everything up to pattern into new string */
+      while (s1 != s2)
+      {
+        *n++ = *s1++;
+      }
+
+      /* copy replacement into new string */
+      while (*r != '\0')
+      {
+        *n++ = *r++;
+      }
+
+      /* skip over pattern in string */
+      s1 = s1 + plen;
+    }
+    else
+    {
+      /* if pattern is no longer found */
+      /* then copy remainder of string into new string */
+      while (*s1 != '\0')
+      {
+	*n++ = *s1++;
+      }
+    }
+  }
+  *n = '\0';
+
+  return newstr;
+}
+
