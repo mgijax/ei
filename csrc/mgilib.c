@@ -749,7 +749,9 @@ char *mgi_DBkey(int table)
 	    break;
     case MGI_NOTE_MRKGO_VIEW:
     case MGI_NOTE_NOMEN_VIEW:
+    case MGI_NOTE_SEQUENCE_VIEW:
     case MGI_NOTE_SOURCE_VIEW:
+    case MGI_NOTE_VOCEVIDENCE_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
     case MGI_ORGANISM:
@@ -763,6 +765,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_RefAssocType_key");
 	    break;
     case MGI_REFERENCE_NOMEN_VIEW:
+    case MGI_REFERENCE_SEQUENCE_VIEW:
             strcpy(buf, "_Object_key");
 	    break;
     case MGI_TRANSLATION:
@@ -896,6 +899,12 @@ char *mgi_DBkey(int table)
     case RISET:
             strcpy(buf, "_RISet_key");
 	    break;
+    case SEQ_SEQUENCE:
+            strcpy(buf, "_Sequence_key");
+	    break;
+    case SEQ_SOURCE_ASSOC:
+            strcpy(buf, "_Assoc_key");
+	    break;
     case STRAIN:
             strcpy(buf, "_Strain_key");
 	    break;
@@ -916,8 +925,10 @@ char *mgi_DBkey(int table)
 	    strcpy(buf, "_AnnotType_key");
 	    break;
     case VOC_ANNOT:
-    case VOC_EVIDENCE:
 	    strcpy(buf, "_Annot_key");
+	    break;
+    case VOC_EVIDENCE:
+	    strcpy(buf, "_AnnotEvidence_key");
 	    break;
     case VOC_CELLLINE_VIEW:
 	    strcpy(buf, "_Term_key");
@@ -990,6 +1001,9 @@ char *mgi_DBtype(int table)
     case PRB_SOURCE_MASTER:
             strcpy(buf, "Source");
             break;
+    case SEQ_SEQUENCE:
+	    strcpy(buf, "Sequence");
+	    break;
     case STRAIN:
     case MLP_STRAIN:
             strcpy(buf, "Strain");
@@ -1081,6 +1095,9 @@ char *mgi_DBaccTable(int table)
     case STRAIN:
     case MLP_STRAIN:
 	    sprintf(buf, "PRB_Strain_Acc_View");
+            break;
+    case SEQ_SEQUENCE:
+	    sprintf(buf, "SEQ_Sequence_AccRef_View");
             break;
     case VOC_TERM:
 	    sprintf(buf, "VOC_Term_Acc_View");
@@ -1381,8 +1398,17 @@ char *mgi_DBtable(int table)
     case MGI_NOTETYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_NoteType_Nomen_View");
 	    break;
+    case MGI_NOTE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_Note_Sequence_View");
+	    break;
+    case MGI_NOTETYPE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_NoteType_Sequence_View");
+	    break;
     case MGI_NOTE_SOURCE_VIEW:
 	    strcpy(buf, "MGI_Note_Source_View");
+	    break;
+    case MGI_NOTE_VOCEVIDENCE_VIEW:
+	    strcpy(buf, "MGI_Note_VocEvidence_View");
 	    break;
     case MGI_NOTETYPE_SOURCE_VIEW:
 	    strcpy(buf, "MGI_NoteType_Source_View");
@@ -1402,8 +1428,14 @@ char *mgi_DBtable(int table)
     case MGI_REFERENCE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_Reference_Nomen_View");
 	    break;
+    case MGI_REFERENCE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_Reference_Sequence_View");
+	    break;
     case MGI_REFTYPE_NOMEN_VIEW:
 	    strcpy(buf, "MGI_RefType_Nomen_View");
+	    break;
+    case MGI_REFTYPE_SEQUENCE_VIEW:
+	    strcpy(buf, "MGI_RefType_Sequence_View");
 	    break;
     case MGI_TRANSLATION:
             strcpy(buf, "MGI_Translation");
@@ -1662,6 +1694,12 @@ char *mgi_DBtable(int table)
 	    break;
     case RISET_VIEW:
             strcpy(buf, "RI_RISet_View");
+	    break;
+    case SEQ_SEQUENCE:
+	    strcpy(buf, "SEQ_Sequence");
+	    break;
+    case SEQ_SOURCE_ASSOC:
+	    strcpy(buf, "SEQ_Source_Assoc");
 	    break;
     case STRAIN:
             strcpy(buf, "PRB_Strain");
@@ -2371,7 +2409,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_EVIDENCE:
-            sprintf(buf, "insert %s (%s, _EvidenceTerm_key, _Refs_key, inferredFrom, notes, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
@@ -2489,6 +2527,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_REFERENCE:
       case PRB_RFLV:
       case PRB_SOURCE:
+      case SEQ_SEQUENCE:
       case VOC_EVIDENCE:
       case VOC_TERM:
               sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 

@@ -45,6 +45,11 @@ extern char *global_version;
 #define YES		"1"
 #define NO 		"0"
 
+#define INTERNALCURATIONSTATE	"Internal"
+
+#define BROADCASTOFFICIAL       "official"
+#define BROADCASTINTERIM        "interim"
+
 /* Table Definitions must be unique */
 
 /* MGD Tables */
@@ -238,18 +243,23 @@ extern char *global_version;
 #define MGI_REFERENCE_ASSOC		605
 #define MGI_REFASSOCTYPE		606
 #define MGI_REFERENCE_NOMEN_VIEW	607
-#define MGI_ORGANISM			608
-#define MGI_ORGANISMTYPE		609
-#define MGI_NOTE_NOMEN_VIEW		610
-#define MGI_NOTETYPE_NOMEN_VIEW		611
-#define MGI_REFTYPE_NOMEN_VIEW		612
-#define MGI_TRANSLATION			613
-#define MGI_TRANSLATIONTYPE		614
-#define MGI_TRANSLATIONSTRAIN_VIEW	615
-#define MGI_NOTE_SOURCE_VIEW		616
-#define MGI_NOTETYPE_SOURCE_VIEW	617
-#define MGI_NOTETYPE_MRKGO_VIEW         618
-#define MGI_NOTE_MRKGO_VIEW             619
+#define MGI_REFERENCE_SEQUENCE_VIEW	608
+#define MGI_ORGANISM			609
+#define MGI_ORGANISMTYPE		610
+#define MGI_NOTE_MRKGO_VIEW             611
+#define MGI_NOTETYPE_MRKGO_VIEW         612
+#define MGI_NOTE_NOMEN_VIEW		613
+#define MGI_NOTETYPE_NOMEN_VIEW		614
+#define MGI_NOTE_SEQUENCE_VIEW		615
+#define MGI_NOTETYPE_SEQUENCE_VIEW	616
+#define MGI_NOTE_SOURCE_VIEW		617
+#define MGI_NOTETYPE_SOURCE_VIEW	618
+#define MGI_REFTYPE_NOMEN_VIEW		619
+#define MGI_REFTYPE_SEQUENCE_VIEW	620
+#define MGI_TRANSLATION			621
+#define MGI_TRANSLATIONTYPE		622
+#define MGI_TRANSLATIONSTRAIN_VIEW	623
+#define MGI_NOTE_VOCEVIDENCE_VIEW	624
 
 
 /* Strains Tables */
@@ -290,14 +300,19 @@ extern char *global_version;
 #define MGI_FANTOM2NOTES	901
 #define MGI_FANTOM2CACHE	902
 
+/* Sequence Tables */
+
+#define SEQ_SEQUENCE		1000
+#define SEQ_SOURCE_ASSOC	1001
+
 /* End of Table Definitions */
 
 /* Stored procedures */
 
-#define NOM_TRANSFERSYMBOL	1000
-#define NOM_TRANSFERBATCH	1001
-#define NOM_TRANSFERREFEDITOR	1002
-#define NOM_TRANSFERREFCOORD	1003
+#define NOM_TRANSFERSYMBOL	2000
+#define NOM_TRANSFERBATCH	2001
+#define NOM_TRANSFERREFEDITOR	2002
+#define NOM_TRANSFERREFCOORD	2003
 
 #define	MOUSE		"1"
 #define HUMAN		"2"
@@ -327,13 +342,15 @@ extern char *global_version;
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
 
-/* Nomen */
+/* Nomen (VOC_Vocab._Vocab_key = 19) */
 
-#define STATUS_PENDING		"11371"
-#define STATUS_NDELETED		"11372"
-#define STATUS_RESERVED		"11373"
-#define STATUS_NAPPROVED	"11374"
-#define STATUS_BROADCAST	"11375"
+#define STATUS_PENDING		"65709"
+#define STATUS_NDELETED		"65710"
+#define STATUS_RESERVED		"65711"
+#define STATUS_NAPPROVED	"65712"
+#define STATUS_BROADCASTOFF     "65713"
+#define STATUS_BROADCASTINT     "65714"
+
 
 /* Allele Nomen */
 
