@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 05/16/2002
+--	- TR 1463 SAO; _ProbeSpecies_key replaced with _Species_key
+--
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
 --
@@ -355,7 +358,7 @@ rules:
 	  end if;
 
           if (top->ProbeSpeciesMenu.menuHistory.modified) then
-            set := set + "_ProbeSpecies_key = " + top->ProbeSpeciesMenu.menuHistory.defaultValue + ",";
+            set := set + "_Species_key = " + top->ProbeSpeciesMenu.menuHistory.defaultValue + ",";
           end if;
  
           if (top->Strain->StrainID->text.modified) then
@@ -451,7 +454,7 @@ rules:
 	  end if;
 
           if (top->ProbeSpeciesMenu.menuHistory.searchValue != "%") then
-            where := where + " and s._ProbeSpecies_key = " + top->ProbeSpeciesMenu.menuHistory.searchValue;
+            where := where + " and s._Species_key = " + top->ProbeSpeciesMenu.menuHistory.searchValue;
           end if;
  
           if (top->Strain->StrainID->text.value.length > 0) then

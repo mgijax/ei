@@ -434,6 +434,12 @@ char *mgi_DBkey(int table)
     case BIB_REVIEW_STATUS:
             strcpy(buf, "_ReviewStatus_key");
 	    break;
+    case MGI_SPECIES:
+            strcpy(buf, "_Species_key");
+	    break;
+    case MGI_SPECIESTYPE:
+            strcpy(buf, "_Species_key");
+	    break;
     case MRK_MARKER:
     case MRK_MOUSE:
     case MRK_ALIAS:
@@ -456,9 +462,6 @@ char *mgi_DBkey(int table)
 	    break;
     case MRK_ALLELE:
             strcpy(buf, "_Allele_key");
-	    break;
-    case MRK_SPECIES:
-            strcpy(buf, "_Species_key");
 	    break;
     case MRK_CHROMOSOME:
             strcpy(buf, "_Species_key");
@@ -519,9 +522,6 @@ char *mgi_DBkey(int table)
     case PRB_SOURCE:
     case PRB_SOURCE_MASTER:
             strcpy(buf, "_Source_key");
-	    break;
-    case PRB_SPECIES:
-            strcpy(buf, "_ProbeSpecies_key");
 	    break;
     case CROSS:
             strcpy(buf, "_Cross_key");
@@ -628,9 +628,6 @@ char *mgi_DBkey(int table)
 	    break;
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "_AntibodyType_key");
-	    break;
-    case GXD_ANTIBODYSPECIES:
-            strcpy(buf, "_AntibodySpecies_key");
 	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "_GelRNAType_key");
@@ -915,6 +912,9 @@ char *mgi_DBaccTable(int table)
     case ALL_ALLELE:
             strcpy(buf, "ALL_Acc_View");
             break;
+    case MGI_SPECIES:
+            strcpy(buf, "MGI_Species_Acc_View");
+            break;
     case MRK_NOMEN:
 	    sprintf(buf, "%s..MRK_Nomen_AccNoRef_View", getenv("NOMEN"));
             break;
@@ -1057,11 +1057,11 @@ char *mgi_DBtable(int table)
     case PRB_SOURCE_MASTER:
             strcpy(buf, "PRB_Source");
 	    break;
-    case PRB_SPECIES:
-	    sprintf(buf, "PRB_Species");
+    case MGI_SPECIES:
+            strcpy(buf, "MGI_Species");
 	    break;
-    case MRK_SPECIES:
-            strcpy(buf, "MRK_Species");
+    case MGI_SPECIESTYPE:
+            strcpy(buf, "MGI_Species_MGIType");
 	    break;
     case MRK_ANCHOR:
             strcpy(buf, "MRK_Anchors");
@@ -1256,9 +1256,6 @@ char *mgi_DBtable(int table)
 	    break;
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "GXD_AntibodyType");
-	    break;
-    case GXD_ANTIBODYSPECIES:
-            strcpy(buf, "GXD_AntibodySpecies");
 	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "GXD_GelRNAType");
@@ -1713,6 +1710,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_STRAIN_SYNONYM:
     case MGI_TABLES:
     case MGI_COLUMNS:
+    case MGI_SPECIESTYPE:
     case ALL_ALLELE_MUTATION:
     case ALL_NOTE:
     case ALL_NOTE_VIEW:
@@ -2034,8 +2032,11 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_INDEXSTAGES:
 	    sprintf(buf, "insert %s (index_id, stage_id, insitu_protein_section, insitu_rna_section, insitu_protein_mount, insitu_rna_mount, northern, western, rt_pcr, clones, rnase, nuclease, primer_extension)", mgi_DBtable(table));
 	    break;
-    case MRK_SPECIES:
-            sprintf(buf, "insert %s (%s, name, species)", mgi_DBtable(table), mgi_DBkey(table));
+    case MGI_SPECIES:
+            sprintf(buf, "insert %s (%s, latinName, commonName)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case MGI_SPECIESTYPE:
+            sprintf(buf, "insert %s (_Species_key, _MGIType_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_ANCHOR:
             sprintf(buf, "insert %s (chromosome, _Marker_key)", mgi_DBtable(table));
@@ -2546,9 +2547,6 @@ char *mgi_DBcvname(int table)
     case PRB_VECTOR_TYPE:
             strcpy(buf, "vectorType");
 	    break;
-    case PRB_SPECIES:
-            strcpy(buf, "species");
-	    break;
     case GXD_ANTIBODYCLASS:
             strcpy(buf, "class");
 	    break;
@@ -2588,9 +2586,6 @@ char *mgi_DBcvname(int table)
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "antibodyType");
 	    break;
-    case GXD_ANTIBODYSPECIES:
-            strcpy(buf, "antibodySpecies");
-	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "rnaType");
 	    break;
@@ -2599,6 +2594,9 @@ char *mgi_DBcvname(int table)
 	    break;
     case GXD_GELCONTROL:
             strcpy(buf, "gelLaneContent");
+	    break;
+    case MGI_SPECIES:
+            strcpy(buf, "commonName");
 	    break;
     case MRK_GENEFAMILY:
             strcpy(buf, "name");

@@ -225,7 +225,7 @@ char *mgi_citation(DBPROCESS *dbproc, int table)
          strcat(buf, mgi_getstr(dbproc, 4));
          break;
  
-    case MRK_SPECIES:
+    case MGI_SPECIES:
          strcpy(buf, mgi_getstr(dbproc, 2));
          strcat(buf, " (");
          strcat(buf, mgi_getstr(dbproc, 3));

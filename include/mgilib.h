@@ -61,7 +61,6 @@ extern char *global_version;
 #define BIB_BOOKS		101
 #define BIB_NOTES		102
 
-#define MRK_SPECIES   		110
 #define MRK_ANCHOR		111
 #define MRK_CHROMOSOME		112
 #define MRK_MARKER  		113
@@ -208,13 +207,13 @@ extern char *global_version;
 #define ALL_TYPE		332
 #define ALL_INHERITANCE_MODE	333
 #define ALL_MOLECULAR_MUTATION	334
-#define GXD_ANTIBODYSPECIES	335
 #define ALL_CELLLINE		336
 #define ALL_STATUS		337
 #define ALL_NOTETYPE		338
 #define ALL_REFERENCETYPE	339
-#define PRB_SPECIES		340
 #define RISET_VIEW		341
+#define MGI_SPECIES   		342
+#define MGI_SPECIESTYPE		343
 
 /* Accession Tables */
 

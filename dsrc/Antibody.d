@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	05/16/2002
+--	- TR 1463 SAO; _AntibodySpecies_key replaced with _Species_key
+--
 -- lec  06/20/2001
 --	- TR 2650; search Name and Alias when user enters Name value
 --
@@ -322,7 +325,7 @@ rules:
 	  end if;
 
 	  if (top->AntibodySpeciesMenu.menuHistory.modified) then
-            set := set + "_AntibodySpecies_key = " + top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
+            set := set + "_Species_key = " + top->AntibodySpeciesMenu.menuHistory.defaultValue + ",";
 	  end if;
 
 	  if (top->WesternMenu.menuHistory.modified) then
@@ -525,7 +528,7 @@ rules:
           end if;
  
           if (top->AntibodySpeciesMenu.menuHistory.searchValue != "%") then
-            where := where + " and g._AntibodySpecies_key = " + top->AntibodySpeciesMenu.menuHistory.searchValue;
+            where := where + " and g._Species_key = " + top->AntibodySpeciesMenu.menuHistory.searchValue;
           end if;
  
           if (top->WesternMenu.menuHistory.searchValue != "%") then

@@ -31,6 +31,9 @@
 --
 -- History
 --
+-- lec 05/16/2002
+--	- TR 1463/SAO; MRK_Species replaced with MGI_Species
+--
 -- lec 07/11/2000
 --	- TR 1773; turn off editing of non-mouse markers; must use non-mouse marker info screen
 --
@@ -948,7 +951,7 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select _Species_key, name + ' (' + species + ')' from MRK_Species " +
+	  cmd := "select _Species_key, species from MGI_Species_Homology_View " +
 		 "where _Species_key in " + defaultSpeciesKeys + " order by _Species_key";
 
 	  dbproc : opaque := mgi_dbopen();

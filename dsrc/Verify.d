@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 05/16/2002
+--	- TR 1463/SAO; MRK_Species replaced with MGI_Species
+--
 -- lec 04/25/2002
 --	- TR3627 (VerifyStrains); fix insert of new Strain
 --
@@ -2647,7 +2650,6 @@ rules:
 	  keys : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
 	  names : string_list := create string_list();
-	  species : string_list := create string_list();
 
 	  -- Clear Species Lookup List
 
@@ -2656,9 +2658,9 @@ rules:
 
 	  -- Search for Species in the database
 
-	  select : string := "select _Species_key, name, species " +
-			     "from MRK_Species " +
-			     " where name = " + mgi_DBprstr(value) + "\n";
+	  select : string := "select _Species_key, commonName, species " +
+			     "from MGI_Species_Marker_View " +
+			     " where commonName = " + mgi_DBprstr(value) + "\n";
 
 	  -- Insert results into string list for loading into Species selection list
 	  -- Insert chromosomes into string list for future reference
@@ -2670,9 +2672,7 @@ rules:
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
               keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
               names.insert(mgi_getstr(dbproc, 2), names.count + 1);
-              species.insert(mgi_getstr(dbproc, 3), species.count + 1);
-              results.insert(mgi_getstr(dbproc, 2) + 
-		" (" + mgi_getstr(dbproc, 3) + ")", results.count + 1);
+              results.insert(mgi_getstr(dbproc, 3), results.count + 1);
             end while;
           end while;
 	  (void) dbclose(dbproc);
