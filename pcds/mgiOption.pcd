@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Feb 11 14:10:00 2005";
+      lastWritten = "Mon Feb 14 09:45:11 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2794,7 +2794,7 @@ Module: mgiOption
           StrainGenoQualMenu = OptionMenu;
           Group: Widget
             subMenuId = StrainGenoQualPulldown;
-            labelString = "Qualifier Menu";
+            labelString = "Strain/Genotype Qualifier";
           Group: Control
             vip_x = 80;
             vip_y = 5695;

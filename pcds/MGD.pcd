@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 14 08:25:25 2005";
+      lastWritten = "Mon Feb 14 09:51:27 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3512,7 +3512,7 @@ Module: MGD
           ExptTextForm = ExptForm : MGD;
           Group: Widget
             rubberPositioning = False;
-            height = 400;
+            height = 450;
             width = 600;
             resizePolicy = resize_any;
           Group: Control
@@ -3539,7 +3539,7 @@ Module: MGD
                     {
                       text = scrolledText;
                       Group: Widget
-                        rows = 20;
+                        rows = 30;
                     }
               }
         }
@@ -3547,7 +3547,7 @@ Module: MGD
           ExptForm = EditForm : MGI;
           Group: Widget
             width = 600;
-            height = 800;
+            height = 900;
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
@@ -3595,6 +3595,14 @@ Module: MGD
               }
               {
                 Notes = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  rightOffset = 2;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 Band = CharText : mgiDataTypes;
@@ -3671,6 +3679,14 @@ Module: MGD
               }
               {
                 Notes = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  rightOffset = 2;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 Band = CharText : mgiDataTypes;
@@ -3940,6 +3956,14 @@ Module: MGD
               }
               {
                 Notes = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  rightOffset = 2;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 Band = CharText : mgiDataTypes;
@@ -4192,6 +4216,14 @@ Module: MGD
               }
               {
                 Notes = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  rightOffset = 2;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 mgiRISet = mgiRISet : mgiDataTypes;
@@ -4355,6 +4387,14 @@ Module: MGD
               }
               {
                 Notes = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  rightOffset = 2;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 mgiCross = mgiCross : mgiDataTypes;
@@ -4730,6 +4770,14 @@ Module: MGD
               }
               {
                 Notes = Notes : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_form;
+                  rightOffset = 2;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 GeneOrder = CharText : mgiDataTypes;
@@ -4984,7 +5032,7 @@ Module: MGD
             width = 600;
             rubberPositioning = False;
             resizePolicy = resize_any;
-            height = 775;
+            height = 800;
           Group: Control
             vip_x = 80;
             vip_y = 1735;
@@ -5066,7 +5114,7 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-5 0)";
                         xrtTblTraversableSeries = "(all 0-6 False)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 15;
+                        xrtTblVisibleRows = 10;
                         xrtTblMaxLengthSeries = "(all 7 40)(all 8 20)(all 9 80)(all 10 255)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
                         xrtTblNumRows = 20;
@@ -5088,7 +5136,6 @@ Module: MGD
                   topWidget = ExptMarker;
                   bottomAttachment = attach_form;
                   resizable = true;
-                  bottomOffset = 5;
               }
               {
                 ExptInSituForm = ExptInSituForm : MGD;
