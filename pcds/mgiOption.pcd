@@ -252,6 +252,14 @@ Module: mgiOption
                         defaultValue = wheat;
                     }
                     {
+                      other = OptionToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Other-See note";
+                      Group: User
+                        searchValue = "Other-See note";
+                        defaultValue = "Other-See note";
+                    }
+                    {
                       NotSpecified = NotSpecified : mgiOption;
                       Group: Widget
                         background = Wheat;
