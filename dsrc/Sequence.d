@@ -363,7 +363,8 @@ rules:
 	  fromMarker : string := "";
 	  fromProbe : string := "";
 
-	  from := "from SEQ_Sequence s, VOC_Term v1, VOC_Term v2";
+--	  from := "from SEQ_Sequence s, VOC_Term v1, VOC_Term v2";
+	  from := "SEQ_Sequence s, VOC_Term v1, VOC_Term v2";
 	  where := "ac._MGIType_key = 19 " +
 		   "and s._SequenceType_key = v1._Term_key " +
 		   "and s._SequenceProvider_key = v2._Term_key";
@@ -554,8 +555,8 @@ rules:
 
 	  value := mgi_tblGetCell(table, 0, table.objectName);
           if (value.length > 0) then
-	    whereMarker := where + "\nand m.symbol like " + mgi_DBprstr(value);
-	    whereProbe := where + "\nand p.name like " + mgi_DBprstr(value);
+	    whereMarker := where + "\nand mm.symbol like " + mgi_DBprstr(value);
+	    whereProbe := where + "\nand pp.name like " + mgi_DBprstr(value);
 	    from_object := true;
 	  end if;
 
@@ -571,16 +572,21 @@ rules:
 	  -- References; deferred
 
 	  if (from_source) then
-	    from := from + ",SEQ_Source_Assoc ssa, PRB_Source ps";
+--	    from := from + ",SEQ_Source_Assoc ssa, PRB_Source ps";
+	    from := "PRB_Source ps, " + from + ",SEQ_Source_Assoc ssa";
 	    where := where + "\nand s._Sequence_key = ssa._Sequence_key" +
 		"\nand ssa._Source_key = ps._Source_key";
 	  end if;
 
+	  from := "from " + from;
+
 	  if (from_object) then
-	    fromMarker := from + ", SEQ_Marker_Cache_View m";
-	    whereMarker := whereMarker + "\nand s._Sequence_key = m._Sequence_key";
-	    fromProbe := from + ", SEQ_Probe_Cache_View p";
-	    whereProbe := whereProbe + "\nand s._Sequence_key = p._Sequence_key";
+	    fromMarker := from + ", MRK_Marker mm, SEQ_Marker_Cache m";
+	    whereMarker := whereMarker + "\nand mm._Marker_key = m._Marker_key" +
+		"\nand s._Sequence_key = m._Sequence_key";
+	    fromProbe := from + ", PRB_Probe pp, SEQ_Probe_Cache p";
+	    whereProbe := whereProbe + "\nand pp._Probe_key = p._Probe_key" +
+		"\nand s._Sequence_key = p._Sequence_key";
 	    union := "union\n" + select + fromProbe + "\n" + "where " + whereProbe;
 	    from := fromMarker;
 	    where := whereMarker;
