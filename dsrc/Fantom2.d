@@ -783,7 +783,7 @@ rules:
 
 		row := row + 1;
 	        fantomKey := mgi_getstr(dbproc, 1);
-	        gbaMGIID := mgi_getstr(dbproc, 32);
+	        gbaMGIID := mgi_getstr(dbproc, 33);
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.row, (string) (row + 1));
 	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, fantomKey);
