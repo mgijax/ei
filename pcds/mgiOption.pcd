@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Feb 20 09:22:27 2004";
+      lastWritten = "Tue Feb 24 12:54:06 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -142,7 +142,7 @@ Module: mgiOption
                     {
                       IMAGE = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "I.M.A.G.E.";
+                        labelString = IMAGE;
                       Group: User
                         defaultValue = 17;
                     }
