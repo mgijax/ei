@@ -238,9 +238,15 @@ rules:
 --
 
 	Exit does
-	  if (mgi->MolecularSource != nil) then
-            mgi->MolecularSource.sensitive := true;
+
+	   -- exiting using window manager causes problems, so check first
+
+	  if (Exit.source_name = "Exit") then
+	    if (mgi->MolecularSource != nil) then
+              mgi->MolecularSource.sensitive := true;
+	    end if;
 	  end if;
+
 	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
