@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 23 13:10:55 2001";
+      lastWritten = "Tue Mar 20 12:24:22 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -816,6 +816,12 @@ Module: MGI
                                               ESCellLine = ControlledVocabToggle : mgiOption;
                                             }
                                             {
+                                              AlleleNoteType = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
+                                              AlleleReferenceType = ControlledVocabToggle : mgiOption;
+                                            }
+                                            {
                                               VectorType = ControlledVocabToggle;
                                             }
                                             {
@@ -965,12 +971,99 @@ Module: MGI
                                   Strain = Strain : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = AssayAbbrev;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    topOffset = 5;
+                                    leftWidget = Name;
+                                }
+                                {
+                                  AllowOnlyOne = OptionMenu;
+                                  Group: Widget
+                                    subMenuId = YesNoPulldown;
+                                    labelString = "Allow Only One";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Strain;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = Name;
+                                    topOffset = 5;
+                                  Group: Control
+                                    vip_x = 80;
+                                    vip_y = 4100;
+                                  Group: User
+                                    defaultOption = SearchAll;
+                                      Popups:
+                                      {
+                                        YesNoPulldown : OptionPulldown = OptionPulldown;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              Yes = Yes : mgiOption;
+                                              Group: Widget
+                                                labelString = Yes;
+                                              Group: User
+                                                searchValue = 1;
+                                                defaultValue = 1;
+                                            }
+                                            {
+                                              No = No : mgiOption;
+                                              Group: Widget
+                                                labelString = No;
+                                              Group: User
+                                                searchValue = 0;
+                                                defaultValue = 0;
+                                            }
+                                      }
+                                }
+                                {
+                                  Private = OptionMenu;
+                                  Group: Widget
+                                    subMenuId = YesNoPulldown;
+                                    labelString = Private;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AllowOnlyOne;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = Name;
+                                    topOffset = 5;
+                                  Group: Control
+                                    vip_x = 80;
+                                    vip_y = 4100;
+                                  Group: User
+                                    defaultOption = SearchAll;
+                                      Popups:
+                                      {
+                                        YesNoPulldown : OptionPulldown = OptionPulldown;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              Yes = Yes : mgiOption;
+                                              Group: Widget
+                                                labelString = Yes;
+                                              Group: User
+                                                searchValue = 1;
+                                                defaultValue = 1;
+                                            }
+                                            {
+                                              No = No : mgiOption;
+                                              Group: Widget
+                                                labelString = No;
+                                              Group: User
+                                                searchValue = 0;
+                                                defaultValue = 0;
+                                            }
+                                      }
                                 }
                           }
                     }
