@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  8 09:02:49 2004";
+      lastWritten = "Wed Oct 13 11:12:44 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11059,7 +11059,7 @@ Shift<Key>Tab: prev-tab-group()
                               bottomAttachment = attach_none;
                               resizable = true;
                               topOffset = 5;
-                              leftOffset = 20;
+                              leftOffset = 250;
                                 {
                                   Table = mgiTable;
                                   Group: Widget
@@ -11253,6 +11253,8 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             SequenceNote = Notes : mgiDataTypes;
+                            Group: Widget
+                              managed = False;
                             Group: Constraint
                               leftAttachment = attach_widget;
                               rightAttachment = attach_none;
@@ -11277,6 +11279,7 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               labelString = "Pick List of Sequence Notes";
                               subMenuId = SeqNotePulldown;
+                              managed = False;
                             Group: Constraint
                               leftAttachment = attach_opposite_widget;
                               leftWidget = SequenceNote;
