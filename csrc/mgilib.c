@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 12/2001-01/2002
+ *	- TR 2867/2239:  VOC
+ *
  * lec 03/04/2001-03/19/2001
  *	- TR 2217; Allele Enhancements
  *	- TR 1939; Allele Nomenclature
@@ -759,6 +762,9 @@ char *mgi_DBkey(int table)
     case VOC_SYNONYM:
 	    strcpy(buf, "_Synonym_key");
 	    break;
+    case VOC_ANNOTTYPE:
+	    strcpy(buf, "_AnnotType_key");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -1473,6 +1479,9 @@ char *mgi_DBtable(int table)
     case VOC_TEXT_VIEW:
             strcpy(buf, "VOC_Text_View");
 	    break;
+    case VOC_ANNOTTYPE:
+            strcpy(buf, "VOC_AnnotType");
+	    break;
     default:
 	    sprintf(buf, "Invalid Table: %d", table);
 	    break;
@@ -2027,6 +2036,9 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case VOC_SYNONYM:
             sprintf(buf, "insert %s (%s, _Term_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case VOC_ANNOTTYPE:
+            sprintf(buf, "insert %s (%s, _MGIType_key, _Vocab_key, _EvidenceVocab_key, name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
