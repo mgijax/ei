@@ -111,11 +111,6 @@ Module: mgiOption
                         defaultValue = 29;
                     }
                     {
-                      EC = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 8;
-                    }
-                    {
                       NSequence = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Nucleotide Sequence";
@@ -152,6 +147,11 @@ Module: mgiOption
                         labelString = UniGene;
                       Group: User
                         defaultValue = 23;
+                    }
+                    {
+                      EC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 8;
                     }
                     {
                       ATCC = AccToggle : mgiOption;
