@@ -38,23 +38,32 @@ on a regular basis to reflect the SSDB changes in nomenclature, mapping position
 <H4>Getting the Data Dumps</H4>
 
 The species-specific Accession numbers are loaded into MGD by an automated process 
-which uses data dumps provided by the SSDBs:
+which uses data dumps provided by the SSDBs.  In addition to Accession number dumps,
+GDB provides a dump of symbols and citations which we use to generate a 
+<A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/HMD_Potentials.rpt">report</A> of
+potential mouse/human homologies.
 <P>
 
 <TABLE BORDER=1>
 <TR ALIGN=left><TH>SSDB<TH>Data File<TH>Contact<TH>Frequency of Data Load
 <TR><TD>GDB
     <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/GeneByAlpha.tab">GeneByAlpha.tab</A>
-	<BR>Data file must be manually extracted to 
-	    <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>
-	    from <A HREF="http://www.gdb.org/gdbreports/GeneByAlpha.tab">GDB's Reports Page</A>.
-	    Perform this extraction at least once a week.
+	<BR>Data file is automatically extracted from the FTP site <CODE>syb.hsc.gdb.org</CODE>
+	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
     <TD>Connie Talbot <BR>(cct@gdb.org)
-    <TD>Daily
+    <TD>Once a week
+
+<TR><TD>GDB
+    <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/Gene.medlineid.tab">Gene.medlineid.tab</A>
+	<BR>Data file is automatically extracted from the FTP site <CODE>syb.hsc.gdb.org</CODE>
+	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
+    <TD>Connie Talbot <BR>(cct@gdb.org)
+    <TD>Once a week (GDB file is only updated once a month)
 
 <TR><TD>RATMAP
     <TD><A HREF="http://prodwww/~lec/mgireport/HOMOLOGY/RatURL.txt">RatURL.txt</A>
-	<BR>Data file is automatically extracted from the FTP site <CODE>genmac17.gen.gu.se</CODE>.
+	<BR>Data file is automatically extracted from the FTP site <CODE>genmac17.gen.gu.se</CODE>
+	    to <CODE>titan:/usr/local/mgi/ei/mgd/mgireport/HOMOLOGY</CODE>.
     <TD>Fredrik Stahl <BR>(Fredrik.Stahl@gen.gu.se)
     <TD>Daily (TR 555)
 
@@ -126,17 +135,26 @@ the <A HREF="http://kelso:4444/qcr.html#homology">QCR page, Homology section</A>
 <P>
 <LI><I>RATMAP Input File</I> will display the RATMAP data dump file.
 <P>
+<LI><I>MGD Entries with Potential Human Homologies</I> will display MGD records
+    which match citations and human symbols in the <CODE>Gene.medlineid.tab</CODE> file.
+    This is used by Deb Reed to pick up any potential mouse/human homologies which
+    are not in MGD but for which citations exist reporting them.
+<P>
 </UL>
 
 <H4>Executing the Load</H4>
 
-The program <CODE>titan:$SYBASE/admin/utilities/loadHomology.sh</CODE> is executed from the user
+The program <CODE>titan:$SYBASE/admin/utilities/GDB/loadHomology.sh</CODE> is executed from the user
 <CODE>sybase</CODE> cron or from the Production load script (see John Gilbert):
 
 	<PRE>
-	$SYBASE/admin/utilities/loadHomology.sh MGD mgd GDB
-	$SYBASE/admin/utilities/loadHomology.sh MGD mgd RATMAP
+	$SYBASE/admin/utilities/GDB/loadHomology.sh MGD mgd GDB
+	$SYBASE/admin/utilities/GDB/loadHomology.sh MGD mgd RATMAP
 	</PRE>
+<P>
+The program <CODE>titan:$SYBASE/admin/utilities/GDB/HMD_Potentials.py</CODE> is executed 
+from <CODE>titan:$SYBASE/admin/utilities/GDB/loadHomology.sh</CODE>.  This generates
+a report of potential mouse/human homologies from the GDB download file <CODE>Gene.medlineid.tab</CODE>.
 
 <HR>
 
