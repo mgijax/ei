@@ -66,7 +66,6 @@ rules:
  
 	  add : string := "";
 	  age : string := "";
-	  library : string := "";
 
 	  top.sql := "";
 
@@ -78,21 +77,13 @@ rules:
                    mgi_DBinsert(PRB_SOURCE, keyLabel);
 	  end if;
 
-	  if (top->Library->text.value = "Anonymous" or
-	      top->Library->text.value = "Not Specified") then
-	    library := "NULL";
-	  else
-	    library := mgi_DBprstr(top->Library->text.value);
-	  end if;
-
 	  add := add +
-	         library + "," +
+	         mgi_DBprstr(top->Library->text.value) + "," +
                  mgi_DBprstr(top->Description->text.value) + "," +
                  mgi_DBprkey(top->mgiCitation->ObjectID->text.value) + "," +
-                 top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
+                 top->ProbeSpeciesMenu.menuHistory.defaultValue + "," +
                  top->Strain->StrainID->text.value + "," +
-                 top->Tissue->TissueID->text.value + "," +
-                 top->GenderMenu.menuHistory.defaultValue + ",";
+                 top->Tissue->TissueID->text.value + ",";
 
 	  -- Construct Age value
 
@@ -125,11 +116,12 @@ rules:
             add := add + mgi_DBprstr(age) + "," +
                          top->AgeMin->text.value + "," +
                          top->AgeMax->text.value + "," +
+                         mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + "," +
             	         mgi_DBprstr(top->CellLine->text.value) + ")\n";
  
 	    top.sql := add;
 	  end if;
-
+ 
 	  if (top->Library.managed) then
 	    ProcessNoteForm.notew := top->mgiNoteForm;
 	    ProcessNoteForm.tableID := MGI_NOTE;
@@ -296,10 +288,6 @@ rules:
 	        if (DisplayMolecularSource.master) then
 		  top->CreationDate->text.value := mgi_getstr(dbproc, 15);
 		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 16);
-		else
-                  if (sourceForm->Library->text.value.length = 0) then
-                    sourceForm->Library->text.value := "Anonymous";
-                  end if;
                 end if;
 
                 sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);
@@ -406,12 +394,7 @@ rules:
 
 	  if (top->Library.managed) then
 	    if (top->Library->text.modified) then
-	      if (top->Library->text.value = "Anonymous" or
-		  top->Library->text.value = "Not Specified") then
-                set := set + "name = NULL,";
-	      else
-                set := set + "name = " + mgi_DBprstr(top->Library->text.value) + ",";
-	      end if;
+              set := set + "name = " + mgi_DBprstr(top->Library->text.value) + ",";
 	    end if;
 	  end if;
 

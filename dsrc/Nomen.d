@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec 04/24/2003
+--	- TR 4752; added rjc
+--
 -- lec 05/21/2002
 --	- TR 1463; SAO; move NomenDB into MGD
 --
@@ -525,8 +528,8 @@ rules:
 	  end if;
 
 	  if (not (global_login = "ljm" or global_login = "lmm" or 
-		   global_login = "cml" or global_login = "csmith" or
-		   global_login = "tc" or global_login = "tier4") and
+		   global_login = "cml" or global_login = "rjc" or
+		   global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;

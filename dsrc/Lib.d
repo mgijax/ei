@@ -7,10 +7,13 @@
 --
 -- History
 --
+-- lec 04/03/2003
+--	- TR 3608/mgiNoteForm
+--
 -- lec 10/24/2002
---	- TR 4184; ExitWindow; check if top is realized (not managed).
---	  if window is iconified, then it is not currently managed
---	  and won't get destroyed.
+--      - TR 4184; ExitWindow; check if top is realized (not managed).
+--        if window is iconified, then it is not currently managed
+--        and won't get destroyed.
 --
 -- lec 03/27/2001
 --	- Added "AlleleStatusMenu" to SetOption
@@ -106,10 +109,6 @@ rules:
 
           (void) busy_cursor(root);
 
-	  if (top.is_defined("allowSelect") != nil) then
-	    top.allowSelect := true;
-	  end if;
-
 	  -- First, clear out all fields on designated clear forms
 
 	  j := 1;
@@ -151,13 +150,15 @@ rules:
 		  end if;
 		  clearForm.child(i).modified := false;
 
-		-- For XmOption menus (except the ControlForm and Lookups)...
+		-- For mgiNoteForm
 
 		elsif (clearForm.child(i).name = "mgiNoteForm") then
 	          -- Clear/Set Notes
 	          ClearSetNoteForm.notew := clearForm.child(i);
 	          ClearSetNoteForm.clearNote := not Clear.reset;
 	          send(ClearSetNoteForm, 0);
+
+		-- For XmOption menus (except the ControlForm and Lookups)...
 
 		elsif (clearForm.name != "ControlForm" and class = "XmRowColumn") then
 
@@ -214,20 +215,6 @@ rules:
 		    ClearTable.clearCells := not Clear.reset;
 		    send(ClearTable, 0);
 		  end if;	-- End if child != nil
-
-		  -- if XmForm has an mgiNoteForm
-		  if (top->mgiNoteForm != nil) then
-
-	  	    -- Clear/Set Notes
-	  	    ClearSetNoteForm.notew := top->mgiNoteForm;
-
-	  	    if (Clear.reset) then
-	    	      ClearSetNoteForm.clearNote := false;
-	  	    end if;
-
-	  	    send(ClearSetNoteForm, 0);
-		  end if;	-- if mgiNoteForm found
-
 		end if;		-- End if class = "XmForm"
 		i := i + 1;
 	      end while;
@@ -411,6 +398,7 @@ rules:
 	  i : integer := 1;
 
           if (top.realized) then
+
 	    -- Unmanage any dialogs which are still active
             while (i <= mgi.initDialog.count) do
               dialog := mgi->(mgi.initDialog[i]);
@@ -704,13 +692,7 @@ rules:
 --
 
 	SetModify does
-	  top : widget := SetModify.source_widget.top;
-
 	  SetModify.source_widget.modified := SetModify.flag;
-
-	  if (top.is_defined("allowSelect") != nil) then
-	    top.allowSelect := false;
-	  end if;
 	end does;
 
 --

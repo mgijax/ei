@@ -12,13 +12,13 @@
 -- History
 --
 -- 02/26/2003 lec
---      - TR 4562; added EditTerm toggle
+--	- TR 4562; added EditTerm toggle
 --
 -- 02/25/2003 lec
---      - TR 4553; added created by/date to table
+--	- TR 4553; added created by/date to table
 --
 -- 02/04/2003 lec
---      - TR 3853; annotation for OMIM/Genotype
+--	- TR 3853; annotation for OMIM/Genotype
 --
 -- 01/02/2003 lec
 --	- TR 4272; annotation for Mammalian Phenotype
@@ -118,6 +118,12 @@ rules:
 
 	  -- Initialize Global variables, Clear form, etc.
 	  send(Init, 0);
+
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_MRKGO_VIEW;
+	  send(InitNoteForm, 0);
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -299,6 +305,14 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  if (annotTable.annotVocab = "GO") then
+	    ProcessNoteForm.notew := top->mgiNoteForm;
+	    ProcessNoteForm.tableID := MGI_NOTE;
+	    ProcessNoteForm.objectKey := currentRecordKey;
+	    send(ProcessNoteForm, 0);
+	    cmd := top->mgiNoteForm.sql;
+          end if;
+
 	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
@@ -397,9 +411,12 @@ rules:
 		       evidenceKey + "," +
 		       refsKey + "," +
 		       mgi_DBprstr(inferredFrom) + "," +
+		       mgi_DBprstr(global_login) + "," +
+		       mgi_DBprstr(global_login) + "," +
 		       mgi_DBprstr(notes) + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
+
 	      set := "isNot = " + notKey;
 
 	      if (editTerm) then
@@ -466,6 +483,15 @@ rules:
 	      where := where + "\nand v.short_description like " + mgi_DBprstr(value);
 	    end if;
 	  end if;
+
+	  if (annotTable.annotVocab = "GO") then
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
+            SearchNoteForm.join := "v._Object_key";
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+          end if;
 
 	  -- Annotations
 
@@ -630,10 +656,12 @@ rules:
 	  -- Different Sorts for different Annotation Types
 	  if (annotTable.annotVocab = "GO") then
 	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
-	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
-	    orderBy := "a.term, e.modification_date\n";
 	  elsif (annotTable.annotVocab = "PhenoSlim") then
 	    orderBy := "a.sequenceNum, e.modification_date\n";
+	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	    orderBy := "e.jnum, a.term\n";
+	  else
+	    orderBy := "a.term, e.modification_date\n";
 	  end if;
 
 	  cmd : string := "select _Object_key, accID, description, short_description " +
@@ -701,8 +729,8 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 12));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
@@ -777,6 +805,10 @@ rules:
 
 	  if (annotTable.annotVocab = "GO") then
 	    send(SelectGOReferences, 0);
+	    LoadNoteForm.notew := top->mgiNoteForm;
+	    LoadNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
+	    LoadNoteForm.objectKey := currentRecordKey;
+	    send(LoadNoteForm, 0);
 	  end if;
 
           top->QueryList->List.row := Select.item_position;
@@ -870,14 +902,18 @@ rules:
 	  send(LoadList, 0);
 
 	  if (annotTable.annotVocab = "PhenoSlim") then
+	    top->mgiNoteForm.managed := false;
 	    top->PhenoSlimList.managed := true;
             LoadList.list := top->PhenoSlimList;
 	    send(LoadList, 0);
 	    top->Reference.managed := false;
 	  elsif (annotTable.annotVocab = "GO") then
+	    top->mgiNoteForm.managed := true;
 	    top->PhenoSlimList.managed := false;
 	    top->Reference.managed := true;
-	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+--	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	  else
+	    top->mgiNoteForm.managed := false;
 	    top->PhenoSlimList.managed := false;
 	    top->Reference.managed := false;
 	  end if;
