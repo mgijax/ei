@@ -37,6 +37,7 @@ ModifyNotes [source_widget : widget;		-- Modify/Add Notes
 Query [source_widget : widget;			-- Query Database Allowing Interruption
        list_w : widget;
        select : string;
+       printSelect : string;
        table : integer;
        rowcount : string;];
 

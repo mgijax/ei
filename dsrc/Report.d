@@ -38,12 +38,13 @@ rules:
      top : widget := ReportGenerate.source_widget.root;
      dialog : widget := ReportGenerate.source_widget.top;
      select : string := dialog.child(1).select; -- top = <widget#ReportDialog_popup:XmDialogShell>
+     printSelect : string := dialog.child(1).printSelect;
 
      if (dialog->ReportList->List.selectedItemCount = 0) then
-        StatusReport.source_widget := top;
-        StatusReport.message := "No Report Selected";
-        send(StatusReport);
-        return;
+       StatusReport.source_widget := top;
+       StatusReport.message := "No Report Selected";
+       send(StatusReport);
+       return;
      end if;
 
      (void) busy_cursor(dialog.top);
@@ -58,79 +59,83 @@ rules:
      -- If program is the Broadcast, then send User login and Password file
 
      if (program = "broadcast.py") then      -- Broadcast (user dependent)
-         commands.insert("-U" + global_login, commands.count + 1);
-         commands.insert("-P" + global_passwd_file, commands.count + 1);
-         commands.insert(dialog->FileSelection.textString, commands.count + 1);
-         bfilename := dialog->FileSelection.textString;
-         basename := tu_base_name(bfilename);
-         if (bfilename.length = 0 or basename.length = 0) then
-              (void) reset_cursor(dialog.top);
-            StatusReport.source_widget := top;
-            StatusReport.message := "Invalid broadcast file";
-            send(StatusReport);
-            return;
+        commands.insert("-U" + global_login, commands.count + 1);
+        commands.insert("-P" + global_passwd_file, commands.count + 1);
+        commands.insert(dialog->FileSelection.textString, commands.count + 1);
+        bfilename := dialog->FileSelection.textString;
+        basename := tu_base_name(bfilename);
+        if (bfilename.length = 0 or basename.length = 0) then
+          (void) reset_cursor(dialog.top);
+           StatusReport.source_widget := top;
+           StatusReport.message := "Invalid broadcast file";
+           send(StatusReport);
+           return;
          end if;
 
      elsif (program = "nlm.py") then      -- NLM program
 
-            -- NLM Mode = 1 is the NLM Update
-            -- NLM Mode = 2 is the Current Contents Update
-            -- NLM Mode = 3 is an NLM or CC Add and requires a starting J#
+       -- NLM Mode = 1 is the NLM Update
+       -- NLM Mode = 2 is the Current Contents Update
+       -- NLM Mode = 3 is an NLM or CC Add and requires a starting J#
 
-               if (ReportGenerate.nlmMode = 3 and
-                  (dialog->Jnum->text.value.length = 0 or
-                  (integer) dialog->Jnum->text.value <= (integer) top->NextJnum->text.value)) then
-                 StatusReport.source_widget := top;
-                 StatusReport.message := "Invalid J#";
-                 send(StatusReport);
-                 return;
-               end if;
+       if (ReportGenerate.nlmMode = 3 and
+         (dialog->Jnum->text.value.length = 0 or
+         (integer) dialog->Jnum->text.value <= (integer) top->NextJnum->text.value)) then
+         StatusReport.source_widget := top;
+         StatusReport.message := "Invalid J#";
+         send(StatusReport);
+         return;
+       end if;
  
-            commands.insert("-U" + global_login, commands.count + 1);
-            commands.insert("-P" + global_passwd_file, commands.count + 1);
+       commands.insert("-U" + global_login, commands.count + 1);
+       commands.insert("-P" + global_passwd_file, commands.count + 1);
  
-            if (ReportGenerate.nlmMode = 3) then
-              commands.insert("-a", commands.count + 1);
-            elsif (ReportGenerate.nlmMode = 2) then
-              commands.insert("-c", commands.count + 1);
-            elsif (ReportGenerate.nlmMode = 1) then
-              commands.insert("-u", commands.count + 1);
-            end if;
+       if (ReportGenerate.nlmMode = 3) then
+         commands.insert("-a", commands.count + 1);
+       elsif (ReportGenerate.nlmMode = 2) then
+         commands.insert("-c", commands.count + 1);
+       elsif (ReportGenerate.nlmMode = 1) then
+         commands.insert("-u", commands.count + 1);
+       end if;
  
-            if (ReportGenerate.nlmMode = 3) then
-              commands.insert("-j" + dialog->Jnum->text.value, commands.count + 1);
-            end if;
+       if (ReportGenerate.nlmMode = 3) then
+         commands.insert("-j" + dialog->Jnum->text.value, commands.count + 1);
+       end if;
  
-            commands.insert(dialog->FileSelection.textString, commands.count + 1);
+       commands.insert(dialog->FileSelection.textString, commands.count + 1);
 
-            if (ReportGenerate.nlmMode = 3) then
-              dialog->Output.value := "NLM/CURRENT CONTENTS ADD\n";
-            elsif (ReportGenerate.nlmMode = 2) then
-              dialog->Output.value := "CURRENT CONTENTS UPDATE\n";
-            elsif (ReportGenerate.nlmMode = 1) then
-              dialog->Output.value := "NLM UPDATE\n";
-            end if;
+       if (ReportGenerate.nlmMode = 3) then
+         dialog->Output.value := "NLM/CURRENT CONTENTS ADD\n";
+       elsif (ReportGenerate.nlmMode = 2) then
+         dialog->Output.value := "CURRENT CONTENTS UPDATE\n";
+       elsif (ReportGenerate.nlmMode = 1) then
+         dialog->Output.value := "NLM UPDATE\n";
+       end if;
  
      -- Other Python scripts are not user-dependent and can execute using the public login
      -- These programs rely on the last search the User performed from within the form
 
      elsif (strstr(program, ".py") != nil) then
-            if (dialog->ReportList->List.row = 1 and select.length = 0) then
-               StatusReport.source_widget := top;
-               StatusReport.message := "Must Return to Form and Perform A Search";
-               send(StatusReport);
-               (void) reset_cursor(dialog.top);
-               return;
-            else
-               commands.insert(select, commands.count + 1);
-            end if;
+       if (dialog->ReportList->List.row = 1 and select.length = 0) then
+         StatusReport.source_widget := top;
+         StatusReport.message := "Must Return to Form and Perform A Search";
+         send(StatusReport);
+         (void) reset_cursor(dialog.top);
+         return;
+       else
+         commands.insert(select, commands.count + 1);
+       end if;
+
+       if (printSelect.length != 0) then
+         commands.insert(printSelect, commands.count + 1);
+       end if;
 
      -- SQL commands also execute using the DSQUERY and MGD env variables
      -- SQL reports should use the public login
 
      elsif (strstr(program, ".sql") != nil) then
-            commands.insert(getenv("DSQUERY"), commands.count + 1);
-            commands.insert(getenv("MGD"), commands.count + 1);
+       commands.insert(getenv("DSQUERY"), commands.count + 1);
+       commands.insert(getenv("MGD"), commands.count + 1);
      end if;
  
      -- Print some diagnostics for the User
@@ -153,11 +158,15 @@ rules:
 
      -- I replaced fork_process2 with fork_process, since stderr and stdout
      -- were being merged anyway -gld
+     -- Used fork_process2 so that we could send stderr somewhere else, 
+     -- if we wanted to - lec
+
      proc_p : opaque := tu_fork_process(program, commands, dialog->Output, ReportEnd);
+
      -- check to see if we could exec the script 
      if (tu_fork_status(proc_p) = 2) then 
         StatusReport.source_widget := top;
-        StatusReport.message := "Couldn't get script status";
+        StatusReport.message := "Couldn't get script status; unable to execute command.";
         send(StatusReport);
      end if;      
 
@@ -192,7 +201,7 @@ rules:
      top->WorkingDialog.managed := false;
 
      (void) reset_cursor(dialog.top);
-        end does;
+   end does;
 
 --
 -- ReportInit
@@ -208,12 +217,12 @@ rules:
      -- Init base directory
 
      if (dialog.useReportDir) then
-            dialog->FileSelection.directory := global_reportdir;
+       dialog->FileSelection.directory := global_reportdir;
      else
-            dialog->FileSelection.directory := getenv("HOME");
+       dialog->FileSelection.directory := getenv("HOME");
      end if;
 
-          dialog->Output.value := "";                  -- Reset Status Area
+     dialog->Output.value := "";                  -- Reset Status Area
 
      printer := getenv("PRINTER");
      if (printer.length > 0) then
@@ -232,14 +241,14 @@ rules:
      end if;
 
      (void) reset_cursor(dialog.root);
-        end does;
+   end does;
 
 --
 -- ReportSelect
 --
 
    ReportSelect does
-          ReportSelect.source_widget.row := ReportSelect.item_position;
+     ReportSelect.source_widget.row := ReportSelect.item_position;
    end does;
 
 end dmodule;

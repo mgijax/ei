@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 08/11/1999
+--	- TR 812; Nomenclature Report
+--
 -- lec 08/04/1999
 --	- TR 518; adding Accession/Reference table
 --
@@ -120,6 +123,7 @@ locals:
 	cmd : string;
 	from : string;
 	where : string;
+	printSelect : string;
 
 	tables : list;
 
@@ -233,8 +237,7 @@ rules:
  
 	  -- Clear the form
 
-	  Clear.source_widget := top;
-	  send(Clear, 0);
+	  send(ClearNomen, 0);
 	end does;
 
 --
@@ -249,6 +252,7 @@ rules:
           top->MarkerStatusPulldown->SearchAll.background := "Wheat";
           top->MarkerStatusMenu.menuHistory.background := "Wheat";
 	  Clear.source_widget := top;
+	  Clear.clearLists := 3;
 	  send(Clear, 0);
 	end does;
 
@@ -743,6 +747,8 @@ rules:
 	  from_homology    : boolean := false;
 	  from_genefamily  : boolean := false;
 
+	  printSelect := "";
+
 	  value : string;
 	  table : widget;
 	  i : integer;
@@ -775,68 +781,90 @@ rules:
 	  QueryDate.tag := "m";
 	  send(QueryDate, 0);
 	  where := where + top->CreationDate.sql;
+	  if (top->CreationDate.sql.length > 0) then
+	    printSelect := printSelect + "\nCreation Date = " + top->CreationDate->text.value;
+	  end if;
 
 	  QueryDate.source_widget := top->ModifiedDate;
 	  QueryDate.tag := "m";
 	  send(QueryDate, 0);
 	  where := where + top->ModifiedDate.sql;
+	  if (top->ModifiedDate.sql.length > 0) then
+	    printSelect := printSelect + "\nModified Date = " + top->ModifiedDate->text.value;
+	  end if;
 
           if (top->MarkerEventMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Event_key = " + top->MarkerEventMenu.menuHistory.searchValue;
+	    printSelect := printSelect + "\nMarker Event = " + top->MarkerEventMenu.menuHistory.labelString;
           end if;
 
           if (top->MarkerStatusMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Status_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
+	    printSelect := printSelect + "\nMarker Status = " + top->MarkerStatusMenu.menuHistory.labelString;
           end if;
 
           if (top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Type_key = " + top->MarkerTypeMenu.menuHistory.searchValue;
+	    printSelect := printSelect + "\nMarker Type = " + top->MarkerTypeMenu.menuHistory.labelString;
           end if;
 
           if (top->ChromosomeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m.chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.searchValue);
+	    printSelect := printSelect + "\nMarker Chromosome = " + top->ChromosomeMenu.menuHistory.labelString;
           end if;
 
           if (top->NomenUserMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Suid_key = " + top->NomenUserMenu.menuHistory.searchValue;
+	    printSelect := printSelect + "\nUser = " + top->NomenUserMenu.menuHistory.labelString;
           end if;
 
           if (top->ProposedSymbol->text.value.length > 0) then
 	    where := where + "\nand m.proposedSymbol like " + mgi_DBprstr(top->ProposedSymbol->text.value);
+	    printSelect := printSelect + "\nProposed Symbol = " + top->ProposedSymbol->text.value;
 	  end if;
 	    
           if (top->ProposedName->text.value.length > 0) then
 	    where := where + "\nand m.proposedName like " + mgi_DBprstr(top->ProposedName->text.value);
+	    printSelect := printSelect + "\nProposed Name = " + top->ProposedName->text.value;
 	  end if;
 	    
           if (top->ApprovedSymbol->text.value.length > 0) then
 	    where := where + "\nand m.approvedSymbol like " + mgi_DBprstr(top->ApprovedSymbol->text.value);
+	    printSelect := printSelect + "\nApproved Symbol = " + top->ApprovedSymbol->text.value;
 	  end if;
 	    
           if (top->ApprovedName->text.value.length > 0) then
 	    where := where + "\nand m.approvedName like " + mgi_DBprstr(top->ApprovedName->text.value);
+	    printSelect := printSelect + "\nApproved Name = " + top->ApprovedName->text.value;
 	  end if;
 	    
           if (top->HumanSymbol->text.value.length > 0) then
 	    where := where + "\nand m.humanSymbol like " + mgi_DBprstr(top->HumanSymbol->text.value);
+	    printSelect := printSelect + "\nHuman Symbol = " + top->HumanSymbol->text.value;
 	  end if;
 	    
           if (top->StatusNotes->text.value.length > 0) then
 	    where := where + "\nand m.statusNote like " + mgi_DBprstr(top->StatusNotes->text.value);
+	    printSelect := printSelect + "\nStatus Notes = " + top->StatusNotes->text.value;
 	  end if;
 	    
           QueryDate.source_widget := top->BroadcastDate->Date;
           QueryDate.tag := "m";
           send(QueryDate, 0);
           where := where + top->BroadcastDate->Date.sql;
- 
+	  if (top->BroadcastDate->Date.sql.length > 0) then
+	    printSelect := printSelect + "\nBroadcast Date = " + top->BroadcastDate->Date.sql;
+	  end if;
+
           if (top->EditorNote->Note->text.value.length > 0) then
 	    where := where + "\nand men.note like " + mgi_DBprstr(top->EditorNote->Note->text.value);
+	    printSelect := printSelect + "\nEditor Notes = " + top->EditorNote->Note->text.value;
 	    from_editornotes := true;
 	  end if;
 	    
           if (top->CoordNote->Note->text.value.length > 0) then
 	    where := where + "\nand mcn.note like " + mgi_DBprstr(top->CoordNote->Note->text.value);
+	    printSelect := printSelect + "\nCoord Notes = " + top->CoordNote->Note->text.value;
 	    from_coordnotes := true;
 	  end if;
 	    
@@ -844,12 +872,14 @@ rules:
           value := mgi_tblGetCell(table, 0, table.otherName);
           if (value.length > 0) then
 	    where := where + "\nand mo.name like " + mgi_DBprstr(value);
+	    printSelect := printSelect + "\nOther Name = " + value;
 	    from_other := true;
 	  end if;
 
           value := mgi_tblGetCell(table, 1, table.otherName);
           if (value.length > 0) then
 	    where := where + "\nand mo.name like " + mgi_DBprstr(value);
+	    printSelect := printSelect + "\nOther Name = " + value;
 	    from_other := true;
 	  end if;
 
@@ -859,11 +889,13 @@ rules:
             value := mgi_tblGetCell(table, i, table.refsKey);
             if (value.length > 0 and value != "NULL") then
 	      where := where + "\nand mr._Refs_key = " + value;
+	      printSelect := printSelect + "\nReference = J:" + mgi_tblGetCell(table, i, table.jnum);
 	      from_reference := true;
 	    else
               value := mgi_tblGetCell(table, i, table.citation);
               if (value.length > 0) then
 	        where := where + "\nand mr.short_citation like " + mgi_DBprstr(value);
+	        printSelect := printSelect + "\nReference = J:" + mgi_tblGetCell(table, i, table.jnum);
 	        from_reference := true;
 	      end if;
 	    end if;
@@ -874,10 +906,12 @@ rules:
           value := mgi_tblGetCell(table, 0, table.familyKey);
           if (value.length > 0) then
 	    where := where + "\nand mf._Marker_Family_key = " + value;
+	    printSelect := printSelect + "\nGene Family = " + mgi_tblGetCell(table, 0, table.familyName);
 	    from_genefamily := true;
 	  end if;
 
 	  if (top->Homology.set) then
+	    printSelect := printSelect + "\nHomology Records in MGD";
 	    from_homology := true;
 	  end if;
 
@@ -946,6 +980,7 @@ rules:
 	  Query.source_widget := top;
 	  Query.select := "select distinct m._Nomen_key, m.approvedSymbol\n" + from + "\n" + 
 			  where + "\norder by m.approvedSymbol\n";
+	  Query.printSelect := printSelect;
 	  Query.table := MRK_NOMEN;
 	  send(Query, 0);
           (void) reset_cursor(top);

@@ -6,6 +6,9 @@
 --
 -- History
 --
+-- lec 08/11/99
+--	- TR 812; added printSelect to Query event
+--
 -- lec 12/23/98
 --	- Query; introduce rowcount
 --
@@ -358,10 +361,10 @@ rules:
 
 	  (void) mgi_writeLog(get_time() + "QUERY:" + Query.select + "\n");
 
-	  -- Set Report selection; Report generation of an SQL command will use
-	  -- the last query the User executed
+	  -- Set Report selection; Report generation will use the last query the User executed
 
 	  Query.source_widget->ReportDialog.select := Query.select;
+	  Query.source_widget->ReportDialog.printSelect := Query.printSelect;
 
 	  if (Query.list_w = nil) then
 	    queryList := Query.source_widget->QueryList;
