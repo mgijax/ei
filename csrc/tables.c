@@ -261,6 +261,28 @@ int mgi_tblNumColumns(Widget table)
 }
 
 /*
+  Set the number of rows and visible rows in the table
+
+  requires:
+	table (Widget), the table
+	rows (int), the number of rows
+
+  effects:
+	changes the XmNxrtTblNumRows attribute
+
+  returns:
+
+*/
+
+void mgi_tblSetNumRows(Widget table, int rows)
+{
+  XtVaSetValues(table, 
+		XmNxrtTblNumRows, rows,
+		XmNxrtTblVisibleRows, rows,
+		NULL);
+}
+
+/*
    Flash the specified row/column an infinite number of times
 
    requires:

@@ -23,6 +23,7 @@ CALLS
 	 mgi_tblGetCurrentRow("Widget")				: "int";
 	 mgi_tblNumRows("Widget")				: "int";
 	 mgi_tblNumColumns("Widget")				: "int";
+	 mgi_tblSetNumRows("Widget", "int");
 	 mgi_tblGetCallbackParent("XrtTblCreateWidgetCallbackStruct"): "Widget";
 	 mgi_tblIsTable("Widget")				: "Boolean";
 	 mgi_tblIsCellVisible("Widget", "int", "int")		: "Boolean";
