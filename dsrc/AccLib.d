@@ -733,18 +733,19 @@ rules:
           (void) busy_cursor(top);
  
 	  cmd : string := mgi_DBaccSelect(tableID, mgiTypeKey, accNumeric);
+	  row : integer := 0;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      -- Object Key
-              top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
-	      -- Accession ID
-              top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
-	      -- Accession Name
-              top->AccessionName->text.value := mgi_getstr(dbproc, 3);
+	      if (row = 0) then
+                top->ObjectID->text.value      := mgi_getstr(dbproc, 1);
+                top->AccessionID->text.value   := mgi_getstr(dbproc, 2);
+                top->AccessionName->text.value := mgi_getstr(dbproc, 3);
+	      end if;
+	      row := row + 1;
             end while;
           end while;
           (void) dbclose(dbproc);

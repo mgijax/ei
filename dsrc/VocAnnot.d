@@ -327,6 +327,7 @@ rules:
 	  end if;
 
 	  top->mgiAccession.mgiTypeKey := top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
+	  top->Annotation->Table.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	end does;
 
 --

@@ -701,7 +701,7 @@ rules:
 	  LoadAcc.tableID := GXD_GENOTYPE;
 	  send(LoadAcc, 0);
 
-	  send(SelectReferences, 0);
+--	  send(SelectReferences, 0);
 
 	  -- Initialize Option Menus for row 0
 
@@ -729,6 +729,8 @@ rules:
 	  row : integer := 0;
 	  table : widget := top->Reference->Table;
 
+	  (void) busy_cursor(top);
+
 	  cmd := "exec GXD_getGenotypesDataSets " + currentRecordKey;
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -746,7 +748,9 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  top->Reference->Rows.labelString := (string) row + " Rows";
+	  top->Reference->Rows.labelString := (string) row + " Records";
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

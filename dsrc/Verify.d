@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 01/15/2002
+--	- TR 2867; VerifyVocabTermAccID
+--
 -- lec 10/16/2001
 --	- TR 2541; VerifyItem, VerifyStrains; check private bit; private
 --	  items cannot be used.
@@ -2986,6 +2989,120 @@ rules:
 	    top->Age->text.value := "";
 	  end if;
 
+	end does;
+
+--
+-- VerifyVocabTermAccID
+--
+--	Verify Term Acc ID for Table
+--	Assumes table.vocabKey, table.term, table.termAccID, table.dag, 
+--              table.dagKey are defined as UDAs
+--	Copy Term Name into Appropriate widget/column
+--	Copy Term Key into Appropriate widget/column
+--	Copy DAG Key into Appropriate widget/column
+--	Copy DAG Name into Appropriate widget/column
+--
+
+	VerifyVocabTermAccID does
+	  sourceWidget : widget := VerifyVocabTermAccID.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  if (isTable) then
+	    row := VerifyVocabTermAccID.row;
+	    column := VerifyVocabTermAccID.column;
+	    reason := VerifyVocabTermAccID.reason;
+	    value := VerifyVocabTermAccID.value;
+
+	    -- If not in the Term ACC ID column, return
+
+	    if (column != sourceWidget.termAccID) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  else
+	    return;
+	  end if;
+
+	  -- If the Term Acc ID is null, return
+
+	  if (value.length = 0) then
+	    if (isTable) then
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dagKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  termAcc : string;
+	  termKey : string;
+	  term : string;
+	  dagKey : string;
+	  dag : string;
+
+	  select : string := "select t.accID, t._Term_key, t.term, d._DAG_key, d.dag " +
+		"from VOC_Term_View t, VOC_VocabDAG_View d " +
+		"where t.accID = " + mgi_DBprstr(value) + 
+		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +
+		" and t._Vocab_key *= d._Vocab_key";
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      termAcc := mgi_getstr(dbproc, 1);
+	      termKey := mgi_getstr(dbproc, 2);
+	      term    := mgi_getstr(dbproc, 3);
+	      dagKey  := mgi_getstr(dbproc, 4);
+	      dag     := mgi_getstr(dbproc, 5);
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  -- If Acc ID is valid
+	  --   Copy the Keys into the Key fields
+	  --   Copy the Names into the Name fields
+	  -- Else
+	  --   Display an error message, set the key columns to null, disallow edit to the field
+
+	  if (termKey.length > 0) then
+	    if (isTable) then
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termAccID, termAcc);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, termKey);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, term);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dagKey, dagKey);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, dag);
+	    end if;
+	  else
+	    if (isTable) then
+	      VerifyVocabTermAccID.doit := (integer) false;
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dagKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	    end if;
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid Term Accession ID";
+            send(StatusReport);
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

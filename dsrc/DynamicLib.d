@@ -16,7 +16,7 @@
 -- History:
 --
 --	lec	01/15/2002
---	TR 2867; added mgiTypeKey to VOCAnnotTypeMenu
+--	TR 2867; added mgiTypeKey, vocabKey to VOCAnnotTypeMenu
 --
 --	lec	10/29/2001
 --	TR 2867; added GO
@@ -161,6 +161,7 @@ rules:
 		if (option.name = "VocAnnotTypeMenu") then
 		  x.evidenceKey := mgi_getstr(dbproc, 3);
 		  x.mgiTypeKey := mgi_getstr(dbproc, 4);
+		  x.vocabKey := mgi_getstr(dbproc, 5);
 		end if;
 
 		x.unbatch;
