@@ -123,8 +123,7 @@ def nomen_report():
 			 	mgi_utils.prvalue(r['final_name1']) + TAB + \
 			 	mgi_utils.prvalue(r['final_symbol2']) + TAB + \
 			 	mgi_utils.prvalue(r['final_name2']) + TAB + \
-			 	r['nomen_event'] + TAB + \
-			 	mgi_utils.prvalue(r['nomen_detail']) + TAB)
+			 	r['nomen_event'] + TAB)
 			if r['noteType'] == 'N' and r['note'] != None:
 				note = regsub.gsub('\n', '\\n', r['note'])
 		else:
@@ -204,7 +203,6 @@ def full_report():
         	         	mgi_utils.prvalue(r['final_symbol2']) + TAB + \
         	         	mgi_utils.prvalue(r['final_name2']) + TAB + \
         	         	mgi_utils.prvalue(r['nomen_event']) + TAB + \
-        	         	mgi_utils.prvalue(r['nomen_detail']) + TAB + \
         	         	mgi_utils.prvalue(r['createdBy']) + TAB + \
         	         	mgi_utils.prvalue(r['modifiedBy']) + TAB + \
         	         	mgi_utils.prvalue(r['cDate']) + TAB + \

@@ -110,7 +110,8 @@ for r in results:
 		if len(printIt) > 0:
 			printIt = regsub.gsub(',', '\,', r['gba_name'])
 		fp.write(printIt + DELIM + \
-	         	`r['genbank_id_inMGI']` + DELIM)
+	         	`r['fantom1_clone']` + DELIM + \
+	         	`r['fantom2_clone']` + DELIM)
 
 		fp.write(`r['riken_seqid']` + DELIM + \
 	         	mgi_utils.prvalue(r['riken_cloneid']) + DELIM + \
@@ -156,8 +157,7 @@ for r in results:
 			printIt = regsub.gsub(',', '\,', r['final_name2'])
 		fp.write(printIt + DELIM)
 
-		fp.write(mgi_utils.prvalue(r['nomen_event']) + DELIM + \
-	         	mgi_utils.prvalue(r['nomen_detail']) + DELIM)
+		fp.write(mgi_utils.prvalue(r['nomen_event']) + DELIM)
 
 		if noteType == 'N':
 			nomennote = note
