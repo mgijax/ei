@@ -13,7 +13,7 @@
 #         buildall.errs contains report of stderr messages
 
 REMFILES="*.o *.c *.do *.ui"
-apps="mgd gxd mgiadmin nomen"
+apps="mgd gxd mgiadmin"
 
 for app in $apps 
 do
