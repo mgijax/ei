@@ -26,6 +26,9 @@
 #
 # History
 #
+# 11/19/2002 lec
+#	- TR 3928; removed constraint that new mgi id must be preferred
+#
 # 08/23/2002 lec
 #	- TR 3452; add "addAsSynonym" parameter
 #
