@@ -50,11 +50,11 @@ results = db.sql(cmd, 'auto')
 for r in results:
 
 	if fp is None:  
-		reportName = 'NomenSearch.%s.rpt' % r['approvedSymbol']
+		reportName = 'NomenSearch.%s.rpt' % r['symbol']
 		fp = reportlib.init(reportName, 'Nomenclature Search Results')
 		printHeader()
 
-	fp.write(string.ljust(r['approvedSymbol'], 25))
+	fp.write(string.ljust(r['symbol'], 25))
 	fp.write(CRT)
 	records = records + 1
 

@@ -48,7 +48,7 @@ results = db.sql(cmd, 'auto')
 for r in results:
 
 	if fp is None:  
-		reportName = 'Nomen.%s.rpt' % r['approvedSymbol']
+		reportName = 'Nomen.%s.rpt' % r['symbol']
 		fp = reportlib.init(reportName, 'Nomenclature Record')
 
 	dcmd = 'select *, ' + \
@@ -61,18 +61,19 @@ for r in results:
 	for d in details:
 
 		fp.write("Event             :  " + mgi_utils.prvalue(d['event']) + CRT)
+		fp.write("Event Reason      :  " + mgi_utils.prvalue(d['eventReason']) + CRT)
 		fp.write("Status            :  "+ mgi_utils.prvalue(d['status']) + CRT)
 		fp.write("Marker Type       :  " + mgi_utils.prvalue(d['markerType']) + CRT)
 		fp.write("Chromosome        :  " + mgi_utils.prvalue(d['chromosome']) + CRT)
-		fp.write("Proposed Symbol   :  " + mgi_utils.prvalue(d['proposedSymbol']) + CRT)
-		fp.write("Approved Symbol   :  " + mgi_utils.prvalue(d['approvedSymbol']) + CRT)
-		fp.write("Submitted By      :  " + mgi_utils.prvalue(d['userName']) + CRT)
+		fp.write("Symbol            :  " + mgi_utils.prvalue(d['symbol']) + CRT)
+		fp.write("Name              :  " + mgi_utils.prvalue(d['name']) + CRT)
+		fp.write("Submitted By      :  " + mgi_utils.prvalue(d['submittedBy']) + CRT)
 		fp.write("Broadcast Date    :  " + mgi_utils.prvalue(d['bdate']) + CRT)
+		fp.write("Broadcast By      :  " + mgi_utils.prvalue(d['broadcastBy']) + CRT)
 		fp.write("Creation Date     :  " + mgi_utils.prvalue(d['cdate']) + CRT)
 		fp.write("Modification Date :  " + mgi_utils.prvalue(d['mdate']) + CRT)
-		fp.write("Human Symbol      :  " + mgi_utils.prvalue(d['humanSymbol']) + 2*CRT)
-		fp.write("Proposed Name     :  " + mgi_utils.prvalue(d['proposedName']) + CRT)
-		fp.write("Approved Name     :  " + mgi_utils.prvalue(d['approvedName']) + 2*CRT)
+		fp.write("Human Symbol      :  " + mgi_utils.prvalue(d['humanSymbol']) + CRT)
+		fp.write("MGI Accession ID  :  " + mgi_utils.prvalue(d['mgiAccID']) + 2*CRT)
 
 		#
 		# Other Names
