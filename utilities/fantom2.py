@@ -67,6 +67,7 @@ except:
 		
 results = db.sql(sqlCmd, 'auto')
 
+row = 1
 fantomKey = -1
 createdBy = ''
 cDate = ''
@@ -113,7 +114,8 @@ for r in results:
 	         	`r['fantom1_clone']` + DELIM + \
 	         	`r['fantom2_clone']` + DELIM)
 
-		fp.write(`r['riken_seqid']` + DELIM + \
+		fp.write(`row` + DELIM + \
+		        `r['riken_seqid']` + DELIM + \
 	         	mgi_utils.prvalue(r['riken_cloneid']) + DELIM + \
 	         	mgi_utils.prvalue(r['genbank_id']) + DELIM + \
 	         	mgi_utils.prvalue(r['gba_mgiID']) + DELIM +
@@ -165,6 +167,8 @@ for r in results:
 			rikennote = note
 		elif noteType == 'C':
 			curatornote = note
+
+		row = row + 1
 	else:
 		if noteType == 'N':
 			nomennote = nomennote + note
