@@ -29,6 +29,7 @@ devents:
 	Exit :local [];					-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
+	PasteZilch :local [];                           -- Paste "zilch" in current cell
 	PrepareSearch :local [];			-- Construct SQL search clause
 	SearchCount :local [];				-- Return Count only
 	SearchLittle :local [prepareSearch : boolean := true;];-- Execute SQL search clause
@@ -919,9 +920,31 @@ rules:
 	  (void) mgi_tblSetCell(fantom, row, fantom.finalName1, mgi_tblGetCell(fantom, row, fantom.gbaName));
 
 	  CommitTableCellEdit.source_widget := fantom;
-	  CommitTableCellEdit.row := mgi_tblGetCurrentRow(fantom);
+	  CommitTableCellEdit.row := row;
 	  CommitTableCellEdit.value_changed := true;
 	  send(CommitTableCellEdit, 0);
+	end does;
+
+--
+-- PasteZilch
+--
+-- Paste the string "zilch" into the current cell
+--
+--
+ 
+        PasteZilch does
+	  row : integer := mgi_tblGetCurrentRow(fantom);
+	  column : integer := mgi_tblGetCurrentColumn(fantom);
+
+	  (void) mgi_tblSetCell(fantom, row, column, "zilch");
+	  CommitTableCellEdit.source_widget := fantom;
+	  CommitTableCellEdit.row := row;
+	  CommitTableCellEdit.value_changed := true;
+	  send(CommitTableCellEdit, 0);
+          TraverseToTableCell.table := fantom;
+          TraverseToTableCell.row := row;
+          TraverseToTableCell.column := column + 1;
+          send(TraverseToTableCell, 0);
 	end does;
 
 --
