@@ -1017,7 +1017,6 @@ CHANGES:
    xrtTblXmStringGetMode = get_xmstring;
    xrtTblXmStringSetMode = set_xmstring;
 
->>>>>>> 1.196.2.14
 TAG: ei-7-0-23
 DATE: 05/15/2002
 STAFF: lec
