@@ -625,7 +625,7 @@ rules:
 
 	  if (from_notes) then
 	    from := from + "," + mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n";
-	    where := where + "\nand v._Object_key = n._Object_key";
+	    where := where + "\nand e._AnnotEvidence_key = n._Object_key";
 	  end if;
 
           if (where.length > 0) then
