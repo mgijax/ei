@@ -110,7 +110,7 @@ devents:
 	Select :local [item_position : integer;];
 	SelectReference :local [item_position : integer;];
 
-	ViewMolSegDetail :local [source_widget : widget;];
+	ViewMolSegDetail :exported [source_widget : widget;];
 	ViewMolSegForm :local [source_widget : widget;];
 
 locals:
@@ -1625,10 +1625,6 @@ rules:
         ViewMolSegDetail does
           NewForm : widget;
  
-	  if (not ViewMolSegDetail.source_widget.set) then
-	    return;
-	  end if;
-
 	  if (ViewMolSegDetail.source_widget.labelString = "primer") then
 		NewForm := top->MolPrimerForm;
 	  else
