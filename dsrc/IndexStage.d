@@ -433,7 +433,7 @@ rules:
 --
 -- PrepareSearch
 --
--- Construct SQL Select statement based on user input
+e- Construct SQL Select statement based on user input
 --
 
 	PrepareSearch does
@@ -444,7 +444,8 @@ rules:
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "i";
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->GXDIndexPriorityMenu.menuHistory.searchValue != "%") then
             where := where + "\nand _Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.searchValue;

@@ -1851,7 +1851,8 @@ rules:
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "g";
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->mgiCitation->ObjectID->text.value.length > 0 and
               top->mgiCitation->ObjectID->text.value != "NULL") then

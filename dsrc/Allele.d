@@ -782,7 +782,8 @@ rules:
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "a";
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
 	  value := top->mgiMarker->ObjectID->text.value;
 	  if (value.length > 0 and value != "NULL" and value != "-1") then
