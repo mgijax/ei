@@ -137,6 +137,11 @@ rules:
 
 	  global_server := top->LoginServer.menuHistory.defaultValue;
 	  global_database := top->LoginDB.menuHistory.defaultValue;
+
+	  if (global_database = nil) then
+		global_database := getenv("MGD");
+	  end if;
+
 	  global_passwd := passwd;
 
 	  if (top->User->text.value.length = 0) then
