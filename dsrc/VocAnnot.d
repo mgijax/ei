@@ -14,6 +14,7 @@
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
 --	- TR 5515; allow search by obsolete term
+--	- TR 5589; search for record after tab thru Acc ID/Object
 --
 -- 12/12/2003 lec
 --	- TR 5422; fix notes
