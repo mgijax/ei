@@ -106,7 +106,7 @@ Module: mgiFantom
                                           xrtTblNumRows = 70000;
                                           xrtTblVisibleRows = 50;
                                           xrtTblNumColumns = 49;
-                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID,RA Symbol,Seq Length,Locus ID,UniGene ID,TIGR TC,R Cluster,Locus Status,RIKEN #,MGI Status,MGI #,BLAST Group ID,BLAST MGI:IDs,CDS Cat #,Seq Qual,Seq Note,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,Final Cluster ID,Cluster Evidence,Non-MGI MGI ID,Non-MGI Representative,Approved New Symbol,Approved New Name,Homology Note,Chromosome,NEvent,Nomen Notes,Cluster Anal,Gene Name Cur,CDS/GO Cur,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
+                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID,RA Symbol,Seq Length,Locus ID,UniGene ID,TIGR TC,R Cluster,Locus Status,RIKEN #,MGI Status,MGI #,BLAST Group ID,BLAST MGI:IDs,CDS Cat #,Seq Qual,Seq Note,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,Final Cluster ID,Cluster Evidence,Load MGI ID,Non-MGI Representative,Approved New Symbol,Approved New Name,Homology Note,Chromosome,NEvent,Nomen Notes,Cluster Anal,Gene Name Cur,CDS/GO Cur,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
                                           width = 1000;
                                           height = 800;
@@ -115,7 +115,7 @@ Module: mgiFantom
                                           xrtTblTraversableSeries = "(all 0-5 False)";
                                           xrtTblEditableSeries = "(all 0-5 False)";
                                           xrtTblFrozenColumns = 11;
-                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"24\"\nseqQuality:Int(Int)=\"23\"\nlocusID:Int(Int)=\"12\"\ntigerID:Int(Int)=\"14\"\nunigeneID:Int(Int)=\"13\"\nclusterID:Int(Int)=\"15\"\nlocusStatus:Int(Int)=\"16\"\nmgiStatus:Int(Int)=\"18\"\nmgiNumber:Int(Int)=\"19\"\nblastGroupID:Int(Int)=\"20\"\nblastMGIIDs:Int(Int)=\"21\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"25\"\nfinalSymbol1:Int(Int)=\"26\"\nfinalName1:Int(Int)=\"27\"\nfinalSymbol2:Int(Int)=\"28\"\nfinalName2:Int(Int)=\"29\"\nnomenEvent:Int(Int)=\"38\"\nnomenNote:Int(Int)=\"39\"\nrikenNote:Int(Int)=\"43\"\ncuratorNote:Int(Int)=\"44\"\ncreatedBy:Int(Int)=\"45\"\ncreatedDate:Int(Int)=\"46\"\nmodifiedBy:Int(Int)=\"47\"\nmodifiedDate:Int(Int)=\"48\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int(Int)=\"4\"\nfinalCluster:Int(Int)=\"30\"\nrikenNumber:Int(Int)=\"17\"\ncds:Int(Int)=\"22\"\nclusterAnal:Int(Int)=\"40\"\ngeneNameCuration:Int(Int)=\"41\"\ncdsGOCuration:Int(Int)=\"42\"\nclusterEvidence:Int=\"31\"\nnonmgi_mgiID:Int=\"32\"\nnonmgi_rep:Int=\"33\"\napprovedSymbol:Int=\"34\"\napprovedName:Int=\"35\"\nhomologyNote:Int=\"36\"\nchromosome:Int=\"37\"\n";
+                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"24\"\nseqQuality:Int(Int)=\"23\"\nlocusID:Int(Int)=\"12\"\ntigerID:Int(Int)=\"14\"\nunigeneID:Int(Int)=\"13\"\nclusterID:Int(Int)=\"15\"\nlocusStatus:Int(Int)=\"16\"\nmgiStatus:Int(Int)=\"18\"\nmgiNumber:Int(Int)=\"19\"\nblastGroupID:Int(Int)=\"20\"\nblastMGIIDs:Int(Int)=\"21\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"25\"\nfinalSymbol1:Int(Int)=\"26\"\nfinalName1:Int(Int)=\"27\"\nfinalSymbol2:Int(Int)=\"28\"\nfinalName2:Int(Int)=\"29\"\nnomenEvent:Int(Int)=\"38\"\nnomenNote:Int(Int)=\"39\"\nrikenNote:Int(Int)=\"43\"\ncuratorNote:Int(Int)=\"44\"\ncreatedBy:Int(Int)=\"45\"\ncreatedDate:Int(Int)=\"46\"\nmodifiedBy:Int(Int)=\"47\"\nmodifiedDate:Int(Int)=\"48\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int(Int)=\"4\"\nfinalCluster:Int(Int)=\"30\"\nrikenNumber:Int(Int)=\"17\"\ncds:Int(Int)=\"22\"\nclusterAnal:Int(Int)=\"40\"\ngeneNameCuration:Int(Int)=\"41\"\ncdsGOCuration:Int(Int)=\"42\"\nclusterEvidence:Int=\"31\"\nload_mgiID:Int=\"32\"\nnonmgi_rep:Int=\"33\"\napprovedSymbol:Int=\"34\"\napprovedName:Int=\"35\"\nhomologyNote:Int=\"36\"\nchromosome:Int=\"37\"\n";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblValidateCellCallback = "D:VerifyFinalMGIID,\nD:CommitTableCellEdit";
                                           xrtTblJumpScroll = jump_none;
@@ -1169,9 +1169,9 @@ Module: mgiFantom
                     {
                       column32 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Non-MGI MGI ID";
+                        labelString = "Load MGI ID";
                       Group: User
-                        dbField = nonmgi_mgiID;
+                        dbField = load_mgiID;
                         columnValue = 32;
                     }
                     {

@@ -2,8 +2,8 @@ Module: mgiLookup
 {
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 15 08:00:43 2002";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Tue Nov  5 09:59:10 2002";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -171,7 +171,7 @@ Module: mgiLookup
               }
         }
         {
-          HomologyAssayList = LookupList;
+          OrthologyAssayList = LookupList;
           Group: Control
             vip_x = 90;
             vip_y = 745;
@@ -180,9 +180,9 @@ Module: mgiLookup
               {
                 Label = LookupLabel;
                 Group: Widget
-                  labelString = "Homology Assays";
+                  labelString = "Orthology Assays";
                 Group: User
-                  defaultLabel = "Homology Assays";
+                  defaultLabel = "Orthology Assays";
               }
               {
                 List = list;

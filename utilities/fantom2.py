@@ -162,9 +162,14 @@ for r in results:
 			printIt = regsub.gsub(',', '\,', r['mgi_numberCode'])
 
 		fp.write(printIt + DELIM + \
-	         	mgi_utils.prvalue(r['blast_groupID']) + DELIM + \
-	         	mgi_utils.prvalue(r['blast_mgiIDs']) + DELIM + \
-	         	mgi_utils.prvalue(r['cds_category']) + DELIM + \
+	         	mgi_utils.prvalue(r['blast_groupID']) + DELIM)
+
+		printIt = mgi_utils.prvalue(r['blast_mgiIDs'])
+		if len(printIt) > 0:
+			printIt = regsub.gsub(',', '\,', r['blast_mgiIDs'])
+
+		fp.write(printIt + DELIM + \
+			mgi_utils.prvalue(r['cds_category']) + DELIM + \
 	         	mgi_utils.prvalue(r['seq_quality']) + DELIM + \
 	         	mgi_utils.prvalue(r['seq_note']) + DELIM + \
 	         	mgi_utils.prvalue(r['final_mgiID']) + DELIM + \
@@ -184,9 +189,9 @@ for r in results:
 
 		fp.write(mgi_utils.prvalue(r['final_cluster']) + DELIM + \
 		         mgi_utils.prvalue(r['cluster_evidence']) + DELIM + \
-		         mgi_utils.prvalue(r['nonmgi_mgiid']) + DELIM + \
+		         mgi_utils.prvalue(r['load_mgiid']) + DELIM + \
 		         mgi_utils.prvalue(r['nonmgi_rep']) + DELIM + \
-		         mgi_utils.prvalue(r['approved_symbol']) + DELIM
+		         mgi_utils.prvalue(r['approved_symbol']) + DELIM)
 
 		printIt = mgi_utils.prvalue(r['approved_name'])
 		if len(printIt) > 0:

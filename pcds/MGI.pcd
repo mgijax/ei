@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 21 13:00:40 2002";
+      lastWritten = "Mon Nov 25 09:32:29 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -784,7 +784,7 @@ Module: MGI
                                       {
                                         ControlledVocabPulldown = OptionPulldown;
                                             {
-                                              HomologyAssay = ControlledVocabToggle;
+                                              OrthologyAssay = ControlledVocabToggle;
                                             }
                                             {
                                               MappingAssay = ControlledVocabToggle;
@@ -1259,7 +1259,7 @@ Module: MGI
                                           xrtTblTraversableSeries = "(all 0-9 False)(all 11-13 False)(all 15 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
-                                          requiredColumns = "2\n5";
+                                          requiredColumns = "2\n5\n7";
                                       }
                                 }
                                 {
@@ -2005,7 +2005,7 @@ Module: MGI
                                       {
                                         ACCLogicalPulldown = OptionPulldown;
                                         Group: User
-                                          sql = "select _LogicalDB_key, name from ACC_LogicalDB\nwhere _LogicalDB_key = 1\norder by name";
+                                          sql = "select _LogicalDB_key, name from ACC_LogicalDB\nwhere _LogicalDB_key in (-1, 1)\norder by name";
                                       }
                                 }
                                 {

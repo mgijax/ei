@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 22 10:15:25 2002";
+      lastWritten = "Wed Oct 23 12:38:32 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -686,7 +686,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -698,13 +698,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -1833,7 +1833,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -1845,13 +1845,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;

@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 21 13:00:37 2002";
+      lastWritten = "Wed Oct 23 12:38:36 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -412,7 +412,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -426,17 +426,17 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = False;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     ATCC = AccToggle : mgiOption;
@@ -702,6 +702,24 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NSequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    LocusLink = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;

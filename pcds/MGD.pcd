@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 22 10:19:42 2002";
+      lastWritten = "Wed Nov 13 15:15:34 2002";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -297,7 +297,7 @@ Module: MGD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle : mgiOption;
+                                                    NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle : mgiOption;
@@ -309,13 +309,13 @@ Module: MGD
                                                     IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NSequence = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ATCC = AccToggle : mgiOption;
@@ -1557,7 +1557,7 @@ Module: MGD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle : mgiOption;
+                                                    NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle : mgiOption;
@@ -1569,13 +1569,13 @@ Module: MGD
                                                     IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NSequence = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ATCC = AccToggle : mgiOption;
@@ -2006,13 +2006,13 @@ Module: MGD
               }
         }
         {
-          HomologyModule = Module : MGI;
+          OrthologyModule = Module : MGI;
           Group: Control
             vip_x = 80;
             vip_y = 360;
           Group: User
             homeWidget = Jnum;
-            activateButtonName = Homology;
+            activateButtonName = Orthology;
               {
                 MainForm = XmForm;
                     {
@@ -2043,7 +2043,7 @@ Module: MGD
                                       {
                                         Clear = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:HomologyClear";
+                                          activateCallback = "D:OrthologyClear";
                                       }
                                 }
                           }
@@ -2230,7 +2230,7 @@ Module: MGD
                                 {
                                   Inferred = toggle : mgiDataTypes;
                                   Group: Widget
-                                    labelString = "Display Inferred Homologies";
+                                    labelString = "Display Inferred Orthologies";
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 1;
@@ -2253,7 +2253,7 @@ Module: MGD
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:HomologyClear";
+                                    activateCallback = "D:OrthologyClear";
                                 }
                           }
                     }
@@ -2288,7 +2288,7 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  HomologyAssayList = HomologyAssayList : mgiLookup;
+                                  OrthologyAssayList = OrthologyAssayList : mgiLookup;
                                       {
                                         Label = LookupLabel;
                                       }
@@ -2326,9 +2326,9 @@ Module: MGD
                                             {
                                               List = list;
                                               Group: Widget
-                                                items = "Homology\nLoad Bulk Homology";
+                                                items = "Orthology\nLoad Bulk Orthology";
                                               Group: User
-                                                keys = "Homology.py\nloadBulkHomology.csh";
+                                                keys = "Orthology.py\nloadBulkOrthology.csh";
                                             }
                                       }
                                       {
@@ -2564,7 +2564,7 @@ Module: MGD
                                     leftWidget = Search;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ModifiedDate;
+                                    topWidget = ModificationHistory;
                                     topOffset = 2;
                                     bottomAttachment = attach_form;
                                     resizable = true;
@@ -2606,9 +2606,13 @@ Module: MGD
                                 }
                                 {
                                   CreationDate = CreationDate;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   ModifiedDate = ModifiedDate;
+                                  Group: Widget
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CreationDate;
@@ -2617,6 +2621,16 @@ Module: MGD
                                     topWidget = CreationDate;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumRows = 2;
+                                      }
                                 }
                           }
                     }
@@ -2655,7 +2669,9 @@ Module: MGD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -2671,15 +2687,13 @@ Module: MGD
                                                       managed = True;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -2969,26 +2983,31 @@ Module: MGD
             vip_x = 80;
             vip_y = 965;
               {
-                Marker = Table : mgiTable;
+                Marker = ReferenceTable : mgiTable;
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
                   topAttachment = attach_form;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftOffset = 200;
+                  leftOffset = 5;
                     {
                       Table = mgiTable;
                       Group: Widget
-                        xrtTblNumColumns = 6;
-                        xrtTblColumnLabels = "Mode,Current Key,New Key,Chr,Marker,R";
-                        xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 4)(all 4 20)(all 5 1)";
-                        xrtTblMaxLengthSeries = "(all 3 8)(all 4 25)(all 5 1)";
+                        xrtTblColumnLabels = "Mode,Current Key,New Key,Refs Key,Chr,Marker,R,J#,Citation";
+                        xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 4)(all 5 20)(all 6 1)(all 7 10)(all 8 50)";
                         xrtTblEditableSeries = "(all 0-3 False)";
+                        xrtTblMaxLengthSeries = "(all 4 8)(all 5 25)(all 6 1)(all 8 255)";
+                        xrtTblNumColumns = 9;
+                        xrtTblPixelWidthSeries = "(all 0-3 0)";
                         xrtTblTraversableSeries = "(all 0-3 False)";
-                        xrtTblPixelWidthSeries = "(all 0-2 0)";
-                        xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
-                        userDefinedAttributes = "markerCurrentKey:Int=\"1\"\nmarkerKey:Int=\"2\"\nmarkerChr:Int=\"3\"\nmarkerSymbol:Int=\"4\"\nmarkerColumns:Int=\"1\"\nrelationship:Int=\"5\"\n";
+                        xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyReference,\nD:CommitTableCellEdit";
+                        userDefinedAttributes = "markerChr:Int(Int)=\"4\"\nmarkerColumns:Int(Int)=\"1\"\nmarkerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"5\"\nrelationship:Int=\"6\"\n";
+                      Group: User
+                        citation = 8;
+                        jnum = 7;
+                        refsCurrentKey = 3;
+                        refsKey = 3;
                     }
               }
               {
@@ -3145,7 +3164,10 @@ Module: MGD
                                   PubMed = AccToggle : mgiOption;
                                 }
                                 {
-                                  EC = AccToggle;
+                                  NSequence = AccToggle;
+                                  Group: Widget
+                                    set = True;
+                                    managed = True;
                                 }
                                 {
                                   SWISSPROT = AccToggle;
@@ -3161,16 +3183,13 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
-                                  NSequence = AccToggle;
-                                  Group: Widget
-                                    set = True;
-                                    managed = True;
-                                }
-                                {
                                   LocusLink = AccToggle : mgiOption;
                                 }
                                 {
                                   UniGene = AccToggle : mgiOption;
+                                }
+                                {
+                                  EC = AccToggle;
                                 }
                                 {
                                   ATCC = AccToggle;
@@ -5490,9 +5509,33 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -5636,7 +5679,7 @@ Module: MGD
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -5648,13 +5691,13 @@ Module: MGD
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -6585,9 +6628,9 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  Homology = XmPushButton;
+                                  Orthology = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Homology\")";
+                                    activateCallback = "D:CreateMGIModule(name = \"Orthology\")";
                                     traversalOn = False;
                                 }
                                 {
@@ -6970,19 +7013,14 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                     Group: User
@@ -7056,7 +7094,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = False;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -7066,13 +7108,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = False;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8576,7 +8611,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -8592,17 +8627,17 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -8742,6 +8777,27 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                }
                           }
                     }
                     {
@@ -8789,9 +8845,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
+                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -8803,9 +8857,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8813,6 +8864,14 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MRK = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }

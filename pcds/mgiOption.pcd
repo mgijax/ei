@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 21 13:00:32 2002";
+      lastWritten = "Tue Nov  5 10:00:23 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -110,9 +110,11 @@ Module: mgiOption
                         defaultValue = 29;
                     }
                     {
-                      EC = AccToggle : mgiOption;
+                      NSequence = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Nucleotide Sequence";
                       Group: User
-                        defaultValue = 8;
+                        defaultValue = 9;
                     }
                     {
                       SWISSPROT = AccToggle : mgiOption;
@@ -134,13 +136,6 @@ Module: mgiOption
                         defaultValue = 17;
                     }
                     {
-                      NSequence = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Nucleotide Sequence";
-                      Group: User
-                        defaultValue = 9;
-                    }
-                    {
                       LocusLink = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 24;
@@ -151,6 +146,11 @@ Module: mgiOption
                         labelString = UniGene;
                       Group: User
                         defaultValue = 23;
+                    }
+                    {
+                      EC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 8;
                     }
                     {
                       ATCC = AccToggle : mgiOption;
@@ -1041,9 +1041,9 @@ Module: mgiOption
                 Group: User
                   childTemplate = ControlledVocabToggle;
                     {
-                      HomologyAssay = ControlledVocabToggle : mgiOption;
+                      OrthologyAssay = ControlledVocabToggle : mgiOption;
                       Group: Widget
-                        labelString = "Homology Assays";
+                        labelString = "Orthology Assays";
                       Group: User
                         dbTable = 315;
                     }

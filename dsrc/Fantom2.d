@@ -236,7 +236,7 @@ rules:
 	  geneNameCuration : string;
 	  cdsGOCuration : string;
 	  clusterEvidence : string;
-	  nonmgi_mgiID : string;
+	  load_mgiID : string;
 	  nonmgi_rep : string;
 	  approvedSymbol : string;
 	  approvedName : string;
@@ -286,7 +286,7 @@ rules:
 	    geneNameCuration := mgi_tblGetCell(fantom, row, fantom.geneNameCuration);
 	    cdsGOCuration := mgi_tblGetCell(fantom, row, fantom.cdsGOCuration);
 	    clusterEvidence := mgi_tblGetCell(fantom, row, fantom.clusterEvidence);
-	    nonmgi_mgiID := mgi_tblGetCell(fantom, row, fantom.nonmgi_mgiID);
+	    load_mgiID := mgi_tblGetCell(fantom, row, fantom.load_mgiID);
 	    nonmgi_rep := mgi_tblGetCell(fantom, row, fantom.nonmgi_rep);
 	    approvedSymbol := mgi_tblGetCell(fantom, row, fantom.approvedSymbol);
 	    approvedName := mgi_tblGetCell(fantom, row, fantom.approvedName);
@@ -417,8 +417,8 @@ rules:
 	      clusterEvidence := "zilch";
 	    end if;
 
-	    if (nonmgi_mgiID.length = 0) then
-	      nonmgi_mgiID := "zilch";
+	    if (load_mgiID.length = 0) then
+	      load_mgiID := "zilch";
 	    end if;
 
 	    if (nonmgi_rep.length = 0) then
@@ -469,7 +469,7 @@ rules:
 		     mgi_DBprstr(finalName2) + "," +
 		     mgi_DBprstr(nomenEvent) + "," +
 		     mgi_DBprstr(clusterEvidence) + "," +
-		     mgi_DBprstr(nonmgi_mgiID) + "," +
+		     mgi_DBprstr(load_mgiID) + "," +
 		     mgi_DBprstr(nonmgi_rep) + "," +
 		     mgi_DBprstr(approvedSymbol) + "," +
 		     mgi_DBprstr(approvedName) + "," +
@@ -551,7 +551,7 @@ rules:
 		     "final_name2 = " + mgi_DBprstr(finalName2) + "," +
 		     "nomen_event = " + mgi_DBprstr(nomenEvent) + "," +
 		     "cluster_evidence = " + mgi_DBprstr(clusterEvidence) + "," +
-		     "nonmgi_mgiID = " + mgi_DBprstr(nonmgi_mgiID) + "," +
+		     "load_mgiID = " + mgi_DBprstr(load_mgiID) + "," +
 		     "nonmgi_rep = " + mgi_DBprstr(nonmgi_rep) + "," +
 		     "approved_symbol = " + mgi_DBprstr(approvedSymbol) + "," +
 		     "approved_name = " + mgi_DBprstr(approvedName) + "," +
@@ -824,9 +824,9 @@ rules:
 	    where := where + andClause + " f.cluster_evidence like " + mgi_DBprstr(value);
 	  end if;
 
-	  value := mgi_tblGetCell(fantom, row, fantom.nonmgi_mgiID);
+	  value := mgi_tblGetCell(fantom, row, fantom.load_mgiID);
 	  if (value.length > 0) then
-	    where := where + andClause + " f.nonmgi_mgiID like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.load_mgiID like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.nonmgi_rep);
@@ -1083,7 +1083,7 @@ rules:
 	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 29));
 	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 30));
 	        (void) mgi_tblSetCell(fantom, row, fantom.clusterEvidence, mgi_getstr(dbproc, 31));
-	        (void) mgi_tblSetCell(fantom, row, fantom.nonmgi_mgiID, mgi_getstr(dbproc, 32));
+	        (void) mgi_tblSetCell(fantom, row, fantom.load_mgiID, mgi_getstr(dbproc, 32));
 	        (void) mgi_tblSetCell(fantom, row, fantom.nonmgi_rep, mgi_getstr(dbproc, 33));
 	        (void) mgi_tblSetCell(fantom, row, fantom.approvedSymbol, mgi_getstr(dbproc, 34));
 	        (void) mgi_tblSetCell(fantom, row, fantom.approvedName, mgi_getstr(dbproc, 35));
