@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Sep 13 13:52:03 2001";
+      lastWritten = "Thu Sep 13 14:08:50 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1613,50 +1613,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  xDim = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = DevelopmentNote;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "X Dimension";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          editable = False;
-                                      }
-                                }
-                                {
-                                  yDim = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = xDim;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = xDim;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Y Dimension";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          editable = False;
-                                      }
-                                }
-                                {
                                   FigureLabel = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -1796,6 +1752,50 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: User
                                     note = "Reprinted with permission of the author and Academic Press from *.  Copyright * by Academic Press.";
                                     noteWidget = CopyrightNote;
+                                }
+                                {
+                                  xDim = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiCitation;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = DevelopmentNote;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "X Dimension";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          editable = False;
+                                      }
+                                }
+                                {
+                                  yDim = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = xDim;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = xDim;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Y Dimension";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          editable = False;
+                                      }
                                 }
                           }
                     }
