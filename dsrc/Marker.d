@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 04/22/2003
+--	- TR 4705; added modifiedBy to Marker History
+--
 -- 04/18/2003
 --	- TR 4728; set addAsSynonym = true in MarkerWithdrawalInit
 --
@@ -1597,6 +1600,12 @@ rules:
 	    from_history := true;
 	  end if;
 
+          value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.modifiedBy);
+          if (value.length > 0) then
+	    where := where + "\nand mh.modifiedBy like " + mgi_DBprstr(value);
+	    from_history := true;
+	  end if;
+
           value := mgi_tblGetCell(top->Alias->Table, 0, top->Alias->Table.markerSymbol);
           if (value.length > 0) then
 	    where := where + "\nand ma.alias like " + mgi_DBprstr(value);
@@ -1816,18 +1825,19 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 14));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 16));
                 (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 7));
                 (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 12));
+                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 14));
                 (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 13));
+                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 15));
+		(void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 10) = "01/01/1900") then
                   (void) mgi_tblSetCell(table, row, table.eventDate, "");
 		else
-                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 11));
+                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 13));
 		end if;
 
           	-- Initialize Option Menus for row 0
