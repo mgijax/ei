@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec  03/12/2003
+--	- TR 4601
+--
 -- lec  02/10/2003
 --	- TR 3711; Coded
 --
@@ -359,11 +362,11 @@ rules:
             set := set + "comments = " + mgi_DBprstr(top->Note->text.value) + ",";
           end if;
  
-	  if (set.length > 0) then
+	  send(ModifyStage, 0);
+
+	  if (set.length > 0 or cmd.length > 0) then
 	    cmd := mgi_DBupdate(GXD_INDEX, currentRecordKey, set);
 	  end if;
-
-	  send(ModifyStage, 0);
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
