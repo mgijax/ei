@@ -111,8 +111,10 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  InitOptionMenu.option := top->ReferenceTypeMenu;
-	  send(InitOptionMenu, 0);
+	  if (top->ReferenceTypeMenu.subMenuId.numChildren = 0) then
+	    InitOptionMenu.option := top->ReferenceTypeMenu;
+	    send(InitOptionMenu, 0);
+	  end if;
 
 	  table.sqlFrom := "";
 	  table.sqlWhere := "";
