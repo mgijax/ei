@@ -30,11 +30,6 @@ ModifySQL [source_widget : widget;		-- Execute a Modification
 	   transaction : boolean := false;
 	   reselect : boolean := true;];
 
-ModifyNotes [source_widget : widget;		-- Modify/Add Notes
-	     tableID : integer;
-	     noteType : string;
-	     key : string;];
-
 Query [source_widget : widget;			-- Query Database Allowing Interruption
        list_w : widget;
        select : string;
