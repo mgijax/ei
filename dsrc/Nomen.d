@@ -1088,7 +1088,6 @@ rules:
           end if;
 
           InitAcc.table := accTable;
-	  InitAcc.showMGI := false;
           send(InitAcc, 0);
  
           InitAcc.table := accRefTable;
