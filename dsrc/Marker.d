@@ -537,9 +537,9 @@ rules:
 	    dialog->nonVerified.sensitive := true;
 	    dialog->Name.sensitive := false;
 	    dialog->mgiMarker.managed := true;
-	    dialog->markerAccession.managed := false;
+--	    dialog->markerAccession.managed := false;
 -- when ready to implement, remove the false and uncomnent the true
---	    dialog->markerAccession.managed := true;
+	    dialog->markerAccession.managed := true;
 	    dialog->NewMarker.sensitive := false;
 	  elsif (event = EVENT_SPLIT) then
 	    dialog->nonVerified.managed := true;
