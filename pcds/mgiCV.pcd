@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 12 08:58:01 2003";
+      lastWritten = "Mon Jan  5 14:10:44 2004";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -296,25 +296,6 @@ Module: mgiCV
                         tableForm = Reference;
                         tableOption = 7;
                         tableOptionKey = 3;
-                          {
-                            SearchAll = SearchAll : mgiOption;
-                            Group: Widget
-                              managed = False;
-                          }
-                    }
-              }
-              {
-                BroadcastMenu = YesNoMenu : mgiOption;
-                Group: Widget
-                  subMenuId = BroadcastPulldown;
-                  labelString = "Broadcast to MGD?";
-                    Popups:
-                    {
-                      BroadcastPulldown : YesNoPulldown = OptionPulldown : mgiOption;
-                      Group: User
-                        tableForm = Reference;
-                        tableOption = 8;
-                        tableOptionKey = 4;
                           {
                             SearchAll = SearchAll : mgiOption;
                             Group: Widget

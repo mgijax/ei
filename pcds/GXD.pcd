@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 16 11:12:39 2003";
+      lastWritten = "Mon Jan  5 14:10:48 2004";
       copy = false;
       inCreateMenu = true;
         {
