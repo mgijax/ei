@@ -361,21 +361,19 @@ void mgi_writeLog(const char *buf)
 char *mgi_simplesub(char *pat, char *repl, char *str)
 {
   static char newstr[TEXTBUFSIZ];
-  char *s1, *s2, *n, *r;
+  char *s1, *s2, *ns;
   int plen = strlen(pat);
+  int rlen = strlen(repl);
 
   memset(newstr, '\0', sizeof(newstr));
 
   s1 = str;
-  n = newstr;
+  ns = newstr;
 
   /* repeat pattern scan/replacement while string is not null */
 
   while (*s1 != '\0')
   {
-    /* set r to start of replacement string */
-    r = repl;
-
     /* find pattern */
     s2 = strstr(s1, pat);
 
@@ -385,17 +383,15 @@ char *mgi_simplesub(char *pat, char *repl, char *str)
       /* copy everything up to pattern into new string */
       while (s1 != s2)
       {
-        *n++ = *s1++;
+        *ns++ = *s1++;
       }
 
       /* copy replacement into new string */
-      while (*r != '\0')
-      {
-        *n++ = *r++;
-      }
+      strcpy(ns, repl);
+      ns += rlen;
 
       /* skip over pattern in string */
-      s1 = s1 + plen;
+      s1 += plen;
     }
     else
     {
@@ -403,11 +399,11 @@ char *mgi_simplesub(char *pat, char *repl, char *str)
       /* then copy remainder of string into new string */
       while (*s1 != '\0')
       {
-	*n++ = *s1++;
+	*ns++ = *s1++;
       }
     }
   }
-  *n = '\0';
+  *ns = '\0';
 
   return newstr;
 }

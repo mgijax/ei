@@ -25,11 +25,11 @@
 
 char *mlced_dbDescToEI(char *txt, int key)
 {
-  static char *newTxt;
+  char *newTxt = txt;
   char chgTxt[TEXTBUFSIZ];
   char cmd[TEXTBUFSIZ];
-  char numTag[35];
-  char symTag[35];
+  char numTag[MAXTAGLEN];
+  char symTag[MAXTAGLEN];
 
   DBPROCESS *dbproc = mgi_dbopen();
 
@@ -72,10 +72,10 @@ char *mlced_dbDescToEI(char *txt, int key)
 
 char *mlced_eiDescToDB(char *txt, xrtlist list)
 {
-  static char *newTxt;
+  char *newTxt = txt;
   char chgTxt[TEXTBUFSIZ];
-  char numTag[35];
-  char symTag[35];
+  char numTag[MAXTAGLEN];
+  char symTag[MAXTAGLEN];
   int numitems;
   tag_ptr tr;
   int i = 0;
