@@ -11,7 +11,7 @@
 -- History
 --
 -- 09/15/2003
---	- SAO; added table processing to ModifyMolecularSource
+--	- SAO; added table processing to ModifyNamedMolecularSource
 --
 -- 07/25/2003
 --	- JSAM
@@ -48,7 +48,7 @@
 --	  this probably signifies that the user did not tab out
 --
 -- lec	04/01/98
---	- ModifyMolecularSource was not modifying AgeMin and AgeMax
+--	- ModifyNamedMolecularSource was not modifying AgeMin and AgeMax
 --
 
 dmodule MolSourceLib is
@@ -429,19 +429,18 @@ rules:
 	end does;
 
 --
--- ModifyMolecularSource
+-- ModifyNamedMolecularSource
 --
--- Construct SQL to update Molecular Source data
+-- Construct SQL to update Named Molecular Source data
 -- SQL statement stored in SourceForm.sql UDA
 -- Assumes use of SourceForm template
 --
  
-        ModifyMolecularSource does
-	  top : widget;
+        ModifyNamedMolecularSource does
+	  top : widget := ModifyNamedMolecularSource.source_widget->SourceForm;;
           set : string := "";
 	  age : string := "";
 
-	  top := ModifyMolecularSource.source_widget->SourceForm;
 	  top.sql := "";
  
 	  -- If no Source record to modify, then return

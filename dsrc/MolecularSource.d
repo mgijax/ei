@@ -197,8 +197,8 @@ rules:
 
           -- Use Molecular Source library
 
-          ModifyMolecularSource.source_widget := top;
-          send(ModifyMolecularSource, 0);
+          ModifyNamedMolecularSource.source_widget := top;
+          send(ModifyNamedMolecularSource, 0);
 
 	  --  Process Accession numbers
 

@@ -638,8 +638,8 @@ rules:
 	        ModifyProbeSource.probeKey := currentMasterKey;
                 send(ModifyProbeSource, 0);
 --	      else
---                ModifyMolecularSource.source_widget := detailForm;
---                send(ModifyMolecularSource, 0);
+--                ModifyNamedMolecularSource.source_widget := detailForm;
+--                send(ModifyNamedMolecularSource, 0);
 	      end if;
 
               cmd := cmd + detailForm->SourceForm.sql;
