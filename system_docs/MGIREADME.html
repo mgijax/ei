@@ -28,7 +28,9 @@ appropriate documentation manuals.
 <LI><A HREF="#dmodules">TeleUSE Dialog Components</A>
 <LI><A HREF="#cmodules">TeleUSE C Components</A>
 <LI><A HREF="#config">Configuration</A>
+<LI><A HREF="Tagging.html">Tagging a Release</A>
 <LI><A HREF="#installsource">Install a copy of Production or Development Source</A>
+<LI><A HREF="#installdocs">Install system documentation</A>
 <LI><A HREF="#applconfig">Application Configuration Files</A>
 <LI><A HREF="#buildInter">Build/Install an Interpreted copy of an MGI Application</A>
 <LI><A HREF="#buildComp">Build/Install a Compiled copy of an MGI Application</A>
@@ -516,11 +518,17 @@ To install a Production or Development copy of the GUI application source:
 <P>
 <LI>Change to this directory.
 <P>
-<LI>Checkout the source
+<LI>Retrieve the source code:<BR>
+To check out the development source:
 	<PRE>cvs checkout ei</PRE>
 Note that pcd files are <em>reserved</em> checkouts to guarantee that only
 one user is editing at a time. They are initially read-only. If you want 
-to edit them, do a <PRE> cvs edit &lt;file&gt </PRE>.
+to edit them, do a <PRE> cvs edit &lt;file&gt;.pcd </PRE>
+<P>
+To export tagged source for a Production build (read-only source): <BR>
+<PRE>export -r &lt;tag&gt ei</PRE>
+The value of &lt;tag&gt depends on the build you are doing. Check with your
+CVS administrator. 
 <P>
 <LI>The appropriate SYBASE and TeleUSE environment also needs to be configured:
 	<PRE>
@@ -545,6 +553,16 @@ to edit them, do a <PRE> cvs edit &lt;file&gt </PRE>.
 <P>
 </OL>
 
+<A NAME="installdocs"><H4>Install system documentation</A></H4>
+To install system documentation, export ei/system_docs to some 
+location where the documents are to be accessed. For a production
+release, this can be done as follows: <P>
+<PRE>
+cvs export -r &lt;eitag&gt -d &lt;installation_directory&gt ei/system_docs
+</PRE>
+(Currently, we copy the contents of the created system_docs directory
+to ~lec/development).
+ 
 <HR>
 <A NAME="applconfig"><H4>Application Configuration Files</H4></A>
 There are several files which are necessary for the application to build successfully.
