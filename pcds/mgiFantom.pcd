@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Mar 27 09:07:25 2002";
+      lastWritten = "Wed Mar 27 10:29:04 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -119,6 +119,7 @@ Module: mgiFantom
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblValidateCellCallback = "D:VerifyFinalMGIID,\nD:CommitTableCellEdit";
                                           xrtTblJumpScroll = jump_none;
+                                          xrtTblHorizScrollBarPlacement = place_top;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
