@@ -729,9 +729,9 @@ rules:
                 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 9);
                 top->EditForm->Note->text.value := mgi_getstr(dbproc, 6);
 		table := top->Control->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 13));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 8));
 
                 SetOption.source_widget := top->ConditionalMenu;
