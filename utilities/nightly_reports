@@ -179,8 +179,6 @@ PRB_StrainDup.sql \
 PRB_Tissue.sql \
 PRB_TissueCell.sql \
 PRB_TissueNonStd.sql \
-NOMEN_CheckMGD.sql \
-NOMEN_NoPrimaryRef.sql \
 MLP_Nomenclature.sql"
 
 for i in $INTERNAL_RPTS
