@@ -8260,7 +8260,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblVisibleRows = 4;
                                           xrtTblNumColumns = 9;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 30)(all 6 10)(all 7 60)";
-                                          xrtTblColumnLabels = "Mode,Other Key,Current Key,New Key,Review Key,Other Name,J#,Citation,Review?";
+                                          xrtTblColumnLabels = "Mode,Other Key,Current Key,New Key,Review Key,Synonym,J#,Citation,Review?";
                                           xrtTblMaxLengthSeries = "(all 5 255)(all 7 255)";
                                           xrtTblNumRows = 6;
                                           xrtTblEditableSeries = "(all 0-4 False)";
