@@ -86,6 +86,7 @@ results = mgdlib.sql(cmd, 'auto')
 fp.write('%-2s %-25s %-25s %-6s %-16s\n' % ('Ch', 'Symbol', 'Gene Name', 'J#', 'First Author'))
 fp.write('%-2s %-25s %-25s %-6s %-16s\n' % ('--', '------', '---------', '--', '------------'))
 
+rows = 0
 for r in results[1]:
 	fp.write('%-2s ' % (r['chr']))
 
@@ -97,7 +98,30 @@ for r in results[1]:
 	fp.write('%-25s ' % (r['name']))
 	fp.write('<A HREF="http://www.informatics.jax.org/searches/accession_report.cgi?id=%s">%-6s</A> ' % (r['jnumID'], r['jnum']))
 	fp.write('%-16s\n' % (r['author']))
+	rows = rows + 1
+
+fp.write('\n(%d rows affected.)\n' % (rows))
 
 reportlib.trailer(fp, isHTML = 1)
 reportlib.finish_nonps(fp)	# non-postscript file
+
+#
+# Send mail
+#
+
+#RECEPIENT="mgi-list"
+RECEPIENT="lec@informatics.jax.org"
+
+msg = 'From: webmaster@informatics.jax.org\n' + \
+      'To:  %s\n' % (RECEPIENT) + \
+      'Subject:  MGI Nomenclature Updates\n\n' + \
+      '%s:  %d nomenclature changes processed.\n\n' % (currentDate, rows) + \
+      'For details, see:\n' + \
+      '\tftp://ftp.informatics.jax.org/pub/informatics/reports/Nomenclature-current.html\n\n' + \
+      'For archives of previous changes, see:\n' + \
+      '\tftp://ftp.informatics.jax.org/pub/informatics/reports/archive/nomen\n\n'
+
+fd = os.popen('%s -t' % ('/usr/lib/sendmail'), 'w')
+fd.write(msg)
+fd.close()
 
