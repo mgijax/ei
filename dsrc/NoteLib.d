@@ -12,6 +12,10 @@
 --
 -- History
 --
+--
+-- lec 04/29/2003
+--	- TR 4756; tab to next cell after committing note
+--
 -- lec 08/13/2002
 --	- TR 3988; changed "dialogName" to "mgiDialogName"
 --
@@ -412,6 +416,16 @@ rules:
 	    CommitTableCellEdit.row := mgi_tblGetCurrentRow(table);
 	    CommitTableCellEdit.value_changed := true;
 	    send(CommitTableCellEdit, 0);
+
+	    TraverseToTableCell.table := table;
+	    if (mgi_tblGetCurrentColumn(table) = mgi_tblNumColumns(table) - 1) then
+	      TraverseToTableCell.row := mgi_tblGetCurrentRow(table) + 1;
+	      -- use first traversable column in table
+            else
+	      TraverseToTableCell.row := mgi_tblGetCurrentRow(table);
+	      TraverseToTableCell.column := column + 1;
+	    end if;
+	    send(TraverseToTableCell, 0);
 	  else
 	    dialog.targetWidget.value := note.value;
 	  end if;
