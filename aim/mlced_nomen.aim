@@ -1,0 +1,18 @@
+CALLS
+  LANGUAGE C 
+        INCLUDE
+          <mlced_nomen.h>;
+
+	TYPE 
+	     "int"     <--> integer;
+	     "char *"  <--> string;
+	     "xrtlist" <--> opaque;
+             
+	ENTRY 
+	 mlced_dbDescToEI("char *", "int") : "char *";
+	 mlced_eiDescToDB("char *", "xrtlist") : "char *";
+
+  ENDL
+ENDC
+
+
