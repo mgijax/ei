@@ -1011,7 +1011,7 @@ rules:
 	    where := " where _Species_key = " + speciesKey +
 		  " and chromosome = " + mgi_DBprstr(value) + "\n";
 
-	    if ((integer) mgi_sql1(select + where) = 0) then
+	    if (speciesKey != "1" and (integer) mgi_sql1(select + where) = 0) then
               StatusReport.source_widget := top;
 	      StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value +
 		  "\n\nThis value will be added to Species/Chromosome master table\n" +
@@ -1019,6 +1019,11 @@ rules:
 		  "Replace the invalid value with a valid value if you DO NOT want\n" +
 		  "the invalid value added to the Species/Chromosome master table.\n";
               send(StatusReport);
+	    elsif (speciesKey = "1" and (integer) mgi_sql1(select + where) = 0) then
+              StatusReport.source_widget := top;
+	      StatusReport.message := "Invalid Chromosome value for Species:\n\n" + value + "\n";
+              send(StatusReport);
+	      VerifyChromosome.doit := (integer) false;
 	    end if;
 	  end if;
 
