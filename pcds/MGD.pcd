@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb  5 12:49:17 2003";
+      lastWritten = "Wed Feb 12 08:11:41 2003";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1335,6 +1335,9 @@ Module: MGD
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     WashU = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2474,6 +2477,9 @@ Module: MGD
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     WashU = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -2963,6 +2969,9 @@ Module: MGD
                                 }
                                 {
                                   SWISSPROT = AccToggle;
+                                }
+                                {
+                                  TrEMBL = AccToggle : mgiOption;
                                 }
                                 {
                                   WashU = AccToggle;
@@ -5477,6 +5486,9 @@ Module: MGD
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     WashU = AccToggle;
                                                   }
                                                   {
@@ -6822,6 +6834,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       private = True;
                                                   }
                                                   {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     WashU = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -6970,6 +6985,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
+                                                  }
+                                                  {
+                                                    TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WashU = AccToggle;
@@ -8487,6 +8505,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     WashU = AccToggle;
                                                   }
                                                   {
@@ -8691,6 +8714,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
+                                                  }
+                                                  {
+                                                    TrEMBL = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     WashU = AccToggle;
