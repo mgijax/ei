@@ -1,7 +1,7 @@
 #!/bin/csh
 
 #
-# Sets up appropriate ENV variables for running MEI in Production.
+# Sets up appropriate ENV variables for running MEI in Development.
 #
 # All SQL transactions logged to USERLOG.
 #
