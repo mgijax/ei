@@ -2358,7 +2358,7 @@ Module: mgiOption
               {
                 VocAnnotTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _AnnotType_key, name, _EvidenceVocab_key, _MGIType_key, _Vocab_key, vocab from VOC_AnnotType_View order by name";
+                  sql = "select _AnnotType_key, name, _EvidenceVocab_key, _MGIType_key, _Vocab_key, vocab from VOC_AnnotType_View where name not in (\"InterPro/Marker\", \"Strain/Super Standard\") order by name";
                   childTemplate = AnnotTypeToggle;
               }
         }
