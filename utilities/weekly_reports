@@ -84,18 +84,3 @@ mv $FTP/Nomenclature-$DATETAG.html $FTP/archive/nomen
 cp $HOME/mgireport/Nomenclature-$DATETAG.html $FTP
 ln -s $FTP/Nomenclature-$DATETAG.html $FTP/Nomenclature-current.html
 
-# Mail mgi-list to announce new report
-#mail mgi-list <<END
-mail lec <<END
-Subject:  MGI Weekly Nomenclature Events
-
-MGI Nomenclature Events in the Past Week can be found at:
-
-	ftp://ftp.informatics.jax.org/pub/informatics/reports/Nomenclature-current.html
-
-Archives of previous Nomenclature Events can be found at:
-
-	ftp://ftp.informatics.jax.org/pub/informatics/reports/archive/nomen
-
-END
-
