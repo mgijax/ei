@@ -48,7 +48,7 @@ setenv EIDEBUG	0
 setenv USERLOG	$HOME/.ei-log
 
 # EI Applications
-setenv EIAPPS	"mgd gxd mgiadmin mgi"
+setenv EIAPPS	"mgd gxd fantom mgiadmin mgi"
 
 # DB server name
 setenv DSQUERY MGD
