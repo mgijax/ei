@@ -273,10 +273,13 @@ rules:
           editMode : string;
           currentSeqNum : string;
 	  newSeqNum : string;
+	  chrKey : string := "";
 	  chr : string;
 	  set : string := "";
 	  deleteCmd : string := "";
 	  tmpCmd : string := "";
+	  keyName : string := "chrKey";
+	  keyDeclared : boolean := false;
  
           -- Check for duplicate Seq # assignments
  
@@ -299,10 +302,18 @@ rules:
  
             currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
             newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
+            chrKey := mgi_tblGetCell(table, row, table.chrKey);
             chr := mgi_tblGetCell(table, row, table.chr);
  
+	    if (not keyDeclared) then
+	      tmpCmd := tmpCmd + mgi_setDBkey(MRK_CHROMOSOME, NEWKEY, keyName);
+	      keyDeclared := true;
+	    else
+	      tmpCmd := tmpCmd + mgi_DBincKey(keyName);
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
-              tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, NOKEY) + currentRecordKey + "," + 
+              tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, keyName) + currentRecordKey + "," + 
 		        mgi_DBprstr(chr) + "," + newSeqNum + ")\n";
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -311,24 +322,21 @@ rules:
 	      if (currentSeqNum != newSeqNum) then
 		-- Delete records with current Seq # (cannot have duplicate Seq #)
 
-	        deleteCmd := deleteCmd + mgi_DBdelete(MRK_CHROMOSOME, currentRecordKey) +
-                             " and sequenceNum = " + currentSeqNum + "\n";
+	        deleteCmd := deleteCmd + mgi_DBdelete(MRK_CHROMOSOME, chrKey);
 
 		-- Insert new record
 
-                tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, NOKEY) + currentRecordKey + "," + 
+                tmpCmd := tmpCmd + mgi_DBinsert(MRK_CHROMOSOME, keyName) + currentRecordKey + "," + 
 		       mgi_DBprstr(chr) + "," + newSeqNum + ")\n";
 
 	      -- Else, a simple update
 
 	      else
                 set := "chromosome = " + mgi_DBprstr(chr);
-                tmpCmd := tmpCmd + mgi_DBupdate(MRK_CHROMOSOME, currentRecordKey, set) +
-                          " and sequenceNum = " + currentSeqNum + "\n";
+                tmpCmd := tmpCmd + mgi_DBupdate(MRK_CHROMOSOME, chrKey, set);
 	      end if;
             elsif (editMode = TBL_ROW_DELETE) then
-               tmpCmd := tmpCmd + mgi_DBdelete(MRK_CHROMOSOME, currentRecordKey) +
-                         " and sequenceNum = " + currentSeqNum + "\n";
+               tmpCmd := tmpCmd + mgi_DBdelete(MRK_CHROMOSOME, chrKey);
             end if;
  
             row := row + 1;
@@ -560,9 +568,10 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
                 table := top->Chromosome->Table;
-		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.chr, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.chrKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.chr, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 4) then
                 table := top->Anchor->Table;

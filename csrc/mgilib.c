@@ -1948,6 +1948,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLP_EXTRA:
     case MRK_ANCHOR:
     case MRK_ALIAS:
+    case MRK_CHROMOSOME:
     case MRK_CLASSES:
     case MRK_CURRENT:
     case MRK_HISTORY:
