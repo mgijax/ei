@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	06/09/2004
+--	- TR 5874; restrict use of GO "ND" evidence code and J:73796 reference
+--
 -- lec	02/19/2004
 --	- TR 5515; search by obsolete terms
 --
@@ -2536,6 +2539,19 @@ rules:
             send(StatusReport);
 	  end if;
 
+	  -- TR 5874
+	  termAcc : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.termAccID);
+	  if (termAcc.length > 0 and value = "73796" and 
+	      not (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554")) then
+	    VerifyGOReference.doit := (integer) false;
+	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "NULL");
+	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.jnum, "");
+	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, "");
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "J:73796 can only be used with GO:0000004, GO:0008372 or GO:0005554";
+            send(StatusReport);
+	  end if;
+
 	  (void) reset_cursor(top);
 	end does;
 
@@ -3269,6 +3285,7 @@ rules:
 	  value : string;
 	  evidenceKey : string;
 	  evidence : string;
+	  termAcc : string;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -3353,6 +3370,22 @@ rules:
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Evidence Code";
             send(StatusReport);
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
+	  -- TR 5874
+	  if (isTable) then
+	    termAcc := mgi_tblGetCell(sourceWidget, row, sourceWidget.termAccID);
+	    if (termAcc.length > 0 and evidence = "ND" and 
+		not (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554")) then
+	      VerifyVocabEvidenceCode.doit := (integer) false;
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
+              StatusReport.source_widget := top.root;
+              StatusReport.message := "Evidence Code 'ND' can only be used with GO:0000004, GO:0008372 or GO:0005554";
+              send(StatusReport);
+	    end if;
 	  end if;
 
 	  (void) reset_cursor(top);
