@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Sep 25 13:43:44 2001";
+      lastWritten = "Wed Feb  6 12:10:06 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -4782,6 +4782,20 @@ Module: MGD
                         saveTraversableSeries = "(all 0-3 False)";
                         saveEditableSeries = "(all 0-3 False)";
                     }
+              }
+              {
+                DisplayMarker = toggle : mgiDataTypes;
+                Group: Widget
+                  labelString = "Only display the marker \nbeing queried.";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = mgiCitation;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = mgiCitation;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
         {
