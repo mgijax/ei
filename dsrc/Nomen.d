@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 07/19/2000
+--	- TR 1813; permissions change for tier4
+--
 -- lec 03/16/2000
 --	- TR 1291
 --
@@ -491,8 +494,8 @@ rules:
 	    error := true;
 	  end if;
 
-	  if (not (global_login = "ljm" or global_login = "djr" or 
-		   global_login = "rmb" or global_login = "tier4") and
+	  if (not (global_login = "ljm" or global_login = "lmm" or 
+		   global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_PENDING) then
             StatusReport.source_widget := top;
