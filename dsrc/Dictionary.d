@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec  08/16/2001
+--	- re-implemented using a LookupList for Clipboard instead of a Table
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -101,28 +104,25 @@ locals:
         current_structure : opaque;   -- the current Structure pointer
         current_stagenum : integer;   -- current stage number
 
-        -- set to how many rows the clipboard has initially
-        clipboard_init_rows : integer;  
-
-        clipboardTable : widget;      -- the clipboard table.
+        clipboardList : widget;      -- the clipboard list.
 
         edinburghAliasTable : widget; -- alias tables in main editForm
         mgiAliasTable : widget;       
 
-        mgiAddedStructureOptionMenu : widget;   -- MGI-Added Structure menu
-        mgiAddedStructurePulldownMenu : widget; -- child of Option Menu
+        mgiAddedStructureMenu : widget;   -- MGI-Added Structure menu
+        mgiAddedStructurePulldown : widget; -- child of Option Menu
         mgiAddedStructureYes : widget;
         mgiAddedStructureNo  : widget;
         mgiAddedStructureAll  : widget;
 
-        mgiAddedAliasOptionMenu : widget;   -- MGI-Added Alias menu
-        mgiAddedAliasPulldownMenu : widget; -- child of Option Menu
+        mgiAddedAliasMenu : widget;   -- MGI-Added Alias menu
+        mgiAddedAliasPulldown : widget; -- child of Option Menu
         mgiAddedAliasYes : widget;
         mgiAddedAliasNo  : widget;
         mgiAddedAliasAll  : widget;
 
-        printStopOptionMenu : widget;   -- printStop menu
-        printStopPulldownMenu : widget;
+        printStopMenu : widget;   -- printStop menu
+        printStopPulldown : widget;
         printStopYes : widget;
         printStopNo  : widget;
         printStopAll : widget;
@@ -164,10 +164,6 @@ rules:
 
           top := create widget("DictionaryModule", nil, mgi);
 
-          -- prevent problems with users using MWM to close windows, rather
-          -- than "File..Exit"
-          (void) install_cleanup_handler(top);
-
           send(Init, 0);
 
           ab : widget := mgi->mgiModules->(top.activateButtonName);
@@ -177,6 +173,9 @@ rules:
           -- clear the clipboard prior to use
           send(ClipboardClear,0);
  
+	  GoHome.source_widget := top;
+	  send(GoHome, 0);
+
           (void) reset_cursor(mgi);
         end does;
 
@@ -201,29 +200,27 @@ rules:
             (void) stagetrees_init(treeDisplay, top->progressMeter);
 
             -- resolve commonly-used paths to variables
-            clipboardTable := top->structureClipboard->Table;
+            clipboardList := top->structureClipboard;
             edinburghAliasTable := top->edinburghAliasTable->Table;
             mgiAliasTable := top->mgiAliasTable->Table;
 
-            mgiAddedStructureOptionMenu := top->MGIAddedStructureOptions;
-            mgiAddedStructurePulldownMenu := 
-                         top->MGIAddedStructureOptionPulldown;
-            mgiAddedStructureYes := mgiAddedStructurePulldownMenu->Yes;
-            mgiAddedStructureNo  := mgiAddedStructurePulldownMenu->No;
-            mgiAddedStructureAll  := mgiAddedStructurePulldownMenu->SearchAll;
+            mgiAddedStructureMenu := top->MGIAddedMenu;
+            mgiAddedStructurePulldown := top->MGIAddedPulldown;
+            mgiAddedStructureYes := mgiAddedStructurePulldown->Yes;
+            mgiAddedStructureNo  := mgiAddedStructurePulldown->No;
+            mgiAddedStructureAll  := mgiAddedStructurePulldown->SearchAll;
 
-            mgiAddedAliasOptionMenu := top->MGIAddedAliasOptions;
-            mgiAddedAliasPulldownMenu := 
-                         top->MGIAddedAliasOptionPulldown;
-            mgiAddedAliasYes := mgiAddedAliasPulldownMenu->Yes;
-            mgiAddedAliasNo  := mgiAddedAliasPulldownMenu->No;
-            mgiAddedAliasAll  := mgiAddedAliasPulldownMenu->SearchAll;
+            mgiAddedAliasMenu := top->MGIAddedAliasMenu;
+            mgiAddedAliasPulldown := top->MGIAddedAliasPulldown;
+            mgiAddedAliasYes := mgiAddedAliasPulldown->Yes;
+            mgiAddedAliasNo  := mgiAddedAliasPulldown->No;
+            mgiAddedAliasAll  := mgiAddedAliasPulldown->SearchAll;
 
-            printStopOptionMenu := top->printStopOptions;
-            printStopPulldownMenu := top->printStopOptionPulldown;
-            printStopYes := printStopPulldownMenu->Yes;
-            printStopNo := printStopPulldownMenu->No;
-            printStopAll := printStopPulldownMenu->SearchAll;
+            printStopMenu := top->printStopOptions;
+            printStopPulldown := top->printStopPulldown;
+            printStopYes := printStopPulldown->Yes;
+            printStopNo := printStopPulldown->No;
+            printStopAll := printStopPulldown->SearchAll;
 
             structureText := top->structureText->text;
             structureNotes := top->structureNotes->text;
@@ -241,15 +238,9 @@ rules:
             tables.append(mgiAliasTable);
             tables.append(edinburghAliasTable);
 
-            -- find out how many rows the clipboard has initially
-            clipboard_init_rows := mgi_tblNumRows(clipboardTable);
-
             -- set the indexes
             -- clipboard_sk_index := 0;
             -- clipboard_name_index := 1; (these are set in .h file)
-
-            -- initialize the clipboard
-            adi_clipboardInit(treeDisplay, clipboardTable);
 
             -- initialize the alias key list
             delaliaskey_list := create string_list();
@@ -282,23 +273,23 @@ rules:
            end if; 
 
            -- clear the structure text
-           top->AddDialog->structureText->text.value := "";
-           top->AddDialog->structureText->text.modified := false; 
+           addDialog->structureText->text.value := "";
+           addDialog->structureText->text.modified := false; 
      
            -- clear the structure notes
-           top->AddDialog->structureNotes->text.value := "";
-           top->AddDialog->structureNotes->text.modified := false;
+           addDialog->structureNotes->text.value := "";
+           addDialog->structureNotes->text.modified := false;
      
            -- clear the alias tables
-           ClearTable.table := top->AddDialog->mgiAliasTable->Table;
+           ClearTable.table := addDialog->mgiAliasTable->Table;
            ClearTable.clearCells := true;
            send(ClearTable, 0);
     
-           SetOption.source_widget := top->AddDialog->printStopOptions; 
+           SetOption.source_widget := addDialog->printStopOptions; 
            SetOption.value := "Yes";
            send(SetOption, 0);  
            -- as if the user selected this option
-           top->AddDialog->printStopOptionPulldown->Yes.modified := true;
+           addDialog->printStopOptionPulldown->Yes.modified := true;
 
            addDialog.managed := true;
          end does;
@@ -321,7 +312,6 @@ rules:
           stage : string; -- logical stage of this added node 
           nullval : string := "NULL";
 
-
           -- the parent key is the current node 
           parentKey := idText.value;
 
@@ -329,15 +319,13 @@ rules:
              parentKey := "NULL";
           end if;
 
-          (void) busy_cursor(top);
+          (void) busy_cursor(addDialog);
 
           cmd := ""; 
           set := "";
 
           -- find out the stage based on the current structure, or if one
           -- isn't current, by the Stage node that is current. 
-
- 
 
           stage := (string) current_stagenum;
 
@@ -368,31 +356,29 @@ rules:
           -- check to see if the structure name is given.  It is the 
           -- only required field.
 
-          if not top->AddDialog->structureText->text.modified
-             or  top->AddDialog->structureText->text.value = "" then
+          if not addDialog->structureText->text.modified
+             or  addDialog->structureText->text.value = "" then
                 StatusReport.message := 
                     "Must specify structure name";
                 send(StatusReport, 0);
-                (void) reset_cursor(top);
+                (void) reset_cursor(addDialog);
                 return;
           end if;
          
-          ModifyStructureText.field := top->AddDialog->structureText->text;
+          ModifyStructureText.field := addDialog->structureText->text;
           -- must not use the current record's id, but the skeyName variable.
           ModifyStructureText.skvariable := "@" + skeyName;
           send(ModifyStructureText, 0);
 
-          ModifyStructureNote.field := top->AddDialog->structureNotes->text;
+          ModifyStructureNote.field := addDialog->structureNotes->text;
           send(ModifyStructureNote, 0);
 
           -- ignore MGI added, it can never be modified by the user
           
           -- test printStop  (it can't be "Search All", since disabled)
 
-          ModifyPrintStop.nooption := 
-                            top->AddDialog->printStopOptionPulldown->No; 
-          ModifyPrintStop.yesoption := 
-                            top->AddDialog->printStopOptionPulldown->Yes; 
+          ModifyPrintStop.nooption := addDialog->printStopOptionPulldown->No; 
+          ModifyPrintStop.yesoption := addDialog->printStopOptionPulldown->Yes; 
           send(ModifyPrintStop, 0);
 
           -- ignore Stage(s) query field.  The stage of a node is never 
@@ -400,13 +386,12 @@ rules:
 
           -- now deal with the MGI aliases table
 
-          ModifyAliases.table := top->AddDialog->mgiAliasTable->Table; 
+          ModifyAliases.table := addDialog->mgiAliasTable->Table; 
           ModifyAliases.addStructureMode := true;
           send(ModifyAliases, 0);
 
           if (set.length > 0) then
-              cmd := cmd + 
-                 mgi_DBupdate(structureTableID,"@" + skeyName, set);
+              cmd := cmd + mgi_DBupdate(structureTableID,"@" + skeyName, set);
           end if;
 
           if (cmd.length > 0) then
@@ -424,12 +409,11 @@ rules:
             --  the current focus on the parent node).
          end if;
 
-          (void) reset_cursor(top);
+          (void) reset_cursor(addDialog);
 
           -- close the dialog
           addDialog.managed := false;
         end does;
-
 
 --
 -- AddCancel
@@ -452,92 +436,48 @@ rules:
 --
 
         Delete does
-          skpos : integer;
-          tmplist : string_list := create string_list();
-          table : widget := clipboardTable; 
-          row : integer;
-          sk : string;
 
           if (current_structure = nil) then 
-                StatusReport.message := 
-                    "No current structure to delete";
+                StatusReport.message := "No current structure to delete";
                 send(StatusReport, 0);
                 return;
           end if;
 
           if (stagetrees_isStageNodeKey((integer) current_structurekey)) then
-                StatusReport.message := 
-                    "Cannot delete a Stage node";
+                StatusReport.message := "Cannot delete a Stage node";
                 send(StatusReport, 0);
                 return;
           end if;
 
           (void) busy_cursor(top);
 
-          cmd := "";
-          cmd := cmd + mgi_DBdelete(structureTableID, idText.value);
-
+          cmd := mgi_DBdelete(structureTableID, idText.value);
           ADI_ExecSQL.cmd := cmd;
           send(ADI_ExecSQL, 0);
 
           if (queryList.sqlSuccessful) then
-             -- update the display by deleting the structure with
-             -- structurekey == idText.value
+             -- update the display by deleting the structure with structurekey == idText.value
 
              stagetrees_deleteStructureByKey((integer)(idText.value));
 
-             -- must handle deletion of an item on the selection list,
-             -- if it exists:
-             -- (unfinished)
-
-             -- for now we clear the form after every delete 
-             -- send(DictionaryClear, 0);
-
              if (queryList.keys != nil) then
-
-             skpos := queryList.keys.find(current_structurekey);
-
-             tmplist := queryList.keys;
-
-             -- we use "DeleteAllItems" in the case of where there is 
-             -- only one element on the list due to memory allocation bug
-             -- indicated in Lib.d
-
-             if (skpos >= 0) then
-                if (queryList.itemCount = 1) then
-                   (void) XmListDeleteAllItems(queryList);
-                else
-                   (void) XmListDeletePos(queryList, skpos);
-                end if;
-
-               tmplist.remove(queryList.keys[skpos]);
-               queryList.keys := tmplist;
-
-               queryLabel.labelString := (string) queryList.itemCount + " " + 
-                                         queryLabel.defaultLabel;
-               queryList.row := 0;
-             end if;
-
+		queryList.row := queryList.keys.find(idText.value);
+		if (queryList.row > 0) then
+		  DeleteList.list := queryList;
+		  send(DeleteList, 0);
+		end if;
              end if; -- queryList.keys != nil
              
              -- clear this structure from the clipboard, if present
-             row := 0;
-             sk := mgi_tblGetCell(table,row,CLIPBOARD_SK_INDEX);
-             while (sk != "" and row < mgi_tblNumRows(table)) do
-               sk := mgi_tblGetCell(table,row,CLIPBOARD_SK_INDEX);
-               if (sk = idText.value) then 
-                  mgi_tblSetCell(table, row, CLIPBOARD_SK_INDEX, "");
-                  mgi_tblSetCell(table, row, CLIPBOARD_NAME_INDEX, "");
-               end if;
-             row := row + 1;
-             end while;
-
+	     clipboardList->List.row := clipboardList->List.keys.find(idText.value);
+	     if (clipboardList->List.row > 0) then
+	       DeleteList.list := clipboardList;
+	       send(DeleteList, 0);
+	     end if;
           end if; -- queryList.sqlSuccessful
-
 
           (void) reset_cursor(top);
         end does;
-
 
 --
 -- ModifyStructureText
@@ -906,10 +846,8 @@ rules:
           send(PrepareSearch, 0);
 
           Query.source_widget := top;
-          Query.select := "select distinct(s._Structure_key), t.stage, " +
-                                         "  s.printName " 
-                          + from + "\n" + where + " order by s.printName " +
-                          "asc"; 
+          Query.select := "select distinct(s._Structure_key), t.stage, " + "  s.printName " 
+                          + from + "\n" + where + " order by s.printName asc";
 
           -- structureTableID is used to identify what mgi_citation to use
           -- in the Search Results
@@ -1023,11 +961,11 @@ rules:
         -- set the printStop state
         printStop := structure_getPrintStop(structure);
         if (printStop) then
-            SetOption.source_widget := printStopOptionMenu;
+            SetOption.source_widget := printStopMenu;
             SetOption.value := "Yes";
             send(SetOption, 0);  -- SetOption sets managed to false btw.
         else
-            SetOption.source_widget := printStopOptionMenu;
+            SetOption.source_widget := printStopMenu;
             SetOption.value := "No";
             send(SetOption, 0);
         end if;
@@ -1035,11 +973,11 @@ rules:
         -- set the MGI-Added state for Structure
         mgiAddedStructure := structure_getMgiAdded(structure);
         if (mgiAddedStructure) then
-            SetOption.source_widget := mgiAddedStructureOptionMenu;
+            SetOption.source_widget := mgiAddedStructureMenu;
             SetOption.value := "Yes";
             send(SetOption, 0);
         else
-            SetOption.source_widget := mgiAddedStructureOptionMenu;
+            SetOption.source_widget := mgiAddedStructureMenu;
             SetOption.value := "No";
             send(SetOption, 0);
         end if;
@@ -1111,10 +1049,9 @@ rules:
 --
 
    ClipboardAddCurrent does
-       table : widget := clipboardTable; 
-       row : integer;
-       sk : string;
        csk : string;
+       pos : integer;
+       item : string;
 
        /* only add if there is a current structure */
        if (current_structure = nil) then
@@ -1129,30 +1066,21 @@ rules:
            return;
        end if;
 
-       -- find the next available row
-       row := 0;
-       sk := mgi_tblGetCell(table,row,CLIPBOARD_SK_INDEX);
-       while (sk != "" and row < mgi_tblNumRows(table)) do
-           sk := mgi_tblGetCell(table,row,CLIPBOARD_SK_INDEX);
-           if (sk = "") then 
-               break;
-           end if;
-           if (sk = csk) then
-              return; -- don't add dups
-           end if;
-           row := row + 1;
-       end while;
+       item := format_stagenum(structure_getStage(current_structure)) +
+		(string) structure_getPrintName(current_structure);
 
-       if (row >= mgi_tblNumRows(table)) then
-           AddTableRow.table := table;
-           send(AddTableRow, 0);
+       pos := XmListItemPos(clipboardList->List, xm_xmstring(item));
+
+       -- don't add duplicates
+
+       if (pos > 0) then
+	 return;
        end if;
 
-       -- finds out the currently-selected icon
-       mgi_tblSetCell(table, row, CLIPBOARD_SK_INDEX, csk);
-       mgi_tblSetCell(table, row, CLIPBOARD_NAME_INDEX,
-                      format_stagenum(structure_getStage(current_structure)) +
-                      (string) structure_getPrintName(current_structure));
+       InsertList.list := clipboardList;
+       InsertList.item := item;
+       InsertList.key := csk;
+       send(InsertList, 0);
    end does;
 
 
@@ -1162,26 +1090,11 @@ rules:
 -- Deletes the currently-selected structure from the clipboard.
 --
    ClipboardDelete does
-       table : widget := clipboardTable; 
-       row : integer;
-
-       row := mgi_tblGetCurrentRow(table); 
-
-       if (row < 0 or row >= mgi_tblNumRows(table)) then
-           -- invalid current row
-           return;
-       end if;
-
-
-       if(mgi_tblNumRows(table) > clipboard_init_rows) then
-          DeleteTableRow.table := table; 
-          DeleteTableRow.position := row; 
-          DeleteTableRow.numRows := 1; 
-          send(DeleteTableRow, 0);
-       else
-          -- clear the current row
-          mgi_tblSetCell(table, row, CLIPBOARD_SK_INDEX, "");
-          mgi_tblSetCell(table, row, CLIPBOARD_NAME_INDEX, "");
+       DeleteList.list := clipboardList;
+       DeleteList.resetRow := false;
+       send(DeleteList, 0);
+       if (clipboardList->List.row > 0) then
+         clipboardList->List.row := clipboardList->List.row - 1;
        end if;
    end does;
 
@@ -1193,9 +1106,8 @@ rules:
 -- 
 
    ClipboardClear does
-       ClearTable.table := clipboardTable;
-       ClearTable.clearCells := true;
-       send(ClearTable, 0);
+       ClearList.source_widget := clipboardList;
+       send(ClearList, 0);
    end does;
 
 
@@ -1222,11 +1134,11 @@ rules:
        send(ClearTable, 0);
 
        -- clear the printStop and mgiAdded option menus 
-       ClearOption.source_widget := mgiAddedStructureOptionMenu; 
+       ClearOption.source_widget := mgiAddedStructureMenu; 
        send(ClearOption, 0); 
-       ClearOption.source_widget := mgiAddedAliasOptionMenu; 
+       ClearOption.source_widget := mgiAddedAliasMenu; 
        send(ClearOption, 0); 
-       ClearOption.source_widget := printStopOptionMenu; 
+       ClearOption.source_widget := printStopMenu; 
        send(ClearOption, 0); 
 
        ClearTable.table := edinburghAliasTable;
@@ -1280,7 +1192,7 @@ rules:
 --
 
    DictionaryExit does
-      adi_clipboardDestroy();
+--      adi_clipboardDestroy();
       (void) busy_cursor(mgi); 	-- this will be undone by ResetCursor
       (void) busy_cursor(top); 	-- this will be undone by closing app 
       stagetrees_destroy();  	-- free up memory associated with trees.

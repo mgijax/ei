@@ -119,6 +119,9 @@ rules:
  
           -- Append the AD Clipboard
  
+	  mgi : widget := top.root.parent;
+	  clipboardList : widget := mgi->DictionaryModule->structureClipboard;
+
 	  sKeys : string_list := create string_list();
 	  sResults : xm_string_list := create xm_string_list();
 	  notify : boolean := false;
@@ -129,21 +132,16 @@ rules:
 
 	  -- Retrieve A.D. clipboard structures
 
-	  i : integer := 0;
-	  numStructures : integer := mgi_adi_countStructures();
+	  i : integer := 1;
+	  numStructures : integer := clipboardList->List.itemCount;
 	  adKey : string;
 	  adName : string;
 
-	  while (i < numStructures) do
+	  while (i <= numStructures) do
+	    adKey := clipboardList->List.keys[i];
+	    adName := clipboardList->List.items[i];
 
-	    adKey := (string) mgi_adi_getADIStructure(i).key;
-	    adName := (string) mgi_adi_getADIStructure(i).name;
-
-	    -- Don't add invalid A.D. Structures
-	    -- Don't add A.D. Structures which are already in the list
-
-	    if (sKeys.find(adKey) < 0 and 
-		mgi_adi_getADIStructure(i).type != ADI_STRUCTURE_INVALID) then
+	    if (sKeys.find(adKey) < 0) then
 	      sKeys.insert(adKey, sKeys.count + 1);
 	      sResults.insert(cbPrefix + adName, sResults.count + 1);
 	    end if;
