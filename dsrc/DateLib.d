@@ -62,16 +62,16 @@ rules:
 
 	    if (strstr(value, ">=") != nil or
 	        strstr(value, "<=") != nil ) then
-	      where := where + 
+	      where := "\nand " + fieldName +
 		       value->substr(1,2) + " " + 
 		       mgi_DBprstr(value->substr(3, value.length));
 	    elsif (strstr(value, ">") != nil or
 	           strstr(value, "<") != nil ) then
-	      where := where + 
+	      where := "\nand " + fieldName +
 		       value->substr(1,1) + " " + 
 		       mgi_DBprstr(value->substr(2, value.length));
 	    else
-	      where := where + "= " + mgi_DBprstr(value);
+	      where := "\nand " + "convert(char(10), " + fieldName + " , 101) = " + mgi_DBprstr(value);
 	    end if;
 	  end if;
 
