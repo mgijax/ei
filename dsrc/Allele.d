@@ -82,6 +82,7 @@ locals:
 	top : widget :exported; -- exported so VerifyAllele can access this value
 	ab : widget;
 	accTable : widget;
+	refTable : widget;
 
 	cmd : string;
 	from : string;
@@ -204,6 +205,7 @@ rules:
 	  -- Global Accession number Tables
 
 	  accTable := top->mgiAccessionTable->Table;
+	  refTable := top->Reference->Table;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -223,13 +225,6 @@ rules:
 
 	ClearAllele does
 
-	  if (not ClearAllele.reset) then
-	    top->AlleleStatusMenu.background := "Wheat";
-            top->AlleleStatusPulldown.background := "Wheat";
-            top->AlleleStatusPulldown->SearchAll.background := "Wheat";
-            top->AlleleStatusMenu.menuHistory.background := "Wheat";
-	  end if;
-
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearLists;
 	  Clear.clearKeys := ClearAllele.clearKeys;
@@ -237,6 +232,10 @@ rules:
 	  send(Clear, 0);
 
 	  if (not ClearAllele.reset) then
+	    top->AlleleStatusMenu.background := "Wheat";
+            top->AlleleStatusPulldown.background := "Wheat";
+            top->AlleleStatusPulldown->SearchAll.background := "Wheat";
+            top->AlleleStatusMenu.menuHistory.background := "Wheat";
 	    InitRefTypeTable.table := top->Reference->Table;
 	    InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
 	    send(InitRefTypeTable, 0);
@@ -245,6 +244,7 @@ rules:
 	  -- Set Note button
           SetNotesDisplay.note := top->markerDescription->Note;
           send(SetNotesDisplay, 0);
+
 	end does;
 
 --
@@ -257,7 +257,6 @@ rules:
 --
 
 	Add does
-	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
 	  statusKey : string;
@@ -266,18 +265,39 @@ rules:
 	  strainKey : string;
 	  mutantesCellLineKey : string;
 	  approvalLoginDate : string;
+	  editMode : string;
+	  refsKey : string;
+	  refsType : string;
+	  originalRefs : integer := 0;
+	  row : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
 
---	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
---	  if (refsKey.length = 0) then
- --           StatusReport.source_widget := top;
-  --          StatusReport.message := "An Original Reference is required.";
-   --         send(StatusReport);
-    --        return;
---	  end if;
+	  while (row < mgi_tblNumRows(refTable)) do
+	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
+	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
+
+	    if (refsType = "Original" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      originalRefs := originalRefs + 1;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  if (originalRefs != 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Original Reference is required.";
+            send(StatusReport);
+            return;
+	  end if;
 
 	  (void) busy_cursor(top);
 
@@ -538,22 +558,40 @@ rules:
 	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
 	  statusKey : string;
+	  editMode : string;
+	  refsKey : string;
+	  refsType : string;
+	  originalRefs : integer := 0;
+	  row : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
 
---	  refsCurrentKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsCurrentKey);
---	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
---	  if (refsCurrentKey.length > 0 and 
---		(refsKey = "NULL" or refsKey.length = 0 or 
---		 mgi_tblGetCell(table, table.origRefsKey, table.editMode) = TBL_ROW_DELETE)) then
- --           StatusReport.source_widget := top;
-  --          StatusReport.message := "An Original Reference is required.";
-   --         send(StatusReport);
---	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
- --           return;
---	  end if;
+	  while (row < mgi_tblNumRows(refTable)) do
+	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
+	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
+
+	    if (refsType = "Original" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      originalRefs := originalRefs + 1;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  if (originalRefs != 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Original Reference is required.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
 
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
 	      (top->mgiParentalESCellLine->ObjectID->text.modified or 
