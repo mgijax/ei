@@ -510,7 +510,7 @@ rules:
 
           value := mgi_tblGetCell(top->Marker->Table, 0, top->Marker->Table.markerKey);
 
-          if (value.length > 0) then
+          if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand sm._Marker_key = " + value;
 	    from_marker := true;
 	  else
@@ -523,7 +523,7 @@ rules:
 
           value := mgi_tblGetCell(top->StrainType->Table, 0, top->StrainType->Table.strainTypeKey);
 
-          if (value.length > 0) then
+          if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand st._StrainType_key = " + value;
 	    from_types := true;
 	  else
