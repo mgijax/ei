@@ -192,7 +192,7 @@ char *mgi_DBprstr(char *value)
     }
 
     /* get rid of trailing space */
-    if (newValue[--i] == ' ')
+    while (newValue[--i] == ' ')
       newValue[i] = '\0';
 
     sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
