@@ -486,7 +486,7 @@ rules:
 
 	  if (annotTable.annotVocab = "GO") then
 	    SearchNoteForm.notew := top->mgiNoteForm;
-	    SearchNoteForm.tableID := MGI_NOTETYPE_MRKGO_VIEW;
+	    SearchNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
             SearchNoteForm.join := "v._Object_key";
 	    send(SearchNoteForm, 0);
 	    from := from + top->mgiNoteForm.sqlFrom;
