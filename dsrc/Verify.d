@@ -299,7 +299,7 @@ rules:
 
 	    -- If edit form is managed AND parent form is managed, check required fields/matrices
 
-	    if (editForm.managed and editForm.parent.managed) then
+	    if (editForm.managed and editForm.sensitive and editForm.parent.managed) then
 	      i := 1;
 
 	      while (i <= editForm.num_children) do
@@ -3192,7 +3192,7 @@ rules:
 	    if (isTable) then
 	      if (sourceWidget.annotVocab = "PhenoSlim" or
 		  sourceWidget.annotVocab = "Mammalian Phenotype") then
-		evidence := "TAS";
+		evidence := "EE";
 	        pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring(evidence));
 		evidenceKey := top->EvidenceCodeList->List.keys[pos];
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, evidenceKey);

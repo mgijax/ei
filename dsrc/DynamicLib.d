@@ -15,6 +15,9 @@
 --
 -- History:
 --
+--	lec	05/23/2003
+--	TR 3710; set x.prepform in InitOptionMenu
+--
 --	lec	05/31/2002
 --	TR 1463; SAO; Nomen status can now be accessed 
 --
@@ -148,10 +151,13 @@ rules:
 		  x.isRNAAssay := (integer) mgi_getstr(dbproc, 3);
 		  x.isGelAssay := (integer) mgi_getstr(dbproc, 4);
 
-		  if (mgi_getstr(dbproc, 3) = "0") then
-		    x.prepForm := "AntibodyPrepForm";
+		  if (mgi_getstr(dbproc, 1) = "9") then
+		    -- no default for knock in
+		    x.prepForm := "";
+		  elsif (mgi_getstr(dbproc, 3) = "0") then
+		    x.prepForm := "AntibodyPrepVerifyForm";
 		  else
-		    x.prepForm := "ProbePrepForm";
+		    x.prepForm := "ProbePrepVerifyForm";
 		  end if;
 
 		  if (mgi_getstr(dbproc, 4) = "0") then
