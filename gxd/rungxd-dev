@@ -28,7 +28,7 @@ STRAINS=strains_dev
 NOMEN=nomen_dev
 
 EIREPORTDIR=$HOME/mgireport
-ARCHIVEDIR=$INSTALL_ROOT/$APP/mgireport
+ARCHIVEDIR=$INSTALL_ROOT/mgireport
 
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
