@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 10:43:04 2004";
+      lastWritten = "Wed May  5 12:46:35 2004";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1445,6 +1445,11 @@ Module: MGD
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    MMHCC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -3118,6 +3123,9 @@ Module: MGD
                                   MMRRC = AccToggle : mgiOption;
                                 }
                                 {
+                                  MMHCC = AccToggle : mgiOption;
+                                }
+                                {
                                   Harwell = AccToggle : mgiOption;
                                 }
                                 {
@@ -3657,6 +3665,9 @@ Module: MGD
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MMHCC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
