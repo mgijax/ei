@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Dec 13 13:38:30 2000";
+      lastWritten = "Mon Dec 18 09:59:24 2000";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1976,12 +1976,6 @@ Module: MGD
                                   Group: User
                                     targetWidget = Assay;
                                     targetColumn = 4;
-                                }
-                                {
-                                  J58000Push = push : mgiDataTypes;
-                                  Group: Widget
-                                    activateCallback = "D:NoteJ58000";
-                                    labelString = "J:58000 Note";
                                 }
                                 {
                                   SpeciesList = SpeciesList : mgiLookup;
@@ -6585,13 +6579,28 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AccessionReference = AccessionReference : mgiTable;
+                                  J58000Note = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:NoteJ58000";
+                                    labelString = "J:58000 Note";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Notes;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Notes;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  AccessionReference = AccessionReference : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = J58000Note;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = J58000Note;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
