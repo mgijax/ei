@@ -1002,11 +1002,11 @@ rules:
 	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 11);
 
 	        table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 15));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.broadcastBy, table.byUser, mgi_getstr(dbproc, 25));
 		(void) mgi_tblSetCell(table, table.broadcastBy, table.byDate, mgi_getstr(dbproc, 12));
 
                 SetOption.source_widget := top->MarkerTypeMenu;
