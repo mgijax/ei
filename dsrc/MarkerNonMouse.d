@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	06/10/2003
+--	TR 4741
+--
 -- 09/19/2001
 --	- Converted NoteJ58000 to use AppendNotePush template
 --
@@ -46,6 +49,7 @@ devents:
 
 	Search :local [];
 	Select :local [item_position : integer;];
+	SetLocusLink :local [];
 
 locals:
 	mgi : widget;
@@ -167,6 +171,8 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  send(SetLocusLink, 0);
+
           -- If adding, then @KEYNAME must be used in all Modify events
  
           currentRecordKey := "@" + KEYNAME;
@@ -267,6 +273,8 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
+
+	  send(SetLocusLink, 0);
 
 	  cmd := "";
 	  set : string := "";
@@ -502,6 +510,20 @@ rules:
 	  send(Clear, 0);
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- SetLocusLink
+--
+-- Set the required flag for the LocusLink ID
+--
+
+        SetLocusLink does
+	  if (top->mgiSpecies->ObjectID->text.value = HUMAN) then
+	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := true;
+	  else
+	    top->Lookup->mgiAccessionTable->AccSourcePulldown->LocusLink.required := false;
+	  end if;
 	end does;
 
 --
