@@ -1,0 +1,10 @@
+#!/bin/csh
+
+#
+# Configuration
+#
+
+source ../Configuration
+
+setenv EIAPP	mgiadmin
+
