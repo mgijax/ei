@@ -8,7 +8,7 @@
 #	List of References in Bibliographic format
 #
 # Usage:
-#	Bibliographic.py reportType format [sql command]
+#	Bibliographic.py reportType [sql command]
 #
 #     reportType =:
 #	dynamic => uses argument as SQL command
@@ -16,9 +16,7 @@
 #	dupall => all duplicates
 #
 #     format =:
-#        1  => prints author, citation, title, jnum, UI, datasets
-#        2  => prints author, title, citation, jnum, datasets
-#        3  => prints author, title, citation, jnum, datasets plus abstract
+#        prints author, citation, title, jnum, UI, datasets
 #
 # Generated from:
 #	Editing Interface, References Report form
@@ -37,17 +35,13 @@ import db
 import mgi_utils
 import reportlib
 
-def process_ref(fp, cmd, format = 1):
+def process_ref(fp, cmd):
 	'''
 	# requires: fp, the output file descriptor
 	#	    cmd, the SQL command to execute (string)
 	#		This command is expected to return the _Refs_key
 	#		of each returned record.  Other columns may be
 	#		returned, but _Refs_key MUST be returned.
-	#	    format, the format to use (1,2,3)
-	#	    1 prints author, citation, title, jnum, UI, datasets
-	#	    2 prints author, title, citation, jnum, datasets
-	#	    3 prints author, title, citation, jnum, datasets plus abstract
 	#
 	# effects:
 	# 1. Executes the SQL command and writes the results
@@ -102,10 +96,7 @@ def process_ref(fp, cmd, format = 1):
 			for a in accResult:
 				accID = TAB + a['accID'] + CRT
 
-			if format == '1':
-				fp.write(authors + citation + title + jnum + accID + dbs + CRT)
-			else:
-				fp.write(authors + title + citation + jnum + dbs + CRT)
+			fp.write(authors + citation + title + jnum + accID + dbs + CRT)
 		
         		cmd = 'select note from BIB_Notes where _Refs_key = %d order by sequenceNum' % ref['_Refs_key']
         		notes = db.sql(cmd, 'auto')
@@ -117,17 +108,6 @@ def process_ref(fp, cmd, format = 1):
 
 				fp.write(n + CRT + CRT)
 
-			if format == '3':
-        			cmd = 'select abstract from BIB_Refs where _Refs_key = %d' % ref['_Refs_key']
-				abstract = db.sql(cmd, 'auto')
-
-				for abs in abstract:
-					a = TAB + mgi_utils.prvalue(abs['abstract'])
-					if len(a) > column_width:
-						a = reportlib.format_line(a)
-
-					fp.write(a + CRT + CRT)
- 
         		row = row + 1
  
 #
@@ -135,7 +115,6 @@ def process_ref(fp, cmd, format = 1):
 #
 
 reportType = sys.argv[1]
-format = sys.argv[2]
 
 if reportType == "dynamic":
 	name = "Bibliographic"
@@ -158,7 +137,7 @@ elif reportType == "dupall":
 	'order by _primary, journal, year'
 
 fp = reportlib.init(name, title, os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
-process_ref(fp, cmd, format)
+process_ref(fp, cmd)
 reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 
