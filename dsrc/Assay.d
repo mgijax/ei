@@ -392,14 +392,15 @@ rules:
 
         Add does
 
-	  if (prepDetailForm.name = "ProbePrepForm") then
-	    if (prepDetailForm->Holder->text.value.length = 0) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "Required Field\n\n'Probe Holder'";
-	      send(StatusReport, 0);
-	      top.allowEdit := false;
-	    end if;
-	  end if;
+	  -- removed per TR 2547
+	  -- if (prepDetailForm.name = "ProbePrepForm") then
+	  --   if (prepDetailForm->Holder->text.value.length = 0) then
+	  --     StatusReport.source_widget := top;
+	  --     StatusReport.message := "Required Field\n\n'Probe Holder'";
+	  --     send(StatusReport, 0);
+	  --     top.allowEdit := false;
+	  --   end if;
+	  -- end if;
 
           if (not top.allowEdit) then
             return;
