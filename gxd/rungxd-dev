@@ -10,6 +10,7 @@ cd `dirname $0`
 
 source Configuration
 
+setenv EIDEBUG	1
 setenv DSQUERY	MGD_DEV
 setenv MGD	mgd_release
 setenv STRAINS	strains_release
