@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 22 11:38:06 2004";
+      lastWritten = "Tue Apr  6 08:13:49 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3743,7 +3743,7 @@ Module: MGD
                     {
                       text = scrolledText;
                       Group: Widget
-                        rows = 25;
+                        rows = 20;
                     }
               }
         }
@@ -5076,7 +5076,7 @@ Module: MGD
             width = 600;
             rubberPositioning = False;
             resizePolicy = resize_any;
-            height = 750;
+            height = 775;
           Group: Control
             vip_x = 80;
             vip_y = 1735;
@@ -5148,10 +5148,10 @@ Module: MGD
                       Table = mgiTable;
                       Group: Widget
                         xrtTblColumnLabels = "Mode,Current Order,key,Marker key,#,Primary Markers";
-                        xrtTblNumRows = 17;
+                        xrtTblNumRows = 25;
                         xrtTblPixelWidthSeries = "(all 0-3 0)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 16;
+                        xrtTblVisibleRows = 20;
                         xrtTblMaxLengthSeries = "(all 5 25)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\nrefMarkerKey:Int=\"2\"\n";
                         xrtTblEditableSeries = "(all 0-4 False)";
@@ -5187,7 +5187,7 @@ Module: MGD
             width = 600;
             rubberPositioning = False;
             resizePolicy = resize_any;
-            height = 750;
+            height = 775;
           Group: Control
             vip_x = 80;
             vip_y = 1680;
@@ -5269,10 +5269,10 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-5 0)";
                         xrtTblTraversableSeries = "(all 0-6 False)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
-                        xrtTblVisibleRows = 10;
+                        xrtTblVisibleRows = 15;
                         xrtTblMaxLengthSeries = "(all 7 25)(all 8 20)(all 9 80)(all 10 255)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
-                        xrtTblNumRows = 15;
+                        xrtTblNumRows = 20;
                       Group: User
                         seqNum = 6;
                         saveTraversableSeries = "(all 0-6 False)";
@@ -8751,7 +8751,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblTraversableSeries = "(all 0-6 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
-                                          xrtTblVisibleRows = 4;
+                                          xrtTblVisibleRows = 5;
                                           xrtTblAllowCellResize = resize_horizontal;
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                         Group: User
@@ -8836,7 +8836,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 4;
+                                          xrtTblVisibleRows = 5;
                                           xrtTblNumColumns = 9;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 30)(all 6 10)(all 7 60)";
                                           xrtTblColumnLabels = "Mode,Other Key,Current Key,New Key,Review Key,Synonym,J#,Citation,Review?";
@@ -8868,7 +8868,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 4;
+                                          xrtTblVisibleRows = 5;
                                           xrtTblValidateCellCallback = "D:VerifyAcc,\nD:VerifyReference,\nD:CommitTableCellEdit";
                                       }
                                       {

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 29 12:17:04 2004";
+      lastWritten = "Tue Apr  6 08:28:09 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1928,7 +1928,7 @@ Module: MGI
           TranslationModule = Module : MGI;
           Group: Widget
             width = 1050;
-            height = 825;
+            height = 900;
             closeWindowCallback = "D:VocAnnotExit";
           Group: Control
             vip_x = 70;
@@ -2023,7 +2023,7 @@ Module: MGI
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = Name;
-                                    topOffset = 20;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     rightOffset = 5;
@@ -2033,11 +2033,11 @@ Module: MGI
                                           xrtTblNumColumns = 9;
                                           xrtTblNumRows = 1000;
                                           xrtTblColumnLabels = "Mode,Current Order,#,Key,Object Key,Non-MGI Term,MGI Term,Acc ID,Modified By,Modified Date";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 2 4)(all 5-6 50)(all 7-8 15)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 2 4)(all 5-6 50)(all 7 15)(all 8 11)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-4 0)";
                                           xrtTblEditableSeries = "(all 0-4 False)";
                                           xrtTblTraversableSeries = "(all 0-4 False)";
-                                          xrtTblVisibleRows = 25;
+                                          xrtTblVisibleRows = 30;
                                           userDefinedAttributes = "transKey:Int(Int)=\"3\"\nobjectKey:Int(Int)=\"4\"\nnonmgiTerm:Int(Int)=\"5\"\nmgiTerm:Int(Int)=\"6\"\nmodifiedBy:Int(Int)=\"8\"\nmodifiedDate:Int(Int)=\"9\"\naccID:Int(Int)=\"7\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyTransMGITermAccID,\nD:CommitTableCellEdit";
                                         Group: User
@@ -2134,7 +2134,7 @@ Module: MGI
                                       {
                                         List = list;
                                         Group: Widget
-                                          visibleItemCount = 25;
+                                          visibleItemCount = 40;
                                       }
                                 }
                           }
@@ -2519,7 +2519,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         List = list;
                                         Group: Widget
-                                          visibleItemCount = 5;
+                                          visibleItemCount = 20;
                                       }
                                 }
                                 {
