@@ -276,17 +276,17 @@ rules:
 		end if;
 
 	        if (DisplayMolecularSource.master) then
-		  top->CreationDate->text.value := mgi_getstr(dbproc, 13);
-		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 14);
+		  top->CreationDate->text.value := mgi_getstr(dbproc, 15);
+		  top->ModifiedDate->text.value := mgi_getstr(dbproc, 16);
 		else
                   if (sourceForm->Library->text.value.length = 0) then
                     sourceForm->Library->text.value := "Anonymous";
                   end if;
                 end if;
 
-                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 16);
+                sourceForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);
                 sourceForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 6);
-                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 18);
+                sourceForm->Tissue->Verify->text.value := mgi_getstr(dbproc, 20);
                 sourceForm->Tissue->TissueID->text.value := mgi_getstr(dbproc, 7);
                 sourceForm->CellLine->text.value := mgi_getstr(dbproc, 12);
                 sourceForm->Description->text.value := mgi_getstr(dbproc, 3);
