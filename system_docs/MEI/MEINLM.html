@@ -116,7 +116,18 @@ There are 2 modes defined for processing NLM data files:
         <LI>First Page
         </UL>
 <P>
-<LI>If a match is found, then the NLM reference is reported as a "duplicate".
+<LI>If a match is found, then the database is also searched for a possible Submission reference
+    using:
+    <UL>
+    <LI>Journal = Submission
+    <LI>Primary Author
+    <LI>first 25 characters of Title
+    </UL>
+<P>
+<LI>If a match to a Submission record is found, then the NLM reference is reported as
+    a "submission" and the message "SUBMISSION FOUND IN MGD" is recorded.
+<P>
+<LI>If a match to a non-Submission record is found, then the NLM reference is reported as a "duplicate".
 <P>
 <LI>If no match is found, then the NLM reference is added and reported as an "add".
 <P>
