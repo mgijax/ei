@@ -102,7 +102,7 @@ rules:
 	    envList.append("STRAINS");
 	  end if;
 
-	  if (global_application = "MGD") then
+	  if (global_application = "NOMEN") then
 	    envList.append("NOMEN");
 	  end if;
 
