@@ -174,6 +174,8 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  send(SetLocusLink, 0);
+
           -- If adding, then @KEYNAME must be used in all Modify events
  
           currentRecordKey := "@" + KEYNAME;
@@ -274,6 +276,8 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
+
+	  send(SetLocusLink, 0);
 
 	  cmd := "";
 	  set : string := "";
