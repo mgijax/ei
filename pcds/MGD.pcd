@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 10:54:54 1999";
+      lastWritten = "Thu Oct 14 14:47:27 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -752,7 +752,7 @@ Module: MGD
                                   ID = ID;
                                 }
                                 {
-                                  Name = CharText : mgiDataTypes;
+                                  Strain = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -776,16 +776,56 @@ Module: MGD
                                       }
                                 }
                                 {
+                                  Species = mgiSpecies : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Strain;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Strain;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
                                   StandardMenu = StandardMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
+                                    leftWidget = Species;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Name;
+                                    topWidget = Species;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
+                                }
+                                {
+                                  NeedsReview = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = NeedsReviewPulldown;
+                                    labelString = "Needs Review?";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = StandardMenu;
+                                    leftOffset = 25;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = StandardMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      Popups:
+                                      {
+                                        NeedsReviewPulldown : YesNoPulldown = OptionPulldown;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                            {
+                                              YesReview : Yes = Yes : mgiOption;
+                                            }
+                                            {
+                                              NoReview : No = No : mgiOption;
+                                            }
+                                      }
                                 }
                                 {
                                   References = DataSetForm : mgiTable;
@@ -796,7 +836,7 @@ Module: MGD
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 10;
-                                    topWidget = StandardMenu;
+                                    topWidget = StrainType;
                                     topOffset = 5;
                                       {
                                         Table = mgiTable;
@@ -835,6 +875,84 @@ Module: MGD
                                         Retrieve = TablePush;
                                         Group: Widget
                                           activateCallback = "D:SelectDataSets";
+                                      }
+                                }
+                                {
+                                  StrainType = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Strain;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = StandardMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Strain Type";
+                                          xrtTblNumColumns = 4;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "Strain Types";
+                                            }
+                                      }
+                                }
+                                {
+                                  Marker = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = StrainType;
+                                    leftOffset = 10;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = StrainType;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblNumColumns = 4;
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Symbol";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 25)";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
+                                          xrtTblMaxLengthSeries = "(all 3 25)";
+                                          userDefinedAttributes = "markerColumns:Int=\"1\"\nmarkerCurrentKey:Int=\"1\"\nmarkerKey:Int=\"2\"\nmarkerSymbol:Int=\"3\"\n";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "Gene Symbols";
+                                            }
+                                      }
+                                }
+                                {
+                                  Notes = Notes : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = References;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = References;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_form;
+                                    bottomOffset = 5;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 80;
+                                          rows = 10;
                                       }
                                 }
                           }
@@ -902,6 +1020,138 @@ Module: MGD
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                      }
+                                      {
+                                        Add = TablePush;
+                                      }
+                                      {
+                                        Delete = TablePush;
+                                      }
+                                      {
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              AccSourcePulldown = OptionPulldown;
+                                                  {
+                                                    MGI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    J = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Medline = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Sequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SequencePID = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ATCC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MRK = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CREX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HYEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    INEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    FSEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TEXT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TXEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PMEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    E = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RATMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JAXMice = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                            }
+                                      }
+                                }
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                }
+                                {
+                                  SpeciesList = SpeciesList : mgiLookup;
+                                  Group: User
+                                    cmd = "select * from MLD_Species order by species";
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: User
+                                          targetText = Species;
+                                          targetKey = ObjectID;
+                                      }
+                                }
+                                {
+                                  StrainTypeList = StrainTypeList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: User
+                                          targetWidget = StrainType;
+                                          targetKey = 2;
+                                          targetText = 3;
+                                      }
                                 }
                           }
                     }
