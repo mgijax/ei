@@ -763,7 +763,7 @@ rules:
 		 classRefWhere +
 		 "and h._Homology_key = hm._Homology_key " +
 		 "and hm._Marker_key = a._Marker_key " +
-		 "and (a._Species_key != 2 or a.LogicalDB = 'LocusLink') " +
+		 "and a.LogicalDB = 'LocusLink' " +
 		 " order by a._Species_key\n";
 
 	  dbproc : opaque := mgi_dbopen();
