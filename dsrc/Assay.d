@@ -29,8 +29,9 @@
 -- History
 --
 -- lec	06/03/2003
---	- TR 4603; DuplicateAssay
---	- TR 4610; added Insert Row to Gel Lane table
+--	TR 4603; DuplicateAssay
+--	TR 4610; added Insert Row to Gel Lane table
+--	TR 4669; AddToEditClipboard
 --
 -- lec	05/07/2003
 --	- TR 3710; added Knock In Assay Type
@@ -725,7 +726,7 @@ rules:
 	    currentNote := mgi_tblGetCell(table, row, table.ageNote);
 
 	    -- append new note to current note
-	    if (currentNote.length > 0) then
+	    if (currentNote.length > 0 and currentNote != AppendToAgeNote.source_widget.note) then
 	      note := currentNote + " " + AppendToAgeNote.source_widget.note;
 	    else
 	      note := AppendToAgeNote.source_widget.note;
