@@ -688,7 +688,7 @@ rules:
 	  if (assayDetailForm.name = "GelForm") then
 	    clipboard := top->CVGel->ADClipboard;
 	  else
-	    clipboard := top->InSituResultDialog->ADClipboard;
+	    clipboard := top->CVSpecimen->ADClipboard;
 	  end if;
 
 	  if (top.parent->(clipboard.editClipboard) = nil) then
