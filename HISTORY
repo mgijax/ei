@@ -1,9 +1,9 @@
-TAG: ei-5-0-1, ei-5-0-2
+TAG: ei-5-0-1, ei-5-0-2, ei-5-0-3
 DATE: 07/11/2001
 STAFF: lec
 RELEASE: A
 CHANGES:
-1) TR 2709 - Assay Search Results
+1) TR 2709 - Assay Search Results, Image Search Results
 2) TR 2710 - Antigen field required in Antibody module
 
 TAG: ei-5-0-0
