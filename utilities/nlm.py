@@ -172,10 +172,11 @@ def printRec(fd, rec, rectags, msg = None):
 	if msg != None:
 		fd.write(msg + '\n')
 
-	# Print every tagged field
+	# Print every tagged field except if value is NULL
 
 	for t in rectags:
-		fd.write('%s  - %s\n' % (t, rec[t]))
+		if rec[t] != 'NULL':
+			fd.write('%s  - %s\n' % (t, rec[t]))
 
 def showUsage():
 	'''
@@ -513,7 +514,7 @@ def doUpdate(refKey, uiKey, rec):
 
 	# Update/Add Medline UI
 
-        if mode == 'nlm' and rec['UI'] != 'NULL':
+        if mode == 'nlm' and rec['UI'] != '"0"':
 		if uiKey is not None:
 			if type(uiKey) == type([]):
 				for ui in uiKey:
@@ -573,7 +574,7 @@ def doAdd(rec, rectags):
  
 	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
 
-	if rec['UI'] != 'NULL':
+	if rec['UI'] != '"0"':
         	cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
 			% (rec['UI'], MEDLINE, MGITYPE))
  
@@ -601,17 +602,17 @@ def processRec(rec, rectags):
 
 	# Sometimes there is no IP field & the info is embedded in the VI field
 	# In this case, extract the IP info and re-assign VI
+	# Or there is no IP at all....in which case NULL the IP field.
 
 	if not rec.has_key('IP'):
-		dList = string.split(rec['VI'], '( ')
-		rec['VI'] = dList[0]
-		rec['IP'] = dList[1][0:len(dList[1]) - 1]
-		rectags.append('IP')
+		try:
+			dList = string.split(rec['VI'], '(')
+			rec['VI'] = dList[0]
+			rec['IP'] = string.strip(dList[1][0:len(dList[1]) - 1])
+		except:
+			rec['IP'] = 'NULL'
 
-	# Is UI = 0, then NULL
-	if rec.has_key('UI'):
-		if rec['UI'] == '0':
-			rec['UI'] = 'NULL'
+		rectags.append('IP')
 
 	# If record missing any required field, skip
 	for t in ('UI', 'AU', 'TI', 'TA', 'DP', 'YR', 'PG', 'IP', 'VI'):
