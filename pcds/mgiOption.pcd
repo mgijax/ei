@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 16 12:31:23 2001";
+      lastWritten = "Fri Mar  2 13:13:53 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -770,7 +770,7 @@ Module: mgiOption
                     {
                       Junior = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = MGI_DEV;
+                        defaultValue = MGI_DEV_1151;
                     }
               }
         }
