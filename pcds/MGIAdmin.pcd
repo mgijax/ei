@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Oct 24 08:43:47 2001";
+      lastWritten = "Wed Jan  2 09:09:12 2002";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -59,6 +59,14 @@ Module: MGIAdmin
                                   Group: Widget
                                     labelString = "Table/Column Comments";
                                     activateCallback = "D:CreateMGIModule(name = \"TablesColumns\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                }
+                                {
+                                  VocAnnotType = XmPushButton;
+                                  Group: Widget
+                                    labelString = "Vocabulary Annotation Type";
+                                    activateCallback = "D:CreateMGIModule(name = \"VocAnnotType\")";
                                     traversalOn = False;
                                     managed = True;
                                 }
@@ -595,6 +603,91 @@ Module: MGIAdmin
                                                   }
                                             }
                                       }
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          VocAnnotTypeModule = Module : MGI;
+          Group: Control
+            vip_x = 70;
+            vip_y = 195;
+          Group: User
+            activateButtonName = VocAnnotType;
+            homeWidget = Name;
+              {
+                MainForm = XmForm;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                }
+                                {
+                                  Name = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = Name;
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 50;
+                                      }
+                                }
+                                {
+                                  MGITypeMenu = MGITypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                }
+                                {
+                                  VocabMenu = VocabMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = MGITypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = MGITypeMenu;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  EvidenceVocabMenu = EvidenceVocabMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = VocabMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = VocabMenu;
+                                    topOffset = 10;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                           }
                     }

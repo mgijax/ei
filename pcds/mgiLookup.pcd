@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Nov 16 08:05:12 2001";
+      lastWritten = "Mon Dec 17 14:37:49 2001";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -463,6 +463,25 @@ Module: mgiLookup
                   targetKey = 3;
                   targetText = 13;
                   targetWidget = GelLane;
+              }
+        }
+        {
+          PhenoSlimList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1130;
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "PhenoSlim Terms";
+                Group: User
+                  defaultLabel = "PhenoSlim Terms";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: User
+                  targetWidget = Annotation;
+                  targetKey = 3;
               }
         }
 }

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Nov 28 09:22:02 2001";
+      lastWritten = "Wed Jan  2 09:11:06 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -2667,6 +2667,100 @@ Module: mgiOption
                 ProbeSpeciesPulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select * from PRB_Species order by species";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          AllelePairStateMenu = OptionMenu;
+          Group: Widget
+            subMenuId = AllelePairStatePulldown;
+            labelString = "Allele Pair State";
+          Group: Control
+            vip_x = 80;
+            vip_y = 4595;
+              Popups:
+              {
+                AllelePairStatePulldown : OptionPulldown = OptionPulldown;
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+                    {
+                      Homozygous = OptionToggle : mgiOption;
+                      Group: User
+                        defaultValue = Homozygous;
+                        searchValue = Homozygous;
+                    }
+                    {
+                      Heterozygous = OptionToggle : mgiOption;
+                      Group: User
+                        defaultValue = Heterozygous;
+                        searchValue = Heterozygous;
+                    }
+                    {
+                      Hemizygous = OptionToggle : mgiOption;
+                      Group: User
+                        defaultValue = Hemizygous;
+                        searchValue = Hemizygous;
+                    }
+                    {
+                      Unknown = OptionToggle : mgiOption;
+                      Group: User
+                        defaultValue = Unknown;
+                        searchValue = Unknown;
+                    }
+              }
+        }
+        {
+          MGITypeMenu = OptionMenu;
+          Group: Widget
+            subMenuId = MGITypePulldown;
+            labelString = "MGI Type";
+          Group: Control
+            vip_x = 80;
+            vip_y = 4650;
+              Popups:
+              {
+                MGITypePulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select _MGIType_key, name from ACC_MGIType order by name";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          EvidenceVocabMenu = OptionMenu;
+          Group: Widget
+            subMenuId = EvidenceVocabPulldown;
+            labelString = "Evidence Vocabulary";
+          Group: Control
+            vip_x = 80;
+            vip_y = 4760;
+              Popups:
+              {
+                EvidenceVocabPulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select _Vocab_key, name from VOC_Vocab where isSimple = 1 order by name";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          VocabMenu = OptionMenu;
+          Group: Widget
+            subMenuId = VocabPulldown;
+            labelString = Vocabulary;
+          Group: Control
+            vip_x = 80;
+            vip_y = 4705;
+              Popups:
+              {
+                VocabPulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select _Vocab_key, name from VOC_Vocab order by name";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
