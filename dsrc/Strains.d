@@ -295,8 +295,8 @@ rules:
           if (top->Name->text.modified) then
             set := set + "strain = " + mgi_DBprstr(top->Name->text.value) + ",";
 	    (void) mgi_writeLog("\n" + get_time() + "STRAIN NAME MODIFIED:" +
-		"\tOriginal Strain Name: " + origStrainName +
-		"\tNew Strain Name: " + top->Name->text.value + "\n\n");
+		"\tOriginal: " + origStrainName +
+		"\tNew: " + top->Name->text.value + "\n\n");
           end if;
 
           if (top->StandardMenu.menuHistory.modified and
