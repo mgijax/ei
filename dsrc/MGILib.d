@@ -61,6 +61,9 @@ rules:
 --
 
 	InitApplication does
+	  envList : list;
+	  env : string;
+
 	  top := create widget("Login", nil, nil);
 
 	  global_version := "CVS 1-3-13";
@@ -87,6 +90,24 @@ rules:
 	  (void) mgi_tblSetReasonValues();
 
 	  top.show;
+
+	  envList := create list("string");
+	  envList.append("APP");
+	  envList.append("DSQUERY");
+	  envList.append("MGD");
+	  envList.append("STRAINS");
+	  envList.append("SYBASE");
+	  envList.open;
+
+	  while envList.more do;
+	    env := envList.next;
+	    if (getenv(env) = nil) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "\nWARNING:  Environment Variable " + env + " is not defined.";
+	      send(StatusReport, 0);
+	    end if;
+	  end while;
+	  envList.close;
 	end does;
 
 --
