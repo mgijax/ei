@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- lec 03/15/2001
+--	- Added ModifyNomenNotes; changed to be consistent with Allele Note
+--	  processing; changes to SQL.d/SQL.de
+--
 -- lec 01/15/2001
 --	- TR 2189; BroadcastByMenu no longer a widget
 --
@@ -127,6 +131,7 @@ devents:
 
 	Modify :local [];
 	ModifyGeneFamily :local [];
+	ModifyNomenNotes :local [];
 	ModifyOther :local [];
 	ModifyReference :local [];
 
@@ -152,6 +157,7 @@ locals:
 	printSelect : string;
 
 	tables : list;
+	notes : list;
 	resettables : list;
 
         currentNomenKey : string;	-- Primary Key value of currently selected record
@@ -161,6 +167,8 @@ locals:
 
         accTable : widget;		-- Accession Table
         accRefTable : widget;		-- Accession Reference Table
+
+	updateModDate : boolean;	-- Flag whether to update modification date
 
 rules:
 
@@ -252,6 +260,7 @@ rules:
 	Init does
 	  tables := create list("widget");
 	  resettables := create list("widget");
+	  notes := create list("widget");
 
 	  -- List of all Table widgets used in form
 
@@ -265,6 +274,11 @@ rules:
 	  resettables.append(top->OtherReference->Table);
 	  resettables.append(top->GeneFamily->Table);
 	  resettables.append(top->AccessionReference->Table);
+
+	  -- List of all Note widgets used in form
+
+	  notes.append(top->EditorNote->Note);
+	  notes.append(top->CoordNote->Note);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -367,18 +381,8 @@ rules:
 	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
 	         mgi_DBprstr(top->StatusNotes->text.value) + ",NULL)\n";
 
-	  ModifyNotes.source_widget := top->EditorNote->Note;
-	  ModifyNotes.tableID := MRK_NOMEN_EDITORNOTES;
-	  ModifyNotes.key := currentNomenKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->EditorNote->Note.sql;
 
-	  ModifyNotes.source_widget := top->CoordNote->Note;
-	  ModifyNotes.tableID := MRK_NOMEN_COORDNOTES;
-	  ModifyNotes.key := currentNomenKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->CoordNote->Note.sql;
-
+	  send(ModifyNomenNotes, 0);
 	  send(ModifyGeneFamily, 0);
 	  send(ModifyOther, 0);
 	  send(ModifyReference, 0);
@@ -452,9 +456,10 @@ rules:
 --
 
 	Modify does
-	  updateModDate : boolean := true;
 	  table : widget := top->Reference->Table;
 	  error : boolean := false;
+
+	  updateModDate := true;
 
 	  if (top->MarkerStatusMenu.menuHistory.defaultValue != STATUS_RESERVED and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
@@ -563,26 +568,6 @@ rules:
 	    set := set + "statusNote = " + mgi_DBprstr(top->StatusNotes->text.value) + ",";
 	  end if;
 
-	  ModifyNotes.source_widget := top->EditorNote->Note;
-	  ModifyNotes.tableID := MRK_NOMEN_EDITORNOTES;
-	  ModifyNotes.key := currentNomenKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->EditorNote->Note.sql;
-
-	  -- Don't attempt to update the master modification date if only the
-	  -- Editor Notes are modified, since Editor's don't have permission
-	  -- to update the master Nomen table
-
-	  if (top->EditorNote->Note.sql.length > 0 and set.length = 0) then
-	    updateModDate := false;
-	  end if;
-
-	  ModifyNotes.source_widget := top->CoordNote->Note;
-	  ModifyNotes.tableID := MRK_NOMEN_COORDNOTES;
-	  ModifyNotes.key := currentNomenKey;
-	  send(ModifyNotes, 0);
-	  cmd := cmd + top->CoordNote->Note.sql;
-
 	  send(ModifyGeneFamily, 0);
 	  send(ModifyOther, 0);
 	  send(ModifyReference, 0);
@@ -600,6 +585,9 @@ rules:
           ProcessAcc.db := getenv("NOMEN");
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
+
+	  -- Do this last because it may set updateModDate to false
+	  send(ModifyNomenNotes, 0);
 
 	  if (updateModDate and (cmd.length > 0 or set.length > 0)) then
 	    cmd := cmd + mgi_DBupdate(MRK_NOMEN, currentNomenKey, set);
@@ -656,6 +644,38 @@ rules:
  
             row := row + 1;
           end while;
+	end does;
+
+--
+-- ModifyNomenNotes
+--
+-- Activated from: devent Modify
+--
+-- Appends to global "cmd" string
+--
+ 
+	ModifyNomenNotes does
+	  notew: widget;
+
+	  -- If notes are the only thing being updated, don't update
+	  -- the modification date of the master table
+	  -- else triggers will block the entire transaction
+
+	  if (cmd.length = 0) then
+	    updateModDate := false;
+	  end if;
+
+	  notes.open;
+	  while (notes.more) do
+	    notew := notes.next;
+	    ModifyNotes.source_widget := notew;
+	    ModifyNotes.tableID := MRK_NOMEN_NOTES;
+	    ModifyNotes.noteType := notew.noteType;
+	    ModifyNotes.key := currentNomenKey;
+	    send(ModifyNotes, 0);
+	    cmd := cmd + notew.sql;
+	  end while;
+	  notes.close;
 	end does;
 
 --
