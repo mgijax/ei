@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 24 12:11:13 2005";
+      lastWritten = "Thu Feb 24 15:32:36 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -109,6 +109,8 @@ Module: mgiTable
               }
               {
                 Add : AddRow = TablePush;
+                Group: Widget
+                  activateCallback = "D:VerifyAccAdd";
                 Group: Constraint
                   leftAttachment = attach_widget;
                   leftWidget = AccSourceMenu;

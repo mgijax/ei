@@ -111,6 +111,45 @@ dmodule AccLib is
 rules:
 
 --
+-- AddAccRow
+--
+--	Adds Row to Accession Table
+--	Sets appropriate logical DB key and name values
+--	based on most recent AccSourceMenu selection.
+--
+
+        AddAccRow does
+	  table : widget := AddAccRow.table;
+	  source : widget := table.parent.child_by_class("XmRowColumn");
+	  logical : string;
+
+	  source := source.menuHistory;
+
+	  -- Traverse thru table and find first empty row
+	  row : integer := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    logical := mgi_tblGetCell(table, row, table.logicalKey);
+	    if (logical.length = 0) then
+	      break;
+	    end if;
+	    row := row + 1;
+	  end while;
+
+	  -- Set LogicalDB Key, Name for row
+
+	  (void) mgi_tblSetCell(table, row, table.logicalKey, source.defaultValue);
+	  (void) mgi_tblSetCell(table, row, table.accName, source.labelString);
+	  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+          -- Traverse to new table row
+
+          TraverseToTableCell.table := table;
+          TraverseToTableCell.row := row;
+          TraverseToTableCell.column := 0;
+          send(TraverseToTableCell, 0);
+	end does;
+
+--
 -- InitAcc
 --
 --	Initializes Accession Table
@@ -342,7 +381,7 @@ rules:
 
           r : integer := 0;
 	  i : integer := 0;
-	  l : integer := 0;
+	  l : integer;
 	  editMode : string;
 	  logicalKey : string;
 	  accKey : string;
@@ -383,7 +422,8 @@ rules:
 
 	    if (not (editMode = TBL_ROW_NOCHG or editMode = TBL_ROW_EMPTY)) then
 
-	      -- If user did not select a Source, then use last given value
+	      -- If user did not select Source, then use last given value
+	      -- If still empty, use last Source selected in Option Menu
 
               logicalKey := mgi_tblGetCell(table, r, table.logicalKey);
 	      l := r - 1;
@@ -393,7 +433,7 @@ rules:
 	      end while;
 
 	      if (logicalKey.length = 0) then
-                logicalKey := mgi_tblGetCell(table, r, table.logicalKey);
+	        logicalKey := source.menuHistory.defaultValue;
 	      end if;
 
               accKey := mgi_tblGetCell(table, r, table.accKey);
@@ -420,6 +460,21 @@ rules:
 		end if;
 	      end if;
 
+	      -- Set the source menu history to the correct child
+
+	      i := 1;
+              while (i <= source.subMenuId.num_children) do
+                if (logicalKey = source.subMenuId.child(i).defaultValue) then
+                  if (((integer) logicalKey = 1 and 
+			accName = source.subMenuId.child(i).labelString) or 
+			(integer) logicalKey > 1) then
+                    source.menuHistory := source.subMenuId.child(i);
+		    break;
+		  end if;
+                end if;
+                i := i + 1;
+              end while;
+
 	      -- Set the preferred and private bits
 	      preferred := (string) (integer) source.menuHistory.preferred;
 	      private := (string) (integer) source.menuHistory.private;
@@ -439,7 +494,8 @@ rules:
 	        accID := "NULL";
 	      end if;
 
-	      if (source.menuHistory.allowAdd and editMode = TBL_ROW_ADD) then
+	      if (source.menuHistory.allowAdd and 
+		  editMode = TBL_ROW_ADD) then
 
 	        -- If refsKey is not given, then just insert into Accession table
 	        -- If refsKey is given, then use a different process
@@ -679,6 +735,56 @@ rules:
             StatusReport.source_widget := table.top;
             StatusReport.message := "Duplicate. This Accession Number is already associated with this Object.\n\n" + value;
             send(StatusReport);
+	  end if;
+
+	end does;
+
+--
+-- VerifyAccAdd
+--
+-- Verify permissable add for mgiAccessionTable->Table row.
+-- Determined by corresponding AccToggle.allowAdd UDA in AccSourceMenu.
+--
+-- If edit is allowed, call AddAccRow.
+--
+	VerifyAccAdd does
+	  table : widget := VerifyAccAdd.source_widget.parent.child_by_class(TABLE_CLASS);
+	  row : integer := mgi_tblGetCurrentRow(table);
+	  source : widget := table.parent.child_by_class("XmRowColumn");
+
+	  if (not source.menuHistory.allowAdd) then
+            StatusReport.source_widget := table.top;
+            StatusReport.message := "Cannot add this class of Accession Number:\n\n" +
+		source.menuHistory.labelString + "\n";
+            send(StatusReport);
+	  else
+	    AddAccRow.table := table;
+	    send(AddAccRow, 0);
+	  end if;
+
+	end does;
+
+--
+-- VerifyAccDelete
+--
+-- Verify permissable deletion for mgiAccessionTable->Table row.
+-- Determined by corresponding AccToggle.allowDelete UDA in AccSourceMenu.
+--
+-- If edit is allowed, call DeleteLogicalTableRow.
+--
+	VerifyAccDelete does
+	  table : widget := VerifyAccDelete.source_widget.parent.child_by_class(TABLE_CLASS);
+	  row : integer := mgi_tblGetCurrentRow(table);
+	  source : widget := table.parent.child_by_class("XmRowColumn");
+
+	  if (not source.menuHistory.allowDelete) then
+            StatusReport.source_widget := table.top;
+            StatusReport.message := "Cannot delete this class of Accession Number:\n\n" +
+		source.menuHistory.labelString + "\n";
+            send(StatusReport);
+	  else
+	    DeleteLogicalTableRow.table := table;
+	    send(DeleteLogicalTableRow, 0);
 	  end if;
 
 	end does;
