@@ -17,7 +17,7 @@
 -- History
 --
 -- lec 01/15/2002
---	- TR 2867; VerifyVocabTermAccID
+--	- TR 2867; VerifyVocabTermAccID, VerifyVocabEvidenceCode
 --
 -- lec 10/16/2001
 --	- TR 2541; VerifyItem, VerifyStrains; check private bit; private
@@ -2989,6 +2989,102 @@ rules:
 	    top->Age->text.value := "";
 	  end if;
 
+	end does;
+
+--
+-- VerifyVocabEvidenceCode
+--
+--	Verify Evidence Code for Table
+--	Assumes table.vocabKey, table.evidence, table.evidenceKey are UDAs
+--	Copy Evidence Code into Appropriate widget/column
+--	Copy Evidence Key into Appropriate widget/column
+--
+
+	VerifyVocabEvidenceCode does
+	  sourceWidget : widget := VerifyVocabEvidenceCode.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  if (isTable) then
+	    row := VerifyVocabEvidenceCode.row;
+	    column := VerifyVocabEvidenceCode.column;
+	    reason := VerifyVocabEvidenceCode.reason;
+	    value := VerifyVocabEvidenceCode.value;
+
+	    -- If not in the Evidence Code column, return
+
+	    if (column != sourceWidget.evidence) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  else
+	    return;
+	  end if;
+
+	  -- If the Evidence Code is null, return
+
+	  if (value.length = 0) then
+	    if (isTable) then
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
+	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  evidenceKey : string;
+	  evidence : string;
+
+	  select : string := "select _Term_key, abbreviation from VOC_Term " +
+		"where abbreviation = " + mgi_DBprstr(value) + 
+		" and _Vocab_key = " + (string) sourceWidget.vocabEvidenceKey;
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      evidenceKey := mgi_getstr(dbproc, 1);
+	      evidence    := mgi_getstr(dbproc, 2);
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  -- If Evidence Code is valid
+	  --   Copy the Keys into the Key fields
+	  --   Copy the Names into the Name fields
+	  -- Else
+	  --   Display an error message, set the key columns to null, disallow edit to the field
+
+	  if (evidenceKey.length > 0) then
+	    if (isTable) then
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, evidenceKey);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, evidence);
+	    end if;
+	  else
+	    if (isTable) then
+	      VerifyVocabEvidenceCode.doit := (integer) false;
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
+	    end if;
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid Evidence Code";
+            send(StatusReport);
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

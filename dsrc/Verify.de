@@ -64,6 +64,10 @@ VerifyStrengthPattern [];
 
 VerifyTissueAge :translation [];
 
+VerifyVocabEvidenceCode [];
+
+VerifyVocabTermAccID [];
+
 VerifyWesternBlot :translation [];
 
 VerifyYesNo [];

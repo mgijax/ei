@@ -328,6 +328,7 @@ rules:
 
 	  top->mgiAccession.mgiTypeKey := top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
 	  top->Annotation->Table.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
+	  top->Annotation->Table.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	end does;
 
 --
