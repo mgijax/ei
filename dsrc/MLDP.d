@@ -3505,7 +3505,8 @@ rules:
 
 	  currentRIKey := ExptForm->mgiRISet->RIID->text.value;
 
-	  if (ExptForm->mgiRISet->Verify->text.modified) then
+	  if (ExptForm->mgiRISet->Verify->text.modified or
+	      ExptForm->mgiRISet->Verify->text.value.length = 0) then
 
 	    -- If designation is blank, default to Not Specified
 
