@@ -63,6 +63,8 @@ rules:
 	InitApplication does
 	  top := create widget("Login", nil, nil);
 
+	  global_version := "CVS 1-3-8";
+
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
 
