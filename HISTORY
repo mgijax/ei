@@ -1,3 +1,11 @@
+TAG: ei-8-3-13
+DATE: 04/28/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) SQL.d; added newline for print of @@error
+2) syblib.c; added print of msgtext in msghandler to ei log
+
 TAG: ei-8-3-12
 DATE: 04/25/2003
 STAFF: lec
