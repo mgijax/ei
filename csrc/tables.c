@@ -67,6 +67,28 @@ Boolean mgi_tblIsTable(Widget table)
 }
 
 /*
+   Determine if cell is editable.
+   Must use XtVaGetValues because there is no convenience routine!
+*/
+
+Boolean mgi_tblIsCellEditable(Widget table, int row, int column)
+{
+  static Boolean isEditable;
+
+  isEditable = 0;
+
+  XtVaSetValues(table, 
+		XmNxrtTblContext, XrtTblSetContext(row, column),
+		NULL);
+
+  XtVaGetValues(table,
+		XmNxrtTblEditableContext, &isEditable,
+		NULL);
+
+  return(isEditable);
+}
+
+/*
    Determine if cell is traversable
 */
 

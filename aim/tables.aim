@@ -26,8 +26,9 @@ CALLS
 	 mgi_tblSetNumRows("Widget", "int");
 	 mgi_tblGetCallbackParent("XrtTblCreateWidgetCallbackStruct"): "Widget";
 	 mgi_tblIsTable("Widget")				: "Boolean";
-	 mgi_tblIsCellVisible("Widget", "int", "int")		: "Boolean";
+	 mgi_tblIsCellEditable("Widget", "int", "int")		: "Boolean";
 	 mgi_tblIsCellTraversable("Widget", "int", "int")	: "Boolean";
+	 mgi_tblIsCellVisible("Widget", "int", "int")		: "Boolean";
 	 mgi_tblMakeCellVisible("Widget", "int", "int")		: "Boolean";
 	 mgi_tblStartFlash("Widget", "int", "int");
 	 mgi_tblStopFlash("Widget", "int", "int");
