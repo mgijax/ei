@@ -669,6 +669,187 @@ rules:
 	end does;
 
 --
+-- VerifyCellLine
+--
+--	Verify CellLine entered in TextField or Table
+--
+--	If Text, assumes use of mgiCellLine template
+--	If Table, assumes table.cellLineKey, table.cellLine
+--
+--	Copy Unique Key into Appropriate widget/column
+--
+--	If ignoreRow > -1, then don't valid that row.
+--
+
+	VerifyCellLine does
+	  sourceWidget : widget := VerifyCellLine.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+	  whichItem : widget := top.root->WhichItem;	-- WhichItem widget
+	  ignoreRow : integer := VerifyCellLine.ignoreRow;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+	  cellLineKey : integer;
+	  cellLineName : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  -- Processing for Table
+
+	  if (isTable) then
+	    row := VerifyCellLine.row;
+	    column := VerifyCellLine.column;
+	    reason := VerifyCellLine.reason;
+	    value := VerifyCellLine.value;
+	    cellLineKey := sourceWidget.cellLineKey;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+					   
+	    -- If not in the cellLine column, return
+
+            if (column != sourceWidget.cellLine) then
+              return;
+            end if;
+
+	    -- if ignoring row, do nothing
+	    if (row = ignoreRow) then
+	      return;
+	    end if;
+
+	    cellLineKey := sourceWidget.cellLineKey;
+	    cellLineName := sourceWidget.cellLine;
+
+	  -- Processing for Text
+
+	  else
+	    value := top->mgiCellLine->CellLine->text.value;
+	  end if;
+
+	  -- If no value entered, return
+
+	  if (value.length = 0) then
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, cellLineKey, "NULL");
+	    else
+	      top->mgiCellLine->ObjectID->text.value := "NULL";
+              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    end if;
+	    return;
+	  end if;
+
+	  -- If a wildcard '%' appears in the cellLine,
+	  --  Then set the CellLine key to empty and return
+
+	  if (strstr(value, "%") != nil) then
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, cellLineKey, "NULL");
+	    else
+	      top->mgiCellLine->ObjectID->text.value := "NULL";
+              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  message : string := "";
+	  whichCellLineRow : integer := 0;
+	  whichCellLine : string := "";
+	  whichName : string := "";
+
+	  keys : string_list := create string_list();
+	  results : xm_string_list := create xm_string_list();
+
+	  -- Clear CellLine Lookup List
+
+	  ClearList.source_widget := whichItem->ItemList;
+	  send(ClearList, 0);
+
+	  -- Search for CellLine in the database
+
+	  select : string := "select _Term_key, term " +
+			     "from VOC_Term_CellLine_View " +
+			     " where term = " + mgi_DBprstr(value) + "\n";
+
+	  -- Insert results into string list for loading into CellLine selection list
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
+              results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+            end while;
+          end while;
+	  (void) dbclose(dbproc);
+
+	  -- Add items to CellLine List
+          -- If keys doesn't exist already, create it
+ 
+          if (whichItem->ItemList->List.keys = nil) then
+            whichItem->ItemList->List.keys := create string_list();
+          end if;
+ 
+          whichItem->ItemList->List.keys := keys;
+	  (void) XmListAddItems(whichItem->ItemList->List, results, results.count, 0);
+
+	  -- If results is empty, then cellLine is invalid
+
+	  if (results.count = 0) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "CellLine '" + value + "'\n\n" + "Invalid CellLine";
+            send(StatusReport);
+
+	    if (isTable) then
+              (void) mgi_tblSetCell(sourceWidget, row, cellLineKey, "NULL");
+	      VerifyCellLine.doit := (integer) false;
+	    else
+	      top->mgiCellLine->ObjectID->text.value := "NULL";
+	    end if;
+
+	    (void) reset_cursor(top);
+	    return;
+
+	  -- If more than one result is found, set Table widget and manage 'WhichItem' dialog
+
+          elsif (results.count > 1) then
+            whichItem.managed := true;
+
+	    -- Keep busy while user selects which cellLine
+
+	    while (whichItem.managed = true) do
+		(void) keep_busy();
+	    end while;
+
+	    (void) XmUpdateDisplay(top);
+	    whichCellLineRow := whichItem->ItemList->List.row;
+
+	  -- If only one result is found, then select first (& only) result from List
+
+          else
+            whichCellLineRow := 0;
+          end if;
+ 
+	  whichCellLine := whichItem->ItemList->List.keys[whichCellLineRow];
+
+	  if (isTable) then
+            (void) mgi_tblSetCell(sourceWidget, row, cellLineKey, whichCellLine);
+	  else
+	    top->mgiCellLine->ObjectID->text.value := whichCellLine;
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
 --
 --
 -- VerifyChromosome
@@ -2369,7 +2550,7 @@ rules:
 					   
 	    -- If not in the organism column, return
 
-            if (column != sourceWidget.organismName) then
+            if (column != sourceWidget.organism) then
               return;
             end if;
 
@@ -2379,7 +2560,7 @@ rules:
 	    end if;
 
 	    organismKey := sourceWidget.organismKey;
-	    organismName := sourceWidget.organismName;
+	    organismName := sourceWidget.organism;
 
 	  -- Processing for Text
 
