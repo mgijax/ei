@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 13:59:19 2005";
+      lastWritten = "Wed Feb 23 14:22:53 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -384,9 +384,6 @@ Module: MGD
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -2754,9 +2751,6 @@ Module: MGD
                                   RGD = AccToggle : mgiOption;
                                 }
                                 {
-                                  RATMAP = AccToggle : mgiOption;
-                                }
-                                {
                                   JRS = AccToggle : mgiOption;
                                 }
                                 {
@@ -3341,9 +3335,6 @@ Module: MGD
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -7055,9 +7046,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -7236,11 +7224,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -9810,9 +9793,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     JRS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10466,9 +10446,6 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               RGD = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              RATMAP = AccToggle : mgiOption;
                                             }
                                             {
                                               JRS = AccToggle : mgiOption;
@@ -11927,9 +11904,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -12950,9 +12924,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;

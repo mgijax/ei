@@ -8,12 +8,6 @@
 -- This is the companion D event declarations file for StrainAlleleTypeTableLib.d.
 --
 
--- Add Row to Allele Type Table
-AddStrainAlleleTypeRow [table : widget;];	 -- Allele Type Table
-
--- Edit Allele Type of current Table Row
-EditStrainAlleleType [table : widget;];	 	 -- Allele Type Table
-
 -- Initialize Allele Type Table
 InitStrainAlleleTypeTable [table : widget;        -- Allele Type Table
 	 tableID : integer;

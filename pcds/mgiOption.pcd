@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb 22 08:35:56 2005";
+      lastWritten = "Wed Feb 23 14:22:48 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -297,11 +297,6 @@ Module: mgiOption
                       RGD = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 47;
-                    }
-                    {
-                      RATMAP = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 4;
                     }
                     {
                       JRS = AccToggle : mgiOption;
