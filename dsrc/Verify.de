@@ -52,6 +52,8 @@ VerifyMarkerAlleles : translation [];
 
 VerifyNomenMarker : translation [];
 
+VerifyNonGeneMarker : translation [];
+
 VerifyReference :translation [];
 
 VerifyGOReference [];

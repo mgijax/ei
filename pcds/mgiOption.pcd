@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar  7 13:41:00 2002";
+      lastWritten = "Wed Apr 17 10:58:42 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -2105,7 +2105,7 @@ Module: mgiOption
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from ALL_Type where _Allele_Type_key > -2 order by alleleType";
+                  sql = "select * from ALL_Type order by alleleType";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2143,7 +2143,7 @@ Module: mgiOption
               {
                 MolecularMutationPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select * from ALL_Molecular_Mutation where _Mutation_key > -2 order by mutation";
+                  sql = "select * from ALL_Molecular_Mutation order by mutation";
               }
         }
         {

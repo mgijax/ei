@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Mar  7 10:55:08 2002";
+      lastWritten = "Wed Apr 17 14:00:55 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1051,15 +1051,16 @@ Module: MGD
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 4;
-                                          xrtTblColumnLabels = "Mode,Current Key,Key,Symbol";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 25)";
-                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblNumColumns = 5;
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Chr,Symbol";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 3)(all 4 25)";
+                                          xrtTblEditableSeries = "(all 0-3 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyStrainMarker,\nD:CommitTableCellEdit";
                                           xrtTblMaxLengthSeries = "(all 3 25)";
-                                          userDefinedAttributes = "markerColumns:Int=\"1\"\nmarkerCurrentKey:Int=\"1\"\nmarkerKey:Int=\"2\"\nmarkerSymbol:Int=\"3\"\n";
+                                          userDefinedAttributes = "markerColumns:Int(Int)=\"1\"\nmarkerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"4\"\nmarkerChr:Int=\"3\"\n";
                                           xrtTblVisibleRows = 3;
+                                          xrtTblTraversableSeries = "(all 0-3 False)";
                                       }
                                 }
                                 {
@@ -1099,6 +1100,17 @@ Module: MGD
                                     leftWidget = Marker;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          userDefinedAttributes = "refsKey:Int(Int)=\"1\"\njnum:Int(Int)=\"3\"\ncitation:Int(Int)=\"2\"\n";
+                                          xrtTblNumColumns = 5;
+                                          xrtTblColumnLabels = "Mode,Key,Citation,J#,Data Set";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 3-4 15)";
+                                          xrtTblValidateCellCallback = "D:VerifyReference\nD:CommitTableCellEdit";
+                                        Group: User
+                                          dataSet = 4;
+                                          accID = 3;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget

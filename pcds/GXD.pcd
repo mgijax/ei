@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Apr 10 10:12:03 2002";
+      lastWritten = "Wed Apr 17 09:58:57 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -968,7 +968,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 userDefinedAttributes = "verifyAccessionID:Widget\n";
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMarker() VerifyMarkerInTable()";
+<Key>Tab: VerifyMarker() VerifyMarkerInTable() VerifyNonGeneMarker()";
                                               Group: User
                                                 verifyAccessionID = ProbeAccession;
                                             }
@@ -2166,6 +2166,22 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        ObjectID = ID;
+                                      }
+                                      {
+                                        Marker = CharText;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMarker() VerifyNonGeneMarker()";
+                                            }
+                                      }
                                 }
                                 {
                                   mgiCitation = mgiCitation : mgiDataTypes;
@@ -2460,6 +2476,13 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = Antibodies;
                                 }
                                 {
+                                  MolecularSegment = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
+                                    labelString = Probes;
+                                    traversalOn = False;
+                                }
+                                {
                                   Image = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Image\")";
@@ -2488,44 +2511,10 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = Index;
                                 }
                                 {
-                                  separator = XmSeparator;
-                                }
-                                {
-                                  Reference = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Reference\")";
-                                    labelString = References;
-                                    traversalOn = False;
-                                }
-                                {
-                                  MolecularSegment = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
-                                    labelString = Probes;
-                                    traversalOn = False;
-                                }
-                                {
                                   Allele = XmPushButton;
                                   Group: Widget
                                     labelString = Alleles;
                                     activateCallback = "D:CreateMGIModule(name = \"Allele\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  Nomen = XmPushButton;
-                                  Group: Widget
-                                    labelString = Nomenclature;
-                                    activateCallback = "D:CreateMGIModule(name = \"Nomen\")";
-                                    traversalOn = False;
-                                }
-                                {
-                                  separator1 = XmSeparator;
-                                }
-                                {
-                                  ControlledVocab = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"ControlledVocab\")";
-                                    labelString = "Controlled Vocab";
                                     traversalOn = False;
                                 }
                                 {
@@ -2534,6 +2523,13 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"Strains\")";
                                     traversalOn = False;
                                     labelString = Strains;
+                                }
+                                {
+                                  ControlledVocab = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"ControlledVocab\")";
+                                    labelString = "Controlled Vocab";
+                                    traversalOn = False;
                                 }
                           }
                     }

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 22 12:58:01 2002";
+      lastWritten = "Wed Apr 17 11:23:36 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -1567,7 +1567,7 @@ Module: MGI
                                           xrtTblEditableSeries = "(all 0-6 False)";
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-6 0)";
                                           xrtTblTraversableSeries = "(all 0-6 False)";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyMarkerAlleles,\nD:VerifyAllele,\nD:VerifyAllelePairState,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:VerifyAllelePairState,\nD:CommitTableCellEdit";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"-1\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nalleleState:Int(Int)=\"10\"\nmarkerColumns:Int=\"1\"\n";
                                         Group: User
                                           alleleSymbol = "8\n9";

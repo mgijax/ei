@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Jan 15 15:01:11 2002";
+      lastWritten = "Wed Apr 17 11:29:46 2002";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -176,7 +176,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 745;
           Group: User
-            cmd = "select * from HMD_Assay where _Assay_key != 15 order by assay";
+            cmd = "select * from HMD_Assay where _Assay_key not in (7, 15) order by assay";
               {
                 Label = LookupLabel;
                 Group: Widget

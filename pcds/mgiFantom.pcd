@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Apr 12 08:04:05 2002";
+      lastWritten = "Wed Apr 17 15:06:33 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -332,6 +332,22 @@ Module: mgiFantom
                                               Group: User
                                                 defaultValue = "Problem-fs";
                                                 searchValue = "Problem-fs";
+                                            }
+                                            {
+                                              P5 = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Problem-5'";
+                                              Group: User
+                                                defaultValue = "Problem-5'";
+                                                searchValue = "Problem-5'";
+                                            }
+                                            {
+                                              P3 = OptionToggle : mgiOption;
+                                              Group: Widget
+                                                labelString = "Problem-3'";
+                                              Group: User
+                                                defaultValue = "Problem-3'";
+                                                searchValue = "Problem-3'";
                                             }
                                             {
                                               zilch = OptionToggle : mgiOption;
@@ -729,13 +745,23 @@ Module: mgiFantom
                               leftAttachment = attach_form;
                               rightAttachment = attach_form;
                               topAttachment = attach_widget;
-                              topWidget = Note;
                               bottomAttachment = attach_none;
                               resizable = true;
-                              topOffset = 5;
+                              topWidget = Note;
+                              topOffset = 100;
                           }
                           {
                             Buttons = Buttons : mgiDialog;
+                            Group: Constraint
+                              leftAttachment = attach_form;
+                              leftOffset = 100;
+                              rightAttachment = attach_form;
+                              topAttachment = attach_widget;
+                              topWidget = separator;
+                              topOffset = 5;
+                              bottomAttachment = attach_form;
+                              resizable = true;
+                              bottomOffset = 5;
                           }
                           {
                             NotePushForm = NotePushForm : mgiFantom;
@@ -746,7 +772,7 @@ Module: mgiFantom
                               rightAttachment = attach_form;
                               topAttachment = attach_opposite_widget;
                               topWidget = Note;
-                              bottomAttachment = attach_none;
+                              bottomAttachment = attach_form;
                               resizable = true;
                               rightOffset = 5;
                                 {
@@ -790,6 +816,20 @@ Module: mgiFantom
                                     labelString = "Problem Cluster";
                                   Group: User
                                     defaultValue = "Problem Cluster";
+                                }
+                                {
+                                  Overlap1 = FantomNotePush : mgiFantom;
+                                  Group: Widget
+                                    labelString = "Overlaps Same Strand";
+                                  Group: User
+                                    defaultValue = "Overlaps Same Strand:";
+                                }
+                                {
+                                  Overlap2 = FantomNotePush : mgiFantom;
+                                  Group: Widget
+                                    labelString = "Overlaps Opposite Strand";
+                                  Group: User
+                                    defaultValue = "Overlaps Opposite Strand:";
                                 }
                           }
                     }
