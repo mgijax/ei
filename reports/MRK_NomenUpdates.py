@@ -46,6 +46,8 @@ edate = results[0]['']
 title = 'Updates to Mouse Nomenclature from %s to %s' % (bdate, edate)
 fp = reportlib.init(reportName, title, isHTML = 1)
 
+fp.write('J:23000 generally indicates gene family nomenclature revision event.\n\n')
+
 cmd = []
 
 cmd.append('select m._Marker_key, m.mgiID, c.sequenceNum, h._Refs_key ' + \
