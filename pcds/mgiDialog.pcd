@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Dec  6 14:14:48 1999";
+      lastWritten = "Mon Dec 13 08:22:18 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -331,7 +331,7 @@ Module: mgiDialog
         {
           NLMDialog = ReportDialog : mgiDialog;
           Group: Widget
-            dialogTitle = "NLM Update";
+            dialogTitle = "NLM/Current Contents Update";
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
@@ -343,7 +343,7 @@ Module: mgiDialog
                 FileSelection = FileSelection;
                 Group: Widget
                   okCallback = "D:ReportGenerate(nlmMode = 1)";
-                  okLabelString = NLM;
+                  okLabelString = "Update\nNLM";
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
@@ -354,15 +354,22 @@ Module: mgiDialog
                       filler = XmSeparator;
                     }
                     {
-                      Current = XmPushButton;
+                      AddNLM = XmPushButton;
                       Group: Widget
-                        labelString = "Current\nContents";
                         activateCallback = "D:ReportGenerate(nlmMode = 2)";
+                        labelString = "Add\nNLM";
                     }
                     {
-                      Add = XmPushButton;
+                      CurrentContents = XmPushButton;
                       Group: Widget
                         activateCallback = "D:ReportGenerate(nlmMode = 3)";
+                        labelString = "Update\nCurrent\nContents";
+                    }
+                    {
+                      AddCurrentContents = XmPushButton;
+                      Group: Widget
+                        activateCallback = "D:ReportGenerate(nlmMode = 4)";
+                        labelString = "Add\nCurrent\nContents";
                     }
               }
               {
@@ -377,10 +384,19 @@ Module: mgiDialog
                                 {
                                   List = list;
                                   Group: Widget
-                                    items = "NLM/CC Updates";
+                                    items = "NLM/Current Contents Updates/Adds";
                                   Group: User
-                                    keys = "nlm.py";
+                                    keys = "nlmcc.py";
                                 }
+                          }
+                          {
+                            PrinterList = LookupList;
+                          }
+                          {
+                            PrintOrient = Choice : mgiDataTypes;
+                          }
+                          {
+                            PrintColumn = Choice : mgiDataTypes;
                           }
                     }
               }
