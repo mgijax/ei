@@ -274,10 +274,17 @@ extern char *global_version;
 
 /* keys of Marker Status */
 
+/* MGD */
+
 #define STATUS_APPROVED		"1"
 #define STATUS_WITHDRAWN	"2"
+
+/* Nomen */
+
 #define STATUS_PENDING		"1"
+#define STATUS_NDELETED		"2"
 #define STATUS_RESERVED		"3"
+#define STATUS_NAPPROVED	"4"
 #define STATUS_BROADCAST	"5"
 
 /* This CV term requires Notes */
