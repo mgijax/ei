@@ -1436,7 +1436,7 @@ rules:
 
 	  -- Check for Primary Reference
 
-	  if ((broadcastType = 1 or broadcastType = 4 or broadcastType = 5)
+	  if ((broadcastType = 1 or broadcastType = 2 or broadcastType = 4 or broadcastType = 5)
 	      and
 	      ((mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                 mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE))) then
