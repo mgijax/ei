@@ -591,7 +591,7 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
-	  if ((cmd.length > 0 and cmd != accTable.sqlCmd) or set.length > 0) then
+	  if ((cmd.length > 0 and cmd != accTable.sqlCmd and cmd != top->mgiNoteForm.sql) or set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
 
 	    if (top->mgiMarker->ObjectID->text.value != "") then

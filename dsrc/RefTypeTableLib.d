@@ -56,7 +56,7 @@ rules:
 	  -- Traverse thru table and find first empty row
 	  row : integer := 0;
 	  while (row < mgi_tblNumRows(table)) do
-	    refsType := mgi_tblGetCell(table, row, table.refsCurrentType);
+	    refsType := mgi_tblGetCell(table, row, table.refsCurrentTypeKey);
 	    if (refsType.length = 0) then
 	      break;
 	    end if;
