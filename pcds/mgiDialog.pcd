@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Apr  6 14:49:04 2001";
+      lastWritten = "Tue Apr 10 09:54:42 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1831,6 +1831,8 @@ Shift<Key>Tab: prev-tab-group()";
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
+                Group: User
+                  accessionWidget = markerAccession;
                     {
                       ObjectID = ID;
                     }
@@ -1848,6 +1850,43 @@ Shift<Key>Tab: prev-tab-group()";
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyMarker() VerifyMarkerChromosome()";
                           }
+                    }
+              }
+              {
+                markerAccession = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = mgiMarker;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = mgiMarker;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  tableID = 113;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      AccessionID = CharText : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() DisplayMarker()";
+                          }
+                    }
+                    {
+                      AccessionName = CharText : mgiDataTypes;
+                      Group: Widget
+                        managed = False;
                     }
               }
               {
