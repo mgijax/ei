@@ -113,7 +113,7 @@ appropriate documentation manuals.
 	</TABLE>
 <P>
 <LI>XRT licenses are <B>not</B> host-independent.  Each license is tied to a specific CPU Id.
-    All licenses expire <B>September 30, 2000</B>.  
+    All licenses expire <B>September 30, 2001</B>.  
     If you have to process a renewal, make a copy of the renewal sent from KL Group, fill out 
     a PO and send it down to Purchasing.  Purchasing will handle it from 
     there.  You might want to request a copy of the PO from Purchasing.  All information is in the XRT envelope 
@@ -510,6 +510,9 @@ The source root directory is sub-divided into several subdirectories.
 <TR><TD>mgd
     <TD><CODE>$application</CODE> directory for the MGD application.
 	This is where the <A HREF="#applconfig">application configuration files</A> reside.
+<TR><TD>mgi
+    <TD><CODE>$application</CODE> directory for the MGI Menu application.
+	This is where the <A HREF="#applconfig">application configuration files</A> reside.
 <TR><TD>mgiadmin
     <TD><CODE>$application</CODE> directory for the MGI Admin application.
 	This is where the <A HREF="#applconfig">application configuration files</A> reside.
@@ -582,14 +585,7 @@ CVS administrator.
 </OL>
 
 <A NAME="installdocs"><H4>Install system documentation</A></H4>
-To install system documentation, export ei/system_docs to some 
-location where the documents are to be accessed. For a production
-release, this can be done as follows: <P>
-<PRE>
-cvs export -r &lt;eitag&gt -d &lt;installation_directory&gt ei/system_docs
-</PRE>
-(Currently, we copy the contents of the created system_docs directory
-to ~lec/production).
+The system documentation is in the <CODE>cd $source_directory/system_docs</CODE> directory.
  
 <HR>
 <A NAME="applconfig"><H4>Application Configuration Files</H4></A>
