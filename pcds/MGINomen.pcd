@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 19 13:55:22 2004";
+      lastWritten = "Tue Feb  3 13:13:35 2004";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -422,6 +422,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
@@ -453,6 +455,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                                   {
                                                     ATCC = AccToggle : mgiOption;
@@ -520,6 +524,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     RefSeq = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                             }
                                       }
