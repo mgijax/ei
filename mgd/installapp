@@ -44,5 +44,6 @@ fi
 mkdir $EIINSTALLDIR/mgd >/dev/null 2>&1
 mkdir $EIINSTALLDIR/mgd/mgireport >/dev/null 2>&1
 mkdir $EIINSTALLDIR/mgd/mgireport/withdrawals >/dev/null 2>&1
+mkdir $EIINSTALLDIR/mgd/mgireport/breakpointsplits >/dev/null 2>&1
 
 uxb $OPTIONS -destdir $EIINSTALLDIR/mgd install
