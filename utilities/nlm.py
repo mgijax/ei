@@ -562,7 +562,7 @@ def doUpdate(rec, rectags):
 
 		if rec.has_key('PMID'):
 			if pmidKey is not None:
-          			cmd.append('exec ACC_update %s,%s' % (pmiKey, rec['PMID']))
+          			cmd.append('exec ACC_update %s,%s' % (pmidKey, rec['PMID']))
 			else:	
           			cmd.append('exec ACC_insert %d,%s,%d,%s' \
 				     	% (refKey, rec['PMID'], PUBMEDKEY, MGITYPE))
