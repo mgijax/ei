@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Apr 16 12:11:07 2004";
+      lastWritten = "Fri Apr 16 14:50:26 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11118,6 +11118,8 @@ Shift<Key>Tab: prev-tab-group()
                                     xrtTblCharWidthSeries = "(all 0 1) (all 3 30) (all 4 30) (all 5 20)";
                                     xrtTblEditableSeries = "(all 0 False) (all 3 False) (all 5 False)";
                                     xrtTblTraversableSeries = "(all 0 False) (all 3 False) (all 5 False)";
+                                    xrtTblVisibleRows = 8;
+                                    xrtTblNumRows = 10;
                                   Group: User
                                     showMGI = False;
                                       {
@@ -11331,7 +11333,7 @@ Shift<Key>Tab: prev-tab-group()
                                     xrtTblNumColumns = 19;
                                     xrtTblDisplayHorizScrollBar = dispsb_always;
                                     xrtTblColumnLabels = "Mode,Assoc key,Source key,Org key,Strain key,Tissue key,CellLine key,Age key,Age Min,Age Max,Gender key,Library,Organism,Strain,Tissue,Cell Line,Age Prefix,Age Range,Gender";
-                                    xrtTblRowLabels = "Raw,Source,Source,Source,Source";
+                                    xrtTblRowLabels = "Raw,Source 1,Source 2,Source 3,Source 4";
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-10 10)(all 11-15 30)(all 16-18 20)";
                                     userDefinedAttributes = "assocKey:Int(Int)=\"1\"\nsourceKey:Int(Int)=\"2\"\norganismKey:Int(Int)=\"3\"\nstrainKeys:Int(Int)=\"4\"\ntissueKey:Int(Int)=\"5\"\ncellLineKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nlibrary:Int(Int)=\"11\"\norganism:Int(Int)=\"12\"\nstrains:Int(Int)=\"13\"\ntissue:Int(Int)=\"14\"\ncellLine:Int(Int)=\"15\"\nagePrefix:Int(Int)=\"16\"\nageRange:Int(Int)=\"17\"\ngenderKey:Int(Int)=\"10\"\ngender:Int(Int)=\"18\"\n";
                                     xrtTblNumRows = 4;
@@ -11340,6 +11342,7 @@ Shift<Key>Tab: prev-tab-group()
                                     xrtTblEnterCellCallback = "D:SetOptions";
                                     xrtTblValidateCellCallback = "D:VerifyOrganism (ignoreRow = 0),\nD:VerifyStrains (ignoreRow = 0),\nD:VerifyTissue (ignoreRow = 0),\nD:VerifyCellLine (ignoreRow = 0),\nD:CommitTableCellEdit";
                                     xrtTblPixelWidthSeries = "(all 0-10 0)";
+                                    xrtTblAllowCellResize = resize_all;
                                   Group: User
                                     saveBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)(0 label Red)";
                                       {
@@ -11385,7 +11388,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Table = mgiTable;
                                   Group: Widget
                                     xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 10;
+                                    xrtTblVisibleRows = 8;
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 15)(all 8 35)";
                                       {
                                         label = XtXrtLabel;
@@ -11432,7 +11435,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Table = mgiTable : mgiTable;
                                   Group: Widget
                                     xrtTblNumRows = 15;
-                                    xrtTblVisibleRows = 10;
+                                    xrtTblVisibleRows = 8;
                                     xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 10)(all 4 20)(all 5 30)(all 6 10)";
                                       {
                                         label = XtXrtLabel;

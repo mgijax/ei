@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 14 12:34:09 2004";
+      lastWritten = "Fri Apr 16 15:03:38 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1918,7 +1918,6 @@ Module: MGI
           Group: Widget
             width = 1050;
             height = 900;
-            closeWindowCallback = "D:VocAnnotExit";
           Group: Control
             vip_x = 70;
             vip_y = 635;
