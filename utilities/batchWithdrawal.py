@@ -77,7 +77,7 @@ def showUsage():
 		'-I input file\n' + \
 		'--eventKey=event key\n' + \
 		'--eventReasonKey=event reason key\n' + \
-		'--refKey=reference key\n + \
+		'--refKey=reference key\n' + \
 		'--addAsSynonym=add old symbol as synonym of new symbol\n'
 	error(usage)
  
