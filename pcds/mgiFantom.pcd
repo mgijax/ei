@@ -2,7 +2,7 @@ Module: mgiFantom
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Feb 22 10:11:37 2002";
+      lastWritten = "Tue Feb 26 09:11:54 2002";
         {
           Fantom2 = Module : MGI;
           Group: Control
@@ -91,17 +91,17 @@ Module: mgiFantom
                                         Group: Widget
                                           xrtTblNumRows = 70000;
                                           xrtTblVisibleRows = 50;
-                                          xrtTblNumColumns = 38;
-                                          xrtTblColumnLabels = "Mode,Key,RA Name,RA in MGI,SeqID,Clone ID,GenBank ID,RA MGI ID, RA Symbol,Seq Length,Seq Note,Seq Qual,Locus ID,TIGR TC,UniGene ID,R Cluster,Locus Status,MGI Status,MGI #,BLAST Hit,BLAST Expect,Auto Annot,Info Annot,Cat ID,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Detail,Nomen Notes,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
+                                          xrtTblNumColumns = 39;
+                                          xrtTblColumnLabels = "Mode,Key,RA Name,Fantom1 Clone,Fantom2 Clone,#,SeqID,Clone ID,GenBank ID,RA MGI ID, RA Symbol,Seq Length,Seq Note,Seq Qual,Locus ID,TIGR TC,UniGene ID,R Cluster,Locus Status,MGI Status,MGI #,BLAST Hit,BLAST Expect,Auto Annot,Info Annot,Cat ID,Final MGI ID,Final Symbol 1,Final Name 1,Final Symbol 2,Final Name 2,NEvent,Nomen Notes,RIKEN Notes,Curator Notes,Created By,Date,Modified By,Date";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
                                           width = 1000;
                                           height = 800;
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3 1)(all 4 5)(all 5-6 10)(all 7-8 15)(all 9 10)(all 10 15)(all 11 10) (all 12 10)(all 13-17 10)(all 18 5)(all 19-20 20)(all 21-22 25)(all 24 20)(all 25-27 25)(all 28 50)(all 29 6)(all 30 25)(all 31-32 25)(all 34-37 10)";
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          xrtTblTraversableSeries = "(all 0-3 False)";
-                                          xrtTblEditableSeries = "(all 0-3 False)";
-                                          xrtTblFrozenColumns = 8;
-                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"4\"\ncloneID:Int(Int)=\"5\"\ngenbankID:Int(Int)=\"6\"\nseqLength:Int(Int)=\"9\"\nseqNote:Int(Int)=\"10\"\nseqQuality:Int(Int)=\"11\"\nlocusID:Int(Int)=\"12\"\ntigerID:Int(Int)=\"13\"\nunigeneID:Int(Int)=\"14\"\nclusterID:Int(Int)=\"15\"\nlocusStatus:Int(Int)=\"16\"\nmgiStatus:Int(Int)=\"17\"\nmgiNumber:Int(Int)=\"18\"\nblastHit:Int(Int)=\"19\"\nblastExpect:Int(Int)=\"20\"\nautoAnnot:Int(Int)=\"21\"\ninfoAnnot:Int(Int)=\"22\"\ncatID:Int(Int)=\"23\"\ngbaMGIID:Int(Int)=\"7\"\ngbaSymbol:Int(Int)=\"8\"\nfinalMGIID:Int(Int)=\"24\"\nfinalSymbol1:Int(Int)=\"25\"\nfinalName1:Int(Int)=\"26\"\nfinalSymbol2:Int(Int)=\"27\"\nfinalName2:Int(Int)=\"28\"\nnomenEvent:Int(Int)=\"29\"\nnomenDetail:Int(Int)=\"30\"\nnomenNote:Int(Int)=\"31\"\nrikenNote:Int(Int)=\"32\"\ncuratorNote:Int(Int)=\"33\"\ncreatedBy:Int(Int)=\"34\"\ncreatedDate:Int(Int)=\"35\"\nmodifiedBy:Int(Int)=\"36\"\nmodifiedDate:Int(Int)=\"37\"\ngenbankInMGI:Int=\"3\"\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 50)(all 3-4 1)(all 5-6 5)(all 7-8 10)(all 9-10 15)(all 11 10)(all 12 15)(all 13-19 10)(all 20 5)(all 21-22 20)(all 23-24 25)(all 26 20)(all 27-29 25)(all 30 50)(all 31 6)(all 32 25)(all 33-34 25)(all 36-39 10)";
+                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
+                                          xrtTblTraversableSeries = "(all 0-5 False)";
+                                          xrtTblEditableSeries = "(all 0-5 False)";
+                                          xrtTblFrozenColumns = 10;
+                                          userDefinedAttributes = "fantomKey:Int(Int)=\"1\"\ngbaName:Int(Int)=\"2\"\nseqID:Int(Int)=\"6\"\ncloneID:Int(Int)=\"7\"\ngenbankID:Int(Int)=\"8\"\nseqLength:Int(Int)=\"11\"\nseqNote:Int(Int)=\"12\"\nseqQuality:Int(Int)=\"13\"\nlocusID:Int(Int)=\"14\"\ntigerID:Int(Int)=\"15\"\nunigeneID:Int(Int)=\"16\"\nclusterID:Int(Int)=\"17\"\nlocusStatus:Int(Int)=\"18\"\nmgiStatus:Int(Int)=\"19\"\nmgiNumber:Int(Int)=\"20\"\nblastHit:Int(Int)=\"21\"\nblastExpect:Int(Int)=\"22\"\nautoAnnot:Int(Int)=\"23\"\ninfoAnnot:Int(Int)=\"24\"\ncatID:Int(Int)=\"25\"\ngbaMGIID:Int(Int)=\"9\"\ngbaSymbol:Int(Int)=\"10\"\nfinalMGIID:Int(Int)=\"26\"\nfinalSymbol1:Int(Int)=\"27\"\nfinalName1:Int(Int)=\"28\"\nfinalSymbol2:Int(Int)=\"29\"\nfinalName2:Int(Int)=\"30\"\nnomenEvent:Int(Int)=\"31\"\nnomenNote:Int(Int)=\"32\"\nrikenNote:Int(Int)=\"33\"\ncuratorNote:Int(Int)=\"34\"\ncreatedBy:Int(Int)=\"35\"\ncreatedDate:Int(Int)=\"36\"\nmodifiedBy:Int(Int)=\"37\"\nmodifiedDate:Int(Int)=\"38\"\nfantom1Clone:Int(Int)=\"3\"\nrow:Int(Int)=\"5\"\nfantom2Clone:Int=\"4\"\n";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblValidateCellCallback = "D:VerifyFinalMGIID,\nD:CommitTableCellEdit";
                                           xrtTblJumpScroll = jump_none;
@@ -246,7 +246,7 @@ Module: mgiFantom
                                         SeqNotePulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 10;
+                                          tableOption = 12;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -297,7 +297,7 @@ Module: mgiFantom
                                         SeqQualityPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 11;
+                                          tableOption = 13;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -356,7 +356,7 @@ Module: mgiFantom
                                         LocusStatusPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 16;
+                                          tableOption = 18;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -423,7 +423,7 @@ Module: mgiFantom
                                         MGIStatusPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 17;
+                                          tableOption = 19;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -490,7 +490,7 @@ Module: mgiFantom
                                         CatIDPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 23;
+                                          tableOption = 25;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -557,7 +557,7 @@ Module: mgiFantom
                                         NomenEventPulldown : OptionPulldown = OptionPulldown : mgiOption;
                                         Group: User
                                           tableForm = Fantom;
-                                          tableOption = 29;
+                                          tableOption = 31;
                                           tableOptionKey = "-1";
                                             {
                                               SearchAll = SearchAll : mgiOption;
@@ -603,7 +603,7 @@ Module: mgiFantom
                                   Group: Widget
                                     labelString = "Auto Pipelne Result";
                                   Group: User
-                                    targetColumn = 21;
+                                    targetColumn = 23;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -611,15 +611,7 @@ Module: mgiFantom
                                   Group: Widget
                                     labelString = "Info Pipeline Result";
                                   Group: User
-                                    targetColumn = 22;
-                                    targetWidget = Fantom;
-                                }
-                                {
-                                  NomenDetail = NotePushShort : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Nomen Detail";
-                                  Group: User
-                                    targetColumn = 30;
+                                    targetColumn = 24;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -628,14 +620,14 @@ Module: mgiFantom
                                     labelString = "Nomen Notes";
                                   Group: User
                                     targetWidget = Fantom;
-                                    targetColumn = 31;
+                                    targetColumn = 32;
                                 }
                                 {
                                   RIKENNote = NotePush : mgiDataTypes;
                                   Group: Widget
                                     labelString = "RIKEN Notes";
                                   Group: User
-                                    targetColumn = 32;
+                                    targetColumn = 33;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -643,7 +635,7 @@ Module: mgiFantom
                                   Group: Widget
                                     labelString = "Curator Notes";
                                   Group: User
-                                    targetColumn = 33;
+                                    targetColumn = 34;
                                     targetWidget = Fantom;
                                 }
                                 {
@@ -659,6 +651,9 @@ Module: mgiFantom
                                 }
                                 {
                                   sortOptions = sortOptions : mgiFantom;
+                                }
+                                {
+                                  colorBox = colorBox : mgiFantom;
                                 }
                           }
                     }
@@ -812,204 +807,204 @@ Module: mgiFantom
               {
                 sortMenuPulldown : OptionPulldown = OptionPulldown : mgiOption;
                     {
-                      column4 = ColumnToggle : mgiFantom;
+                      column5 = ColumnToggle : mgiFantom;
                       Group: Widget
                         labelString = "Riken Seq ID";
                       Group: User
                         dbField = riken_seqid;
-                        columnValue = 4;
-                    }
-                    {
-                      column5 = ColumnToggle : mgiFantom;
-                      Group: Widget
-                        labelString = "Riken Clone ID";
-                      Group: User
-                        dbField = riken_cloneid;
-                        columnValue = 5;
+                        columnValue = 6;
                     }
                     {
                       column6 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "GenBank ID";
+                        labelString = "Riken Clone ID";
                       Group: User
-                        dbField = genbank_id;
-                        columnValue = 6;
+                        dbField = riken_cloneid;
+                        columnValue = 7;
                     }
                     {
                       column7 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "GBA MGI ID";
+                        labelString = "GenBank ID";
                       Group: User
-                        dbField = gba_mgiID;
-                        columnValue = 7;
+                        dbField = genbank_id;
+                        columnValue = 8;
                     }
                     {
                       column8 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "GBA Symbol";
+                        labelString = "GBA MGI ID";
                       Group: User
-                        dbField = gba_symbol;
-                        columnValue = 8;
+                        dbField = gba_mgiID;
+                        columnValue = 9;
                     }
                     {
                       column9 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Seq Length";
+                        labelString = "GBA Symbol";
                       Group: User
-                        dbField = seq_length;
-                        columnValue = 9;
+                        dbField = gba_symbol;
+                        columnValue = 10;
                     }
                     {
                       column10 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Seq Note";
+                        labelString = "Seq Length";
                       Group: User
-                        dbField = seq_note;
-                        columnValue = 10;
+                        dbField = seq_length;
+                        columnValue = 11;
                     }
                     {
                       column11 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Seq Quality";
+                        labelString = "Seq Note";
                       Group: User
-                        dbField = seq_quality;
-                        columnValue = 11;
+                        dbField = seq_note;
+                        columnValue = 12;
                     }
                     {
                       column12 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Locus ID";
+                        labelString = "Seq Quality";
                       Group: User
-                        dbField = riken_locusid;
-                        columnValue = 12;
+                        dbField = seq_quality;
+                        columnValue = 13;
                     }
                     {
                       column13 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "TIGER TC";
+                        labelString = "Locus ID";
                       Group: User
-                        dbField = tiger_tc;
-                        columnValue = 13;
+                        dbField = riken_locusid;
+                        columnValue = 14;
                     }
                     {
                       column14 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Unigene ID";
+                        labelString = "TIGER TC";
                       Group: User
-                        dbField = unigene_id;
-                        columnValue = 14;
+                        dbField = tiger_tc;
+                        columnValue = 15;
                     }
                     {
                       column15 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Riken Cluster ID";
+                        labelString = "Unigene ID";
                       Group: User
-                        dbField = riken_cluster;
-                        columnValue = 15;
+                        dbField = unigene_id;
+                        columnValue = 16;
                     }
                     {
                       column16 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Locus Status";
+                        labelString = "Riken Cluster ID";
                       Group: User
-                        dbField = riken_locusStatus;
-                        columnValue = 16;
+                        dbField = riken_cluster;
+                        columnValue = 17;
                     }
                     {
                       column17 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "MGI Status";
+                        labelString = "Locus Status";
                       Group: User
-                        dbField = mgi_statusCode;
-                        columnValue = 17;
+                        dbField = riken_locusStatus;
+                        columnValue = 18;
                     }
                     {
                       column18 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "MGI #";
+                        labelString = "MGI Status";
                       Group: User
-                        dbField = mgi_numberCode;
-                        columnValue = 18;
+                        dbField = mgi_statusCode;
+                        columnValue = 19;
                     }
                     {
                       column19 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "BLAST Hit";
+                        labelString = "MGI #";
                       Group: User
-                        dbField = blast_hit;
-                        columnValue = 19;
+                        dbField = mgi_numberCode;
+                        columnValue = 20;
                     }
                     {
                       column20 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "BLAST Expect";
+                        labelString = "BLAST Hit";
                       Group: User
-                        dbField = blast_expect;
-                        columnValue = 20;
+                        dbField = blast_hit;
+                        columnValue = 21;
                     }
                     {
                       column21 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Auto Annotation";
+                        labelString = "BLAST Expect";
                       Group: User
-                        dbField = auto_annot;
-                        columnValue = 21;
+                        dbField = blast_expect;
+                        columnValue = 22;
                     }
                     {
                       column22 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Info Annotation";
+                        labelString = "Auto Annotation";
                       Group: User
-                        dbField = info_annot;
-                        columnValue = 22;
+                        dbField = auto_annot;
+                        columnValue = 23;
                     }
                     {
                       column23 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Cat ID";
+                        labelString = "Info Annotation";
                       Group: User
-                        dbField = cat_id;
-                        columnValue = 23;
+                        dbField = info_annot;
+                        columnValue = 24;
                     }
                     {
                       column24 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final MGI ID";
+                        labelString = "Cat ID";
                       Group: User
-                        dbField = final_mgiID;
-                        columnValue = 24;
+                        dbField = cat_id;
+                        columnValue = 25;
                     }
                     {
                       column25 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Symbol 1";
+                        labelString = "Final MGI ID";
                       Group: User
-                        dbField = final_symbol1;
-                        columnValue = 25;
+                        dbField = final_mgiID;
+                        columnValue = 26;
                     }
                     {
                       column26 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Name 1";
+                        labelString = "Final Symbol 1";
                       Group: User
-                        dbField = final_name1;
-                        columnValue = 26;
+                        dbField = final_symbol1;
+                        columnValue = 27;
                     }
                     {
                       column27 = ColumnToggle : mgiFantom;
                       Group: Widget
-                        labelString = "Final Symbol 2";
+                        labelString = "Final Name 1";
                       Group: User
-                        dbField = final_symbol2;
-                        columnValue = 27;
+                        dbField = final_name1;
+                        columnValue = 28;
                     }
                     {
                       column28 = ColumnToggle : mgiFantom;
                       Group: Widget
+                        labelString = "Final Symbol 2";
+                      Group: User
+                        dbField = final_symbol2;
+                        columnValue = 29;
+                    }
+                    {
+                      column29 = ColumnToggle : mgiFantom;
+                      Group: Widget
                         labelString = "Final Name 2";
                       Group: User
                         dbField = final_name2;
-                        columnValue = 28;
+                        columnValue = 30;
                     }
                     {
                       nocolumn = ColumnToggle : mgiFantom;
@@ -1027,6 +1022,74 @@ Module: mgiFantom
           Group: Control
             vip_x = 135;
             vip_y = 85;
+        }
+        {
+          colorBox = XmFrame;
+          Group: Control
+            vipComment = "";
+            vip_x = 123;
+            vip_y = 151;
+              {
+                form = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
+                    {
+                      messageText = messageText : mgiDataTypes;
+                      Group: Widget
+                        value = "Fantom1; GenBankID not in MGI";
+                        background = Thistle;
+                        columns = 30;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_form;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      messageText1 = messageText : mgiDataTypes;
+                      Group: Widget
+                        value = Fantom2;
+                        background = PaleGreen;
+                        columns = 30;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = messageText;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      messageText2 = messageText : mgiDataTypes;
+                      Group: Widget
+                        background = SkyBlue;
+                        value = "nonRIKEN Clone";
+                        columns = 30;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = messageText1;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+                    {
+                      messageText3 = messageText : mgiDataTypes;
+                      Group: Widget
+                        background = Red;
+                        value = "Sequence Quality is not zilch";
+                        columns = 30;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = messageText2;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                    }
+              }
         }
 }
 
