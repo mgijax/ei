@@ -6,6 +6,8 @@
 # usage:  sql.sh <database> <file containing SQL commands> <output directory>
 #
 
+set path = ($path $SYBASE/bin)
+
 setenv DATABASE	$1
 setenv SQL	$2
 
