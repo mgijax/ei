@@ -200,11 +200,13 @@ rules:
 	  top : widget := DisplayMolecularSource.source_widget.top;
 	  sourceForm : widget := top->SourceForm;
           key : string;
+	  keyModified : boolean;
  
           (void) busy_cursor(top);
  
 	  -- Save the ID
 	  key := sourceForm->SourceID->text.value;
+	  keyModified := sourceForm->SourceID->text.modified;
 
 	  -- Clear the SourceForm
 	  ClearForm.source_widget := sourceForm.root;
@@ -298,6 +300,10 @@ rules:
 	    ClearForm.reset := true;
 	    send(ClearForm, 0);
 	  end if;
+
+	  -- Reset modification flag
+
+	  sourceForm->SourceID->text.modified := keyModified;
 
           (void) reset_cursor(top);
         end does;
