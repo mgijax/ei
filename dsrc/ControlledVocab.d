@@ -60,6 +60,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget;
+	ab : widget;
 
 	cmd : string;
 	from : string;
@@ -87,7 +88,7 @@ rules:
           InitOptionMenu.option := top->MGITypeMenu;
 	  send(InitOptionMenu, 0);
 
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -617,6 +618,7 @@ rules:
 --
 
 	Exit does
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

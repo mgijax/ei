@@ -117,6 +117,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget;
+	ab : widget;
 	accTable : widget;
 	detailForm : widget;
 
@@ -162,7 +163,7 @@ rules:
           -- Build Dynamic GUI Components
           send(BuildDynamicComponents, 0);
  
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -1764,6 +1765,7 @@ rules:
 --
 
 	Exit does
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

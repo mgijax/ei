@@ -67,6 +67,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget :exported; -- exported so VerifyAllele can access this value
+	ab : widget;
 	accTable : widget;
 
 	cmd : string;
@@ -103,7 +104,7 @@ rules:
 	  send(BuildDynamicComponents, 0);
 
 	  -- Prevent multiple instances of the Allele form
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -1054,6 +1055,7 @@ rules:
 --
 
 	Exit does
+          ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

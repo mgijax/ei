@@ -142,6 +142,7 @@ devents:
 locals:
 	mgi : widget;            -- widget parent of this app
 	top : widget;            -- our toplevel
+	ab : widget;
 
 	from : string;           -- source and condition to finish PrepareSelect    
 	where : string;          -- where string for queries
@@ -181,7 +182,7 @@ rules:
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -1608,6 +1609,7 @@ rules:
 -- if "integrated" then real Lib.d Exit routine is called 
 --
 	UncondExit does
+          ab.sensitive := true;
 	  destroy self;    -- will queue FINALLY
 	  ExitWindow.source_widget := top; 
 	  send(ExitWindow,0);

@@ -88,6 +88,7 @@ devents:
 locals:
         mgi : widget;                -- Main Application Widget
         top : widget;                -- Local Application Widget
+	ab : widget;
 
         tables : list;               -- List of Tables in interface
 
@@ -133,7 +134,7 @@ rules:
 
           top := create widget("DictionaryModule", nil, mgi);
 
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
           top.show;
 
@@ -881,6 +882,7 @@ rules:
       (void) busy_cursor(mgi); 	-- this will be undone by ExitWindow
       (void) busy_cursor(top); 	-- this will be undone by closing app 
       stagetrees_destroy();  	-- free up memory associated with trees.
+      ab.sensitive := true;
       destroy self;		-- destroy D module instance
       ExitWindow.source_widget := top;
       send(ExitWindow, 0);     	-- the usual exit procedure

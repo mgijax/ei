@@ -83,6 +83,7 @@ devents:
 locals:
 	mgi : widget;			-- Application widget
 	top : widget;			-- Parent widget for this top-level shell
+	ab : widget;
 	accTable : widget;		-- Accession number Table widget
 	statusTable : widget;		-- Statused Data Set Table widget
 	nonstatusTable : widget;	-- Non-Statused Data Set Table widget
@@ -126,7 +127,7 @@ rules:
  
 	  -- Only one instance of this module can be instantiated at a time
 	  -- So, de-sensitize buttons which invoke this initialization event
-          ab : widget := mgi->mgiModules->(top.activateButtonName);
+          ab := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
 	  top.show;
 
@@ -1110,6 +1111,7 @@ rules:
 --
 
 	Exit does
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);
