@@ -591,6 +591,8 @@ rules:
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.notes);
 	  if (value.length > 0) then
 	    where := where + "\nand n.note like " + mgi_DBprstr(value);
+	    from_annot : true;
+	    from_evidence := true;
 	    from_notes := true;
 	  end if;
 
@@ -611,7 +613,7 @@ rules:
 
 	  if (from_notes) then
 	    from := from + "," + mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n";
-	    where := where + "\nand v._Object_key = n._Object_key";
+	    where := where + "\nand e._AnnotEvidence_key = n._Object_key";
 	  end if;
 
           if (where.length > 0) then
