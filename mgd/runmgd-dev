@@ -21,7 +21,7 @@ INSTALL_ROOT=`pwd`
 
 OPENWINHOME=/usr/openwin
 XKEYSYMDB=$OPENWINHOME/lib/XKeysymDB
-PYTHONPATH=/usr/local/mgi/lib/python:/usr/local/etc/httpd/python
+PYTHONPATH=/usr/local/lib/python1.4:/usr/local/mgi/lib/python:/usr/local/etc/httpd/python
 
 USERLOG=$HOME/.mgd_dev-log
 
@@ -31,8 +31,8 @@ STRAINS=strains_dev
 NOMEN=nomen_dev
 
 EIREPORTDIR=$HOME/mgireport
-EIARCHIVEDIR=$INSTALL_ROOT/$APP/mgireport
-EIWITHDRAWALDIR=$ARCHIVEDIR/withdrawals
+EIARCHIVEDIR=$INSTALL_ROOT/mgireport
+EIWITHDRAWALDIR=$EIARCHIVEDIR/withdrawals
 
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
