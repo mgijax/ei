@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Sep 26 13:53:26 2001";
+      lastWritten = "Wed Nov 28 09:22:02 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -139,13 +139,6 @@ Module: mgiOption
                         labelString = "Nucleotide Sequence";
                       Group: User
                         defaultValue = 9;
-                    }
-                    {
-                      SequencePID = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Sequence (pid)";
-                      Group: User
-                        defaultValue = 11;
                     }
                     {
                       LocusLink = AccToggle : mgiOption;

@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Mon Nov  5 09:53:11 2001";
+      lastWritten = "Wed Nov 28 09:22:11 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -223,42 +223,6 @@ Module: GXD
                                         AccSourceMenu = AccSourceMenu;
                                         Group: Widget
                                           managed = False;
-                                            Popups:
-                                            {
-                                              AccSourcePulldown = OptionPulldown;
-                                                  {
-                                                    MGI = AccToggle;
-                                                  }
-                                                  {
-                                                    J = AccToggle;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
-                                                    PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
-                                                    SWISSPROT = AccToggle;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                  }
-                                                  {
-                                                    SequencePID = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                            }
                                       }
                                 }
                           }
@@ -735,9 +699,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle;
-                                                  }
-                                                  {
-                                                    SequencePID = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -1859,9 +1820,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle;
-                                                  }
-                                                  {
-                                                    SequencePID = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;

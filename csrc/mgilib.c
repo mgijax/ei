@@ -878,6 +878,9 @@ char *mgi_DBaccTable(int table)
     case GXD_ASSAY:
             strcpy(buf, "GXD_Assay_Acc_View");
             break;
+    case GXD_GENOTYPE:
+            strcpy(buf, "GXD_Genotype_Acc_View");
+            break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image_Acc_View");
             break;

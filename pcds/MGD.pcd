@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Nov  1 08:04:46 2001";
+      lastWritten = "Wed Nov 28 09:22:15 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1312,9 +1312,6 @@ Module: MGD
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    SequencePID = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2417,9 +2414,6 @@ Module: MGD
                                                       managed = True;
                                                   }
                                                   {
-                                                    SequencePID = AccToggle;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2909,9 +2903,6 @@ Module: MGD
                                   Group: Widget
                                     set = True;
                                     managed = True;
-                                }
-                                {
-                                  SequencePID = AccToggle;
                                 }
                                 {
                                   LocusLink = AccToggle : mgiOption;
@@ -5368,9 +5359,6 @@ Module: MGD
                                                     NSequence = AccToggle;
                                                   }
                                                   {
-                                                    SequencePID = AccToggle;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -6775,9 +6763,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = False;
                                                     Group: User
                                                       private = True;
-                                                  }
-                                                  {
-                                                    SequencePID = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8325,9 +8310,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    SequencePID = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     LocusLink = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -8517,9 +8499,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle;
-                                                  }
-                                                  {
-                                                    SequencePID = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -9038,7 +9017,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 columns = 30;
                                                 translations = "#override
  Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyItem() DisplayESCellLine()";
+<Key>Tab: VerifyItem()";
                                               Group: User
                                                 defaultValue = "Not Applicable";
                                             }
