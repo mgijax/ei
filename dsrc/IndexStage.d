@@ -343,7 +343,7 @@ rules:
 	  set := "";
 
           if (top->GXDIndexPriorityMenu.menuHistory.modified) then
-            set := set + "_Priority_key = " + top->top->GXDIndexPriorityMenu.menuHistory.defaultValue + ",";
+            set := set + "_Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.defaultValue + ",";
 	  end if;
 
           if (top->mgiMarker->ObjectID->text.modified) then
