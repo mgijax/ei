@@ -514,7 +514,7 @@ rules:
 		     symbol + "\t" +
 		     "N\t" + 
 		     markerType + "\t";
-	      buf := buf + top->Name->text.value + "\t" + jnum + "\t" + symbol + "\n";
+	      buf := buf + dialog->Name->text.value + "\t" + jnum + "\t" + symbol + "\n";
 	    end if;
 	  end while;
 
