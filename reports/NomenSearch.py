@@ -2,13 +2,13 @@
 
 '''
 #
-# Nomen.py 08/11/1999
+# NomenSearch.py 08/11/1999
 #
 # Report:
 #	Basic Nomen info
 #
 # Usage:
-#       Nomen.py
+#       NomenSearch.py
 #
 # Generated from:
 #       Editing Interface Nomenclature Form
@@ -49,7 +49,7 @@ results = mgdlib.sql(cmd, 'auto')
 for r in results:
 
 	if fp is None:  
-		reportName = 'Nomen.%s.rpt' % r['approvedSymbol']
+		reportName = 'NomenSearch.%s.rpt' % r['approvedSymbol']
 		fp = reportlib.init(reportName, 'Nomenclature Search Results')
 		printHeader()
 
