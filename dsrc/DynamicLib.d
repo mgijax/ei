@@ -176,7 +176,10 @@ rules:
 
 		x.unbatch;
 
+		-- set default option
 		if (option.defaultValue = x.defaultValue) then
+		  option.defaultOption := x;
+		elsif (option.defaultValue = label) then
 		  option.defaultOption := x;
 		end if;
 
