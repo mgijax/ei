@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 07/11/2001
+--	- TR 2709; add Symbol to Search Results text
+--
 -- lec 06/14/2001
 --	- TR 2547; remove Holder
 --
@@ -1749,7 +1752,8 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct g._Assay_key, g.jnumID + \",\" + g.assayType\n" + 
+	  Query.select := "select distinct g._Assay_key, " + 
+			"g.jnumID + \";\" + g.assayType + \";\" + g.symbol\n" + 
 			from + "\n" + where + "\norder by g.jnumID\n";
 	  Query.table := GXD_ASSAY;
 	  send(Query, 0);
