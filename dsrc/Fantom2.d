@@ -770,8 +770,8 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      noteType := mgi_getstr(dbproc, 37);
-	      note := mgi_getstr(dbproc, 38);
+	      noteType := mgi_getstr(dbproc, 38);
+	      note := mgi_getstr(dbproc, 39);
 
 	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 33) != gbaMGIID) then
 
@@ -784,6 +784,9 @@ rules:
 		row := row + 1;
 	        fantomKey := mgi_getstr(dbproc, 1);
 	        gbaMGIID := mgi_getstr(dbproc, 33);
+		nomennote := "";
+		rikennote := "";
+		curatornote := "";
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.row, (string) (row + 1));
 	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, fantomKey);
