@@ -413,7 +413,7 @@ rules:
 		     mgi_DBprstr(mgiStatus) + "," +
 		     mgi_DBprstr(mgiNumber) + "," +
 		     mgi_DBprstr(rikenNumber) + "," +
-		     mgi_DBprstr(cds) + "," +
+		     cds + "," +
 		     mgi_DBprstr(clusterAnal) + "," +
 		     mgi_DBprstr(geneNameCuration) + "," +
 		     mgi_DBprstr(cdsGOCuration) + "," +
