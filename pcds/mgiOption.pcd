@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 19 09:27:04 2004";
+      lastWritten = "Fri Feb 20 09:22:42 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -349,6 +349,13 @@ Module: mgiOption
                       DOTS = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 36;
+                    }
+                    {
+                      NIAGeneIndex = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NIA Mouse Gene Index";
+                      Group: User
+                        defaultValue = 53;
                     }
                     {
                       EMMA = AccToggle : mgiOption;
