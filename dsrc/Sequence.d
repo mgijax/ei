@@ -359,7 +359,7 @@ rules:
 	  fromProbe : string := "";
 
 	  from := "from SEQ_Sequence s, VOC_Term v1, VOC_Term v2";
-	  where := "s._SequenceType_key = v1._Term_key and s._SequenceProvider_key = v2._Term_key";
+	  where := "ac.preferred = 1 and s._SequenceType_key = v1._Term_key and s._SequenceProvider_key = v2._Term_key";
 	  union := "";
 
 	  -- Common Stuff
