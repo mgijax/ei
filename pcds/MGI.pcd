@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 25 13:02:01 2003";
+      lastWritten = "Mon Jul  7 10:25:57 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -539,6 +539,7 @@ Module: MGI
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 5;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -588,6 +589,34 @@ Module: MGI
                               required = False;
                           }
                     }
+              }
+              {
+                SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = mgiCitation;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = mgiCitation;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                VectorTypeMenu = VectorTypeMenu : mgiOption;
+                Group: Widget
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = SegmentTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = SegmentTypeMenu;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
               {
                 ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;

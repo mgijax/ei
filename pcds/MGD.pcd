@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 25 09:39:18 2003";
+      lastWritten = "Mon Jul  7 10:25:26 2003";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1834,7 +1834,7 @@ Module: MGD
                                   MolMarkerForm = MolMarkerForm;
                                 }
                                 {
-                                  SeqTypeMenu = SeqTypeMenu;
+                                  SegmentTypeMenu = SegmentTypeMenu;
                                 }
                                 {
                                   Name = CharText;
@@ -2116,7 +2116,7 @@ Module: MGD
                 ID = ID;
               }
               {
-                SeqTypeMenu = SeqTypeMenu : mgiOption;
+                SegmentTypeMenu = SegmentTypeMenu : mgiOption;
                 Group: Constraint
                   leftAttachment = attach_form;
                   leftOffset = 5;
@@ -2130,7 +2130,7 @@ Module: MGD
                 Name = CharText : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = SeqTypeMenu;
+                  leftWidget = SegmentTypeMenu;
                   leftOffset = 5;
                   rightAttachment = attach_none;
                   topAttachment = attach_form;
@@ -2948,6 +2948,13 @@ Module: MGD
                                         Library = CharText;
                                         Group: Widget
                                           managed = True;
+                                        Group: Constraint
+                                          leftAttachment = attach_form;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_form;
+                                          topOffset = 5;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                       }
                                       {
                                         mgiCitation = mgiCitation;
@@ -2955,17 +2962,27 @@ Module: MGD
                                           managed = True;
                                       }
                                       {
+                                        SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
+                                        VectorTypeMenu = VectorTypeMenu : mgiOption;
+                                        Group: Widget
+                                          managed = True;
+                                      }
+                                      {
                                         ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
-                                          leftWidget = mgiCitation;
+                                          leftWidget = VectorTypeMenu;
                                           rightAttachment = attach_none;
                                           topAttachment = attach_widget;
-                                          topWidget = mgiCitation;
+                                          topWidget = VectorTypeMenu;
                                           topOffset = 5;
                                           bottomAttachment = attach_none;
                                           resizable = true;
-                                          leftOffset = 5;
+                                          leftOffset = 0;
                                       }
                                 }
                           }
@@ -7780,6 +7797,12 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       mgiCitation = mgiCitation : mgiDataTypes;
+                    }
+                    {
+                      SegmentTypeMenu = SegmentTypeMenu : mgiOption;
+                    }
+                    {
+                      VectorTypeMenu = VectorTypeMenu : mgiOption;
                     }
                     {
                       ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;

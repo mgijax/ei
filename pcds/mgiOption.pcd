@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 17 08:33:16 2003";
+      lastWritten = "Mon Jul  7 09:20:02 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -1695,16 +1695,16 @@ Module: mgiOption
             vip_y = 470;
         }
         {
-          SeqTypeMenu = OptionMenu;
+          SegmentTypeMenu = OptionMenu;
           Group: Widget
-            subMenuId = SeqTypePulldown;
-            labelString = "Sequence\nType";
+            subMenuId = SegmentTypePulldown;
+            labelString = "Segment\nType";
           Group: Control
             vip_x = 80;
             vip_y = 3660;
               Popups:
               {
-                SeqTypePulldown : OptionPulldown = OptionPulldown;
+                SegmentTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select _Term_key, term from VOC_Term_SegmentType_View order by _Term_key";
                     {

@@ -153,7 +153,7 @@ locals:
 	ref_creation_date : string;
 	ref_modification_date : string;
 
-	origSeqType : string;
+	origSegmentType : string;
 
 rules:
 
@@ -200,7 +200,7 @@ rules:
 
           -- Dynmcically create menus
  
-	  InitOptionMenu.option := top->SeqTypeMenu;
+	  InitOptionMenu.option := top->SegmentTypeMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->MolDetailForm->VectorTypeMenu;
@@ -343,7 +343,7 @@ rules:
 	    end if;
 
             cmd := cmd + top->MolDetailForm->VectorTypeMenu.menuHistory.defaultValue + "," +
-                         top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue + "," +
+                         top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 "NULL,NULL,";	-- primer1sequence, primer2sequence
 
             if (top->MolMasterForm->Region->text.value.length <= 255) then
@@ -362,7 +362,7 @@ rules:
 
 	  else
 	    cmd := cmd + "NULL,-2,-2," +
-                         top->MolDetailForm->SeqTypeMenu.menuHistory.defaultValue + "," +
+                         top->MolDetailForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
 
@@ -541,16 +541,16 @@ rules:
             return; 
           end if; 
 
-	  if (origSeqType = "primer" and 
-	      top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue != "primer") then
+	  if (origSegmentType = "primer" and 
+	      top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue != "primer") then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot change Primer to Molecular Segment.";
 	    send(StatusReport);
 	    return;
 	  end if;
 
-	  if (origSeqType != "primer" and 
-	      top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue = "primer") then
+	  if (origSegmentType != "primer" and 
+	      top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue = "primer") then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot change Molecular Segment to Primer.";
 	    send(StatusReport);
@@ -591,8 +591,8 @@ rules:
               set := set + "insertSite = " + mgi_DBprstr(top->MolDetailForm->InsertSite->text.value) + ",";
 	    end if;
 
-            if (top->MolMasterForm->SeqTypeMenu.menuHistory.modified) then
-	      set := set + "_SegmentType_key = " + top->MolMasterForm->SeqTypeMenu.menuHistory.defaultValue + ",";
+            if (top->MolMasterForm->SegmentTypeMenu.menuHistory.modified) then
+	      set := set + "_SegmentType_key = " + top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + ",";
 	    end if;
 
 	    -- If Parent Clone has been modified, then Source info must be reviewed
@@ -1048,8 +1048,8 @@ rules:
 	    from_ref := true;
 	  end if;
  
-          if (top->MolMasterForm->SeqTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand p._SegmentType_key = " + top->MolMasterForm->SeqTypeMenu.menuHistory.searchValue;
+          if (top->MolMasterForm->SegmentTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand p._SegmentType_key = " + top->MolMasterForm->SegmentTypeMenu.menuHistory.searchValue;
           end if;
 
           if (top->MolMasterForm->Name->text.value.length > 0) then
@@ -1453,11 +1453,11 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
-                SetOption.source_widget := top->MolMasterForm->SeqTypeMenu;
+                SetOption.source_widget := top->MolMasterForm->SegmentTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
-		origSeqType := top->MolMasterForm->SeqTypeMenu.menuHistory.labelString;
-		ViewMolSegDetail.source_widget := top->MolMasterForm->SeqTypeMenu.menuHistory;
+		origSegmentType := top->MolMasterForm->SegmentTypeMenu.menuHistory.labelString;
+		ViewMolSegDetail.source_widget := top->MolMasterForm->SegmentTypeMenu.menuHistory;
 		send(ViewMolSegDetail, 0);
 
 	        top->MolMarkerForm->MolNote->text.value := "";
@@ -1676,7 +1676,7 @@ rules:
         ViewMolSegDetail does
           NewForm : widget;
  
-	  if (origSeqType = "primer") then
+	  if (origSegmentType = "primer") then
 		NewForm := top->MolPrimerForm;
 	  else
 		NewForm := top->MolDetailForm;
@@ -1690,7 +1690,7 @@ rules:
             NewForm.managed := true;
             detailForm.managed := false;
             detailForm := NewForm;
-            top->MolMasterForm->SeqTypeMenu.modified := true;
+            top->MolMasterForm->SegmentTypeMenu.modified := true;
           end if;
         end does;
  
