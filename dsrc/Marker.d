@@ -340,18 +340,22 @@ rules:
 
 	ClearMarker does
 
-	  if (not ClearMarker.reset) then
-	    top->MarkerStatusMenu.background := "Wheat";
-            top->MarkerStatusPulldown.background := "Wheat";
-            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
-            top->MarkerStatusMenu.menuHistory.background := "Wheat";
-	  end if;
-
           Clear.source_widget := top;
 	  Clear.clearLists := ClearMarker.clearLists;
 	  Clear.clearKeys := ClearMarker.clearKeys;
 	  Clear.reset := ClearMarker.reset;
 	  send(Clear, 0);
+
+	  if (not ClearMarker.reset) then
+	    top->MarkerStatusMenu.background := "Wheat";
+            top->MarkerStatusPulldown.background := "Wheat";
+            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
+            top->MarkerStatusMenu.menuHistory.background := "Wheat";
+            InitSynTypeTable.table := top->Synonym->Table;
+            InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
+            send(InitSynTypeTable, 0);
+	  end if;
+
 	end does;
 
 --
