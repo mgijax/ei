@@ -1225,11 +1225,11 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->MarkerEventMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
+                SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->SubmittedByMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
+                SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->BroadcastByMenu;
