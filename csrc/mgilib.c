@@ -618,6 +618,7 @@ char *mgi_DBkey(int table)
     case MLD_CONCORDANCE:
     case MLD_DISTANCE:
     case MLD_EXPT_MARKER:
+    case MLD_EXPT_MARKER_VIEW:
     case MLD_EXPT_NOTES:
     case MLD_EXPTS:
     case MLD_FISH:
@@ -1338,6 +1339,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MLD_EXPT_MARKER:
             strcpy(buf, "MLD_Expt_Marker");
+	    break;
+    case MLD_EXPT_MARKER_VIEW:
+            strcpy(buf, "MLD_Expt_Marker_View");
 	    break;
     case MLD_EXPT_NOTES:
             strcpy(buf, "MLD_Expt_Notes");
