@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  12/30/2002
+--	- TR 4339; AppendToAgeNote should append
+--
 -- lec  11/04/2002
 --      - TR 4222
 --
@@ -622,7 +625,8 @@ rules:
 	AppendToAgeNote does
 	  table : widget;
 	  row : integer := 0;
-	  note : string := AppendToAgeNote.source_widget.note;
+	  note : string;
+	  currentNote : string;
 
 	  if (assayDetailForm.name = "InSituForm") then
             table := top->InSituForm->Specimen->Table;
@@ -631,6 +635,16 @@ rules:
 	  end if;
 
           while (row < mgi_tblNumRows(table)) do
+	    -- current note
+	    currentNote := mgi_tblGetCell(table, row, table.ageNote);
+
+	    -- append new note to current note
+	    if (currentNote.length > 0) then
+	      note := currentNote + " " + AppendToAgeNote.source_widget.note;
+	    else
+	      note := AppendToAgeNote.source_widget.note;
+	    end if;
+
 	    (void) mgi_tblSetCell(table, row, table.ageNote, note);
 
             if (mgi_tblGetCell(table, row, table.editMode) != TBL_ROW_EMPTY) then
