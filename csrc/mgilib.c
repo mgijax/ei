@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 09/05/2000
+ *	- TR 1916; Nomen
+ *
  * lec 08/20/2000
  *	- TR 1003; GXD_ANTIBODY and GXD_ANTIBODYSPECIES 
  *
@@ -869,9 +872,6 @@ char *mgi_DBaccTable(int table)
     case MRK_NOMEN_ACC_REFERENCE:
 	    sprintf(buf, "%s..MRK_Nomen_AccRef_View", getenv("NOMEN"));
             break;
-    case MRK_NOMEN_USER_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_User_View", getenv("NOMEN"));
-            break;
     case STRAIN:
     case MLP_STRAIN:
 	    sprintf(buf, "PRB_Strain_Acc_View");
@@ -1306,9 +1306,6 @@ char *mgi_DBtable(int table)
 	    break;
     case MRK_NOMEN_REFERENCE_VIEW:
 	    sprintf(buf, "%s..MRK_Nomen_Reference_View", getenv("NOMEN"));
-	    break;
-    case MRK_NOMEN_USER_VIEW:
-	    sprintf(buf, "%s..MRK_Nomen_User_View", getenv("NOMEN"));
 	    break;
     case MRK_GENEFAMILY:
 	    sprintf(buf, "%s..MRK_GeneFamily", getenv("NOMEN"));
@@ -1869,7 +1866,7 @@ mgi_DBtable(table));
             sprintf(buf, "insert %s (_Table_id, _Column_id, description, example)", mgi_DBtable(table));
 	    break;
     case MRK_NOMEN:
-            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, _Suid_key, _Suid_broadcast_key, symbol, name, chromosome, humanSymbol, mgiAccID, statusNote, broadcast_date)",
+            sprintf(buf, "insert %s (%s, _Marker_Type_key, _Marker_Status_key, _Marker_Event_key, _Marker_EventReason_key, submittedBy, broadcastBy, symbol, name, chromosome, humanSymbol, mgiAccID, statusNote, broadcast_date)",
 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;

@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 12 09:50:16 2000";
+      lastWritten = "Tue Sep  5 09:48:59 2000";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -150,27 +150,6 @@ Module: MGINomen
                                       }
                                 }
                                 {
-                                  SubmittedByMenu = NomenUserMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = SubmittedByPulldown;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = HumanSymbol;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = HumanSymbol;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 10;
-                                    topOffset = 5;
-                                  Group: User
-                                    required = False;
-                                      Popups:
-                                      {
-                                        SubmittedByPulldown : NomenUserPulldown = OptionPulldown;
-                                      }
-                                }
-                                {
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -246,48 +225,60 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  BroadcastByMenu = NomenUserMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = BroadcastByPulldown;
-                                    labelString = "Broadcast By";
+                                  SubmittedBy = ModifiedBy : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = HumanSymbol;
+                                    leftOffset = 10;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = HumanSymbol;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Submitted By";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          columns = 20;
+                                      }
+                                }
+                                {
+                                  BroadcastBy = ModifiedBy : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Name;
-                                    topOffset = 10;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                  Group: User
-                                    required = False;
-                                    defaultOption = NotSpecified;
-                                      Popups:
                                       {
-                                        BroadcastByPulldown : NomenUserPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              NotSpecified = NotSpecified : mgiOption;
-                                              Group: User
-                                                defaultValue = "-1";
-                                                searchValue = "-1";
-                                            }
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Broadcast By";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          columns = 20;
                                       }
                                 }
                                 {
                                   BroadcastDate = mgiDate : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = BroadcastByMenu;
+                                    leftWidget = BroadcastBy;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = BroadcastByMenu;
+                                    topWidget = BroadcastBy;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
-                                    topOffset = "-10";
                                   Group: User
                                     fieldName = broadcast_date;
                                       {
@@ -419,10 +410,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Reference = ReferenceTable : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = BroadcastByMenu;
+                                    leftWidget = SymbolName;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = BroadcastDate;
+                                    topWidget = BroadcastBy;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;

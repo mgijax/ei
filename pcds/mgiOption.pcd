@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Aug 29 13:24:10 2000";
+      lastWritten = "Tue Sep  5 09:18:10 2000";
       copy = false;
       inCreateMenu = true;
         {
@@ -2467,7 +2467,7 @@ Module: mgiOption
             labelString = Mode;
           Group: Control
             vip_x = 80;
-            vip_y = 4485;
+            vip_y = 4430;
           Group: User
             defaultOption = NotSpecified;
               Popups:
@@ -2557,22 +2557,6 @@ Module: mgiOption
           Group: Control
             vip_x = 80;
             vip_y = 635;
-        }
-        {
-          NomenUserMenu = OptionMenu;
-          Group: Widget
-            subMenuId = NomenUserPulldown;
-            labelString = "Submitted by";
-          Group: Control
-            vip_x = 80;
-            vip_y = 4375;
-              Popups:
-              {
-                NomenUserPulldown : OptionPulldown = OptionPulldown;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
-              }
         }
         {
           DatabaseMenu = OptionMenu;
@@ -2725,7 +2709,7 @@ Module: mgiOption
             labelString = "Allele Type";
           Group: Control
             vip_x = 80;
-            vip_y = 4430;
+            vip_y = 4375;
               Popups:
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
