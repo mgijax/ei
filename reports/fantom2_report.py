@@ -168,6 +168,7 @@ def riken_report():
 
 			if fantomKey != -1:
 				fp.write(mgi_utils.prvalue(note) + CRT)
+				note = ''
 
 			fp.write(mgi_utils.prvalue(r['riken_seqid']) + TAB + \
 			 	mgi_utils.prvalue(r['riken_cloneid']) + TAB + \
