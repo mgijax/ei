@@ -121,6 +121,7 @@ extern char *global_version;
 #define MLD_RI2POINT		179
 #define MLD_STATISTICS		180
 #define MLC_MARKER_VIEW		181
+#define MLD_MARKERBYREF		182
 
 /* GXD Tables */
 

@@ -849,7 +849,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Allele_key");
 	    break;
     case MRK_CHROMOSOME:
-            strcpy(buf, "_Organism_key");
+            strcpy(buf, "_Chromosome_key");
 	    break;
     case MRK_CLASS:
             strcpy(buf, "_Class_key");
@@ -1946,7 +1946,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLP_STRAINTYPES:
     case MLP_NOTES:
     case MLP_EXTRA:
-    case MRK_CHROMOSOME:
     case MRK_ANCHOR:
     case MRK_ALIAS:
     case MRK_CLASSES:
@@ -2319,7 +2318,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (chromosome, _Marker_key)", mgi_DBtable(table));
 	    break;
     case MRK_CHROMOSOME:
-            sprintf(buf, "insert %s (_Organism_key, chromosome, sequenceNum)", mgi_DBtable(table));
+            sprintf(buf, "insert %s (%s, _Organism_key, chromosome, sequenceNum)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MRK_CLASSES:
 	    sprintf(buf, "insert %s (_Class_key, %s)",
