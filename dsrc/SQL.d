@@ -94,7 +94,7 @@ rules:
 	  -- calling event can set AddSQL.transaction = false
 
 	  if (AddSQL.transaction) then
-	    cmd := "begin transaction\n" + AddSQL.cmd + "commit transaction\n";
+	    cmd := "begin transaction\n" + AddSQL.cmd + "\ncommit transaction\n";
 	  else
 	    cmd := AddSQL.cmd;
 	  end if;
@@ -264,7 +264,7 @@ rules:
 	  -- calling event can set ModifySQL.transaction = false
 
 	  if (ModifySQL.transaction) then
-	    cmd := "begin transaction\n" + ModifySQL.cmd + "commit transaction\n";
+	    cmd := "begin transaction\n" + ModifySQL.cmd + "\ncommit transaction\n";
 	  else
 	    cmd := ModifySQL.cmd;
 	  end if;
