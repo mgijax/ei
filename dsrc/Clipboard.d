@@ -291,6 +291,10 @@ rules:
             return;
           end if;
  
+          if (clipboard->List.keys = nil) then
+	    return;
+	  end if;
+
           (void) XmListDeselectAllItems(clipboard->List);
 
           itemList := mgi_splitfields(mgi_tblGetCell(table, row, column), ",");
