@@ -21,6 +21,11 @@
 --
 -- lec  08/21/2001
 --	- simplified lots of code here
+--	- removed ADI_ExecSQL (we can use SQL.d events)
+--	- consolidated DictionaryClear and DictionaryClearFormAndStages
+--	- lots of cleanup involving consistent behavior w/ other EI modules
+--	- note that the AddDialog should be removed so that adds are performed
+--	  as they are in other MGI modules
 --
 -- lec  08/16/2001
 --	- re-implemented using a LookupList for Clipboard instead of a Table
@@ -803,7 +808,7 @@ rules:
 
         row := 0;
         while (row < XrtGearListGetItemCount(edinburghAliases)) do
-            alias := StructureNameList_getitem(mgiAliases, row);
+            alias := StructureNameList_getitem(edinburghAliases, row);
             mgi_tblSetCell(top->edinburghAliasTable->Table, row, 
 			   top->edinburghAliasTable->Table.editMode, TBL_ROW_NOCHG);
             mgi_tblSetCell(top->edinburghAliasTable->Table, row, 
