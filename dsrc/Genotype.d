@@ -426,20 +426,25 @@ rules:
 	  where := "";
 
           SearchAcc.table := accTable;
-          SearchAcc.objectKey := "g." + mgi_DBkey(GXD_GENOTYPE_VIEW);
-	  SearchAcc.tableID := STRAIN;
+          SearchAcc.objectKey := "g." + mgi_DBkey(GXD_GENOTYPE);
+	  SearchAcc.tableID := GXD_GENOTYPE;
           send(SearchAcc, 0);
 
 	  if (accTable.sqlFrom.length > 0) then
 	    from := from + accTable.sqlFrom;
 	    where := where + accTable.sqlWhere;
+	    manualSearch := true;
 	  end if;
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "a";
+	  QueryModificationHistory.tag := "g";
 	  send(QueryModificationHistory, 0);
-          where := where + top->ModificationHistory->Table.sqlCmd;
- 
+
+	  if (top->ModificationHistory->Table.sqlCmd.length > 0) then
+            where := where + top->ModificationHistory->Table.sqlCmd;
+	    manualSearch := true;
+	  end if;
+
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	    where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
 	    manualSearch := true;
