@@ -372,7 +372,8 @@ rules:
 		-- to indicate there are more records
 		else
 		  item := results[results.count];
-		  results.insert(item + "...", results.count);
+		  results.remove(item);
+		  results.insert(item + "...", results.count + 1);
 		end if;
 
 	      -- Dups allowed
