@@ -57,7 +57,7 @@ for r in results:
 	for m in markers:
 		if fp is None:  
 			reportName = 'Marker.%s.rpt' % m['symbol']
-			fp = reportlib.init(reportName, 'Markers', os.environ['QCREPORTOUTPUTDIR'])
+			fp = reportlib.init(reportName, 'Markers')
 			printHeader()
 
 		fp.write(string.ljust(m['symbol'], 20))

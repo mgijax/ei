@@ -147,7 +147,7 @@ def parse_symbol_name_chr(t):
 
 	if fp is None:
 		reportName = symbol + '-' + mgdlib.date('%m%d%Y') + '-MLC'
-		fp = reportlib.init(reportName, 'MLC Symbol Report', os.environ['QCREPORTOUTPUTDIR'])
+		fp = reportlib.init(reportName, 'MLC Symbol Report')
 
 def parse_classes(t):
 	global classes

@@ -104,7 +104,7 @@ def parse_reference(reference):
 # Main
 #
 
-fp = reportlib.init(sys.argv[0], 'Homology', os.environ['QCREPORTOUTPUTDIR'])
+fp = reportlib.init(sys.argv[0], 'Homology')
 mgdlib.sql(sys.argv[1], parse_reference)
 reportlib.finish_ps(fp)
 

@@ -31,6 +31,6 @@ import reportlib
 cmd = 'select _Refs_key from BIB_All_View ' + \
 'group by _primary, journal, vol, pgs, year having count(*) > 1 ' + \
 'order by _primary, journal, year'
-fp = reportlib.init(sys.argv[0], 'All Duplicate References', os.environ['QCREPORTOUTPUTDIR'])
+fp = reportlib.init(sys.argv[0], 'All Duplicate References')
 reportlib.process_ref(fp, cmd)
 reportlib.finish_nonps(fp)

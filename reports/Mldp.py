@@ -378,7 +378,7 @@ def parse_ref_key(mldpref_key):
 
 	if fp is None:
 		reportName = 'Mldp.J:%s.rpt' % mldpref_key['jnum']
-		fp = reportlib.init(reportName, 'MLDP', os.environ['QCREPORTOUTPUTDIR'])
+		fp = reportlib.init(reportName, 'MLDP')
 
 	fp.write('Reference: ' + mgdlib.prvalue(mldpref_key['jnum']) + \
 		 '  ' + mgdlib.prvalue(mldpref_key['short_citation']) + CRT)

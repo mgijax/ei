@@ -150,7 +150,7 @@ def parse_probe_key(probe_key):
 		reportName = regsub.gsub(' ', '-', probe_key['name'])
 		reportName = regsub.gsub('/', '', reportName)
 		reportName = 'Probe.' + reportName + '.rpt'
-		fp = reportlib.init(reportName, 'Molecular Probes and Segments', os.environ['QCREPORTOUTPUTDIR'])
+		fp = reportlib.init(reportName, 'Molecular Probes and Segments')
 
 	fp.write(header + probe_info)
 	header = ''

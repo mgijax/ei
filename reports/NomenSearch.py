@@ -51,7 +51,7 @@ for r in results:
 
 	if fp is None:  
 		reportName = 'NomenSearch.%s.rpt' % r['approvedSymbol']
-		fp = reportlib.init(reportName, 'Nomenclature Search Results', os.environ['QCREPORTOUTPUTDIR'])
+		fp = reportlib.init(reportName, 'Nomenclature Search Results')
 		printHeader()
 
 	fp.write(string.ljust(r['approvedSymbol'], 25))

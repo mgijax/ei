@@ -40,7 +40,7 @@ for s in strains:
 		reportName = regsub.gsub(' ', '', s['strain'])
 		reportName = regsub.gsub('/', '', reportName)
 		reportName = 'StrainList.%s.rpt' % reportName
-		fp = reportlib.init(reportName, 'Strain Listing', os.environ['QCREPORTOUTPUTDIR'])
+		fp = reportlib.init(reportName, 'Strain Listing')
 
 	fp.write(s['strain'])
 	fp.write(CRT)

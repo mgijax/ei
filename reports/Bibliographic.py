@@ -34,6 +34,6 @@ import sys
 import os
 import reportlib
 
-fp = reportlib.init(sys.argv[0], 'Bibliographic References', os.environ['QCREPORTOUTPUTDIR'])
+fp = reportlib.init(sys.argv[0], 'Bibliographic References')
 reportlib.process_ref(fp, sys.argv[2], sys.argv[1])
 reportlib.finish_nonps(fp)

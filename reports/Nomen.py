@@ -48,7 +48,7 @@ for r in results:
 
 	if fp is None:  
 		reportName = 'Nomen.%s.rpt' % r['approvedSymbol']
-		fp = reportlib.init(reportName, 'Nomenclature Record', os.environ['QCREPORTOUTPUTDIR'])
+		fp = reportlib.init(reportName, 'Nomenclature Record')
 
 	dcmd = 'select *, ' + \
 	       'bdate = convert(char(25), broadcast_date), ' + \
