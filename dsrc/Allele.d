@@ -249,6 +249,15 @@ rules:
 
           currentRecordKey := "@" + KEYNAME;
  
+	  nomenSymbol : string := "NULL";
+
+	  -- if validated NomenDB symbol, the set Marker key to NULL
+
+	  if (top->mgiMarker->ObjectID->text.value = "-1") then
+		nomenSymbol := top->mgiMarker->Marker->text.value;
+	        top->mgiMarker->ObjectID->text.value := "NULL";
+	  end if;
+
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
 		 top->mgiMarker->ObjectID->text.value + "," +
@@ -259,6 +268,7 @@ rules:
                  top->AlleleStatusMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
+		 mgi_DBprstr(nomenSymbol) + "," +
 		 mgi_DBprstr(global_login) + "," + mgi_DBprstr(global_login) + ",";
 
 	  if (top->AlleleStatusMenu.menuHistory.defaultValue = ALL_STATUS_APPROVED) then
@@ -466,7 +476,14 @@ rules:
 	  set : string := "";
 
 	  if (top->mgiMarker->ObjectID->text.modified) then
-	    set := set + "_Marker_key = " + top->mgiMarker->ObjectID->text.value + ",";
+	    -- if validated NomenDB symbol, the set Marker key to NULL
+	    if (top->mgiMarker->ObjectID->text.value = "-1") then
+	      set := set + "_Marker_key = NULL," +
+		     "nomenSymbol = " + mgi_DBprstr(top->mgiMarker->Marker->text.value) + ",";
+	    else
+	      set := set + "_Marker_key = " + top->mgiMarker->ObjectID->text.value + "," +
+		     "nomenSymbol = NULL,";
+	    end if;
 	  end if;
 
 	  if (top->EditForm->Strain->StrainID->text.modified) then
@@ -753,10 +770,11 @@ rules:
           where := where + top->ModificationHistory->Table.sqlCmd;
  
 	  value := top->mgiMarker->ObjectID->text.value;
-	  if (value.length > 0 and value != "NULL") then
+	  if (value.length > 0 and value != "NULL" and value != "-1") then
 	    where := where + "\nand a._Marker_key = " + top->mgiMarker->ObjectID->text.value;
 	  elsif (top->mgiMarker->Marker->text.value.length > 0) then
-	    where := where + "\nand a.markerSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
+	    where := where + "\nand (a.markerSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) +
+		"\nor a.nomenSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value) + ")";
 	  end if;
 
           if (top->Symbol->text.value.length > 0) then

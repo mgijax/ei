@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Mar 20 11:11:37 2001";
+      lastWritten = "Tue Mar 20 15:47:44 2001";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -8804,6 +8804,13 @@ Shift<Key>Tab: prev-tab-group()
                                               label = XmLabel;
                                               Group: Widget
                                                 labelString = "Marker Symbol";
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyNomenMarker()";
                                             }
                                       }
                                 }
