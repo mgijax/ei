@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 25 14:23:50 2001";
+      lastWritten = "Tue Aug 21 10:30:36 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -897,9 +897,39 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Edit = Edit;
+                                Popups:
+                                {
+                                  EditPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Clipboard = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:ManageSelectionList(dialog = \"ClipboardDialog\")";
+                                          labelString = Clipboard;
+                                      }
+                                }
                           }
                           {
                             View = View;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Cross = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        RI = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
                           }
                           {
                             Reports = MenuCascade;
@@ -924,6 +954,8 @@ Shift<Key>Tab: prev-tab-group()
                             EditForm = EditForm : MGI;
                             Group: Widget
                               width = 900;
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
                                 {
                                   ID = ID;
                                 }
@@ -1019,12 +1051,36 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  AppendNotes = AppendNotes : GXD;
+                                  Group: Widget
+                                    orientation = vertical;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = AssayNote;
+                                    leftOffset = 5;
+                                    topWidget = AssayNote;
+                                      {
+                                        AppendNotePush1 = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = AssayNote;
+                                      }
+                                      {
+                                        AppendNotePush2 = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = AssayNote;
+                                      }
+                                }
+                                {
                                   separator = XmSeparator;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = mgiMarker;
+                                    topWidget = AppendNotes;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -1308,6 +1364,11 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       MRKTransferDialog = MRKTransferDialog : mgiDialog;
+                    }
+                    {
+                      ClipboardDialog = ClipboardDialog : mgiDialog;
+                      Group: User
+                        editForm = AssayModule;
                     }
               }
         }
@@ -1642,7 +1703,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = mgiCitation;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = CopyrightNote;
+                                    topWidget = DevelopmentNote;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -1759,7 +1820,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = CopyrightNote;
+                                    topWidget = DevelopmentNote;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
@@ -1785,6 +1846,40 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Image Panes";
                                             }
                                       }
+                                }
+                                {
+                                  DevelopmentNote = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = Development;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CopyrightNote;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = CopyrightNote;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    noteWidget = CopyrightNote;
+                                    note = "This image is from * and is displayed with the permission of The Company of Developmental Biologists who owns the Copyright.";
+                                }
+                                {
+                                  DevBiolNote = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Dev. Biol.";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = DevelopmentNote;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = DevelopmentNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                  Group: User
+                                    note = "Reprinted with permission of the author and Academic Press from *.  Copyright * by Academic Press.";
+                                    noteWidget = CopyrightNote;
                                 }
                           }
                     }
@@ -2211,9 +2306,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  StagingNotNormalized = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Staging Not Normalized";
+                                  AppendNotes = AppendNotes : GXD;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Note;
@@ -2223,9 +2316,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                  Group: User
-                                    note = "Staging not normalized.";
-                                    noteWidget = Note;
                                 }
                                 {
                                   Stage = TableLabel : mgiTable;
@@ -2234,7 +2324,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = Note;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = StagingNotNormalized;
+                                    topWidget = AppendNotes;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2281,6 +2371,9 @@ Shift<Key>Tab: prev-tab-group()
                       Control = Control : mgiControl;
                           {
                             ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
                                 {
                                   Search = ControlPush;
                                 }
@@ -2288,6 +2381,50 @@ Shift<Key>Tab: prev-tab-group()
                                   Clear = ControlPush;
                                   Group: Widget
                                     activateCallback = "D:ClearIndex";
+                                }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                }
+                                {
+                                  Duplicate = ControlPush : mgiControl;
+                                  Group: Widget
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:Duplicate,\nD:GoHome";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Search;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = Search;
+                                    topOffset = 2;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Search;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Duplicate;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                           }
                     }
@@ -2638,6 +2775,31 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                           }
                     }
+              }
+        }
+        {
+          AppendNotes = XmRowColumn;
+          Group: Widget
+            orientation = horizontal;
+          Group: Control
+            vipComment = "";
+            vip_x = 57;
+            vip_y = 358;
+              {
+                AppendNotePush1 = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Staging Criteria Not Specified";
+                Group: User
+                  note = "Staging criteria not specified in reference.";
+                  noteWidget = Note;
+              }
+              {
+                AppendNotePush2 = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Staging Normalized/Plug Day = E0.5";
+                Group: User
+                  noteWidget = Note;
+                  note = "Staging normalized so that noon of plug day = E0.5.";
               }
         }
 }

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 25 11:22:24 2001";
+      lastWritten = "Thu Aug 16 10:07:56 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -836,7 +836,7 @@ Module: mgiOption
           AntibodyClassMenu = OptionMenu;
           Group: Widget
             subMenuId = AntibodyClassPulldown;
-            labelString = "Antibody Class";
+            labelString = "Antibody\nClass";
           Group: Control
             vip_x = 80;
             vip_y = 1845;
@@ -854,7 +854,7 @@ Module: mgiOption
           AntibodyTypeMenu = OptionMenu;
           Group: Widget
             subMenuId = AntibodyTypePulldown;
-            labelString = "Antibody Type";
+            labelString = "Antibody\nType";
           Group: Control
             vip_x = 80;
             vip_y = 1790;
@@ -1478,7 +1478,7 @@ Module: mgiOption
           AntibodySpeciesMenu = OptionMenu;
           Group: Widget
             subMenuId = AntibodySpeciesPulldown;
-            labelString = Species;
+            labelString = "Ab raised in";
           Group: Control
             vip_x = 80;
             vip_y = 1295;
@@ -1540,6 +1540,7 @@ Module: mgiOption
                   tableColumn = 13;
                   tableKeyColumn = 4;
                   targetWidget = Specimen;
+                  dialogName = GenotypeDialog;
               }
               {
                 AgeMenu = AgeMenu : mgiOption;
@@ -1631,6 +1632,7 @@ Module: mgiOption
                   targetWidget = Specimen;
                   tableColumn = 21;
                   tableKeyColumn = 3;
+                  dialogName = InSituResultsDialog;
               }
         }
         {
@@ -1742,6 +1744,7 @@ Module: mgiOption
                   targetWidget = GelLane;
                   tableColumn = 13;
                   tableKeyColumn = 3;
+                  dialogName = GenotypeDialog;
               }
               {
                 GelControlMenu = GelControlMenu : mgiOption;
@@ -1823,9 +1826,9 @@ Module: mgiOption
                 CVMenu = CVMenu : mgiOption;
                 Group: Widget
                   packing = pack_column;
-                  numColumns = 2;
                   adjustLast = False;
                   orientation = horizontal;
+                  numColumns = 2;
                     {
                       AgeNote = NotePush : mgiDataTypes;
                       Group: Widget

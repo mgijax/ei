@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 25 14:02:51 2001";
+      lastWritten = "Tue Aug 21 09:24:45 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -131,19 +131,75 @@ Module: gxdDictionary
                                         ID = ID;
                                       }
                                       {
-                                        structureAndNote = structureAndNote;
+                                        structureText = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Structure:";
+                                            }
+                                            {
+                                              text = text;
+                                              Group: Widget
+                                                columns = 50;
+                                                userDefinedAttributes = "structureNameKey:String\n";
+                                            }
                                       }
                                       {
-                                        aliasTables = aliasTables;
+                                        structureNotes = Notes : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = scrolledText;
+                                              Group: Widget
+                                                columns = 50;
+                                                rows = 2;
+                                              Group: Constraint
+                                                xrtGearAlignerAlignment = aligner_center;
+                                            }
+                                      }
+                                      {
+                                        mgiAliasTable = aliasTable : gxdDictionary;
+                                            {
+                                              Table = mgiTable;
+                                                  {
+                                                    label = XtXrtLabel;
+                                                    Group: Widget
+                                                      labelString = "MGI Aliases";
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        edinburghAliasTable = aliasTable : gxdDictionary;
+                                            {
+                                              Table = mgiTable;
+                                              Group: Widget
+                                                xrtTblEditableSeries = "(all all False)";
+                                                  {
+                                                    label = XtXrtLabel;
+                                                    Group: Widget
+                                                      labelString = "Edinburgh Aliases";
+                                                  }
+                                            }
+                                            {
+                                              AddRow = TablePush;
+                                              Group: Widget
+                                                managed = False;
+                                            }
+                                            {
+                                              DeleteRow = TablePush;
+                                              Group: Widget
+                                                managed = False;
+                                            }
                                       }
                                       {
                                         stagesText = CharText;
                                       }
                                       {
-                                        MGIAddedStructureOptions = MGIAddedOptions : gxdDictionary;
+                                        MGIAddedMenu = YesNoMenu : gxdDictionary;
                                       }
                                       {
-                                        printStopOptions = printStopOptions : gxdDictionary;
+                                        printStopOptions = XmOptionMenu : gxdDictionary;
                                         Group: Widget
                                           subMenuId = printStopOptionPulldown;
                                       }
@@ -386,6 +442,33 @@ Module: gxdDictionary
                         dialogTitle = "Structure Add Dialog";
                           {
                             theForm = XmForm;
+                                {
+                                  structureText = CharText : mgiDataTypes;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Structure:";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          columns = 50;
+                                      }
+                                }
+                                {
+                                  structureNotes = Notes : mgiDataTypes;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = scrolledText;
+                                        Group: Widget
+                                          columns = 50;
+                                          rows = 2;
+                                        Group: Constraint
+                                          xrtGearAlignerAlignment = aligner_center;
+                                      }
+                                }
                           }
                           {
                             rowColumn = XmRowColumn;
@@ -402,7 +485,7 @@ Module: gxdDictionary
               }
         }
         {
-          structureClipboard = XmForm;
+          structureClipboard = LookupList : mgiLookup;
           Group: Widget
             rubberPositioning = False;
             resizePolicy = resize_any;
@@ -411,41 +494,9 @@ Module: gxdDictionary
           Group: Control
             vip_x = 60;
             vip_y = 85;
+            vipComment = "XmForm is a container widget with no input semantics. Constraints are placed on its children to define attachments for each of the child's four sides. These attachments can be to the XmForm, to another child, to a relative position or to the initial position of the child. The attachments determine the layout behavior of XmForm when resizing occurs.";
               {
-                TableLabel = TableLabel : mgiTable;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      Table = mgiTable;
-                      Group: Widget
-                        xrtTblDisplayHorizScrollBar = dispsb_always;
-                        xrtTblNumColumns = 2;
-                        xrtTblVisibleColumns = 1;
-                        xrtTblVisibleRows = 4;
-                        xrtTblCharWidthSeries = "(all 0 1)(all 1 40)";
-                          {
-                            label = XtXrtLabel;
-                            Group: Widget
-                              labelString = "Structure Clipboard";
-                          }
-                    }
-                    {
-                      AddRow = TablePush;
-                      Group: Widget
-                        managed = False;
-                    }
-                    {
-                      DeleteRow = TablePush;
-                      Group: Widget
-                        managed = False;
-                    }
-              }
-              {
-                ControlPush = TablePush : mgiTable;
+                Add = TablePush : mgiTable;
                 Group: Widget
                   labelString = "Add Current";
                   activateCallback = "D:ClipboardAddCurrent";
@@ -453,36 +504,56 @@ Module: gxdDictionary
                   leftAttachment = attach_form;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = TableLabel;
+                  topWidget = List;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 2;
               }
               {
-                ControlPush1 = TablePush : mgiTable;
+                Delete = TablePush : mgiTable;
                 Group: Widget
                   labelString = Delete;
                   activateCallback = "D:ClipboardDelete";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = ControlPush;
+                  leftWidget = Add;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = ControlPush;
+                  topWidget = Add;
                   bottomAttachment = attach_none;
                   resizable = true;
               }
               {
-                ControlPush2 = TablePush : mgiTable;
+                Clear = TablePush : mgiTable;
                 Group: Widget
                   labelString = Clear;
                   activateCallback = "D:ClipboardClear";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = ControlPush1;
+                  leftWidget = Delete;
                   rightAttachment = attach_none;
                   topAttachment = attach_opposite_widget;
-                  topWidget = ControlPush1;
+                  topWidget = Delete;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "Anatomical Structures";
+                Group: User
+                  defaultLabel = "Anatomical Structures";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  visibleItemCount = 10;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = Label;
+                  topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
               }
@@ -507,8 +578,8 @@ Module: gxdDictionary
             bottomAttachment = attach_none;
             resizable = true;
           Group: Control
-            vip_x = 60;
-            vip_y = 250;
+            vip_x = 175;
+            vip_y = 140;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -528,8 +599,8 @@ Module: gxdDictionary
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 175;
-            vip_y = 85;
+            vip_x = 177;
+            vip_y = 83;
               {
                 theForm = XmForm;
                 Group: Widget
@@ -544,7 +615,7 @@ Module: gxdDictionary
                   bottomAttachment = attach_none;
                   resizable = true;
                     {
-                      structureAndNote = structureAndNote : gxdDictionary;
+                      structureText = CharText : mgiDataTypes;
                       Group: Constraint
                         leftAttachment = attach_form;
                         rightAttachment = attach_form;
@@ -552,26 +623,49 @@ Module: gxdDictionary
                         bottomAttachment = attach_none;
                         resizable = true;
                           {
-                            structureText = CharText;
-                                {
-                                  label = XmLabel;
-                                }
-                                {
-                                  text = text;
-                                  Group: User
-                                    required = True;
-                                }
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Structure:";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              columns = 50;
+                          }
+                    }
+                    {
+                      structureNotes = Notes : mgiDataTypes;
+                      Group: Widget
+                        xrtGearOrientation = horizontal;
+                      Group: Constraint
+                        leftAttachment = attach_form;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        topWidget = structureText;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = scrolledText;
+                            Group: Widget
+                              columns = 50;
+                              rows = 2;
+                            Group: Constraint
+                              xrtGearAlignerAlignment = aligner_center;
                           }
                     }
                     {
                       mgiAliasTable = aliasTable : gxdDictionary;
                       Group: Constraint
-                        leftAttachment = attach_form;
+                        leftAttachment = attach_opposite_widget;
                         rightAttachment = attach_none;
                         topAttachment = attach_widget;
                         bottomAttachment = attach_form;
                         resizable = true;
-                        topWidget = structureAndNote;
+                        topWidget = structureNotes;
+                        leftWidget = structureText;
                           {
                             Table = mgiTable;
                                 {
@@ -587,28 +681,12 @@ Module: gxdDictionary
                         leftAttachment = attach_widget;
                         leftWidget = mgiAliasTable;
                         rightAttachment = attach_none;
-                        topAttachment = attach_widget;
-                        topWidget = structureAndNote;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = mgiAliasTable;
                         bottomAttachment = attach_none;
                         resizable = true;
-                        topOffset = 58;
                       Group: User
                         defaultOption = Yes;
-                          Popups:
-                          {
-                            printStopOptionPulldown = OptionPulldown;
-                                {
-                                  SearchAll = SearchAll;
-                                  Group: Widget
-                                    managed = False;
-                                    set = False;
-                                }
-                                {
-                                  Yes = Yes;
-                                  Group: Widget
-                                    set = True;
-                                }
-                          }
                     }
               }
               {
@@ -652,29 +730,28 @@ Module: gxdDictionary
               }
         }
         {
-          substringToggle = XmToggleButton;
-          Group: Widget
-            labelString = "substring search";
-          Group: Control
-            vip_x = 175;
-            vip_y = 140;
-        }
-        {
-          structureAndNote = XmForm;
+          QueryForm = EditForm : MGI;
           Group: Widget
             rubberPositioning = False;
             resizePolicy = resize_any;
+            verticalSpacing = 0;
+            horizontalSpacing = 0;
           Group: Control
-            vip_x = 60;
-            vip_y = 195;
+            vip_x = 175;
+            vip_y = 30;
+              {
+                ID = ID;
+              }
               {
                 structureText = CharText : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_form;
-                  rightAttachment = attach_form;
+                  rightAttachment = attach_none;
                   topAttachment = attach_form;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 5;
+                  topOffset = 5;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -691,12 +768,14 @@ Module: gxdDictionary
                 Group: Widget
                   xrtGearOrientation = horizontal;
                 Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  bottomAttachment = attach_form;
+                  bottomAttachment = attach_none;
                   resizable = true;
                   topWidget = structureText;
+                  leftWidget = structureText;
+                  topOffset = 5;
                     {
                       label = XmLabel;
                     }
@@ -709,23 +788,17 @@ Module: gxdDictionary
                         xrtGearAlignerAlignment = aligner_center;
                     }
               }
-        }
-        {
-          aliasTables = XmForm;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 175;
-            vip_y = 195;
               {
                 mgiAliasTable = aliasTable : gxdDictionary;
                 Group: Constraint
-                  leftAttachment = attach_form;
+                  leftAttachment = attach_opposite_widget;
                   rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  bottomAttachment = attach_none;
                   resizable = true;
+                  leftWidget = structureText;
+                  topWidget = structureNotes;
+                  topOffset = 5;
                     {
                       Table = mgiTable;
                           {
@@ -741,9 +814,11 @@ Module: gxdDictionary
                   leftAttachment = attach_widget;
                   leftWidget = mgiAliasTable;
                   rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_form;
+                  topAttachment = attach_opposite_widget;
+                  bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 5;
+                  topWidget = mgiAliasTable;
                     {
                       Table = mgiTable;
                       Group: Widget
@@ -765,59 +840,17 @@ Module: gxdDictionary
                         managed = False;
                     }
               }
-        }
-        {
-          QueryForm = EditForm : MGI;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-            verticalSpacing = 0;
-            horizontalSpacing = 0;
-          Group: Control
-            vip_x = 175;
-            vip_y = 30;
-              {
-                ID = ID;
-              }
-              {
-                structureAndNote = structureAndNote : gxdDictionary;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      structureText = CharText;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              userDefinedAttributes = "structureNameKey:String\n";
-                          }
-                    }
-              }
-              {
-                aliasTables = aliasTables : gxdDictionary;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topWidget = structureAndNote;
-              }
               {
                 stagesText = CharText : mgiDataTypes;
                 Group: Constraint
-                  leftAttachment = attach_form;
+                  leftAttachment = attach_opposite_widget;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  bottomAttachment = attach_form;
+                  bottomAttachment = attach_none;
                   resizable = true;
-                  topWidget = aliasTables;
+                  topWidget = mgiAliasTable;
+                  leftWidget = structureText;
+                  topOffset = 5;
                     {
                       label = XmLabel;
                       Group: Widget
@@ -825,118 +858,72 @@ Module: gxdDictionary
                     }
               }
               {
-                MGIAddedStructureOptions = MGIAddedOptions : gxdDictionary;
+                MGIAddedMenu = YesNoMenu : mgiOption;
                 Group: Widget
-                  subMenuId = MGIAddedStructureOptionPulldown;
+                  subMenuId = MGIAddedPulldown;
+                  labelString = "MGI Added?";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = structureAndNote;
+                  leftWidget = structureText;
+                  leftOffset = 5;
                   rightAttachment = attach_none;
-                  topAttachment = attach_form;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = structureText;
+                  topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  topOffset = 5;
-                  leftOffset = 5;
                     Popups:
                     {
-                      MGIAddedStructureOptionPulldown : MGIAddedOptionPulldown = OptionPulldown;
+                      MGIAddedPulldown : YesNoPulldown = OptionPulldown;
                     }
               }
               {
                 printStopOptions = printStopOptions : gxdDictionary;
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  leftWidget = structureAndNote;
-                  topWidget = MGIAddedStructureOptions;
-                  topOffset = 20;
+                  leftWidget = structureNotes;
+                  topWidget = structureNotes;
+                  leftOffset = 5;
+                  topOffset = 10;
               }
               {
-                MGIAddedAliasOptions = MGIAddedOptions : gxdDictionary;
+                MGIAddedAliasMenu = YesNoMenu : mgiOption;
                 Group: Widget
-                  subMenuId = MGIAddedAliasOptionPulldown;
+                  subMenuId = MGIAddedAliasPulldown;
                   labelString = "MGI Added Name?";
                 Group: Constraint
                   leftAttachment = attach_widget;
-                  leftWidget = aliasTables;
+                  leftWidget = edinburghAliasTable;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = structureAndNote;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = edinburghAliasTable;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  topOffset = 45;
                   leftOffset = 5;
+                  topOffset = 30;
                     Popups:
                     {
-                      MGIAddedAliasOptionPulldown : MGIAddedOptionPulldown = OptionPulldown;
+                      MGIAddedAliasPulldown : YesNoPulldown = OptionPulldown;
                     }
               }
         }
         {
-          MGIAddedOptions = OptionMenu : mgiOption;
-          Group: Widget
-            labelString = "MGI Added?";
-            subMenuId = MGIAddedOptionPulldown;
-          Group: Control
-            vip_x = 175;
-            vip_y = 250;
-          Group: User
-            defaultOption = SearchAll;
-              Popups:
-              {
-                MGIAddedOptionPulldown : OptionPulldown = OptionPulldown;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify";
-                        set = True;
-                    }
-                    {
-                      Yes = Yes : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify";
-                    }
-                    {
-                      No = No : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify";
-                    }
-              }
-        }
-        {
-          printStopOptions = OptionMenu : mgiOption;
+          printStopOptions = YesNoMenu : mgiOption;
           Group: Widget
             labelString = "PrintStop Set?";
-            subMenuId = printStopOptionPulldown;
+            subMenuId = printStopPulldown;
           Group: Control
             vip_x = 60;
-            vip_y = 305;
+            vip_y = 195;
           Group: User
             defaultOption = SearchAll;
               Popups:
               {
-                printStopOptionPulldown : OptionPulldown = OptionPulldown;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                      Group: Widget
-                        selectColor = DimGray;
-                        valueChangedCallback = "D:SetModify";
-                        set = True;
-                    }
-                    {
-                      Yes = Yes : mgiOption;
-                      Group: Widget
-                        valueChangedCallback = "D:SetModify";
-                    }
-                    {
-                      No = No : mgiOption;
-                      Group: Widget
-                        selectColor = Green;
-                        valueChangedCallback = "D:SetModify";
-                    }
+                printStopPulldown : YesNoPulldown = OptionPulldown;
               }
         }
 }

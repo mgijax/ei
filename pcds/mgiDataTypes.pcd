@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 11 10:14:17 2001";
+      lastWritten = "Tue Jul 31 10:53:54 2001";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -361,7 +361,7 @@ Shift<Key>Tab: prev-tab-group()
           NotePush = XmPushButton;
           Group: Widget
             activateCallback = "D:NoteInit";
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ndialogName:String=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
             background = Wheat;
@@ -500,7 +500,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           TableDialogPush = XmPushButton;
           Group: Widget
-            userDefinedAttributes = "targetWidget:Widget\ntableColumn:Int(Int)\ntableKeyColumn:Int(Int)=\"-1\"\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntableColumn:Int(Int)\ntableKeyColumn:Int(Int)=\"-1\"\ndialogName:String\n";
             activateCallback = "D:VerifyEdit(mode = 1)";
           Group: Control
             vip_x = 160;
@@ -894,7 +894,7 @@ Shift<Key>Tab: prev-tab-group()
           NotePushShort = XmPushButton;
           Group: Widget
             activateCallback = "D:NoteInit(shortNote = true)";
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ndialogName:String=\"NoteDialog\"\n";
             labelString = Notes;
             traversalOn = False;
           Group: Control
