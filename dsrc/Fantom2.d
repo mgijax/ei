@@ -506,7 +506,7 @@ rules:
 	  where := "";
 
 	  -- Construct Order By
-	  orderBy := " order by f._Fantom2_key," + top->sortOptions->sortMenu1.menuHistory.dbField;
+	  orderBy := " order by " + top->sortOptions->sortMenu1.menuHistory.dbField;
 		
 	  if (top->sortOptions->sortMenu2.menuHistory.dbField.length > 0) then
 	    orderBy := orderBy + "," + top->sortOptions->sortMenu2.menuHistory.dbField;
@@ -516,7 +516,7 @@ rules:
 	    orderBy := orderBy + "," + top->sortOptions->sortMenu3.menuHistory.dbField;
 	  end if;
 
-	  orderBy := orderBy + ", n.noteType, n.sequenceNum";
+	  orderBy := orderBy + ", f._Fantom2_key, n.noteType, n.sequenceNum";
 
 	  -- Build Where Clause
 
