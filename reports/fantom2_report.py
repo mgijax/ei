@@ -45,7 +45,7 @@ def open_file(name):
 
 	i1 = string.find(sqlCmd, 'where')
 	i2 = string.find(sqlCmd, 'order')
-	fp.write('where ' + sqlCmd[i1 + 116:i2] + CRT*2)
+	fp.write('where ' + sqlCmd[i1 + 79:i2] + CRT*2)
 	return(fp)
 
 def close_file(fp):
