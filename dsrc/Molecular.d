@@ -1470,9 +1470,9 @@ rules:
 	  Clear.clearForms := clearAll;
           Clear.reset := true;
           send(Clear, 0);
-	  ClearForm.source_widget := top;
-	  ClearForm.form := "MolReferenceForm";
-	  send(ClearForm, 0);
+--	  ClearForm.source_widget := top;
+--	  ClearForm.form := "MolReferenceForm";
+--	  send(ClearForm, 0);
 	  send(SearchReference, 0);
 
 	  (void) reset_cursor(top);
