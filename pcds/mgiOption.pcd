@@ -487,9 +487,6 @@ Module: mgiOption
                         labelString = InterPro;
                       Group: User
                         defaultValue = 28;
-                        allowAdd = False;
-                        allowDelete = False;
-                        allowModify = False;
                     }
               }
         }
