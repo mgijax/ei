@@ -10,6 +10,12 @@
  * 
  * Note: We should be using lex to tokenize the strings, rather than
  * rolling-our-own. -gld 
+ *
+ * History:
+ *
+ * 10/24/2000 lec
+ *	- TR 2029; new MLC markup using () causes problem in getlocustaglist.
+ *	  logic must check for parens embedded within symbols
  */
 
 #include <mlced.h>
@@ -123,58 +129,76 @@ void Tag_destroy(tag_ptr tg);
 
 xrtlist getlocustaglist(char *txt, long len)
 {
-	int j,		/* index into parsed tag string */
-		c,		/* character currently being read */
-		st1,st2,st3,st4; 		/* state variables */
-	int lastchar;               /* last character seen */
+	int j,			/* index into parsed tag string */
+            c,			/* character currently being read */
+	    st1,st2,st3,st4; 	/* state variables */
+	int lastchar;          	/* last character seen */
 	char *tp=txt, 
-         tagtxt[MAXTAGLEN+1];
-    xrtlist taglist = createTagList(); 
+        tagtxt[MAXTAGLEN+1];
+
+    	xrtlist taglist = createTagList(); 
 
 	st1=st2=st3=st4=0;
-	
-	while((c = *tp++) != '\0') {
+	/* st1 = start of markup "\" */
+	/* st2 = tag markup "L" */
+	/* st3 = opening markup detected "(" */
+	/* st4 = paren within symbol detected */
+
+	while ((c = *tp++) != '\0') {
 		switch(c) {
 			case '\\':  /* start of markup */	
-                        st1 = 1;
-						j=0;        /* reset tag character count */
+                        	st1 = 1;
+				j=0;        /* reset tag character count */
 				break;
 			case 'L':   /* it's a tag markup */	
-                        if(st1 && lastchar == '\\') st2 = 1;
-						else if(st4) {
-							if(j < MAXTAGLEN)
-                                tagtxt[j++] = c;
-						}
+                        	if (st1 && lastchar == '\\') 
+					st2 = 1;
+				else if (st3) {
+					if (j < MAXTAGLEN)
+                                		tagtxt[j++] = c;
+					}
 				break;
 			case OMARKUPCHAR:   /* first delim */	
-                        if(st2 && lastchar == 'L') st4 = 1;
+                        	if (st2 && lastchar == 'L') 
+					st3 = 1;
+				else if (st3) {		/* paren within symbol detected */
+					st4 = 1;
+					if (j < MAXTAGLEN) 
+						tagtxt[j++] = c; /* accumulate the tag text */
+				}
 				break;
 			case CMARKUPCHAR:	/* closing delim */
-                        if(st4) {
-    						tag_ptr tr;
-							tagtxt[j] = '\0';
-							tr = createTag(); 
+				if (st4) {	/* closing paren within symbol detected */
+					if (j < MAXTAGLEN)
+						tagtxt[j++] = c; /* accumulate the tag text */
+					st4 = 0;	/* reset the flag */
+				}
 
-							if(!tr) {
-								XrtGearListRemoveAll(taglist); /* empty list*/
-								return taglist;
-							}
+                        	else if (st3) {
+    					tag_ptr tr;
+					tagtxt[j] = '\0';
+					tr = createTag(); 
 
-							tr->tagstr = tu_strdup(tagtxt);
-							st1=st2=st3=st4=0;  /* reset state machine */	
+					if(!tr) {
+						XrtGearListRemoveAll(taglist); /* empty list*/
+						return taglist;
+					}
 
-							/* insert tag on taglist */
-							if(!taginlist(tr,taglist)) 
-							    TagList_append(taglist,tr);
-							else 
-								Tag_destroy(tr); /* a duplicate */
-						}
+					tr->tagstr = tu_strdup(tagtxt);
+					st1=st2=st3=st4=0;  /* reset state machine */	
+
+					/* insert tag on taglist */
+					if(!taginlist(tr,taglist)) 
+					    TagList_append(taglist,tr);
+					else 
+						Tag_destroy(tr); /* a duplicate */
+					}
 				break;
 			default:
-						if(st4) {  /* then we are within a tag */
-							if(j < MAXTAGLEN)
-								tagtxt[j++] = c; /* accumulate the tag text */
-						}
+				if (st3) {  /* then we are within a tag */
+					if (j < MAXTAGLEN)
+						tagtxt[j++] = c; /* accumulate the tag text */
+					}
 				break;
 		}	
 		lastchar = c;
@@ -664,7 +688,7 @@ xrtlist check_tags(xrtlist taglist)
 {
 	char *tag;
 	tag_ptr tr;
-    xrtlist prob_list = XrtGearListCreate(sizeof(tag_check_ptr));
+        xrtlist prob_list = XrtGearListCreate(sizeof(tag_check_ptr));
 	tag_check_ptr tc;
 	int i,tagcount,reason;
 	xrtlist symlist;
