@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  06/17/2004
+--	- TR 5810; remove Field Type
+--
 -- lec	12/31/2002
 --	- TR 4362; default Not Specified for Field Type
 --	- added ability to search by Field Type or Pane Label
@@ -57,7 +60,6 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
-	CopyImagePane :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -66,7 +68,6 @@ devents:
 	PrepareSearch :local [];
 	Search :local [];
 	Select :local [];
-	SetOptions :local [];
 
 locals:
 	mgi : widget;		-- Main Application Widget
@@ -127,9 +128,6 @@ rules:
 	  tables.append(top->ImagePane->Table);
 
 	  accTable := top->mgiAccessionTable->Table;
-
-	  InitOptionMenu.option := top->FieldTypeMenu;
-	  send(InitOptionMenu, 0);
 	end does;
 
 --
@@ -290,7 +288,6 @@ rules:
           row : integer := 0;
           editMode : string;
           key : string;
-          ftKey : string;
           paneLabel : string;
 	  keyName : string := "paneKey";
 	  keyDeclared : boolean := false;
@@ -301,15 +298,16 @@ rules:
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
-            if (editMode = TBL_ROW_EMPTY) then
+	    -- we always need to add at least one image pane per assay
+
+            if (row > 0 and editMode = TBL_ROW_EMPTY) then
               break;
             end if;
  
             key := mgi_tblGetCell(table, row, table.imagePaneKey);
-            ftKey := mgi_tblGetCell(table, row, table.fieldTypeKey);
             paneLabel := mgi_tblGetCell(table, row, table.paneLabel);
  
-            if (editMode = TBL_ROW_ADD) then
+            if (editMode = TBL_ROW_EMPTY or editMode = TBL_ROW_ADD) then
 
               if (not keyDeclared) then
                 cmd := cmd + mgi_setDBkey(IMG_IMAGEPANE, NEWKEY, keyName);
@@ -321,12 +319,10 @@ rules:
               cmd := cmd + 
 		     mgi_DBinsert(IMG_IMAGEPANE, keyName) +
                      currentRecordKey + "," + 
-		     ftKey + "," +
 		     mgi_DBprstr(paneLabel) + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              update := "_FieldType_key = " + ftKey + "," +
-		        "paneLabel = " + mgi_DBprstr(paneLabel);
+              update := "paneLabel = " + mgi_DBprstr(paneLabel);
               cmd := cmd + mgi_DBupdate(IMG_IMAGEPANE, key, update);
             end if;
  
@@ -394,12 +390,6 @@ rules:
 	    where := where + "\nand n.imageNote like " + 
 		mgi_DBprstr(top->ImageNote->text.value);
 	    from_note := true;
-	  end if;
-
-	  value := mgi_tblGetCell(table, 0, table.fieldTypeKey);
-	  if (value.length > 0) then
-	    where := where + "\nand p._FieldType_key = " + value;
-	    from_pane := true;
 	  end if;
 
 	  value := mgi_tblGetCell(table, 0, table.paneLabel);
@@ -478,7 +468,7 @@ rules:
 	  cmd := "select * from IMG_Image_View where _Image_key = " + currentRecordKey + "\n" +
 		 "select imageNote from IMG_ImageNote where _Image_key = " + currentRecordKey + "\n" +
 		 "order by sequenceNum\n" +
-	         "select * from IMG_ImagePane_View where _Image_key = " + currentRecordKey + "\n";
+	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer;
@@ -506,9 +496,7 @@ rules:
 		top->ImageNote->text.value := top->ImageNote->text.value + mgi_getstr(dbproc, 1);
 	      elsif (results = 3) then
 		(void) mgi_tblSetCell(table, row, table.imagePaneKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.fieldTypeKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.fieldType, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      end if;
 	      row := row + 1;
@@ -518,12 +506,6 @@ rules:
 
 	  (void) dbclose(dbproc);
  
-	  -- Initialize option menus for row 0
-
-          SetOption.source_widget := top->FieldTypeMenu;
-          SetOption.value := mgi_tblGetCell(table, 0, table.fieldTypeKey);
-          send(SetOption, 0);
-
 	  -- Load Accession numbers
 
           LoadAcc.table := accTable;
@@ -537,68 +519,6 @@ rules:
           send(Clear, 0);
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- SetOptions
---
--- Each time a row is entered, set the option menus based on the values
--- in the appropriate column.
---
--- EnterCellCallback for table.
---
-
-	SetOptions does
-	  table : widget := SetOptions.source_widget;
-	  row : integer := SetOptions.row;
-
-          SetOption.source_widget := top->FieldTypeMenu;
-          SetOption.value := mgi_tblGetCell(table, row, table.fieldTypeKey);
-          send(SetOption, 0);
-	end does;
-
---
--- CopyImagePane
---
---	Copy the previous row's values to the current row
---	if current row value is blank and previous row value is not blank.
---
---	Only copy the Field Type
---
-
-	CopyImagePane does
-	  table : widget := CopyImagePane.source_widget;
-	  row : integer := CopyImagePane.row;
-	  column : integer := CopyImagePane.column;
-	  reason : integer := CopyImagePane.reason;
-
-          if (CopyImagePane.reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
-            return;
-          end if;
- 
-          if (mgi_tblGetCell(table, row, table.editMode) = TBL_ROW_DELETE) then
-            return;
-          end if;
- 
-	  -- Only copy Field Type
-
-	  if (column != table.fieldType) then
-	    return;
-	  end if;
-
-	  if (row > 0 and mgi_tblGetCell(table, row, column) = "" and
-	      mgi_tblGetCell(table, row - 1, column) != "") then
-	    mgi_tblSetCell(table, row, column, mgi_tblGetCell(table, row - 1, column));
-	    mgi_tblSetCell(table, row, table.fieldTypeKey, mgi_tblGetCell(table, row - 1, table.fieldTypeKey));
-	  elsif (mgi_tblGetCell(table, row, column) = "") then
-	    mgi_tblSetCell(table, row, column, "Not Specified");
-	    mgi_tblSetCell(table, row, table.fieldTypeKey, NOTSPECIFIED);
-	  end if;
-
-	  CommitTableCellEdit.source_widget := table;
-	  CommitTableCellEdit.row := row;
-	  CommitTableCellEdit.value_changed := true;
-	  send(CommitTableCellEdit, 0);
 	end does;
 
 --
