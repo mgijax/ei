@@ -1,3 +1,10 @@
+TAG: ei-10-0-4
+DATE: 12/10/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) fix VocAnnot.d; using wrong mgiTypeKey for notes, not display modified by/created by
+
 TAG: ei-10-0-3
 DATE: 12/04/2003
 STAFF: lec
