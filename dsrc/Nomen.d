@@ -201,9 +201,6 @@ rules:
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
-	  top->MarkerEventReasonMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_EVENTREASON) + 
-		" where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
 	  InitOptionMenu.option := top->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
 
