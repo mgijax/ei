@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 15 13:45:18 2004";
+      lastWritten = "Mon Nov 29 08:15:22 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2561,6 +2561,14 @@ Module: MGD
                               labelString = "Undetermined Problem Sequence";
                             Group: User
                               note = "Undetermined:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. The artifact may have been introduced during the cloning process, or may be due to unreliable sequence data.";
+                              noteWidget = MolNote;
+                          }
+                          {
+                            SequenceSource = AppendNotePush : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Sequence Source Difference";
+                            Group: User
+                              note = "The source of the material used to create this cDNA probe was different than \nthat used to create the Genbank sequence record.";
                               noteWidget = MolNote;
                           }
                     }
