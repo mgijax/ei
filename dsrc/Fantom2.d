@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 03/20/2002	lec
+--	- fixed "not" search
+--
 -- 03/07/2002	lec
 --	- added CopyToNote
 --	- modified VerifyFinalMGIID to only verify if the prefix "MGI:" exists
@@ -550,6 +553,7 @@ rules:
 	  orderByGBA : boolean := false;
 	  clusterSearch : boolean := false;
 	  searchNote : boolean := false;
+	  andClause : string := " and ";
 
 	  where1 : string := "where f._Fantom2_key = c1._Fantom2_key " +
 	       "and f._Fantom2_key = n._Fantom2_key";
@@ -596,178 +600,182 @@ rules:
 	    orderBy := orderBy + ", f._Fantom2_key, n.noteType, n.sequenceNum";
 	  end if;
 
+	  if (top->notSearch.set) then
+	    andClause := " and not ";
+	  end if;
+
 	  -- Build Where Clause
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqID);
 	  if (value.length > 0) then
-	    where := where + " and f.riken_seqid = " + value;
+	    where := where + andClause + " f.riken_seqid = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.locusID);
 	  if (value.length > 0) then
-	    where := where + " and f.riken_locusid = " + value;
+	    where := where + andClause + " f.riken_locusid = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqLength);
 	  if (value.length > 0) then
-	    where := where + " and f.seq_length = " + value;
+	    where := where + andClause + " f.seq_length = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.cloneID);
 	  if (value.length > 0) then
-	    where := where + " and f.riken_cloneid like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.riken_cloneid like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.genbankID);
 	  if (value.length > 0) then
-	    where := where + " and f.genbank_id like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.genbank_id like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.tigerID);
 	  if (value.length > 0) then
-	    where := where + " and f.tiger_tc like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.tiger_tc like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.unigeneID);
 	  if (value.length > 0) then
-	    where := where + " and f.unigene_id like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.unigene_id like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqNote);
 	  if (value.length > 0) then
-	    where := where + " and f.seq_note like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.seq_note like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.seqQuality);
 	  if (value.length > 0) then
-	    where := where + " and f.seq_quality like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.seq_quality like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.blastMGIIDs);
 	  if (value.length > 0) then
-	    where := where + " and f.blast_mgiIDs like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.blast_mgiIDs like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.blastGroupID);
 	  if (value.length > 0) then
-	    where := where + " and f.blast_groupID like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.blast_groupID like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalMGIID);
 	  if (value.length > 0) then
-	    where := where + " and f.final_mgiID like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.final_mgiID like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalSymbol1);
 	  if (value.length > 0) then
-	    where := where + " and f.final_symbol1 like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.final_symbol1 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalName1);
 	  if (value.length > 0) then
-	    where := where + " and f.final_name1 like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.final_name1 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalSymbol2);
 	  if (value.length > 0) then
-	    where := where + " and f.final_symbol2 like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.final_symbol2 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalName2);
 	  if (value.length > 0) then
-	    where := where + " and f.final_name2 like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.final_name2 like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.locusStatus);
 	  if (value.length > 0) then
-	    where := where + " and f.riken_locusStatus like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.riken_locusStatus like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.mgiStatus);
 	  if (value.length > 0) then
-	    where := where + " and f.mgi_statusCode like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.mgi_statusCode like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.mgiNumber);
 	  if (value.length > 0) then
-	    where := where + " and f.mgi_numberCode like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.mgi_numberCode like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.rikenNumber);
 	  if (value.length > 0) then
-	    where := where + " and f.riken_numberCode like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.riken_numberCode like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.cds);
 	  if (value.length > 0) then
-	    where := where + " and f.cds_category = " + value;
+	    where := where + andClause + " f.cds_category = " + value;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.clusterAnal);
 	  if (value.length > 0) then
-	    where := where + " and f.cluster_analysis like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.cluster_analysis like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.geneNameCuration);
 	  if (value.length > 0) then
-	    where := where + " and f.gene_name_curation like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.gene_name_curation like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.cdsGOCuration);
 	  if (value.length > 0) then
-	    where := where + " and f.cds_go_curation like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.cds_go_curation like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.finalCluster);
 	  if (value.length > 0) then
-	    where := where + " and f.final_cluster like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.final_cluster like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.nomenEvent);
 	  if (value.length > 0) then
-	    where := where + " and f.nomen_event like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.nomen_event like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaMGIID);
 	  if (value.length > 0) then
-	    where := where + " and c1.gba_mgiID like " + mgi_DBprstr(value);
+	    where := where + andClause + " c1.gba_mgiID like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaSymbol);
 	  if (value.length > 0) then
-	    where := where + " and c1.gba_symbol like " + mgi_DBprstr(value);
+	    where := where + andClause + " c1.gba_symbol like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaName);
 	  if (value.length > 0) then
-	    where := where + " and c1.gba_name like " + mgi_DBprstr(value);
+	    where := where + andClause + " c1.gba_name like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.createdBy);
 	  if (value.length > 0) then
-	    where := where + " and f.createdBy like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.createdBy like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.modifiedBy);
 	  if (value.length > 0) then
-	    where := where + " and f.modifiedBy like " + mgi_DBprstr(value);
+	    where := where + andClause + " f.modifiedBy like " + mgi_DBprstr(value);
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.nomenNote);
 	  if (value.length > 0) then
-	    where := where + " and sn.note like " + mgi_DBprstr(value);
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
 	    searchNote := true;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.rikenNote);
 	  if (value.length > 0) then
-	    where := where + " and sn.note like " + mgi_DBprstr(value);
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
 	    searchNote := true;
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.curatorNote);
 	  if (value.length > 0) then
-	    where := where + " and sn.note like " + mgi_DBprstr(value);
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
 	    searchNote := true;
 	  end if;
 
@@ -838,12 +846,7 @@ rules:
 	  -- else, normal processing
 
           elsif (where.length > 0) then
-	    if (top->notSearch.set) then
-              where := " not (" + where->substr(5, where.length) + ")";
-            else
-	      where := where->substr(5, where.length);
-	    end if;
-
+	    where := where->substr(5, where.length);
 	    where := where1 + " and" + where;
 	  else
 	    where := where1;
