@@ -12,6 +12,8 @@ CopyInSituRow [];					-- Copy Result Rows
 
 InSituResultCancel [];					-- Cancel Dialog
 
+InSituResultExit [];					-- Exit Dialog
+
 InSituResultCommit [quit : boolean := false;];		-- Commit Edits
 
 InSituResultInit [source_widget : widget;];		-- Initialize dialog

@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Apr 13 12:07:11 2001";
+      lastWritten = "Tue Jul 24 12:49:39 2001";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -803,11 +803,13 @@ Module: mgiDialog
                       OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:GenotypeCommit";
+                        labelString = "Save Edits\nand Close";
                     }
                     {
                       Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "D:GenotypeCancel";
+                        labelString = Close;
                     }
               }
         }
@@ -889,6 +891,7 @@ Module: mgiDialog
             dialogStyle = dialog_modeless;
             rubberPositioning = False;
             resizePolicy = resize_any;
+            closeWindowCallback = "D:InSituResultCancel";
           Group: Control
             vip_x = 80;
             vip_y = 1405;
@@ -964,6 +967,7 @@ Module: mgiDialog
                       OK = DialogPush;
                       Group: Widget
                         activateCallback = "D:InSituResultCommit(quit = true)";
+                        labelString = "Save Edits\nand Close";
                     }
                     {
                       Save = DialogPush : mgiDialog;
@@ -975,6 +979,7 @@ Module: mgiDialog
                       Cancel = DialogPush;
                       Group: Widget
                         activateCallback = "D:InSituResultCancel";
+                        labelString = Close;
                     }
               }
               {
@@ -1029,6 +1034,12 @@ Module: mgiDialog
                                 }
                           }
                     }
+              }
+              Popups:
+              {
+                ExitDialog = ExitDialog : mgiDialog;
+                Group: Widget
+                  okCallback = "D:InSituResultExit";
               }
         }
         {

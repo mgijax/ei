@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	07/24/2001
+--	- TR 2767; ExitDialog added; InSituResultExit added
+--
 -- lec	01/16/2001
 --	- TR 2194; StrengthMenu has no default (Modify event); added call to VerifyTable
 --
@@ -147,8 +150,22 @@ rules:
 --
 
 	InSituResultCancel does
-	  top.managed := false;
+	  if (top->Results->Table.modified) then
+	    top->ExitDialog.managed := true;    
+	  else
+	    send(InSituResultExit, 0);
+	  end if;
         end does;
+
+--
+-- InSituResultExit
+--
+-- Calls Lib.d's Exit routine.  
+-- 
+
+	InSituResultExit does
+	  top.managed := false;
+	end does;
 
 --
 -- InSituResultCommit
