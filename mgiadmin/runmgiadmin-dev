@@ -31,10 +31,7 @@ LD_LIBRARY_PATH=$SYBASE/lib:$TeleUSE/lib:$OPENWINHOME/lib:/usr/lib:/usr/ucblib
 PATH=$PATH:$OPENWINHOME/bin:$TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin
 
 # determine script's installation directory and cd to it.
-BASENAME=`basename $0`; NOTBASENAME=`echo $0 | sed "s/$BASENAME$//"`
-[ "$NOTBASENAME" != "" ] && {
-   cd $NOTBASENAME
-}
+cd `dirname $0`
  
 # export the root installation directory
 PWD=`pwd`
