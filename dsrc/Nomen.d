@@ -499,7 +499,6 @@ rules:
 
 	Modify does
 	  table : widget := top->Reference->Table;
-	  value : string;
 	  error : boolean := false;
 
 	  if (top->MarkerStatusMenu.menuHistory.labelString != STATUS_RESERVED and
@@ -519,19 +518,19 @@ rules:
 	      top->ChromosomeMenu.menuHistory.searchValue != "%" and
               top->ChromosomeMenu.menuHistory.defaultValue = "W") then
             StatusReport.source_widget := top;
-            StatusReport.message := "This Chromosome value is no longer valid.\n";
+            StatusReport.message := "This Chromosome value is no longer valid.";
             send(StatusReport);
 	    error := true;
 	  end if;
 
-	  if (not (global_login = "mgo_dbo" or
+	  if (not (global_login = "mgd_dbo" or
 	           global_login = "ljm" or global_login = "lmm" or 
 		   global_login = "cml" or global_login = "rjc" or
 		   global_login = "bobs" or global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.labelString != STATUS_PENDING) then
             StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Status field.\n";
+            StatusReport.message := "You do not have permission to modify the Status field.";
             send(StatusReport);
 	    error := true;
 	  end if;
@@ -540,28 +539,10 @@ rules:
 	      (top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTOFF or
 	       top->MarkerStatusMenu.menuHistory.labelString = STATUS_BROADCASTINT)) then
             StatusReport.source_widget := top;
-            StatusReport.message := "You cannot modify status to Broadcast.\n";
+            StatusReport.message := "You cannot change the status to Broadcast.";
             send(StatusReport);
 	    error := true;
 	  end if;
-
-	  table := top->ModificationHistory->Table;
-	  value := mgi_tblGetCell(table, table.createdBy, table.editMode);
-	  if (value = TBL_ROW_MODIFY) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Created By or Date field.\n";
-            send(StatusReport);
-	    error := true;
-          end if;
-
-	  table := top->ModificationHistory->Table;
-	  value := mgi_tblGetCell(table, table.broadcastBy, table.editMode);
-	  if (value = TBL_ROW_MODIFY) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "You do not have permission to modify the Broadcast By or Date field.\n";
-            send(StatusReport);
-	    error := true;
-          end if;
 
 	  if (error) then
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
