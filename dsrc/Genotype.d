@@ -448,7 +448,7 @@ rules:
             end if;
  
 	    if (not reordering) then
-	      localCmd := localCmd + "exec GXD_processGenotypeOrder " + key + "\n";
+	      localCmd := localCmd + "exec GXD_orderGenotypes " + key + "\n";
 	    end if;
 
             row := row + 1;
