@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 21 12:58:26 2002";
+      lastWritten = "Wed Oct 23 12:28:58 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -1312,6 +1312,9 @@ Module: MGD
                                                     EC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NSequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -1319,9 +1322,6 @@ Module: MGD
                                                   }
                                                   {
                                                     IMAGE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -2408,6 +2408,11 @@ Module: MGD
                                                     EC = AccToggle;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -2417,11 +2422,6 @@ Module: MGD
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -2898,6 +2898,12 @@ Module: MGD
                                   EC = AccToggle;
                                 }
                                 {
+                                  NSequence = AccToggle;
+                                  Group: Widget
+                                    set = True;
+                                    managed = True;
+                                }
+                                {
                                   SWISSPROT = AccToggle;
                                 }
                                 {
@@ -2908,12 +2914,6 @@ Module: MGD
                                 {
                                   IMAGE = AccToggle;
                                   Group: Widget
-                                    managed = True;
-                                }
-                                {
-                                  NSequence = AccToggle;
-                                  Group: Widget
-                                    set = True;
                                     managed = True;
                                 }
                                 {
@@ -5240,9 +5240,33 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -5389,6 +5413,9 @@ Module: MGD
                                                     EC = AccToggle;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -5396,9 +5423,6 @@ Module: MGD
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -6726,20 +6750,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     EC = AccToggle;
                                                   }
                                                   {
-                                                    SWISSPROT = AccToggle;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                     Group: User
                                                       private = True;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                             }
                                       }
@@ -6812,6 +6832,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     EC = AccToggle;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = False;
+                                                    Group: User
+                                                      private = True;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -6819,13 +6846,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = False;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8332,6 +8352,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -8341,11 +8366,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -8542,6 +8562,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -8549,9 +8572,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;

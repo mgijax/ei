@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 21 12:58:53 2002";
+      lastWritten = "Wed Oct 23 12:28:26 2002";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -553,6 +553,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -560,11 +565,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;

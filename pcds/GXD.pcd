@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 21 12:57:40 2002";
+      lastWritten = "Wed Oct 23 12:28:32 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -689,6 +689,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EC = AccToggle;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -696,9 +699,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;
@@ -1836,6 +1836,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EC = AccToggle;
                                                   }
                                                   {
+                                                    NSequence = AccToggle;
+                                                  }
+                                                  {
                                                     SWISSPROT = AccToggle;
                                                   }
                                                   {
@@ -1843,9 +1846,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
                                                   }
                                                   {
                                                     LocusLink = AccToggle : mgiOption;

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 21 12:57:34 2002";
+      lastWritten = "Wed Oct 23 12:28:24 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -116,6 +116,13 @@ Module: mgiOption
                         defaultValue = 8;
                     }
                     {
+                      NSequence = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Nucleotide Sequence";
+                      Group: User
+                        defaultValue = 9;
+                    }
+                    {
                       SWISSPROT = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "SWISS-PROT";
@@ -133,13 +140,6 @@ Module: mgiOption
                         labelString = "I.M.A.G.E.";
                       Group: User
                         defaultValue = 17;
-                    }
-                    {
-                      NSequence = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Nucleotide Sequence";
-                      Group: User
-                        defaultValue = 9;
                     }
                     {
                       LocusLink = AccToggle : mgiOption;
