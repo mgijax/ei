@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 04/04/2002	lec
+--	- added CopyCloneToFinal
+--
 -- 03/27/2002	lec
 --	- added PasteDoneCuration
 --
@@ -40,6 +43,7 @@ devents:
 		   launchedFrom : widget;];		-- Initialize form
 	ClearFantom2 :local [reset : boolean := false;];-- Local Clear 
 	CopyColumn :local [];				-- Copies Select Column to all Rows
+	CopyClonetoFinal :local [];			-- Copies Clone ID field to Final MGI ID
 	CopyGBAtoFinal :local [];			-- Copies GBA MGI ID fields to Final
 	CopyToNote :local [];				-- Copies Option to Nomen Note
 	Exit :local [];					-- Destroys D module instance & cleans up
@@ -1142,6 +1146,23 @@ rules:
           (void) reset_cursor(top);
 	end does;
 
+--
+-- CopyClonetoFinal
+--
+--
+ 
+        CopyClonetoFinal does
+	  row : integer := mgi_tblGetCurrentRow(fantom);
+
+	  (void) mgi_tblSetCell(fantom, row, fantom.finalMGIID, mgi_tblGetCell(fantom, row, fantom.cloneID));
+
+	  CommitTableCellEdit.source_widget := fantom;
+	  CommitTableCellEdit.row := row;
+	  CommitTableCellEdit.value_changed := true;
+	  send(CommitTableCellEdit, 0);
+	end does;
+
+--
 --
 -- CopyGBAtoFinal
 --
