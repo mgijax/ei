@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 08/28/2002	lec
+--	- TR 4025; pre-load supplement to table
+--
 -- 04/04/2002	lec
 --	- added CopyCloneToFinal
 --
@@ -229,6 +232,13 @@ rules:
 	  clusterAnal : string;
 	  geneNameCuration : string;
 	  cdsGOCuration : string;
+	  clusterEvidence : string;
+	  nonmgi_mgiID : string;
+	  nonmgi_rep : string;
+	  approvedSymbol : string;
+	  approvedName : string;
+	  homologyNote : string;
+	  chromosome : string;
 
 	  (void) busy_cursor(top);
 
@@ -272,6 +282,13 @@ rules:
 	    clusterAnal := mgi_tblGetCell(fantom, row, fantom.clusterAnal);
 	    geneNameCuration := mgi_tblGetCell(fantom, row, fantom.geneNameCuration);
 	    cdsGOCuration := mgi_tblGetCell(fantom, row, fantom.cdsGOCuration);
+	    clusterEvidence := mgi_tblGetCell(fantom, row, fantom.clusterEvidence);
+	    nonmgi_mgiID := mgi_tblGetCell(fantom, row, fantom.nonmgi_mgiID);
+	    nonmgi_rep := mgi_tblGetCell(fantom, row, fantom.nonmgi_rep);
+	    approvedSymbol := mgi_tblGetCell(fantom, row, fantom.approvedSymbol);
+	    approvedName := mgi_tblGetCell(fantom, row, fantom.approvedName);
+	    homologyNote := mgi_tblGetCell(fantom, row, fantom.homologyNote);
+	    chromosome := mgi_tblGetCell(fantom, row, fantom.chromosome);
 
 	    if (seqID.length = 0) then
 	      seqID := "-1";
@@ -393,6 +410,30 @@ rules:
 	      gbaName := "zilch";
 	    end if;
 
+	    if (clusterEvidence.length = 0) then
+	      clusterEvidence := "zilch";
+	    end if;
+
+	    if (nonmgi_mgiID.length = 0) then
+	      nonmgi_mgiID := "zilch";
+	    end if;
+
+	    if (nonmgi_rep.length = 0) then
+	      nonmgi_rep := "zilch";
+	    end if;
+
+	    if (approvedSymbol.length = 0) then
+	      approvedSymbol := "zilch";
+	    end if;
+
+	    if (approvedName.length = 0) then
+	      approvedName := "zilch";
+	    end if;
+
+	    if (chromosome.length = 0) then
+	      chromosome := "zilch";
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
               key := KEYNAME;
 	      cmd := mgi_setDBkey(MGI_FANTOM2, NEWKEY, KEYNAME) +
@@ -424,6 +465,12 @@ rules:
 		     mgi_DBprstr(finalSymbol2) + "," +
 		     mgi_DBprstr(finalName2) + "," +
 		     mgi_DBprstr(nomenEvent) + "," +
+		     mgi_DBprstr(clusterEvidence) + "," +
+		     mgi_DBprstr(nonmgi_mgiID) + "," +
+		     mgi_DBprstr(nonmgi_rep) + "," +
+		     mgi_DBprstr(approvedSymbol) + "," +
+		     mgi_DBprstr(approvedName) + "," +
+		     mgi_DBprstr(chromosome) + "," +
 		     mgi_DBprstr(global_login) + "," +
 		     mgi_DBprstr(global_login) + ")\n";
 
@@ -462,6 +509,16 @@ rules:
 	      send(ModifyNotes, 0);
 	      cmd := cmd + fantom.sqlCmd;
 
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := "@" + KEYNAME;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.homologyNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "H";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
             elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "riken_seqid = " + seqID + "," +
 		     "riken_cloneid = " + mgi_DBprstr(cloneID) + "," +
@@ -490,6 +547,12 @@ rules:
 		     "final_symbol2 = " + mgi_DBprstr(finalSymbol2) + "," +
 		     "final_name2 = " + mgi_DBprstr(finalName2) + "," +
 		     "nomen_event = " + mgi_DBprstr(nomenEvent) + "," +
+		     "cluster_evidence = " + mgi_DBprstr(clusterEvidence) + "," +
+		     "nonmgi_mgiID = " + mgi_DBprstr(nonmgi_mgiID) + "," +
+		     "nonmgi_rep = " + mgi_DBprstr(nonmgi_rep) + "," +
+		     "approved_symbol = " + mgi_DBprstr(approvedSymbol) + "," +
+		     "approved_name = " + mgi_DBprstr(approvedName) + "," +
+		     "chromosome = " + mgi_DBprstr(chromosome) + "," +
 		     "modifiedBy = " + mgi_DBprstr(global_login);
               cmd := cmd + mgi_DBupdate(MGI_FANTOM2, key, set);
 
@@ -526,6 +589,16 @@ rules:
 	      ModifyNotes.column := fantom.curatorNote;
 	      ModifyNotes.allowBlank := true;
 	      ModifyNotes.noteType := "C";
+	      send(ModifyNotes, 0);
+	      cmd := cmd + fantom.sqlCmd;
+
+	      ModifyNotes.source_widget := fantom;
+	      ModifyNotes.tableID := MGI_FANTOM2NOTES;
+	      ModifyNotes.key := key;
+	      ModifyNotes.row := row;
+	      ModifyNotes.column := fantom.homologyNote;
+	      ModifyNotes.allowBlank := true;
+	      ModifyNotes.noteType := "H";
 	      send(ModifyNotes, 0);
 	      cmd := cmd + fantom.sqlCmd;
 
@@ -743,6 +816,36 @@ rules:
 	    where := where + andClause + " f.nomen_event like " + mgi_DBprstr(value);
 	  end if;
 
+	  value := mgi_tblGetCell(fantom, row, fantom.clusterEvidence);
+	  if (value.length > 0) then
+	    where := where + andClause + " f.cluster_evidence like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.nonmgi_mgiID);
+	  if (value.length > 0) then
+	    where := where + andClause + " f.nonmgi_mgiID like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.nonmgi_rep);
+	  if (value.length > 0) then
+	    where := where + andClause + " f.nonmgi_rep like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.approvedSymbol);
+	  if (value.length > 0) then
+	    where := where + andClause + " f.approved_symbol like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.approvedName);
+	  if (value.length > 0) then
+	    where := where + andClause + " f.approved_name like " + mgi_DBprstr(value);
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, row, fantom.chromosome);
+	  if (value.length > 0) then
+	    where := where + andClause + " f.chromosome like " + mgi_DBprstr(value);
+	  end if;
+
 	  value := mgi_tblGetCell(fantom, row, fantom.gbaMGIID);
 	  if (value.length > 0) then
 	    where := where + andClause + " c1.gba_mgiID like " + mgi_DBprstr(value);
@@ -781,6 +884,12 @@ rules:
 	  end if;
 
 	  value := mgi_tblGetCell(fantom, 0, fantom.curatorNote);
+	  if (value.length > 0) then
+	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
+	    searchNote := true;
+	  end if;
+
+	  value := mgi_tblGetCell(fantom, 0, fantom.homologyNote);
 	  if (value.length > 0) then
 	    where := where + andClause + " sn.note like " + mgi_DBprstr(value);
 	    searchNote := true;
@@ -898,6 +1007,7 @@ rules:
 	  nomennote : string;
 	  rikennote : string;
 	  curatornote : string;
+	  homologynote : string;
 	  fantomKey : string := "-1";
 	  gbaMGIID : string := "-1";
 
@@ -918,23 +1028,25 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      noteType := mgi_getstr(dbproc, 40);
-	      note := mgi_getstr(dbproc, 41);
+	      noteType := mgi_getstr(dbproc, 46);
+	      note := mgi_getstr(dbproc, 47);
 
-	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 35) != gbaMGIID) then
+	      if (mgi_getstr(dbproc, 1) != fantomKey or mgi_getstr(dbproc, 41) != gbaMGIID) then
 
 		if (fantomKey != "-1") then
 	          (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
 	          (void) mgi_tblSetCell(fantom, row, fantom.rikenNote, rikennote);
 	          (void) mgi_tblSetCell(fantom, row, fantom.curatorNote, curatornote);
+	          (void) mgi_tblSetCell(fantom, row, fantom.homologyNote, homologynote);
 		end if;
 
 		row := row + 1;
 	        fantomKey := mgi_getstr(dbproc, 1);
-	        gbaMGIID := mgi_getstr(dbproc, 35);
+	        gbaMGIID := mgi_getstr(dbproc, 41);
 		nomennote := "";
 		rikennote := "";
 		curatornote := "";
+		homologynote := "";
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.row, (string) (row + 1));
 	        (void) mgi_tblSetCell(fantom, row, fantom.fantomKey, fantomKey);
@@ -967,15 +1079,21 @@ rules:
 	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 28));
 	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 29));
 	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 30));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 31));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 33));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 32));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 34));
+	        (void) mgi_tblSetCell(fantom, row, fantom.clusterEvidence, mgi_getstr(dbproc, 31));
+	        (void) mgi_tblSetCell(fantom, row, fantom.nonmgi_mgiID, mgi_getstr(dbproc, 32));
+	        (void) mgi_tblSetCell(fantom, row, fantom.nonmgi_rep, mgi_getstr(dbproc, 33));
+	        (void) mgi_tblSetCell(fantom, row, fantom.approvedSymbol, mgi_getstr(dbproc, 34));
+	        (void) mgi_tblSetCell(fantom, row, fantom.approvedName, mgi_getstr(dbproc, 35));
+	        (void) mgi_tblSetCell(fantom, row, fantom.chromosome, mgi_getstr(dbproc, 36));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 37));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 39));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 38));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 40));
 
 		-- data from cache tables
 	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, gbaMGIID);
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 36));
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 37));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 42));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 43));
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.editMode, TBL_ROW_NOCHG);
 
@@ -985,6 +1103,8 @@ rules:
 		  rikennote := note;
 		elsif (noteType = "C") then
 		  curatornote := note;
+		elsif (noteType = "H") then
+		  homologynote := note;
 		end if;
 	      else		-- continuation of note
 		if (noteType = "N") then
@@ -993,6 +1113,8 @@ rules:
 		  rikennote := rikennote + note;
 		elsif (noteType = "C") then
 		  curatornote := curatornote + note;
+		elsif (noteType = "H") then
+		  homologynote := homologynote + note;
 		end if;
 	      end if;
             end while;
@@ -1008,6 +1130,7 @@ rules:
 	    (void) mgi_tblSetCell(fantom, row, fantom.nomenNote, nomennote);
 	    (void) mgi_tblSetCell(fantom, row, fantom.rikenNote, rikennote);
 	    (void) mgi_tblSetCell(fantom, row, fantom.curatorNote, curatornote);
+	    (void) mgi_tblSetCell(fantom, row, fantom.homologyNote, homologynote);
 
 	    send(SetBackground, 0);
 
