@@ -504,7 +504,7 @@ rules:
 	  where := "";
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "m";
+	  QueryModificationHistory.tag := "s";
 	  send(QueryModificationHistory, 0);
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
