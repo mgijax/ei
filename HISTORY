@@ -1,3 +1,10 @@
+TAG: ei-5-0-5
+DATE: 07/12/2001
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) Created "runapp"; making mgd/runmgd, mgd/Configuration, etc. obsolete
+
 TAG: ei-5-0-1, ei-5-0-2, ei-5-0-3, ei-5-0-4
 DATE: 07/11/2001
 STAFF: lec
