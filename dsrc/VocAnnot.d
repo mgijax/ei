@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 02/26/2003 lec
+--	- TR 4562; added EditTerm toggle
+--
 -- 02/25/2003 lec
 --	- TR 4553; added created by/date to table
 --
@@ -288,6 +291,7 @@ rules:
 	  keyDeclared : boolean := false;
 	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
+	  editTerm : boolean := false;
  
           if (not top.allowEdit) then
             return;
@@ -308,6 +312,8 @@ rules:
 	    (void) reset_cursor(top);
 	    return;
 	  end if;
+
+	  editTerm := top->Annotation->EditTerm.set;
 
           -- Process while non-empty rows are found
  
@@ -396,7 +402,13 @@ rules:
 		       mgi_DBprstr(notes) + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
+
 	      set := "isNot = " + notKey;
+
+	      if (editTerm) then
+		set := set + ",_Term_key = " + termKey;
+	      end if;
+
               cmd := cmd + mgi_DBupdate(VOC_ANNOT, annotKey, set);
 
 	      set := "_EvidenceTerm_key = " + evidenceKey + "," +
