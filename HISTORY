@@ -1,3 +1,10 @@
+TAG: ei-8-0-15
+DATE: 11/26/2002
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) Fantom2; nonmgi_mgiID changed to load_mgiID
+
 TAG: ei-8-0-14
 DATE: 11/22/2002
 STAFF: lec
