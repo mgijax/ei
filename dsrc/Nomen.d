@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 03/16/2000
+--	- TR 1291
+--
 -- lec 12/06/1999
 --	- TR 830; eliminate email report
 --
@@ -60,7 +63,7 @@
 --	- add BroadcastInit, Broadcast, BroadcastEnd
 --
 -- lec  01/21/1999 - 01/22/1999
---	- added NomenUserMenu; multiple Notes
+--	- added SubmittedByMenu; multiple Notes
 --
 -- lec  01/13/1999
 --	- fixed query for BroadcastDate
@@ -98,10 +101,8 @@ devents:
 	ClearNomen :local [clearKeys : boolean := true;];
 
 	-- Process Broadcast Events
-	BroadcastChangeFileNames :translation [];
-	BroadcastInit :local [];
 	Broadcast :local [];
-	BroadcastEnd :local [source_widget : widget;];
+	BroadcastEnd :local [];
 
 	Modify :local [];
 	ModifyGeneFamily :local [];
@@ -113,9 +114,10 @@ devents:
 	Reset :local [];
 
 	Search :local [];
-	SearchDuplicateProposed :local [];
-	SearchDuplicateApproved :local [];
 	Select :local [item_position : integer;];
+	SetOptions :local [source_widget : widget;
+			   row : integer;
+			   reason : integer;];
 
 	VerifyNomenSymbol :translation [];
 
@@ -185,15 +187,21 @@ rules:
 	  accTable := top->mgiAccessionTable->Table;
           accRefTable := top->AccessionReference->Table;
 
-	  -- Dynamically create Marker Event, Status, Type and Chromosome Menus
+	  -- Dynamically create Marker Event, Event Reason, Status, 
+	  -- Type and Chromosome Menus
 
 	  top->MarkerEventMenu.subMenuId.sql := 
 		"select * from " + mgi_DBtable(MRK_EVENT) + " order by " + mgi_DBkey(MRK_EVENT);
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
+	  top->MarkerEventReasonMenu.subMenuId.sql := 
+		"select * from " + mgi_DBtable(MRK_EVENTREASON) + " order by " + mgi_DBkey(MRK_EVENTREASON);
+	  InitOptionMenu.option := top->MarkerEventReasonMenu;
+	  send(InitOptionMenu, 0);
+
 	  top->MarkerStatusMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_STATUS) + " order by " + mgi_DBkey(MRK_STATUS);
+		"select * from " + mgi_DBtable(MRK_NOMENSTATUS) + " order by " + mgi_DBkey(MRK_NOMENSTATUS);
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
@@ -203,9 +211,14 @@ rules:
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
-	  top->NomenUserMenu.subMenuId.sql := 
+	  top->SubmittedByMenu.subMenuId.sql := 
 		"select * from " + mgi_DBtable(MRK_NOMEN_USER_VIEW) + " order by status, name";
-	  InitOptionMenu.option := top->NomenUserMenu;
+	  InitOptionMenu.option := top->SubmittedByMenu;
+	  send(InitOptionMenu, 0);
+
+	  top->BroadcastByMenu.subMenuId.sql := 
+		"select * from " + mgi_DBtable(MRK_NOMEN_USER_VIEW) + " order by status, name";
+	  InitOptionMenu.option := top->BroadcastByMenu;
 	  send(InitOptionMenu, 0);
 
 	  top->GeneFamilyList.cmd :=
@@ -232,15 +245,14 @@ rules:
 
 	  -- List of all Table widgets used in form
 
-	  tables.append(top->Other->Table);
+	  tables.append(top->OtherReference->Table);
 	  tables.append(top->Reference->Table);
 	  tables.append(top->GeneFamily->Table);
-	  tables.append(top->Marker->Table);
 	  tables.append(top->AccessionReference->Table);
 
-	  reserved := mgi_sql1("select " + mgi_DBkey(MRK_STATUS) + 
-		" from " + mgi_DBtable(MRK_STATUS) +
-		" where " + mgi_DBcvname(MRK_STATUS) + " = 'Reserved'");
+	  reserved := mgi_sql1("select " + mgi_DBkey(MRK_NOMENSTATUS) + 
+		" from " + mgi_DBtable(MRK_NOMENSTATUS) +
+		" where " + mgi_DBcvname(MRK_NOMENSTATUS) + " = 'Reserved'");
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -282,13 +294,6 @@ rules:
 	  suid : string := "";
 	  table : widget := top->Reference->Table;
 
-          if (top->MarkerStatusMenu.menuHistory.labelString = "Broadcast") then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Cannot select status of 'Broadcast'.";
-            send(StatusReport);
-            return;
-          end if;
- 
 	  if (top->MarkerStatusMenu.menuHistory.defaultValue != reserved and
               (mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_EMPTY or
                mgi_tblGetCell(table, 0, table.editMode) = TBL_ROW_DELETE)) then
@@ -302,28 +307,24 @@ rules:
 	    return;
 	  end if;
 
-          if (top->ChromosomeMenu.menuHistory.defaultValue = "W" or
-              top->ChromosomeMenu.menuHistory.defaultValue = "RE") then
+          if (top->ChromosomeMenu.menuHistory.defaultValue = "W") then
             StatusReport.source_widget := top;
-            StatusReport.message := "Invalid Chromosome value for Nomen record.\n" +
-				    "Use Event field to designate a Withdrawn or Reserved symbol.";
+            StatusReport.message := "This Chromosome value is no longer valid.\n";
             send(StatusReport);
 	    return;
 	  end if;
 
-	  -- If no Submitted User selected, try to use global_login value
+	  -- Use global_login value to set Submitted By
 
-	  if (top->NomenUserMenu.menuHistory.defaultValue = "%") then
-	    suid := mgi_sql1("select suid from " + getenv("NOMEN") + "..MRK_Nomen_User_View where name = " 
-			+ mgi_DBprstr(global_login));
-            SetOption.source_widget := top->NomenUserMenu;
-            SetOption.value := suid;
-            send(SetOption, 0);
-	  else
-	    suid := top->NomenUserMenu.menuHistory.defaultValue;
-	  end if;
+	  suid := mgi_sql1("select suid from " + 
+		mgi_DBtable(MRK_NOMEN_USER_VIEW) + 
+		" where name = " 
+		+ mgi_DBprstr(global_login));
+          SetOption.source_widget := top->SubmittedByMenu;
+          SetOption.value := suid;
+          send(SetOption, 0);
 
-	  if (suid = "%" or suid = "") then
+	  if (suid = "") then
             StatusReport.source_widget := top;
             StatusReport.message := "Invalid Editor: " + global_login + "\n";
             send(StatusReport);
@@ -343,13 +344,12 @@ rules:
                  top->MarkerTypeMenu.menuHistory.defaultValue + "," +
                  top->MarkerStatusMenu.menuHistory.defaultValue + "," +
                  top->MarkerEventMenu.menuHistory.defaultValue + "," +
-                 suid + "," +
-	         mgi_DBprstr(top->ProposedSymbol->text.value) + "," +
-	         mgi_DBprstr(top->ProposedName->text.value) + "," +
-	         mgi_DBprstr(top->ApprovedSymbol->text.value) + "," +
-	         mgi_DBprstr(top->ApprovedName->text.value) + "," +
+                 top->MarkerEventReasonMenu.menuHistory.defaultValue + "," +
+                 suid + ",NULL," +
+	         mgi_DBprstr(top->Symbol->text.value) + "," +
+	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
-	         mgi_DBprstr(top->HumanSymbol->text.value) + "," +
+	         mgi_DBprstr(top->HumanSymbol->text.value) + ",NULL," +
 	         mgi_DBprstr(top->StatusNotes->text.value) + "," +
 	         mgi_DBprstr(top->BroadcastDate->text.value) + ")\n";
 
@@ -388,7 +388,7 @@ rules:
 	  AddSQL.tableID := MRK_NOMEN;
           AddSQL.cmd := cmd;
           AddSQL.list := top->QueryList;
-          AddSQL.item := top->ApprovedSymbol->text.value;
+          AddSQL.item := top->Symbol->text.value;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
@@ -454,21 +454,11 @@ rules:
 	    return;
 	  end if;
 
-          if (top->MarkerStatusMenu.menuHistory.modified and
-              top->MarkerStatusMenu.menuHistory.labelString = "Broadcast") then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Cannot select status of 'Broadcast'.";
-            send(StatusReport);
-            return;
-          end if;
- 
           if (top->ChromosomeMenu.menuHistory.modified and
 	      top->ChromosomeMenu.menuHistory.searchValue != "%" and
-              (top->ChromosomeMenu.menuHistory.defaultValue = "W" or
-               top->ChromosomeMenu.menuHistory.defaultValue = "RE")) then
+              top->ChromosomeMenu.menuHistory.defaultValue = "W") then
             StatusReport.source_widget := top;
-            StatusReport.message := "Invalid Chromosome value for Nomen record.\n" +
-				    "Use Event field to designate a Withdrawn or Reserved symbol.";
+            StatusReport.message := "This Chromosome value is no longer valid.\n";
             send(StatusReport);
 	    return;
 	  end if;
@@ -481,6 +471,11 @@ rules:
           if (top->MarkerEventMenu.menuHistory.modified and
 	      top->MarkerEventMenu.menuHistory.searchValue != "%") then
             set := set + "_Marker_Event_key = "  + top->MarkerEventMenu.menuHistory.defaultValue + ",";
+          end if;
+
+          if (top->MarkerEventReasonMenu.menuHistory.modified and
+	      top->MarkerEventReasonMenu.menuHistory.searchValue != "%") then
+            set := set + "_Marker_EventReason_key = "  + top->MarkerEventReasonMenu.menuHistory.defaultValue + ",";
           end if;
 
           if (top->MarkerStatusMenu.menuHistory.modified and
@@ -498,25 +493,12 @@ rules:
             set := set + "chromosome = " + mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + ",";
           end if;
 
-          if (top->NomenUserMenu.menuHistory.modified and
-	      top->NomenUserMenu.menuHistory.searchValue != "%") then
-            set := set + "_Suid_key = "  + top->NomenUserMenu.menuHistory.defaultValue + ",";
-          end if;
-
-	  if (top->ProposedSymbol->text.modified) then
-	    set := set + "proposedSymbol = " + mgi_DBprstr(top->ProposedSymbol->text.value) + ",";
+	  if (top->Symbol->text.modified) then
+	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
 	  end if;
 
-	  if (top->ProposedName->text.modified) then
-	    set := set + "proposedName = " + mgi_DBprstr(top->ProposedName->text.value) + ",";
-	  end if;
-
-	  if (top->ApprovedSymbol->text.modified) then
-	    set := set + "approvedSymbol = " + mgi_DBprstr(top->ApprovedSymbol->text.value) + ",";
-	  end if;
-
-	  if (top->ApprovedName->text.modified) then
-	    set := set + "approvedName = " + mgi_DBprstr(top->ApprovedName->text.value) + ",";
+	  if (top->Name->text.modified) then
+	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
 	  end if;
 
 	  if (top->HumanSymbol->text.modified) then
@@ -636,11 +618,13 @@ rules:
 --
 
 	ModifyOther does
-          table : widget := top->Other->Table;
+          table : widget := top->OtherReference->Table;
           row : integer := 0;
           editMode : string;
           key : string;
           name : string;
+	  refsKey : string;
+	  refsCurrentKey : string;
 	  isAuthor : string;
           set : string := "";
 	  keyName : string := "otherKey";
@@ -657,6 +641,8 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.otherKey);
             name := mgi_tblGetCell(table, row, table.otherName);
+	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
+	    refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
 
 	    if (row = 0) then
 	      isAuthor := "1";
@@ -664,6 +650,10 @@ rules:
 	      isAuthor := "0";
 	    end if;
  
+	    if (refsKey.length = 0) then
+	      refsKey := "NULL";
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
 	      
               if (not keysDeclared) then
@@ -676,11 +666,13 @@ rules:
               cmd := cmd +
                      mgi_DBinsert(MRK_NOMEN_OTHER, keyName) +
 		     currentNomenKey + "," +
+		     refsKey + "," +
 		     mgi_DBprstr(name) + "," +
 		     isAuthor + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "name = " + mgi_DBprstr(name);
+              set := "name = " + mgi_DBprstr(name) +
+		     ",_Refs_key = " + refsKey;
               cmd := cmd + mgi_DBupdate(MRK_NOMEN_OTHER, key, set);
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(MRK_NOMEN_OTHER, key);
@@ -707,6 +699,8 @@ rules:
           key : string;
           newKey : string;
 	  isPrimary : string;
+	  isBroadcast : string;
+	  isReview : string;
 	  set : string := "";
  
           -- Process while non-empty rows are found
@@ -720,6 +714,8 @@ rules:
  
             key := mgi_tblGetCell(table, row, table.refsCurrentKey);
             newKey := mgi_tblGetCell(table, row, table.refsKey);
+	    isReview := mgi_tblGetCell(table, row, table.reviewKey);
+	    isBroadcast := mgi_tblGetCell(table, row, table.broadcastKey);
  
 	    if (row = 0) then
 	      isPrimary := "1";
@@ -727,16 +723,36 @@ rules:
 	      isPrimary := "0";
 	    end if;
  
+	    -- Primary reference is ALWAYS broadcast
+
+	    if (isPrimary = "1" or isBroadcast = "") then
+	      isBroadcast := "1";
+	    end if;
+
             if (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(MRK_NOMEN_REFERENCE, NOKEY) + 
 		     currentNomenKey + "," + 
 		     newKey + "," +
-		     isPrimary + ")\n";
+		     isPrimary + "," +
+		     isBroadcast + ")\n";
+
+              -- update Review? value for row
+
+              set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+              cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
+
             elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Refs_key = " + newKey;
+              set := "_Refs_key = " + newKey + "," +
+		     "broadcastToMGD = " + isBroadcast;
               cmd := cmd + mgi_DBupdate(MRK_NOMEN_REFERENCE, currentNomenKey, set) + 
                      "and _Refs_key = " + key + 
 		     " and isPrimary = " + isPrimary + "\n";
+
+              -- update Review? value for row
+
+              set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
+              cmd := cmd + mgi_DBupdate(BIB_REFS, newKey, set);
+
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(MRK_NOMEN_REFERENCE, currentNomenKey) + 
 		      "and _Refs_key = " + key +
@@ -760,7 +776,6 @@ rules:
 	  from_coordnotes  : boolean := false;
 	  from_other       : boolean := false;
 	  from_reference   : boolean := false;
-	  from_homology    : boolean := false;
 	  from_genefamily  : boolean := false;
 
 	  printSelect := "";
@@ -814,6 +829,11 @@ rules:
 	    printSelect := printSelect + "\nMarker Event = " + top->MarkerEventMenu.menuHistory.labelString;
           end if;
 
+          if (top->MarkerEventReasonMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand m._Marker_EventReason_key = " + top->MarkerEventReasonMenu.menuHistory.searchValue;
+	    printSelect := printSelect + "\nMarker Event Reason = " + top->MarkerEventReasonMenu.menuHistory.labelString;
+          end if;
+
           if (top->MarkerStatusMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Status_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
 	    printSelect := printSelect + "\nMarker Status = " + top->MarkerStatusMenu.menuHistory.labelString;
@@ -829,34 +849,34 @@ rules:
 	    printSelect := printSelect + "\nMarker Chromosome = " + top->ChromosomeMenu.menuHistory.labelString;
           end if;
 
-          if (top->NomenUserMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand m._Suid_key = " + top->NomenUserMenu.menuHistory.searchValue;
-	    printSelect := printSelect + "\nUser = " + top->NomenUserMenu.menuHistory.labelString;
+          if (top->SubmittedByMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand m._Suid_key = " + top->SubmittedByMenu.menuHistory.searchValue;
+	    printSelect := printSelect + "\nUser = " + top->SubmittedByMenu.menuHistory.labelString;
           end if;
 
-          if (top->ProposedSymbol->text.value.length > 0) then
-	    where := where + "\nand m.proposedSymbol like " + mgi_DBprstr(top->ProposedSymbol->text.value);
-	    printSelect := printSelect + "\nProposed Symbol = " + top->ProposedSymbol->text.value;
+          if (top->BroadcastByMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand m._Suid_broadcast_key = " + top->BroadcastByMenu.menuHistory.searchValue;
+	    printSelect := printSelect + "\nUser = " + top->BroadcastByMenu.menuHistory.labelString;
+          end if;
+
+          if (top->Symbol->text.value.length > 0) then
+	    where := where + "\nand m.symbol like " + mgi_DBprstr(top->Symbol->text.value);
+	    printSelect := printSelect + "\nSymbol = " + top->Symbol->text.value;
 	  end if;
 	    
-          if (top->ProposedName->text.value.length > 0) then
-	    where := where + "\nand m.proposedName like " + mgi_DBprstr(top->ProposedName->text.value);
-	    printSelect := printSelect + "\nProposed Name = " + top->ProposedName->text.value;
-	  end if;
-	    
-          if (top->ApprovedSymbol->text.value.length > 0) then
-	    where := where + "\nand m.approvedSymbol like " + mgi_DBprstr(top->ApprovedSymbol->text.value);
-	    printSelect := printSelect + "\nApproved Symbol = " + top->ApprovedSymbol->text.value;
-	  end if;
-	    
-          if (top->ApprovedName->text.value.length > 0) then
-	    where := where + "\nand m.approvedName like " + mgi_DBprstr(top->ApprovedName->text.value);
-	    printSelect := printSelect + "\nApproved Name = " + top->ApprovedName->text.value;
+          if (top->Name->text.value.length > 0) then
+	    where := where + "\nand m.name like " + mgi_DBprstr(top->Name->text.value);
+	    printSelect := printSelect + "\nName = " + top->Name->text.value;
 	  end if;
 	    
           if (top->HumanSymbol->text.value.length > 0) then
 	    where := where + "\nand m.humanSymbol like " + mgi_DBprstr(top->HumanSymbol->text.value);
 	    printSelect := printSelect + "\nHuman Symbol = " + top->HumanSymbol->text.value;
+	  end if;
+	    
+          if (top->AccessionID->text.value.length > 0) then
+	    where := where + "\nand m.mgiAccID like " + mgi_DBprstr(top->AccessionID->text.value);
+	    printSelect := printSelect + "\nMGI Accession ID = " + top->AccessionID->text.value;
 	  end if;
 	    
           if (top->StatusNotes->text.value.length > 0) then
@@ -884,20 +904,25 @@ rules:
 	    from_coordnotes := true;
 	  end if;
 	    
-	  table := top->Other->Table;
-          value := mgi_tblGetCell(table, 0, table.otherName);
-          if (value.length > 0) then
-	    where := where + "\nand mo.name like " + mgi_DBprstr(value);
-	    printSelect := printSelect + "\nOther Name = " + value;
-	    from_other := true;
-	  end if;
+	  -- Check both Author and Other Names
+	  table := top->OtherReference->Table;
+	  i := 0;
+	  while (i <= 1) do
+            value := mgi_tblGetCell(table, i, table.otherName);
+            if (value.length > 0) then
+	      where := where + "\nand mo.name like " + mgi_DBprstr(value);
+	      printSelect := printSelect + "\nOther Name = " + value;
+	      from_other := true;
+	    end if;
 
-          value := mgi_tblGetCell(table, 1, table.otherName);
-          if (value.length > 0) then
-	    where := where + "\nand mo.name like " + mgi_DBprstr(value);
-	    printSelect := printSelect + "\nOther Name = " + value;
-	    from_other := true;
-	  end if;
+            value := mgi_tblGetCell(table, i, table.refsKey);
+            if (value.length > 0 and value != "NULL") then
+	      where := where + "\nand mo._Refs_key = " + value;
+	      printSelect := printSelect + "\nOther Reference = J:" + mgi_tblGetCell(table, i, table.jnum);
+	      from_other := true;
+	    end if;
+	    i := i + 1;
+	  end while;
 
 	  table := top->Reference->Table;
 	  i := 0;
@@ -911,10 +936,25 @@ rules:
               value := mgi_tblGetCell(table, i, table.citation);
               if (value.length > 0) then
 	        where := where + "\nand mr.short_citation like " + mgi_DBprstr(value);
-	        printSelect := printSelect + "\nReference = J:" + mgi_tblGetCell(table, i, table.jnum);
+	        printSelect := printSelect + "\nReference = " + value;
 	        from_reference := true;
 	      end if;
 	    end if;
+
+            value := mgi_tblGetCell(table, i, table.reviewKey);
+            if (value.length > 0 and value != "NULL") then
+	      where := where + "\nand mr.isReviewArticle = " + value;
+	      printSelect := printSelect + "\nReference Review Article? = " + value;
+	      from_reference := true;
+	    end if;
+
+            value := mgi_tblGetCell(table, i, table.broadcastKey);
+            if (value.length > 0 and value != "NULL") then
+	      where := where + "\nand mr.broadcastToMGD = " + value;
+	      printSelect := printSelect + "\nReference Broadcast to MGD? = " + value;
+	      from_reference := true;
+	    end if;
+
 	    i := i + 1;
 	  end while;
 
@@ -926,24 +966,16 @@ rules:
 	    from_genefamily := true;
 	  end if;
 
-	  if (top->Homology.set) then
-	    printSelect := printSelect + "\nHomology Records in MGD";
-	    from_homology := true;
-	  end if;
-
 	  -- If SymbolName filled in, then ignore all other search criteria
 
           if (top->SymbolName->text.value.length > 0) then
-	    where := "\nand m.proposedSymbol like " + mgi_DBprstr(top->SymbolName->text.value) +
-	             "\nor m.proposedName like " + mgi_DBprstr(top->SymbolName->text.value) +
-	             "\nor m.approvedSymbol like " + mgi_DBprstr(top->SymbolName->text.value) +
-	             "\nor m.approvedName like " + mgi_DBprstr(top->SymbolName->text.value);
-	    printSelect := printSelect + "\nApproved Symbol/Proposed Symbol/Approved Name/ProposedName = \n" + top->SymbolName->text.value;
+	    where := "\nand (m.symbol like " + mgi_DBprstr(top->SymbolName->text.value) +
+	             "\nor m.name like " + mgi_DBprstr(top->SymbolName->text.value) + ")";
+	    printSelect := printSelect + "\nSymbol/Name = \n" + top->SymbolName->text.value;
 	    from_editornotes := false;
 	    from_coordnotes := false;
 	    from_other := false;
 	    from_reference := false;
-	    from_homology := false;
 	  end if;
 	    
 	  if (from_editornotes) then
@@ -971,11 +1003,6 @@ rules:
 	    where := where + "\nand m._Nomen_key = mf._Nomen_key";
 	  end if;
 
-	  if (from_homology) then
-	    from := from + "," + mgi_DBtable(MRK_NOMEN_HOMOLOGY_VIEW) + " h";
-	    where := where + "\nand m._Nomen_key = h._Nomen_key";
-	  end if;
-
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
           end if;
@@ -995,49 +1022,13 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct m._Nomen_key, m.approvedSymbol\n" + from + "\n" + 
-			  where + "\norder by m.approvedSymbol\n";
+	  Query.select := "select distinct m._Nomen_key, m.symbol\n" + from + "\n" + 
+			  where + "\norder by m.symbol\n";
 	  Query.printSelect := printSelect;
 	  Query.table := MRK_NOMEN;
 	  send(Query, 0);
           (void) reset_cursor(top);
         end does;
-
---
--- SearchDuplicateProposed
---
--- Search for Duplicate Proposed Symbol records
---
-
-	SearchDuplicateProposed does
-          (void) busy_cursor(top);
-	  from := " from " + mgi_DBtable(MRK_NOMEN) + " m";
-	  where := "group by proposedSymbol having count(*) > 1";
-	  Query.source_widget := top;
-	  Query.select := "select distinct m._Nomen_key, m.proposedSymbol\n" + from + "\n" + 
-			  where + "\norder by m.proposedSymbol\n";
-	  Query.table := MRK_NOMEN;
-	  send(Query, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- SearchDuplicateApproved
---
--- Search for Duplicate Approved Symbol records
---
-
-	SearchDuplicateApproved does
-          (void) busy_cursor(top);
-	  from := " from " + mgi_DBtable(MRK_NOMEN) + " m";
-	  where := "group by approvedSymbol having count(*) > 1";
-	  Query.source_widget := top;
-	  Query.select := "select distinct m._Nomen_key, m.approvedSymbol\n" + from + "\n" + 
-			  where + "\norder by m.approvedSymbol\n";
-	  Query.table := MRK_NOMEN;
-	  send(Query, 0);
-	  (void) reset_cursor(top);
-	end does;
 
 --
 -- Reset
@@ -1130,7 +1121,10 @@ rules:
 	         "select * from " + mgi_DBtable(MRK_NOMEN_OTHER) +
 		 " where _Nomen_key = " + currentNomenKey + 
 		 " order by isAuthor desc, name\n" +
-	         "select isPrimary, _Refs_key, jnum, short_citation from " +
+	         "select * from " + mgi_DBtable(MRK_NOMEN_OTHER_VIEW) +
+		 " where _Nomen_key = " + currentNomenKey + 
+		 " order by isAuthor desc, name\n" +
+	         "select isPrimary, broadcastToMGD, _Refs_key, jnum, short_citation, isReviewArticle from " +
 		  mgi_DBtable(MRK_NOMEN_REFERENCE_VIEW) +
 		 " where _Nomen_key = " + currentNomenKey +
 		 " order by isPrimary desc, short_citation\n" +
@@ -1151,12 +1145,11 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->ProposedSymbol->text.value := mgi_getstr(dbproc, 6);
-	        top->ProposedName->text.value   := mgi_getstr(dbproc, 7);
-	        top->ApprovedSymbol->text.value := mgi_getstr(dbproc, 8);
-	        top->ApprovedName->text.value   := mgi_getstr(dbproc, 9);
+	        top->Symbol->text.value := mgi_getstr(dbproc, 6);
+	        top->Name->text.value   := mgi_getstr(dbproc, 7);
 	        top->HumanSymbol->text.value    := mgi_getstr(dbproc, 11);
 	        top->StatusNotes->text.value    := mgi_getstr(dbproc, 12);
+	        top->AccessionID->text.value    := mgi_getstr(dbproc, 12);
 	        top->BroadcastDate->text.value  := mgi_getstr(dbproc, 13);
 	        top->CreationDate->text.value   := mgi_getstr(dbproc, 14);
 	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 15);
@@ -1173,7 +1166,15 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
-                SetOption.source_widget := top->NomenUserMenu;
+                SetOption.source_widget := top->MarkerEventReasonMenu;
+                SetOption.value := mgi_getstr(dbproc, 4);
+                send(SetOption, 0);
+
+                SetOption.source_widget := top->SubmittedByMenu;
+                SetOption.value := mgi_getstr(dbproc, 5);
+                send(SetOption, 0);
+
+                SetOption.source_widget := top->BroadcastByMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
 
@@ -1188,27 +1189,59 @@ rules:
 		top->CoordNote->Note->text.value := 
 			top->CoordNote->Note->text.value + mgi_getstr(dbproc, 1);
 	      elsif (results = 4) then
-		table := top->Other->Table;
+		table := top->OtherReference->Table;
 
-		if (row = 0 and mgi_getstr(dbproc, 4) != "1") then
+		if (row = 0 and mgi_getstr(dbproc, 5) != "1") then
 		  row := row + 1;
 		end if;
 
                 (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 5) then
+		table := top->OtherReference->Table;
+
+		if (row = 0 and mgi_getstr(dbproc, 5) != "1") then
+		  row := row + 1;
+		end if;
+
+                (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.otherName, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 8));
+                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+	      elsif (results = 6) then
 		table := top->Reference->Table;
 
 		if (row = 0 and mgi_getstr(dbproc, 1) != "1") then
 		  row := row + 1;
 		end if;
 
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
+                SetOption.source_widget := top->BroadcastMenu;
+                SetOption.value := mgi_getstr(dbproc, 2);
+                send(SetOption, 0);
+
+                SetOption.source_widget := top->ReviewMenu;
+                SetOption.value := mgi_getstr(dbproc, 6);
+                send(SetOption, 0);
+
+          	-- Initialize Option Menus for row 0
+
+		if (row = 0) then
+          	  SetOptions.source_widget := table;
+          	  SetOptions.row := 0;
+          	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
+          	  send(SetOptions, 0);
+		end if;
+
 	      elsif (results = 6) then
 		table := top->GeneFamily->Table;
                 (void) mgi_tblSetCell(table, row, table.familyCurrentKey, mgi_getstr(dbproc, 1));
@@ -1220,6 +1253,7 @@ rules:
 	    end while;
 	    results := results + 1;
 	  end while;
+	  (void) dbclose(dbproc);
 
 	  if (top->EditorNote->Note->text.value.length > 0) then
 	    top->EditorNote->NotePush.background := "PaleGreen";
@@ -1232,39 +1266,6 @@ rules:
 	  else
 	    top->CoordNote->NotePush.background := "Wheat";
 	  end if;
-
-	  cmd := "select distinct * from " +
-		  mgi_DBtable(MRK_NOMEN_MARKER_VIEW) +
-		 " where symbol = " + mgi_DBprstr(top->ApprovedSymbol->text.value) + "\n" +
-	         "select count(*) from " +
-		  mgi_DBtable(MRK_NOMEN_HOMOLOGY_VIEW) +
-		 " where humanSymbol = " + mgi_DBprstr(top->HumanSymbol->text.value) + "\n";
-
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-	  row := 0;
-	  results := 1;
-	  table := top->Marker->Table;
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 2));
-	        row := row + 1;
-	      elsif (results = 2) then
-		if ((integer) mgi_getstr(dbproc, 1) > 0) then
-		  top->Homology.set := true;
-		else
-		  top->Homology.set := false;
-		end if;
-	      end if;
-	    end while;
-	    results := results + 1;
-	  end while;
-
-	  (void) dbclose(dbproc);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentNomenKey;
@@ -1287,13 +1288,39 @@ rules:
 	end does;
 
 --
+-- SetOptions
+--
+-- Each time a row is entered, set the option menus based on the values
+-- in the appropriate column.
+--
+-- EnterCellCallback for table.
+--
+ 
+        SetOptions does
+          table : widget := SetOptions.source_widget;
+          row : integer := SetOptions.row;
+	  reason : integer := SetOptions.reason;
+ 
+	  if (reason != TBL_REASON_ENTER_CELL_END) then
+	    return;
+	  end if;
+
+          SetOption.source_widget := top->CVNomen->ReviewMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.reviewKey);
+          send(SetOption, 0);
+
+          SetOption.source_widget := top->CVNomen->BroadcastMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.broadcastKey);
+          send(SetOption, 0);
+        end does;
+
+--
 -- VerifyNomenSymbol
 --
--- Activated from:  tab out of ProposedSymbol->text
+-- Activated from:  tab out of Symbol->text
 --
--- Check Proposed Symbol against Nomen and MGD.
+-- Check Symbol against Nomen and MGD.
 -- Inform user if Symbol has already been used.
--- If Approved Symbol is blank, then populate with Proposed Symbol
 --
 
 	VerifyNomenSymbol does
@@ -1308,56 +1335,9 @@ rules:
 	  (void) busy_cursor(top);
 	  (void) mgi_sql1("exec " + getenv("NOMEN") + "..NOMEN_verifyMarker " + mgi_DBprstr(value));
 
-	  if (top->ApprovedSymbol->text.value.length = 0) then
-	    top->ApprovedSymbol->text.value := top->ProposedSymbol->text.value;
-	  end if;
-
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
 	end does;
-
---
--- BroadcastChangeFileNames
---
--- Activated from:  top->NomenBroadcastDialog->mgiDate->text translation, <Key>Tab
---
--- Change file names if date changes
---
- 
-        BroadcastChangeFileNames does
-          dialog : widget := top->NomenBroadcastDialog;
-	  defaultDate : string := dialog->mgiDate->text.value;
-	  i : integer := 1;
-
-	  while (i <= defaultDate.length) do
-	    if (defaultDate[i] = '/') then
-	      defaultDate[i] := '-';
-	    end if;
-	    i := i + 1;
-	  end while;
-
-          dialog->PreviewFileName->text.value := "Broadcast-" + defaultDate + ".preview";
-          dialog->BroadcastFileName->text.value := "Broadcast-" + defaultDate;
-	end does;
-
---
--- BroadcastInit
---
--- Activated from:  top->Utilities->Broadcast, activateCallback
---
--- Initialize Broadcast Dialog fields
---
- 
-        BroadcastInit does
-          dialog : widget := top->NomenBroadcastDialog;
- 
-          dialog->Choice->Preview.set := true;
-          dialog->Choice->Broadcast.set := false;
-          dialog->mgiDate->text.value := get_date("");
-          dialog->PreviewFileName->text.value := "Broadcast-" + get_date("%m-%d-%Y") + ".preview";
-          dialog->BroadcastFileName->text.value := "Broadcast-" + get_date("%m-%d-%Y");
-          dialog.managed := true;
-        end does;
 
 --
 -- Broadcast

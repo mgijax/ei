@@ -15,6 +15,9 @@
 --
 -- History
 --
+-- 03/20/2000
+--	- tr 1291
+--
 -- 12/09/1999
 --	- use markerType key value instead of name so that any new
 --	  marker types added will automatically work w/ the broadcast
@@ -107,8 +110,10 @@ devents:
 
 	-- Process Marker Withdrawal Events
 	MarkerWithdrawalCancel : local [];
+	MarkerWithdrawalInit :local [];
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;];
+	SetWithdrawalFields :local [];
 
 	-- Process Marker Allele Events
 	MarkerAlleleMergeInit :local [];
@@ -146,14 +151,12 @@ locals:
 	tables : list;
 
 	new_symbols : string_list;    -- Hold list of new symbols used in Withdrawal process
-	hasAlleles : boolean;         -- Flags if Symbol has Alleles (used in Withdrawal process)
 
-	original_chromosome : string; -- Holds original Chr of Symbol
+	currentChr : string;		-- current Chromosome of selected record
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	speciesKey : string;    -- Species key
 	clearLists : integer;	-- Clear List value for Clear event
 
 rules:
@@ -203,6 +206,9 @@ rules:
 	  InitOptionMenu.option := top->MarkerTypeMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->MarkerStatusMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 	end does;
@@ -223,10 +229,6 @@ rules:
 	Init does
 	  tables := create list("widget");
 
-	  -- Initialize table ids
-
-	  speciesKey := "1";	-- Species key is 1 for Mouse
-
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->History->Table);
@@ -241,8 +243,6 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 	  accRefTable := top->AccessionReference->Table;
-
-	  hasAlleles := false;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -264,6 +264,8 @@ rules:
 -- Activated from:  widget top->MainMenu->Commands->Add
 --
 -- Contruct and execute insert statement
+--
+-- Note that ALL new markers should be added via Nomen.
 --
 
 	Add does
@@ -291,24 +293,27 @@ rules:
           currentRecordKey := "@" + KEYNAME;
  
 	  -- Insert master Marker Record
+	  -- Always inserted w/ status = APPROVED
 
           cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MRK_MARKER, KEYNAME) +
-		 speciesKey + "," +
+		 MOUSE + "," +
                  top->MarkerTypeMenu.menuHistory.defaultValue + "," +
+                 STATUS_APPROVED + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->ChromosomeMenu.menuHistory.defaultValue) + "," +
 	         mgi_DBprstr(top->Cyto->text.value) + ")\n";
 
-	  -- Insert History Record
+	  -- Insert History Record for EVENT_ASSIGNED event
 
 	  cmd := cmd + "execute MRK_insertHistory " + 
 		 currentRecordKey + "," + 
 		 currentRecordKey + "," + 
 		 refsKey + "," + 
-		 mgi_DBprstr(top->Name->text.value) + 
-		 ",'Assigned'\n";
+		 EVENT_ASSIGNED + "," +
+		 NOTSPECIFIED + "," +
+		 mgi_DBprstr(top->Name->text.value) + "\n";
 
 	  ModifyNotes.source_widget := top->Notes;
 	  ModifyNotes.tableID := MRK_NOTES;
@@ -389,47 +394,142 @@ rules:
 --
 -- Activated from:  widget top->WithdrawalDialog->Cancel
 --
--- If User cancels Withdrawal, return Chromosome value to original
+-- If User cancels Withdrawal, re-select record and cancel dialog
 --
 
 	MarkerWithdrawalCancel does
-          SetOption.source_widget := top->ChromosomeMenu;
-          SetOption.value := original_chromosome;
-          send(SetOption, 0);
-	  (void) XmProcessTraversal(top->ChromosomeMenu, XmTRAVERSE_CURRENT);
+	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	  top->WithdrawalDialog.managed := false;
+	end does;
+
+--
+-- MarkerWithdrawalInit
+--
+-- Activated from:  widget top->Utilities->MarkerWithdrawal
+--
+-- Initializes Withdrawal Dialog fields
+--
+
+	MarkerWithdrawalInit does
+
+	  if (currentRecordKey.length = 0) then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "There is no symbol selected to withdraw.";
+	    send(StatusReport);
+	    return;
+	  end if;
+
+	  SetOption.source_widget := top->MarkerEventMenu;
+	  SetOption.value := EVENT_WITHDRAWAL;
+	  send(SetOption, 0);
+
+	  SetOption.source_widget := top->MarkerEventReasonMenu;
+	  SetOption.value := NOTSPECIFIED;
+	  send(SetOption, 0);
+
+	  ClearTable.table := top->WithdrawalDialog->Marker->Table;
+	  send(ClearTable, 0);
+
+	  top->WithdrawalDialog->mgiCitation->ObjectID->text.value := "";
+	  top->WithdrawalDialog->mgiCitation->Jnum->text.value := "";
+	  top->WithdrawalDialog->mgiCitation->Citation->text.value := "";
+	  top->WithdrawalDialog->Name->text.value := "";
+	  top->WithdrawalDialog.managed := true;
+	end does;
+
+--
+-- SetWithdrawalFields
+--
+-- Activated from:  widget top->WithdrawalDialog->MarkerEvent->toggle
+--
+-- Based on selected Marker Event, set some editing attributes within 
+-- the Marker Withdrawal dialog.
+--
+
+	SetWithdrawalFields does
+
+	--
+	-- Don't do anything if de-selecting
+	--
+
+	if (not top->WithdrawalDialog->MarkerEventMenu.menuHistory.set) then
+	  return;
+	end if;
+
+	--
+	-- Set number of rows, number of visible rows and callbacks depending
+	-- on the event the user has selected
+	--
+
+	if (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_WITHDRAWAL) then
+
+	  mgi_tblSetNumRows(top->WithdrawalDialog->Marker, 1);  
+
+	elsif (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_MERGE or
+	       top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_ALLELEOF) then
+
+	  mgi_tblSetNumRows(top->WithdrawalDialog->Marker, 1);  
+	  SetTableValidateCallback.table := top->WithdrawalDialog->Marker;
+	  SetTableValidateCallback.callback := "D:VerifyMarker,D:CommitTableCellEdit";
+	  send(SetTableValidateCallback, 0);
+
+	elsif (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_SPLIT) then
+
+	  mgi_tblSetNumRows(top->WithdrawalDialog->Marker, 3);  
+	  SetTableValidateCallback.table := top->WithdrawalDialog->Marker;
+	  SetTableValidateCallback.callback := "D:CommitTableCellEdit";
+	  send(SetTableValidateCallback, 0);
+
+	elsif (top->WithdrawalDialog->MarkerEventMenu.menuHistory.defaultValue = EVENT_DELETED) then
+
+	  mgi_tblSetNumRows(top->WithdrawalDialog->Marker, 0);  
+	  SetTableValidateCallback.table := top->WithdrawalDialog->Marker;
+	  SetTableValidateCallback.callback := "D:CommitTableCellEdit";
+	  send(SetTableValidateCallback, 0);
+
+	end if;
+
 	end does;
 
 --
 -- MarkerWithdrawal
 --
--- Activated from:  devent ModifyChromosome
---
--- Create broadcast file (see broadcast.py for format) from user-entered values
--- Execute broadcast.py using generated file
--- (Verifications take place in broadcast.py)
+-- Activated from:  Process button in Marker Withdrawal Dialog
 --
 
 	MarkerWithdrawal does
 	  dialog : widget := top->WithdrawalDialog;
-	  bFile : string := global_reportdir + "/Broadcast-" + top->Symbol->text.value;
-	  buf : string := "";
-	  withdrawn : string := "withdrawn";
-	  markerType : string := "";
-	  jnum : string := "J:" + dialog->mgiCitation->Jnum->text.value;
 	  table : widget := dialog->Marker->Table;
 	  symbol : string;
+	  event : string;
+	  eventReason : string;
+	  buf : string;
 
-	  if (mgi_tblGetCell(table, 0, table.markerSymbol) = "") then
+	  if (dialog->MarkerEventMenu.menuHistory.defaultValue = "%") then
+	    SetOption.source_widget := top->MarkerEventMenu;
+	    SetOption.value := EVENT_WITHDRAWAL;
+	    send(SetOption, 0);
+	  end if;
+
+	  if (dialog->MarkerEventReasonMenu.menuHistory.defaultValue = "%") then
+	    SetOption.source_widget := top->MarkerEventReasonMenu;
+	    SetOption.value := NOTSPECIFIED;
+	    send(SetOption, 0);
+	  end if;
+
+	  event := dialog->MarkerEventMenu.menuHistory.defaultValue;
+	  eventReason := dialog->MarkerEventReasonMenu.menuHistory.defaultValue;
+
+	  if (event != EVENT_DELETED and mgi_tblGetCell(table, 0, table.markerSymbol) = "") then
             StatusReport.source_widget := top;
-	    StatusReport.message := "New symbol(s) required during withdrawal of Marker";
+	    StatusReport.message := "New symbol(s) required";
 	    send(StatusReport);
 	    return;
 	  end if;
 
 	  if (dialog->mgiCitation->Jnum->text.value.length = 0) then
             StatusReport.source_widget := top;
-	    StatusReport.message := "J# required during withdrawal of Marker";
+	    StatusReport.message := "J# required";
 	    send(StatusReport);
 	    (void) XmProcessTraversal(dialog->mgiCitation->Jnum->text, XmTRAVERSE_CURRENT);
 	    return;
@@ -452,7 +552,7 @@ rules:
 	    row := row + 1;
 	  end while;
 
-	  -- New symbol cannot equal withdrawn symbol
+	  -- New symbol should not equal withdrawn symbol
 
 	  new_symbols.rewind;
 	  while (new_symbols.more) do
@@ -465,98 +565,43 @@ rules:
 	    end if;
 	  end while;
 
-	  allele_of : boolean := dialog->Mode->AlleleOf.set;
-
-	  -- Construct appropriate Withdrawn statement
-
-	  if (new_symbols.count > 0) then
-	    if (not allele_of) then
-	      withdrawn := withdrawn + ", = ";
-	    else
-	      withdrawn := withdrawn + ", allele of ";
-	    end if;
-	  end if;
-
-	  -- Set Marker Type
-
-	  markerType := top->MarkerTypeMenu.menuHistory.defaultValue;
-
-	  -- Write Withdrawal line
-
-	  buf := original_chromosome + "\t" + 
-		 top->Symbol->text.value + "\t" +
-		 "W\t" + 
-		 markerType + "\t" +
-		 withdrawn;
-
-	  -- Need comma separated list
-
-	  new_symbols.rewind;
-	  while (new_symbols.more) do
-	    buf := buf + new_symbols.next + ", ";
-	  end while;
-
-	  buf := buf->substr(1,buf.length - 2); -- Remove trailing ', '
-	  buf := buf + "\t" + jnum + "\t"; -- Attach J#
-	  buf := buf + top->Symbol->text.value + "\n";
-
-	  -- Write line(s) for New Symbol(s) if Symbol(s) DO NOT exist in MGD
-
-	  select : string := "select count(*) from MRK_Mouse_View where symbol = '";
-	  exists : integer := 0;
-	  new_symbols.rewind;
-	  while (new_symbols.more) do
-	    symbol := new_symbols.next;
-	    exists := (integer) mgi_sql1(select + symbol + "'");
-	    -- Only write line if symbol does not exist in MGD!!!!!
-	    if (exists = 0) then
-	      buf := buf + original_chromosome + "\t" + 
-		     symbol + "\t" +
-		     "N\t" + 
-		     markerType + "\t";
-	      buf := buf + dialog->Name->text.value + "\t" + jnum + "\t" + symbol + "\n";
-	    end if;
-	  end while;
-
-	  -- Log the contents of buf
-	  (void) mgi_writeLog(buf + "\n");
-
-	  -- Write contents of buf to file
-
-	  if (not (boolean) mgi_writeFile(bFile, buf)) then
-            StatusReport.source_widget := top;
-	    StatusReport.message := "Could not create Broadcast File:\n" + bFile + "\n" +
-	                            "This Withdrawal cannot be processed.\n" +
-				    "Please contact the Bug Lady.";
-	    send(StatusReport);
-	    (void) reset_cursor(dialog);
-	    return;
-	  end if;
-
-	  -- Execute broadcast.py w/ created file
+	  -- Execute Python Wrapper
 
 	  cmds : string_list := create string_list();
-	  cmds.insert("broadcast.py", cmds.count + 1);
+	  cmds.insert("markerWithdrawal.py", cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert(bFile, cmds.count + 1);
+	  cmds.insert("--eventKey=" + event, cmds.count + 1);
+	  cmds.insert("--eventReasonKey=" + eventReason, cmds.count + 1);
+	  cmds.insert("--oldKey=" + currentRecordKey, cmds.count + 1);
+	  cmds.insert("--refKey=" + dialog->mgiCitation->ObjectID->text.value, cmds.count + 1);
+	  cmds.insert("--newName=" + dialog->Name->text.value, cmds.count + 1);
 
-	  -- Print cmds to Output
+	  if (event = EVENT_MERGE or event = EVENT_ALLELEOF) then
+	    cmds.insert("--newKey=" + mgi_tblGetCell(table, 0, table.markerKey), cmds.count + 1);
+	  end if;
 
-	  dialog->Output.value := "PROCESSING...\n[";
+	  if (event = EVENT_SPLIT) then
+	    buf := "";
+	    new_symbols.rewind;
+	    while (new_symbols.more) do
+	      buf := new_symbols.next + ",";
+	    end while;
+	    cmds.insert("--newSymbols=" + buf, cmds.count + 1);
+	  end if;
+
+	  -- Write cmds to user log
+	  buf := "";
 	  cmds.rewind;
 	  while (cmds.more) do
-	    dialog->Output.value := dialog->Output.value + cmds.next + " ";
+	    buf := buf + cmds.next + " ";
 	  end while;
-	  cmds.rewind;
-	  dialog->Output.value := dialog->Output.value + "]\n\n";
-	  dialog->Output.value := dialog->Output.value + buf + "\n\n";
-
-	  -- Execute the Broadcast, MarkerWithdrawalEnd event will be called after child finishes
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
 
 	  MarkerWithdrawalEnd.source_widget := dialog;
           proc_id : opaque := 
-	    tu_fork_process2(cmds[1], cmds, dialog->Output, dialog->Output, MarkerWithdrawalEnd);
+	    tu_fork_process2(cmds[1], cmds, nil, nil, MarkerWithdrawalEnd);
 	    tu_fork_free(proc_id);
 	end does;
 
@@ -565,35 +610,16 @@ rules:
 --
 -- Activated from: child process forked from MarkerWithdrawal is finished
 --
--- Prints diagnostics
 -- Queries for all new and old symbols
 --
  
         MarkerWithdrawalEnd does
 	  dialog : widget := MarkerWithdrawalEnd.source_widget;
-	  bFile : string := global_reportdir + "/Broadcast-" + top->Symbol->text.value;
-
-	  -- Print some diagnostics for the User and to the User log
-
-          dialog->Output.value := dialog->Output.value + "PROCESSING COMPLETED\n\n";
-
-	  (void) mgi_writeLog(dialog->Output.value);
- 
-	  -- Give User file information
-
-	  dialog->Output.value := dialog->Output.value + 
-                      "Check the files:\n\n" + 
-		       bFile + "\n" +
-		       bFile + ".diagnostics\n" +
-		       bFile + ".stats\n\n" +
-		       "for further information.";
-
-	  (void) XmTextShowPosition(dialog->Output, XmTextGetLastPosition(dialog->Output));
 
 	  -- Query for All New Symbol(s) and Old Symbol
 
-	  from := " from MRK_Marker m";
-	  where := "where m._Species_key = 1 and m.symbol in (";
+	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
+	  where := "where m._Species_key = " + MOUSE + " and m.symbol in (";
 
 	  new_symbols.rewind;
 	  while (new_symbols.more) do
@@ -757,7 +783,7 @@ rules:
  
           oFile : string := getenv("INSTALL_ROOT") + "/" + 
                             getenv("APP") + "/" + REPORTDIR + 
-                            "/SPLITS/breakpointSplit." + 
+                            "/EVENT_SPLITS/breakpointSplit." + 
 			    dialog->mgiMarker->Marker->text.value;
 
           -- Print some diagnostics for the User and to the User log
@@ -784,7 +810,6 @@ rules:
 -- Activated from:  widget top->ChromosomeMenu->ChromToggle
 --
 -- If Chromosome = "UN", then Offset = -999
--- If Chromosome = "W", then manage the Withdrawal dialog
 -- If Chromosome was known and changed to another know, then Offsets = -1
 --
 
@@ -807,47 +832,14 @@ rules:
 	    return;
 	  end if;
 
-	  --
-	  -- Disallow modification to withdrawn symbols
-	  --
-
-	  if (top->QueryList->List.selectedItemCount = 1 and original_chromosome = "W") then
-            SetOption.source_widget := top->ChromosomeMenu;
-            SetOption.value := original_chromosome;
-            send(SetOption, 0);
-            StatusReport.source_widget := top;
-	    StatusReport.message := "Symbol is already withdrawn.";
-	    send(StatusReport);
-	    return;
-	  end if;
-
-	  -- If Chromosome = "W", then manage the Withdrawal Dialog
-
-	  if (top->ChromosomeMenu.menuHistory.defaultValue = "W" and
-	      top->QueryList->List.selectedItemCount = 1) then
-	     top->WithdrawalDialog->HasAlleles.set := hasAlleles;
-	     top->WithdrawalDialog->ConvertAlleles.set := hasAlleles;
-	     ClearTable.table := top->WithdrawalDialog->Marker->Table;
-	     send(ClearTable, 0);
-	     top->WithdrawalDialog->Name->text.value := top->Name->text.value;
-	     top->WithdrawalDialog->mgiCitation->Jnum->text.value := "";
-	     top->WithdrawalDialog->mgiCitation->ObjectID->text.value := "";
-	     top->WithdrawalDialog->mgiCitation->Citation->text.value := "";
-	     top->WithdrawalDialog->Output.value := "";
-	     top->WithdrawalDialog.managed := true;
-	     return;
-
 	  -- If Chromosome = "UN", then offset = -999
 
-	  elsif (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
+	  if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
 	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-999.00");
 
 	  -- Changing from one known chromosome to another, change MGD and CC Offsets to -1
 
-	  elsif (top->QueryList->List.selectedItemCount != 0 and
-		 original_chromosome != "W" and 
-		 original_chromosome != "UN" and
-		 top->ChromosomeMenu.menuHistory.defaultValue != "W" and
+	  elsif (top->QueryList->List.selectedItemCount != 0 and currentChr != "UN" and
 		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
 
 	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
@@ -855,7 +847,7 @@ rules:
 	      StatusReport.message := "Symbol is an Anchor Locus.  Remove Anchor record before modifying the Chromosome value.";
 	      send(StatusReport);
               SetOption.source_widget := top->ChromosomeMenu;
-              SetOption.value := original_chromosome;
+              SetOption.value := currentChr;
               send(SetOption, 0);
 	      return;
 	    end if;
@@ -902,6 +894,12 @@ rules:
 	      top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
           end if;
+
+	  -- Don't allow modifications to Marker Status; maybe in the future...
+--          if (top->MarkerStatusMenu.menuHistory.modified and
+--	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
+--            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
+--          end if;
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
@@ -1120,7 +1118,8 @@ rules:
 	  markerKey : string;
 	  refsKey : string;
 	  name : string;
-	  event : string;
+	  eventKey : string;
+	  eventReasonKey : string;
 	  eventDate : string;
 
 	  -- Check for duplicate Seq # assignments
@@ -1148,16 +1147,18 @@ rules:
             name := mgi_tblGetCell(table, row, table.markerName);
             refsKey := mgi_tblGetCell(table, row, table.refsKey);
             eventDate := mgi_tblGetCell(table, row, table.eventDate);
-            event := mgi_tblGetCell(table, row, table.event);
+            eventKey := mgi_tblGetCell(table, row, table.eventKey);
+            eventReasonKey := mgi_tblGetCell(table, row, table.eventReasonKey);
  
             if (editMode = TBL_ROW_ADD) then
               tmpCmd := tmpCmd + mgi_DBinsert(MRK_HISTORY, NOKEY) + 
 			currentRecordKey + "," +
 			markerKey + "," +
 			mgi_DBprkey(refsKey) + "," +
+			mgi_DBprkey(eventKey) + "," +
+			mgi_DBprkey(eventReasonKey) + "," +
 			newSeqNum + "," +
 			mgi_DBprstr(name) + "," +
-			mgi_DBprstr(event) + "," +
 			mgi_DBprstr(eventDate) + ")\n";
 
 	      historyModified := true;
@@ -1178,9 +1179,10 @@ rules:
 			  currentRecordKey + "," +
 			  markerKey + "," +
 			  mgi_DBprkey(refsKey) + "," +
+			  mgi_DBprkey(eventKey) + "," +
+			  mgi_DBprkey(eventReasonKey) + "," +
 			  newSeqNum + "," +
 			  mgi_DBprstr(name) + "," +
-			  mgi_DBprstr(event) + "," +
 			  mgi_DBprstr(eventDate) + ")\n";
 
               -- Else, a simple update
@@ -1188,8 +1190,9 @@ rules:
               else
                 set := "_History_key = " + markerKey + "," +
 		       "_Refs_key = " + mgi_DBprkey(refsKey) + "," +
+		       "_Marker_Event_key = " + mgi_DBprkey(eventKey) + "," +
+		       "_Marker_EventReason_key = " + mgi_DBprkey(eventReasonKey) + "," +
 		       "name = " + mgi_DBprstr(name) + "," +
-		       "note = " + mgi_DBprstr(event) + "," +
 		       "event_date = " + mgi_DBprstr(eventDate);
                 tmpCmd := tmpCmd + mgi_DBupdate(MRK_HISTORY, currentRecordKey, set) +
                           "and sequenceNum = " + currentSeqNum + "\n";
@@ -1440,7 +1443,7 @@ rules:
 	  value : string;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Species_key = " + speciesKey;
+	  where := "where m._Species_key = " + MOUSE;
 
 	  -- Cannot search both Accession tables at once
 
@@ -1475,6 +1478,10 @@ rules:
  
           if (top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Type_key = " + top->MarkerTypeMenu.menuHistory.searchValue;
+          end if;
+
+          if (top->MarkerStatusMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand m._Marker_Status_key = " + top->MarkerStatusMenu.menuHistory.searchValue;
           end if;
 
           if (top->Symbol->text.value.length > 0) then
@@ -1541,7 +1548,7 @@ rules:
 
           value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.eventDate);
           if (value.length > 0) then
-	    where := where + "\nand mh.event_display = '" + value + "'";
+	    where := where + "\nand mh.event_display = " + mgi_DBprstr(value);
 	    from_history := true;
 	  end if;
 
@@ -1558,9 +1565,15 @@ rules:
 	    end if;
 	  end if;
 
-          value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.event);
+          value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.eventKey);
           if (value.length > 0) then
-	    where := where + "\nand mh.note like " + mgi_DBprstr(value);
+	    where := where + "\nand mh._Marker_Event_key = " + value;
+	    from_history := true;
+	  end if;
+
+          value := mgi_tblGetCell(top->History->Table, 0, top->History->Table.eventReasonKey);
+          if (value.length > 0) then
+	    where := where + "\nand mh._Marker_EventReason_key = " + value;
 	    from_history := true;
 	  end if;
 
@@ -1708,8 +1721,6 @@ rules:
 	  end while;
 	  tables.close;
 
-	  hasAlleles := false;
-
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -1724,7 +1735,7 @@ rules:
 	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Marker_key, _Marker_Type_key, symbol, name, chromosome, " +
+	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
 		 "cytogeneticOffset, creation_date, modification_date " +
 		 "from MRK_Marker where _Marker_key = " + currentRecordKey + "\n" +
 	         "select note from MRK_Notes " +
@@ -1761,7 +1772,6 @@ rules:
 
 	  results : integer := 1;
 	  row : integer := 0;
-	  hasAlleles := false;
 	  source : string;
 	  seqRow : integer := 0;
 	  seqNum1, seqNum2 : string;
@@ -1775,16 +1785,19 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 3);
-	        top->Name->text.value         := mgi_getstr(dbproc, 4);
-	        top->Cyto->text.value         := mgi_getstr(dbproc, 6);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 7);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 8);
+	        top->Symbol->text.value       := mgi_getstr(dbproc, 4);
+	        top->Name->text.value         := mgi_getstr(dbproc, 5);
+	        top->Cyto->text.value         := mgi_getstr(dbproc, 7);
+	        top->CreationDate->text.value := mgi_getstr(dbproc, 8);
+	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 9);
                 SetOption.source_widget := top->MarkerTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
                 send(SetOption, 0);
+                SetOption.source_widget := top->MarkerStatusMenu;
+                SetOption.value := mgi_getstr(dbproc, 3);
+                send(SetOption, 0);
                 SetOption.source_widget := top->ChromosomeMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
+                SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
 	      elsif (results = 2) then
 		top->Notes->text.value := top->Notes->text.value + mgi_getstr(dbproc, 1);
@@ -1801,7 +1814,10 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 11));
                 (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 6));
                 (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 6));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 9) = "01/01/1900") then
@@ -1849,7 +1865,6 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.alleleSymbol, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, table.alleleName, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-		hasAlleles := true;
 	      elsif (results = 9) then
 		table := top->OtherReference->Table;
                 (void) mgi_tblSetCell(table, row, table.otherKey, mgi_getstr(dbproc, 1));
@@ -1892,9 +1907,11 @@ rules:
 	    row := row + 1;
 	  end while;
 
-	  original_chromosome := top->ChromosomeMenu.menuHistory.defaultValue;
+	  currentChr := top->ChromosomeMenu.menuHistory.defaultValue;
 
-	  if (original_chromosome = "W") then
+	  -- Withdrawn markers will not have MGI accession IDs
+
+	  if (top->MarkerTypeMenu.menuHistory.defaultValue = STATUS_WITHDRAWN) then
 	    LoadAcc.reportError := false;
 	  end if;
 
