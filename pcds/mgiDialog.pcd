@@ -203,7 +203,7 @@ Module: mgiDialog
                                 {
                                   List = list;
                                   Group: Widget
-                                    items = "jaguar\nzinger\nmgmgrand\nmeadow\ninforback\ndiva\nwizard\nmario\nzeppelin\nbentley\ntucker\npackard";
+                                    items = "jaguar\nzinger\nmgmgrand\nmeadow\ninforback\ndiva\nwizard\nmario\nbentley\ntucker\npackard\nlotus\ndelorean\nlancia";
                                 }
                           }
                           {
