@@ -1635,7 +1635,7 @@ class Marker:
 			# If Old Symbol has known Chr & New Symbol has UN/RE, update Chr
 			# of New Symbol to that of Old Symbol
 
-			if self.getChr() != 'UN' and new.getChr() = 'UN':
+			if self.getChr() != 'UN' and new.getChr() == 'UN':
 				updateChr = 1
 			else:
 				msg = '\t%s Chromosome %s does not match %s Chromosome %s\n' \
