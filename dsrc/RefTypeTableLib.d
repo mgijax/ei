@@ -90,7 +90,7 @@ rules:
 	  row : integer := 0;
 
 	  if (tableID = MGI_REFTYPE_NOMEN_VIEW) then
-	    cmd := "select _RefAssocType_key, assocType, allowOnlyOne from " + 
+	    cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
 		  mgi_DBtable(tableID) + 
 		  "\norder by allowOnlyOne desc, _RefAssocType_key";
 	  else
@@ -109,6 +109,10 @@ rules:
 	       (void) mgi_tblSetCell(table, row, table.refsType, mgi_getstr(dbproc, 1));
 	       (void) mgi_tblSetCell(table, row, table.refsName,  mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
+
+	       if (tableID = MGI_REFTYPE_NOMEN_VIEW) then
+	         table.mgiTypeKey := mgi_getstr(dbproc, 4);
+	       end if;
 
 	       if (mgi_getstr(dbproc, 2) = "Original" 
 			and table.is_defined("origRefsKey") != nil) then
@@ -147,7 +151,7 @@ rules:
 
 	  if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
             cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
-		  "jnum, short_citation, _Assoc_key, _MGIType_key, isReviewArticle, isReviewArticleString" +
+		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
 		  " where " + mgi_DBkey(tableID) + " = " + objectKey +
 		  " order by allowOnlyOne desc, _RefAssocType_key";
@@ -181,9 +185,8 @@ rules:
 
 	      if (tableID = MGI_REFERENCE_NOMEN_VIEW) then
 	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
-		table.mgiTypeKey := mgi_getstr(dbproc, 8);
-	        (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(table, row, table.review, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(table, row, table.review, mgi_getstr(dbproc, 9));
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -219,6 +222,8 @@ rules:
 	  refsType : string;
 	  mgiType : string;
 	  set : string := "";
+	  keyName : string := "refassocKey";
+	  keyDefined : boolean := false;
  
           -- Process 
  
@@ -233,8 +238,15 @@ rules:
  
             if (editMode = TBL_ROW_ADD) then
 	      if (tableID = MGI_REFERENCE_ASSOC) then
-		cmd := cmd + mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
-		       mgi_DBinsert(tableID, KEYNAME) +
+
+		if (not keyDefined) then
+		  cmd := cmd + mgi_setDBkey(tableID, NEWKEY, keyName);
+		  keyDefined := true;
+		else
+		  cmd := cmd + mgi_DBincKey(keyName);
+		end if;
+
+		cmd := cmd + mgi_DBinsert(tableID, keyName) +
 		       newKey + "," +
 		       objectKey + "," +
 		       mgiType + "," +
