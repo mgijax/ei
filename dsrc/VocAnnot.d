@@ -16,6 +16,7 @@
 --
 -- 06/05/2002 lec
 --	- TR 3677; display all allele pairs for Genotype object
+--	- Init; select all Genotypes in Clipboard (if any exist)
 --
 -- 05/30/2002 lec
 --      - TR 3677; modifedBy will be set in mgi_DBupdate()
@@ -564,10 +565,6 @@ rules:
 	Select does
 	  orderBy : string;
           annotKey : string;
-
-          if (not top.allowSelect) then
-            return;
-          end if;
 
           (void) busy_cursor(top);
 

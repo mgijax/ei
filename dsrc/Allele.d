@@ -13,7 +13,7 @@
 -- History
 --
 -- 05/30/2002 lec
--- 	- TR 3677; modifedBy will be set in mgi_DBupdate()
+--	- TR 3677; item 3
 --
 -- 03/04/2001 lec
 --	- TR 2217; Allele Enhancements
