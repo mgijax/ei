@@ -34,9 +34,7 @@ devents:
 
 	ModifyAllelePair :local [];
 
-	PrepareSearch :local [];
-	Search :local [];
-	SelectGenotypeByAssay :local [assayKey : string;];
+	Search :local [assayKey : string;];
 	Select :local [item_position : integer;];
 
 	AssignGenotypeToAssay :local [];
@@ -115,8 +113,8 @@ rules:
 
 	  -- if an Assay record has been selected, then select
 	  -- the Genotype records for the Assay
-	  SelectGenotypeByAssay.assayKey := mgi->AssayModule->EditForm->ID->text.value;
-	  send(SelectGenotypeByAssay, 0);
+	  Search.assayKey := mgi->AssayModule->EditForm->ID->text.value;
+	  send(Search, 0);
 	end does;
 
 --
@@ -178,6 +176,14 @@ rules:
 
         Delete does
 
+	  if (top->ID->text.value = NOTAPPLICABLE or
+	      top->ID->text.value = NOTSPECIFIED) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Cannot delete this record.";
+            send(StatusReport);
+	    return;
+	  end if;
+
           (void) busy_cursor(top);
 
 	  DeleteSQL.tableID := GXD_GENOTYPE;
@@ -207,6 +213,14 @@ rules:
           if (not top.allowEdit) then
             return;
           end if;
+
+	  if (top->ID->text.value = NOTAPPLICABLE or
+	      top->ID->text.value = NOTSPECIFIED) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Cannot modify this record.";
+            send(StatusReport);
+	    return;
+	  end if;
 
 	  (void) busy_cursor(top);
 
@@ -318,74 +332,14 @@ rules:
         end does;
 
 --
--- PrepareSearch
---
--- Construct select statement based on values entered by user
---
-
-	PrepareSearch does
-	  value : string;
-
-	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
-	    "," + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
-	  where := "where g._Genotype_key *= ap._Genotype_key";
-
-          QueryDate.source_widget := top->CreationDate;
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
- 
-	  if (top->EditForm->ID->text.value.length > 0) then
-	    where := where + "\nand g._Genotype_key = " + top->EditForm->ID->text.value;
-	  end if;
-
-	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
-	       where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
-	  elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
-		where := where + "\nand g.strain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
-	  end if;
-
-          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
-
-          if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand ap._Marker_key = " + value;
-	  else
-            value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
-            if (value.length > 0) then
-	      where := where + "\nand ap.symbol like " + mgi_DBprstr(value);
-	    end if;
-	  end if;
-	end does;
-
---
 -- Search
 --
--- Prepare and execute search
+-- Retrieve Genotype records for given assayKey
+-- Global event (defined in Genotype.de)
 --
 
 	Search does
-          (void) busy_cursor(top);
-	  send(PrepareSearch, 0);
-	  Query.source_widget := top;
-	  Query.select := "select distinct g._Genotype_key, " +
-		"g.strain + ',' + ap.symbol + ',' + ap.allele1\n" + 
-		from + "\n" + where + "\norder by g.strain\n";
-	  Query.table := GXD_GENOTYPE_VIEW;
-	  send(Query, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- SelectGenotypeByAssay
---
--- Retrieve Genotype records for given assayKey
---
-
-	SelectGenotypeByAssay does
-	  assayKey : string := SelectGenotypeByAssay.assayKey;
+	  assayKey : string := Search.assayKey;
 
 	  if (mgi->AssayModule = nil) then
 	    send(Exit, 0);
@@ -409,23 +363,45 @@ rules:
 	    from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
 	  end if;
 
+	  assayExists : string := "select distinct g._Genotype_key, " +
+		"g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
+		from + "\n" + where;
+
+          notExists : string := "select distinct g._Genotype_key, " +
+		"g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
+	  	"from GXD_Genotype_View g, GXD_AllelePair_View ap \n" +
+	  	"where not exists (select 1 from GXD_Specimen s\n" +
+	  	"where g._Genotype_key = s._Genotype_key)\n" +
+	  	"and not exists (select 1 from GXD_GelLane s\n" +
+	  	"where g._Genotype_key = s._Genotype_key)\n" +
+		" and g._Genotype_key *= ap._Genotype_key\n";
+
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := "select distinct g._Genotype_key, " +
-		"convert(varchar(3), a.sequenceNum) + ':' + g.strain + ',' + ap.symbol + ',' + ap.allele1\n" + 
-		from + "\n" + where + "\norder by a.sequenceNum\n";
+	  QueryNoInterrupt.select := assayExists + "\nunion\n" + notExists;
 	  QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
 	  send(QueryNoInterrupt, 0);
 
-	  -- Select Genotype record of currently selected Specimen/Gel Row
+	  send(SelectGenotypeRecord, 0);
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- SelectGenotypeRecord
+--
+-- Select Genotype Record of currently selected Specimen/Gel Row.
+-- Globally declare in Genotype.de so that Assay.d can issue the callback.
+--
+
+	SelectGenotypeRecord does
 	  row : integer := mgi_tblGetCurrentRow(assayTable);
 	  genotypeKey : string := mgi_tblGetCell(assayTable, row, assayTable.genotypeKey);
 	  pos : integer := top->QueryList->List.keys.find(genotypeKey);
+
 	  if (pos > 0) then
 	    (void) XmListSelectPos(top->QueryList->List, pos, true);
+	    (void) XmListSetPos(top->QueryList->List, pos);
 	  end if;
-
-
-	  (void) reset_cursor(top);
 	end does;
 
 --

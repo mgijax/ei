@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 08/29/2001
+--	- Modify; check length of "cmd" and "set" before updating modification date
+--
 -- lec 08/28/2001
 --	- TR 2869
 --
@@ -1069,7 +1072,9 @@ rules:
 	  -- Place update of primary table last, so that cache table gets
 	  -- updated AFTER Assay details are modified.
 
-	  cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, set);
+	  if (cmd.length > 0 or set.length > 0) then
+	    cmd := cmd + mgi_DBupdate(GXD_ASSAY, currentAssay, set);
+	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -2467,6 +2472,10 @@ rules:
 
 	      InSituResultInit.source_widget := top->CVSpecimen->ResultsPush;
 	      send(InSituResultInit, 0);
+	    end if;
+
+	    if (mgi->GenotypeModule != nil) then
+	      send(SelectGenotypeRecord, 0);
 	    end if;
 
             SetOption.source_widget := top->CVSpecimen->AgeMenu;

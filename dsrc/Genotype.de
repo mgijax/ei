@@ -1,0 +1,11 @@
+--
+-- Name    : Genotype.de
+-- Creator : lec
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for Genotype.d
+--
+
+SelectGenotypeRecord [];
+
