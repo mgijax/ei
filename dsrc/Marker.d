@@ -1043,11 +1043,10 @@ rules:
             set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-	  -- Don't allow modifications to Marker Status; maybe in the future...
---          if (top->MarkerStatusMenu.menuHistory.modified and
---	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
---            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
---          end if;
+          if (top->MarkerStatusMenu.menuHistory.modified and
+	      top->MarkerStatusMenu.menuHistory.searchValue != "%") then
+            set := set + "_Marker_Status_key = "  + top->MarkerStatusMenu.menuHistory.defaultValue + ",";
+          end if;
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
@@ -1097,18 +1096,27 @@ rules:
 
 	  if ((cmd.length > 0 and cmd != accRefTable.sqlCmd and cmd != accTable.sqlCmd) or
 	       set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set) +
-		   "\nexec MRK_reloadLabel " + currentRecordKey +
-		   "\nexec MRK_reloadReference " + currentRecordKey +
-		   "\nexec MRK_reloadSequence " + currentRecordKey;
-	  elsif (cmd = accRefTable.sqlCmd) then
-	    cmd := cmd + "\nexec MRK_reloadReference " + currentRecordKey +
-		   "\nexec MRK_reloadSequence " + currentRecordKey;
+	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set);
 	  end if;
+
+	  -- Split up the modification because the SP may contain 'select into'
+	  -- statements and these cannot be wrapped up within a transaction
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
+
+	  if (cmd.length > 0) then
+	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
+		   "\nexec MRK_reloadReference " + currentRecordKey +
+		   "\nexec MRK_reloadSequence " + currentRecordKey;
+	    ModifySQL.cmd := cmd;
+	    ModifySQL.list := top->QueryList;
+	    ModifySQL.reselect := true;
+	    ModifySQL.transaction := false;
+	    send(ModifySQL, 0);
+          end if;
 
 	  (void) reset_cursor(top);
 	end does;
