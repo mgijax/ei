@@ -1065,11 +1065,10 @@ rules:
             while (row < mgi_tblNumRows(table)) do
               editMode := mgi_tblGetCell(table, row, table.editMode);
  
-              if (editMode = TBL_ROW_EMPTY) then
-                break;
-              end if;
- 
-              (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+              if (editMode != TBL_ROW_EMPTY) then
+                (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_ADD);
+	      end if;
+
               row := row + 1;
             end while;
 	  end while;
