@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 18 13:41:13 2000";
+      lastWritten = "Wed Apr 19 08:55:05 2000";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -68,6 +68,7 @@ Module: mgiDialog
             userDefinedAttributes = "select:String(String)\nuseReportDir:Boolean(Boolean)=\"True\"\nprintSelect:String\n";
             dialogTitle = Reports;
             mapCallback = "D:ReportInit";
+            width = 600;
           Group: Control
             vip_x = 80;
             vip_y = 305;
@@ -105,9 +106,37 @@ Module: mgiDialog
                           }
                           {
                             PrintOrient = Choice : mgiDataTypes;
+                                {
+                                  PrintOrientBox : ChoiceBox = XmRowColumn;
+                                      {
+                                        Portrait = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          set = True;
+                                          labelString = Portrait;
+                                      }
+                                      {
+                                        Landscape = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = Landscape;
+                                      }
+                                }
                           }
                           {
                             PrintColumn = Choice : mgiDataTypes;
+                                {
+                                  PrintColumnBox : ChoiceBox = XmRowColumn;
+                                      {
+                                        OneColumn = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          set = True;
+                                          labelString = "1 column";
+                                      }
+                                      {
+                                        TwoColumn = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "2 column";
+                                      }
+                                }
                           }
                           {
                             Output = XmScrolledText;
@@ -384,19 +413,35 @@ Module: mgiDialog
                           {
                             PrintOrient = Choice : mgiDataTypes;
                                 {
-                                  PrintOrientBox = XmRowColumn;
-                                }
-                                {
-                                  ChoiceBox = XmRowColumn;
+                                  PrintOrientBox : ChoiceBox = XmRowColumn;
+                                      {
+                                        Portrait = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          set = True;
+                                          labelString = Portrait;
+                                      }
+                                      {
+                                        Landscape = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = Landscape;
+                                      }
                                 }
                           }
                           {
                             PrintColumn = Choice : mgiDataTypes;
                                 {
-                                  PrintColumnBox = XmRowColumn;
-                                }
-                                {
-                                  ChoiceBox = XmRowColumn;
+                                  PrintColumnBox : ChoiceBox = XmRowColumn;
+                                      {
+                                        OneColumn = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          set = True;
+                                          labelString = "1 column";
+                                      }
+                                      {
+                                        TwoColumn = toggle : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "2 column";
+                                      }
                                 }
                           }
                     }
