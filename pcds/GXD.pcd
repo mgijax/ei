@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 30 09:50:23 2001";
+      lastWritten = "Wed Sep  5 14:41:09 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -931,22 +931,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown;
-                                      {
-                                        Transfer = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "C: TuManage(find = MRKTransferDialog)";
-                                          labelString = "Marker Transfer Report";
-                                      }
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1320,9 +1304,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       InSituResultDialog = InSituResultDialog : mgiDialog;
-                    }
-                    {
-                      MRKTransferDialog = MRKTransferDialog : mgiDialog;
                     }
                     {
                       NextRecordDialog = NextRecordDialog : mgiDialog;
