@@ -923,21 +923,21 @@ rules:
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 8);
 	        top->Name->text.value         := mgi_getstr(dbproc, 9);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 15));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 15));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 16));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 14));
 
 		top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 16);
+		top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 17);
 
 		top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 17);
+		top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 18);
 
 		top->ESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 6);
-		top->ESCellLine->CharText->text.value := mgi_getstr(dbproc, 20);
+		top->ESCellLine->CharText->text.value := mgi_getstr(dbproc, 21);
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
