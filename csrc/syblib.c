@@ -64,6 +64,7 @@ int mgi_dbinit(char *user, char *pwd)
   if (dbinit() == FAIL)
     exit(ERREXIT);
 
+  dbsetversion(DBVERSION_100);
   dberrhandle(mgi_err_handler);
   dbmsghandle(mgi_msg_handler);
 
