@@ -3250,7 +3250,7 @@ Module: MGD
         {
           MolecularSourceModule = Module : MGI;
           Group: Widget
-            destroyCallback = "D:MolecularSourceExit";
+            closeWindowCallback = "D:MolecularSourceExit";
           Group: Control
             vip_x = 80;
             vip_y = 800;
@@ -5596,7 +5596,7 @@ Module: MGD
         {
           MLCModule = Module : MGI;
           Group: Widget
-            destroyCallback = "D:ExitMLCED";
+            closeWindowCallback = "D:ExitMLCED";
           Group: Control
             vip_x = 80;
             vip_y = 855;

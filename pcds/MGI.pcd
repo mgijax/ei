@@ -182,7 +182,7 @@ Module: MGI
           Module = TopLevelShell;
           Group: Widget
             userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\n";
-            destroyCallback = "D:Exit";
+            closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
             vip_x = 70;
@@ -364,7 +364,7 @@ Module: MGI
           Module1 = TopLevelShell;
           Group: Widget
             userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String\n";
-            destroyCallback = "D:Exit";
+	    closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
             vip_x = 70;
@@ -1136,7 +1136,7 @@ Module: MGI
           Group: Widget
             width = 1200;
             height = 825;
-            destroyCallback = "D:VocAnnotExit";
+	    closeWindowCallback = "D:VocAnnotExit";
           Group: Control
             vip_x = 70;
             vip_y = 580;
@@ -1464,7 +1464,7 @@ Module: MGI
         {
           GenotypeModule = Module : MGI;
           Group: Widget
-            destroyCallback = "D:GenotypeExit";
+            closeWindowCallback = "D:GenotypeExit";
           Group: Control
             vip_x = 70;
             vip_y = 470;
