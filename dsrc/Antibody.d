@@ -862,13 +862,6 @@ rules:
           ClearAntibody.reset := true;
           send(ClearAntibody, 0);
 
-	  notes.open;
-	  while (notes.more) do
-	    SetNotesDisplay.note := notes.next;
-	    send(SetNotesDisplay, 0);
-	  end while;
-	  notes.close;
-
 	  (void) reset_cursor(top);
 	end does;
 
