@@ -14,11 +14,11 @@
 --
 -- History
 --
--- 08/15/2002
---	- TR 1463/SAO; Species replaced with Organism
+-- 08/14/2002
+--	- TR 1463/SAO; Species to Organism
 --
 -- 06/04/2002
---      - TR 3750; set OtherReference->Table.xrtTblNumRows
+--	- TR 3750; set OtherReference->Table.xrtTblNumRows
 --
 -- 11/29/2001
 --	- TR 3148; when Name is modified, modify all corresponding History names too
@@ -1941,7 +1941,9 @@ rules:
 
 	  (void) dbclose(dbproc);
 
-	  top->OtherReference->Table.xrtTblNumRows := row + 1;
+	  if (row > 5) then
+	    top->OtherReference->Table.xrtTblNumRows := row + 1;
+	  end if;
 
 	  -- Initialize Offset rows which do not exist
 	  row := 0;
