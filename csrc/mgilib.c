@@ -184,6 +184,63 @@ char *mgi_DBprstr(char *value)
 
    example:
 
+	buf = mgi_DBprstr("")
+	the value of buf is: NULL
+
+	buf = mgi_DBprstr("Cook")
+	the value of buf is: \"Cook\"
+
+	buf = mgi_DBprstr("NULL")
+	the value of buf is: NULL
+
+	buf = mgi_DBprstr("    ")
+	the value of buf is: NULL
+*/
+
+char *mgi_DBprstr2(char *value)
+{
+  static char buf[BUFSIZ];
+  int allSpaces = 1;
+  int i;
+  char *s;
+
+  memset(buf, '\0', sizeof(buf));
+
+  for (s = value; *s != '\0'; s++)
+  {
+    allSpaces = isspace(*s);
+    if (!allSpaces)
+      break;
+  }
+
+  if (strlen(value) == 0 || strcmp(value, "NULL") == 0 || allSpaces)
+  {
+    strcpy(buf, "NULL");
+  }
+  else
+  {
+    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+  }
+
+  return(buf);
+}
+
+/*
+   Compose a string SQL value for a given value.
+   If the value is not null, then enclose in escaped quotes so
+   that SQL will accept it.
+   If the value is null, return NULL.
+   If the value = "NULL", return NULL.
+   If the value is a string of blanks, return NULL.
+
+   requires:	
+	value (char *), the value
+
+   returns:
+	a string buffer containing the new string
+
+   example:
+
 	buf = mgi_DBprnotestr("")
 	the value of buf is: NULL
 
@@ -511,11 +568,11 @@ char *mgi_DBkey(int table)
     case MRK_NOTES:
     case MRK_OFFSET:
     case MRK_REFERENCE:
-    case MLC_LOCK_EDIT:
-    case MLC_MARKER_EDIT:
-    case MLC_REFERENCE_EDIT:
-    case MLC_TEXT_EDIT:
-    case MLC_TEXT_EDIT_ALL:
+    case MLC_LOCK:
+    case MLC_MARKER:
+    case MLC_REFERENCE:
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
             strcpy(buf, "_Marker_key");
 	    break;
     case MRK_OTHER:
@@ -923,6 +980,9 @@ char *mgi_DBtype(int table)
     case ALL_ALLELE:
             strcpy(buf, "Allele");
             break;
+    case PRB_SOURCE_MASTER:
+            strcpy(buf, "Source");
+            break;
     case VOC_TERM:
 	    strcpy(buf, "Vocabulary Term");
 	    break;
@@ -1215,21 +1275,21 @@ char *mgi_DBtable(int table)
     case TISSUE:
             strcpy(buf, "PRB_Tissue");
 	    break;
-    case MLC_LOCK_EDIT:
-            strcpy(buf, "MLC_Lock_edit");
+    case MLC_LOCK:
+            strcpy(buf, "MLC_Lock");
 	    break;
-    case MLC_MARKER_EDIT:
-            strcpy(buf, "MLC_Marker_edit");
+    case MLC_MARKER:
+            strcpy(buf, "MLC_Marker");
 	    break;
-    case MLC_MARKER_EDIT_VIEW:
-            strcpy(buf, "MLC_Marker_edit_View");
+    case MLC_MARKER_VIEW:
+            strcpy(buf, "MLC_Marker_View");
 	    break;
-    case MLC_REFERENCE_EDIT:
-            strcpy(buf, "MLC_Reference_edit");
+    case MLC_REFERENCE:
+            strcpy(buf, "MLC_Reference");
 	    break;
-    case MLC_TEXT_EDIT:
-    case MLC_TEXT_EDIT_ALL:
-            strcpy(buf, "MLC_Text_edit");
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
+            strcpy(buf, "MLC_Text");
 	    break;
     case MLD_CONCORDANCE:
             strcpy(buf, "MLD_Concordance");
@@ -1754,11 +1814,11 @@ char *mgi_DBinsert(int table, char *keyName)
     case GXD_INDEXSTAGES:
     case MGI_NOTE:
     case MGI_NOTECHUNK:
-    case MLC_LOCK_EDIT:
-    case MLC_MARKER_EDIT:
-    case MLC_REFERENCE_EDIT:
-    case MLC_TEXT_EDIT:
-    case MLC_TEXT_EDIT_ALL:
+    case MLC_LOCK:
+    case MLC_MARKER:
+    case MLC_REFERENCE:
+    case MLC_TEXT:
+    case MLC_TEXT_ALL:
     case MLD_CONCORDANCE:
     case MLD_DISTANCE:
     case MLD_EXPT_MARKER:
@@ -1871,19 +1931,19 @@ char *mgi_DBinsert(int table, char *keyName)
     case MGI_NOTETYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, noteType, private)", mgi_DBtable(table), mgi_DBkey(table));
             break;
-    case MLC_LOCK_EDIT:
+    case MLC_LOCK:
 	    sprintf(buf, "insert %s (time, %s, checkedOut)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLC_MARKER_EDIT:
+    case MLC_MARKER:
 	    sprintf(buf, "insert %s (%s, tag, _Marker_key_2)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLC_REFERENCE_EDIT:
+    case MLC_REFERENCE:
 	    sprintf(buf, "insert %s (%s, _Refs_key, tag)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLC_TEXT_EDIT:
+    case MLC_TEXT:
 	    sprintf(buf, "insert %s (%s, mode, description, userID, creation_date)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2446,11 +2506,11 @@ char *mgi_DBdelete(int table, char *key)
               sprintf(buf, "delete from %s where _Class_key = %s and _Refs_key = %s\n", 
 		mgi_DBtable(table), tokens[0], tokens[1]);
 	      break;
-      case MLC_TEXT_EDIT_ALL:
+      case MLC_TEXT_ALL:
 	      sprintf(buf, "delete from %s where %s = %s\n 
 			    delete from MRK_Classes where %s = %s\n 
-			    delete from MLC_Marker_edit where %s = %s 
-			    delete from MLC_Reference_edit where %s = %s\n",
+			    delete from MLC_Marker where %s = %s 
+			    delete from MLC_Reference where %s = %s\n",
 			mgi_DBtable(table), mgi_DBkey(table), key,
 			mgi_DBkey(table), key,
 			mgi_DBkey(table), key,
@@ -2824,7 +2884,7 @@ char *mgi_DBrefstatus(int key, int table)
     case MLD_MARKER:
 	sprintf(cmd, "exec BIB_MLD_Exists %d", key);
 	break;
-    case MLC_REFERENCE_EDIT:
+    case MLC_REFERENCE:
 	sprintf(cmd, "exec BIB_MLC_Exists %d", key);
 	break;
     case GXD_INDEX:
