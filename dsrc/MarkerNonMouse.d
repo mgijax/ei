@@ -167,6 +167,7 @@ rules:
 --
 
 	Add does
+	  curationState : string := mgd_sql1("select _Term_key from VOC_Term_CurationState_View where term = 'internal'");
 
 	  if (not top.allowEdit) then
 	    return;
@@ -185,8 +186,9 @@ rules:
           cmd := mgi_setDBkey(MRK_MARKER, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MRK_MARKER, KEYNAME) +
 	         top->mgiOrganism->ObjectID->text.value + "," +
-                 markerTypeKey + "," +
                  markerStatusKey + "," +
+                 markerTypeKey + "," +
+		 curationState + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Chromosome->text.value) + "," +
