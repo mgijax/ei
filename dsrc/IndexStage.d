@@ -184,6 +184,8 @@ rules:
 	  (void) dbclose(dbproc);
 
 	  table.batch;
+	  table.xrtTblNumRows := assayKeys.count;
+	  table.xrtTblVisibleRows := assayKeys.count;
 	  table.xrtTblBackgroundSeries := backgroundSeries;
 	  table.xrtTblVisibleRows := row + 1;
 	  table.xrtTblRowLabels := rowLabels;
