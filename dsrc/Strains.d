@@ -188,7 +188,8 @@ rules:
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->NeedsReviewMenu.menuHistory.defaultValue + ")\n";
  
-          cmd := cmd + mgi_DBinsert(MLP_STRAIN, KEYNAME) +
+          cmd := cmd + mgi_DBinsert(MLP_STRAIN, NOKEY) +
+		 currentRecordKey + "," +
 		 top->mlpSpecies->ObjectID->text.value + "," +
 		 mgi_DBprstr(top->User1->text.value) + "," +
 		 mgi_DBprstr(top->User2->text.value) + ")\n";

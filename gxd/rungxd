@@ -19,6 +19,7 @@ USERLOG=$HOME/.gxd-log
 
 DSQUERY=MGD
 MGD=mgd
+STRAINS=strains
 
 SYBASE=/opt/sybase
 TeleUSE=/opt/teleuseXRT
