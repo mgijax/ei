@@ -21,6 +21,8 @@
 #define LT '<'
 #define GT '>'
 
+/* maximum allowable length of a text tag */
+#define MAXTAGLEN 80
 
 /* Define the HTML anchor chars, upper and lowercase */
 
