@@ -8,6 +8,24 @@
 #include <Xm/XrtList.h>
 #include <Xm/XrtGearString.h>
 
+/* Open and Closed symbols for markup */
+#define OMARKUPCHAR '('
+#define CMARKUPCHAR ')'
+
+/* Open and Closed symbols that are close the the right ones, but incorrect */
+#define OBADMARKUPCHAR '{'
+#define CBADMARKUPCHAR '}'
+
+/* Define lt gt HTML tag delimiters */
+
+#define LT '<'
+#define GT '>'
+
+
+/* Define the HTML anchor chars, upper and lowercase */
+
+#define UANCHOR 'A'
+#define LANCHOR 'a'
 
 #define REFNUMTXTLEN 10  /* maximum length of a reference number in
                             ascii chars */
@@ -98,8 +116,8 @@ typedef struct _tag_rec {
 	 */
 
 
-	long checkbraces(char *);
-	/* checkbraces
+	long checkmarkuppairs(char *);
+	/* checkmarkuppairs
 	 *
 	 * returns offset of first brace in locustext which does not have a
 	 * corresponding '}'.  Braces can be any kind of markup, either text
@@ -116,8 +134,8 @@ typedef struct _tag_rec {
 	 *
 	 * requires: locustext is a null-terminated string.
 	 * effects: Checks for confused markup.
-	 *          Currently checks only to see if user used \L() instead of \L{}
-	 *          or \R{} instead of \R().
+	 *          Currently checks only to see if user used O/CBADMARKUPCHAR
+	 *          instead of O/CMARKUPCHAR after \L and \R.
 	 * returns: -1 if no errors, position in file of problem otherwise (>=0).
 	 */
 

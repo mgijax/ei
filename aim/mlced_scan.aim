@@ -28,12 +28,13 @@ CALLS
 		renumberRefs("char *", "xrtlist") : "int";
 		getmatchrefs("char *","xrtlist","int") : "xrtlist";
 		getlocustaglist("char *", "long") : "xrtlist";
-		checkbraces("char *") : "long";
+		checkmarkuppairs("char *") : "long";
 		checkmarkup("char *") : "long";
 		check_tags("xrtlist") : "xrtlist";
 		getfixsymbol("char *") : "char *";
 		getfixreason("char *") : "char *";
 		getfixnew("char *") : "char *";	
+		sprintf("char *", "char *", ...);
 
 		XrtGearListGetItemCount("xrtlist") : "int";
        

@@ -47,7 +47,7 @@ int alterRtags(char *intxt, chg *chgs, int numchgs, tagaction ta);
 /* alterRtags
  *
  * Changes reference tags within the text, based on a change list 'chgs',
- * and the action type ta.
+ * and the action type ta. numchgs is the count of changes in 'chgs'.
  * 
  * To understand why we need to use an intermediate tag, say you 
  * have "\R(1) \R(2)" and the renumbering 1->2, and 2->1.  
@@ -147,10 +147,10 @@ xrtlist getlocustaglist(char *txt, long len)
                                 tagtxt[j++] = c;
 						}
 				break;
-			case '{':   /* first brace */	
+			case OMARKUPCHAR:   /* first delim */	
                         if(st2 && lastchar == 'L') st4 = 1;
 				break;
-			case '}':	/* closing brace */
+			case CMARKUPCHAR:	/* closing delim */
                         if(st4) {
     						tag_ptr tr;
 							tagtxt[j] = '\0';
@@ -214,22 +214,29 @@ int alterRtags(char *intxt, chg *chgs, int numchgs, tagaction ta)
 						break;
 			case 'R' :	if(st1) st2 = 1;
 						break;
-			case '(' :	if(st1 && st2) 
+			case OMARKUPCHAR :	if(st1 && st2) 
 							st3 = 1;
 						break;
-			case ')' : /* process tag */
+			case CMARKUPCHAR : /* process tag */
 						if(st3) {
 							char *tok;
 							tagtxt[j] = '\0'; /* finish cmpd tag */
 	
 							tok = strtok(tagtxt,", ");
 							if(!tok) tok=tagtxt;  /* single tag */
+							/* else, tok is first ref index in comma-delimited
+							   list */
 
 							do {
+								/* found is set to true when tag to be
+                                   changed is found and renamed */
 								found = 0;
 								if(ta == RENAME_RTAGS) { 
 									tagval = atoi(tok);
-									/* match with old tag, map to new */
+									/* for the given tag, find which change
+									   is to be applied to it from the list of
+									   changes and perform the change */ 
+
 									for(i=0;i<numchgs;i++) { 
 										if(tagval == chgs[i].old) {
 											char buf[REFNUMTXTLEN];
@@ -237,6 +244,8 @@ int alterRtags(char *intxt, chg *chgs, int numchgs, tagaction ta)
 											/* replace the old tag */	
 											p = buf;
 								    		while(*p) *ob++ = *p++;
+											/* add underscore to mark as 
+											   processed */
 											*ob++ = '_';  
 											found = 1;
 											break;
@@ -253,6 +262,10 @@ int alterRtags(char *intxt, chg *chgs, int numchgs, tagaction ta)
 									p = tok;
 									while(*p) *ob++ = *p++;
 								}
+
+								/*  if we have a list of refs, grab next number
+									then output comma after the number already
+									output */
 								tok = strtok(NULL,", ");
 								if(tok) {  /* comma delimit multiple refs */ 
 									*ob++ = ',';	
@@ -267,7 +280,7 @@ int alterRtags(char *intxt, chg *chgs, int numchgs, tagaction ta)
 							if(j < MAXTAGLEN) tagtxt[j++] = c;
 						break;
 		}
-		if(!st3 || (st3 && c == '(')) *ob++ = c;  
+		if(!st3 || (st3 && c == OMARKUPCHAR)) *ob++ = c;  
 	}
 	*ob++ = '\0';
 		
@@ -390,11 +403,11 @@ xrtlist getmatchrefs(char *txt, xrtlist refnumslist, int mode)
                         break;
             case 'R' :  if(st1 && lastchar == '\\') st2 = 1;
                         break;
-            case '(' :  if(st1 && st2)
+            case OMARKUPCHAR :  if(st1 && st2)
 							if(lastchar == 'R')
 	                            st3 = 1;
                         break;
-            case ')' : 	if(st3) {
+            case CMARKUPCHAR : 	if(st3) {
 							int off,tlen,added=0;
 							char *tok;
 
@@ -463,38 +476,43 @@ int taginlist(tag_ptr tagp, xrtlist taglist)
 	return 0;
 }
 
-long checkbraces(char *locustext)
+long checkmarkuppairs(char *locustext)
 {
-	char c, *p=locustext;
+	char c, lastc=' ', *p=locustext;
 	int bc=0,pc=0;
 	long offset=0;
-    /* we basically maintain two stacks, pushing on the stack when { or (
-       is encountered, and popping off the stack when } or ) is encountered
+    /* we basically maintain two stacks, pushing on the stack when OMARKUPCHAR 
+       or LT is encountered, and popping off the stack when CMARKUPCHAR or GT
+       is encountered.
      */
-	#define MAXNEXT 256 /* stack height */
-	long brace[MAXNEXT+1];
+	#define MAXNEXT 256 /* stack height. Note limits are checked in code */ 
+	long html[MAXNEXT+1]; 
 	long paren[MAXNEXT+1];
 
 	if(p) {
 		while(c=*p) {
 			switch(c) {
-				case '{':
+				case LT:
+					if (lastc == '\\') /* then an escape for literal LT */
+						break;
 					if(bc < MAXNEXT)
-						brace[bc]=offset;
+						html[bc]=offset;
 					bc++;
 					break;
-				case '}':
+				case GT:
+					if (lastc == '\\') /* then an escape for literal LT */
+						break;
 					if(bc >= 0)
-						brace[bc]=offset;
+						html[bc]=offset;
 					bc--;
 					if (bc < 0) return offset;
 		   	   		break;
-				case '(':
+				case OMARKUPCHAR:
 					if(pc < MAXNEXT)
 						paren[pc]=offset;
                     pc++;
                     break;
-                case ')':
+                case CMARKUPCHAR:
 					if(pc >= 0)
 						paren[pc]=offset;
                     pc--;
@@ -503,11 +521,12 @@ long checkbraces(char *locustext)
 				default:
 					break;
 			}		
+			lastc = c;
 			offset++;
 			p++;
 		}
 	}
-	if(bc > 0 && bc <= MAXNEXT) return brace[bc-1];
+	if(bc > 0 && bc <= MAXNEXT) return html[bc-1];
 	if(pc > 0 && pc <= MAXNEXT) return paren[pc-1];
 	return -1;
 }
@@ -515,27 +534,55 @@ long checkbraces(char *locustext)
 
 long checkmarkup(char *locustext)
 {
-	char c, lastc, *p=locustext;
-	long offset=0;
+	char c, lastc, *p=locustext, *rp;
+	long i,offset=0;
+	static char buf[MAXTAGLEN];
 
 	lastc = ' ';
 
 	if(p) {
 		while(c=*p) {
 			switch(c) {
-				case '{':
-					if(lastc == 'R') return offset;
+				case LT:
+					if (lastc != '\\') { /* then not a literal LT */
+						char nextchar = *(p+1);
+						if (nextchar == UANCHOR || nextchar == LANCHOR)
+							return offset;
+					}
 					break;
-				case '(':
-					if(lastc == 'L') return offset;
-                    break;
+				case OBADMARKUPCHAR:
+					if(lastc == 'R' || lastc == 'L') return offset;
+					break;
+				case OMARKUPCHAR:
+					/* look for delimiters other than commas and spaces 
+					in the multiple-reference form of the R markup */
+					if(lastc == 'R') {
+						rp = p+1; /* skip the OMARKUPCHAR */
+						/* check to see if list of numbers has ',' and only
+							',' as delimiters */
+						i=0; 
+						while ((c=*rp) && c != CMARKUPCHAR)
+						{
+							if (i+1 >= MAXTAGLEN)  /* then markup is wrong */ 
+								return offset;
+							buf[i++] = c;   /* accum chars to CMARKUPCHAR */
+							rp++;
+						}
+						buf[i] = '\0'; /* null terminate */
+						/* s should consist of digits, commas and spaces only */ 
+						if ((i=strspn(buf,"0123456789, ")) != strlen(buf)) {
+							/* then we have bad characters somewhere */
+							return offset;
+						}
+					}
+					break;
 				default:
 					break;
-			}		
+			} /* end switch */	
 			lastc = c;
 			offset++;
 			p++;
-		}
+		} /* end while */
 	}
 	return -1;
 }
@@ -659,7 +706,7 @@ char *getfixsymbol(char *row)
 	strncpy(tbuf,row,ERRDIALOG_STRLEN); /* copy the original row */
 	p = strtok(tbuf," ");  /* tok copy */
 	buf[0]='\0';
-	if(p) sprintf(buf,"\\L{%s}",p); /* copy piece we want */ 
+	if(p) sprintf(buf,"\\L%c%s%c",OMARKUPCHAR,p,CMARKUPCHAR); /* copy piece we want */ 
 	return buf;
 }
 
@@ -690,7 +737,7 @@ char *getfixnew(char *row)
 	p = strtok(NULL," "); 
 	p = strtok(NULL," ");  /* need third piece and beyond... */
 	buf[0]='\0';
-	if(p) sprintf(buf,"\\L{%s}",p); /* copy piece we want */ 
+	if(p) sprintf(buf,"\\L%c%s%c",OMARKUPCHAR,p,CMARKUPCHAR); /* copy piece we want */ 
 	p = strtok(NULL," ");  /* need third piece and beyond... */
 	if(p) strcat(buf,", "); /* more than one */
 	while (p) {

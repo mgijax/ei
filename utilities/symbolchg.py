@@ -139,9 +139,14 @@ app=sys.argv[0]
 # Text pattern regular expressions.  Matched '\L' and \L*'
 # Note: we only expect to find \L, but we will process \L*
 #
-startMarker_re = '\\\\L\(\*\|\){'
-inMarker_re = '\([^}]*\)'
-endMarker_re = '}'
+
+# Markup delimiters, opening and closing.
+OMARKUPCHAR = '('
+CMARKUPCHAR = ')'
+
+startMarker_re = '\\\\L\(\*\|\)%c' % OMARKUPCHAR
+inMarker_re = '\([^%c]*\)' % CMARKUPCHAR
+endMarker_re = CMARKUPCHAR 
 marker_re = startMarker_re + inMarker_re + endMarker_re
 marker_cre = regex.compile(marker_re)
 
@@ -348,8 +353,8 @@ def get_alter_textcmd(mk,os,ns,userid):
 				if marker_cre.search(w) > -1:
 					l = marker_cre.group(2)
 					if l == os:   # then replace it with its new symbol 
-						indexb = string.find(w,'{') + 1
-						indexe = string.find(w,'}')
+						indexb = string.find(w,OMARKUPCHAR) + 1
+						indexe = string.find(w,CMARKUPCHAR)
 						words[i] = w[0:indexb] + ns + w[indexe:] 
 
 		# restore the original characters substituted

@@ -386,11 +386,13 @@ rules:
 			return;
 		end if;
 
-		offset := checkbraces(locustext.value);
+		muchars : string := "";
+
+		offset := checkmarkuppairs(locustext.value);
 		if (offset >= 0) then
 			XmTextSetHighlight(locustext, offset, offset + 1, 1);
 			StatusReport.source_widget := top;
-			StatusReport.message := "Unmatched braces/parentheses." +
+			StatusReport.message := "Unmatched <> or parentheses." +
                                     " Edit and resubmit.";
 			send(StatusReport);
 			return;
@@ -400,8 +402,12 @@ rules:
 		if (offset >= 0) then
 			XmTextSetHighlight(locustext, offset, offset + 1, 1);
 			StatusReport.source_widget := top;
-			StatusReport.message := "Bad markup, either \R{<symbol>}" + 
-									" or \L(n). Edit and resubmit.";
+			
+			sprintf(muchars, "%c or %c", OBADMARKUPCHAR, CBADMARKUPCHAR);
+			StatusReport.message := "Bad/Disallowed markup, Using " + 
+									muchars +  
+									" or other invalid characters. " +
+									"Edit and resubmit.";
 			send(StatusReport);
 			return;
 		end if;
@@ -1110,6 +1116,12 @@ rules:
 -- to numbers must also be reflected in the tags within the 
 -- Description->text. These changes are performed within the C routine 
 -- "renumberRefs". This C routine marks locustext as modified, as well.
+--
+-- PLEASE NOTE: The correctness of the algorithm used when renumbering the 
+-- text references depends on the user being able to Delete and Add rows
+-- only. A *bad* problem occurred in the past when a "Insert Row" button 
+-- was added to the MLC References table, invalidating the algorithm's 
+-- assumptions. 
 --
 -- We determine if each sorted row needs to be modified based on the 
 -- editMode value in the Table row before updating with the sorted list.
