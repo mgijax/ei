@@ -1660,12 +1660,15 @@ rules:
 	  top->Band->text.value := band;
 
           bands := mgi_splitfields(band, " & ");
-	  top->ProximalBand->text.value := bands[1];
 
-	  if (bands.count = 2) then
-	    top->DistalBand->text.value := bands[2];
-	  else
-	    top->DistalBand->text.value := "";
+	  if (bands.count > 0) then
+	    top->ProximalBand->text.value := bands[1];
+
+	    if (bands.count = 2) then
+	      top->DistalBand->text.value := bands[2];
+	    else
+	      top->DistalBand->text.value := "";
+	    end if;
 	  end if;
 
 	  top->ProximalSymbol->text.value := symbol + "-p";
