@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  2 13:17:50 2004";
+      lastWritten = "Thu Dec  2 13:52:57 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -399,6 +399,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
@@ -2771,6 +2774,11 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
+                                  RIKENFANTOM = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
+                                {
                                   NIA = AccToggle : mgiOption;
                                   Group: Widget
                                     managed = True;
@@ -3354,6 +3362,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIA = AccToggle : mgiOption;
@@ -7005,6 +7016,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NIA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8879,6 +8893,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NIA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10576,6 +10593,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RIKENClone = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NIA = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -11230,6 +11250,9 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               RIKENClone = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              RIKENFANTOM = AccToggle : mgiOption;
                                             }
                                             {
                                               NIA = AccToggle : mgiOption;
