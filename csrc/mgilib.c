@@ -700,8 +700,6 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Marker_Status_key");
 	    break;
     case NOM_MARKER:
-    case NOM_GENEFAMILY:
-    case VOC_NOMGENEFAMILY:
             strcpy(buf, "_Nomen_key");
 	    break;
     case NOM_SYNONYM:
@@ -1158,15 +1156,6 @@ char *mgi_DBtable(int table)
 	    break;
     case NOM_MARKER_VALID_VIEW:
 	    strcpy(buf, "NOM_Marker_Valid_View");
-	    break;
-    case NOM_GENEFAMILY:
-	    strcpy(buf, "NOM_GeneFamily");
-	    break;
-    case NOM_GENEFAMILY_VIEW:
-	    strcpy(buf, "NOM_GeneFamily_View");
-	    break;
-    case VOC_NOMGENEFAMILY:
-	    strcpy(buf, "VOC_Term_GeneFamily_View");
 	    break;
     case NOM_STATUS:
 	    strcpy(buf, "VOC_Term_NomenStatus_View");
@@ -1865,7 +1854,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MRK_NOTES:
     case MRK_OFFSET:
     case MRK_REFERENCE:
-    case NOM_GENEFAMILY:
     case NOM_SYNONYM:
     case HMD_HOMOLOGY:
     case HMD_HOMOLOGY_MARKER:
@@ -2076,9 +2064,6 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Marker_Type_key, _NomenStatus_key, _Marker_Event_key, _Marker_EventReason_key, _CurationState_key, symbol, name, chromosome, humanSymbol, statusNote)",
 
 	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case NOM_GENEFAMILY:
-            sprintf(buf, "insert %s (%s, _GeneFamily_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case NOM_SYNONYM:
             sprintf(buf, "insert %s (%s, _Nomen_key, _Refs_key, name, isAuthor)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2444,7 +2429,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
-      case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
       case VOC_EVIDENCE:
@@ -2472,7 +2456,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MRK_HISTORY:
-      case NOM_GENEFAMILY:
       case NOM_MARKER:
       case NOM_SYNONYM:
       case VOC_EVIDENCE:
@@ -2824,9 +2807,6 @@ char *mgi_DBcvname(int table)
 	    break;
     case GXD_GELCONTROL:
             strcpy(buf, "gelLaneContent");
-	    break;
-    case MRK_GENEFAMILY:
-            strcpy(buf, "name");
 	    break;
     case MRK_EVENT:
             strcpy(buf, "event");

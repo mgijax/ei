@@ -205,7 +205,6 @@ extern char *global_version;
 #define STRAIN     		322
 #define TISSUE     		323
 #define BIB_REVIEW_STATUS	324
-#define MRK_GENEFAMILY		326
 #define MRK_EVENT		327
 #define NOM_STATUS     		328
 #define GXD_GELCONTROL		329
@@ -235,13 +234,10 @@ extern char *global_version;
 
 #define NOM_MARKER			500
 #define NOM_MARKER_VIEW			501
-#define NOM_GENEFAMILY      		502
-#define NOM_SYNONYM     		503
-#define NOM_GENEFAMILY_VIEW      	504
-#define NOM_ACC_REFERENCE		505
-#define NOM_SYNONYM_VIEW     		506
-#define NOM_MARKER_VALID_VIEW		507
-#define VOC_NOMGENEFAMILY      		508
+#define NOM_SYNONYM     		502
+#define NOM_ACC_REFERENCE		503
+#define NOM_SYNONYM_VIEW     		504
+#define NOM_MARKER_VALID_VIEW		505
 
 /* MGI Tables */
 
@@ -350,12 +346,12 @@ extern char *global_version;
 
 /* Nomen (VOC_Vocab._Vocab_key = 17) */
 
-#define STATUS_PENDING          "93914"
-#define STATUS_NDELETED         "93915"
-#define STATUS_RESERVED         "93916"
-#define STATUS_NAPPROVED        "93917"
-#define STATUS_BROADCASTOFF     "93918"
-#define STATUS_BROADCASTINT     "93919"
+#define STATUS_PENDING          "In Progress"
+#define STATUS_NDELETED         "Deleted"
+#define STATUS_RESERVED         "Reserved"
+#define STATUS_NAPPROVED        "Approved"
+#define STATUS_BROADCASTOFF     "Broadcast - Official"
+#define STATUS_BROADCASTINT     "Broadcast - Interim"
 
 /* Allele Nomen */
 
