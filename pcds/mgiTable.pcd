@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 29 08:25:45 2004";
+      lastWritten = "Wed May  5 12:46:06 2004";
         {
           mgiTable = XtXrtTable;
           Group: Widget

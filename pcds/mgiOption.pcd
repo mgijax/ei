@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 14 12:34:06 2004";
+      lastWritten = "Wed May  5 12:46:00 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -373,6 +373,11 @@ Module: mgiOption
                       MMRRC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 38;
+                    }
+                    {
+                      MMHCC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 54;
                     }
                     {
                       Harwell = AccToggle : mgiOption;
