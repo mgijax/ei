@@ -325,6 +325,8 @@ rules:
 	  else
 	    top->PhenoSlimList.managed := false;
 	  end if;
+
+	  top->mgiAccession.mgiTypeKey := top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
 	end does;
 
 --

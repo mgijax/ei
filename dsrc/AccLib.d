@@ -23,6 +23,9 @@
 --
 -- History:
 --
+-- lec	01/15/2002
+--	Added mgiTypeKey to mgiAccession template, VerifyMGIAcc
+--
 -- lec	03/12/2001
 --	Added "end does;" for all events
 --
@@ -695,6 +698,7 @@ rules:
         VerifyMGIAcc does
           top : widget := VerifyMGIAcc.source_widget.ancestor_by_class("XmRowColumn");
 	  tableID : integer := top.tableID;
+	  mgiTypeKey : integer := top.mgiTypeKey;
 	  accID : string := top->AccessionID->text.value;
 	  accNumeric : integer;
 	  accTable : widget := top.root->mgiAccessionTable->Table;
@@ -728,7 +732,7 @@ rules:
 
           (void) busy_cursor(top);
  
-	  cmd : string := mgi_DBaccSelect(tableID, accNumeric);
+	  cmd : string := mgi_DBaccSelect(tableID, mgiTypeKey, accNumeric);
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
