@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May 19 08:10:45 2004";
+      lastWritten = "Fri Jun 18 08:10:48 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3188,54 +3188,17 @@ Module: MGD
                     }
               }
               {
-                Repeat = CharText : mgiDataTypes;
+                ProductSize = CharText : mgiDataTypes;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Sequence2;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   topWidget = Sequence2;
-                  topOffset = 2;
-                  bottomAttachment = attach_none;
+                  bottomAttachment = attach_form;
                   resizable = true;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Repeat Unit";
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        maxLength = 120;
-                        columns = 75;
-                    }
-              }
-              {
-                More = toggle : mgiDataTypes;
-                Group: Widget
-                  labelString = "More Than 1 Product?";
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Repeat;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Repeat;
+                  bottomOffset = 5;
                   topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                ProductSize = CharText : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = More;
-                  leftOffset = 10;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = More;
-                  topOffset = "-5";
-                  bottomAttachment = attach_none;
-                  resizable = true;
                     {
                       label = XmLabel;
                       Group: Widget

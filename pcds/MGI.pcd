@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 17 11:11:59 2004";
+      lastWritten = "Thu Jun 17 15:27:14 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -943,9 +943,6 @@ Module: MGI
                                             }
                                             {
                                               GelControl = ControlledVocabToggle;
-                                            }
-                                            {
-                                              ImageFieldType = ControlledVocabToggle;
                                             }
                                             {
                                               Labels = ControlledVocabToggle;

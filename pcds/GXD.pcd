@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May 28 11:04:38 2004";
+      lastWritten = "Thu Jun 17 15:09:10 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1147,27 +1147,24 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = DevelopmentNote;
+                                    topWidget = CopyrightNote;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
-                                    leftOffset = 25;
+                                    leftOffset = 100;
                                     bottomOffset = 5;
                                     leftWidget = xDim;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1) (all 3 30) (all 4 25)";
-                                          xrtTblMaxLengthSeries = "(all 4 255)";
-                                          xrtTblColumnLabels = "Mode,IP Key,FT Key,Field Type,Label";
-                                          userDefinedAttributes = "imagePaneKey:Int=\"1\"\nfieldTypeKey:Int=\"2\"\nfieldType:Int=\"3\"\npaneLabel:Int=\"4\"\n";
-                                          xrtTblPixelHeightSeries = "(allcells allcells 30)";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1) (all 2 25)";
+                                          xrtTblMaxLengthSeries = "(all 3 255)";
+                                          xrtTblColumnLabels = "Mode,IP Key,Label";
+                                          userDefinedAttributes = "imagePaneKey:Int(Int)=\"1\"\npaneLabel:Int(Int)=\"2\"\n";
                                           xrtTblAlignmentSeries = "(all all alignment_middlebegin)";
-                                          xrtTblCreateWidgetCallback = "D:CreateTableMenuWidget(menu = \"FieldTypeCombo\")";
-                                          xrtTblEditableSeries = "(all 0 False) (all 3 False)";
-                                          xrtTblEnterCellCallback = "D:SetOptions";
-                                          xrtTblValidateCellCallback = "D:CopyImagePane,\nD:CommitTableCellEdit";
+                                          xrtTblEditableSeries = "(all 0 False)";
+                                          xrtTblNumColumns = 3;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -1361,23 +1358,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
-                                            }
-                                      }
-                                }
-                                {
-                                  QueryList = QueryList;
-                                }
-                                {
-                                  CVImage = CVImage : mgiCV;
-                                      {
-                                        FieldTypeMenu = FieldTypeMenu;
-                                            Popups:
-                                            {
-                                              FieldTypePulldown = OptionPulldown;
-                                              Group: User
-                                                tableOptionKey = 2;
-                                                tableOption = 3;
-                                                tableForm = ImagePane;
                                             }
                                       }
                                 }
