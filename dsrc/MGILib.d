@@ -114,6 +114,7 @@ rules:
 	  envList.append("SYBASE");
 	  envList.append("MGD");
 	  envList.append("EIDEBUG");
+	  envList.append("RADAR");
 
 	  envList.open;
 	  while envList.more do;
@@ -137,6 +138,7 @@ rules:
 	  mgi : widget;
 	  dialog : widget;
 	  title : string;
+	  jobStream : string;
 	  i : integer := 1;
 
 	  (void) mgi_writeLog("\n" + get_time() + "Logging in to Application...\n");
@@ -162,6 +164,8 @@ rules:
 	    global_passwd := "mgdpub";
 	  end if;
 
+	  global_radar := getenv("RADAR");
+
 	  (void) busy_cursor(top);
 
 	  -- Login to Server; Set DSQUERY and MGD env variables
@@ -177,6 +181,17 @@ rules:
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;
 	      StatusReport.message := "\nERROR:  Login " + global_login + " is not defined in the MGI User Table.";
+	      send(StatusReport, 0);
+	      (void) reset_cursor(top);
+	      return;
+	    end if;
+
+	    -- If a Job Stream has not finished, then disallow Login
+
+	    jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null");
+	    if ((integer) jobStream > 0) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := "\nERROR:  EI is unavailable.  A data load job is running.";
 	      send(StatusReport, 0);
 	      (void) reset_cursor(top);
 	      return;
