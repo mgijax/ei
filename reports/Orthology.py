@@ -2,23 +2,23 @@
 
 '''
 #
-# Homology.py 11/16/98
+# Orthology.py 11/16/98
 #
 # Report:
-#       Detail information for Homology record
+#       Detail information for Orthology record
 #
 # Usage:
-#       Homology.py command
+#       Orthology.py command
 #
 #       where:
 #
 #       command = SQL select statement which returns the 
-#                 desired Homology records from the database.
+#                 desired Orthology records from the database.
 #                 The classRef, short_citation and jnum columns 
 #                 must be included in the select statement.
 #
 # Generated from:
-#       Editing Interface, Homology Report form
+#       Editing Interface, Orthology Report form
 #
 # Notes:
 #	Produces a postscript output file.
@@ -105,7 +105,7 @@ def parse_reference(reference):
 # Main
 #
 
-fp = reportlib.init(sys.argv[0], 'Homology', os.environ['EIREPORTDIR'])
+fp = reportlib.init(sys.argv[0], 'Orthology', os.environ['EIREPORTDIR'])
 db.sql(sys.argv[1], parse_reference)
 reportlib.trailer(fp)
 reportlib.finish_ps(fp)
