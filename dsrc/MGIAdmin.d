@@ -17,7 +17,7 @@ rules:
 
 	INITIALLY does
 	  global_application := "MGIAdmin";
-	  global_version := "CVS 1.3";
+	  global_version := "CVS 1.3.6";
 	  send(InitApplication, 0);
 	end does;
 
