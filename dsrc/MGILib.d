@@ -66,7 +66,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS 1-3-17";
+	  global_version := "CVS 1-3-18";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -95,8 +95,17 @@ rules:
 	  envList.append("APP");
 	  envList.append("DSQUERY");
 	  envList.append("MGD");
-	  envList.append("STRAINS");
 	  envList.append("SYBASE");
+
+	  if (global_application = "MGD" or
+	      global_application = "GXD") then
+	    envList.append("STRAINS");
+	  end if;
+
+	  if (global_application = "MGD") then
+	    envList.append("NOMEN");
+	  end if;
+
 	  envList.open;
 
 	  while envList.more do;
