@@ -183,7 +183,7 @@ for line in inputFile.readlines():
 
 	errorFound = 0
 
-	[oldID, newID, newSymbol, newName] = string.splitfields(string.rstrip(line), '\t')
+	[oldID, newID, newSymbol, newName] = string.split(line[:-1], '\t')
 
 	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s" and preferred = 1' % (oldID), 'auto')
 

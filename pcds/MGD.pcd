@@ -5496,7 +5496,7 @@ Module: MGD
         {
           MLCModule = Module : MGI;
           Group: Widget
-            closeWindowCallback = "D:ExitMLCED";
+            closeWindowCallback = "D:ExitMLC";
           Group: Control
             vip_x = 80;
             vip_y = 855;
@@ -5515,7 +5515,7 @@ Module: MGD
                                       {
                                         Exit = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:ExitMLCED";
+                                          activateCallback = "D:ExitMLC";
                                       }
                                 }
                           }
@@ -5544,7 +5544,7 @@ Module: MGD
                                       {
                                         Clear = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:VerifyMLCEDClear";
+                                          activateCallback = "D:VerifyMLCClear";
                                       }
                                 }
                           }
@@ -5961,7 +5961,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:VerifyMLCEDClear";
+                                    activateCallback = "D:VerifyMLCClear";
                                 }
                                 {
                                   Modify = ControlPush;
@@ -6141,7 +6141,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       ClearDialog = ClearDialog : mgiDialog;
                       Group: Widget
-                        okCallback = "D:ClearMLCED";
+                        okCallback = "D:ClearMLC";
                     }
                     {
                       MLCUnlockDialog = MLCUnlockDialog : mgiDialog;
@@ -6237,7 +6237,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   MLC = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MLCED\")";
+                                    activateCallback = "D:CreateMGIModule(name = \"MLC\")";
                                     traversalOn = False;
                                 }
                                 {
