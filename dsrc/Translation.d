@@ -12,7 +12,7 @@
 -- History
 --
 -- 01/24/2003 lec
---	- SAO; new; aka Bad Name/Good Name list
+--	- SAO; new; aka Bad Name/MGI Term list
 --
 
 dmodule Translation is
@@ -34,7 +34,7 @@ devents:
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
-	VerifyGoodName :local [];			-- Verify Good Name
+	VerifyTransMGITermAccID :local [];			-- Verify MGI Term
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
@@ -183,7 +183,7 @@ rules:
           editMode : string;
           transKey : string;
           objectKey : string;
-	  badName : string;
+	  nonmgiTerm : string;
 	  currentSeqNum : string;
 	  newSeqNum : string;
 	  keyDeclared : boolean := false;
@@ -229,7 +229,7 @@ rules:
             newSeqNum := mgi_tblGetCell(transTable, row, transTable.seqNum);
             transKey := mgi_tblGetCell(transTable, row, transTable.transKey);
             objectKey := mgi_tblGetCell(transTable, row, transTable.objectKey);
-            badName := mgi_tblGetCell(transTable, row, transTable.badName);
+            nonmgiTerm := mgi_tblGetCell(transTable, row, transTable.nonmgiTerm);
  
             if (editMode = TBL_ROW_ADD) then
 	      
@@ -245,7 +245,7 @@ rules:
                        mgi_DBinsert(MGI_TRANSLATION, KEYNAME) +
 		       currentRecordKey + "," +
 		       objectKey + "," +
-		       mgi_DBprstr(badName) + "," + 
+		       mgi_DBprstr(nonmgiTerm) + "," + 
 		       newSeqNum + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
@@ -255,7 +255,7 @@ rules:
 		set := "sequenceNum = " + newSeqNum;
               else
 	        set := "_Object_key = " + objectKey + 
-		       ",badName = " + mgi_DBprstr(badName);
+		       ",badName = " + mgi_DBprstr(nonmgiTerm);
               end if;
 
               cmd := cmd + mgi_DBupdate(MGI_TRANSLATION, transKey, set);
@@ -364,7 +364,7 @@ rules:
 			top->MGITypeMenu.menuHistory.defaultValue);
 
 	  cmd := "select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, " +
-		  "t.modifiedBy, t.modification_date, v.description " +
+		  "t.modifiedBy, t.modification_date, v.description, v.accID " +
 		  "from " + mgi_DBtable(MGI_TRANSLATION) + " t, " + dbView + " v" +
 		  " where v._Object_key = t._Object_key" + 
 		  " and t._TranslationType_key = " + currentRecordKey +
@@ -379,8 +379,9 @@ rules:
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(transTable, row, transTable.transKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(transTable, row, transTable.objectKey, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(transTable, row, transTable.badName, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(transTable, row, transTable.goodName, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(transTable, row, transTable.nonmgiTerm, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(transTable, row, transTable.mgiTerm, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(transTable, row, transTable.accID, mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(transTable, row, transTable.currentSeqNum, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(transTable, row, transTable.seqNum, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(transTable, row, transTable.modifiedBy, mgi_getstr(dbproc, 5));
@@ -430,19 +431,20 @@ rules:
 	end does;
 
 --
--- VerifyGoodName
+-- VerifyTransMGITermAccID
 --
---	Verify Good Name for Table
---	Assumes table.objectKey, table.goodName are UDAs
+--	Verify MGI Term for Table
+--	Assumes table.objectKey, table.mgiTerm are UDAs
 --	Copy Object Key into Appropriate widget/column
 --
 
-	VerifyGoodName does
-	  sourceWidget : widget := VerifyGoodName.source_widget;
+	VerifyTransMGITermAccID does
+	  sourceWidget : widget := VerifyTransMGITermAccID.source_widget;
 	  isTable : boolean;
 	  value : string;
 	  objectKey : string;
-	  goodName : string;
+	  mgiTerm : string;
+	  accID : string;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -452,14 +454,14 @@ rules:
 	  isTable := mgi_tblIsTable(sourceWidget);
 
 	  if (isTable) then
-	    row := VerifyGoodName.row;
-	    column := VerifyGoodName.column;
-	    reason := VerifyGoodName.reason;
-	    value := VerifyGoodName.value;
+	    row := VerifyTransMGITermAccID.row;
+	    column := VerifyTransMGITermAccID.column;
+	    reason := VerifyTransMGITermAccID.reason;
+	    value := VerifyTransMGITermAccID.value;
 
-	    -- If not in the Evidence Code column, return
+	    -- If not in the Term or AccID column, return
 
-	    if (column != sourceWidget.goodName) then
+	    if (column != sourceWidget.mgiTerm and column != sourceWidget.accID) then
 	      return;
 	    end if;
 
@@ -470,20 +472,26 @@ rules:
 	    return;
 	  end if;
 
-	  -- If the Good Name is null, return
+	  -- If the value is null, return
 
 	  if (value.length = 0) then
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.goodName, "");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.mgiTerm, "");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.accID, "");
 	    end if;
 	    return;
 	  end if;
 
 	  (void) busy_cursor(top);
 
-	  select : string := "select _Object_key, description from " + dbView +
-		" where description = " + mgi_DBprstr(value);
+	  select : string := "select _Object_key, description, accID from " + dbView;
+
+	  if (column = sourceWidget.mgiTerm) then
+	    select := select + " where description = " + mgi_DBprstr(value);
+	  else
+	    select := select + " where accID = " + mgi_DBprstr(value);
+	  end if;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -491,30 +499,34 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      objectKey := mgi_getstr(dbproc, 1);
-	      goodName  := mgi_getstr(dbproc, 2);
+	      mgiTerm  := mgi_getstr(dbproc, 2);
+	      accID := mgi_getstr(dbproc, 3);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
 
-	  -- If Good Name is valid
-	  --   Copy the Keys into the Key fields
-	  --   Copy the Names into the Name fields
+	  -- If value is valid
+	  --   Copy the Key into the Key field
+	  --   Copy the Term into the Term field
+	  --   Copy the Acc ID into the Acc ID field
 	  -- Else
-	  --   Display an error message, set the key columns to null, disallow edit to the field
+	  --   Display an error message, set the key column to null, disallow edit to the field
 
 	  if (objectKey.length > 0) then
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, objectKey);
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.goodName, goodName);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.mgiTerm, mgiTerm);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.accID, accID);
 	    end if;
 	  else
 	    if (isTable) then
-	      VerifyGoodName.doit := (integer) false;
+	      VerifyTransMGITermAccID.doit := (integer) false;
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.goodName, "");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.mgiTerm, "");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.accID, "");
 	    end if;
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Invalid Good Name";
+            StatusReport.message := "Invalid MGI Term/Acc ID";
             send(StatusReport);
 	  end if;
 
