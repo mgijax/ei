@@ -214,7 +214,7 @@ rules:
 	  end while;
 	  notes.close;
 
-	  -- Initial Reference table
+	  -- Initialize Reference table
 
 	  InitRefTypeTable.table := top->Reference->Table;
 	  InitRefTypeTable.tableID := ALL_REFERENCETYPE;
@@ -238,20 +238,13 @@ rules:
 	    return;
 	  end if;
 
-	  i : integer := 0;
-	  refsName : string;
-	  refsKey : string;
-	  while (i < mgi_tblNumRows(table)) do
-	    refsName := mgi_tblGetCell(table, i, table.refsName);
-	    refsKey :=  mgi_tblGetCell(table, i, table.refsKey);
-	    if (refsName = "Original" and refsKey.length = 0) then
-              StatusReport.source_widget := top;
-              StatusReport.message := "An Original Reference is required.";
-              send(StatusReport);
-              return;
-	    end if;
-	    i := i + 1;
-	  end while;
+	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
+	  if (refsKey.length = 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "An Original Reference is required.";
+            send(StatusReport);
+            return;
+	  end if;
 
 	  (void) busy_cursor(top);
 
@@ -266,7 +259,7 @@ rules:
                  top->InheritanceModeMenu.menuHistory.defaultValue + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  top->EditForm->ESCellLine->ObjectID->text.value + "," +
-                 top->AlleleStatus.menuHistory.defaultValue + "," +
+                 top->AlleleStatusMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 "user_name(),user_name(),";
@@ -304,7 +297,7 @@ rules:
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
 	  ProcessRefTypeTable.tableID := ALL_REFERENCE;
-	  ProcessRefTypeTable.objectID := currentRecordKey;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
 
@@ -442,20 +435,16 @@ rules:
 	    return;
 	  end if;
 
-	  i : integer := 0;
-	  refsName : string;
-	  refsKey : string;
-	  while (i < mgi_tblNumRows(table)) do
-	    refsName := mgi_tblGetCell(table, i, table.refsName);
-	    refsKey :=  mgi_tblGetCell(table, i, table.refsKey);
-	    if (refsName = "Original" and refsKey.length = 0) then
-              StatusReport.source_widget := top;
-              StatusReport.message := "An Original Reference is required.";
-              send(StatusReport);
-              return;
-	    end if;
-	    i := i + 1;
-	  end while;
+	  refsCurrentKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsCurrentKey);
+	  refsKey : string :=  mgi_tblGetCell(table, table.origRefsKey, table.refsKey);
+	  if (refsCurrentKey.length > 0 and 
+		(refsKey = "NULL" or refsKey.length = 0 or 
+		 mgi_tblGetCell(table, table.origRefsKey, table.editMode) = TBL_ROW_DELETE)) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "An Original Reference is required.";
+            send(StatusReport);
+            return;
+	  end if;
 
 	  (void) busy_cursor(top);
 
@@ -526,7 +515,7 @@ rules:
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
 	  ProcessRefTypeTable.tableID := ALL_REFERENCE;
-	  ProcessRefTypeTable.objectID := currentRecordKey;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
 
@@ -703,13 +692,11 @@ rules:
 --
 
 	PrepareSearch does
-	  from_reference  : boolean := false;
 	  from_mutation   : boolean := false;
 	  from_synonym    : boolean := false;
 	  from_note       : boolean := false;
 
 	  value : string;
-	  table : widget;
 
 	  from := " from " + mgi_DBtable(ALL_ALLELE_VIEW) + " a";
 	  where := "";
@@ -718,53 +705,21 @@ rules:
           SearchAcc.objectKey := "a." + mgi_DBkey(ALL_ALLELE);
 	  SearchAcc.tableID := ALL_ALLELE;
           send(SearchAcc, 0);
+	  from := from + accTable.sqlFrom;
+	  where := where + accTable.sqlWhere;
 
-	  if (accTable.sqlFrom.length > 0) then
-	    from := from + accTable.sqlFrom;
-	    where := where + "\nand " + accTable.sqlWhere;
-	  end if;
+	  SearchRefTypeTable.table := top->Reference->Table;
+	  SearchRefTypeTable.tableID := ALL_REFERENCE_VIEW;
+          SearchRefTypeTable.join := "a." + mgi_DBkey(ALL_ALLELE);
+	  send(SearchRefTypeTable, 0);
+	  from := from + top->Reference->Table.sqlFrom;
+	  where := where + top->Reference->Table.sqlWhere;
 
-	  table := top->ModificationHistory->Table;
-
-          QueryDate.source_widget := table;
-	  QueryDate.row := table.createdBy;
-	  QueryDate.column := table.byDate;
-          QueryDate.tag := "a";
-          QueryDate.fieldName := table.createdFieldName;
-          send(QueryDate, 0);
-          where := where + table.sqlCmd;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "a";
+	  send(QueryModificationHistory, 0);
+          where := where + top->ModificationHistory->Table.sqlCmd;
  
-          QueryDate.source_widget := table;
-	  QueryDate.row := table.modifiedBy;
-	  QueryDate.column := table.byDate;
-          QueryDate.tag := "a";
-          QueryDate.fieldName := table.modifiedFieldName;
-          send(QueryDate, 0);
-          where := where + table.sqlCmd;
- 
-          QueryDate.source_widget := table;
-	  QueryDate.row := table.approvedBy;
-	  QueryDate.column := table.byDate;
-          QueryDate.tag := "a";
-          QueryDate.fieldName := table.approvedFieldName;
-          send(QueryDate, 0);
-          where := where + table.sqlCmd;
- 
-	  value := mgi_tblGetCell(table, table.createdBy, table.byUser);
-	  if (value.length > 0) then
-	    where := where + "\nand a.submittedBy like " + mgi_DBprstr(value);
-	  end if;
-
-	  value := mgi_tblGetCell(table, table.modifiedBy, table.byUser);
-	  if (value.length > 0) then
-	    where := where + "\nand a.modifiedBy like " + mgi_DBprstr(value);
-	  end if;
-
-	  value := mgi_tblGetCell(table, table.approvedBy, table.byUser);
-	  if (value.length > 0) then
-	    where := where + "\nand a.approvedBy like " + mgi_DBprstr(value);
-	  end if;
-
 	  value := top->mgiMarker->ObjectID->text.value;
 	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand a._Marker_key = " + top->mgiMarker->ObjectID->text.value;
@@ -802,18 +757,6 @@ rules:
             where := where + "\nand a._Strain_key = " + top->EditForm->Strain->StrainID->text.value;;
 	  elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
             where := where + "\nand a.strain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
-	  end if;
-
-	  value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
-	  if (value.length > 0) then
-	    where := where + "\nand r._Refs_key = " + mgi_DBprkey(value);
-	    from_reference := true;
-	  else
-	    value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.citation);
-	    if (value.length > 0) then
-	      where := where + "\nand r.short_citation like " + mgi_DBprstr(value);
-	      from_reference := true;
-	    end if;
 	  end if;
 
 	  value := mgi_tblGetCell(top->MolecularMutation->Table, 0, top->MolecularMutation->Table.mutationKey);
@@ -871,11 +814,6 @@ rules:
 	    from_note := true;
 	  end if;
 	    
-	  if (from_reference) then
-	    from := from + "," + mgi_DBtable(ALL_REFERENCE_VIEW) + " r";
-	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = r." + mgi_DBkey(ALL_ALLELE);
-	  end if;
-
 	  if (from_mutation) then
 	    from := from + "," + mgi_DBtable(ALL_MUTATION_VIEW) + " m";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = m." + mgi_DBkey(ALL_ALLELE);
