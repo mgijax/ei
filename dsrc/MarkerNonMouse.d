@@ -54,6 +54,7 @@ locals:
                                         -- Initialized in Select[] and Add[] events
  
 	markerTypeKey : string := "1"; -- Default Marker Type
+	markerStatusKey : string := "1"; -- Default Marker Status
 	clearLists : integer;	-- Clear List value for Clear event
 
 rules:
@@ -166,6 +167,7 @@ rules:
                  mgi_DBinsert(MRK_MARKER, KEYNAME) +
 	         top->mgiSpecies->ObjectID->text.value + "," +
                  markerTypeKey + "," +
+                 markerStatusKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
                  mgi_DBprstr(top->Chromosome->text.value) + "," +
