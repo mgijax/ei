@@ -1999,8 +1999,10 @@ rules:
             (void) mgi_tblSetCell(sourceWidget, row, markerKey, whichMarker);
             (void) mgi_tblSetCell(sourceWidget, row, markerSymbol, whichSymbol);
 
-	    if (sourceWidget.markerChr >= 0) then
-              (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerChr, whichChrom);
+	    if (sourceWidget.is_defined("markerChr") != nil) then
+	      if (sourceWidget.markerChr >= 0) then
+                (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerChr, whichChrom);
+	      end if;
 	    end if;
 	  else
 	    top->mgiMarker->ObjectID->text.value := whichMarker;
