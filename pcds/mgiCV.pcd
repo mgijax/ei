@@ -1,0 +1,444 @@
+Module: mgiCV
+{
+      autoCuil = False;
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Thu Jan  3 09:26:57 2002";
+        {
+          CVMenu = XmRowColumn;
+          Group: Widget
+            entryAlignment = alignment_center;
+          Group: Control
+            vip_x = 50;
+            vip_y = 30;
+        }
+        {
+          CVMarker = CVMenu;
+          Group: Control
+            vip_x = 145;
+            vip_y = 30;
+              {
+                MarkerEventMenu = MarkerEventMenu : mgiOption;
+                    Popups:
+                    {
+                      MarkerEventPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = History;
+                        tableOption = 12;
+                        tableOptionKey = 4;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+              {
+                MarkerEventReasonMenu = MarkerEventReasonMenu : mgiOption;
+                    Popups:
+                    {
+                      MarkerEventReasonPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = History;
+                        tableOption = 13;
+                        tableOptionKey = 5;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+              {
+                YesNoMenu = YesNoMenu : mgiOption;
+                Group: Widget
+                  labelString = "Review?";
+                Group: User
+                  defaultOption = No;
+                    Popups:
+                    {
+                      YesNoPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = OtherReference;
+                        tableOptionKey = 4;
+                        tableOption = 8;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+        }
+        {
+          CVImage = CVMenu;
+          Group: Control
+            vip_x = 50;
+            vip_y = 85;
+              {
+                FieldTypeMenu = FieldTypeMenu : mgiOption;
+                    Popups:
+                    {
+                      FieldTypePulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = ImagePane;
+                        tableOptionKey = 2;
+                        tableOption = 3;
+                    }
+              }
+        }
+        {
+          CVInSituResult = CVMenu;
+          Group: Control
+            vip_x = 145;
+            vip_y = 85;
+              {
+                StrengthMenu = StrengthMenu : mgiOption;
+                    Popups:
+                    {
+                      StrengthPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 9;
+                        tableOptionKey = 5;
+                        tableForm = Results;
+                        sql = "select * from GXD_Strength where _Strength_key > -1 order by strength";
+                    }
+              }
+              {
+                PatternMenu = PatternMenu : mgiOption;
+                    Popups:
+                    {
+                      PatternPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Results;
+                        tableOption = 10;
+                        tableOptionKey = 6;
+                    }
+              }
+              {
+                NotePush = NotePushShort : mgiDataTypes;
+                Group: User
+                  targetWidget = Results;
+                  targetColumn = 12;
+              }
+        }
+        {
+          CVGel = XmFrame;
+          Group: Control
+            vip_x = 50;
+            vip_y = 140;
+            vipComment = "";
+              {
+                panedWindow = XmPanedWindow;
+                    {
+                      ADClipboard = ADClipboard : mgiLookup;
+                      Group: User
+                        cmd = "select distinct _Structure_key, dbName from GXD_GelLaneStructure_View where _Assay_key = ";
+                        orderBy = sequenceNum;
+                          {
+                            Label = LookupLabel;
+                          }
+                          {
+                            List = list;
+                            Group: Widget
+                              visibleItemCount = 3;
+                            Group: User
+                              targetWidget = GelLane;
+                              targetKey = 4;
+                              targetText = 14;
+                          }
+                    }
+                    {
+                      GenotypeGelClipboard = GenotypeGelClipboard : mgiLookup;
+                          {
+                            Label = LookupLabel : mgiLookup;
+                          }
+                          {
+                            List = list : mgiDataTypes;
+                            Group: Widget
+                              visibleItemCount = 3;
+                          }
+                    }
+                    {
+                      CVMenu1 = CVMenu;
+                          {
+                            GelControlMenu = GelControlMenu : mgiOption;
+                                Popups:
+                                {
+                                  GelControlPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOption = 12;
+                                    tableOptionKey = 2;
+                                }
+                          }
+                          {
+                            GelRNATypeMenu = GelRNATypeMenu : mgiOption;
+                                Popups:
+                                {
+                                  GelRNATypePulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOptionKey = 5;
+                                    tableOption = 16;
+                                }
+                          }
+                          {
+                            AgeMenu = AgeMenu : mgiOption;
+                                Popups:
+                                {
+                                  AgePulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOption = 17;
+                                    tableOptionKey = 6;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            SexMenu = SexMenu : mgiOption;
+                                Popups:
+                                {
+                                  SexPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelLane;
+                                    tableOptionKey = 9;
+                                    tableOption = 20;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            GelUnitsMenu = GelUnitsMenu : mgiOption;
+                                Popups:
+                                {
+                                  GelUnitsPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelRow;
+                                    tableOptionKey = 2;
+                                    tableOption = 5;
+                                }
+                          }
+                          {
+                            StrengthMenu = StrengthMenu : mgiOption;
+                                Popups:
+                                {
+                                  StrengthPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = GelRow;
+                                    tableOption = "-1";
+                                    tableOptionKey = "-1";
+                                }
+                          }
+                          {
+                            CVMenu = CVMenu;
+                            Group: Widget
+                              packing = pack_column;
+                              adjustLast = False;
+                              orientation = horizontal;
+                              numColumns = 2;
+                                {
+                                  AgeNote = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Age Notes";
+                                  Group: User
+                                    targetWidget = GelLane;
+                                    targetColumn = 19;
+                                }
+                                {
+                                  LaneNote = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Lane Notes";
+                                  Group: User
+                                    targetWidget = GelLane;
+                                    targetColumn = 21;
+                                }
+                                {
+                                  RowNote = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Row Notes";
+                                  Group: User
+                                    targetWidget = GelRow;
+                                    targetColumn = 6;
+                                }
+                                {
+                                  BandNote = NotePushShort : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Band Notes";
+                                  Group: User
+                                    targetWidget = GelRow;
+                                    targetColumn = "-1";
+                                }
+                          }
+                    }
+              }
+        }
+        {
+          CVNomen = CVMenu;
+          Group: Control
+            vip_x = 145;
+            vip_y = 140;
+              {
+                ReviewMenu = YesNoMenu : mgiOption;
+                Group: Widget
+                  subMenuId = ReviewPulldown;
+                  labelString = "Review?";
+                    Popups:
+                    {
+                      ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Reference;
+                        tableOption = 7;
+                        tableOptionKey = 3;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+              {
+                BroadcastMenu = YesNoMenu : mgiOption;
+                Group: Widget
+                  subMenuId = BroadcastPulldown;
+                  labelString = "Broadcast to MGD?";
+                    Popups:
+                    {
+                      BroadcastPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Reference;
+                        tableOption = 8;
+                        tableOptionKey = 4;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+        }
+        {
+          CVAllele = CVMenu;
+          Group: Control
+            vip_x = 50;
+            vip_y = 195;
+              {
+                MolecularMutationMenu = MolecularMutationMenu : mgiOption;
+              }
+        }
+        {
+          CVSpecimen = XmFrame;
+          Group: Control
+            vip_x = 145;
+            vip_y = 195;
+            vipComment = "";
+              {
+                panedWindow = XmPanedWindow;
+                    {
+                      GenotypeSpecimenClipboard = GenotypeSpecimenClipboard : mgiLookup;
+                    }
+                    {
+                      CVMenu = CVMenu;
+                          {
+                            AgeMenu = AgeMenu : mgiOption;
+                                Popups:
+                                {
+                                  AgePulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableForm = Specimen;
+                                    tableOption = 14;
+                                    tableOptionKey = 5;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            SexMenu = SexMenu : mgiOption;
+                                Popups:
+                                {
+                                  SexPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 17;
+                                    tableOptionKey = 8;
+                                    tableForm = Specimen;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                }
+                          }
+                          {
+                            FixationMenu = FixationMenu : mgiOption;
+                                Popups:
+                                {
+                                  FixationPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 18;
+                                    tableOptionKey = 9;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            EmbeddingMenu = EmbeddingMenu : mgiOption;
+                                Popups:
+                                {
+                                  EmbeddingPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 19;
+                                    tableOptionKey = 10;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            HybridizationMenu = HybridizationMenu : mgiOption;
+                                Popups:
+                                {
+                                  HybridizationPulldown = OptionPulldown : mgiOption;
+                                  Group: User
+                                    tableOption = 20;
+                                    tableOptionKey = 11;
+                                    tableForm = Specimen;
+                                }
+                          }
+                          {
+                            AgeNote = NotePushShort : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Age Notes";
+                            Group: User
+                              targetWidget = Specimen;
+                              targetColumn = 16;
+                          }
+                          {
+                            SpecimenNotes = NotePushShort : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Specimen Notes";
+                            Group: User
+                              targetWidget = Specimen;
+                              targetColumn = 22;
+                          }
+                          {
+                            ResultsPush = TableDialogPush : mgiDataTypes;
+                            Group: Widget
+                              activateCallback = "D:VerifyEdit(mode = 1),\nD:InSituResultInit";
+                              labelString = Results;
+                            Group: User
+                              targetWidget = Specimen;
+                              tableColumn = 21;
+                              tableKeyColumn = 3;
+                              dialogName = InSituResultsDialog;
+                          }
+                    }
+              }
+        }
+}
+

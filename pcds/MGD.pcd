@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Dec 27 14:38:02 2001";
+      lastWritten = "Thu Jan  3 08:36:52 2002";
         {
           SpeciesModule = Module : MGI;
           Group: Control
@@ -6319,6 +6319,13 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  VocAnnot = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"VocAnnot\")";
+                                    labelString = "Vocabulary Annotations";
+                                    traversalOn = False;
+                                }
+                                {
                                   separator = XmSeparator;
                                   Group: Widget
                                     separatorType = shadow_etched_out;
@@ -8529,7 +8536,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  CVMarker = CVMarker : mgiOption;
+                                  CVMarker = CVMarker : mgiCV;
                                       {
                                         MarkerEventMenu = MarkerEventMenu : mgiOption;
                                       }
@@ -9240,7 +9247,7 @@ Shift<Key>Tab: prev-tab-group()
                                   QueryList = QueryList : mgiLookup;
                                 }
                                 {
-                                  CVAllele = CVAllele : mgiOption;
+                                  CVAllele = CVAllele : mgiCV;
                                       {
                                         MolecularMutationMenu = MolecularMutationMenu : mgiOption;
                                             Popups:

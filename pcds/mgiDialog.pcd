@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Oct 31 10:54:39 2001";
+      lastWritten = "Thu Jan  3 08:36:10 2002";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -922,7 +922,7 @@ Module: mgiDialog
                               managed = False;
                           }
                           {
-                            CVInSituResult = CVInSituResult : mgiOption;
+                            CVInSituResult = CVInSituResult : mgiCV;
                           }
                           {
                             ImagePaneList = LookupList : mgiLookup;

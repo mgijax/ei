@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Dec 18 09:59:38 2001";
+      lastWritten = "Fri Jan  4 10:18:06 2002";
       copy = false;
       inCreateMenu = true;
         {
@@ -808,6 +808,9 @@ Shift<Key>Tab: prev-tab-group()
         }
         {
           AssayModule = Module : MGI;
+          Group: Widget
+            height = 900;
+            width = 1200;
           Group: Control
             vip_x = 60;
             vip_y = 140;
@@ -1152,10 +1155,10 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  CVSpecimen = CVSpecimen : mgiOption;
+                                  CVSpecimen = CVSpecimen : mgiCV;
                                 }
                                 {
-                                  CVGel = CVGel : mgiOption;
+                                  CVGel = CVGel : mgiCV;
                                   Group: Widget
                                     managed = False;
                                 }
@@ -1845,7 +1848,7 @@ Shift<Key>Tab: prev-tab-group()
                                   QueryList = QueryList;
                                 }
                                 {
-                                  CVImage = CVImage : mgiOption;
+                                  CVImage = CVImage : mgiCV;
                                       {
                                         FieldTypeMenu = FieldTypeMenu;
                                             Popups:
@@ -2452,7 +2455,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"IndexStage\")";
                                     traversalOn = False;
-                                    labelString = "Index/Stages";
+                                    labelString = Index;
                                 }
                                 {
                                   separator = XmSeparator;
@@ -2468,7 +2471,7 @@ Shift<Key>Tab: prev-tab-group()
                                   MolecularSegment = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
-                                    labelString = "Molecular Probes & Segments";
+                                    labelString = Probes;
                                     traversalOn = False;
                                 }
                                 {
@@ -2526,6 +2529,59 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 305;
               {
                 MainForm = XmForm;
+                    {
+                      MainMenu = MainMenu;
+                    }
+                    {
+                      Edit = XmFrame;
+                    }
+                    {
+                      Control = Control;
+                    }
+                    {
+                      BroadcastToMenu = XmFrame;
+                    }
+                    {
+                      CVNomen = CVNomen : mgiCV;
+                          {
+                            ReviewMenu = YesNoMenu : mgiOption;
+                                Popups:
+                                {
+                                  ReviewPulldown = OptionPulldown : mgiOption;
+                                }
+                                {
+                                  YesNoPulldown = OptionPulldown;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                      }
+                                      {
+                                        Yes = Yes : mgiOption;
+                                      }
+                                      {
+                                        No = No : mgiOption;
+                                      }
+                                }
+                          }
+                          {
+                            BroadcastMenu = YesNoMenu : mgiOption;
+                                Popups:
+                                {
+                                  BroadcastPulldown = OptionPulldown : mgiOption;
+                                }
+                                {
+                                  YesNoPulldown = OptionPulldown;
+                                      {
+                                        SearchAll = SearchAll : mgiOption;
+                                      }
+                                      {
+                                        Yes = Yes : mgiOption;
+                                      }
+                                      {
+                                        No = No : mgiOption;
+                                      }
+                                }
+                          }
+                    }
                     Popups:
                     {
                       StatusDialog = StatusDialog;
