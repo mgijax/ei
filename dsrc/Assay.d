@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	10/31/2003
+--	- TR 5270; Reporter Gene
+--
 -- lec	06/03/2003
 --	- TR 4603; DuplicateAssay
 --	- TR 4610; added Insert Row to Gel Lane table
@@ -1912,6 +1915,10 @@ rules:
             where := where + " and g.symbol like " + 
 		mgi_DBprstr(top->mgiMarker->Marker->text.value);
           end if;
+
+	  if (top->GXDReporterGeneMenu.menuHistory.searchValue != "%") then
+            where := where + " and g._ReporterGene_key = " + top->GXDReporterGeneMenu.menuHistory.searchValue;
+	  end if;
 
           if (top->AssayNote->Note->text.value.length > 0) then
 	    where := where + " and n.assayNote like " + 
