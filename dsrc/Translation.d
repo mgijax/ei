@@ -674,9 +674,9 @@ rules:
 
 	  if (value.length = 0) then
 	    if (isTable) then
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.mgiTerm, "");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.accID, "");
+--	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.objectKey, "NULL");
+--	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.mgiTerm, "");
+--	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.accID, "");
 	    end if;
 	    return;
 	  end if;
