@@ -65,14 +65,18 @@ def fullcluster_report():
 			 	mgi_utils.prvalue(r['genbank_id']) + TAB + \
 			 	mgi_utils.prvalue(r['gba_mgiID']) + TAB + \
 			 	mgi_utils.prvalue(r['gba_symbol']) + TAB + \
-			 	mgi_utils.prvalue(r['seq_quality']) + TAB + \
 			 	mgi_utils.prvalue(r['riken_locusid']) + TAB + \
-			 	mgi_utils.prvalue(r['tiger_tc']) + TAB + \
 			 	mgi_utils.prvalue(r['unigene_id']) + TAB + \
+			 	mgi_utils.prvalue(r['tiger_tc']) + TAB + \
 			 	mgi_utils.prvalue(r['riken_cluster']) + TAB + \
-			 	r['riken_locusStatus'] + TAB + \
-			 	r['mgi_statusCode'] + TAB + \
-			 	mgi_utils.prvalue(r['mgi_numberCode']) + CRT)
+			 	mgi_utils.prvalue(r['riken_locusStatus']) + TAB + \
+			 	mgi_utils.prvalue(r['riken_numberCode']) + TAB + \
+			 	mgi_utils.prvalue(r['mgi_statusCode']) + TAB + \
+			 	mgi_utils.prvalue(r['mgi_numberCode']) + TAB + \
+			 	mgi_utils.prvalue(r['blast_groupID']) + TAB + \
+			 	mgi_utils.prvalue(r['blast_mgiIDs']) + TAB + \
+			 	mgi_utils.prvalue(r['seq_quality']) + TAB + \
+			 	mgi_utils.prvalue(r['cds_category']) + CRT)
 
 		fantomKey = r['_Fantom2_key']
 
@@ -88,9 +92,12 @@ def status_report():
 		if r['_Fantom2_key'] != fantomKey:
 			fp.write(mgi_utils.prvalue(r['riken_seqid']) + TAB + \
 			 	mgi_utils.prvalue(r['riken_cloneid']) + TAB + \
-			 	r['riken_locusStatus'] + TAB + \
-			 	r['mgi_statusCode'] + TAB + \
-			 	mgi_utils.prvalue(r['mgi_numberCode']) + CRT)
+			 	mgi_utils.prvalue(r['riken_locusStatus']) + TAB + \
+			 	mgi_utils.prvalue(r['riken_numberCode']) + TAB + \
+			 	mgi_utils.prvalue(r['mgi_statusCode']) + TAB + \
+			 	mgi_utils.prvalue(r['mgi_numberCode']) + TAB + \
+			 	mgi_utils.prvalue(r['blast_groupID']) + TAB + \
+			 	mgi_utils.prvalue(r['blast_mgiIDs']) + CRT)
 
 		fantomKey = r['_Fantom2_key']
 
@@ -99,7 +106,8 @@ def nomen_report():
 	fp = open_file("fantom2_nomen")
 
 	fantomKey = -1
-	note = ''
+	nnote = ''
+	cnote = ''
 
 	results = db.sql(sqlCmd, 'auto')
 
@@ -107,32 +115,44 @@ def nomen_report():
 		if r['_Fantom2_key'] != fantomKey:
 
 			if fantomKey != -1:
-				fp.write(mgi_utils.prvalue(note) + CRT)
-				
+				fp.write(mgi_utils.prvalue(nnote) + TAB + \
+				         mgi_utils.prvalue(cnote) + CRT)
+
+				nnote = ''
+				cnote = ''
+
 			fp.write(mgi_utils.prvalue(r['riken_seqid']) + TAB + \
 			 	mgi_utils.prvalue(r['riken_cloneid']) + TAB + \
 			 	mgi_utils.prvalue(r['genbank_id']) + TAB + \
 			 	mgi_utils.prvalue(r['gba_mgiID']) + TAB + \
 			 	mgi_utils.prvalue(r['gba_symbol']) + TAB + \
-			 	mgi_utils.prvalue(r['seq_quality']) + TAB + \
-			 	r['mgi_statusCode'] + TAB + \
+			 	mgi_utils.prvalue(r['mgi_statusCode']) + TAB + \
 			 	mgi_utils.prvalue(r['mgi_numberCode']) + TAB + \
-			 	r['cat_id'] + TAB + \
+			 	mgi_utils.prvalue(r['seq_quality']) + TAB + \
+			 	mgi_utils.prvalue(r['seq_note']) + TAB + \
 			 	mgi_utils.prvalue(r['final_mgiID']) + TAB + \
 			 	mgi_utils.prvalue(r['final_symbol1']) + TAB + \
 			 	mgi_utils.prvalue(r['final_name1']) + TAB + \
 			 	mgi_utils.prvalue(r['final_symbol2']) + TAB + \
 			 	mgi_utils.prvalue(r['final_name2']) + TAB + \
-			 	r['nomen_event'] + TAB)
+			 	mgi_utils.prvalue(r['nomen_event']) + TAB)
+
 			if r['noteType'] == 'N' and r['note'] != None:
-				note = regsub.gsub('\n', '\\n', r['note'])
+				nnote = regsub.gsub('\n', '\\n', r['note'])
+
+			if r['noteType'] == 'C' and r['note'] != None:
+				cnote = regsub.gsub('\n', '\\n', r['note'])
 		else:
 			if r['noteType'] == 'N' and r['note'] != None:
-				note = note + regsub.gsub('\n', '\\n', r['note'])
+				nnote = nnote + regsub.gsub('\n', '\\n', r['note'])
+			
+			if r['noteType'] == 'C' and r['note'] != None:
+				cnote = cnote + regsub.gsub('\n', '\\n', r['note'])
 			
 		fantomKey = r['_Fantom2_key']
 
-	fp.write(mgi_utils.prvalue(note) + CRT)
+	fp.write(mgi_utils.prvalue(nnote) + TAB + \
+		 mgi_utils.prvalue(cnote) + CRT)
 
 def riken_report():
 
@@ -153,8 +173,8 @@ def riken_report():
 			 	mgi_utils.prvalue(r['riken_cloneid']) + TAB + \
 			 	mgi_utils.prvalue(r['gba_mgiID']) + TAB + \
 			 	mgi_utils.prvalue(r['gba_symbol']) + TAB + \
-			 	mgi_utils.prvalue(r['seq_note']) + TAB + \
 			 	mgi_utils.prvalue(r['seq_quality']) + TAB + \
+			 	mgi_utils.prvalue(r['seq_note']) + TAB + \
 			 	mgi_utils.prvalue(r['final_mgiID']) + TAB + \
 			 	mgi_utils.prvalue(r['final_symbol1']) + TAB + \
 			 	mgi_utils.prvalue(r['final_name1']) + TAB + \
@@ -185,25 +205,28 @@ def full_report():
 			 	mgi_utils.prvalue(r['gba_mgiID']) + TAB + \
 			 	mgi_utils.prvalue(r['gba_symbol']) + TAB + \
         	         	mgi_utils.prvalue(r['seq_length']) + TAB + \
-        	         	mgi_utils.prvalue(r['seq_note']) + TAB + \
-        	         	mgi_utils.prvalue(r['seq_quality']) + TAB + \
         	         	mgi_utils.prvalue(r['riken_locusid']) + TAB + \
-        	         	mgi_utils.prvalue(r['tiger_tc']) + TAB + \
         	         	mgi_utils.prvalue(r['unigene_id']) + TAB + \
+        	         	mgi_utils.prvalue(r['tiger_tc']) + TAB + \
         	         	mgi_utils.prvalue(r['riken_cluster']) + TAB + \
         	         	mgi_utils.prvalue(r['riken_locusStatus']) + TAB + \
+        	         	mgi_utils.prvalue(r['riken_numberCode']) + TAB + \
         	         	mgi_utils.prvalue(r['mgi_statusCode']) + TAB + \
         	         	mgi_utils.prvalue(r['mgi_numberCode']) + TAB + \
-        	         	mgi_utils.prvalue(r['blast_hit']) + TAB + \
-        	         	mgi_utils.prvalue(r['blast_expect']) + TAB + \
-        	         	mgi_utils.prvalue(r['auto_annot']) + TAB + \
-        	         	mgi_utils.prvalue(r['info_annot']) + TAB + \
+        	         	mgi_utils.prvalue(r['blast_groupID']) + TAB + \
+        	         	mgi_utils.prvalue(r['blast_mgiIDs']) + TAB + \
+        	         	mgi_utils.prvalue(r['cds_category']) + TAB + \
+        	         	mgi_utils.prvalue(r['seq_quality']) + TAB + \
+        	         	mgi_utils.prvalue(r['seq_note']) + TAB + \
         	         	mgi_utils.prvalue(r['final_cluster']) + TAB + \
-        	         	mgi_utils.prvalue(r['cat_id']) + TAB + \
         	         	mgi_utils.prvalue(r['final_mgiID']) + TAB + \
         	         	mgi_utils.prvalue(r['final_symbol2']) + TAB + \
         	         	mgi_utils.prvalue(r['final_name2']) + TAB + \
         	         	mgi_utils.prvalue(r['nomen_event']) + TAB + \
+        	         	mgi_utils.prvalue(r['cluster_analysis']) + TAB + \
+        	         	mgi_utils.prvalue(r['gene_name_curation']) + TAB + \
+        	         	mgi_utils.prvalue(r['cds_go_curation']) + TAB + \
+        	         	mgi_utils.prvalue(r['final_cluster']) + TAB + \
         	         	mgi_utils.prvalue(r['createdBy']) + TAB + \
         	         	mgi_utils.prvalue(r['modifiedBy']) + TAB + \
         	         	mgi_utils.prvalue(r['cDate']) + TAB + \
