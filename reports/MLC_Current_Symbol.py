@@ -21,6 +21,9 @@
 #
 # History:
 #
+#	lec	04/18/2000
+#	- TR 148; translate \L(x) tags to \L(symbol)
+#
 #	lec	02/10/1999
 #	- TR 322; MLC_History_edit is obsolete
 #
@@ -158,6 +161,13 @@ def parse_references(t):
 	global refs
 	refs.append((t['tag'],t['jnum'],t['short_citation']))
 
+def parse_tags(t):
+	global description
+
+	oldTag = '\\L(%d)' % (t['tag'])
+	newTag = 'L(%s)' % (t['tagSymbol'])
+	description = regsub.gsub(oldTag, newTag, description)
+
 #######################################################
 
 fp = None
@@ -177,8 +187,11 @@ cmd = 'select b._Refs_key, r.tag, b.jnum, b.short_citation ' + \
 db.sql(cmd, parse_references)
 
 cmd = 'select mode, description, modDate = convert(char(25), modification_date), userID ' + \
-	'from MLC_Text_edit where _marker_key = ' + mk
+	'from MLC_Text_edit where _Marker_key = ' + mk
 db.sql(cmd, parse_mode_description)
+
+cmd = 'select tag, tagSymbol from MLC_Marker_edit_View where _Marker_key = ' + mk
+db.sql(cmd, parse_tags)
 
 indent=0 
 
