@@ -23,6 +23,9 @@
 --
 -- History:
 --
+-- lec	12/29/2000
+--	TR 1971; added VerifyAcc
+--
 -- lec	08/18/1999
 --	TR 104; ProcessAcc; preferred & private are now attributes of the
 --		AccToggle template so they can be set specifically.
@@ -573,6 +576,48 @@ rules:
             end if;
             i := i + 1;
           end while;
+	end does;
+
+--
+-- VerifyAcc
+--
+-- Verify accession number in mgiAccessionTable->Table row.
+-- If it is a duplicate, issue a warning.
+--
+	VerifyAcc does
+	  table : widget := VerifyAcc.source_widget;
+	  row : integer := VerifyAcc.row;
+	  column : integer := VerifyAcc.column;
+	  value : string := VerifyAcc.value;
+	  logicalKey : string := mgi_tblGetCell(table, row, table.logicalKey);
+	  isDuplicate : boolean := false;
+
+	  if (column != table.accID) then
+	    return;
+	  end if;
+
+	  -- Traverse thru table and find duplicate
+	  r : integer := 0;
+	  searchvalue : string;
+	  searchlogicalKey : string;
+
+	  while (r < mgi_tblNumRows(table)) do
+	    if (r != row) then
+	      searchvalue := mgi_tblGetCell(table, r, table.accID);
+	      searchlogicalKey := mgi_tblGetCell(table, r, table.logicalKey);
+	      if (value = searchvalue and logicalKey = searchlogicalKey) then
+	        isDuplicate := true;
+	      end if;
+	    end if;
+	    r := r + 1;
+	  end while;
+
+	  if (isDuplicate) then
+            StatusReport.source_widget := table.top;
+            StatusReport.message := "Duplicate. This Accession Number is already associated with this Marker.\n\n" + value;
+            send(StatusReport);
+	  end if;
+
 	end does;
 
 --
