@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 09/11/2001
+--	- TR 2860; moved AppendNote buttons to Age Notes
+--
 -- lec 08/21/2001
 --	- TR 2860; added add'l functionality to AppendNote to handle
 --	  notes with dialogs.
@@ -328,12 +331,14 @@ rules:
 --
 
 	NoteCancel does
-	  dialog : widget := NoteCancel.source_widget.find_ancestor("NoteDialog");
+	  dialog : widget := NoteCancel.source_widget.ancestor_by_class("XmForm");
 
-	  dialog.targetWidget := nil;
-	  dialog->label.labelString := "Notes";
-	  dialog->Note->text.value := "";
-	  dialog.managed := false;
+	  if (dialog != nil) then
+	    dialog.targetWidget := nil;
+	    dialog->label.labelString := "Notes";
+	    dialog->Note->text.value := "";
+	    dialog.managed := false;
+	  end if;
         end does;
 
 --
@@ -345,7 +350,7 @@ rules:
 --
 
 	NoteCommit does
-	  dialog : widget := NoteCommit.source_widget.find_ancestor("NoteDialog");
+	  dialog : widget := NoteCommit.source_widget.ancestor_by_class("XmForm");
 	  table : widget := dialog.targetWidget.child_by_class(TABLE_CLASS);
 	  note : widget := dialog->Note->text;
 	  isTable : boolean := false;
@@ -392,7 +397,7 @@ rules:
         NoteInit does
 	  push : widget := NoteInit.source_widget;
 	  top : widget := push.root;
-	  dialog : widget := top->NoteDialog;
+	  dialog : widget := top->(push.dialogName);
 	  table : widget := push.targetWidget.child_by_class(TABLE_CLASS);
 	  commit : boolean := NoteInit.commit;
 	  target : widget;
