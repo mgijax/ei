@@ -46,10 +46,12 @@ rules:
 -- after this rule has finished.
 --
 -- The "top" widget is a parameter to the INITIALLY rule in the D module instance.
+-- The "launchedFrom" widget is a parameter to the INITIALLY rule in the D module instance.
 --
 
 	CreateMGIModule does
-	  (void) create dmodule(CreateMGIModule.name, top);
+	  launchedFrom : widget := top;
+	  (void) create dmodule(CreateMGIModule.name, top, launchedFrom);
 	end does;
 
 --
@@ -66,7 +68,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS 2-0-14";
+	  global_version := "CVS 2-0-15";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);

@@ -113,8 +113,8 @@ dmodule Verify is
 devents:
 
 locals:
-	allelemod : dmodule;	-- For VerifyAllele which may create a D module instance
-				-- of "Allele"
+	allelemod : dmodule:exported;	-- For VerifyAllele which may create a D module instance
+				        -- of "Allele"
 
 rules:
 
@@ -804,7 +804,7 @@ rules:
 		  -- If "Allele" Module is not already instantiated, create it
 
 		  if (root.parent->mgiModules->Allele.sensitive = true) then
-		    allelemod := create dmodule("Allele", root.parent);
+		    allelemod := create dmodule("Allele", root.parent, top);
 		  end if;
 
 		  -- If "Allele" Module was created by this event, then bring it
@@ -812,9 +812,7 @@ rules:
 
 		  if (allelemod != nil) then
 		    allelemod.top.front;
-		    Clear.source_widget := allelemod.top;
-		    Clear.clearLists := allelemod.clearLists;
-		    send(Clear, 0);
+		    send(allelemod.ClearAllele, 0);
 		    allelemod.top->mgiMarker->ObjectID->text.value := markerKey;
 		    allelemod.top->mgiMarker->Marker->text.value := markerSymbol;
 		    allelemod.top->Symbol->text.value := value;

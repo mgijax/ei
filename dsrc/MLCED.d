@@ -96,7 +96,8 @@ dmodule MLCED is
 
 devents:
 
-	INITIALLY [parent : widget;];
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];
 	ClearMLCED :local [clearKeys : boolean := true;];    
 	InitMLCED :local [];      -- initialization for this app after realization 
 	ExitMLCED  [];            -- Prompts user to confirm exit, calls UncondExit 

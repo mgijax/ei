@@ -45,7 +45,8 @@ dmodule Dictionary is
 
 devents:
 
-	INITIALLY [parent : widget;];
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];
         Init :local [];
         Add :local [];
         AddCancel :local [];

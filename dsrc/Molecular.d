@@ -69,7 +69,8 @@ dmodule MolecularSegment is
 
 devents:
 
-	INITIALLY [parent : widget;];
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];
 	Add :local [];
 	AddReference :local [];
 

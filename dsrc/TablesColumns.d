@@ -34,7 +34,8 @@ dmodule TablesColumns is
 
 devents:
 
-	INITIALLY [parent : widget;];
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];
 	Add :local [];
 	BuildDynamicComponents :local [];
 	Delete :local [];

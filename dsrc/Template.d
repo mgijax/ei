@@ -34,7 +34,8 @@ dmodule Template is
 
 devents:
 
-	INITIALLY [parent : widget;];			-- Initialize form
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];			-- Initialize form
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];		-- Build Dynamic widget components
 	Delete :local [];				-- Delete record

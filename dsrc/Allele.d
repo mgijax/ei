@@ -23,15 +23,16 @@ dmodule Allele is
 
 devents:
 
-	INITIALLY [parent : widget;];
+	INITIALLY [parent : widget;
+		   launchedFrom : widget;];
 	Add :local [];
 	BuildDynamicComponents :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
 
-	ClearAllele :local [clearKeys : boolean := true;
-			    reset : boolean := false;];
+	ClearAllele :local :exported [clearKeys : boolean := true;
+			              reset : boolean := false;];
 
 	-- Process Merge Events
 	AlleleMergeInit :local [];
@@ -53,6 +54,7 @@ devents:
 locals:
 	mgi : widget;
 	top : widget :exported; -- exported so VerifyAllele can access this value
+	launchedFrom : widget;
 	accTable : widget;
 
 	cmd : string;
@@ -64,7 +66,7 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	clearLists : integer :exported := 3; -- exported so VerifyAllele can access this value
+	clearLists : integer := 3;
 
 	alleleNotesRequired : boolean;  -- Are Allele Notes a required field for the edit?
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
@@ -83,6 +85,7 @@ rules:
 
 	INITIALLY does
 	  mgi := INITIALLY.parent;
+	  launchedFrom := INITIALLY.launchedFrom;
 
 	  (void) busy_cursor(mgi);
 
@@ -276,6 +279,10 @@ rules:
 	  end if;
 
 	  (void) reset_cursor(top);
+
+	  if (launchedFrom != nil) then
+	    send(Exit, 0);
+	  end if;
 	end does;
 
 --
