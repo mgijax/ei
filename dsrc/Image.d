@@ -10,6 +10,10 @@
 --
 -- History
 --
+-- lec	12/31/2002
+--	- TR 4362; default Not Specified for Field Type
+--	- added ability to search by Field Type or Pane Label
+--
 -- lec	04/23/2002
 --	- no TR; added ability to search by short citation
 --
@@ -342,9 +346,13 @@ rules:
 
 	PrepareSearch does
 	  from_note : boolean := false;
+	  from_pane : boolean := false;
 
 	  from := "from IMG_Image_View i";
 	  where := "";
+
+	  table : widget := top->ImagePane->Table;
+	  value : string;
 
 	  -- Common Stuff
 
@@ -388,9 +396,26 @@ rules:
 	    from_note := true;
 	  end if;
 
+	  value := mgi_tblGetCell(table, 0, table.fieldTypeKey);
+	  if (value.length > 0) then
+	    where := where + "\nand p._FieldType_key = " + value;
+	    from_pane := true;
+	  end if;
+
+	  value := mgi_tblGetCell(table, 0, table.paneLabel);
+	  if (value.length > 0) then
+	    where := where + "\nand p.paneLabel like " + mgi_DBprstr(value);
+	    from_pane := true;
+	  end if;
+
 	  if (from_note) then
 	    from := from + "," + mgi_DBtable(IMG_IMAGENOTE) + " n";
 	    where := where + " and n." + mgi_DBkey(IMG_IMAGE) + " = i." + mgi_DBkey(IMG_IMAGE);
+	  end if;
+
+	  if (from_pane) then
+	    from := from + "," + mgi_DBtable(IMG_IMAGEPANE) + " p";
+	    where := where + " and p." + mgi_DBkey(IMG_IMAGE) + " = i." + mgi_DBkey(IMG_IMAGE);
 	  end if;
 
           if (where.length > 0) then
@@ -557,21 +582,23 @@ rules:
  
 	  -- Only copy Field Type
 
-	  if (row = 0 or column != table.fieldType) then
+	  if (column != table.fieldType) then
 	    return;
 	  end if;
 
-	  if (mgi_tblGetCell(table, row, column) = "" and
+	  if (row > 0 and mgi_tblGetCell(table, row, column) = "" and
 	      mgi_tblGetCell(table, row - 1, column) != "") then
-
 	    mgi_tblSetCell(table, row, column, mgi_tblGetCell(table, row - 1, column));
 	    mgi_tblSetCell(table, row, table.fieldTypeKey, mgi_tblGetCell(table, row - 1, table.fieldTypeKey));
-
-	    CommitTableCellEdit.source_widget := table;
-	    CommitTableCellEdit.row := row;
-	    CommitTableCellEdit.value_changed := true;
-	    send(CommitTableCellEdit, 0);
+	  elsif (mgi_tblGetCell(table, row, column) = "") then
+	    mgi_tblSetCell(table, row, column, "Not Specified");
+	    mgi_tblSetCell(table, row, table.fieldTypeKey, NOTSPECIFIED);
 	  end if;
+
+	  CommitTableCellEdit.source_widget := table;
+	  CommitTableCellEdit.row := row;
+	  CommitTableCellEdit.value_changed := true;
+	  send(CommitTableCellEdit, 0);
 	end does;
 
 --
