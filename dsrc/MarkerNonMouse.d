@@ -316,7 +316,7 @@ rules:
 	  from_notes    : boolean := false;
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
-	  where := "where m._Species_key != 1";	-- exclude mouse markers
+	  where := "where m._Species_key != " + MOUSE;	-- exclude mouse markers
 
 	  -- Cannot search both Accession tables at once
 
