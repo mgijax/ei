@@ -25,136 +25,6 @@ This process involves:
 <LI>Processing Nomenclature events (withdrawals, etc.) and propagating these events to MGD.
 </OL>
 <P>
-Detailed <A HREF="MEINomenEntry.html">Nomenclature Data Entry Documentation</A> is also available.
-
-<H4>Data Model (<A HREF="nomen_schema.gif">GIF Image)</A></H4>
-<OL>
-<LI>The Master Nomen table, <I>MRK_Nomen</I>, defines the primary Nomenclature record.
-    The definition of this table is consistent with the FileMaker Pro Nomen database record:
-    a Nomenclature record is created for each Nomenclature symbol.  Each Nomenclature event
-    which occurs for the symbol is recorded within the same Nomenclature record.  Only the
-    most recent Nomenclature event is recorded.  Historical record of Nomenclature events
-    are stored in the MGD Marker History records.
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key<TD>unique
-	<TR><TD>_Marker_Type_key<TD>int<TD>not null<TD>foreign key to MRK_Types<TD>non-unique
-	<TR><TD>_Marker_Status_key<TD>int<TD>not null<TD>foreign key to MRK_Status<TD>non-unique
-	<TR><TD>_Marker_Event_key<TD>int<TD>not null<TD>foreign key to MRK_Event<TD>non-unique
-	<TR><TD>_Suid_key<TD>int<TD>not null<TD>foreign key to sysusers<TD>non-unique
-	<TR><TD>proposedSymbol<TD>varchar(25)<TD>not null<TD>&nbsp;<TD>non-unique
-	<TR><TD>proposedName<TD>varchar(255)<TD>null<TD>&nbsp;<TD>none
-	<TR><TD>approvedSymbol<TD>varchar(25)<TD>not null<TD>&nbsp;<TD>non-unique
-	<TR><TD>approvedName<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
-	<TR><TD>chromosome<TD>varchar(8)<TD>not null<TD>&nbsp;<TD>non-unique
-	<TR><TD>humanSymbol<TD>varchar(25)<TD>null<TD>&nbsp;<TD>none
-	<TR><TD>statusNote<TD>varchar(255)<TD>null<TD>&nbsp;<TD>none
-	<TR><TD>broadcast_date<TD>datetime<TD>null<TD>&nbsp;<TD>non-unique
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Marker Event table, <I>MRK_Event</I>, defines the controlled vocabulary for all of
-    the Marker events (New, Withdrawal, etc.)
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Marker_Event_key<TD>int<TD>not null<TD>primary key<TD>unique
-	<TR><TD>event<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Marker Status table, <I>MRK_Status</I>, defines the controlled vocabulary for all of
-    the Marker statuses (Pending, Approved, Broadcast, etc.)
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Marker_Status_key<TD>int<TD>not null<TD>primary key<TD>unique
-	<TR><TD>status<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Marker Type table, <I>MRK_Types</I>, which defines the controlled vocabulary for all
-    of the Marker types (Gene, DNA Segment, etc.) already exists in MGD.
-<P>
-<LI>The Marker Gene Family table, <I>MRK_GeneFamily</I>, defines the controlled vocabulary for all of
-    the Gene Families.
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Marker_Family_key<TD>int<TD>not null<TD>primary key<TD>unique
-	<TR><TD>name<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Marker Nomen Gene Family table, <I>MRK_Nomen_GeneFamily</I>, defines the list of all
-    Gene Families to which a specific symbol belongs.  A symbol can be associated with many
-    Gene Families.
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key w/ _Marker_Family_key; foreign key to MRK_Nomen<TD>non-unique
-	<TR><TD>_Marker_Family_key<TD>int<TD>not null<TD>primary key w/ _Nomen_key<TD>non-unique
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Marker Nomen Notes table, <I>MRK_Nomen_Notes</I>, defines all textual Editor
-    and Nomenclature Coordinator notes related to a symbol.  A symbol can contain many 
-    notes.
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key w/ sequenceNum and noteType; foreign key to MRK_Nomen<TD>non-unique
-	<TR><TD>sequenceNum<TD>int<TD>not null<TD>primary key w/ _Nomen_key and noteType<TD>none
-	<TR><TD>noteType<TD>char(1)<TD>not null<TD>E = Editor, C = Nomenclature Coordinator; bind a rule;primary key w/ _Nomen_key and sequenceNum<TD>non-unique
-	<TR><TD>note<TD>varchar(255)<TD>not null<TD>&nbsp;<TD>none
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Marker Nomen Other Names table, <I>MRK_Nomen_Other</I>, defines a list of all other names
-    by which a symbol is known.  This includes the name given by the Author (if one exists) which
-    is clearly differentiated from the other synonyms.  A symbol can have many Other Names.
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Other_key<TD>int<TD>not null<TD>primary key<TD>unique
-	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>foreign key to MRK_Nomen<TD>non-unique & unique composite key with name
-	<TR><TD>name<TD>varchar(200)<TD>not null<TD>&nbsp;<TD>non-unique & unique composite index with _Nomen_key
-	<TR><TD>isAuthor<TD>bit<TD>not null<TD>if 1, then name is Author Name<TD>none
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Marker Nomen References table, <I>MRK_Nomen_Reference</I>, defines a list of references
-    which support the symbol nomenclature.  This includes the primary reference of the initial
-    nomenclature event, which is clearly differentiated from the other references.  A symbol can 
-    have many References.
-    <P>
-	<TABLE BORDER=1>
-	<TR><ALIGN = left><TH>Field<TH>Data Type<TH>Allow Nulls?<TH>Other<TH>Index
-	<TR><TD>_Nomen_key<TD>int<TD>not null<TD>primary key w/ _Refs_key; foreign key to MRK_Nomen<TD>non-unique
-	<TR><TD>_Refs_key<TD>int<TD>not null<TD>primary key w/ _Nomen_key; foreign key to BIB_Refs<TD>non-unique
-	<TR><TD>isPrimary<TD>bit<TD>not null<TD>if 1, then reference is Primary reference<TD>none
-	<TR><TD>creation_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>none
-	<TR><TD>modification_date<TD>datetime<TD>not null<TD>bind current_date_default<TD>non-unique
-	</TABLE>
-<P>
-<LI>The Accession table (same as ACC_Accession in MGD database).
-<P>
-<LI>The Accession Reference table (same as ACC_Accession_Reference in MGD database).
-<P>
-<LI>The Accession MGI Type table (same as ACC_MGIType in MGD database).
-<P>
-<LI>All primary keys require a unique index.
-<P>
-<LI>Controlled vocabulary tables can be modified by privileged users.
-</OL>
 
 <H4>Editing Form</H4>
 <A HREF="nomen.gif">GIF Image</A>
@@ -199,6 +69,7 @@ Detailed <A HREF="MEINomenEntry.html">Nomenclature Data Entry Documentation</A> 
 	<LI>DNA segment
 	<LI>Cytogenetic Marker
 	<LI>QTL
+	<LI>etc.
 	</UL>
 <P>
 <LI>Chromosome (see <A HREF="MEI.html#dataVerOption">Data Verifications section on Option Menus</A>)
