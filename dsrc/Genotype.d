@@ -52,7 +52,6 @@ locals:
 	where : string;
 	set : string;
 
-	assayModule : widget;
 	assayTable : widget;
 	assayPush : widget;
 
@@ -68,7 +67,7 @@ rules:
 --
 
 	INITIALLY does
-	  mgi := INITIALLY.parent;
+	  mgi := INITIALLY.parent.root;
 
 	  (void) busy_cursor(mgi);
 
@@ -98,14 +97,12 @@ rules:
 
 	Init does
 
-	  assayModule := mgi->AssayModule;
-
-	  if (assayModule->InSituForm.managed) then
-	    assayTable := assayModule->Specimen->Table;
-	    assayPush := assayModule->Lookup->CVSpecimen->GenotypePush;
-	  elsif (assayModule->GelForm.managed) then
-	    assayTable := assayModule->GelLane->Table;
-	    assayPush := assayModule->Lookup->CVGel->GenotypePush;
+	  if (mgi->AssayModule->InSituForm.managed) then
+	    assayTable := mgi->AssayModule->Specimen->Table;
+	    assayPush := mgi->AssayModule->Lookup->CVSpecimen->GenotypePush;
+	  elsif (mgi->AssayModule->GelForm.managed) then
+	    assayTable := mgi->AssayModule->GelLane->Table;
+	    assayPush := mgi->AssayModule->Lookup->CVGel->GenotypePush;
 	  end if;
 
           -- Set Row Count
@@ -118,7 +115,7 @@ rules:
 
 	  -- if an Assay record has been selected, then select
 	  -- the Genotype records for the Assay
-	  SelectGenotypeByAssay.assayKey := assayModule->EditForm->ID->text.value;
+	  SelectGenotypeByAssay.assayKey := mgi->AssayModule->EditForm->ID->text.value;
 	  send(SelectGenotypeByAssay, 0);
 	end does;
 
@@ -129,6 +126,10 @@ rules:
 --
 
         Add does
+
+	  if (mgi->AssayModule = nil) then
+	    send(Exit, 0);
+	  end if;
 
           if (not top.allowEdit) then
             return;
@@ -154,7 +155,6 @@ rules:
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
 	  AddSQL.list := top->QueryList;
---	  AddSQL.selectNewListItem := false;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
@@ -387,6 +387,10 @@ rules:
 	SelectGenotypeByAssay does
 	  assayKey : string := SelectGenotypeByAssay.assayKey;
 
+	  if (mgi->AssayModule = nil) then
+	    send(Exit, 0);
+	  end if;
+
 	  if (assayKey.length = 0) then
 	    return;
 	  end if;
@@ -399,7 +403,7 @@ rules:
 		"and a._Assay_key = " + assayKey + 
 		" and g._Genotype_key *= ap._Genotype_key";
 
-	  if (assayModule->InSituForm.managed) then
+	  if (mgi->AssayModule->InSituForm.managed) then
 	    from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
 	  else
 	    from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
@@ -511,6 +515,10 @@ rules:
 	  table : widget;
 	  row : integer;
 
+	  if (mgi->AssayModule = nil) then
+	    send(Exit, 0);
+	  end if;
+
 	  -- If no Genotype selected, return
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
@@ -556,9 +564,13 @@ rules:
 --
 
 	Exit does
+
+	  if (mgi->AssayModule != nil) then
+	    ab.sensitive := false;
+	  end if;
+
 	  destroy self;
 	  ExitWindow.source_widget := top;
-	  ExitWindow.ab := ab;
 	  send(ExitWindow, 0);
 	end does;
 

@@ -378,7 +378,6 @@ rules:
         ExitWindow does
 	  top : widget := ExitWindow.source_widget.root;
 	  mgi : widget := ExitWindow.source_widget.find_ancestor(global_application);
-	  ab : widget := ExitWindow.ab;
 	  module : widget;
 	  dialog : widget;
 	  i : integer := 1;
@@ -398,25 +397,21 @@ rules:
 	    -- An activation may take place from the main menu (mgiModules)
 	    -- or from within another form under mgi->Edit
 
-	    if (ab != nil) then
-	      ab.sensitive := true;
+	    if (top->activateButtonName = nil) then
+	      slist := mgi_splitfields(top.name, "Module");
+	      activateButton := slist[1];
 	    else
-	      if (top->activateButtonName = nil) then
-	        slist := mgi_splitfields(top.name, "Module");
-	        activateButton := slist[1];
-	      else
-	        activateButton := top.activateButtonName;
-	      end if;
+	      activateButton := top.activateButtonName;
+	    end if;
 
-	      module := mgi->mgiModules->(activateButton);
-	      if (module != nil) then
-	        module.sensitive := true;
-	      end if;
+	    module := mgi->mgiModules->(activateButton);
+	    if (module != nil) then
+	      module.sensitive := true;
+	    end if;
 
-	      module := mgi->EditPulldown->(activateButton);
-	      if (module != nil) then
-	        module.sensitive := true;
-	      end if;
+	    module := mgi->EditPulldown->(activateButton);
+	    if (module != nil) then
+	      module.sensitive := true;
 	    end if;
 
 	    -- Unmanage any dialogs which are still active
