@@ -59,7 +59,6 @@ DSQUERY=$1
 MGD=$2
 NOMEN=nomen
 HOME=`pwd`
-#FTP=hobbes:/export/ftp/pub/informatics/reports
 FTP=$FTP_RPTS_DIR
 PYTHONPATH=/usr/local/lib/python1.4:/usr/local/etc/httpd/python
 SYBASE=/opt/sybase
@@ -107,8 +106,6 @@ do
 $i $DSQUERY $MGD
 done
 cp $HOME/mgireport/*.rpt $FTP
-# remove write perms for others on all generated reports
-chmod o-w $FTP/*.rpt
 
 HOME=$INTERNAL_RPTS_DIR
 INTERNAL_RPTS="ACC_Accession.sql \
@@ -195,5 +192,3 @@ do
 $i $DSQUERY $MGD $NOMEN
 done
 
-# remove write perms for others on all generated reports
-chmod o-w $INTERNAL_RPTS_DIR/mgireport/*.rpt
