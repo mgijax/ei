@@ -112,6 +112,9 @@ into #homology1
 from #homology
 go
 
+set nocount off
+go
+
 print ""
 print "Homologies defined by Marker Symbol only; No Common Reference; No Single Homologies"
 print ""
