@@ -301,8 +301,8 @@ rules:
 
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
-		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
---	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
+		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
+	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
 	  end if;
 
           ModifySQL.cmd := cmd;
