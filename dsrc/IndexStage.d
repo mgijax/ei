@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec  05/21/2002
+--	- TR 3710, 3711; new Assay Type, Priority status
+--
 -- lec  08/07/2001
 --	- ; add Duplicate function
 --
@@ -50,10 +53,9 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
-
+	BuildDynamicComponents :local [];
 	ClearIndex :local [clearKeys : boolean := true;
 			   reset : boolean := false;];
-
 	Delete :local [];
 	Duplicate :local [];
 	Exit :local [];
@@ -75,6 +77,9 @@ locals:
 	from : string;
 	where : string;
 
+	assayKeys : string_list;
+	stageKeys : string_list;
+	stageTerms : string_list;
 rules:
 
 --
@@ -89,6 +94,9 @@ rules:
 	  (void) busy_cursor(mgi);
 
 	  top := create widget("IndexStageModule", nil, mgi);
+
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
 
           ab : widget := mgi->mgiModules->(top.activateButtonName);
           ab.sensitive := false;
@@ -108,6 +116,85 @@ rules:
 	end does;
 
 --
+-- BuildDynamicComponents
+--
+-- Activated from:  devent IndexStages
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+
+	  InitOptionMenu.option := top->GXDIndexPriorityMenu;
+	  send(InitOptionMenu, 0);
+
+	  -- Set Row labels/Assay keys
+	  table : widget := top->Stage->Table;
+	  rowLabels : string := "";
+	  columnLabels : string := "Mode,";
+	  backgroundSeries : string := "(label all Thistle) (all label Thistle)";
+	  newColor : string := BACKGROUNDALT1;
+	  row : integer := 0;
+
+	  dbproc : opaque := mgi_dbopen();
+
+	  -- create a string list of row/assay key pairs
+	  assayKeys := create string_list();
+	  
+          (void) dbcmd(dbproc, "select _Term_key, term from VOC_Term_GXDIndexAssay_View order by sequenceNum");
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      assayKeys.insert(mgi_getstr(dbproc, 1), assayKeys.count + 1);
+	      rowLabels := rowLabels + mgi_getstr(dbproc, 2) + ",";
+
+	      if (row mod 3 = 0) then
+	        if (newColor = BACKGROUNDALT1) then
+		  newColor := BACKGROUNDNORMAL;
+	        else
+		  newColor := BACKGROUNDALT1;
+	        end if;
+	      end if;
+
+	      backgroundSeries := backgroundSeries + " (" + (string) row + " all " + newColor + ") ";
+	      row := row + 1;
+	    end while;
+	  end while;
+
+	  -- Set Column Labels/Stage Keys
+
+	  -- create a string list of column/stage key pairs
+	  stageKeys := create string_list();
+	  -- create a string list of column/term pairs
+	  stageTerms := create string_list();
+
+          (void) dbcmd(dbproc, "select _Term_key, term from VOC_Term_GXDIndexStage_View order by sequenceNum");
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      columnLabels := columnLabels + mgi_getstr(dbproc, 2) + ",";
+	      stageKeys.insert(mgi_getstr(dbproc, 1), stageKeys.count + 1);
+	      stageTerms.insert(mgi_getstr(dbproc, 2), stageTerms.count + 1);
+	    end while;
+	  end while;
+
+	  (void) dbclose(dbproc);
+
+	  table.batch;
+	  table.xrtTblBackgroundSeries := backgroundSeries;
+	  table.xrtTblVisibleRows := row + 1;
+	  table.xrtTblRowLabels := rowLabels;
+	  table.xrtTblColumnLabels := columnLabels;
+	  table.saveBackgroundSeries := backgroundSeries;
+	  table.endX := stageKeys.count;
+	  table.unbatch;
+
+	end does;
+
+--
 -- ClearIndex
 -- 
 -- Local Clear
@@ -121,8 +208,8 @@ rules:
 	  Clear.reset := ClearIndex.reset;
 	  send(Clear, 0);
 
-	  -- set column to DPC 8.5
-	  top->Stage->Table.xrtTblLeftColumn := 17;
+	  -- set column to DPC 8.5 (18)
+	  top->Stage->Table.xrtTblLeftColumn := stageTerms.find("8.5");
 	end does;
 
 --
@@ -148,7 +235,8 @@ rules:
 		 mgi_DBinsert(GXD_INDEX, KEYNAME) +
                  top->mgiCitation->ObjectID->text.value + "," +
                  top->mgiMarker->ObjectID->text.value + "," +
-                 mgi_DBprstr(top->Note->text.value) + ")\n";
+		 top->GXDIndexPriorityMenu.menuHistory.defaultValue + "," +
+		 mgi_DBprstr(top->Note->text.value) + ")\n";
 
 	  send(ModifyStage, 0);
 
@@ -167,7 +255,7 @@ rules:
  
           if (top->QueryList->List.sqlSuccessful) then
             SetReportSelect.source_widget := top;
-            SetReportSelect.tableID := GXD_ANTIGEN;
+            SetReportSelect.tableID := GXD_INDEX;
             send(SetReportSelect, 0);
  
             ClearIndex.clearKeys := false;
@@ -248,6 +336,10 @@ rules:
 	  cmd := "";
 	  set := "";
 
+          if (top->GXDIndexPriorityMenu.menuHistory.modified) then
+            set := set + "_Priority_key = " + top->top->GXDIndexPriorityMenu.menuHistory.defaultValue + ",";
+	  end if;
+
           if (top->mgiMarker->ObjectID->text.modified) then
             set := set + "_Marker_key = " + top->mgiMarker->ObjectID->text.value + ",";
           end if;
@@ -278,61 +370,41 @@ rules:
 --
 -- Processes Stage table for inserts
 -- Appends to global cmd string
--- Only insert Stage records if at least one Assay is selected
--- If no Assays selected for a given Stage, don't insert a record for that Stage
+-- Insert Stage record for each Assay/Stage selected
 --
  
         ModifyStage does
           table : widget := top->Stage->Table;
-          row : integer;
-	  column : integer := 1;
-	  i : integer;
-	  dpc : string;
-	  dpcs : string_list := create string_list();
-	  dpcCmd : string;
+          row : integer := 0;
+	  column : integer := table.beginX;
+	  assayKey : string;
 	  dpcsExist : boolean := false;
  
 	  -- Delete all Stage records first
 
           cmd := cmd + mgi_DBdelete(GXD_INDEXSTAGES, currentRecordKey);
 
-	  -- Process all columns/rows; perform inserts only
+	  -- Process all rows/columns; perform inserts only
 
-	  while (column < mgi_tblNumColumns(table)) do
-	    dpcs.reset;
-	    row := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    assayKey := assayKeys[row + 1];
+	    column := table.beginX;
+	    while (column < mgi_tblNumColumns(table)) do
 
-            while (row < mgi_tblNumRows(table)) do
-
-	      if (mgi_tblGetCell(table, row, column) = "") then
-		dpc := "0";
-	      else
-		dpc := "1";
+	      -- insert a record into stage table if the stage is selected
+	      if (mgi_tblGetCell(table, row, column) = "X") then
+		cmd := cmd + mgi_DBinsert(GXD_INDEXSTAGES, NOKEY) + 
+			currentRecordKey + "," +
+			assayKey + "," +
+			stageKeys[column] + ")\n";
+		dpcsExist := true;
 	      end if;
 
-	      dpcs.insert(dpc, dpcs.count + 1);
-              row := row + 1;
+              column := column + 1;
 	    end while;
 
-	    -- If at least one Assay is chosen for this Stage, add the record
-
-	    if (dpcs.find("1") > 0) then
-               cmd := cmd + mgi_DBinsert(GXD_INDEXSTAGES, "") + currentRecordKey + "," + 
-		    (string) (column - 1) + ",";
-	       dpcCmd := "";
-	       dpcsExist := true;
-
-	      i := 1;
-	      while (i <= dpcs.count) do
-	        dpcCmd := dpcCmd + dpcs[i] + ",";
-	        i := i + 1;
-	      end while;
-
-	      cmd := cmd + dpcCmd->substr(1, dpcCmd.length - 1) + ")\n";
-	    end if;
-
-	    column := column + 1;
-          end while;
+            row := row + 1;
+	  end while;
 
 	  -- Warn user if no Stages have been selected
 
@@ -354,35 +426,32 @@ rules:
 	  from := "from GXD_Index_View i";
 	  where := "";
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "i";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "i";
+	  send(QueryModificationHistory, 0);
+          where := where + top->ModificationHistory->Table.sqlCmd;
  
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "i";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
- 
+          if (top->GXDIndexPriorityMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand _Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.searchValue;
+	  end if;
+
           if (top->mgiMarker->ObjectID->text.value.length > 0 and
               top->mgiMarker->ObjectID->text.value != "NULL") then
-            where := where + " and i._Marker_key = " + top->mgiMarker->ObjectID->text.value;
+            where := where + "\nand i._Marker_key = " + top->mgiMarker->ObjectID->text.value;
           elsif (top->mgiMarker->Marker->text.value.length > 0) then
-            where := where + " and i.symbol like " + 
-                mgi_DBprstr(top->mgiMarker->Marker->text.value);
+            where := where + "\nand i.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
           end if;
  
           if (top->mgiCitation->ObjectID->text.value.length > 0 and
 	      top->mgiCitation->ObjectID->text.value != "NULL") then
-            where := where + " and i._Refs_key = " + top->mgiCitation->ObjectID->text.value;
+            where := where + "\nand i._Refs_key = " + top->mgiCitation->ObjectID->text.value;
 	  end if;
 
           if (top->Note->text.value.length > 0) then
-	    where := where + " and i.comments like " + 
-		mgi_DBprstr(top->Note->text.value);
+	    where := where + "\nand i.comments like " + mgi_DBprstr(top->Note->text.value);
 	  end if;
 
-	  -- Chop off trailing " and "
+	  -- Chop off leading "\nand"
 
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
@@ -399,7 +468,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct index_id, " +
+	  Query.select := "select distinct _Index_key, " +
 		"symbol + \", \" + jnumID + \", \" + short_citation\n" +
 		from + "\n" + where + "\norder by symbol, short_citation\n";
 	  Query.table := GXD_INDEX;
@@ -432,16 +501,13 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Index_View where index_id = " + currentRecordKey + "\n" +
-		 "select * from GXD_Index_Stages where index_id = " + currentRecordKey +
-			"\norder by stage_id\n";
+	  cmd := "select * from GXD_Index_View where _Index_key = " + currentRecordKey + "\n" +
+		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
+			" order by _Assay_key, _StageID_key\n";
 
 	  table : widget;
 	  results : integer := 1;
 	  row : integer;
-	  column : integer := 0;
-	  i : integer;
-	  dpc : string;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -453,44 +519,36 @@ rules:
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
 	        top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 3);
-	        top->Note->text.value := mgi_getstr(dbproc, 4);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 5);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
-	        top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 7);
-	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 9);
-	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 10);
+	        top->Note->text.value := mgi_getstr(dbproc, 5);
+	        top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 10);
+	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 12);
+	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 13);
+
+                SetOption.source_widget := top->GXDIndexPriorityMenu;
+                SetOption.value := mgi_getstr(dbproc, 4);
+                send(SetOption, 0);
+
+		table := top->ModificationHistory->Table;
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 
 	      elsif (results = 2) then
-		-- GXD_Index_Stages.stage_id ranges from 0 to 41
-		-- the bit fields are either on/off for each stage_id for each index_id
-		-- Since table.editMode = 0, stage_id 0 corresponds to column 1,
-		-- stage_id 1 corresponds to column 2, etc.
+		table := top->Stage->Table;
 
-          	table := top->Stage->Table;
-		column := (integer) mgi_getstr(dbproc, 2) + 1;
-
-		-- For each Assay, if the bit has been set (1),
-		-- then place 'x' in cell, else place '' in cell
-		-- 'i' corresponds to the column # of the field in the schema
-		-- the Assays are columns 3-13
-
-		i := 3;
-		while (i <= 13) do
-		  if ((integer) mgi_getstr(dbproc, i) = 1) then
-		    dpc := "X";
-		  else
-		    dpc := "";
-		  end if;
-
-		  (void) mgi_tblSetCell(table, i - 3, column, dpc);
-		  i := i + 1;
-		end while;
-
+		-- find the row for the assay key
 		row := 0;
 		while (row < mgi_tblNumRows(table)) do
-		  (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		  if (assayKeys[row + 1] = mgi_getstr(dbproc, 2)) then
+		    break;
+		  end if;
 		  row := row + 1;
 		end while;
+
+		-- place an "X" in the correct column (stage)
+		(void) mgi_tblSetCell(table, row, stageKeys.find(mgi_getstr(dbproc, 3)), "X");
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      end if;
 	    end while;
 	    results := results + 1;
