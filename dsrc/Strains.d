@@ -67,7 +67,7 @@ devents:
 
 	ModifyMarker :local [];
 	ModifyType :local [];
-	ModifyStrainExtra :local [add : boolean := false;];
+	ModifyStrainExtra :local [];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -197,7 +197,6 @@ rules:
 
 	  send(ModifyMarker, 0);
 	  send(ModifyType, 0);
-	  ModifyStrainExtra.add := true;
 	  send(ModifyStrainExtra, 0);
 
           ModifyNotes.source_widget := top->Notes;
@@ -429,7 +428,7 @@ rules:
 --
 -- Activated from: devent Modify
 --
--- Construct insert/update/delete for Strain Notes
+-- Construct insert/update/delete for Strain Extra Info
 -- Appends to global "cmd" string
 --
 
@@ -458,25 +457,15 @@ rules:
             return;
 	  end if;
 
-	  if (ModifyStrainExtra.add) then
-	      cmd := cmd + mgi_DBinsert(MLP_EXTRA, NOKEY) + 
-		     currentRecordKey + "," + 
-                     mgi_DBprstr(andor) + "," +
-                     mgi_DBprkey(reference) + "," +
-                     mgi_DBprstr(dataset) + "," +
-                     mgi_DBprstr(note1) + "," +
-                     mgi_DBprstr(note2) + "," +
-                     mgi_DBprstr(note3) + ")\n";
-	  else
-            set := "andor = " + mgi_DBprstr(andor) +
-                   ",reference = " + mgi_DBprkey(reference) +
-                   ",dataset = " + mgi_DBprstr(dataset) +
-                   ",note1 = " + mgi_DBprstr(note1) +
-                   ",note2 = " + mgi_DBprstr(note2) +
-                   ",note3 = " + mgi_DBprstr(note3);
-            cmd := cmd + mgi_DBupdate(MLP_EXTRA, currentRecordKey, set);
-	  end if;
-
+	  cmd := cmd + mgi_DBdelete(MLP_EXTRA, currentRecordKey) +
+	         mgi_DBinsert(MLP_EXTRA, NOKEY) + 
+		 currentRecordKey + "," + 
+                 mgi_DBprstr(andor) + "," +
+                 mgi_DBprkey(reference) + "," +
+                 mgi_DBprstr(dataset) + "," +
+                 mgi_DBprstr(note1) + "," +
+                 mgi_DBprstr(note2) + "," +
+                 mgi_DBprstr(note3) + ")\n";
 	end does;
 
 --

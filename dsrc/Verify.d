@@ -16,6 +16,10 @@
 --
 -- History
 --
+-- lec 10/16/2001
+--	- TR 2541; VerifyItem, VerifyStrains; check private bit; private
+--	  items cannot be used.
+--
 -- lec 08/16/2001
 --	- TR 2846; VerifyAllele; don't launch Allele module upon invalid entry
 --	- TR 2849; VerifyGelLaneControl; remove defaults for Control = 'No'
@@ -1258,7 +1262,7 @@ rules:
 
 	  if (mgi_tblGetCell(table, row, table.genotype) = "") then
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
-	    (void) mgi_tblSetCell(table, row, table.genotype, "Not Specified");
+	    (void) mgi_tblSetCell(table, row, table.genotype, "-1");
 	  end if;
 	end does;
 
@@ -1325,6 +1329,7 @@ rules:
 	  keys : string_list := create string_list();
 	  std : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
+	  private : xm_string_list := create xm_string_list();
 	  cmd : string;
 	  select : string;
 	  where : string;
@@ -1391,6 +1396,10 @@ rules:
 	      keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
 	      results.insert(mgi_getstr(dbproc, 2), results.count + 1);
 	      std.insert(mgi_getstr(dbproc, 3), std.count + 1);
+
+	      if (tableID = STRAIN) then
+	        private.insert(mgi_getstr(dbproc, 5), private.count + 1);
+	      end if;
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
@@ -1443,6 +1452,17 @@ rules:
 	  -- selectedItem = -2; no items selected
 
 	  if (selectedItem >= 0) then
+
+	    -- If private item selected
+	    if (private.count > 0) then
+	      if (private[selectedItem] = "1") then
+                StatusReport.source_widget := root;
+	        StatusReport.message := "This value is designated as 'private' and cannot be used.\n\n";
+                send(StatusReport);
+	        (void) reset_cursor(top);
+	        return;
+	      end if;
+	    end if;
 
 	    if (key != nil) then
 	      key.value := keys[selectedItem];
@@ -2776,6 +2796,7 @@ rules:
  
           keys : xm_string_list := create xm_string_list();
           results : xm_string_list := create xm_string_list();
+          private : xm_string_list := create xm_string_list();
           strains : string_list;
           strainKeys : string := "";
           cmd : string;
@@ -2794,13 +2815,14 @@ rules:
           strains.rewind;
           while (strains.more) do
             s := strains.next;
-            cmd := "select _Strain_key, strain from PRB_Strain where strain = " + mgi_DBprstr(s);
+            cmd := "select _Strain_key, strain, private from PRB_Strain where strain = " + mgi_DBprstr(s);
             (void) dbcmd(dbproc, cmd);
             (void) dbsqlexec(dbproc);
             while (dbresults(dbproc) != NO_MORE_RESULTS) do
               while (dbnextrow(dbproc) != NO_MORE_ROWS) do
                 keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
                 results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+                private.insert(mgi_getstr(dbproc, 3), private.count + 1);
               end while;
             end while;
  
@@ -2808,6 +2830,13 @@ rules:
             i := results.find(s);
  
             if (i > 0) then     -- Strain found
+	      if (private[i] = "1") then 	-- Strain is private
+                StatusReport.source_widget := top;
+                StatusReport.message := "\nThis Strain is designated as 'private' and cannot be used.\n";
+                send(StatusReport);
+	        (void) reset_cursor(top);
+	        return;
+	      end if;
               -- Construct ", " delimited string of keys
               strainKeys := strainKeys + keys[i] + ", ";
             else                -- Strain not found
