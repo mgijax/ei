@@ -84,7 +84,7 @@ def showUsage():
  
         usage = 'usage: %s [-S server] [-D database] ' % sys.argv[0] + \
 		'-U user -P password file ' + \
-		'-m CR|RI|CRCHK|RICHK -e -1|-2|ExptKey -d'
+		'-m CR|RI|CRCHK|RICHK -e -1|-2|ExptKey'
         error(usage)
  
 def init():
@@ -102,7 +102,7 @@ def init():
 	global mode, exptKey
 
         try:
-                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:m:e:d')
+                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:m:e:')
         except:
                 showUsage()
  
@@ -128,16 +128,11 @@ def init():
 			mode = opt[1]
                 elif opt[0] == '-e':
 			exptKey = string.atoi(opt[1])
-                elif opt[0] == '-d':
-                        DEBUG = 1
                 else:
                         showUsage()
  
 	if user is None or password is None or mode is None or exptKey == 0:
 		showUsage()
-
-	if server != 'MGD' or (server == 'MGD' and database == 'mgd_old'):
-		DEBUG = 1
 
 	# Initialize DBMS parameters
 	db.set_sqlLogin(user, password, server, database)
@@ -652,7 +647,6 @@ def catchUp():
 #
 
 INSERTSTATS = 'insert MLD_Statistics (_Expt_key, sequenceNum, _Marker_key_1, _Marker_key_2, recomb, total, pcntrecomb, stderr)\n'
-DEBUG = 0
 
 mode = None	# Processing mode
 exptKey = 0	# Experiment Key
