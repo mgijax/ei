@@ -348,7 +348,6 @@ rules:
 	  objectKey : string := ProcessAcc.objectKey;
 	  refsKey : string := ProcessAcc.refsKey;
 	  tableID : integer := ProcessAcc.tableID;
-	  db : string := ProcessAcc.db;
 
           r : integer := 0;
 	  i : integer := 0;
@@ -364,12 +363,6 @@ rules:
 	  private : string := "";
 	  exec : string := "exec ";
 
-	  if (db.length = 0) then
-	    exec := "exec " + getenv("MGD") + "..";
-	  else
-	    exec := "exec " + db + "..";
-	  end if;
- 
 	  -- For each required Accession ID, if blank print message
 	  i := 1;
           while (i <= source.subMenuId.num_children) do

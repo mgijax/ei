@@ -26,8 +26,7 @@ LoadAcc [table : widget;		-- Accession Table
 ProcessAcc [table : widget;		-- Accession Table
             objectKey : string;		-- Unique identifier of Accessionable Object
 	    refsKey : string := "-1";   -- Reference Key for Accessionable Object
-            tableID : integer;  	-- ID of table
-	    db : string;];		-- DB to use (default is MGD)
+            tableID : integer;];  	-- ID of table
 
 -- Formulate 'from' and 'where' clauses for searching Accession Numbers
 SearchAcc [table : widget;		-- Accession Table
