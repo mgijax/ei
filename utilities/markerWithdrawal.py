@@ -267,6 +267,7 @@ try:
 except db.error:
 	diagFile.write(cmd)
 	diagFile.close()
-	error('The withdrawal procedure could not be processed.\n')
+        db.useOneConnection(0)
+	error('The withdrawal procedure could not be processed.\n' + db.sql_server_msg)
 
 db.useOneConnection(0)
