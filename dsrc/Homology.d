@@ -97,6 +97,8 @@ devents:
 	Modify :local [];
 	ModifyHomology :local [add : boolean := false;];
 
+	NoteJ58000 :local [];
+
 	PrepareSearch :local [];
 
 	Search :local [];
@@ -518,6 +520,23 @@ rules:
             row := row + 1;
           end while;
         end
+
+--
+-- NoteJ58000
+--
+-- Places Note into Note column of current Assay Table row.
+--
+-- Activated from:  widget top->Lookup->NoteJ58000
+-- 
+--
+
+	NoteJ58000 does
+          assayTable : widget := top->Assay->Table;
+	  row : integer := mgi_tblGetCurrentRow(assayTable);
+	  note : string := "J:58000. Sequence homology based on a comparison of mouse sequence:";
+
+          mgi_tblSetCell(assayTable, row, assayTable.notes, note);
+	end does;
 
 --
 -- PrepareSearch
