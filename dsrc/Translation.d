@@ -337,49 +337,60 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd : string := "select * from " + mgi_DBtable(MGI_TRANSLATIONTYPE) +
-			  " where " + mgi_DBkey(MGI_TRANSLATIONTYPE) + " = " + currentRecordKey + "\n" + 
-			  "select _Translation_key, _Object_key, badName, goodName, sequenceNum, " + 
-			  "modifiedBy, modification_date " +
-			  "from " + mgi_DBtable(MGI_TRANSLATIONSTRAIN_VIEW) +
-			  " where " + mgi_DBkey(MGI_TRANSLATIONTYPE) + " = " + currentRecordKey +
-			  " order by sequenceNum\n";
+	  -- Query for Master Translation Type record
 
-	  row : integer := 0;
-	  results : integer := 1;
+	  cmd : string := "select * from " + mgi_DBtable(MGI_TRANSLATIONTYPE) +
+			  " where " + mgi_DBkey(MGI_TRANSLATIONTYPE) + " = " + currentRecordKey + "\n";
+
           dbproc : opaque := mgi_dbopen();
+
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
  
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-	        top->ID->text.value   := mgi_getstr(dbproc, 1);
-	        top->Name->text.value := mgi_getstr(dbproc, 3);
-	        top->Compression->text.value := mgi_getstr(dbproc, 4);
-                SetOption.source_widget := top->MGITypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
-                send(SetOption, 0);
-	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(transTable, row, transTable.transKey, mgi_getstr(dbproc, 1));
-	        (void) mgi_tblSetCell(transTable, row, transTable.objectKey, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(transTable, row, transTable.badName, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(transTable, row, transTable.goodName, mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(transTable, row, transTable.currentSeqNum, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(transTable, row, transTable.seqNum, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(transTable, row, transTable.modifiedBy, mgi_getstr(dbproc, 6));
-	        (void) mgi_tblSetCell(transTable, row, transTable.modifiedDate, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(transTable, row, transTable.editMode, TBL_ROW_NOCHG);
-	      row := row + 1;
-	      end if;
-            end while;
-	    results := results + 1;
-          end while;
- 
-	  (void) dbclose(dbproc);
+	      top->ID->text.value   := mgi_getstr(dbproc, 1);
+	      top->Name->text.value := mgi_getstr(dbproc, 3);
+	      top->Compression->text.value := mgi_getstr(dbproc, 4);
+              SetOption.source_widget := top->MGITypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 2);
+              send(SetOption, 0);
+	    end while;
+	  end while;
+
+	  -- Query for specific bad name/good name records based on Translation Type
 
 	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + 
 			top->MGITypeMenu.menuHistory.defaultValue);
+
+	  cmd := "select distinct t._Translation_key, t._Object_key, t.badName, t.sequenceNum, " +
+		  "t.modifiedBy, t.modification_date, v.description " +
+		  "from " + mgi_DBtable(MGI_TRANSLATION) + " t, " + dbView + " v" +
+		  " where v._Object_key = t._Object_key" + 
+		  " and t._TranslationType_key = " + currentRecordKey +
+		  " order by t.sequenceNum\n";
+
+	  row : integer := 0;
+
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+ 
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(transTable, row, transTable.transKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(transTable, row, transTable.objectKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(transTable, row, transTable.badName, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(transTable, row, transTable.goodName, mgi_getstr(dbproc, 7));
+	      (void) mgi_tblSetCell(transTable, row, transTable.currentSeqNum, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(transTable, row, transTable.seqNum, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(transTable, row, transTable.modifiedBy, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(transTable, row, transTable.modifiedDate, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(transTable, row, transTable.editMode, TBL_ROW_NOCHG);
+	      row := row + 1;
+            end while;
+          end while;
+ 
+	  (void) dbclose(dbproc);
 
 	  -- Reset Background
 
