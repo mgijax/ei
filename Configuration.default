@@ -27,13 +27,16 @@ setenv EISYSTEMDOCDIR $EIINSTALLDIR/system_docs
 # SYBASE
 setenv SYBASE /opt/sybase
 
+$ DB Utilities
+setenv DBUTILITIESPATH /usr/local/mgi/dbutils/mgidbutilities
+
 # TeleUSE
 setenv TeleUSE	/opt/teleuseXRT
 setenv XUSERFILESEARCHPATH	%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
 setenv LD_LIBRARY_PATH	$SYBASE/lib:$TeleUSE/lib:/usr/lib:/usr/ucblib
 
 # PATH
-set path = ($path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin)
+set path = ($DBUTILITIES/bin $path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin)
 
 # PYTHON PATH
 setenv PYTHONPATH /usr/local/mgi/lib/python
@@ -59,7 +62,7 @@ setenv NOMEN nomen
 setenv DBUSER mgd_dbo
 
 # Database Password File
-setenv DBPASSWORDFILE $SYBASE/admin/.mgd_dbo_password
+setenv DBPASSWORDFILE $DBUTILITIESPATH/.mgd_dbo_password
 
 # Data directories
 setenv EIREPORTDIR	$HOME/mgireport
