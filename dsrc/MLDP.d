@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	02/06/2002
+--	- added DisplayMarker toggle
+--
 -- lec	10/16/2001
 --	- TR 256; SelectRILookup
 --
@@ -181,6 +184,7 @@ locals:
 
 	assayNull : string;	-- key for default Mapping Assay of "None"
 	origExptType : string;
+	displayMarker : string;	-- key of marker to display (when DisplayMarker.set = true)
 
 rules:
 
@@ -909,6 +913,8 @@ rules:
 	  descr : string;
 	  yesno : string;
  
+	  resetSequenceNum : boolean := true;
+
 	  -- Check for duplicate Seq # assignments
 
 	  DuplicateSeqNumInTable.table := table;
@@ -1001,6 +1007,11 @@ rules:
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
               tmpCmd := tmpCmd + mgi_DBdelete(MLD_EXPT_MARKER, currentExptKey) +
                         "and sequenceNum = " + currentSeqNum + "\n";
+
+	      if ((integer) currentSeqNum > 100) then
+	        resetSequenceNum := false;
+	      end if;
+
             end if;
  
             row := row + 1;
@@ -1010,7 +1021,10 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
-            cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_EXPT_MARKER) + "'," + currentExptKey + "\n";
+
+	    if (resetSequenceNum) then
+              cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_EXPT_MARKER) + "'," + currentExptKey + "\n";
+	    end if;
 	  end if;
         end does;
  
@@ -1099,7 +1113,9 @@ rules:
  
 	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
             cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
-            cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_MARKER) + "'," + currentRefKey + "\n";
+	    if ((integer) currentSeqNum <= 100) then
+              cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_MARKER) + "'," + currentRefKey + "\n";
+	    end if;
 	  end if;
         end does;
  
@@ -2354,6 +2370,7 @@ rules:
 	  table : widget;
 	  from := "from MLD_Marker_View g";
 	  where := "";
+	  displayMarker := "";
 
           QueryDate.source_widget := top->CreationDate;
           QueryDate.tag := "g";
@@ -2384,6 +2401,9 @@ rules:
           value := mgi_tblGetCell(table, 0, table.markerKey);
           if (value.length > 0 and value != "NULL") then
             where := where + " and g._Marker_key = " + value + "\n";
+	    if (top->DisplayMarker.set) then
+	      displayMarker := value;
+	    end if;
 	  else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
@@ -2432,6 +2452,9 @@ rules:
           if (value.length > 0 and value != "NULL") then
             where := where + "\nand eg._Marker_key = " + value;
 	    from_emarker := true;
+	    if (top->DisplayMarker.set) then
+	      displayMarker := value;
+	    end if;
 	  else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
@@ -3080,8 +3103,15 @@ rules:
 	  currentRefKey := top->QueryList->List.keys[Select.item_position];
 	  top->ExptMasterForm->Notes->text.value := "";
 
-	  cmd := "select * from MLD_Marker_View where _Refs_key = " + currentRefKey + " order by sequenceNum\n" +
+	  cmd := "select * from MLD_Marker_View where _Refs_key = " + currentRefKey;
+	  
+	  if (displayMarker.length > 0) then
+	    cmd := cmd + " and _Marker_key = " + displayMarker;
+	  end if;
+
+	  cmd := cmd + " order by sequenceNum\n" +
 		 "select rtrim(note) from MLD_Notes where _Refs_key = " + currentRefKey + " order by sequenceNum\n";
+
 	  results : integer := 1;
 	  row : integer;
 
@@ -3178,8 +3208,13 @@ rules:
 		 " order by sequenceNum\n" +
                  "select sequenceNum, _Marker_key, symbol, _Allele_key, _Assay_Type_key, " +
                  "allele, assay, description, matrixData " +
-                 "from MLD_Expt_Marker_View where _Expt_key = " + currentExptKey + 
-		 " order by sequenceNum\n";
+                 "from MLD_Expt_Marker_View where _Expt_key = " + currentExptKey;
+
+	  if (displayMarker.length > 0) then
+	    cmd := cmd + " and _Marker_key = " + displayMarker;
+	  end if;
+
+	  cmd := cmd + " order by sequenceNum\n";
  
           results : integer := 1;
           row : integer := 0;
