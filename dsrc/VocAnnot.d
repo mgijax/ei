@@ -603,6 +603,8 @@ rules:
 	  value := mgi_tblGetCell(annotTable, 0, annotTable.notes);
 	  if (value.length > 0) then
 	    where := where + "\nand n.note like " + mgi_DBprstr(value);
+	    from_annot := true;
+	    from_evidence := true;
 	    from_notes := true;
 	  end if;
 
