@@ -555,24 +555,19 @@ Module: mgiOption
                     {
                       Production = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = MGD;
+                        defaultValue = PROD_MGI
                         development = False;
                     }
                     {
                       Development = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = MGD_DEV;
+                        defaultValue = DEV_MGI;
                     }
                     {
                       Public = ServerToggle : mgiOption;
                       Group: User
-                        defaultValue = MGD_PUBLIC;
+                        defaultValue = PUB_MGI;
                         development = False;
-                    }
-                    {
-                      Rohan = ServerToggle : mgiOption;
-                      Group: User
-                        defaultValue = DEV_MGI;
                     }
               }
         }
