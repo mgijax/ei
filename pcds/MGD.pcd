@@ -9016,7 +9016,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 columns = 30;
                                                 translations = "#override
  Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyItem() DisplayESCellLine()";
+<Key>Tab: VerifyItem()";
                                               Group: User
                                                 defaultValue = "Not Applicable";
                                             }
