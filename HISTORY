@@ -1,5 +1,5 @@
-TAG: ei-3-0-4, 5, 6, 7, 8, 9, 10
-DATE: 01/15/2001, 01/16/2001, 01/18/2001, 01/25/2001, 01/29/2001
+TAG: ei-3-0-4, 5, 6, 7, 8, 9, 10, 11
+DATE: 01/15/2001, 01/16/2001, 01/18/2001, 01/25/2001, 01/29/2001, 01/31/2001
 STAFF: lec
 RELEASE: A
 CHANGES: 
@@ -12,6 +12,7 @@ CHANGES:
 7) Renamed system_docs/EIrelease.fm to release.fm to
    fix permissions (664).
 8) case fix for TR 1971.
+9) replaced SP Current_Symbol in mlc*.c routines
 
 TAG: ei-3-0-3
 DATE: 01/15/2001
