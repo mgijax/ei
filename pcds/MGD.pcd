@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 15:25:35 2005";
+      lastWritten = "Thu Feb 24 12:12:10 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -12751,6 +12751,8 @@ Shift<Key>Tab: prev-tab-group()
                                           topAttachment = attach_form;
                                           bottomAttachment = attach_none;
                                           resizable = true;
+                                        Group: User
+                                          requiredColumns = 3;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;

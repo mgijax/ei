@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 23 14:48:11 2005";
+      lastWritten = "Thu Feb 24 11:50:55 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2623,7 +2623,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:NotePreInit,D:NoteInit";
                                   Group: User
-                                    targetColumn = 22;
+                                    targetColumn = 20;
                                     targetWidget = Annotation;
                                 }
                                 {
