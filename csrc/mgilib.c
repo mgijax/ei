@@ -824,6 +824,9 @@ char *mgi_DBaccTable(int table)
     case MRK_NOMEN_ACC_REFERENCE:
 	    sprintf(buf, "%s..MRK_Nomen_AccRef_View", getenv("NOMEN"));
             break;
+    case MRK_NOMEN_USER_VIEW:
+	    sprintf(buf, "%s..MRK_Nomen_User_View", getenv("NOMEN"));
+            break;
     case STRAIN:
     case MLP_STRAIN:
 	    sprintf(buf, "PRB_Strain_Acc_View");
