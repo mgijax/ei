@@ -451,7 +451,7 @@ rules:
           cmd := mgi_setDBkey(PRB_REFERENCE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(PRB_REFERENCE, KEYNAME) +
                  currentMasterKey + "," +
-	         top->MolReferenceForm->mgiCitation->ObjectID->text.value + ",NULL," +
+	         top->MolReferenceForm->mgiCitation->ObjectID->text.value + "," +
 	         (string)((integer) top->MolReferenceForm->RMAP.set) + "," +
                  (string)((integer) top->MolReferenceForm->HasSequence.set) + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
@@ -1659,12 +1659,12 @@ rules:
                 top->MolMasterForm->MJnum->Jnum->text.value := mgi_getstr(dbproc, 1);
                 top->MolMasterForm->MJnum->ObjectID->text.value := mgi_getstr(dbproc, 6);
                 top->MolMasterForm->MJnum->Citation->text.value := mgi_getstr(dbproc, 3);
-                top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 9));
-                top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 8));
-		ref_createdBy := mgi_getstr(dbproc, 16);
-		ref_modifiedBy := mgi_getstr(dbproc, 17);
-		ref_creation_date := mgi_getstr(dbproc, 12);
-		ref_modification_date := mgi_getstr(dbproc, 13);
+                top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 8));
+                top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 7));
+		ref_createdBy := mgi_getstr(dbproc, 15);
+		ref_modifiedBy := mgi_getstr(dbproc, 16);
+		ref_creation_date := mgi_getstr(dbproc, 11);
+		ref_modification_date := mgi_getstr(dbproc, 12);
               elsif (results = 2) then
                 top->MolReferenceForm->Notes->text.value := top->MolReferenceForm->Notes->text.value + 
 			mgi_getstr(dbproc, 1);
