@@ -37,7 +37,6 @@ devents:
 	Search :local [assayKey : string;];
 	Select :local [item_position : integer;];
 
-	AssignGenotypeToAssay :local [];
 	GenotypeClipboardAdd :local [];
 
 locals:
@@ -263,6 +262,7 @@ rules:
 	  keysDeclared : boolean := false;
  
 	  keyName := "allele" + KEYNAME;
+	  allelePairString := "";
 
           -- Process while non-empty rows are found
  
@@ -340,34 +340,34 @@ rules:
 
 	Search does
 	  assayKey : string := Search.assayKey;
+	  assayExists : string;
+	  notExists : string;
 
 	  if (mgi->AssayModule = nil) then
 	    send(Exit, 0);
 	  end if;
 
-	  if (assayKey.length = 0) then
-	    return;
-	  end if;
-
           (void) busy_cursor(top);
 
-	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
-		", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
-	  where := "where g._Genotype_key = a._Genotype_key " +
-		"and a._Assay_key = " + assayKey + 
-		" and g._Genotype_key *= ap._Genotype_key";
+	  if (assayKey.length > 0) then
+	    from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
+		  ", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
+	    where := "where g._Genotype_key = a._Genotype_key " +
+		  "and a._Assay_key = " + assayKey + 
+		  " and g._Genotype_key *= ap._Genotype_key";
 
-	  if (mgi->AssayModule->InSituForm.managed) then
-	    from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
-	  else
-	    from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
-	  end if;
+	    if (mgi->AssayModule->InSituForm.managed) then
+	      from := from + "," + mgi_DBtable(GXD_SPECIMEN) + " a";
+	    else
+	      from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
+	    end if;
 
-	  assayExists : string := "select distinct g._Genotype_key, " +
-		"g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
-		from + "\n" + where;
+	    assayExists := "select distinct g._Genotype_key, " +
+		  "g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
+		  from + "\n" + where;
+ 	  end if;
 
-          notExists : string := "select distinct g._Genotype_key, " +
+          notExists := "select distinct g._Genotype_key, " +
 		"g.genotypeDisplay + ',' + ap.symbol + ',' + ap.allele1\n" + 
 	  	"from GXD_Genotype_View g, GXD_AllelePair_View ap \n" +
 	  	"where not exists (select 1 from GXD_Specimen s\n" +
@@ -376,8 +376,13 @@ rules:
 	  	"where g._Genotype_key = s._Genotype_key)\n" +
 		" and g._Genotype_key *= ap._Genotype_key\n";
 
+	  if (assayKey.length > 0) then
+	    QueryNoInterrupt.select := assayExists + "\nunion\n" + notExists;
+	  else
+	    QueryNoInterrupt.select := notExists;
+	  end if;
+
 	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.select := assayExists + "\nunion\n" + notExists;
 	  QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
 	  send(QueryNoInterrupt, 0);
 
@@ -476,43 +481,6 @@ rules:
           send(Clear, 0);
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- AssignGenotypeToAssay
---
--- Activated from AssignGenotypeToAssay push button
---
--- Associates the selected Genotype record with the current Specimen or Gel Lane
---
-
-	AssignGenotypeToAssay does
-	  push : widget;
-	  table : widget;
-	  row : integer;
-
-	  if (mgi->AssayModule = nil) then
-	    send(Exit, 0);
-	  end if;
-
-	  -- If no Genotype selected, return
-          if (top->QueryList->List.selectedItemCount = 0) then
-	    currentRecordKey := "";
-            top->QueryList->List.row := 0;
-            top->ID->text.value := "";
-            return;
-          end if;
-
-	  push := assayPush;
-	  table := push.targetWidget->Table;
-	  row := mgi_tblGetCurrentRow(table);
-
-	  -- Copy the appropriate values to the target table
-
-	  (void) mgi_tblSetCell(table, row, push.tableColumn, top->EditForm->Strain->Verify->text.value);
-	  (void) mgi_tblSetCell(table, row, push.tableKeyColumn, top->ID->text.value);
-
-	  top.managed := false;
 	end does;
 
 --
