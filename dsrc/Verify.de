@@ -40,7 +40,7 @@ VerifyMarker :translation [source_widget : widget;
 			   allowWithdrawn : boolean := false;
 			   verifyOtherSpecies : boolean := false;];
 
-VerifyMarkerChromosome :translation [];
+VerifyMarkerChromosome :translation [allowMismatch : boolean := true;];
 
 VerifyMarkerInTable :translation [];
 

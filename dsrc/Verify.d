@@ -1986,6 +1986,7 @@ rules:
 	  sourceWidget : widget := VerifyMarkerChromosome.source_widget;
 	  top : widget := sourceWidget.top;
 	  isTable : boolean;
+	  allowMismatch : boolean := VerifyMarkerChromosome.allowMismatch;
 	  value : string;
 	  valueKey : string;
 
@@ -2056,13 +2057,15 @@ rules:
                        "\nChromosome:  " + comparisonChr;
             valid := false;
 
-	    -- Disallow continued processing of Marker
+	    -- Disallow continued processing of Marker if mismatch is not allowed
 
-	    if (isTable) then
-              (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerKey, "NULL");
-              VerifyMarkerChromosome.doit := (integer) false;
-	    else
-	      top->mgiMarker->ObjectID->text.value := "NULL";
+	    if (not allowMismatch) then
+	      if (isTable) then
+                (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.markerKey, "NULL");
+                VerifyMarkerChromosome.doit := (integer) false;
+	      else
+	        top->mgiMarker->ObjectID->text.value := "NULL";
+	      end if;
 	    end if;
           end if;
  
@@ -2070,8 +2073,6 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := message;
             send(StatusReport);
-            (void) reset_cursor(top);
-            return;
           end if;
  
           (void) reset_cursor(top);

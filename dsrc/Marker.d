@@ -115,7 +115,7 @@ devents:
 	MarkerWithdrawal :local [];
 	MarkerWithdrawalEnd :local [source_widget : widget;
 				    status : integer;];
-	SetMarkerWithdrawalFields :exported [];
+	SetMarkerWithdrawalFields :exported [];	-- exported so that EventReasonToggle can use it
 
 	-- Process Breakpoint Split Events
 	MarkerBreakpointSplitInit :local [];
@@ -217,6 +217,9 @@ rules:
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->CVMarker->MarkerEventReasonMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->WithdrawalDialog->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
 	  top->WithdrawalDialog->MarkerEventMenu.subMenuId.sql := 
@@ -439,6 +442,9 @@ rules:
 	    return;
 	  end if;
 
+	  ClearTable.table := dialog->NewMarker->Table;
+	  send(ClearTable, 0);
+
 	  SetOption.source_widget := dialog->MarkerEventMenu;
 	  SetOption.value := EVENT_WITHDRAWAL;
 	  send(SetOption, 0);
@@ -447,8 +453,9 @@ rules:
 	  SetOption.value := NOTSPECIFIED;
 	  send(SetOption, 0);
 
-	  ClearTable.table := dialog->NewMarker->Table;
-	  send(ClearTable, 0);
+	  SetOption.source_widget := dialog->ChromosomeMenu;
+	  SetOption.value := top->ChromosomeMenu.menuHistory.defaultValue;
+	  send(SetOption, 0);
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
 	  dialog->hasAlleles.set := hasAlleles;
