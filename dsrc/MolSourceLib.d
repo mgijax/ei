@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 09/23/1999
+--	- TR 940; Age verification
+--
 -- lec	07/28/98
 --	- added mgiCitation to SourceForm
 --	- special processing for MolecularSource form
@@ -48,6 +51,8 @@ rules:
  
 	  add : string := "";
 	  age : string := "";
+
+	  top.sql := "";
 
           if (AddMolecularSource.master) then
             add := mgi_setDBkey(PRB_SOURCE_MASTER, NEWKEY, keyLabel) +
@@ -89,13 +94,18 @@ rules:
 	    send(VerifyAge, 0);
 	  end if;
 
-          add := add + mgi_DBprstr(age) + "," +
-                       top->AgeMin->text.value + "," +
-                       top->AgeMax->text.value + "," +
-                       mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + "," +
-            	       mgi_DBprstr(top->CellLine->text.value) + ")\n";
+	  -- If AgeMin and AgeMax are not set, then do not set top.sql
+
+	  if (top->AgeMin->text.value.length > 0 and
+	      top->AgeMax->text.value.length > 0) then
+            add := add + mgi_DBprstr(age) + "," +
+                         top->AgeMin->text.value + "," +
+                         top->AgeMax->text.value + "," +
+                         mgi_DBprstr(top->SexMenu.menuHistory.defaultValue) + "," +
+            	         mgi_DBprstr(top->CellLine->text.value) + ")\n";
  
-	  top.sql := add;
+	    top.sql := add;
+	  end if;
         end does;
  
 --
@@ -368,9 +378,17 @@ rules:
               age := age + " " + top->Age->text.value;
             end if;
 
-	    set := set + "age = " + mgi_DBprstr(age) + "," +
-                         "ageMin = " + top->AgeMin->text.value + "," +
-                         "ageMax = " + top->AgeMax->text.value + ",";
+	    VerifyAge.source_widget := top->Age->text;
+	    send(VerifyAge, 0);
+
+	    if (top->AgeMin->text.value.length > 0 and
+	        top->AgeMax->text.value.length > 0) then
+	      set := set + "age = " + mgi_DBprstr(age) + "," +
+                           "ageMin = " + top->AgeMin->text.value + "," +
+                           "ageMax = " + top->AgeMax->text.value + ",";
+	    else
+	      set := "";
+	    end if;
           end if;
  
           if (top->SexMenu.menuHistory.modified) then

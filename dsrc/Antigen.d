@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec 09/23/1999
+--	- TR 940; Age verification
+--
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
 --        see MGI.d/CreateForm for details
@@ -121,6 +124,11 @@ rules:
           AddMolecularSource.source_widget := top;
           AddMolecularSource.keyLabel := sourceKeyLabel;
           send(AddMolecularSource, 0);
+
+	  if (top->SourceForm.sql.length = 0) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
 
           cmd := top->SourceForm.sql +
 		 mgi_setDBkey(GXD_ANTIGEN, NEWKEY, KEYNAME) + 

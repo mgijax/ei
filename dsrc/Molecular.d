@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 09/23/1999
+--	- TR 940; Age verification
+--
 -- lec  08/25/1999
 --	TR 846
 --	TR 907; Initialize Reference info on master form
@@ -274,6 +277,11 @@ rules:
               AddMolecularSource.source_widget := detailForm;
               AddMolecularSource.keyLabel := sourceKeyName;
               send(AddMolecularSource, 0);
+
+	      if (detailForm->SourceForm.sql.length = 0) then
+	        (void) reset_cursor(top);
+	        return;
+	      end if;
 	    end if;
           end if;
  
@@ -596,6 +604,10 @@ rules:
                 AddMolecularSource.source_widget := detailForm;
                 AddMolecularSource.keyLabel := sourceKeyName;
                 send(AddMolecularSource, 0);
+	        if (top->MolDetailForm->SourceForm.sql.length = 0) then
+	          (void) reset_cursor(top);
+	          return;
+	        end if;
                 cmd := cmd + top->MolDetailForm->SourceForm.sql;
 	        set := set + "derivedFrom = NULL,";
 	        set := set + "_Source_key = @" + sourceKeyName + ",";

@@ -92,6 +92,11 @@ rules:
 	  AddMolecularSource.master := true;
 	  send(AddMolecularSource, 0);
 
+	  if (top->SourceForm.sql.length = 0) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
           cmd := top->SourceForm.sql;
 
           -- Execute the add

@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec 09/23/1999
+--	- TR 940; VerifyAge
+--
 -- lec 08/09/99
 --	- TR 839; added VerifyChromosome
 --
@@ -438,7 +441,9 @@ rules:
 	  ageStr : string;
 	  firstOfList : boolean := true;
 	  error : boolean := false;
+	  prmessage : boolean := false;
           message : string := 
+		"Invalid Age Range\n\n" +
 		"Must enter a single (x), range (x-y), list (x,y,z) or list of ranges (x-y,w-z)";
 
 	  -- Set ageMin/ageMax based on Age prefixes
@@ -480,6 +485,7 @@ rules:
 	  elsif (ageRange.length > 0) then
 	    if (not allow_only_digits(ageRange)) then
 	      error := true;
+	      prmessage := true;
 	    else
 
 	      -- Determine if a list of values
@@ -502,6 +508,7 @@ rules:
 	        -- Unknown format
 	        else
 		  error := true;
+		  prmessage := true;
 	        end if;
 
 	      -- List of values
@@ -554,9 +561,20 @@ rules:
 	  end if;
 
 	  if (error) then
---            StatusReport.source_widget := top.root;
---            StatusReport.message := message;
---            send(StatusReport);
+
+	    if (prmessage) then
+              StatusReport.source_widget := top.root;
+              StatusReport.message := message;
+              send(StatusReport);
+
+	      if (isTable or isMenu) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.ageMin, "");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.ageMax, "");
+	      else
+	        top->AgeMin->text.value := "";
+	        top->AgeMax->text.value := "";
+	      end if;
+	    end if;
 
 	    if (isTable) then
               VerifyAge.doit := (integer) false;
@@ -588,13 +606,6 @@ rules:
 -- VerifyAllele
 --
 -- Activated from:  Table ValidateCellCallback
---		    Text translation
---
--- 	UDAs required:  alleleSymbol, alleleKey (string lists)
--- 	UDAs required:  markerSymbol, markerKey (integers)
---
---	Verify Allele exists for Marker in MRK_Allele
---	If Marker is not given and one occurrence of the given Allele exists,
 --	then the Marker info is entered in the appropriate columns based on
 --	the given Allele.
 --
