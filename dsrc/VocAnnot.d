@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 12/12/2003 lec
+--	- TR 5422; fix notes
+--
 -- 09/18/2003 lec
 --	- TR 4579; VOC_Evidence; extended notes; added primary key
 --
