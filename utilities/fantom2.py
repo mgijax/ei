@@ -77,10 +77,12 @@ mDate = ''
 clusterAnal = ''
 geneNameCuration = ''
 cdsGOCuration = ''
-finalCluster = ''
+nomenevent = ''
+chromosome = ''
 nomennote = ''
 rikennote = ''
 curatornote = ''
+homologynote = ''
 
 # Escape all commas embedded in text fields (since comma is the field delimiter)
 
@@ -95,11 +97,13 @@ for r in results:
 	if r['_Fantom2_key'] != fantomKey or r['gba_mgiID'] != gbaMGIID:
 
 		if fantomKey != -1:
-			fp.write(mgi_utils.prvalue(nomennote) + DELIM + \
+			fp.write(mgi_utils.prvalue(homologynote) + DELIM + \
+			         mgi_utils.prvalue(chromosome) + DELIM + \
+				 mgi_utils.prvalue(nomenevent) + DELIM + \
+				 mgi_utils.prvalue(nomennote) + DELIM + \
 			         mgi_utils.prvalue(clusterAnal) + DELIM + \
 			         mgi_utils.prvalue(geneNameCuration) + DELIM + \
 			         mgi_utils.prvalue(cdsGOCuration) + DELIM + \
-			         mgi_utils.prvalue(finalCluster) + DELIM + \
 			         mgi_utils.prvalue(rikennote) + DELIM + \
 			         mgi_utils.prvalue(curatornote) + DELIM + \
 	         	         createdBy + DELIM + \
@@ -112,14 +116,16 @@ for r in results:
 		clusterAnal = r['cluster_analysis']
 		geneNameCuration = r['gene_name_curation']
 		cdsGOCuration = r['cds_go_curation']
-		finalCluster = r['final_cluster']
 		createdBy = r['createdBy']
 		cDate = r['cDate']
 		modifiedBy = r['modifiedBy']
 		mDate = r['mDate']
+		nomenevent = r['nomen_event']
+		chromosome = r['chromosome']
 		nomennote = ''
 		rikennote = ''
 		curatornote = ''
+		homologynote = ''
 
 		fp.write('X' + DELIM + \
 	         	mgi_utils.prvalue(fantomKey) + DELIM)
@@ -176,7 +182,16 @@ for r in results:
 			printIt = regsub.gsub(',', '\,', r['final_name2'])
 		fp.write(printIt + DELIM)
 
-		fp.write(mgi_utils.prvalue(r['nomen_event']) + DELIM)
+		fp.write(mgi_utils.prvalue(r['final_cluster']) + DELIM + \
+		         mgi_utils.prvalue(r['cluster_evidence']) + DELIM + \
+		         mgi_utils.prvalue(r['nonmgi_mgiid']) + DELIM + \
+		         mgi_utils.prvalue(r['nonmgi_rep']) + DELIM + \
+		         mgi_utils.prvalue(r['approved_symbol']) + DELIM
+
+		printIt = mgi_utils.prvalue(r['approved_name'])
+		if len(printIt) > 0:
+			printIt = regsub.gsub(',', '\,', r['approved_name'])
+		fp.write(printIt + DELIM)
 
 		if noteType == 'N':
 			nomennote = note
@@ -184,6 +199,8 @@ for r in results:
 			rikennote = note
 		elif noteType == 'C':
 			curatornote = note
+		elif noteType == 'H':
+			homologynote = note
 
 		row = row + 1
 	else:
@@ -193,14 +210,18 @@ for r in results:
 			rikennote = rikennote + note
 		elif noteType == 'C':
 			curatornote = curatornote + note
+		elif noteType == 'H':
+			homologynote = homologynote + note
 
 # last record
 
-fp.write(mgi_utils.prvalue(nomennote) + DELIM + \
+fp.write(mgi_utils.prvalue(homologynote) + DELIM + \
+	 mgi_utils.prvalue(chromosome) + DELIM + \
+	 mgi_utils.prvalue(nomenevent) + DELIM + \
+         mgi_utils.prvalue(nomennote) + DELIM + \
 	 mgi_utils.prvalue(clusterAnal) + DELIM + \
 	 mgi_utils.prvalue(geneNameCuration) + DELIM + \
 	 mgi_utils.prvalue(cdsGOCuration) + DELIM + \
-	 mgi_utils.prvalue(finalCluster) + DELIM + \
          mgi_utils.prvalue(rikennote) + DELIM + \
          mgi_utils.prvalue(curatornote) + DELIM + \
 	 createdBy + DELIM + \

@@ -21,8 +21,16 @@
 # --eventKey = event key of the nomenclature event
 # --eventReasonKey = event reason key of the nomenclature event
 # --refKey = reference key of the nomenclature event
+# --addAsSynonym = 0|1; should the old symbol be added as an other name to the new symbol?
+#       only applies to rename, merge, alleleOf.
 #
 # History
+#
+# 11/19/2002 lec
+#	- TR 3928; removed constraint that new mgi id must be preferred
+#
+# 08/23/2002 lec
+#	- TR 3452; add "addAsSynonym" parameter
 #
 # 03/26/2001 lec
 #	- TR 2430
@@ -72,7 +80,8 @@ def showUsage():
 		'-I input file\n' + \
 		'--eventKey=event key\n' + \
 		'--eventReasonKey=event reason key\n' + \
-		'--refKey=reference key\n'
+		'--refKey=reference key\n' + \
+		'--addAsSynonym=add old symbol as synonym of new symbol\n'
 	error(usage)
  
 #
@@ -82,7 +91,7 @@ def showUsage():
 WITHDRAWALPROG = 'markerWithdrawal.py'
 
 try:
-	optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:I:', ['eventKey=', 'eventReasonKey=', 'refKey='])
+	optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:I:', ['eventKey=', 'eventReasonKey=', 'refKey=', 'addAsSynonym='])
 except:
 	showUsage()
 
@@ -94,6 +103,7 @@ inputFileName = None
 eventKey = None
 eventReasonKey = None
 refKey = None
+addAsSynonym = 1
 
 for opt in optlist:
 	if opt[0] == '-S':
@@ -112,6 +122,8 @@ for opt in optlist:
 		eventReasonKey = string.atoi(opt[1])
 	elif opt[0] == '--refKey':
 		refKey = string.atoi(opt[1])
+	elif opt[0] == '--addAsSynonym':
+		addAsSynonym = string.atoi(opt[1])
 	else:
 		showUsage()
 
@@ -130,6 +142,7 @@ if server is None or \
 # Initialize DBMS parameters
 password = string.strip(open(passwordFile, 'r').readline())
 db.set_sqlLogin(user, password, server, database)
+db.useOneConnection(1)
 
 # Log all SQL commands
 db.set_sqlLogFunction(db.sqlLogAll)
@@ -179,7 +192,7 @@ for line in inputFile.readlines():
 		error('Invalid Old Marker Acc ID %s' % (oldID), 0)
 		errorFound = 1
 
-	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s" and preferred = 1' % (newID), 'auto')
+	results = db.sql('select _Object_key from MRK_Acc_View where accID = "%s"' % (newID), 'auto')
 
 	if len(results) > 0:
 		newKey = results[0]['_Object_key']
@@ -203,9 +216,11 @@ for line in inputFile.readlines():
 			'--eventKey=%s --eventReasonKey=%s ' % (eventKey, eventReasonKey) + \
 			'--oldKey=%s --newKey=%s ' % (oldKey, newKey) + \
 			'--refKey=%s ' % (refKey) + \
-			'--newName="%s" --newSymbol="%s" ' % (newName, newSymbol)
+			'--newName="%s" --newSymbol="%s" ' % (newName, newSymbol) + \
+			'--addAsSynonym=%d ' % (addAsSynonym)
 
 		diagFile.write(cmd + '\n')
 
 		os.system(cmd)
 
+db.useOneConnection(0)
