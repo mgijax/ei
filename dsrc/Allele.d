@@ -302,8 +302,8 @@ rules:
         AlleleMergeInit does
           dialog : widget := top->AlleleMergeDialog;
 
-	  dialog->mgiAllele->ObjectID->text.value := "";
-	  dialog->mgiAllele->Allele->text.value := "";
+	  dialog->mgiMarker->ObjectID->text.value := "";
+	  dialog->mgiMarker->Marker->text.value := "";
 	  dialog->OldAllele->ObjectID->text.value := "";
 	  dialog->OldAllele->Allele->text.value := "";
 	  dialog->NewAllele->ObjectID->text.value := "";
@@ -411,7 +411,6 @@ rules:
 	  if (top->EditForm->Strain->StrainID->text.modified) then
 	    set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
 	  end if;
-
 
 	  alleleNotesRequired := false;
 	  send(ModifyAlleleNotes, 0);
