@@ -41,7 +41,8 @@
 #	The NLM input file contains records in the following format:
 #	(a record ID, list of export tags and data)
 #
-#	PMID- PubMed unique identifier
+#	PMID- PubMed unique identifier	(their format)
+#	PMID  - PubMed unique identifier (our format)
 #	UI  - Medline unique identifier
 #	AU  - list of authors in format (NAME II; NAME II; ...)
 #	TI  - title of article
@@ -199,6 +200,8 @@ def printRec(fd, rec, rectags, msg = None):
 		fd.write(msg + '\n')
 
 	# Print every tagged field except if value is NULL
+	# note that we print the tag + 2 spaces
+	# the NLM-generated file has PMID with no spaces
 
 	for t in rectags:
 		if rec[t] != 'NULL':
@@ -753,6 +756,8 @@ def processFile():
 	while line:
 
 		# Find start of new record by looking for line containing 'PMID  -'
+		# or 'PMID-'.  Our printRec routine uses 'PMID  -' format,
+		# but NLM uses 'PMID-' format.
 
 		if regex.match('PMID-', line) > 0 or regex.match('PMID  -', line) > 0:
 			if newRec:	# Found new record, process current one
