@@ -306,12 +306,12 @@ rules:
 	      seqLength := "-1";
 	    end if;
 
-	    if (finalCluster.length = 0) then
-	      finalCluster := "-1";
-	    end if;
-
 	    if (cds.length = 0) then
 	      cds := "-1";
+	    end if;
+
+	    if (finalCluster.length = 0) then
+	      finalCluster := "zilch";
 	    end if;
 
 	    if (cloneID.length = 0) then
@@ -442,7 +442,7 @@ rules:
 		     mgi_DBprstr(cloneID) + "," +
 		     locusID + "," +
 		     clusterID + "," +
-		     finalCluster + "," +
+		     mgi_DBprstr(finalCluster) + "," +
 		     mgi_DBprstr(genbankID) + ",0,1," +
 		     mgi_DBprstr(tigerID) + "," +
 		     mgi_DBprstr(unigeneID) + "," +
@@ -524,7 +524,7 @@ rules:
 		     "riken_cloneid = " + mgi_DBprstr(cloneID) + "," +
 		     "riken_locusid = " + locusID + "," +
 		     "riken_cluster = " + clusterID + "," +
-		     "final_cluster = " + finalCluster + "," +
+		     "final_cluster = " + mgi_DBprstr(finalCluster) + "," +
 		     "genbank_id = " + mgi_DBprstr(genbankID) + "," +
 		     "tiger_tc = " + mgi_DBprstr(tigerID) + "," +
 		     "unigene_id = " + mgi_DBprstr(unigeneID) + "," +
