@@ -1447,6 +1447,9 @@ rules:
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
 	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 9) + mgi_getstr(dbproc, 10);
+                top->MolMasterForm->MJnum->Jnum->text.value := "";
+                top->MolMasterForm->MJnum->ObjectID->text.value := "";
+                top->MolMasterForm->MJnum->Citation->text.value := "";
 		prb_createdBy := mgi_getstr(dbproc, 23);
 		prb_modifiedBy := mgi_getstr(dbproc, 24);
 		prb_creation_date := mgi_getstr(dbproc, 18);
@@ -1523,6 +1526,9 @@ rules:
 	  Clear.clearForms := clearAll;
           Clear.reset := true;
           send(Clear, 0);
+	  ClearForm.source_widget := top;
+	  ClearForm.form := "MolReferenceForm";
+	  send(ClearForm, 0);
 	  send(SearchReference, 0);
 
 	  (void) reset_cursor(top);
