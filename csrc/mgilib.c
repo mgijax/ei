@@ -2363,6 +2363,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MRK_HISTORY:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
@@ -2382,6 +2383,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
+      case MRK_HISTORY:
       case VOC_EVIDENCE:
               sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), mgi_DBkey(table), key);

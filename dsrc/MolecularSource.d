@@ -14,7 +14,7 @@
 -- History
 --
 -- lec 09/26/2001
---      - TR 2714/Probe Species Menu
+--      - TR 2714/Probe  Menu
 --
 -- lec  09/23/98
 --      - re-implemented creation of windows using create D module instance.
@@ -46,9 +46,12 @@ locals:
 	top : widget;
 	ab : widget;
 
-	cmd : string;
 	from : string;
 	where : string;
+
+	accTable : widget;
+
+	clearLists : integer := 3;
 
 rules:
 
@@ -70,12 +73,17 @@ rules:
           ab.sensitive := false;
 	  top.show;
 
+	  -- Global Accession number Table
+
+	  accTable := top->mgiAccessionTable->Table;
+
           -- Set Row Count
           SetRowCount.source_widget := top;
           SetRowCount.tableID := PRB_SOURCE_MASTER;
           send(SetRowCount, 0);
  
 	  Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
 	  send(Clear, 0);
 
 	  (void) reset_cursor(mgi);
@@ -106,12 +114,17 @@ rules:
 	    return;
 	  end if;
 
-          cmd := top->SourceForm.sql;
+	  --  Process Accession numbers
+
+          ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := "key";
+          ProcessAcc.tableID := PRB_SOURCE_MASTER;
+          send(ProcessAcc, 0);
 
           -- Execute the add
  
           AddSQL.tableID := PRB_SOURCE_MASTER;
-          AddSQL.cmd := cmd;
+          AddSQL.cmd := top->SourceForm.sql + accTable.sqlCmd;
           AddSQL.list := top->QueryList;
           AddSQL.item := top->SourceForm->Library->text.value;
           AddSQL.key := top->SourceForm->SourceID->text;
@@ -119,6 +132,7 @@ rules:
  
 	  if (top->QueryList->List.sqlSuccessful) then
 	    Clear.source_widget := top;
+	    Clear.clearLists := clearLists;
             Clear.clearKeys := false;
             send(Clear, 0);
 	  end if;
@@ -142,6 +156,7 @@ rules:
 
 	  if (top->QueryList->List.row = 0) then
 	    Clear.source_widget := top;
+	    Clear.clearLists := clearLists;
             Clear.clearKeys := false;
             send(Clear, 0);
 	  end if;
@@ -165,7 +180,14 @@ rules:
           ModifyMolecularSource.source_widget := top;
           send(ModifyMolecularSource, 0);
 
-          ModifySQL.cmd := top->SourceForm.sql;
+	  --  Process Accession numbers
+
+          ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := top->SourceForm->SourceID->text.value;
+          ProcessAcc.tableID := PRB_SOURCE_MASTER;
+          send(ProcessAcc, 0);
+
+          ModifySQL.cmd := top->SourceForm.sql + accTable.sqlCmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
@@ -187,6 +209,13 @@ rules:
 
           from := top->SourceForm.sqlFrom;
           where := top->SourceForm.sqlWhere;
+
+          SearchAcc.table := accTable;
+          SearchAcc.objectKey := "s." + mgi_DBkey(PRB_SOURCE_MASTER);
+	  SearchAcc.tableID := PRB_SOURCE_MASTER;
+          send(SearchAcc, 0);
+	  from := from + accTable.sqlFrom;
+	  where := where + accTable.sqlWhere;
 
           if (where.length > 0) then
             where := "where" + where->substr(5, where.length);
@@ -212,6 +241,10 @@ rules:
 --
 
 	Select does
+
+	  InitAcc.table := accTable;
+          send(InitAcc, 0);
+ 
           if (top->QueryList->List.selectedItemCount = 0) then
             top->QueryList->List.row := 0;
 	    top->SourceForm->SourceID->text.value := "";
@@ -226,7 +259,14 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
+          LoadAcc.table := accTable;
+          LoadAcc.objectKey := top->SourceForm->SourceID->text.value;
+	  LoadAcc.tableID := PRB_SOURCE_MASTER;
+	  LoadAcc.reportError := false;
+          send(LoadAcc, 0);
+ 
 	  Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
           Clear.reset := true;
           send(Clear, 0);
 	end does;
