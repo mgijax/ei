@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb  4 10:30:02 2004";
+      lastWritten = "Fri Feb  6 14:42:04 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11655,6 +11655,16 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       MolecularSourceAttributeHistoryDialog = MolecularSourceAttributeHistoryDialog : mgiDialog;
+                          {
+                            AttributeHistoryTable = Table : mgiTable;
+                                {
+                                  Table = mgiTable : mgiTable;
+                                  Group: Widget
+                                    xrtTblDisplayVertScrollBar = dispsb_never;
+                                    xrtTblNumRows = 7;
+                                    xrtTblVisibleRows = 7;
+                                }
+                          }
                     }
                     {
                       NoteDialog = NoteDialog : mgiDialog;
