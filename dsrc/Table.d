@@ -14,6 +14,9 @@
 --
 -- History:
 --
+-- lec	02/19/2002
+--	- ClearTable; table.xrtTblCellValues := nil;
+--
 -- lec	08/29/2001
 --	- DuplicateSeqNumInTable; if dialog, set top accordingly
 --
@@ -240,7 +243,7 @@ rules:
 	  end if;
 
 	  if (ClearTable.clearCells) then
-	    table.xrtTblCellValues := "";
+	    table.xrtTblCellValues := nil;
 	    result := XrtTblCancelEdit(table, true);
 
 	    -- If table contains sequence numbers which need to be initialized,
