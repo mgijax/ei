@@ -265,6 +265,7 @@ rules:
           LoadAcc.table := accTable;
           LoadAcc.objectKey := top->SourceForm->SourceID->text.value;
 	  LoadAcc.tableID := PRB_SOURCE_MASTER;
+	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  
 	  Clear.source_widget := top;
