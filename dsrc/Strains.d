@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec	10/31/2001
+--	- TR 2541; ResetModificationFlags
+--
 -- lec	10/29/2001
 --	- TR 2541; Synonyms
 --
@@ -84,6 +87,7 @@ devents:
 	SelectReferences :local [doCount : boolean := false;];
 	SelectDataSets :local [doCount : boolean := false;];
 
+	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
 
 locals:
@@ -271,6 +275,13 @@ rules:
           if (not top.allowEdit) then
             return;
           end if;
+
+          if (top->PrivateMenu.menuHistory.modified) then
+	    top->VerifyValueChange.managed := true;
+	    while (top->VerifyValueChange.managed) do
+	      (void) keep_busy();
+	    end while;
+	  end if;
 
 	  (void) busy_cursor(top);
 
@@ -980,6 +991,17 @@ rules:
 
 	  (void) reset_cursor(dialog);
 
+	end does;
+
+--
+-- ResetModificationFlags
+--
+-- This is the cancelCallback for the VerifyValueChange dialog
+-- and is local to this module.
+--
+	ResetModificationFlags does
+          top->PrivateMenu.menuHistory.modified := false;
+	  top->VerifyValueChange.managed := false;
 	end does;
 
 --
