@@ -17,7 +17,6 @@
 #include <syblib.h>
 #include <ux_uims.h>
 
-#define MAXTAGLEN 80     /* maximum allowable length of a text tag */ 
 #define MAXCITATIONLEN 256    /* maximum length of a citation string */
 #define ERRDIALOG_STRLEN 512  /* maximum
 
