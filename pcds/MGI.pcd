@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb 23 10:42:35 2004";
+      lastWritten = "Thu Mar 25 08:01:44 2004";
       copy = false;
       inCreateMenu = true;
         {
@@ -1824,15 +1824,16 @@ Module: MGI
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumColumns = 10;
-                                          xrtTblColumnLabels = "Mode,Current Order,#,Term Key,Obsolete Key,Acc ID,Term,Abbr,Definition,Obsolete";
+                                          xrtTblColumnLabels = "Mode,Current Order,#,Term Key,Obsolete Key,Acc ID,Term,Abbreviation,Definition,Obsolete";
                                           xrtTblEditableSeries = "(all 0-5 False)";
                                           xrtTblNumRows = 25;
                                           xrtTblVisibleRows = 20;
                                           xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-4 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 3 10)(all 4 1)(all 5 20)(all 6 70)(all 7 5)(all 8 15)(all 9 8)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 3 10)(all 4 1)(all 5 20)(all 6 50)(all 7 50)(all 8 10)(all 9 8)";
                                           userDefinedAttributes = "termKey:Int(Int)=\"3\"\nterm:Int(Int)=\"6\"\nabbreviation:Int(Int)=\"7\"\ndefinition:Int(Int)=\"8\"\nmgiID:Int(Int)=\"5\"\nisObsolete:Int(Int)=\"9\"\nobsoleteKey:Int=\"4\"\n";
                                           xrtTblTraversableSeries = "(all 0-5 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions,\nD:SelectSynonym";
+                                          xrtTblAllowCellResize = resize_all;
                                         Group: User
                                           saveEditableSeries = "(all 0-5 False)";
                                           saveTraversableSeries = "(all 0-5 False)";
