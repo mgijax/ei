@@ -1751,11 +1751,13 @@ rules:
 
 	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
 		 "cytogeneticOffset, createdBy, creation_date, modifiedBy, modification_date " +
-		 "from MRK_Marker where _Marker_key = " + currentRecordKey + "\n" +
+		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
 	         "select source, str(offset,10,2) from MRK_Offset " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by source\n" +
-	         "select * from MRK_History_View " +
+	         "select _Marker_Event_key, _Marker_EventReason_key, _History_key, sequenceNum, " +
+		 "name, event_display, event, eventReason, history, modifiedBy " +
+		 "from MRK_History_View " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum, _History_key\n" +
 	         "select sequenceNum, _Refs_key, jnum, short_citation from MRK_History_Ref_View " +
@@ -1822,22 +1824,22 @@ rules:
 		(void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
 		table := top->History->Table;
-                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 16));
-                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 14));
-                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 15));
+                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 4));
+                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 9));
+                (void) mgi_tblSetCell(table, row, table.markerName, mgi_getstr(dbproc, 5));
+                (void) mgi_tblSetCell(table, row, table.eventKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.event, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.eventReasonKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.eventReason, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 10) = "01/01/1900") then
                   (void) mgi_tblSetCell(table, row, table.eventDate, "");
 		else
-                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 13));
+                  (void) mgi_tblSetCell(table, row, table.eventDate, mgi_getstr(dbproc, 6));
 		end if;
 
           	-- Initialize Option Menus for row 0
