@@ -1,3 +1,91 @@
+TAG: ei-12-0-11
+DATE: 08/16/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+
+TAG: ei-12-0-9
+DATE: 07/30/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+
+TAG: ei-12-0-8
+TAG: ei-12-0-7
+DATE: 07/29/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) added EntrezGene, NCBI Gene Model, Ensembl Gene Model
+
+TAG: ei-12-0-6
+DATE: 07/23/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) dsrc/MarkerNonMouse.d
+
+TAG: ei-12-0-5
+DATE: 07/22/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) csrc/mgilib.c/mgi_DBprstr
+
+TAG: ei-12-0-4
+TAG: ei-12-0-3
+DATE: 07/21/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) Orthology.d
+
+TAG: ei-12-0-2
+DATE: 07/20/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) Strains.d
+
+TAG: ei-12-0-1
+DATE: 07/01/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+
+TAG: ei-12-0-0
+DATE: 06/29/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.01 
+2) TR 5810, 5523, 5702 (IMG_Image, PRB_Probe, PRB_Reference)
+3) TR 5750/Allele Types (new sort)
+4) GXD EI; added ADClipboardAddAll to AD EI
+5) Genotype EI: TR 5907
+6) TR 326/normalize BIB_Refs.dbs
+
+TAG: ei-11-0-64
+TAG: ei-11-0-63
+TAG: ei-11-0-62
+DATE: 06/17/2004
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) Translation.d
+
+TAG: ei-11-0-61
+DATE: 06/11/2004
+STAFF: lec
+RELEASE: A
 TAG: ei-12-0-10
 DATE: 08/04/2004
 STAFF: lec

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug  4 14:25:54 2004";
+      lastWritten = "Mon Aug 16 08:58:48 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -4965,7 +4965,7 @@ Module: MGD
                         xrtTblPixelWidthSeries = "(all 0-3 0)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 20;
-                        xrtTblMaxLengthSeries = "(all 5 25)";
+                        xrtTblMaxLengthSeries = "(all 5 50)";
                         userDefinedAttributes = "markerKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"5\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\nrefMarkerKey:Int=\"2\"\n";
                         xrtTblEditableSeries = "(all 0-4 False)";
                         xrtTblTraversableSeries = "(all 0-4 False)";
@@ -5397,33 +5397,9 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
