@@ -1294,6 +1294,20 @@ Module: mgiOption
                         dbTable = 336;
                     }
                     {
+                      AlleleNoteType = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Allele Note Type";
+                      Group: User
+                        dbTable = 338;
+                    }
+                    {
+                      AlleleReferenceType = ControlledVocabToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Allele Reference Type";
+                      Group: User
+                        dbTable = 339;
+                    }
+                    {
                       VectorType = ControlledVocabToggle : mgiOption;
                       Group: Widget
                         labelString = "Vector Types";
