@@ -116,8 +116,8 @@ for opt in optlist:
 
 # required parameters for all events
 
-if server = None or \
-   database = None or \
+if server is None or \
+   database is None or \
    user is None or \
    passwordFile is None or \
    inputFileName is None or \
