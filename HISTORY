@@ -10,3 +10,9 @@ TAG: ei1-0
 CHANGES: Removed MEITEST directory and replaced with "testing", as this is the
 standard directory name we use for testing-related documentation. Made
 many changes to system_docs to make them compatible with the patch release. 
+
+DATE: 08/05/1999
+SE: gld
+TAG: ei1-1 
+CHANGES: Updated system documents that were out-of-sync with patch release.
+Fixed cut-and-paste error in Report.d.
