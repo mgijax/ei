@@ -33,7 +33,7 @@ setenv DBUTILITIESPATH /usr/local/mgi/dbutils/mgidbutilities
 # TeleUSE
 setenv TeleUSE	/opt/teleuseXRT
 setenv XUSERFILESEARCHPATH	%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
-setenv LD_LIBRARY_PATH	$SYBASE/lib:$TeleUSE/lib:/usr/lib:/usr/ucblib
+setenv LD_LIBRARY_PATH	$SYBASE/lib:$TeleUSE/lib:$TeleUSE/conf/lib:/usr/lib:/usr/ucblib
 
 # PATH
 set path = ($DBUTILITIESPATH/bin $path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin)
