@@ -10,6 +10,10 @@
 --
 -- History
 --
+-- 03/06/2002	lec
+--	- added CopyColumn
+--	- added finalCluster field/column
+--
 -- 02/13/2002	lec
 --	- new (TR 3355)
 --
@@ -25,6 +29,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];		-- Initialize form
 	ClearFantom2 :local [reset : boolean := false;];-- Local Clear 
+	CopyColumn :local [];				-- Copies Select Column to all Rows
 	CopyGBAtoFinal :local [];			-- Copies GBA MGI ID fields to Final
 	Exit :local [];					-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
@@ -808,15 +813,16 @@ rules:
 	        (void) mgi_tblSetCell(fantom, row, fantom.finalSymbol2, mgi_getstr(dbproc, 25));
 	        (void) mgi_tblSetCell(fantom, row, fantom.finalName2, mgi_getstr(dbproc, 26));
 	        (void) mgi_tblSetCell(fantom, row, fantom.nomenEvent, mgi_getstr(dbproc, 27));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 28));
-	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 30));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 29));
-	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 31));
+	        (void) mgi_tblSetCell(fantom, row, fantom.finalCluster, mgi_getstr(dbproc, 28));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdBy, mgi_getstr(dbproc, 29));
+	        (void) mgi_tblSetCell(fantom, row, fantom.createdDate, mgi_getstr(dbproc, 31));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedBy, mgi_getstr(dbproc, 30));
+	        (void) mgi_tblSetCell(fantom, row, fantom.modifiedDate, mgi_getstr(dbproc, 32));
 
 		-- data from cache tables
 	        (void) mgi_tblSetCell(fantom, row, fantom.gbaMGIID, gbaMGIID);
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 33));
-	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 34));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaSymbol, mgi_getstr(dbproc, 34));
+	        (void) mgi_tblSetCell(fantom, row, fantom.gbaName, mgi_getstr(dbproc, 35));
 
 	        (void) mgi_tblSetCell(fantom, row, fantom.editMode, TBL_ROW_NOCHG);
 
@@ -935,6 +941,50 @@ rules:
 
      (void) reset_cursor(top);
   end does;
+
+--
+-- CopyColumn
+--
+-- Copy selected column to all rows which contain a zilch in that column
+--
+ 
+        CopyColumn does
+	  row : integer := mgi_tblGetCurrentRow(fantom);
+	  column : integer := mgi_tblGetCurrentColumn(fantom);
+	  i : integer := 0;
+	  editMode : string;
+	  value : string := mgi_tblGetCell(fantom, row, column);
+
+          (void) busy_cursor(top);
+
+          while (i < mgi_tblNumRows(fantom)) do
+            editMode := mgi_tblGetCell(fantom, i, fantom.editMode);
+
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+	
+	    if (mgi_tblGetCell(fantom, i, column) = "zilch" or 
+		mgi_tblGetCell(fantom, i, column) = "-1") then
+
+	      (void) mgi_tblSetCell(fantom, i, column, value);
+
+	      if (column = fantom.finalMGIID) then
+	        (void) mgi_tblSetCell(fantom, i, fantom.finalSymbol1, mgi_tblGetCell(fantom, row, fantom.gbaSymbol));
+	        (void) mgi_tblSetCell(fantom, i, fantom.finalName1, mgi_tblGetCell(fantom, row, fantom.gbaName));
+	      end if;
+
+	      CommitTableCellEdit.source_widget := fantom;
+	      CommitTableCellEdit.row := i;
+	      CommitTableCellEdit.value_changed := true;
+	      send(CommitTableCellEdit, 0);
+	    end if;
+
+	    i := i + 1;
+	  end while;
+
+          (void) reset_cursor(top);
+	end does;
 
 --
 -- CopyGBAtoFinal
