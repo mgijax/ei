@@ -61,20 +61,22 @@ rules:
 --	row : integer		current table row to process
 --	
 -- Construct SQL to modify Structure records
--- Sets the top->ADClipboard.updateCmd UDA
+-- Sets the ADClipboard.updateCmd UDA
 --
 
 	ModifyStructure does
-	  top : widget := ModifyStructure.source_widget;
-	  list_w : widget := top->ADClipboard->List;
-	  table : widget := list_w.targetWidget->Table;
+	  top : widget := ModifyStructure.source_widget.top;
+	  table : widget := ModifyStructure.source_widget;
+	  form : widget := top->(table.clipboard);
+	  clipboard : widget := form->ADClipboard;
+	  list_w : widget := clipboard->List;
 	  primaryID : integer := ModifyStructure.primaryID;
 	  key : string := ModifyStructure.key;
 	  row : integer := ModifyStructure.row;
 	  structures : string_list;
 	  cmd : string;
 
-	  top->ADClipboard.updateCmd := "";
+	  clipboard.updateCmd := "";
 
 	  if (key.length = 0) then
 	    return;
@@ -92,7 +94,7 @@ rules:
             cmd := cmd + mgi_DBinsert(primaryID, NOKEY) + key + "," + structures.next + ")\n";
           end while;
  
-	  top->ADClipboard.updateCmd := cmd;
+	  clipboard.updateCmd := cmd;
 
 	end does;
 

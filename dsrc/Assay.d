@@ -1156,6 +1156,9 @@ rules:
           ClipboardLoad.source_widget := top->CVGel->ADClipboard->Label;
           send(ClipboardLoad, 0);
 
+          ClipboardLoad.source_widget := top->InSituResultDialog->ADClipboard->Label;
+          send(ClipboardLoad, 0);
+
 	  if (assayDetailForm.name = "InSituForm") then
             ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
             send(ClipboardLoad, 0);
@@ -1632,7 +1635,7 @@ rules:
 
               -- Process Gel Lane Structures
 
-              ModifyStructure.source_widget := top;
+              ModifyStructure.source_widget := table;
               ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
               ModifyStructure.key := "@" + keyName;
               ModifyStructure.row := row;
@@ -1666,7 +1669,7 @@ rules:
 
                 -- Process Gel Lane Structures
 
-                ModifyStructure.source_widget := top;
+                ModifyStructure.source_widget := table;
                 ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
                 ModifyStructure.key := key;
                 ModifyStructure.row := row;

@@ -355,7 +355,7 @@ rules:
 
 	      -- Process Structures
 
-	      ModifyStructure.source_widget := top;
+	      ModifyStructure.source_widget := table;
 	      ModifyStructure.primaryID := structureID;
 	      ModifyStructure.key := "@" + KEYNAME;
 	      ModifyStructure.row := row;
@@ -386,7 +386,7 @@ rules:
 
 	        -- Process Structures
 
-	        ModifyStructure.source_widget := top;
+	        ModifyStructure.source_widget := table;
 	        ModifyStructure.primaryID := structureID;
 	        ModifyStructure.key := key;
 	        ModifyStructure.row := row;
