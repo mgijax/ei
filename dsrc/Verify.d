@@ -1207,7 +1207,9 @@ rules:
 	  row : integer := VerifyGenotype.row;
 	  column : integer := VerifyGenotype.column;
 	  reason : integer := VerifyGenotype.reason;
-	  genotypeKey : string;
+	  genotypeID : string := "";
+	  genotypeKey : string := "";
+	  genotypeName : string := "";
 
 	  if (reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
 	    return;
@@ -1219,21 +1221,47 @@ rules:
 	    return;
 	  end if;
 
-	  (void) busy_cursor(top);
+	  -- a kludge...this really needs to be specific to GXD Assays
+	  -- where we want to default the Gentoype
 
 	  if (mgi_tblGetCell(table, row, table.genotype) = "") then
-	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
-	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
-	  else
-	    genotypeKey := mgi_sql1("select _Object_key from GXD_Genotype_Acc_View " +
-		"where accID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)));
-	    if (genotypeKey.length > 0) then
-	      (void) mgi_tblSetCell(table, row, table.genotypeKey, genotypeKey);
-	    else
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "Invalid Genotype.\n";
-	      send(StatusReport, 0);
+	    if (table.is_defined("genotypeName") = nil) then
+	      (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
+	      (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
 	    end if;
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  dbproc : opaque := mgi_dbopen();
+	  cmd : string := "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
+		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n" +
+	        "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
+		"where mgiID = " + mgi_DBprstr("MGI:" + mgi_tblGetCell(table, row, table.genotype)) + "\n";
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      if (mgi_getstr(dbproc, 1) != "") then
+	        genotypeID := mgi_getstr(dbproc, 1);
+	        genotypeKey := mgi_getstr(dbproc, 2);
+	        genotypeName := mgi_getstr(dbproc, 3);
+	      end if;
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  if (genotypeKey.length > 0) then
+	    (void) mgi_tblSetCell(table, row, table.genotype, genotypeID);
+	    (void) mgi_tblSetCell(table, row, table.genotypeKey, genotypeKey);
+	    if (table.is_defined("genotypeName") != nil) then
+	      (void) mgi_tblSetCell(table, row, table.genotypeName, genotypeName);
+	    end if;
+	  else
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Invalid Genotype.\n";
+	    send(StatusReport, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -3191,6 +3219,87 @@ rules:
 	    top->Age->text.value := "";
 	  end if;
 
+	end does;
+
+--
+-- VerifyUser
+--
+--      Verify User entered into Table Row
+--	Assumes use of mgiTable template
+--	UDAS:  userLogin (integer), userKey (integer)
+--
+--	Stores the key for the user in the userKey UDA
+--	If a User entered cannot be validated, give the user the option
+--	to add the User.
+--
+--	If ignoreRow > -1, then don't valid that row.
+--
+ 
+        VerifyUser does
+	  top : widget := VerifyUser.source_widget.top;
+	  table : widget := VerifyUser.source_widget;
+	  row : integer := VerifyUser.row;
+	  column : integer := VerifyUser.column;
+	  reason : integer := VerifyUser.reason;
+	  value : string := VerifyUser.value;
+ 
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+          -- If not in the User column, do nothing
+ 
+          if (column != table.userLogin) then
+            return;
+          end if;
+ 
+          -- If no User entered, do nothing
+ 
+          if (value.length = 0) then
+            (void) mgi_tblSetCell(table, row, table.userKey, "");
+            return;
+          end if;
+ 
+          (void) busy_cursor(top);
+ 
+          keys : xm_string_list := create xm_string_list();
+          results : xm_string_list := create xm_string_list();
+          userKey : string := "";
+          cmd : string;
+          added : boolean := false;
+          i : integer;
+ 
+          -- Try to get key from the database
+          -- If the User does not exist, then add it
+ 
+          dbproc : opaque := mgi_dbopen();
+          cmd := "select _User_key, login from " + mgi_DBtable(MGI_USER) + " where login = " + mgi_DBprstr(value);
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
+              results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+            end while;
+          end while;
+          (void) dbclose(dbproc);
+ 
+          -- Set i to index of string for exact match
+          i := results.find(value);
+ 
+          if (i > 0) then     -- User found
+            userKey := keys[i];
+            (void) mgi_tblSetCell(table, row, table.userKey, userKey);
+	  else
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid User";
+            send(StatusReport);
+	    (void) mgi_tblSetCell(table, row, table.userKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.userLogin, "");
+            VerifyUser.doit := (integer) false;
+          end if;
+ 
+          (void) reset_cursor(top);
 	end does;
 
 --

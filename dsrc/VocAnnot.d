@@ -127,6 +127,10 @@ rules:
 	  -- Create the widget hierarchy in memory
 	  top := create widget("VocAnnotModule", ab.name, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
 	  top.show;
@@ -728,7 +732,7 @@ rules:
 			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Annot_key = e._Annot_key " +
 			  " order by " + orderBy +
-			  "select distinct a._Annot_key, v.dagAbbrev" +
+			  "select distinct a._Annot_key, substring(v.dagAbbrev,1,3)" +
 			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			  	mgi_DBtable(DAG_NODE_VIEW) + " v" +
 		          " where a._AnnotType_key = " + annotTypeKey +

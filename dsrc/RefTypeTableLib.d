@@ -128,7 +128,7 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  if (tableID = MGI_REFTYPE_NOMEN_VIEW or tableID = MGI_REFTYPE_SEQUENCE_VIEW) then
+	  if (tableID = MGI_REFTYPE_NOMEN_VIEW or tableID = MGI_REFTYPE_SEQUENCE_VIEW or tableID = MGI_REFTYPE_STRAIN_VIEW) then
 	    cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
 		  mgi_DBtable(tableID) + 
 		  "\norder by allowOnlyOne desc, _RefAssocType_key";
@@ -150,7 +150,7 @@ rules:
 	       (void) mgi_tblSetCell(table, row, table.refsName,  mgi_getstr(dbproc, 2));
 	       (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_EMPTY);
 
-	       if (tableID = MGI_REFTYPE_NOMEN_VIEW or tableID = MGI_REFTYPE_SEQUENCE_VIEW) then
+	       if (tableID = MGI_REFTYPE_NOMEN_VIEW or tableID = MGI_REFTYPE_SEQUENCE_VIEW or tableID = MGI_REFTYPE_STRAIN_VIEW) then
 	         table.mgiTypeKey := mgi_getstr(dbproc, 4);
 	       end if;
 
@@ -189,7 +189,7 @@ rules:
 	  objectKey : string := LoadRefTypeTable.objectKey;
 	  cmd : string;
 
-	  if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW) then
+	  if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW or tableID = MGI_REFERENCE_STRAIN_VIEW) then
             cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
 		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
@@ -224,7 +224,7 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 6));
 
-	      if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW) then
+	      if (tableID = MGI_REFERENCE_NOMEN_VIEW or tableID = MGI_REFERENCE_SEQUENCE_VIEW or tableID = MGI_REFERENCE_STRAIN_VIEW) then
 	        (void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 7));
 
 	        if (table.is_defined("reviewKey") != nil) then

@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	02/03/2005
+--	- TR 6524; searching KnockIn Detection Method
+--
 -- lec	10/11/2004
 --	- TR 6108; Copy Column for In Situs
 --
@@ -1963,6 +1966,17 @@ rules:
 
 	  if (top->GXDReporterGeneMenu.menuHistory.searchValue != "%") then
             where := where + " and g._ReporterGene_key = " + top->GXDReporterGeneMenu.menuHistory.searchValue;
+	  end if;
+
+	  if (top->GXDKnockInMenu.menuHistory.searchValue != "%") then
+	    value := top->GXDKnockInMenu.menuHistory.searchValue;
+	    if (value = "antibody") then
+	      where := where + " and g._AntibodyPrep_key is not null";
+	    elsif (value = "nucleotide") then
+	      where := where + " and g._ProbePrep_key is not null";
+	    else
+	      where := where + " and g._ProbePrep_key is null and g._AntibodyPrep_key is null";
+	    end if;
 	  end if;
 
           if (top->AssayNote->Note->text.value.length > 0) then

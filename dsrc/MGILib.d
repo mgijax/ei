@@ -83,7 +83,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-1-1-1";
+	  global_version := "CVS ei-3-1-1-3";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -255,6 +255,32 @@ rules:
 	end does;
 
 --
+-- SetPermissions
+--
+--      Set Add/Modify/Delete button permissions based on EI module
+--
+ 
+        SetPermissions does
+	   top := SetPermissions.source_widget;
+	   cmd : string;
+	   permOK : integer;
+
+	   cmd := "exec MGI_checkUserRole " + mgi_DBprstr(top.name) + "," + mgi_DBprstr(global_login);
+		
+	   permOK := (integer) mgi_sql1(cmd);
+
+	   if (permOK = 0) then
+	      top->Control->Add.sensitive := false;
+	      top->Control->Modify.sensitive := false;
+	      top->Control->Delete.sensitive := false;
+	      top->CommandsPulldown->Add.sensitive := false;
+	      top->CommandsPulldown->Modify.sensitive := false;
+	      top->CommandsPulldown->Delete.sensitive := false;
+	   end if;
+
+        end does;
+ 
+--
 -- SetServer
 --
 --      Set Database Information for Form banner
@@ -355,10 +381,10 @@ rules:
 --
 
         StatusReportOK does
-	  if (StatusReportOK.source_widget = top->StatusDialog and
-	      top.name != "Login") then
-	    top.back;
-	  end if;
+--	  if (StatusReportOK.source_widget = top->StatusDialog and
+--	      top.name != "Login") then
+--	    top.back;
+--	  end if;
 
 	  StatusReportOK.source_widget.managed := false;
           StatusReportOK.source_widget.messageString := "";

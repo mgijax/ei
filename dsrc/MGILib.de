@@ -17,6 +17,8 @@ InitApplication [];			-- Initialize the Application
 
 Login [];				-- Login to the SQL Server
 
+SetPermissions [source_widget : widget;];	-- Set Add/Modify/Delete permissions
+
 SetServer [];                           -- Set Database Information for Form Banner
  
 SetTitle [source_widget : widget;];     -- Set Form Title for Form Banner

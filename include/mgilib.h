@@ -211,7 +211,6 @@ extern char *global_version;
 #define ALL_NOTETYPE		338
 #define ALL_REFERENCETYPE	339
 #define RISET_VIEW		341
-#define MGI_USER		342
 #define VOC_CELLLINE_VIEW	343
 
 /* Accession Tables */
@@ -269,6 +268,11 @@ extern char *global_version;
 #define MGI_SYNONYMTYPE_NOMEN_VIEW	634
 #define MGI_SYNONYM_MUSMARKER_VIEW	635
 #define MGI_SYNONYMTYPE_MUSMARKER_VIEW	636
+#define MGI_REFERENCE_STRAIN_VIEW	637
+#define MGI_REFTYPE_STRAIN_VIEW		638
+#define MGI_USER			639
+#define MGI_USERROLE			640
+#define MGI_USERROLE_VIEW		641
 
 
 /* Strains Tables */
@@ -280,6 +284,7 @@ extern char *global_version;
 #define STRAIN_MERGE		704
 #define STRAIN_VIEW		705
 #define VOC_TERM_STRAINALLELE_VIEW		706
+#define PRB_STRAIN_GENOTYPE	707
 
 /* VOC & DAG Tables */
 
