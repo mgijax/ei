@@ -1998,8 +1998,6 @@ Module: mgiOption
                     }
                     {
                       Article = OptionToggle : mgiOption;
-                      Group: Widget
-                        background = Thistle;
                       Group: User
                         defaultValue = "ART ";
                         searchValue = "ART ";
