@@ -529,7 +529,7 @@ rules:
 	  -- Else if the noteWidget has a valid noteType (string), use it
 
 	  if (isTable) then
-	    noteType := "";
+	    noteType := ModifyNotes.noteType;
 	  elsif (noteWidget.noteTypeKey > 0) then
 	    noteType := (string) noteWidget.noteTypeKey + "," + (string) noteWidget.private;
 	  elsif (noteWidget.noteType.length > 0) then
@@ -538,7 +538,9 @@ rules:
 
           cmd := mgi_DBdelete(tableID, key);
 
-	  if (noteWidget.is_defined("noteTypeKey") != nil) then
+	  if (isTable and noteType.length > 0) then
+	    cmd := cmd + " and noteType = " + mgi_DBprstr(noteType) + "\n";
+	  elsif (noteWidget.is_defined("noteTypeKey") != nil) then
 	    if (noteWidget.noteTypeKey > 0) then
 	        cmd := cmd + " and _NoteType_key = " + (string) noteWidget.noteTypeKey + "\n";
 	    elsif (noteWidget.noteType.length > 0) then
@@ -549,7 +551,13 @@ rules:
           -- Break notes up into segments of 255
  
           while (note.length > 255) do
-	    if (noteType.length > 0) then
+	    if (isTable and noteType.length > 0) then
+	        cmd := cmd + 
+		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		     (string) i + "," + 
+		     mgi_DBprstr(noteType) + "," +
+                     mgi_DBprstr(note->substr(1, 255)) + ")\n";
+	    elsif (noteType.length > 0) then
 	        cmd := cmd + 
 		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		     (string) i + "," + 
@@ -565,8 +573,27 @@ rules:
             i := i + 1;
           end while;
  
-	  if (mgi_DBprstr(note) != "NULL") then
-	    if (noteType.length > 0) then
+	  if (mgi_DBprstr(note) != "NULL" or ModifyNotes.allowBlank) then
+	    if (isTable and noteType.length > 0 and not ModifyNotes.allowBlank) then
+	        cmd := cmd + 
+		     mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		     (string) i + "," + 
+		     mgi_DBprstr(noteType) + "," +
+                     mgi_DBprstr(note) + ")\n";
+	    elsif (isTable and noteType.length > 0 and ModifyNotes.allowBlank) then
+		if (mgi_DBprstr(note) != "NULL") then
+	          cmd := cmd + 
+		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		       (string) i + "," + 
+		       mgi_DBprstr(noteType) + "," +
+                       mgi_DBprstr(note) + ")\n";
+		else
+	          cmd := cmd + 
+		       mgi_DBinsert(tableID, NOKEY) + key + "," + 
+		       (string) i + "," + 
+		       mgi_DBprstr(noteType) + ",\" \")\n";
+		end if;
+	    elsif (noteType.length > 0) then
               cmd := cmd + 
 		   mgi_DBinsert(tableID, NOKEY) + key + "," + 
 		   (string) i + "," + 
