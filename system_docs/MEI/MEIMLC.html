@@ -120,11 +120,9 @@ dialog to unlock a specific MLC record.  Records will not be unlocked if the use
 <I>File->Quit</I> menu option.  Instead, the user should choose <I>File->Exit</I> from the MLC editing form
 or click in the <I>close window key</I> in the upper left hand corner of the MLC editing form window.
 
-<H4>Description Field</H4>
+<H4>Description Field Markups</H4>
+The <I>Description</I> field can contain cross references to valid Marker symbols and References.
 <OL>
-<LI>The <I>Description</I> field can contain cross references to valid Marker symbols
-    and References:
-<UL>
 <LI>To designate a Marker:
 	<PRE>\L(symbol)</PRE>
     <P>
@@ -183,14 +181,56 @@ or click in the <I>close window key</I> in the upper left hand corner of the MLC
 	&lt;SUB&gt;This text should be subscript&lt;/SUB&gt;
 	</PRE>
 <P>
-</UL>
+</OL>
+
+<H4>Description Field Error Checking</H4>
+When the user hits the <I>Modify</I> key, the following error checks are performed.
+All errors must be fixed before the user can successfully modify the MLC record.
+<OL>
+<LI>Duplicate References are checked.  If a Reference appears more than once in the Reference table,
+    then the message <I>Duplicate Ref#(s):</I> with a listing of the Reference numbers which are
+    duplicates is displayed.
 <P>
-<LI>When the user hits the <I>Modify</I> key, all of the Marker symbols with the <CODE>\L(symbol)</CODE>
-    markup are validated against the database.
+<LI>All markup is valided.
+	<UL>
+	<LI>If bad or disallowed markup is found,, then the
+	    message <I>Bad/Disallowed markup using { or } or other invalid characters. Edit and resubmit.</I>
+	    is displayed.
+	<P>
+	<LI>If unmatched brackets &lt;&gt; or parentheses () are found, then the
+	    message <I>Unmatched &lt;&gt; or parentheses.  Edit and re-submit.</I> is 
+	    displayed.
+	<P>
+	</UL>
+<P>
+<LI>All Marker symbols in <CODE>\L(symbol)</CODE> markup are validated against the database.
+    If any errors are detected, a table of Symbol Errors is displayed with the following
+    fields:
+    <UL>
+    <LI>Symbol
+    <LI>Reason
+    <LI>New Symbol(s)
+    </UL>
     <P>
+    <I>Reason</I> values are:
+    <UL>
+    <LI><I>NOT_IN_MGD</I>, the symbol is not a valid symbol.  
+	These errors must be fixed directly within the <I>Description</I> field.
+    <P>
+    <LI><I>NOT_CURRENT</I>, the symbol is withdrawn.
+        These errors can be fixed by selecting the appropriate Symbol line
+        in the Symbol Errors dialog and clicking <I>Fix</I>.  This will replace the withdrawn
+        symbol in the <I>Description</I> field with the current symbol displayed in the <I>Selection</I>
+	text.  Edits to the <I>Selection</I> text are ignored.
+    <P>
+    <LI><I>SPLIT</I>, the symbol is withdrawn and has been split into more than one new symbol.
+        These errors can be fixed by selecting the appropriate Symbol line
+        in the Symbol Errors dialog and clicking <I>Fix</I>.  This will replace the withdrawn
+        symbol in the <I>Description</I> field with the current symbol(s) displayed in the <I>Selection</I>
+	text.  Edits to the <I>Selection</I> text are ignored.
+    </UL>
 <P>
-<LI>To import a text description from another Marker symbol into the current record, use the
-    <I>Utilities->Import Description</I> dialog.
+<LI>
 <P>
 </OL>
 
@@ -216,6 +256,9 @@ MLC Class modifications <B>are</B> transferred to Production <B>immediately</B> 
 
 <H4>Miscellaneous</H4>
 <OL>
+<LI>To import a text description from another Marker symbol into the current record, use the
+    <I>Utilities->Import Description</I> dialog.
+<P>
 <LI>A global search and replace mechanism is available for the <I>Description</I> field.
     An <I>Undo</I> button allows the user to back out the most recent search and replace.
 <P>
