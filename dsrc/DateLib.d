@@ -58,8 +58,7 @@ rules:
 	  end if;
 
 	  if (value.length > 0) then
-	    where := "\nand convert(datetime, convert(char(10), " +
-		tag + fieldName + ", 1)) ";
+	    where := "\nand " + fieldName;
 
 	    if (strstr(value, ">=") != nil or
 	        strstr(value, "<=") != nil ) then
