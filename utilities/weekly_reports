@@ -46,9 +46,9 @@ DATETAG=`date '+%Y-%m-%d'`
 umask 002
 
 # check command-line arguments for validity
-if [ ! -d $INTERNAL_RPTS_DIR/mgireport/weekly ]
+if [ ! -d $INTERNAL_RPTS_DIR/mgireport ]
 then
-    echo "$INTERNAL_RPTS_DIR/mgireport/weekly does not exist."
+    echo "$INTERNAL_RPTS_DIR/mgireport does not exist."
 	exit 1
 fi
 
@@ -68,6 +68,10 @@ BASENAME=`basename $0`; NOTBASENAME=`echo $0 | sed "s/$BASENAME$//"`
 HOME=`pwd`
 cd $HOME
 
+# Remove current & copy old Nomen reports to archive
+rm $FTP/Nomenclature-current.html
+mv $FTP/Nomenclature-*.html $FTP/archive/nomen
+
 PUBLIC_RPTS="MRK_NomenUpdates.py"
 
 # Copy all of the generated reports from the EI installation filesystem
@@ -77,10 +81,8 @@ for i in $PUBLIC_RPTS
 do
 $i $DSQUERY $MGD
 done
-cp $HOME/mgireport/weekly/*.rpt $FTP
+cp $HOME/mgireport/*.html $FTP
 
-# Move Nomenclature report to archive; copy & link current report
-mv $FTP/Nomenclature-$DATETAG.html $FTP/archive/nomen
-cp $HOME/mgireport/Nomenclature-$DATETAG.html $FTP
+# Copy & link current report
 ln -s $FTP/Nomenclature-$DATETAG.html $FTP/Nomenclature-current.html
 
