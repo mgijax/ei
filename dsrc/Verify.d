@@ -2767,7 +2767,11 @@ rules:
 	        return;
 	      end if;
               -- Construct ", " delimited string of keys
-              strainKeys := strainKeys + keys[i] + ", ";
+	      if (strainKeys.length = 0) then
+                strainKeys := keys[i];
+              else
+		strainKeys := strainKeys + ", " + keys[i];
+	      end if;
             else                -- Strain not found
  
               -- Have user verify that this item should be added
