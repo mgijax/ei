@@ -226,7 +226,7 @@ elif eventKey == SPLIT:
 if eventKey == WITHDRAWAL:
 	newSymbolsList = string.split(newSymbols, ',')
 	newSymbol = newSymbolsList[0]
-	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,"%s","%s"' \
+	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s' \
 		% (oldKey, refKey, eventReasonKey, newSymbol, newName)
 elif eventKey == MERGED:
 	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d' \
