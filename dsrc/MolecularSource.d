@@ -236,7 +236,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by name\n";
+	  Query.select := "select distinct s._Source_key, s.name\n" + from + "\n" + where + "\norder by s.name\n";
 	  Query.table := PRB_SOURCE_MASTER;
 	  send(Query, 0);
 	  (void) reset_cursor(top);

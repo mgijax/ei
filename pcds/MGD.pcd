@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May 28 13:21:35 2003";
+      lastWritten = "Wed Jun 25 09:39:18 2003";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2558,6 +2558,44 @@ Module: MGD
                                   Group: Widget
                                     managed = True;
                                 }
+                                {
+                                  RefSeq = AccToggle : mgiOption;
+                                }
+                                {
+                                  InterPro = AccToggle : mgiOption;
+                                }
+                                {
+                                  Taxon = AccToggle : mgiOption;
+                                }
+                                {
+                                  Ensembl = AccToggle : mgiOption;
+                                }
+                                {
+                                  TIGR = AccToggle : mgiOption;
+                                }
+                                {
+                                  DOTS = AccToggle : mgiOption;
+                                }
+                                {
+                                  EMMA = AccToggle : mgiOption;
+                                }
+                                {
+                                  MMRRC = AccToggle : mgiOption;
+                                }
+                                {
+                                  Harwell = AccToggle : mgiOption;
+                                }
+                                {
+                                  ORNL = AccToggle : mgiOption;
+                                }
+                                {
+                                  IMAGELibrary = AccToggle : mgiOption;
+                                }
+                                {
+                                  NIA15K = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
+                                }
                           }
                     }
               }
@@ -3131,6 +3169,11 @@ Module: MGD
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -5526,12 +5569,6 @@ Module: MGD
                                           activateCallback = "C: TuManage(find = ImportMLCTextDialog)";
                                       }
                                       {
-                                        Submit = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          labelString = "Submit Data to Production";
-                                          activateCallback = "C: TuManage(find = SubmitDialog)";
-                                      }
-                                      {
                                         Unlock = MenuPush : mgiMenu;
                                         Group: Widget
                                           labelString = "Unlock Record";
@@ -6081,13 +6118,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NoteDialog = NoteDialog;
-                    }
-                    {
-                      SubmitDialog = VerifyDialog : mgiDialog;
-                      Group: Widget
-                        okCallback = "D:Submit";
-                        dialogTitle = "MLC - Submit Data";
-                        messageString = "You are about to transfer the \ncurrent record to the \nMLC Production Database.\nIf you have deleted the current\nrecord, then this same delete\nwill occur on Production.\nSelect \"Yes\" to confirm, \"No\"\nto cancel.";
                     }
                     {
                       ImportMLCTextDialog = ImportMLCTextDialog : mgiDialog;
@@ -6775,6 +6805,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     LocusLink = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      required = True;
                                                   }
                                             }
                                       }
@@ -7795,23 +7827,26 @@ Shift<Key>Tab: prev-tab-group()
                         resizable = true;
                     }
                     {
-                      CellLine = CharText : mgiDataTypes;
+                      CellLine = mgiVerify : mgiDataTypes;
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Tissue;
+                        leftOffset = 5;
                         rightAttachment = attach_none;
                         topAttachment = attach_opposite_widget;
                         topWidget = Tissue;
                         bottomAttachment = attach_none;
                         resizable = true;
-                        leftOffset = 5;
                           {
-                            label = XmLabel;
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              columns = 25;
+                            Verify = CharText : mgiDataTypes;
+                                {
+                                  label = XmLabel;
+                                }
+                                {
+                                  text = text;
+                                  Group: Widget
+                                    columns = 45;
+                                }
                           }
                     }
                     {

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr 22 07:52:30 2003";
+      lastWritten = "Wed Jun 25 13:02:01 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -648,7 +648,9 @@ Module: MGI
                     }
               }
               {
-                CellLine = CharText : mgiDataTypes;
+                CellLine = mgiVerify : mgiDataTypes;
+                Group: Widget
+                  userDefinedAttributes = "vocabKey:Int=\"16\"\n";
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Description;
@@ -657,16 +659,32 @@ Module: MGI
                   topWidget = Description;
                   bottomAttachment = attach_none;
                   resizable = true;
+                Group: User
+                  verifyKey = CellLineID;
+                  verifyTable = 343;
                     {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Cell Line";
+                      Verify = CharText : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Cell Line";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              columns = 50;
+                          }
                     }
                     {
-                      text = text;
-                      Group: Widget
-                        columns = 50;
-                        maxLength = 100;
+                      CellLineID : VerifyID = ID : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            text = text;
+                            Group: User
+                              defaultValue = "Not Specified";
+                          }
                     }
               }
               {

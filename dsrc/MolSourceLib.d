@@ -487,6 +487,7 @@ rules:
           where : string := "";
 	  fromStrain : boolean := false;
 	  fromTissue : boolean := false;
+	  fromCellLine : boolean:= false;
 	  i : integer;
 
 	  top.sqlFrom := "";
@@ -569,6 +570,9 @@ rules:
 
           if (top->CellLine->CellLineID->text.value.length > 0) then
             where := where + " and s._CellLine_key = " + top->CellLine->CellLineID->text.value;
+          elsif (top->CellLine->Verify->text.value.length > 0) then
+            fromCellLine := true;
+            where := where + " and cl.term like " + mgi_DBprstr(top->CellLine->Verify->text.value) + "\n";
           end if;
  
           if (top->AgeMenu.menuHistory.searchValue != "%") then
@@ -607,6 +611,11 @@ rules:
 	  if (fromTissue) then
 	    from := from + "," + mgi_DBtable(TISSUE) + " st";
 	    where := where + " and s." + mgi_DBkey(TISSUE) + " = st." + mgi_DBkey(TISSUE);
+	  end if;
+
+	  if (fromCellLine) then
+	    from := from + "," + mgi_DBtable(VOC_CELLLINE_VIEW) + " cl";
+	    where := where + " and s._CellLine_key = cl." + mgi_DBkey(VOC_CELLLINE_VIEW);
 	  end if;
 
 	  top.sqlFrom := from;

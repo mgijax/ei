@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May 28 13:51:15 2003";
+      lastWritten = "Tue Jun 17 08:33:16 2003";
       copy = false;
       inCreateMenu = true;
         {
@@ -41,13 +41,14 @@ Module: mgiOption
         {
           OptionToggle = XmToggleButton;
           Group: Widget
-            userDefinedAttributes = "searchValue:String(String)=\"%\"\ndefaultValue:String(String)\nform:String(String)\nmodified:Boolean(Boolean)=\"False\"\nrequiredText:String(String)\n";
+            userDefinedAttributes = "searchValue:String(String)=\"%\"\ndefaultValue:String(String)\nform:String(String)\nmodified:Boolean(Boolean)=\"False\"\n";
             selectColor = Red;
             valueChangedCallback = "D:CopyOptionToTable,\nD:SetModify";
             background = Wheat;
           Group: Control
             vip_x = 80;
             vip_y = 140;
+            vipComment = "XmToggleButton sets nontransitory state data within an application. Usually this widget consists of an indicator (square or diamond) with either text or a pixmap to its right. The indicator implies a selected or unselected state. Normally, mouse button 1 is used to arm and activate the XmToggleButton.";
         }
         {
           OptionPush = XmPushButton;
@@ -364,6 +365,13 @@ Module: mgiOption
                         defaultValue = 43;
                     }
                     {
+                      NIA15K = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NIA 15K";
+                      Group: User
+                        defaultValue = 46;
+                    }
+                    {
                       dbESTLibrary = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "dbEST Library";
@@ -376,7 +384,7 @@ Module: mgiOption
           AccToggle = OptionToggle;
           Group: Widget
             managed = False;
-            userDefinedAttributes = "allowAdd:Boolean(Boolean)=\"True\"\nallowModify:Boolean(Boolean)=\"True\"\nallowDelete:Boolean(Boolean)=\"True\"\npreferred:Boolean=\"True\"\nprivate:Boolean=\"False\"\n";
+            userDefinedAttributes = "allowAdd:Boolean(Boolean)=\"True\"\nallowModify:Boolean(Boolean)=\"True\"\nallowDelete:Boolean(Boolean)=\"True\"\npreferred:Boolean(Boolean)=\"True\"\nprivate:Boolean(Boolean)=\"False\"\nrequired:Boolean=\"False\"\n";
           Group: Control
             vip_x = 80;
             vip_y = 1240;
