@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec 08/16/2001
+--	- TR 2849; CopyGelLane; don't copy Age Range during Age Prefix copy
+--
 -- lec 07/11/2001
 --	- TR 2709; add Symbol to Search Results text
 --
@@ -679,11 +682,10 @@ rules:
 	      keyColumn := table.sexKey;
 	    end if;
 
-	    -- For Age Prefix, copy Age Key, Age Range, Age Min and Age Max columns
+	    -- For Age Prefix, copy Age Key, Age Min and Age Max columns
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, row, table.ageKey, mgi_tblGetCell(table, row - 1, table.ageKey));
-	      mgi_tblSetCell(table, row, table.ageRange, mgi_tblGetCell(table, row - 1, table.ageRange));
 	      mgi_tblSetCell(table, row, table.ageMin, mgi_tblGetCell(table, row - 1, table.ageMin));
 	      mgi_tblSetCell(table, row, table.ageMax, mgi_tblGetCell(table, row - 1, table.ageMax));
 
