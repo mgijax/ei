@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Oct 14 14:47:27 1999";
+      lastWritten = "Mon Oct 18 09:04:18 1999";
         {
           Species = Module : MGI;
           Group: Control
@@ -728,6 +728,30 @@ Module: MGD
                           }
                           {
                             Commands = Commands;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:Clear(clearLists = 3)";
+                                      }
+                                }
                           }
                           {
                             Edit = Edit;
@@ -748,11 +772,13 @@ Module: MGD
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
+                            Group: User
+                              homeWidget = Name;
                                 {
                                   ID = ID;
                                 }
                                 {
-                                  Strain = CharText : mgiDataTypes;
+                                  Name = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -776,13 +802,13 @@ Module: MGD
                                       }
                                 }
                                 {
-                                  Species = mgiSpecies : mgiDataTypes;
+                                  mgiSpecies = mgiSpecies : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Strain;
+                                    leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Strain;
+                                    topWidget = Name;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -791,16 +817,16 @@ Module: MGD
                                   StandardMenu = StandardMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Species;
+                                    leftWidget = mgiSpecies;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Species;
+                                    topWidget = mgiSpecies;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
                                 }
                                 {
-                                  NeedsReview = YesNoMenu : mgiOption;
+                                  NeedsReviewMenu = YesNoMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = NeedsReviewPulldown;
                                     labelString = "Needs Review?";
@@ -813,6 +839,8 @@ Module: MGD
                                     topWidget = StandardMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    defaultOption = NoReview;
                                       Popups:
                                       {
                                         NeedsReviewPulldown : YesNoPulldown = OptionPulldown;
@@ -881,7 +909,7 @@ Module: MGD
                                   StrainType = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Strain;
+                                    leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = StandardMenu;
@@ -897,6 +925,7 @@ Module: MGD
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
+                                          xrtTblVisibleRows = 3;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -910,11 +939,12 @@ Module: MGD
                                     leftAttachment = attach_widget;
                                     leftWidget = StrainType;
                                     leftOffset = 10;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = StrainType;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
@@ -926,6 +956,7 @@ Module: MGD
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:CommitTableCellEdit";
                                           xrtTblMaxLengthSeries = "(all 3 25)";
                                           userDefinedAttributes = "markerColumns:Int=\"1\"\nmarkerCurrentKey:Int=\"1\"\nmarkerKey:Int=\"2\"\nmarkerSymbol:Int=\"3\"\n";
+                                          xrtTblVisibleRows = 3;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -942,8 +973,7 @@ Module: MGD
                                     topAttachment = attach_widget;
                                     topWidget = References;
                                     topOffset = 5;
-                                    bottomAttachment = attach_form;
-                                    bottomOffset = 5;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
                                       {
                                         label = XmLabel;
@@ -952,7 +982,54 @@ Module: MGD
                                         text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           columns = 80;
-                                          rows = 10;
+                                          rows = 5;
+                                      }
+                                }
+                                {
+                                  User1 = CharSText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Notes;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = Notes;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 2;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "User \nDefined 1";
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 70;
+                                      }
+                                }
+                                {
+                                  User2 = CharSText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = User1;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = User1;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_form;
+                                    bottomOffset = 5;
+                                    resizable = true;
+                                    rightOffset = 2;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "User \nDefined 2";
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 70;
                                       }
                                 }
                           }
@@ -969,6 +1046,8 @@ Module: MGD
                                 }
                                 {
                                   Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Clear(clearLists = 3)";
                                 }
                                 {
                                   Modify = ControlPush;
@@ -1040,6 +1119,8 @@ Module: MGD
                                       }
                                       {
                                         AccSourceMenu = AccSourceMenu : mgiOption;
+                                        Group: User
+                                          defaultOption = JAXMice;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
