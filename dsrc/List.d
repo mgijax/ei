@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec  05/03/2002
+--	fix bug in DeleteList; if (list_w.accIDs.count > 0) then remove item
+--
 -- lec	02/20/2002
 --	TR 3380; SelectLookupListItem; traverse to next cell
 --
@@ -196,7 +199,9 @@ rules:
 	  -- Use tmp string list when manipulating list_w.accIDs
 
 	  tmp := list_w.accIDs;
-	  tmp.remove(list_w.accIDs[list_w.row]);
+	  if (list_w.accIDs.count > 0) then
+	    tmp.remove(list_w.accIDs[list_w.row]);
+	  end if;
 	  list_w.accIDs := tmp;
 
 	  label_w.labelString := (string) list_w.itemCount + " " + label_w.defaultLabel;
