@@ -2303,9 +2303,6 @@ rules:
 	  value : string;
 
 	  value := top->mgiMutantESCellLine->CellLine->text.value;
-	  top->mgiMutantESCellLine->ObjectID->text.value := "NULL";
-	  top->mgiMutantESCellLine->CellLine->text.value := "";
-	  top->mgiMutantESCellLine->Provider->text.value := "";
 
 	  -- If a wildcard '%' appears in the field,,
 
@@ -2315,6 +2312,10 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
+
+	  top->mgiMutantESCellLine->ObjectID->text.value := "NULL";
+	  top->mgiMutantESCellLine->CellLine->text.value := "";
+	  top->mgiMutantESCellLine->Provider->text.value := "";
 
 	  -- If no value entered, use default
 	  if (value.length = 0) then
@@ -2365,10 +2366,6 @@ rules:
 	  value : string;
 
 	  value := top->mgiParentalESCellLine->CellLine->text.value;
-	  top->mgiParentalESCellLine->ObjectID->text.value := "NULL";
-	  top->mgiParentalESCellLine->CellLine->text.value := "";
-	  top->mgiParentalESCellLine->Strain->StrainID->text.value := "";
-	  top->mgiParentalESCellLine->Strain->Verify->text.value := "";
 
 	  -- If a wildcard '%' appears in the field,,
 
@@ -2378,6 +2375,11 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
+
+	  top->mgiParentalESCellLine->ObjectID->text.value := "NULL";
+	  top->mgiParentalESCellLine->CellLine->text.value := "";
+	  top->mgiParentalESCellLine->Strain->StrainID->text.value := "";
+	  top->mgiParentalESCellLine->Strain->Verify->text.value := "";
 
 	  -- If no value entered, use default
 	  if (value.length = 0) then

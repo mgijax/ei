@@ -875,6 +875,11 @@ rules:
 	    from_cellline2 := true;
           end if;
 
+          if (top->mgiMutantESCellLine->Provider->text.value.length > 0) then
+            where := where + "\nand c2.provider like " + mgi_DBprstr(top->mgiMutantESCellLine->Provider->text.value);
+	    from_cellline2 := true;
+          end if;
+
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->EditForm->Strain->StrainID->text.value;;
 	  elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
@@ -907,12 +912,12 @@ rules:
 
 	  if (from_cellline1) then
 	    from := from + "," + mgi_DBtable(ALL_CELLLINE) + " c1";
-	    where := where + "\nand a." + mgi_DBkey(ALL_CELLLINE) + " = c1." + mgi_DBkey(ALL_CELLLINE);
+	    where := where + "\nand a._ESCellLine_key = c1." + mgi_DBkey(ALL_CELLLINE);
 	  end if;
 
 	  if (from_cellline2) then
 	    from := from + "," + mgi_DBtable(ALL_CELLLINE) + " c2";
-	    where := where + "\nand a." + mgi_DBkey(ALL_CELLLINE) + " = c2." + mgi_DBkey(ALL_CELLLINE);
+	    where := where + "\nand a._MutantESCellLine_key = c2." + mgi_DBkey(ALL_CELLLINE);
 	  end if;
 
 	  if (from_mutation) then
