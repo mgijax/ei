@@ -59,7 +59,7 @@ select @edate = dateadd(day, 0, "$DATEQUERY")
 set nocount off
 
 print ""
-print "Updates to MGI Mouse Nomenclature from %1! to %2!", @bdate, @edate
+print "Updates to Mouse Nomenclature from %1! to %2!", @bdate, @edate
 print ""     
 
 select 
