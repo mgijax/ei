@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	11/05/2001
+--	- implement normal searching in Genotype Module
+--
 -- lec	08/22/2001-09/18/2001
 --	- TR 2844
 --
@@ -34,6 +37,7 @@ devents:
 
 	ModifyAllelePair :local [];
 
+	PrepareSearch :local [];
 	Select :local [item_position : integer;];
 
 
@@ -47,6 +51,7 @@ locals:
 	from : string;
 	where : string;
 	set : string;
+	manualSearch : boolean := false;
 
 	assayTable : widget;
 	assayPush : widget;
@@ -332,6 +337,77 @@ rules:
         end does;
 
 --
+-- PrepareSearch
+--
+-- Activated from:  devent Search
+--
+-- Prepare select statement based on user input
+--
+
+	PrepareSearch does
+	  from_allele : boolean := false;
+	  value : string;
+
+	  manualSearch := false;
+
+	  from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
+	  	", " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + " ap";
+	  where := "";
+
+          SearchAcc.table := accTable;
+          SearchAcc.objectKey := "g." + mgi_DBkey(GXD_GENOTYPE_VIEW);
+	  SearchAcc.tableID := STRAIN;
+          send(SearchAcc, 0);
+
+	  if (accTable.sqlFrom.length > 0) then
+	    from := from + accTable.sqlFrom;
+	    where := where + accTable.sqlWhere;
+	  end if;
+
+          QueryDate.source_widget := top->CreationDate;
+          QueryDate.tag := "g";
+          send(QueryDate, 0);
+          where := where + top->CreationDate.sql;
+ 
+          QueryDate.source_widget := top->ModifiedDate;
+          QueryDate.tag := "g";
+          send(QueryDate, 0);
+          where := where + top->ModifiedDate.sql;
+ 
+	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
+	    where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
+	    manualSearch := true;
+	  else
+	    value := top->EditForm->Strain->Verify->text.value;
+	    if (value .length > 0) then
+	      where := where + "\nand g.strain like " + mgi_DBprstr(value);
+	      manualSearch := true;
+	    end if;
+	  end if;
+	    
+          value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
+
+          if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand ap._Marker_key = " + value;
+	    from_allele := true;
+	  else
+            value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerSymbol);
+            if (value.length > 0) then
+	      where := where + "\nand ap.symbol like " + mgi_DBprstr(value);
+	      from_allele := true;
+	    end if;
+	  end if;
+
+	  if (from_allele) then
+	    where := "where g._Genotype_key = ap._Genotype_key" + where;
+	    manualSearch := true;
+	  else
+	    where := "where g._Genotype_key *= ap._Genotype_key" + where;
+	  end if;
+
+	end does;
+
+--
 -- SearchGenotype
 --
 -- Retrieve Genotype records for given assayKey
@@ -340,19 +416,28 @@ rules:
 
 	SearchGenotype does
 	  assayKey : string := SearchGenotype.assayKey;
-	  assayExists : string;
+	  select : string;
 	  notExists : string;
 	  orderBy : string := "\norder by g._Genotype_key";
 
-	  if (mgi->AssayModule = nil) then
-	    send(Exit, 0);
-	  end if;
-
           (void) busy_cursor(top);
 
-	  if (assayKey.length = 0) then
-	    assayKey := mgi->AssayModule->ID->text.value;
+	  --
+	  -- See if the user has entered any search constraints;
+	  -- If so, then process the user-specified query
+	  --
+
+	  send(PrepareSearch, 0);
+
+	  -- If no user-specified query, then use current Assay
+
+	  if (not manualSearch and assayKey.length = 0) then
+	    if (mgi->AssayModule != nil) then
+	      assayKey := mgi->AssayModule->ID->text.value;
+	    end if;
 	  end if;
+
+	  -- If current Assay record...
 
 	  if (assayKey.length > 0) then
 	    from := "from " + mgi_DBtable(GXD_GENOTYPE_VIEW) + " g" +
@@ -366,11 +451,11 @@ rules:
 	    else
 	      from := from + "," + mgi_DBtable(GXD_GELLANE) + " a";
 	    end if;
-
-	    assayExists := "select distinct g._Genotype_key, " +
-	 	  "g.dbName + ',' + ap.allele1 + ',' + ap.allele2\n" + 
-		  from + "\n" + where;
 	  end if;
+
+	  select := "select distinct g._Genotype_key, " +
+	     "g.dbName + ',' + ap.allele1 + ',' + ap.allele2\n" + 
+	     from + "\n" + where;
 
           notExists := "select distinct g._Genotype_key, " +
 		"'*' + g.dbName + ',' + ap.allele1 + ',' + ap.allele2\n" + 
@@ -381,16 +466,26 @@ rules:
 	  	"where g._Genotype_key = s._Genotype_key)\n" +
 		" and g._Genotype_key *= ap._Genotype_key\n";
 
-	  if (assayKey.length > 0) then
-	    QueryNoInterrupt.select := assayExists + "\nunion\n" + notExists + orderBy;
+	  if (manualSearch) then
+	    Query.source_widget := top;
+	    Query.select := select;
+	    Query.table := GXD_GENOTYPE_VIEW;
+	    send(Query, 0);
+	  elsif (assayKey.length > 0) then
+	    QueryNoInterrupt.select := select + "\nunion\n" + notExists + orderBy;
+	    QueryNoInterrupt.source_widget := top;
+	    QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
+	    QueryNoInterrupt.selectItem := false;
+	    send(QueryNoInterrupt, 0);
 	  else
 	    QueryNoInterrupt.select := notExists + orderBy;
+	    QueryNoInterrupt.source_widget := top;
+	    QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
+	    QueryNoInterrupt.selectItem := false;
+	    send(QueryNoInterrupt, 0);
 	  end if;
 
-	  QueryNoInterrupt.source_widget := top;
-	  QueryNoInterrupt.table := GXD_GENOTYPE_VIEW;
-	  QueryNoInterrupt.selectItem := false;
-	  send(QueryNoInterrupt, 0);
+	  manualSearch := false;
 
 	  (void) reset_cursor(top);
 	end does;
