@@ -14,6 +14,7 @@
 --
 -- lec 11/12/2002
 --	- SAO
+--	- implemented ModificationHistory table
 --
 -- lec 09/26/2001
 --      - TR 2714/Probe Species Menu
@@ -142,8 +143,13 @@ locals:
  
         sourceKeyName : string;		-- key name when adding new Source record
 
+	modTable : widget;
+	prb_createdBy : string;
+	prb_modifiedBy : string;
 	prb_creation_date : string;
 	prb_modification_date : string;
+	ref_createdBy : string;
+	ref_modifiedBy : string;
 	ref_creation_date : string;
 	ref_modification_date : string;
 
@@ -238,8 +244,13 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 
+	  modTable := top->Control->ModificationHistory->Table;
+	  prb_createdBy := "";
+	  prb_modifiedBy := "";
 	  prb_creation_date := "";
 	  prb_modification_date := "";
+	  ref_createdBy := "";
+	  ref_modifiedBy := "";
 	  ref_creation_date := "";
 	  ref_modification_date := "";
 
@@ -1375,6 +1386,8 @@ rules:
           ClearList.source_widget := top->ReferenceList;
           send(ClearList, 0);
 
+	  prb_createdBy := "";
+	  prb_modifiedBy := "";
 	  prb_creation_date := "";
 	  prb_modification_date := "";
 
@@ -1397,7 +1410,7 @@ rules:
           table : widget := top->MolMarkerForm->Marker->Table;
 	  currentMasterKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from PRB_View where _Probe_key = " + currentMasterKey + "\n" +
+	  cmd := "select * from PRB_Probe where _Probe_key = " + currentMasterKey + "\n" +
 		 "select parentKey, parentClone, parentNumeric from PRB_Parent_View " +
 		 "where _Probe_key = " + currentMasterKey + "\n" +
 		 "select rtrim(note) from PRB_Notes where _Probe_key = " + currentMasterKey + " order by sequenceNum\n" +
@@ -1416,8 +1429,8 @@ rules:
 	        top->MolMasterForm->ID->text.value := mgi_getstr(dbproc, 1);
 	        top->MolMasterForm->Name->text.value := mgi_getstr(dbproc, 2);
 	        top->MolMasterForm->Region->text.value := mgi_getstr(dbproc, 8) + mgi_getstr(dbproc, 9);
-		prb_creation_date := mgi_getstr(dbproc, 16);
-		prb_modification_date := mgi_getstr(dbproc, 17);
+		prb_creation_date := mgi_getstr(dbproc, 18);
+		prb_modification_date := mgi_getstr(dbproc, 19);
 
 		top->MolDetailForm->InsertSite->text.value  := mgi_getstr(dbproc, 10);
 	        top->MolDetailForm->InsertSize->text.value  := mgi_getstr(dbproc, 11);
@@ -1474,8 +1487,10 @@ rules:
 	  (void) dbclose(dbproc);
  
           if (not top->Control->References.set) then
-            top->CreationDate->text.value := prb_creation_date;
-            top->ModifiedDate->text.value := prb_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, prb_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, prb_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, prb_modification_date);
           end if;
 
           LoadAcc.table := accTable;
@@ -1505,6 +1520,8 @@ rules:
           end while;
 	  refTables.close;
 
+          ref_createdBy := "";
+          ref_modifiedBy := "";
           ref_creation_date := "";
           ref_modification_date := "";
 
@@ -1560,8 +1577,10 @@ rules:
                 top->MolReferenceForm->Holder->text.value := mgi_getstr(dbproc, 7);
                 top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 9));
                 top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 8));
-		ref_creation_date := mgi_getstr(dbproc, 10);
-		ref_modification_date := mgi_getstr(dbproc, 11);
+		ref_createdBy := mgi_getstr(dbproc, 10);
+		ref_modifiedBy := mgi_getstr(dbproc, 11);
+		ref_creation_date := mgi_getstr(dbproc, 12);
+		ref_modification_date := mgi_getstr(dbproc, 13);
               elsif (results = 2) then
                 top->MolReferenceForm->Notes->text.value := top->MolReferenceForm->Notes->text.value + 
 			mgi_getstr(dbproc, 1);
@@ -1622,8 +1641,10 @@ rules:
           send(LoadAcc, 0);
 
           if (top->Control->References.set) then
-            top->CreationDate->text.value := ref_creation_date;
-            top->ModifiedDate->text.value := ref_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, ref_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, ref_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, ref_modification_date);
           end if;
  
           top->ReferenceList->List.row := SelectReference.item_position;
@@ -1674,19 +1695,27 @@ rules:
 	  if (top->MolMasterForm.managed) then
 	    detailForm.managed := true;
 	    if (top->MolMasterForm->ID->text.value.length = 0) then
+	      prb_createdBy := "";
+	      prb_modifiedBy := "";
 	      prb_creation_date := "";
 	      prb_modification_date := "";
 	    end if;
-            top->CreationDate->text.value := prb_creation_date;
-            top->ModifiedDate->text.value := prb_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, prb_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, prb_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, prb_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, prb_modification_date);
 	  else
 	    detailForm.managed := false;
 	    if (top->MolReferenceForm->ReferenceID->text.value.length = 0) then
+	      ref_createdBy := "";
+	      ref_modifiedBy := "";
 	      ref_creation_date := "";
 	      ref_modification_date := "";
 	    end if;
-            top->CreationDate->text.value := ref_creation_date;
-            top->ModifiedDate->text.value := ref_modification_date;
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byUser, ref_createdby);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, ref_modifiedBy);
+	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, ref_creation_date);
+	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, ref_modification_date);
 	  end if;
 	end does;
 
