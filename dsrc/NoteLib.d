@@ -85,6 +85,7 @@ rules:
 	  x : widget;
 	  instance : string := ""; -- Unique name of child instance
 	  label : string;
+	  k : integer;
 
 	  cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
 		"\nwhere _NoteType_key > 0 " +
@@ -97,7 +98,17 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 		label := mgi_getstr(dbproc, 2);
-		instance := label + "Note";
+
+		-- Read up to the first blank space
+		k := 1;
+		while (k < label.length) do
+		  if (label[k] = ' ') then
+		    break;
+		  end if;
+		  k := k + 1;
+		end while;
+
+		instance := label->substr(1,k) + "Note";
 		x := create widget("mgiNote", instance, notew);
 		x.batch;
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
