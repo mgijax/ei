@@ -30,6 +30,7 @@
 --
 -- lec	06/03/2003
 --	- TR 4603; DuplicatePartial and DuplicateAll
+--	- TR 4610; added Insert Row to Gel Lane table
 --
 -- lec	05/07/2003
 --	- TR 3710; added Knock In Assay Type
@@ -382,6 +383,7 @@ rules:
           send(SetNotesDisplay, 0);
 
 	  if (not AssayClear.select) then
+	    currentAssay := "";
 	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
@@ -389,7 +391,6 @@ rules:
 	    top->KnockInForm.sensitive := false;
 	    top->GXDReporterGeneMenu.required := false;
 	    top->GXDKnockInMenu.required := false;
-	    currentAssay := "";
 	  end if;
 	end does;
 
@@ -1502,6 +1503,8 @@ rules:
           row : integer := 0;
           editMode : string;
           key : string;
+          currentSeqNum : string;
+          newSeqNum : string;
 	  controlKey : string;
 	  genotypeKey : string;
 	  rnaKey : string;
@@ -1515,6 +1518,15 @@ rules:
 	  keysDeclared : boolean := false;
 	  update : string := "";
  
+	  -- Check for duplicate Seq # assignments
+
+          DuplicateSeqNumInTable.table := table;
+          send(DuplicateSeqNumInTable, 0);
+ 
+          if (table.duplicateSeqNum) then
+            return;
+          end if;
+ 
           -- Process while non-empty rows are found
  
           while (row < mgi_tblNumRows(table)) do
@@ -1525,6 +1537,8 @@ rules:
             end if;
  
             key := mgi_tblGetCell(table, row, table.laneKey);
+            currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
+            newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
 	    genotypeKey := mgi_tblGetCell(table, row, table.genotypeKey);
             controlKey := mgi_tblGetCell(table, row, table.controlKey);
             rnaKey := mgi_tblGetCell(table, row, table.rnaKey);
@@ -1609,30 +1623,42 @@ rules:
               send(ModifyStructure, 0);
               cmd := cmd + top->ADClipboard.updateCmd;
  
-            elsif (editMode = TBL_ROW_MODIFY) then
+            elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
-              update := "_Genotype_key = " + genotypeKey + "," +
-		        "_GelRNAType_key = " + rnaKey + "," +
-                        "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
-		        "_GelControl_key = " + controlKey + "," +
-		        "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
-                        "sex = " + mgi_DBprstr(sexKey) + "," +
-                        "age = " + mgi_DBprstr(ageKey) + "," +
-                        "ageMin = " + ageMin + "," +
-                        "ageMax = " + ageMax + "," +
-	    	        "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	        "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
-              cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
-
-              -- Process Gel Lane Structures
-
-              ModifyStructure.source_widget := top;
-              ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-              ModifyStructure.key := key;
-              ModifyStructure.row := row;
-              send(ModifyStructure, 0);
-              cmd := cmd + top->ADClipboard.updateCmd;
+              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
  
+              if (currentSeqNum != newSeqNum) then
+		update := "sequenceNum = " + newSeqNum;
+                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
+
+              -- Else, a simple update
+ 
+              else
+
+                update := "_Genotype_key = " + genotypeKey + "," +
+		          "_GelRNAType_key = " + rnaKey + "," +
+                          "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
+		          "_GelControl_key = " + controlKey + "," +
+		          "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
+                          "sex = " + mgi_DBprstr(sexKey) + "," +
+                          "age = " + mgi_DBprstr(ageKey) + "," +
+                          "ageMin = " + ageMin + "," +
+                          "ageMax = " + ageMax + "," +
+	    	          "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
+	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
+                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
+
+                -- Process Gel Lane Structures
+
+                ModifyStructure.source_widget := top;
+                ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
+                ModifyStructure.key := key;
+                ModifyStructure.row := row;
+                send(ModifyStructure, 0);
+                cmd := cmd + top->ADClipboard.updateCmd;
+   
+	      end if;
+
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               cmd := cmd + mgi_DBdelete(GXD_GELLANE, key);
             end if;
@@ -2500,6 +2526,7 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(table, row, table.rnaKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.rna, mgi_getstr(dbproc, 17));
+	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.label, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.sampleAmt, mgi_getstr(dbproc, 8));
@@ -2672,6 +2699,7 @@ rules:
 		",Mode,Lane key,Band key,Strength key," + (string) b + "; " + laneLabel + ",Note";
 	    newPixelWidthSeries := newPixelWidthSeries +
 		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
+--	    newPixelWidthSeries := "";
 	    newCharWidthSeries := newCharWidthSeries +
 		" (all " + (string) noteCol + " 4)" + " (all " + (string) (noteCol - 1) + " 15)";
 	    newTraverseSeries := newTraverseSeries + 
@@ -2780,22 +2808,34 @@ rules:
 	      end if;
 
 	      x := lane * gelTable.bandIncrement;
-	      lane := lane + 1;
-	      prev_row := row;
+
+	      -- If the Gel Lane key from the query is the same as the Gel Lane key in the Gel Row table...
+	      --	then we're okay
+	      -- else
+	      --	skip to the appropriate Gel Lane in the Gel Row table
+	      --	flag Gel Band for Add
+
+	      while (mgi_getstr(dbproc, 2) != mgi_tblGetCell(gelTable, row, gelTable.laneKey + x)) do
+	        (void) mgi_tblSetCell(gelTable, row, gelTable.bandMode + x, TBL_ROW_ADD);
+		lane := lane + 1;
+	        x := lane * gelTable.bandIncrement;
+	      end while;
 
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandKey + x, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.strengthKey + x, mgi_getstr(dbproc, 4));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandNotes + x, mgi_getstr(dbproc, 5));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.strength + x, mgi_getstr(dbproc, 8));
 	      (void) mgi_tblSetCell(gelTable, row, gelTable.bandMode + x, TBL_ROW_NOCHG);
-	      (void) mgi_tblSetCell(gelTable, row, gelTable.editMode, TBL_ROW_NOCHG);
+
+	      lane := lane + 1;
+	      prev_row := row;
+
 	    end while;
           end while;
 	  (void) dbclose(dbproc);
 
 	  -- For first row, if Lane Control != No and no Strength, then Strength = Not Applicable
 	  i := 0;
-	  lanes.rewind;
 	  while (i < lanes.count) do
             x := i * gelTable.bandIncrement;
 	    controlKey := mgi_tblGetCell(laneTable, i, laneTable.controlKey);
@@ -2803,17 +2843,40 @@ rules:
               (void) mgi_tblSetCell(gelTable, 0, gelTable.strengthKey + x, NOTAPPLICABLE);
 	      (void) mgi_tblSetCell(gelTable, 0, gelTable.strength + x, "Not Applicable");
 	      (void) mgi_tblSetCell(gelTable, 0, gelTable.bandMode + x, TBL_ROW_ADD);
-
-	      -- If existing key exists, then flag for modification, else flag for add
-
-	      if (mgi_tblGetCell(gelTable, 0, gelTable.editMode) = TBL_ROW_NOCHG) then
-	        (void) mgi_tblSetCell(gelTable, 0, gelTable.editMode, TBL_ROW_MODIFY);
-	      else
-	        (void) mgi_tblSetCell(gelTable, 0, gelTable.editMode, TBL_ROW_ADD);
-	      end if;
 	    end if;
 	    i := i + 1;
 	  end while;
+
+	  -- Set bandMode for any bands which have not been set
+          -- Set row.editMode based on whether any bandModes have been set for that row
+
+	  row := 0;
+	  i := 0;
+	  while (row < mgi_tblNumRows(gelTable)) do
+	    while (i < lanes.count) do
+              x := i * gelTable.bandIncrement;
+
+	      -- If existing row and bandMode is empty, flag band as an add
+
+	      if (mgi_tblGetCell(gelTable, row, gelTable.rowKey) != "" and
+	          mgi_tblGetCell(gelTable, row, gelTable.bandMode + x) = TBL_ROW_EMPTY) then
+	        (void) mgi_tblSetCell(gelTable, 0, gelTable.bandMode + x, TBL_ROW_ADD);
+	      end if;
+
+	      -- If band as been flagged for add, set row flag accordingly
+
+	      if (mgi_tblGetCell(gelTable, row, gelTable.bandMode + x) = TBL_ROW_ADD) then
+	        if (mgi_tblGetCell(gelTable, row, gelTable.rowKey) != "") then
+	          (void) mgi_tblSetCell(gelTable, row, gelTable.editMode, TBL_ROW_MODIFY);
+	        else
+	          (void) mgi_tblSetCell(gelTable, row, gelTable.editMode, TBL_ROW_ADD);
+	        end if;
+	      end if;
+
+              i := i + 1;
+	    end while;
+	    row := row + 1;
+          end while;
 
 	end does;
 
