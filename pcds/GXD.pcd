@@ -2,8 +2,8 @@ Module: GXD
 {
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Wed Aug 11 14:14:20 1999";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Tue Aug 31 14:20:51 1999";
       copy = false;
       inCreateMenu = true;
         {
@@ -18,77 +18,47 @@ Module: GXD
               {
                 MainForm = XmForm;
                     {
-                      MainMenu = XmMenuBar;
+                      MainMenu = MainMenu;
                           {
-                            File = XmCascadeButton;
+                            File = File;
                           }
                           {
-                            Commands = XmCascadeButton;
+                            Commands = Commands;
                                 Popups:
                                 {
-                                  CommandsPulldown = XmPulldownMenu;
+                                  CommandsPulldown = MenuPulldown;
                                       {
-                                        Search = XmPushButton;
+                                        Search = MenuPush;
                                       }
                                       {
-                                        Modify = XmPushButton;
+                                        Modify = MenuPush;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = MenuPush;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = MenuPush;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = XmPushButton;
+                                        Clear = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearLists = 3)\nD:InitAcc";
                                       }
-                                      {
-                                        Clear1 = XmPushButton;
-                                      }
-                                      {
-                                        Clear2 = XmPushButton;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = XmPushButton;
-                                      }
-                                      {
-                                        Next = XmPushButton;
-                                      }
                                 }
-                          }
-                          {
-                            Edit = XmCascadeButton;
-                          }
-                          {
-                            View = XmCascadeButton;
-                          }
-                          {
-                            Reports = XmCascadeButton;
-                          }
-                          {
-                            Utilities = XmCascadeButton : mgiMenu;
-                          }
-                          {
-                            Help = XmCascadeButton;
                           }
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = XmForm : MGI;
+                            EditForm = EditForm : MGI;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
                                   Name = CharText : mgiDataTypes;
@@ -106,7 +76,7 @@ Module: GXD
                                           labelString = Name;
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           columns = 75;
                                         Group: User
@@ -130,7 +100,7 @@ Module: GXD
                                           labelString = "Region\nCovered";
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           columns = 75;
                                       }
@@ -149,7 +119,7 @@ Module: GXD
                                         label = XmLabel;
                                       }
                                       {
-                                        text = XmScrolledText : mgiDataTypes;
+                                        text = scrolledText : mgiDataTypes;
                                         Group: Widget
                                           columns = 75;
                                       }
@@ -175,220 +145,114 @@ Module: GXD
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Strain = XmRowColumn;
+                                        Strain = Strain;
                                       }
                                       {
-                                        Tissue = XmRowColumn;
+                                        Tissue = Tissue;
                                       }
                                       {
-                                        Description = XmXrtAligner;
+                                        Description = CharText;
                                       }
                                       {
-                                        CellLine = XmXrtAligner;
+                                        CellLine = CharText;
                                       }
                                       {
-                                        AgeMenu = XmOptionMenu;
+                                        AgeMenu = AgeMenu;
                                       }
                                       {
-                                        Age = XmXrtAligner;
+                                        Age = CharText;
                                       }
                                       {
-                                        AgeMin = XmXrtAligner;
+                                        AgeMin = ID;
                                       }
                                       {
-                                        AgeMax = XmXrtAligner;
+                                        AgeMax = ID;
                                       }
                                       {
-                                        SexMenu = XmOptionMenu;
+                                        SexMenu = SexMenu;
                                       }
                                       {
-                                        SpeciesMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        SourceID = XmXrtAligner : mgiDataTypes;
-                                      }
-                                      {
-                                        Library = XmXrtAligner : mgiDataTypes;
-                                      }
-                                      {
-                                        mgiCitation = XmRowColumn : mgiDataTypes;
+                                        SpeciesMenu = SpeciesMenu;
                                       }
                                 }
                           }
                     }
                     {
-                      Control = XmFrame;
+                      Control = Control;
                           {
                             ControlForm = XmForm;
                                 {
-                                  Search = XmPushButton;
+                                  Search = ControlPush;
                                 }
                                 {
-                                  Clear = XmPushButton;
+                                  Clear = ControlPush;
                                   Group: Widget
                                     activateCallback = "D:Clear(clearLists = 3)\nD:InitAcc";
-                                }
-                                {
-                                  Modify = XmPushButton;
-                                }
-                                {
-                                  Add = XmPushButton;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
-                                {
-                                  Previous = XmArrowButton;
-                                }
-                                {
-                                  Next = XmArrowButton;
-                                }
-                                {
-                                  Clear1 = XmMenuBar;
-                                }
-                                {
-                                  RecordCount = XmXrtAligner;
-                                }
-                                {
-                                  CreationDate = XmXrtAligner : mgiDataTypes;
-                                }
-                                {
-                                  ModifiedDate = XmXrtAligner : mgiDataTypes;
                                 }
                           }
                     }
                     {
-                      Lookup = XmFrame;
+                      Lookup = Lookup;
                           {
                             panedWindow = XmPanedWindow;
                                 {
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = TablePush;
                                         Group: Widget
                                           managed = False;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = TablePush;
                                         Group: Widget
                                           managed = False;
                                       }
                                       {
-                                        AccSourceMenu = XmOptionMenu;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: Widget
                                           managed = False;
                                             Popups:
                                             {
-                                              AccSourcePulldown = XmPulldownMenu;
+                                              AccSourcePulldown = OptionPulldown;
                                                   {
-                                                    MGI = XmToggleButton;
+                                                    MGI = AccToggle;
                                                   }
                                                   {
-                                                    J = XmToggleButton;
+                                                    J = AccToggle;
                                                   }
                                                   {
-                                                    Medline = XmToggleButton;
+                                                    Medline = AccToggle;
                                                   }
                                                   {
-                                                    EC = XmToggleButton;
+                                                    EC = AccToggle;
                                                   }
                                                   {
-                                                    SWISSPROT = XmToggleButton;
+                                                    SWISSPROT = AccToggle;
                                                   }
                                                   {
-                                                    dbEST = XmToggleButton;
+                                                    dbEST = AccToggle;
                                                   }
                                                   {
-                                                    WashU = XmToggleButton;
+                                                    WashU = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = XmToggleButton;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = XmToggleButton;
+                                                    Sequence = AccToggle;
                                                   }
                                                   {
-                                                    SequencePID = XmToggleButton : mgiOption;
+                                                    SequencePID = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    ATCC = XmToggleButton;
-                                                  }
-                                                  {
-                                                    MRK = XmToggleButton;
-                                                  }
-                                                  {
-                                                    MGIImage = XmToggleButton;
-                                                  }
-                                                  {
-                                                    CREX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    HYEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    INEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    FSEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    RIEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    TEXT = XmToggleButton;
-                                                  }
-                                                  {
-                                                    TXEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    PMEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    E = XmToggleButton;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
                                 }
-                                {
-                                  QueryList = XmForm;
-                                }
                           }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = XmWarningDialog;
-                    }
-                    {
-                      DeleteDialog = XmQuestionDialog;
-                    }
-                    {
-                      ReportDialog = XmFormDialog;
-                    }
-                    {
-                      SearchDialog = XmWorkingDialog;
-                    }
-                    {
-                      WhichItem = XmFormDialog;
-                    }
-                    {
-                      VerifyItemAdd = XmQuestionDialog;
-                    }
-                    {
-                      WorkingDialog = XmWorkingDialog;
-                    }
-                    {
-                      NoteDialog = XmFormDialog : mgiDialog;
                     }
               }
         }
@@ -403,77 +267,47 @@ Module: GXD
               {
                 MainForm = XmForm;
                     {
-                      MainMenu = XmMenuBar;
+                      MainMenu = MainMenu;
                           {
-                            File = XmCascadeButton;
+                            File = File;
                           }
                           {
-                            Commands = XmCascadeButton;
+                            Commands = Commands;
                                 Popups:
                                 {
-                                  CommandsPulldown = XmPulldownMenu;
+                                  CommandsPulldown = MenuPulldown;
                                       {
-                                        Search = XmPushButton;
+                                        Search = MenuPush;
                                       }
                                       {
-                                        Modify = XmPushButton;
+                                        Modify = MenuPush;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = MenuPush;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = MenuPush;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = XmPushButton;
+                                        Clear = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearLists = 3)";
                                       }
-                                      {
-                                        Clear1 = XmPushButton;
-                                      }
-                                      {
-                                        Clear2 = XmPushButton;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = XmPushButton;
-                                      }
-                                      {
-                                        Next = XmPushButton;
-                                      }
                                 }
-                          }
-                          {
-                            Edit = XmCascadeButton;
-                          }
-                          {
-                            View = XmCascadeButton;
-                          }
-                          {
-                            Reports = XmCascadeButton;
-                          }
-                          {
-                            Utilities = XmCascadeButton : mgiMenu;
-                          }
-                          {
-                            Help = XmCascadeButton;
                           }
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = XmForm : MGI;
+                            EditForm = EditForm : MGI;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
                                   Name = CharText : mgiDataTypes;
@@ -491,7 +325,7 @@ Module: GXD
                                           labelString = Name;
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           columns = 85;
                                         Group: User
@@ -596,25 +430,25 @@ Module: GXD
                                   Group: User
                                     tableID = 200;
                                       {
-                                        ObjectID = XmXrtAligner;
+                                        ObjectID = ID;
                                             {
                                               label = XmLabel;
                                             }
                                             {
-                                              text = XmTextField;
+                                              text = text;
                                               Group: Widget
                                                 valueChangedCallback = "D:SetModify\nD:DisplayMolecularSource";
                                             }
                                       }
                                       {
-                                        AccessionID = XmXrtAligner;
+                                        AccessionID = CharText;
                                             {
                                               label = XmLabel;
                                               Group: Widget
                                                 labelString = "Antigen Accession ID";
                                             }
                                             {
-                                              text = XmTextField;
+                                              text = text;
                                               Group: Widget
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -622,14 +456,14 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                       {
-                                        AccessionName = XmXrtAligner : mgiDataTypes;
+                                        AccessionName = CharText : mgiDataTypes;
                                             {
                                               label = XmLabel;
                                               Group: Widget
                                                 labelString = "Antigen Name";
                                             }
                                             {
-                                              text = XmTextField;
+                                              text = text;
                                               Group: Widget
                                                 columns = 40;
                                             }
@@ -647,43 +481,34 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Strain = XmRowColumn;
+                                        Strain = Strain;
                                       }
                                       {
-                                        Tissue = XmRowColumn;
+                                        Tissue = Tissue;
                                       }
                                       {
-                                        Description = XmXrtAligner;
+                                        Description = CharText;
                                       }
                                       {
-                                        CellLine = XmXrtAligner;
+                                        CellLine = CharText;
                                       }
                                       {
-                                        AgeMenu = XmOptionMenu;
+                                        AgeMenu = AgeMenu;
                                       }
                                       {
-                                        Age = XmXrtAligner;
+                                        Age = CharText;
                                       }
                                       {
-                                        AgeMin = XmXrtAligner;
+                                        AgeMin = ID;
                                       }
                                       {
-                                        AgeMax = XmXrtAligner;
+                                        AgeMax = ID;
                                       }
                                       {
-                                        SexMenu = XmOptionMenu;
+                                        SexMenu = SexMenu;
                                       }
                                       {
-                                        SpeciesMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        SourceID = XmXrtAligner : mgiDataTypes;
-                                      }
-                                      {
-                                        Library = XmXrtAligner : mgiDataTypes;
-                                      }
-                                      {
-                                        mgiCitation = XmRowColumn : mgiDataTypes;
+                                        SpeciesMenu = SpeciesMenu;
                                       }
                                 }
                                 {
@@ -700,7 +525,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = SourceForm;
                                     leftOffset = 5;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblColumnLabels = "Mode,Current Key,New Key,Marker,Chr";
@@ -717,12 +542,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = Markers;
                                             }
                                       }
-                                      {
-                                        AddRow = XmPushButton;
-                                      }
-                                      {
-                                        DeleteRow = XmPushButton;
-                                      }
                                 }
                                 {
                                   Alias = TableLabel : mgiTable;
@@ -736,7 +555,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumColumns = 6;
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
@@ -751,12 +570,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = Aliases;
                                             }
                                       }
-                                      {
-                                        AddRow = XmPushButton;
-                                      }
-                                      {
-                                        DeleteRow = XmPushButton;
-                                      }
                                 }
                                 {
                                   AntibodyNote = mgiNote : mgiDataTypes;
@@ -769,10 +582,10 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     rightOffset = 10;
                                       {
-                                        Note = XmXrtAligner;
+                                        Note = Notes;
                                       }
                                       {
-                                        NotePush = XmPushButton;
+                                        NotePush = NotePush;
                                         Group: Widget
                                           labelString = "Antibody Notes";
                                       }
@@ -789,10 +602,10 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     rightWidget = AntibodyNote;
                                       {
-                                        Note = XmXrtAligner;
+                                        Note = Notes;
                                       }
                                       {
-                                        NotePush = XmPushButton;
+                                        NotePush = NotePush;
                                         Group: Widget
                                           labelString = "Antigen Recognition Notes";
                                       }
@@ -800,174 +613,80 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      Control = XmFrame;
+                      Control = Control;
                           {
                             ControlForm = XmForm;
                                 {
-                                  Search = XmPushButton;
+                                  Search = ControlPush;
                                 }
                                 {
-                                  Clear = XmPushButton;
+                                  Clear = ControlPush;
                                   Group: Widget
                                     activateCallback = "D:Clear(clearLists = 3)";
-                                }
-                                {
-                                  Modify = XmPushButton;
-                                }
-                                {
-                                  Add = XmPushButton;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
-                                {
-                                  Previous = XmArrowButton;
-                                }
-                                {
-                                  Next = XmArrowButton;
-                                }
-                                {
-                                  Clear1 = XmMenuBar;
-                                }
-                                {
-                                  RecordCount = XmXrtAligner;
-                                }
-                                {
-                                  CreationDate = XmXrtAligner : mgiDataTypes;
-                                }
-                                {
-                                  ModifiedDate = XmXrtAligner : mgiDataTypes;
                                 }
                           }
                     }
                     {
-                      Lookup = XmFrame;
+                      Lookup = Lookup;
                           {
                             panedWindow = XmPanedWindow;
                                 {
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = TablePush;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = TablePush;
                                       }
                                       {
-                                        AccSourceMenu = XmOptionMenu;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: User
                                           defaultOption = ATCC;
                                             Popups:
                                             {
-                                              AccSourcePulldown = XmPulldownMenu;
+                                              AccSourcePulldown = OptionPulldown;
                                                   {
-                                                    MGI = XmToggleButton;
+                                                    MGI = AccToggle;
                                                   }
                                                   {
-                                                    J = XmToggleButton;
+                                                    J = AccToggle;
                                                   }
                                                   {
-                                                    Medline = XmToggleButton;
+                                                    Medline = AccToggle;
                                                   }
                                                   {
-                                                    EC = XmToggleButton;
+                                                    EC = AccToggle;
                                                   }
                                                   {
-                                                    SWISSPROT = XmToggleButton;
+                                                    SWISSPROT = AccToggle;
                                                   }
                                                   {
-                                                    dbEST = XmToggleButton;
+                                                    dbEST = AccToggle;
                                                   }
                                                   {
-                                                    WashU = XmToggleButton;
+                                                    WashU = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = XmToggleButton;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = XmToggleButton;
+                                                    Sequence = AccToggle;
                                                   }
                                                   {
-                                                    SequencePID = XmToggleButton : mgiOption;
+                                                    SequencePID = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    ATCC = XmToggleButton;
+                                                    ATCC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    MRK = XmToggleButton;
-                                                  }
-                                                  {
-                                                    MGIImage = XmToggleButton : mgiOption;
-                                                  }
-                                                  {
-                                                    CREX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    HYEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    INEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    FSEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    RIEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    TEXT = XmToggleButton;
-                                                  }
-                                                  {
-                                                    TXEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    PMEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    E = XmToggleButton;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
                                 }
-                                {
-                                  QueryList = XmForm;
-                                }
                           }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = XmWarningDialog;
-                    }
-                    {
-                      DeleteDialog = XmQuestionDialog;
-                    }
-                    {
-                      ReportDialog = XmFormDialog;
-                    }
-                    {
-                      SearchDialog = XmWorkingDialog;
-                    }
-                    {
-                      WhichItem = XmFormDialog;
-                    }
-                    {
-                      VerifyItemAdd = XmQuestionDialog;
-                    }
-                    {
-                      WorkingDialog = XmWorkingDialog;
-                    }
-                    {
-                      NoteDialog = XmFormDialog : mgiDialog;
                     }
               }
         }
@@ -985,66 +704,51 @@ Shift<Key>Tab: prev-tab-group()
                 Group: Widget
                   height = 775;
                     {
-                      MainMenu = XmMenuBar;
+                      MainMenu = MainMenu;
                           {
-                            File = XmCascadeButton;
+                            File = File;
                           }
                           {
-                            Commands = XmCascadeButton;
+                            Commands = Commands;
                                 Popups:
                                 {
-                                  CommandsPulldown = XmPulldownMenu;
+                                  CommandsPulldown = MenuPulldown;
                                       {
-                                        Search = XmPushButton;
+                                        Search = MenuPush;
                                       }
                                       {
-                                        Modify = XmPushButton;
+                                        Modify = MenuPush;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = MenuPush;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = MenuPush;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = XmPushButton;
+                                        Clear = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:AssayClear()";
-                                      }
-                                      {
-                                        Clear1 = XmPushButton;
-                                      }
-                                      {
-                                        Clear2 = XmPushButton;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = XmPushButton;
-                                      }
-                                      {
-                                        Next = XmPushButton;
                                       }
                                 }
                           }
                           {
-                            Edit = XmCascadeButton;
+                            Edit = Edit;
                           }
                           {
-                            View = XmCascadeButton;
+                            View = View;
                           }
                           {
-                            Reports = XmCascadeButton;
+                            Reports = MenuCascade;
                           }
                           {
-                            Utilities = XmCascadeButton : mgiMenu;
+                            Utilities = Utilities : mgiMenu;
                                 Popups:
                                 {
-                                  UtilitiesPulldown = XmPulldownMenu;
+                                  UtilitiesPulldown = MenuPulldown;
                                       {
                                         Transfer = MenuPush : mgiMenu;
                                         Group: Widget
@@ -1053,18 +757,15 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            Help = XmCascadeButton;
-                          }
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = XmForm : MGI;
+                            EditForm = EditForm : MGI;
                             Group: Widget
                               width = 800;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
                                   mgiCitation = mgiCitation : mgiDataTypes;
@@ -1077,23 +778,20 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        ObjectID = XmXrtAligner;
+                                        ObjectID = ID;
                                       }
                                       {
-                                        Jnum = XmXrtAligner;
+                                        Jnum = Jnum;
                                             {
                                               label = XmLabel;
                                             }
                                             {
-                                              text = XmTextField;
+                                              text = text;
                                               Group: Widget
                                                 translations = "#override
  Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyReference() InitImagePane()";
                                             }
-                                      }
-                                      {
-                                        Citation = XmXrtAligner;
                                       }
                                 }
                                 {
@@ -1121,15 +819,15 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     topOffset = "-10";
                                       {
-                                        ObjectID = XmXrtAligner;
+                                        ObjectID = ID;
                                       }
                                       {
-                                        Marker = XmXrtAligner;
+                                        Marker = CharText;
                                             {
                                               label = XmLabel;
                                             }
                                             {
-                                              text = XmTextField;
+                                              text = text;
                                               Group: Widget
                                                 userDefinedAttributes = "verifyAccessionID:Widget\n";
                                                 translations = "#override
@@ -1152,10 +850,10 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Note = XmXrtAligner;
+                                        Note = Notes;
                                       }
                                       {
-                                        NotePush = XmPushButton;
+                                        NotePush = NotePush;
                                         Group: Widget
                                           labelString = "Assay Notes";
                                       }
@@ -1224,28 +922,28 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      Control = XmFrame;
+                      Control = Control;
                           {
                             ControlForm = XmForm;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  Search = XmPushButton;
+                                  Search = ControlPush;
                                 }
                                 {
-                                  Clear = XmPushButton;
+                                  Clear = ControlPush;
                                   Group: Widget
                                     activateCallback = "D:AssayClear()";
                                 }
                                 {
-                                  Modify = XmPushButton;
+                                  Modify = ControlPush;
                                 }
                                 {
-                                  Add = XmPushButton;
+                                  Add = ControlPush;
                                 }
                                 {
-                                  Delete = XmPushButton;
+                                  Delete = ControlPush;
                                 }
                                 {
                                   Duplicate = ControlPush : mgiControl;
@@ -1262,16 +960,16 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                 }
                                 {
-                                  Previous = XmArrowButton;
+                                  Previous = ControlArrow;
                                 }
                                 {
-                                  Next = XmArrowButton;
+                                  Next = ControlArrow;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
-                                  RecordCount = XmXrtAligner;
+                                  RecordCount = RecordCount;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Duplicate;
@@ -1282,33 +980,27 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
-                                {
-                                  CreationDate = XmXrtAligner : mgiDataTypes;
-                                }
-                                {
-                                  ModifiedDate = XmXrtAligner : mgiDataTypes;
-                                }
                           }
                     }
                     {
-                      Lookup = XmFrame;
+                      Lookup = Lookup;
                           {
                             panedWindow = XmPanedWindow;
                                 {
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 1;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = TablePush;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = TablePush;
                                       }
                                       {
-                                        AccSourceMenu = XmOptionMenu;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: Widget
                                           managed = False;
                                         Group: User
@@ -1316,12 +1008,12 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  QueryList = XmForm;
+                                  QueryList = QueryList;
                                       {
-                                        Label = XmPushButton;
+                                        Label = LookupLabel;
                                       }
                                       {
-                                        List = XmScrolledList;
+                                        List = list;
                                         Group: Widget
                                           visibleItemCount = 8;
                                       }
@@ -1332,102 +1024,72 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   CVGel = CVGel : mgiOption;
                                       {
-                                        StructureList = XmForm : mgiLookup;
+                                        StructureList = StructureList : mgiLookup;
                                             {
-                                              Label = XmPushButton;
+                                              Label = LookupLabel;
                                             }
                                             {
-                                              List = XmScrolledList;
+                                              List = list;
                                               Group: User
                                                 targetWidget = GelLane;
                                             }
-                                      }
-                                      {
-                                        GenotypePush = XmPushButton;
-                                      }
-                                      {
-                                        GelControlMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        GelRNATypeMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        AgeMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        SexMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        GelUnitsMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        StrengthMenu = XmOptionMenu;
-                                      }
-                                      {
-                                        CVMenu = XmRowColumn : mgiOption;
                                       }
                                 }
                           }
                     }
                     Popups:
                     {
-                      StatusDialog = XmWarningDialog;
+                      StatusDialog = StatusDialog;
                     }
                     {
-                      DeleteDialog = XmQuestionDialog;
+                      DeleteDialog = DeleteDialog;
                     }
                     {
-                      ReportDialog = XmFormDialog;
+                      ReportDialog = ReportDialog;
                     }
                     {
-                      SearchDialog = XmWorkingDialog;
+                      SearchDialog = SearchDialog;
                     }
                     {
-                      WhichItem = XmFormDialog;
+                      WhichItem = WhichItem;
                     }
                     {
-                      VerifyItemAdd = XmQuestionDialog;
+                      VerifyItemAdd = VerifyItemAdd;
                     }
                     {
-                      WorkingDialog = XmWorkingDialog;
+                      WorkingDialog = WorkingDialog;
                     }
                     {
-                      NoteDialog = XmFormDialog : mgiDialog;
+                      NoteDialog = NoteDialog : mgiDialog;
                     }
                     {
                       GenotypeDialog = GenotypeDialog : mgiDialog;
                           {
-                            EditForm = XmForm : MGI;
+                            EditForm = EditForm : MGI;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
-                                  Strain = XmRowColumn : mgiDataTypes;
+                                  Strain = Strain : mgiDataTypes;
                                 }
                                 {
-                                  AllelePair = XmForm : mgiTable;
+                                  AllelePair = TableLabel : mgiTable;
                                 }
                                 {
-                                  AlleleName = XmXrtAligner : mgiDataTypes;
+                                  AlleleName = CharText : mgiDataTypes;
                                       {
                                         label = XmLabel;
                                         Group: Widget
                                           labelString = "Allele Name";
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           columns = 50;
                                         Group: User
                                           defaultValue = "allele name in progress";
                                       }
                                 }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = XmRowColumn;
                           }
                     }
                     {
@@ -1442,7 +1104,7 @@ Shift<Key>Tab: prev-tab-group()
                             frame = XmFrame;
                           }
                           {
-                            Marker = XmForm;
+                            Marker = Table;
                           }
                           {
                             manualFrame = XmFrame;
@@ -1454,22 +1116,12 @@ Shift<Key>Tab: prev-tab-group()
                             Lookup = XmFrame;
                           }
                           {
-                            Buttons = XmRowColumn;
+                            Buttons = Buttons;
                                 {
-                                  OK = XmPushButton;
+                                  OK = DialogPush;
                                   Group: Widget
                                     sensitive = False;
                                 }
-                                {
-                                  Cancel = XmPushButton;
-                                }
-                          }
-                          Popups:
-                          {
-                            WhichItem = XmFormDialog;
-                          }
-                          {
-                            VerifyTransferDialog = XmQuestionDialog;
                           }
                     }
               }
@@ -1483,7 +1135,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 175;
             vip_y = 85;
               {
-                PrepID : ID = XmXrtAligner;
+                PrepID : ID = ID;
               }
               {
                 label = XmLabel;
@@ -1574,17 +1226,17 @@ Shift<Key>Tab: prev-tab-group()
                 Group: User
                   tableID = 135;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      AccessionID = XmXrtAligner;
+                      AccessionID = CharText;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "Probe Accession ID";
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -1594,14 +1246,11 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AccessionName = XmXrtAligner;
+                      AccessionName = CharText;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "Probe Name";
-                          }
-                          {
-                            text = XmTextField;
                           }
                     }
               }
@@ -1621,7 +1270,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "Probe Holder";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 20;
                         maxLength = 40;
@@ -1636,7 +1285,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 175;
             vip_y = 140;
               {
-                PrepID : ID = XmXrtAligner;
+                PrepID : ID = ID;
               }
               {
                 label = XmLabel;
@@ -1692,17 +1341,17 @@ Shift<Key>Tab: prev-tab-group()
                 Group: User
                   tableID = 201;
                     {
-                      ObjectID = XmXrtAligner;
+                      ObjectID = ID;
                     }
                     {
-                      AccessionID = XmXrtAligner;
+                      AccessionID = CharText;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "Primary Antibody \nAccession ID";
                           }
                           {
-                            text = XmTextField;
+                            text = text;
                             Group: Widget
                               translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -1710,14 +1359,11 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AccessionName = XmXrtAligner;
+                      AccessionName = CharText;
                           {
                             label = XmLabel;
                             Group: Widget
                               labelString = "Antibody Name";
-                          }
-                          {
-                            text = XmTextField;
                           }
                     }
               }
@@ -1733,7 +1379,7 @@ Shift<Key>Tab: prev-tab-group()
               {
                 Specimen = TableLabel : mgiTable;
                     {
-                      Table = XtXrtTable;
+                      Table = mgiTable;
                       Group: Widget
                         xrtTblColumnLabels = "Mode,Specimen Key,Geno Key,Age Key,Age Min, Age Max,Sex key,Fix Key,Embed Key,Hybrid Key,Specimen Label,Genotype,Age,Age Range,Age Note,Sex,Fixation,Embedding,Hybridization,Results,Notes";
                         xrtTblNumColumns = 21;
@@ -1753,12 +1399,6 @@ Shift<Key>Tab: prev-tab-group()
                               labelString = Specimen;
                           }
                     }
-                    {
-                      AddRow = XmPushButton;
-                    }
-                    {
-                      DeleteRow = XmPushButton;
-                    }
               }
         }
         {
@@ -1771,77 +1411,47 @@ Shift<Key>Tab: prev-tab-group()
               {
                 MainForm = XmForm;
                     {
-                      MainMenu = XmMenuBar;
+                      MainMenu = MainMenu;
                           {
-                            File = XmCascadeButton;
+                            File = File;
                           }
                           {
-                            Commands = XmCascadeButton;
+                            Commands = Commands;
                                 Popups:
                                 {
-                                  CommandsPulldown = XmPulldownMenu;
+                                  CommandsPulldown = MenuPulldown;
                                       {
-                                        Search = XmPushButton;
+                                        Search = MenuPush;
                                       }
                                       {
-                                        Modify = XmPushButton;
+                                        Modify = MenuPush;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = MenuPush;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = MenuPush;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = XmPushButton;
+                                        Clear = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearLists = 3)";
                                       }
-                                      {
-                                        Clear1 = XmPushButton;
-                                      }
-                                      {
-                                        Clear2 = XmPushButton;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = XmPushButton;
-                                      }
-                                      {
-                                        Next = XmPushButton;
-                                      }
                                 }
-                          }
-                          {
-                            Edit = XmCascadeButton;
-                          }
-                          {
-                            View = XmCascadeButton;
-                          }
-                          {
-                            Reports = XmCascadeButton;
-                          }
-                          {
-                            Utilities = XmCascadeButton : mgiMenu;
-                          }
-                          {
-                            Help = XmCascadeButton;
                           }
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = XmForm : MGI;
+                            EditForm = EditForm : MGI;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
                                   mgiCitation = mgiCitation : mgiDataTypes;
@@ -1871,7 +1481,7 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "X Dimension";
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           editable = False;
                                       }
@@ -1893,7 +1503,7 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "Y Dimension";
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           editable = False;
                                       }
@@ -1915,7 +1525,7 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "Figure Label";
                                       }
                                       {
-                                        text = XmTextField;
+                                        text = text;
                                         Group: Widget
                                           columns = 85;
                                         Group: User
@@ -1941,7 +1551,7 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "Image Notes";
                                       }
                                       {
-                                        text = XmScrolledText;
+                                        text = scrolledText;
                                         Group: Widget
                                           columns = 100;
                                           rows = 10;
@@ -1966,7 +1576,7 @@ Shift<Key>Tab: prev-tab-group()
                                           labelString = "Copyright Notes";
                                       }
                                       {
-                                        text = XmScrolledText;
+                                        text = scrolledText;
                                         Group: Widget
                                           columns = 100;
                                           rows = 2;
@@ -1987,7 +1597,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomOffset = 5;
                                     leftWidget = xDim;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblCharWidthSeries = "(all 0 1) (all 3 30) (all 4 25)";
@@ -2005,165 +1615,99 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Image Panes";
                                             }
                                       }
-                                      {
-                                        AddRow = XmPushButton;
-                                      }
-                                      {
-                                        DeleteRow = XmPushButton;
-                                      }
                                 }
                           }
                     }
                     {
-                      Control = XmFrame;
+                      Control = Control;
                           {
                             ControlForm = XmForm;
                                 {
-                                  Search = XmPushButton;
+                                  Search = ControlPush;
                                 }
                                 {
-                                  Clear = XmPushButton;
+                                  Clear = ControlPush;
                                   Group: Widget
                                     activateCallback = "D:Clear(clearLists = 3)";
-                                }
-                                {
-                                  Modify = XmPushButton;
-                                }
-                                {
-                                  Add = XmPushButton;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
-                                {
-                                  Previous = XmArrowButton;
-                                }
-                                {
-                                  Next = XmArrowButton;
-                                }
-                                {
-                                  Clear1 = XmMenuBar;
-                                }
-                                {
-                                  RecordCount = XmXrtAligner;
-                                }
-                                {
-                                  CreationDate = XmXrtAligner;
-                                }
-                                {
-                                  ModifiedDate = XmXrtAligner;
                                 }
                           }
                     }
                     {
-                      Lookup = XmFrame;
+                      Lookup = Lookup;
                           {
                             panedWindow = XmPanedWindow;
                                 {
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                       }
                                       {
-                                        Add = XmPushButton;
+                                        Add = TablePush;
                                       }
                                       {
-                                        Delete = XmPushButton;
+                                        Delete = TablePush;
                                       }
                                       {
-                                        AccSourceMenu = XmOptionMenu;
+                                        AccSourceMenu = AccSourceMenu;
                                         Group: User
                                           defaultOption = MGIImage;
                                             Popups:
                                             {
-                                              AccSourcePulldown = XmPulldownMenu;
+                                              AccSourcePulldown = OptionPulldown;
                                                   {
-                                                    MGI = XmToggleButton;
+                                                    MGI = AccToggle;
                                                   }
                                                   {
-                                                    J = XmToggleButton;
+                                                    J = AccToggle;
                                                   }
                                                   {
-                                                    Medline = XmToggleButton;
+                                                    Medline = AccToggle;
                                                   }
                                                   {
-                                                    EC = XmToggleButton;
+                                                    EC = AccToggle;
                                                   }
                                                   {
-                                                    SWISSPROT = XmToggleButton;
+                                                    SWISSPROT = AccToggle;
                                                   }
                                                   {
-                                                    dbEST = XmToggleButton;
+                                                    dbEST = AccToggle;
                                                   }
                                                   {
-                                                    WashU = XmToggleButton;
+                                                    WashU = AccToggle;
                                                   }
                                                   {
-                                                    IMAGE = XmToggleButton;
+                                                    IMAGE = AccToggle;
                                                   }
                                                   {
-                                                    Sequence = XmToggleButton;
+                                                    Sequence = AccToggle;
                                                   }
                                                   {
-                                                    SequencePID = XmToggleButton : mgiOption;
+                                                    SequencePID = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    ATCC = XmToggleButton;
+                                                    ATCC = AccToggle;
                                                   }
                                                   {
-                                                    MRK = XmToggleButton;
+                                                    MRK = AccToggle;
                                                   }
                                                   {
-                                                    MGIImage = XmToggleButton : mgiOption;
+                                                    MGIImage = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    CREX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    HYEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    INEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    FSEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    RIEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    TEXT = XmToggleButton;
-                                                  }
-                                                  {
-                                                    TXEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    PMEX = XmToggleButton;
-                                                  }
-                                                  {
-                                                    E = XmToggleButton;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RATMAP = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
                                 }
                                 {
-                                  QueryList = XmForm;
+                                  QueryList = QueryList;
                                 }
                                 {
                                   CVImage = CVImage : mgiOption;
                                       {
-                                        FieldTypeMenu = XmOptionMenu;
+                                        FieldTypeMenu = FieldTypeMenu;
                                             Popups:
                                             {
-                                              FieldTypePulldown = XmPulldownMenu;
+                                              FieldTypePulldown = OptionPulldown;
                                               Group: User
                                                 tableOptionKey = 2;
                                                 tableOption = 3;
@@ -2172,31 +1716,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = XmWarningDialog;
-                    }
-                    {
-                      DeleteDialog = XmQuestionDialog;
-                    }
-                    {
-                      ReportDialog = XmFormDialog;
-                    }
-                    {
-                      SearchDialog = XmWorkingDialog;
-                    }
-                    {
-                      WhichItem = XmFormDialog;
-                    }
-                    {
-                      VerifyItemAdd = XmQuestionDialog;
-                    }
-                    {
-                      WorkingDialog = XmWorkingDialog;
-                    }
-                    {
-                      NoteDialog = XmFormDialog;
                     }
               }
         }
@@ -2223,7 +1742,7 @@ Shift<Key>Tab: prev-tab-group()
                 Group: User
                   cmd = "select _ImagePane_key, paneLabel from IMG_ImagePaneRef_View where _Refs_key =";
                     {
-                      Label = XmPushButton;
+                      Label = LookupLabel;
                       Group: Widget
                         labelString = "0 Image Panes";
                         activateCallback = "D:InitImagePane";
@@ -2231,7 +1750,7 @@ Shift<Key>Tab: prev-tab-group()
                         defaultLabel = "Image Panes";
                     }
                     {
-                      List = XmScrolledList;
+                      List = list;
                       Group: Widget
                         visibleItemCount = 2;
                         scrollBarDisplayPolicy = as_needed;
@@ -2252,7 +1771,7 @@ Shift<Key>Tab: prev-tab-group()
                   leftOffset = 5;
                   topWidget = ImagePaneList;
                     {
-                      Table = XtXrtTable;
+                      Table = mgiTable;
                       Group: Widget
                         xrtTblNumColumns = 22;
                         xrtTblColumnLabels = "Mode,Gel Lane Key,Control Key,Genotype key,Structure Key,RNA Key,Age Key,Age Min,Age Max,Sex Key,Lane,Label,Control,Genotype,Structures,Sample Amt,RNA,Age,Age Range,Age Note,Sex,Notes";
@@ -2273,10 +1792,10 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AddRow = XmPushButton;
+                      AddRow = TablePush;
                     }
                     {
-                      DeleteRow = XmPushButton;
+                      DeleteRow = TablePush;
                     }
                     {
                       CopyColumn = TablePush : mgiTable;
@@ -2308,7 +1827,7 @@ Shift<Key>Tab: prev-tab-group()
                   leftWidget = GelLane;
                   bottomOffset = 5;
                     {
-                      Table = XtXrtTable;
+                      Table = mgiTable;
                       Group: Widget
                         xrtTblNumColumns = 7;
                         xrtTblEditableSeries = "(all 0-3 False) (all 5-6 False)";
@@ -2333,10 +1852,10 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      AddRow = XmPushButton;
+                      AddRow = TablePush;
                     }
                     {
-                      DeleteRow = XmPushButton;
+                      DeleteRow = TablePush;
                     }
                     {
                       DeleteBand = TablePush : mgiTable;
@@ -2366,17 +1885,17 @@ Shift<Key>Tab: prev-tab-group()
               {
                 MainForm = XmForm;
                     {
-                      MainMenu = XmMenuBar;
+                      MainMenu = MainMenu;
                     }
                     {
                       Edit = XmFrame;
                           {
-                            EditForm = XmForm : MGI;
+                            EditForm = EditForm : MGI;
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {
-                                  ID = XmXrtAligner;
+                                  ID = ID;
                                 }
                                 {
                                   mgiMarker = mgiMarker : mgiDataTypes;
@@ -2418,7 +1937,7 @@ Shift<Key>Tab: prev-tab-group()
                                         label = XmLabel;
                                       }
                                       {
-                                        text = XmScrolledText;
+                                        text = scrolledText;
                                         Group: Widget
                                           columns = 75;
                                           rows = 2;
@@ -2438,7 +1957,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     rightOffset = 5;
                                       {
-                                        Table = XtXrtTable;
+                                        Table = mgiTable;
                                         Group: Widget
                                           xrtTblNumRows = 11;
                                           xrtTblVisibleRows = 11;
@@ -2461,48 +1980,17 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                       {
-                                        AddRow = XmPushButton;
+                                        AddRow = TablePush;
                                         Group: Widget
                                           managed = False;
                                       }
                                       {
-                                        DeleteRow = XmPushButton;
+                                        DeleteRow = TablePush;
                                         Group: Widget
                                           managed = False;
                                       }
                                 }
                           }
-                    }
-                    {
-                      Control = XmFrame;
-                    }
-                    {
-                      Lookup = XmFrame;
-                    }
-                    Popups:
-                    {
-                      StatusDialog = XmWarningDialog;
-                    }
-                    {
-                      DeleteDialog = XmQuestionDialog;
-                    }
-                    {
-                      ReportDialog = XmFormDialog;
-                    }
-                    {
-                      SearchDialog = XmWorkingDialog;
-                    }
-                    {
-                      WhichItem = XmFormDialog;
-                    }
-                    {
-                      VerifyItemAdd = XmQuestionDialog;
-                    }
-                    {
-                      WorkingDialog = XmWorkingDialog;
-                    }
-                    {
-                      NoteDialog = XmFormDialog;
                     }
               }
         }
@@ -2527,9 +2015,9 @@ Shift<Key>Tab: prev-tab-group()
                             File = File : mgiMenu;
                                 Popups:
                                 {
-                                  FilePulldown = XmPulldownMenu;
+                                  FilePulldown = MenuPulldown;
                                       {
-                                        Exit = XmPushButton;
+                                        Exit = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:ExitApplication";
                                       }
@@ -2608,10 +2096,10 @@ Shift<Key>Tab: prev-tab-group()
               }
               Popups:
               {
-                StatusDialog = XmWarningDialog;
+                StatusDialog = StatusDialog;
               }
               {
-                WorkingDialog = XmWorkingDialog;
+                WorkingDialog = WorkingDialog;
               }
               {
                 StrainDialog = StrainDialog : mgiDialog;

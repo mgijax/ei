@@ -2,8 +2,8 @@ Module: mgiLookup
 {
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Mar  2 08:52:01 1999";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Tue Aug 31 14:21:00 1999";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -56,7 +56,7 @@ Module: mgiLookup
             vip_x = 60;
             vip_y = 195;
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = "0 Search Results";
                 Group: Constraint
@@ -69,7 +69,7 @@ Module: mgiLookup
                   defaultLabel = "Search Results";
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   visibleItemCount = 10;
                   singleSelectionCallback = "D:NoteInit(commit = false),\nD:Select,\nD:GoHome";
@@ -109,14 +109,14 @@ Module: mgiLookup
           Group: User
             cmd = "select -1, name = \"Anonymous\"\nselect _Source_key, name from PRB_Source\nwhere name is not null and name != \"Anonymous\" and _Source_key > 0\norder by name";
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = "0 Libraries";
                 Group: User
                   defaultLabel = Libraries;
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   items = Anonymous;
                   singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayMolecularSource";
@@ -135,7 +135,7 @@ Module: mgiLookup
             vip_x = 60;
             vip_y = 360;
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = "Anatomical Structures";
                   activateCallback = "D:LoadStructureList";
@@ -143,7 +143,7 @@ Module: mgiLookup
                   defaultLabel = "Anatomical Structures";
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   selectionPolicy = multiple_select;
                   multipleSelectionCallback = "D:SelectStructure";
@@ -158,14 +158,14 @@ Module: mgiLookup
           Group: User
             cmd = "select * from MRK_Class order by name";
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = Classes;
                 Group: User
                   defaultLabel = Classes;
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
               }
@@ -178,14 +178,14 @@ Module: mgiLookup
           Group: User
             cmd = "select * from HMD_Assay where _Assay_key != 15 order by assay";
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = "Homology Assays";
                 Group: User
                   defaultLabel = "Homology Assays";
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
               }
@@ -198,14 +198,14 @@ Module: mgiLookup
           Group: User
             cmd = "select _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key <= 2 order by _Species_key\nselect _Species_key, name + ' (' + species + ')' from MRK_Species where _Species_key > 2 order by name\n";
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = Species;
                 Group: User
                   defaultLabel = Species;
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
               }
@@ -216,14 +216,14 @@ Module: mgiLookup
             vip_x = 60;
             vip_y = 580;
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = "0 Primary Markers";
                 Group: User
                   defaultLabel = "Primary Markers";
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
               }
@@ -236,14 +236,14 @@ Module: mgiLookup
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = Assays;
                 Group: User
                   defaultLabel = Assays;
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
               }
@@ -256,14 +256,14 @@ Module: mgiLookup
           Group: User
             cmd = "select * from nomen..MRK_GeneFamily order by name";
               {
-                Label = XmPushButton;
+                Label = LookupLabel;
                 Group: Widget
                   labelString = "0 Gene Families";
                 Group: User
                   defaultLabel = "Gene Families";
               }
               {
-                List = XmScrolledList;
+                List = list;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
                 Group: User

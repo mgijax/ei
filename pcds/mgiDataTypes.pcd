@@ -1,8 +1,8 @@
 Module: mgiDataTypes
 {
       autoCuil = False;
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Fri Aug  6 08:04:45 1999";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Tue Aug 31 14:21:14 1999";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -164,7 +164,7 @@ Shift<Key>Tab: prev-tab-group()
                   managed = False;
               }
               {
-                text = XmTextField;
+                text = text;
                 Group: Widget
                   inTabGroup = False;
                   traversalOn = False;
@@ -183,7 +183,7 @@ Shift<Key>Tab: prev-tab-group()
                   labelString = "J:";
               }
               {
-                text = XmTextField;
+                text = text;
                 Group: Widget
                   maxLength = 50;
                 Group: User
@@ -207,7 +207,7 @@ Shift<Key>Tab: prev-tab-group()
                   labelString = Citation;
               }
               {
-                text = XmTextField;
+                text = text;
                 Group: Widget
                   maxLength = 255;
                   columns = 75;
@@ -228,7 +228,7 @@ Shift<Key>Tab: prev-tab-group()
                   labelString = Date;
               }
               {
-                text = XmTextField;
+                text = text;
                 Group: Widget
                   columns = 10;
                   maxLength = 30;
@@ -247,7 +247,7 @@ Shift<Key>Tab: prev-tab-group()
                   labelString = "Created\n(MM/DD/YYYY)";
               }
               {
-                text = XmTextField;
+                text = text;
                 Group: Widget
                   inTabGroup = False;
               }
@@ -265,7 +265,7 @@ Shift<Key>Tab: prev-tab-group()
                   labelString = "Modified\n(MM/DD/YYYY)";
               }
               {
-                text = XmTextField;
+                text = text;
                 Group: Widget
                   inTabGroup = False;
               }
@@ -280,24 +280,24 @@ Shift<Key>Tab: prev-tab-group()
             verifyTable = 323;
             verifyKey = TissueID;
               {
-                TissueID : VerifyID = XmXrtAligner;
+                TissueID : VerifyID = ID;
                     {
                       label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: User
                         required = True;
                         defaultValue = "-1";
                     }
               }
               {
-                Verify = XmXrtAligner;
+                Verify = CharText;
                     {
                       Tissue : label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 50;
                     }
@@ -313,24 +313,24 @@ Shift<Key>Tab: prev-tab-group()
             verifyTable = 322;
             verifyKey = StrainID;
               {
-                StrainID : VerifyID = XmXrtAligner;
+                StrainID : VerifyID = ID;
                     {
                       label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: User
                         required = True;
                         defaultValue = "-1";
                     }
               }
               {
-                Verify = XmXrtAligner;
+                Verify = CharText;
                     {
                       Strain : label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 50;
                     }
@@ -347,7 +347,7 @@ Shift<Key>Tab: prev-tab-group()
                   labelString = "# Records";
               }
               {
-                text = XmTextField;
+                text = text;
                 Group: Widget
                   traversalOn = False;
                   editable = False;
@@ -420,7 +420,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = "MGI Accession ID";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 20;
                         maxLength = 20;
@@ -435,7 +435,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         inTabGroup = False;
                         columns = 20;
@@ -458,7 +458,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -492,17 +492,17 @@ Shift<Key>Tab: prev-tab-group()
           Group: User
             tableID = 113;
               {
-                ObjectID = XmXrtAligner;
+                ObjectID = ID;
               }
               {
-                Marker : CharText = XmXrtAligner;
+                Marker : CharText = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
                         labelString = Marker;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -621,21 +621,18 @@ Shift<Key>Tab: prev-tab-group()
             verifyChars = 3;
             verifyNotSpecified = False;
               {
-                Verify = XmXrtAligner;
+                Verify = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
                         labelString = Journal;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 95;
                         maxLength = 100;
                     }
-              }
-              {
-                VerifyID = XmXrtAligner;
               }
         }
         {
@@ -659,14 +656,14 @@ Shift<Key>Tab: prev-tab-group()
             verifyDialog = RIDialog;
             verifyKey = RIID;
               {
-                Verify = XmXrtAligner;
+                Verify = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
                         labelString = Designation;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 15;
                         translations = "#override
@@ -676,7 +673,7 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                RIID : VerifyID = XmXrtAligner;
+                RIID : VerifyID = ID;
               }
               {
                 Origin = CharText : mgiDataTypes;
@@ -686,7 +683,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Origin;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 25;
                         maxLength = 35;
@@ -700,7 +697,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Abbrev1;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 2;
                         maxLength = 4;
@@ -714,7 +711,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Abbrev2;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 2;
                         maxLength = 4;
@@ -731,17 +728,17 @@ Shift<Key>Tab: prev-tab-group()
             verifyKey = CrossID;
             verifyTable = 320;
               {
-                CrossID : VerifyID = XmXrtAligner;
+                CrossID : VerifyID = ID;
               }
               {
-                Verify = XmXrtAligner;
+                Verify = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
                         labelString = Cross;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 30;
                         translations = "#override
@@ -780,17 +777,17 @@ Shift<Key>Tab: prev-tab-group()
           Group: User
             tableID = 110;
               {
-                ObjectID = XmXrtAligner;
+                ObjectID = ID;
               }
               {
-                Species : CharText = XmXrtAligner;
+                Species : CharText = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
                         labelString = Species;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 50;
                         translations = "#override
@@ -813,17 +810,17 @@ Shift<Key>Tab: prev-tab-group()
           Group: User
             tableID = 115;
               {
-                ObjectID = XmXrtAligner;
+                ObjectID = ID;
               }
               {
-                Allele : CharText = XmXrtAligner;
+                Allele : CharText = CharText;
                     {
                       label = XmLabel;
                       Group: Widget
                         labelString = "Allele Symbol";
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         columns = 50;
                         maxLength = 50;
@@ -846,7 +843,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         maxLength = 255;
                         translations = "#override
@@ -869,7 +866,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = XmTextField;
+                      text = text;
                       Group: Widget
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Fri Aug 27 09:21:36 1999";
+      lastWritten = "Tue Aug 31 14:20:55 1999";
         {
           Reference = Module : MGI;
           Group: Widget
@@ -2293,8 +2293,8 @@ Module: MGD
                                                   }
                                                   {
                                                     EC = AccToggle;
-						    Group: Widget
-						      managed = True;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;

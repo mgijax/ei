@@ -2,8 +2,8 @@ Module: mgiMenu
 {
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
-      release = "TeleUSE v3.1 / Solaris 2.5";
-      lastWritten = "Tue Dec  8 14:01:46 1998";
+      release = "TeleUSE v3.2 / Solaris 2.6";
+      lastWritten = "Tue Aug 31 14:21:10 1999";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
