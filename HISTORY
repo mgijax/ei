@@ -1,3 +1,11 @@
+TAG: ei-9-0-16
+DATE: 11/03/2003
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) Verify.d; find correct AccID for Rat
+2) Molecular.d; clear Reference form 
+
 TAG: ei-9-0-15
 DATE: 10/31/2003
 STAFF: lec
