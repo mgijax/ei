@@ -116,7 +116,12 @@ def snapShot(markerKey):
 	# Generate the SQL report using the temp SQL file
 	args = 'sql.sh %s %s %s' % (db.get_sqlDatabase(), outFileName, os.environ['EIWITHDRAWALDIR'])
 	os.system(args)
-	os.unlink(outFileName)
+
+	# Remove the temp SQL file
+	try:
+		os.unlink(outFileName)
+	except:
+		pass
 
 #
 # Main
