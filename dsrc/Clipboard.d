@@ -368,13 +368,15 @@ rules:
 	  top : widget :=  table.top;
 	  reason : integer := ADClipboardSetItems.reason;
 	  row : integer := ADClipboardSetItems.row;
+	  form : widget := top->(table.clipboard);
+	  clipboard : widget := form->ADClipboard;
 
           if (reason != TBL_REASON_ENTER_CELL_END) then
             return;
           end if;
  
 	  ClipboardSetItems.table := table;
-	  ClipboardSetItems.clipboard := top->ADClipboard;
+	  ClipboardSetItems.clipboard := clipboard;
 	  ClipboardSetItems.row := row;
 	  ClipboardSetItems.column := table.structureKeys;
 	  ClipboardSetItems.reason := reason;

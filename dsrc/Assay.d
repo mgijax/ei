@@ -1153,7 +1153,7 @@ rules:
 
 	LoadClipboards does
 
-          ClipboardLoad.source_widget := top->ADClipboard->Label;
+          ClipboardLoad.source_widget := top->CVGel->ADClipboard->Label;
           send(ClipboardLoad, 0);
 
 	  if (assayDetailForm.name = "InSituForm") then
@@ -1637,7 +1637,7 @@ rules:
               ModifyStructure.key := "@" + keyName;
               ModifyStructure.row := row;
               send(ModifyStructure, 0);
-              cmd := cmd + top->ADClipboard.updateCmd;
+              cmd := cmd + top->CVGel->ADClipboard.updateCmd;
  
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
@@ -1671,7 +1671,7 @@ rules:
                 ModifyStructure.key := key;
                 ModifyStructure.row := row;
                 send(ModifyStructure, 0);
-                cmd := cmd + top->ADClipboard.updateCmd;
+                cmd := cmd + top->CVGel->ADClipboard.updateCmd;
    
 	      end if;
 
