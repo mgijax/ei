@@ -621,7 +621,8 @@ rules:
 	  if (noteWidget->NotePush != nil) then
 	    dialogWidget := top->(noteWidget->NotePush.dialogName);
 	    if (dialogWidget.managed) then
-	      dialogWidget->Note->text.value := noteWidget->text.value;
+	      dialogWidget->Note->text.value := dialogWidget->Note->text.value +
+		noteWidget->text.value;
 	    end if;
 	  end if;
 	end does;

@@ -1860,7 +1860,7 @@ rules:
 	  -- Select general Assay information
 
 	  select := "select * from GXD_Assay_View where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-		 "select assayNote from GXD_AssayNote " +
+		 "select rtrim(assayNote) from GXD_AssayNote " +
 			"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
 			"\norder by sequenceNum\n";
 
