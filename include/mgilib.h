@@ -178,8 +178,10 @@ extern char *global_version;
 #define BIB_REVIEW_STATUS	324
 #define MRK_GENEFAMILY		326
 #define MRK_EVENT		327
-#define MRK_STATUS		328
+#define MRK_NOMENSTATUS		328
 #define GXD_GELCONTROL		329
+#define MRK_EVENTREASON		330
+#define MRK_STATUS		331
 
 /* Accession Tables */
 
@@ -199,13 +201,12 @@ extern char *global_version;
 #define MRK_NOMEN_OTHER			505
 #define MRK_NOMEN_REFERENCE		506
 #define MRK_NOMEN_REFERENCE_VIEW	507
-#define MRK_NOMEN_MARKER_VIEW		509
-#define MRK_NOMEN_HOMOLOGY_VIEW		510
 #define MRK_NOMEN_GENEFAMILY_VIEW	511
 #define MRK_NOMEN_COORDNOTES		512
 #define MRK_NOMEN_EDITORNOTES		513
 #define MRK_NOMEN_ACC_REFERENCE		514
 #define MRK_NOMEN_USER_VIEW		515
+#define MRK_NOMEN_OTHER_VIEW		516
 
 /* MGI Admin Tables */
 
@@ -228,10 +229,32 @@ extern char *global_version;
 
 /* End of Table Definitions */
 
+/* Stored procedures */
+
+#define NOMEN_TRANSFERSYMBOL	1000
+#define NOMEN_TRANSFERBATCH	1001
+#define NOMEN_TRANSFERREF	1002
+
 #define	MOUSE		"1"
 #define HUMAN		"2"
 
 #define	STANDARD	"Wheat"
 #define	NONSTANDARD	"Red"
+
+/* keys of Marker Events (see MRK_Event table) */
+
+#define EVENT_ASSIGNED		"1"
+#define EVENT_WITHDRAWAL	"2"
+#define EVENT_MERGE		"3"
+#define EVENT_ALLELEOF		"4"
+#define EVENT_SPLIT		"5"
+#define EVENT_DELETED		"6"
+
+/* keys of Marker Status */
+
+#define STATUS_APPROVED		"1"
+#define STATUS_WITHDRAWN	"2"
+#define STATUS_RESERVED		"3"
+#define STATUS_BROADCAST	"5"
 
 #endif
