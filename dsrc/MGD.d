@@ -17,7 +17,7 @@ rules:
 
 	INITIALLY does
 	  global_application := "MGD";
-	  global_version := "v20.4";
+	  global_version := "v20.5";
 	  send(InitApplication, 0);
 	end does;
 
