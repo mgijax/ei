@@ -1,3 +1,10 @@
+TAG: ei-3-0-2
+DATE: 01/09/2001
+STAFF: lec
+RELEASE: A
+CHANGES: 
+1) Nomen.d/Modify - set ModifySQL.transaction = true
+
 TAG: ei-3-0-1
 DATE: 01/09/2001
 STAFF: lec
