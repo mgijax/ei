@@ -53,11 +53,11 @@ cmds = []
 cmds.append('select m._Marker_key, m.mgiID, m.symbol, m.name, m.chromosome ' +
       'into #markers ' +
       'from MRK_Mouse_View m ' +
-      'where m._Marker_Type_key in (1,10) ' +
+      'where m._Marker_Type_key = 1 ' +
       'union ' +
       'select m._Marker_key, mgiID = null, m.symbol, m.name, m.chromosome ' +
       'from MRK_Marker m ' +
-      'where m._Marker_Type_key in (1,10) ' +
+      'where m._Marker_Type_key = 1 ' +
       'and m._Species_key = 1 ' +
       'and m.chromosome = "W" ' +
       'and not exists (select a.* from MRK_Acc_View a where a._Object_key = m._Marker_key) ' +
