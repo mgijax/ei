@@ -1,27 +1,31 @@
 <HTML>
 <HEADER>
 <TITLE>
-MGI: NLM/CC Update
+MGI: NLM Update
 </TITLE>
 </HEADER>
 
 <BODY>
 
-<H2>MGI: NLM/CC Update</H2>
+<H2>MGI: NLM Update</H2>
 
 <H4>Introduction</H4>
-During initial entry of a Reference in MGD, only a minimum of information is entered.  The
-full reference information is updated on a regular basis from two external sources:
-<OL>
-<LI>National Library of Medicine (NLM)
-<LI>Current Contents (CC)
-</OL>
-ASCII data files containing full reference information from these sources are used to update
-the following Reference fields in MGD:
+Reference information is added to MGD in two ways:
+	<OL>
+	<LI>Manual add by data staff followed by automated update from NLM file.
+	<LI>Automated add from NLM file.
+	</OL>
+During manual entry of a Reference in MGD, only a minimum of information is entered.  The
+full reference information is updated on a regular basis from the National Library of Medicine (NLM).
+A Web version of NLM is maintained by NCBI/PubMed. This site provides an electronic interface to
+references and can be used to search and download files in MEDLINE format for processing.
+<P>
+The information from NLM/PubMed is used to add references to MGD or to update an existing MGD
+reference.  The following Reference fields in MGD are modified directly from NLM information:
 <OL>
 <LI>Authors
 <LI>Title
-<LI>Medline (NLM) Accession number
+<LI>Medline Accession number
 <LI>Abstract
 <LI>Date
 <LI>Volume
@@ -31,70 +35,37 @@ the following Reference fields in MGD:
 
 <H4>The Data Input Files</H4>
 <OL>
-<LI>During the update process, Journals which have already been scanned by the
-    Editorial Staff in TJL library must be ignored.  Therefore, a list of Journals which are 
-    carried by TJL library is maintained by Janice Ornsby:
-    <PRE>
-    <BR><CODE>titan:/usr/local/mgi/ei/mgd/nlm.journals.seen</CODE>
-    </PRE>
-    <PRE>
-    Oncogene
-    Oncology
-    Pathobiology
-    PCR Methods Appl
-    Peromyscus News Lett
-    Physiol Rev
-    </PRE>
-<P>
-<LI>NLM and Current Contents do not necessarily use the same nomenclature for Journal names.
-    In MGD, the NLM nomenclature is used.  Therefore, a list of NLM Journal names and their CC
-    synonyms is maintained by Janice Ornsby.  The NLM abbreviation is listed first, followed by 
-    the CC synonyms prefixed with a +: 
-    <PRE>
-    <CODE>titan:/usr/local/mgi/ei/mgd/cc.journals</CODE>
-    </PRE>
-    <PRE>
-    Proc Natl Acad Sci U S A
-    +Proc Natl Acad Sci USA
-    +Proc Natl Acad Sci  U S A
-    +Proc Natl Acad Sci
-    </PRE>
-<P>
-<LI>The NLM/CC input files reside in the user's home directory.  The CC input files use the
-    format <I>CC# + some number</I>.  The NLM input files have no standard format.
+<LI>The input files from NLM are generated from the NCBI NLM/PubMed site 
+    <A HREF="http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed">http://www.ncbi.nlm.nih.gov/entrez/query.fcgi?db=PubMed</A> using the MEDLINE display format.
+    These files should be saved to the user's UNIX home directory so they can be accessed by
+    the EI.  For complete instructions on creating a NLM input file from NCBI, see..).
     <P>
-    <B>Note:</B>:  It is very important that the user does <B>not</B> edit the files
-       which are downloaded from CC or NLM.
-       
-    <BR>
-    <BR><CODE>/home/jeo/CC#51</CODE>
-    <BR><CODE>/home/jeo/Fabrizio</CODE>
+    <B>Note:</B>:  It is very important that users do <B>not</B> edit the files
+       which are downloaded from NCBI NLM/PubMed.
 </OL>
 
-<H4>Initiating the NLM/CC Update</H4>
+<H4>Initiating the NLM Update</H4>
 <OL>
 <LI>Bring up the <A HREF="reference.gif">MGD Reference Editing Form</A>.
-<LI>Click <I>NLM/Current Contents</I> to bring up the <A HREF="nlm.gif">NLM/CC dialog</A>.
-<LI>Enter the name of the NLM/CC input file in the dialog <I>Selection</I> field.
-<LI>Click on the desired <B>mode</B> to initiate the NLM/CC Update.
-<LI>If the users selects the <I>Add NLM</I> or <I>Add Current Contents</I> mode, 
-    then the <I>Starting J#</I> field will automatically
+<LI>Click <I>NLM</I> to bring up the <A HREF="nlm.gif">NLM dialog</A>.
+<LI>Enter the name of the NLM input file in the dialog <I>Selection</I> field using the <I>Filter</I>
+    and <I>Files</I> listing to select the appropriate file.
+<LI>Click on the desired <B>mode</B> to initiate the NLM Update.
+<LI>If the users selects <I>Add NLM</I>, then the <I>Starting J#</I> field will automatically
     be populated with the next available J#.  The user can override this value, but transactions
     which attempt to use duplicate J#s will be denied.
 </OL>
 
-There are 4 modes defined for processing NLM/CC data files:
+There are 2 modes defined for processing NLM data files:
 <OL>
 <LI><I>Update NLM</I> mode updates MGD References from an NLM input file.
 <LI><I>Add NLM</I> mode inserts MGD References from an NLM input file.
-<LI><I>Update Current Contents</I> mode updates MGD References from a Current Contents input file.
-<LI><I>Add Current Contents</I> mode inserts MGD References from a Current Contents input file.
 <P>
 </OL>
 
 <H4>Update Algorithm</H4>
 <OL>
-<LI>MGD is searched for a match to a NLM/CC record using the following criteria:
+<LI>MGD is searched for a match to a NLM record using the following criteria:
         <UL>
         <LI>Journal
         <LI>Year
@@ -103,11 +74,11 @@ There are 4 modes defined for processing NLM/CC data files:
         </UL>
 <P>
 <LI>If a match is found and the Medline UI, Title or Abstract is blank, then the MGD record 
-    is updated with the full NLM/CC Reference information:
+    is updated with the full NLM Reference information:
     <UL>
     <LI>Authors
     <LI>Title
-    <LI>Medline (NLM) Accession number
+    <LI>Medline Accession number
     <LI>Abstract
     <LI>Date
     <LI>Volume
@@ -115,25 +86,18 @@ There are 4 modes defined for processing NLM/CC data files:
     <LI>Pages
     </UL>
 <P>
-<LI>If more than one match is found, then the NLM/CC reference is reported as a "duplicate".
+<LI>If more than one match is found, then the NLM reference is reported as a "duplicate".
 <P>
-<LI>If no match is found and the reference does not contain an Author, Publication Date, Journal 
-    or Volume, then the NLM/CC reference is reported as "nomatch" with an note explaining
-    what data is missing.
+<LI>If no match is found, then the NLM reference is reported as "nomatch".
 <P>
-<LI>If no match is found and the input file is CC and the Journal cannot be found in TJL 
-    library file, then the CC reference is reported as "unseen".
-<P>
-<LI>If no match is found and the input file is NLM and the Journal is in TJL library file,
-    then the NLM reference is reported as "nomatch".
-    <P>In other words, the Reference was scanned by the Editorial Staff in TJL library but 
-    was not entered into MGD.  Therefore, the Reference has been "seen".
+<LI>If any required information is missing in the NLM record, then the NLM reference is 
+    reported as "nomatch" and a line explaining what data field is missing in recorded.
 <P>
 </OL>
 
 <H4>Add Algorithm</H4>
 <OL>
-<LI>MGD is searched for a match to a NLM/CC record using the following criteria:
+<LI>MGD is searched for a match to a NLM record using the following criteria:
         <UL>
         <LI>Journal
         <LI>Year
@@ -141,15 +105,15 @@ There are 4 modes defined for processing NLM/CC data files:
         <LI>First Page
         </UL>
 <P>
-<LI>If a match is found, then the NLM/CC reference is reported as a "duplicate".
+<LI>If a match is found, then the NLM reference is reported as a "duplicate".
 <P>
-<LI>If no match is found, then the NLM/CC reference is added and reported as an "add".
+<LI>If no match is found, then the NLM reference is added and reported as an "add".
 <P>
 </OL>
 
-<H4>Output from the NLM/CC Update</H4>
+<H4>Output from the NLM Update</H4>
 
-The NLM/CC process outputs several files.  These files are output into
+The NLM process outputs several files.  These files are output into
 the user's <CODE>$HOME</CODE> directory.
 
 <OL>
@@ -159,33 +123,26 @@ the user's <CODE>$HOME</CODE> directory.
 <P>
 <LI><I>&lt;inputfile&gt;.duplicates</I>
     <P>Listing of all References which contain duplicate entries in MGD.
-       This file is in the same format as the input file (either NLM or CC format).
+       This file is in the same format as the input file.
 <P>
 <LI><I>&lt;inputfile&gt;.nomatch</I>
     <P>Listing of all References in the input file for which no match could be found in MGD.
-       This file is in the same format as the input file (either NLM or CC format).
-<P>
-<LI><I>&lt;inputfile&gt;.unseen</I>
-    <P>Listing of all References in the input file for which the input file is CC or the 
-       Journal does not exist in TJL library file.
-       This file is in the same format as the input file (either NLM or CC format).
-       This file is circulated among the Editorial Staff and usually used as the input file 
-       for the Add process.
+       This file is in the same format as the input file.
 <P>
 <LI><I>&lt;inputfile&gt;.added</I>
     <P>Listing of all References in the input file which were added to the database during
        the Add process.
-       This file is in the same format as the input file (either NLM or CC format) with
-       the addition of the J# assignment for each record.
+       This file is in the same format as the input file with the addition of the J# assignment 
+       for each record.
 <P>
 </OL>
 
 <H4>Source Code</H4>
 The NLM source programs are:
 <OL>
-<LI>Production:  <CODE>titan:/usr/local/mgi/ei/mgd/nlmcc.py</CODE>
+<LI>Production:  <CODE>titan:/usr/local/mgi/ei/mgd/nlm.py</CODE>
     <BR>
-    Development:  <CODE>utilities/nlmcc.py</CODE>
+    Development:  <CODE>utilities/nlm.py</CODE>
     <P>
     Main program.
 <P>
