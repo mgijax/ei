@@ -362,8 +362,8 @@ rules:
 	        if (mgi_tblGetCell(table, r, table.accName) = source.subMenuId.child(i).labelString
 		    and mgi_tblGetCell(table, r, table.editMode) = TBL_ROW_EMPTY) then
                   StatusReport.source_widget := table.top;
-                  StatusReport.message := "The Accession ID for " + 
-			mgi_tblGetCell(table, r, table.accName) + " is required.";
+                  StatusReport.message := "Note:  You did not provide an Accession ID for " + 
+			mgi_tblGetCell(table, r, table.accName) + ".";
                   send(StatusReport);
 		end if;
 		r := r + 1;
