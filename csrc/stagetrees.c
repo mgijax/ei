@@ -626,6 +626,8 @@ void stagetrees_loadStages(char *from, char *where)
        }
     }
 
+    dbclose(dbproc);
+
  /* cut here, provide countdstages and distinctstages as load args */
 
     stagetrees_internalLoadStages(countdstages, distinctstages);
@@ -872,6 +874,8 @@ void stagetree_AddStructureNames(StageTree *stagetree, char *snmaxmod)
           stagetree_AddStructureName(stagetree, &tmpstn);
        }
     }
+
+    dbclose(dbproc);
 }
 
 void stagetree_AddStructure(StageTree *stagetree, Structure *st)
@@ -1032,6 +1036,8 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
           stagetree_AddStructure(stagetree, &tmpst);
        }
     }
+
+    dbclose(dbproc);
 }
 
 Structure *stagetree_getStructureByKey(StageTree *stagetree, DBINT sk)
