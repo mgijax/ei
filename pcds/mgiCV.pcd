@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 17 15:25:52 2004";
+      lastWritten = "Wed Oct 27 07:50:19 2004";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -179,6 +179,61 @@ Module: mgiCV
                                         Group: Widget
                                           managed = False;
                                       }
+                                      {
+                                        embryonic = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        embryonicDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        perinatal = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        postnatal = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalWeek = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalMonth = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalYear = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalAdult = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalImmature = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        postnatalNewborn = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotSpecified = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        NotApplicable = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotResolved = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotLoaded = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
                                 }
                           }
                           {
@@ -299,6 +354,61 @@ Module: mgiCV
                                     tableOptionKey = 5;
                                       {
                                         SearchAll = SearchAll : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        embryonic = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        embryonicDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        perinatal = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        postnatal = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalDay = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalWeek = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalMonth = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalYear = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalAdult = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        postnatalImmature = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        postnatalNewborn = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotSpecified = AgeToggle : mgiOption;
+                                        Group: Widget
+                                          managed = False;
+                                      }
+                                      {
+                                        NotApplicable = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotResolved = AgeToggle : mgiOption;
+                                      }
+                                      {
+                                        NotLoaded = AgeToggle : mgiOption;
                                         Group: Widget
                                           managed = False;
                                       }
