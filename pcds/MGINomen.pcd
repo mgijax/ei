@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  9 12:40:57 2004";
+      lastWritten = "Tue Jan  4 14:27:59 2005";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -451,11 +451,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = False;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -514,13 +509,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -761,9 +756,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WashU = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;

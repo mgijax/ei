@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  2 13:53:27 2004";
+      lastWritten = "Tue Jan  4 14:27:57 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -157,11 +157,6 @@ Module: mgiOption
                         defaultValue = 16;
                     }
                     {
-                      LocusLink = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 24;
-                    }
-                    {
                       EntrezGene = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Entrez Gene";
@@ -294,6 +289,11 @@ Module: mgiOption
                         preferred = False;
                     }
                     {
+                      HGNC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 64;
+                    }
+                    {
                       RGD = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 47;
@@ -302,11 +302,6 @@ Module: mgiOption
                       RATMAP = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 4;
-                    }
-                    {
-                      GDB = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 2;
                     }
                     {
                       JRS = AccToggle : mgiOption;

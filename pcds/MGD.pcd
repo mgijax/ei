@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 21 10:03:58 2004";
+      lastWritten = "Tue Jan  4 14:28:02 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -326,9 +326,6 @@ Module: MGD
                                                     WashU = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -383,13 +380,13 @@ Module: MGD
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -2693,9 +2690,6 @@ Module: MGD
                                     managed = True;
                                 }
                                 {
-                                  LocusLink = AccToggle : mgiOption;
-                                }
-                                {
                                   EntrezGene = AccToggle : mgiOption;
                                 }
                                 {
@@ -2752,13 +2746,13 @@ Module: MGD
                                   E = AccToggle : mgiOption;
                                 }
                                 {
+                                  HGNC = AccToggle : mgiOption;
+                                }
+                                {
                                   RGD = AccToggle : mgiOption;
                                 }
                                 {
                                   RATMAP = AccToggle : mgiOption;
-                                }
-                                {
-                                  GDB = AccToggle : mgiOption;
                                 }
                                 {
                                   JRS = AccToggle : mgiOption;
@@ -3287,9 +3281,6 @@ Module: MGD
                                                     WashU = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3344,13 +3335,13 @@ Module: MGD
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -5568,9 +5559,6 @@ Module: MGD
                                                     WashU = AccToggle;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -6941,9 +6929,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -6998,13 +6983,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -7123,14 +7108,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
+                                                    EntrezGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                    Group: User
-                                                      required = True;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Ensembl = AccToggle : mgiOption;
@@ -7184,17 +7164,17 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -9609,9 +9589,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9666,13 +9643,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -10268,9 +10245,6 @@ Shift<Key>Tab: prev-tab-group()
                                               WashU = AccToggle : mgiOption;
                                             }
                                             {
-                                              LocusLink = AccToggle : mgiOption;
-                                            }
-                                            {
                                               EntrezGene = AccToggle : mgiOption;
                                             }
                                             {
@@ -10327,13 +10301,13 @@ Shift<Key>Tab: prev-tab-group()
                                               E = AccToggle : mgiOption;
                                             }
                                             {
+                                              HGNC = AccToggle : mgiOption;
+                                            }
+                                            {
                                               RGD = AccToggle : mgiOption;
                                             }
                                             {
                                               RATMAP = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              GDB = AccToggle : mgiOption;
                                             }
                                             {
                                               JRS = AccToggle : mgiOption;
@@ -11722,11 +11696,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -11793,13 +11762,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -12128,9 +12097,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WashU = AccToggle;
-                                                  }
-                                                  {
-                                                    LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
@@ -12795,11 +12761,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     WashU = AccToggle;
                                                   }
                                                   {
-                                                    LocusLink = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     EntrezGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -12866,13 +12827,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     E = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RATMAP = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GDB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -13073,9 +13034,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     WashU = AccToggle;
-                                                  }
-                                                  {
-                                                    LocusLink = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
