@@ -87,7 +87,7 @@ Module: mgiOption
                       mouse = OptionToggle : mgiOption;
                       Group: Widget
                         labelString = "mouse, laboratory";
-                        background = Yellow;
+                        background = Thistle;
                       Group: User
                         defaultValue = "mouse, laboratory";
                         searchValue = "mouse, laboratory";
@@ -471,7 +471,7 @@ Module: mgiOption
           NotSpecified = OptionToggle : mgiOption;
           Group: Widget
             labelString = "Not Specified";
-            background = Yellow;
+            background = Thistle;
           Group: Control
             vip_x = 70;
             vip_y = 965;
@@ -482,7 +482,7 @@ Module: mgiOption
         {
           DefaultToggle = OptionToggle;
           Group: Widget
-            background = Yellow;
+            background = Thistle;
           Group: Control
             vip_x = 70;
             vip_y = 690;
@@ -658,7 +658,7 @@ Module: mgiOption
                       NotSpecified = AgeToggle : mgiOption;
                       Group: Widget
                         labelString = "Not Specified";
-                        background = Yellow;
+                        background = Thistle;
                       Group: User
                         searchValue = "Not Specified";
                         defaultValue = "Not Specified";
@@ -1386,7 +1386,7 @@ Module: mgiOption
                       mouse = OptionToggle : mgiOption;
                       Group: Widget
                         labelString = "mouse, laboratory";
-                        background = Yellow;
+                        background = Thistle;
                       Group: User
                         defaultValue = "mouse, laboratory";
                         searchValue = "mouse, laboratory";
@@ -1891,7 +1891,7 @@ Module: mgiOption
                     {
                       Article = OptionToggle : mgiOption;
                       Group: Widget
-                        background = Yellow;
+                        background = Thistle;
                       Group: User
                         defaultValue = "ART ";
                         searchValue = "ART ";
@@ -1923,7 +1923,7 @@ Module: mgiOption
                     {
                       Yes = OptionToggle : mgiOption;
                       Group: Widget
-                        background = Yellow;
+                        background = Thistle;
                       Group: User
                         searchValue = Y;
                         defaultValue = Y;
@@ -2092,7 +2092,7 @@ Module: mgiOption
                     {
                       No = OptionToggle : mgiOption;
                       Group: Widget
-                        background = Yellow;
+                        background = Thistle;
                       Group: User
                         searchValue = 0;
                         defaultValue = 0;
