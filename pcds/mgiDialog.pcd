@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Nov  4 11:02:31 1999";
+      lastWritten = "Mon Dec  6 14:14:48 1999";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -381,15 +381,6 @@ Module: mgiDialog
                                   Group: User
                                     keys = "nlm.py";
                                 }
-                          }
-                          {
-                            PrinterList = LookupList;
-                          }
-                          {
-                            PrintOrient = Choice : mgiDataTypes;
-                          }
-                          {
-                            PrintColumn = Choice : mgiDataTypes;
                           }
                     }
               }
@@ -1952,16 +1943,9 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             Broadcast = toggle : mgiDataTypes;
                             Group: Widget
-                              labelString = "MGD Broadcast and Email \n(updates Nomen Status and Broadcast Date)";
+                              labelString = "MGD Broadcast\n(updates Nomen Status and Broadcast Date)";
                             Group: User
                               value = broadcast;
-                          }
-                          {
-                            Email = toggle : mgiDataTypes;
-                            Group: Widget
-                              labelString = "Email Report Only (no database updates)";
-                            Group: User
-                              value = email;
                           }
                     }
               }
@@ -2038,35 +2022,13 @@ Shift<Key>Tab: prev-tab-group()
                     }
               }
               {
-                EmailFileName = CharText : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = BroadcastFileName;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = BroadcastFileName;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      label = XmLabel;
-                      Group: Widget
-                        labelString = "Email File Name";
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        columns = 35;
-                    }
-              }
-              {
                 separator = XmSeparator;
                 Group: Constraint
                   leftAttachment = attach_form;
                   leftOffset = 2;
                   rightAttachment = attach_widget;
                   topAttachment = attach_widget;
-                  topWidget = EmailFileName;
+                  topWidget = BroadcastFileName;
                   topOffset = 2;
                   bottomAttachment = attach_none;
                   resizable = true;
