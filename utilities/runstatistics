@@ -1,0 +1,15 @@
+#!/bin/csh
+
+#
+# Runs statistics
+#
+
+setenv SYBASE /opt/sybase
+setenv PYTHONPATH /usr/local/mgi/lib/python:/usr/local/etc/httpd/python
+
+setenv DSQUERY $1
+setenv MGD $2
+
+/usr/local/mgi/ei/mgd/statistics.py -S$DSQUERY -D$MGD -Umgd_dbo -P$SYBASE/admin/.mgd_dbo_password -mCR -e-2
+/usr/local/mgi/ei/mgd/statistics.py -S$DSQUERY -D$MGD -Umgd_dbo -P$SYBASE/admin/.mgd_dbo_password -mRI -e-2
+
