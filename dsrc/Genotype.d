@@ -110,7 +110,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  send(Init, 0);
 
@@ -301,7 +301,7 @@ rules:
 
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
-		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
+	           "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
 	           "exec GXD_loadGenoCacheByGenotype " + currentRecordKey + "\n";
 	  end if;
 

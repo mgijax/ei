@@ -106,7 +106,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  top->AntigenAccession.tableID := GXD_ANTIGEN;
 

@@ -106,7 +106,7 @@ rules:
 	  -- Prevent multiple instances of the Allele form
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  -- Initialize
 	  send(Init, 0);

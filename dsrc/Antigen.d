@@ -89,7 +89,7 @@ rules:
 
 	  ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  SetRowCount.source_widget := top;
 	  SetRowCount.tableID := GXD_ANTIGEN;

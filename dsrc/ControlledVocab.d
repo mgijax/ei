@@ -90,7 +90,7 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  send(Init, 0);
 
