@@ -1039,7 +1039,7 @@ rules:
 	  column : integer := GOTraverse.column;
 	  reason : integer := GOTraverse.reason;
 
-	  if (column = annotTable.notes) then
+	  if (column = annotTable.inferredFrom) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
 	      row := -1;
 	    end if;
