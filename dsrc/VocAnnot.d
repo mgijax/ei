@@ -12,7 +12,7 @@
 -- History
 --
 -- 04/28/2004 lec
---	- TR 5693; GO annotation note template (see NotePreInit)
+--	- TR 5693; GO annotation note template (see NotePreInit, NotePreCancel)
 --
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
@@ -67,7 +67,8 @@ devents:
 	VocAnnotExit :local [];				-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
-	NotePreInit :local [];				-- Pre-initialization of Note
+	NotePreCancel :local [];			-- Pre-cancellation of Note Dialog
+	NotePreInit :local [];				-- Pre-initialization of Note Dialog
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
@@ -985,6 +986,25 @@ rules:
           SetOption.value := mgi_tblGetCell(table, row, table.notKey);
           send(SetOption, 0);
         end does;
+
+--
+-- NotePreCancel
+-- (TR 5693)
+--
+-- Activated From:  NoteDialog->Cancel.activateCallback
+-- Does:            If annotation is GO/Marker and row note = GO note template,
+--		    then blank the note.  We don't want to save a note if
+--		    it's just equal to the template.
+--
+
+	NotePreCancel does
+	  row : integer := mgi_tblGetCurrentRow(annotTable);
+
+	  if (annotTable.annotVocab = "GO" and
+	      mgi_tblGetCell(annotTable, row, annotTable.notes) = goNoteTemplate) then
+	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, "");
+	  end if;
+	end does;
 
 --
 -- NotePreInit
