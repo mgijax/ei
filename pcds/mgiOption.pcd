@@ -967,8 +967,8 @@ Module: mgiOption
                       Group: Widget
                         labelString = section;
                       Group: User
-                        searchValue = sections;
-                        defaultValue = sections;
+                        searchValue = section;
+                        defaultValue = section;
                     }
                     {
                       sectionWhole = OptionToggle : mgiOption;
