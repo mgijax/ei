@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 24 12:55:22 2005";
+      lastWritten = "Fri Mar 25 10:45:48 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11609,11 +11609,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:MPClipboardCopyAnnotation";
                                       }
-                                      {
-                                        CopyNote = TablePush : mgiTable;
-                                        Group: Widget
-                                          activateCallback = "D:MPClipboardCopyNote";
-                                      }
                                 }
                                 {
                                   PhenoSlimList = PhenoSlimList : mgiLookup;
@@ -13314,7 +13309,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AccSourceMenu = AccSourceMenu;
                                         Group: User
-                                          defaultOption = NSequence;
+                                          defaultOption = EC;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;

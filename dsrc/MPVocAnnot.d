@@ -50,7 +50,6 @@ devents:
 	MPClipboardAdd :local [];
 	MPClipboardAddAll :local [];
 	MPClipboardCopyAnnotation :local [];
-	MPClipboardCopyNote :local [];
 
 	MPTraverse :local [];
 
@@ -318,6 +317,7 @@ rules:
 	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
+	  clipAnnotEvidenceKey : string;
  
           if (not top.allowEdit) then
             return;
@@ -357,6 +357,7 @@ rules:
             notKey := mgi_tblGetCell(annotTable, row, annotTable.notKey);
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
             evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
+            clipAnnotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.clipAnnotEvidenceKey);
  
 	    if (notKey = "NULL" or notKey.length = 0) then
 	      notKey := NO;
@@ -432,6 +433,11 @@ rules:
 		       refsKey + "," +
 		       "NULL," +
 		       global_loginKey + "," + global_loginKey + ")\n";
+
+	      if (clipAnnotEvidenceKey.length > 0) then
+		-- add notes
+		cmd := cmd + "exec VOC_copyAnnotEvidenceNotes " + clipAnnotEvidenceKey + ",@" + keyName + "\n";
+	      end if;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
@@ -1164,6 +1170,8 @@ rules:
 	  column : integer := MPTraverse.column;
 	  reason : integer := MPTraverse.reason;
 
+	  return;
+
 	  if (column = annotTable.evidence) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
 	      row := -1;
@@ -1322,39 +1330,6 @@ rules:
           end while;
 
 	  (void) dbclose(dbproc);
-	  (void) reset_cursor(top);
-
-	end does;
-
---
--- MPClipboardCopyNote
---
--- Takes the clipboard annotation evidence key in the current row of the annotation table
--- and loads the notes for that annotation into the note table.
---
--- Sets the editMode of each Note to "add".
---
-
-	MPClipboardCopyNote does
-	  i : integer := 0;
-	  annotRow : integer := 0;
-	  clipAnnotEvidenceKey : string;
-	  
-	  (void) busy_cursor(top);
-
-	  annotRow := mgi_tblGetCurrentRow(annotTable);
-	  clipAnnotEvidenceKey := mgi_tblGetCell(annotTable, annotRow, annotTable.clipAnnotEvidenceKey);
-
-	  if (clipAnnotEvidenceKey.length > 0) then
-            LoadNoteTypeTable.table := noteTable;
-	    LoadNoteTypeTable.tableID := MGI_NOTE_VOCEVIDENCE_VIEW;
-            LoadNoteTypeTable.objectKey := clipAnnotEvidenceKey;
-	    LoadNoteTypeTable.labelString :=  mgi_tblGetCell(annotTable, annotRow, annotTable.termAccID) + ", " + 
-				   mgi_tblGetCell(annotTable, annotRow, annotTable.jnum);
-	    LoadNoteTypeTable.editMode := TBL_ROW_ADD;
-            send(LoadNoteTypeTable, 0);
-	  end if;
-
 	  (void) reset_cursor(top);
 
 	end does;

@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 24 12:47:09 2005";
+      lastWritten = "Fri Mar 25 10:45:46 2005";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -635,10 +635,10 @@ Module: mgiLookup
                 Delete = TablePush : mgiTable;
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = CopyNote;
+                  leftWidget = CopyAnnot;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = CopyNote;
+                  topWidget = CopyAnnot;
                   bottomAttachment = attach_none;
                   resizable = true;
                   topOffset = 5;
@@ -672,20 +672,6 @@ Module: mgiLookup
                   bottomAttachment = attach_none;
                   resizable = true;
                   topWidget = AddAll;
-                  topOffset = 5;
-              }
-              {
-                CopyNote = TablePush : mgiTable;
-                Group: Widget
-                  labelString = "Copy Clipboard Notes To Table";
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = CopyAnnot;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topWidget = CopyAnnot;
                   topOffset = 5;
               }
         }
