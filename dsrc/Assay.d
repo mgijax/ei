@@ -2687,6 +2687,11 @@ rules:
 --
 
 	Exit does
+
+	  if (mgi->GenotypeModule != nil) then
+	    mgi->GenotypeModule.destroy_widget;
+	  end if;
+
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);

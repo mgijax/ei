@@ -46,6 +46,7 @@ devents:
 
 	PrepareSearch :local [];
 	Select :local [item_position : integer;];
+	SelectReferences :local [];
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
@@ -120,6 +121,7 @@ rules:
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->AllelePair->Table);
+	  tables.append(top->Reference->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 
 	  if (mgi->AssayModule != nil) then
@@ -194,7 +196,6 @@ rules:
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
---	  AddSQL.appendKeyToItem := true;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
@@ -283,8 +284,8 @@ rules:
 	  send(ModifyAllelePair, 0);
 
 	  if (set.length > 0 or cmd.length > 0) then
-            cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
---		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
+            cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
+		   "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
 	  end if;
 
           ModifySQL.cmd := cmd;
@@ -506,6 +507,19 @@ rules:
 	    where := "where g._Genotype_key *= ap._Genotype_key" + where;
 	  end if;
 
+	  -- Reference search
+	  -- if searching by reference, then use the stored procedure
+	  -- this search ignores other search criteria
+
+          value := mgi_tblGetCell(top->Reference->Table, 0, top->Reference->Table.refsKey);
+
+          if (value.length > 0) then
+	    Query.source_widget := top;
+	    Query.select := "exec MGI_searchGenotypeByRef " + value + "\n";
+	    Query.table := (integer) NOTSPECIFIED;
+	    send(Query, 0);
+	    manualSearch := false;
+	  end if;
 	end does;
 
 --
@@ -518,7 +532,7 @@ rules:
 	SearchGenotype does
 	  assayKey : string := SearchGenotype.assayKey;
 	  select : string;
-	  orderBy : string := "\norder by g._Genotype_key";
+	  orderBy : string := "\norder by g.strain, ap.allele1";
 
           (void) busy_cursor(top);
 
@@ -552,11 +566,18 @@ rules:
 	  select := "select distinct g._Genotype_key, " +
 	     "g.strain + ',' + ap.allele1 + ',' + ap.allele2\n" + 
 	     from + "\n" + where;
---	     from + "\n" + where + "\nand ap.sequenceNum = 1";
+
+--	Because genotypes are returned by unique strain + allele pair,
+--	double (or triple) mutants will return two (or three) records
+--	with the same genotype key.  To exclude this records, we could
+--	add (and ap.sequenceNum = 1) to the query.  However, if the
+--	user queries by Marker and/or Allele, then the query will not
+--	return appropriate results. 
+--	     "\nand ap.sequenceNum = 1";
 
 	  if (manualSearch) then
 	    Query.source_widget := top;
-	    Query.select := select;
+	    Query.select := select + orderBy;
 	    Query.table := GXD_GENOTYPE_VIEW;
 	    send(Query, 0);
 	  elsif (assayKey.length > 0) then
@@ -683,6 +704,8 @@ rules:
 	  LoadAcc.tableID := GXD_GENOTYPE;
 	  send(LoadAcc, 0);
 
+	  send(SelectReferences, 0);
+
 	  -- Initialize Option Menus for row 0
 
 	  SetOptions.source_widget := top->AllelePair->Table;
@@ -697,6 +720,35 @@ rules:
           send(Clear, 0);
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- SelectReferences
+--
+-- Retrieve and display references for a specific Genotype.
+--
+
+	SelectReferences does
+	  row : integer := 0;
+	  table : widget := top->Reference->Table;
+
+	  cmd := "exec GXD_getGenotypesDataSets " + currentRecordKey;
+          dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    row := 0;
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(table, row, table.dataSet, mgi_getstr(dbproc, 3));
+	      row := row + 1;
+	    end while;
+	  end while;
+
+	  (void) dbclose(dbproc);
+
 	end does;
 
 --
@@ -821,11 +873,7 @@ rules:
 --
 
 	Exit does
-
---	  if (mgi->AssayModule != nil) then
-	    ab.sensitive := true;
---	  end if;
-
+	  ab.sensitive := true;
 	  destroy self;
 	  ExitWindow.source_widget := top;
 	  send(ExitWindow, 0);
