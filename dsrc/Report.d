@@ -52,29 +52,9 @@ rules:
      -- Retrieve program and parameters for selected Report
 
      commands : string_list;
-     commands := mgi_splitfields(dialog->ReportList->List.keys[dialog->ReportList->List.row], " ");
-     program : string := commands[1];
-     basename, bfilename : string; 
+     program : string := dialog->ReportList->List.keys[dialog->ReportList->List.row];
 
-     -- If program is the Broadcast, then send User login and Password file
-
-     if (program = "broadcast.py") then      -- Broadcast (user dependent)
-       commands.insert("-U" + global_login, commands.count + 1);
-       commands.insert("-P" + global_passwd_file, commands.count + 1);
-       commands.insert(dialog->FileSelection.textString, commands.count + 1);
-
-       bfilename := dialog->FileSelection.textString;
-       basename := tu_base_name(bfilename);
-
-       if (bfilename.length = 0 or basename.length = 0) then
-         StatusReport.source_widget := top;
-         StatusReport.message := "Invalid Broadcast File";
-         send(StatusReport);
-         (void) reset_cursor(dialog.top);
-         return;
-        end if;
-
-     elsif (program = "nlm.py") then      -- NLM program
+     if (program = "nlm.py") then      -- NLM program
 
        -- NLM Mode = 1 is the NLM Update
        -- NLM Mode = 2 is the NLM Add and requires a starting J#
@@ -89,6 +69,7 @@ rules:
          return;
        end if;
  
+       commands.insert(program, commands.count + 1);
        commands.insert("-U" + global_login, commands.count + 1);
        commands.insert("-P" + global_passwd_file, commands.count + 1);
  
@@ -114,6 +95,8 @@ rules:
      -- These programs rely on the last search the User performed from within the form
 
      elsif (strstr(program, ".py") != nil) then
+       commands.insert(program, commands.count + 1);
+
        if (dialog->ReportList->List.row = 1 and select.length = 0) then
          StatusReport.source_widget := top;
          StatusReport.message := "Must Return to Form and Perform A Search";
@@ -128,12 +111,12 @@ rules:
          commands.insert(printSelect, commands.count + 1);
        end if;
 
-     -- SQL commands also execute using the DSQUERY and MGD env variables
-     -- SQL reports should use the public login
+     -- SQL commands will be executed by the "sql.sh" wrapper
 
      elsif (strstr(program, ".sql") != nil) then
-       commands.insert(getenv("DSQUERY"), commands.count + 1);
+       commands.insert("sql.sh", commands.count + 1);
        commands.insert(getenv("MGD"), commands.count + 1);
+       commands.insert(program, commands.count + 1);
      end if;
  
      -- Print some diagnostics for the User
@@ -160,7 +143,7 @@ rules:
      -- check to see if we could exec the script 
      if (tu_fork_status(proc_p) = 2) then 
         StatusReport.source_widget := top;
-        StatusReport.message := "Couldn't get script status; unable to execute command.";
+        StatusReport.message := "Invalid Status.  Cannot Generate Report.";
         send(StatusReport);
      end if;      
 
