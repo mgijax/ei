@@ -2556,7 +2556,7 @@ rules:
 	  while (b <= hasLanes) do
 	    laneLabel := mgi_simplesub(",", "\\,", mgi_tblGetCell(laneTable, b - 1, laneTable.label));
 	    newColLabels := newColLabels + 
-		",Mode,Lane key,Band key,Strength key," + (string) b + ";" + laneLabel + ",Note";
+		",Mode,Lane key,Band key,Strength key," + (string) b + "; " + laneLabel + ",Note";
 	    newPixelWidthSeries := newPixelWidthSeries +
 		" (all " + (string) begCol + "-" + (string) endCol + " 0)";
 	    newCharWidthSeries := newCharWidthSeries +
