@@ -105,9 +105,28 @@
 # record into MGD.  Since NLM and CC use different tags for the same information, we will
 # will chose one of the tags (NLM or CC) to use in retrieving information from the rec{}
 # dictionary in the update/add routines.  For example, NLM uses the 'TA' tag for the journal
-# and CC uses the 'JI' tag.  In the update/add routines, we retrieve the journal by the 'TA'
-# tag, so we must copy rec['JI'] to rec['TA'] when we process a CC file.
+# and CC uses the 'JI' tag.  In the update/add routines, we retrieve the journal by the 'JI'
+# tag, so we must copy rec['TA'] to rec['JI'] when we process a NLM file.
 # 
+# We use these tags for retrieving information for adding/updating MGD:
+#
+#			NLM	CC	doUpdate() and doAdd() use:
+#
+#        	authors  AU	AU	AU
+#        	title    TI	TI	TI
+#        	journal  TA	JI	JI
+#        	date     SO	PD	PD
+#        	year     SO	PY	PY
+#        	pgs      PG	PG	PG
+#        	vol      VI	VL	VL
+#        	issue    SO	IS	IS
+#
+#		To handle overflow and special MGD values:
+#
+#        	authors2 AU2	if author values exceed 255
+#        	title2   TI2	if title values exceed 255
+#        	_primary PAU	primary author
+#
 # History
 #
 #	lec	12/10/99
@@ -217,7 +236,7 @@ def showUsage():
 	'''
  
         usage = 'usage: %s [-S server] -[D database] ' % sys.argv[0] + \
-		'-U user -P password file nlmca -j [starting J#] input file'
+		'-U user -P password file --mode=[nlm cc addnlm addcc] -j [starting J#] input file'
         error(usage)
  
 def init():
@@ -231,11 +250,11 @@ def init():
 	#
 	'''
  
-	global DEBUG, nlmccFile, diagFile, dupsFile, nomatchFile, outFile
+	global nlmccFile, diagFile, dupsFile, nomatchFile, outFile
 	global mode, nextJnum
  
         try:
-                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:j:d', ['mode='])
+                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:j', ['mode='])
         except:
                 showUsage()
  
@@ -259,8 +278,6 @@ def init():
                         user = opt[1]
                 elif opt[0] == '-P':
                         password = string.strip(open(opt[1], 'r').readline())
-                elif opt[0] == '-d':
-                        DEBUG = 1
                 elif opt[0] == '--mode':
 			mode = opt[1]
 		elif opt[0] == '-j':
@@ -270,10 +287,6 @@ def init():
  
 	if user is None or password is None:
 		showUsage()
-
-	# If testing, then auto-set DEBUG mode
-	if server != 'MGD':
-		DEBUG = 1
 
         # Initialize DBMS parameters
 	mgdlib.set_sqlLogin(user, password, server, database)
@@ -385,10 +398,6 @@ def initJournals():
 		NLMseen[line] = line
 		line = string.strip(fd.readline())
 
-#	if DEBUG:
-#		for jnl in NLMseen.keys():
-#			print NLMseen[jnl]
-
 	fd.close()
 
 	try:
@@ -408,10 +417,6 @@ def initJournals():
 			journal = line
 
 		line = string.strip(fd.readline())
-
-#	if DEBUG:
-#		for jnl in NLMsyn.keys():
-#			print jnl + ':' + NLMsyn[jnl]
 
 	fd.close()
 
@@ -457,7 +462,7 @@ def processSO(rec):
 	# Initializes appropriate 'rec' dictionary values
 	#
 	# Note that the NLM file contains "TA", "PG" and "VI" fields for 
-	# journla, page and volume information. But we need to parse the 
+	# journal, page and volume information. But we need to parse the 
 	# "SO" field to get the year, date and issue information.
 	#
 	# returns:
@@ -574,7 +579,7 @@ def getRec(rec, rectags, maxCount = 1):
 		pgs = pgs[:idx]
 		  
 	cmd = 'select _Refs_key, title, abstract, jnum from BIB_All_View ' + \
-              'where journal = "' + rec['TA'] + '"' + \
+              'where journal = "' + rec['JI'] + '"' + \
 	      ' and year = ' + rec['PY'] + \
 	      ' and vol = "' + rec['VL'] + '"' + \
 	      ' and (pgs = "' + pgs + '" or pgs like "' + pgs + '-%")'
@@ -659,12 +664,12 @@ def noMatch(rec, rectags, msg = None):
 
 	# If CC update or Journal does NOT exist in TJL library, write to UNSEEN
 
-	if mode == 'cc' or not NLMseen.has_key(rec['TA']):
+	if mode == 'cc' or not NLMseen.has_key(rec['JI']):
 		printRec(outFile, rec, rectags)
 
 	# If NLM update and Journal does exist in TJL library, write to No Match Found
 
-	elif mode == 'nlm' and NLMseen.has_key(rec['TA']):
+	elif mode == 'nlm' and NLMseen.has_key(rec['JI']):
 		printRec(nomatchFile, rec, rectags)
 	
 	else:
@@ -721,7 +726,7 @@ def doUpdate(refKey, uiKey, rec):
         	'date = %s,' % rec['PD'] + \
         	'year = %s,' % rec['PY'] + \
         	'pgs = %s,' % rec['PG'] + \
-        	'journal = %s,' % rec['TA'] + \
+        	'journal = %s,' % rec['JI'] + \
         	'vol = %s' % rec['VL'])
  
 	# If record has abstract and abstract is not null, update it
@@ -788,7 +793,7 @@ def doAdd(rec, rectags):
 		'select @nextRef = max(_Refs_key) + 1 from BIB_Refs\n' + \
 		'%s values(@nextRef,%d,"ART",%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,NULL,"Y",0,%s)' \
 		% (INSERTBIB, REVIEWSTATUS, rec['AU'], rec['AU2'], rec['PAU'], \
-		rec['TI'], rec['TI2'], rec['TA'], rec['VL'], rec['IS'], \
+		rec['TI'], rec['TI2'], rec['JI'], rec['VL'], rec['IS'], \
 		rec['PD'], rec['PY'], rec['PG'], rec['AB']))
  
 	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
@@ -810,7 +815,7 @@ def processRec(rec, rectags):
 	#
 	# effects:
 	# Massage the data read in from the NLM/CC dump
-	# Store the data in the 'rec' dictionary
+	# Determine whether to call add or update procedure
 	#
 	# returns:
 	#
@@ -821,9 +826,11 @@ def processRec(rec, rectags):
 		noMatch(rec, rectags, 'Record missing Publication Date (PD) Field')
 		return
 
-	# Journal and Page tags different for NLM and CC
+	# Journal tags different for NLM and CC
+	if mode in ('nlm', 'addnlm'):
+		rec['JI'] = rec['TA']
+
 	if mode in ('cc', 'addcc'):
-		rec['TA'] = rec['JI']
 		rec['PG'] = rec['BP'] + '-' + rec['EP']
 
 		# If Year is not in Date string, then add it
@@ -892,8 +899,8 @@ def processRec(rec, rectags):
 	# Some journals abbreviations are not the same as in MEDLINE.
 	# If processing CC or adding records, use MEDLINE abbrev
 		 
-	if mode in ('cc', 'addnlm', 'addcc') and NLMsyn.has_key(rec['TA']):
-		rec['TA'] = NLMsyn[rec['TA']]
+	if mode in ('cc', 'addnlm', 'addcc') and NLMsyn.has_key(rec['JI']):
+		rec['JI'] = NLMsyn[rec['JI']]
 		
 	if mode in ('nlm', 'cc'):
 		if not determineMatch(rec, rectags):
@@ -1048,7 +1055,6 @@ def processCCFile():
 
 # Fields present in NLM/Current Contents text files
 
-DEBUG = 0
 MEDLINE = accessionlib.get_LogicalDB_key('Medline')
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
