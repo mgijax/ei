@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Wed Jul 25 11:09:39 2001";
+      lastWritten = "Wed Jul 25 14:23:50 2001";
       copy = false;
       inCreateMenu = true;
         {
@@ -1391,23 +1391,25 @@ Shift<Key>Tab: prev-tab-group()
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
                   topWidget = LabelTypeMenu;
-                  bottomAttachment = attach_none;
+                  bottomAttachment = attach_form;
                   resizable = true;
                   topOffset = 5;
+                  bottomOffset = 5;
               }
               {
                 ProbeAccession = mgiAccession : mgiDataTypes;
                 Group: Widget
-                  orientation = horizontal;
                   userDefinedAttributes = "markerTableID:Int(Int)=\"133\"\n";
                 Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = VisualizationMenu;
+                  leftAttachment = attach_widget;
+                  leftWidget = CoverageMenu;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = VisualizationMenu;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = SenseMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
+                  leftOffset = 20;
+                  topOffset = "-10";
                 Group: User
                   tableID = 135;
                     {
@@ -1444,6 +1446,8 @@ Shift<Key>Tab: prev-tab-group()
           AntibodyPrepForm = EditForm : MGI;
           Group: Widget
             managed = False;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
           Group: Control
             vip_x = 175;
             vip_y = 140;
@@ -1478,14 +1482,14 @@ Shift<Key>Tab: prev-tab-group()
               {
                 LabelTypeMenu = LabelMenu : mgiOption;
                 Group: Constraint
-                  leftAttachment = attach_opposite_widget;
+                  leftAttachment = attach_widget;
                   leftWidget = SecondaryMenu;
                   rightAttachment = attach_none;
-                  topAttachment = attach_widget;
+                  topAttachment = attach_opposite_widget;
                   topWidget = SecondaryMenu;
                   bottomAttachment = attach_none;
                   resizable = true;
-                  topOffset = 5;
+                  leftOffset = 10;
               }
               {
                 AntibodyAccession = mgiAccession : mgiDataTypes;
@@ -1494,10 +1498,10 @@ Shift<Key>Tab: prev-tab-group()
                   userDefinedAttributes = "markerTableID:Int=\"202\"\n";
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
-                  leftWidget = LabelTypeMenu;
+                  leftWidget = SecondaryMenu;
                   rightAttachment = attach_none;
                   topAttachment = attach_widget;
-                  topWidget = LabelTypeMenu;
+                  topWidget = SecondaryMenu;
                   topOffset = 5;
                   bottomAttachment = attach_none;
                   resizable = true;
@@ -1956,7 +1960,7 @@ Shift<Key>Tab: prev-tab-group()
             managed = False;
             rubberPositioning = False;
             resizePolicy = resize_any;
-            width = 800;
+            width = 900;
           Group: Control
             vip_x = 175;
             vip_y = 195;
@@ -1983,8 +1987,8 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       List = list;
                       Group: Widget
-                        visibleItemCount = 2;
-                        scrollBarDisplayPolicy = as_needed;
+                        visibleItemCount = 10;
+                        scrollBarDisplayPolicy = static;
                         listSizePolicy = variable;
                     }
               }
@@ -1994,13 +1998,13 @@ Shift<Key>Tab: prev-tab-group()
                   rubberPositioning = False;
                   resizePolicy = resize_any;
                 Group: Constraint
-                  leftAttachment = attach_form;
+                  leftAttachment = attach_widget;
                   rightAttachment = attach_form;
-                  topAttachment = attach_widget;
+                  topAttachment = attach_form;
                   bottomAttachment = attach_none;
                   resizable = true;
                   leftOffset = 5;
-                  topWidget = ImagePaneList;
+                  leftWidget = ImagePaneList;
                     {
                       Table = mgiTable;
                       Group: Widget
@@ -2049,14 +2053,14 @@ Shift<Key>Tab: prev-tab-group()
                   rubberPositioning = False;
                   resizePolicy = resize_any;
                 Group: Constraint
-                  leftAttachment = attach_opposite_widget;
+                  leftAttachment = attach_form;
                   rightAttachment = attach_form;
                   topAttachment = attach_widget;
                   topWidget = GelLane;
                   bottomAttachment = attach_form;
                   resizable = true;
-                  leftWidget = GelLane;
                   bottomOffset = 5;
+                  leftOffset = 5;
                     {
                       Table = mgiTable;
                       Group: Widget

@@ -2,7 +2,7 @@ Module: gxdDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Tue Apr 25 11:09:53 2000";
+      lastWritten = "Wed Jul 25 14:02:51 2001";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -214,26 +214,26 @@ Module: gxdDictionary
                                 {
                                   Previous = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Search;
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Next;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Search;
-                                    topOffset = 2;
+                                    rightWidget = Next;
+                                    rightOffset = 5;
                                 }
                                 {
                                   Next = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Previous;
-                                    rightAttachment = attach_none;
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = Search;
+                                    topWidget = Delete;
                                     topOffset = 2;
+                                    rightWidget = Delete;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -276,7 +276,7 @@ Module: gxdDictionary
                                   CreationDate = CreationDate : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Previous;
+                                    leftWidget = Search;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Previous;
