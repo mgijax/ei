@@ -9,6 +9,10 @@
 --
 -- History
 --
+-- lec 05/16/2000
+--	- TR 1291; Save "rows" dialog attributes since this can be different
+--		within different forms.
+--
 -- lec 08/06/1999
 --	- TR 602; Note dialog attributes must be re-set for Short Notes
 --
@@ -166,8 +170,13 @@ rules:
 	    dialog->Note->text.saveMaxNoteLength := dialog->Note->text.maxLength;
 	  end if;
 
+	  -- Save initial value of rows
+	  if (dialog->Note->text.saveRows = 0) then
+	    dialog->Note->text.saveRows := dialog->Note->text.rows;
+	  end if;
+
 	  dialog->label.labelString := push.labelString;
-	  dialog->Note->text.rows := 15;
+	  dialog->Note->text.rows := dialog->Note->text.saveRows;;
 	  dialog->Note->text.maxLength := dialog->Note->text.saveMaxNoteLength;
 
 	  -- For short notes (max 255)
