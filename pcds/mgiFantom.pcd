@@ -1200,9 +1200,9 @@ Module: mgiFantom
               {
                 Intial = FantomNotePush : mgiFantom;
                 Group: Widget
-                  labelString = "|Sp|LL:|Seqid:|GS:|GN:|";
+                  labelString = "|Sp:|LL:|Seqid:|GS:|GN:|";
                 Group: User
-                  defaultValue = "|Sp|LL:|Seqid:|GS:|GN:|";
+                  defaultValue = "|Sp:|LL:|Seqid:|GS:|GN:|";
               }
               {
                 ProbOrtholog = FantomNotePush : mgiFantom;
