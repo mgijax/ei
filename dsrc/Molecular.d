@@ -369,13 +369,8 @@ rules:
 			 primerVector + "," +
                          top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
-	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + ",";
-
-            if (top->MolMasterForm->Region->text.value.length <= 255) then
-              cmd := cmd + mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",NULL,";
-            else
-                cmd := cmd + mgi_DBprstr(top->MolMasterForm->Region->text.value->substr(1, 255)) + "," +
-                       mgi_DBprstr(top->MolMasterForm->Region->text.value->substr(256, top->MolMasterForm->Region->text.value.length)) + ",";
+	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + "," +
+                         mgi_DBprstr(top->MolMasterForm->Region->text.value) + ",";
             end if;
 
 	    cmd := cmd + "NULL,NULL," +	-- insertSite, insertSize
