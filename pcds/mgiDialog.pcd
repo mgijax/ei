@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 15 13:08:57 2004";
+      lastWritten = "Fri Sep 17 10:42:46 2004";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1169,132 +1169,6 @@ Module: mgiDialog
               }
         }
         {
-          TissueMergeDialog = XmFormDialog;
-          Group: Widget
-            dialogStyle = dialog_primary_application_modal;
-            dialogTitle = "Tissue Merge";
-            managed = False;
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 120;
-            vip_y = 1845;
-              {
-                Mode = XmRadioBox;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 2;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  topOffset = 2;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      Merge1 = toggle : mgiDataTypes;
-                      Group: Widget
-                        set = True;
-                        labelString = "Merge Non-standard Tissues into Standard Tissue\n(enter New Tissue only)";
-                        valueChangedCallback = "D:SetModify,\nD:TissueMergeSet";
-                    }
-                    {
-                      Merge2 = toggle : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Merge Standard Tissues into Non-standard Tissue\n(enter New Tissue only)";
-                        valueChangedCallback = "D:SetModify,\nD:TissueMergeSet";
-                    }
-                    {
-                      Merge3 = toggle : mgiDataTypes;
-                      Group: Widget
-                        labelString = "Merge old Tissue into new Tissue";
-                        valueChangedCallback = "D:SetModify,\nD:TissueMergeSet";
-                    }
-              }
-              {
-                New = Tissue : mgiDataTypes;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = Mode;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = Mode;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      Verify = CharText;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "New Tissue";
-                          }
-                    }
-              }
-              {
-                Old = Tissue : mgiDataTypes;
-                Group: Widget
-                  sensitive = False;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = New;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = New;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                    {
-                      Verify = CharText;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Old Tissue";
-                          }
-                    }
-              }
-              {
-                separator = XmSeparator;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_form;
-                  topAttachment = attach_widget;
-                  topWidget = Old;
-                  topOffset = 2;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 2;
-                  rightOffset = 2;
-              }
-              {
-                Buttons = XmWorkArea;
-                Group: Widget
-                  orientation = horizontal;
-                  entryAlignment = alignment_center;
-                  inTabGroup = True;
-                  spacing = 25;
-                  packing = pack_column;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 2;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = separator;
-                  bottomAttachment = attach_form;
-                  bottomOffset = 2;
-                  resizable = true;
-                    {
-                      Process = DialogPush : mgiDialog;
-                      Group: Widget
-                        labelString = "Process Merge";
-                        activateCallback = "D:TissueMerge";
-                        traversalOn = False;
-                    }
-                    {
-                      Done = DialogPush : mgiDialog;
-                      Group: Widget
-                        activateCallback = "C: TuUnmanage";
-                        traversalOn = False;
-                    }
-              }
-        }
-        {
           PromptDialog = XmPromptDialog;
           Group: Widget
             dialogStyle = dialog_primary_application_modal;
@@ -1523,7 +1397,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1955;
+            vip_y = 1900;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1629,7 +1503,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2065;
+            vip_y = 2010;
             vipComment = "";
               {
                 AttributeHistoryTable = Table : mgiTable;
@@ -1706,7 +1580,7 @@ Shift<Key>Tab: prev-tab-group()
           MolecularSourceAttributeHistoryDialog = AttributeHistoryDialog;
           Group: Control
             vip_x = 120;
-            vip_y = 2010;
+            vip_y = 1955;
               {
                 AttributeHistoryTable = Table : mgiTable;
                     {
@@ -1732,7 +1606,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
             vip_x = 120;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint

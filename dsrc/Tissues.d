@@ -48,11 +48,6 @@ devents:
 	Init :local [];
 	Modify :local [];
 
-        -- Process Tissue Merge Events
-        TissueMergeInit :local [];
-        TissueMerge :local [];
-        TissueMergeSet :local [];
-
 	PrepareSearch :local [];
 	Search :local [];
 	SearchDuplicates :local [];
@@ -383,101 +378,6 @@ rules:
 
 	  top->DataSets->Records.labelString := (string) row + " Records";
 	  (void) reset_cursor(top);
-	end does;
-
---
--- TissueMergeInit
---
--- Activated from:  top->Edit->Merge, activateCallback
---
--- Initialize Tissue Merge Dialog fields
---
- 
-        TissueMergeInit does
-          dialog : widget := top->TissueMergeDialog;
-
-	  dialog->Merge1.set := true;
-	  dialog->Old.sensitive := false;
-	  dialog->Old->Verify->text.value := "";
-	  dialog->Old->TissueID->text.value := "";
-
-	  -- Default Merge value to currently selected record
-
-	  dialog->New->Verify->text.value := top->Name->text.value;
-	  dialog->New->TissueID->text.value := currentRecordKey;
-	  dialog.managed := true;
-	end does;
-
---
--- TissueMergeSet
---
--- Activated from:  dialog->Merge1/Merge2/Merge3, valueChangedCallback
---
--- Sensitize the Old Tissue text field based on which Merge was chosen
---
- 
-        TissueMergeSet does
-          dialog : widget := top->TissueMergeDialog;
-
-	  if (dialog->Merge1.set or dialog->Merge2.set) then
-	    dialog->Old.sensitive := false;
-	  else
-	    dialog->Old.sensitive := true;
-	  end if;
-	end does;
-
---
--- TissueMerge
---
--- Activated from:  top->TissueMergeDialog->Process
---
--- Execute appropriate stored procedures to merge given Tissues
---
- 
-        TissueMerge does
-          dialog : widget := top->TissueMergeDialog;
- 
-          if (dialog->New->TissueID->text.value.length = 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "New Tissue required during this merge";
-            send(StatusReport);
-            return;
-          end if;
- 
-          if (dialog->Merge3.set and dialog->Old->TissueID->text.value.length = 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Old Tissue required during this merge";
-            send(StatusReport);
-            return;
-          end if;
- 
-          (void) busy_cursor(dialog);
-
-	  cmd : string;
-
-          if (dialog->Merge1.set) then
-	    cmd := "\nexec PRB_mergeStandardTissue " + 
-		mgi_DBprstr(dialog->New->Verify->text.value);
-          elsif (dialog->Merge2.set) then
-	    cmd := "\nexec PRB_mergeStandardTissue " + 
-		mgi_DBprstr(dialog->New->Verify->text.value) + ",1,0";
-	  else
-	    cmd := "exec PRB_mergeTissue " + dialog->Old->TissueID->text.value + "," +
-	           dialog->New->TissueID->text.value + "\n";
-	  end if;
-	  
-	  ExecSQL.cmd := cmd;
-	  send(ExecSQL, 0);
-
-	  -- After merge, search for New Tissue
-
-	  Clear.source_widget := top;
-	  send(Clear, 0);
-          top->Name->text.value := dialog->New->Verify->text.value;
-	  send(Search, 0);
-
-	  (void) reset_cursor(dialog);
-
 	end does;
 
 --

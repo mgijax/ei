@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 15 13:08:40 2004";
+      lastWritten = "Fri Sep 17 10:42:37 2004";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1147,23 +1147,6 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
-                          {
-                            File = File;
-                          }
-                          {
-                            Commands = Commands;
-                          }
-                          {
-                            Edit = Edit;
-                          }
-                          {
-                            View = View;
-                          }
-                          {
-                            Merge = MenuCascade : mgiMenu;
-                            Group: Widget
-                              activateCallback = "D:TissueMergeInit";
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1359,24 +1342,6 @@ Module: MGD
                                       }
                                 }
                           }
-                    }
-                    {
-                      SearchDialog = SearchDialog;
-                    }
-                    {
-                      WhichItem = WhichItem;
-                    }
-                    {
-                      VerifyItemAdd = VerifyItemAdd;
-                    }
-                    {
-                      WorkingDialog = WorkingDialog;
-                    }
-                    {
-                      NoteDialog = NoteDialog;
-                    }
-                    {
-                      TissueMergeDialog = TissueMergeDialog : mgiDialog;
                     }
               }
         }
