@@ -295,7 +295,7 @@ rules:
 	  end if;
 
           if (top->Chromosome->text.modified) then
-            set := set + "chromosome = " + mgi_DBprstr(top->Chromosome->text.value) + ",";
+            set := set + "chromosome  " + mgi_DBprstr(top->Chromosome->text.value) + ",";
           end if;
 
 	  if (top->Cyto->text.modified) then
@@ -388,7 +388,7 @@ rules:
 	  end if;
 	    
           if (top->Chromosome->text.value.length > 0) then
-            where := where + "\nand m.chromosome = " + mgi_DBprstr(top->Chromosome->text.value);
+            where := where + "\nand m.chromosome like " + mgi_DBprstr(top->Chromosome->text.value);
           end if;
 
 	  if (top->Cyto->text.modified) then
