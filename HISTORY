@@ -1,10 +1,11 @@
-TAG: ei-3-0-4, 5
-DATE: 01/15/2001
+TAG: ei-3-0-4, 5, 6
+DATE: 01/15/2001, 01/16/2001
 STAFF: lec
 RELEASE: A
 CHANGES: 
 1) TR 2192 - KF Memorial button modification
 2) Added stdout to run scripts for logging
+3) TR 2194 - GXD/InSituResult
 
 TAG: ei-3-0-3
 DATE: 01/15/2001
