@@ -91,13 +91,14 @@ for s in strains:
                   ' union ' + \
                   'select distinct a._Refs_key, _Probe_key = NULL, dataSet = "Expression" ' + \
                   'from GXD_Genotype s, GXD_Expression x, GXD_Assay a ' + \
-                  'where s._Strain_key = %s' % s['_Strain_key'] + \
+                  'where s._Strain_key = %s ' % s['_Strain_key'] + \
                   'and s._Genotype_key = x._Genotype_key ' + \
                   'and x._Assay_key = a._Assay_key ' + \
                   ' union ' + \
-                  'select distinct _Refs_key, _Probe_key = NULL, dataSet = "Allele" ' + \
-                  'from ALL_Allele ' + \
-                  'where _Strain_key = %s' % s['_Strain_key'] + \
+                  'select distinct r._Refs_key, _Probe_key = NULL, dataSet = "Allele" ' + \
+                  'from ALL_Allele a, ALL_Reference r ' + \
+                  'where a._Strain_key = %s ' % s['_Strain_key'] + \
+		  'and a._Allele_key = r._Allele_key' + \
                   ' union ' + \
                   'select distinct r._Refs_key, r._Probe_key, dataSet = "RFLP" ' + \
                   'from PRB_Reference r, PRB_RFLV v, PRB_Allele a, PRB_Allele_Strain s ' + \
