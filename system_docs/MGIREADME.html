@@ -518,6 +518,9 @@ To install a Production or Development copy of the GUI application source:
 <P>
 <LI>Checkout the source
 	<PRE>cvs checkout ei</PRE>
+Note that pcd files are <em>reserved</em> checkouts to guarantee that only
+one user is editing at a time. They are initially read-only. If you want 
+to edit them, do a <PRE> cvs edit &lt;file&gt </PRE>.
 <P>
 <LI>The appropriate SYBASE and TeleUSE environment also needs to be configured:
 	<PRE>
@@ -582,6 +585,13 @@ These files are located in <CODE>$source_directory/$application</CODE>:
 	    the <I>File->Include Module</I> option and saved through the <I>File->Session Initfile->Save</I> 
 	    option in the <CODE>vip</CODE> tool. For more information, see the Implementing Presentation
 	    Components manual pages 3-10 thru 3-11.
+<P>
+<B>NOTE:</B> For now, if you are using vip, you must edit your .viprc files
+so they have the correct paths in them for your working copy of the 
+source. We should eventually create a distribution script that changes these
+paths automatically upon checkout. Regardless, these files pose a problem
+because we will end up changing them constantly, and checking in changes
+that only reflect the different SE's source installation.
 </TABLE>
 <P>
 
