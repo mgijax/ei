@@ -43,7 +43,6 @@ extern char *global_database;
 extern char *global_server;
 
 #define PASSWDFILE	".mgi_password"
-#define REPORTDIR 	"mgireport"
 #define ROWLIMIT 	"1000"
 #define NOROWLIMIT 	"0"
 
