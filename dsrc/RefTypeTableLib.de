@@ -29,6 +29,6 @@ ProcessRefTypeTable [table : widget;     -- Reference Type Table
 -- Search Reference Type Table
 SearchRefTypeTable [table : widget;      -- Reference Type Table
             tableID : integer;           -- ID of table
-            tableTag : string := "r";    -- Table Alias Tag for Query
+            tableTag : string := "ref";  -- Table Alias Tag for Query
             join : string;];          -- Join command
 
