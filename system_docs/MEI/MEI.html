@@ -575,9 +575,10 @@ The new orders are verified for uniqueness; duplicate order numbers are not allo
 invalid entries.
 <P>
 <LI>When the user executes <I>Add</I> or <I>Modify</I>, the table rows are read sequentially.  If the
-    table row has been modified, then that table row is processed.  When a blank row is reached, the
-    table scan stops and the transaction is executed.  A deleted row is <I>not</I> considered a blank row
-    because it has been flagged for deletion.  Therefore, do not skip rows when adding new data to a
+    row has been added to, modified or deleted (using <I>Delete Row</I>), then that row is 
+    processed.  When a blank row is reached, the table scan stops and the transaction is executed.  
+    (A deleted row is <I>not</I> considered a blank row because it has been flagged for deletion.)
+    Therefore, do not skip rows when adding new data to a
     table because the rows after the first blank row will be ignored.
 <P>
 </OL>
