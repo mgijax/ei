@@ -143,6 +143,11 @@ rules:
           -- Clear form
           Clear.source_widget := top;
           send(Clear, 0);
+
+	  -- Perform an initial search
+	  send(PrepareSearch, 0);
+	  send(Search, 0);
+
 	end does;
 
 --
