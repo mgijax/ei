@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 08/20/2000
+ *	- TR 1003; GXD_ANTIBODY and GXD_ANTIBODYSPECIES 
+ *
  * lec 03/20/2000
  *	- TR 1291
  *	- removed MRK_NOMEN_MARKER_VIEW
@@ -619,6 +622,9 @@ char *mgi_DBkey(int table)
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "_AntibodyType_key");
 	    break;
+    case GXD_ANTIBODYSPECIES:
+            strcpy(buf, "_AntibodySpecies_key");
+	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "_GelRNAType_key");
 	    break;
@@ -1199,6 +1205,9 @@ char *mgi_DBtable(int table)
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "GXD_AntibodyType");
 	    break;
+    case GXD_ANTIBODYSPECIES:
+            strcpy(buf, "GXD_AntibodySpecies");
+	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "GXD_GelRNAType");
 	    break;
@@ -1743,7 +1752,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
-            sprintf(buf, "insert %s (%s, _AntibodyClass_key, _Refs_key, _AntibodyType_key, antibodyName, antibodySpecies, antibodyNote, recogWestern, recogImmunPrecip, _Antigen_key, recogNote)", 
+            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _AntibodySpecies_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYMARKER:
@@ -2324,6 +2333,9 @@ char *mgi_DBcvname(int table)
 	    break;
     case GXD_ANTIBODYTYPE:
             strcpy(buf, "antibodyType");
+	    break;
+    case GXD_ANTIBODYSPECIES:
+            strcpy(buf, "antibodySpecies");
 	    break;
     case GXD_GELRNATYPE:
             strcpy(buf, "rnaType");
