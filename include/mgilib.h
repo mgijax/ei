@@ -302,12 +302,6 @@ extern char *global_version;
 #define VOC_ANNOTHEADER		814
 #define VOC_ANNOTHEADER_VIEW	815
 
-/* Fantom2 Tables */
-
-#define MGI_FANTOM2		900
-#define MGI_FANTOM2NOTES	901
-#define MGI_FANTOM2CACHE	902
-
 /* Sequence Tables */
 
 #define SEQ_SEQUENCE		1000

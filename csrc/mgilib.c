@@ -730,11 +730,6 @@ char *mgi_DBkey(int table)
     case MGI_TABLES:
             strcpy(buf, "table_name");
 	    break;
-    case MGI_FANTOM2:
-    case MGI_FANTOM2NOTES:
-    case MGI_FANTOM2CACHE:
-	    strcpy(buf, "_Fantom2_key");
-	    break;
     case MGI_NOTE:
     case MGI_NOTECHUNK:
             strcpy(buf, "_Note_key");
@@ -1351,15 +1346,6 @@ char *mgi_DBtable(int table)
     case MGI_COLUMNS:
             strcpy(buf, "MGI_Columns");
 	    break;
-    case MGI_FANTOM2:
-	    strcpy(buf, "MGI_Fantom2");
-	    break;
-    case MGI_FANTOM2NOTES:
-	    strcpy(buf, "MGI_Fantom2Notes");
-	    break;
-    case MGI_FANTOM2CACHE:
-	    strcpy(buf, "MGI_Fantom2Cache");
-	    break;
     case MGI_NOTE:
 	    strcpy(buf, "MGI_Note");
 	    break;
@@ -1925,8 +1911,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case IMG_IMAGENOTE:
     case MGI_TABLES:
     case MGI_COLUMNS:
-    case MGI_FANTOM2NOTES:
-    case MGI_FANTOM2CACHE:
     case MGI_NOTE:
     case MGI_NOTECHUNK:
     case MGI_ORGANISMTYPE:
@@ -2158,15 +2142,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case MGI_TABLES:
             sprintf(buf, "insert %s (table_name, description)", mgi_DBtable(table));
-	    break;
-    case MGI_FANTOM2:
-            sprintf(buf, "insert %s (%s, riken_seqid, riken_cloneid, riken_locusid, riken_cluster, final_cluster, genbank_id, fantom1_clone, fantom2_clone, tiger_tc, unigene_id, seq_length, seq_note, seq_quality, riken_locusStatus, mgi_statusCode, mgi_numberCode, riken_numberCode, cds_category, cluster_analysis, gene_name_curation, cds_go_curation, blast_groupID, blast_mgiIDs, final_mgiID, final_symbol1, final_name1, final_symbol2, final_name2, nomen_event, cluster_evidence, load_mgiid, nonmgi_rep, approved_symbol, approved_name, chromosome)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_FANTOM2NOTES:
-            sprintf(buf, "insert %s (%s, sequenceNum, noteType, note)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case MGI_FANTOM2CACHE:
-            sprintf(buf, "insert %s (%s, gba_mgiID, gba_symbol, gba_name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_NOTE:
             sprintf(buf, "insert %s (%s, _Object_key, _MGIType_key, _NoteType_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2548,10 +2523,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
               sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, global_loginKey, mgi_DBkey(table), key);
 	      break;
-      case MGI_FANTOM2:
-              sprintf(buf, "update %s set %s, modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
-		  mgi_DBtable(table), str, mgi_DBkey(table), key);
-	      break;
       default:
               sprintf(buf, "update %s set %s, modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, mgi_DBkey(table), key);
@@ -2600,10 +2571,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_TERM:
               sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), global_loginKey, mgi_DBkey(table), key);
-	      break;
-      case MGI_FANTOM2:
-              sprintf(buf, "update %s set modifiedBy = user_name(), modification_date = getdate() where %s = %s\n", 
-		  mgi_DBtable(table), mgi_DBkey(table), key);
 	      break;
       default:
               sprintf(buf, "update %s set modification_date = getdate() where %s = %s\n", 
