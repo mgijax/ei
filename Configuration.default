@@ -54,7 +54,7 @@ setenv USERLOG	$HOME/.ei-log
 setenv EIPASSWORDFILE  $HOME/.mgi_password
 
 # EI Applications
-setenv EIAPPS	"mgd gxd mgiadmin mgi fantom"
+setenv EIAPPS	"mgd gxd mgiadmin mgi"
 
 # DB server name
 setenv DSQUERY PROD_MGI
