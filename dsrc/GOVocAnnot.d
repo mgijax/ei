@@ -1,9 +1,9 @@
 --
--- Name    : VocAnnot.d
+-- Name    : GOVocAnnot.d
 -- Creator : 
--- VocAnnot.d 01/02/2002
+-- GOVocAnnot.d 01/02/2002
 --
--- TopLevelShell:		VocAnnotModule
+-- TopLevelShell:		GOVocAnnotModule
 -- Database Tables Affected:	Voc_Annot, VOC_Evidence
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -11,12 +11,15 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- 07/29/2004 lec
 --	TR 6036; SelectGOReferences;
 --	exclude *any* reference which has a GO annotation
 --
 -- 04/28/2004 lec
---	- TR 5693; GO annotation note template (see NotePreInit, NotePreCancel)
+--	- TR 5693; GO annotation note template (see GONoteInit, NotePreCancel)
 --
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
@@ -56,7 +59,7 @@
 --	- created; TR 2867, TR 2239
 --
 
-dmodule VocAnnot is
+dmodule GOVocAnnot is
 
 #include <mgilib.h>
 #include <syblib.h>
@@ -67,12 +70,14 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];		-- INITIALLY
 	Add :local [];					-- Add record
+	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
-	VocAnnotExit :local [];				-- Destroys D module instance & cleans up
+	GOVocAnnotExit :local [];				-- Destroys D module instance & cleans up
+	GOTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	NotePreCancel :local [];			-- Pre-cancellation of Note Dialog
-	NotePreInit :local [];				-- Pre-initialization of Note Dialog
+	GONoteInit :local [];				-- Pre-initialization of Note Dialog
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
@@ -111,7 +116,7 @@ rules:
 --
 -- Activated from:  MGI:CreateMGIModule
 --
--- Creates and manages D Module "VocAnnot"
+-- Creates and manages D Module "GOVocAnnot"
 --
 
 	INITIALLY does
@@ -125,11 +130,14 @@ rules:
           ab.sensitive := false;
 
 	  -- Create the widget hierarchy in memory
-	  top := create widget("VocAnnotModule", ab.name, mgi);
+	  top := create widget("GOVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
+
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
 
 	  -- Create windows for all widgets in the widget hierarchy
 	  -- All widgets now visible on screen
@@ -148,6 +156,21 @@ rules:
 	end does;
 
 --
+-- BuildDynamicComponents
+--
+-- Activated from:  devent INITIALLY
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+	  annotTable := top->Annotation->Table;
+	end does;
+
+--
 -- Init
 --
 -- Activated from:  devent INITIALLY
@@ -162,16 +185,11 @@ rules:
 
         Init does
 	  tables := create list("widget");
-	  genotype : widget := ab.root->GenotypeModule;
-	  gclipboardList : widget;
-	  i : integer := 0;
-	  gKey : string;
 
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->Annotation->Table);
 	  tables.append(top->Reference->Table);
-	  annotTable := top->Annotation->Table;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -182,42 +200,8 @@ rules:
           Clear.source_widget := top;
           send(Clear, 0);
 
-	  -- If launched from the Genotype Module...
-	  if (genotype != nil and ab.is_defined("annotTypeKey") != nil) then
-
-	    -- select the appropriate Annotation Type
-            SetOption.source_widget := top->VocAnnotTypeMenu;
-            SetOption.value := (string) ab.annotTypeKey;
-            send(SetOption, 0);
-	    send(SetAnnotTypeDefaults, 0);
-
-	    -- if the Genotype clipboard contains entries, 
-	    -- then retrieve the annotations for those entries
-
-	    gclipboardList := genotype->GenotypeEditClipboard->List;
-	    if (gclipboardList.itemCount > 0) then
-	      from := "from " + dbView + " v";
-	      where := where + "v._Object_key in (";
-	      while (i < gclipboardList.keys.count) do
-		gKey := gclipboardList.keys[i];
-		where := where + gKey + ",";
-		i := i + 1;
-	      end while;
-	      where := "where " + where->substr(1, where.length - 1) + ")";
-	      Search.prepareSearch := false;
-	      send(Search, 0);
-
-	    -- else if a Genotype record is currently selected,
-	    -- then retrieve the annotation records for that Genotype
-
-	    elsif (genotype->ID->text.value.length != 0) then
-	      top->mgiAccession->ObjectID->text.value := genotype->EditForm->ID->text.value;
-	      send(Search, 0);
-	    end if;
-	  else
-	    -- Set Defaults
-	    send(SetAnnotTypeDefaults, 0);
-	  end if;
+	  -- Set Defaults
+	  send(SetAnnotTypeDefaults, 0);
 	end does;
 
 --
@@ -316,13 +300,11 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  if (annotTable.annotVocab = "GO") then
-	    ProcessNoteForm.notew := top->mgiNoteForm;
-	    ProcessNoteForm.tableID := MGI_NOTE;
-	    ProcessNoteForm.objectKey := currentRecordKey;
-	    send(ProcessNoteForm, 0);
-	    cmd := top->mgiNoteForm.sql;
-          end if;
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := top->mgiNoteForm.sql;
 
 	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
@@ -520,14 +502,12 @@ rules:
 	    end if;
 	  end if;
 
-	  if (annotTable.annotVocab = "GO") then
-	    SearchNoteForm.notew := top->mgiNoteForm;
-	    SearchNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
-            SearchNoteForm.join := "v._Object_key";
-	    send(SearchNoteForm, 0);
-	    from := from + top->mgiNoteForm.sqlFrom;
-	    where := where + top->mgiNoteForm.sqlWhere;
-          end if;
+	  SearchNoteForm.notew := top->mgiNoteForm;
+	  SearchNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
+          SearchNoteForm.join := "v._Object_key";
+	  send(SearchNoteForm, 0);
+	  from := from + top->mgiNoteForm.sqlFrom;
+	  where := where + top->mgiNoteForm.sqlWhere;
 
 	  -- Annotations
 
@@ -709,16 +689,7 @@ rules:
 	  top->ReportDialog.select := "select distinct _Object_key, description " +
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
-	  -- Different Sorts for different Annotation Types
-	  if (annotTable.annotVocab = "GO") then
-	    orderBy := "e.evidenceSeqNum, e.modification_date\n";
-	  elsif (annotTable.annotVocab = "PhenoSlim") then
-	    orderBy := "a.sequenceNum, e.modification_date\n";
-	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
-	    orderBy := "e.jnum, a.term\n";
-	  else
-	    orderBy := "a.term, e.modification_date\n";
-	  end if;
+	  orderBy := "e.evidenceSeqNum, e.modification_date\n";
 
 	  cmd : string := "select _Object_key, accID, description, short_description" +
 			  " from " + dbView + 
@@ -829,9 +800,7 @@ rules:
 	  (void) dbclose(dbproc);
 
 	  -- Sort by DAG
-	  if (annotTable.annotVocab = "GO") then
-	    (void) mgi_tblSort(annotTable, annotTable.dag);
-	  end if;
+	  (void) mgi_tblSort(annotTable, annotTable.dag);
 
 	  -- Reset Background
 
@@ -852,7 +821,7 @@ rules:
 
 	    if (mgi_tblGetCell(annotTable, i, annotTable.dag) != 
 		mgi_tblGetCell(annotTable, i-1, annotTable.dag)) then
-	      if (newColor = "Wheat") then
+	      if (newColor = BACKGROUNDNORMAL) then
 		newColor := BACKGROUNDALT1;
 	      else
 		newColor := BACKGROUNDNORMAL;
@@ -878,13 +847,11 @@ rules:
 
 	  -- End Reset Background
 
-	  if (annotTable.annotVocab = "GO") then
-	    send(SelectGOReferences, 0);
-	    LoadNoteForm.notew := top->mgiNoteForm;
-	    LoadNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
-	    LoadNoteForm.objectKey := currentRecordKey;
-	    send(LoadNoteForm, 0);
-	  end if;
+	  send(SelectGOReferences, 0);
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
 
           top->QueryList->List.row := Select.item_position;
 
@@ -918,14 +885,15 @@ rules:
 
 --	TR 6036; exclude any reference which has a GO annotation
 --			" where a._Object_key = r._Marker_key " +
+
 	  cmd : string;
 	  cmd := "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r " + 
 		 "where r._Marker_key = " + currentRecordKey + 
 		 " and not exists (select 1 from " +
 			mgi_DBtable(VOC_ANNOT) + " a," +
 			mgi_DBtable(VOC_EVIDENCE) + " e" +
-			" where a._Annot_key = e._Annot_key " +
-			" and a._AnnotType_key = " + annotTypeKey +
+			" where a._AnnotType_key = " + annotTypeKey +
+			" and a._Annot_key = e._Annot_key " +
 			" and e._Refs_key = r._Refs_key) " +
 		" order by r.jnum desc\n";
 
@@ -978,23 +946,6 @@ rules:
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
-	  if (annotTable.annotVocab = "PhenoSlim") then
-	    top->mgiNoteForm.managed := false;
-	    top->PhenoSlimList.managed := true;
-            LoadList.list := top->PhenoSlimList;
-	    send(LoadList, 0);
-	    top->Reference.managed := false;
-	  elsif (annotTable.annotVocab = "GO") then
-	    top->mgiNoteForm.managed := true;
-	    top->PhenoSlimList.managed := false;
-	    top->Reference.managed := true;
---	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
-	  else
-	    top->mgiNoteForm.managed := false;
-	    top->PhenoSlimList.managed := false;
-	    top->Reference.managed := false;
-	  end if;
-
 	  (void) reset_cursor(mgi);
 	end does;
 
@@ -1033,28 +984,63 @@ rules:
 	NotePreCancel does
 	  row : integer := mgi_tblGetCurrentRow(annotTable);
 
-	  if (annotTable.annotVocab = "GO" and
-	      mgi_tblGetCell(annotTable, row, annotTable.notes) = goNoteTemplate) then
+	  if (mgi_tblGetCell(annotTable, row, annotTable.notes) = goNoteTemplate) then
 	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, "");
 	  end if;
 	end does;
 
 --
--- NotePreInit
+-- GONoteInit
 -- (TR 5693)
 --
 -- Activated From:  NotePush.activateCallback
--- Does:            If current row note is blank and annotation is GO/Marker,
+-- Does:            If current row note is blank,
 --		    then initialize row note with GO note template.
 --
 
-	NotePreInit does
+	GONoteInit does
 	  row : integer := mgi_tblGetCurrentRow(annotTable);
 
-	  if (annotTable.annotVocab = "GO" and
-	      mgi_tblGetCell(annotTable, row, annotTable.notes) = "") then
+	  if (mgi_tblGetCell(annotTable, row, annotTable.notes) = "") then
 	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, goNoteTemplate);
 	  end if;
+
+	  NoteInit.source_widget := top->Lookup->NotePush;
+	  send(NoteInit, 0);
+	end does;
+
+--
+-- GOTraverse
+--
+--  Skips over the Modified By/Modification Date/Created By/Creation Date columns
+--  These cells need to be traversable in order to enter search criteria,
+--  but we want to skip them while curating.
+--
+--
+
+	GOTraverse does;
+	  table : widget := GOTraverse.source_widget;
+	  row : integer := GOTraverse.row;
+	  column : integer := GOTraverse.column;
+	  reason : integer := GOTraverse.reason;
+
+	  if (row < 0) then
+	    return;
+	  end if;
+
+	  if (column = annotTable.inferredFrom) then
+	    send(GONoteInit, 0);
+	  end if;
+
+	  if (column = annotTable.notes or column = annotTable.editor) then
+	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
+	      AddTableRow.table := annotTable;
+	      send(AddTableRow, 0);
+	    end if;
+	    GOTraverse.next_row := row + 1;
+	    GOTraverse.next_column := annotTable.termAccID;
+	  end if;
+
 	end does;
 
 --
@@ -1063,7 +1049,7 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
  
-        VocAnnotExit does
+        GOVocAnnotExit does
 	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;

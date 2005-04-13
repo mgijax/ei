@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec 12/17/2003
 --	- TR 5327; nomen merge
 --
@@ -333,22 +336,17 @@ rules:
 
 	ClearNomen does
 
-	  if (not ClearNomen.reset) then
-	    top->MarkerStatusMenu.background := "Wheat";
-            top->MarkerStatusPulldown.background := "Wheat";
-            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
-            top->MarkerStatusMenu.menuHistory.background := "Wheat";
-	  end if;
-
 	  Clear.source_widget := top;
 	  Clear.clearLists := 3;
 	  Clear.clearKeys := ClearNomen.clearKeys;
 	  Clear.reset := ClearNomen.reset;
 	  send(Clear, 0);
 
-	  -- Initialize Reference table
-
 	  if (not ClearNomen.reset) then
+	    top->MarkerStatusMenu.background := "Wheat";
+            top->MarkerStatusPulldown.background := "Wheat";
+            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
+            top->MarkerStatusMenu.menuHistory.background := "Wheat";
 	    InitRefTypeTable.table := top->Reference->Table;
 	    InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
 	    send(InitRefTypeTable, 0);
@@ -356,6 +354,7 @@ rules:
 	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
 	    send(InitSynTypeTable, 0);
 	  end if;
+
 	end does;
 
 --
@@ -431,7 +430,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentNomenKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -439,7 +437,6 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentNomenKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
@@ -610,7 +607,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentNomenKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -618,7 +614,6 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentNomenKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
@@ -897,14 +892,6 @@ rules:
 	    send(ClearTable, 0);
 	  end while;
 	  tables.close;
-
-	  InitRefTypeTable.table := top->Reference->Table;
-	  InitRefTypeTable.tableID := MGI_REFTYPE_NOMEN_VIEW;
-	  send(InitRefTypeTable, 0);
-
-	  InitSynTypeTable.table := top->Synonym->Table;
-	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_NOMEN_VIEW;
-	  send(InitSynTypeTable, 0);
 
           (void) busy_cursor(top);
 

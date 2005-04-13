@@ -38,7 +38,7 @@ devents:
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :local [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
-	SetMGIType [source_widget : widget;];	        -- Set MGI Type and DB View
+	SetMGIType [source_widget : widget;];		-- Set MGI Type and DB View
 	SortTable :local [];				-- Sort Rows
 	StripeRows :local [];				-- Strip Rows
 	VerifyTransMGITermAccID :local [];		-- Verify MGI Term

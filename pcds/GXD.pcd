@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Mar 25 10:57:13 2005";
+      lastWritten = "Wed Apr 13 10:49:13 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2253,9 +2253,15 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   mgiMarker = mgiMarker : mgiDataTypes;
-                                }
-                                {
-                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
+                                      {
+                                        ObjectID = ID;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
                                 }
                                 {
                                   messageText = messageText : mgiDataTypes;
@@ -2269,7 +2275,7 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Reference = ReferenceTypeTable : mgiTable;
                                       {
-                                        Table = mgiTable;
+                                        Table = XtXrtTable;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -2300,6 +2306,33 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     No = No : mgiOption;
                                                   }
+                                            }
+                                      }
+                                }
+                                {
+                                  AlleleStatusMenu = AlleleStatusMenu : mgiOption;
+                                }
+                                {
+                                  AlleleTypeMenu = AlleleTypeMenu : mgiOption;
+                                }
+                                {
+                                  InheritanceModeMenu = InheritanceModeMenu : mgiOption;
+                                }
+                                {
+                                  MolecularMutation = TableLabel : mgiTable;
+                                }
+                                {
+                                  mgiMutantESCellLine = mgiMutantESCellLine : mgiDataTypes;
+                                }
+                                {
+                                  mgiParentalESCellLine = mgiParentalESCellLine : mgiDataTypes;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
                                             }
                                       }
                                 }
@@ -2362,6 +2395,45 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                 }
+                          }
+                    }
+                    {
+                      SearchDialog = SearchDialog : mgiDialog;
+                    }
+                    {
+                      WhichItem = WhichItem : mgiDialog;
+                          {
+                            ItemList = LookupList : mgiLookup;
+                          }
+                          {
+                            separator = XmSeparator;
+                          }
+                          {
+                            Buttons = XmRowColumn;
+                                {
+                                  Cancel = DialogPush : mgiDialog;
+                                }
+                          }
+                    }
+                    {
+                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                    }
+                    {
+                      WorkingDialog = WorkingDialog : mgiDialog;
+                    }
+                    {
+                      NoteDialog = NoteDialog : mgiDialog;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            Note = Notes : mgiDataTypes;
+                          }
+                          {
+                            separator = XmSeparator;
+                          }
+                          {
+                            Buttons = Buttons : mgiDialog;
                           }
                     }
               }

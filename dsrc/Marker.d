@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- 06/27/2003
 --      - TR 4872; Marker Withdrawals
 --
@@ -165,7 +168,6 @@ devents:
 	ModifyCurrent :local [];
 	ModifyHistory :local [];
 	ModifyOffset :local [];
-	ModifyReference :local [];
 
 	PrepareSearch :local [];
 
@@ -257,6 +259,12 @@ rules:
 	  InitOptionMenu.option := top->WithdrawalDialog->ChromosomeMenu;
 	  send(InitOptionMenu, 0);
 
+	  -- Initialize Reference table
+
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_MARKER_VIEW;
+	  send(InitRefTypeTable, 0);
+
           -- Initialize Synonym table
 
           InitSynTypeTable.table := top->Synonym->Table;
@@ -293,8 +301,6 @@ rules:
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
 	  tables.append(top->Offset->Table);
-	  tables.append(top->Synonym->Table);
-	  tables.append(top->Reference->Table);
 	  tables.append(top->AccessionReference->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 
@@ -334,26 +340,22 @@ rules:
 
 	ClearMarker does
 
-	  if (not ClearMarker.reset) then
-	    top->MarkerStatusMenu.background := "Wheat";
-            top->MarkerStatusPulldown.background := "Wheat";
-            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
-            top->MarkerStatusMenu.menuHistory.background := "Wheat";
-	  end if;
-
           Clear.source_widget := top;
 	  Clear.clearLists := ClearMarker.clearLists;
 	  Clear.clearKeys := ClearMarker.clearKeys;
 	  Clear.reset := ClearMarker.reset;
 	  send(Clear, 0);
 
-	  -- Initialize Synonym table
-
 	  if (not ClearMarker.reset) then
-	    InitSynTypeTable.table := top->Synonym->Table;
-	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
-	    send(InitSynTypeTable, 0);
+	    top->MarkerStatusMenu.background := "Wheat";
+            top->MarkerStatusPulldown.background := "Wheat";
+            top->MarkerStatusPulldown->SearchAll.background := "Wheat";
+            top->MarkerStatusMenu.menuHistory.background := "Wheat";
+            InitSynTypeTable.table := top->Synonym->Table;
+            InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
+            send(InitSynTypeTable, 0);
 	  end if;
+
 	end does;
 
 --
@@ -898,12 +900,18 @@ rules:
 	  send(ModifyAlias, 0);
 	  send(ModifyCurrent, 0);
 	  send(ModifyOffset, 0);
-	  send(ModifyReference, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.tableID := MGI_REFTYPE_MARKER_VIEW;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
           --  Process Synonyms
 
           ProcessSynTypeTable.table := top->Synonym->Table;
-          ProcessSynTypeTable.tableID := MGI_SYNONYM;
           ProcessSynTypeTable.objectKey := currentRecordKey;
           send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
@@ -1236,69 +1244,6 @@ rules:
 	end does;
 
 --
--- ModifyReference
---
--- Activated from: devent Modify
---
--- Construct insert/update/delete for Marker References
--- Only add/modify/delete non-auto (auto = 0) records; that is, those that are
--- entered using this interface.
---
--- Auto references (auto = 1) are loaded during a nightly process and should not
--- be edited via this event.
---
-
-	ModifyReference does
-          table : widget := top->Reference->Table;
-          row : integer := 0;
-          editMode : string;
-	  refsKey : string;
-	  refsCurrentKey : string;
-          set : string := "";
- 
-          -- Process while non-empty rows are found
- 
-          while (row < mgi_tblNumRows(table)) do
-            editMode := mgi_tblGetCell(table, row, table.editMode);
- 
-            if (editMode = TBL_ROW_EMPTY) then
-              break;
-            end if;
- 
-            refsKey := mgi_tblGetCell(table, row, table.refsKey);
-            refsCurrentKey := mgi_tblGetCell(table, row, table.refsCurrentKey);
- 
-            if (editMode = TBL_ROW_ADD) then
-              cmd := cmd + 
-		     mgi_DBinsert(MRK_REFERENCE, NOKEY) + 
-		     currentRecordKey + "," + 
-		     refsKey + ",0)\n";
-
-	      -- update Review value for row
-
-	      set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-              cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
-
-            elsif (editMode = TBL_ROW_MODIFY) then
-              set := "_Refs_key = " + refsKey;
-              cmd := cmd + mgi_DBupdate(MRK_REFERENCE, currentRecordKey, set) + 
-                     "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
-
-	      -- update Review value for row
-
-	      set := "isReviewArticle = " + mgi_tblGetCell(table, row, table.reviewKey);
-              cmd := cmd + mgi_DBupdate(BIB_REFS, refsKey, set);
-
-            elsif (editMode = TBL_ROW_DELETE) then
-	      cmd := cmd + mgi_DBdelete(MRK_REFERENCE, currentRecordKey) + 
-		     "and _Refs_key = " + refsCurrentKey + " and auto = 0\n";
-            end if;
- 
-            row := row + 1;
-	  end while;
-	end does;
-
---
 -- PrepareSearch
 --
 -- Activated from:  devent Search
@@ -1343,6 +1288,13 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
  
+	  SearchRefTypeTable.table := top->Reference->Table;
+	  SearchRefTypeTable.tableID := MGI_REFERENCE_MARKER_VIEW;
+          SearchRefTypeTable.join := "m." + mgi_DBkey(MRK_MARKER);
+	  send(SearchRefTypeTable, 0);
+	  from := from + top->Reference->Table.sqlFrom;
+	  where := where + top->Reference->Table.sqlWhere;
+
           SearchSynTypeTable.table := top->Synonym->Table;
           SearchSynTypeTable.tableID := MGI_SYNONYM_MUSMARKER_VIEW;
           SearchSynTypeTable.join := "m." + mgi_DBkey(MRK_MARKER);
@@ -1546,10 +1498,6 @@ rules:
 	  end while;
 	  tables.close;
 
-          InitSynTypeTable.table := top->Synonym->Table;
-          InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
-          send(InitSynTypeTable, 0);
-
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;
@@ -1579,11 +1527,7 @@ rules:
 	         "select _Current_key, current_symbol from MRK_Current_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
 	         "select _Alias_key, alias from MRK_Alias_View " +
-		 "where _Marker_key = " + currentRecordKey + "\n" +
-	         "select _Refs_key, jnum, short_citation, isReviewArticle " +
-		 "from MRK_Reference_View " +
-		 "where _Marker_key = " + currentRecordKey + " and auto = 0 " +
-		 "order by short_citation\n";
+		 "where _Marker_key = " + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1686,30 +1630,6 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 7) then
-		table := top->Reference->Table;
-                (void) mgi_tblSetCell(table, row, table.refsCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.citation, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 4));
-
-		if (mgi_getstr(dbproc, 4) = "1") then
-                  (void) mgi_tblSetCell(table, row, table.review, "Yes");
-		else
-                  (void) mgi_tblSetCell(table, row, table.review, "No");
-		end if;
-
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-          	-- Initialize Option Menus for row 0
-
-		if (row = 0) then
-          	  SetOptions.source_widget := table;
-          	  SetOptions.row := 0;
-          	  SetOptions.reason := TBL_REASON_ENTER_CELL_END;
-          	  send(SetOptions, 0);
-		end if;
 	      end if;
 	      row := row + 1;
 	    end while;
@@ -1739,6 +1659,11 @@ rules:
 	    LoadAcc.reportError := false;
 	  end if;
 
+          LoadRefTypeTable.table := top->Reference->Table;
+	  LoadRefTypeTable.tableID := MGI_REFERENCE_MARKER_VIEW;
+          LoadRefTypeTable.objectKey := currentRecordKey;
+          send(LoadRefTypeTable, 0);
+ 
           LoadSynTypeTable.table := top->Synonym->Table;
           LoadSynTypeTable.tableID := MGI_SYNONYM_MUSMARKER_VIEW;
           LoadSynTypeTable.objectKey := currentRecordKey;

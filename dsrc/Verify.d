@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec	06/09/2004
 --	- TR 5874; restrict use of GO "ND" evidence code and J:73796 reference
 --
@@ -549,13 +552,15 @@ rules:
 
 	        whichMarker := 1;
  
-                select := "select _Allele_key, _Marker_key, symbol, markerSymbol " +
-			  "from " + mgi_DBtable(ALL_ALLELE_VIEW) +
-                          " where symbol = " + mgi_DBprstr(value) +
-			  " and _Allele_Status_key = " + ALL_STATUS_APPROVED;
+                select := "select a._Allele_key, a._Marker_key, a.symbol, markerSymbol = m.symbol " +
+			  "from ALL_Allele a, MRK_Marker m, VOC_Term t " +
+                          " where a.symbol = " + mgi_DBprstr(value) +
+			  " and a._Marker_key = m._Marker_key " +
+			  " and a._Allele_Status_key = t._Term_key " +
+			  "and t.term = " + mgi_DBprstr(ALL_STATUS_APPROVED);
 
 	        if (markerKey.length > 0 and markerKey != "NULL") then
-                  select := select + " and _Marker_key = " + markerKey;
+                  select := select + " and a._Marker_key = " + markerKey;
 	        end if;
 
                 dbproc := mgi_dbopen();
@@ -1235,8 +1240,13 @@ rules:
 	  (void) busy_cursor(top);
 
 	  dbproc : opaque := mgi_dbopen();
+
 	  cmd : string := "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
 		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n";
+
+--	        "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
+--		"where mgiID = " + mgi_DBprstr("MGI:" + mgi_tblGetCell(table, row, table.genotype)) + "\n";
+
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -1258,7 +1268,7 @@ rules:
 	    end if;
 	  else
 	    StatusReport.source_widget := top;
-	    StatusReport.message := "Invalid Genotype.\n";
+	    StatusReport.message := "Invalid Genotype.";
 	    send(StatusReport, 0);
 	  end if;
 
@@ -1388,8 +1398,6 @@ rules:
 	    select := "select _Cross_key, display, standard = 1 from " + table + " where ";
 	  elsif (tableID = RISET) then
 	    select := "select _RISet_key, designation, standard = 1 from " + table + " where ";
-	  elsif (tableID = ALL_CELLLINE) then
-	    select := "select _CellLine_key, cellLine, standard = 1 from " + table + " where ";
 	  else
 	    select := "select _Term_key, term, standard = 1 from " + table + " where ";
 	  end if;
@@ -1555,6 +1563,11 @@ rules:
 	  -- No value found/selected, cannot add
 
 	  elsif (selectedItem < 0 and not verify.verifyAdd) then
+	    key.value := "";
+	    item.value := "";
+            StatusReport.source_widget := root;
+	    StatusReport.message := "Invalid Value.";
+            send(StatusReport);
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  end if;
 
@@ -2182,6 +2195,8 @@ rules:
 	  column : integer;
 	  reason : integer;
 
+	  (void) busy_cursor(top);
+
 	  isTable := mgi_tblIsTable(sourceWidget);
 
 	  -- Processing for Table
@@ -2192,12 +2207,14 @@ rules:
 	    reason := VerifyMarkerAlleles.reason;
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      (void) reset_cursor(top);
 	      return;
 	    end if;
 					   
 	    -- If not in the marker column, return
 
             if (column != sourceWidget.markerSymbol) then
+	      (void) reset_cursor(top);
               return;
             end if;
 
@@ -2210,12 +2227,14 @@ rules:
 	  end if;
 
 	  if (value.length = 0 or value = "NULL") then
+	    (void) reset_cursor(top);
 	    return;
 	  end if;
 
-	  select := "select count(*) from " + mgi_DBtable(ALL_ALLELE) +
-		" where _Marker_key = " + value +
-		" and _Allele_Status_key != " + ALL_STATUS_APPROVED;
+	  select := "select count(a._Allele_key) from ALL_Allele a, VOC_Term t " +
+	  	"where a._Marker_key = " + value + 
+	  	" and a._Allele_Status_key = t._Term_key" +
+	  	" and t.term != " + mgi_DBprstr(ALL_STATUS_APPROVED);
 
           if ((integer) mgi_sql1(select) > 0) then
                 StatusReport.source_widget := top.root;
@@ -2223,6 +2242,8 @@ rules:
 			"Please check these records before entering your new Allele Symbol.\n";
                 send(StatusReport);
           end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --
@@ -3322,7 +3343,6 @@ rules:
 	  row : integer;
 	  column : integer;
 	  reason : integer;
-	  pos : integer;
 
 	  isTable := mgi_tblIsTable(sourceWidget);
 
@@ -3349,17 +3369,8 @@ rules:
 
 	  if (value.length = 0) then
 	    if (isTable) then
-	      if (sourceWidget.annotVocab = "PhenoSlim" or
-		  sourceWidget.annotVocab = "Mammalian Phenotype") then
-		evidence := "EE";
-	        pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring(evidence));
-		evidenceKey := top->EvidenceCodeList->List.keys[pos];
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, evidenceKey);
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, evidence);
-	      else
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
-	      end if;
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
 	    end if;
 	    return;
 	  end if;
@@ -3478,7 +3489,9 @@ rules:
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      if (sourceWidget.is_defined("dag") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      end if;
 	    end if;
 	    return;
 	  end if;
@@ -3540,7 +3553,9 @@ rules:
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termAccID, termAcc);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, termKey);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, term);
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, dag);
+	      if (sourceWidget.is_defined("dag") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, dag);
+	      end if;
 
 	      -- TR 4262
 	      if (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554") then
@@ -3556,7 +3571,9 @@ rules:
 	      VerifyVocabTermAccID.doit := (integer) false;
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, "NULL");
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, "");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      if (sourceWidget.is_defined("dag") != nil) then
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.dag, "");
+	      end if;
 	    end if;
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Term Accession ID";

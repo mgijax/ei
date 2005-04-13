@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec	09/29/2004
 --	- TR 5686; derived from RefTypeTableLib
 --
@@ -86,6 +89,9 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
+
 	  cmd := "select _SynonymType_key, _MGIType_key, synonymType, allowOnlyOne from " + mgi_DBtable(tableID) + 
 		  "\norder by allowOnlyOne desc, _SynonymType_key";
 
@@ -130,9 +136,13 @@ rules:
 	  objectKey : string := LoadSynTypeTable.objectKey;
 	  cmd : string;
 
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
+
           cmd := "select _Synonym_key, _SynonymType_key, synonymType, synonym, allowOnlyOne, modification_date, modifiedBy";
 
-	  if (tableID = MGI_SYNONYM_NOMEN_VIEW or 
+	  if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
+	      tableID = MGI_SYNONYM_NOMEN_VIEW or 
 	      tableID = MGI_SYNONYM_MUSMARKER_VIEW) then
 	      cmd := cmd + " , _Refs_key, jnum, short_citation";
           end if;
@@ -156,7 +166,8 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
 
-	      if (tableID = MGI_SYNONYM_NOMEN_VIEW or
+	      if (tableID = MGI_SYNONYM_ALLELE_VIEW or 
+	          tableID = MGI_SYNONYM_NOMEN_VIEW or
 	          tableID = MGI_SYNONYM_MUSMARKER_VIEW) then
 	        (void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.jnum, mgi_getstr(dbproc, 9));
@@ -185,8 +196,13 @@ rules:
 
 	ProcessSynTypeTable does
           table : widget := ProcessSynTypeTable.table;
-	  tableID : integer := ProcessSynTypeTable.tableID;
 	  objectKey : string := ProcessSynTypeTable.objectKey;
+
+	  -- temporary id for table that has only one
+	  -- synonym type (like Alleles) that the user doesn't even see
+
+	  tableID : integer := ProcessSynTypeTable.tableID;
+
 	  cmd : string;
           row : integer := 0;
           editMode : string;
@@ -199,13 +215,23 @@ rules:
 	  keyName : string := "synKey";
 	  keyDefined : boolean := false;
  
+	  syntableID : integer := MGI_SYNONYM;
+
+	  if (table.useDefaultSynType) then
+	    synTypeKey := mgi_sql1("select _SynonymType_key from " + mgi_DBtable(tableID));
+	  end if;
+
           -- Process 
  
           while (row < mgi_tblNumRows(table)) do
             editMode := mgi_tblGetCell(table, row, table.editMode);
  
             key := mgi_tblGetCell(table, row, table.synKey);
-	    synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
+
+	    if (not table.useDefaultSynType) then
+	      synTypeKey := mgi_tblGetCell(table, row, table.synTypeKey);
+	    end if;
+
 	    synName := mgi_tblGetCell(table, row, table.synName);
 	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
 	    mgiType := table.mgiTypeKey;
@@ -217,13 +243,13 @@ rules:
             if (editMode = TBL_ROW_ADD) then
 
 	      if (not keyDefined) then
-		cmd := cmd + mgi_setDBkey(tableID, NEWKEY, keyName);
+		cmd := cmd + mgi_setDBkey(syntableID, NEWKEY, keyName);
 		keyDefined := true;
 	      else
 		cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
 
-	      cmd := cmd + mgi_DBinsert(tableID, keyName) +
+	      cmd := cmd + mgi_DBinsert(syntableID, keyName) +
 		     objectKey + "," +
 		     mgiType + "," +
 		     synTypeKey + "," +
@@ -235,10 +261,10 @@ rules:
               set := "_SynonymType_key = " + synTypeKey +
 		     ",synonym = " + mgi_DBprstr(synName) +
 		     ",_Refs_key = " + refsKey;
-              cmd := cmd + mgi_DBupdate(tableID, key, set);
+              cmd := cmd + mgi_DBupdate(syntableID, key, set);
 
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-              cmd := cmd + mgi_DBdelete(tableID, key);
+              cmd := cmd + mgi_DBdelete(syntableID, key);
             end if;
  
             row := row + 1;

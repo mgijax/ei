@@ -8,8 +8,6 @@
  * strpos:			used to find integer offset of a substring in text 
  * getIdbySymbol:	get a markerkey associated with a symbol
  * symbolinMLC:		determine if a symbol has information in MLC database
- * release_mlc_lock: release lock on a symbol
- * obtain_mlc_lock: obtain lock on a symbol
  * cleanup_handler:	registered "atexit" callbacks for MLCED
  *
  * lec - 01/25/1999
@@ -133,112 +131,6 @@ char *symidtext;
     if(foundit)
 		return True;
 	return False;
-}
-
-/* release_mlc_lock
- *  
- * Releases the "lock" on a particular MLC symbol (with markerkey 'mk') by 
- * appending a check-in row to the MLC_Lock table
- *
- * Returns true if lock has been released, false otherwise
- */
-
-Boolean release_mlc_lock(char *mk) 
-{
-    DBPROCESS *dbproc = mgi_dbopen();
-    char cmd[BUFSIZ];
-	RETCODE rc;
-
-	sprintf(cmd,"insert MLC_Lock (_Marker_key,time,checkedOut) values(%s,getdate(),%d)\n",mk,0);
-	dbcmd(dbproc,cmd);
-	rc = dbsqlexec(dbproc);
-	dbclose(dbproc);
-	return rc == FAIL? False : True;
-}
-
-
-/* obtain_mlc_lock
- *
- * Obtains an exclusive lock on MLC_Lock (isolation-level 3) while 
- * reading the rows.  No insertions can be performed by any other clients,
- * so no one else can obtain the MLC "lock" until the transaction is 
- * committed, and then only if the last check-in record for symbol (with
- * markerkey 'mk') indicates that symbol isn't currently checked out. 
- *
- * Returns true if lock has been obtained, false otherwise
- */
-
-Boolean obtain_mlc_lock(char *mk)
-{
-	#define NROWS 2 
-    DBPROCESS *dbproc = mgi_dbopen();
-	DBCURSOR *cursor;
-    char cmd[BUFSIZ];
-	RETCODE rc;
-	DBINT pstatus[NROWS];
-	DBDATETIME  datetimes[NROWS];
-	DBBIT checked[NROWS];	
-	DBINT checked_out;
-	int i;
- 
-    sprintf(cmd, "select time, checkedOut from MLC_Lock holdlock where _Marker_key = %s\n", mk); 
-
-    cursor = dbcursoropen(dbproc,cmd,CUR_KEYSET,CUR_LOCKCC,NROWS,pstatus); 
-
-	if(cursor) {
-
-	dbcursorbind(cursor,1,DATETIMEBIND,0,NULL,(BYTE *)datetimes,NULL);
-	dbcursorbind(cursor,2,BITBIND,0,NULL,(BYTE *)checked,NULL);
-	
-	/* start isolation level 3 */
-	sprintf(cmd,"begin transaction obtain_MLC_lock");
-	dbcmd(dbproc,cmd);
-	rc = dbsqlexec(dbproc);
-	if(!rc) { dbclose(dbproc); dbcursorclose(cursor); return False; }
-	
-	/* we prevent any other client from obtaining an update lock while
-       we are fetching rows */
-
-	rc = dbcursorfetch(cursor,FETCH_LAST,0);  /* get the last part of results */
-	if(!rc) { 
-		dbclose(dbproc); 
-		dbcursorclose(cursor); 
-		return False;  /* this is where other client loses out, 
-						  since we have lock */
-	}
-
-	checked_out = 1;  /* assume checked out */
-	
-	for(i=0;i<NROWS;i++) {
-		if(pstatus[i] & FTC_SUCCEED) { 
-			if ((pstatus[i] & FTC_ENDOFKEYSET) ||
-				(pstatus[i] & FTC_ENDOFRESULTS)) 
-				checked_out = checked[i]; 
-		}
-	}
-
-	} /* cursor */
-	else 
-		checked_out=0;  /* assume it failed because no entries in MLC */
-						/* there has got to be a better way, but for now..*/
-
-	if(!checked_out) {  /* check in */
-		sprintf(cmd,"insert MLC_Lock (_Marker_key,time,checkedOut) values(%s,getdate(),%d)\n",mk,1);
-		dbcmd(dbproc,cmd);
-		rc = dbsqlexec(dbproc);
-		if(!rc) { dbclose(dbproc); if(cursor) dbcursorclose(cursor); 
-			    	return False; }
-	}
-		
-	sprintf(cmd,"commit transaction");
-	dbcmd(dbproc,cmd);
-	rc = dbsqlexec(dbproc);
-	if(!rc) { dbclose(dbproc); if(cursor) dbcursorclose(cursor); return False; }
-	/* end isolation level 3 */
-
-	if(cursor) dbcursorclose(cursor);
-    (void) dbclose(dbproc);
-	return checked_out==1? False:True;
 }
 
 /* sigterm_hand

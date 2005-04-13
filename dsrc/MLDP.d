@@ -1995,7 +1995,7 @@ rules:
 --
 -- ModifyRI
 --
--- Construct update statements for MLD_RI, MLC_RIHAPLOTYPE, MLD_RI2POINT
+-- Construct update statements for MLD_RI, MLD_RIHAPLOTYPE, MLD_RI2POINT
 -- Appends to global "cmd" string.
 --
 
@@ -2461,9 +2461,9 @@ rules:
           if (value.length > 0 and value != "NULL") then
             where := where + "\nand eg._Marker_key = " + value;
 	    from_emarker := true;
-	    if (top->DisplayMarker.set) then
-	      displayMarker := value;
-	    end if;
+--	    if (top->DisplayMarker.set) then
+--	      displayMarker := value;
+--	    end if;
 	  else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
@@ -3220,9 +3220,9 @@ rules:
                  "allele, assay, description, matrixData " +
                  "from MLD_Expt_Marker_View where _Expt_key = " + currentExptKey;
 
-	  if (displayMarker.length > 0) then
-	    cmd := cmd + " and _Marker_key = " + displayMarker;
-	  end if;
+--	  if (displayMarker.length > 0) then
+--	    cmd := cmd + " and _Marker_key = " + displayMarker;
+--	  end if;
 
 	  cmd := cmd + " order by sequenceNum\n";
  

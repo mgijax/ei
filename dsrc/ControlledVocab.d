@@ -11,7 +11,7 @@
 --
 -- Module controls edits of Controlled Vocabulary tables:
 --
--- Orthology Assays, Mapping Assays, Marker MLC Classes,
+-- Orthology Assays, Mapping Assays, 
 -- Marker Types, Molecuar Segment Vector Types,
 -- Antibody Classes, Antibody Types, Assay Types, Expression Patterns,
 -- Expression Strengths, Gel RNA Types, Gel Units, Image Field Types,
@@ -161,8 +161,6 @@ rules:
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
 		   global_loginKey + "," + global_loginKey;
-	  elsif (tableID = ALL_TYPE) then
-	    cmd := cmd + "1";
 	  else
 	    cmd := cmd + mgi_DBprstr(top->Name->text.value);
 	  end if;
@@ -172,12 +170,6 @@ rules:
             cmd := cmd + "," + top->GelAssayMenu.menuHistory.defaultValue;
 	  elsif (tableID = HMD_ASSAY) then
 	    cmd := cmd + "," + mgi_DBprstr(top->AssayAbbrev->text.value);
-	  elsif (tableID = ALL_CELLLINE) then
-	    cmd := cmd + "," + top->EditForm->Strain->StrainID->text.value;
-	  elsif (tableID = ALL_NOTETYPE) then
-	    cmd := cmd + "," + top->PrivateMenu.menuHistory.defaultValue;
-	  elsif (tableID = ALL_REFERENCETYPE) then
-	    cmd := cmd + "," + top->AllowOnlyOneMenu.menuHistory.defaultValue;
 	  end if;
 
 	  cmd := cmd + ")\n";
@@ -288,13 +280,7 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_CELLLINE) then
-	    if (top->EditForm->Strain->StrainID->text.modified) then
-	      set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
-	    end if;
-	  end if;
-
-	  if (tableID = ALL_NOTETYPE or tableID = MGI_NOTETYPE) then
+	  if (tableID = MGI_NOTETYPE) then
 	    if (top->PrivateMenu.menuHistory.modified and
 		top->PrivateMenu.menuHistory.searchValue != "%") then
 	      set:= set + "private = " + top->PrivateMenu.menuHistory.defaultValue + ",";
@@ -307,7 +293,7 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_REFERENCETYPE or tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_REFASSOCTYPE) then
 	    if (top->AllowOnlyOneMenu.menuHistory.modified and
 		top->AllowOnlyOneMenu.menuHistory.searchValue != "%")
 		then
@@ -329,11 +315,8 @@ rules:
 --
 
 	PrepareSearch does
-	  if (tableID = ALL_CELLLINE) then
-	    from := "from " + mgi_DBtable(ALL_CELLLINE_VIEW);
-	  else
-	    from := "from " + table;
-	  end if;
+
+	  from := "from " + table;
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -364,23 +347,13 @@ rules:
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_CELLLINE) then
-	    if (top->EditForm->Strain->StrainID->text.value.length > 0) then
-	      -- we have a strain key
-	      where := where + "\nand _Strain_key = " + top->EditForm->Strain->StrainID->text.value;
-	    elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
-	      -- we have no strain key, but we do have a text strain
-	      where := where + "\nand cellLineStrain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
-	    end if;
-	  end if;
-
-	  if (tableID = ALL_NOTETYPE or tableID = MGI_NOTETYPE) then
+	  if (tableID = MGI_NOTETYPE) then
 	    if (top->PrivateMenu.menuHistory.searchValue != "%") then
 	      where := where + "\nand private = " + top->PrivateMenu.menuHistory.defaultValue;
 	    end if;
 	  end if;
 
-	  if (tableID = ALL_REFERENCETYPE or tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_REFASSOCTYPE) then
 	    if (top->AllowOnlyOneMenu.menuHistory.searchValue != "%") then
 	      where := where + "\nand allowOnlyOne = " + top->AllowOnlyOneMenu.menuHistory.defaultValue;
 	    end if;
@@ -457,12 +430,7 @@ rules:
 
 	  cmd := cmd + " from ";
 
-	  if (tableID = ALL_CELLLINE) then
-	    cmd := cmd + mgi_DBtable(ALL_CELLLINE_VIEW);
-	  else
-	    cmd := cmd + table;
-	  end if;
-	  cmd := cmd + " where " + tableKey + " = " + key + " order by " + tableName;
+	  cmd := cmd + table + " where " + tableKey + " = " + key + " order by " + tableName;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -484,23 +452,6 @@ rules:
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 6);
 	      elsif (tableID = HMD_ASSAY) then
 	        top->AssayAbbrev->text.value := mgi_getstr(dbproc, 3);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-	      elsif (tableID = ALL_CELLLINE) then
-	        top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-	        top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 6);
-	      elsif (tableID = ALL_NOTETYPE) then
-                SetOption.source_widget := top->PrivateMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
-	      elsif (tableID = ALL_REFERENCETYPE) then
-                SetOption.source_widget := top->AllowOnlyOneMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
-                send(SetOption, 0);
 	        top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
 	      elsif (tableID = MGI_NOTETYPE) then
@@ -585,13 +536,7 @@ rules:
 	    top->AssayAbbrev->text.required := false;
 	  end if;
 
-	  if (tableID = ALL_CELLLINE) then
-	    top->EditForm->Strain->Verify.sensitive := true;
-	  else
-	    top->EditForm->Strain->Verify.sensitive := false;
-	  end if;
-
-	  if (tableID = ALL_NOTETYPE or tableID = MGI_NOTETYPE) then
+	  if (tableID = MGI_NOTETYPE) then
 	    top->PrivateMenu.sensitive := true;
 	    top->PrivateMenu.required := true;
 	  else
@@ -599,7 +544,7 @@ rules:
 	    top->PrivateMenu.required := false;
 	  end if;
 
-	  if (tableID = ALL_REFERENCETYPE or tableID = MGI_REFASSOCTYPE) then
+	  if (tableID = MGI_REFASSOCTYPE) then
 	    top->AllowOnlyOneMenu.sensitive := true;
 	    top->AllowOnlyOneMenu.required := true;
 	  else

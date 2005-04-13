@@ -69,7 +69,7 @@ int mgi_dbinit(char *user, char *pwd)
   dbmsghandle(mgi_msg_handler);
 
   memset(passwdfile, '\0', sizeof(passwdfile));
-  sprintf(passwdfile, "%s/%s", getenv("HOME"), PASSWDFILE);
+  sprintf(passwdfile, "%s", getenv("EIPASSWORDFILE"));
   unlink(passwdfile);
   global_passwd_file = passwdfile;
 

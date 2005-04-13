@@ -111,7 +111,8 @@ rules:
 	  label : string;
 	  k : integer;
 
-	  if (tableID = MGI_NOTETYPE_MRKGO_VIEW or 
+	  if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	      tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 	      tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 	      tableID = MGI_NOTETYPE_SOURCE_VIEW or
 	      tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
@@ -148,7 +149,8 @@ rules:
 		x->Note.noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
-	        if (tableID = MGI_NOTETYPE_MRKGO_VIEW or 
+	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	            tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 		    tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 		    tableID = MGI_NOTETYPE_SOURCE_VIEW or 
 		    tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
@@ -176,7 +178,7 @@ rules:
 	  notew : widget := LoadNoteForm.notew;
 	  tableID : integer := LoadNoteForm.tableID;
 	  objectKey : string := LoadNoteForm.objectKey;
-	  noteTypeKey : integer;
+	  noteTypeKey : integer := LoadNoteForm.noteTypeKey;
 	  childnote : widget := nil;
 	  notecontinuation : boolean := false;
 	  note : string;
@@ -187,7 +189,8 @@ rules:
 	  ClearSetNoteForm.notew := notew;
 	  send(ClearSetNoteForm, 0);
 
-	  if (tableID = MGI_NOTE_MRKGO_VIEW or 
+	  if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	      tableID = MGI_NOTE_MRKGO_VIEW or 
 	      tableID = MGI_NOTE_NOMEN_VIEW or 
 	      tableID = MGI_NOTE_SOURCE_VIEW or 
 	      tableID = MGI_NOTE_SEQUENCE_VIEW or 
@@ -195,8 +198,13 @@ rules:
 	      tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
             cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
 	  	  " from " + mgi_DBtable(tableID) +
-		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		   " order by _NoteType_key, sequenceNum";
+		   " where " + mgi_DBkey(tableID) + " = " + objectKey;
+
+            if (noteTypeKey > 0) then
+	      cmd := cmd + "and _NoteType_key = " + (string) noteTypeKey;
+	    end if;
+
+	    cmd := cmd + " order by _NoteType_key, sequenceNum";
 	  else
             cmd := "select _NoteType_key, note, sequenceNum" +
 	  	  " from " + mgi_DBtable(tableID) +
@@ -213,7 +221,8 @@ rules:
 	      noteTypeKey := (integer) mgi_getstr(dbproc, 1);
 	      note := mgi_getstr(dbproc, 2);
 
-	      if (tableID = MGI_NOTE_MRKGO_VIEW or 
+	      if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	          tableID = MGI_NOTE_MRKGO_VIEW or 
 		  tableID = MGI_NOTE_NOMEN_VIEW or 
 		  tableID = MGI_NOTE_SOURCE_VIEW or 
 		  tableID = MGI_NOTE_SEQUENCE_VIEW or 
@@ -418,6 +427,7 @@ rules:
 
 	NoteCommit does
 	  dialog : widget := NoteCommit.source_widget.ancestor_by_class("XmForm");
+	  traverseToNextCell : boolean := NoteCommit.traverseToNextCell;
 	  table : widget := dialog.targetWidget.child_by_class(TABLE_CLASS);
 	  note : widget := dialog->Note->text;
 	  isTable : boolean := false;
@@ -440,15 +450,17 @@ rules:
 	    CommitTableCellEdit.value_changed := true;
 	    send(CommitTableCellEdit, 0);
 
-	    TraverseToTableCell.table := table;
-	    if (mgi_tblGetCurrentColumn(table) = mgi_tblNumColumns(table) - 1) then
-	      TraverseToTableCell.row := mgi_tblGetCurrentRow(table) + 1;
-	      -- use first traversable column in table
-            else
-	      TraverseToTableCell.row := mgi_tblGetCurrentRow(table);
-	      TraverseToTableCell.column := column + 1;
+	    if (traverseToNextCell) then
+	      TraverseToTableCell.table := table;
+	      if (mgi_tblGetCurrentColumn(table) = mgi_tblNumColumns(table) - 1) then
+	        TraverseToTableCell.row := mgi_tblGetCurrentRow(table) + 1;
+	        -- use first traversable column in table
+              else
+	        TraverseToTableCell.row := mgi_tblGetCurrentRow(table);
+	        TraverseToTableCell.column := column + 1;
+	      end if;
+	      send(TraverseToTableCell, 0);
 	    end if;
-	    send(TraverseToTableCell, 0);
 	  else
 	    dialog.targetWidget.value := note.value;
 	  end if;
@@ -799,12 +811,12 @@ rules:
 
 	SetNotesRequired does
 	  notew : widget := SetNotesRequired.notew;
-	  noteTypeKey : integer := SetNotesRequired.noteTypeKey;
+	  noteType : string := SetNotesRequired.noteType;
 	  required : boolean := SetNotesRequired.required;
 
 	  i : integer := 1;
 	  while (i <= notew.numChildren) do
-	    if (notew.child(i)->Note.noteTypeKey = noteTypeKey) then
+	    if (notew.child(i)->Note.noteType = noteType) then
 	      notew.child(i)->Note->text.required := required;
 	    end if;
 	    i := i + 1;

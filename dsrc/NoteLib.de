@@ -21,7 +21,8 @@ InitNoteForm [notew : widget;              -- mgiNoteForm widget
 -- Load NoteForm from tableID for given objectKey
 LoadNoteForm [notew : widget;              -- mgiNoteForm widget
 	      tableID : integer;           -- ID of table
-	      objectKey : string;];        -- primary key of object to load
+	      objectKey : string;          -- primary key of object to load
+	      noteTypeKey : integer := -1;];    -- note type to load (if -1, search all)
 
 -- Process NoteForm data from tableID for given objectKey
 ProcessNoteForm [notew : widget;              -- mgiNoteForm widget
@@ -41,7 +42,8 @@ SearchNoteForm [notew : widget;              -- mgiNoteForm widget
 NoteCancel [source_widget : widget;];
 
 -- Saves changes entered into NoteDialog to source_widget->text widget
-NoteCommit [source_widget : widget;]; 
+NoteCommit [source_widget : widget;
+	    traverseToNextCell : boolean := true;]; 
 
 -- Initializes NoteDialog
 NoteInit [source_widget : widget;
@@ -65,7 +67,7 @@ SetNotesDisplay [note : widget;];
 
 -- Set required field for specific noteTypeKey
 SetNotesRequired [notew : widget;                -- mgiNoteForm widget
-		  noteTypeKey : integer;         -- noteTypeKey to set
+		  noteType : string;             -- noteType to set
 		  required : boolean := true;];  -- value of "required"
 
 -- Events which handle AppendNotePush template

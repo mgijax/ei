@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	03/2005
+--	TR 4289, MPR
+--
 -- lec  12/01/2004
 --	- TR 6349; annotKey not initialized in Add
 --
@@ -86,6 +89,9 @@ devents:
 	Init :local [];
 	Modify :local [];
 
+        ClearStrain :local [clearKeys : boolean := true;
+                            reset : boolean := false;];
+
 	ModifyGenotype :local [];
 	ModifyType :local [];
 	ModifySuperStandard :local [];
@@ -141,18 +147,6 @@ rules:
 
 	  top := create widget("StrainModule", nil, mgi);
 
-	  -- Initialize Allele Type table
-
-	  InitStrainAlleleTypeTable.table := top->Marker->Table;
-	  InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
-	  send(InitStrainAlleleTypeTable, 0);
-
-	  -- Initialize Synonym table
-
-	  InitSynTypeTable.table := top->Synonym->Table;
-	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
-	  send(InitSynTypeTable, 0);
-
 	  -- Ref Type Menu
 	  InitOptionMenu.option := top->ReferenceTypeMenu;
 	  send(InitOptionMenu, 0);
@@ -182,13 +176,9 @@ rules:
 	  tables := create list("widget");
 
 	  tables.append(top->StrainType->Table);
-	  tables.append(top->Marker->Table);
-	  tables.append(top->Synonym->Table);
 	  tables.append(top->Genotype->Table);
-	  tables.append(top->Reference->Table);
 	  tables.append(top->ReferenceMGI->Table);
 	  tables.append(top->DataSets->Table);
-	  tables.append(top->Synonym->Table);
 
 	  -- Global Accession number Tables
 
@@ -199,6 +189,18 @@ rules:
 
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
+
+	  -- Initialize Allele Type table
+
+	  InitStrainAlleleTypeTable.table := top->Marker->Table;
+	  InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
+	  send(InitStrainAlleleTypeTable, 0);
+
+	  -- Initialize Synonym table
+
+	  InitSynTypeTable.table := top->Synonym->Table;
+	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
+	  send(InitSynTypeTable, 0);
 
 	  -- Initialize Notes form
 
@@ -216,12 +218,40 @@ rules:
  
           -- Clear form
 	  clearLists := 3;
-          Clear.source_widget := top;
-	  Clear.clearLists := clearLists;
-	  Clear.reset := true;
-          send(Clear, 0);
+          send(ClearStrain, 0);
+
 	end does;
 
+--
+-- ClearStrain
+-- 
+-- Local Clear
+--
+
+	ClearStrain does
+
+          Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
+	  Clear.clearKeys := ClearStrain.clearKeys;
+	  Clear.reset := ClearStrain.reset;
+	  send(Clear, 0);
+
+	  if (not ClearStrain.reset) then
+	    -- Initialize Allele Type table
+
+	    InitStrainAlleleTypeTable.table := top->Marker->Table;
+	    InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
+	    send(InitStrainAlleleTypeTable, 0);
+
+	    -- Initialize Synonym table
+  
+	    InitSynTypeTable.table := top->Synonym->Table;
+	    InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
+	    send(InitSynTypeTable, 0);
+
+	  end if;
+
+	end does;
 --
 -- Add
 --
@@ -269,7 +299,6 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
@@ -277,7 +306,6 @@ rules:
 	  --  Process Reference
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -304,10 +332,8 @@ rules:
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    Clear.source_widget := top;
-            Clear.clearKeys := false;
-	    Clear.clearLists := clearLists;
-            send(Clear, 0);
+            ClearStrain.clearKeys := false;
+            send(ClearStrain, 0);
 	  end if;
 
           (void) reset_cursor(top);
@@ -329,10 +355,8 @@ rules:
           send(DeleteSQL, 0);
 
 	  if (top->QueryList->List.row = 0) then
-	    Clear.source_widget := top;
-            Clear.clearKeys := false;
-	    Clear.clearLists := clearLists;
-            send(Clear, 0);
+            ClearStrain.clearKeys := false;
+            send(ClearStrain, 0);
 	  end if;
 
           (void) reset_cursor(top);
@@ -406,7 +430,6 @@ rules:
 	  --  Process Synonyms
 
 	  ProcessSynTypeTable.table := top->Synonym->Table;
-	  ProcessSynTypeTable.tableID := MGI_SYNONYM;
 	  ProcessSynTypeTable.objectKey := currentRecordKey;
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
@@ -414,7 +437,6 @@ rules:
 	  --  Process ReferenceMGI
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFERENCE_ASSOC;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -792,7 +814,7 @@ rules:
 		 "where _AnnotType_key = " + annotTypeKey +
 		 " and _Term_key = " + superStandardKey +
 		 " and _Object_key = " + currentRecordKey + "\n" +
-		 "select _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
+		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
 		 "from PRB_Strain_Genotype_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n";
 
@@ -889,9 +911,8 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
-	  Clear.source_widget := top;
-          Clear.reset := true;
-          send(Clear, 0);
+          ClearStrain.reset := true;
+          send(ClearStrain, 0);
 
 	  (void) reset_cursor(top);
 	end does;
@@ -1060,8 +1081,7 @@ rules:
 
 	  -- After merge, search for New Strain
 
---	  Clear.source_widget := top;
---	  send(Clear, 0);
+--	  send(ClearStrain, 0);
 --        top->ID->text.value := dialog->Strain2->StrainID->text.value;
 --	  send(Search, 0);
 

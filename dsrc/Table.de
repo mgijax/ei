@@ -51,23 +51,11 @@ SetCellToX [source_widget : widget;		-- Set Table Cell Value to X
 
 SetXCellsToFlash [source_widget : widget;];	-- Set all X Cells to Flash
 
+SetTableRow [source_widget : widget;];		-- Set Table.row = current Table row
+
 TraverseToTableCell [table : widget;		-- Traverse To Cell
 		     row : integer := 0;
 		     column : integer := 0;];
 
 VerifyTable [source_widget : widget;];		-- Verify all required columns in Table are populated
  
---
--- Creating/Cloning Table cell/label widgets
---
-
-CreateTableMenuWidget [menu : string;];  	-- CreateWidgetCallback for Option Menus
- 
-DisplayTableMenuWidget [];			-- DisplayWidgetCallback for Option Menus
- 
-SelectTableMenu [];				-- SelectCallback for Option Menus
-
-InsertTableLabelWidget [table : widget;         -- Insert Widget Template into Table Label
-                        template : string;
-		        column : integer;];
-

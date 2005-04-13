@@ -86,6 +86,9 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
+
 	  cmd := "select _Term_key, term from VOC_Term_StrainAllele_View order by term";
 
 	  dbproc : opaque := mgi_dbopen();
@@ -127,6 +130,9 @@ rules:
 	  tableID : integer := LoadStrainAlleleTypeTable.tableID;
 	  objectKey : string := LoadStrainAlleleTypeTable.objectKey;
 	  cmd : string;
+
+	  ClearTable.table := table;
+	  send(ClearTable, 0);
 
           cmd := "select * from " + mgi_DBtable(tableID) + 
 	      " where " + mgi_DBkey(STRAIN) + " = " + objectKey + "\norder by symbol, sequenceNum";

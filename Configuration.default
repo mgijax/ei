@@ -50,8 +50,11 @@ setenv EIDEBUG	1
 # User log
 setenv USERLOG	$HOME/.ei-log
 
+# User password file
+setenv EIPASSWORDFILE  $HOME/.mgi_password
+
 # EI Applications
-setenv EIAPPS	"mgd gxd mgiadmin mgi fantom"
+setenv EIAPPS	"mgd gxd mgiadmin mgi"
 
 # DB server name
 setenv DSQUERY PROD_MGI

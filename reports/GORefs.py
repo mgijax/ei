@@ -78,6 +78,8 @@ def scanText(text):
 # Main
 #
 
+fp = reportlib.init('GO%s' % (symbol), printHeading = 0, isHTML = 1, outputdir = os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
+
 # expects _Object_key and description fields
 cmd = sys.argv[1]
 results = db.sql(cmd, 'auto')
@@ -89,7 +91,6 @@ tokens = string.split(description, ', ')
 symbol = tokens[0]
 
 # initialize report output file
-fp = reportlib.init('GO%s' % (symbol), printHeading = 0, isHTML = 1, outputdir = os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 fp.write(TITLE + 'Potential New GO References' + EOTITLE + CRT)
 fp.write(H + 'Potential New GO References' + EOH + CRT)
 fp.write(H + 'Symbol: %s' % (description) + EOH + CRT)
@@ -99,15 +100,18 @@ fp.write('</PRE>')
 # read terms & synonyms into dictionary
 terms = []
 cmd = 'select distinct term ' + \
-'from VOC_Term ' + \
-'where _Vocab_key = 4 ' + \
-'and term not like "%(sensu %" ' + \
-'and term != "cell" ' + \
-'union ' + \
-'select distinct s.synonym ' + \
-'from VOC_Term v, VOC_Synonym s ' + \
-'where v._Vocab_key = 4 ' + \
-'and v._Term_key = s._Term_key'
+	'from VOC_Term ' + \
+	'where _Vocab_key = 4 ' + \
+	'and term not like "%(sensu %" and term != "cell" '
+results = db.sql(cmd, 'auto')
+for r in results:
+	terms.append(r['term'])
+
+cmd = 'select distinct s.synonym ' + \
+	'from VOC_Term v, MGI_Synonym s ' + \
+	'where v._Vocab_key = 4 ' + \
+	'and v._Term_key = s._Object_key ' + \
+	'and s._MGIType_key = 13 '
 results = db.sql(cmd, 'auto')
 for r in results:
 	terms.append(r['term'])

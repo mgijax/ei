@@ -103,7 +103,6 @@ devents:
 	ExitMLC  [];            -- Prompts user to confirm exit, calls UncondExit 
 	UncondExit [];            -- Unconditional Exit; must be a GLOBAL event
 
-	CheckSQLrc :local [];
 	ClearMatchCount :local [];
 	Delete :local [];
 
@@ -128,12 +127,8 @@ devents:
 	HighlightRefs :local [type : string;];
 	SaveLocusText :local [];
 	UpdateLocusText :local [value : string;];
-	Checkin :local [];
 	Import :local [];
 	FixSymbols :local [];
-
-	UnlockInit :local [];    -- Initialize/Manage MLCUnlockDialog
-	Unlock :local [];        -- Unlock MLC record via MLCUnlock Dialog
 
 	VerifyMLCMarker :translation [];
 	VerifyMLCClear :local [];
@@ -150,11 +145,7 @@ locals:
 	tables : list;              -- list of Tables used in this app 
 	currentMarkerKey : string;  -- Currently selected Marker key
 
-	debug : boolean := false;   -- mode of operation. if (debug) then SQL->stdout.
-				    -- and no database mods are made.
-
 	savedlocustext : string;    -- undo buffer (simpleminded :)
-	lockon  : boolean := false; -- Flags whether current Marker is checked in or not
 
 rules:
 
@@ -218,35 +209,6 @@ rules:
 	  send(Clear, 0);
 	end does;
 
---
--- Checkin
---
--- If current Marker has a lock, then remove the lock and re-set the currentMarkerKey
---
-	Checkin does
-	  if (lockon) then
-	    (void) mgi_writeLog("RELEASING LOCK ON SYMBOL WITH KEY: " + currentMarkerKey + "\n");
-	    (void) release_mlc_lock(currentMarkerKey);
-	    currentMarkerKey := "";
-	  end if; 
-
-	  lockon := false;
-	end does;
-
---
--- CheckSQLrc
---
--- Checks return code of SQL query.  Clears the screen and checks in
--- the record if query was successful, otherwise retains the record lock
--- and the current symbol data. 
---
-	CheckSQLrc does
-	  if (top->QueryList->List.sqlSuccessful) then
-	    ClearMLC.clearKeys := false;
-	    send(ClearMLC,0);
-	  end if;
-	end does;
-
 -- 
 -- VerifyMLCClear
 --
@@ -273,7 +235,6 @@ rules:
 --
 
 	ClearMLC does
-	  send(Checkin,0);  -- checkin current symbol, if exists
 	  Clear.source_widget := top;
 	  Clear.clearKeys := ClearMLC.clearKeys;
 	  send(Clear, 0);
@@ -303,15 +264,8 @@ rules:
 	  DeleteSQL.tableID := MLC_TEXT_ALL;
 	  DeleteSQL.key := currentMarkerKey;
 	  DeleteSQL.list := top->QueryList;
+	  send(DeleteSQL, 0);
 
-	  if (debug) then 
-	    (void) mgi_writeLog("MLC DELETE DEBUG: \n" + 
-	      mgi_DBdelete(MLC_TEXT, currentMarkerKey) + "\n");
-	  else
-	    send(DeleteSQL, 0);
-	  end if;
-
-	  send(CheckSQLrc, 0);
 	  (void) reset_cursor(top);
 	end does;
 
@@ -493,15 +447,8 @@ rules:
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
-	  ModifySQL.reselect := false;
+	  send(ModifySQL, 0);
 
-	  if (debug) then 
-	    (void) mgi_writeLog("MLC ADD/MODIFY DEBUG: \n" + cmd + "\n");
-	  else
-	     send(ModifySQL, 0);
-	  end if;
-
-	  send(CheckSQLrc,0);
 	  (void) reset_cursor(top);
 	end does;
 
@@ -789,19 +736,16 @@ rules:
 --
  
 	Search does
-	  if (lockon) then 
-	    if (top->Description->text.modified or
-	        top->Reference->Table.modified or
-	        top->Class->Table.modified) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "You have made changes to the data\n" +
-	                              "associated with the current symbol.\n"  +
-	                              "Commit changes or Clear before\n" +
-	                              "selecting a new symbol to edit.";
-	      send(StatusReport);
-	      return;
-	    end if;
-	    send(Checkin,0);
+	  if (top->Description->text.modified or
+	      top->Reference->Table.modified or
+	      top->Class->Table.modified) then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "You have made changes to the data\n" +
+	                            "associated with the current symbol.\n"  +
+	                            "Commit changes or Clear before\n" +
+	                            "selecting a new symbol to edit.";
+	    send(StatusReport);
+	    return;
 	  end if;
 
 	  (void) busy_cursor(top);
@@ -821,36 +765,11 @@ rules:
 	Select does
 	  MLCexists : boolean := false;
 
-	--
-	-- If lockon is set, then a record is active, and needs to be
-	-- either saved and checked in, or thrown away and checked in. 
-	--
-
-	  if (lockon) then 
-	    if (top->Description->text.modified or
-                top->Reference->Table.modified or
-                top->Class->Table.modified) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "You have made changes to the data\n" +
-	                              "associated with the current symbol.\n"  +
-	                              "Commit changes or Clear before\n" +
-	                              "selecting a new symbol to edit.";
-	      send(StatusReport);
-
-	      -- Re-select "current" record
-	      (void)XmListSelectPos(top->QueryList->List, top->QueryList->List.row, false);
-	      return;
-	    end if;
-
-	    send(Checkin,0);
-	  end if;
-
           -- If no new item selected, return
 
 	  if (top->QueryList->List.selectedItemCount = 0) then
 	    top->QueryList->List.row := 0;
 	    top->mgiMarker->ObjectID->text.value := "";
-	    send(Checkin,0);
 	    return;
 	  end if;
 
@@ -861,26 +780,6 @@ rules:
 
 	  currentMarkerKey := top->QueryList->List.keys[Select.item_position];
 	  top->ReportDialog.select := currentMarkerKey;
-
-	  -- Try to obtain a record lock
-	  -- If unsuccessful, de-select record, clear the form,
-	  -- re-set the currentMarkerKey global variable, return
-
-	  lockon := obtain_mlc_lock(currentMarkerKey);
-
-	  if (not lockon) then 
-	    (void) mgi_writeLog("Couldn't obtain MLC lock\n");
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "The MLC Record you have chosen is\n" +
-				    "currently being edited by another user,\n"  +
-				    "or you do not have the appropriate permissions\n" +
-				    "to edit the MLC entries";
-	    send(StatusReport);
-	    (void) XmListDeselectPos(top->QueryList->List, Select.item_position);
-	    currentMarkerKey := "";
-	    (void) reset_cursor(top);
-	    return;
-	  end if;
 
 	  tables.open;
 	  while (tables.more) do
@@ -970,18 +869,6 @@ rules:
 	  Clear.source_widget := top;
 	  Clear.reset := true;
 	  send(Clear, 0);
-
-	  if (not MLCexists) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Symbol does not have an MLC entry.";
-	    send(StatusReport);
-	  elsif (top->Description->text.value.length = 0) then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "Symbol has a BLANK MLC description.\n" +
-		                    "Either insert some text or DELETE the MLC entry.\n" +
-		                    "Blank text will cause a display error in the WI.";
-	    send(StatusReport);
-	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -1529,47 +1416,6 @@ rules:
 	end does;
 
 --
--- UnlockInit
---
--- Activated from:  top->Utilities->Unlock, activateCallback
---
--- Initialize Unlock Dialog fields
---
- 
-	UnlockInit does
-	  dialog : widget := top->MLCUnlockDialog;
- 
-	  dialog->mgiMarker->ObjectID->text.value := "";
-	  dialog->mgiMarker->Marker->text.value := "";
-	  dialog.managed := true;
-	end does;
-
---
--- Unlock
---
--- Release lock on MLC record specified in MLCUnlockDialog
---
-
-	Unlock does
-	  dialog : widget := top->MLCUnlockDialog;
-	  markerKey : string := dialog->mgiMarker->ObjectID->text.value;
-
-	  if (markerKey = "" or markerKey = "NULL") then
-	    StatusReport.source_widget := top;
-	    StatusReport.message := "No Symbol to unlock.  TAB after entering the Marker Symbol.";
-	    send(StatusReport);
-	    return;
-	  end if;
-
-	  (void) busy_cursor(top);
-	  (void) mgi_writeLog("RELEASING LOCK ON SYMBOL WITH KEY: " +  markerKey + "\n");
-	  (void) release_mlc_lock(markerKey);
-	  (void) reset_cursor(top);
-
-	  dialog.managed := false;
-	end does;
-
---
 -- VerifyMLCMarker
 --
 -- Activated from:  tab out of mgiMarker->Marker
@@ -1585,14 +1431,8 @@ rules:
 	  VerifyMarker.allowWithdrawn := true;
 	  send(VerifyMarker, 0);
 
-	  if (not lockon and top->mgiMarker->ObjectID->text.value.length > 0) then
+	  if (top->mgiMarker->ObjectID->text.value.length > 0) then
 	    send(Search, 0);
-	    if (currentMarkerKey.length != 0) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := "Symbol\n\n" + top->mgiMarker->Marker->text.value + 
-				      "\n\ndoes not have an MLC entry.\n";
-	      send(StatusReport);
-	    end if;
 	  end if;
 
 	end does;
@@ -1615,8 +1455,8 @@ rules:
 -- ExitMLC
 --
 -- ExitMLC exists for convenience of calling Exit from C (where the 
--- widgets aren't as easily accessible as from D), and to ensure that 
--- Checkin is called.  Calls 'UncondExit' directly if no modifications
+-- widgets aren't as easily accessible as from D).
+-- Calls 'UncondExit' directly if no modifications
 -- have been made to symbol data, or activates exit dialog to get user
 -- to confirm.   
 --
@@ -1628,16 +1468,6 @@ rules:
 	  else
 	    send(UncondExit,0);
 	  end if;
-	end does;
-
---
--- FINALLY
---
--- Release any outstanding locks
--- 
-
-	FINALLY does
-	  send(Checkin,0);
 	end does;
 
 end dmodule;
