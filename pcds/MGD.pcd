@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr  7 11:19:59 2005";
+      lastWritten = "Wed Apr 13 10:49:13 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8517,7 +8517,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {
-                                        Table = mgiTable;
+                                        Table = XtXrtTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 10;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 40)";

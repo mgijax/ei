@@ -79,6 +79,8 @@ devents:
 			   reason : integer;];
 
 	VerifyESStrain :local [];
+	VerifyMutantESCellLine :translation [];
+	VerifyParentalESCellLine :translation [];
 
 locals:
 	mgi : widget;
@@ -1261,6 +1263,143 @@ rules:
 	VerifyESStrain does
 	  top->VerifyESStrain.doModify := true;
 	  top->VerifyESStrain.managed := false;
+	end does;
+
+--
+-- VerifyMutantESCellLine
+--
+--	Verify MutantESCellLine entered by User.
+-- 	Uses mgiMutantESCellLine template.
+--
+
+	VerifyMutantESCellLine does
+	  value : string;
+
+	  value := top->mgiMutantESCellLine->CellLine->text.value;
+
+	  -- If a wildcard '%' appears in the field,,
+
+	  if (strstr(value, "%") != nil) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  top->mgiMutantESCellLine->ObjectID->text.value := "NULL";
+	  top->mgiMutantESCellLine->CellLine->text.value := "";
+	  top->mgiMutantESCellLine->Provider->text.value := "";
+
+	  -- If no value entered, use default
+	  if (value.length = 0) then
+            if (top->AlleleTypeMenu.menuHistory.labelString = GENE_TRAPPED) then
+	      value := "Not Specified";
+	    else
+	      value := "Not Applicable";
+	    end if;
+	  end if;
+
+	  -- Search for value in the database
+
+	  select : string := "select _CellLine_key, cellLine, provider from " + 
+		mgi_DBtable(ALL_CELLLINE_VIEW) +
+		" where isMutant = 1 and cellLine = " + mgi_DBprstr(value);
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->mgiMutantESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiMutantESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiMutantESCellLine->Provider->text.value := mgi_getstr(dbproc, 3);
+            end while;
+          end while;
+	  (void) dbclose(dbproc);
+
+	  -- If ID is null, then value is invalid
+
+	  if (top->mgiMutantESCellLine->ObjectID->text.value = "NULL") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Mutant ES CellLine '" + value + "' is invalid.";
+            send(StatusReport);
+	  else
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyParentalESCellLine
+--
+--	Verify ParentalESCellLine entered by User.
+-- 	Uses mgiParentalESCellLine template.
+--
+
+	VerifyParentalESCellLine does
+	  value : string;
+
+	  value := top->mgiParentalESCellLine->CellLine->text.value;
+
+	  -- If a wildcard '%' appears in the field,,
+
+	  if (strstr(value, "%") != nil) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  top->mgiParentalESCellLine->ObjectID->text.value := "NULL";
+	  top->mgiParentalESCellLine->CellLine->text.value := "";
+	  top->mgiParentalESCellLine->Strain->StrainID->text.value := "";
+	  top->mgiParentalESCellLine->Strain->Verify->text.value := "";
+
+	  -- If no value entered, use default
+	  if (value.length = 0) then
+            if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
+		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
+	      value := "Not Specified";
+	    else
+	      value := "Not Applicable";
+	    end if;
+	  end if;
+
+	  -- Search for value in the database
+
+	  select : string := "select _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
+		mgi_DBtable(ALL_CELLLINE_VIEW) +
+		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      top->mgiParentalESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiParentalESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiParentalESCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+	      top->mgiParentalESCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+            end while;
+          end while;
+	  (void) dbclose(dbproc);
+
+	  -- If ID is null, then value is invalid
+
+	  if (top->mgiParentalESCellLine->ObjectID->text.value = "NULL") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Parental ES CellLine '" + value + "' is invalid.";
+            send(StatusReport);
+	  else
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

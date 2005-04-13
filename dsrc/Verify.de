@@ -50,10 +50,6 @@ VerifyNomenMarker : translation [];
 
 VerifyNonGeneMarker : translation [];
 
-VerifyMutantESCellLine :translation [];
-
-VerifyParentalESCellLine :translation [];
-
 VerifyReference :translation [];
 
 VerifyGOReference [];

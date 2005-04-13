@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 31 10:37:46 2005";
+      lastWritten = "Wed Apr 13 10:55:17 2005";
         {
           toggle = XmToggleButton;
           Group: Widget
