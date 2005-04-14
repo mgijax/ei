@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Apr  1 15:33:20 2005";
+      lastWritten = "Thu Apr 14 08:57:43 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1207,6 +1207,14 @@ Module: MGI
                                           activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
                                           labelString = "PhenoSlim Annotations";
                                           userDefinedAttributes = "annotTypeKey:Int(Int)=\"1001\"\n";
+                                      }
+                                      {
+                                        OMIMAnnotation = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:CreateMGIModule(name = \"OMIMVocAnnot\")";
+                                          labelString = "OMIM Annotations";
+                                          userDefinedAttributes = "annotTypeKey:Int(Int)=\"1002\"\n";
+                                          managed = True;
                                       }
                                 }
                           }

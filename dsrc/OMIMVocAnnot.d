@@ -132,6 +132,10 @@ rules:
 
         Init does
 	  tables := create list("widget");
+	  genotype : widget := ab.root->GenotypeModule;
+	  gclipboardList : widget;
+	  i : integer := 0;
+	  gKey : string;
 
 	  -- List of all Table widgets used in form
 
@@ -146,8 +150,43 @@ rules:
           Clear.source_widget := top;
           send(Clear, 0);
 
-	  -- Set Defaults
-	  send(SetAnnotTypeDefaults, 0);
+	  -- If launched from the Genotype Module...
+	  if (genotype != nil and ab.is_defined("annotTypeKey") != nil) then
+
+	    -- select the appropriate Annotation Type
+            SetOption.source_widget := top->VocAnnotTypeMenu;
+            SetOption.value := (string) ab.annotTypeKey;
+            send(SetOption, 0);
+	    send(SetAnnotTypeDefaults, 0);
+
+	    -- if the Genotype clipboard contains entries, 
+	    -- then retrieve the annotations for those entries
+
+	    gclipboardList := genotype->GenotypeEditClipboard->List;
+	    if (gclipboardList.itemCount > 0) then
+	      from := "from " + dbView + " v";
+	      where := where + "v._Object_key in (";
+	      while (i < gclipboardList.keys.count) do
+		gKey := gclipboardList.keys[i];
+		where := where + gKey + ",";
+		i := i + 1;
+	      end while;
+	      where := "where " + where->substr(1, where.length - 1) + ")";
+	      Search.prepareSearch := false;
+	      send(Search, 0);
+
+	    -- else if a Genotype record is currently selected,
+	    -- then retrieve the annotation records for that Genotype
+
+	    elsif (genotype->ID->text.value.length != 0) then
+	      top->mgiAccession->ObjectID->text.value := genotype->EditForm->ID->text.value;
+	      send(Search, 0);
+	    end if;
+	  else
+	    -- Set Defaults
+	    send(SetAnnotTypeDefaults, 0);
+	  end if;
+
 	end does;
 
 --
