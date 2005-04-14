@@ -136,7 +136,6 @@ rules:
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->Annotation->Table);
-	  tables.append(top->Reference->Table);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -573,7 +572,6 @@ rules:
 --
 
 	Select does
-	  orderBy : string;
           objectKey : string;
 	  value : string;
 
@@ -596,8 +594,6 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  orderBy := "e.jnum, a.term\n";
-
 	  cmd : string := "select _Object_key, accID, description, short_description" +
 			  " from " + dbView + 
 			  " where _Object_key = " + currentRecordKey + 
@@ -609,7 +605,7 @@ rules:
 		          " where a._AnnotType_key = " + annotTypeKey +
 			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Annot_key = e._Annot_key " +
-			  " order by " + orderBy +
+			  " order by a.term\n" +
 			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
 			  " from " + 
 			    mgi_DBtable(VOC_ANNOT) + " a, " +
