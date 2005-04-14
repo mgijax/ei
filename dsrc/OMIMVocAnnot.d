@@ -642,7 +642,6 @@ rules:
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.termSeqNum, mgi_getstr(dbproc, 3));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
@@ -650,7 +649,6 @@ rules:
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceSeqNum, mgi_getstr(dbproc, 17));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
@@ -658,7 +656,6 @@ rules:
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
---	        (void) mgi_tblSetCell(annotTable, row, annotTable.notes, mgi_getstr(dbproc, 14));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
