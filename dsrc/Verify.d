@@ -3514,7 +3514,7 @@ rules:
 	  end if;
 
 	  select := select + 
-	  	"select d.dagAbbrev " +
+	  	"select rtrim(d.dagAbbrev) " +
 		"from VOC_Term_View t, DAG_Node_View d " +
 		"where t.accID = " + mgi_DBprstr(value) + 
 		" and t._Vocab_key = " + (string) sourceWidget.vocabKey +

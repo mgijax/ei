@@ -258,9 +258,7 @@ rules:
           termKey : string;
 	  notKey : string;
 	  refsKey : string;
-	  currentRefsKey : string;
           evidenceKey : string;
-          currentEvidenceKey : string;
 	  inferredFrom : string;
 	  notes : string;
           set : string := "";
@@ -314,10 +312,8 @@ rules:
             annotKey := mgi_tblGetCell(annotTable, row, annotTable.annotKey);
             termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
             notKey := mgi_tblGetCell(annotTable, row, annotTable.notKey);
-            currentRefsKey := mgi_tblGetCell(annotTable, row, annotTable.currentRefsKey);
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
             evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
-            currentEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.currentEvidenceKey);
             inferredFrom := mgi_tblGetCell(annotTable, row, annotTable.inferredFrom);
             notes := mgi_tblGetCell(annotTable, row, annotTable.notes);
  
@@ -737,11 +733,9 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentEvidenceKey, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.currentRefsKey, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
