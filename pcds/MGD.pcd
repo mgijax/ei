@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 14 11:54:51 2005";
+      lastWritten = "Fri Apr 15 14:28:18 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11187,20 +11187,20 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 10;
-                                          xrtTblNumColumns = 21;
-                                          xrtTblColumnLabels = "Mode,Clipboard key,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Evidence key,Evidence SeqNum,Note key,Term Acc ID,Vocabulary Term,NOT,J:,Citation,Evi,Modified By,Date,Created By,Date";
-                                          xrtTblPixelWidthSeries = "(all 0-10 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-10 10)(all 11 15)(all 12 40)(all 13 3)(all 15 10)(all 16 3)(all 17 15)(all 19 15)(all 18 10)(all 20 10)";
+                                          xrtTblNumColumns = 18;
+                                          xrtTblColumnLabels = "Mode,Clipboard key,AnnotEvidence key,Annot key,Term key,Not key,Refs key,Evidence key,Term Acc ID,Vocabulary Term,NOT,J:,Citation,Evi,Modified By,Date,Created By,Date";
+                                          xrtTblPixelWidthSeries = "(all 0-7 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 15)(all 9 40)(all 10 3)(all 12 10)(all 13 3)(all 14 15)(all 16 15)(all 15 10)(all 17 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"3\"\ntermKey:Int(Int)=\"4\"\nnotKey:Int(Int)=\"6\"\nrefsKey:Int(Int)=\"7\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"11\"\nterm:Int(Int)=\"12\"\nnotCode:Int(Int)=\"13\"\njnum:Int(Int)=\"14\"\ncitation:Int(Int)=\"15\"\nevidence:Int(Int)=\"16\"\neditor:Int(Int)=\"17\"\nmodifiedDate:Int(Int)=\"18\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"19\"\ncreatedDate:Int(Int)=\"20\"\nannotEvidenceKey:Int(Int)=\"2\"\nmgiTypeKey:Int(Int)=\"25\"\nclipAnnotEvidenceKey:Int(Int)=\"1\"\n";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"3\"\ntermKey:Int(Int)=\"4\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"8\"\nterm:Int(Int)=\"9\"\nnotCode:Int(Int)=\"10\"\njnum:Int(Int)=\"11\"\ncitation:Int(Int)=\"12\"\nevidence:Int(Int)=\"13\"\neditor:Int(Int)=\"14\"\nmodifiedDate:Int(Int)=\"15\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"16\"\ncreatedDate:Int(Int)=\"17\"\nannotEvidenceKey:Int(Int)=\"2\"\nmgiTypeKey:Int(Int)=\"25\"\nclipAnnotEvidenceKey:Int(Int)=\"1\"\n";
                                           xrtTblValidateCellCallback = "D:CopyAnnotation,\nD:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0-10 False)(all 12-13 False)(all 15 False)";
+                                          xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 12 False)";
                                           xrtTblEnterCellCallback = "D:LoadMPNotes,\nD:SetOptions,\nD:SetTableRow";
                                           width = 960;
                                           xrtTblTraverseCellCallback = "D:MPTraverse";
                                         Group: User
-                                          requiredColumns = "3\n7\n8";
-                                          saveTraversableSeries = "(all 0-10 False)(all 12-13 False)(all 15 False)";
+                                          requiredColumns = "3\n6\n7";
+                                          saveTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 12 False)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -11508,8 +11508,8 @@ Shift<Key>Tab: prev-tab-group()
                                         NotPulldown : YesNoPulldown = OptionPulldown;
                                         Group: User
                                           tableForm = Annotation;
-                                          tableOption = 13;
-                                          tableOptionKey = 6;
+                                          tableOption = 10;
+                                          tableOptionKey = 5;
                                       }
                                 }
                                 {
@@ -11521,8 +11521,8 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetWidget = Annotation;
-                                          targetKey = 8;
-                                          targetText = 16;
+                                          targetKey = 7;
+                                          targetText = 13;
                                       }
                                 }
                                 {
@@ -11572,8 +11572,8 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           targetKey = 4;
                                           targetWidget = Annotation;
-                                          targetText = 12;
-                                          targetAccID = 11;
+                                          targetText = 9;
+                                          targetAccID = 8;
                                       }
                                 }
                           }
@@ -13547,21 +13547,22 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 15;
-                                          xrtTblNumColumns = 25;
-                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Term SeqNum,Not key,Refs key,Current Refs key,Evidence key,Current Evidence key,Evidence SeqNum,Note key,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evi,Inferred From,Notes,Modified By,Date,Created By,Date";
-                                          xrtTblPixelWidthSeries = "(all 0-11 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-11 10)(all 12 12)(all 13 3)(all 14 40)(all 15 3)(all 16 6)(all 17 10)(all 18 3)(all 19 20)(all 20 15)(all 21 11)(all 22 10)(all 24 10)";
+                                          xrtTblNumColumns = 21;
+                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Not key,Refs key,Evidence key,Note key,Term Acc ID,DAG,Vocabulary Term,NOT,J:,Citation,Evi,Inferred From,Notes,Modified By,Date,Created By,Date";
+                                          xrtTblPixelWidthSeries = "(all 0-7 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 8 12)(all 9 3)(all 10 40)(all 11 3)(all 12 6)(all 13 10)(all 14 3)(all 15 20)(all 16 15)(all 17 11)(all 18 10)(all 20 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"8\"\ntermAccID:Int(Int)=\"12\"\ndag:Int(Int)=\"13\"\nterm:Int(Int)=\"14\"\nnotCode:Int(Int)=\"15\"\njnum:Int(Int)=\"16\"\ncitation:Int(Int)=\"17\"\nevidence:Int(Int)=\"18\"\ninferredFrom:Int(Int)=\"19\"\neditor:Int(Int)=\"21\"\nmodifiedDate:Int(Int)=\"22\"\nnotes:Int(Int)=\"20\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\ncurrentRefsKey:Int(Int)=\"7\"\ncurrentEvidenceKey:Int(Int)=\"9\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"23\"\ncreatedDate:Int(Int)=\"24\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int(Int)=\"11\"\n";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nnotKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"6\"\ntermAccID:Int(Int)=\"8\"\ndag:Int(Int)=\"9\"\nterm:Int(Int)=\"10\"\nnotCode:Int(Int)=\"11\"\njnum:Int(Int)=\"12\"\ncitation:Int(Int)=\"13\"\nevidence:Int(Int)=\"14\"\ninferredFrom:Int(Int)=\"15\"\neditor:Int(Int)=\"17\"\nmodifiedDate:Int(Int)=\"18\"\nnotes:Int(Int)=\"16\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"19\"\ncreatedDate:Int(Int)=\"20\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int(Int)=\"7\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0-11 False)(all 13-15 False)(all 17 False)";
+                                          xrtTblTraversableSeries = "(all 0-7 False)(all 9-11 False)(all 13 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
-                                          xrtTblFrozenColumns = 21;
+                                          xrtTblFrozenColumns = 17;
                                           xrtTblAllowCellResize = resize_all;
                                           width = 950;
                                           xrtTblTraverseCellCallback = "D:GOTraverse";
                                         Group: User
-                                          requiredColumns = "3\n6\n8";
+                                          requiredColumns = "3\n5\n6";
+                                          saveTraversableSeries = "(all 0-7 False)(all 9-11 False)(all 13 False)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
@@ -13743,8 +13744,8 @@ Shift<Key>Tab: prev-tab-group()
                                         NotPulldown : YesNoPulldown = OptionPulldown;
                                         Group: User
                                           tableForm = Annotation;
-                                          tableOption = 15;
-                                          tableOptionKey = 5;
+                                          tableOption = 11;
+                                          tableOptionKey = 4;
                                       }
                                 }
                                 {
@@ -13752,7 +13753,7 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:GONoteInit";
                                   Group: User
-                                    targetColumn = 20;
+                                    targetColumn = 16;
                                     targetWidget = Annotation;
                                 }
                                 {
@@ -13764,8 +13765,8 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list : mgiDataTypes;
                                         Group: User
                                           targetWidget = Annotation;
-                                          targetKey = 8;
-                                          targetText = 18;
+                                          targetKey = 6;
+                                          targetText = 14;
                                       }
                                 }
                           }
