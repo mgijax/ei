@@ -147,13 +147,12 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := "select n._Note_key, n._NoteType_key, n.noteType, nc.note, nc.sequenceNum " +
-	  	 " from " + mgi_DBtable(tableID) + " n, " + mgi_DBtable(MGI_NOTECHUNK) + " nc " +
-		 " where n." + mgi_DBkey(tableID) + " = " + objectKey +
-		 " and n._Note_key = nc._Note_key " +
-		 " order by n.noteType, n._NoteType_key, nc.sequenceNum";
+          cmd := "select _Note_key, _NoteType_key, noteType, note, sequenceNum " +
+	  	 " from " + mgi_DBtable(tableID) +
+		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
+		 " order by noteType, _Note_key, sequenceNum";
 
-	  row : integer := 0;
+	  row : integer := -1;
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -162,22 +161,24 @@ rules:
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
 	      noteKey := mgi_getstr(dbproc, 1);
+
 	      if (noteKey != prevNoteKey) then
-		note := "";
+                row := row + 1;
+	        note := mgi_getstr(dbproc, 4);
+	        (void) mgi_tblSetCell(table, row, table.noteKey, noteKey);
+	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(table, row, table.noteTypeKey,  mgi_getstr(dbproc, 2));
+	        (void) mgi_tblSetCell(table, row, table.noteType, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(table, row, table.note, note);
+	        (void) mgi_tblSetCell(table, row, table.editMode, editMode);
+	      else
+	        note := note + mgi_getstr(dbproc, 4);
+	        (void) mgi_tblSetCell(table, row, table.note, note);
+	        (void) mgi_tblSetCell(table, row, table.editMode, editMode);
 	      end if;
 
-	      note := note + mgi_getstr(dbproc, 4);
-	      (void) mgi_tblSetCell(table, row, table.noteKey, noteKey);
-	      (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(table, row, table.noteTypeKey,  mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(table, row, table.noteType, mgi_getstr(dbproc, 3));
-	      (void) mgi_tblSetCell(table, row, table.note, note);
-
-	      (void) mgi_tblSetCell(table, row, table.editMode, editMode);
-
 	      prevNoteKey := noteKey;
-              row := row + 1;
             end while;
           end while;
           (void) dbclose(dbproc);
