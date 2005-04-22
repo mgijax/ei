@@ -335,11 +335,18 @@ rules:
 
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
-	           "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	           "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
+	           "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
 	  end if;
 
           ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.transaction := false;
+          send(ModifySQL, 0);
+
+	  -- always update Allele Combination, even if genotype update is denied
+	  -- to pick up any changes to the algorithm
+
+	  ModifySQL.cmd := "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.transaction := false;
           send(ModifySQL, 0);
