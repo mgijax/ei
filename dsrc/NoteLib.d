@@ -204,7 +204,7 @@ rules:
 	      cmd := cmd + "and _NoteType_key = " + (string) noteTypeKey;
 	    end if;
 
-	    cmd := cmd + " order by _NoteType_key, sequenceNum";
+	    cmd := cmd + " order by _NoteType_key, _Note_key, sequenceNum";
 	  else
             cmd := "select _NoteType_key, note, sequenceNum" +
 	  	  " from " + mgi_DBtable(tableID) +

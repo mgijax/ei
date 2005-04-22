@@ -109,6 +109,7 @@ devents:
 
 	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
+	VerifyDuplicateStrain :translation [];
 
 locals:
 	mgi : widget;
@@ -762,7 +763,7 @@ rules:
 	  from := "from " + mgi_DBtable(STRAIN) + " ";
 	  where := "group by strain having count(*) > 1";
 	  Query.source_widget := top;
-	  Query.select := "select distinct *\n" + from + "\n" + where + "\norder by strain\n";
+	  Query.select := "select distinct _Strain_key, strain\n" + from + "\n" + where + "\norder by strain\n";
 	  Query.table := STRAIN;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
@@ -1137,6 +1138,40 @@ rules:
 	    (void) mgi_tblSetCell(table, row, table.markerKey, "NULL");
 	    VerifyStrainMarker.doit := (integer) false;
 	  end if;
+	end does;
+
+--
+-- VerifyDuplicateStrain
+--
+-- Activated from:  tab out of Name->text
+--
+-- Check Strain against existing Strains.
+-- Inform user if Strain is a duplicate.
+--
+
+	VerifyDuplicateStrain does
+	  value : string := VerifyDuplicateStrain.source_widget.value;
+	  strainCount : string;
+
+	  -- If wildcard (%), then skip verification
+
+	  if (strstr(value, "%") != nil) then
+	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  strainCount := mgi_sql1("select count(*) from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(value));
+
+	  if ((integer) strainCount > 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "This Strain already exists in MGI.";
+            send(StatusReport);
+	  end if;
+
+	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  (void) reset_cursor(top);
 	end does;
 
 --
