@@ -267,12 +267,6 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  ProcessNoteForm.notew := top->mgiNoteForm;
-	  ProcessNoteForm.tableID := MGI_NOTE;
-	  ProcessNoteForm.objectKey := currentRecordKey;
-	  send(ProcessNoteForm, 0);
-	  cmd := top->mgiNoteForm.sql;
-
 	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
