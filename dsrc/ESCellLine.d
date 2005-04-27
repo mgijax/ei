@@ -310,7 +310,7 @@ rules:
 	    where := where + "\nand a._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
 	  else
 	    value := top->EditForm->Strain->Verify->text.value;
-	    if (value .length > 0) then
+	    if (value.length > 0) then
 	      where := where + "\nand s.strain like " + mgi_DBprstr(value);
 	      from_strain := true;
 	    end if;
@@ -326,7 +326,7 @@ rules:
 
 	  if (from_strain) then
 	    from := from + ", PRB_Strain s";
-	    where := "\nand a._Strain_key = s._Strain_key";
+	    where := where + "\nand a._Strain_key = s._Strain_key";
 	  end if;
 
 	  if (where.length > 0) then
