@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Apr 22 09:48:39 2005";
+      lastWritten = "Wed Apr 27 12:03:50 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3379,6 +3379,9 @@ Module: MGD
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -9860,6 +9863,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
+                                                  {
+                                                    RIKENBRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
                                             }
                                       }
                                 }
@@ -14225,6 +14233,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENBRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
