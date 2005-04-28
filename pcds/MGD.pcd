@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 27 12:03:50 2005";
+      lastWritten = "Thu Apr 28 13:36:30 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -384,6 +384,9 @@ Module: MGD
                                                   }
                                                   {
                                                     HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OMIM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
@@ -2721,6 +2724,9 @@ Module: MGD
                                   HGNC = AccToggle : mgiOption;
                                 }
                                 {
+                                  OMIM = AccToggle : mgiOption;
+                                }
+                                {
                                   RGD = AccToggle : mgiOption;
                                 }
                                 {
@@ -3308,6 +3314,9 @@ Module: MGD
                                                   }
                                                   {
                                                     HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OMIM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
@@ -7122,6 +7131,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    OMIM = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -9780,6 +9794,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     HGNC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    OMIM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10430,6 +10447,9 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               HGNC = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              OMIM = AccToggle : mgiOption;
                                             }
                                             {
                                               RGD = AccToggle : mgiOption;
@@ -12072,6 +12092,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     HGNC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    OMIM = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -13096,6 +13119,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OMIM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
@@ -14164,6 +14190,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OMIM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;

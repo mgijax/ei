@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 27 12:02:30 2005";
+      lastWritten = "Thu Apr 28 13:35:57 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -299,6 +299,11 @@ Module: mgiOption
                       HGNC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 64;
+                    }
+                    {
+                      OMIM = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 15;
                     }
                     {
                       RGD = AccToggle : mgiOption;

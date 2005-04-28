@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 27 12:02:37 2005";
+      lastWritten = "Thu Apr 28 13:35:58 2005";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -505,6 +505,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OMIM = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RGD = AccToggle : mgiOption;
