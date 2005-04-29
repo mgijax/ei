@@ -4,7 +4,7 @@
 -- SimpleVocab.d 12/27/2001
 --
 -- TopLevelShell:		SimpleVocab
--- Database Tables Affected:	VOC_Vocab, VOC_Term, VOC_Text, VOC_Synonym
+-- Database Tables Affected:	VOC_Vocab, VOC_Term, VOC_Text, MGI_Synonym
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module to process edits for (table).
@@ -57,6 +57,8 @@ locals:
  
 	tables : list;
 	termTable : widget;
+
+	synTypeKey : string;		-- Synonym Type Key for Vocabulary Synonyms
 
 rules:
 
@@ -147,6 +149,8 @@ rules:
 	  -- Perform initial search
 	  send(PrepareSearch, 0);
 	  send(Search, 0);
+
+	  synTypeKey := mgi_sql1("select _SynonymType_key from MGI_SynonymType where _MGIType_key = 13 and synonymType = 'exact'");
 
 	end does;
 
@@ -253,10 +257,6 @@ rules:
 
 	  -- You can't modify the Name, Private Flag of a Vocabulary once it
 	  -- has been defined.
-
---	  if (top->Name->text.modified) then
---	    set := set + "name = " + mgi_DBprstr(top->Name->text.value) + ",";
---	  end if;
 
           if (top->ACCLogicalMenu.menuHistory.modified and
 	      top->ACCLogicalMenu.menuHistory.searchValue != "%") then
@@ -444,23 +444,27 @@ rules:
  
             if (editMode = TBL_ROW_ADD) then
               if (not keyDeclared) then
-                cmd := cmd + mgi_setDBkey(VOC_SYNONYM, NEWKEY, keyName);
+                cmd := cmd + mgi_setDBkey(MGI_SYNONYM, NEWKEY, keyName);
                 keyDeclared := true;
               else
                 cmd := cmd + mgi_DBincKey(keyName);
               end if;
 
-              cmd := cmd + mgi_DBinsert(VOC_SYNONYM, keyName) + 
+              cmd := cmd + mgi_DBinsert(MGI_SYNONYM, keyName) + 
 			termKey + "," +
-			mgi_DBprstr(synonym) + ")\n";
+			"13," +
+			synTypeKey + "," +
+			"NULL," +
+			mgi_DBprstr(synonym) + "," +
+			global_loginKey + "," + global_loginKey + ")\n";
 
             elsif (editMode = TBL_ROW_MODIFY) then
  
               set := "synonym = " + mgi_DBprstr(synonym);
-              cmd := cmd + mgi_DBupdate(VOC_SYNONYM, synKey, set);
+              cmd := cmd + mgi_DBupdate(MGI_SYNONYM, synKey, set);
 
             elsif (editMode = TBL_ROW_DELETE) then
-              cmd := cmd + mgi_DBdelete(VOC_SYNONYM, synKey);
+              cmd := cmd + mgi_DBdelete(MGI_SYNONYM, synKey);
             end if;
  
             row := row + 1;
@@ -628,8 +632,9 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select * from " + mgi_DBtable(VOC_SYNONYM) + 
-		 " where " + mgi_DBkey(VOC_TERM) + " = " + termKey + "\n" +
+	  cmd := "select _Synonym_key, synonym from " + mgi_DBtable(MGI_SYNONYM) + 
+		 " where _SynonymType_key = " + synTypeKey +
+		 " and _Object_key = " + termKey + "\n" +
 		 " order by synonym\n";
 
 
@@ -641,7 +646,7 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	     (void) mgi_tblSetCell(synTable, row, synTable.synKey, mgi_getstr(dbproc, 1));
-	     (void) mgi_tblSetCell(synTable, row, synTable.synonym, mgi_getstr(dbproc, 3));
+	     (void) mgi_tblSetCell(synTable, row, synTable.synonym, mgi_getstr(dbproc, 2));
 	     (void) mgi_tblSetCell(synTable, row, synTable.editMode, TBL_ROW_NOCHG);
 	     row := row + 1;
 	    end while;

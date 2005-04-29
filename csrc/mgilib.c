@@ -922,9 +922,6 @@ char *mgi_DBkey(int table)
     case VOC_TEXT:
 	    strcpy(buf, "_Term_key");
 	    break;
-    case VOC_SYNONYM:
-	    strcpy(buf, "_Synonym_key");
-	    break;
     case VOC_ANNOTHEADER:
 	    strcpy(buf, "_AnnotHeader_key");
 	    break;
@@ -1728,9 +1725,6 @@ char *mgi_DBtable(int table)
     case VOC_TEXT:
             strcpy(buf, "VOC_Text");
 	    break;
-    case VOC_SYNONYM:
-            strcpy(buf, "VOC_Synonym");
-	    break;
     case VOC_VOCAB_VIEW:
             strcpy(buf, "VOC_Vocab_View");
 	    break;
@@ -2373,9 +2367,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case VOC_TEXT:
             sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case VOC_SYNONYM:
-            sprintf(buf, "insert %s (%s, _Term_key, synonym)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_ANNOTHEADER:
             sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
