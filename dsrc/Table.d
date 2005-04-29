@@ -458,18 +458,18 @@ rules:
 	  CommitTableCellEdit.value_changed := true;
 	  send(CommitTableCellEdit, 0);
 
-	  if (column = valueColumn) then
+--	  if (column = valueColumn) then
 
-	    if (column = mgi_tblNumColumns(table) - 1) then
-	      TraverseToTableCell.row := row + 1;
-	    else
-	      TraverseToTableCell.row := row;
-	    end if;
+--	    if (column = mgi_tblNumColumns(table) - 1) then
+--	      TraverseToTableCell.row := row + 1;
+--	    else
+--	      TraverseToTableCell.row := row;
+--	    end if;
 
-	    TraverseToTableCell.table := table;
-	    TraverseToTableCell.column := column + 1;
-	    send(TraverseToTableCell, 0);
-	  end if;
+--	    TraverseToTableCell.table := table;
+--	    TraverseToTableCell.column := column + 1;
+--	    send(TraverseToTableCell, 0);
+--	  end if;
 
 	end does;
 
