@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 29 13:38:41 2005";
+      lastWritten = "Wed May  4 08:43:37 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3379,6 +3379,12 @@ Module: MGD
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENBRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CMMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -9809,6 +9815,16 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    RIKENBRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    CMMR = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
