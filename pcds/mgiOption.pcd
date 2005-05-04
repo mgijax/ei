@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 28 13:35:57 2005";
+      lastWritten = "Wed May  4 08:18:33 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -454,6 +454,11 @@ Module: mgiOption
                         labelString = "RIKEN BRC";
                       Group: User
                         defaultValue = 70;
+                    }
+                    {
+                      CMMR = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 71;
                     }
                     {
                       IMAGELibrary = AccToggle : mgiOption;
