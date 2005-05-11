@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 10 10:19:03 2005";
+      lastWritten = "Wed Apr 13 10:55:17 2005";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1155,28 +1155,6 @@ Shift<Key>Tab: prev-tab-group()
                             Group: User
                               defaultValue = "Not Applicable";
                           }
-                    }
-              }
-        }
-        {
-          mgiExternalAccession = mgiAccession;
-          Group: Control
-            vip_x = 156;
-            vip_y = 1766;
-              {
-                ObjectID = ID : mgiDataTypes;
-              }
-              {
-                AccessionID = CharText : mgiDataTypes;
-                    {
-                      label = XmLabel;
-                    }
-                    {
-                      text = text;
-                      Group: Widget
-                        translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIExternalAcc()";
                     }
               }
         }
