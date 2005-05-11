@@ -1004,9 +1004,9 @@ rules:
 	    return;
 	  end if;
 
-	  if (column = annotTable.inferredFrom) then
-	    send(GONoteInit, 0);
-	  end if;
+--	  if (column = annotTable.inferredFrom) then
+--	    send(GONoteInit, 0);
+--	  end if;
 
 	  if (column = annotTable.notes or column = annotTable.editor) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then

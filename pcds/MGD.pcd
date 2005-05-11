@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  4 08:19:05 2005";
+      lastWritten = "Wed May 11 13:35:05 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1383,19 +1383,6 @@ Module: MGD
                                         Clear = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:OrthologyClear";
-                                      }
-                                }
-                          }
-                          {
-                            Edit = Edit;
-                                Popups:
-                                {
-                                  EditPulldown = MenuPulldown;
-                                      {
-                                        MarkerNonMouse = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
-                                          labelString = "Marker Information";
                                       }
                                 }
                           }
@@ -6542,6 +6529,13 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MolecularSegment\")";
                                     labelString = "Molecular Probes & Segments";
+                                    traversalOn = False;
+                                }
+                                {
+                                  NonMouseMarker = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
+                                    labelString = "Non-Mouse Markers";
                                     traversalOn = False;
                                 }
                                 {
@@ -14439,6 +14433,18 @@ Shift<Key>Tab: prev-tab-group()
 <Key>Tab: SetDefault() Search()";
                                             }
                                       }
+                                }
+                                {
+                                  mgiExternalAccession = mgiExternalAccession : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = VocAnnotTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = VocAnnotTypeMenu;
+                                    topOffset = 10;
                                 }
                                 {
                                   Annotation = Table : mgiTable;
