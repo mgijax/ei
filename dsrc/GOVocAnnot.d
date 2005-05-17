@@ -107,7 +107,7 @@ locals:
 
 	annotTable : widget;		-- Annotation table
 
-	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nqualifier:\ntext:";
+	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nqualifier:\ntarget:\ntext:";
 
 rules:
 
