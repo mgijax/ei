@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  4 08:18:33 2005";
+      lastWritten = "Thu May 19 11:16:40 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1119,6 +1119,14 @@ Module: mgiOption
                       Group: User
                         searchValue = "section from whole mount";
                         defaultValue = "section from whole mount";
+                    }
+                    {
+                      opticalsection = OptionToggle : mgiOption;
+                      Group: Widget
+                        labelString = "optical section";
+                      Group: User
+                        searchValue = "optical section";
+                        defaultValue = "optical section";
                     }
                     {
                       NotSpecified = NotSpecified : mgiOption;
