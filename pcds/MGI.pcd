@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  4 08:18:39 2005";
+      lastWritten = "Thu May 26 11:16:37 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -707,7 +707,7 @@ Module: MGI
               {
                 CellLine = mgiVerify : mgiDataTypes;
                 Group: Widget
-                  userDefinedAttributes = "vocabKey:Int=\"16\"\n";
+                  userDefinedAttributes = "vocabKey:Int(Int)=\"18\"\n";
                 Group: Constraint
                   leftAttachment = attach_opposite_widget;
                   leftWidget = Description;
@@ -718,7 +718,7 @@ Module: MGI
                   resizable = true;
                 Group: User
                   verifyKey = CellLineID;
-                  verifyTable = 343;
+                  verifyTable = 333;
                     {
                       Verify = CharText : mgiDataTypes;
                           {
