@@ -956,7 +956,8 @@ rules:
 	  if (cmd.length > 0) then
 	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
 		   "\nexec MRK_reloadReference " + currentRecordKey +
-		   "\nexec MRK_reloadSequence " + currentRecordKey;
+		   "\nexec MRK_reloadSequence " + currentRecordKey +
+		   "\nexec MRK_reloadLocation " + currentRecordKey;
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := true;
