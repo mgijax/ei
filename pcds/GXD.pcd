@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May 19 11:16:42 2005";
+      lastWritten = "Fri Jun  3 11:16:16 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -190,7 +190,7 @@ Module: GXD
                                         Description = CharText : mgiDataTypes;
                                       }
                                       {
-                                        CellLine = mgiVerify : mgiDataTypes;
+                                        CellLine = XmRowColumn : mgiDataTypes;
                                       }
                                       {
                                         AgeMenu = AgeMenu : mgiOption;
@@ -633,7 +633,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Description = CharText : mgiDataTypes;
                                       }
                                       {
-                                        CellLine = mgiVerify : mgiDataTypes;
+                                        CellLine = XmRowColumn : mgiDataTypes;
                                       }
                                       {
                                         AgeMenu = AgeMenu : mgiOption;
@@ -3023,9 +3023,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    JRS = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     RIKENCluster = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3062,34 +3059,37 @@ Shift<Key>Tab: prev-tab-group()
                                                     NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EMMA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Harwell = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ORNL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NMICE = AccToggle : mgiOption;
+                                                    BCBC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CARD = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    BCBC = AccToggle : mgiOption;
+                                                    CMMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMMA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Harwell = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MMHCC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ORNL = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RIKENBRC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    CMMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
