@@ -151,9 +151,8 @@ extern char *global_version;
 #define GXD_STRUCTURECLOSURE    222
 #define GXD_INDEX		223
 #define GXD_INDEXSTAGES		224
-#define IMG_IMAGENOTE		225
-#define GXD_GENOTYPE_VIEW	226
-#define GXD_ALLELEPAIR_VIEW	227
+#define GXD_GENOTYPE_VIEW	225
+#define GXD_ALLELEPAIR_VIEW	226
 
 /* Allele Tables */
 
@@ -270,6 +269,8 @@ extern char *global_version;
 #define MGI_NOTETYPE_GENOTYPE_VIEW	649
 #define MGI_REFERENCE_MARKER_VIEW	650
 #define MGI_REFTYPE_MARKER_VIEW		651
+#define MGI_NOTE_IMAGE_VIEW		652
+#define MGI_NOTETYPE_IMAGE_VIEW		653
 
 
 /* Strains Tables */

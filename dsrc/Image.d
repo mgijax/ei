@@ -60,6 +60,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
+	BuildDynamicComponents :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -99,6 +100,9 @@ rules:
 
 	  top := create widget("ImageModule", nil, mgi);
 
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
+
 	  send(Init, 0);
 
           ab := INITIALLY.launchedFrom;
@@ -114,6 +118,28 @@ rules:
 	  send(Clear, 0);
  
 	  (void) reset_cursor(mgi);
+	end does;
+
+--
+-- BuildDynamicComponents
+--
+-- Activated from:  devent Image
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+	  -- Dynamically create Menus
+
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_IMAGE_VIEW;
+	  send(InitNoteForm, 0);
+
 	end does;
 
 --
@@ -157,12 +183,20 @@ rules:
 	  -- Notes
 
           ModifyNotes.source_widget := top->ImageNote;
-          ModifyNotes.tableID := IMG_IMAGENOTE;
+          ModifyNotes.tableID := MGI_NOTE;
           ModifyNotes.key := currentRecordKey;
           send(ModifyNotes, 0);
           cmd := cmd + top->ImageNote.sql;
  
 	  send(ModifyImagePane, 0);
+
+	  -- Process Notes
+
+--	  ProcessNoteForm.notew := top->mgiNoteForm;
+--	  ProcessNoteForm.tableID := MGI_NOTE;
+--	  ProcessNoteForm.objectKey := currentRecordKey;
+--	  send(ProcessNoteForm, 0);
+--	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  -- Process any Accession numbers
 
@@ -262,6 +296,12 @@ rules:
 	  send(ModifyImagePane, 0);
 
 	  cmd := cmd + mgi_DBupdate(IMG_IMAGE, currentRecordKey, set);
+
+--	  ProcessNoteForm.notew := top->mgiNoteForm;
+--	  ProcessNoteForm.tableID := MGI_NOTE;
+--	  ProcessNoteForm.objectKey := currentRecordKey;
+--	  send(ProcessNoteForm, 0);
+--	  cmd := cmd + top->mgiNoteForm.sql;
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
@@ -466,13 +506,13 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from IMG_Image_View where _Image_key = " + currentRecordKey + "\n" +
-		 "select imageNote from IMG_ImageNote where _Image_key = " + currentRecordKey + "\n" +
-		 "order by sequenceNum\n" +
+		 "select nc.note from MGI_Note_Image_View n, MGI_NoteChunk nc where n._Object_key = " + currentRecordKey + "\n" +
+		 "and n._Note_key = nc._Note_key order by nc.sequenceNum\n" +
 	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer;
-	  table : widget := top->ImagePane->Table;
+	  table : widget;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -482,19 +522,25 @@ rules:
 	    row := 0;
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
+		table := top->Control->ModificationHistory->Table;
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
 	        top->xDim->text.value           := mgi_getstr(dbproc, 3);
 	        top->yDim->text.value           := mgi_getstr(dbproc, 4);
 	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 5);
 	        top->CopyrightNote->text.value  := mgi_getstr(dbproc, 6);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 7);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 8);
                 top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
                 top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 13);
                 top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 14);
+
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 8));
+--		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 26));
+--		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 27));
+
 	      elsif (results = 2) then
 		top->ImageNote->text.value := top->ImageNote->text.value + mgi_getstr(dbproc, 1);
 	      elsif (results = 3) then
+	        table := top->ImagePane->Table;
 		(void) mgi_tblSetCell(table, row, table.imagePaneKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -506,6 +552,13 @@ rules:
 
 	  (void) dbclose(dbproc);
  
+	  -- Load Notes
+
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_IMAGE_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
+
 	  -- Load Accession numbers
 
           LoadAcc.table := accTable;

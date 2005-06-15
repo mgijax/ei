@@ -718,7 +718,6 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Homology_key");
 	    break;
     case IMG_IMAGE:
-    case IMG_IMAGENOTE:
             strcpy(buf, "_Image_key");
 	    break;
     case IMG_IMAGEPANE:
@@ -739,6 +738,7 @@ char *mgi_DBkey(int table)
 	    break;
     case MGI_NOTE_ALLELE_VIEW:
     case MGI_NOTE_GENOTYPE_VIEW:
+    case MGI_NOTE_IMAGE_VIEW:
     case MGI_NOTE_MRKGO_VIEW:
     case MGI_NOTE_NOMEN_VIEW:
     case MGI_NOTE_SEQUENCE_VIEW:
@@ -1334,9 +1334,6 @@ char *mgi_DBtable(int table)
     case IMG_IMAGEPANE:
             strcpy(buf, "IMG_ImagePane");
 	    break;
-    case IMG_IMAGENOTE:
-            strcpy(buf, "IMG_ImageNote");
-	    break;
     case MGI_TABLES:
             strcpy(buf, "MGI_Tables");
 	    break;
@@ -1358,6 +1355,9 @@ char *mgi_DBtable(int table)
     case MGI_NOTE_GENOTYPE_VIEW:
 	    strcpy(buf, "MGI_Note_Genotype_View");
 	    break;
+    case MGI_NOTE_IMAGE_VIEW:
+	    strcpy(buf, "MGI_Note_Image_View");
+	    break;
     case MGI_NOTE_MRKGO_VIEW:
 	    strcpy(buf, "MGI_Note_MRKGO_View");
 	    break;
@@ -1366,6 +1366,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_NOTETYPE_GENOTYPE_VIEW:
 	    strcpy(buf, "MGI_NoteType_Genotype_View");
+	    break;
+    case MGI_NOTETYPE_IMAGE_VIEW:
+	    strcpy(buf, "MGI_NoteType_Image_View");
 	    break;
     case MGI_NOTETYPE_MRKGO_VIEW:
 	    strcpy(buf, "MGI_NoteType_MRKGO_View");
@@ -1902,7 +1905,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case HMD_HOMOLOGY_ASSAY:
     case HMD_NOTES:
     case IMG_IMAGEPANE:
-    case IMG_IMAGENOTE:
     case MGI_TABLES:
     case MGI_COLUMNS:
     case MGI_NOTE:
@@ -2120,15 +2122,11 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case IMG_IMAGE:
-            sprintf(buf, "insert %s (%s, _Refs_key, xDim, yDim, figureLabel, copyrightNote)", 
+            sprintf(buf, "insert %s (%s, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE:
             sprintf(buf, "insert %s (%s, _Image_key, paneLabel)", 
-		mgi_DBtable(table), mgi_DBkey(table));
-	    break;
-    case IMG_IMAGENOTE:
-            sprintf(buf, "insert %s (%s, sequenceNum, imageNote)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_COLUMNS:
