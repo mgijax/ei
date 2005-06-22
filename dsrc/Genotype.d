@@ -64,6 +64,8 @@ devents:
 
 	ModifyAllelePair :local [];
 
+	PostProcess :local [];
+
 	ResetEditMode :local [];
 
 	Select :local [item_position : integer;];
@@ -94,8 +96,10 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
+	alleleList : string_list;
 	allelePairString : string;
 	alleleCombinationOK : boolean;
+	reorderingAlleles : boolean;
 
 rules:
 
@@ -179,6 +183,9 @@ rules:
 	      send(SearchGenotype, 0);
 	    end if;
 	  end if;
+	
+	  alleleList := create string_list();
+
 	end does;
 
 --
@@ -238,10 +245,10 @@ rules:
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
-	  AddSQL.transaction := false;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
+	    send(PostProcess, 0);
 	    (void) XmListDeselectAllItems(top->QueryList->List);
 	    Clear.source_widget := top;
             Clear.clearKeys := false;
@@ -341,15 +348,15 @@ rules:
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
-	  ModifySQL.transaction := false;
           send(ModifySQL, 0);
+
+	  send(PostProcess, 0);
 
 	  -- always update Allele Combination, even if genotype update is denied
 	  -- to pick up any changes to the algorithm
 
 --	  ModifySQL.cmd := "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 --	  ModifySQL.list := top->QueryList;
---	  ModifySQL.transaction := false;
 --        send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
@@ -378,12 +385,12 @@ rules:
 	  compoundKey : string;
 	  keysDeclared : boolean := false;
 	  set : string;
-	  reordering : boolean := false;
 	  ordergenotypes : boolean := false;
-	  alleleList : string_list := create string_list();
  
 	  keyName := "allele" + KEYNAME;
+	  reorderingAlleles := false;
 	  allelePairString := "";
+	  alleleList.reset;
 
 	  -- Check for duplicate Seq # assignments
 
@@ -458,7 +465,7 @@ rules:
               if (currentSeqNum != newSeqNum) then
 		set := "sequenceNum = " + newSeqNum;
                 cmd := cmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
-		reordering := true;
+		reorderingAlleles := true;
 
               -- Else, a simple update
  
@@ -492,20 +499,38 @@ rules:
             row := row + 1;
           end while;
 
-	  -- process distinct alleles
+	  cmd := cmd + localCmd;
 	  alleleList.reduce;
 	  alleleList.rewind;
-	  while alleleList.more do
-	    localCmd := localCmd + "exec GXD_orderGenotypes " +  alleleList.next + "\n";
-	  end while;
-
-	  cmd := cmd + localCmd;
-
-	  if (not reordering) then
-	    cmd := cmd + "exec GXD_orderAllelePairs " + currentRecordKey + "\n";
-	  end if;
 
         end does;
+
+--
+-- PostProcess
+--
+-- Things to execute after a Genotype is succesfully added or updated.
+--
+--
+
+	PostProcess does
+
+	  cmd := "";
+
+	  -- process distinct alleles
+	  while alleleList.more do
+	    cmd := cmd + "exec GXD_orderGenotypes " +  alleleList.next + "\n";
+	  end while;
+
+	  if (reorderingAlleles) then
+	    cmd := cmd + "exec GXD_orderAllelePairs " + top->ID->text.value + "\n";
+	  end if;
+
+	  if (cmd.length > 0) then
+	    ExecSQL.cmd := cmd;
+	    send(ExecSQL, 0);
+          end if;
+
+	end does;
 
 --
 -- SearchGenotype
