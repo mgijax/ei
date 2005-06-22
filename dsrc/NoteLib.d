@@ -112,6 +112,7 @@ rules:
 	  k : integer;
 
 	  if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	      tableID = MGI_NOTETYPE_IMAGE_VIEW or 
 	      tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 	      tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 	      tableID = MGI_NOTETYPE_SOURCE_VIEW or
@@ -150,6 +151,7 @@ rules:
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
 	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	            tableID = MGI_NOTETYPE_IMAGE_VIEW or 
 	            tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 		    tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 		    tableID = MGI_NOTETYPE_SOURCE_VIEW or 
@@ -190,6 +192,7 @@ rules:
 	  send(ClearSetNoteForm, 0);
 
 	  if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	      tableID = MGI_NOTE_IMAGE_VIEW or 
 	      tableID = MGI_NOTE_MRKGO_VIEW or 
 	      tableID = MGI_NOTE_NOMEN_VIEW or 
 	      tableID = MGI_NOTE_SOURCE_VIEW or 
@@ -222,6 +225,7 @@ rules:
 	      note := mgi_getstr(dbproc, 2);
 
 	      if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	          tableID = MGI_NOTE_IMAGE_VIEW or 
 	          tableID = MGI_NOTE_MRKGO_VIEW or 
 		  tableID = MGI_NOTE_NOMEN_VIEW or 
 		  tableID = MGI_NOTE_SOURCE_VIEW or 
@@ -268,10 +272,12 @@ rules:
 		else
 	          childnote->Note.noteKey := -1;
 		end if;
-	      else
-                StatusReport.source_widget := notew.top;
-                StatusReport.message := "Cannot determine Note Type\n";
-                send(StatusReport, 0);
+
+-- don't print an error...we'll assume we're just not displaying this note type
+--	      else
+--                StatusReport.source_widget := notew.top;
+--                StatusReport.message := "Cannot determine Note Type\n";
+--                send(StatusReport, 0);
 	      end if;
 
             end while;
