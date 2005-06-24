@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun  3 11:16:15 2005";
+      lastWritten = "Fri Jun 24 10:31:21 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3105,7 +3105,7 @@ Module: MGD
                                         Description = CharText : mgiDataTypes;
                                       }
                                       {
-                                        CellLine = XmRowColumn : mgiDataTypes;
+                                        CellLine = mgiVerify : mgiDataTypes;
                                       }
                                       {
                                         AgeMenu = AgeMenu : mgiOption;
@@ -9833,6 +9833,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    JRS = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -9854,11 +9859,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    JRS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
