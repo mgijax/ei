@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun 10 08:54:31 2005";
+      lastWritten = "Fri Jun 24 10:32:53 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1236,7 +1236,7 @@ Shift<Key>Tab: prev-tab-group()
             title = "GXD Index";
           Group: Control
             vip_x = 75;
-            vip_y = 415;
+            vip_y = 360;
           Group: User
             homeWidget = Marker;
             activateButtonName = IndexStage;
@@ -1734,7 +1734,7 @@ Shift<Key>Tab: prev-tab-group()
           AlleleModule = AlleleModule : MGD;
           Group: Control
             vip_x = 75;
-            vip_y = 470;
+            vip_y = 415;
               {
                 MainForm = XmForm;
                     {
@@ -2555,6 +2555,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2568,9 +2571,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    JRS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
@@ -2731,7 +2731,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 525;
+            vip_y = 470;
               {
                 PrepID : ID = ID;
               }
@@ -2859,7 +2859,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 580;
+            vip_y = 525;
               {
                 PrepID : ID = ID;
               }
@@ -2941,7 +2941,7 @@ Shift<Key>Tab: prev-tab-group()
           ProbePrepVerifyForm = ProbePrepForm;
           Group: Control
             vip_x = 75;
-            vip_y = 635;
+            vip_y = 580;
               {
                 PrepID = ID;
               }
@@ -2987,7 +2987,7 @@ Shift<Key>Tab: prev-tab-group()
           AntibodyPrepVerifyForm = AntibodyPrepForm;
           Group: Control
             vip_x = 75;
-            vip_y = 690;
+            vip_y = 635;
               {
                 PrepID = ID;
               }
@@ -3027,7 +3027,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 745;
+            vip_y = 690;
               {
                 ID = ID : mgiDataTypes;
               }
@@ -3052,12 +3052,6 @@ Shift<Key>Tab: prev-tab-group()
                   bottomAttachment = attach_none;
                   resizable = true;
               }
-        }
-        {
-          ImageModule = ImageModule : MGI;
-          Group: Control
-            vip_x = 75;
-            vip_y = 360;
         }
 }
 

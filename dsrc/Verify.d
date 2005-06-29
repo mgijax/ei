@@ -3048,8 +3048,12 @@ rules:
 -- Activated from ValidateCellCallback of Table
 --	UDAs required:  strengthKey, strength, patternKey, pattern
 --
--- Default Strength and Patter to "Not Applicable" (-2) if Assay is
+-- Default Strength and Pattern to "Not Applicable" (-2) if Assay is
 -- RNA In Situ and Probe Prep Hybridization is Sense
+--
+-- Default Pattern to "Not Applicable" (-2) if Assay is
+-- In Situ and Strength = "Absent" (TR 6948)
+--
 --
 
 	VerifyStrengthPattern does
@@ -3062,6 +3066,7 @@ rules:
 
 	  isInSitu : boolean := false;
 	  isSense : boolean := false;
+	  isAbsent : boolean := false;
 
 	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	    return;
@@ -3083,11 +3088,20 @@ rules:
             isSense := true;
           end if;
  
+          if (top->InSituResultDialog->CVInSituResult->StrengthMenu.menuHistory.labelString = "Absent") then
+            isAbsent := true;
+          end if;
+ 
 	  -- Only default if Assay is RNA InSitu and Probe Prep Hybridization is Sense
 
 	  if (isInSitu and isSense and value.length = 0) then
 	    (void) mgi_tblSetCell(table, row, table.strengthKey, "-2");
 	    (void) mgi_tblSetCell(table, row, table.strength, "Not Applicable");
+	    (void) mgi_tblSetCell(table, row, table.patternKey, "-2");
+	    (void) mgi_tblSetCell(table, row, table.pattern, "Not Applicable");
+	  end if;
+
+	  if (isAbsent and value.length = 0) then
 	    (void) mgi_tblSetCell(table, row, table.patternKey, "-2");
 	    (void) mgi_tblSetCell(table, row, table.pattern, "Not Applicable");
 	  end if;

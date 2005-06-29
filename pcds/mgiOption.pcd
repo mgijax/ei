@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun  3 11:17:40 2005";
+      lastWritten = "Fri Jun 24 10:32:46 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -401,6 +401,14 @@ Module: mgiOption
                         defaultValue = 53;
                     }
                     {
+                      JRS = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "JAX Registry";
+                      Group: User
+                        private = True;
+                        defaultValue = 22;
+                    }
+                    {
                       BCBC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 58;
@@ -424,14 +432,6 @@ Module: mgiOption
                       Harwell = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 39;
-                    }
-                    {
-                      JRS = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "JAX Registry";
-                      Group: User
-                        private = True;
-                        defaultValue = 22;
                     }
                     {
                       MMHCC = AccToggle : mgiOption;
@@ -2790,6 +2790,24 @@ Module: mgiOption
                 AlleleCompoundPulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select _Term_key, term from VOC_Term_ALLCompound_View order by sequenceNum";
+              }
+        }
+        {
+          ImageTypeMenu = OptionMenu;
+          Group: Widget
+            subMenuId = ImageTypePulldown;
+            labelString = "Image Type";
+          Group: Control
+            vip_x = 80;
+            vip_y = 5805;
+              Popups:
+              {
+                ImageTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term_IMGType_View order by sequenceNum";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
               }
         }
 }
