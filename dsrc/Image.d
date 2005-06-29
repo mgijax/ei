@@ -479,6 +479,18 @@ rules:
           from := from + accTable.sqlFrom;
           where := where + accTable.sqlWhere;
  
+	  i : integer := 1;
+	  while (i <= top->mgiNoteForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_IMAGE_VIEW;
+            SearchNoteForm.join := "i." + mgi_DBkey(IMG_IMAGE);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+	    i := i + 1;
+	  end while;
+
           QueryDate.source_widget := top->CreationDate;
           QueryDate.tag := "i";
           send(QueryDate, 0);
