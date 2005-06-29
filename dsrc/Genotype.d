@@ -237,6 +237,7 @@ rules:
 		 note + "," + global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
+
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
 	               "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 
@@ -341,23 +342,17 @@ rules:
 	  send(ModifyAllelePair, 0);
 
 	  if (set.length > 0 or cmd.length > 0) then
-            cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd +
-	           "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	           "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
+            cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
 	  end if;
+
+	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
+	               "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
 	  send(PostProcess, 0);
-
-	  -- always update Allele Combination, even if genotype update is denied
-	  -- to pick up any changes to the algorithm
-
---	  ModifySQL.cmd := "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
---	  ModifySQL.list := top->QueryList;
---        send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
 	end does;

@@ -167,6 +167,14 @@ rules:
 	  tables.append(top->ImagePane->Table);
 
 	  accTable := top->mgiAccessionTable->Table;
+
+	  if (global_application = "MGD") then
+	      top->ControlForm->AddGXD.sensitive := false;
+	      top->ControlForm->AddPhenotype.sensitive := true;
+	  else
+	      top->ControlForm->AddGXD.sensitive := true;
+	      top->ControlForm->AddPhenotype.sensitive := false;
+	  end if;
 	end does;
 
 --
@@ -490,6 +498,10 @@ rules:
  
           if (top->FigureLabel->text.value.length > 0) then
 	    where := where + "\nand i.figureLabel like " + mgi_DBprstr(top->FigureLabel->text.value);
+	  end if;
+
+	  if (top->ImageTypeMenu.menuHistory.searchValue != "%") then
+	    where := where + "\nand i._ImageType_key = " + top->ImageTypeMenu.menuHistory.searchValue;
 	  end if;
 
           if (top->Caption->text.value.length > 0) then
