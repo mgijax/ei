@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun 24 10:31:21 2005";
+      lastWritten = "Fri Jul  1 10:28:36 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2536,6 +2536,22 @@ Module: MGD
                               labelString = "Sequence Source Difference";
                             Group: User
                               note = "The source of the material used to create this cDNA probe was different than that used to create the Genbank sequence record.";
+                              noteWidget = MolNote;
+                          }
+                          {
+                            DownstreamArich = AppendNotePush : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Downstream A-rich region primed";
+                            Group: User
+                              note = "Downstream A-rich primed:  MGI curatorial staff have found evidence of \nartifact in the sequence of this molecular segment. This cDNA clone appears to \nbe the product of reverse transcription primed internally at downstream A-rich \nsequences.";
+                              noteWidget = MolNote;
+                          }
+                          {
+                            ReversedClone = AppendNotePush : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Reversed clone";
+                            Group: User
+                              note = "Reversed clone: MGI curatorial staff have found evidence of artifact in the \nsequence of this molecular segment. The sequence of this cDNA clone appears to be\nreversed.";
                               noteWidget = MolNote;
                           }
                     }
