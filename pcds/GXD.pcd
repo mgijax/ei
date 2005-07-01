@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun  3 11:16:16 2005";
+      lastWritten = "Fri Jul  1 10:30:42 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -190,7 +190,7 @@ Module: GXD
                                         Description = CharText : mgiDataTypes;
                                       }
                                       {
-                                        CellLine = XmRowColumn : mgiDataTypes;
+                                        CellLine = mgiVerify : mgiDataTypes;
                                       }
                                       {
                                         AgeMenu = AgeMenu : mgiOption;
@@ -633,7 +633,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Description = CharText : mgiDataTypes;
                                       }
                                       {
-                                        CellLine = XmRowColumn : mgiDataTypes;
+                                        CellLine = mgiVerify : mgiDataTypes;
                                       }
                                       {
                                         AgeMenu = AgeMenu : mgiOption;
@@ -1242,9 +1242,9 @@ Shift<Key>Tab: prev-tab-group()
                                     note = "This image is from * and is displayed with the permission of The Company of Biologists Limited who owns the Copyright.";
                                 }
                                 {
-                                  DevBiolNote = AppendNotePush : mgiDataTypes;
+                                  NatureNote = AppendNotePush : mgiDataTypes;
                                   Group: Widget
-                                    labelString = "Dev Biol";
+                                    labelString = Nature;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = DevelopmentNote;
@@ -1252,23 +1252,6 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = DevelopmentNote;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    note = "Reprinted with permission of the author and Academic Press from *.  Copyright * by Academic Press.";
-                                    noteWidget = CopyrightNote;
-                                }
-                                {
-                                  NatureNote = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = Nature;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = DevBiolNote;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = DevBiolNote;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                   Group: User
