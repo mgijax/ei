@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	07/13/2005
+--	- TR 6974; CopySpecimenColumn; do not copy Age Range, just Prefix
+--
 -- lec	02/03/2005
 --	- TR 6524; searching KnockIn Detection Method
 --
@@ -875,11 +878,10 @@ rules:
 	      keyColumn := table.hybridizationKey;
 	    end if;
 
-	    -- For Age Prefix, copy Age Key columns
+	    -- For Age Prefix, copy Age Key column
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, i, table.ageKey, mgi_tblGetCell(table, row, table.ageKey));
-	      mgi_tblSetCell(table, i, table.ageRange, mgi_tblGetCell(table, row - 1, table.ageRange));
 
 	    -- Else, copy key column
 

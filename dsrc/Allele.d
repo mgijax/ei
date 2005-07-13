@@ -755,7 +755,9 @@ rules:
 	  send(ModifySQL, 0);
 
 	  if (cmd.length > 0) then
-	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n";
+	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
+		   "exec ALL_processAlleleCombByAllele " + currentRecordKey + "\n" +
+		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
 
 	    if (top->mgiMarker->ObjectID->text.value != "") then
 		cmd := cmd + "exec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value + "\n";
