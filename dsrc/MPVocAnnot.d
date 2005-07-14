@@ -321,7 +321,6 @@ rules:
  
 	  (void) busy_cursor(top);
 
-	  -- First, sort the table by the Term so that all like Terms
           if (not top.allowEdit) then
 	    (void) reset_cursor(top);
             return;
@@ -335,12 +334,13 @@ rules:
 	    return;
 	  end if;
 
-	  -- are grouped together.  
+	  -- First, sort the table by the Term so that all like Terms are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current row's Term is not equal to the previous row's Term,
 	  -- then we have a new _Annot_key.
 
-	  (void) mgi_tblSort(annotTable, annotTable.term);
+	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
+	  (void) mgi_tblSort(annotTable, annotTable.termKey);
 
 	  editTerm := top->Annotation->EditTerm.set;
 
@@ -465,10 +465,10 @@ rules:
 
 	  cmd := cmd + "\nexec VOC_processAnnotHeader " + annotTypeKey + "," + currentRecordKey + "\n";
 
-          ModifySQL.cmd := cmd;
-	  ModifySQL.list := top->QueryList;
-	  ModifySQL.transaction := false;
-          send(ModifySQL, 0);
+--          ModifySQL.cmd := cmd;
+--	  ModifySQL.list := top->QueryList;
+--	  ModifySQL.transaction := false;
+ --         send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
 	end does;
