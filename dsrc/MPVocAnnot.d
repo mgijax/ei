@@ -465,10 +465,10 @@ rules:
 
 	  cmd := cmd + "\nexec VOC_processAnnotHeader " + annotTypeKey + "," + currentRecordKey + "\n";
 
---          ModifySQL.cmd := cmd;
---	  ModifySQL.list := top->QueryList;
---	  ModifySQL.transaction := false;
- --         send(ModifySQL, 0);
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.transaction := false;
+          send(ModifySQL, 0);
 
 	  (void) reset_cursor(top);
 	end does;
