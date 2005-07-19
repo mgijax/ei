@@ -31,6 +31,10 @@
 --
 -- History
 --
+-- lec	07/19/2005
+--	OMIM/MGI3.3
+--	PythonMarkerOMIMCache
+--
 -- lec	02/14/2003
 --      - TR 1892; added "exec MRK_reloadLabel"
 --
@@ -143,6 +147,9 @@ locals:
 
 	errorDetected : boolean;
 
+        markerTable : widget;
+        assayTable : widget;
+
 rules:
 
 --
@@ -204,6 +211,9 @@ rules:
 	  tables := create list("widget");
 
 	  homologyKeyName := "maxHomology";
+
+          markerTable := top->Marker->Table;
+          assayTable := top->Assay->Table;
 
     	  -- List of all Table widgets used in form
 
@@ -274,6 +284,11 @@ rules:
 	  AddSQL.key := top->ID->text;
 	  send(AddSQL, 0);
 
+	  -- Assume that first row holds the mouse marker key
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  send(PythonMarkerOMIMCache, 0);
+
 	  (void) reset_cursor(top);
 	end
 
@@ -293,6 +308,11 @@ rules:
 	  DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
 	  send(DeleteSQL, 0);
+
+	  -- Assume that first row holds the mouse marker key
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  send(PythonMarkerOMIMCache, 0);
 
 	  if (top->QueryList->List.row = 0) then
 	    OrthologyClear.source_widget := top;
@@ -339,6 +359,11 @@ rules:
 	    send(SplitKey, 0);
 	  end if;
 
+	  -- Assume that first row holds the mouse marker key
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  send(PythonMarkerOMIMCache, 0);
+
 	  (void) reset_cursor(top);
 	end
 
@@ -357,8 +382,6 @@ rules:
 --
 
         ModifyOrthology does
-          markerTable : widget := top->Marker->Table;
-          assayTable : widget := top->Assay->Table;
           row : integer := 0;
           i : integer := 0;
 	  j : integer;
@@ -740,8 +763,6 @@ rules:
 	  SplitKey.key := currentRecordKey;
 	  send(SplitKey, 0);
 
-	  markerTable : widget := top->Marker->Table;
-	  assayTable : widget := top->Assay->Table;
 	  row : integer := 0;
 	  results : integer := 1;
 	  markerKey : string := "";

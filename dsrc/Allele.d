@@ -12,7 +12,10 @@
 --
 -- History
 --
--- lec	03/2005
+-- 07/19/2005	lec
+--	MGI 3.3
+--
+-- 03/2005	lec
 --	TR 4289, MPR
 --
 -- 05/05/2004 lec
@@ -749,10 +752,17 @@ rules:
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
 	  end if;
 
+	  top->WorkingDialog.messageString := "Modifying Allele....";
+	  top->WorkingDialog.managed := true;
+	  XmUpdateDisplay(top->WorkingDialog);
+
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
+
+	  top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+	  XmUpdateDisplay(top->WorkingDialog);
 
 	  if (cmd.length > 0) then
 	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
@@ -769,6 +779,13 @@ rules:
 	    ModifySQL.transaction := false;
 	    send(ModifySQL, 0);
           end if;
+
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYALLELE;
+	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	  send(PythonMarkerOMIMCache, 0);
+
+	  top->WorkingDialog.managed := false;
+	  XmUpdateDisplay(top->WorkingDialog);
 
 	  (void) reset_cursor(top);
 	end does;

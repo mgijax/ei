@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- 07/19/2005	lec
+--	OMIM/MGI 3.3
+--	PythonMarkerOMIMCache
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -525,6 +529,9 @@ rules:
 	    send(ExecSQL, 0);
           end if;
 
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYGENOTYPE;
+	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	  send(PythonMarkerOMIMCache, 0);
 	end does;
 
 --
