@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 29 14:19:05 2005";
+      lastWritten = "Thu Jul 14 14:09:32 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2659,7 +2659,7 @@ Module: MGI
                                         Group: Widget
                                           labelString = "Allele Symbol Tag";
                                         Group: User
-                                          note = "\\AlleleSymbol(, 0)";
+                                          note = "\\AlleleSymbol(|0)";
                                           noteWidget = Caption;
                                       }
                                 }

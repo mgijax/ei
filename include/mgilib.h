@@ -334,6 +334,12 @@ extern char *global_version;
 #define EVENT_SPLIT		"5"
 #define EVENT_DELETED		"6"
 
+/* OMIM Cache Events */
+
+#define EVENT_OMIM_BYALLELE	"1"
+#define EVENT_OMIM_BYMARKER	"2"
+#define EVENT_OMIM_BYGENOTYPE	"3"
+
 /* keys of Marker Status */
 
 /* MGD */

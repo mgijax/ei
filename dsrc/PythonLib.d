@@ -28,11 +28,11 @@ rules:
 	  buf : string;
 
 	  if (omimevent = EVENT_OMIM_BYALLELE) then
-	    cmds.insert("mrkomimByAllele.py", cmds.count + 1);
+	    cmds.insert(getenv("OMIMCACHE") + "/mrkomimByAllele.py", cmds.count + 1);
 	  elsif (omimevent = EVENT_OMIM_BYMARKER) then
-	    cmds.insert("mrkomimByMarker.py", cmds.count + 1);
+	    cmds.insert(getenv("OMIMCACHE") + "/mrkomimByMarker.py", cmds.count + 1);
 	  elsif (omimevent = EVENT_OMIM_BYGENOTYPE) then
-	    cmds.insert("mrkomimByGenotype.py", cmds.count + 1);
+	    cmds.insert(getenv("OMIMCACHE") + "/mrkomimByGenotype.py", cmds.count + 1);
 	  end if;
 
 	  cmds.insert("-S" + getenv("DSQUERY"), cmds.count + 1);

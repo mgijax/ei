@@ -44,6 +44,9 @@ set path = ($DBUTILITIESPATH/bin $path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/lo
 # PYTHON PATH
 setenv PYTHONPATH /usr/local/mgi/live/lib/python
 
+# PYTHON OMIM Cache
+setenv OMIMCACHE        /usr/local/mgi/live/dbutils/mrkcacheload
+
 # Debug mode
 setenv EIDEBUG	1
 
