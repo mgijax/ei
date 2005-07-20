@@ -419,6 +419,10 @@ rules:
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYGENOTYPE;
+	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	  send(PythonMarkerOMIMCache, 0);
+
 	  (void) reset_cursor(top);
 	end does;
 
