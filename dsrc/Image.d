@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	07/2005
+--	- TR 3557/MLC images
+--
 -- lec  06/17/2004
 --	- TR 5810; remove Field Type
 --
