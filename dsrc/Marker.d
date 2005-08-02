@@ -1547,9 +1547,11 @@ rules:
 		 "from MRK_History_View " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum, _History_key\n" +
-	         "select sequenceNum, _Refs_key, jnum, short_citation from MRK_History_Ref_View " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum, _History_key\n" +
+	         "select h.sequenceNum, h._Refs_key, b.jnum, b.short_citation " +
+		 "from MRK_History h, BIB_View b " +
+		 "where h._Marker_key = " + currentRecordKey +
+		 "and h._Refs_key = b._Refs_key " + 
+		 " order by h.sequenceNum, h._History_key\n" +
 	         "select _Current_key, current_symbol from MRK_Current_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
 	         "select _Alias_key, alias from MRK_Alias_View " +

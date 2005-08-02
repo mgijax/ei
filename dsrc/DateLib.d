@@ -82,7 +82,7 @@ rules:
 	    elsif (strstr(value, "..") != nil) then
 	      where := "\nand (" + 
 		fieldName + " between substring(" + mgi_DBprstr(value) + ",1,charindex('..'," + mgi_DBprstr(value) + ") - 1) " +
-		" and substring(" + mgi_DBprstr(value) + ",charindex('..'," + mgi_DBprstr(value) + ") + 2, char_length(" + mgi_DBprstr(value) + ")))";
+		" and dateadd(day, 1, substring(" + mgi_DBprstr(value) + ",charindex('..'," + mgi_DBprstr(value) + ") + 2, char_length(" + mgi_DBprstr(value) + "))))";
 
 	    else
 	      where := "\nand (" + fieldName + " between " + mgi_DBprstr(value) + " and dateadd(day,1," + mgi_DBprstr(value) + "))";
