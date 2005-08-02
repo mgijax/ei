@@ -89,7 +89,7 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-	  cmd := "select _Term_key, term from VOC_Term_StrainAllele_View order by term";
+	  cmd := "select _Term_key, term from VOC_Term_StrainAllele_View order by sequenceNum";
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

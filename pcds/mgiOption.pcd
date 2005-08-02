@@ -2723,7 +2723,7 @@ Module: mgiOption
               {
                 StrainAlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_StrainAllele_View";
+                  sql = "select _Term_key, term from VOC_Term_StrainAllele_View order by sequenceNum";
               }
         }
         {
