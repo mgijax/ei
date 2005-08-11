@@ -219,6 +219,7 @@ rules:
 
 	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
+	  tables.append(top->ImagePane->Table);
 
 	  -- Global Accession number Tables
 
@@ -1146,7 +1147,21 @@ rules:
 		 mgi_DBtable(MRK_NOTES) + " m " +
                  " where a." + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + 
                  " and a." + mgi_DBkey(MRK_MARKER) + " = m." + mgi_DBkey(MRK_MARKER) +
-		 " order by m.sequenceNum\n";
+		 " order by m.sequenceNum\n" +
+		 "select ip._Assoc_key, ip._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID, ip.isPrimary " +
+		 "from IMG_ImagePane_Assoc ip, IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2 " +
+		 "where ip._Object_key = " + currentRecordKey +
+		 "and ip._ImagePane_key = p._ImagePane_key " +
+		 "and p._Image_key = i._Image_key " +
+		 "and p._Image_key = a1._Object_key " +
+		 "and a1._MGIType_key = 9 " +
+		 "and a1._LogicalDB_key = 1 " +
+		 "and a1.prefixPart = 'MGI:' " +
+		 "and a1.preferred = 1 " +
+		 "and p._Image_key = a2._Object_key " +
+		 "and a2._MGIType_key = 9 " +
+		 "and a2._LogicalDB_key = 19 " +
+		 "order by ip.isPrimary desc, a1.accID";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1212,6 +1227,22 @@ rules:
 	      elsif (results = 3) then
                 top->markerDescription->Note->text.value := 
 			top->markerDescription->Note->text.value + mgi_getstr(dbproc, 1);
+
+	      elsif (results = 4) then
+		table := top->ImagePane->Table;
+		(void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(table, row, table.paneKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(table, row, table.figureLabel, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.pixID, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(table, row, table.isPrimaryKey, mgi_getstr(dbproc, 6));
+
+		if (mgi_getstr(dbproc, 6) = YES) then
+		    (void) mgi_tblSetCell(table, row, table.isPrimary, "Yes");
+	        else
+		    (void) mgi_tblSetCell(table, row, table.isPrimary, "No");
+		end if;
+
 	      end if;
 	      row := row + 1;
 	    end while;

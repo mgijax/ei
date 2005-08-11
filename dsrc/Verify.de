@@ -28,6 +28,8 @@ VerifyGelRowUnits [];
 
 VerifyGenotype [];
 
+VerifyImagePane [];
+
 VerifyItem : translation [];
 
 VerifyItemAdd [];
