@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jul 19 13:05:53 2005";
+      lastWritten = "Fri Aug 12 11:23:51 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1380,19 +1380,6 @@ Module: MGD
                                         Clear = MenuPush;
                                         Group: Widget
                                           activateCallback = "D:OrthologyClear";
-                                      }
-                                }
-                          }
-                          {
-                            Edit = Edit;
-                                Popups:
-                                {
-                                  EditPulldown = MenuPulldown;
-                                      {
-                                        MarkerNonMouse = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
-                                          labelString = "Marker Information";
                                       }
                                 }
                           }
@@ -6561,6 +6548,13 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  NonMouseMarkers = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"MarkerNonMouse\")";
+                                    labelString = "Markers (non-mouse)";
+                                    traversalOn = False;
+                                }
+                                {
                                   Mapping = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"MLDP\")";
@@ -8483,6 +8477,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Reference = ReferenceTypeTable : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
@@ -8503,6 +8500,18 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          labelString = "Add Row";
+                                        Group: Constraint
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          leftOffset = 0;
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
@@ -8510,8 +8519,14 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
                                         Group: Constraint
-                                          leftWidget = Table;
-                                          topWidget = Table;
+                                          leftWidget = DeleteRow;
+                                          topWidget = DeleteRow;
+                                          leftAttachment = attach_widget;
+                                          leftOffset = 5;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
@@ -8627,9 +8642,8 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AddRow = TablePush : mgiTable;
                                         Group: Constraint
-                                          leftAttachment = attach_widget;
-                                          leftWidget = MolecularMutationMenu;
-                                          leftOffset = 10;
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
                                           rightAttachment = attach_none;
                                           topAttachment = attach_widget;
                                           topWidget = Table;
@@ -8643,14 +8657,15 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         MolecularMutationMenu = MolecularMutationMenu : mgiOption;
                                         Group: Constraint
-                                          leftAttachment = attach_opposite_widget;
+                                          leftAttachment = attach_widget;
                                           rightAttachment = attach_none;
                                           topAttachment = attach_widget;
                                           topWidget = Table;
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                           topOffset = 2;
-                                          leftWidget = Table;
+                                          leftWidget = DeleteRow;
+                                          leftOffset = 5;
                                             Popups:
                                             {
                                               MolecularMutationPulldown = OptionPulldown : mgiOption;
@@ -8658,6 +8673,77 @@ Shift<Key>Tab: prev-tab-group()
                                                 tableForm = MolecularMutation;
                                                 tableOptionKey = 2;
                                                 tableOption = 3;
+                                            }
+                                      }
+                                }
+                                {
+                                  ImagePane = TableLabel : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = MolecularMutation;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = Reference;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    topOffset = 5;
+                                    rightOffset = 5;
+                                  Group: Control
+                                    vipComment = "";
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblColumnLabels = "Mode,Key,Key,Key,MGI ID,PIX ID,Image Pane,Primary?";
+                                          xrtTblNumColumns = 8;
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblVisibleRows = 3;
+                                          xrtTblCharWidthSeries = "(all 0 1)\n(all 4 15)\n(all 5 10)\n(all 6 10)\n(all 7 8)";
+                                          xrtTblEditableSeries = "(all 0-3 False)";
+                                          userDefinedAttributes = "assocKey:Int(Int)=\"1\"\npaneKey:Int(Int)=\"2\"\nmgiID:Int(Int)=\"4\"\nfigureLabel:Int(Int)=\"6\"\nisPrimary:Int(Int)=\"7\"\nisPrimaryKey:Int(Int)=\"3\"\nmgiTypeKey:String(String)=\"11\"\npixID:Int(Int)=\"5\"\n";
+                                          xrtTblValidateCellCallback = "D:VerifyImagePane\nD:CommitTableCellEdit";
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = "Image Associations";
+                                            }
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        IsPrimaryMenu = YesNoMenu : mgiOption;
+                                        Group: Widget
+                                          subMenuId = IsPrimaryPulldown;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = DeleteRow;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = DeleteRow;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          leftOffset = 5;
+                                        Group: User
+                                          defaultOption = Yes;
+                                            Popups:
+                                            {
+                                              IsPrimaryPulldown : YesNoPulldown = OptionPulldown;
+                                              Group: User
+                                                tableOption = 7;
+                                                tableOptionKey = 3;
+                                                tableForm = ImagePane;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  }
                                             }
                                       }
                                 }

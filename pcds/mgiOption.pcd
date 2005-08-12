@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun 24 10:32:46 2005";
+      lastWritten = "Tue Aug  2 13:19:49 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2723,7 +2723,7 @@ Module: mgiOption
               {
                 StrainAlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_StrainAllele_View";
+                  sql = "select _Term_key, term from VOC_Term_StrainAllele_View order by sequenceNum";
               }
         }
         {

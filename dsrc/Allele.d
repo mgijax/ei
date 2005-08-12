@@ -71,6 +71,7 @@ devents:
 
 	Modify :local [];
 	ModifyAlleleNotes :local [];
+	ModifyImagePaneAssociation :local [];
 	ModifyMolecularMutation :local [];
 
 	PrepareSearch :local [];
@@ -91,6 +92,7 @@ locals:
 	ab : widget;
 	accTable : widget;
 	refTable : widget;
+	imgTable : widget;
 
 	cmd : string;
 	from : string;
@@ -225,6 +227,7 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 	  refTable := top->Reference->Table;
+	  imgTable := top->ImagePane->Table;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -308,12 +311,18 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
+	  paneKey : string;
+	  panePrimaryKey : string;
+	  primaryPane : integer := 0;
 	  row : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
 
+	  -- Verify at most one Original Reference
+
+	  row := 0;
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
@@ -334,6 +343,33 @@ rules:
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
+            send(StatusReport);
+            return;
+	  end if;
+
+	  -- Verify at most one Primary Image Pane Association
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(imgTable)) do
+	    editMode := mgi_tblGetCell(imgTable, row, imgTable.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    paneKey :=  mgi_tblGetCell(imgTable, row, imgTable.paneKey);
+	    panePrimaryKey :=  mgi_tblGetCell(imgTable, row, imgTable.isPrimaryKey);
+
+	    if (panePrimaryKey = YES and paneKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      primaryPane := primaryPane + 1;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  if (primaryPane > 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Primary Image Pane is allowed.";
             send(StatusReport);
             return;
 	  end if;
@@ -413,6 +449,7 @@ rules:
 		 approvalLoginDate;
 
 	  send(ModifyMolecularMutation, 0);
+	  send(ModifyImagePaneAssociation, 0);
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -605,12 +642,18 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
+	  paneKey : string;
+	  panePrimaryKey : string;
+	  primaryPane : integer := 0;
 	  row : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
 
+	  -- Verify at most one Original Reference
+
+	  row := 0;
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
@@ -633,6 +676,33 @@ rules:
             StatusReport.message := "At most one Original Reference is required.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
+
+	  -- Verify at most one Primary Image Pane Association
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(imgTable)) do
+	    editMode := mgi_tblGetCell(imgTable, row, imgTable.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    paneKey :=  mgi_tblGetCell(imgTable, row, imgTable.paneKey);
+	    panePrimaryKey :=  mgi_tblGetCell(imgTable, row, imgTable.isPrimaryKey);
+
+	    if (panePrimaryKey = YES and paneKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      primaryPane := primaryPane + 1;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  if (primaryPane > 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Primary Image Pane is allowed.";
+            send(StatusReport);
             return;
 	  end if;
 
@@ -718,6 +788,7 @@ rules:
 	  end if;
 
 	  send(ModifyMolecularMutation, 0);
+	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
 
 	  if (not top.allowEdit) then
@@ -891,6 +962,74 @@ rules:
 	      molecularNotesRequired := true;
 	    end if;
 
+	    row := row + 1;
+	  end while;
+	end does;
+ 
+--
+-- ModifyImagePaneAssociation
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Molecular Mutations
+-- Appends to global "cmd" string
+--
+ 
+	ModifyImagePaneAssociation does
+	  table : widget := top->ImagePane->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  assocKey : string;
+	  paneKey : string;
+	  mgiTypeKey : string;
+	  isPrimaryKey : string;
+	  set : string := "";
+	  keyName : string := "ipAssocKey";
+	  keyDefined : boolean := false;
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    assocKey := mgi_tblGetCell(table, row, table.assocKey);
+	    paneKey := mgi_tblGetCell(table, row, table.paneKey);
+	    mgiTypeKey := table.mgiTypeKey;
+	    isPrimaryKey := mgi_tblGetCell(table, row, table.isPrimaryKey);
+
+	    if (isPrimaryKey.length = 0) then
+	      isPrimaryKey := NO;
+	    end if;
+
+	    if (editMode = TBL_ROW_ADD) then
+
+	      if (not keyDefined) then
+		cmd := cmd + mgi_setDBkey(IMG_IMAGEPANE_ASSOC, NEWKEY, keyName);
+		keyDefined := true;
+	      else
+		cmd := cmd + mgi_DBincKey(keyName);
+	      end if;
+
+	      cmd := cmd + mgi_DBinsert(IMG_IMAGEPANE_ASSOC, keyName) +
+		     paneKey + "," +
+		     mgiTypeKey + "," +
+		     currentRecordKey + "," +
+		     isPrimaryKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+            elsif (editMode = TBL_ROW_MODIFY) then
+              set := "_ImagePane_key = " + paneKey +
+		     ",isPrimary = " + isPrimaryKey;
+              cmd := cmd + mgi_DBupdate(IMG_IMAGEPANE_ASSOC, assocKey, set);
+
+            elsif (editMode = TBL_ROW_DELETE and assocKey.length > 0) then
+              cmd := cmd + mgi_DBdelete(IMG_IMAGEPANE_ASSOC, assocKey);
+            end if;
+ 
 	    row := row + 1;
 	  end while;
 	end does;
@@ -1236,6 +1375,7 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.pixID, mgi_getstr(dbproc, 5));
 		(void) mgi_tblSetCell(table, row, table.isPrimaryKey, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 6) = YES) then
 		    (void) mgi_tblSetCell(table, row, table.isPrimary, "Yes");

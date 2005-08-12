@@ -1229,32 +1229,39 @@ rules:
 	    return;
 	  end if;
 
-	  -- a kludge...this really needs to be specific to GXD Assays
-	  -- where we want to default the Gentoype
+	  genotypeID := mgi_tblGetCell(table, row, table.genotype);
 
-	  if (mgi_tblGetCell(table, row, table.genotype) = "") then
+	  if (genotypeID.length = 0) then
+
+	    -- a kludge...this really needs to be specific to GXD Assays
+	    -- where we want to default the Gentoype
+
 	    if (table.is_defined("genotypeName") = nil) then
 	      (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
 	      (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
 	    end if;
 	    return;
+
+	  end if;
+
+	  if (strstr(genotypeID, "MGI:") = nil) then
+	      genotypeID := "MGI:" + genotypeID;
 	  end if;
 
 	  (void) busy_cursor(top);
 
 	  dbproc : opaque := mgi_dbopen();
 
-	  cmd : string := "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n";
+	  cmd : string := "select _Object_key, description from GXD_Genotype_Summary_View " +
+		"where mgiID = " + mgi_DBprstr(genotypeID) + "\n";
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (mgi_getstr(dbproc, 1) != "") then
-	        genotypeID := mgi_getstr(dbproc, 1);
-	        genotypeKey := mgi_getstr(dbproc, 2);
-	        genotypeName := mgi_getstr(dbproc, 3);
+	        genotypeKey := mgi_getstr(dbproc, 1);
+	        genotypeName := mgi_getstr(dbproc, 2);
 	      end if;
 	    end while;
 	  end while;
@@ -1304,41 +1311,29 @@ rules:
 	    return;
 	  end if;
 
-	  (void) busy_cursor(top);
-
 	  mgiID := mgi_tblGetCell(table, row, table.mgiID);
-	  pixID := mgi_tblGetCell(table, row, table.pixID);
+
+	  if (mgiID.length = 0) then
+	    return;
+          end if;
+
+	  if (strstr(mgiID, "MGI:") = nil) then
+	      mgiID := "MGI:" + mgiID;
+	  end if;
+
+	  (void) busy_cursor(top);
 
 	  dbproc : opaque := mgi_dbopen();
 
-	  if (mgiID.length > 0) then
-
-	      cmd := "select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID" +
-                     " from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2" +
-                     " where p._Image_key = i._Image_key" +
-                     " and p._Image_key = a1._Object_key" +
-                     " and a1._MGIType_key = 9" +
-		     " and a1.accID = " + mgi_DBprstr(mgiID) +
-                     " and p._Image_key = a2._Object_key" +
-                     " and a2._MGIType_key = 9" +
-                     " and a2._LogicalDB_key = 19";
-
-	  elsif (pixID.length > 0) then
-
-	      cmd := "select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID" +
-                     " from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2" +
-                     " where p._Image_key = i._Image_key" +
-                     " and p._Image_key = a1._Object_key" +
-                     " and a1._MGIType_key = 9" +
-		     " and a1._LogicalDB_key = 1" +
-		     " and a1.prefixPart = 'MGI:'" +
-		     " and a1.preferred = 1" +
-                     " and p._Image_key = a2._Object_key" +
-                     " and a2._MGIType_key = 9" +
-		     " and a2.accID = " + mgi_DBprstr(pixID) +
-                     " and a2._LogicalDB_key = 19";
-
-	  end if;
+	  cmd := "select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID" +
+                 " from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2" +
+                 " where p._Image_key = i._Image_key" +
+                 " and p._Image_key = a1._Object_key" +
+                 " and a1._MGIType_key = 9" +
+		 " and a1.accID = " + mgi_DBprstr(mgiID) +
+                 " and p._Image_key = a2._Object_key" +
+                 " and a2._MGIType_key = 9" +
+                 " and a2._LogicalDB_key = 19";
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -1360,6 +1355,10 @@ rules:
 	    (void) mgi_tblSetCell(table, row, table.pixID, pixID);
 	    (void) mgi_tblSetCell(table, row, table.figureLabel, figureLabel);
 	  else
+	    (void) mgi_tblSetCell(table, row, table.paneKey, "");
+	    (void) mgi_tblSetCell(table, row, table.mgiID, "");
+	    (void) mgi_tblSetCell(table, row, table.pixID, "");
+	    (void) mgi_tblSetCell(table, row, table.figureLabel, "");
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Invalid Image Pane.";
 	    send(StatusReport, 0);

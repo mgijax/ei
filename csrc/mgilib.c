@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 08/11/2005
+ *	- TR 3557/OMIM/added IMG_IMAGEPANE_ASSOC
+ *
  * lec 07/22/2004
  * 	- TR 6042/mgi_DBprstr/get rid of trailing and leading spaces
  *
@@ -723,6 +726,9 @@ char *mgi_DBkey(int table)
     case IMG_IMAGEPANE:
             strcpy(buf, "_ImagePane_key");
 	    break;
+    case IMG_IMAGEPANE_ASSOC:
+            strcpy(buf, "_Assoc_key");
+	    break;
     case MGI_COLUMNS:
             strcpy(buf, "column_name");
 	    break;
@@ -1334,6 +1340,9 @@ char *mgi_DBtable(int table)
     case IMG_IMAGEPANE:
             strcpy(buf, "IMG_ImagePane");
 	    break;
+    case IMG_IMAGEPANE_ASSOC:
+            strcpy(buf, "IMG_ImagePane_Assoc");
+	    break;
     case MGI_TABLES:
             strcpy(buf, "MGI_Tables");
 	    break;
@@ -1905,6 +1914,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case HMD_HOMOLOGY_ASSAY:
     case HMD_NOTES:
     case IMG_IMAGEPANE:
+    case IMG_IMAGEPANE_ASSOC:
     case MGI_TABLES:
     case MGI_COLUMNS:
     case MGI_NOTE:
@@ -2127,6 +2137,10 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case IMG_IMAGEPANE:
             sprintf(buf, "insert %s (%s, _Image_key, paneLabel)", 
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case IMG_IMAGEPANE_ASSOC:
+            sprintf(buf, "insert %s (%s, _ImagePane_key, _MGIType_key, _Object_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_COLUMNS:
@@ -2476,6 +2490,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case IMG_IMAGE:
+      case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
@@ -2530,6 +2546,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case IMG_IMAGE:
+      case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
