@@ -1097,7 +1097,7 @@ rules:
 	  -- If "No" is not selected
 	  if (mgi_tblGetCell(table, row, table.controlKey) != "1") then
 	    -- Genotype
-	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-2");
+	    (void) mgi_tblSetCell(table, row, table.genotypeKey, NOTAPPLICABLE);
 	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166309");
 
 	    -- Age
@@ -3137,67 +3137,33 @@ rules:
 --
 -- VerifyStrengthPattern
 --
--- Activated from ValidateCellCallback of Table
+-- Activated from: StrengthMenu->StrengthPulldown->StrengthPatternToggle:valueChangedCallback
+-- Activated from: PatternMenu->PatternPulldown->StrengthPatternToggle:valueChangedCallback
 --	UDAs required:  strengthKey, strength, patternKey, pattern
 --
--- Default Strength and Pattern to "Not Applicable" (-2) if Assay is
--- RNA In Situ and Probe Prep Hybridization is Sense
---
--- Default Pattern to "Not Applicable" (-2) if Assay is
--- In Situ and Strength = "Absent" (TR 6948)
+-- Default Pattern to "Not Applicable" (-2) if Strength = "Absent" (TR 6948)
 --
 --
 
 	VerifyStrengthPattern does
-	  table : widget := VerifyStrengthPattern.source_widget;
-	  row : integer := VerifyStrengthPattern.row;
-	  column : integer := VerifyStrengthPattern.column;
-	  reason : integer := VerifyStrengthPattern.reason;
-	  value : string := VerifyStrengthPattern.value;
-	  top : widget := table.top.root;
+	  sourceWidget : widget := VerifyStrengthPattern.source_widget;
+          top : widget := sourceWidget.root;
+	  pulldown : widget := sourceWidget.parent;
+	  tableForm : widget;
+	  table : widget;
+	  row : integer;
 
-	  isInSitu : boolean := false;
-	  isSense : boolean := false;
-	  isAbsent : boolean := false;
+	  tableForm := top->(pulldown.tableForm);
+	  table := tableForm->Table;
+          row := mgi_tblGetCurrentRow(table);
 
-	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	    return;
-	  end if;
-					   
-	  -- If not in the correct column, return
-
-	  if (not (column = table.strength or column = table.pattern)) then
-	    return;
-	  end if;
-
-          -- Check some attributes of the Assay
- 
-          if (top->AssayTypeMenu.menuHistory.labelString = "RNA In Situ") then
-            isInSitu := true;
-          end if;
- 
-          if (top->ProbePrepForm->SenseMenu.menuHistory.labelString = "Sense") then
-            isSense := true;
-          end if;
- 
           if (top->InSituResultDialog->CVInSituResult->StrengthMenu.menuHistory.labelString = "Absent") then
-            isAbsent := true;
-          end if;
- 
-	  -- Only default if Assay is RNA InSitu and Probe Prep Hybridization is Sense
-
-	  if (isInSitu and isSense and value.length = 0) then
-	    (void) mgi_tblSetCell(table, row, table.strengthKey, "-2");
-	    (void) mgi_tblSetCell(table, row, table.strength, "Not Applicable");
-	    (void) mgi_tblSetCell(table, row, table.patternKey, "-2");
+	    (void) mgi_tblSetCell(table, row, table.patternKey, NOTAPPLICABLE);
 	    (void) mgi_tblSetCell(table, row, table.pattern, "Not Applicable");
+            SetOption.source_widget := top->InSituResultDialog->CVInSituResult->PatternMenu;
+            SetOption.value := NOTAPPLICABLE;
+            send(SetOption, 0);
 	  end if;
-
-	  if (isAbsent and value.length = 0) then
-	    (void) mgi_tblSetCell(table, row, table.patternKey, "-2");
-	    (void) mgi_tblSetCell(table, row, table.pattern, "Not Applicable");
-	  end if;
-
 	end does;
 
 --
