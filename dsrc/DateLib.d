@@ -30,8 +30,12 @@ rules:
 --
 -- Will correctly process:
 --
---	> 9/9/1995
---	< 9/9/1995
+--	> 09/09/1995
+--	< 09/09/1995
+--	>= 09/09/1995
+--	<= 09/09/1995
+--	07/01/2005..07/06/2005 (between)
+--	07/01/2005 (=)
 --
 -- Note that <= and >= don't work as you would expect.
 -- If you want to query for <= "04/10/2001", then you really
@@ -75,8 +79,13 @@ rules:
 	      where := "\nand " + fieldName + " " +
 		       value->substr(1,1) + " " + 
 		       mgi_DBprstr(value->substr(2, value.length));
+	    elsif (strstr(value, "..") != nil) then
+	      where := "\nand (" + 
+		fieldName + " between substring(" + mgi_DBprstr(value) + ",1,charindex('..'," + mgi_DBprstr(value) + ") - 1) " +
+		" and dateadd(day, 1, substring(" + mgi_DBprstr(value) + ",charindex('..'," + mgi_DBprstr(value) + ") + 2, char_length(" + mgi_DBprstr(value) + "))))";
+
 	    else
-	      where := "\nand " + "convert(char(10), " + fieldName + " , 101) = " + mgi_DBprstr(value);
+	      where := "\nand (" + fieldName + " between " + mgi_DBprstr(value) + " and dateadd(day,1," + mgi_DBprstr(value) + "))";
 	    end if;
 	  end if;
 

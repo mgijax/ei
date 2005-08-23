@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May 19 11:28:47 2005";
+      lastWritten = "Mon Aug 22 15:23:16 2005";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -64,6 +64,7 @@ Module: mgiCV
                         tableOptionKey = 5;
                         tableForm = Results;
                         sql = "select * from GXD_Strength where _Strength_key > -1 order by strength";
+                        childTemplate = StrengthPatternToggle;
                     }
               }
               {
@@ -75,6 +76,7 @@ Module: mgiCV
                         tableForm = Results;
                         tableOption = 10;
                         tableOptionKey = 6;
+                        childTemplate = StrengthPatternToggle;
                     }
               }
               {

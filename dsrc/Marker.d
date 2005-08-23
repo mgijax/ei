@@ -14,7 +14,11 @@
 --
 -- History
 --
--- lec	03/2005
+-- 07/19/2005	lec
+--	MGI 3.3
+--	PythonMarkerOMIMCache
+--
+-- 03/2005	lec
 --	TR 4289, MPR
 --
 -- 06/27/2003
@@ -735,6 +739,13 @@ rules:
 	    return;
 	  end if;
 
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	  send(PythonMarkerOMIMCache, 0);
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
+	  send(PythonMarkerOMIMCache, 0);
+
 	  -- Query for records
 
 	  from := " from " + mgi_DBtable(MRK_MARKER) + " m";
@@ -948,10 +959,17 @@ rules:
 	  -- Split up the modification because the SP may contain 'select into'
 	  -- statements and these cannot be wrapped up within a transaction
 
+	  top->WorkingDialog.messageString := "Modifying Marker....";
+	  top->WorkingDialog.managed := true;
+	  XmUpdateDisplay(top->WorkingDialog);
+
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
+
+	  top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+	  XmUpdateDisplay(top->WorkingDialog);
 
 	  if (cmd.length > 0) then
 	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
@@ -964,6 +982,13 @@ rules:
 	    ModifySQL.transaction := false;
 	    send(ModifySQL, 0);
           end if;
+
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	  send(PythonMarkerOMIMCache, 0);
+
+	  top->WorkingDialog.managed := false;
+	  XmUpdateDisplay(top->WorkingDialog);
 
 	  (void) reset_cursor(top);
 	end does;
@@ -1522,9 +1547,11 @@ rules:
 		 "from MRK_History_View " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum, _History_key\n" +
-	         "select sequenceNum, _Refs_key, jnum, short_citation from MRK_History_Ref_View " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum, _History_key\n" +
+	         "select h.sequenceNum, h._Refs_key, b.jnum, b.short_citation " +
+		 "from MRK_History h, BIB_View b " +
+		 "where h._Marker_key = " + currentRecordKey +
+		 "and h._Refs_key = b._Refs_key " + 
+		 " order by h.sequenceNum, h._History_key\n" +
 	         "select _Current_key, current_symbol from MRK_Current_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
 	         "select _Alias_key, alias from MRK_Alias_View " +

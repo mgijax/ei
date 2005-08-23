@@ -83,7 +83,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-2-2-7";
+	  global_version := "CVS ei-3-3-0-1";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -270,7 +270,19 @@ rules:
 	   permOK := (integer) mgi_sql1(cmd);
 
 	   if (permOK = 0) then
-	      top->Control->Add.sensitive := false;
+
+	      if (top->Control->Add != nil) then
+	        top->Control->Add.sensitive := false;
+	      end if;
+
+	      if (top->Control->AddGXD != nil) then
+	        top->Control->AddGXD.sensitive := false;
+	      end if;
+
+	      if (top->Control->AddPhenotype != nil) then
+	        top->Control->AddPhenotype.sensitive := false;
+	      end if;
+
 	      top->Control->Modify.sensitive := false;
 	      top->Control->Delete.sensitive := false;
 	      top->CommandsPulldown->Add.sensitive := false;

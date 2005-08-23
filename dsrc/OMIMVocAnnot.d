@@ -273,6 +273,7 @@ rules:
 	  -- If the current row's Term is not equal to the previous row's Term,
 	  -- then we have a new _Annot_key.
 
+	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
 	  (void) mgi_tblSort(annotTable, annotTable.term);
 
 	  editTerm := top->Annotation->EditTerm.set;
@@ -418,6 +419,10 @@ rules:
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
+
+	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYGENOTYPE;
+	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	  send(PythonMarkerOMIMCache, 0);
 
 	  (void) reset_cursor(top);
 	end does;

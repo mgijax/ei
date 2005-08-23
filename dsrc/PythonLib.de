@@ -1,0 +1,13 @@
+--
+-- Name: PythonLib.de
+--
+-- 07/19/2005	lec
+--	- events for executing Python from with the EI
+--
+--
+
+PythonMarkerOMIMCache [omimevent : string;
+		       objectKey : string;];
+
+PythonForkEnd [];
+

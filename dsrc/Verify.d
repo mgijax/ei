@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	08/10/2005
+--	TR 3557, Images, OMIM
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -1094,7 +1097,7 @@ rules:
 	  -- If "No" is not selected
 	  if (mgi_tblGetCell(table, row, table.controlKey) != "1") then
 	    -- Genotype
-	    (void) mgi_tblSetCell(table, row, table.genotypeKey, "-2");
+	    (void) mgi_tblSetCell(table, row, table.genotypeKey, NOTAPPLICABLE);
 	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166309");
 
 	    -- Age
@@ -1226,35 +1229,39 @@ rules:
 	    return;
 	  end if;
 
-	  -- a kludge...this really needs to be specific to GXD Assays
-	  -- where we want to default the Gentoype
+	  genotypeID := mgi_tblGetCell(table, row, table.genotype);
 
-	  if (mgi_tblGetCell(table, row, table.genotype) = "") then
+	  if (genotypeID.length = 0) then
+
+	    -- a kludge...this really needs to be specific to GXD Assays
+	    -- where we want to default the Gentoype
+
 	    if (table.is_defined("genotypeName") = nil) then
 	      (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
 	      (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
 	    end if;
 	    return;
+
+	  end if;
+
+	  if (strstr(genotypeID, "MGI:") = nil) then
+	      genotypeID := "MGI:" + genotypeID;
 	  end if;
 
 	  (void) busy_cursor(top);
 
 	  dbproc : opaque := mgi_dbopen();
 
-	  cmd : string := "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
-		"where mgiID = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.genotype)) + "\n";
-
---	        "select mgiID, _Object_key, description from GXD_Genotype_Summary_View " +
---		"where mgiID = " + mgi_DBprstr("MGI:" + mgi_tblGetCell(table, row, table.genotype)) + "\n";
+	  cmd : string := "select _Object_key, description from GXD_Genotype_Summary_View " +
+		"where mgiID = " + mgi_DBprstr(genotypeID) + "\n";
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (mgi_getstr(dbproc, 1) != "") then
-	        genotypeID := mgi_getstr(dbproc, 1);
-	        genotypeKey := mgi_getstr(dbproc, 2);
-	        genotypeName := mgi_getstr(dbproc, 3);
+	        genotypeKey := mgi_getstr(dbproc, 1);
+	        genotypeName := mgi_getstr(dbproc, 2);
 	      end if;
 	    end while;
 	  end while;
@@ -1269,6 +1276,91 @@ rules:
 	  else
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Invalid Genotype.";
+	    send(StatusReport, 0);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyImagePane
+--
+-- Activated from ValidateCellCallback of Table
+--	UDAs required:  genotypeKey, genotype
+--
+
+	VerifyImagePane does
+	  top : widget := VerifyImagePane.source_widget.top;
+	  table : widget := VerifyImagePane.source_widget;
+	  row : integer := VerifyImagePane.row;
+	  column : integer := VerifyImagePane.column;
+	  reason : integer := VerifyImagePane.reason;
+	  mgiID : string := "";
+	  pixID : string := "";
+	  paneKey : string := "";
+	  figureLabel : string := "";
+	  cmd : string := "";
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
+	    return;
+	  end if;
+					   
+	  -- If not in the mgiID column, return
+
+	  if (column != table.mgiID) then
+	    return;
+	  end if;
+
+	  mgiID := mgi_tblGetCell(table, row, table.mgiID);
+
+	  if (mgiID.length = 0) then
+	    return;
+          end if;
+
+	  if (strstr(mgiID, "MGI:") = nil) then
+	      mgiID := "MGI:" + mgiID;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  dbproc : opaque := mgi_dbopen();
+
+	  cmd := "select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID" +
+                 " from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2" +
+                 " where p._Image_key = i._Image_key" +
+                 " and p._Image_key = a1._Object_key" +
+                 " and a1._MGIType_key = 9" +
+		 " and a1.accID = " + mgi_DBprstr(mgiID) +
+                 " and p._Image_key = a2._Object_key" +
+                 " and a2._MGIType_key = 9" +
+                 " and a2._LogicalDB_key = 19";
+
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      if (mgi_getstr(dbproc, 1) != "") then
+		paneKey := mgi_getstr(dbproc, 1);
+		figureLabel := mgi_getstr(dbproc, 2);
+		mgiID := mgi_getstr(dbproc, 3);
+		pixID := mgi_getstr(dbproc, 4);
+	      end if;
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  if (paneKey.length > 0) then
+	    (void) mgi_tblSetCell(table, row, table.paneKey, paneKey);
+	    (void) mgi_tblSetCell(table, row, table.mgiID, mgiID);
+	    (void) mgi_tblSetCell(table, row, table.pixID, pixID);
+	    (void) mgi_tblSetCell(table, row, table.figureLabel, figureLabel);
+	  else
+	    (void) mgi_tblSetCell(table, row, table.paneKey, "");
+	    (void) mgi_tblSetCell(table, row, table.mgiID, "");
+	    (void) mgi_tblSetCell(table, row, table.pixID, "");
+	    (void) mgi_tblSetCell(table, row, table.figureLabel, "");
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Invalid Image Pane.";
 	    send(StatusReport, 0);
 	  end if;
 
@@ -3045,53 +3137,33 @@ rules:
 --
 -- VerifyStrengthPattern
 --
--- Activated from ValidateCellCallback of Table
+-- Activated from: StrengthMenu->StrengthPulldown->StrengthPatternToggle:valueChangedCallback
+-- Activated from: PatternMenu->PatternPulldown->StrengthPatternToggle:valueChangedCallback
 --	UDAs required:  strengthKey, strength, patternKey, pattern
 --
--- Default Strength and Patter to "Not Applicable" (-2) if Assay is
--- RNA In Situ and Probe Prep Hybridization is Sense
+-- Default Pattern to "Not Applicable" (-2) if Strength = "Absent" (TR 6948)
+--
 --
 
 	VerifyStrengthPattern does
-	  table : widget := VerifyStrengthPattern.source_widget;
-	  row : integer := VerifyStrengthPattern.row;
-	  column : integer := VerifyStrengthPattern.column;
-	  reason : integer := VerifyStrengthPattern.reason;
-	  value : string := VerifyStrengthPattern.value;
-	  top : widget := table.top.root;
+	  sourceWidget : widget := VerifyStrengthPattern.source_widget;
+          top : widget := sourceWidget.root;
+	  pulldown : widget := sourceWidget.parent;
+	  tableForm : widget;
+	  table : widget;
+	  row : integer;
 
-	  isInSitu : boolean := false;
-	  isSense : boolean := false;
+	  tableForm := top->(pulldown.tableForm);
+	  table := tableForm->Table;
+          row := mgi_tblGetCurrentRow(table);
 
-	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
-	    return;
-	  end if;
-					   
-	  -- If not in the correct column, return
-
-	  if (not (column = table.strength or column = table.pattern)) then
-	    return;
-	  end if;
-
-          -- Check some attributes of the Assay
- 
-          if (top->AssayTypeMenu.menuHistory.labelString = "RNA In Situ") then
-            isInSitu := true;
-          end if;
- 
-          if (top->ProbePrepForm->SenseMenu.menuHistory.labelString = "Sense") then
-            isSense := true;
-          end if;
- 
-	  -- Only default if Assay is RNA InSitu and Probe Prep Hybridization is Sense
-
-	  if (isInSitu and isSense and value.length = 0) then
-	    (void) mgi_tblSetCell(table, row, table.strengthKey, "-2");
-	    (void) mgi_tblSetCell(table, row, table.strength, "Not Applicable");
-	    (void) mgi_tblSetCell(table, row, table.patternKey, "-2");
+          if (top->InSituResultDialog->CVInSituResult->StrengthMenu.menuHistory.labelString = "Absent") then
+	    (void) mgi_tblSetCell(table, row, table.patternKey, NOTAPPLICABLE);
 	    (void) mgi_tblSetCell(table, row, table.pattern, "Not Applicable");
+            SetOption.source_widget := top->InSituResultDialog->CVInSituResult->PatternMenu;
+            SetOption.value := NOTAPPLICABLE;
+            send(SetOption, 0);
 	  end if;
-
 	end does;
 
 --

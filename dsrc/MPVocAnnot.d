@@ -321,6 +321,7 @@ rules:
  
 	  (void) busy_cursor(top);
 
+	  -- First, sort the table by the Term so that all like Terms
           if (not top.allowEdit) then
 	    (void) reset_cursor(top);
             return;
@@ -334,13 +335,13 @@ rules:
 	    return;
 	  end if;
 
-	  -- First, sort the table by the Term so that all like Terms are grouped together.  
+	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current row's Term is not equal to the previous row's Term,
 	  -- then we have a new _Annot_key.
 
 	  (void) mgi_tblSort(annotTable, annotTable.annotKey);
-	  (void) mgi_tblSort(annotTable, annotTable.termKey);
+	  (void) mgi_tblSort(annotTable, annotTable.term);
 
 	  editTerm := top->Annotation->EditTerm.set;
 

@@ -210,7 +210,7 @@ rules:
 	  synTypeKey : string;
 	  synName : string;
 	  refsKey : string;
-	  mgiType : string;
+	  mgiTypeKey : string;
 	  set : string := "";
 	  keyName : string := "synKey";
 	  keyDefined : boolean := false;
@@ -234,7 +234,7 @@ rules:
 
 	    synName := mgi_tblGetCell(table, row, table.synName);
 	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
-	    mgiType := table.mgiTypeKey;
+	    mgiTypeKey := table.mgiTypeKey;
  
 	    if (refsKey.length = 0) then
 	      refsKey := "NULL";
@@ -251,7 +251,7 @@ rules:
 
 	      cmd := cmd + mgi_DBinsert(syntableID, keyName) +
 		     objectKey + "," +
-		     mgiType + "," +
+		     mgiTypeKey + "," +
 		     synTypeKey + "," +
 		     refsKey + "," +
 		     mgi_DBprstr(synName) + "," +

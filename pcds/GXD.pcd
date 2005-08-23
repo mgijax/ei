@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jul  1 10:30:42 2005";
+      lastWritten = "Fri Aug 12 11:21:32 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1053,493 +1053,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          ImageModule = Module : MGI;
-          Group: Control
-            vip_x = 75;
-            vip_y = 360;
-          Group: User
-            homeWidget = "Jnum\nmgiAccessionTable";
-            activateButtonName = Image;
-              {
-                MainForm = XmForm;
-                    {
-                      MainMenu = MainMenu;
-                          {
-                            File = File;
-                          }
-                          {
-                            Commands = Commands;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown;
-                                      {
-                                        Search = MenuPush;
-                                      }
-                                      {
-                                        Modify = MenuPush;
-                                      }
-                                      {
-                                        Add = MenuPush;
-                                      }
-                                      {
-                                        Delete = MenuPush;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush;
-                                        Group: Widget
-                                          activateCallback = "D:Clear(clearLists = 3)";
-                                      }
-                                }
-                          }
-                    }
-                    {
-                      Edit = XmFrame;
-                          {
-                            EditForm = EditForm : MGI;
-                            Group: Widget
-                              rubberPositioning = False;
-                              resizePolicy = resize_any;
-                                {
-                                  ID = ID;
-                                }
-                                {
-                                  mgiCitation = mgiCitation : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_form;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  FigureLabel = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = mgiCitation;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Figure Label";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          columns = 85;
-                                        Group: User
-                                          required = True;
-                                      }
-                                }
-                                {
-                                  ImageNote = Notes : mgiDataTypes;
-                                  Group: Widget
-                                    xrtGearOrientation = vertical;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = FigureLabel;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = FigureLabel;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Image Notes";
-                                      }
-                                      {
-                                        text = scrolledText;
-                                        Group: Widget
-                                          columns = 100;
-                                          rows = 10;
-                                      }
-                                }
-                                {
-                                  CopyrightNote = SingleNote : mgiDataTypes;
-                                  Group: Widget
-                                    xrtGearOrientation = vertical;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = ImageNote;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = ImageNote;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Copyright Notes";
-                                      }
-                                      {
-                                        text = scrolledText : mgiDataTypes;
-                                        Group: Widget
-                                          rows = 3;
-                                          columns = 100;
-                                          scrollHorizontal = False;
-                                          scrollVertical = False;
-                                          maxLength = 255;
-                                      }
-                                }
-                                {
-                                  ImagePane = TableLabel : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = CopyrightNote;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
-                                    leftOffset = 100;
-                                    bottomOffset = 5;
-                                    leftWidget = xDim;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1) (all 2 25)";
-                                          xrtTblMaxLengthSeries = "(all 3 255)";
-                                          xrtTblColumnLabels = "Mode,IP Key,Label";
-                                          userDefinedAttributes = "imagePaneKey:Int(Int)=\"1\"\npaneLabel:Int(Int)=\"2\"\n";
-                                          xrtTblAlignmentSeries = "(all all alignment_middlebegin)";
-                                          xrtTblEditableSeries = "(all 0 False)";
-                                          xrtTblNumColumns = 3;
-                                            {
-                                              label = XtXrtLabel;
-                                              Group: Widget
-                                                labelString = "Image Panes";
-                                            }
-                                      }
-                                }
-                                {
-                                  DevelopmentNote = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = Development;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = CopyrightNote;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = CopyrightNote;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    noteWidget = CopyrightNote;
-                                    note = "This image is from * and is displayed with the permission of The Company of Biologists Limited who owns the Copyright.";
-                                }
-                                {
-                                  NatureNote = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = Nature;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = DevelopmentNote;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = DevelopmentNote;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    note = "This image is from * and is displayed with the permission of <A HREF=\"http://www.nature.com/\">The Nature Publishing Group</A> who owns the Copyright.";
-                                    noteWidget = CopyrightNote;
-                                }
-                                {
-                                  DevDynamics = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Dev Dyn";
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = NatureNote;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = NatureNote;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    note = "This image is from * and is displayed with the permission of Wiley-Liss, Inc. who owns the Copyright.";
-                                    noteWidget = CopyrightNote;
-                                }
-                                {
-                                  PLOS = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = PLoS;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = DevelopmentNote;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = DevelopmentNote;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 2;
-                                  Group: User
-                                    note = "This image is from * , an open-access article distributed under the terms of the Creative Commons Attribution License.";
-                                    noteWidget = CopyrightNote;
-                                }
-                                {
-                                  BMC = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = BMC;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = PLOS;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = PLOS;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    note = "This image is from *, an open-access article, licensee BioMed Central Ltd.";
-                                    noteWidget = CopyrightNote;
-                                }
-                                {
-                                  Elsevier = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = Elsevier;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = BMC;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = BMC;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                  Group: User
-                                    note = "Reprinted with permission from Elsevier from \\DXDOI(||) \\Elsevier(||)";
-                                    noteWidget = CopyrightNote;
-                                }
-                                {
-                                  xDim = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = PLOS;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "X Dimension";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          editable = False;
-                                      }
-                                }
-                                {
-                                  yDim = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = xDim;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = xDim;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Y Dimension";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          editable = False;
-                                      }
-                                }
-                          }
-                    }
-                    {
-                      Control = Control;
-                          {
-                            ControlForm = XmForm;
-                                {
-                                  Search = ControlPush;
-                                }
-                                {
-                                  Clear = ControlPush;
-                                  Group: Widget
-                                    activateCallback = "D:Clear(clearLists = 3)";
-                                }
-                          }
-                    }
-                    {
-                      Lookup = Lookup;
-                          {
-                            panedWindow = XmPanedWindow;
-                                {
-                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
-                                      {
-                                        Table = mgiTable;
-                                      }
-                                      {
-                                        Add = TablePush;
-                                      }
-                                      {
-                                        Delete = TablePush;
-                                      }
-                                      {
-                                        AccSourceMenu = AccSourceMenu;
-                                        Group: User
-                                          defaultOption = MGIImage;
-                                            Popups:
-                                            {
-                                              AccSourcePulldown = OptionPulldown;
-                                                  {
-                                                    MGI = AccToggle;
-                                                  }
-                                                  {
-                                                    J = AccToggle;
-                                                  }
-                                                  {
-                                                    PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SWISSPROT = AccToggle;
-                                                  }
-                                                  {
-                                                    TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PDB = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle;
-                                                  }
-                                                  {
-                                                    MGC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EnsemblGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UniGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EC = AccToggle;
-                                                  }
-                                                  {
-                                                    ATCC = AccToggle;
-                                                  }
-                                                  {
-                                                    MRK = AccToggle;
-                                                  }
-                                                  {
-                                                    MGIImage = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
-                    Popups:
-                    {
-                      StatusDialog = StatusDialog : mgiDialog;
-                    }
-                    {
-                      DeleteDialog = DeleteDialog : mgiDialog;
-                    }
-                    {
-                      ReportDialog = ReportDialog : mgiDialog;
-                          {
-                            FileSelection = FileSelection;
-                          }
-                          {
-                            Lookup = XmFrame;
-                                {
-                                  panedWindow = XmPanedWindow;
-                                      {
-                                        ReportList = LookupList : mgiLookup;
-                                      }
-                                      {
-                                        PrinterList = LookupList;
-                                      }
-                                      {
-                                        PrintOrient = Choice : mgiDataTypes;
-                                            {
-                                              PrintOrientBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    Portrait = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = Portrait;
-                                                  }
-                                                  {
-                                                    Landscape = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = Landscape;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        PrintColumn = Choice : mgiDataTypes;
-                                            {
-                                              PrintColumnBox : ChoiceBox = XmRowColumn;
-                                                  {
-                                                    OneColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      set = True;
-                                                      labelString = "1 column";
-                                                  }
-                                                  {
-                                                    TwoColumn = toggle : mgiDataTypes;
-                                                    Group: Widget
-                                                      labelString = "2 column";
-                                                  }
-                                            }
-                                      }
-                                }
-                          }
-                    }
-              }
-        }
-        {
           GelForm = SubEditForm : MGI;
           Group: Widget
             managed = False;
@@ -1723,7 +1236,7 @@ Shift<Key>Tab: prev-tab-group()
             title = "GXD Index";
           Group: Control
             vip_x = 75;
-            vip_y = 415;
+            vip_y = 360;
           Group: User
             homeWidget = Marker;
             activateButtonName = IndexStage;
@@ -2221,7 +1734,7 @@ Shift<Key>Tab: prev-tab-group()
           AlleleModule = AlleleModule : MGD;
           Group: Control
             vip_x = 75;
-            vip_y = 470;
+            vip_y = 415;
               {
                 MainForm = XmForm;
                     {
@@ -3042,6 +2555,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3055,9 +2571,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    JRS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
@@ -3218,7 +2731,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 525;
+            vip_y = 470;
               {
                 PrepID : ID = ID;
               }
@@ -3346,7 +2859,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 580;
+            vip_y = 525;
               {
                 PrepID : ID = ID;
               }
@@ -3428,7 +2941,7 @@ Shift<Key>Tab: prev-tab-group()
           ProbePrepVerifyForm = ProbePrepForm;
           Group: Control
             vip_x = 75;
-            vip_y = 635;
+            vip_y = 580;
               {
                 PrepID = ID;
               }
@@ -3474,7 +2987,7 @@ Shift<Key>Tab: prev-tab-group()
           AntibodyPrepVerifyForm = AntibodyPrepForm;
           Group: Control
             vip_x = 75;
-            vip_y = 690;
+            vip_y = 635;
               {
                 PrepID = ID;
               }
@@ -3514,7 +3027,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 745;
+            vip_y = 690;
               {
                 ID = ID : mgiDataTypes;
               }

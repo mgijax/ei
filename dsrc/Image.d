@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	07/2005
+--	- TR 3557/MLC images
+--
 -- lec  06/17/2004
 --	- TR 5810; remove Field Type
 --
@@ -59,7 +62,8 @@ devents:
 
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
-	Add :local [];
+	Add :local [createThumbnail: boolean := false;];
+	BuildDynamicComponents :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -81,6 +85,12 @@ locals:
 	from : string;
 	where : string;
 
+	defaultImageTypeKey : string;
+	defaultThumbNailKey : string;
+	panekeyName : string := "paneKey";
+	panekeyDeclared : boolean := false;
+	xydim : string := "NULL,NULL,";
+
 	currentRecordKey : string;      -- Primary Key value of currently selected record
 					-- Set in Add[] and Select[]
 
@@ -99,11 +109,18 @@ rules:
 
 	  top := create widget("ImageModule", nil, mgi);
 
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
+
 	  send(Init, 0);
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
+
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  SetRowCount.source_widget := top;
 	  SetRowCount.tableID := IMG_IMAGE;
@@ -114,6 +131,31 @@ rules:
 	  send(Clear, 0);
  
 	  (void) reset_cursor(mgi);
+	end does;
+
+--
+-- BuildDynamicComponents
+--
+-- Activated from:  devent Image
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+	  -- Dynamically create Menus
+
+	  InitOptionMenu.option := top->ImageTypeMenu;
+	  send(InitOptionMenu, 0);
+
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_IMAGE_VIEW;
+	  send(InitNoteForm, 0);
+
 	end does;
 
 --
@@ -128,6 +170,14 @@ rules:
 	  tables.append(top->ImagePane->Table);
 
 	  accTable := top->mgiAccessionTable->Table;
+
+	  if (global_application = "MGD") then
+	      top->ControlForm->AddGXD.sensitive := false;
+	      top->ControlForm->AddPhenotype.sensitive := true;
+	  else
+	      top->ControlForm->AddGXD.sensitive := true;
+	      top->ControlForm->AddPhenotype.sensitive := false;
+	  end if;
 	end does;
 
 --
@@ -137,6 +187,8 @@ rules:
 --
 
         Add does
+	  createThumbnail: boolean := Add.createThumbnail;
+	  refsKey : string;
 
           if (not top.allowEdit) then
             return;
@@ -145,24 +197,73 @@ rules:
           (void) busy_cursor(top);
 
 	  currentRecordKey := "@" + KEYNAME;
+	  panekeyDeclared := false;
+	  refsKey := top->mgiCitation->ObjectID->text.value;
 
-	  -- X Dim and Y Dim are not editable by the user thru this form
+          cmd := mgi_setDBkey(IMG_IMAGE, NEWKEY, KEYNAME);
 
-          cmd := mgi_setDBkey(IMG_IMAGE, NEWKEY, KEYNAME) + 
-		 mgi_DBinsert(IMG_IMAGE, KEYNAME) +
-		 top->mgiCitation->ObjectID->text.value + ",NULL,NULL," +
+	  if (createThumbnail) then
+
+	    -- Create the Thumbnail record first
+
+	    defaultThumbNailKey := "NULL";
+	    defaultImageTypeKey := mgi_sql1("select _Term_key from VOC_Term_IMGType_View where term = 'Thumbnail'");
+
+            cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
+		   defaultImageTypeKey + "," +
+		   refsKey + "," +
+		   defaultThumbNailKey + "," +
+		   xydim +
+	           mgi_DBprstr(top->FigureLabel->text.value) + "," +
+		   global_loginKey + "," +
+		   global_loginKey + ")\n";
+
+	    send(ModifyImagePane, 0);
+
+            cmd := cmd + mgi_DBincKey(KEYNAME);
+
+	    -- The Full Size record will be created next...and needs to reference the Thumbnail record
+
+	    defaultThumbNailKey := currentRecordKey + " - 1";
+
+	  else
+	    defaultThumbNailKey := "NULL";
+	  end if;
+
+	  -- Create the Full Size record
+
+	  defaultImageTypeKey := mgi_sql1("select _Term_key from VOC_Term_IMGType_View where term = 'Full Size'");
+
+          cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
+		 defaultImageTypeKey + "," +
+		 refsKey + "," +
+		 defaultThumbNailKey + "," +
+		 xydim +
 	         mgi_DBprstr(top->FigureLabel->text.value) + "," +
-	         mgi_DBprstr(top->CopyrightNote->text.value) + ")\n";
+		 global_loginKey + "," +
+		 global_loginKey + ")\n";
+
+	  send(ModifyImagePane, 0);
 
 	  -- Notes
 
-          ModifyNotes.source_widget := top->ImageNote;
-          ModifyNotes.tableID := IMG_IMAGENOTE;
+          ModifyNotes.source_widget := top->Caption;
+          ModifyNotes.tableID := MGI_NOTE;
           ModifyNotes.key := currentRecordKey;
           send(ModifyNotes, 0);
-          cmd := cmd + top->ImageNote.sql;
+          cmd := cmd + top->Caption.sql;
  
-	  send(ModifyImagePane, 0);
+          ModifyNotes.source_widget := top->Copyright;
+          ModifyNotes.tableID := MGI_NOTE;
+          ModifyNotes.key := currentRecordKey;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->Copyright.sql;
+ 
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  -- Process any Accession numbers
 
@@ -193,8 +294,21 @@ rules:
 	    Clear.clearLists := 3;
             send(Clear, 0);
           end if;
+
+	  -- If a Thumbnail was also created, then select 
+	  if (createThumbnail) then
+	    from := "from IMG_Image_View i";
+	    where := "where _Refs_key = " + refsKey;
+            QueryNoInterrupt.source_widget := top;
+	    QueryNoInterrupt.select := "select distinct i._Image_key, " + 
+			"i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
+			from + "\n" + where + "\norder by i.jnum\n";
+	    QueryNoInterrupt.table := IMG_IMAGE;
+            send(QueryNoInterrupt, 0);
+	  end if;
  
           (void) reset_cursor(top);
+
 	end does;
 
 --
@@ -247,21 +361,32 @@ rules:
             set := set + "figureLabel = " + mgi_DBprstr(top->FigureLabel->text.value) + ",";
           end if;
  
-          if (top->CopyrightNote->text.modified) then
-            set := set + "copyrightNote = " + mgi_DBprstr(top->CopyrightNote->text.value) + ",";
-          end if;
- 
-	  -- Notes
-
-          ModifyNotes.source_widget := top->ImageNote;
-          ModifyNotes.tableID := IMG_IMAGENOTE;
-          ModifyNotes.key := currentRecordKey;
-          send(ModifyNotes, 0);
-          cmd := cmd + top->ImageNote.sql;
- 
+	  panekeyDeclared := false;
 	  send(ModifyImagePane, 0);
 
 	  cmd := cmd + mgi_DBupdate(IMG_IMAGE, currentRecordKey, set);
+
+	  -- Notes
+
+          ModifyNotes.source_widget := top->Caption;
+          ModifyNotes.tableID := MGI_NOTE;
+          ModifyNotes.key := currentRecordKey;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->Caption.sql;
+ 
+          ModifyNotes.source_widget := top->Copyright;
+          ModifyNotes.tableID := MGI_NOTE;
+          ModifyNotes.key := currentRecordKey;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->Copyright.sql;
+ 
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
+
+	  -- Accession IDs
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
@@ -289,8 +414,6 @@ rules:
           editMode : string;
           key : string;
           paneLabel : string;
-	  keyName : string := "paneKey";
-	  keyDeclared : boolean := false;
 	  update : string := "";
  
           -- Process while non-empty rows are found
@@ -309,15 +432,15 @@ rules:
  
             if (editMode = TBL_ROW_EMPTY or editMode = TBL_ROW_ADD) then
 
-              if (not keyDeclared) then
-                cmd := cmd + mgi_setDBkey(IMG_IMAGEPANE, NEWKEY, keyName);
-                keyDeclared := true;
+              if (not panekeyDeclared) then
+                cmd := cmd + mgi_setDBkey(IMG_IMAGEPANE, NEWKEY, panekeyName);
+                panekeyDeclared := true;
               else
-                cmd := cmd + mgi_DBincKey(keyName);
+                cmd := cmd + mgi_DBincKey(panekeyName);
               end if;
  
               cmd := cmd + 
-		     mgi_DBinsert(IMG_IMAGEPANE, keyName) +
+		     mgi_DBinsert(IMG_IMAGEPANE, panekeyName) +
                      currentRecordKey + "," + 
 		     mgi_DBprstr2(paneLabel) + ")\n";
 
@@ -359,6 +482,18 @@ rules:
           from := from + accTable.sqlFrom;
           where := where + accTable.sqlWhere;
  
+	  i : integer := 1;
+	  while (i <= top->mgiNoteForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_IMAGE_VIEW;
+            SearchNoteForm.join := "i." + mgi_DBkey(IMG_IMAGE);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+	    i := i + 1;
+	  end while;
+
           QueryDate.source_widget := top->CreationDate;
           QueryDate.tag := "i";
           send(QueryDate, 0);
@@ -377,18 +512,18 @@ rules:
           end if;
  
           if (top->FigureLabel->text.value.length > 0) then
-	    where := where + "\nand i.figureLabel like " + 
-		mgi_DBprstr(top->FigureLabel->text.value);
+	    where := where + "\nand i.figureLabel like " + mgi_DBprstr(top->FigureLabel->text.value);
 	  end if;
 
-          if (top->CopyrightNote->text.value.length > 0) then
-	    where := where + "\nand i.copyrightNote like " + 
-		mgi_DBprstr(top->CopyrightNote->text.value);
+	  if (top->ImageTypeMenu.menuHistory.searchValue != "%") then
+	    where := where + "\nand i._ImageType_key = " + top->ImageTypeMenu.menuHistory.searchValue;
 	  end if;
 
-          if (top->ImageNote->text.value.length > 0) then
-	    where := where + "\nand n.imageNote like " + 
-		mgi_DBprstr(top->ImageNote->text.value);
+          if (top->Caption->text.value.length > 0) then
+	    where := where + "\nand n.note like " + mgi_DBprstr(top->Caption->text.value);
+	    from_note := true;
+          elsif (top->Copyright->text.value.length > 0) then
+	    where := where + "\nand n.note like " + mgi_DBprstr(top->Copyright->text.value);
 	    from_note := true;
 	  end if;
 
@@ -398,14 +533,14 @@ rules:
 	    from_pane := true;
 	  end if;
 
-	  if (from_note) then
-	    from := from + "," + mgi_DBtable(IMG_IMAGENOTE) + " n";
-	    where := where + " and n." + mgi_DBkey(IMG_IMAGE) + " = i." + mgi_DBkey(IMG_IMAGE);
-	  end if;
-
 	  if (from_pane) then
 	    from := from + "," + mgi_DBtable(IMG_IMAGEPANE) + " p";
 	    where := where + " and p." + mgi_DBkey(IMG_IMAGE) + " = i." + mgi_DBkey(IMG_IMAGE);
+	  end if;
+
+	  if (from_note) then
+	    from := from + "," + mgi_DBtable(MGI_NOTE_IMAGE_VIEW) + " n";
+	    where := where + " and n._Object_key = i." + mgi_DBkey(IMG_IMAGE);
 	  end if;
 
           if (where.length > 0) then
@@ -423,8 +558,9 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct i._Image_key, i.jnumID + \";\" + i.figureLabel\n" + from + "\n" + 
-			where + "\norder by i.jnum\n";
+	  Query.select := "select distinct i._Image_key, " + 
+			"i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
+			from + "\n" + where + "\norder by i.jnum\n";
 	  Query.table := IMG_IMAGE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
@@ -452,7 +588,10 @@ rules:
           end while;
           tables.close;
  
-	  top->ImageNote->text.value := "";
+	  top->Caption->text.value := "";
+	  top->Copyright->text.value := "";
+	  top->ThumbnailImage->ObjectID->text.value := "";
+	  top->ThumbnailImage->AccessionID->text.value := "";
 
           if (top->QueryList->List.selectedItemCount = 0) then
             top->QueryList->List.row := 0;
@@ -466,13 +605,21 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from IMG_Image_View where _Image_key = " + currentRecordKey + "\n" +
-		 "select imageNote from IMG_ImageNote where _Image_key = " + currentRecordKey + "\n" +
-		 "order by sequenceNum\n" +
-	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n";
+		 "select nc.note from MGI_Note_Image_View n, MGI_NoteChunk nc \n" + 
+		 "where n.noteType = 'Caption' and n._Object_key = " + currentRecordKey + "\n" +
+		 "and n._Note_key = nc._Note_key order by nc.sequenceNum\n" +
+		 "select nc.note from MGI_Note_Image_View n, MGI_NoteChunk nc \n" + 
+		 "where n.noteType = 'Copyright' and n._Object_key = " + currentRecordKey + "\n" +
+		 "and n._Note_key = nc._Note_key order by nc.sequenceNum\n" +
+	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n" +
+		 "select a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i " +
+		 "where i._Image_key = " + currentRecordKey + "\n" +
+		 "and i._ThumbnailImage_key = a._Object_key\n" +
+		 "and a._LogicalDB_key = 1 and a.prefixPart = 'MGI:' and a.preferred = 1";
 
 	  results : integer := 1;
 	  row : integer;
-	  table : widget := top->ImagePane->Table;
+	  table : widget;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -482,23 +629,42 @@ rules:
 	    row := 0;
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      if (results = 1) then
+		table := top->Control->ModificationHistory->Table;
+
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->xDim->text.value           := mgi_getstr(dbproc, 3);
-	        top->yDim->text.value           := mgi_getstr(dbproc, 4);
-	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 5);
-	        top->CopyrightNote->text.value  := mgi_getstr(dbproc, 6);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 7);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 8);
-                top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
-                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 13);
-                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 14);
+	        top->xDim->text.value           := mgi_getstr(dbproc, 5);
+	        top->yDim->text.value           := mgi_getstr(dbproc, 6);
+	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 7);
+                top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 3);
+                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 17);
+                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 18);
+
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 19));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 20));
+
+                SetOption.source_widget := top->ImageTypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 2);
+                send(SetOption, 0);
+
 	      elsif (results = 2) then
-		top->ImageNote->text.value := top->ImageNote->text.value + mgi_getstr(dbproc, 1);
+		top->Caption->text.value := top->Caption->text.value + mgi_getstr(dbproc, 1);
+
 	      elsif (results = 3) then
+		top->Copyright->text.value := top->Copyright->text.value + mgi_getstr(dbproc, 1);
+
+	      elsif (results = 4) then
+	        table := top->ImagePane->Table;
 		(void) mgi_tblSetCell(table, row, table.imagePaneKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.paneLabel, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+
+	      elsif (results = 5) then
+		 top->ThumbnailImage->ObjectID->text.value := mgi_getstr(dbproc, 1);
+		 top->ThumbnailImage->AccessionID->text.value := mgi_getstr(dbproc, 2);
 	      end if;
+
 	      row := row + 1;
 	    end while;
 	    results := results + 1;
@@ -506,6 +672,13 @@ rules:
 
 	  (void) dbclose(dbproc);
  
+	  -- Load Notes
+
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_IMAGE_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
+
 	  -- Load Accession numbers
 
           LoadAcc.table := accTable;

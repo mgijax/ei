@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 08/11/2005
+ *	- TR 3557/OMIM/added IMG_IMAGEPANE_ASSOC
+ *
  * lec 07/22/2004
  * 	- TR 6042/mgi_DBprstr/get rid of trailing and leading spaces
  *
@@ -718,11 +721,13 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Homology_key");
 	    break;
     case IMG_IMAGE:
-    case IMG_IMAGENOTE:
             strcpy(buf, "_Image_key");
 	    break;
     case IMG_IMAGEPANE:
             strcpy(buf, "_ImagePane_key");
+	    break;
+    case IMG_IMAGEPANE_ASSOC:
+            strcpy(buf, "_Assoc_key");
 	    break;
     case MGI_COLUMNS:
             strcpy(buf, "column_name");
@@ -739,6 +744,7 @@ char *mgi_DBkey(int table)
 	    break;
     case MGI_NOTE_ALLELE_VIEW:
     case MGI_NOTE_GENOTYPE_VIEW:
+    case MGI_NOTE_IMAGE_VIEW:
     case MGI_NOTE_MRKGO_VIEW:
     case MGI_NOTE_NOMEN_VIEW:
     case MGI_NOTE_SEQUENCE_VIEW:
@@ -1334,8 +1340,8 @@ char *mgi_DBtable(int table)
     case IMG_IMAGEPANE:
             strcpy(buf, "IMG_ImagePane");
 	    break;
-    case IMG_IMAGENOTE:
-            strcpy(buf, "IMG_ImageNote");
+    case IMG_IMAGEPANE_ASSOC:
+            strcpy(buf, "IMG_ImagePane_Assoc");
 	    break;
     case MGI_TABLES:
             strcpy(buf, "MGI_Tables");
@@ -1358,6 +1364,9 @@ char *mgi_DBtable(int table)
     case MGI_NOTE_GENOTYPE_VIEW:
 	    strcpy(buf, "MGI_Note_Genotype_View");
 	    break;
+    case MGI_NOTE_IMAGE_VIEW:
+	    strcpy(buf, "MGI_Note_Image_View");
+	    break;
     case MGI_NOTE_MRKGO_VIEW:
 	    strcpy(buf, "MGI_Note_MRKGO_View");
 	    break;
@@ -1366,6 +1375,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_NOTETYPE_GENOTYPE_VIEW:
 	    strcpy(buf, "MGI_NoteType_Genotype_View");
+	    break;
+    case MGI_NOTETYPE_IMAGE_VIEW:
+	    strcpy(buf, "MGI_NoteType_Image_View");
 	    break;
     case MGI_NOTETYPE_MRKGO_VIEW:
 	    strcpy(buf, "MGI_NoteType_MRKGO_View");
@@ -1902,7 +1914,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case HMD_HOMOLOGY_ASSAY:
     case HMD_NOTES:
     case IMG_IMAGEPANE:
-    case IMG_IMAGENOTE:
+    case IMG_IMAGEPANE_ASSOC:
     case MGI_TABLES:
     case MGI_COLUMNS:
     case MGI_NOTE:
@@ -2120,15 +2132,15 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case IMG_IMAGE:
-            sprintf(buf, "insert %s (%s, _Refs_key, xDim, yDim, figureLabel, copyrightNote)", 
+            sprintf(buf, "insert %s (%s, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE:
             sprintf(buf, "insert %s (%s, _Image_key, paneLabel)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case IMG_IMAGENOTE:
-            sprintf(buf, "insert %s (%s, sequenceNum, imageNote)", 
+    case IMG_IMAGEPANE_ASSOC:
+            sprintf(buf, "insert %s (%s, _ImagePane_key, _MGIType_key, _Object_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_COLUMNS:
@@ -2478,6 +2490,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case IMG_IMAGE:
+      case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:
@@ -2532,6 +2546,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case GXD_GENOTYPE:
       case GXD_INDEX:
       case GXD_INDEXSTAGES:
+      case IMG_IMAGE:
+      case IMG_IMAGEPANE_ASSOC:
       case MGI_NOTE:
       case MGI_NOTECHUNK:
       case MGI_NOTETYPE:

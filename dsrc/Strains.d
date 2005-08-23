@@ -84,6 +84,7 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
+	BuildDynamicComponents :local [];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -148,13 +149,8 @@ rules:
 
 	  top := create widget("StrainModule", nil, mgi);
 
-	  -- Ref Type Menu
-	  InitOptionMenu.option := top->ReferenceTypeMenu;
-	  send(InitOptionMenu, 0);
-
-	  -- Strain/Genotype Qualifier Menu
-	  InitOptionMenu.option := top->StrainGenoQualMenu;
-	  send(InitOptionMenu, 0);
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
@@ -163,6 +159,47 @@ rules:
 	  send(Init, 0);
 
 	  (void) reset_cursor(mgi);
+	end does;
+
+-- BuildDynamicComponents
+--
+-- Activated from:  devent Marker
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+	  -- Dynamically create Marker Type and Chromosome Menus
+
+	  -- Initialize Allele Type table
+
+	  InitStrainAlleleTypeTable.table := top->Marker->Table;
+	  InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
+	  send(InitStrainAlleleTypeTable, 0);
+
+	  -- Initialize Synonym table
+
+	  InitSynTypeTable.table := top->Synonym->Table;
+	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
+	  send(InitSynTypeTable, 0);
+
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_STRAIN_VIEW;
+	  send(InitNoteForm, 0);
+
+	  -- Ref Type Menu
+	  InitOptionMenu.option := top->ReferenceTypeMenu;
+	  send(InitOptionMenu, 0);
+
+	  -- Strain/Genotype Qualifier Menu
+	  InitOptionMenu.option := top->StrainGenoQualMenu;
+	  send(InitOptionMenu, 0);
+
 	end does;
 
 --
@@ -190,24 +227,6 @@ rules:
 
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
-
-	  -- Initialize Allele Type table
-
-	  InitStrainAlleleTypeTable.table := top->Marker->Table;
-	  InitStrainAlleleTypeTable.tableID := VOC_TERM_STRAINALLELE_VIEW;
-	  send(InitStrainAlleleTypeTable, 0);
-
-	  -- Initialize Synonym table
-
-	  InitSynTypeTable.table := top->Synonym->Table;
-	  InitSynTypeTable.tableID := MGI_SYNONYMTYPE_STRAIN_VIEW;
-	  send(InitSynTypeTable, 0);
-
-	  -- Initialize Notes form
-
-	  InitNoteForm.notew := top->mgiNoteForm;
-	  InitNoteForm.tableID := MGI_NOTETYPE_STRAIN_VIEW;
-	  send(InitNoteForm, 0);
 
 	  superStandardKey := mgi_sql1("select _Term_key from VOC_Term where term = 'super standard'");
 	  speciesNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'Not Specified'");

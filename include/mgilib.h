@@ -151,9 +151,9 @@ extern char *global_version;
 #define GXD_STRUCTURECLOSURE    222
 #define GXD_INDEX		223
 #define GXD_INDEXSTAGES		224
-#define IMG_IMAGENOTE		225
-#define GXD_GENOTYPE_VIEW	226
-#define GXD_ALLELEPAIR_VIEW	227
+#define GXD_GENOTYPE_VIEW	225
+#define GXD_ALLELEPAIR_VIEW	226
+#define IMG_IMAGEPANE_ASSOC	227
 
 /* Allele Tables */
 
@@ -270,6 +270,8 @@ extern char *global_version;
 #define MGI_NOTETYPE_GENOTYPE_VIEW	649
 #define MGI_REFERENCE_MARKER_VIEW	650
 #define MGI_REFTYPE_MARKER_VIEW		651
+#define MGI_NOTE_IMAGE_VIEW		652
+#define MGI_NOTETYPE_IMAGE_VIEW		653
 
 
 /* Strains Tables */
@@ -332,6 +334,12 @@ extern char *global_version;
 #define EVENT_ALLELEOF		"4"
 #define EVENT_SPLIT		"5"
 #define EVENT_DELETED		"6"
+
+/* OMIM Cache Events */
+
+#define EVENT_OMIM_BYALLELE	"1"
+#define EVENT_OMIM_BYMARKER	"2"
+#define EVENT_OMIM_BYGENOTYPE	"3"
 
 /* keys of Marker Status */
 

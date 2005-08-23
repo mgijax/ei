@@ -289,7 +289,8 @@ rules:
 	  send(ProcessNoteForm, 0);
 	  cmd := top->mgiNoteForm.sql;
 
-	  -- First, sort the table by the Term so that all like Terms are grouped together.  
+	  -- First, sort the table by the Term so that all like Terms
+	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current row's Term is not equal to the previous row's Term,
 	  -- then we have a new _Annot_key.
