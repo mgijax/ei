@@ -1326,14 +1326,16 @@ rules:
 	  dbproc : opaque := mgi_dbopen();
 
 	  cmd := "select p._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID" +
-                 " from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2" +
+                 " from IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2, VOC_Term t" +
                  " where p._Image_key = i._Image_key" +
                  " and p._Image_key = a1._Object_key" +
                  " and a1._MGIType_key = 9" +
 		 " and a1.accID = " + mgi_DBprstr(mgiID) +
                  " and p._Image_key = a2._Object_key" +
                  " and a2._MGIType_key = 9" +
-                 " and a2._LogicalDB_key = 19";
+                 " and a2._LogicalDB_key = 19" +
+		 " and i._ImageType_key = t._Term_key" +
+		 " and t.term = 'Full Size'";
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -1359,6 +1361,7 @@ rules:
 	    (void) mgi_tblSetCell(table, row, table.mgiID, "");
 	    (void) mgi_tblSetCell(table, row, table.pixID, "");
 	    (void) mgi_tblSetCell(table, row, table.figureLabel, "");
+            VerifyImagePane.doit := (integer) false;
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Invalid Image Pane.";
 	    send(StatusReport, 0);

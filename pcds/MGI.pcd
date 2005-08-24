@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 14 14:09:32 2005";
+      lastWritten = "Wed Aug 24 07:52:40 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1443,7 +1443,7 @@ Module: MGI
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Note;
-                                    topOffset = 10;
+                                    topOffset = 20;
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     bottomOffset = 5;
@@ -1494,6 +1494,27 @@ Module: MGI
                                           resizable = true;
                                           topWidget = Retrieve;
                                           leftOffset = 5;
+                                      }
+                                }
+                                {
+                                  ImagePane = ImagePane : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Reference;
+                                    leftOffset = 25;
+                                    rightAttachment = attach_form;
+                                    rightOffset = 5;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Reference;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = "-25";
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 5;
+                                        Group: User
+                                          mgiTypeKey = 12;
                                       }
                                 }
                           }
