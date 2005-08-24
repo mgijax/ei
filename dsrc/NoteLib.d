@@ -636,7 +636,7 @@ rules:
 	  -- Else if the noteWidget has a valid noteType (string), use it
 
 	  if (isTable) then
-	    if (noteWidget.is_defined("mgiTypeKey") != nil) then
+	    if (noteWidget.is_defined("noteTypeKey") != nil) then
 	      noteType := (string) noteWidget.noteTypeKey;
 	    else
 	      noteType := ModifyNotes.noteType;
