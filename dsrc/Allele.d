@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 08/23/2005	lec
+--	Image Associations
+--
 -- 07/19/2005	lec
 --	MGI 3.3
 --
@@ -93,6 +96,7 @@ locals:
 	accTable : widget;
 	refTable : widget;
 	imgTable : widget;
+	mgiTypeKey : string;
 
 	cmd : string;
 	from : string;
@@ -228,6 +232,7 @@ rules:
 	  accTable := top->mgiAccessionTable->Table;
 	  refTable := top->Reference->Table;
 	  imgTable := top->ImagePane->Table;
+	  mgiTypeKey := imgTable.mgiTypeKey;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -971,17 +976,15 @@ rules:
 --
 -- Activated from: devent Modify
 --
--- Construct insert/update/delete for Molecular Mutations
+-- Construct insert/update/delete for Image Associations
 -- Appends to global "cmd" string
 --
  
 	ModifyImagePaneAssociation does
-	  table : widget := top->ImagePane->Table;
 	  row : integer := 0;
 	  editMode : string;
 	  assocKey : string;
 	  paneKey : string;
-	  mgiTypeKey : string;
 	  isPrimaryKey : string;
 	  set : string := "";
 	  keyName : string := "ipAssocKey";
@@ -989,17 +992,16 @@ rules:
  
 	  -- Process while non-empty rows are found
  
-	  while (row < mgi_tblNumRows(table)) do
-	    editMode := mgi_tblGetCell(table, row, table.editMode);
+	  while (row < mgi_tblNumRows(imgTable)) do
+	    editMode := mgi_tblGetCell(imgTable, row, imgTable.editMode);
 
 	    if (editMode = TBL_ROW_EMPTY) then
 	      break;
 	    end if;
  
-	    assocKey := mgi_tblGetCell(table, row, table.assocKey);
-	    paneKey := mgi_tblGetCell(table, row, table.paneKey);
-	    mgiTypeKey := table.mgiTypeKey;
-	    isPrimaryKey := mgi_tblGetCell(table, row, table.isPrimaryKey);
+	    assocKey := mgi_tblGetCell(imgTable, row, imgTable.assocKey);
+	    paneKey := mgi_tblGetCell(imgTable, row, imgTable.paneKey);
+	    isPrimaryKey := mgi_tblGetCell(imgTable, row, imgTable.isPrimaryKey);
 
 	    if (isPrimaryKey.length = 0) then
 	      isPrimaryKey := NO;
@@ -1291,6 +1293,7 @@ rules:
 		 "from IMG_ImagePane_Assoc ip, IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2 " +
 		 "where ip._Object_key = " + currentRecordKey +
 		 "and ip._ImagePane_key = p._ImagePane_key " +
+		 "and ip._MGIType_key = " + mgiTypeKey +
 		 "and p._Image_key = i._Image_key " +
 		 "and p._Image_key = a1._Object_key " +
 		 "and a1._MGIType_key = 9 " +
@@ -1368,19 +1371,18 @@ rules:
 			top->markerDescription->Note->text.value + mgi_getstr(dbproc, 1);
 
 	      elsif (results = 4) then
-		table := top->ImagePane->Table;
-		(void) mgi_tblSetCell(table, row, table.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.paneKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.figureLabel, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(table, row, table.pixID, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(table, row, table.isPrimaryKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		(void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 6) = YES) then
-		    (void) mgi_tblSetCell(table, row, table.isPrimary, "Yes");
+		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
 	        else
-		    (void) mgi_tblSetCell(table, row, table.isPrimary, "No");
+		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
 		end if;
 
 	      end if;

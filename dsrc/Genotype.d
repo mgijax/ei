@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 08/23/2005	lec
+--	Image Associations
+--
 -- 07/19/2005	lec
 --	OMIM/MGI 3.3
 --	PythonMarkerOMIMCache
@@ -65,8 +68,8 @@ devents:
 	GenotypeExit :local [];
 
 	Modify :local [];
-
 	ModifyAllelePair :local [];
+	ModifyImagePaneAssociation :local [];
 
 	PostProcess :local [];
 
@@ -93,7 +96,9 @@ locals:
 	where : string;
 
 	assayTable : widget;
+	imgTable : widget;
 	assayPush : widget;
+	mgiTypeKey : string;
 
 	tables : list;
 
@@ -158,6 +163,7 @@ rules:
 	  tables.append(top->AllelePair->Table);
 	  tables.append(top->Reference->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
+	  tables.append(top->ImagePane->Table);
 
 	  if (mgi->AssayModule != nil) then
 	    if (mgi->AssayModule->InSituForm.managed) then
@@ -170,6 +176,8 @@ rules:
 	  end if;
 
 	  accTable := top->mgiAccessionTable->Table;
+	  imgTable := top->ImagePane->Table;
+	  mgiTypeKey := imgTable.mgiTypeKey;
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -241,6 +249,7 @@ rules:
 		 note + "," + global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
+	  send(ModifyImagePaneAssociation, 0);
 
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
 	               "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
@@ -344,6 +353,7 @@ rules:
           end if;
 
 	  send(ModifyAllelePair, 0);
+	  send(ModifyImagePaneAssociation, 0);
 
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
@@ -504,6 +514,71 @@ rules:
 
         end does;
 
+--
+-- ModifyImagePaneAssociation
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Image Associations
+-- Appends to global "cmd" string
+--
+ 
+	ModifyImagePaneAssociation does
+	  row : integer := 0;
+	  editMode : string;
+	  assocKey : string;
+	  paneKey : string;
+	  isPrimaryKey : string;
+	  set : string := "";
+	  keyName : string := "ipAssocKey";
+	  keyDefined : boolean := false;
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(imgTable)) do
+	    editMode := mgi_tblGetCell(imgTable, row, imgTable.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    assocKey := mgi_tblGetCell(imgTable, row, imgTable.assocKey);
+	    paneKey := mgi_tblGetCell(imgTable, row, imgTable.paneKey);
+	    isPrimaryKey := mgi_tblGetCell(imgTable, row, imgTable.isPrimaryKey);
+
+	    if (isPrimaryKey.length = 0) then
+	      isPrimaryKey := NO;
+	    end if;
+
+	    if (editMode = TBL_ROW_ADD) then
+
+	      if (not keyDefined) then
+		cmd := cmd + mgi_setDBkey(IMG_IMAGEPANE_ASSOC, NEWKEY, keyName);
+		keyDefined := true;
+	      else
+		cmd := cmd + mgi_DBincKey(keyName);
+	      end if;
+
+	      cmd := cmd + mgi_DBinsert(IMG_IMAGEPANE_ASSOC, keyName) +
+		     paneKey + "," +
+		     mgiTypeKey + "," +
+		     currentRecordKey + "," +
+		     isPrimaryKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+            elsif (editMode = TBL_ROW_MODIFY) then
+              set := "_ImagePane_key = " + paneKey +
+		     ",isPrimary = " + isPrimaryKey;
+              cmd := cmd + mgi_DBupdate(IMG_IMAGEPANE_ASSOC, assocKey, set);
+
+            elsif (editMode = TBL_ROW_DELETE and assocKey.length > 0) then
+              cmd := cmd + mgi_DBdelete(IMG_IMAGEPANE_ASSOC, assocKey);
+            end if;
+ 
+	    row := row + 1;
+	  end while;
+	end does;
+ 
 --
 -- PostProcess
 --
@@ -813,7 +888,22 @@ rules:
 		 " where _Genotype_key = " + currentRecordKey + "\norder by sequenceNum\n" +
 		 "select note, sequenceNum from " + mgi_DBtable(MGI_NOTE_GENOTYPE_VIEW) +
 		 " where _Object_key = " + currentRecordKey + 
-		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n";
+		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n" +
+		 "select ip._Assoc_key, ip._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID, ip.isPrimary " +
+		 "from IMG_ImagePane_Assoc ip, IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2 " +
+		 "where ip._Object_key = " + currentRecordKey +
+		 "and ip._MGIType_key = " + mgiTypeKey +
+		 "and ip._ImagePane_key = p._ImagePane_key " +
+		 "and p._Image_key = i._Image_key " +
+		 "and p._Image_key = a1._Object_key " +
+		 "and a1._MGIType_key = 9 " +
+		 "and a1._LogicalDB_key = 1 " +
+		 "and a1.prefixPart = 'MGI:' " +
+		 "and a1.preferred = 1 " +
+		 "and p._Image_key = a2._Object_key " +
+		 "and a2._MGIType_key = 9 " +
+		 "and a2._LogicalDB_key = 19 " +
+		 "order by ip.isPrimary desc, a1.accID";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -857,6 +947,21 @@ rules:
 	      elsif (results = 3) then
 	          top->EditForm->CombinationNote1->text.value := top->EditForm->CombinationNote1->text.value +
 			mgi_getstr(dbproc, 1);
+	      elsif (results = 4) then
+		(void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
+
+		if (mgi_getstr(dbproc, 6) = YES) then
+		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
+	        else
+		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
+		end if;
+
 	      end if;
 	    end while;
 	    results := results + 1;
