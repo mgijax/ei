@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 24 07:45:31 2005";
+      lastWritten = "Wed Aug 24 11:49:52 2005";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -895,11 +895,11 @@ Module: mgiTable
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
-                  xrtTblColumnLabels = "Mode,Key,Key,Key,MGI ID,PIX ID,Image Pane,Primary?";
+                  xrtTblColumnLabels = "Mode,Key,Key,Key,MGI ID,PIX ID,Figure Label,Primary?";
                   xrtTblNumColumns = 8;
                   xrtTblPixelWidthSeries = "(all 0-3 0)";
                   xrtTblVisibleRows = 3;
-                  xrtTblCharWidthSeries = "(all 0 1)\n(all 4 15)\n(all 5 10)\n(all 6 10)\n(all 7 8)";
+                  xrtTblCharWidthSeries = "(all 0 1)\n(all 4 15)\n(all 5 10)\n(all 6 12)\n(all 7 8)";
                   xrtTblEditableSeries = "(all 0-3 False)";
                   userDefinedAttributes = "assocKey:Int(Int)=\"1\"\npaneKey:Int(Int)=\"2\"\nmgiID:Int(Int)=\"4\"\nfigureLabel:Int(Int)=\"6\"\nisPrimary:Int(Int)=\"7\"\nisPrimaryKey:Int(Int)=\"3\"\nmgiTypeKey:String(String)\npixID:Int(Int)=\"5\"\n";
                   xrtTblValidateCellCallback = "D:VerifyImagePane\nD:CommitTableCellEdit";
