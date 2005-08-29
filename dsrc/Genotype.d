@@ -358,8 +358,7 @@ rules:
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
 	  end if;
 
-	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	               "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
+	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
