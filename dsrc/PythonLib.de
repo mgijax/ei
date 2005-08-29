@@ -6,7 +6,10 @@
 --
 --
 
-PythonMarkerOMIMCache [omimevent : string;
+PythonMarkerOMIMCache [pythonevent : string;
+		       objectKey : string;];
+
+PythonAlleleCombination [pythonevent : string;
 		       objectKey : string;];
 
 PythonForkEnd [];

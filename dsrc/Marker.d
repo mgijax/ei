@@ -739,10 +739,17 @@ rules:
 	    return;
 	  end if;
 
-	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
+	  PythonAlleleCombination.objectKey := currentRecordKey;
+	  send(PythonAlleleCombination, 0);
+	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
+	  PythonAlleleCombination.objectKey := dialog->mgiMarker->ObjectID->text.value;
+	  send(PythonAlleleCombination, 0);
+
+	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
 	  send(PythonMarkerOMIMCache, 0);
-	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
 	  send(PythonMarkerOMIMCache, 0);
 
@@ -983,7 +990,11 @@ rules:
 	    send(ModifySQL, 0);
           end if;
 
-	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
+	  PythonAlleleCombination.objectKey := currentRecordKey;
+	  send(PythonAlleleCombination, 0);
+
+	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
 	  send(PythonMarkerOMIMCache, 0);
 

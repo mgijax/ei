@@ -341,6 +341,12 @@ extern char *global_version;
 #define EVENT_OMIM_BYMARKER	"2"
 #define EVENT_OMIM_BYGENOTYPE	"3"
 
+/* Allele Combination Events */
+
+#define EVENT_ALLELECOMB_BYALLELE	"1"
+#define EVENT_ALLELECOMB_BYMARKER	"2"
+#define EVENT_ALLELECOMB_BYGENOTYPE	"3"
+
 /* keys of Marker Status */
 
 /* MGD */

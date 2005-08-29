@@ -251,8 +251,7 @@ rules:
 	  send(ModifyAllelePair, 0);
 	  send(ModifyImagePaneAssociation, 0);
 
-	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n" +
-	               "exec ALL_processAlleleCombination " + currentRecordKey + "\n";
+	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
 
 	  AddSQL.tableID := GXD_GENOTYPE;
           AddSQL.cmd := cmd;
@@ -604,7 +603,11 @@ rules:
 	    send(ExecSQL, 0);
           end if;
 
-	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYGENOTYPE;
+	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYGENOTYPE;
+	  PythonAlleleCombination.objectKey := currentRecordKey;
+	  send(PythonAlleleCombination, 0);
+
+	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYGENOTYPE;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
 	  send(PythonMarkerOMIMCache, 0);
 	end does;

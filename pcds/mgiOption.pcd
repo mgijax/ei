@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 22 15:24:21 2005";
+      lastWritten = "Fri Aug 26 12:48:53 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -325,14 +325,14 @@ Module: mgiOption
                       Group: Widget
                         labelString = "RIKEN Clone";
                       Group: User
-                        defaultValue = 26;
+                        defaultValue = 51;
                     }
                     {
                       RIKENFANTOM = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "RIKEN (FANTOM)";
                       Group: User
-                        defaultValue = 51;
+                        defaultValue = 26;
                     }
                     {
                       NIA = AccToggle : mgiOption;

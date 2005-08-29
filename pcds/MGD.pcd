@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 24 07:47:15 2005";
+      lastWritten = "Fri Aug 26 12:52:13 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2741,6 +2741,8 @@ Module: MGD
                                 }
                                 {
                                   RIKENFANTOM = AccToggle : mgiOption;
+                                  Group: Widget
+                                    managed = True;
                                 }
                                 {
                                   NIA = AccToggle : mgiOption;

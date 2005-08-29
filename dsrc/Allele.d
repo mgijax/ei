@@ -843,7 +843,6 @@ rules:
 
 	  if (cmd.length > 0) then
 	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
-		   "exec ALL_processAlleleCombByAllele " + currentRecordKey + "\n" +
 		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
 
 	    if (top->mgiMarker->ObjectID->text.value != "") then
@@ -857,7 +856,11 @@ rules:
 	    send(ModifySQL, 0);
           end if;
 
-	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYALLELE;
+	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
+	  PythonAlleleCombination.objectKey := currentRecordKey;
+	  send(PythonAlleleCombination, 0);
+
+	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
 	  send(PythonMarkerOMIMCache, 0);
 

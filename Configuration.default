@@ -47,6 +47,9 @@ setenv PYTHONPATH /usr/local/mgi/live/lib/python
 # PYTHON OMIM Cache
 setenv OMIMCACHE        /usr/local/mgi/live/dbutils/mrkcacheload
 
+# PYTHON Allele Cache
+setenv ALLELECACHE      /usr/local/mgi/live/dbutils/allcacheload
+
 # Debug mode
 setenv EIDEBUG	1
 
