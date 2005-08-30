@@ -605,12 +605,12 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from IMG_Image_View where _Image_key = " + currentRecordKey + "\n" +
-		 "select nc.note from MGI_Note_Image_View n, MGI_NoteChunk nc \n" + 
+		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
 		 "where n.noteType = 'Caption' and n._Object_key = " + currentRecordKey + "\n" +
-		 "and n._Note_key = nc._Note_key order by nc.sequenceNum\n" +
-		 "select nc.note from MGI_Note_Image_View n, MGI_NoteChunk nc \n" + 
+		 "order by n.sequenceNum\n" +
+		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
 		 "where n.noteType = 'Copyright' and n._Object_key = " + currentRecordKey + "\n" +
-		 "and n._Note_key = nc._Note_key order by nc.sequenceNum\n" +
+		 "order by n.sequenceNum\n" +
 	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n" +
 		 "select a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i " +
 		 "where i._Image_key = " + currentRecordKey + "\n" +
@@ -649,10 +649,12 @@ rules:
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
-		top->Caption->text.value := top->Caption->text.value + mgi_getstr(dbproc, 1);
+		top->Caption->text.value := top->Caption->text.value + mgi_getstr(dbproc, 2);
+		top->Caption.noteKey := (integer) mgi_getstr(dbproc, 1);
 
 	      elsif (results = 3) then
-		top->Copyright->text.value := top->Copyright->text.value + mgi_getstr(dbproc, 1);
+		top->Copyright->text.value := top->Copyright->text.value + mgi_getstr(dbproc, 2);
+		top->Copyright.noteKey := (integer) mgi_getstr(dbproc, 1);
 
 	      elsif (results = 4) then
 	        table := top->ImagePane->Table;
