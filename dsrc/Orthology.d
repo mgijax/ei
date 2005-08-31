@@ -310,7 +310,7 @@ rules:
 	  send(DeleteSQL, 0);
 
 	  -- Assume that first row holds the mouse marker key
-	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  send(PythonMarkerOMIMCache, 0);
 
@@ -360,7 +360,7 @@ rules:
 	  end if;
 
 	  -- Assume that first row holds the mouse marker key
-	  PythonMarkerOMIMCache.omimevent := EVENT_OMIM_BYMARKER;
+	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  send(PythonMarkerOMIMCache, 0);
 
