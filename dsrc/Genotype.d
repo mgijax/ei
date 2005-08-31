@@ -881,7 +881,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 	  results : integer := 1;
-	  row : integer;
+	  row : integer := 0;
 	  table : widget;
 
 	  cmd := "select * from " + mgi_DBtable(GXD_GENOTYPE_VIEW) +
@@ -963,6 +963,8 @@ rules:
 	        else
 		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
 		end if;
+
+		row := row + 1;
 
 	      end if;
 	    end while;

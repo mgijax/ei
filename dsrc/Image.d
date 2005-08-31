@@ -494,15 +494,11 @@ rules:
 	    i := i + 1;
 	  end while;
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "i";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "i";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "i";
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
  
           if (top->mgiCitation->ObjectID->text.value.length > 0 and
               top->mgiCitation->ObjectID->text.value != "NULL") then
