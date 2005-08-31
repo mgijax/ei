@@ -78,8 +78,6 @@ def scanText(text):
 # Main
 #
 
-fp = reportlib.init('GO%s' % (symbol), printHeading = 0, isHTML = 1, outputdir = os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
-
 # expects _Object_key and description fields
 cmd = sys.argv[1]
 results = db.sql(cmd, 'auto')
@@ -91,6 +89,7 @@ tokens = string.split(description, ', ')
 symbol = tokens[0]
 
 # initialize report output file
+fp = reportlib.init('GO%s' % (symbol), printHeading = 0, isHTML = 1, outputdir = os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 fp.write(TITLE + 'Potential New GO References' + EOTITLE + CRT)
 fp.write(H + 'Potential New GO References' + EOH + CRT)
 fp.write(H + 'Symbol: %s' % (description) + EOH + CRT)
@@ -114,7 +113,7 @@ cmd = 'select distinct s.synonym ' + \
 	'and s._MGIType_key = 13 '
 results = db.sql(cmd, 'auto')
 for r in results:
-	terms.append(r['term'])
+	terms.append(r['synonym'])
 
 # select no-go references for given marker key
 cmd = 'select r.jnumID, r.title, r.short_citation, r.abstract ' + \
