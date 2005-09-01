@@ -30,8 +30,8 @@ import mgi_utils
 
 # HTML constants
 
-TITLE = '<TITLE>'
-EOTITLE = '</TITLE>'
+TITLE ='<HEAD><TITLE>'
+EOTITLE = '</TITLE></HEAD>'
 LB = '<BR>'
 PB = '<P>'
 HR = '<HR>'
@@ -90,11 +90,11 @@ symbol = tokens[0]
 
 # initialize report output file
 fp = reportlib.init('GO%s' % (symbol), printHeading = 0, isHTML = 1, outputdir = os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
+fp.write(EOP)
 fp.write(TITLE + 'Potential New GO References' + EOTITLE + CRT)
 fp.write(H + 'Potential New GO References' + EOH + CRT)
 fp.write(H + 'Symbol: %s' % (description) + EOH + CRT)
 fp.write('Start Date/Time:  %s\n' % (mgi_utils.date()))
-fp.write('</PRE>')
 
 # read terms & synonyms into dictionary
 terms = []

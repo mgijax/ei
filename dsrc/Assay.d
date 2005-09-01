@@ -882,6 +882,7 @@ rules:
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, i, table.ageKey, mgi_tblGetCell(table, row, table.ageKey));
+	      mgi_tblSetCell(table, i, table.ageRange, "");
 
 	    -- Else, copy key column
 
@@ -1013,7 +1014,7 @@ rules:
 
 	    if (column = table.agePrefix) then
 	      mgi_tblSetCell(table, i, table.ageKey, mgi_tblGetCell(table, row, table.ageKey));
-	      mgi_tblSetCell(table, i, table.ageRange, mgi_tblGetCell(table, row - 1, table.ageRange));
+	      mgi_tblSetCell(table, i, table.ageRange, "");
 
 	    -- Else, copy key column
 
