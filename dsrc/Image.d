@@ -253,6 +253,12 @@ rules:
           send(ModifyNotes, 0);
           cmd := cmd + top->Caption.sql;
  
+	  if (top->Caption.sql.length > 0) then
+	    ModifyNotes.keyDeclared := true;
+	  else
+	    ModifyNotes.keyDeclared := false;
+	  end if;
+
           ModifyNotes.source_widget := top->Copyright;
           ModifyNotes.tableID := MGI_NOTE;
           ModifyNotes.key := currentRecordKey;
@@ -374,6 +380,12 @@ rules:
           send(ModifyNotes, 0);
           cmd := cmd + top->Caption.sql;
  
+	  if (top->Caption.sql.length > 0) then
+	    ModifyNotes.keyDeclared := true;
+	  else
+	    ModifyNotes.keyDeclared := false;
+	  end if;
+
           ModifyNotes.source_widget := top->Copyright;
           ModifyNotes.tableID := MGI_NOTE;
           ModifyNotes.key := currentRecordKey;
