@@ -585,7 +585,9 @@ rules:
           tables.close;
  
 	  top->Caption->text.value := "";
+	  top->Caption.noteKey := -1;
 	  top->Copyright->text.value := "";
+	  top->Copyright.noteKey := -1;
 	  top->ThumbnailImage->ObjectID->text.value := "";
 	  top->ThumbnailImage->AccessionID->text.value := "";
 
