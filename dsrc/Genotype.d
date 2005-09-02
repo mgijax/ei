@@ -208,6 +208,11 @@ rules:
 
         Add does
 	  note : string;
+	  row : integer;
+	  editMode : string;
+	  paneKey : string;
+	  panePrimaryKey : string;
+	  primaryPane : integer := 0;
 
 --	  if (mgi->AssayModule = nil) then
 --	    send(Exit, 0);
@@ -340,6 +345,11 @@ rules:
 
 	Modify does
 	  set : string;
+	  row : integer;
+	  editMode : string;
+	  paneKey : string;
+	  panePrimaryKey : string;
+	  primaryPane : integer := 0;
 
           if (not top.allowEdit) then
             return;
