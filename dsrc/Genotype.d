@@ -387,6 +387,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Primary Image Pane is allowed.";
             send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
 	  end if;
 
