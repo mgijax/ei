@@ -324,6 +324,14 @@ rules:
 --
 
         Delete does
+
+	  if (top->ImageTypeMenu.menuHistory.labelString = "Thumbnail") then
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "\nCannot Delete a Thumbnail Image.\n";
+	    send(StatusReport);
+	    return;
+	  end if;
+
           (void) busy_cursor(top);
 
 	  DeleteSQL.tableID := IMG_IMAGE;

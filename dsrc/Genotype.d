@@ -217,6 +217,33 @@ rules:
             return;
           end if;
 
+	  -- Verify at most one Primary Image Pane Association
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(imgTable)) do
+	    editMode := mgi_tblGetCell(imgTable, row, imgTable.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    paneKey :=  mgi_tblGetCell(imgTable, row, imgTable.paneKey);
+	    panePrimaryKey :=  mgi_tblGetCell(imgTable, row, imgTable.isPrimaryKey);
+
+	    if (panePrimaryKey = YES and paneKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      primaryPane := primaryPane + 1;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  if (primaryPane > 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Primary Image Pane is allowed.";
+            send(StatusReport);
+            return;
+	  end if;
+
           (void) busy_cursor(top);
 
 	  send(VerifyAlleleCombination, 0);
@@ -324,6 +351,33 @@ rules:
             StatusReport.message := "Cannot modify this record.";
             send(StatusReport);
 	    return;
+	  end if;
+
+	  -- Verify at most one Primary Image Pane Association
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(imgTable)) do
+	    editMode := mgi_tblGetCell(imgTable, row, imgTable.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    paneKey :=  mgi_tblGetCell(imgTable, row, imgTable.paneKey);
+	    panePrimaryKey :=  mgi_tblGetCell(imgTable, row, imgTable.isPrimaryKey);
+
+	    if (panePrimaryKey = YES and paneKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      primaryPane := primaryPane + 1;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  if (primaryPane > 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Primary Image Pane is allowed.";
+            send(StatusReport);
+            return;
 	  end if;
 
 	  (void) busy_cursor(top);
