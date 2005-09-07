@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Aug 26 12:52:13 2005";
+      lastWritten = "Wed Sep  7 11:27:19 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2539,6 +2539,14 @@ Module: MGD
                               labelString = "Reversed clone";
                             Group: User
                               note = "Reversed clone: MGI curatorial staff have found evidence of artifact in the \nsequence of this molecular segment. The sequence of this cDNA clone appears to be\nreversed.";
+                              noteWidget = MolNote;
+                          }
+                          {
+                            Contaiminated = AppendNotePush : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Contaminated clone";
+                            Group: User
+                              note = "Contaminated clone: MGI curatorial staff have found evidence of artifact in the \nsequence of this molecular segment. The sequence of this cDNA clone appears to \nbe from species other than mouse.";
                               noteWidget = MolNote;
                           }
                     }
