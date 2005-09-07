@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 22 15:24:22 2005";
+      lastWritten = "Wed Sep  7 10:11:03 2005";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -293,7 +293,7 @@ Module: mgiDialog
                     {
                       List = list;
                       Group: Widget
-                        width = 250;
+                        width = 300;
                         singleSelectionCallback = "D:WhichItem,\nC:TuUnmanage";
                         visibleItemCount = 10;
                     }

@@ -1808,6 +1808,7 @@ rules:
 	  keys : string_list := create string_list();
 	  results : xm_string_list := create xm_string_list();
 	  symbols : string_list := create string_list();
+	  names : string_list := create string_list();
 	  chromosome : string_list := create string_list();
 	  status : string_list := create string_list();
 	  band : string_list := create string_list();
@@ -1835,7 +1836,7 @@ rules:
 
 	  -- Search for Marker in the database
 
-	  select : string := "select _Marker_key, _Marker_Status_key, symbol, chromosome, cytogeneticOffset " +
+	  select : string := "select _Marker_key, _Marker_Status_key, symbol, chromosome, cytogeneticOffset, substring(name,1,25) " +
 			     "from MRK_Marker where _Organism_key = " + organismKey + 
 			     " and symbol = " + mgi_DBprstr(value) + "\n";
 
@@ -1843,7 +1844,7 @@ rules:
 
 	  if (VerifyMarker.allowNomen) then
 	    select := select + "union\n" +
-		"select -1, " + STATUS_APPROVED + ", symbol, chromosome, null " +
+		"select -1, " + STATUS_APPROVED + ", symbol, chromosome, null, substring(name, 1, 25) " +
 		"\nfrom " + mgi_DBtable(NOM_MARKER_VALID_VIEW) +
 		"\nwhere symbol = " + mgi_DBprstr(value) +  "\n";
 	  end if;
@@ -1861,7 +1862,9 @@ rules:
               symbols.insert(mgi_getstr(dbproc, 3), symbols.count + 1);
               chromosome.insert(mgi_getstr(dbproc, 4), chromosome.count + 1);
               band.insert(mgi_getstr(dbproc, 5), band.count + 1);
+              names.insert(mgi_getstr(dbproc, 6), names.count + 1);
               results.insert(symbols[symbols.count] + 
+		", " + names[names.count] +
 		", Chr " + chromosome[chromosome.count] + 
 		", Band " + band[band.count], results.count + 1);
             end while;
