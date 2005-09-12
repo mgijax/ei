@@ -1649,6 +1649,11 @@ rules:
               send(StatusReport);
 	    end if;
 
+	  -- No value selected, Reference Journal
+
+	  elsif (tableID = BIB_REFS) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+
 	  -- No value selected, can add
 
 	  elsif (selectedItem = -2 and verify.verifyAdd) then
