@@ -876,6 +876,7 @@ rules:
 
 	Modify does
 	  modifyName : boolean := false;
+	  modifySymbol : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -898,6 +899,7 @@ rules:
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
+	    modifySymbol := true;
 	  end if;
 
 	  if (top->Name->text.modified) then
@@ -966,17 +968,17 @@ rules:
 	  -- Split up the modification because the SP may contain 'select into'
 	  -- statements and these cannot be wrapped up within a transaction
 
-	  top->WorkingDialog.messageString := "Modifying Marker....";
-	  top->WorkingDialog.managed := true;
-	  XmUpdateDisplay(top->WorkingDialog);
+--	  top->WorkingDialog.messageString := "Modifying Marker....";
+--	  top->WorkingDialog.managed := true;
+--	  XmUpdateDisplay(top->WorkingDialog);
 
 	  ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
 
-	  top->WorkingDialog.messageString := "Re-loading Cache Tables....";
-	  XmUpdateDisplay(top->WorkingDialog);
+--	  top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+--	  XmUpdateDisplay(top->WorkingDialog);
 
 	  if (cmd.length > 0) then
 	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
@@ -990,16 +992,18 @@ rules:
 	    send(ModifySQL, 0);
           end if;
 
-	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
-	  PythonAlleleCombination.objectKey := currentRecordKey;
-	  send(PythonAlleleCombination, 0);
+	  if (modifySymbol) then
+	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
+	    PythonAlleleCombination.objectKey := currentRecordKey;
+	    send(PythonAlleleCombination, 0);
 
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
+	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
+	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
+	    send(PythonMarkerOMIMCache, 0);
+	  end if;
 
-	  top->WorkingDialog.managed := false;
-	  XmUpdateDisplay(top->WorkingDialog);
+--	  top->WorkingDialog.managed := false;
+--	  XmUpdateDisplay(top->WorkingDialog);
 
 	  (void) reset_cursor(top);
 	end does;
