@@ -464,10 +464,15 @@ rules:
             row := row + 1;
 	  end while;
 
-	  cmd := cmd + "\nexec VOC_processAnnotHeader " + annotTypeKey + "," + currentRecordKey + "\n";
-
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := false;
+          send(ModifySQL, 0);
+
+	  cmd := "\nexec VOC_processAnnotHeader " + annotTypeKey + "," + currentRecordKey + "\n";
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := true;
 	  ModifySQL.transaction := false;
           send(ModifySQL, 0);
 
