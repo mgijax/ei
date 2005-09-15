@@ -744,14 +744,14 @@ rules:
 	  send(PythonAlleleCombination, 0);
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
 	  PythonAlleleCombination.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	  send(PythonAlleleCombination, 0);
+	  send(PythonAlleleCombination, 2000);
 
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
+	  send(PythonMarkerOMIMCache, 2000);
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	  send(PythonMarkerOMIMCache, 0);
+	  send(PythonMarkerOMIMCache, 2000);
 
 	  -- Query for records
 
@@ -999,7 +999,7 @@ rules:
 
 	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	    send(PythonMarkerOMIMCache, 0);
+	    send(PythonMarkerOMIMCache, 2000);
 	  end if;
 
 --	  top->WorkingDialog.managed := false;

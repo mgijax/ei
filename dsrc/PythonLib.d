@@ -51,7 +51,7 @@ rules:
 	  (void) mgi_writeLog(buf);
 
 	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonForkEnd);
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerOMIMCacheEnd);
 	  tu_fork_free(proc_id);
 
 	end does;
@@ -93,16 +93,23 @@ rules:
 	  (void) mgi_writeLog(buf);
 
 	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonForkEnd);
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonAlleleCombinationEnd);
 	  tu_fork_free(proc_id);
 
 	end does;
 
 --
--- PythonForkEnd
+-- PythonMarkerOMIMCacheEnd
 --
 
-	PythonForkEnd does
+	PythonMarkerOMIMCacheEnd does
+	end does;
+
+--
+-- PythonAlleleCombinationEnd
+--
+
+	PythonAlleleCombinationEnd does
 	end does;
 
 end dmodule;

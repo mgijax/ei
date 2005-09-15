@@ -673,7 +673,7 @@ rules:
 
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYGENOTYPE;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
+	  send(PythonMarkerOMIMCache, 2000);
 	end does;
 
 --

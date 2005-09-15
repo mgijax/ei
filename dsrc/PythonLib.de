@@ -12,5 +12,7 @@ PythonMarkerOMIMCache [pythonevent : string;
 PythonAlleleCombination [pythonevent : string;
 		       objectKey : string;];
 
-PythonForkEnd [];
+PythonMarkerOMIMCacheEnd [];
+
+PythonAlleleCombinationEnd [];
 

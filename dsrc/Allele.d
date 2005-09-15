@@ -863,7 +863,7 @@ rules:
 
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
+	  send(PythonMarkerOMIMCache, 2000);
 
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
