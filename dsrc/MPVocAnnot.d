@@ -466,6 +466,7 @@ rules:
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.transaction := false;
 	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
