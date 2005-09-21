@@ -469,7 +469,7 @@ rules:
 	  -- need to find a workaround for this...
 	  --
 
-	  if (clipAnnotEvidenceKey.length > 0) then
+	  if (strstr(cmd, "exec VOC_copyAnnotEvidenceNotes") != nil) then
 	    ModifySQL.transaction := false;
 	  else
 	    ModifySQL.transaction := true;
