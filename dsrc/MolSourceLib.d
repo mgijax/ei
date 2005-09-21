@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 09/21/2005
+--	- TR 7130; change default Cell Line behavior
+--
 -- 09/15/2003
 --	- SAO; added table processing to ModifyNamedMolecularSource
 --
@@ -105,8 +108,11 @@ rules:
 	  end if;
 
 	  if (top->CellLine->CellLineID->text.value.length = 0) then
-	    cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View " + 
-		"where term = \"Not Specified\"");
+	      if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
+	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"Not Specified\"");
+	      else
+	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"Not Applicable\"");
+	      end if;
 	  else
 	    cellLine := top->CellLine->CellLineID->text.value;
 	  end if;
