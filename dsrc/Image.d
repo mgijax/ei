@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	09/21/2005
+--	- TR 7111; change query results display format
+--
 -- lec	07/2005
 --	- TR 3557/MLC images
 --
@@ -575,7 +578,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct i._Image_key, " + 
-			"i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
+			"i.jnumID + \"; \" + i.imageType + \"; \" + i.figureLabel\n" +
 			from + "\n" + where + "\norder by i.jnum\n";
 	  Query.table := IMG_IMAGE;
 	  send(Query, 0);
