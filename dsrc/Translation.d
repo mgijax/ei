@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 09/21/2005 lec
+--	- TR 7109; don't update modified by if re-ordering
+--
 -- 06/17/2004 lec
 --	- TR 5929/revisions; sorting option, searching
 --
@@ -327,12 +330,12 @@ rules:
  
               if (currentSeqNum != newSeqNum) then
 		set := "sequenceNum = " + newSeqNum;
+                cmd := cmd + mgi_DBupdate(MGI_TRANSLATIONSEQNUM, transKey, set);
               else
 	        set := "_Object_key = " + objectKey + 
 		       ",badName = " + mgi_DBprstr(nonmgiTerm);
+                cmd := cmd + mgi_DBupdate(MGI_TRANSLATION, transKey, set);
               end if;
-
-              cmd := cmd + mgi_DBupdate(MGI_TRANSLATION, transKey, set);
 
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(MGI_TRANSLATION, transKey);
