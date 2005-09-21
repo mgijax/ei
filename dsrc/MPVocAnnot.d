@@ -464,9 +464,19 @@ rules:
             row := row + 1;
 	  end while;
 
+	  --
+	  -- if we're calling VOC_copyAnnotEvidenceNotes, we can't use a transaction...
+	  -- need to find a workaround for this...
+	  --
+
+	  if (clipAnnotEvidenceKey.length > 0) then
+	    ModifySQL.transaction := false;
+	  else
+	    ModifySQL.transaction := true;
+          end if;
+
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
-	  ModifySQL.transaction := false;
 	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
