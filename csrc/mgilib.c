@@ -786,6 +786,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Object_key");
 	    break;
     case MGI_TRANSLATION:
+    case MGI_TRANSLATIONSEQNUM:
             strcpy(buf, "_Translation_key");
 	    break;
     case MGI_TRANSLATIONTYPE:
@@ -1488,6 +1489,7 @@ char *mgi_DBtable(int table)
 	    strcpy(buf, "MGI_SynonymType_Strain_View");
 	    break;
     case MGI_TRANSLATION:
+    case MGI_TRANSLATIONSEQNUM:
             strcpy(buf, "MGI_Translation");
 	    break;
     case MGI_TRANSLATIONTYPE:
@@ -2527,6 +2529,10 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case VOC_TERM:
               sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, global_loginKey, mgi_DBkey(table), key);
+	      break;
+      case MGI_TRANSLATIONSEQNUM:
+              sprintf(buf, "update %s set %s, modification_date = getdate() where %s = %s\n", 
+		  mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
       default:
               sprintf(buf, "update %s set %s, modification_date = getdate() where %s = %s\n", 
