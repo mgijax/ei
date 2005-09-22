@@ -440,7 +440,7 @@ rules:
 
 	  -- Append Reference key to lookup command
 	  newCmd := saveCmd + " " + key;
-	  top->ImagePaneList.cmd := newCmd;
+	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
 	  -- Load the Pane list for the current Reference
 	  LoadList.list := top->ImagePaneList;

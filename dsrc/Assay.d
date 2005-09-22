@@ -480,7 +480,7 @@ rules:
  
           -- Append Reference key to lookup command
           newCmd := saveCmd + " " + refKey;
-          imageList.cmd := newCmd;
+          imageList.cmd := newCmd + "\norder by paneLabel";
 
 	  -- Load the Image list
 	  LoadList.list := imageList;
