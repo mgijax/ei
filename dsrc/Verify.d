@@ -1483,18 +1483,18 @@ rules:
 	  end if;
 
 	  if (tableID = STRAIN) then
-	    select := "select _Strain_key, strain, standard from " + table + " where ";
+	    select := "select _Strain_key, strain, standard, private from " + table + " where ";
 	    defaultSpecies := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'laboratory mouse'");
 	  elsif (tableID = TISSUE) then
-	    select := "select _Tissue_key, tissue, standard from " + table + " where ";
+	    select := "select _Tissue_key, tissue, standard, private = 0 from " + table + " where ";
 	  elsif (tableID = BIB_REFS) then
-	    select := "select distinct id = 0, journal, standard = 1 from " + table + " where ";
+	    select := "select distinct id = 0, journal, standard = 1, private = 0 from " + table + " where ";
 	  elsif (tableID = CROSS) then
-	    select := "select _Cross_key, display, standard = 1 from " + table + " where ";
+	    select := "select _Cross_key, display, standard = 1, private = 0 from " + table + " where ";
 	  elsif (tableID = RISET) then
-	    select := "select _RISet_key, designation, standard = 1 from " + table + " where ";
+	    select := "select _RISet_key, designation, standard = 1, private = 0 from " + table + " where ";
 	  else
-	    select := "select _Term_key, term, standard = 1 from " + table + " where ";
+	    select := "select _Term_key, term, standard = 1, private = 0 from " + table + " where ";
 	  end if;
 
 	  dbproc : opaque := mgi_dbopen();
@@ -1515,10 +1515,8 @@ rules:
 	      end if;
 
 	      std.insert(mgi_getstr(dbproc, 3), std.count + 1);
+	      private.insert(mgi_getstr(dbproc, 4), private.count + 1);
 
-	      if (tableID = STRAIN) then
-	        private.insert(mgi_getstr(dbproc, 5), private.count + 1);
-	      end if;
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
