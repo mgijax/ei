@@ -67,6 +67,9 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [createThumbnail: boolean := false;];
 	BuildDynamicComponents :local [];
+        ClearImage :local [clearKeys : boolean := true;
+                           clearLists : integer := 3;
+                           reset : boolean := false;];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
@@ -129,9 +132,7 @@ rules:
 	  SetRowCount.tableID := IMG_IMAGE;
 	  send(SetRowCount, 0);
 
-	  Clear.source_widget := top;
-	  Clear.clearLists := 3;
-	  send(Clear, 0);
+	  send(ClearImage, 0);
  
 	  (void) reset_cursor(mgi);
 	end does;
@@ -158,6 +159,29 @@ rules:
 	  InitNoteForm.notew := top->mgiNoteForm;
 	  InitNoteForm.tableID := MGI_NOTETYPE_IMAGE_VIEW;
 	  send(InitNoteForm, 0);
+
+	end does;
+
+--
+-- ClearImage
+-- 
+-- Local Clear
+--
+
+	ClearImage does
+
+          Clear.source_widget := top;
+	  Clear.clearLists := ClearImage.clearLists;
+	  Clear.clearKeys := ClearImage.clearKeys;
+	  Clear.reset := ClearImage.reset;
+	  send(Clear, 0);
+
+	  if (not ClearImage.reset) then
+	    top->Caption->text.value := "";
+	    top->Caption.noteKey := -1;
+	    top->Copyright->text.value := "";
+	    top->Copyright.noteKey := -1;
+	  end if;
 
 	end does;
 
@@ -298,10 +322,8 @@ rules:
             SetReportSelect.tableID := GXD_ANTIGEN;
             send(SetReportSelect, 0);
  
-            Clear.source_widget := top;
-            Clear.clearKeys := false;
-	    Clear.clearLists := 3;
-            send(Clear, 0);
+            ClearImage.clearKeys := false;
+            send(ClearImage, 0);
           end if;
 
 	  -- If a Thumbnail was also created, then select 
@@ -348,9 +370,8 @@ rules:
           send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-            Clear.source_widget := top;
-            Clear.clearKeys := false;
-            send(Clear, 0);
+            ClearImage.clearKeys := false;
+            send(ClearImage, 0);
           end if;
  
           (void) reset_cursor(top);
@@ -715,9 +736,8 @@ rules:
           send(LoadAcc, 0);
  
           top->QueryList->List.row := Select.item_position;
-	  Clear.source_widget := top;
-          Clear.reset := true;
-          send(Clear, 0);
+          ClearImage.reset := true;
+          send(ClearImage, 0);
 
 	  (void) reset_cursor(top);
 	end does;

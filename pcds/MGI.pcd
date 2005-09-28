@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 14 13:01:08 2005";
+      lastWritten = "Wed Sep 28 10:17:48 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2550,7 +2550,7 @@ Module: MGI
                                       {
                                         Clear = MenuPush;
                                         Group: Widget
-                                          activateCallback = "D:Clear(clearLists = 3)";
+                                          activateCallback = "D:ClearImage()";
                                       }
                                 }
                           }
@@ -2973,7 +2973,7 @@ Module: MGI
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:Clear(clearLists = 3)";
+                                    activateCallback = "D:ClearImage()";
                                 }
                                 {
                                   Modify = ControlPush;
