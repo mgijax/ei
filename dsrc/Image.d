@@ -314,6 +314,11 @@ rules:
 			from + "\n" + where + "\norder by i.jnum\n";
 	    QueryNoInterrupt.table := IMG_IMAGE;
             send(QueryNoInterrupt, 0);
+	  else
+	    top->Caption->text.value := "";
+	    top->Caption.noteKey := -1;
+	    top->Copyright->text.value := "";
+	    top->Copyright.noteKey := -1;
 	  end if;
  
           (void) reset_cursor(top);
