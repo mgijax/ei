@@ -236,7 +236,6 @@ rules:
 --
 
         Add does
-	  note : string;
 	  row : integer;
 	  editMode : string;
 	  paneKey : string;

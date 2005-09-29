@@ -112,6 +112,7 @@ rules:
 	  k : integer;
 
 	  if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	      tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTETYPE_IMAGE_VIEW or 
 	      tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 	      tableID = MGI_NOTETYPE_NOMEN_VIEW or 
@@ -151,6 +152,7 @@ rules:
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
 	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	            tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	            tableID = MGI_NOTETYPE_IMAGE_VIEW or 
 	            tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 		    tableID = MGI_NOTETYPE_NOMEN_VIEW or 
@@ -192,6 +194,7 @@ rules:
 	  send(ClearSetNoteForm, 0);
 
 	  if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	      tableID = MGI_NOTE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTE_IMAGE_VIEW or 
 	      tableID = MGI_NOTE_MRKGO_VIEW or 
 	      tableID = MGI_NOTE_NOMEN_VIEW or 
@@ -225,6 +228,7 @@ rules:
 	      note := mgi_getstr(dbproc, 2);
 
 	      if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	          tableID = MGI_NOTE_GENOTYPE_VIEW or 
 	          tableID = MGI_NOTE_IMAGE_VIEW or 
 	          tableID = MGI_NOTE_MRKGO_VIEW or 
 		  tableID = MGI_NOTE_NOMEN_VIEW or 
@@ -613,6 +617,7 @@ rules:
 	  isModified : boolean;
           i : integer := 1;
 	  cmd : string := "";
+	  keyCmd : string := "";
 	  deleteCmd : string := "";
 	  masterCmd : string := "";
  
@@ -630,6 +635,10 @@ rules:
 
 	  if (not isModified) then
 	    return;
+	  end if;
+
+	  if (not keyDeclared) then
+	    keyCmd := mgi_setDBkey(tableID, NEWKEY, keyName);
 	  end if;
 
 	  -- If the noteWidget has a valid noteTypeKey, use it
@@ -685,14 +694,7 @@ rules:
 	  -- for MGI_Note, first add a record for the MGI_Note object
 
 	  if (tableID = MGI_NOTE) then
-	    if (not keyDeclared) then
-	      masterCmd := mgi_setDBkey(tableID, NEWKEY, keyName);
-	    else
-	      masterCmd := mgi_DBincKey(keyName);
-	    end if;
-
-	    masterCmd := masterCmd +
-	           mgi_DBinsert(tableID, keyName) +
+	    masterCmd := mgi_DBinsert(tableID, keyName) +
 	           key + "," +
 		   mgiType + "," +
 		   noteType + "," +
@@ -772,14 +774,13 @@ rules:
 	    end if;
 	  end if;
 
-
 	  -- if notes are being added, then include 'masterCmd'
 	  -- else just include the 'deleteCmd'
 
 	  if (cmd.length > 0) then
-	    cmd := deleteCmd + masterCmd + cmd;
+	    cmd := keyCmd + deleteCmd + masterCmd + cmd + mgi_DBincKey(keyName);;
 	  else
-	    cmd := deleteCmd + cmd;
+	    cmd := keyCmd + deleteCmd + cmd;
 	  end if;
 
 	  if (isTable) then
