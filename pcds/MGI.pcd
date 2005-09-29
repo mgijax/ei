@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 28 10:17:48 2005";
+      lastWritten = "Thu Sep 29 12:26:23 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1386,39 +1386,16 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  Note = SingleNote : mgiDataTypes;
+                                  CombinationNote1 = Notes : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = ConditionalMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = ConditionalMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                     topOffset = 10;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 50;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = scrolledText : mgiDataTypes;
-                                        Group: Widget
-                                          rows = 5;
-                                          scrollHorizontal = False;
-                                          scrollVertical = False;
-                                      }
-                                }
-                                {
-                                  CombinationNote1 = Notes : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = Note;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Note;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftOffset = 50;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -1442,7 +1419,7 @@ Module: MGI
                                     leftWidget = ConditionalMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Note;
+                                    topWidget = CombinationNote1;
                                     topOffset = 20;
                                     bottomAttachment = attach_form;
                                     resizable = true;
@@ -1516,6 +1493,18 @@ Module: MGI
                                         Group: User
                                           mgiTypeKey = 12;
                                       }
+                                }
+                                {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = CombinationNote1;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = CombinationNote1;
+                                    leftOffset = 10;
                                 }
                           }
                     }

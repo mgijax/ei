@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 09/29/2005	lec
+--	- TR 7070
+--
 -- 08/23/2005	lec
 --	Image Associations
 --
@@ -63,6 +66,7 @@ devents:
 		   launchedFrom : widget;];
 	Init :local [];
 	Add :local [];
+	BuildDynamicComponents :local [];
 	Delete :local [];
 
 	GenotypeExit :local [];
@@ -127,11 +131,8 @@ rules:
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
 
-	  InitOptionMenu.option := top->AllelePairStateMenu;
-	  send(InitOptionMenu, 0);
-
-	  InitOptionMenu.option := top->AlleleCompoundMenu;
-	  send(InitOptionMenu, 0);
+	  -- Build Dynamic GUI Components
+	  send(BuildDynamicComponents, 0);
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
@@ -199,6 +200,34 @@ rules:
 	  alleleList := create string_list();
 
 	end does;
+
+--
+-- BuildDynamicComponents
+--
+-- Activated from:  devent Allele
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+	BuildDynamicComponents does
+	  -- Dynamically create Menus
+
+	  InitOptionMenu.option := top->AllelePairStateMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->AlleleCompoundMenu;
+	  send(InitOptionMenu, 0);
+
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_GENOTYPE_VIEW;
+	  send(InitNoteForm, 0);
+
+        end does;
 
 --
 -- Add
@@ -271,17 +300,17 @@ rules:
             cmd := cmd + top->EditForm->Strain->StrainID->text.value + ",";
 	  end if;
  
-	  if (top->Note->text.value.length > 0) then
-	    note := mgi_DBprstr(top->Note->text.value);
-	  else
-	    note := "NULL";
-	  end if;
-
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
-		 note + "," + global_loginKey + "," + global_loginKey + ")\n";
+		 "NULL," + global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
 	  send(ModifyImagePaneAssociation, 0);
+
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  cmd := cmd + "exec GXD_checkDuplicateGenotype " + currentRecordKey + "\n";
 
@@ -412,12 +441,14 @@ rules:
             set := set + "isConditional = " + top->ConditionalMenu.menuHistory.defaultValue + ",";
           end if;
 
-          if (top->Note->text.modified) then
-            set := set + "note = " + mgi_DBprstr(top->Note->text.value) + ",";
-          end if;
-
 	  send(ModifyAllelePair, 0);
 	  send(ModifyImagePaneAssociation, 0);
+
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  if (set.length > 0 or cmd.length > 0) then
             cmd := mgi_DBupdate(GXD_GENOTYPE, currentRecordKey, set) + cmd;
@@ -720,6 +751,13 @@ rules:
             from:= from+ top->ModificationHistory->Table.sqlFrom;
 	  end if;
 
+	  SearchNoteForm.notew := top->mgiNoteForm;
+	  SearchNoteForm.tableID := MGI_NOTE_GENOTYPE_VIEW;
+          SearchNoteForm.join := "g." + mgi_DBkey(GXD_GENOTYPE);
+	  send(SearchNoteForm, 0);
+	  from := from + top->mgiNoteForm.sqlFrom;
+	  where := where + top->mgiNoteForm.sqlWhere;
+
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	    where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;
 	  else
@@ -732,10 +770,6 @@ rules:
           if (top->ConditionalMenu.menuHistory.searchValue != "%") then
             where := where + "\nand g.isConditional = " + top->ConditionalMenu.menuHistory.searchValue;
           end if;
-
-	  if (top->Note->text.value.length > 0) then
-            where := where + "\nand g.note like " + mgi_DBprstr(top->Note->text.value);
-	  end if;
 
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
 
@@ -940,7 +974,6 @@ rules:
 	  end while;
 	  tables.close;
 
-	  top->EditForm->Note->text.value := "";
 	  top->EditForm->CombinationNote1->text.value := "";
 	  top->Reference->Records.labelString := "0 Records";
 
@@ -983,7 +1016,6 @@ rules:
                 top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
                 top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 9);
-                top->EditForm->Note->text.value := mgi_getstr(dbproc, 4);
 		table := top->Control->ModificationHistory->Table;
 		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 7));
@@ -1042,6 +1074,11 @@ rules:
 	  LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := GXD_GENOTYPE;
 	  send(LoadAcc, 0);
+
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_GENOTYPE_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
 
 --	  send(SelectReferences, 0);
 
