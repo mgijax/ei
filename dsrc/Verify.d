@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	09/29/2005
+--	- TR 7018; add automatic fill-in of copyright information in VerifyReference
+--
 -- lec	08/10/2005
 --	TR 3557, Images, OMIM
 --
@@ -2411,6 +2414,8 @@ rules:
 	  top : widget := sourceWidget.top;
 	  isTable : boolean;
 	  value : string;
+	  dbproc : opaque;
+	  copyright : string;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -2464,10 +2469,15 @@ rules:
 	  key : string;
 	  citation : string;
 	  isReview : string;
+	  journal : string;
+	  copyrightcitation : string;
+	  splitcopyright : string_list;
 
-	  select : string := "exec BIB_byJnum " + value;
+--	  select : string := "exec BIB_byJnum " + value;
+	  select : string := 
+	      "select _Refs_key, short_citation, isReviewArticle, journal, copyright_citation from BIB_View where jnum = " + value;
 
-	  dbproc : opaque := mgi_dbopen();
+	  dbproc := mgi_dbopen();
           (void) dbcmd(dbproc, select);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -2475,6 +2485,8 @@ rules:
 	      key := mgi_getstr(dbproc, 1);
 	      citation := mgi_getstr(dbproc, 2);
 	      isReview := mgi_getstr(dbproc, 3);
+	      journal := mgi_getstr(dbproc, 4);
+	      copyrightcitation := mgi_getstr(dbproc, 5);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
@@ -2502,7 +2514,55 @@ rules:
 	    else
 	      refTop->ObjectID->text.value := key;
 	      refTop->Citation->text.value := citation;
+
+	      --
+	      -- if Copyright widget exists and Copyright is blank, look it up and fill it in
+	      --
+	      -- J: exceptions are J:48521, J:80501, J:80502
+	      --
+
+	      copyright := "";
+	      if (top->Copyright != nil and value != "48521" and value != "80501" and value != "80502") then
+		if (top->Copyright->text.value.length = 0) then
+	          select := "select c.note from VOC_Term t, MGI_Note n, MGI_NoteChunk c " +
+			"where t.term = " + mgi_DBprstr(journal) +
+			" and t._Term_key = n._Object_key " + 
+			" and n._MGIType_key = 13 " + 
+			" and n._NoteType_key = 1026 " +
+			" and n._Note_key = c._Note_key";
+	          dbproc := mgi_dbopen();
+                  (void) dbcmd(dbproc, select);
+                  (void) dbsqlexec(dbproc);
+                  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	              copyright := copyright + mgi_getstr(dbproc, 1);
+	            end while;
+	          end while;
+	          (void) dbclose(dbproc);
+
+		  --
+		  -- If a Copyright for this Journal was found...
+		  -- replace the "*" with the journal's citation.
+		  --
+		  -- If the Journal requires an Elsevier copyright, then fill in the J:
+		  --
+
+		  if (copyright.length > 0) then
+		    if (strstr(copyright, "*") != nil) then
+		      splitcopyright := mgi_splitfields(copyright, "*");
+                      copyright := splitcopyright[1] + citation + splitcopyright[2];
+		    elsif (strstr(copyright, "Elsevier(") != nil) then
+		      splitcopyright := mgi_splitfields(copyright, "Elsevier(");
+                      copyright := splitcopyright[1] + "Elsevier(J:" + value + splitcopyright[2];
+		    end if;
+		    top->Copyright->text.value := copyright;
+		  end if;
+
+		end if;
+	      end if;
+
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+
 	    end if;
 	  else
 	    if (isTable) then

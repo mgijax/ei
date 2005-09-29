@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  09/29/2005
+--	- TR 7018; don't query by copyright unless a "%" character is present
+--
 -- lec	09/21/2005
 --	- TR 7111; change query results display format
 --
@@ -568,8 +571,10 @@ rules:
 	    where := where + "\nand n.note like " + mgi_DBprstr(top->Caption->text.value);
 	    from_note := true;
           elsif (top->Copyright->text.value.length > 0) then
-	    where := where + "\nand n.note like " + mgi_DBprstr(top->Copyright->text.value);
-	    from_note := true;
+	    if (strstr(top->Copyright->text.value, "%") != nil) then
+	      where := where + "\nand n.note like " + mgi_DBprstr(top->Copyright->text.value);
+	      from_note := true;
+	    end if;
 	  end if;
 
 	  value := mgi_tblGetCell(table, 0, table.paneLabel);
