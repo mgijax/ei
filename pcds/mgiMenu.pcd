@@ -2,8 +2,8 @@ Module: mgiMenu
 {
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
-      release = "TeleUSE v3.2 / Solaris 2.6";
-      lastWritten = "Thu Aug 24 10:15:20 2000";
+      release = "TeleUSE v3.2.3 / Solaris 8";
+      lastWritten = "Tue Oct  4 07:40:49 2005";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
@@ -67,8 +67,6 @@ Module: mgiMenu
         }
         {
           MainMenu = MenuBar;
-          Group: Widget
-            menuHelpWidget = Help;
           Group: Control
             vip_x = 45;
             vip_y = 250;
@@ -91,9 +89,6 @@ Module: mgiMenu
               }
               {
                 Utilities = Utilities : mgiMenu;
-              }
-              {
-                Help = Help : mgiMenu;
               }
         }
         {
@@ -214,16 +209,6 @@ Module: mgiMenu
               Popups:
               {
                 EditPulldown = MenuPulldown : mgiMenu;
-              }
-        }
-        {
-          Help = MenuCascade;
-          Group: Control
-            vip_x = 135;
-            vip_y = 305;
-              Popups:
-              {
-                HelpPulldown = MenuPulldown : mgiMenu;
               }
         }
         {

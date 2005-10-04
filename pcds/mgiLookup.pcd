@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar 28 15:03:55 2005";
+      lastWritten = "Tue Oct  4 07:17:58 2005";
         {
           LookupLabel = XmPushButton;
           Group: Widget

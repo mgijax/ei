@@ -2470,12 +2470,10 @@ rules:
 	  citation : string;
 	  isReview : string;
 	  journal : string;
-	  copyrightcitation : string;
 	  splitcopyright : string_list;
 
---	  select : string := "exec BIB_byJnum " + value;
 	  select : string := 
-	      "select _Refs_key, short_citation, isReviewArticle, journal, copyright_citation from BIB_View where jnum = " + value;
+	      "select _Refs_key, short_citation, isReviewArticle, journal from BIB_View where jnum = " + value;
 
 	  dbproc := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2486,7 +2484,6 @@ rules:
 	      citation := mgi_getstr(dbproc, 2);
 	      isReview := mgi_getstr(dbproc, 3);
 	      journal := mgi_getstr(dbproc, 4);
-	      copyrightcitation := mgi_getstr(dbproc, 5);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
