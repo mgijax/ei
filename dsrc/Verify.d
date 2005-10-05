@@ -2515,11 +2515,9 @@ rules:
 	      --
 	      -- if Copyright widget exists and Copyright is blank, look it up and fill it in
 	      --
-	      -- J: exceptions are J:48521, J:80501, J:80502
-	      --
 
 	      copyright := "";
-	      if (top->Copyright != nil and value != "48521" and value != "80501" and value != "80502") then
+	      if (top->Copyright != nil) then
 		if (top->Copyright->text.value.length = 0) then
 	          select := "select c.note from VOC_Term t, MGI_Note n, MGI_NoteChunk c " +
 			"where t.term = " + mgi_DBprstr(journal) +

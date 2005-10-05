@@ -224,16 +224,15 @@ rules:
             return;
           end if;
 
+          (void) busy_cursor(top);
+
 	  if (strstr(top->Copyright->text.value, "DXDOI") != nil) then
 	    if (strstr(top->Copyright->text.value, "DXDOI(||)") != nil) then
 	      StatusReport.source_widget := top;
-	      StatusReport.message := "\nThis Copyright is missing the DXDOI identifier .\n";
+	      StatusReport.message := "\nThis Copyright is missing the DXDOI identifier.\n";
 	      send(StatusReport);
-	      return;
 	    end if;
 	  end if;
-
-          (void) busy_cursor(top);
 
 	  currentRecordKey := "@" + KEYNAME;
 	  panekeyDeclared := false;
@@ -401,16 +400,15 @@ rules:
             return; 
           end if; 
 
+	  (void) busy_cursor(top);
+
 	  if (strstr(top->Copyright->text.value, "DXDOI") != nil) then
 	    if (strstr(top->Copyright->text.value, "DXDOI(||)") != nil) then
 	      StatusReport.source_widget := top;
-	      StatusReport.message := "\nThis Copyright is missing the DXDOI identifier .\n";
+	      StatusReport.message := "\nThis Copyright is missing the DXDOI identifier.\n";
 	      send(StatusReport);
-	      return;
 	    end if;
 	  end if;
-
-	  (void) busy_cursor(top);
 
 	  cmd := "";
 	  set := "";

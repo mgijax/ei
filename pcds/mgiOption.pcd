@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  4 09:57:51 2005";
+      lastWritten = "Wed Oct  5 09:36:12 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2813,13 +2813,6 @@ Module: mgiOption
               Popups:
               {
                 EvidenceCodePulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  tableOptionKey = 6;
-                  tableOption = 14;
-                  tableForm = Annotation;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
               }
         }
         {
@@ -2833,13 +2826,6 @@ Module: mgiOption
               Popups:
               {
                 AnnotQualifierPulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  tableOptionKey = 6;
-                  tableOption = 14;
-                  tableForm = Annotation;
-                    {
-                      SearchAll = SearchAll : mgiOption;
-                    }
               }
         }
 }

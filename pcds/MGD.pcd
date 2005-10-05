@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  4 09:30:25 2005";
+      lastWritten = "Wed Oct  5 09:36:21 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -6588,6 +6588,13 @@ Shift<Key>Tab: prev-tab-group()
                                   GOVocAnnot = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"GOVocAnnot\")";
+                                    labelString = "GO Vocabulary Annotations";
+                                    traversalOn = False;
+                                }
+                                {
+                                  GOVocAnnot1 = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"GOVocAnnot1\")";
                                     labelString = "GO Vocabulary Annotations";
                                     traversalOn = False;
                                 }
@@ -14893,7 +14900,10 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               AnnotQualifierPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select _Term_key, abbreviation from VOC_Term where _Vocab_key = 49 \norder by abbreviation";
+                                                sql = "select _Term_key, term from VOC_Term where _Vocab_key = 48 \norder by abbreviation";
+                                                tableForm = Annotation;
+                                                tableOption = 11;
+                                                tableOptionKey = 4;
                                             }
                                       }
                                       {
@@ -14912,6 +14922,9 @@ Shift<Key>Tab: prev-tab-group()
                                               EvidenceCodePulldown = OptionPulldown;
                                               Group: User
                                                 sql = "select _Term_key, abbreviation from VOC_Term where _Vocab_key = 3\norder by abbreviation";
+                                                tableForm = Annotation;
+                                                tableOption = 14;
+                                                tableOptionKey = 6;
                                             }
                                       }
                                       {
