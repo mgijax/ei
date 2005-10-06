@@ -26,83 +26,83 @@ pcds
     show_names  = false
     height      = 209
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGI.pcd"
+  load "/home/lec/ei/ei/pcds/MGI.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 121
     vsb_pos     = 72
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/GXD.pcd"
+  load "/home/lec/ei/ei/pcds/GXD.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 396
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGD.pcd"
+  load "/home/lec/ei/ei/pcds/MGD.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 836
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiDialog.pcd"
+  load "/home/lec/ei/ei/pcds/mgiDialog.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 561
     vsb_pos     = 1430
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiLookup.pcd"
+  load "/home/lec/ei/ei/pcds/mgiLookup.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 231
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiOption.pcd"
+  load "/home/lec/ei/ei/pcds/mgiOption.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 3861
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiControl.pcd"
+  load "/home/lec/ei/ei/pcds/mgiControl.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 121
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiMenu.pcd"
+  load "/home/lec/ei/ei/pcds/mgiMenu.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 396
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiTable.pcd"
+  load "/home/lec/ei/ei/pcds/mgiTable.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 176
     vsb_pos     = 74
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiDataTypes.pcd"
+  load "/home/lec/ei/ei/pcds/mgiDataTypes.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 1166
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/gxdDictionary.pcd"
+  load "/home/lec/ei/ei/pcds/gxdDictionary.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 671
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGIAdmin.pcd"
+  load "/home/lec/ei/ei/pcds/MGIAdmin.pcd"
     floating    = false
     opened      = true
     show_names  = false
     height      = 66
     vsb_pos     = 55
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGINomen.pcd"
+  load "/home/lec/ei/ei/pcds/MGINomen.pcd"
     floating    = false
     opened      = true
     show_names  = false
