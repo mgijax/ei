@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	10/05/2005
+--	- TR 5188; VerifyVocabQualifier
+--
 -- lec	09/29/2005
 --	- TR 7018; add automatic fill-in of copyright information in VerifyReference
 --
@@ -3455,6 +3458,115 @@ rules:
           end if;
  
           (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyVocabQualifier
+--
+--	Verify Qualifier for Table
+--	Assumes table.vocabKey, table.qualifier, table.qualifierKey are UDAs
+--	Copy Qualifier into Appropriate widget/column
+--	Copy Qualifier Key into Appropriate widget/column
+--
+
+	VerifyVocabQualifier does
+	  sourceWidget : widget := VerifyVocabQualifier.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+	  qualifierKey : string;
+	  qualifier : string;
+	  dag : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  if (isTable) then
+	    row := VerifyVocabQualifier.row;
+	    column := VerifyVocabQualifier.column;
+	    reason := VerifyVocabQualifier.reason;
+	    value := VerifyVocabQualifier.value;
+
+	    -- If not in the Qualifier column, return
+
+	    if (column != sourceWidget.qualifier) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  else
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  select : string := "select _Term_key, abbreviation from VOC_Term " +
+		"where abbreviation = " + mgi_DBprstr(value) + 
+		" and _Vocab_key = " + (string) sourceWidget.vocabQualifierKey;
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      qualifierKey := mgi_getstr(dbproc, 1);
+	      qualifier    := mgi_getstr(dbproc, 2);
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  -- If Qualifier is valid
+	  --   Copy the Keys into the Key fields
+	  --   Copy the Names into the Name fields
+	  -- Else
+	  --   Display an error message, set the key columns to null, disallow edit to the field
+
+	  if (qualifierKey.length > 0) then
+	    if (isTable) then
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, qualifierKey);
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, qualifier);
+	    end if;
+	  else
+	    if (isTable) then
+	      VerifyVocabQualifier.doit := (integer) false;
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "NULL");
+	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
+	    end if;
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid Qualifier";
+            send(StatusReport);
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
+	  if (isTable) then
+	    if (sourceWidget.is_defined("dag") != nil) then
+	      dag := mgi_tblGetCell(sourceWidget, row, sourceWidget.dag);
+	      if ((qualifier = "col" or qualifier = "ncol") and dag != "C") then
+	        VerifyVocabQualifier.doit := (integer) false;
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "NULL");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Qualifier 'colocalizes with' can only be used with the Component Ontology";
+                send(StatusReport);
+	      elsif ((qualifier = "con" or qualifier = "ncon") and dag != "F") then
+	        VerifyVocabQualifier.doit := (integer) false;
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "NULL");
+	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Qualifier 'contributes to' can only be used with the Function Ontology";
+                send(StatusReport);
+	      end if;
+	    end if;
+	  end if;
+
+	  (void) reset_cursor(top);
 	end does;
 
 --

@@ -72,6 +72,8 @@ VerifyUser [];
 
 VerifyVocabEvidenceCode [];
 
+VerifyVocabQualifier [];
+
 VerifyVocabTermAccID [];
 
 VerifyWesternBlot :translation [];
