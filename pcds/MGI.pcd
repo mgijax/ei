@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  4 07:39:14 2005";
+      lastWritten = "Fri Oct  7 10:53:31 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -1156,8 +1156,6 @@ Module: MGI
                                   CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
                                         Search = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:SearchGenotype,\nD:GoHome";
                                       }
                                       {
                                         Modify = MenuPush : mgiMenu;
@@ -1175,16 +1173,6 @@ Module: MGI
                                         Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearLists = 3)";
-                                      }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                 }
                           }
@@ -2259,67 +2247,6 @@ Module: MGI
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
-                          {
-                            File = File : mgiMenu;
-                          }
-                          {
-                            Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Modify = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:Modify,\nD:GoHome";
-                                      }
-                                      {
-                                        Add = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Next = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2517,29 +2444,29 @@ Module: MGI
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:ClearImage()";
+                                          activateCallback = "D:ClearImage";
                                       }
                                 }
                           }
@@ -2962,7 +2889,7 @@ Module: MGI
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:ClearImage()";
+                                    activateCallback = "D:ClearImage";
                                 }
                                 {
                                   Modify = ControlPush;

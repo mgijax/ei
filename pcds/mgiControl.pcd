@@ -3,7 +3,7 @@ Module: mgiControl
       autoCuil = False;
       dDialogFile = "mgiControl_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 27 15:10:28 2003";
+      lastWritten = "Fri Oct  7 08:53:20 2005";
         {
           Control = XmFrame;
           Group: Control
@@ -20,6 +20,7 @@ Module: mgiControl
                       Search = ControlPush : mgiControl;
                       Group: Widget
                         activateCallback = "D:Search,\nD:GoHome";
+                        accelerator = "Ctrl<Key>s";
                       Group: Constraint
                         leftAttachment = attach_form;
                         rightAttachment = attach_none;
@@ -33,6 +34,7 @@ Module: mgiControl
                       Clear = ControlPush : mgiControl;
                       Group: Widget
                         activateCallback = "D:Clear";
+                        accelerator = "Ctrl<Key>c";
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Search;
@@ -47,6 +49,7 @@ Module: mgiControl
                       Modify = ControlPush : mgiControl;
                       Group: Widget
                         activateCallback = "D:VerifyEdit(mode = 1),\nD:Modify,\nD:GoHome";
+                        accelerator = "Ctrl<Key>m";
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Clear;
@@ -61,6 +64,7 @@ Module: mgiControl
                       Add = ControlPush : mgiControl;
                       Group: Widget
                         activateCallback = "D:VerifyEdit(mode = 2),\nD:Add,\nD:GoHome";
+                        accelerator = "Ctrl<Key>a";
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Modify;
@@ -75,6 +79,7 @@ Module: mgiControl
                       Delete = ControlPush : mgiControl;
                       Group: Widget
                         activateCallback = "D:VerifyEdit(mode = 3),\nD:GoHome";
+                        accelerator = "Ctrl<Key>d";
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Add;

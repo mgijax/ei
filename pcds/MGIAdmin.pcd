@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  4 07:39:18 2005";
+      lastWritten = "Fri Oct  7 10:10:57 2005";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -92,7 +92,7 @@ Module: MGIAdmin
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                           }
                           {
                             Edit = Edit;
@@ -364,7 +364,7 @@ Module: MGIAdmin
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                           }
                           {
                             Edit = Edit;

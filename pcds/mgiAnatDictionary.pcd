@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  4 07:39:10 2005";
+      lastWritten = "Fri Oct  7 10:10:56 2005";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -24,41 +24,7 @@ Module: mgiAnatDictionary
                             File = File;
                           }
                           {
-                            Commands = Commands;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown;
-                                      {
-                                        Search = MenuPush;
-                                      }
-                                      {
-                                        Modify = MenuPush;
-                                      }
-                                      {
-                                        Add = MenuPush;
-                                        Group: Widget
-                                          activateCallback = "D:AddDialog,\nD:GoHome";
-                                      }
-                                      {
-                                        Delete = MenuPush;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush;
-                                        Group: Widget
-                                          labelString = "Clear Form Only";
-                                          activateCallback = "D:DictionaryClear";
-                                      }
-                                      {
-                                        ClearFormStages : Clear1 = MenuPush;
-                                        Group: Widget
-                                          activateCallback = "D:DictionaryClear(clearStages = true)";
-                                          labelString = "Clear Form and Stages";
-                                          sensitive = True;
-                                      }
-                                }
+                            Commands = Commands : mgiMenu;
                           }
                           {
                             Edit = Edit;

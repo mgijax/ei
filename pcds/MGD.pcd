@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 08:19:37 2005";
+      lastWritten = "Fri Oct  7 11:07:44 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1357,29 +1357,29 @@ Module: MGD
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:OrthologyClear";
+                                          activateCallback = "D:ClearOrthology";
                                       }
                                 }
                           }
@@ -1576,7 +1576,7 @@ Module: MGD
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:OrthologyClear";
+                                    activateCallback = "D:ClearOrthology";
                                 }
                           }
                     }
@@ -1704,43 +1704,29 @@ Module: MGD
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearForms = 127, clearLists = 7)";
-                                      }
-                                      {
-                                        Clear1 = MenuPush;
-                                        Group: Widget
-                                          sensitive = True;
-                                          labelString = "Clear Molecular Segment";
-                                          activateCallback = "D:Clear(clearForms = 63, clearLists = 7)";
-                                      }
-                                      {
-                                        Clear2 = MenuPush;
-                                        Group: Widget
-                                          activateCallback = "D:Clear(clearForms = 65, clearLists = 4)";
-                                          labelString = "Clear References";
-                                          sensitive = True;
                                       }
                                 }
                           }
@@ -5309,41 +5295,29 @@ Module: MGD
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearForms = 1023, clearLists = 15)";
-                                      }
-                                      {
-                                        Clear1 = MenuPush;
-                                        Group: Widget
-                                          labelString = "Clear References (1)";
-                                          activateCallback = "D:Clear(clearForms = 7, clearLists = 15)";
-                                      }
-                                      {
-                                        Clear2 = MenuPush;
-                                        Group: Widget
-                                          labelString = "Clear Experiments (2)";
-                                          activateCallback = "D:Clear(clearForms = 1021, clearLists = 4)";
                                       }
                                 }
                           }
@@ -5417,33 +5391,9 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -5842,29 +5792,27 @@ Module: MGD
                                 }
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
-                                        Group: Widget
-                                          activateCallback = "D:VerifyEdit(mode = 1),\nD:Modify,\nD:GoHome";
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:VerifyMLCClear";
                                       }
@@ -6739,27 +6687,27 @@ Shift<Key>Tab: prev-tab-group()
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearLists = 3)";
                                       }
@@ -7271,27 +7219,27 @@ Shift<Key>Tab: prev-tab-group()
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearForms = 15, clearLists = 5)";
                                       }
@@ -9095,7 +9043,7 @@ Shift<Key>Tab: prev-tab-group()
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
                                   CommandsPulldown = MenuPulldown : mgiMenu;
@@ -10026,26 +9974,6 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Modify = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Add = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          sensitive = False;
-                                      }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          sensitive = False;
-                                      }
-                                }
                           }
                           {
                             Edit = Edit : mgiMenu;
@@ -11053,29 +10981,27 @@ Shift<Key>Tab: prev-tab-group()
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
-                                        Group: Widget
-                                          sensitive = False;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:ClearMarker";
                                       }
@@ -11935,31 +11861,29 @@ Shift<Key>Tab: prev-tab-group()
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
-                                        Group: Widget
-                                          sensitive = False;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:ClearMarker";
+                                          activateCallback = "D:ClearMarker()";
                                       }
                                 }
                           }
@@ -12854,7 +12778,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Clear = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:Clear (clearLists = 3)";
+                                          activateCallback = "D:Clear(clearLists = 3)";
                                       }
                                 }
                           }
@@ -13786,18 +13710,12 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Modify = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         Add = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         Delete = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         separator1 = XmSeparator;
@@ -14399,29 +14317,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Exit = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:OMIMVocAnnotExit";
-                                      }
-                                }
-                          }
-                          {
-                            Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Modify = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Add = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                 }
                           }

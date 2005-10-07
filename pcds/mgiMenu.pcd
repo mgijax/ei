@@ -3,7 +3,7 @@ Module: mgiMenu
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  4 07:40:49 2005";
+      lastWritten = "Fri Oct  7 10:44:56 2005";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
@@ -137,20 +137,20 @@ Module: mgiMenu
                       Search = MenuPush : mgiMenu;
                       Group: Widget
                         activateCallback = "D:Search,\nD:GoHome";
-                        accelerator = " Ctrl<Key>s";
+                        accelerator = " trl<Key>s";
                         mnemonic = S;
                     }
                     {
                       Modify = MenuPush : mgiMenu;
                       Group: Widget
                         activateCallback = "D:VerifyEdit(mode = 1),\nD:Modify,\nD:GoHome";
-                        accelerator = " Ctrl<Key>m";
+                        accelerator = "Ctrl<Key>m";
                         mnemonic = M;
                     }
                     {
                       Add = MenuPush : mgiMenu;
                       Group: Widget
-                        accelerator = " Ctrl<Key>a";
+                        accelerator = "Ctrl<Key>a";
                         activateCallback = "D:VerifyEdit(mode = 2),\nD:Add,\nD:GoHome";
                         mnemonic = A;
                     }
@@ -158,7 +158,7 @@ Module: mgiMenu
                       Delete = MenuPush : mgiMenu;
                       Group: Widget
                         activateCallback = "D:VerifyEdit(mode = 3),\nD:GoHome";
-                        accelerator = " Ctrl<Key>d";
+                        accelerator = "Ctrl<Key>d";
                         mnemonic = D;
                     }
                     {
@@ -168,7 +168,7 @@ Module: mgiMenu
                       Clear = MenuPush : mgiMenu;
                       Group: Widget
                         activateCallback = "D:Clear";
-                        accelerator = " Ctrl<Key>c";
+                        accelerator = "Ctrl<Key>c";
                         mnemonic = C;
                         labelString = "Clear All";
                     }
@@ -188,14 +188,14 @@ Module: mgiMenu
                     {
                       Previous = MenuPush : mgiMenu;
                       Group: Widget
-                        accelerator = " Ctrl<Key>p";
+                        accelerator = "Ctrl<Key>p";
                         activateCallback = "D:Previous,\nD:GoHome";
                         mnemonic = P;
                     }
                     {
                       Next = MenuPush : mgiMenu;
                       Group: Widget
-                        accelerator = " Ctrl<Key>n";
+                        accelerator = " trl<Key>n";
                         activateCallback = "D:Next,\nD:GoHome";
                         mnemonic = N;
                     }
