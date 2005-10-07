@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct  6 14:29:11 2005";
+      lastWritten = "Fri Oct  7 08:19:37 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13500,14 +13500,13 @@ Shift<Key>Tab: prev-tab-group()
                                     orientation = horizontal;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = VocAnnotTypeMenu;
+                                    leftWidget = mgiAccession;
                                     leftOffset = 30;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = VocAnnotTypeMenu;
-                                    topOffset = "-5";
+                                    topWidget = mgiAccession;
                                 }
                           }
                     }

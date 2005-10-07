@@ -1000,7 +1000,7 @@ rules:
 	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, goNoteTemplate);
 	  end if;
 
-	  NoteInit.source_widget := top->Lookup->NotePush;
+	  NoteInit.source_widget := top->Annotation->NotePush;
 	  send(NoteInit, 0);
 	end does;
 
