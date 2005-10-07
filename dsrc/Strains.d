@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	10/07/2005
+--	TR 6949, VerifyNomenclature
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -85,14 +88,13 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [];
 	BuildDynamicComponents :local [];
+        ClearStrain :local [clearKeys : boolean := true;
+                            reset : boolean := false;];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
+
 	Modify :local [];
-
-        ClearStrain :local [clearKeys : boolean := true;
-                            reset : boolean := false;];
-
 	ModifyGenotype :local [];
 	ModifyType :local [];
 	ModifySuperStandard :local [];
@@ -110,7 +112,8 @@ devents:
 
 	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
-	VerifyDuplicateStrain :translation [];
+	VerifyDuplicateStrain :local [];
+	VerifyNomenclature :translation [];
 
 locals:
 	mgi : widget;
@@ -272,6 +275,7 @@ rules:
 	  end if;
 
 	end does;
+
 --
 -- Add
 --
@@ -1162,24 +1166,21 @@ rules:
 --
 -- VerifyDuplicateStrain
 --
--- Activated from:  tab out of Name->text
+-- Activated from:  VerifyNomenclature
 --
 -- Check Strain against existing Strains.
 -- Inform user if Strain is a duplicate.
 --
 
 	VerifyDuplicateStrain does
-	  value : string := VerifyDuplicateStrain.source_widget.value;
+	  value : string := top->Name->text.value;
 	  strainCount : string;
 
 	  -- If wildcard (%), then skip verification
 
 	  if (strstr(value, "%") != nil) then
-	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;
 	  end if;
-
-	  (void) busy_cursor(top);
 
 	  strainCount := mgi_sql1("select count(*) from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(value));
 
@@ -1188,6 +1189,81 @@ rules:
             StatusReport.message := "This Strain already exists in MGI.";
             send(StatusReport);
 	  end if;
+
+	end does;
+
+--
+-- VerifyNomenclature
+--
+-- Activated from:  tab out of Name->text
+--
+-- Verify Strain Nomenclature
+--
+
+	VerifyNomenclature does
+	  value : string := VerifyNomenclature.source_widget.value;
+	  foundError : boolean := false;
+	  msg : string := "";
+
+	  (void) busy_cursor(top);
+
+	  if (strstr(value, "CD1 ") != nil) then
+	    foundError := true;
+	    msg := msg + "CD1 should be CD-1\n";
+	  end if;
+
+	  if (strstr(value, "C3H/R1 ") != nil) then
+	    foundError := true;
+	    msg := msg + "C3HR1 should be C3HRl\n";
+	  end if;
+
+	  if (strstr(value, "FVB/J ") != nil) then
+	    foundError := true;
+	    msg := msg + "FVB/J should be FVB/NJ\n";
+	  end if;
+
+	  if (strstr(value, "129P2 ") != nil) then
+	    foundError := true;
+	    msg := msg + "129P2 should be 129P2/OlaHsd\n";
+	  end if;
+
+	  if (strstr(value, "129S7 ") != nil) then
+	    foundError := true;
+	    msg := msg + "129S7 should be 129S7/SvEvBrd\n";
+	  end if;
+
+	  if (strstr(value, "129/SvEv ") != nil) then
+	    foundError := true;
+	    msg := msg + "129/SvEv should be 129S/SvEv\n";
+	  end if;
+
+	  if (strstr(value, "129/SvJ ") != nil) then
+	    foundError := true;
+	    msg := msg + "129/SvJ should be 129X1/Svj\n";
+	  end if;
+
+	  if (strstr(value, ":  ") != nil) then
+	    foundError := true;
+	    msg := msg + "2 spaces after : should be 1 space\n";
+	  end if;
+
+	  if (strstr(value, "#") != nil) then
+	    foundError := true;
+	    msg := msg + "# should be *\n";
+	  end if;
+
+	  if (strstr(value, "\"") != nil) then
+	    msg := msg + "\" should be *\n";
+	    foundError := true;
+	  end if;
+
+	  if (foundError) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "The nomenclature on this record looks non-standard:\n\n" + msg;
+            send(StatusReport);
+	  end if;
+
+	  send(VerifyDuplicateStrain, 0);
 
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
