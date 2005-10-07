@@ -1198,6 +1198,7 @@ rules:
 -- Activated from:  tab out of Name->text
 --
 -- Verify Strain Nomenclature
+-- trailing blank check is deliberate ("CD1 " vs. "CD1").
 --
 
 	VerifyNomenclature does
