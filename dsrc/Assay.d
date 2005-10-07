@@ -137,7 +137,7 @@
 --	- added DeleteGelBand to GelBand form
 --
 -- lec	06/23/98
---	- added AssayClear to clear the currentAssay key
+--	- added ClearAssay to clear the currentAssay key
 --	- when clearing, reconstruct the Gel Band table
 --
 -- lec	05/29/98
@@ -203,12 +203,12 @@ devents:
 	AddToEditClipboard :local [];
 	AppendToAgeNote :local [];
 	Assay [];
-	AssayClear [clearKeys : boolean := true;
+	BuildDynamicComponents :local [];
+	ClearAssay [clearKeys : boolean := true;
 		    clearForms : integer := 511;
 		    clearLists : integer := 3;
 		    reset : boolean := false;
 		    select: boolean := false;];
-	BuildDynamicComponents :local [];
 	CopySpecimen :local [];
 	CopySpecimenColumn :local [];
 	CopyGelLane :local [];
@@ -385,23 +385,23 @@ rules:
 	end does;
 
 --
--- AssayClear
+-- ClearAssay
 --
 -- Special clearing for Assay form
 --
-	AssayClear does
+	ClearAssay does
 
 	  Clear.source_widget := top;
-	  Clear.clearForms := AssayClear.clearForms;
-	  Clear.clearLists := AssayClear.clearLists;
-	  Clear.clearKeys := AssayClear.clearKeys;
-	  Clear.reset := AssayClear.reset;
+	  Clear.clearForms := ClearAssay.clearForms;
+	  Clear.clearLists := ClearAssay.clearLists;
+	  Clear.clearKeys := ClearAssay.clearKeys;
+	  Clear.reset := ClearAssay.reset;
 	  send(Clear, 0);
 
           SetNotesDisplay.note := top->AssayNote->Note;
           send(SetNotesDisplay, 0);
 
-	  if (not AssayClear.select) then
+	  if (not ClearAssay.select) then
 	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
@@ -442,7 +442,7 @@ rules:
 	  SetRowCount.tableID := GXD_ASSAY;
 	  send(SetRowCount, 0);
 
-	  send(AssayClear, 0);
+	  send(ClearAssay, 0);
 	end does;
 
 --
@@ -717,7 +717,7 @@ rules:
 
 	  EditClipboardLoad.source_widget := clipboard;
 	  send(EditClipboardLoad, 0);
-	  send(AssayClear, 0);
+	  send(ClearAssay, 0);
 	end does;
 
 --
@@ -1101,8 +1101,8 @@ rules:
           send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-            AssayClear.clearKeys := false;
-            send(AssayClear, 0);
+            ClearAssay.clearKeys := false;
+            send(ClearAssay, 0);
           end if;
  
 	  currentAssay := "";
@@ -2461,12 +2461,12 @@ rules:
 	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
 
 	  if (assayDetailForm.name = "GelForm") then
-	    AssayClear.clearForms := clearAssayGel;
+	    ClearAssay.clearForms := clearAssayGel;
 	  end if;
 
-          AssayClear.reset := true;
-	  AssayClear.select := true;
-          send(AssayClear, 0);
+          ClearAssay.reset := true;
+	  ClearAssay.select := true;
+          send(ClearAssay, 0);
 
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);

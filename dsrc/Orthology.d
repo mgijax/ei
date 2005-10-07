@@ -106,7 +106,7 @@ devents:
 	Exit :local [];
 	Init :local [];
 
-	OrthologyClear :local [source_widget : widget;
+	ClearOrthology :local [source_widget : widget;
 			      clearKeys : boolean := true;
 			      reset : boolean := false;];
 
@@ -227,18 +227,18 @@ rules:
  
           -- Clear the form
  
-          OrthologyClear.source_widget := top;
-          send(OrthologyClear, 0);
+          ClearOrthology.source_widget := top;
+          send(ClearOrthology, 0);
 	end
 
 --
--- OrthologyClear
+-- ClearOrthology
 --
 
-	OrthologyClear does
+	ClearOrthology does
 	  Clear.source_widget := top;
-	  Clear.clearKeys := OrthologyClear.clearKeys;
-	  Clear.reset := OrthologyClear.reset;
+	  Clear.clearKeys := ClearOrthology.clearKeys;
+	  Clear.reset := ClearOrthology.reset;
 	  send(Clear, 0);
 
 	  send(SetOrganismDefault, 0);
@@ -315,9 +315,9 @@ rules:
 	  send(PythonMarkerOMIMCache, 0);
 
 	  if (top->QueryList->List.row = 0) then
-	    OrthologyClear.source_widget := top;
-	    OrthologyClear.clearKeys := false;
-	    send(OrthologyClear, 0);
+	    ClearOrthology.source_widget := top;
+	    ClearOrthology.clearKeys := false;
+	    send(ClearOrthology, 0);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -944,9 +944,9 @@ rules:
 
 	  top->QueryList->List.row := Select.item_position;
 
-	  OrthologyClear.source_widget := top;
-	  OrthologyClear.reset := true;
-	  send(OrthologyClear, 0);
+	  ClearOrthology.source_widget := top;
+	  ClearOrthology.reset := true;
+	  send(ClearOrthology, 0);
 
 	  (void) reset_cursor(top);
 	end

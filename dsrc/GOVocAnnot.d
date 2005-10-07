@@ -300,6 +300,9 @@ rules:
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  send(ProcessNoteForm, 0);
 	  cmd := top->mgiNoteForm.sql;
+	  if (top->mgiNoteForm.sql.length > 0) then
+	      notesModified := true;
+	  end if;
 
 	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
