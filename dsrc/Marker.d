@@ -840,7 +840,7 @@ rules:
 		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
 
             StatusReport.source_widget := top;
-	    StatusReport.message := "Chromosome value has changed.  Check Cytogenetic Band and centiMorgan assignments.";
+	    StatusReport.message := "Check genome coordinates, cytogenetic band and centiMorgan assignments.";
 	    send(StatusReport);
 
 	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
