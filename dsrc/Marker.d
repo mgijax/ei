@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 10/07/2005	lec
+--	-- TR 6223; ModifyChromosome;add warning message 
+--
 -- 07/19/2005	lec
 --	MGI 3.3
 --	PythonMarkerOMIMCache
@@ -802,7 +805,7 @@ rules:
 -- Activated from:  widget top->ChromosomeMenu->ChromToggle
 --
 -- If Chromosome = "UN", then Offset = -999
--- If Chromosome was known and changed to another know, then Offsets = -1
+-- If Chromosome was known and changed to another known, then Offsets = -1
 --
 
 	ModifyChromosome does
@@ -835,6 +838,10 @@ rules:
 		 currentChr != top->ChromosomeMenu.menuHistory.defaultValue and
 		 currentChr != "UN" and
 		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
+
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Chromosome value has changed.  Check Cytogenetic Band and centiMorgan assignments.";
+	    send(StatusReport);
 
 	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
               StatusReport.source_widget := top;
