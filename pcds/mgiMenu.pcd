@@ -3,7 +3,7 @@ Module: mgiMenu
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 10:44:56 2005";
+      lastWritten = "Fri Oct  7 13:18:58 2005";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
@@ -137,7 +137,7 @@ Module: mgiMenu
                       Search = MenuPush : mgiMenu;
                       Group: Widget
                         activateCallback = "D:Search,\nD:GoHome";
-                        accelerator = " trl<Key>s";
+                        accelerator = "Ctrl<Key>s";
                         mnemonic = S;
                     }
                     {
