@@ -584,11 +584,13 @@ rules:
 	  end if;
 
           if (top->Caption->text.value.length > 0) then
-	    where := where + "\nand n.note like " + mgi_DBprstr(top->Caption->text.value);
+	    where := where + "\nand n._NoteType_key = " + (string) top->Caption.noteTypeKey +
+		     "\nand n.note like " + mgi_DBprstr(top->Caption->text.value);
 	    from_note := true;
           elsif (top->Copyright->text.value.length > 0) then
 	    if (strstr(top->Copyright->text.value, "%") != nil) then
-	      where := where + "\nand n.note like " + mgi_DBprstr(top->Copyright->text.value);
+	      where := where + "\nand n._NoteType_key = " + (string) top->Copyright.noteTypeKey +
+		       "\nand n.note like " + mgi_DBprstr(top->Copyright->text.value);
 	      from_note := true;
 	    end if;
 	  end if;
