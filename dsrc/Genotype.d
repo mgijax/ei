@@ -750,12 +750,18 @@ rules:
             from:= from+ top->ModificationHistory->Table.sqlFrom;
 	  end if;
 
-	  SearchNoteForm.notew := top->mgiNoteForm;
-	  SearchNoteForm.tableID := MGI_NOTE_GENOTYPE_VIEW;
-          SearchNoteForm.join := "g." + mgi_DBkey(GXD_GENOTYPE);
-	  send(SearchNoteForm, 0);
-	  from := from + top->mgiNoteForm.sqlFrom;
-	  where := where + top->mgiNoteForm.sqlWhere;
+	  -- this searches each note individually
+	  i : integer := 1;
+	  while (i <= top->mgiNoteForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_GENOTYPE_VIEW;
+            SearchNoteForm.join := "g." + mgi_DBkey(GXD_GENOTYPE);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+	    i := i + 1;
+	  end while;
 
 	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
 	    where := where + "\nand g._Strain_key = " + top->EditForm->Strain->StrainID->text.value;

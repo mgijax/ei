@@ -1208,6 +1208,8 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  value := value.raise_case;
+
 	  if (strstr(value, "CD1 ") != nil) then
 	    foundError := true;
 	    msg := msg + "CD1 should be CD-1\n";
@@ -1233,14 +1235,14 @@ rules:
 	    msg := msg + "129S7 should be 129S7/SvEvBrd\n";
 	  end if;
 
-	  if (strstr(value, "129/SvEv ") != nil) then
+	  if (strstr(value, "129/SVEV ") != nil) then
 	    foundError := true;
 	    msg := msg + "129/SvEv should be 129S/SvEv\n";
 	  end if;
 
-	  if (strstr(value, "129/SvJ ") != nil) then
+	  if (strstr(value, "129/SVJ ") != nil) then
 	    foundError := true;
-	    msg := msg + "129/SvJ should be 129X1/Svj\n";
+	    msg := msg + "129/SvJ should be 129X1/SvJ\n";
 	  end if;
 
 	  if (strstr(value, ":  ") != nil) then
