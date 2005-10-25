@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 10:53:31 2005";
+      lastWritten = "Fri Oct 14 13:49:59 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -2646,68 +2646,6 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  GXDcopyrights = XmRowColumn;
-                                  Group: Widget
-                                    orientation = horizontal;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Copyright;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Copyright;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        DevelopmentNote = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Development;
-                                        Group: User
-                                          noteWidget = Copyright;
-                                          note = "This image is from * and is displayed with the permission of The Company of Biologists Limited who owns the Copyright.";
-                                      }
-                                      {
-                                        NatureNote = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Nature;
-                                        Group: User
-                                          note = "This image is from * and is displayed with the permission of <A HREF=\"http://www.nature.com/\">The Nature Publishing Group</A> who owns the Copyright.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        DevDynamics = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Dev Dyn";
-                                        Group: User
-                                          note = "This image is from * and is displayed with the permission of Wiley-Liss, Inc. who owns the Copyright.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        PLOS = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = PLoS;
-                                        Group: User
-                                          note = "This image is from * , an open-access article distributed under the terms of the Creative Commons Attribution License.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        BMC = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = BMC;
-                                        Group: User
-                                          note = "This image is from *, an open-access article, licensee BioMed Central Ltd.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        Elsevier = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Elsevier;
-                                        Group: User
-                                          note = "Reprinted with permission from Elsevier from \\DXDOI(||) \\Elsevier(||)";
-                                          noteWidget = Copyright;
-                                      }
-                                }
-                                {
                                   ImagePane = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_none;
@@ -2745,7 +2683,7 @@ Module: MGI
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_widget;
                                     topAttachment = attach_widget;
-                                    topWidget = GXDcopyrights;
+                                    topWidget = Copyright;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
