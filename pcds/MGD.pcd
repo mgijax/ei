@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 15:05:16 2005";
+      lastWritten = "Mon Oct 31 12:59:38 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -9166,16 +9166,37 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                 }
                                 {
+                                  IMSRMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = IMSRPulldown;
+                                    labelString = "OK for IMSR?";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = StandardMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = StandardMenu;
+                                    topOffset = 5;
+                                  Group: User
+                                    defaultOption = No;
+                                      Popups:
+                                      {
+                                        IMSRPulldown : YesNoPulldown = OptionPulldown;
+                                      }
+                                }
+                                {
                                   SuperStandardMenu = YesNoMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = SuperStandardPulldown;
                                     labelString = "Super Standard?";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = StandardMenu;
+                                    leftWidget = IMSRMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = StandardMenu;
+                                    topWidget = IMSRMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;

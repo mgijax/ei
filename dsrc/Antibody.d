@@ -4,8 +4,7 @@
 -- Antibody.d 11/19/98
 --
 -- TopLevelShell:		Antibody
--- Database Tables Affected:	GXD_Antibody, GXD_AntibodyAlias, GXD_AntibodyMarker
--- Cross Reference Tables:	
+-- Database Tables Affected:	GXD_Antibody, GXD_AntibodyAlias, GXD_AntibodyMarker, PRB_Source
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- History

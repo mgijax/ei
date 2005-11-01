@@ -5,7 +5,6 @@
 --
 -- TopLevelShell:		Antigen
 -- Database Tables Affected:	GXD_Antigen, PRB_Source
--- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- History

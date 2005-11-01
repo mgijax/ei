@@ -3,8 +3,7 @@
 -- Creator : lec
 --
 -- TopLevelShell:		ControlledVocab
--- Database Tables Affected:	All Controlled Vocabulary tables defined
---				in ControlledVocabMenu template.
+-- Database Tables Affected:	All Controlled Vocabulary tables defined in ControlledVocabMenu template.
 --
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete

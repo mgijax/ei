@@ -3,9 +3,7 @@
 -- Creator : lec
 --
 -- TopLevelShell:		Allele
--- Database Tables Affected:	ALL_Allele, ALL_Note, ALL_Synonym, ALL_Reference
--- Cross Reference Tables:	ALL_Type, ALL_Inheritance_Mode, ALL_Molecular_Mutation,
---				ALL_Status, ALL_CellLine
+-- Database Tables Affected:	ALL_Allele, ALL_Allele_Mutation, MGI_Note, MGI_Synonym, MGI_Reference_Assoc
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module process edits for Allele tables.
