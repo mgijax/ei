@@ -688,7 +688,7 @@ rules:
 	    cmd := cmd + "exec GXD_orderGenotypes " +  alleleList.next + "\n";
 	  end while;
 
-	  if (reorderingAlleles) then
+	  if (not reorderingAlleles) then
 	    cmd := cmd + "exec GXD_orderAllelePairs " + top->ID->text.value + "\n";
 	  end if;
 
