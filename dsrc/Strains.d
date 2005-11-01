@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	10/31/2005
+--	TR 7153; added IMSRMenu
+--
 -- lec	10/07/2005
 --	TR 6949, VerifyNomenclature
 --
@@ -305,6 +308,7 @@ rules:
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->NeedsReviewMenu.menuHistory.defaultValue + "," +
                  top->PrivateMenu.menuHistory.defaultValue + "," +
+                 top->IMSRMenu.menuHistory.defaultValue + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
  
 	  send(ModifyType, 0);
@@ -435,6 +439,11 @@ rules:
           if (top->PrivateMenu.menuHistory.modified and
               top->PrivateMenu.menuHistory.searchValue != "%") then
             set := set + "private = "  + top->PrivateMenu.menuHistory.defaultValue + ",";
+          end if;
+ 
+          if (top->IMSRMenu.menuHistory.modified and
+              top->IMSRMenu.menuHistory.searchValue != "%") then
+            set := set + "imsrOK = "  + top->IMSRMenu.menuHistory.defaultValue + ",";
           end if;
  
           cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
@@ -703,6 +712,10 @@ rules:
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
           end if;
 
+          if (top->IMSRMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand s.imsrOK = " + top->IMSRMenu.menuHistory.searchValue;
+          end if;
+
 	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
             where := where + "\nand exists (select 1 from VOC_Annot a " +
 		"where s._Strain_key = a._Object_key" + 
@@ -852,15 +865,15 @@ rules:
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 11);
+		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 12);
                 top->Name->text.value := mgi_getstr(dbproc, 3);
 		origStrainName := top->Name->text.value;
 
 	        table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
 
                 SetOption.source_widget := top->StandardMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
@@ -870,6 +883,9 @@ rules:
                 send(SetOption, 0);
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
+                send(SetOption, 0);
+                SetOption.source_widget := top->IMSRMenu;
+                SetOption.value := mgi_getstr(dbproc, 7);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
