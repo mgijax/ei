@@ -208,6 +208,13 @@ rules:
           SetRowCount.tableID := VOC_ANNOT;
           send(SetRowCount, 0);
  
+	  tables.open;
+	  while (tables.more) do
+	    ClearTable.table := tables.next;
+	    send(ClearTable, 0);
+	  end while;
+	  tables.close;
+
           -- Clear form
           Clear.source_widget := top;
           send(Clear, 0);
