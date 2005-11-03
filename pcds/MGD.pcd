@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 31 12:59:38 2005";
+      lastWritten = "Thu Nov  3 10:43:27 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -330,9 +330,6 @@ Module: MGD
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -2662,9 +2659,6 @@ Module: MGD
                                   EntrezGene = AccToggle : mgiOption;
                                 }
                                 {
-                                  Ensembl = AccToggle : mgiOption;
-                                }
-                                {
                                   NCBIGeneModel = AccToggle : mgiOption;
                                 }
                                 {
@@ -3253,9 +3247,6 @@ Module: MGD
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -5564,9 +5555,6 @@ Module: MGD
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -6939,22 +6927,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                                   {
                                                     SWISSPROT = AccToggle;
                                                     Group: Widget
                                                       managed = True;
-                                                    Group: User
-                                                      private = True;
                                                   }
                                             }
                                       }
@@ -7045,9 +7027,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -9705,9 +9684,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10341,11 +10317,6 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               EntrezGene = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              Ensembl = AccToggle : mgiOption;
-                                              Group: Widget
-                                                managed = True;
                                             }
                                             {
                                               NCBIGeneModel = AccToggle : mgiOption;
@@ -11348,11 +11319,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -11739,9 +11705,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -12372,11 +12335,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -12638,9 +12596,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -13021,9 +12976,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -13295,7 +13247,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               label = XmLabel;
                                               Group: Widget
-                                                labelString = Object;
+                                                labelString = Marker;
                                             }
                                             {
                                               text = scrolledText : mgiDataTypes;
@@ -13394,7 +13346,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               AnnotQualifierPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select _Term_key, abbreviation from VOC_Term \nwhere _Vocab_key = 52 and abbreviation is not null\norder by abbreviation";
+                                                sql = "select _Term_key, abbreviation from VOC_Term \nwhere _Vocab_key = 52 \norder by abbreviation";
                                                 tableForm = Annotation;
                                                 tableOption = 11;
                                                 tableOptionKey = 4;
@@ -13836,7 +13788,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               label = XmLabel;
                                               Group: Widget
-                                                labelString = Object;
+                                                labelString = Genotype;
                                             }
                                             {
                                               text = scrolledText : mgiDataTypes;
@@ -14415,7 +14367,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               label = XmLabel;
                                               Group: Widget
-                                                labelString = Object;
+                                                labelString = Genotype;
                                             }
                                             {
                                               text = scrolledText : mgiDataTypes;

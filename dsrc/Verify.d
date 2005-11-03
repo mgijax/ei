@@ -3471,12 +3471,15 @@ rules:
 
 	VerifyVocabQualifier does
 	  sourceWidget : widget := VerifyVocabQualifier.source_widget;
-	  top : widget := sourceWidget.top;
+	  top : widget := sourceWidget.root;
 	  isTable : boolean;
 	  value : string;
 	  qualifierKey : string;
 	  qualifier : string;
 	  dag : string;
+	  pulldown : widget;
+	  tableForm : widget;
+	  table : widget;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -3490,14 +3493,25 @@ rules:
 	    column := VerifyVocabQualifier.column;
 	    reason := VerifyVocabQualifier.reason;
 	    value := VerifyVocabQualifier.value;
+            table := sourceWidget;
 
 	    -- If not in the Qualifier column, return
 
-	    if (column != sourceWidget.qualifier) then
+	    if (column != table.qualifier) then
 	      return;
 	    end if;
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  elsif (sourceWidget.class_name = "XmToggleButton") then
+	    pulldown := sourceWidget.parent;
+            tableForm := top->(pulldown.tableForm);
+            table := tableForm->Table;
+	    row := mgi_tblGetCurrentRow(table);
+	    value := sourceWidget.labelString;
+
+	    if (sourceWidget.set = false) then
 	      return;
 	    end if;
 	  else
@@ -3506,9 +3520,13 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  if (value = "(none)") then
+	      value := "";
+	  end if;
+
 	  select : string := "select _Term_key, abbreviation from VOC_Term " +
 		"where abbreviation = " + mgi_DBprstr(value) + 
-		" and _Vocab_key = " + (string) sourceWidget.vocabQualifierKey;
+		" and _Vocab_key = " + (string) table.vocabQualifierKey;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -3528,16 +3546,14 @@ rules:
 	  --   Display an error message, set the key columns to null, disallow edit to the field
 
 	  if (qualifierKey.length > 0) then
-	    if (isTable) then
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, qualifierKey);
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, qualifier);
-	    end if;
+	    (void) mgi_tblSetCell(table, row, table.qualifierKey, qualifierKey);
+	    (void) mgi_tblSetCell(table, row, table.qualifier, qualifier);
 	  else
 	    if (isTable) then
 	      VerifyVocabQualifier.doit := (integer) false;
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
 	    end if;
+	    (void) mgi_tblSetCell(table, row, table.qualifierKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.qualifier, "");
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Qualifier";
             send(StatusReport);
@@ -3545,24 +3561,26 @@ rules:
 	    return;
 	  end if;
 
-	  if (isTable) then
-	    if (sourceWidget.is_defined("dag") != nil) then
-	      dag := mgi_tblGetCell(sourceWidget, row, sourceWidget.dag);
-	      if ((qualifier = "col" or qualifier = "ncol") and dag != "C") then
+	  if (table.is_defined("dag") != nil) then
+	    dag := mgi_tblGetCell(table, row, table.dag);
+	    if ((qualifier = "col" or qualifier = "ncol") and dag != "C") then
+	      if (isTable) then
 	        VerifyVocabQualifier.doit := (integer) false;
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "NULL");
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "Qualifier 'colocalizes with' can only be used with the Component Ontology";
-                send(StatusReport);
-	      elsif ((qualifier = "con" or qualifier = "ncon") and dag != "F") then
-	        VerifyVocabQualifier.doit := (integer) false;
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "NULL");
-	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "Qualifier 'contributes to' can only be used with the Function Ontology";
-                send(StatusReport);
 	      end if;
+	      (void) mgi_tblSetCell(table, row, table.qualifierKey, "NULL");
+	      (void) mgi_tblSetCell(table, row, table.qualifier, "");
+              StatusReport.source_widget := top.root;
+              StatusReport.message := "Qualifier 'colocalizes with' can only be used with the Component Ontology";
+              send(StatusReport);
+	    elsif ((qualifier = "con" or qualifier = "ncon") and dag != "F") then
+	      if (isTable) then
+	        VerifyVocabQualifier.doit := (integer) false;
+	      end if;
+	      (void) mgi_tblSetCell(table, row, table.qualifierKey, "NULL");
+	      (void) mgi_tblSetCell(table, row, table.qualifier, "");
+              StatusReport.source_widget := top.root;
+              StatusReport.message := "Qualifier 'contributes to' can only be used with the Function Ontology";
+              send(StatusReport);
 	    end if;
 	  end if;
 

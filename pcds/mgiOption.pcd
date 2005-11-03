@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 08:55:16 2005";
+      lastWritten = "Wed Nov  2 08:37:47 2005";
       copy = false;
       inCreateMenu = true;
         {
@@ -169,11 +169,6 @@ Module: mgiOption
                         labelString = "Entrez Gene";
                       Group: User
                         defaultValue = 55;
-                    }
-                    {
-                      Ensembl = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 33;
                     }
                     {
                       NCBIGeneModel = AccToggle : mgiOption;

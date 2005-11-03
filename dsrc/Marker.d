@@ -5,7 +5,7 @@
 --
 -- TopLevelShell:		Marker
 -- Database Tables Affected:	MRK_Alias, MRK_Current, MRK_History
---				MRK_Marker, MRK_Offset, MRK_Reference, MGI_Synonym
+--				MRK_Marker, MRK_Offset, MGI_Reference_Assoc, MGI_Synonym
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
 --

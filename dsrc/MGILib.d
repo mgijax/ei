@@ -3,7 +3,7 @@
 -- Creator : lec
 -- MGILib.d 04/05/99
 --
--- D Events are declared in MGILib.d.de
+-- D Events are declared in MGILib.de
 --
 -- History
 --
@@ -83,7 +83,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-tr7062-5";
+	  global_version := "CVS ei-tr7062-6";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);

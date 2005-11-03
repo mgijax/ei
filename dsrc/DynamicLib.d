@@ -96,7 +96,10 @@ rules:
 
 		-- Create a unique name for the child instance
 
-		if (label = "Not Specified") then
+		if (label = "") then
+		  instance := "NotSpecified";
+		  label := "(none)";
+		elsif (label = "Not Specified") then
 		  instance := "NotSpecified";
 		elsif (label = "Not Applicable") then
 		  instance := "NotApplicable";
