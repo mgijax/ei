@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov  3 10:43:27 2005";
+      lastWritten = "Thu Nov  3 12:32:54 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13736,7 +13736,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 mgiTypeKey = 12;
                                                 vocabKey = 5;
                                                 defaultValue = 1002;
-                                                qualifierKey = 49;
+                                                qualifierKey = 53;
                                             }
                                             {
                                               PSGenotype = OptionToggle;
@@ -13750,7 +13750,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 mgiTypeKey = 12;
                                                 vocabKey = 1;
                                                 defaultValue = 1001;
-                                                qualifierKey = 49;
+                                                qualifierKey = 53;
                                             }
                                       }
                                 }
@@ -14329,7 +14329,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 mgiTypeKey = 12;
                                                 vocabKey = 44;
                                                 defaultValue = 1005;
-                                                qualifierKey = 49;
+                                                qualifierKey = 53;
                                             }
                                       }
                                 }
