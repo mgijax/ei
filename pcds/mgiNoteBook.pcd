@@ -2,7 +2,7 @@ Module: mgiNoteBook
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Dec 10 11:08:11 2004";
+      lastWritten = "Fri Nov  4 08:50:38 2005";
         {
           notebook = XmNotebook;
           Group: Widget

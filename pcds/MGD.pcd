@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov  3 12:32:54 2005";
+      lastWritten = "Fri Nov  4 08:51:08 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -6467,6 +6467,13 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
+                                  Marker1 = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:CreateMGIModule(name = \"Marker\")";
+                                    labelString = "Markers (NoteBook)";
+                                    traversalOn = False;
+                                }
+                                {
                                   Allele = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Allele\")";
@@ -10954,7 +10961,7 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          MarkerSave = Module : MGI;
+          MarkerNoteBookModule = Module : MGI;
           Group: Control
             vip_x = 80;
             vip_y = 415;
@@ -11235,7 +11242,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         legend = XmLabelGadget;
                                         Group: Widget
-                                          labelString = "1 = Accession, 2 = History, 3 = Synonym, 4 = Reference Indexing, 5 = Alias, 6 = Allele";
+                                          labelString = "1 = Accession, 2 = History, 3 = Synonym, 4 = Reference Indexing, 5 = Alias";
                                       }
                                       {
                                         notebook = notebook : mgiNoteBook;
@@ -11470,6 +11477,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       xrtTblNumRows = 25;
                                                       xrtTblVisibleRows = 20;
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 10)(all 5 40)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
                                                   }
                                                   {
                                                     AddRow = TablePush : mgiTable;
@@ -11527,35 +11535,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblVisibleRows = 20;
                                                       xrtTblEditableSeries = "(all 0-2 False)";
                                                       xrtTblNumRows = 25;
-                                                  }
-                                            }
-                                            {
-                                              Allele = Table : mgiTable;
-                                              Group: Constraint
-                                                resizable = true;
-                                                  {
-                                                    Table = mgiTable;
-                                                    Group: Widget
-                                                      xrtTblNumColumns = 4;
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1 10)(all 2 25)(all 3 60)";
-                                                      xrtTblMaxLengthSeries = "(all 2 50)(all 3 255)";
-                                                      xrtTblEditableSeries = "(all 0-1 False)";
-                                                      xrtTblPixelWidthSeries = "(all 0-1 0)";
-                                                      xrtTblColumnLabels = "Mode,Key,Allele Symbol,Allele Name";
-                                                      userDefinedAttributes = "alleleKey:Int=\"1\"\nalleleSymbol:Int=\"2\"\nalleleName:Int=\"3\"\n";
-                                                      xrtTblVisibleRows = 20;
-                                                      xrtTblTraversableSeries = "(all 0-1 False)";
-                                                      xrtTblNumRows = 25;
-                                                  }
-                                                  {
-                                                    AddRow = TablePush : mgiTable;
-                                                    Group: Widget
-                                                      managed = False;
-                                                  }
-                                                  {
-                                                    DeleteRow = TablePush : mgiTable;
-                                                    Group: Widget
-                                                      managed = False;
                                                   }
                                             }
                                       }
@@ -13412,10 +13391,12 @@ Shift<Key>Tab: prev-tab-group()
                       Group: Constraint
                         leftAttachment = attach_widget;
                         rightAttachment = attach_form;
-                        topAttachment = attach_form;
-                        bottomAttachment = attach_none;
+                        topAttachment = attach_opposite_widget;
+                        bottomAttachment = attach_opposite_widget;
                         resizable = true;
                         leftWidget = MainMenu;
+                        topWidget = MainMenu;
+                        bottomWidget = MainMenu;
                           {
                             ControlForm = XmForm;
                             Group: Widget
