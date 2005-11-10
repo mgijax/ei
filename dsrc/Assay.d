@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  11/10/2005
+--	- TR 7224; dbclose not getting called every time in Select
+--
 -- lec	07/13/2005
 --	- TR 6974; CopySpecimenColumn; do not copy Age Range, just Prefix
 --
@@ -2354,7 +2357,7 @@ rules:
 
 	        send(ViewPrepDetail, 0);
 
-		send(InitImagePane, 0);
+--		send(InitImagePane, 0);
 
 	        ViewAssayDetail.source_widget := top->AssayTypeMenu.menuHistory;
 	        send(ViewAssayDetail, 0);
@@ -2422,8 +2425,8 @@ rules:
 	        end if;
 	      end while;
             end while;
-	    (void) dbclose(dbproc);
 	  end if;
+	  (void) dbclose(dbproc);
 
 	  -- Select InSitu information
 
@@ -2433,6 +2436,7 @@ rules:
 	  -- Select Gel information
 
 	  elsif (assayDetailForm.name = "GelForm") then
+	    send(InitImagePane, 0);
 	    send(SelectGelLane, 0);
 	    send(SelectGelRow, 0);
 	    SelectGelBand.reason := TBL_REASON_ENTER_CELL_END;
