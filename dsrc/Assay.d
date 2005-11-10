@@ -2357,8 +2357,6 @@ rules:
 
 	        send(ViewPrepDetail, 0);
 
---		send(InitImagePane, 0);
-
 	        ViewAssayDetail.source_widget := top->AssayTypeMenu.menuHistory;
 	        send(ViewAssayDetail, 0);
 
