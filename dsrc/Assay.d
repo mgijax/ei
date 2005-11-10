@@ -2426,12 +2426,12 @@ rules:
 	  -- Select InSitu information
 
 	  if (assayDetailForm.name = "InSituForm") then
-	    send(InitImagePane, 0);
 	    send(SelectInSitu, 0);
 
 	  -- Select Gel information
 
 	  elsif (assayDetailForm.name = "GelForm") then
+	    send(InitImagePane, 0);
 	    send(SelectGelLane, 0);
 	    send(SelectGelRow, 0);
 	    SelectGelBand.reason := TBL_REASON_ENTER_CELL_END;
