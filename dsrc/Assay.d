@@ -2354,8 +2354,6 @@ rules:
 
 	        send(ViewPrepDetail, 0);
 
-		send(InitImagePane, 0);
-
 	        ViewAssayDetail.source_widget := top->AssayTypeMenu.menuHistory;
 	        send(ViewAssayDetail, 0);
 
@@ -2422,12 +2420,13 @@ rules:
 	        end if;
 	      end while;
             end while;
-	    (void) dbclose(dbproc);
 	  end if;
+	  (void) dbclose(dbproc);
 
 	  -- Select InSitu information
 
 	  if (assayDetailForm.name = "InSituForm") then
+	    send(InitImagePane, 0);
 	    send(SelectInSitu, 0);
 
 	  -- Select Gel information
