@@ -355,7 +355,6 @@ rules:
 	  end if;
 
           status->StatusDialog.top.front;
-	  send(StatusReportFront, 0);
         end does;
 
 --
@@ -366,9 +365,10 @@ rules:
 --
 
         StatusReportFront does
-	  status : widget := StatusReportFront.source_widget.top;
 
 	  return;
+
+	  status : widget := StatusReportFront.source_widget.top;
 
 	  if (status->StatusDialog != nil) then
             if (status->StatusDialog.managed) then
