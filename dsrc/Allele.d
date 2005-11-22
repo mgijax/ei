@@ -880,16 +880,7 @@ rules:
 --
  
 	ModifyAlleleNotes does
-
-	  -- Modify Marker Description
-
-	  if (top->mgiMarker->ObjectID->text.value.length > 0) then
-            ModifyNotes.source_widget := top->markerDescription->Note;
-            ModifyNotes.tableID := MRK_NOTES;
-            ModifyNotes.key := top->mgiMarker->ObjectID->text.value;
-            send(ModifyNotes, 0);
-            cmd := cmd + top->markerDescription->Note.sql;
-	  end if;
+	  noteKeyDeclared : boolean := false;
 
 	  -- Set required field for General Notes
 
@@ -920,6 +911,20 @@ rules:
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
+
+	  -- Modify Marker Description
+
+	  if (top->mgiMarker->ObjectID->text.value.length > 0) then
+            if (top->mgiNoteForm.sql.length > 0) then
+		noteKeyDeclared := true;
+	    end if;
+            ModifyNotes.source_widget := top->markerDescription->Note;
+            ModifyNotes.tableID := MRK_NOTES;
+            ModifyNotes.key := top->mgiMarker->ObjectID->text.value;
+	    ModifyNotes.keyDeclared := noteKeyDeclared;
+            send(ModifyNotes, 0);
+            cmd := cmd + top->markerDescription->Note.sql;
+	  end if;
 
 	end does;
 
