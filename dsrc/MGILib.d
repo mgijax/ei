@@ -355,6 +355,8 @@ rules:
 	  end if;
 
           status->StatusDialog.top.front;
+	  StatusReportFront.source_widget := status;
+	  send(StatusReportFront, 0);
         end does;
 
 --

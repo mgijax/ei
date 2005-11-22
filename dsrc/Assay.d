@@ -1197,7 +1197,9 @@ rules:
 	  newAssayKey : string;
 	  dupAll : integer := DuplicateAssay.dupAll;
 
+	  (void) busy_cursor(top);
 	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + "," + (string) dupAll);
+	  (void) reset_cursor(top);
 
           InsertList.list := top->QueryList;
           InsertList.item := "J:" + top->Jnum->text.value + ";" + 

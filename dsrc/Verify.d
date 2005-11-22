@@ -2209,6 +2209,10 @@ rules:
             accTop := VerifyMarkerInTable.source_widget.ancestor_by_class("XmRowColumn");
           end if;
  
+	  if (accTop = nil) then
+	    return;
+	  end if;
+
           accLabel := accTop->AccessionID->label.labelString;
           accID := accTop->ObjectID->text.value;
           markerID := top->mgiMarker->ObjectID->text.value;
