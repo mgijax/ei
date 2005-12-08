@@ -809,8 +809,8 @@ rules:
 --
 -- Activated from:  widget top->ChromosomeMenu->ChromToggle
 --
--- If Chromosome = "UN", then Offset = -999
--- If Chromosome was known and changed to another known, then Offsets = -1
+-- If Chromosome = "UN", then Offset = -1
+-- If Chromosome was known and changed to another known, then Offset = -1
 --
 
 	ModifyChromosome does
@@ -832,10 +832,10 @@ rules:
 	    return;
 	  end if;
 
-	  -- If Chromosome = "UN", then offset = -999
+	  -- If Chromosome = "UN", then offset = -1
 
 	  if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
-	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-999.00");
+	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-1.00");
 
 	  -- Changing from one known chromosome to another, change MGD and CC Offsets to -1
 
@@ -1260,9 +1260,6 @@ rules:
 
 	    if ((editMode= TBL_ROW_EMPTY or editMode = TBL_ROW_ADD) and 
 		 row = 0 and offset.length = 0) then
-	      if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
-	        offset := "-999.0";
-	      else
 	        offset := "-1.0";
 	      end if;
 
