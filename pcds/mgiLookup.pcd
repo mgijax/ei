@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct  4 07:17:58 2005";
+      lastWritten = "Thu Dec  8 09:06:20 2005";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -441,27 +441,6 @@ Module: mgiLookup
               }
         }
         {
-          PhenoSlimList = LookupList;
-          Group: Control
-            vip_x = 90;
-            vip_y = 1295;
-          Group: User
-            cmd = "select _Term_key, term, accID from VOC_Term_View where vocabName = \"PhenoSlim\" order by sequenceNum";
-              {
-                Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  labelString = "PhenoSlim Terms";
-                Group: User
-                  defaultLabel = "PhenoSlim Terms";
-              }
-              {
-                List = list : mgiDataTypes;
-                Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem";
-                  visibleItemCount = 30;
-              }
-        }
-        {
           EvidenceCodeList = LookupList;
           Group: Control
             vip_x = 90;
@@ -501,7 +480,7 @@ Module: mgiLookup
           OrganismMGITypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1350;
           Group: User
             cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,18,19) order by name";
               {
@@ -521,7 +500,7 @@ Module: mgiLookup
           CloneLibrarySetList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1295;
           Group: User
             cmd = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
               {
@@ -536,7 +515,7 @@ Module: mgiLookup
           CellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1405;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_CellLine_View order by term";
               {
@@ -556,7 +535,7 @@ Module: mgiLookup
           OrganismSequenceList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1515;
+            vip_y = 1460;
           Group: User
             cmd = "select _Organism_key, commonName from MGI_Organism_Sequence_View order by commonName";
               {

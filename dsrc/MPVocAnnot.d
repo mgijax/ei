@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	12/08/2005
+--	TR 7317; remove PhenoSlim
+--
 -- lec	10/06/2005
 --	TR 5188/new GO Qualifier
 --
@@ -924,12 +927,7 @@ rules:
 	  top->ReportDialog.select := "select distinct _Object_key, description " +
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
-	  -- Different Sorts for different Annotation Types
-	  if (annotTable.annotVocab = "PhenoSlim") then
-	    orderBy := "a.sequenceNum, e.modification_date\n";
-	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
-	    orderBy := "e.jnum, a.term\n";
-	  end if;
+	  orderBy := "e.jnum, a.term\n";
 
 	  cmd : string := "select _Object_key, accID, description, short_description" +
 			  " from " + dbView + 
@@ -1095,14 +1093,6 @@ rules:
 
 	  defaultQualifierKey := 
 	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + (string) annotTable.vocabQualifierKey + " and term is null");
-
-	  if (annotTable.annotVocab = "PhenoSlim") then
-	    top->PhenoSlimList.managed := true;
-            LoadList.list := top->PhenoSlimList;
-	    send(LoadList, 0);
-	  else
-	    top->PhenoSlimList.managed := false;
-	  end if;
 
 	  (void) reset_cursor(mgi);
 	end does;

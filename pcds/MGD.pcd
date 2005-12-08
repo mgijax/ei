@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Nov  4 08:51:08 2005";
+      lastWritten = "Thu Dec  8 09:04:04 2005";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13719,20 +13719,6 @@ Shift<Key>Tab: prev-tab-group()
                                                 defaultValue = 1002;
                                                 qualifierKey = 53;
                                             }
-                                            {
-                                              PSGenotype = OptionToggle;
-                                              Group: Widget
-                                                valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
-                                                userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\nqualifierKey:Int=\"0\"\n";
-                                                labelString = "PhenoSlim/Genotype";
-                                              Group: User
-                                                annotVocab = PhenoSlim;
-                                                evidenceKey = 2;
-                                                mgiTypeKey = 12;
-                                                vocabKey = 1;
-                                                defaultValue = 1001;
-                                                qualifierKey = 53;
-                                            }
                                       }
                                 }
                                 {
@@ -14170,24 +14156,6 @@ Shift<Key>Tab: prev-tab-group()
                                         CopyAnnot = TablePush : mgiTable;
                                         Group: Widget
                                           activateCallback = "D:MPClipboardCopyAnnotation";
-                                      }
-                                }
-                                {
-                                  PhenoSlimList = PhenoSlimList : mgiLookup;
-                                  Group: Widget
-                                    managed = False;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: Widget
-                                          visibleItemCount = 10;
-                                        Group: User
-                                          targetKey = 4;
-                                          targetWidget = Annotation;
-                                          targetText = 9;
-                                          targetAccID = 8;
                                       }
                                 }
                           }
