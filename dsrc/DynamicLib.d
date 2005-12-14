@@ -158,9 +158,9 @@ rules:
 		    -- no default for knock in
 		    x.prepForm := "";
 		  elsif (mgi_getstr(dbproc, 3) = "0") then
-		    x.prepForm := "AntibodyPrepVerifyForm";
+		    x.prepForm := "AntibodyPrepForm";
 		  else
-		    x.prepForm := "ProbePrepVerifyForm";
+		    x.prepForm := "ProbePrepForm";
 		  end if;
 
 		  if (mgi_getstr(dbproc, 4) = "0") then
