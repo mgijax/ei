@@ -3,14 +3,14 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Nov  4 12:00:51 2005";
+      lastWritten = "Wed Dec 14 09:47:54 2005";
       copy = false;
       inCreateMenu = true;
         {
           AntigenModule = Module : MGI;
           Group: Control
-            vip_x = 75;
-            vip_y = 85;
+            vip_x = 175;
+            vip_y = 30;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
             homeWidget = "Name\nmgiAccessionTable";
@@ -367,8 +367,8 @@ Module: GXD
         {
           AntibodyModule = Module : MGI;
           Group: Control
-            vip_x = 75;
-            vip_y = 140;
+            vip_x = 60;
+            vip_y = 85;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
             homeWidget = "Name\nmgiAccessionTable\nMarker\nAlias";
@@ -971,8 +971,8 @@ Shift<Key>Tab: prev-tab-group()
             width = 900;
             resizePolicy = resize_none;
           Group: Control
-            vip_x = 75;
-            vip_y = 250;
+            vip_x = 60;
+            vip_y = 140;
               {
                 Specimen = OrderedTableLabel : mgiTable;
                 Group: Widget
@@ -1057,8 +1057,8 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_none;
             width = 900;
           Group: Control
-            vip_x = 75;
-            vip_y = 305;
+            vip_x = 175;
+            vip_y = 140;
               {
                 ImagePaneList = LookupList : mgiLookup;
                 Group: Constraint
@@ -1232,8 +1232,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             title = "GXD Index";
           Group: Control
-            vip_x = 75;
-            vip_y = 360;
+            vip_x = 60;
+            vip_y = 195;
           Group: User
             homeWidget = Marker;
             activateButtonName = IndexStage;
@@ -1584,7 +1584,7 @@ Shift<Key>Tab: prev-tab-group()
         {
           GXD = Application : MGI;
           Group: Control
-            vip_x = 75;
+            vip_x = 60;
             vip_y = 30;
           Group: User
             initDialog = "StrainDialog\nTissueDialog";
@@ -1730,8 +1730,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           AlleleModule = AlleleModule : MGD;
           Group: Control
-            vip_x = 75;
-            vip_y = 415;
+            vip_x = 175;
+            vip_y = 195;
               {
                 MainForm = XmForm;
                     {
@@ -1862,11 +1862,11 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
             width = 1200;
           Group: Control
-            vip_x = 75;
-            vip_y = 195;
+            vip_x = 175;
+            vip_y = 85;
           Group: User
             homeWidget = "Jnum\nmgiAccessionTable";
-            clearForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nProbePrepVerifyForm\nAntibodyPrepForm\nAntibodyPrepVerifyForm\nInSituForm\nGelForm";
+            clearForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
             editForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nProbePrepVerifyForm\nAntibodyPrepForm\nAntibodyPrepVerifyForm\nInSituForm\nGelForm";
             activateButtonName = Assay;
               {
@@ -2115,18 +2115,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ProbePrepForm = ProbePrepForm : GXD;
-                                  Group: Widget
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    topWidget = separator;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  ProbePrepVerifyForm = ProbePrepVerifyForm : GXD;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
@@ -2146,22 +2134,12 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  AntibodyPrepVerifyForm = AntibodyPrepVerifyForm : GXD;
-                                  Group: Constraint
-                                    leftAttachment = attach_form;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    topWidget = separator;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
                                   separator1 = XmSeparator;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = ProbePrepVerifyForm;
+                                    topWidget = ProbePrepForm;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
@@ -2724,8 +2702,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
-            vip_y = 470;
+            vip_x = 60;
+            vip_y = 250;
               {
                 PrepID : ID = ID;
               }
@@ -2831,6 +2809,10 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() VerifyProbePrep() VerifyMarkerInTable()";
                             Group: User
                               required = True;
                           }
@@ -2852,8 +2834,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
-            vip_y = 525;
+            vip_x = 175;
+            vip_y = 250;
               {
                 PrepID : ID = ID;
               }
@@ -2920,6 +2902,13 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               labelString = "Primary Antibody \nAccession ID";
                           }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable() VerifyWesternBlot()";
+                          }
                     }
                     {
                       AccessionName = CharSText;
@@ -2932,96 +2921,13 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          ProbePrepVerifyForm = ProbePrepForm;
-          Group: Control
-            vip_x = 75;
-            vip_y = 580;
-              {
-                PrepID = ID;
-              }
-              {
-                label = XmLabel;
-              }
-              {
-                PrepTypeMenu = PrepTypeMenu : mgiOption;
-              }
-              {
-                SenseMenu = SenseMenu : mgiOption;
-              }
-              {
-                LabelTypeMenu = LabelMenu : mgiOption;
-              }
-              {
-                CoverageMenu = CoverageMenu : mgiOption;
-              }
-              {
-                VisualizationMenu = VisualizationMenu : mgiOption;
-              }
-              {
-                ProbeAccession = mgiAccession : mgiDataTypes;
-                    {
-                      ObjectID = ID;
-                    }
-                    {
-                      AccessionID = CharText;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable()";
-                          }
-                    }
-              }
-        }
-        {
-          AntibodyPrepVerifyForm = AntibodyPrepForm;
-          Group: Control
-            vip_x = 75;
-            vip_y = 635;
-              {
-                PrepID = ID;
-              }
-              {
-                label = XmLabel;
-              }
-              {
-                SecondaryMenu = SecondaryMenu : mgiOption;
-              }
-              {
-                LabelTypeMenu = LabelMenu : mgiOption;
-              }
-              {
-                AntibodyAccession = mgiAccession : mgiDataTypes;
-                    {
-                      ObjectID = ID;
-                    }
-                    {
-                      AccessionID = CharText;
-                          {
-                            label = XmLabel;
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable() VerifyWesternBlot()";
-                          }
-                    }
-              }
-        }
-        {
           KnockInForm = EditForm : MGI;
           Group: Widget
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
-            vip_y = 690;
+            vip_x = 60;
+            vip_y = 305;
               {
                 ID = ID : mgiDataTypes;
               }
