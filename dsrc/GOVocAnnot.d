@@ -11,10 +11,13 @@
 --
 -- History
 --
--- lec	10/05/2005
+-- 01/09/2006	lec
+--	TR 7376; change to GO note text (added 'external ref')
+--
+-- 10/05/2005	lec
 --	TR 5188/new GO Qualifier
 --
--- lec	03/2005
+-- 03/2005	lec
 --	TR 4289, MPR
 --
 -- 07/29/2004 lec
@@ -112,7 +115,7 @@ locals:
 
 	annotTable : widget;		-- Annotation table
 
-	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nqualifier:\ntarget:\ntext:";
+	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nqualifier:\ntarget:\nexternal ref:\ntext:";
 
 rules:
 
