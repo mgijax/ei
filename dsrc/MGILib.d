@@ -367,9 +367,6 @@ rules:
 --
 
         StatusReportFront does
-
-	  return;
-
 	  status : widget := StatusReportFront.source_widget.top;
 
 	  if (status->StatusDialog != nil) then
