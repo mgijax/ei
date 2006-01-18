@@ -5,7 +5,7 @@
 --
 -- TopLevelShell:		Marker
 -- Database Tables Affected:	MRK_Alias, MRK_Current, MRK_History
---				MRK_Marker, MRK_Offset, MRK_Reference, MGI_Synonym
+--				MRK_Marker, MRK_Offset, MGI_Reference_Assoc, MGI_Synonym
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -13,6 +13,9 @@
 -- Non-Mouse Markers can only be edited using the Homology module.
 --
 -- History
+--
+-- 10/07/2005	lec
+--	-- TR 6223; ModifyChromosome;add warning message 
 --
 -- 07/19/2005	lec
 --	MGI 3.3
@@ -215,14 +218,15 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
+	  -- Prevent multiple instances of the Marker form
+          ab := INITIALLY.launchedFrom;
+          ab.sensitive := false;
+
 	  top := create widget("MarkerModule", nil, mgi);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
-	  -- Prevent multiple instances of the Marker form
-          ab := INITIALLY.launchedFrom;
-          ab.sensitive := false;
 	  top.show;
 
 	  -- Initialize
@@ -802,7 +806,7 @@ rules:
 -- Activated from:  widget top->ChromosomeMenu->ChromToggle
 --
 -- If Chromosome = "UN", then Offset = -999
--- If Chromosome was known and changed to another know, then Offsets = -1
+-- If Chromosome was known and changed to another known, then Offsets = -1
 --
 
 	ModifyChromosome does
@@ -835,6 +839,10 @@ rules:
 		 currentChr != top->ChromosomeMenu.menuHistory.defaultValue and
 		 currentChr != "UN" and
 		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
+
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Check genome coordinates, cytogenetic band and centiMorgan assignments.";
+	    send(StatusReport);
 
 	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
               StatusReport.source_widget := top;
