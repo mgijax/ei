@@ -118,7 +118,7 @@ reportType = sys.argv[1]
 if reportType == "dynamic":
 	name = "Bibliographic"
 	title = 'Bibliographic References'
-	cmd = sys.argv[3]
+	cmd = sys.argv[2]
 
 elif reportType == "dupall":
 	name = "DupRefAll"
