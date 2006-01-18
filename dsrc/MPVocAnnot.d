@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	01/18/2006
+--	TR 7371; delete PhenoSlim EI
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -915,12 +918,7 @@ rules:
 	  top->ReportDialog.select := "select distinct _Object_key, description " +
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
-	  -- Different Sorts for different Annotation Types
-	  if (annotTable.annotVocab = "PhenoSlim") then
-	    orderBy := "a.sequenceNum, e.modification_date\n";
-	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
-	    orderBy := "e.jnum, a.term\n";
-	  end if;
+	  orderBy := "e.jnum, a.term\n";
 
 	  cmd : string := "select _Object_key, accID, description, short_description" +
 			  " from " + dbView + 
@@ -1081,14 +1079,6 @@ rules:
 		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
-
-	  if (annotTable.annotVocab = "PhenoSlim") then
-	    top->PhenoSlimList.managed := true;
-            LoadList.list := top->PhenoSlimList;
-	    send(LoadList, 0);
-	  else
-	    top->PhenoSlimList.managed := false;
-	  end if;
 
 	  (void) reset_cursor(mgi);
 	end does;
