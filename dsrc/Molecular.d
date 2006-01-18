@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	01/18/2006
+--	- TR 7303; default Segment Type for primers
+--
 -- lec	06/18/2004
 --	- TR 5702; remove RepeatUnit and MoreProduct
 --
