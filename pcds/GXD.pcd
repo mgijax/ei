@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 18 15:05:49 2006";
+      lastWritten = "Thu Jan 19 14:59:16 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1972,6 +1972,10 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() VerifyProbePrep() VerifyMarkerInTable()";
                             Group: User
                               required = True;
                           }
@@ -2060,6 +2064,13 @@ Shift<Key>Tab: prev-tab-group()
                             label = XmLabel;
                             Group: Widget
                               labelString = "Primary Antibody \nAccession ID";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable() VerifyWesternBlot()";
                           }
                     }
                     {
