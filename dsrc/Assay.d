@@ -28,6 +28,14 @@
 --
 -- History
 --
+-- lec  12/14/2005
+--	- TR 7328; added VerifyProbePrep
+--	- removed AnitbodyPrepVerifyForm, ProbePrepVerifyForm;
+--	  can't remember why there were duplicate Prep forms?
+--
+-- lec  11/10/2005
+--	- TR 7224; dbclose not getting called every time in Select
+--
 -- lec	07/13/2005
 --	- TR 6974; CopySpecimenColumn; do not copy Age Range, just Prefix
 --
@@ -137,7 +145,7 @@
 --	- added DeleteGelBand to GelBand form
 --
 -- lec	06/23/98
---	- added AssayClear to clear the currentAssay key
+--	- added ClearAssay to clear the currentAssay key
 --	- when clearing, reconstruct the Gel Band table
 --
 -- lec	05/29/98
@@ -203,12 +211,12 @@ devents:
 	AddToEditClipboard :local [];
 	AppendToAgeNote :local [];
 	Assay [];
-	AssayClear [clearKeys : boolean := true;
+	BuildDynamicComponents :local [];
+	ClearAssay [clearKeys : boolean := true;
 		    clearForms : integer := 511;
 		    clearLists : integer := 3;
 		    reset : boolean := false;
 		    select: boolean := false;];
-	BuildDynamicComponents :local [];
 	CopySpecimen :local [];
 	CopySpecimenColumn :local [];
 	CopyGelLane :local [];
@@ -250,6 +258,8 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
+
+	VerifyProbePrep :translation [];
 
 	-- Must be non-local so that DynamicLib.InitOptionMenu[] doesn't complain
 	ViewAssayDetail [source_widget : widget;];
@@ -344,15 +354,8 @@ rules:
           options.append(top->ProbePrepForm->LabelTypeMenu);
           options.append(top->ProbePrepForm->CoverageMenu);
           options.append(top->ProbePrepForm->VisualizationMenu);
-          options.append(top->ProbePrepVerifyForm->PrepTypeMenu);
-          options.append(top->ProbePrepVerifyForm->SenseMenu);
-          options.append(top->ProbePrepVerifyForm->LabelTypeMenu);
-          options.append(top->ProbePrepVerifyForm->CoverageMenu);
-          options.append(top->ProbePrepVerifyForm->VisualizationMenu);
           options.append(top->AntibodyPrepForm->SecondaryMenu);
           options.append(top->AntibodyPrepForm->LabelTypeMenu);
-          options.append(top->AntibodyPrepVerifyForm->SecondaryMenu);
-          options.append(top->AntibodyPrepVerifyForm->LabelTypeMenu);
           options.append(top->CVSpecimen->AgeMenu);
           options.append(top->CVSpecimen->SexMenu);
           options.append(top->CVSpecimen->FixationMenu);
@@ -378,30 +381,28 @@ rules:
 
 	  prepForms.append("KnockInForm");
 	  prepForms.append("AntibodyPrepForm");
-	  prepForms.append("AntibodyPrepVerifyForm");
 	  prepForms.append("ProbePrepForm");
-	  prepForms.append("ProbePrepVerifyForm");
 
 	end does;
 
 --
--- AssayClear
+-- ClearAssay
 --
 -- Special clearing for Assay form
 --
-	AssayClear does
+	ClearAssay does
 
 	  Clear.source_widget := top;
-	  Clear.clearForms := AssayClear.clearForms;
-	  Clear.clearLists := AssayClear.clearLists;
-	  Clear.clearKeys := AssayClear.clearKeys;
-	  Clear.reset := AssayClear.reset;
+	  Clear.clearForms := ClearAssay.clearForms;
+	  Clear.clearLists := ClearAssay.clearLists;
+	  Clear.clearKeys := ClearAssay.clearKeys;
+	  Clear.reset := ClearAssay.reset;
 	  send(Clear, 0);
 
           SetNotesDisplay.note := top->AssayNote->Note;
           send(SetNotesDisplay, 0);
 
-	  if (not AssayClear.select) then
+	  if (not ClearAssay.select) then
 	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
@@ -426,7 +427,7 @@ rules:
           tables := create list("widget");
 
 	  accTable := top->mgiAccessionTable->Table;
-          prepDetailForm := top->ProbePrepVerifyForm;
+          prepDetailForm := top->ProbePrepForm;
           assayDetailForm := top->InSituForm;
 	  antibodyPrep := false;
 	  probePrep := true;
@@ -442,7 +443,7 @@ rules:
 	  SetRowCount.tableID := GXD_ASSAY;
 	  send(SetRowCount, 0);
 
-	  send(AssayClear, 0);
+	  send(ClearAssay, 0);
 	end does;
 
 --
@@ -717,7 +718,7 @@ rules:
 
 	  EditClipboardLoad.source_widget := clipboard;
 	  send(EditClipboardLoad, 0);
-	  send(AssayClear, 0);
+	  send(ClearAssay, 0);
 	end does;
 
 --
@@ -1101,8 +1102,8 @@ rules:
           send(DeleteSQL, 0);
 
           if (top->QueryList->List.row = 0) then
-            AssayClear.clearKeys := false;
-            send(AssayClear, 0);
+            ClearAssay.clearKeys := false;
+            send(ClearAssay, 0);
           end if;
  
 	  currentAssay := "";
@@ -1194,7 +1195,9 @@ rules:
 	  newAssayKey : string;
 	  dupAll : integer := DuplicateAssay.dupAll;
 
+	  (void) busy_cursor(top);
 	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + "," + (string) dupAll);
+	  (void) reset_cursor(top);
 
           InsertList.list := top->QueryList;
           InsertList.item := "J:" + top->Jnum->text.value + ";" + 
@@ -2460,12 +2463,12 @@ rules:
 	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
 
 	  if (assayDetailForm.name = "GelForm") then
-	    AssayClear.clearForms := clearAssayGel;
+	    ClearAssay.clearForms := clearAssayGel;
 	  end if;
 
-          AssayClear.reset := true;
-	  AssayClear.select := true;
-          send(AssayClear, 0);
+          ClearAssay.reset := true;
+	  ClearAssay.select := true;
+          send(ClearAssay, 0);
 
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);
@@ -3037,6 +3040,52 @@ rules:
         end does;
 
 --
+-- VerifyProbePrep
+--
+-- After the MGI Accession ID is verified, verify that the Segment Type
+-- of the Probe is consistent with the Assay Type.
+--
+-- If Assay Type = RT-PCR (5), then Segment Type = Primer (63473)
+-- If Assay Type != RT-PCR (5), then Segment Type != Primer (63473)
+--
+ 
+        VerifyProbePrep does
+	   objectKey : string := top->ProbePrepForm->ProbeAccession->ObjectID->text.value;
+	   segmentType : string;
+
+	   if (objectKey.length = 0) then
+	     return;
+	   end if;
+
+	   segmentType := mgi_sql1("select _SegmentType_key from PRB_Probe where _Probe_key = " + objectKey);
+
+	   -- if RT-PCR then Segment Type must be Primer
+
+	   if (top->AssayTypeMenu.menuHistory.defaultValue = "5" and segmentType != "63473") then
+	     StatusReport.source_widget := top;
+             StatusReport.message := "Only a Primer can be used with a RT-PCR Assay.\n";
+             send(StatusReport, 0);
+	     top->ProbePrepForm->ProbeAccession->AccessionID->text.value := "";
+	     top->ProbePrepForm->ProbeAccession->AccessionName->text.value := "";
+	     top->ProbePrepForm->ProbeAccession->ObjectID->text.value := "";
+             return;
+	   end if;
+
+	   -- if not RT-PCR then Segment Type cannot be Primer
+
+	   if (top->AssayTypeMenu.menuHistory.defaultValue != "5" and segmentType = "63473") then
+	     StatusReport.source_widget := top;
+             StatusReport.message := "A Primer can be used only with a RT-PCR Assay.\n";
+             send(StatusReport, 0);
+	     top->ProbePrepForm->ProbeAccession->AccessionID->text.value := "";
+	     top->ProbePrepForm->ProbeAccession->AccessionName->text.value := "";
+	     top->ProbePrepForm->ProbeAccession->ObjectID->text.value := "";
+             return;
+	   end if;
+
+	end does;
+
+--
 -- ViewAssayDetail
 --
 -- When AssayTypeMenu is created dynamically, each
@@ -3142,10 +3191,10 @@ rules:
 
 	  -- set the antibodyPrep, probePrep booleans based on NewForm
 
-	  if (NewForm = top->AntibodyPrepForm or NewForm = top->AntibodyPrepVerifyForm) then
+	  if (NewForm = top->AntibodyPrepForm) then
 	    antibodyPrep := true;
 	    probePrep := false;
-	  elsif (NewForm = top->ProbePrepForm or NewForm = top->ProbePrepVerifyForm) then
+	  elsif (NewForm = top->ProbePrepForm) then
 	    antibodyPrep := false;
 	    probePrep := true;
 --	  else
@@ -3156,9 +3205,9 @@ rules:
 	  -- set the value for verifying the MGI Marker based on NewForm
 	  -- for Knockins, no verification is done
 
-	  if (NewForm = top->ProbePrepVerifyForm) then
+	  if (NewForm = top->ProbePrepForm) then
 	    top->mgiMarker->Marker->text.verifyAccessionID := NewForm->ProbeAccession;
-	  elsif (NewForm = top->AntibodyPrepVerifyForm) then
+	  elsif (NewForm = top->AntibodyPrepForm) then
 	    top->mgiMarker->Marker->text.verifyAccessionID := NewForm->AntibodyAccession;
 	  end if;
 

@@ -96,7 +96,10 @@ rules:
 
 		-- Create a unique name for the child instance
 
-		if (label = "Not Specified") then
+		if (label = "") then
+		  instance := "NotSpecified";
+		  label := "(none)";
+		elsif (label = "Not Specified") then
 		  instance := "NotSpecified";
 		elsif (label = "Not Applicable") then
 		  instance := "NotApplicable";
@@ -155,9 +158,9 @@ rules:
 		    -- no default for knock in
 		    x.prepForm := "";
 		  elsif (mgi_getstr(dbproc, 3) = "0") then
-		    x.prepForm := "AntibodyPrepVerifyForm";
+		    x.prepForm := "AntibodyPrepForm";
 		  else
-		    x.prepForm := "ProbePrepVerifyForm";
+		    x.prepForm := "ProbePrepForm";
 		  end if;
 
 		  if (mgi_getstr(dbproc, 4) = "0") then
