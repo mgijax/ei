@@ -148,7 +148,8 @@ rules:
 	  -- Prevent multiple instances of the Allele form
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+--	  top.managed := true;
+	  top.show;
 
 	  -- Initialize
 	  send(Init, 0);
@@ -170,17 +171,17 @@ rules:
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
 
-	  InitOptionMenu.option := top->AlleleTypeMenu;
-	  send(InitOptionMenu, 0);
+--	  InitOptionMenu.option := top->AlleleTypeMenu;
+--	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->AlleleStatusMenu;
-	  send(InitOptionMenu, 0);
+--	  InitOptionMenu.option := top->AlleleStatusMenu;
+--	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->InheritanceModeMenu;
-	  send(InitOptionMenu, 0);
+--	  InitOptionMenu.option := top->InheritanceModeMenu;
+--	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->MolecularMutationMenu;
-	  send(InitOptionMenu, 0);
+--	  InitOptionMenu.option := top->MolecularMutationMenu;
+--	  send(InitOptionMenu, 0);
 
           LoadList.list := top->ESCellLineList;
 	  send(LoadList, 0);
@@ -1612,8 +1613,9 @@ rules:
 	Exit does
           ab.sensitive := true;
 	  destroy self;
-	  ExitWindow.source_widget := top;
-	  send(ExitWindow, 0);
+	  top.destroy_widget;
+--	  ExitWindow.source_widget := top;
+--	  send(ExitWindow, 0);
 	end does;
 
 end dmodule;

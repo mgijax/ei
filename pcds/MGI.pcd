@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 18 14:55:11 2006";
+      lastWritten = "Fri Jan 27 13:58:50 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -334,7 +334,6 @@ Module: MGI
           EditForm = XmForm;
           Group: Widget
             userDefinedAttributes = "homeWidget:StringTable(StringTable)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
-            focusCallback = "D:StatusReportFront";
           Group: Control
             vip_x = 70;
             vip_y = 250;
@@ -1118,7 +1117,6 @@ Module: MGI
           SubEditForm = XmForm;
           Group: Widget
             userDefinedAttributes = "homeWidget:StringTable(StringTable)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
-            focusCallback = "D:StatusReportFront";
           Group: Control
             vip_x = 70;
             vip_y = 360;

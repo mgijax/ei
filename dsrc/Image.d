@@ -154,8 +154,8 @@ rules:
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
 
-	  InitOptionMenu.option := top->ImageTypeMenu;
-	  send(InitOptionMenu, 0);
+--	  InitOptionMenu.option := top->ImageTypeMenu;
+--	  send(InitOptionMenu, 0);
 
 	  -- Initialize Notes form
 
@@ -774,8 +774,9 @@ rules:
 	Exit does
 	  ab.sensitive := true;
 	  destroy self;
-	  ExitWindow.source_widget := top;
-	  send(ExitWindow, 0);
+	  top.destroy_widget;
+--	  ExitWindow.source_widget := top;
+--	  send(ExitWindow, 0);
 	end does;
 
 end dmodule;
