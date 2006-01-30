@@ -11,12 +11,6 @@
 --
 -- History
 --
--- lec	12/08/2005
---	TR 7317; remove PhenoSlim
---
--- lec	10/06/2005
---	TR 5188/new GO Qualifier
---
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -76,8 +70,6 @@ locals:
 	annotType : string;		-- Annotation Type Description
 	mgiTypeKey : string;		-- MGI Type key (of Annotation Type)
 	dbView : string;		-- DB View Table (of ACC_MGIType._MGIType_key)
-
-	defaultQualifierKey : string;
 
 	annotTable : widget;		-- Annotation table
 	headerTable : widget;		-- Header table
@@ -158,9 +150,6 @@ rules:
 --
 
 	BuildDynamicComponents does
-
-	  InitOptionMenu.option := top->AnnotQualifierMenu;
-	  send(InitOptionMenu, 0);
 
 	  -- Initialize Note Type table
 
@@ -318,7 +307,7 @@ rules:
 	  key : string;
           annotKey : string;
           termKey : string;
-	  qualifierKey : string;
+	  notKey : string;
 	  refsKey : string;
           evidenceKey : string;
           set : string := "";
@@ -368,16 +357,15 @@ rules:
             key := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
             annotKey := mgi_tblGetCell(annotTable, row, annotTable.annotKey);
             termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
-            qualifierKey := mgi_tblGetCell(annotTable, row, annotTable.qualifierKey);
+            notKey := mgi_tblGetCell(annotTable, row, annotTable.notKey);
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
             evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
             clipAnnotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.clipAnnotEvidenceKey);
  
-	    if (qualifierKey = "NULL" or qualifierKey.length = 0) then
-	      qualifierKey := defaultQualifierKey;
+	    if (notKey = "NULL" or notKey.length = 0) then
+	      notKey := NO;
 	      -- set it in the table because we need to check it later on...
-	      mgi_tblSetCell(annotTable, row, annotTable.qualifier, "");
-	      mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, qualifierKey);
+	      mgi_tblSetCell(annotTable, row, annotTable.notKey, notKey);
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -390,7 +378,7 @@ rules:
 
 	      if (row > 0) then
 	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
-	            qualifierKey = mgi_tblGetCell(annotTable, row - 1, annotTable.qualifierKey)) then
+	            notKey = mgi_tblGetCell(annotTable, row - 1, annotTable.notKey)) then
 		  annotKey := mgi_tblGetCell(annotTable, row - 1, annotTable.annotKey);
 		  dupAnnot := true;
 		end if;
@@ -438,7 +426,7 @@ rules:
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
-		       qualifierKey + ")\n";
+		       notKey + ")\n";
 	      end if;
 
               cmd := cmd +
@@ -456,7 +444,7 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
-	      set := "_Qualifier_key = " + qualifierKey;
+	      set := "isNot = " + notKey;
 
 	      if (editTerm) then
 		set := set + ",_Term_key = " + termKey;
@@ -765,9 +753,9 @@ rules:
 	    from_annot := true;
 	  end if;
 
-	  value := mgi_tblGetCell(annotTable, 0, annotTable.qualifierKey);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.notKey);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand a._Qualifier_key = " + value;
+	    where := where + "\nand a.isNot = " + value;
 	    from_annot := true;
 	  end if;
 
@@ -927,14 +915,19 @@ rules:
 	  top->ReportDialog.select := "select distinct _Object_key, description " +
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
-	  orderBy := "e.jnum, a.term\n";
+	  -- Different Sorts for different Annotation Types
+	  if (annotTable.annotVocab = "PhenoSlim") then
+	    orderBy := "a.sequenceNum, e.modification_date\n";
+	  elsif (annotTable.annotVocab = "Mammalian Phenotype") then
+	    orderBy := "e.jnum, a.term\n";
+	  end if;
 
 	  cmd : string := "select _Object_key, accID, description, short_description" +
 			  " from " + dbView + 
 			  " where _Object_key = " + currentRecordKey + 
 			  " and prefixPart = 'MGI:' and preferred = 1 " + 
 			  " order by description\n" +
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
+	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.*" +
 			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
 		          " where a._AnnotType_key = " + annotTypeKey +
@@ -970,8 +963,8 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
@@ -1075,7 +1068,6 @@ rules:
           send(ClearMP, 0);
 
 	  evidenceKey : integer := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
-	  qualifierKey : integer := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
@@ -1083,7 +1075,6 @@ rules:
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
-	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
 	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
@@ -1091,8 +1082,13 @@ rules:
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
-	  defaultQualifierKey := 
-	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + (string) annotTable.vocabQualifierKey + " and term is null");
+	  if (annotTable.annotVocab = "PhenoSlim") then
+	    top->PhenoSlimList.managed := true;
+            LoadList.list := top->PhenoSlimList;
+	    send(LoadList, 0);
+	  else
+	    top->PhenoSlimList.managed := false;
+	  end if;
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -1114,8 +1110,8 @@ rules:
 	    return;
 	  end if;
 
-          SetOption.source_widget := top->AnnotQualifierMenu;
-          SetOption.value := mgi_tblGetCell(table, row, table.qualifierKey);
+          SetOption.source_widget := top->NotMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.notKey);
           send(SetOption, 0);
         end does;
 
@@ -1309,7 +1305,7 @@ rules:
           while (i < annotclipboard->List.items.count) do
 	    key := annotclipboard->List.keys[i];
 
-	    cmd := "select a._Term_key, t.term, t.sequenceNum, ac.accID, a._Qualifier_key, a.qualifier, " +
+	    cmd := "select a._Term_key, t.term, t.sequenceNum, ac.accID, a.isNot, " +
 		   "e._EvidenceTerm_key, et.abbreviation, et.sequenceNum " +
 		   " from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et " +
 		   " where a._AnnotType_key = " + annotTypeKey +
@@ -1331,11 +1327,16 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 8));
+		if (mgi_getstr(dbproc, 5) = "1") then
+	          (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, "Yes");
+		else
+	          (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, "No");
+		end if;
+
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 7));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_ADD);
 		row := row + 1;
