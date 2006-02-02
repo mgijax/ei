@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 18 14:54:55 2006";
+      lastWritten = "Thu Feb  2 10:10:48 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -11437,8 +11437,6 @@ Shift<Key>Tab: prev-tab-group()
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblVisibleRows = 3;
                                       }
                                       {
                                         Add = TablePush;
@@ -11447,32 +11445,32 @@ Shift<Key>Tab: prev-tab-group()
                                         Delete = TablePush;
                                       }
                                       {
-                                        AccSourceMenu = AccSourceMenu;
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
                                         Group: User
                                           defaultOption = EC;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
                                                   {
-                                                    MGI = AccToggle;
+                                                    MGI = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    J = AccToggle;
+                                                    J = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
+                                                    Medline = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    NSequence = AccToggle;
+                                                    NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     RefSeq = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    SWISSPROT = AccToggle;
+                                                    SWISSPROT = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     TrEMBL = AccToggle : mgiOption;
@@ -11481,13 +11479,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     PDB = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    IMAGE = AccToggle;
+                                                    IMAGE = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MGC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    WashU = AccToggle;
+                                                    WashU = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
@@ -11502,18 +11500,18 @@ Shift<Key>Tab: prev-tab-group()
                                                     EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    ATCC = AccToggle;
+                                                    UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MRK = AccToggle;
+                                                    EC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
                                                   {
-                                                    UniGene = AccToggle : mgiOption;
+                                                    ATCC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    EC = AccToggle;
+                                                    MRK = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
