@@ -840,10 +840,6 @@ rules:
 		 currentChr != "UN" and
 		 top->ChromosomeMenu.menuHistory.defaultValue != "UN") then
 
-            StatusReport.source_widget := top;
-	    StatusReport.message := "Check genome coordinates, cytogenetic band and centiMorgan assignments.";
-	    send(StatusReport);
-
 	    if (mgi_DBisAnchorMarker(currentRecordKey)) then
               StatusReport.source_widget := top;
 	      StatusReport.message := "Symbol is an Anchor Locus.  Remove Anchor record before modifying the Chromosome value.";
@@ -853,6 +849,10 @@ rules:
               send(SetOption, 0);
 	      return;
 	    end if;
+
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Check genome coordinates, cytogenetic band and centiMorgan assignments.";
+	    send(StatusReport);
 
 	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-1.00");
 
