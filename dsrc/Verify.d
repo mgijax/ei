@@ -3170,7 +3170,7 @@ rules:
               if (top->VerifyItemAdd.doAdd) then
                 ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
                                mgi_DBinsert(STRAIN, KEYNAME) +
-                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0," +
+                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0,0," +
 			       global_loginKey + "," + global_loginKey + ")\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
