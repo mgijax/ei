@@ -14,6 +14,9 @@
 --
 -- History:
 --
+-- lec  11/08/2005
+--	TR 7217; AddTableRow
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -162,6 +165,17 @@ rules:
               (void) mgi_tblSetCell(table, currentRow, table.seqNum, (string)(currentRow + 1));
 	    end if;
 	  end if;
+
+	  -- Set table row to first blank row (TR 7217)
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(table)) do
+	    if (mgi_tblGetCell(table, row, table.editMode) = TBL_ROW_EMPTY) then
+	      position := row;
+	      break;
+	    end if;
+	    row := row + 1;
+	  end while;
 
 	  -- Traverse to new table row
 

@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Aug 30 10:42:31 2005";
+      lastWritten = "Tue Jan 24 16:12:11 2006";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -15,7 +15,7 @@ Module: mgiDataTypes
             vip_y = 85;
         }
         {
-          text = XmTextField;
+          text = XmText;
           Group: Widget
             background = Wheat;
             userDefinedAttributes = "defaultValue:String(String)\nmodified:Boolean(Boolean)=\"False\"\nrequired:Boolean(Boolean)=\"False\"\ndefaultCmd:String(String)\n";
@@ -28,6 +28,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 70;
             vip_y = 30;
+            vipComment = "XmTextField provides a single-line text editor for customizing user interfaces. XmTextField thus provides an application with a consistent editing system for textual data.";
         }
         {
           scrolledText = XmScrolledText;
@@ -285,7 +286,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: User
                         required = True;
                         defaultValue = "-1";
@@ -299,7 +300,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Tissue;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: Widget
                         columns = 50;
                     }
@@ -320,7 +321,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: User
                         required = True;
                         defaultValue = "-1";
@@ -334,7 +335,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Strain;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: Widget
                         columns = 50;
                     }
@@ -627,7 +628,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Journal;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: Widget
                         columns = 95;
                         maxLength = 100;
@@ -663,7 +664,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Designation;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: Widget
                         columns = 15;
                         translations = "#override
@@ -678,7 +679,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: Widget
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -748,7 +749,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Cross;
                     }
                     {
-                      text = text;
+                      text = XmText;
                       Group: Widget
                         columns = 30;
                         translations = "#override
@@ -1138,7 +1139,7 @@ Shift<Key>Tab: prev-tab-group()
                             label = XmLabel;
                           }
                           {
-                            text = text;
+                            text = XmText;
                             Group: User
                               defaultValue = "-2";
                           }
@@ -1151,7 +1152,7 @@ Shift<Key>Tab: prev-tab-group()
                               labelString = "Strain of \nOrigin";
                           }
                           {
-                            text = text;
+                            text = XmText;
                             Group: User
                               defaultValue = "Not Applicable";
                           }

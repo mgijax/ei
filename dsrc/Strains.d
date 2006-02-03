@@ -13,6 +13,12 @@
 --
 -- History
 --
+-- lec	10/31/2005
+--	TR 7153; added IMSRMenu
+--
+-- lec	10/07/2005
+--	TR 6949, VerifyNomenclature
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -85,14 +91,13 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [];
 	BuildDynamicComponents :local [];
+        ClearStrain :local [clearKeys : boolean := true;
+                            reset : boolean := false;];
 	Delete :local [];
 	Exit :local [];
 	Init :local [];
+
 	Modify :local [];
-
-        ClearStrain :local [clearKeys : boolean := true;
-                            reset : boolean := false;];
-
 	ModifyGenotype :local [];
 	ModifyType :local [];
 	ModifySuperStandard :local [];
@@ -110,7 +115,8 @@ devents:
 
 	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
-	VerifyDuplicateStrain :translation [];
+	VerifyDuplicateStrain :local [];
+	VerifyNomenclature :translation [];
 
 locals:
 	mgi : widget;
@@ -272,6 +278,7 @@ rules:
 	  end if;
 
 	end does;
+
 --
 -- Add
 --
@@ -301,6 +308,7 @@ rules:
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->NeedsReviewMenu.menuHistory.defaultValue + "," +
                  top->PrivateMenu.menuHistory.defaultValue + "," +
+                 top->IMSRMenu.menuHistory.defaultValue + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
  
 	  send(ModifyType, 0);
@@ -431,6 +439,11 @@ rules:
           if (top->PrivateMenu.menuHistory.modified and
               top->PrivateMenu.menuHistory.searchValue != "%") then
             set := set + "private = "  + top->PrivateMenu.menuHistory.defaultValue + ",";
+          end if;
+ 
+          if (top->IMSRMenu.menuHistory.modified and
+              top->IMSRMenu.menuHistory.searchValue != "%") then
+            set := set + "imsrOK = "  + top->IMSRMenu.menuHistory.defaultValue + ",";
           end if;
  
           cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
@@ -699,6 +712,10 @@ rules:
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
           end if;
 
+          if (top->IMSRMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand s.imsrOK = " + top->IMSRMenu.menuHistory.searchValue;
+          end if;
+
 	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
             where := where + "\nand exists (select 1 from VOC_Annot a " +
 		"where s._Strain_key = a._Object_key" + 
@@ -848,15 +865,15 @@ rules:
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 11);
+		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 12);
                 top->Name->text.value := mgi_getstr(dbproc, 3);
 		origStrainName := top->Name->text.value;
 
 	        table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
 
                 SetOption.source_widget := top->StandardMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
@@ -866,6 +883,9 @@ rules:
                 send(SetOption, 0);
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
+                send(SetOption, 0);
+                SetOption.source_widget := top->IMSRMenu;
+                SetOption.value := mgi_getstr(dbproc, 7);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
@@ -1162,24 +1182,21 @@ rules:
 --
 -- VerifyDuplicateStrain
 --
--- Activated from:  tab out of Name->text
+-- Activated from:  VerifyNomenclature
 --
 -- Check Strain against existing Strains.
 -- Inform user if Strain is a duplicate.
 --
 
 	VerifyDuplicateStrain does
-	  value : string := VerifyDuplicateStrain.source_widget.value;
+	  value : string := top->Name->text.value;
 	  strainCount : string;
 
 	  -- If wildcard (%), then skip verification
 
 	  if (strstr(value, "%") != nil) then
-	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;
 	  end if;
-
-	  (void) busy_cursor(top);
 
 	  strainCount := mgi_sql1("select count(*) from " + mgi_DBtable(STRAIN) + " where strain = " + mgi_DBprstr(value));
 
@@ -1188,6 +1205,84 @@ rules:
             StatusReport.message := "This Strain already exists in MGI.";
             send(StatusReport);
 	  end if;
+
+	end does;
+
+--
+-- VerifyNomenclature
+--
+-- Activated from:  tab out of Name->text
+--
+-- Verify Strain Nomenclature
+-- trailing blank check is deliberate ("CD1 " vs. "CD1").
+--
+
+	VerifyNomenclature does
+	  value : string := VerifyNomenclature.source_widget.value;
+	  foundError : boolean := false;
+	  msg : string := "";
+
+	  (void) busy_cursor(top);
+
+	  value := value.raise_case;
+
+	  if (strstr(value, "CD1 ") != nil) then
+	    foundError := true;
+	    msg := msg + "CD1 should be CD-1\n";
+	  end if;
+
+	  if (strstr(value, "C3H/R1 ") != nil) then
+	    foundError := true;
+	    msg := msg + "C3HR1 should be C3HRl\n";
+	  end if;
+
+	  if (strstr(value, "FVB/J ") != nil) then
+	    foundError := true;
+	    msg := msg + "FVB/J should be FVB/NJ\n";
+	  end if;
+
+	  if (strstr(value, "129P2 ") != nil) then
+	    foundError := true;
+	    msg := msg + "129P2 should be 129P2/OlaHsd\n";
+	  end if;
+
+	  if (strstr(value, "129S7 ") != nil) then
+	    foundError := true;
+	    msg := msg + "129S7 should be 129S7/SvEvBrd\n";
+	  end if;
+
+	  if (strstr(value, "129/SVEV ") != nil) then
+	    foundError := true;
+	    msg := msg + "129/SvEv should be 129S/SvEv\n";
+	  end if;
+
+	  if (strstr(value, "129/SVJ ") != nil) then
+	    foundError := true;
+	    msg := msg + "129/SvJ should be 129X1/SvJ\n";
+	  end if;
+
+	  if (strstr(value, ":  ") != nil) then
+	    foundError := true;
+	    msg := msg + "2 spaces after : should be 1 space\n";
+	  end if;
+
+	  if (strstr(value, "#") != nil) then
+	    foundError := true;
+	    msg := msg + "# should be *\n";
+	  end if;
+
+	  if (strstr(value, "\"") != nil) then
+	    msg := msg + "\" should be *\n";
+	    foundError := true;
+	  end if;
+
+	  if (foundError) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "The nomenclature on this record looks non-standard:\n\n" + msg;
+            send(StatusReport);
+	  end if;
+
+	  send(VerifyDuplicateStrain, 0);
 
 	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);

@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec	01/18/2006
+--	- TR 7303; default Segment Type for primers
+--
 -- lec	06/18/2004
 --	- TR 5702; remove RepeatUnit and MoreProduct
 --
@@ -164,6 +167,7 @@ locals:
 
 	origSegmentType : string;
 	primerVector : string;
+	primerType : string;
 
 rules:
 
@@ -245,6 +249,7 @@ rules:
 	   
           sourceKeyName := "maxSource";
 	  primerVector := mgi_sql1("select _Term_key from VOC_Term_SegVectorType_View where term = 'Not Applicable'");
+	  primerType := mgi_sql1("select _Term_key from VOC_Term_SegmentType_View where term = 'primer'");
 
 	  sourceOptions.append(top->MolDetailForm->ProbeOrganismMenu);
 	  sourceOptions.append(top->MolDetailForm->AgeMenu);
@@ -365,9 +370,10 @@ rules:
 	  -- Insert for Primers
 
 	  else
+
 	    cmd := cmd + "NULL,-2," +
 			 primerVector + "," +
-                         top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue + "," +
+			 primerType + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence1->text.value) + "," +
 	                 mgi_DBprstr(top->MolPrimerForm->Sequence2->text.value) + "," +
                          mgi_DBprstr(top->MolMasterForm->Region->text.value) + "," +
@@ -543,7 +549,7 @@ rules:
 	    return;
 	  end if;
 
-	  if (origSegmentType != "primer" and 
+	  if (origSegmentType != "primer" and origSegmentType != "Not Specified" and
 	      top->MolMasterForm->SegmentTypeMenu.menuHistory.labelString = "primer") then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot change Molecular Segment to Primer.";

@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec  12/13/2005
+--	TR 7325;ProcessNoteTypeTable;re-use primary key if possible
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -241,15 +244,24 @@ rules:
                 cmd := cmd + mgi_DBdelete(MGI_NOTE, key);
 	      end if;
 
-	      if (not keyDefined) then
-		cmd := cmd + mgi_setDBkey(MGI_NOTE, NEWKEY, keyName);
-		keyDefined := true;
-	      else
-		cmd := cmd + mgi_DBincKey(keyName);
+              if (editMode = TBL_ROW_ADD) then
+	        if (not keyDefined) then
+		  cmd := cmd + mgi_setDBkey(MGI_NOTE, NEWKEY, keyName);
+		  keyDefined := true;
+	        else
+		  cmd := cmd + mgi_DBincKey(keyName);
+		end if;
 	      end if;
 
-	      cmd := cmd + mgi_DBinsert(MGI_NOTE, keyName) +
-		     objectKey + "," +
+	      -- Re-use primary key if modifying an existing note
+
+              if (editMode = TBL_ROW_ADD) then
+	        cmd := cmd + mgi_DBinsert(MGI_NOTE, keyName);
+	      else
+	        cmd := cmd + mgi_DBinsert(MGI_NOTE, NOKEY) + key + ",";
+	      end if;
+
+	      cmd := cmd + objectKey + "," +
 		     mgiType + "," +
 		     noteTypeKey + "," +
 		     global_loginKey + "," + global_loginKey + ")\n";
@@ -257,11 +269,17 @@ rules:
               -- Break notes up into segments of 255
  
               while (note.length > 255) do
-	        cmd := cmd +
-		       mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + "," +
-		       (string) i + "," + 
+
+                if (editMode = TBL_ROW_ADD) then
+	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + ",";
+		else
+	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + key + ",";
+		end if;
+
+		cmd := cmd + (string) i + "," + 
                        mgi_DBprnotestr(note->substr(1, 255)) + "," +
 		       global_loginKey + "," + global_loginKey + ")\n";
+
                 note := note->substr(256, note.length);
                 i := i + 1;
               end while;
@@ -269,9 +287,13 @@ rules:
 	      -- Process the last remaining chunk of note
     
 	      if (mgi_DBprnotestr(note) != "NULL") then
-	        cmd := cmd +
-		       mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + "," +
-		       (string) i + "," + 
+                if (editMode = TBL_ROW_ADD) then
+	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + "@" + keyName + ",";
+		else
+	          cmd := cmd + mgi_DBinsert(MGI_NOTECHUNK, NOKEY) + key + ",";
+		end if;
+
+		cmd := cmd + (string) i + "," + 
                        mgi_DBprnotestr(note) + "," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 	      end if;

@@ -3,9 +3,12 @@
 -- Creator : lec
 -- MGILib.d 04/05/99
 --
--- D Events are declared in MGILib.d.de
+-- D Events are declared in MGILib.de
 --
 -- History
+--
+-- 01/27/2006 lec
+--	- remove StatusReportFront
 --
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
@@ -83,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-4-0-22";
+	  global_version := "CVS ei-3-4-1-1";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -355,34 +358,6 @@ rules:
 	  end if;
 
           status->StatusDialog.top.front;
-        end does;
-
---
--- StatusReportFront
---
--- Set Status Report to front of stacking order
--- Called from EditForm/SubEditForm focusCallback
---
-
-        StatusReportFront does
-	  status : widget := StatusReportFront.source_widget.top;
-
-	  return;
-
-	  if (status->StatusDialog != nil) then
-            if (status->StatusDialog.managed) then
-              status->StatusDialog.top.front;
-	    end if;
-	  end if;
-
-	  status := top;
-
-	  if (status->StatusDialog != nil) then
-            if (status->StatusDialog.managed) then
-              status->StatusDialog.top.front;
-	    end if;
-	  end if;
-
         end does;
 
 --

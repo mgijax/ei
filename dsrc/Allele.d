@@ -148,7 +148,7 @@ rules:
 	  -- Prevent multiple instances of the Allele form
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.managed := true;
+	  top.show;
 
 	  -- Initialize
 	  send(Init, 0);
@@ -1612,8 +1612,9 @@ rules:
 	Exit does
           ab.sensitive := true;
 	  destroy self;
-	  ExitWindow.source_widget := top;
-	  send(ExitWindow, 0);
+	  top.destroy_widget;
+--	  ExitWindow.source_widget := top;
+--	  send(ExitWindow, 0);
 	end does;
 
 end dmodule;

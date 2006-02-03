@@ -154,8 +154,8 @@ char *global_loginKey;        /* Set in Application dModule; holds login key val
 
 char *mgi_DBprstr(char *value)
 {
-  static char buf[BUFSIZ];
-  char newValue[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
+  char newValue[TEXTBUFSIZ];
   int allSpaces = 1;
   int i = 0;
   char *s;
@@ -235,7 +235,7 @@ char *mgi_DBprstr(char *value)
 
 char *mgi_DBprstr2(char *value)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
   int allSpaces = 1;
   int i;
   char *s;
@@ -292,7 +292,7 @@ char *mgi_DBprstr2(char *value)
 
 char *mgi_DBprnotestr(char *value)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
   int allSpaces = 1;
   int i;
   char *s;
@@ -340,7 +340,7 @@ char *mgi_DBprnotestr(char *value)
 
 char *mgi_DBprkey(char *value)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -387,7 +387,7 @@ char *mgi_DBprkey(char *value)
 
 char *mgi_setDBkey(int table, int key, char *keyName)
 {
-  static char cmd[BUFSIZ];
+  static char cmd[TEXTBUFSIZ];
   int startKey = 1000;
 
   memset(cmd, '\0', sizeof(cmd));
@@ -434,8 +434,8 @@ char *mgi_setDBkey(int table, int key, char *keyName)
 
 char *mgi_DBnextSeqKey(int table, char *key, char *keyName)
 {
-  static char cmd[BUFSIZ];
-  char DBkey[BUFSIZ];
+  static char cmd[TEXTBUFSIZ];
+  char DBkey[TEXTBUFSIZ];
   int startKey = 1;
 
   memset(cmd, '\0', sizeof(cmd));
@@ -482,7 +482,7 @@ char *mgi_DBnextSeqKey(int table, char *key, char *keyName)
 
 char *mgi_DBincKey(char *keyName)
 {
-  static char cmd[BUFSIZ];
+  static char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
   sprintf(cmd, "select @%s = @%s + 1\n", keyName, keyName);
@@ -501,7 +501,7 @@ char *mgi_DBincKey(char *keyName)
 
 char *mgi_DBrecordCount(int table)
 {
-  static char cmd[BUFSIZ];
+  static char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
 
@@ -534,7 +534,7 @@ char *mgi_DBrecordCount(int table)
 
 char *mgi_DBaccKey(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -569,7 +569,7 @@ char *mgi_DBaccKey(int table)
 
 char *mgi_DBkey(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -970,7 +970,7 @@ char *mgi_DBkey(int table)
 
 char *mgi_DBtype(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -1053,7 +1053,7 @@ char *mgi_DBtype(int table)
  
 char *mgi_DBaccTable(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
  
   memset(buf, '\0', sizeof(buf));
  
@@ -1146,7 +1146,7 @@ char *mgi_DBaccTable(int table)
 
 char *mgi_DBtable(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -1801,7 +1801,7 @@ char *mgi_DBtable(int table)
  
 char *mgi_DBsumTable(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
  
   memset(buf, '\0', sizeof(buf));
  
@@ -1877,9 +1877,9 @@ char *mgi_DBsumTable(int table)
 
 char *mgi_DBinsert(int table, char *keyName)
 {
-  static char buf[BUFSIZ];
-  static char buf2[BUFSIZ];
-  static char buf3[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
+  static char buf2[TEXTBUFSIZ];
+  static char buf3[TEXTBUFSIZ];
   int selectKey;
 
   memset(buf, '\0', sizeof(buf));
@@ -2367,7 +2367,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case STRAIN:
-            sprintf(buf, "insert %s (%s, _Species_key, strain, standard, needsReview, private, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Species_key, strain, standard, needsReview, private, imsrOK, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case TISSUE:
             sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
@@ -2461,7 +2461,7 @@ char *mgi_DBinsert(int table, char *keyName)
 
 char *mgi_DBupdate(int table, char *key, char *str)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
   char **tokens;
 
   memset(buf, '\0', sizeof(buf));
@@ -2623,7 +2623,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
 
 char *mgi_DBdelete(int table, char *key)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
   char **tokens;
 
   memset(buf, '\0', sizeof(buf));
@@ -2685,7 +2685,7 @@ char *mgi_DBdelete(int table, char *key)
 
 char *mgi_DBreport(int table, char *key)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -2721,7 +2721,7 @@ char *mgi_DBreport(int table, char *key)
 
 char *mgi_DBaccSelect(int table, int mgiTypeKey, int key)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
   static char dbView[80];
 
   memset(buf, '\0', sizeof(buf));
@@ -2767,7 +2767,7 @@ char *mgi_DBaccSelect(int table, int mgiTypeKey, int key)
 
 char *mgi_DBcvLoad(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -2805,7 +2805,7 @@ char *mgi_DBcvLoad(int table)
 /*
 char *mgi_DBcvKey(int table, int value)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -2839,7 +2839,7 @@ char *mgi_DBcvKey(int table, int value)
 
 char *mgi_DBcvname(int table)
 {
-  static char buf[BUFSIZ];
+  static char buf[TEXTBUFSIZ];
 
   memset(buf, '\0', sizeof(buf));
 
@@ -2972,7 +2972,7 @@ char *mgi_DBcvname(int table)
 
 char *mgi_DBrefstatus(int key, int table)
 {
-  char cmd[BUFSIZ];
+  char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
 
@@ -3020,7 +3020,7 @@ char *mgi_DBrefstatus(int key, int table)
 
 Boolean mgi_DBisAnchorMarker(char *key)
 {
-  char cmd[BUFSIZ];
+  char cmd[TEXTBUFSIZ];
 
   memset(cmd, '\0', sizeof(cmd));
   sprintf(cmd, "exec MRK_isAnchor %s", key);
@@ -3052,7 +3052,7 @@ Boolean mgi_DBisAnchorMarker(char *key)
 char *mgi_escape_quotes(char *txt)
 {
     int c;
-    static char outbuf[BUFSIZ];
+    static char outbuf[TEXTBUFSIZ];
     char *ob=outbuf;
     char *tp=txt;
  

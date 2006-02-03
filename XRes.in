@@ -2,7 +2,6 @@ MGD*fontList:	"fixed"
 GXD*fontList:	"fixed"
 MGI*fontList:	"fixed"
 MGIADMIN*fontList:	"fixed"
-FANTOM*fontList:	"fixed"
 *XmText.translations: #override\n\
  	<Key>osfDelete:   delete-previous-character()\n\
         <Key>F3:          copy-clipboard()\n\
