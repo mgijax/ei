@@ -17,7 +17,7 @@
 --	TR 7153; added IMSRMenu
 --
 -- lec	10/07/2005
---	TR 6949, VerifyNomenclature
+--	TR 6949, VerifyStrainNomenclature
 --
 -- lec	03/2005
 --	TR 4289, MPR
@@ -116,7 +116,6 @@ devents:
 	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
 	VerifyDuplicateStrain :local [];
-	VerifyNomenclature :translation [];
 
 locals:
 	mgi : widget;
@@ -1182,7 +1181,7 @@ rules:
 --
 -- VerifyDuplicateStrain
 --
--- Activated from:  VerifyNomenclature
+-- Activated from:  VerifyStrainNomenclature
 --
 -- Check Strain against existing Strains.
 -- Inform user if Strain is a duplicate.
@@ -1206,86 +1205,6 @@ rules:
             send(StatusReport);
 	  end if;
 
-	end does;
-
---
--- VerifyNomenclature
---
--- Activated from:  tab out of Name->text
---
--- Verify Strain Nomenclature
--- trailing blank check is deliberate ("CD1 " vs. "CD1").
---
-
-	VerifyNomenclature does
-	  value : string := VerifyNomenclature.source_widget.value;
-	  foundError : boolean := false;
-	  msg : string := "";
-
-	  (void) busy_cursor(top);
-
-	  value := value.raise_case;
-
-	  if (strstr(value, "CD1 ") != nil) then
-	    foundError := true;
-	    msg := msg + "CD1 should be CD-1\n";
-	  end if;
-
-	  if (strstr(value, "C3H/R1 ") != nil) then
-	    foundError := true;
-	    msg := msg + "C3HR1 should be C3HRl\n";
-	  end if;
-
-	  if (strstr(value, "FVB/J ") != nil) then
-	    foundError := true;
-	    msg := msg + "FVB/J should be FVB/NJ\n";
-	  end if;
-
-	  if (strstr(value, "129P2 ") != nil) then
-	    foundError := true;
-	    msg := msg + "129P2 should be 129P2/OlaHsd\n";
-	  end if;
-
-	  if (strstr(value, "129S7 ") != nil) then
-	    foundError := true;
-	    msg := msg + "129S7 should be 129S7/SvEvBrd\n";
-	  end if;
-
-	  if (strstr(value, "129/SVEV ") != nil) then
-	    foundError := true;
-	    msg := msg + "129/SvEv should be 129S/SvEv\n";
-	  end if;
-
-	  if (strstr(value, "129/SVJ ") != nil) then
-	    foundError := true;
-	    msg := msg + "129/SvJ should be 129X1/SvJ\n";
-	  end if;
-
-	  if (strstr(value, ":  ") != nil) then
-	    foundError := true;
-	    msg := msg + "2 spaces after : should be 1 space\n";
-	  end if;
-
-	  if (strstr(value, "#") != nil) then
-	    foundError := true;
-	    msg := msg + "# should be *\n";
-	  end if;
-
-	  if (strstr(value, "\"") != nil) then
-	    msg := msg + "\" should be *\n";
-	    foundError := true;
-	  end if;
-
-	  if (foundError) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "The nomenclature on this record looks non-standard:\n\n" + msg;
-            send(StatusReport);
-	  end if;
-
-	  send(VerifyDuplicateStrain, 0);
-
-	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
-	  (void) reset_cursor(top);
 	end does;
 
 --

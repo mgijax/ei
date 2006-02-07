@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb  2 14:33:36 2006";
+      lastWritten = "Mon Feb  6 15:07:52 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -12934,7 +12934,7 @@ Shift<Key>Tab: prev-tab-group()
                                           columns = 95;
                                           translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyNomenclature()";
+<Key>Tab: VerifyStrainNomenclature() VerifyDuplicateStrain()";
                                         Group: User
                                           required = True;
                                       }

@@ -86,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-4-1-4";
+	  global_version := "CVS ei-3-4-1-5";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -350,7 +350,7 @@ rules:
             status->StatusDialog.messageString := StatusReport.message;
             status->StatusDialog.managed := true;
 	    XmUpdateDisplay(status->StatusDialog);
-	  elsif (StatusReport.appendMessage = 1) then
+	  elsif (StatusReport.appendMessage = true) then
             status->StatusDialog.managed := false;
             status->StatusDialog.messageString := 
 	    	status->StatusDialog.messageString + "\n\n" + StatusReport.message;

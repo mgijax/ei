@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 24 16:12:11 2006";
+      lastWritten = "Mon Feb  6 15:06:36 2006";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -286,7 +286,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: User
                         required = True;
                         defaultValue = "-1";
@@ -300,7 +300,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Tissue;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: Widget
                         columns = 50;
                     }
@@ -321,7 +321,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: User
                         required = True;
                         defaultValue = "-1";
@@ -335,9 +335,12 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Strain;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: Widget
                         columns = 50;
+                        translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyStrainNomenclature() VerifyItem()";
                     }
               }
         }
@@ -628,7 +631,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Journal;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: Widget
                         columns = 95;
                         maxLength = 100;
@@ -664,7 +667,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Designation;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: Widget
                         columns = 15;
                         translations = "#override
@@ -679,7 +682,7 @@ Shift<Key>Tab: prev-tab-group()
                       label = XmLabel;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: Widget
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
@@ -749,7 +752,7 @@ Shift<Key>Tab: prev-tab-group()
                         labelString = Cross;
                     }
                     {
-                      text = XmText;
+                      text = text;
                       Group: Widget
                         columns = 30;
                         translations = "#override
@@ -1139,7 +1142,7 @@ Shift<Key>Tab: prev-tab-group()
                             label = XmLabel;
                           }
                           {
-                            text = XmText;
+                            text = text;
                             Group: User
                               defaultValue = "-2";
                           }
@@ -1152,7 +1155,7 @@ Shift<Key>Tab: prev-tab-group()
                               labelString = "Strain of \nOrigin";
                           }
                           {
-                            text = XmText;
+                            text = text;
                             Group: User
                               defaultValue = "Not Applicable";
                           }

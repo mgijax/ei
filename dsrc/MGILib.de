@@ -25,7 +25,7 @@ SetTitle [source_widget : widget;];     -- Set Form Title for Form Banner
   
 StatusReport [source_widget : widget;  	-- Display Status Report
               message : string;
-	      appendMessage : integer := 0;];
+	      appendMessage : boolean := false;];
 
 StatusReportFront [source_widget : widget;]; 	-- Set Status Report to front of stack
 
