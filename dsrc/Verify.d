@@ -1509,9 +1509,9 @@ rules:
 
 	      if (tableID = STRAIN) then
 		if (mgi_getstr(dbproc, 3) = NO) then
-	          results.insert(mgi_getstr(dbproc, 2));
+	          results.insert(mgi_getstr(dbproc, 2), results.count + 1);
 		else
-	          results.insert(mgi_getstr(dbproc, 2));
+	          results.insert(mgi_getstr(dbproc, 2), results.count + 1);
 		end if;
 	      else
 	        results.insert(mgi_getstr(dbproc, 2), results.count + 1);
