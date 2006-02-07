@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb  6 15:06:36 2006";
+      lastWritten = "Tue Feb  7 14:06:14 2006";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -15,7 +15,7 @@ Module: mgiDataTypes
             vip_y = 85;
         }
         {
-          text = XmText;
+          text = XmTextField;
           Group: Widget
             background = Wheat;
             userDefinedAttributes = "defaultValue:String(String)\nmodified:Boolean(Boolean)=\"False\"\nrequired:Boolean(Boolean)=\"False\"\ndefaultCmd:String(String)\n";

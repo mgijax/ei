@@ -16,9 +16,6 @@
 -- lec	10/31/2005
 --	TR 7153; added IMSRMenu
 --
--- lec	10/07/2005
---	TR 6949, VerifyStrainNomenclature
---
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -1181,7 +1178,7 @@ rules:
 --
 -- VerifyDuplicateStrain
 --
--- Activated from:  VerifyStrainNomenclature
+-- Activated from:  Strain translation
 --
 -- Check Strain against existing Strains.
 -- Inform user if Strain is a duplicate.
