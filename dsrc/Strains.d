@@ -112,7 +112,7 @@ devents:
 
 	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
-	VerifyDuplicateStrain :local [];
+	VerifyDuplicateStrain :translation [];
 
 locals:
 	mgi : widget;
