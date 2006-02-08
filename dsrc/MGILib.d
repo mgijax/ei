@@ -367,6 +367,10 @@ rules:
         StatusReportFront does
 	  status : widget := StatusReportFront.source_widget.top;
 
+	  -- don't uncomment or EI will crash
+
+	  return;
+
 	  if (status->StatusDialog != nil) then
             if (status->StatusDialog.managed) then
               status->StatusDialog.top.front;
