@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- 01/27/2006 lec
+--	- remove StatusReportFront
+--
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
 --
@@ -347,7 +350,7 @@ rules:
             status->StatusDialog.messageString := StatusReport.message;
             status->StatusDialog.managed := true;
 	    XmUpdateDisplay(status->StatusDialog);
-	  elsif (StatusReport.appendMessage = 1) then
+	  elsif (StatusReport.appendMessage = true) then
             status->StatusDialog.managed := false;
             status->StatusDialog.messageString := 
 	    	status->StatusDialog.messageString + "\n\n" + StatusReport.message;
@@ -355,36 +358,6 @@ rules:
 	  end if;
 
           status->StatusDialog.top.front;
-        end does;
-
---
--- StatusReportFront
---
--- Set Status Report to front of stacking order
--- Called from EditForm/SubEditForm focusCallback
---
-
-        StatusReportFront does
-	  status : widget := StatusReportFront.source_widget.top;
-
-	  -- don't uncomment or EI will crash
-
-	  return;
-
-	  if (status->StatusDialog != nil) then
-            if (status->StatusDialog.managed) then
-              status->StatusDialog.top.front;
-	    end if;
-	  end if;
-
-	  status := top;
-
-	  if (status->StatusDialog != nil) then
-            if (status->StatusDialog.managed) then
-              status->StatusDialog.top.front;
-	    end if;
-	  end if;
-
         end does;
 
 --

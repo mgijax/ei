@@ -27,7 +27,5 @@ StatusReport [source_widget : widget;  	-- Display Status Report
               message : string;
 	      appendMessage : integer := 0;];
 
-StatusReportFront [source_widget : widget;]; 	-- Set Status Report to front of stack
-
 StatusReportOK []; 			-- Unmanage Status Dialog and push MGI to back
 
