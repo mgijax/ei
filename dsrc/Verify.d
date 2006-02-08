@@ -2950,7 +2950,6 @@ rules:
             send(StatusReport);
 	  end if;
 
-	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
 	end does;
 
