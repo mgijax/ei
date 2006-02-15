@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 19 14:59:16 2006";
+      lastWritten = "Wed Feb 15 11:21:35 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1443,6 +1443,11 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           noteWidget = Note;
                                       }
+                                      {
+                                        AgeAssigned = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = Note;
+                                      }
                                 }
                           }
                     }
@@ -2345,6 +2350,11 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AgeNormalized = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          activateCallback = "D:AppendToAgeNote";
+                                      }
+                                      {
+                                        AgeAssigned = AppendNotePush : mgiDataTypes;
                                         Group: Widget
                                           activateCallback = "D:AppendToAgeNote";
                                       }

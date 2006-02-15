@@ -1,14 +1,14 @@
 
 !
 ! VIP init file
-! written: Tue Dec 21 10:30:14 2004
+! written: Wed Feb 15 11:15:01 2006
 !
 
 session_information {
-  x       = 926
+  x       = 851
   y       = 0
-  width   = 979
-  height  = 862
+  width   = 1054
+  height  = 1044
   display = ":0.0"
 }
 
@@ -40,7 +40,7 @@ pcds
 
   load "/home/lec/ei/ei/pcds/MGD.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 836
 
