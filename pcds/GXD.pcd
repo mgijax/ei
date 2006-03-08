@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 15 11:21:35 2006";
+      lastWritten = "Wed Mar  8 15:10:10 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -2132,7 +2132,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: User
             homeWidget = "Jnum\nmgiAccessionTable";
             clearForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
-            editForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nProbePrepVerifyForm\nAntibodyPrepForm\nAntibodyPrepVerifyForm\nInSituForm\nGelForm";
+            editForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
             activateButtonName = Assay;
               {
                 MainForm = XmForm;
