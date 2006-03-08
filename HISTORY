@@ -1,3 +1,9 @@
+TAG: ei-3-4-1-13
+DATE: 03/08/2006
+STAFF: lec
+CHANGES:
+1) dsrc/Assay.d; select count(*) don't use view
+
 TAG: ei-3-4-1-12
 DATE: 02/27/2006
 STAFF: lec
