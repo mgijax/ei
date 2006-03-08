@@ -2611,9 +2611,6 @@ rules:
 	        "select * from GXD_GelLane_View " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
 		"\norder by sequenceNum\n" +
-	        "select a.accID from GXD_GelLane s, GXD_Genotype_Acc_View a " +
-		"where s." + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-		" and s._Genotype_key = a._Object_key\n" +
                 "select _GelLane_key, _Structure_key from GXD_GelLaneStructure_View " +
                 "where _Assay_key = " + currentAssay + "\norder by sequenceNum\n";
 
@@ -2634,8 +2631,9 @@ rules:
 	      elsif (results = 2) then
 	        (void) mgi_tblSetCell(table, row, table.laneKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.controlKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.control, mgi_getstr(dbproc, 18));
+	        (void) mgi_tblSetCell(table, row, table.control, mgi_getstr(dbproc, 19));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 3));
+	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(table, row, table.rnaKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.rna, mgi_getstr(dbproc, 17));
 	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
@@ -2656,10 +2654,6 @@ rules:
 	        row := row + 1;
 
 	      elsif (results = 3) then
-	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 1));
-	        row := row + 1;
-
-	      elsif (results = 4) then
                 structureGel := mgi_getstr(dbproc, 1);
  
                 -- Find row of Gel key
