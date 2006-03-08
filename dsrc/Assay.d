@@ -2490,9 +2490,18 @@ rules:
 
 	  select := "select count(*) from GXD_Specimen " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n" +
-	        "select * from GXD_Specimen_View " +
+	        "select * from GXD_Specimen " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-		"\norder by sequenceNum\n";
+		"\norder by sequenceNum\n" +
+	        "select e.embeddingMethod from GXD_Specimen s, GXD_EmbeddingMethod e " +
+		"where s." + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
+		" and s._Embedding_key = e._Embedding_key\n" +
+	        "select e.fixation from GXD_Specimen s, GXD_FixationMethod e " +
+		"where s." + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
+		" and s._Fixation_key = e._Fixation_key\n" +
+	        "select a.accID from GXD_Specimen s, GXD_Genotype_Acc_View a " +
+		"where s." + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
+		" and s._Genotype_key = a._Object_key\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2508,17 +2517,14 @@ rules:
 		  AddTableRow.numRows := numRows - mgi_tblNumRows(table);
 		  send(AddTableRow, 0);
 		end if;
-	      else
+	      elsif (results = 2) then
 	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 6));
 	        (void) mgi_tblSetCell(table, row, table.specimenKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.specimenLabel, mgi_getstr(dbproc, 7));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(table, row, table.fixationKey, mgi_getstr(dbproc, 4));
-	        (void) mgi_tblSetCell(table, row, table.fixation, mgi_getstr(dbproc, 18));
 	        (void) mgi_tblSetCell(table, row, table.embeddingKey, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, table.embedding, mgi_getstr(dbproc, 17));
 	        (void) mgi_tblSetCell(table, row, table.sexKey, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.sex, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.hybridizationKey, mgi_getstr(dbproc, 13));
@@ -2531,11 +2537,25 @@ rules:
 	        DisplayMolecularAge.row := row;
 	        DisplayMolecularAge.age := mgi_getstr(dbproc, 9);
 	        send(DisplayMolecularAge, 0);
-	      
+
 	        row := row + 1;
+	      
+	      elsif (results = 3) then
+	        (void) mgi_tblSetCell(table, row, table.embedding, mgi_getstr(dbproc, 1));
+	        row := row + 1;
+
+	      elsif (results = 4) then
+	        (void) mgi_tblSetCell(table, row, table.fixation, mgi_getstr(dbproc, 1));
+	        row := row + 1;
+
+	      elsif (results = 5) then
+	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 1));
+	        row := row + 1;
+
 	      end if;
 	    end while;
 	    results := results + 1;
+	    row := 0;
           end while;
 
 	  -- Determine number of InSitu Results per Specimen
@@ -2591,6 +2611,9 @@ rules:
 	        "select * from GXD_GelLane_View " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
 		"\norder by sequenceNum\n" +
+	        "select a.accID from GXD_GelLane s, GXD_Genotype_Acc_View a " +
+		"where s." + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
+		" and s._Genotype_key = a._Object_key\n" +
                 "select _GelLane_key, _Structure_key from GXD_GelLaneStructure_View " +
                 "where _Assay_key = " + currentAssay + "\norder by sequenceNum\n";
 
@@ -2611,9 +2634,8 @@ rules:
 	      elsif (results = 2) then
 	        (void) mgi_tblSetCell(table, row, table.laneKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(table, row, table.controlKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(table, row, table.control, mgi_getstr(dbproc, 19));
+	        (void) mgi_tblSetCell(table, row, table.control, mgi_getstr(dbproc, 18));
 	        (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 3));
-	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 20));
 	        (void) mgi_tblSetCell(table, row, table.rnaKey, mgi_getstr(dbproc, 4));
 	        (void) mgi_tblSetCell(table, row, table.rna, mgi_getstr(dbproc, 17));
 	        (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 6));
@@ -2632,7 +2654,12 @@ rules:
 	        send(DisplayMolecularAge, 0);
 
 	        row := row + 1;
+
 	      elsif (results = 3) then
+	        (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 1));
+	        row := row + 1;
+
+	      elsif (results = 4) then
                 structureGel := mgi_getstr(dbproc, 1);
  
                 -- Find row of Gel key
@@ -2659,6 +2686,7 @@ rules:
 	      end if;
 	    end while;
 	    results := results + 1;
+	    row := 0;
           end while;
 	  (void) dbclose(dbproc);
 
