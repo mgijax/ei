@@ -2488,7 +2488,7 @@ rules:
 	  row : integer := 0;
 	  numRows : integer := 0;
 
-	  select := "select count(*) from GXD_Specimen_View " +
+	  select := "select count(*) from GXD_Specimen " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n" +
 	        "select * from GXD_Specimen_View " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
@@ -2586,7 +2586,7 @@ rules:
 	  structureGel : string := "";
 	  structureKeys : string := "";
 
-	  select := "select count(*) from GXD_GelLane_View " +
+	  select := "select count(*) from GXD_GelLane " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n" +
 	        "select * from GXD_GelLane_View " +
 		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
