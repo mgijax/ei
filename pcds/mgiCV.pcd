@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Aug 22 15:23:16 2005";
+      lastWritten = "Wed Feb 15 11:22:24 2006";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -459,6 +459,13 @@ Module: mgiCV
                   labelString = "Age Normalized";
                 Group: User
                   note = "Age normalized so that noon of plug day = E0.5.";
+              }
+              {
+                AgeAssigned = AppendNotePush : mgiDataTypes;
+                Group: Widget
+                  labelString = "Age Assigned";
+                Group: User
+                  note = "Age assigned by curator based on morphological criteria supplied by authors.";
               }
         }
         {

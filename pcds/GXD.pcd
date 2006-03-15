@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 14 09:47:54 2005";
+      lastWritten = "Fri Mar 10 10:45:07 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1440,6 +1440,11 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           noteWidget = Note;
                                       }
+                                      {
+                                        AgeAssigned = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = Note;
+                                      }
                                 }
                           }
                     }
@@ -1867,7 +1872,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: User
             homeWidget = "Jnum\nmgiAccessionTable";
             clearForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
-            editForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nProbePrepVerifyForm\nAntibodyPrepForm\nAntibodyPrepVerifyForm\nInSituForm\nGelForm";
+            editForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
             activateButtonName = Assay;
               {
                 MainForm = XmForm;
@@ -2085,6 +2090,11 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AgeNormalized = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          activateCallback = "D:AppendToAgeNote";
+                                      }
+                                      {
+                                        AgeAssigned = AppendNotePush : mgiDataTypes;
                                         Group: Widget
                                           activateCallback = "D:AppendToAgeNote";
                                       }

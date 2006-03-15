@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Aug 30 10:42:31 2005";
+      lastWritten = "Wed Feb  8 08:13:40 2006";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -337,6 +337,9 @@ Shift<Key>Tab: prev-tab-group()
                       text = text;
                       Group: Widget
                         columns = 50;
+                        translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyStrainNomenclature() VerifyItem()";
                     }
               }
         }
