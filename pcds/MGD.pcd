@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 15 10:30:14 2006";
+      lastWritten = "Thu Mar 16 12:38:04 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -14674,22 +14674,22 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       Table = mgiTable;
                       Group: Widget
-                        xrtTblNumColumns = 12;
-                        xrtTblCharWidthSeries = "(all 0 1)(all 6 3)(all 7 25)(all 8 15)(all 9-10 20)(all 11 7)";
-                        xrtTblColumnLabels = "Mode,Current Order,Marker key,Chr,Allele key,Assay key,#,Marker,Allele,Assay Type,Description,Matrix?";
-                        xrtTblEditableSeries = "(all 0-6 False)";
-                        xrtTblPixelWidthSeries = "(all 0-5 0)";
-                        xrtTblTraversableSeries = "(all 0-6 False)";
+                        xrtTblNumColumns = 13;
+                        xrtTblCharWidthSeries = "(all 0 1)(all 7 3)(all 8 25)(all 9 15)(all 10-11 20)(all 12 7)";
+                        xrtTblColumnLabels = "Mode,Current Order,Marker key,Current Marker key,Chr,Allele key,Assay key,#,Marker,Allele,Assay Type,Description,Matrix?";
+                        xrtTblEditableSeries = "(all 0-7 False)";
+                        xrtTblPixelWidthSeries = "(all 0-6 0)";
+                        xrtTblTraversableSeries = "(all 0-7 False)";
                         xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyExptChromosome,\nD:VerifyAllele,\nD:VerifyExptAssay,\nD:VerifyYesNo,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 10;
-                        xrtTblMaxLengthSeries = "(all 7 40)(all 8 20)(all 9 80)(all 10 255)";
-                        userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable=\"4\"\nassayKey:Int(Int)=\"5\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerChr:Int(Int)=\"3\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable=\"8\"\nassay:Int(Int)=\"9\"\ndescription:Int(Int)=\"10\"\nyesno:Int(Int)=\"11\"\n";
+                        xrtTblMaxLengthSeries = "(all 8 40)(all 9 20)(all 10 80)(all 11 255)";
+                        userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nalleleKey:StringTable(StringTable)=\"5\"\nassayKey:Int(Int)=\"6\"\nmarkerSymbol:Int(Int)=\"8\"\nmarkerChr:Int(Int)=\"4\"\nmarkerColumns:Int(Int)=\"1\"\nalleleSymbol:StringTable(StringTable)=\"9\"\nassay:Int(Int)=\"10\"\ndescription:Int(Int)=\"11\"\nyesno:Int(Int)=\"12\"\ncurrentMarkerKey:Int(Int)=\"3\"\n";
                         xrtTblNumRows = 20;
                         xrtTblDisplayHorizScrollBar = dispsb_always;
                       Group: User
-                        seqNum = 6;
-                        saveTraversableSeries = "(all 0-6 False)";
-                        saveEditableSeries = "(all 0-6 False)";
+                        seqNum = 7;
+                        saveTraversableSeries = "(all 0-7 False)";
+                        saveEditableSeries = "(all 0-7 False)";
                     }
               }
               {
@@ -15038,12 +15038,30 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Next = ControlArrow;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    rightWidget = Delete;
+                                    topAttachment = attach_widget;
+                                    topWidget = ModifyMarker;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
                                   RecordCount = RecordCount;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = ModifyMarker;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = ModifyMarker;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   CreationDate = CreationDate;
@@ -15058,6 +15076,25 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = CreationDate;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                }
+                                {
+                                  ModifyMarker = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:ModifyMarkerAllExpts";
+                                    labelString = "Modify Marker for all Expts in this Reference";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Search;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = Search;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 2;
+                                    rightOffset = 2;
                                 }
                           }
                     }
@@ -15215,8 +15252,8 @@ Shift<Key>Tab: prev-tab-group()
                                         List = list;
                                         Group: User
                                           targetWidget = Marker;
-                                          targetText = 9;
-                                          targetKey = 5;
+                                          targetText = 10;
+                                          targetKey = 6;
                                       }
                                 }
                           }

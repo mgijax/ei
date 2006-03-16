@@ -105,6 +105,7 @@ devents:
 
 	Modify :local [];
 	ModifyExptMarker :local [];
+	ModifyMarkerAllExpts :local [];
 	ModifyStatistics :local [];
 	ModifyCross :local [];
 	ModifyCrossHaplotype :local [];
@@ -862,6 +863,7 @@ rules:
 
                 tmpCmd := tmpCmd + mgi_DBupdate(MLD_EXPT_MARKER, currentExptKey, set) +
                           "and sequenceNum = " + currentSeqNum + "\n";
+
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
@@ -886,6 +888,73 @@ rules:
               cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_EXPT_MARKER) + "'," + currentExptKey + "\n";
 	    end if;
 	  end if;
+        end does;
+ 
+--
+-- ModifyMarkerAllExpts
+--
+-- Modifies Marker for all experiments of given reference
+--
+
+        ModifyMarkerAllExpts does
+          table : widget := top->ExptDetailForm->Marker->Table;
+          row : integer;
+          editMode : string;
+          set : string := "";
+ 
+          markerKey : string;
+          currentMarkerKey : string;
+
+	  cmd := "";
+ 
+	  -- Check for duplicate Seq # assignments
+
+	  DuplicateSeqNumInTable.table := table;
+	  send(DuplicateSeqNumInTable, 0);
+
+	  if (table.duplicateSeqNum) then
+	    return;
+	  end if;
+
+          -- Process while non-empty rows are found
+ 
+          row := 0;
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+ 
+            if (editMode = TBL_ROW_MODIFY) then
+              markerKey := mgi_tblGetCell(table, row, table.markerKey);
+              currentMarkerKey := mgi_tblGetCell(table, row, table.currentMarkerKey);
+	      cmd := cmd + "update MLD_Expt_Marker " +
+		  " set _Marker_key = " + markerKey +
+		  " from MLD_Expt_Marker em, MLD_Expts e " +
+		  " where em._Marker_key = " + currentMarkerKey +
+		  " and em._Expt_key = e._Expt_key " +
+		  " and e._Refs_key = " + top->ExptDetailForm->mgiCitation->ObjectID->text.value + "\n";
+            end if;
+            row := row + 1;
+          end while;
+ 
+          if (cmd.length > 0 or set.length > 0) then
+            cmd := cmd + mgi_DBupdate(MLD_EXPTS, currentExptKey, set);
+          end if;
+
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+          send(ModifySQL, 0);
+
+	  -- Re-generate Statistics for Cross or RI Experiment
+
+	  if (ExptForm = top->ExptDetailForm->ExptCrossForm or
+	      ExptForm = top->ExptDetailForm->ExptRIForm) then
+	    send(DoStatistics, 0);
+	  end if;
+
+	  (void) reset_cursor(top);
         end does;
  
 --
@@ -2741,7 +2810,7 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
           Query.source_widget := top;
-          Query.select := "select e._Expt_key, e.jnumID + ', ' + e.exptType + '-' + convert(varchar(5), e.tag) + ', Chr ' + e.chromosome " +
+          Query.select := "select distinct e._Expt_key, e.jnumID + ', ' + e.exptType + '-' + convert(varchar(5), e.tag) + ', Chr ' + e.chromosome " +
 		from + "\n" + where + "\norder by e.jnum, e.exptType, e.tag";
           Query.table := MLD_EXPT_MARKER_VIEW;
           send(Query, 0);
@@ -2825,6 +2894,7 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.currentMarkerKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 6)); 
@@ -3760,15 +3830,17 @@ rules:
           -- If Marker Chr = Unknown, then Marker Chr will be modified to Expt value
 	  -- when record is modified by MLD_EXPT_MARKER update trigger
 
+	  -- skip verification
+
+	  if (exptChr = "%") then
+	    return;
+          end if;
+
           if (markerChr = "UN") then
             StatusReport.source_widget := top;
             StatusReport.message := "Symbol '" + markerSymbol + "'\n\n" +
                                     "Chromosome will be modified from '" + markerChr + "' to '" + exptChr + "'";
             send(StatusReport);
---          elsif (exptChr = "%") then
---            StatusReport.source_widget := top;
---            StatusReport.message := "No Chromosome has been selected.  Cannot verify.";
---            send(StatusReport);
           elsif (markerChr != exptChr) then
             StatusReport.source_widget := top;
             StatusReport.message := "Experiment Chromosome '" + exptChr + "'" + 

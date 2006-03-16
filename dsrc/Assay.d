@@ -3059,6 +3059,12 @@ rules:
 
 	   segmentType := mgi_sql1("select _SegmentType_key from PRB_Probe where _Probe_key = " + objectKey);
 
+	   -- if no Assay selected, don't do the verification
+
+	   if (top->AssayTypeMenu.menuHistory.defaultValue = "%") then
+	     return;
+           end if;
+
 	   -- if RT-PCR then Segment Type must be Primer
 
 	   if (top->AssayTypeMenu.menuHistory.defaultValue = "5" and segmentType != "63473") then
