@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov  3 12:48:00 2005";
+      lastWritten = "Thu Mar 16 13:37:56 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -394,6 +394,13 @@ Module: mgiOption
                         labelString = "NIA Mouse Gene Index";
                       Group: User
                         defaultValue = 53;
+                    }
+                    {
+                      UniSTS = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NCBI UniSTS";
+                      Group: User
+                        defaultValue = 80;
                     }
                     {
                       JRS = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 16 12:38:04 2006";
+      lastWritten = "Thu Mar 16 13:39:15 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3347,6 +3347,9 @@ Module: MGD
                                                     NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    UniSTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -5382,9 +5385,33 @@ Module: MGD
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -9784,6 +9811,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    UniSTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     JRS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -12427,6 +12457,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
+                                                  {
+                                                    UniSTS = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
                                             }
                                       }
                                 }
@@ -13049,6 +13084,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NIAGeneIndex = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniSTS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;
@@ -14989,9 +15027,33 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
