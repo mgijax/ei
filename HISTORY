@@ -1,3 +1,9 @@
+TAG: ei-3-4-1-17
+DATE: 03/22/2006
+STAFF: lec
+CHANGES:
+1) dsrc/Assay.d; don't clear form after select
+
 TAG: ei-3-4-1-16
 TAG: ei-3-4-1-15
 TAG: ei-3-4-1-14
