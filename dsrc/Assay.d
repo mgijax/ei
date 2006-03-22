@@ -2462,13 +2462,13 @@ rules:
 
 	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
 
-	  if (assayDetailForm.name = "GelForm") then
-	    ClearAssay.clearForms := clearAssayGel;
-	  end if;
+--	  if (assayDetailForm.name = "GelForm") then
+--	    ClearAssay.clearForms := clearAssayGel;
+--	  end if;
 
-          ClearAssay.reset := true;
-	  ClearAssay.select := true;
-          send(ClearAssay, 0);
+--          ClearAssay.reset := true;
+--	  ClearAssay.select := true;
+--          send(ClearAssay, 0);
 
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);
