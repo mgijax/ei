@@ -2460,6 +2460,9 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
+          SetNotesDisplay.note := top->AssayNote->Note;
+          send(SetNotesDisplay, 0);
+
 	  -- Don't clear the form because it'll wipe out editMode flags on Gel Bands
 
 --	  if (assayDetailForm.name = "GelForm") then
