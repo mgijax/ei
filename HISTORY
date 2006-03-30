@@ -1,3 +1,9 @@
+TAG: ei-3-4-4-1
+DATE: 03/30/2006
+STAFF: lec
+CHANGES:
+1) MGI 3.44; dbsnpload is okay to run while using EI
+
 TAG: ei-3-4-1-18
 DATE: 03/27/2006
 STAFF: lec
