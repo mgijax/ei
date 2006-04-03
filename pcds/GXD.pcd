@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  8 15:10:10 2006";
+      lastWritten = "Mon Apr  3 10:07:00 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -616,6 +616,12 @@ Shift<Key>Tab: prev-tab-group()
                                         ProbeOrganismMenu = ProbeOrganismMenu : mgiOption;
                                         Group: Widget
                                           subMenuId = ProbeOrganismPulldown;
+                                            Popups:
+                                            {
+                                              ProbeOrganismPulldown = OptionPulldown;
+                                              Group: User
+                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                            }
                                       }
                                       {
                                         ViewAttributeHistory = push;

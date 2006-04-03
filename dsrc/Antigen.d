@@ -91,9 +91,6 @@ rules:
 
 	  send(Init, 0);
 
-          InitOptionMenu.option := top->SourceForm->ProbeOrganismMenu;
-          send(InitOptionMenu, 0);
-
 	  ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
 	  top.show;
@@ -125,6 +122,9 @@ rules:
 
 	  InitOptionMenu.option := top->GenderMenu;
 	  send(InitOptionMenu, 0);
+
+          InitOptionMenu.option := top->SourceForm->ProbeOrganismMenu;
+          send(InitOptionMenu, 0);
 
 	  accTable := top->mgiAccessionTable->Table;
 	end does;
