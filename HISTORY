@@ -1,8 +1,10 @@
+TAG: ei-3-4-4-3
 TAG: ei-3-4-4-2
 DATE: 04/03/2006
 STAFF: lec
 CHANGES:
 1) MGI 3.44; fixed bug in Antibody/Source pick list display
+2) TR 7602;Antibody Raised In Default
 
 TAG: ei-3-4-4-1
 DATE: 03/30/2006
