@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- lec 03/30/2006
+--	- APP_JobStream: dbsnpload is okay to run 
+--
 -- lec 01/10/2002
 --	- QueryNoInterrupt; use LoadList
 --
@@ -98,7 +101,7 @@ rules:
 
 	  -- If a Job Stream has not finished, then disallow Add
 
-	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null");
+	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null and jobStreamName != 'dbsnp_load'");
 	  if ((integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
@@ -177,7 +180,7 @@ rules:
 	  top : widget := DeleteSQL.list.top;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null");
+	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null and jobStreamName != 'dbsnp_load'");
 	  if ((integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
@@ -280,7 +283,7 @@ rules:
 	  cmd : string;
 	  jobStream : string;
 
-	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null");
+	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null and jobStreamName != 'dbsnp_load'");
 	  if ((integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";

@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.d
 --
+-- 04/04/2006	lec
+--	- TR 7607; HomologyCache
+--
 -- 07/19/2005	lec
 --	- events for executing Python from with the EI
 --
@@ -99,6 +102,41 @@ rules:
 	end does;
 
 --
+-- PythonMarkerHomologyCache
+--
+-- Activated from:  Orthology module
+-- after an update 
+--
+
+	PythonMarkerHomologyCache does
+	  objectKey : string := PythonMarkerHomologyCache.objectKey;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  cmds.insert(getenv("HOMOLOGYCACHE") + "/mrkHomologyByClass.py", cmds.count + 1);
+
+	  cmds.insert("-S" + getenv("DSQUERY"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD"), cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerHomologyCacheEnd);
+	  tu_fork_free(proc_id);
+
+	end does;
+
+--
 -- PythonMarkerOMIMCacheEnd
 --
 
@@ -110,6 +148,13 @@ rules:
 --
 
 	PythonAlleleCombinationEnd does
+	end does;
+
+--
+-- PythonHomologyCacheEnd
+--
+
+	PythonHomologyCacheEnd does
 	end does;
 
 end dmodule;
