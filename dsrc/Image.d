@@ -595,6 +595,32 @@ rules:
 	    end if;
 	  end if;
 
+	  value := top->xDim->text.value;
+	  if (value.length > 0) then
+	    if (strstr(value, ">=") != nil or
+	        strstr(value, "<=") != nil ) then
+	      where := where + "\nand i.xDim " + value->substr(1,2) + " " + value->substr(3, value.length);
+	    elsif (strstr(value, ">") != nil or
+	           strstr(value, "<") != nil ) then
+	      where := where + "\nand i.xDim " + value->substr(1,1) + " " + value->substr(2, value.length);
+	    else
+	      where := where + "\nand i.xDim = " + value;
+	    end if;
+	  end if;
+
+	  value := top->yDim->text.value;
+	  if (value.length > 0) then
+	    if (strstr(value, ">=") != nil or
+	        strstr(value, "<=") != nil ) then
+	      where := where + "\nand i.yDim " + value->substr(1,2) + " " + value->substr(3, value.length);
+	    elsif (strstr(value, ">") != nil or
+	           strstr(value, "<") != nil ) then
+	      where := where + "\nand i.yDim " + value->substr(1,1) + " " + value->substr(2, value.length);
+	    else
+	      where := where + "\nand i.yDim = " + value;
+	    end if;
+	  end if;
+
 	  value := mgi_tblGetCell(table, 0, table.paneLabel);
 	  if (value.length > 0) then
 	    where := where + "\nand p.paneLabel like " + mgi_DBprstr2(value);

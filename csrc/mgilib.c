@@ -1887,7 +1887,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIGEN:
-            sprintf(buf, "insert %s (%s, _Source_key, antigenName, regionCovered, antigenNote)", 
+            sprintf(buf, "insert %s (%s, _Source_key, antigenName, regionCovered, antigenNote, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYTYPE:
@@ -1895,7 +1895,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
-            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote)", 
+            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYMARKER:
@@ -2340,6 +2340,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_CELLLINE:
       case BIB_DATASET_ASSOC:
       case BIB_REFS:
+      case GXD_ANTIBODY:
+      case GXD_ANTIGEN:
       case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:
@@ -2399,6 +2401,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_CELLLINE:
       case BIB_REFS:
       case BIB_DATASET_ASSOC:
+      case GXD_ANTIBODY:
+      case GXD_ANTIGEN:
       case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:

@@ -151,10 +151,10 @@ rules:
 	end does;
 
 --
--- PythonHomologyCacheEnd
+-- PythonMarkerHomologyCacheEnd
 --
 
-	PythonHomologyCacheEnd does
+	PythonMarkerHomologyCacheEnd does
 	end does;
 
 end dmodule;

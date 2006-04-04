@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 16 13:38:02 2006";
+      lastWritten = "Tue Apr  4 15:27:36 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -2775,11 +2775,6 @@ Module: MGI
                                         Group: Widget
                                           labelString = "X Dimension";
                                       }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          editable = False;
-                                      }
                                 }
                                 {
                                   yDim = CharText : mgiDataTypes;
@@ -2796,11 +2791,6 @@ Module: MGI
                                         label = XmLabel;
                                         Group: Widget
                                           labelString = "Y Dimension";
-                                      }
-                                      {
-                                        text = text;
-                                        Group: Widget
-                                          editable = False;
                                       }
                                 }
                           }
