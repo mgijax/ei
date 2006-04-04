@@ -50,6 +50,9 @@ setenv OMIMCACHE        /usr/local/mgi/live/dbutils/mrkcacheload
 # PYTHON Allele Cache
 setenv ALLELECACHE      /usr/local/mgi/live/dbutils/allcacheload
 
+# PYTHON Homology Cache
+setenv HOMOLOGYCACHE    /usr/local/mgi/live/dbutils/mrkcacheload
+
 # Debug mode
 setenv EIDEBUG	1
 
