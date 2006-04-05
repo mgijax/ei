@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 16 13:39:15 2006";
+      lastWritten = "Wed Apr  5 08:44:48 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -1429,7 +1429,6 @@ Module: MGD
                                             {
                                               label = XmLabel;
                                               Group: Widget
-                                                labelString = "Class ID";
                                                 managed = True;
                                             }
                                             {
