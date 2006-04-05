@@ -3,7 +3,8 @@
 -- Creator : lec
 --
 -- TopLevelShell:		ControlledVocab
--- Database Tables Affected:	All Controlled Vocabulary tables defined in ControlledVocabMenu template.
+-- Database Tables Affected:	All Controlled Vocabulary tables defined
+--				in ControlledVocabMenu template.
 --
 -- Cross Reference Tables:	
 -- Actions Allowed:		Add, Modify, Delete
@@ -18,6 +19,9 @@
 -- Secondary Labelling, Embedding Methods, Fixation Methods.
 --
 -- History
+--
+-- lec 04/05/2006
+--	- TR 7610; fixed error with adding Reference Association Types
 --
 -- lec 05/24/2002
 --	- TR 1463; new handling for Note Type, Ref Assoc Types
@@ -155,7 +159,8 @@ rules:
 	  elsif (tableID = MGI_REFASSOCTYPE) then
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
-	           top->AllowOnlyOneMenu.menuHistory.defaultValue;
+	           top->AllowOnlyOneMenu.menuHistory.defaultValue + "," +
+		   global_loginKey + "," + global_loginKey;
 	  elsif (tableID = MGI_SYNONYMTYPE) then
 	    cmd := cmd + top->MGITypeMenu.menuHistory.defaultValue + "," +
 		   mgi_DBprstr(top->Name->text.value) + "," +
