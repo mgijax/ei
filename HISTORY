@@ -1,3 +1,11 @@
+TAG: ei-tr7062-21
+DATE: 04/07/2006
+STAFF: lec
+RELEASE: A
+CHANGES:
+1) MGI 3.5
+2) replaced regsub.gsub() with re.sub()
+
 TAG: ei-tr7062-20
 DATE: 04/05/2006
 STAFF: lec
