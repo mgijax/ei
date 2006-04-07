@@ -23,7 +23,7 @@
 import sys
 import os
 import string
-import regsub
+import re
 import db
 import reportlib
 import mgi_utils
@@ -68,7 +68,7 @@ def scanText(text):
 			term = terms[i]
 			if string.find(text1, term) >= 0:
 				highlighted = '<B>%s</B>' % term
-				text2 = regsub.gsub(term, highlighted, text1)
+				text2 = re.sub(term, highlighted, text1)
 				text1 = text2
 				numTerms = numTerms + 1
 
