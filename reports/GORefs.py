@@ -94,7 +94,7 @@ fp.write(EOP)
 fp.write(TITLE + 'Potential New GO References' + EOTITLE + CRT)
 fp.write(H + 'Potential New GO References' + EOH + CRT)
 fp.write(H + 'Symbol: %s' % (description) + EOH + CRT)
-fp.write('Start Date/Time:  %s\n' % (mgi_utils.date()))
+fp.write('Start Date/Time:  %s' % (mgi_utils.date()) + CRT + LB + HR)
 
 # read terms & synonyms into dictionary
 terms = []
