@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.de
 --
+-- 04/04/2006	lec
+--	- TR 7607; HomologyCache
+--
 -- 07/19/2005	lec
 --	- events for executing Python from with the EI
 --
@@ -10,9 +13,13 @@ PythonMarkerOMIMCache [pythonevent : string;
 		       objectKey : string;];
 
 PythonAlleleCombination [pythonevent : string;
-		       objectKey : string;];
+		         objectKey : string;];
+
+PythonMarkerHomologyCache [objectKey : string;];
 
 PythonMarkerOMIMCacheEnd [];
 
 PythonAlleleCombinationEnd [];
+
+PythonMarkerHomologyCacheEnd [];
 

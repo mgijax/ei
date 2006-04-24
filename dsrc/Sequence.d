@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	10/13/2005
+--	- TR 7094, MGI 3.5
+--
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -340,6 +343,7 @@ rules:
 	PrepareSearch does
 
 	  from_acc : boolean := false;
+	  from_raw : boolean := false;
 	  from_source : boolean := false;
 	  from_strain : boolean := false;
 	  from_tissue : boolean := false;
@@ -422,7 +426,8 @@ rules:
 	  end if;
 	    
           if (top->RawType->text.value.length > 0) then
-	    where := where + "\nand s.rawType like " + mgi_DBprstr(top->RawType->text.value);
+	    where := where + "\nand r.rawType like " + mgi_DBprstr(top->RawType->text.value);
+	    from_raw := true;
 	  end if;
 	    
           if (top->Version->text.value.length > 0) then
@@ -463,37 +468,44 @@ rules:
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.library);
 	  if (value.length > 0) then
-	    where := where + "\nand s.rawLibrary like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawLibrary like " + mgi_DBprstr(value);
+	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.organism);
 	  if (value.length > 0) then
-	    where := where + "\nand s.rawOrganism like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawOrganism like " + mgi_DBprstr(value);
+	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.strains);
 	  if (value.length > 0) then
-	    where := where + "\nand s.rawStrain like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawStrain like " + mgi_DBprstr(value);
+	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.tissue);
 	  if (value.length > 0) then
-	    where := where + "\nand s.rawTissue like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawTissue like " + mgi_DBprstr(value);
+	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.cellLine);
 	  if (value.length > 0) then
-	    where := where + "\nand s.rawCellLine like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawCellLine like " + mgi_DBprstr(value);
+	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.agePrefix);
 	  if (value.length > 0) then
-	    where := where + "\nand s.rawAge like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawAge like " + mgi_DBprstr(value);
+	    from_raw := true;
 	  end if;
 
 	  value := mgi_tblGetCell(sourceTable, rawRow, sourceTable.gender);
 	  if (value.length > 0) then
-	    where := where + "\nand s.rawSex like " + mgi_DBprstr(value);
+	    where := where + "\nand r.rawSex like " + mgi_DBprstr(value);
+	    from_raw := true;
 	  end if;
 
 	  -- Source Attributes
@@ -564,8 +576,16 @@ rules:
 
 	  -- References; deferred
 
+	  -- Raw
+
+	  if (from_raw) then
+	    from := from + ",SEQ_Sequence_Raw r";
+	    where := where + "\nand s._Sequence_key = r._Sequence_key";
+	  end if;
+
+	  -- Source
+
 	  if (from_source) then
---	    from := from + ",SEQ_Source_Assoc ssa, PRB_Source ps";
 	    from := "PRB_Source ps, " + from + ",SEQ_Source_Assoc ssa";
 	    where := where + "\nand s._Sequence_key = ssa._Sequence_key" +
 		"\nand ssa._Source_key = ps._Source_key";
@@ -651,6 +671,7 @@ rules:
 	  currentKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from SEQ_Sequence_View where _Sequence_key = " + currentKey + "\n" +
+		"select * from SEQ_Sequence_Raw where _Sequence_key = " + currentKey + "\n" +
 		"select s._Assoc_key, p._Source_key, p.name, p.age from SEQ_Source_Assoc s, PRB_Source p\n" +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = p._Source_key\n" +
@@ -697,19 +718,18 @@ rules:
 		table := top->Control->ModificationHistory->Table;
 
 	        top->ID->text.value              := mgi_getstr(dbproc, 1);
-	        top->Description->text.value     := mgi_getstr(dbproc, 7);
-	        top->RawType->text.value         := mgi_getstr(dbproc, 11);
-	        top->Version->text.value         := mgi_getstr(dbproc, 8);
-	        top->Division->text.value        := mgi_getstr(dbproc, 9);
-	        top->Length->text.value          := mgi_getstr(dbproc, 6);
-	        top->NumberOrganisms->text.value := mgi_getstr(dbproc, 19);
+	        top->Description->text.value     := mgi_getstr(dbproc, 8);
+	        top->Version->text.value         := mgi_getstr(dbproc, 9);
+	        top->Division->text.value        := mgi_getstr(dbproc, 10);
+	        top->Length->text.value          := mgi_getstr(dbproc, 7);
+	        top->NumberOrganisms->text.value := mgi_getstr(dbproc, 12);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 30));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 31));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 25));
-		(void) mgi_tblSetCell(table, table.seqRecordDate, table.byDate, mgi_getstr(dbproc, 20));
-		(void) mgi_tblSetCell(table, table.sequenceDate, table.byDate, mgi_getstr(dbproc, 21));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(table, table.seqRecordDate, table.byDate, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.sequenceDate, table.byDate, mgi_getstr(dbproc, 14));
 
                 SetOption.source_widget := top->SequenceTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -728,19 +748,22 @@ rules:
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->VirtualMenu;
-                SetOption.value := mgi_getstr(dbproc, 10);
+                SetOption.value := mgi_getstr(dbproc, 11);
                 send(SetOption, 0);
 
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.library, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.organism, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.strains, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.tissue, mgi_getstr(dbproc, 15));
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.cellLine, mgi_getstr(dbproc, 18));
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.agePrefix, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.gender, mgi_getstr(dbproc, 17));
+	      elsif (results = 2) then
+
+	        top->RawType->text.value := mgi_getstr(dbproc, 2);
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.library, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.organism, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.strains, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.tissue, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.agePrefix, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.gender, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.cellLine, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(sourceTable, rawRow, sourceTable.editMode, TBL_ROW_NOCHG);
 
-	      elsif (results = 2) then
+	      elsif (results = 3) then
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.assocKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.sourceKey, mgi_getstr(dbproc, 2));
@@ -753,35 +776,35 @@ rules:
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 3) then
+	      elsif (results = 4) then
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organismKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.organism, mgi_getstr(dbproc, 3));
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 4) then
+	      elsif (results = 5) then
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strainKeys, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.strains, mgi_getstr(dbproc, 3));
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 5) then
+	      elsif (results = 6) then
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissueKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.tissue, mgi_getstr(dbproc, 3));
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 6) then
+	      elsif (results = 7) then
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.genderKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.gender, mgi_getstr(dbproc, 3));
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 7) then
+	      elsif (results = 8) then
 
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLineKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(sourceTable, nonRawRow, sourceTable.cellLine, mgi_getstr(dbproc, 3));
@@ -789,7 +812,7 @@ rules:
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 8 or results = 9) then
+	      elsif (results = 9 or results = 10) then
 		table := top->ObjectAssociation->Table;
 		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));

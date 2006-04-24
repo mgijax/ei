@@ -406,63 +406,6 @@ char *mgi_setDBkey(int table, int key, char *keyName)
 }
 
 /*
-   Compose a sequence key declaration for a given table ID.
-
-   requires:	
-	table (int), the table ID from mgilib.h
-	key (char *), the primary key value
-	keyName (char *), the name of the key variable
-
-   	If the next available key is NULL, then key = 1
-
-   returns:
-	a string buffer containing the declaration and initialization of the key
-
-   example:
-
-	buf = mgi_DBnextSeqKey(FOO, 1200, SEQKEYNAME)
-
-	the value of buf is:
-
-   	declare @seqKey int
-   	(select @seqKey = max(sequenceNum) + 1 from foo where _foo_key = 1200)
-   	if @seqKey is NULL
-   	begin
-	  select @seqKey = 1
-   	end
-*/
-
-char *mgi_DBnextSeqKey(int table, char *key, char *keyName)
-{
-  static char cmd[TEXTBUFSIZ];
-  char DBkey[TEXTBUFSIZ];
-  int startKey = 1;
-
-  memset(cmd, '\0', sizeof(cmd));
-  memset(DBkey, '\0', sizeof(cmd));
-
-  switch (table)
-  {
-    case GXD_ALLELEPAIR:
-	strcpy(DBkey, "_Genotype_key");
-	break;
-    case GXD_ISRESULT:
-	strcpy(DBkey, "_Specimen_key");
-	break;
-    case GXD_SPECIMEN:
-	strcpy(DBkey, "_Assay_key");
-	break;
-    default:
-	strcpy(DBkey, mgi_DBkey(table));
-	break;
-  }
-
-  sprintf(cmd, "declare @%s int\nselect @%s = max(sequenceNum) + 1 from %s where %s = %s\nif @%s is NULL\nbegin\nselect @%s = %d\nend\n",
-	keyName, keyName, mgi_DBtable(table), DBkey, key, keyName, keyName, startKey);
-  return(cmd);
-}
-
-/*
    Compose a sequence key increment declaration for a given key variable
 
    requires:	
@@ -822,12 +765,6 @@ char *mgi_DBkey(int table)
     case MLD_STATISTICS:
             strcpy(buf, "_Expt_key");
 	    break;
-    case MLD_MARKER:
-	    strcpy(buf, "_RefMarker_key");
-	    break;
-    case MLD_MARKERBYREF:
-	    strcpy(buf, "_Refs_key");
-	    break;
     case MLD_NOTES:
     case MLD_EXPTS_DELETE:
             strcpy(buf, "_Refs_key");
@@ -846,9 +783,6 @@ char *mgi_DBkey(int table)
     case MLC_TEXT:
     case MLC_TEXT_ALL:
             strcpy(buf, "_Marker_key");
-	    break;
-    case MRK_OTHER:
-            strcpy(buf, "_Other_key");
 	    break;
     case MRK_ALLELE:
             strcpy(buf, "_Allele_key");
@@ -883,7 +817,6 @@ char *mgi_DBkey(int table)
 	    break;
     case PRB_PROBE:
     case PRB_MARKER:
-    case PRB_MARKER_VIEW:
     case PRB_NOTES:
             strcpy(buf, "_Probe_key");
 	    break;
@@ -1557,10 +1490,6 @@ char *mgi_DBtable(int table)
     case MLD_INSITU_REGION:
             strcpy(buf, "MLD_ISRegion");
 	    break;
-    case MLD_MARKER:
-    case MLD_MARKERBYREF:
-            strcpy(buf, "MLD_Marker");
-	    break;
     case MLD_MCMASTER:
             strcpy(buf, "MLD_Matrix");
 	    break;
@@ -1612,9 +1541,6 @@ char *mgi_DBtable(int table)
     case MRK_OFFSET:
             strcpy(buf, "MRK_Offset");
 	    break;
-    case MRK_OTHER:
-            strcpy(buf, "MRK_Other");
-	    break;
     case MRK_MOUSE:
             strcpy(buf, "MRK_Mouse_View");
 	    break;
@@ -1665,9 +1591,6 @@ char *mgi_DBtable(int table)
 	    break;
     case PRB_MARKER:
             strcpy(buf, "PRB_Marker");
-	    break;
-    case PRB_MARKER_VIEW:
-            strcpy(buf, "PRB_Marker_View");
 	    break;
     case PRB_NOTES:
             strcpy(buf, "PRB_Notes");
@@ -1784,68 +1707,6 @@ char *mgi_DBtable(int table)
 }
 
 /*
-   Determine the name of the Summary table/view for a given table ID.
-
-   requires:
-	table (int), the table ID from mgilib.h
-
-   returns:
-	a string which contains the name of the Summary table/view.
-
-   example:
-	buf = mgi_DBsumTable(BIB_REFS)
-
-	buf contains:
-		BIB_Summary_View
-*/
- 
-char *mgi_DBsumTable(int table)
-{
-  static char buf[TEXTBUFSIZ];
- 
-  memset(buf, '\0', sizeof(buf));
- 
-  switch (table)
-  {
-    case ALL_ALLELE:
-            strcpy(buf, "ALL_Summary_View");
-            break;
-    case BIB_REFS:
-            strcpy(buf, "BIB_Summary_All_View");
-            break;
-    case GXD_ANTIGEN:
-            strcpy(buf, "GXD_Antigen_Summary_View");
-            break;
-    case GXD_ANTIBODY:
-            strcpy(buf, "GXD_Antibody_Summary_View");
-            break;
-    case GXD_ASSAY:
-            strcpy(buf, "GXD_Assay_Summary_View");
-            break;
-    case IMG_IMAGE:
-            strcpy(buf, "IMG_Image_Summary_View");
-            break;
-    case MLD_EXPTS:
-            strcpy(buf, "MLD_Summary_View");
-            break;
-    case MRK_MARKER:
-            strcpy(buf, "MRK_Summary_View");
-            break;
-    case PRB_PROBE:
-            strcpy(buf, "PRB_Summary_View");
-            break;
-    case STRAIN:
-	    strcpy(buf, "PRB_Strain_Summary_View");
-            break;
-    default:
-            sprintf(buf, "Invalid Table: %d", table);
-            break;
-  }
- 
-  return(buf);
-}
- 
-/*
    Determine the insert statement for a given table ID,
    if the given table ID has one primary key.
 
@@ -1940,7 +1801,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case MLD_HYBRID:
     case MLD_INSITU:
     case MLD_INSITU_REGION:
-    case MLD_MARKER:
     case MLD_MCMASTER:
     case MLD_MC2POINT:
     case MLD_MCHAPLOTYPE:
@@ -2027,7 +1887,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIGEN:
-            sprintf(buf, "insert %s (%s, _Source_key, antigenName, regionCovered, antigenNote)", 
+            sprintf(buf, "insert %s (%s, _Source_key, antigenName, regionCovered, antigenNote, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ASSAYTYPE:
@@ -2035,7 +1895,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
-            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote)", 
+            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYMARKER:
@@ -2241,10 +2101,6 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (%s, sequenceNum, region, grainCount)",
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case MLD_MARKER:
-	    sprintf(buf, "insert %s (%s, _Refs_key, _Marker_key, sequenceNum)",
-	      mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case MLD_MCMASTER:
 	    sprintf(buf, "insert %s (%s, _Cross_key, female, female2, male, male2)",
 	      mgi_DBtable(table), mgi_DBkey(table));
@@ -2309,10 +2165,6 @@ char *mgi_DBinsert(int table, char *keyName)
  	    break;
     case MRK_OFFSET:
 	    sprintf(buf, "insert %s (%s, source, offset)",
-	      mgi_DBtable(table), mgi_DBkey(table));
- 	    break;
-    case MRK_OTHER:
-	    sprintf(buf, "insert %s (%s, _Marker_key, name, _Refs_key)",
 	      mgi_DBtable(table), mgi_DBkey(table));
  	    break;
     case NOM_MARKER:
@@ -2389,7 +2241,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _MGIType_key, _Vocab_key, _EvidenceVocab_key, name)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_ANNOT:
-            sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, isNot)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, _Qualifier_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_EVIDENCE:
             sprintf(buf, "insert %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
@@ -2488,6 +2340,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_CELLLINE:
       case BIB_DATASET_ASSOC:
       case BIB_REFS:
+      case GXD_ANTIBODY:
+      case GXD_ANTIGEN:
       case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:
@@ -2507,7 +2361,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case MGI_TRANSLATION:
       case MGI_TRANSLATIONTYPE:
       case MGI_USERROLE:
-      case MLD_MARKER:
       case MRK_CHROMOSOME:
       case MRK_HISTORY:
       case MRK_MARKER:
@@ -2548,6 +2401,8 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_CELLLINE:
       case BIB_REFS:
       case BIB_DATASET_ASSOC:
+      case GXD_ANTIBODY:
+      case GXD_ANTIGEN:
       case GXD_ASSAY:
       case GXD_GENOTYPE:
       case GXD_INDEX:
@@ -2747,81 +2602,6 @@ char *mgi_DBaccSelect(int table, int mgiTypeKey, int key)
 }
 
 /*
-   Determine the CV select statement for a given table ID.
-
-   requires:
-	table (int), the table ID from mgilib.h
-
-   returns:
-	a string which contains the CV select statement for the table.
-
-   example:
-	buf := mgi_DBcvLoad(FOO)
-
-	buf contains:
-
-            select _Foo_key, foo
-	    from FOO
-	    order by foo
-*/
-
-char *mgi_DBcvLoad(int table)
-{
-  static char buf[TEXTBUFSIZ];
-
-  memset(buf, '\0', sizeof(buf));
-
-  switch (table)
-  {
-    default:
-            sprintf(buf, "select %s, %s from %s order by %s\n", 
-		mgi_DBkey(table), mgi_DBcvname(table), mgi_DBtable(table), mgi_DBcvname(table));
-	    break;
-  }
-
-  return(buf);
-}
-
-/*
-   Determine the CV key for a given table ID/value.
-
-   requires:
-	table (int), the table ID from mgilib.h
-	value (char *), the value
-
-   returns:
-	a string which contains the CV key for the given value.
-
-   example:
-	buf := mgi_DBcvLoad(FOO)
-
-	buf contains:
-
-            select _Foo_key, foo
-	    from FOO
-	    where foo = "foo"
-*/
-
-/*
-char *mgi_DBcvKey(int table, int value)
-{
-  static char buf[TEXTBUFSIZ];
-
-  memset(buf, '\0', sizeof(buf));
-
-  switch (table)
-  {
-    default:
-            sprintf(buf, "select %s from %s where %s = \"%s\"\n", 
-		mgi_DBkey(table), mgi_DBtable(table), mgi_DBcvname(table), value);
-	    break;
-  }
-
-  return(buf);
-}
-*/
-
-/*
    Determine the controlled vocabulary column name for a given table ID.
 
    requires:
@@ -2946,62 +2726,6 @@ char *mgi_DBcvname(int table)
   }
 
   return(buf);
-}
-
-/*
-   Determine the Reference status for the given Reference
-   by executing the appropriate stored procedure which checks
-   for the cross-reference of the given Reference key to the
-   given table ID.
-
-   requires:
-	key (int), the record key
-	table (int), the table ID from mgilib.h
-
-   returns:
-	the number of records which are cross-referenced to the Reference key
-
-   example:
-	s = mgi_DBrefstatus(1000, HMD_HOMOLOGY)
-
-	s may contain:
-		"0" = no Homology records exist for Reference key 1000
-		"1" = 1 Homology record exists for Reference key 1000
-		"x" = x Homology records exist for Reference key 1000
-*/
-
-char *mgi_DBrefstatus(int key, int table)
-{
-  char cmd[TEXTBUFSIZ];
-
-  memset(cmd, '\0', sizeof(cmd));
-
-  switch (table)
-  {
-    case HMD_HOMOLOGY:
-	sprintf(cmd, "exec BIB_HMD_Exists %d", key);
-	break;
-    case MLC_REFERENCE:
-	sprintf(cmd, "exec BIB_MLC_Exists %d", key);
-	break;
-    case MLD_MARKER:
-	sprintf(cmd, "exec BIB_MLD_Exists %d", key);
-	break;
-    case GO_DATAEVIDENCE:
-	sprintf(cmd, "exec BIB_GO_Exists %d", key);
-	break;
-    case GXD_INDEX:
-	sprintf(cmd, "exec BIB_GXD_Exists %d", key);
-	break;
-    case MGI_REFERENCE_NOMEN_VIEW:
-	sprintf(cmd, "exec BIB_NOM_Exists %d", key);
-	break;
-    case PRB_REFERENCE:
-	sprintf(cmd, "exec BIB_PRB_Exists %d", key);
-	break;
-  }
-
-  return(mgi_sql1(cmd));
 }
 
 /*

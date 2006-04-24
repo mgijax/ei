@@ -630,7 +630,7 @@ int check_tag(DBPROCESS *dbproc, char *tag, int *reason, xrtlist *symlist)
 	int inmgd,count;
 	int iscurrent=0; /* set to true if this symbol can be considered current,
                         even if it was previously withdrawn */
-	static char cmd[TEXTBUFSIZ];
+	static char cmd[BUFSIZ];
 	static char cs[MAXTAGLEN],sym[MAXTAGLEN];
 	tu_status_t status;
 	xrtlist slist = createStringList(MAXTAGLEN); 

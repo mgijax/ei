@@ -159,12 +159,32 @@ void mgi_dbexit()
 
 DBPROCESS *mgi_dbopen()
 {
-  static DBPROCESS *dbproc;
+  static DBPROCESS *dbproc = NULL;
+  static char buf[TEXTBUFSIZ];
   
-  dbproc = dbopen(loginrec, global_server);
+  if (loginrec)
+  {
+    dbproc = dbopen(loginrec, global_server);
 
-  if (dbuse(dbproc, global_database) == FAIL)
-    send_status("DBUSE Failed", 0);
+    if (dbproc)
+    {
+      if (dbuse(dbproc, global_database) == FAIL)
+      {
+        sprintf(buf, "mgi_dbopen: DBUSE failed: %s:%s", global_server, global_database);
+        send_status(buf, 0);
+      }
+    }
+    else
+    {
+      sprintf(buf, "mgi_dbopen: dbproc is null: %s:%s", global_server, global_database);
+      send_status(buf, 0);
+    }
+  }
+  else
+  {
+    sprintf(buf, "mgi_dbopen: loginrec is null: %s:%s", global_server, global_database);
+    send_status(buf, 0);
+  }
 
   return(dbproc);
 }

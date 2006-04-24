@@ -11,13 +11,11 @@ extern char *mgi_DBprstr2(char *);
 extern char *mgi_DBprnotestr(char *);
 extern char *mgi_DBprkey(char *);
 extern char *mgi_DBincKey(char *);
-extern char *mgi_DBnextSeqKey(int, char *, char *);
 extern char *mgi_DBrecordCount(int);
 extern char *mgi_DBaccKey(int);
 extern char *mgi_DBkey(int);
 extern char *mgi_DBaccTable(int);
 extern char *mgi_DBtable(int);
-extern char *mgi_DBsumTable(int);
 extern char *mgi_DBtype(int);
 extern char *mgi_DBinsert(int, char *);
 extern char *mgi_DBdelete(int, char *);
@@ -25,8 +23,6 @@ extern char *mgi_DBupdate(int, char *, char *);
 extern char *mgi_DBreport(int, char *);
 extern char *mgi_DBaccSelect(int, int, int);
 extern char *mgi_DBcvname(int);
-extern char *mgi_DBcvLoad(int);
-extern char *mgi_DBrefstatus(int, int);
 extern Boolean mgi_DBisAnchorMarker(char *);
 extern char *mgi_escape_quotes(char *);
 
@@ -71,10 +67,8 @@ extern char *global_version;
 #define MRK_HISTORY		118
 #define MRK_NOTES		119
 #define MRK_OFFSET		120
-#define MRK_OTHER		121
 #define MRK_MOUSE  		123
 #define MRK_ACC_REFERENCE	124
-#define MLC_LOCK		125
 #define MLC_MARKER		126
 #define MLC_REFERENCE		127
 #define MLC_TEXT		128
@@ -91,7 +85,6 @@ extern char *global_version;
 #define PRB_RFLV		138
 #define PRB_SOURCE		139
 #define PRB_SOURCE_MASTER	140		/* Behavior when table treated as Master record */
-#define PRB_MARKER_VIEW  	141		/* Behavior when table treated as Master record */
 
 #define HMD_CLASS		150
 #define HMD_HOMOLOGY		151
@@ -110,7 +103,6 @@ extern char *global_version;
 #define MLD_HYBRID		168
 #define MLD_INSITU		169
 #define MLD_INSITU_REGION	170
-#define MLD_MARKER		171
 #define MLD_MCMASTER   		172
 #define MLD_MC2POINT		173
 #define MLD_MCHAPLOTYPE		174
@@ -163,9 +155,6 @@ extern char *global_version;
 #define ALL_CELLLINE		234
 #define ALL_CELLLINE_VIEW	235
 #define ALL_MUTATION_VIEW	236
-
-/* Annotation Tables */
-#define GO_DATAEVIDENCE		247
 
 /* MGI Controlled Vocabulary Tables */
 

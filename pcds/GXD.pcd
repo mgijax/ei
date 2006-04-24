@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Apr  3 10:07:00 2006";
+      lastWritten = "Mon Apr  3 10:05:29 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -24,27 +24,27 @@ Module: GXD
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearLists = 3)";
                                       }
@@ -266,6 +266,9 @@ Module: GXD
                       Control = Control;
                           {
                             ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
                                 {
                                   Search = ControlPush;
                                 }
@@ -273,6 +276,50 @@ Module: GXD
                                   Clear = ControlPush;
                                   Group: Widget
                                     activateCallback = "D:Clear(clearLists = 3)";
+                                }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Search;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = RecordCount;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                           }
                     }
@@ -381,27 +428,27 @@ Module: GXD
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:ClearAntibody";
                                       }
@@ -795,6 +842,42 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:ClearAntibody";
                                 }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                }
                           }
                     }
                     {
@@ -857,9 +940,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -1871,263 +1951,6 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          ProbePrepForm = EditForm : MGI;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 60;
-            vip_y = 250;
-              {
-                PrepID : ID = ID;
-              }
-              {
-                label = XmLabel;
-                Group: Widget
-                  labelString = "Probe Prep";
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 5;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                PrepTypeMenu = PrepTypeMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = label;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = label;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                SenseMenu = SenseMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = PrepTypeMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = PrepTypeMenu;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 15;
-              }
-              {
-                LabelTypeMenu = LabelMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = PrepTypeMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = PrepTypeMenu;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  topOffset = 5;
-              }
-              {
-                CoverageMenu = CoverageMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = LabelTypeMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = LabelTypeMenu;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 15;
-              }
-              {
-                VisualizationMenu = VisualizationMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = LabelTypeMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = LabelTypeMenu;
-                  bottomAttachment = attach_form;
-                  resizable = true;
-                  topOffset = 5;
-                  bottomOffset = 5;
-              }
-              {
-                ProbeAccession = mgiAccession : mgiDataTypes;
-                Group: Widget
-                  userDefinedAttributes = "markerTableID:Int(Int)=\"133\"\n";
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = CoverageMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = SenseMenu;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 20;
-                  topOffset = "-10";
-                Group: User
-                  tableID = 135;
-                    {
-                      ObjectID = ID;
-                    }
-                    {
-                      AccessionID = CharText;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Probe Accession ID";
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc() VerifyProbePrep() VerifyMarkerInTable()";
-                            Group: User
-                              required = True;
-                          }
-                    }
-                    {
-                      AccessionName = CharSText;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Probe Name";
-                          }
-                    }
-              }
-        }
-        {
-          AntibodyPrepForm = EditForm : MGI;
-          Group: Widget
-            managed = False;
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 175;
-            vip_y = 250;
-              {
-                PrepID : ID = ID;
-              }
-              {
-                label = XmLabel;
-                Group: Widget
-                  labelString = "Antibody Prep";
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  leftOffset = 5;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                SecondaryMenu = SecondaryMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = label;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = label;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                LabelTypeMenu = LabelMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = SecondaryMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = SecondaryMenu;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                  leftOffset = 10;
-              }
-              {
-                AntibodyAccession = mgiAccession : mgiDataTypes;
-                Group: Widget
-                  orientation = horizontal;
-                  userDefinedAttributes = "markerTableID:Int=\"202\"\n";
-                Group: Constraint
-                  leftAttachment = attach_opposite_widget;
-                  leftWidget = SecondaryMenu;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_widget;
-                  topWidget = SecondaryMenu;
-                  topOffset = 5;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-                Group: User
-                  tableID = 201;
-                    {
-                      ObjectID = ID;
-                    }
-                    {
-                      AccessionID = CharText;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Primary Antibody \nAccession ID";
-                          }
-                          {
-                            text = text;
-                            Group: Widget
-                              translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable() VerifyWesternBlot()";
-                          }
-                    }
-                    {
-                      AccessionName = CharSText;
-                          {
-                            label = XmLabel;
-                            Group: Widget
-                              labelString = "Antibody Name";
-                          }
-                    }
-              }
-        }
-        {
-          KnockInForm = EditForm : MGI;
-          Group: Widget
-            rubberPositioning = False;
-            resizePolicy = resize_any;
-          Group: Control
-            vip_x = 60;
-            vip_y = 305;
-              {
-                ID = ID : mgiDataTypes;
-              }
-              {
-                GXDReporterGeneMenu = GXDReporterGeneMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_form;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_form;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-              {
-                GXDKnockInMenu = GXDKnockInMenu : mgiOption;
-                Group: Constraint
-                  leftAttachment = attach_widget;
-                  leftWidget = GXDReporterGeneMenu;
-                  leftOffset = 5;
-                  rightAttachment = attach_none;
-                  topAttachment = attach_opposite_widget;
-                  topWidget = GXDReporterGeneMenu;
-                  bottomAttachment = attach_none;
-                  resizable = true;
-              }
-        }
-        {
           AssayModule = Module : MGI;
           Group: Widget
             height = 900;
@@ -2803,6 +2626,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     NIAGeneIndex = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    UniSTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2840,15 +2666,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     dbESTLibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Taxon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IGTC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Lexicon = AccToggle : mgiOption;
                                                   }
                                             }
                                       }
@@ -2979,6 +2796,263 @@ Shift<Key>Tab: prev-tab-group()
                         okCallback = "D:NextISResult";
                         cancelCallback = "D:NextISResult(answer = false)";
                     }
+              }
+        }
+        {
+          ProbePrepForm = EditForm : MGI;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 60;
+            vip_y = 250;
+              {
+                PrepID : ID = ID;
+              }
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = "Probe Prep";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                PrepTypeMenu = PrepTypeMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = label;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = label;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                SenseMenu = SenseMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = PrepTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = PrepTypeMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 15;
+              }
+              {
+                LabelTypeMenu = LabelMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = PrepTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = PrepTypeMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+              }
+              {
+                CoverageMenu = CoverageMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = LabelTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = LabelTypeMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 15;
+              }
+              {
+                VisualizationMenu = VisualizationMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = LabelTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = LabelTypeMenu;
+                  bottomAttachment = attach_form;
+                  resizable = true;
+                  topOffset = 5;
+                  bottomOffset = 5;
+              }
+              {
+                ProbeAccession = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  userDefinedAttributes = "markerTableID:Int(Int)=\"133\"\n";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = CoverageMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = SenseMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 20;
+                  topOffset = "-10";
+                Group: User
+                  tableID = 135;
+                    {
+                      ObjectID = ID;
+                    }
+                    {
+                      AccessionID = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Probe Accession ID";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() VerifyProbePrep() VerifyMarkerInTable()";
+                            Group: User
+                              required = True;
+                          }
+                    }
+                    {
+                      AccessionName = CharSText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Probe Name";
+                          }
+                    }
+              }
+        }
+        {
+          AntibodyPrepForm = EditForm : MGI;
+          Group: Widget
+            managed = False;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 175;
+            vip_y = 250;
+              {
+                PrepID : ID = ID;
+              }
+              {
+                label = XmLabel;
+                Group: Widget
+                  labelString = "Antibody Prep";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                SecondaryMenu = SecondaryMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = label;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = label;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                LabelTypeMenu = LabelMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = SecondaryMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = SecondaryMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 10;
+              }
+              {
+                AntibodyAccession = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  orientation = horizontal;
+                  userDefinedAttributes = "markerTableID:Int=\"202\"\n";
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = SecondaryMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = SecondaryMenu;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  tableID = 201;
+                    {
+                      ObjectID = ID;
+                    }
+                    {
+                      AccessionID = CharText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Primary Antibody \nAccession ID";
+                          }
+                          {
+                            text = text;
+                            Group: Widget
+                              translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyMGIAcc() VerifyMarkerInTable() VerifyWesternBlot()";
+                          }
+                    }
+                    {
+                      AccessionName = CharSText;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Antibody Name";
+                          }
+                    }
+              }
+        }
+        {
+          KnockInForm = EditForm : MGI;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 60;
+            vip_y = 305;
+              {
+                ID = ID : mgiDataTypes;
+              }
+              {
+                GXDReporterGeneMenu = GXDReporterGeneMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                GXDKnockInMenu = GXDKnockInMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = GXDReporterGeneMenu;
+                  leftOffset = 5;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = GXDReporterGeneMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
 }

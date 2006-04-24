@@ -2469,9 +2469,9 @@ rules:
 --	    ClearAssay.clearForms := clearAssayGel;
 --	  end if;
 
- --         ClearAssay.reset := true;
+--          ClearAssay.reset := true;
 --	  ClearAssay.select := true;
- --         send(ClearAssay, 0);
+--          send(ClearAssay, 0);
 
 	  -- Make the selected item the first visible item in the list
 	  (void) XmListSetPos(top->QueryList->List, Select.item_position);
@@ -3061,6 +3061,12 @@ rules:
 	   end if;
 
 	   segmentType := mgi_sql1("select _SegmentType_key from PRB_Probe where _Probe_key = " + objectKey);
+
+	   -- if no Assay selected, don't do the verification
+
+	   if (top->AssayTypeMenu.menuHistory.defaultValue = "%") then
+	     return;
+           end if;
 
 	   -- if RT-PCR then Segment Type must be Primer
 

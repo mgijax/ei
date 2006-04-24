@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr  4 15:16:48 2006";
+      lastWritten = "Tue Apr  4 15:27:36 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1154,8 +1154,6 @@ Module: MGI
                                   CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
                                         Search = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:SearchGenotype,\nD:GoHome";
                                       }
                                       {
                                         Modify = MenuPush : mgiMenu;
@@ -1173,16 +1171,6 @@ Module: MGI
                                         Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:Clear(clearLists = 3)";
-                                      }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                 }
                           }
@@ -2250,67 +2238,6 @@ Module: MGI
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
-                          {
-                            File = File : mgiMenu;
-                          }
-                          {
-                            Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Modify = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:Modify,\nD:GoHome";
-                                      }
-                                      {
-                                        Add = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        Next = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -2508,29 +2435,29 @@ Module: MGI
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:ClearImage()";
+                                          activateCallback = "D:ClearImage";
                                       }
                                 }
                           }
@@ -2710,68 +2637,6 @@ Module: MGI
                                       }
                                 }
                                 {
-                                  GXDcopyrights = XmRowColumn;
-                                  Group: Widget
-                                    orientation = horizontal;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Copyright;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Copyright;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        DevelopmentNote = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Development;
-                                        Group: User
-                                          noteWidget = Copyright;
-                                          note = "This image is from * and is displayed with the permission of The Company of Biologists Limited who owns the Copyright.";
-                                      }
-                                      {
-                                        NatureNote = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Nature;
-                                        Group: User
-                                          note = "This image is from * and is displayed with the permission of <A HREF=\"http://www.nature.com/\">The Nature Publishing Group</A> who owns the Copyright.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        DevDynamics = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = "Dev Dyn";
-                                        Group: User
-                                          note = "This image is from * and is displayed with the permission of Wiley-Liss, Inc. who owns the Copyright.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        PLOS = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = PLoS;
-                                        Group: User
-                                          note = "This image is from * , an open-access article distributed under the terms of the Creative Commons Attribution License.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        BMC = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = BMC;
-                                        Group: User
-                                          note = "This image is from *, an open-access article, licensee BioMed Central Ltd.";
-                                          noteWidget = Copyright;
-                                      }
-                                      {
-                                        Elsevier = AppendNotePush : mgiDataTypes;
-                                        Group: Widget
-                                          labelString = Elsevier;
-                                        Group: User
-                                          note = "Reprinted with permission from Elsevier from \\DXDOI(||) \\Elsevier(||)";
-                                          noteWidget = Copyright;
-                                      }
-                                }
-                                {
                                   ImagePane = TableLabel : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_none;
@@ -2809,7 +2674,7 @@ Module: MGI
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_widget;
                                     topAttachment = attach_widget;
-                                    topWidget = GXDcopyrights;
+                                    topWidget = Copyright;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -2943,7 +2808,7 @@ Module: MGI
                                 {
                                   Clear = ControlPush;
                                   Group: Widget
-                                    activateCallback = "D:ClearImage()";
+                                    activateCallback = "D:ClearImage";
                                 }
                                 {
                                   Modify = ControlPush;
@@ -3122,9 +2987,6 @@ Module: MGI
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;

@@ -23,7 +23,7 @@
 import sys
 import os
 import string
-import regsub
+import re
 import db
 import reportlib
 import mgi_utils
@@ -68,7 +68,7 @@ def scanText(text):
 			term = terms[i]
 			if string.find(text1, term) >= 0:
 				highlighted = '<B>%s</B>' % term
-				text2 = regsub.gsub(term, highlighted, text1)
+				text2 = re.sub(term, highlighted, text1)
 				text1 = text2
 				numTerms = numTerms + 1
 
@@ -94,7 +94,7 @@ fp.write(EOP)
 fp.write(TITLE + 'Potential New GO References' + EOTITLE + CRT)
 fp.write(H + 'Potential New GO References' + EOH + CRT)
 fp.write(H + 'Symbol: %s' % (description) + EOH + CRT)
-fp.write('Start Date/Time:  %s\n' % (mgi_utils.date()))
+fp.write('Start Date/Time:  %s' % (mgi_utils.date()) + CRT + LB + HR)
 
 # read terms & synonyms into dictionary
 terms = []

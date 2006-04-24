@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	10/06/2005
+--	TR 5188/new GO Qualifier
+--
 -- lec	04/2005
 --	TR 3853, OMIM
 --
@@ -61,6 +64,7 @@ locals:
 	annotTable : widget;		-- Annotation table
 
 	defaultEvidenceCodeKey : string;	-- Default Evidence Code key
+	defaultQualifierKey : string;
 
 rules:
 
@@ -115,6 +119,9 @@ rules:
 
 	BuildDynamicComponents does
 	  annotTable := top->Annotation->Table;
+
+	  InitOptionMenu.option := top->AnnotQualifierMenu;
+	  send(InitOptionMenu, 0);
 	end does;
 
 --
@@ -241,7 +248,7 @@ rules:
 	  key : string;
           annotKey : string;
           termKey : string;
-	  notKey : string;
+	  qualifierKey : string;
 	  refsKey : string;
           evidenceKey : string;
 	  notes : string;
@@ -290,15 +297,15 @@ rules:
             key := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
             annotKey := mgi_tblGetCell(annotTable, row, annotTable.annotKey);
             termKey := mgi_tblGetCell(annotTable, row, annotTable.termKey);
-            notKey := mgi_tblGetCell(annotTable, row, annotTable.notKey);
+            qualifierKey := mgi_tblGetCell(annotTable, row, annotTable.qualifierKey);
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
             evidenceKey := defaultEvidenceCodeKey;
             notes := mgi_tblGetCell(annotTable, row, annotTable.notes);
  
-	    if (notKey = "NULL" or notKey.length = 0) then
-	      notKey := NO;
+	    if (qualifierKey = "NULL" or qualifierKey.length = 0) then
 	      -- set it in the table because we need to check it later on...
-	      mgi_tblSetCell(annotTable, row, annotTable.notKey, notKey);
+	      mgi_tblSetCell(annotTable, row, annotTable.qualifier, "");
+	      mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, qualifierKey);
 	    end if;
 
             if (editMode = TBL_ROW_ADD) then
@@ -311,7 +318,7 @@ rules:
 
 	      if (row > 0) then
 	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
-	            notKey = mgi_tblGetCell(annotTable, row - 1, annotTable.notKey)) then
+	            qualifierKey = mgi_tblGetCell(annotTable, row - 1, annotTable.qualifierKey)) then
 		  annotKey := mgi_tblGetCell(annotTable, row - 1, annotTable.annotKey);
 		  dupAnnot := true;
 		end if;
@@ -359,7 +366,7 @@ rules:
 		       annotTypeKey + "," +
 		       top->mgiAccession->ObjectID->text.value + "," +
 		       termKey + "," +
-		       notKey + ")\n";
+		       qualifierKey + ")\n";
 	      end if;
 
               cmd := cmd +
@@ -384,7 +391,7 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
-	      set := "isNot = " + notKey;
+	      set := "_Qualifier_key = " + qualifierKey;
 
 	      if (editTerm) then
 		set := set + ",_Term_key = " + termKey;
@@ -472,9 +479,9 @@ rules:
 	    from_annot := true;
 	  end if;
 
-	  value := mgi_tblGetCell(annotTable, 0, annotTable.notKey);
+	  value := mgi_tblGetCell(annotTable, 0, annotTable.qualifierKey);
 	  if (value.length > 0 and value != "NULL") then
-	    where := where + "\nand a.isNot = " + value;
+	    where := where + "\nand a._Qualifier_key = " + value;
 	    from_annot := true;
 	  end if;
 
@@ -637,7 +644,7 @@ rules:
 			  " where _Object_key = " + currentRecordKey + 
 			  " and prefixPart = 'MGI:' and preferred = 1 " + 
 			  " order by description\n" +
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a.isNot, a.isNotCode, e.*" +
+	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
 			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
 		          " where a._AnnotType_key = " + annotTypeKey +
@@ -682,8 +689,8 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.notKey, mgi_getstr(dbproc, 5));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.notCode, mgi_getstr(dbproc, 6));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
@@ -753,6 +760,7 @@ rules:
           send(Clear, 0);
 
 	  evidenceKey : integer := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
+	  qualifierKey : integer := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
@@ -760,6 +768,7 @@ rules:
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
+	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
 	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
@@ -769,6 +778,9 @@ rules:
 
           pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
+
+	  defaultQualifierKey := 
+	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + (string) annotTable.vocabQualifierKey + " and term is null");
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -790,8 +802,8 @@ rules:
 	    return;
 	  end if;
 
-          SetOption.source_widget := top->NotMenu;
-          SetOption.value := mgi_tblGetCell(table, row, table.notKey);
+          SetOption.source_widget := top->AnnotQualifierMenu;
+          SetOption.value := mgi_tblGetCell(table, row, table.qualifierKey);
           send(SetOption, 0);
         end does;
 

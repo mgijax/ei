@@ -1178,7 +1178,7 @@ rules:
 --
 -- VerifyDuplicateStrain
 --
--- Activated from:  Strain translation
+-- Activated from:  Strain Translation
 --
 -- Check Strain against existing Strains.
 -- Inform user if Strain is a duplicate.

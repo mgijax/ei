@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	10/05/2005
+--	- TR 5188; VerifyVocabQualifier
+--
 -- lec	09/29/2005
 --	- TR 7018; add automatic fill-in of copyright information in VerifyReference
 --
@@ -1509,9 +1512,9 @@ rules:
 
 	      if (tableID = STRAIN) then
 		if (mgi_getstr(dbproc, 3) = NO) then
-	          results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+	          results.insert(mgi_getstr(dbproc, 2) + " (Non-Standard)", results.count + 1);
 		else
-	          results.insert(mgi_getstr(dbproc, 2), results.count + 1);
+	          results.insert(mgi_getstr(dbproc, 2) + " (Standard)", results.count + 1);
 		end if;
 	      else
 	        results.insert(mgi_getstr(dbproc, 2), results.count + 1);
@@ -1617,7 +1620,7 @@ rules:
 	      if (tableID = STRAIN) then
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
-                       defaultSpecies + "," + mgi_DBprstr(item.value) + ",0,0,0,0," +
+                       defaultSpecies + "," + mgi_DBprstr(item.value) + ",0,0,0," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
 		nextSeqNum := mgi_sql1("select max(sequenceNum) + 1 from " + 
@@ -2947,7 +2950,6 @@ rules:
             send(StatusReport);
 	  end if;
 
-	  (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	  (void) reset_cursor(top);
 	end does;
 
@@ -3250,7 +3252,7 @@ rules:
               if (top->VerifyItemAdd.doAdd) then
                 ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
                                mgi_DBinsert(STRAIN, KEYNAME) +
-                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0,0," +
+                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0," +
 			       global_loginKey + "," + global_loginKey + ")\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
@@ -3552,12 +3554,15 @@ rules:
 
 	VerifyVocabEvidenceCode does
 	  sourceWidget : widget := VerifyVocabEvidenceCode.source_widget;
-	  top : widget := sourceWidget.top;
+	  top : widget := sourceWidget.root;
 	  isTable : boolean;
 	  value : string;
 	  evidenceKey : string;
 	  evidence : string;
 	  termAcc : string;
+	  pulldown : widget;
+	  tableForm : widget;
+	  table : widget;
 
 	  -- These variables are only relevant for Tables
 	  row : integer;
@@ -3566,32 +3571,48 @@ rules:
 
 	  isTable := mgi_tblIsTable(sourceWidget);
 
+	  -- If typed into table column....
+
 	  if (isTable) then
 	    row := VerifyVocabEvidenceCode.row;
 	    column := VerifyVocabEvidenceCode.column;
 	    reason := VerifyVocabEvidenceCode.reason;
 	    value := VerifyVocabEvidenceCode.value;
+	    table := sourceWidget;
 
 	    -- If not in the Evidence Code column, return
 
-	    if (column != sourceWidget.evidence) then
+	    if (column != table.evidence) then
 	      return;
 	    end if;
 
 	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	      return;
 	    end if;
+
+	  -- If using pulldown menu...
+
+	  elsif (sourceWidget.class_name = "XmToggleButton") then
+	    pulldown := sourceWidget.parent;
+            tableForm := top->(pulldown.tableForm);
+            table := tableForm->Table;
+	    row := mgi_tblGetCurrentRow(table);
+	    value := sourceWidget.labelString;
+
+	    if (sourceWidget.set = false) then
+	      return;
+	    end if;
+
 	  else
 	    return;
+
 	  end if;
 
 	  -- If the Evidence Code is null, return
 
 	  if (value.length = 0) then
-	    if (isTable) then
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
-	    end if;
+	    (void) mgi_tblSetCell(table, row, table.evidenceKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.evidence, "");
 	    return;
 	  end if;
 
@@ -3599,7 +3620,7 @@ rules:
 
 	  select : string := "select _Term_key, abbreviation from VOC_Term " +
 		"where abbreviation = " + mgi_DBprstr(value) + 
-		" and _Vocab_key = " + (string) sourceWidget.vocabEvidenceKey;
+		" and _Vocab_key = " + (string) table.vocabEvidenceKey;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -3619,16 +3640,14 @@ rules:
 	  --   Display an error message, set the key columns to null, disallow edit to the field
 
 	  if (evidenceKey.length > 0) then
-	    if (isTable) then
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, evidenceKey);
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, evidence);
-	    end if;
+	    (void) mgi_tblSetCell(table, row, table.evidenceKey, evidenceKey);
+	    (void) mgi_tblSetCell(table, row, table.evidence, evidence);
 	  else
 	    if (isTable) then
 	      VerifyVocabEvidenceCode.doit := (integer) false;
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
 	    end if;
+	    (void) mgi_tblSetCell(table, row, table.evidenceKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.evidence, "");
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Evidence Code";
             send(StatusReport);
@@ -3637,15 +3656,149 @@ rules:
 	  end if;
 
 	  -- TR 5874
-	  if (isTable) then
-	    termAcc := mgi_tblGetCell(sourceWidget, row, sourceWidget.termAccID);
-	    if (termAcc.length > 0 and evidence = "ND" and 
-		not (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554")) then
+	  termAcc := mgi_tblGetCell(table, row, table.termAccID);
+	  if (termAcc.length > 0 and evidence = "ND" and 
+	      not (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554")) then
+	    if (isTable) then
 	      VerifyVocabEvidenceCode.doit := (integer) false;
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "NULL");
-	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "");
+	    end if;
+	    (void) mgi_tblSetCell(table, row, table.evidenceKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.evidence, "");
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Evidence Code 'ND' can only be used with GO:0000004, GO:0008372 or GO:0005554";
+            send(StatusReport);
+	  end if;
+
+	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyVocabQualifier
+--
+--	Verify Qualifier for Table
+--	Assumes table.vocabKey, table.qualifier, table.qualifierKey are UDAs
+--	Copy Qualifier into Appropriate widget/column
+--	Copy Qualifier Key into Appropriate widget/column
+--
+
+	VerifyVocabQualifier does
+	  sourceWidget : widget := VerifyVocabQualifier.source_widget;
+	  top : widget := sourceWidget.root;
+	  isTable : boolean;
+	  value : string;
+	  qualifierKey : string;
+	  qualifier : string;
+	  dag : string;
+	  pulldown : widget;
+	  tableForm : widget;
+	  table : widget;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  -- If typed into table column....
+
+	  if (isTable) then
+	    row := VerifyVocabQualifier.row;
+	    column := VerifyVocabQualifier.column;
+	    reason := VerifyVocabQualifier.reason;
+	    value := VerifyVocabQualifier.value;
+            table := sourceWidget;
+
+	    -- If not in the Qualifier column, return
+
+	    if (column != table.qualifier) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+
+	  -- If using pulldown menu...
+
+	  elsif (sourceWidget.class_name = "XmToggleButton") then
+	    pulldown := sourceWidget.parent;
+            tableForm := top->(pulldown.tableForm);
+            table := tableForm->Table;
+	    row := mgi_tblGetCurrentRow(table);
+	    value := sourceWidget.labelString;
+
+	    if (sourceWidget.set = false) then
+	      return;
+	    end if;
+
+	  else
+	    return;
+
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  if (value = "(none)") then
+	      value := "";
+	  end if;
+
+	  select : string := "select _Term_key, abbreviation from VOC_Term " +
+		"where abbreviation = " + mgi_DBprstr(value) + 
+		" and _Vocab_key = " + (string) table.vocabQualifierKey;
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      qualifierKey := mgi_getstr(dbproc, 1);
+	      qualifier    := mgi_getstr(dbproc, 2);
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  -- If Qualifier is valid
+	  --   Copy the Keys into the Key fields
+	  --   Copy the Names into the Name fields
+	  -- Else
+	  --   Display an error message, set the key columns to null, disallow edit to the field
+
+	  if (qualifierKey.length > 0) then
+	    (void) mgi_tblSetCell(table, row, table.qualifierKey, qualifierKey);
+	    (void) mgi_tblSetCell(table, row, table.qualifier, qualifier);
+	  else
+	    if (isTable) then
+	      VerifyVocabQualifier.doit := (integer) false;
+	    end if;
+	    (void) mgi_tblSetCell(table, row, table.qualifierKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.qualifier, "");
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Invalid Qualifier";
+            send(StatusReport);
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
+	  if (table.is_defined("dag") != nil) then
+	    dag := mgi_tblGetCell(table, row, table.dag);
+	    if ((qualifier = "col" or qualifier = "ncol") and dag != "C") then
+	      if (isTable) then
+	        VerifyVocabQualifier.doit := (integer) false;
+	      end if;
+	      (void) mgi_tblSetCell(table, row, table.qualifierKey, "NULL");
+	      (void) mgi_tblSetCell(table, row, table.qualifier, "");
               StatusReport.source_widget := top.root;
-              StatusReport.message := "Evidence Code 'ND' can only be used with GO:0000004, GO:0008372 or GO:0005554";
+              StatusReport.message := "Qualifier 'colocalizes with' can only be used with the Component Ontology";
+              send(StatusReport);
+	    elsif ((qualifier = "con" or qualifier = "ncon") and dag != "F") then
+	      if (isTable) then
+	        VerifyVocabQualifier.doit := (integer) false;
+	      end if;
+	      (void) mgi_tblSetCell(table, row, table.qualifierKey, "NULL");
+	      (void) mgi_tblSetCell(table, row, table.qualifier, "");
+              StatusReport.source_widget := top.root;
+              StatusReport.message := "Qualifier 'contributes to' can only be used with the Function Ontology";
               send(StatusReport);
 	    end if;
 	  end if;

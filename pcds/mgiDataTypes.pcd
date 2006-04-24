@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb  7 14:06:14 2006";
+      lastWritten = "Wed Feb  8 08:13:40 2006";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -28,7 +28,6 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 70;
             vip_y = 30;
-            vipComment = "XmTextField provides a single-line text editor for customizing user interfaces. XmTextField thus provides an application with a consistent editing system for textual data.";
         }
         {
           scrolledText = XmScrolledText;

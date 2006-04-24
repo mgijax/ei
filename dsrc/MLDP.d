@@ -4,7 +4,7 @@
 -- MLDP.d 11/30/98
 --
 -- TopLevelShell:		MLDP
--- Database Tables Affected:	MLD_Expts, MLD_Marker, MLD_Expt_Marker, MLD_Expt_Notes, MLD_Notes
+-- Database Tables Affected:	MLD_Expts, MLD_Expt_Marker, MLD_Expt_Notes, MLD_Notes
 --				MLD_Assay_Types, MLD_Statistics
 --				MLD_MCData, MLD_MC2point, MLD_MCDataList
 --				MLD_FISH, MLD_FISH_Region
@@ -83,7 +83,6 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
-	AddExpt :local [];
 	AddCross :local [];
 	AddCrossLookup :local [];
 	AddFISH :local [];
@@ -94,6 +93,9 @@ devents:
 
 	BuildDynamicComponents :local [];
 
+	ClearMLDP :local :exported [clearKeys : boolean := true;
+			            reset : boolean := false;];
+
 	Delete :local [];
 	DoStatistics :local [table : string;];
 	DoStatisticsEnd :local;
@@ -102,9 +104,8 @@ devents:
 	Init :local [];
 
 	Modify :local [];
-	ModifyExpt :local [];
 	ModifyExptMarker :local [];
-	ModifyPrimaryMarker :local [];
+	ModifyMarkerAllExpts :local [];
 	ModifyStatistics :local [];
 	ModifyCross :local [];
 	ModifyCrossHaplotype :local [];
@@ -125,10 +126,7 @@ devents:
 	PrepareSearch :local [];
 
 	Search :local [];
-	SearchExpt :local [];
-	Select :local [item_position : integer;
-		       searchExpt : boolean := false;];
-	SelectExpt :local [item_position : integer;];
+	Select :local [item_position : integer;];
 	SelectCross :local [];
 	SelectCrossLookup :translation [];
 	SelectRILookup :translation [];
@@ -137,7 +135,6 @@ devents:
 	SelectInSitu :local [];
 	SelectPhysical :local [];
 	SelectRI :local [];
-	SelectPrimaryMarker :local [];
 	SelectStatistics :local [];
 	SetDefaultAssay :local [];
 	SetHybrid :local [];
@@ -160,7 +157,6 @@ locals:
 	from : string;
 	where : string;
 
-	masterTables : list;	-- Master tables
 	detailTables : list;	-- Detail tables
 	exptTables : list;	-- All Experiment tables
 	fishTables : list;	-- FISH tables
@@ -171,24 +167,13 @@ locals:
 	riTables : list;	-- RI tables
 
 	-- Current primary keys
-	currentRefKey : string;
 	currentExptKey : string;
 	currentCrossKey : string;
 	currentRIKey : string;
 
-	-- Values for clearing specific forms/lists
-	-- Synchronize with Clear push buttons in form
-
-	clearAll : integer;
-	ClearRef : integer;
-	clearExpts : integer;
-	clearAllLists : integer;
-	ClearRefLists : integer;
-	clearExptLists : integer;
-
+        clearLists : integer := 3;
 	assayNull : string;	-- key for default Mapping Assay of "None"
 	origExptType : string;
-	displayMarker : string;	-- key of marker to display (when DisplayMarker.set = true)
 
 rules:
 
@@ -250,7 +235,6 @@ rules:
 --
 
 	Init does
-	  masterTables := create list("widget");
 	  detailTables := create list("widget");
 	  exptTables := create list("widget");
 	  fishTables := create list("widget");
@@ -264,10 +248,7 @@ rules:
 	  top->ExptDetailForm->ExptTypeMenu.defaultOption := nil;
 	  ExptForm := top->ExptDetailForm->ExptTextForm;
 
-	  masterTables.append(top->ExptMasterForm->Marker->Table);
-	  masterTables.append(accTable);
-
-	  detailTables.append(top->ExptDetailForm->ExptMarker->Table);
+	  detailTables.append(top->ExptDetailForm->Marker->Table);
 	  detailTables.append(accTable);
 
 	  exptTables.append(top->ExptDetailForm->ExptFISHForm->Region->Table);
@@ -294,24 +275,37 @@ rules:
 
 	  assayNull := mgi_sql1("select _Assay_Type_key from MLD_Assay_Types where description = ' '");
 
-	  clearAll := 1023;
-	  ClearRef := 7;
-	  clearExpts := 1021;
-	  clearAllLists := 15;
-	  ClearRefLists := 15;
-	  clearExptLists := 4;
-
           -- Set Row Count
           SetRowCount.source_widget := top;
           SetRowCount.tableID := MLD_EXPTS;
           send(SetRowCount, 0);
  
           -- Clear the form
- 
-          Clear.source_widget := top;
-	  Clear.clearForms := clearAll;
-	  Clear.clearLists := clearAllLists;
-          send(Clear, 0);
+          send(ClearMLDP, 0);
+
+	end does;
+
+--
+-- ClearMLDP
+--
+-- Activated from:  local devents
+--
+
+	ClearMLDP does
+
+	  Clear.source_widget := top;
+	  Clear.clearLists := clearLists;
+	  Clear.clearKeys := ClearMLDP.clearKeys;
+	  Clear.reset := ClearMLDP.reset;
+	  send(Clear, 0);
+
+	  if not ClearMLDP.reset then
+	    ExptForm->Notes->text.value := "";
+	  end if;
+
+	  -- Set Note button
+          SetNotesDisplay.note := top->referenceNote->Note;
+          send(SetNotesDisplay, 0);
 
 	end does;
 
@@ -322,73 +316,6 @@ rules:
 --
 
         Add does
-
-	  -- Process add for Experiment record
-
-	  if (top->Control->Experiments.set) then
-	    send(AddExpt, 0);
-	    return;
-	  end if;
-
-	  -- Process add for Master record
-
-          if (not top.allowEdit) then
-            return;
-          end if;
-
-          (void) busy_cursor(top);
- 
-          currentRefKey := top->ExptMasterForm->mgiCitation->ObjectID->text.value;
-	  top->ExptMasterForm->ID->text.value := currentRefKey;
-	  cmd := "";
-
-	  -- Process Primary Marker table
-
-	  send(ModifyPrimaryMarker, 0);
-
-          -- Process Notes
- 
-          ModifyNotes.source_widget := top->ExptMasterForm->Notes;
-          ModifyNotes.tableID := MLD_NOTES;
-          ModifyNotes.key := currentRefKey;
-          send(ModifyNotes, 0);
-          cmd := cmd + top->ExptMasterForm->Notes.sql;
-
-	  AddSQL.tableID := MLD_MARKER;
-          AddSQL.cmd := cmd;
-	  AddSQL.list := top->QueryList;
-          AddSQL.item := top->ExptMasterForm->mgiCitation->Citation->text.value;
-	  AddSQL.key := top->ExptMasterForm->ID->text;
-          send(AddSQL, 0);
-
-	  -- If add was successful, view Experiment form
-
-	  if (top->QueryList->List.sqlSuccessful) then
-	    top->Control->Experiments.set := true;
-	    Clear.source_widget := top;
-	    Clear.clearForms := clearExpts;
-	    Clear.clearLists := clearExptLists;
-            send(Clear, 0);
-	    ViewForm.source_widget := top->Control->Experiments;
-	    send(ViewForm, 0);
-	  else
-	    currentRefKey := "";
-	    top->ExptMasterForm->ID->text.value := "";
-	  end if;
-
-	  top->ExptDetailForm->Jnum->text.value := 
-			top->ExptMasterForm->mgiCitation->Jnum->text.value;
-
-          (void) reset_cursor(top);
-	end does;
-
---
--- AddExpt
---
--- Construct and execute add of new Experiment record
---
-
-        AddExpt does
 
           if (top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue = "%") then
             StatusReport.source_widget := top;
@@ -403,13 +330,15 @@ rules:
 
           (void) busy_cursor(top);
 
+	  cmd := "";
+
           -- If adding, then @KEYNAME must be used in all Modify events
  
           currentExptKey := "@" + KEYNAME;
  
 	  tag : string;
           cmd := "select max(tag) from " + mgi_DBtable(MLD_EXPTS) +
-		" where _Refs_key = " + currentRefKey +
+		" where _Refs_key = " + top->ExptDetailForm->mgiCitation->ObjectID->text.value +
 		 " and exptType = " + mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue);
 	  tag := mgi_sql1(cmd);
 	  tag := (string)((integer) tag + 1);
@@ -418,22 +347,31 @@ rules:
 
           cmd := mgi_setDBkey(MLD_EXPTS, NEWKEY, KEYNAME) +
                  mgi_DBinsert(MLD_EXPTS, KEYNAME) +
-		 currentRefKey + "," +
+		 top->ExptDetailForm->mgiCitation->ObjectID->text.value + "," +
 		 mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue) + "," + 
 		 tag + "," +
                  mgi_DBprstr(top->ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue) +  ")\n";
 
-	  -- Process Markers
+	  -- Process Reference Note
 
-	  send(ModifyExptMarker, 0);
+          ModifyNotes.source_widget := top->referenceNote->Note;
+          ModifyNotes.tableID := MLD_NOTES;
+          ModifyNotes.key := top->mgiCitation->ObjectID->text.value;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->referenceNote->Note.sql;
 
-          -- Process Notes
+          -- Process Experiment Notes
  
           ModifyNotes.source_widget := ExptForm->Notes;
           ModifyNotes.tableID := MLD_EXPT_NOTES;
           ModifyNotes.key := currentExptKey;
+	  ModifyNotes.keyDeclared := true;
           send(ModifyNotes, 0);
           cmd := cmd + ExptForm->Notes.sql;
+
+	  -- Process Markers
+
+	  send(ModifyExptMarker, 0);
 
 	  -- Construct appropriate insert statement based on Experiment type
 
@@ -463,19 +401,12 @@ rules:
 
 	  AddSQL.tableID := MLD_EXPTS;
           AddSQL.cmd := cmd;
-	  AddSQL.list := top->ExperimentList;
-          AddSQL.item := top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue + "-" + tag +
+	  AddSQL.list := top->QueryList;
+          AddSQL.item := "J:" + top->ExptDetailForm->mgiCitation->Jnum->text.value + "," +
+			top->ExptDetailForm->ExptTypeMenu.menuHistory.defaultValue + "-" + tag +
 			", Chr " + top->ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue;
           AddSQL.key := top->ExptDetailForm->ID->text;
           send(AddSQL, 0);
-
-	  if (top->ExperimentList->List.sqlSuccessful) then
-	    Clear.source_widget := top;
-	    Clear.clearForms := clearExpts;
-	    Clear.clearLists := clearExptLists;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
-	  end if;
 
 	  -- Generate Statistics for Cross or RI Experiment
 
@@ -484,7 +415,14 @@ rules:
 	    send(DoStatistics, 0);
 	  end if;
 
-	  top->ExptDetailForm->Jnum->text.value := top->ExptMasterForm->mgiCitation->Jnum->text.value;
+	  -- If add was successful...
+
+	  if (top->QueryList->List.sqlSuccessful) then
+	    ClearMLDP.clearKeys := false;
+	    send(ClearMLDP, 0);
+	  end if;
+
+          (void) reset_cursor(top);
 	end does;
 
 --
@@ -667,53 +605,19 @@ rules:
 --
 -- Delete
 --
--- Construct delete statements for MLD_Marker, MLD_Expts, MLD_Notes
+-- Construct delete statements for MLD_Expts, MLD_Notes
 --
 
         Delete does
           (void) busy_cursor(top);
 
-	  -- Delete Master Reference
+	  DeleteSQL.tableID := MLD_EXPTS;
+	  DeleteSQL.key := currentExptKey;
+	  DeleteSQL.list := top->QueryList;
+	  send(DeleteSQL, 0);
 
-	  if (not top->Control->Experiments.set) then
-	    DeleteSQL.tableID := MLD_MARKERBYREF;
-	    DeleteSQL.key := currentRefKey;
-	    DeleteSQL.list := top->QueryList;
-	    send(DeleteSQL, 0);
-	    DeleteSQL.tableID := MLD_EXPTS_DELETE;
-	    DeleteSQL.key := currentRefKey;
-	    DeleteSQL.list := top->QueryList;
-	    send(DeleteSQL, 0);
-	    DeleteSQL.tableID := MLD_NOTES;
-	    DeleteSQL.key := currentRefKey;
-	    DeleteSQL.list := top->QueryList;
-	    send(DeleteSQL, 0);
-
-	  -- Delete Experiment
-
-	  else
-	    DeleteSQL.tableID := MLD_EXPTS;
-	    DeleteSQL.key := currentExptKey;
-	    DeleteSQL.list := top->ExperimentList;
-	    send(DeleteSQL, 0);
-	  end if;
-
-          Clear.source_widget := top;
-
-          if (not top->Control->Experiments.set) then
-            Clear.clearForms := clearAll;
-            Clear.clearLists := clearAllLists - 1;
-            send(Clear, 0);
-          else
-            Clear.clearForms := clearExpts;
-            Clear.clearLists := clearExptLists;
-	    Clear.clearKeys := false;
-            send(Clear, 0);
-          end if;
+          send(ClearMLDP, 0);
  
-	  top->ExptDetailForm->Jnum->text.value := 
-		top->ExptMasterForm->mgiCitation->Jnum->text.value;
-
           (void) reset_cursor(top);
         end does;
 
@@ -739,9 +643,6 @@ rules:
 
 	  (void) mgi_writeLog(get_time() + " " + cmdOut + "\n");
 
-	  top->WorkingDialog.messageString := "Updating Statistics...\n";
-	  top->WorkingDialog.managed := true;
-
           proc_id : opaque := tu_fork_process(cmd_str[1], cmd_str, nil, DoStatisticsEnd);
 	  tu_fork_free(proc_id);
         end does;
@@ -753,63 +654,17 @@ rules:
 --
  
         DoStatisticsEnd does
-	  top->WorkingDialog.messageString := "";
-	  top->WorkingDialog.managed := false;
 	  send(SelectStatistics, 0);
         end does;
  
 --
 -- Modify
 --
--- Initiates all potential modifications to selected record
---
-
-	Modify does
-
-	  -- Process Modifications for Experiment record
-
-	  if (top->Control->Experiments.set) then
-	    send(ModifyExpt, 0);
-	    return;
-	  end if;
-
-	  -- Process Modifications for Master record
-
-          if (not top.allowEdit) then
-            return;
-          end if;
-
-	  (void) busy_cursor(top);
-
-          cmd := "";
- 
-	  -- Process Primary Markers
-
-	  send(ModifyPrimaryMarker, 0);
-
-          -- Process Notes
- 
-          ModifyNotes.source_widget := top->ExptMasterForm->Notes;
-          ModifyNotes.tableID := MLD_NOTES;
-          ModifyNotes.key := currentRefKey;
-          send(ModifyNotes, 0);
-          cmd := cmd + top->ExptMasterForm->Notes.sql;
-
-          ModifySQL.cmd := cmd;
-	  ModifySQL.list := top->QueryList;
-          send(ModifySQL, 0);
-
-	  (void) reset_cursor(top);
-	end does;
-
---
--- ModifyExpt
---
 -- Constructs update statement for MLD_Expts
 -- Cannot modify the Experiment Type 
 --
 
-	ModifyExpt does
+	Modify does
 
           if (not top.allowEdit) then
 	    return;
@@ -830,13 +685,24 @@ rules:
 		mgi_DBprstr(top->ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue) + ",";
           end if;
 
-          -- Process Notes
+	  -- Process Reference Note
+
+          ModifyNotes.source_widget := top->referenceNote->Note;
+          ModifyNotes.tableID := MLD_NOTES;
+          ModifyNotes.key := top->mgiCitation->ObjectID->text.value;
+          send(ModifyNotes, 0);
+          cmd := cmd + top->referenceNote->Note.sql;
+
+          -- Process Experiment Notes
  
           ModifyNotes.source_widget := ExptForm->Notes;
           ModifyNotes.tableID := MLD_EXPT_NOTES;
           ModifyNotes.key := currentExptKey;
+	  ModifyNotes.keyDeclared := true;
           send(ModifyNotes, 0);
           cmd := cmd + ExptForm->Notes.sql;
+
+	  -- Process Experiment/Markers
 
 	  send(ModifyExptMarker, 0);
 
@@ -871,7 +737,7 @@ rules:
           cmd := cmd + accTable.sqlCmd;
 
           ModifySQL.cmd := cmd;
-	  ModifySQL.list := top->ExperimentList;
+	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
 	  -- Re-generate Statistics for Cross or RI Experiment
@@ -892,7 +758,7 @@ rules:
 --
 
         ModifyExptMarker does
-          table : widget := top->ExptDetailForm->ExptMarker->Table;
+          table : widget := top->ExptDetailForm->Marker->Table;
           row : integer;
           editMode : string;
           set : string := "";
@@ -997,6 +863,7 @@ rules:
 
                 tmpCmd := tmpCmd + mgi_DBupdate(MLD_EXPT_MARKER, currentExptKey, set) +
                           "and sequenceNum = " + currentSeqNum + "\n";
+
               end if;
  
             elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
@@ -1024,25 +891,21 @@ rules:
         end does;
  
 --
--- ModifyPrimaryMarker
+-- ModifyMarkerAllExpts
 --
--- Constructs update statement for primary Markers
--- Appends to global "cmd" variable
+-- Modifies Marker for all experiments of given reference
 --
 
-        ModifyPrimaryMarker does
-          table : widget := top->ExptMasterForm->Marker->Table;
+        ModifyMarkerAllExpts does
+          table : widget := top->ExptDetailForm->Marker->Table;
           row : integer;
           editMode : string;
           set : string := "";
-          deleteCmd : string := "";
-          tmpCmd : string := "";
  
-	  keyDeclared : boolean := false;
-          currentSeqNum : string;
-          newSeqNum : string;
-          refMarkerKey : string;
           markerKey : string;
+          currentMarkerKey : string;
+
+	  cmd := "";
  
 	  -- Check for duplicate Seq # assignments
 
@@ -1063,63 +926,35 @@ rules:
               break;
             end if;
  
-            currentSeqNum := mgi_tblGetCell(table, row, table.currentSeqNum);
-            newSeqNum := mgi_tblGetCell(table, row, table.seqNum);
-            refMarkerKey := mgi_tblGetCell(table, row, table.refMarkerKey);
-            markerKey := mgi_tblGetCell(table, row, table.markerKey);
- 
-	    if (not keyDeclared) then
-	      tmpCmd := tmpCmd + mgi_setDBkey(MLD_MARKER, NEWKEY, KEYNAME);
-	      keyDeclared := true;
-	    else
-	      tmpCmd := tmpCmd + mgi_DBincKey(KEYNAME);
-	    end if;
-
-            if (editMode = TBL_ROW_ADD) then
-
-              tmpCmd := tmpCmd + mgi_DBinsert(MLD_MARKER, KEYNAME) +
-                        currentRefKey + "," +
-                        markerKey + "," +
-                        newSeqNum + ")\n";
- 
-            elsif (editMode = TBL_ROW_MODIFY) then
- 
-              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
- 
-              if (currentSeqNum != newSeqNum) then
-                -- Delete records with current Seq # (cannot have duplicate Seq #)
- 
-                deleteCmd := deleteCmd + mgi_DBdelete(MLD_MARKER, refMarkerKey);
- 
-                -- Insert new record
- 
-                tmpCmd := tmpCmd + mgi_DBinsert(MLD_MARKER, KEYNAME) +
-                          currentRefKey + "," +
-                          markerKey + "," +
-                          newSeqNum + ")\n";
- 
-              -- Else, a simple update
- 
-              else
-                set := "_Marker_key = " + markerKey;
-                tmpCmd := tmpCmd + mgi_DBupdate(MLD_MARKER, refMarkerKey, set);
-              end if;
- 
-            elsif (editMode = TBL_ROW_DELETE and currentSeqNum.length > 0) then
-              tmpCmd := tmpCmd + mgi_DBdelete(MLD_MARKER, refMarkerKey);
+            if (editMode = TBL_ROW_MODIFY) then
+              markerKey := mgi_tblGetCell(table, row, table.markerKey);
+              currentMarkerKey := mgi_tblGetCell(table, row, table.currentMarkerKey);
+	      cmd := cmd + "update MLD_Expt_Marker " +
+		  " set _Marker_key = " + markerKey +
+		  " from MLD_Expt_Marker em, MLD_Expts e " +
+		  " where em._Marker_key = " + currentMarkerKey +
+		  " and em._Expt_key = e._Expt_key " +
+		  " and e._Refs_key = " + top->ExptDetailForm->mgiCitation->ObjectID->text.value + "\n";
             end if;
- 
             row := row + 1;
           end while;
  
-          -- Delete records first, then process inserts/updates/deletes, then re-order sequence numbers
- 
-	  if (deleteCmd.length > 0 or tmpCmd.length > 0) then
-            cmd := cmd + deleteCmd + tmpCmd + ROLLBACK;
-	    if ((integer) currentSeqNum <= 100) then
-              cmd := cmd + "exec MGI_resetSequenceNum '" + mgi_DBtable(MLD_MARKER) + "'," + currentRefKey + "\n";
-	    end if;
+          if (cmd.length > 0 or set.length > 0) then
+            cmd := cmd + mgi_DBupdate(MLD_EXPTS, currentExptKey, set);
+          end if;
+
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+          send(ModifySQL, 0);
+
+	  -- Re-generate Statistics for Cross or RI Experiment
+
+	  if (ExptForm = top->ExptDetailForm->ExptCrossForm or
+	      ExptForm = top->ExptDetailForm->ExptRIForm) then
+	    send(DoStatistics, 0);
 	  end if;
+
+	  (void) reset_cursor(top);
         end does;
  
 --
@@ -2343,9 +2178,7 @@ rules:
 
 	PrepareSearch does
 	  from_note : boolean := false;
-	  from_expt : boolean := false;
 	  from_enote : boolean := false;
-	  from_emarker : boolean := false;
 	  from_allele : boolean := false;
 	  from_cross : boolean := false;
 	  from_crosshap : boolean := false;
@@ -2371,16 +2204,14 @@ rules:
 
 	  value : string;
 	  table : widget;
-	  from := "from MLD_Marker_View g";
+	  from := "from MLD_Expt_Marker_View e";
 	  where := "";
-	  displayMarker := "";
 
           QueryDate.source_widget := top->CreationDate;
           QueryDate.tag := "e";
           send(QueryDate, 0);
           if (top->CreationDate.sql.length > 0) then
             where := where + top->CreationDate.sql;
-	    from_expt := true;
           end if;
  
           QueryDate.source_widget := top->ModifiedDate;
@@ -2388,38 +2219,22 @@ rules:
           send(QueryDate, 0);
           if (top->ModifiedDate.sql.length > 0) then
             where := where + top->ModifiedDate.sql;
-	    from_expt := true;
           end if; 
 
-          if (top->ExptMasterForm->mgiCitation->Jnum->text.value.length > 0) then
-	    where := where + " and g.jnum = " + top->ExptMasterForm->mgiCitation->Jnum->text.value + "\n";
-          elsif (top->ExptDetailForm->Jnum->text.value.length > 0) then
-	    where := where + " and g.jnum = " + top->ExptDetailForm->Jnum->text.value + "\n";
-          elsif (top->ExptMasterForm->mgiCitation->Citation->text.value.length > 0) then
-	    where := where + " and g.short_citation like " + 
-		mgi_DBprstr(top->ExptMasterForm->mgiCitation->Citation->text.value) + "\n";
+          if (top->ExptDetailForm->mgiCitation->Jnum->text.value.length > 0) then
+	    where := where + " and e.jnum = " + top->ExptDetailForm->mgiCitation->Jnum->text.value + "\n";
+          elsif (top->ExptDetailForm->mgiCitation->Jnum->text.value.length > 0) then
+	    where := where + " and e.jnum = " + top->ExptDetailForm->mgiCitation->Jnum->text.value + "\n";
+          elsif (top->ExptDetailForm->mgiCitation->Citation->text.value.length > 0) then
+	    where := where + " and e.short_citation like " + 
+		mgi_DBprstr(top->ExptDetailForm->mgiCitation->Citation->text.value) + "\n";
 	  end if;
 
-          if (top->ExptMasterForm->Notes->text.value.length > 0) then
-	    where := where + " and n.note like " + 
-		mgi_DBprstr(top->ExptMasterForm->Notes->text.value) + "\n";
-	    from_note := true;
-	  end if;
-
-	  table := top->ExptMasterForm->Marker->Table;
-          value := mgi_tblGetCell(table, 0, table.markerKey);
-          if (value.length > 0 and value != "NULL") then
-            where := where + " and g._Marker_key = " + value + "\n";
-	    if (top->DisplayMarker.set) then
-	      displayMarker := value;
-	    end if;
-	  else
-            value := mgi_tblGetCell(table, 0, table.markerSymbol);
-            if (value.length > 0) then
-              where := where + " and g.symbol like " + mgi_DBprstr(value);
-	    end if;
+          if (top->referenceNote->Note->text.value.length > 0) then
+            where := where + "\nand n.note like " + mgi_DBprstr(top->referenceNote->Note->text.value);
+            from_note := true;
           end if;
-
+      
           -- Construct Accession number query
  
           SearchAcc.table := accTable;
@@ -2430,7 +2245,6 @@ rules:
           if (accTable.sqlFrom.length > 0) then
             from := from + accTable.sqlFrom;
             where := where + accTable.sqlWhere;
-	    from_expt := true;
           end if;
  
 	  -- From Experiment table MLD_EXPTS
@@ -2438,13 +2252,11 @@ rules:
           if (top->ExptDetailForm->ExptTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand e.exptType = " + 
 		mgi_DBprstr(top->ExptDetailForm->ExptTypeMenu.menuHistory.searchValue);
-	    from_expt := true;
           end if;
  
           if (top->ExptDetailForm->ChromosomeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand e.chromosome = " + 
 		mgi_DBprstr(top->ExptDetailForm->ChromosomeMenu.menuHistory.searchValue);
-	    from_expt := true;
           end if;
  
 	  -- From Experiment Notes MLD_EXPT_NOTES
@@ -2456,45 +2268,36 @@ rules:
 
 	  -- From Experiment Marker MLD_EXPT_MARKER
 
-	  table := top->ExptDetailForm->ExptMarker->Table;
+	  table := top->ExptDetailForm->Marker->Table;
           value := mgi_tblGetCell(table, 0, table.markerKey);
           if (value.length > 0 and value != "NULL") then
-            where := where + "\nand eg._Marker_key = " + value;
-	    from_emarker := true;
---	    if (top->DisplayMarker.set) then
---	      displayMarker := value;
---	    end if;
+            where := where + "\nand e._Marker_key = " + value;
 	  else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
-              where := where + "\nand eg.symbol like " + mgi_DBprstr(value);
-	      from_emarker := true;
+              where := where + "\nand e.symbol like " + mgi_DBprstr(value);
 	    end if;
           end if;
 
           value := mgi_tblGetCell(table, 0, (integer) table.alleleKey[1]);
           if (value.length > 0) then
-            where := where + "\nand eg._Allele_key = " + value;
-	    from_emarker := true;
+            where := where + "\nand e._Allele_key = " + value;
 	  else
             value := mgi_tblGetCell(table, 0, (integer) table.alleleSymbol[1]);
             if (value.length > 0) then
               where := where + "\nand a.symbol like " + mgi_DBprstr(value);
 	      from_allele := true;
-	      from_emarker := true;
 	    end if;
           end if;
 
           value := mgi_tblGetCell(table, 0, table.assayKey);
           if (value.length > 0) then
-            where := where + "\nand eg._Assay_Type_key = " + value;
-	    from_emarker := true;
+            where := where + "\nand e._Assay_Type_key = " + value;
           end if;
 
           value := mgi_tblGetCell(table, 0, table.description);
           if (value.length > 0) then
-            where := where + "\nand eg.description like " + mgi_DBprstr(value);
-	    from_emarker := true;
+            where := where + "\nand e.description like " + mgi_DBprstr(value);
           end if;
 
 	  -- From Cross
@@ -2867,40 +2670,9 @@ rules:
 
 	  -- Construct from/where
 
-	  from_expt := from_expt or
-		       from_enote or 
-		       from_emarker or
-		       from_allele or
-		       from_cross or
-		       from_crosshap or
-		       from_crosspoint or
-		       from_crossset or
-		       from_ri or
-		       from_rihap or
-		       from_ripoint or
-		       from_riset or
-		       from_hybrid or
-		       from_hybridconcordance or
-		       from_fish or
-		       from_fishregion or
-		       from_insitu or
-		       from_insituregion or
-		       from_strain1 or
-		       from_strain2 or
-		       from_strain3 or
-		       from_strain4 or
-		       from_strain5 or
-		       from_physical or
-		       from_physicaldistance;
-
           if (from_note) then
 	    from := from + "," + mgi_DBtable(MLD_NOTES) + " n";
-	    where := where + " and n._Refs_key = g._Refs_key";
-	  end if;
-
-	  if (from_expt) then
-	    from := from + "," + mgi_DBtable(MLD_EXPTS) + " e";
-	    where := where + " and e._Refs_key = g._Refs_key";
+	    where := where + " and n._Refs_key = e._Refs_key";
 	  end if;
 
 	  if (from_enote) then
@@ -2908,14 +2680,9 @@ rules:
 	    where := where + " and en._Expt_key = e._Expt_key";
 	  end if;
 
-	  if (from_emarker) then
-	    from := from + "," + mgi_DBtable(MLD_EXPT_MARKER_VIEW) + " eg";
-	    where := where + " and eg._Expt_key = e._Expt_key";
-	  end if;
-
 	  if (from_allele) then
 	    from := from + "," + mgi_DBtable(ALL_ALLELE) + " a";
-	    where := where + " and eg._Allele_key = a._Allele_key";
+	    where := where + " and g._Allele_key = a._Allele_key";
 	  end if;
 
 	  if (from_cross) then
@@ -3036,41 +2803,17 @@ rules:
 --
 -- Search
 --
--- Construct search string for first form and execute
---
-
-	Search does
-          (void) busy_cursor(top);
-	  send(PrepareSearch, 0);
-	  ClearList.source_widget := top->ExperimentList;
-	  send(ClearList, 0);
-          ClearList.source_widget := top->MarkerList;
-          send(ClearList, 0);
-	  Query.source_widget := top;
-	  Query.select := "select distinct g._Refs_key, g.short_citation, g.jnum\n" + 
-				from + "\n" + where + "\norder by g.jnum\n";
-	  Query.table := MLD_MARKER;
-	  send(Query, 0);
-	  (void) reset_cursor(top);
-	end does;
-
---
--- SearchExpt
---
--- Construct search string for second (Experiment) form and execute
+-- Construct search string and execute
 --
  
-        SearchExpt does
+        Search does
           (void) busy_cursor(top);
-          top->ExptDetailForm->ID->text.value := "";
-          QueryNoInterrupt.source_widget := top;
-          QueryNoInterrupt.list_w := top->ExperimentList;
-          QueryNoInterrupt.select := 
-		"select _Expt_key, exptLabel from MLD_Expt_View\n" +
-		"where _Refs_key = " + currentRefKey + 
-		"\norder by exptType, tag";
-          QueryNoInterrupt.table := MLD_EXPTS;
-          send(QueryNoInterrupt, 0);
+	  send(PrepareSearch, 0);
+          Query.source_widget := top;
+          Query.select := "select distinct e._Expt_key, e.jnumID + ', ' + e.exptType + '-' + convert(varchar(5), e.tag) + ', Chr ' + e.chromosome " +
+		from + "\n" + where + "\norder by e.jnum, e.exptType, e.tag";
+          Query.table := MLD_EXPT_MARKER_VIEW;
+          send(Query, 0);
           (void) reset_cursor(top);
         end does;
  
@@ -3087,106 +2830,6 @@ rules:
 	  InitAcc.table := accTable;
           send(InitAcc, 0);
  
-          masterTables.open;
-          while (masterTables.more) do
-            ClearTable.table := masterTables.next;
-            send(ClearTable, 0);
-          end while;
-          masterTables.close;
- 
-          ClearList.source_widget := top->MarkerList;
-          send(ClearList, 0);
-          ClearList.source_widget := top->ExperimentList;
-          send(ClearList, 0);
-
-          if (top->QueryList->List.selectedItemCount = 0) then
-            top->QueryList->List.row := 0;
-            top->ExptMasterForm->ID->text.value := "";
-	    currentRefKey := "";
-	    currentExptKey := "";
-	    (void) reset_cursor(top);
-            return;
-          end if;
-
-	  table : widget := top->ExptMasterForm->Marker->Table;
-	  currentRefKey := top->QueryList->List.keys[Select.item_position];
-	  top->ExptMasterForm->Notes->text.value := "";
-
-	  cmd := "select * from MLD_Marker_View where _Refs_key = " + currentRefKey;
-	  
-	  if (displayMarker.length > 0) then
-	    cmd := cmd + " and _Marker_key = " + displayMarker;
-	  end if;
-
-	  cmd := cmd + " order by sequenceNum\n" +
-		 "select rtrim(note) from MLD_Notes where _Refs_key = " + currentRefKey + " order by sequenceNum\n";
-
-	  results : integer := 1;
-	  row : integer;
-
-          dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
- 
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    row := 0;
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      if (results = 1) then
-
-		if (row = 0) then
-	          top->ExptMasterForm->ID->text.value := mgi_getstr(dbproc, 5);
-	          top->ExptMasterForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 5);
-	          top->ExptMasterForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 2);
-	          top->ExptDetailForm->Jnum->text.value := mgi_getstr(dbproc, 2);
-	          top->ExptMasterForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 3);
-		end if;
-
-                (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 7));
-                (void) mgi_tblSetCell(table, row, table.refMarkerKey, mgi_getstr(dbproc, 4));
-                (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 6));
-                (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-
-		-- Insert all Primary Markers into Marker List
-                InsertList.item := mgi_getstr(dbproc, 12);
-                InsertList.key := mgi_getstr(dbproc, 6);
-                InsertList.list := top->MarkerList;
-                send(InsertList, 0);
-	      elsif (results = 2) then
-	        top->ExptMasterForm->Notes->text.value := 
-			top->ExptMasterForm->Notes->text.value + mgi_getstr(dbproc, 1);
-	      end if;
-	      row := row + 1;
-            end while;
-	    results := results + 1;
-          end while;
- 
-	  (void) dbclose(dbproc);
-
-          top->QueryList->List.row := Select.item_position;
-	  Clear.source_widget := top;
-	  Clear.clearForms := clearAll;
-          Clear.reset := true;
-          send(Clear, 0);
-
-	  if (Select.searchExpt) then
-	    send(SearchExpt, 0);
-	  end if;
-
-	  (void) reset_cursor(top);
-	end does;
-
---
--- SelectExpt
---
--- Query for selected item in QueryList and fill in form with appropriate values
---
-
-	SelectExpt does
-
-          (void) busy_cursor(top);
-
           detailTables.open;
           while (detailTables.more) do
             ClearTable.table := detailTables.next;
@@ -3194,25 +2837,24 @@ rules:
           end while;
           detailTables.close;
 
-          if (top->ExperimentList->List.selectedItemCount = 0) then
-	    Clear.source_widget := top;
-	    Clear.clearForms := clearExpts;
-	    Clear.clearLists := clearExptLists;
-	    Clear.clearKeys := false;
-	    send(Clear, 0);
-            top->ExperimentList->List.row := 0;
+	  top->referenceNote->Note->text.value := "";
+
+          if (top->QueryList->List.selectedItemCount = 0) then
+            top->QueryList->List.row := 0;
+            top->ExptDetailForm->ID->text.value := "";
 	    currentExptKey := "";
 	    origExptType := "";
-            top->ExptDetailForm->ID->text.value := "";
-	    top->ExptDetailForm->Jnum->text.value := top->ExptMasterForm->mgiCitation->Jnum->text.value;
 	    (void) reset_cursor(top);
             return;
           end if;
 
-	  table : widget := top->ExptDetailForm->ExptMarker->Table;
-          currentExptKey := top->ExperimentList->List.keys[SelectExpt.item_position];
+	  table : widget := top->ExptDetailForm->Marker->Table;
+	  ExptForm->Notes->text.value := "";
+          currentExptKey := top->QueryList->List.keys[Select.item_position];
+	  origExptType := "";
  
-          cmd := "select _Expt_key, exptType, chromosome, creation_date, modification_date " +
+          cmd := "select _Expt_key, exptType, chromosome, creation_date, modification_date, " +
+		 "_Refs_key, jnum, short_citation " +
                  "from MLD_Expt_View where _Expt_key = " + currentExptKey + "\n" +
                  "select rtrim(note) from MLD_Expt_Notes where _Expt_key = " + currentExptKey + 
 		 " order by sequenceNum\n" +
@@ -3220,16 +2862,10 @@ rules:
                  "allele, assay, description, matrixData " +
                  "from MLD_Expt_Marker_View where _Expt_key = " + currentExptKey;
 
---	  if (displayMarker.length > 0) then
---	    cmd := cmd + " and _Marker_key = " + displayMarker;
---	  end if;
-
 	  cmd := cmd + " order by sequenceNum\n";
  
           results : integer := 1;
           row : integer := 0;
-          ExptForm->Notes->text.value := "";
-	  origExptType := "";
  
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -3241,6 +2877,9 @@ rules:
                 top->ExptDetailForm->ID->text.value := mgi_getstr(dbproc, 1);
 		top->CreationDate->text.value := mgi_getstr(dbproc, 4);
 		top->ModifiedDate->text.value := mgi_getstr(dbproc, 5);
+	        top->ExptDetailForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 6);
+	        top->ExptDetailForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 7);
+	        top->ExptDetailForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 8);
 		SetOption.source_widget := top->ExptDetailForm->ExptTypeMenu;
 		SetOption.value := mgi_getstr(dbproc, 2);
 		send(SetOption, 0);
@@ -3255,6 +2894,7 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.seqNum, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.currentMarkerKey, mgi_getstr(dbproc, 2));
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 3));
                 (void) mgi_tblSetCell(table, row, (integer) table.alleleKey[1], mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, (integer) table.alleleSymbol[1], mgi_getstr(dbproc, 6)); 
@@ -3274,6 +2914,16 @@ rules:
             end while;
             results := results + 1;
             row := 0;
+          end while;
+
+	  cmd := "select rtrim(note) from MLD_Notes where _Refs_key = " + 
+		top->mgiCitation->ObjectID->text.value + " order by sequenceNum\n";
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              top->referenceNote->Note->text.value := top->referenceNote->Note->text.value + mgi_getstr(dbproc, 1);
+            end while;
           end while;
  
 	  (void) dbclose(dbproc);
@@ -3297,14 +2947,11 @@ rules:
 	    send(SelectRI, 0);
 	  end if;
 
-	  top->ExptDetailForm->Jnum->text.value := top->ExptMasterForm->mgiCitation->Jnum->text.value;
-          top->ExperimentList->List.row := SelectExpt.item_position;
+          top->QueryList->List.row := Select.item_position;
+          ClearMLDP.reset := true;
+          send(ClearMLDP, 0);
 
-	  Clear.source_widget := top;
-	  Clear.clearForms := clearExpts;
-          Clear.reset := true;
-          send(Clear, 0);
-
+	  (void) reset_cursor(top);
           (void) reset_cursor(top);
         end does;
 
@@ -3397,7 +3044,7 @@ rules:
 --
 -- Query for selected Cross and fill in form with appropriate values
 -- Construct Genotypes for Female and Male strains by using Cross definition and
--- number of Markers in ExptMarker->Table
+-- number of Markers in Marker->Table
 --
 -- Assumes use of mgiObject template 'mgiCross'.
 --
@@ -3471,7 +3118,7 @@ rules:
 	  ExptForm->Strain1->Verify->text.modified := false;
 	  ExptForm->Strain2->Verify->text.modified := false;
 
-	  table : widget := top->ExptDetailForm->ExptMarker->Table;
+	  table : widget := top->ExptDetailForm->Marker->Table;
 
 	  -- Count loci in Experiment Marker table
 
@@ -3940,62 +3587,6 @@ rules:
 	end does;
 
 --
--- SelectPrimaryMarker
---
--- After Primary Marker is selected, SelectLookupListItem will load the appropriate
--- information into the Experiment Marker table.
--- Set the default Assay type
--- Copy the Primary Marker into the RI Haplotype table.
---
-
-	SelectPrimaryMarker does
-	  position : integer := SelectPrimaryMarker.item_position;
-	  targetWidget : widget;
-	  targetText : string;
-	  targetKey : string;
-	  table : widget;
-	  notify : boolean := true;
-
-	  if (top->MarkerList->List.selectedItemCount = 0) then
-	    return;
-	  end if;
-
-	  -- Set Default Assay
-
-	  send(SetDefaultAssay, 0);
-
-	  -- For RIs, also copy Primary Marker into RI Haplotype table
-
-	  if (ExptForm = top->ExptDetailForm->ExptRIForm) then
-
-	    -- Save current target values
-	    targetWidget := top->MarkerList->List.targetWidget;
-	    targetText := top->MarkerList->List.targetText;
-	    targetKey := top->MarkerList->List.targetKey;
-
-	    -- Assign new target values
-	    table := ExptForm->RIHaplotype->Table;
-	    top->MarkerList->List.targetWidget := top->RIHaplotype;
-	    top->MarkerList->List.targetText := (string) table.markerSymbol;
-	    top->MarkerList->List.targetKey := (string) table.markerKey;
-
-	    -- Copy appropriate values into target
-	    SelectLookupListItem.source_widget := top->MarkerList->List;
-	    SelectLookupListItem.item_position := SelectPrimaryMarker.item_position;
-	    SelectLookupListItem.row := -2;	-- Copy Marker to next available row
-	    send(SelectLookupListItem, 0);
-
-	    -- Replace saved target values
-	    top->MarkerList->List.targetWidget := targetWidget;
-	    top->MarkerList->List.targetText := targetText;
-	    top->MarkerList->List.targetKey := targetKey;
-	  end if;
-
-	  -- De-select the Marker
-	  (void) XmListDeselectPos(top->MarkerList->List, position);
-	end does;
-
---
 -- SelectStatistics
 --
 -- Query for selected Experiment's Statistics and fill in form with appropriate values
@@ -4196,7 +3787,7 @@ rules:
 --
 -- VerifyExptChromosome
 --
--- Activated from ExptDetailForm->ExptMarker->Table
+-- Activated from ExptDetailForm->Marker->Table
 -- Verify that Marker's chromosome matches 
 -- ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue entered by user
 --
@@ -4239,14 +3830,16 @@ rules:
           -- If Marker Chr = Unknown, then Marker Chr will be modified to Expt value
 	  -- when record is modified by MLD_EXPT_MARKER update trigger
 
+	  -- skip verification
+
+	  if (exptChr = "%") then
+	    return;
+          end if;
+
           if (markerChr = "UN") then
             StatusReport.source_widget := top;
             StatusReport.message := "Symbol '" + markerSymbol + "'\n\n" +
                                     "Chromosome will be modified from '" + markerChr + "' to '" + exptChr + "'";
-            send(StatusReport);
-          elsif (exptChr = "%") then
-            StatusReport.source_widget := top;
-            StatusReport.message := "No Chromosome has been selected.  Cannot verify.";
             send(StatusReport);
           elsif (markerChr != exptChr) then
             StatusReport.source_widget := top;
@@ -4290,7 +3883,7 @@ rules:
 
 	  -- Get number of rows in marker list with yesno = yes or blank
 
-          markers : widget := top->ExptDetailForm->ExptMarker->Table;
+          markers : widget := top->ExptDetailForm->Marker->Table;
           while (i < mgi_tblNumRows(markers)) do
             if (mgi_tblGetCell(markers, i, markers.markerKey) != "" and
 	       (mgi_tblGetCell(markers, i, markers.yesno) = "yes" or
@@ -4426,7 +4019,7 @@ rules:
  
 	  -- Reset origExptType if no record is currently selected
 
-          if (top->ExperimentList->List.selectedItemCount = 0) then
+          if (top->QueryList->List.selectedItemCount = 0) then
 	    origExptType := "";
 	  end if;
 
@@ -4466,9 +4059,9 @@ rules:
 	  if (NewForm != ExptForm) then
 
 	    if (NewForm.name = "ExptTextForm") then
-	      mgi_tblSetVisibleRows(top->ExptMarker->Table, 10);
+	      mgi_tblSetVisibleRows(top->Marker->Table, 10);
 	    else
-	      mgi_tblSetVisibleRows(top->ExptMarker->Table, 5);
+	      mgi_tblSetVisibleRows(top->Marker->Table, 5);
 	    end if;
 
             NewForm.managed := true;

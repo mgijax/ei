@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Feb  6 15:26:16 2006";
+      lastWritten = "Wed Sep  7 10:11:03 2005";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -16,7 +16,6 @@ Module: mgiDialog
           Group: Control
             vip_x = 120;
             vip_y = 470;
-            vipComment = "XmWarningDialog is a convenience widget combining an XmMessageBox within an XmDialogShell parent. It is used for warning the user of action consequences and gives a choice of resolutions. It includes a symbol, a message, and three buttons. The default symbol is an exclamation mark. The default button labels are OK, Cancel and Help.";
         }
         {
           DeleteDialog = XmQuestionDialog;

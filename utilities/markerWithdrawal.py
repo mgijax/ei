@@ -38,7 +38,7 @@ import sys
 import os
 import getopt
 import string
-import regsub
+import re
 import db
 import mgi_utils
 
@@ -112,7 +112,7 @@ def snapShot(markerKey):
 
 	# Replace all occurences of KEY in the template with the marker key
 	for line in insql.readlines():
-		newLine = regsub.sub('KEY', '%d' % (markerKey), line)
+		newLine = re.sub('KEY', '%d' % (markerKey), line)
 		outsql.write(newLine)
 
 	# Close the SQL files

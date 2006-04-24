@@ -3,9 +3,7 @@
 -- Creator : lec
 --
 -- TopLevelShell:		Allele
--- Database Tables Affected:	ALL_Allele, ALL_Note, ALL_Synonym, ALL_Reference
--- Cross Reference Tables:	ALL_Type, ALL_Inheritance_Mode, ALL_Molecular_Mutation,
---				ALL_Status, ALL_CellLine
+-- Database Tables Affected:	ALL_Allele, ALL_Allele_Mutation, MGI_Note, MGI_Synonym, MGI_Reference_Assoc
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module process edits for Allele tables.
@@ -148,7 +146,7 @@ rules:
 	  -- Prevent multiple instances of the Allele form
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-	  top.show;
+	  top.managed := true;
 
 	  -- Initialize
 	  send(Init, 0);
@@ -1612,9 +1610,8 @@ rules:
 	Exit does
           ab.sensitive := true;
 	  destroy self;
-	  top.destroy_widget;
---	  ExitWindow.source_widget := top;
---	  send(ExitWindow, 0);
+	  ExitWindow.source_widget := top;
+	  send(ExitWindow, 0);
 	end does;
 
 end dmodule;

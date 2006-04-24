@@ -236,7 +236,8 @@ rules:
                  mgi_DBprstr(top->AntibodyNote->text.value) + "," +
                  mgi_DBprstr(top->WesternMenu.menuHistory.defaultValue) + "," +
                  mgi_DBprstr(top->ImmunoMenu.menuHistory.defaultValue) + "," +
-                 mgi_DBprstr(top->AntigenNote->text.value) + ")\n";
+                 mgi_DBprstr(top->AntigenNote->text.value) + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAlias, 0);
 	  send(ModifyMarker, 0);
@@ -506,6 +507,12 @@ rules:
 
 	  -- Common Stuff
 
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "i";
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
+ 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "g." + mgi_DBkey(GXD_ANTIBODY);
 	  SearchAcc.tableID := GXD_ANTIBODY;
@@ -775,8 +782,6 @@ rules:
 	        top->Name->text.value         := mgi_getstr(dbproc, 7);
 	        top->AntibodyNote->text.value := mgi_getstr(dbproc, 8);
 	        top->AntigenNote->text.value  := mgi_getstr(dbproc, 11);
-	        top->CreationDate->text.value := mgi_getstr(dbproc, 12);
-	        top->ModifiedDate->text.value := mgi_getstr(dbproc, 13);
 
                 SetOption.source_widget := top->AntibodyClassMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
@@ -797,6 +802,12 @@ rules:
                 SetOption.source_widget := top->ImmunoMenu;
                 SetOption.value := mgi_getstr(dbproc, 10);
                 send(SetOption, 0);
+
+		table := top->ModificationHistory->Table;
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 21));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 13));
 
 	      -- Optional Antibody Reference
 	      elsif (results = 2) then

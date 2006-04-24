@@ -49,7 +49,7 @@
 import sys
 import os
 import regex
-import regsub
+import re
 import string
 import math
 import getopt
@@ -197,7 +197,7 @@ def parseDatalines(datalines, columns = 0):
 	# load original and compare matrices
 
 	for i in range(len(datalines)):
-		datalines[i] = regsub.gsub('  ', ' ', datalines[i])
+		datalines[i] = re.sub('  ', ' ', datalines[i])
 		line = string.split(datalines[i], ' ')
 
 		for l in range(len(line)):

@@ -164,7 +164,8 @@ rules:
                  "@" + sourceKeyLabel + "," +
 		 mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(top->Region->text.value) + "," +
-		 mgi_DBprstr(top->Note->text.value) + ")\n";
+		 mgi_DBprstr(top->Note->text.value) + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  -- Process any Accession numbers
 
@@ -305,6 +306,12 @@ rules:
 
 	  -- Common Stuff
 
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "i";
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
+ 
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "g." + mgi_DBkey(GXD_ANTIGEN);
 	  SearchAcc.tableID := GXD_ANTIGEN;
@@ -424,11 +431,16 @@ rules:
 	        top->Name->text.value           := mgi_getstr(dbproc, 3);
 	        top->Region->text.value         := mgi_getstr(dbproc, 4);
 	        top->Note->text.value           := mgi_getstr(dbproc, 5);
-	        top->CreationDate->text.value   := mgi_getstr(dbproc, 6);
-	        top->ModifiedDate->text.value   := mgi_getstr(dbproc, 7);
 	        top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
 	        DisplayMolecularSource.source_widget := top;
 	        send(DisplayMolecularSource, 0);
+
+		table := top->ModificationHistory->Table;
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 20));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 21));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 7));
+
 	      elsif (results = 2) then
 		(void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));

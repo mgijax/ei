@@ -85,6 +85,9 @@
 #
 # History
 #
+#	lec	04/06/2006
+#	- regex replaced by re; regsub replaced by re
+#
 #	lec	12/04/2003
 #	- UI is no longer included in NLM file
 #
@@ -144,8 +147,7 @@
 '''
 
 import sys
-import regex
-import regsub
+import re
 import string
 import os
 import getopt
@@ -378,12 +380,14 @@ def processAU(value, currentValue = None):
 	'''
 
 	# strip out numerics from author names
-	newvalue = regsub.gsub('[0-9]', '', value)
+	newvalue = re.sub('[0-9]', '', value)
 
 	# If List of authors...convert to 'NAME II; ' format
 	# Primary Author is first in list
-	if regex.search(';', value) > 0:
-		authors = regsub.gsub(' ;', ';', newvalue)
+
+	m = re.search(';', value)
+	if m != None:
+		authors = re.sub(' ;', ';', newvalue)
 		[primary, ignore] = string.split(authors, ';', 1)
 
 	# Singles; append to current value
@@ -676,7 +680,7 @@ def processRec(rec, rectags):
 			return
 
 	# Eliminate commas in author list
-	rec['AU'] = regsub.gsub(',', '', rec['AU'])
+	rec['AU'] = re.sub(',', '', rec['AU'])
 
 	# Set primary author
 	try:
@@ -686,8 +690,10 @@ def processRec(rec, rectags):
 
 	# Eliminate double spaces in Title, Author
 	for i in ('TI', 'AU'):
-		while regex.search('  ', rec[i]) > 0:
-			rec[i] = regsub.gsub('  ', ' ', rec[i])
+		m = re.search('  ', rec[i])
+		while m != None:
+			rec[i] = re.sub('  ', ' ', rec[i])
+		        m = re.search('  ', rec[i])
 
 	# If TI or AU > 255, split remaining characters into TI2/AU2
 	# Truncate the Title at 510.
@@ -710,9 +716,9 @@ def processRec(rec, rectags):
 	# Remove [In Process Citation] from title
 	for i in ('TI', 'AB'):
 		if rec.has_key(i):
-			newValue = regsub.gsub('"', '\'', rec[i])
+			newValue = re.sub('"', '\'', rec[i])
 			rec[i] = newValue
-			newValue = regsub.gsub(' \[In Process Citation\]', '', rec[i])
+			newValue = re.sub(' \[In Process Citation\]', '', rec[i])
 			rec[i] = newValue
 
 	# Short title for Submission matches
@@ -746,7 +752,9 @@ def processFile():
 
 		# Find start of new record by looking for line containing 'PMID  -'
 
-		if regex.match('PMID-', line) > 0 or regex.match('PMID  -', line) > 0:
+		m1 = re.match('PMID-', line)
+		m2 = re.match('PMID  -', line)
+		if m1 != None or m2 != None:
 			if newRec:	# Found new record, process current one
 				processRec(rec, rectags)
 				rec = {}	# re-set the dictionary
@@ -754,7 +762,8 @@ def processFile():
 			newRec = 1
 
 		# Line contains a label in format 'AU - '
-		if regex.match('^[A-Z]*[ ]*- ', line) > 0:
+		m = re.match('^[A-Z]*[ ]*- ', line)
+		if m != None:
 
 			[field, value] = string.split(line, '- ', 1)
 			field = string.strip(field)

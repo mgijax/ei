@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb  2 10:01:20 2006";
+      lastWritten = "Thu Mar 16 13:37:59 2006";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -22,27 +22,27 @@ Module: MGINomen
                             File = File;
                           }
                           {
-                            Commands = Commands;
+                            Commands = Commands : mgiMenu;
                                 Popups:
                                 {
-                                  CommandsPulldown = MenuPulldown;
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        Search = MenuPush;
+                                        Search = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Modify = MenuPush;
+                                        Modify = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Add = MenuPush;
+                                        Add = MenuPush : mgiMenu;
                                       }
                                       {
-                                        Delete = MenuPush;
+                                        Delete = MenuPush : mgiMenu;
                                       }
                                       {
                                         separator1 = XmSeparator;
                                       }
                                       {
-                                        Clear = MenuPush;
+                                        Clear = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:ClearNomen";
                                       }
@@ -449,9 +449,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Ensembl = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -673,7 +670,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AccSourceMenu = AccSourceMenu;
                                         Group: User
-                                          defaultOption = EC;
+                                          defaultOption = NSequence;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
@@ -715,9 +712,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Ensembl = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
