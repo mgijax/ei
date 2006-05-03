@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Apr  3 10:05:29 2006";
+      lastWritten = "Wed May  3 08:21:01 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -2590,6 +2590,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RGD = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    HomoloGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     RIKENCluster = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2614,6 +2617,12 @@ Shift<Key>Tab: prev-tab-group()
                                                     RPCI24 = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    UniSTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BROAD = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     InterPro = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2624,9 +2633,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NIAGeneIndex = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UniSTS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     JRS = AccToggle : mgiOption;

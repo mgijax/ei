@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Apr  3 11:29:51 2006";
+      lastWritten = "Wed May  3 08:20:56 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -306,6 +306,13 @@ Module: mgiOption
                         defaultValue = 47;
                     }
                     {
+                      HomoloGene = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = HomoloGene;
+                      Group: User
+                        defaultValue = 81;
+                    }
+                    {
                       RIKENCluster = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "RIKEN Cluster";
@@ -365,6 +372,20 @@ Module: mgiOption
                         defaultValue = 52;
                     }
                     {
+                      UniSTS = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NCBI UniSTS";
+                      Group: User
+                        defaultValue = 80;
+                    }
+                    {
+                      BROAD = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = BROAD;
+                      Group: User
+                        defaultValue = 82;
+                    }
+                    {
                       InterPro = AccToggle : mgiOption;
                       Group: Widget
                         labelString = InterPro;
@@ -394,13 +415,6 @@ Module: mgiOption
                         labelString = "NIA Mouse Gene Index";
                       Group: User
                         defaultValue = 53;
-                    }
-                    {
-                      UniSTS = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "NCBI UniSTS";
-                      Group: User
-                        defaultValue = 80;
                     }
                     {
                       JRS = AccToggle : mgiOption;
