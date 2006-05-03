@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  3 08:21:01 2006";
+      lastWritten = "Wed May  3 14:00:52 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -949,6 +949,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;
@@ -2540,6 +2543,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle : mgiOption;

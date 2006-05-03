@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  3 08:20:58 2006";
+      lastWritten = "Wed May  3 14:03:13 2006";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -458,6 +458,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    miRBase = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -724,6 +729,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;

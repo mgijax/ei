@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  3 08:21:04 2006";
+      lastWritten = "Wed May  3 14:04:19 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -339,6 +339,9 @@ Module: MGD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle : mgiOption;
@@ -2676,6 +2679,9 @@ Module: MGD
                                   UniGene = AccToggle : mgiOption;
                                 }
                                 {
+                                  miRBase = AccToggle : mgiOption;
+                                }
+                                {
                                   EC = AccToggle;
                                 }
                                 {
@@ -3277,6 +3283,9 @@ Module: MGD
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle : mgiOption;
@@ -5618,6 +5627,9 @@ Module: MGD
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    miRBase = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                   }
                                                   {
@@ -6526,6 +6538,7 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"Marker\")";
                                     labelString = "Markers (NoteBook)";
                                     traversalOn = False;
+                                    managed = False;
                                 }
                                 {
                                   Allele = XmPushButton;
@@ -7097,6 +7110,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle : mgiOption;
@@ -9759,6 +9775,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    miRBase = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -10401,6 +10420,9 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               UniGene = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              miRBase = AccToggle : mgiOption;
                                             }
                                             {
                                               EC = AccToggle : mgiOption;
@@ -11418,6 +11440,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    miRBase = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -11787,6 +11812,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;
@@ -12415,6 +12443,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    miRBase = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     EC = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -12687,6 +12720,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;
@@ -13057,6 +13093,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle : mgiOption;
@@ -15298,6 +15337,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;

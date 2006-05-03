@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  3 08:21:00 2006";
+      lastWritten = "Wed May  3 14:00:49 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -2996,6 +2996,9 @@ Module: MGI
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EC = AccToggle;

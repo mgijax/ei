@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  3 08:20:56 2006";
+      lastWritten = "Wed May  3 14:00:47 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -190,6 +190,13 @@ Module: mgiOption
                         labelString = UniGene;
                       Group: User
                         defaultValue = 23;
+                    }
+                    {
+                      miRBase = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = miRBase;
+                      Group: User
+                        defaultValue = 83;
                     }
                     {
                       EC = AccToggle : mgiOption;
