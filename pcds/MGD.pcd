@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  3 14:04:19 2006";
+      lastWritten = "Fri May  5 12:13:36 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3402,6 +3402,9 @@ Module: MGD
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
@@ -9901,6 +9904,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    JPGA = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     MMHCC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -13210,6 +13218,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
