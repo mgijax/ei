@@ -365,7 +365,6 @@ rules:
           ModifyNotes.source_widget := ExptForm->Notes;
           ModifyNotes.tableID := MLD_EXPT_NOTES;
           ModifyNotes.key := currentExptKey;
-	  ModifyNotes.keyDeclared := true;
           send(ModifyNotes, 0);
           cmd := cmd + ExptForm->Notes.sql;
 
