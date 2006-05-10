@@ -9,14 +9,14 @@
 #
 
 # install directory
-setenv EIINSTALLDIR ${USRLOCALMGI}/ei/prod
+setenv EIINSTALLDIR /usr/local/mgi/live/ei/prod
 
 # for MGI Menu, we can run both production and development versions
-setenv EIINSTALLDIRPROD ${USRLOCALMGI}/ei/prod
-setenv EIINSTALLDIRDEV ${USRLOCALMGI}/ei/dev
+setenv EIINSTALLDIRPROD /usr/local/mgi/live/ei/prod
+setenv EIINSTALLDIRDEV /usr/local/mgi/live/ei/dev
 
 # build directory
-setenv EIBUILDDIR ${USRLOCALMGI}/ei/ei_build/ei
+setenv EIBUILDDIR /usr/local/mgi/live/ei/ei_build/ei
 
 # data directory
 setenv EIDATADIR /data/ei
@@ -28,7 +28,7 @@ setenv EISYSTEMDOCDIR $EIINSTALLDIR/system_docs
 setenv SYBASE /opt/sybase/12.5
 
 # DB Utilities
-setenv DBUTILITIESPATH ${USRLOCALMGI}/dbutils/mgidbutilities
+setenv DBUTILITIESPATH /usr/local/mgi/live/dbutils/mgidbutilities
 
 # TeleUSE
 setenv TeleUSE	/opt/teleuseXRT
@@ -42,13 +42,13 @@ setenv XKEYSYMDB        $OPENWINHOME/lib/XKeysymDB
 set path = ($DBUTILITIESPATH/bin $path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin)
 
 # PYTHON PATH
-setenv PYTHONPATH ${USRLOCALMGI}/lib/python
+setenv PYTHONPATH /usr/local/mgi/live/lib/python
 
 # PYTHON OMIM Cache
-setenv OMIMCACHE        ${USRLOCALMGI}/dbutils/mrkcacheload
+setenv OMIMCACHE        /usr/local/mgi/live/dbutils/mrkcacheload
 
 # PYTHON Allele Cache
-setenv ALLELECACHE      ${USRLOCALMGI}/dbutils/allcacheload
+setenv ALLELECACHE      /usr/local/mgi/live/dbutils/allcacheload
 
 # Debug mode
 setenv EIDEBUG	1
