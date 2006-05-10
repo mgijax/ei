@@ -436,10 +436,10 @@ rules:
 	        send(DisplayMolecularSource, 0);
 
 		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 20));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 21));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 
 	      elsif (results = 2) then
 		(void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));

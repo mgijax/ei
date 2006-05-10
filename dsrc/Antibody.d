@@ -804,10 +804,10 @@ rules:
                 send(SetOption, 0);
 
 		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 21));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 22));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 15));
 
 	      -- Optional Antibody Reference
 	      elsif (results = 2) then
