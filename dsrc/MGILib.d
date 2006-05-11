@@ -92,11 +92,11 @@ rules:
 	  send(SetTitle, 0);
 
 	  SetOption.source_widget := top->LoginServer;
-	  SetOption.value := getenv("DSQUERY");
+	  SetOption.value := getenv("MGD_DBSERVER");
 	  send(SetOption, 0);
 
 	  SetOption.source_widget := top->LoginDB;
-	  SetOption.value := getenv("MGD");
+	  SetOption.value := getenv("MGD_DBNAME");
 	  send(SetOption, 0);
 
 	  -- If Server is a Development server, then don't allow selection
@@ -113,11 +113,11 @@ rules:
 
 	  envList := create list("string");
 	  envList.append("EIAPP");
-	  envList.append("DSQUERY");
+	  envList.append("MGD_DBSERVER");
 	  envList.append("SYBASE");
-	  envList.append("MGD");
+	  envList.append("MGD_DBNAME");
 	  envList.append("EIDEBUG");
-	  envList.append("RADAR");
+	  envList.append("RADAR_DBNAME");
 
 	  envList.open;
 	  while envList.more do;
@@ -152,7 +152,7 @@ rules:
 	  global_database := top->LoginDB.menuHistory.defaultValue;
 
 	  if (global_database = nil) then
-		global_database := getenv("MGD");
+		global_database := getenv("MGD_DBNAME");
 	  end if;
 
 	  global_passwd := passwd;
@@ -167,11 +167,11 @@ rules:
 	    global_passwd := "mgdpub";
 	  end if;
 
-	  global_radar := getenv("RADAR");
+	  global_radar := getenv("RADAR_DBNAME");
 
 	  (void) busy_cursor(top);
 
-	  -- Login to Server; Set DSQUERY and MGD env variables
+	  -- Login to Server; Set MGD_DBSERVER and MGD_DBNAME env variables
 	  -- If successful, destroy Login window and create main menu window
 
 	  if (mgi_dbinit(global_login, global_passwd) = 1) then

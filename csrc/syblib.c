@@ -54,6 +54,8 @@ int mgi_dbinit(char *user, char *pwd)
 {
   static char server[TEXTBUFSIZ];
   static char database[TEXTBUFSIZ];
+  static char server2[TEXTBUFSIZ];
+  static char database2[TEXTBUFSIZ];
   static char passwdfile[TEXTBUFSIZ];
   static char reportdir[TEXTBUFSIZ];
 
@@ -119,13 +121,18 @@ int mgi_dbinit(char *user, char *pwd)
     }
   }
 
-  /* Set DSQUERY and MGD environment variable based on interface selections */
+  /* Set MGD_DBSERVER and MGD_DBNAME environment variable based on interface selections */
+  /* Set DSQUERY and MGD for backward compatibility */
 
   memset(server, '\0', sizeof(server));
   memset(database, '\0', sizeof(database));
+  memset(server2, '\0', sizeof(server2));
+  memset(database2, '\0', sizeof(database2));
 
-  sprintf(server, "DSQUERY=%s", global_server);
-  sprintf(database, "MGD=%s", global_database);
+  sprintf(server, "MGD_DBSERVER=%s", global_server);
+  sprintf(database, "MGD_DBNAME=%s", global_database);
+  sprintf(server2, "DSQUERY=%s", global_server);
+  sprintf(database2, "MGD=%s", global_database);
 
   if (putenv(server) != 0)
   {
@@ -136,6 +143,18 @@ int mgi_dbinit(char *user, char *pwd)
   if (putenv(database) != 0)
   {
     send_status(database, 0);
+    return(0);
+  }
+
+  if (putenv(server2) != 0)
+  {
+    send_status(server2, 0);
+    return(0);
+  }
+
+  if (putenv(database2) != 0)
+  {
+    send_status(database2, 0);
     return(0);
   }
 

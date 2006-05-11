@@ -683,8 +683,8 @@ rules:
 
 	  cmds : string_list := create string_list();
 	  cmds.insert("markerWithdrawal.py", cmds.count + 1);
-	  cmds.insert("-S" + getenv("DSQUERY"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD"), cmds.count + 1);
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("--eventKey=" + dialog.eventKey, cmds.count + 1);

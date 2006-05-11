@@ -113,13 +113,13 @@ rules:
 
      --
      -- c-shell scripts expect 5 parameters:
-     -- 	DSQUERY, DATABASE, LOGIN, PASSWORDFILE  and FILE TO PROCESS
+     -- 	MGD_DBSERVER, DATABASE, LOGIN, PASSWORDFILE  and FILE TO PROCESS
      --
 
      elsif (strstr(commands[1], ".csh") != nil) then
 
-       commands.insert(getenv("DSQUERY"), commands.count + 1);
-       commands.insert(getenv("MGD"), commands.count + 1);
+       commands.insert(getenv("MGD_DBSERVER"), commands.count + 1);
+       commands.insert(getenv("MGD_DBNAME"), commands.count + 1);
        commands.insert(global_login, commands.count + 1);
        commands.insert(global_passwd_file, commands.count + 1);
        commands.insert(dialog->FileSelection.textString, commands.count + 1);

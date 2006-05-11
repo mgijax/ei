@@ -38,8 +38,8 @@ rules:
 	    cmds.insert(getenv("OMIMCACHE") + "/mrkomimByGenotype.py", cmds.count + 1);
 	  end if;
 
-	  cmds.insert("-S" + getenv("DSQUERY"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD"), cmds.count + 1);
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -80,8 +80,8 @@ rules:
 	    cmds.insert(getenv("ALLELECACHE") + "/allelecombinationByGenotype.py", cmds.count + 1);
 	  end if;
 
-	  cmds.insert("-S" + getenv("DSQUERY"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD"), cmds.count + 1);
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -115,8 +115,8 @@ rules:
 
 	  cmds.insert(getenv("HOMOLOGYCACHE") + "/mrkhomologyByClass.py", cmds.count + 1);
 
-	  cmds.insert("-S" + getenv("DSQUERY"), cmds.count + 1);
-	  cmds.insert("-D" + getenv("MGD"), cmds.count + 1);
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);

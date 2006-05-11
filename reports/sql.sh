@@ -19,14 +19,14 @@ endif
 
 cat > $OUTPUT <<END
 The Jackson Laboratory - Mouse Genome Informatics - Mouse Genome Database (MGD)
-Copyright 1996, 1999, 2000 The Jackson Laboratory
+Copyright 2006 The Jackson Laboratory
 All Rights Reserved
 Date Generated:  `date`
-(SERVER=$DSQUERY;DATABASE=$MGD)
+(SERVER=$MGD_DBSERVER;DATABASE=$DATABASE)
 
 END
 
-isql -S$DSQUERY -D$DATABASE -Umgd_public -Pmgdpub -w200 -i $SQL >> $OUTPUT
+isql -S$MGD_DBSERVER -D$DATABASE -Umgd_public -Pmgdpub -w200 -i $SQL >> $OUTPUT
 
 cat >> $OUTPUT <<END
 
@@ -44,5 +44,5 @@ and educational purposes.  Any reproduction or use for commercial purpose
 is prohibited without the prior express written permission of the Jackson 
 Laboratory.
 
-Copyright © 1996, 1999, 2000 by The Jackson Laboratory
+Copyright © 2006 by The Jackson Laboratory
 END
