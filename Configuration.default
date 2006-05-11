@@ -45,7 +45,7 @@ setenv OPENWINHOME	/usr/openwin
 setenv XKEYSYMDB        $OPENWINHOME/lib/XKeysymDB
 
 # PATH
-set path = (${MGI_DBUTILS}/bin $path $TeleUSE/bin $SYBASE/bin /usr/ucb /usr/local/bin)
+set path = (${MGI_DBUTILS}/bin $TeleUSE/bin $path)
 
 # PYTHON OMIM Cache
 setenv OMIMCACHE        ${USRLOCALMGI}/dbutils/mrkcacheload

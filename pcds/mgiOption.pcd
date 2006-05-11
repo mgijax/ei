@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May  5 12:13:06 2006";
+      lastWritten = "Thu May 11 12:05:10 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -803,26 +803,6 @@ Module: mgiOption
                       pub_2 = OptionToggle : mgiOption;
                       Group: User
                         defaultValue = pub_2;
-                    }
-                    {
-                      qatest1 = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = qatest1;
-                    }
-                    {
-                      qatest2 = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = qatest2;
-                    }
-                    {
-                      mgd_qa1 = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = mgd_qa1;
-                    }
-                    {
-                      mgd_qa2 = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = mgd_qa2;
                     }
               }
         }
