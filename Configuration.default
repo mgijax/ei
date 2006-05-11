@@ -21,14 +21,14 @@ setenv DSQUERY ${MGD_DBSERVER}
 setenv MGD ${MGD_DBNAME}
 
 # install directory
-setenv EIINSTALLDIR /usr/local/mgi/live/ei
+setenv EIINSTALLDIR ${USRLOCALMGI}/ei
 
 # for MGI Menu, we can run both production and development versions
-setenv EIINSTALLDIRPROD /usr/local/mgi/live/ei/prod
-setenv EIINSTALLDIRDEV /usr/local/mgi/live/ei/dev
+setenv EIINSTALLDIRPROD ${USRLOCALMGI}/ei/prod
+setenv EIINSTALLDIRDEV ${USRLOCALMGI}/ei/dev
 
 # build directory
-setenv EIBUILDDIR /usr/local/mgi/live/ei/ei_build
+setenv EIBUILDDIR ${USRLOCALMGI}/ei/ei_build
 
 # data directory
 setenv EIDATADIR /data/ei
