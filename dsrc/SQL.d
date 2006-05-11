@@ -102,7 +102,7 @@ rules:
 	  -- If a Job Stream has not finished, then disallow Add
 
 	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null and jobStreamName != 'dbsnp_load'");
-	  if ((integer) jobStream > 0) then
+	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Add functionality is unavailable.  A data load job is running.";
 	    send(StatusReport, 0);
@@ -181,7 +181,7 @@ rules:
 	  jobStream : string;
 
 	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null and jobStreamName != 'dbsnp_load'");
-	  if ((integer) jobStream > 0) then
+	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Delete functionality is unavailable.  A data load job is running.";
 	    send(StatusReport, 0);
@@ -284,7 +284,7 @@ rules:
 	  jobStream : string;
 
 	  jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null and jobStreamName != 'dbsnp_load'");
-	  if ((integer) jobStream > 0) then
+	  if ((getenv("EIDEBUG") = "0") and (integer) jobStream > 0) then
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "\nERROR:  Modify functionality is unavailable.  A data load job is running.";
 	    send(StatusReport, 0);
