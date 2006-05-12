@@ -51,7 +51,7 @@ setenv OMIMCACHE        /usr/local/mgi/live/dbutils/mrkcacheload
 setenv ALLELECACHE      /usr/local/mgi/live/dbutils/allcacheload
 
 # Debug mode
-setenv EIDEBUG	1
+setenv EIDEBUG	0
 
 # User log
 setenv USERLOG	$HOME/.ei-log
@@ -64,7 +64,7 @@ setenv EIAPPS	"mgd gxd mgiadmin mgi"
 
 # DB server name
 setenv MGD_DBSERVER PROD_MGI
-setenv DSQUERY ${DSQUERY}
+setenv DSQUERY ${MGD_DBSERVER}
 
 # DB instance names
 setenv MGD_DBNAME mgd
