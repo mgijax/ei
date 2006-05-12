@@ -86,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-5-0-12";
+	  global_version := "CVS ei-3-5-0-13";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -220,9 +220,9 @@ rules:
 --	        send(LoadList, 0);
 --	        i := i + 1;
 --	      end while;
-
-	      mgi->WorkingDialog.managed := false;
-	    end if;
+--
+--	      mgi->WorkingDialog.managed := false;
+--	    end if;
 
 	    destroy mgi;
 	    top.show;
