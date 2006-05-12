@@ -266,10 +266,6 @@ rules:
             set := set + "antigenNote = " + mgi_DBprstr(top->Note->text.value) + ",";
           end if;
  
-	  if (set.length > 0) then
-	    cmd := mgi_DBupdate(GXD_ANTIGEN, currentRecordKey, set);
-	  end if;
-
 	  -- ModifyAntigenSource will set top->SourceForm.sql appropriately
 	  -- Append this value to the 'cmd' string
           ModifyAntigenSource.source_widget := top;
@@ -282,6 +278,10 @@ rules:
           ProcessAcc.tableID := GXD_ANTIGEN;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
+
+	  if (cmd.length > 0) then
+	    cmd := cmd + mgi_DBupdate(GXD_ANTIGEN, currentRecordKey, set);
+	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
@@ -418,7 +418,7 @@ rules:
 
 	  results : integer := 1;
 	  row : integer := 0;
-	  table : widget := top->Antibody->Table;
+	  table : widget;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -442,6 +442,7 @@ rules:
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 
 	      elsif (results = 2) then
+	        table := top->Antibody->Table;
 		(void) mgi_tblSetCell(table, row, table.accID, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.antibody, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);

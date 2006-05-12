@@ -354,10 +354,6 @@ rules:
             set := set + "recogNote = " + mgi_DBprstr(top->AntigenNote->text.value) + ",";
           end if;
  
-	  if (set.length > 0) then
-	    cmd := mgi_DBupdate(GXD_ANTIBODY, currentRecordKey, set);
-	  end if;
-
           -- ModifyAntigenSource will set top->SourceForm.sql appropriately
           -- Append this value to the 'cmd' string
           ModifyAntigenSource.source_widget := top;
@@ -373,6 +369,10 @@ rules:
           ProcessAcc.tableID := GXD_ANTIBODY;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
+
+	  if (cmd.length > 0) then
+	    cmd := cmd + mgi_DBupdate(GXD_ANTIBODY, currentRecordKey, set);
+	  end if;
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
