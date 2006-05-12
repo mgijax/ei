@@ -86,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-5-0-11";
+	  global_version := "CVS ei-3-5-0-12";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -209,17 +209,17 @@ rules:
 
 	    -- Initializations
 
-	    if (getenv("EIDEBUG") = "0") then
-	      XmUpdateDisplay(mgi);
-	      mgi->WorkingDialog.managed := true;
-	      XmUpdateDisplay(mgi->WorkingDialog);
-
-	      while (i <= top.initDialog.count) do
-	        dialog := top->(top.initDialog[i]);
-	        LoadList.list := dialog->ItemList;
-	        send(LoadList, 0);
-	        i := i + 1;
-	      end while;
+--	    if (getenv("EIDEBUG") = "0") then
+--	      XmUpdateDisplay(mgi);
+--	      mgi->WorkingDialog.managed := true;
+--	      XmUpdateDisplay(mgi->WorkingDialog);
+--
+--	      while (i <= top.initDialog.count) do
+--	        dialog := top->(top.initDialog[i]);
+--	        LoadList.list := dialog->ItemList;
+--	        send(LoadList, 0);
+--	        i := i + 1;
+--	      end while;
 
 	      mgi->WorkingDialog.managed := false;
 	    end if;
