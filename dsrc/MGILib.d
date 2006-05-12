@@ -86,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-5-0-13";
+	  global_version := "CVS ei-3-5-0-14";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -139,7 +139,6 @@ rules:
 
 	Login does
 	  mgi : widget;
-	  dialog : widget;
 	  title : string;
 	  jobStream : string;
 	  i : integer := 1;
@@ -209,6 +208,7 @@ rules:
 
 	    -- Initializations
 
+--	    dialog : widget;
 --	    if (getenv("EIDEBUG") = "0") then
 --	      XmUpdateDisplay(mgi);
 --	      mgi->WorkingDialog.managed := true;
