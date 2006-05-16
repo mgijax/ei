@@ -764,8 +764,7 @@ void stagetree_AddStructureName(StageTree *stagetree, StructureName *stn)
    if (hst)  /* then this name is for an existing structure */
    {
        /* find out whether or not we have the preferred name */
-       if (structurename_getStructureNameKey(stn) ==
-           structure_getStructureNameKey(hst))
+       if (structurename_getStructureNameKey(stn) == structure_getStructureNameKey(hst))
        {
            Widget xrtstr;
 
@@ -1181,8 +1180,7 @@ StructureName *structure_getPreferredStructureName(Structure *structure)
     for (i=0; i<itemcnt; i++)
     {
        StructureName *stn = *(StructureName **)XrtGearListGetItem(list, i);
-       if (structure_getStructureNameKey(structure) ==
-           structurename_getStructureNameKey(stn))
+       if (structure_getStructureNameKey(structure) == structurename_getStructureNameKey(stn))
        {   /* then we've found the preferred name */
            preferred=stn;
        }
@@ -1204,48 +1202,6 @@ Boolean structure_getPrintStop(Structure *structure)
    return False;
 }
 
-Boolean structure_getMgiAdded(Structure *structure)
-{
-   /* we are assuming that edinburgh doesn't use id == 0 */
-   if (structure->edinburghKey == 0)
-      return True;
-
-   return False;
-}
-
-xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist)
-{
-    int i, itemcnt;
-    XrtGearObject list = structure_getnames(structure);
-    DBINT pnkey;
-    StructureName *stn;
-
-    /* find the preferred name key, so we don't include it in the aliases */
-    stn = structure_getPreferredStructureName(structure);
-
-    pnkey = structure_getStructureNameKey(stn);
-
-    itemcnt = XrtGearListGetItemCount(list);
-
-    for (i=0; i<itemcnt; i++)
-    {
-        StructureName *stn = *(StructureName **)XrtGearListGetItem(list, i);
-        if (structurename_getStructureNameKey(stn) != pnkey)
-        {
-           if( mgi && structurename_isMgiAdded(stn) )
-           {
-               StructureNameList_append(alist, stn);
-           }
-           else if( !mgi && !structurename_isMgiAdded(stn) )
-           {
-               StructureNameList_append(alist, stn);
-           }
-        }
-    }
-
-    return alist;
-}
- 
 
 int structure_getStage(Structure *structure)
 {
@@ -1357,6 +1313,13 @@ char *structurename_getName(StructureName *stn)
     return stn->structure;
 }
 
+Boolean structurename_getMgiAdded(StructureName *stn)
+{
+    if (stn->mgiAdded == 0)
+       return True;
+
+    return False;
+}
 
 DBINT structurename_getStructureNameKey(StructureName *stn)
 {
@@ -1379,3 +1342,37 @@ StructureName *StructureNameList_getitem(xrtlist list, int i)
     StructureName *sn = *(StructureName **)XrtGearListGetItem(list, i);
     return sn;
 }
+
+xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist)
+{
+    int i, itemcnt;
+    XrtGearObject list = structure_getnames(structure);
+    DBINT pnkey;
+    StructureName *stn;
+
+    /* find the preferred name key, so we don't include it in the aliases */
+    stn = structure_getPreferredStructureName(structure);
+
+    pnkey = structure_getStructureNameKey(stn);
+
+    itemcnt = XrtGearListGetItemCount(list);
+
+    for (i=0; i<itemcnt; i++)
+    {
+        StructureName *stn = *(StructureName **)XrtGearListGetItem(list, i);
+        if (structurename_getStructureNameKey(stn) != pnkey)
+        {
+           if( mgi && structurename_getMgiAdded(stn) )
+           {
+               StructureNameList_append(alist, stn);
+           }
+           else if( !mgi && !structurename_getMgiAdded(stn) )
+           {
+               StructureNameList_append(alist, stn);
+           }
+        }
+    }
+
+    return alist;
+}
+ 
