@@ -653,6 +653,15 @@ rules:
                  where := where + "\nand t.stage in (" + stages_query + ")";
             end if;
 
+            if (top->printStopMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand s.printStop = "  + top->printStopMenu.menuHistory.searchValue;
+            end if;
+
+            if (top->MGIAddedMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand sn.mgiAdded = "  + top->MGIAddedMenu.menuHistory.searchValue +
+		"\nand s._StructureName_key = sn._StructureName_key";
+            end if;
+
             -- structure note
 
             if (top->structureNote->text.value.length > 0) then
@@ -794,9 +803,9 @@ rules:
         send(SetOption, 0);
 
         -- set the MGI-Added state for Structure
---        SetOption.source_widget := top->MGIAddedMenu;
---        SetOption.value := (string) (integer) structure_getMgiAdded(structure);
---        send(SetOption, 0);
+        SetOption.source_widget := top->MGIAddedMenu;
+        SetOption.value := (string) (integer) structurename_getMgiAdded(preferredStructureName);
+        send(SetOption, 0);
 
         -- get the aliases assoc. w/ the structure 
         mgiAliases := structure_getAliases(structure, true, createStructureNameList());

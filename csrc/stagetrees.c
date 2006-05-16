@@ -1315,7 +1315,7 @@ char *structurename_getName(StructureName *stn)
 
 Boolean structurename_getMgiAdded(StructureName *stn)
 {
-    if (stn->mgiAdded == 0)
+    if (stn->mgiAdded == 1)
        return True;
 
     return False;

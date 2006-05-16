@@ -211,9 +211,6 @@ int structure_getStage(Structure *structure);
    /* returns the stage number to which this structure belongs */ 
 
 
-Boolean structure_getMgiAdded(Structure *structure);
-   /* returns True if this structure was defined by MGI, False otherwise */ 
-
 
 xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist);
    /* returns aliases (StructureNames) associated with this structure */ 
@@ -291,13 +288,8 @@ void structurename_destroy(StructureName *stn);
    /* macro to return _Structure_key attribute */ 
 
 
-#define structurename_isMgiAdded(stn) stn->mgiAdded
-   /* macro to return mgiAdded attribute */ 
-
-
 #define structurename_getModificationDate(stn) stn->modification_date
    /* macro to return a static pointer to mod. date variable */ 
-
 
 int structurename_cmp_proc(XtPointer sn1, XtPointer sn2);
    /* comparison proc for StructureNames stored in XrtLists
@@ -316,6 +308,9 @@ char *structurename_getName(StructureName *stn);
 DBINT structurename_getStructureNameKey(StructureName *stn);
    /* returns StructureName's _StructureName_key attribute */ 
 
+Boolean structurename_getMgiAdded(StructureName *stn);
+   /* returns StructureName's mgiAdded attribute */ 
+   
 
 /* 
  *  #### StageTree Object ####

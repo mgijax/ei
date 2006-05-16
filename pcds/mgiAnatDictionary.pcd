@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 16 10:06:22 2006";
+      lastWritten = "Tue May 16 13:09:47 2006";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -124,7 +124,7 @@ Module: mgiAnatDictionary
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 75;
+                                          columns = 60;
                                           userDefinedAttributes = "structureNameKey:String\n";
                                       }
                                 }
@@ -203,7 +203,6 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     subMenuId = MGIAddedPulldown;
                                     labelString = "MGI Added?";
-                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = structureText;
@@ -213,7 +212,7 @@ Module: mgiAnatDictionary
                                     topWidget = structureText;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 10;
+                                    topOffset = 5;
                                       Popups:
                                       {
                                         MGIAddedPulldown : YesNoPulldown = OptionPulldown;
@@ -222,35 +221,15 @@ Module: mgiAnatDictionary
                                 {
                                   printStopMenu = printStopMenu : mgiAnatDictionary;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = stagesText;
-                                    rightOffset = 5;
-                                    topOffset = 10;
-                                }
-                                {
-                                  MGIAddedAliasMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = MGIAddedAliasPulldown;
-                                    labelString = "MGI Added Name?";
-                                    managed = False;
-                                  Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = printStopMenu;
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
-                                    topWidget = printStopMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 10;
+                                    topWidget = MGIAddedMenu;
+                                    topOffset = 5;
+                                    leftWidget = MGIAddedMenu;
                                     rightOffset = 5;
-                                      Popups:
-                                      {
-                                        MGIAddedAliasPulldown : YesNoPulldown = OptionPulldown;
-                                      }
                                 }
                                 {
                                   structureNote = Notes : mgiDataTypes;

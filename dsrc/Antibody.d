@@ -433,8 +433,7 @@ rules:
                        currentRecordKey + "," + refsKey + "," + mgi_DBprstr(alias) + ")\n";
 
 	      elsif (editMode = TBL_ROW_MODIFY) then
-		set := "_Refs_key = " + refsKey + ", alias = " + mgi_DBprstr(alias);
-                cmd := cmd + mgi_DBupdate(GXD_ANTIBODYALIAS, key, set);
+                cmd := cmd + mgi_DBupdate(GXD_ANTIBODYALIAS, key, "_Refs_key = " + refsKey + ", alias = " + mgi_DBprstr(alias));
 	      end if;
 	    end if;
 
@@ -475,8 +474,7 @@ rules:
 	    if (editMode = TBL_ROW_ADD) then
               cmd := cmd + mgi_DBinsert(GXD_ANTIBODYMARKER, "") + currentRecordKey + "," + newKey + ")\n";
 	    elsif (editMode = TBL_ROW_MODIFY) then
-	      set := mgi_DBkey(MRK_MOUSE) + " = " + newKey;
-              cmd := cmd + mgi_DBupdate(GXD_ANTIBODYMARKER, currentRecordKey, set) +
+              cmd := cmd + mgi_DBupdate(GXD_ANTIBODYMARKER, currentRecordKey, mgi_DBkey(MRK_MOUSE) + " = " + newKey) +
                      " and " + mgi_DBkey(MRK_MOUSE) + " = " + key + "\n";
 	    elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(GXD_ANTIBODYMARKER, currentRecordKey) +
