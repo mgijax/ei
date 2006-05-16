@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 10:10:56 2005";
+      lastWritten = "Tue May 16 10:06:22 2006";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -54,16 +54,13 @@ Module: mgiAnatDictionary
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
-                              height = 700;
+                              height = 800;
                             Group: User
                               homeWidget = structureText;
                                 {
                                   ID = ID;
-                                }
-                                {
-                                  label = label : mgiDataTypes;
                                   Group: Widget
-                                    labelString = "Note that only Structure and Stage values are considered during a Search.";
+                                    managed = True;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -72,6 +69,41 @@ Module: mgiAnatDictionary
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          managed = True;
+                                          labelString = "MGI Key";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          managed = True;
+                                          inTabGroup = True;
+                                          traversalOn = True;
+                                          columns = 20;
+                                      }
+                                }
+                                {
+                                  edinburghKey = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = ID;
+                                    rightOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Edinburgh Key";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 20;
+                                      }
                                 }
                                 {
                                   structureText = CharText : mgiDataTypes;
@@ -82,8 +114,8 @@ Module: mgiAnatDictionary
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
-                                    leftWidget = label;
-                                    topWidget = label;
+                                    leftWidget = ID;
+                                    topWidget = ID;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -92,7 +124,7 @@ Module: mgiAnatDictionary
                                       {
                                         text = text;
                                         Group: Widget
-                                          columns = 50;
+                                          columns = 75;
                                           userDefinedAttributes = "structureNameKey:String\n";
                                       }
                                 }
@@ -114,31 +146,6 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
-                                  structureNotes = Notes : mgiDataTypes;
-                                  Group: Widget
-                                    xrtGearOrientation = horizontal;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = stagesText;
-                                    leftWidget = structureText;
-                                    topOffset = 5;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = scrolledText;
-                                        Group: Widget
-                                          columns = 50;
-                                          rows = 2;
-                                        Group: Constraint
-                                          xrtGearAlignerAlignment = aligner_center;
-                                      }
-                                }
-                                {
                                   mgiAliasTable = aliasTable : mgiAnatDictionary;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -147,7 +154,7 @@ Module: mgiAnatDictionary
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = structureText;
-                                    topWidget = structureNotes;
+                                    topWidget = stagesText;
                                     topOffset = 5;
                                       {
                                         Table = mgiTable;
@@ -163,12 +170,13 @@ Module: mgiAnatDictionary
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = mgiAliasTable;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
                                     topWidget = mgiAliasTable;
+                                    rightOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -195,17 +203,17 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     subMenuId = MGIAddedPulldown;
                                     labelString = "MGI Added?";
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = structureText;
                                     leftOffset = 5;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = structureText;
-                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightOffset = 5;
+                                    topOffset = 10;
                                       Popups:
                                       {
                                         MGIAddedPulldown : YesNoPulldown = OptionPulldown;
@@ -214,13 +222,13 @@ Module: mgiAnatDictionary
                                 {
                                   printStopMenu = printStopMenu : mgiAnatDictionary;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = MGIAddedMenu;
-                                    topWidget = MGIAddedMenu;
+                                    topWidget = stagesText;
+                                    rightOffset = 5;
                                     topOffset = 10;
                                 }
                                 {
@@ -228,19 +236,43 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     subMenuId = MGIAddedAliasPulldown;
                                     labelString = "MGI Added Name?";
+                                    managed = False;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = edinburghAliasTable;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = edinburghAliasTable;
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = printStopMenu;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = printStopMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 5;
-                                    topOffset = 30;
+                                    topOffset = 10;
+                                    rightOffset = 5;
                                       Popups:
                                       {
                                         MGIAddedAliasPulldown : YesNoPulldown = OptionPulldown;
+                                      }
+                                }
+                                {
+                                  structureNote = Notes : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = mgiAliasTable;
+                                    leftWidget = structureText;
+                                    topOffset = 5;
+                                    rightOffset = 5;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = scrolledText;
+                                        Group: Widget
+                                          columns = 85;
+                                        Group: Constraint
+                                          xrtGearAlignerAlignment = aligner_center;
                                       }
                                 }
                                 {
@@ -255,7 +287,7 @@ Module: mgiAnatDictionary
                                     bottomAttachment = attach_widget;
                                     resizable = true;
                                     bottomWidget = progressMeter;
-                                    topWidget = mgiAliasTable;
+                                    topWidget = structureNote;
                                     topOffset = 5;
                                 }
                                 {
@@ -582,8 +614,6 @@ Module: mgiAnatDictionary
         {
           aliasTable = TableLabel : mgiTable;
           Group: Widget
-            width = 160;
-            horizontalSpacing = 2;
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Constraint
@@ -599,13 +629,18 @@ Module: mgiAnatDictionary
                 Table = mgiTable;
                 Group: Widget
                   xrtTblVisibleRows = 3;
-                  xrtTblVisibleColumns = 1;
-                  xrtTblDisplayVertScrollBar = dispsb_as_needed;
                   xrtTblNumColumns = 3;
-                  xrtTblCharWidthSeries = "(all 0 1) (all 1 20) (all 2 20)";
                   xrtTblPixelWidthSeries = "(all 0 0) (all 1 0)";
                   xrtTblTraversableSeries = "(all 0 False) (all 1 False)";
                   userDefinedAttributes = "structureNameKeyIndex:Int(Int)=\"1\"\nstructureIndex:Int(Int)=\"2\"\n";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 2 40)";
+                Group: Constraint
+                  topOffset = 0;
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
         {
@@ -749,13 +784,11 @@ Module: mgiAnatDictionary
         {
           printStopMenu = YesNoMenu : mgiOption;
           Group: Widget
-            labelString = "PrintStop\nSet?";
+            labelString = "PrintStop Set?";
             subMenuId = printStopPulldown;
           Group: Control
             vip_x = 175;
             vip_y = 140;
-          Group: User
-            defaultOption = SearchAll;
               Popups:
               {
                 printStopPulldown : YesNoPulldown = OptionPulldown;

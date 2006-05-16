@@ -1191,12 +1191,10 @@ StructureName *structure_getPreferredStructureName(Structure *structure)
     return preferred;
 }
 
-
 char *structure_getNotes(Structure *structure)
 {
     return structure->structureNote; 
 }
-
 
 Boolean structure_getPrintStop(Structure *structure)
 {
@@ -1206,7 +1204,6 @@ Boolean structure_getPrintStop(Structure *structure)
    return False;
 }
 
-
 Boolean structure_getMgiAdded(Structure *structure)
 {
    /* we are assuming that edinburgh doesn't use id == 0 */
@@ -1215,7 +1212,6 @@ Boolean structure_getMgiAdded(Structure *structure)
 
    return False;
 }
-
 
 xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist)
 {
@@ -1265,6 +1261,11 @@ DBINT structure_getStructureKey(Structure *structure)
 DBINT structure_getStageKey(Structure *structure)
 {
     return structure->_Stage_key;
+}
+
+DBINT structure_getEdinburghKey(Structure *structure)
+{
+    return structure->edinburghKey; 
 }
 
 char *structure_getPrintName(Structure *structure)

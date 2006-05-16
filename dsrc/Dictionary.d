@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec	05/16/2006
+--	- TR 7673; added MGI key, Edinburgh key; search for keys and notes
+--
 -- lec	06/23/2004
 --	- added ADClipboardAddAll
 --
@@ -228,8 +231,8 @@ rules:
            addDialog->structureText->text.modified := false; 
      
            -- clear the structure notes
-           addDialog->structureNotes->text.value := "";
-           addDialog->structureNotes->text.modified := false;
+           addDialog->structureNote->text.value := "";
+           addDialog->structureNote->text.modified := false;
      
            -- clear the alias tables
            ClearTable.table := addDialog->mgiAliasTable->Table;
@@ -300,7 +303,7 @@ rules:
                              " 0, " +          /* treeDepth - set by trg */
                             addDialog->printStopMenu.menuHistory.defaultValue + "," +
 			    "0," +	/* topoSort */
-			    mgi_DBprstr(addDialog->structureNotes->text.value) + ")\n";
+			    mgi_DBprstr(addDialog->structureNote->text.value) + ")\n";
 
           -- StructureName will be created for the preferred name
           -- if necessary by the ModifyStructureText event.
@@ -538,8 +541,8 @@ rules:
           ModifyStructureText.field := top->structureText->text;
           send(ModifyStructureText, 0);
 
-          if (top->structureNotes->text.modified) then
-              set := set + "structureNote = " + mgi_DBprstr(top->structureNotes->text.value) + ",";
+          if (top->structureNote->text.modified) then
+              set := set + "structureNote = " + mgi_DBprstr(top->structureNote->text.value) + ",";
           end if;
 
           -- ignore MGI added, it can never be modified by the user
@@ -624,6 +627,16 @@ rules:
             where := "\nwhere s._Stage_key = t._Stage_key " + 
                      "\nand s._Structure_key = sn._Structure_key";
 
+            -- ids
+
+            if (top->ID->text.value.length > 0) then
+                 where := where + "\nand s._Structure_key = " + top->ID->text.value;
+            end if;
+
+            if (top->edinburghKey->text.value.length > 0) then
+                 where := where + "\nand s.edinburghKey = " + top->edinburghKey->text.value;
+            end if;
+
             -- structure name
 
             if (top->structureText->text.value.length > 0) then
@@ -639,6 +652,13 @@ rules:
             if (stages_query != "") then
                  where := where + "\nand t.stage in (" + stages_query + ")";
             end if;
+
+            -- structure note
+
+            if (top->structureNote->text.value.length > 0) then
+                 where := where + "\nand s.structureNote like " + mgi_DBprstr(top->structureNote->text.value);
+            end if;
+
         end does;
 
 --
@@ -762,8 +782,11 @@ rules:
         top->structureText->text.structureNameKey := 
 		(string) structurename_getStructureNameKey(preferredStructureName);
 
+	-- set the edinburgh key
+	top->edinburghKey->text.value := (string) structure_getEdinburghKey(structure);
+
         -- set the notes
-        top->structureNotes->text.value := structure_getNotes(structure);
+        top->structureNote->text.value := structure_getNotes(structure);
 
 	-- set the print stop
         SetOption.source_widget := top->printStopMenu;
@@ -771,9 +794,9 @@ rules:
         send(SetOption, 0);
 
         -- set the MGI-Added state for Structure
-        SetOption.source_widget := top->MGIAddedMenu;
-        SetOption.value := (string) (integer) structure_getMgiAdded(structure);
-        send(SetOption, 0);
+--        SetOption.source_widget := top->MGIAddedMenu;
+--        SetOption.value := (string) (integer) structure_getMgiAdded(structure);
+--        send(SetOption, 0);
 
         -- get the aliases assoc. w/ the structure 
         mgiAliases := structure_getAliases(structure, true, createStructureNameList());

@@ -191,6 +191,10 @@ DBINT structure_getStageKey(Structure *structure);
    /* returns _Stage_key attribute for structure */ 
 
 
+DBINT structure_getEdinburghKey(Structure *structure);
+   /* returns edinburghKey attribute for structure */ 
+
+
 char *structure_getPrintName(Structure *structure);
    /* returns printName attribute for structure */ 
 
