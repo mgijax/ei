@@ -506,7 +506,7 @@ rules:
 	  -- Common Stuff
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
-	  QueryModificationHistory.tag := "i";
+	  QueryModificationHistory.tag := "g";
 	  send(QueryModificationHistory, 0);
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
