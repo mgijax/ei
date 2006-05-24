@@ -155,7 +155,7 @@ rules:
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Alias->Table);
 
-	  notes.append(top->AntibodyNote->Note);
+	  notes.append(top->AntibodyNote);
 	  notes.append(top->AntigenNote->Note);
 
 	  accTable := top->mgiAccessionTable->Table;

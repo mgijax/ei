@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May 18 09:19:48 2006";
+      lastWritten = "Wed May 24 13:53:18 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -755,14 +755,15 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   Alias = TableLabel : mgiTable;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = SourceForm;
+                                    leftAttachment = attach_form;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = SourceForm;
+                                    topWidget = AntibodyNote;
                                     topOffset = 5;
-                                    bottomAttachment = attach_none;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
+                                    leftOffset = 5;
+                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -773,6 +774,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblCharWidthSeries = "(all 0 1) (all 3 20) (all 4 10) (all 5 35)";
                                           userDefinedAttributes = "aliasKey:Int=\"1\"\nrefsKey:Int=\"2\"\nalias:Int=\"3\"\njnum:Int=\"4\"\ncitation:Int=\"5\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                                          xrtTblVisibleRows = 3;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -781,42 +783,38 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AntibodyNote = mgiNoteShort : mgiDataTypes;
+                                  AntibodyNote = Notes : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Alias;
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = SourceForm;
+                                    topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightOffset = 10;
-                                  Group: Control
-                                    vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
                                       {
-                                        Note = Notes : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Antibody Notes";
-                                            }
-                                      }
-                                      {
-                                        NotePush = NotePushShort : mgiDataTypes;
+                                        label = XmLabel;
                                         Group: Widget
                                           labelString = "Antibody Notes";
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 95;
                                       }
                                 }
                                 {
                                   AntigenNote = mgiNoteShort : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = AntibodyNote;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightWidget = AntibodyNote;
+                                    leftWidget = Alias;
                                   Group: Control
                                     vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
                                       {
