@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 15 11:22:24 2006";
+      lastWritten = "Tue May 30 09:04:35 2006";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -170,11 +170,6 @@ Module: mgiCV
                                         embryonicDay = AgeToggle : mgiOption;
                                       }
                                       {
-                                        perinatal = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
                                         postnatal = AgeToggle : mgiOption;
                                       }
                                       {
@@ -191,11 +186,6 @@ Module: mgiCV
                                       }
                                       {
                                         postnatalAdult = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalImmature = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         postnatalNewborn = AgeToggle : mgiOption;
@@ -314,11 +304,6 @@ Module: mgiCV
                                         embryonicDay = AgeToggle : mgiOption;
                                       }
                                       {
-                                        perinatal = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
                                         postnatal = AgeToggle : mgiOption;
                                       }
                                       {
@@ -335,11 +320,6 @@ Module: mgiCV
                                       }
                                       {
                                         postnatalAdult = AgeToggle : mgiOption;
-                                      }
-                                      {
-                                        postnatalImmature = AgeToggle : mgiOption;
-                                        Group: Widget
-                                          managed = False;
                                       }
                                       {
                                         postnatalNewborn = AgeToggle : mgiOption;

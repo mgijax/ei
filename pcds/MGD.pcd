@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri May  5 12:13:36 2006";
+      lastWritten = "Tue May 30 09:04:34 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -10944,9 +10944,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     embryonicDay = AgeToggle : mgiOption;
                                                   }
                                                   {
-                                                    perinatal = AgeToggle : mgiOption;
-                                                  }
-                                                  {
                                                     postnatal = AgeToggle : mgiOption;
                                                   }
                                                   {
@@ -10963,9 +10960,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     postnatalAdult = AgeToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    postnatalImmature = AgeToggle : mgiOption;
                                                   }
                                                   {
                                                     postnatalNewborn = AgeToggle : mgiOption;

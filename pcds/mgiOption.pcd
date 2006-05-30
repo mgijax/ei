@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May 11 12:05:10 2006";
+      lastWritten = "Tue May 30 09:04:28 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -613,14 +613,6 @@ Module: mgiOption
                         defaultValue = "embryonic day";
                     }
                     {
-                      perinatal = AgeToggle : mgiOption;
-                      Group: Widget
-                        labelString = perinatal;
-                      Group: User
-                        searchValue = perinatal;
-                        defaultValue = perinatal;
-                    }
-                    {
                       postnatal = AgeToggle : mgiOption;
                       Group: Widget
                         labelString = postnatal;
@@ -667,14 +659,6 @@ Module: mgiOption
                       Group: User
                         searchValue = "postnatal adult";
                         defaultValue = "postnatal adult";
-                    }
-                    {
-                      postnatalImmature = AgeToggle : mgiOption;
-                      Group: Widget
-                        labelString = "postnatal immature";
-                      Group: User
-                        searchValue = "postnatal immature";
-                        defaultValue = "postnatal immature";
                     }
                     {
                       postnatalNewborn = AgeToggle : mgiOption;
