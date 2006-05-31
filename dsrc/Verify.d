@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- lec	05/31/2006
+--	- TR 7707; VerifyGOInferredFrom
+--
 -- lec	10/05/2005
 --	- TR 5188; VerifyVocabQualifier
 --
@@ -2588,6 +2591,72 @@ rules:
 	  end if;
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyGOInferredFrom
+--
+--	Verify that if the "Inferred From" value is not blank, 
+--	then the Evidence Code is not IDA
+--
+
+	VerifyGOInferredFrom does
+	  sourceWidget : widget := VerifyGOInferredFrom.source_widget;
+	  top : widget := sourceWidget.top;
+	  isTable : boolean;
+	  value : string;
+
+	  -- These variables are only relevant for Tables
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  if (isTable) then
+	    row := VerifyGOInferredFrom.row;
+	    column := VerifyGOInferredFrom.column;
+	    reason := VerifyGOInferredFrom.reason;
+	    value := VerifyGOInferredFrom.value;
+
+	    -- If not annotating to the GO, return
+
+	    if (sourceWidget.annotVocab != "GO") then
+	      return;
+	    end if;
+
+	    -- If not in the Inferred From, return
+
+	    if (column != sourceWidget.inferredFrom) then
+	      return;
+	    end if;
+
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+	    end if;
+	  else
+	    return;
+	  end if;
+
+	  -- If Inferred From is null, it's okay, return
+
+	  if (value.length = 0 or value = "%") then
+	    return;
+	  end if;
+
+	  evidence : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.evidence);
+	  evidence := evidence.raise_case;
+
+	  -- If evidence is IDA, display an error message
+
+	  if (evidence = "IDA") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "ERROR:  When using Evidence Code IDA, the Inferred From value must be blank.";
+            send(StatusReport);
+	    VerifyGOInferredFrom.doit := (integer) false;
+	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.inferredFrom, "");
+	  end if;
+
 	end does;
 
 --

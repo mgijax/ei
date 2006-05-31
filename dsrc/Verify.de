@@ -54,6 +54,8 @@ VerifyNonGeneMarker : translation [];
 
 VerifyReference :translation [];
 
+VerifyGOInferredFrom [];
+
 VerifyGOReference [];
 
 VerifyOrganism :translation [ignoreRow : integer := -1;];
