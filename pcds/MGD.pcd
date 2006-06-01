@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 30 09:04:34 2006";
+      lastWritten = "Wed May 31 12:22:04 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13411,7 +13411,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-7 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 8 12)(all 9 3)(all 10 40)(all 11 4)(all 12 6)(all 13 10)(all 14 3)(all 15 20)(all 16 15)(all 17 11)(all 18 10)(all 20 10)";
                                           userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nqualifierKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"6\"\ntermAccID:Int(Int)=\"8\"\ndag:Int(Int)=\"9\"\nterm:Int(Int)=\"10\"\nqualifier:Int(Int)=\"11\"\njnum:Int(Int)=\"12\"\ncitation:Int(Int)=\"13\"\nevidence:Int(Int)=\"14\"\ninferredFrom:Int(Int)=\"15\"\neditor:Int(Int)=\"17\"\nmodifiedDate:Int(Int)=\"18\"\nnotes:Int(Int)=\"16\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"19\"\ncreatedDate:Int(Int)=\"20\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int(Int)=\"7\"\nvocabQualifierKey:Int=\"0\"\n";
-                                          xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabQualifier,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabQualifier,\nD:VerifyVocabEvidenceCode,\nD:VerifyGOInferredFrom,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 13 False)";
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblFrozenColumns = 17;
