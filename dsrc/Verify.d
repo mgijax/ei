@@ -1623,7 +1623,7 @@ rules:
 	      if (tableID = STRAIN) then
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
-                       defaultSpecies + "," + mgi_DBprstr(item.value) + ",0,0,0," +
+                       defaultSpecies + "," + mgi_DBprstr(item.value) + ",0,0,0,0," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
 		nextSeqNum := mgi_sql1("select max(sequenceNum) + 1 from " + 
@@ -3321,7 +3321,7 @@ rules:
               if (top->VerifyItemAdd.doAdd) then
                 ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
                                mgi_DBinsert(STRAIN, KEYNAME) +
-                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0," +
+                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0,0," +
 			       global_loginKey + "," + global_loginKey + ")\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
