@@ -303,6 +303,7 @@ rules:
             notes := mgi_tblGetCell(annotTable, row, annotTable.notes);
  
 	    if (qualifierKey = "NULL" or qualifierKey.length = 0) then
+	      qualifierKey := defaultQualifierKey;
 	      -- set it in the table because we need to check it later on...
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifier, "");
 	      mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, qualifierKey);

@@ -1,3 +1,10 @@
+TAG: ei-3-5-0-22
+DATE: 06/14/2006
+STAFF: lec
+CHANGES:
+1) MGI 3.5 tag
+2) qualifier bug in OMIMVocAnnot.d
+
 TAG: ei-3-5-0-21
 DATE: 06/13/2006
 STAFF: lec
