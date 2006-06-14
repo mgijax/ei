@@ -1200,8 +1200,10 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "This Strain already exists in MGI.";
             send(StatusReport);
+	    return;
 	  end if;
 
+	  (void) XmProcessTraversal(VerifyDuplicateStrain.source_widget.top, XmTRAVERSE_NEXT_TAB_GROUP);
 	end does;
 
 --
