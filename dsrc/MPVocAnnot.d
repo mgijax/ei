@@ -1309,9 +1309,9 @@ rules:
           while (i < annotclipboard->List.items.count) do
 	    key := annotclipboard->List.keys[i];
 
-	    cmd := "select a._Term_key, t.term, t.sequenceNum, ac.accID, a._Qualifier_key, a.qualifier, " +
+	    cmd := "select a._Term_key, t.term, t.sequenceNum, ac.accID, a._Qualifier_key, qualifier = q.term, " +
 		   "e._EvidenceTerm_key, et.abbreviation, et.sequenceNum " +
-		   " from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et " +
+		   " from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et, VOC_Term q " +
 		   " where a._AnnotType_key = " + annotTypeKey +
 		   " and a._Term_key = ac._Object_key " + 
 		   " and ac._MGIType_key = 13 " + 
@@ -1319,7 +1319,8 @@ rules:
 		   " and a._Term_key = t._Term_key " +
 		   " and a._Annot_key = e._Annot_key " +
 		   " and e._AnnotEvidence_key = " + key + 
-		   " and e._EvidenceTerm_key = et._Term_key";
+		   " and e._EvidenceTerm_key = et._Term_key " +
+		   " and a._Qualifier_key = q._Term_key";
 
             (void) dbcmd(dbproc, cmd);
             (void) dbsqlexec(dbproc);
