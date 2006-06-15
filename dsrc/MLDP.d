@@ -2175,6 +2175,8 @@ rules:
 --
 
 	PrepareSearch does
+	  from_emarker : boolean := false;
+	  from_marker : boolean := false;
 	  from_note : boolean := false;
 	  from_enote : boolean := false;
 	  from_allele : boolean := false;
@@ -2202,7 +2204,7 @@ rules:
 
 	  value : string;
 	  table : widget;
-	  from := "from MLD_Expt_Marker_View e";
+	  from := "from MLD_Expt_View e";
 	  where := "";
 
           QueryDate.source_widget := top->CreationDate;
@@ -2269,33 +2271,40 @@ rules:
 	  table := top->ExptDetailForm->Marker->Table;
           value := mgi_tblGetCell(table, 0, table.markerKey);
           if (value.length > 0 and value != "NULL") then
-            where := where + "\nand e._Marker_key = " + value;
+            where := where + "\nand em._Marker_key = " + value;
+	    from_emarker := true;
 	  else
             value := mgi_tblGetCell(table, 0, table.markerSymbol);
             if (value.length > 0) then
-              where := where + "\nand e.symbol like " + mgi_DBprstr(value);
+              where := where + "\nand m.symbol like " + mgi_DBprstr(value);
+	    from_emarker := true;
+	    from_marker := true;
 	    end if;
           end if;
 
           value := mgi_tblGetCell(table, 0, (integer) table.alleleKey[1]);
           if (value.length > 0) then
-            where := where + "\nand e._Allele_key = " + value;
+            where := where + "\nand em._Allele_key = " + value;
+	    from_emarker := true;
 	  else
             value := mgi_tblGetCell(table, 0, (integer) table.alleleSymbol[1]);
             if (value.length > 0) then
               where := where + "\nand a.symbol like " + mgi_DBprstr(value);
+	      from_emarker := true;
 	      from_allele := true;
 	    end if;
           end if;
 
           value := mgi_tblGetCell(table, 0, table.assayKey);
           if (value.length > 0) then
-            where := where + "\nand e._Assay_Type_key = " + value;
+            where := where + "\nand em._Assay_Type_key = " + value;
+	    from_emarker := true;
           end if;
 
           value := mgi_tblGetCell(table, 0, table.description);
           if (value.length > 0) then
             where := where + "\nand e.description like " + mgi_DBprstr(value);
+	    from_emarker := true;
           end if;
 
 	  -- From Cross
@@ -2678,6 +2687,16 @@ rules:
 	    where := where + " and en._Expt_key = e._Expt_key";
 	  end if;
 
+	  if (from_emarker) then
+	    from := from + "," + mgi_DBtable(MLD_EXPT_MARKER) + " em";
+	    where := where + " and em._Expt_key = e._Expt_key";
+	  end if;
+
+	  if (from_marker) then
+	    from := from + "," + mgi_DBtable(MRK_MARKER) + " m";
+	    where := where + " and em._Marker_key = m._Marker_key";
+	  end if;
+
 	  if (from_allele) then
 	    from := from + "," + mgi_DBtable(ALL_ALLELE) + " a";
 	    where := where + " and g._Allele_key = a._Allele_key";
@@ -2810,7 +2829,7 @@ rules:
           Query.source_widget := top;
           Query.select := "select distinct e._Expt_key, e.jnumID + ', ' + e.exptType + '-' + convert(varchar(5), e.tag) + ', Chr ' + e.chromosome " +
 		from + "\n" + where + "\norder by e.jnum, e.exptType, e.tag";
-          Query.table := MLD_EXPT_MARKER_VIEW;
+          Query.table := MLD_EXPT_VIEW;
           send(Query, 0);
           (void) reset_cursor(top);
         end does;

@@ -114,7 +114,7 @@ extern char *global_version;
 #define MLD_STATISTICS		180
 #define MLC_MARKER_VIEW		181
 #define MLD_MARKERBYREF		182
-#define MLD_EXPT_MARKER_VIEW	183
+#define MLD_EXPT_VIEW		183
 
 /* GXD Tables */
 
