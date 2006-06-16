@@ -1512,17 +1512,7 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      keys.insert(mgi_getstr(dbproc, 1), keys.count + 1);
-
-	      if (tableID = STRAIN) then
-		if (mgi_getstr(dbproc, 3) = NO) then
-	          results.insert(mgi_getstr(dbproc, 2) + " (Non-Standard)", results.count + 1);
-		else
-	          results.insert(mgi_getstr(dbproc, 2) + " (Standard)", results.count + 1);
-		end if;
-	      else
-	        results.insert(mgi_getstr(dbproc, 2), results.count + 1);
-	      end if;
-
+	      results.insert(mgi_getstr(dbproc, 2), results.count + 1);
 	      std.insert(mgi_getstr(dbproc, 3), std.count + 1);
 	      private.insert(mgi_getstr(dbproc, 4), private.count + 1);
 

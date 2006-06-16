@@ -78,7 +78,8 @@ devents:
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
-	GOVocAnnotExit :local [];				-- Destroys D module instance & cleans up
+        ClearGO :local [reset : boolean := false;];
+	GOVocAnnotExit :local [];			-- Destroys D module instance & cleans up
 	GOTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
@@ -186,6 +187,24 @@ rules:
 	end does;
 
 --
+-- ClearGO
+--
+-- Activated from:  local devents
+--
+
+	ClearGO does
+
+	  Clear.source_widget := top;
+	  Clear.reset := ClearGO.reset;
+	  send(Clear, 0);
+
+          if (not ClearGO.reset) then
+	    ClearTable.table := top->Reference->Table;
+	    send(ClearTable, 0);
+	  end if;
+	end does;
+
+--
 -- Init
 --
 -- Activated from:  devent INITIALLY
@@ -219,8 +238,7 @@ rules:
 	  tables.close;
 
           -- Clear form
-          Clear.source_widget := top;
-          send(Clear, 0);
+          send(ClearGO, 0);
 
 	  -- Set Defaults
 	  send(SetAnnotTypeDefaults, 0);
@@ -858,9 +876,8 @@ rules:
 
           top->QueryList->List.row := Select.item_position;
 
-	  Clear.source_widget := top;
-          Clear.reset := true;
-          send(Clear, 0);
+          ClearGO.reset := true;
+          send(ClearGO, 0);
 
 	  -- Initialize Option Menus for row 0
 
@@ -931,8 +948,7 @@ rules:
 	  (void) busy_cursor(mgi);
 
           -- Clear form
-          Clear.source_widget := top;
-          send(Clear, 0);
+          send(ClearGO, 0);
 
 	  evidenceKey : integer := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  qualifierKey : integer := top->VocAnnotTypeMenu.menuHistory.qualifierKey;

@@ -4031,9 +4031,15 @@ rules:
 --
 
 	ViewExpt does
-          NewForm : widget := top->(ViewExpt.source_widget.form);
+          NewForm : widget;
 	  modifyExptType : boolean := true;
  
+	  if (ViewExpt.source_widget.form = nil) then
+	    return;
+	  end if;
+
+	  NewForm := top->(ViewExpt.source_widget.form);
+
 	  -- Reset origExptType if no record is currently selected
 
           if (top->QueryList->List.selectedItemCount = 0) then
