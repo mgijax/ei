@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 14 12:34:49 2006";
+      lastWritten = "Fri Jun 16 12:03:41 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13291,6 +13291,33 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:ClearGO";
+                                      }
+                                }
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -13566,6 +13593,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:ClearGO";
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_widget;
