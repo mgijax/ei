@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 16 13:09:47 2006";
+      lastWritten = "Tue Jun 20 19:16:24 2006";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -513,7 +513,7 @@ Module: mgiAnatDictionary
                                       }
                                 }
                                 {
-                                  structureNotes = Notes : mgiDataTypes;
+                                  structureNote = Notes : mgiDataTypes;
                                       {
                                         label = XmLabel;
                                       }
@@ -663,7 +663,7 @@ Module: mgiAnatDictionary
                           }
                     }
                     {
-                      structureNotes = Notes : mgiDataTypes;
+                      structureNote = Notes : mgiDataTypes;
                       Group: Widget
                         xrtGearOrientation = horizontal;
                       Group: Constraint
@@ -693,7 +693,7 @@ Module: mgiAnatDictionary
                         topAttachment = attach_widget;
                         bottomAttachment = attach_form;
                         resizable = true;
-                        topWidget = structureNotes;
+                        topWidget = structureNote;
                         leftWidget = structureText;
                           {
                             Table = mgiTable;

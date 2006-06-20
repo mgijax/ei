@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun  1 08:27:12 2006";
+      lastWritten = "Tue Jun 20 19:23:52 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1220,7 +1220,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblDisplayHorizScrollBar = dispsb_always;
                         xrtTblMaxLengthSeries = "(all 20 255)(all 22 255)";
                         xrtTblMinCellVisibility = 5;
-                        xrtTblFrozenRows = 13;
+                        xrtTblFrozenColumns = 15;
                       Group: User
                         seqNum = 11;
                         saveEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)(all 20 True)(all 22 True)";

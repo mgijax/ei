@@ -481,10 +481,11 @@ rules:
 	  -- need to find a workaround for this...
 	  --
 
-	  if (strstr(cmd, "exec VOC_copyAnnotEvidenceNotes") != nil) then
-	    ModifySQL.transaction := false;
-	  else
-	    ModifySQL.transaction := true;
+	  ModifySQL.transaction := true;
+	  if (cmd != nil) then
+	    if (strstr(cmd, "exec VOC_copyAnnotEvidenceNotes") != nil) then
+	      ModifySQL.transaction := false;
+	    end if;
           end if;
 
           ModifySQL.cmd := cmd;
