@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	07/07/2006
+--	TR 7686; add VerifyMPReference
+--
 -- lec	12/08/2005
 --	TR 7317; remove PhenoSlim
 --
@@ -58,6 +61,8 @@ devents:
 	MPClipboardCopyAnnotation :local [];
 
 	MPTraverse :local [];
+
+	VerifyMPReference :local [];
 
 locals:
 	mgi : widget;			-- Top-level shell of Application
@@ -1350,6 +1355,96 @@ rules:
 	  (void) dbclose(dbproc);
 	  (void) reset_cursor(top);
 
+	end does;
+
+--
+-- VerifyMPReference
+--
+--	If the J: is not associated with all Alleles of the Genotype, 
+--      then inform the user and ask them to verify that the Reference should be added to each Allele that does not have the Reference.
+--
+
+	VerifyMPReference does
+	  sourceWidget : widget := VerifyMPReference.source_widget;
+	  refTop : widget := VerifyMPReference.source_widget.ancestor_by_class("XmRowColumn");
+	  dbproc : opaque;
+
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+	  refsKey : string;
+
+	  alleles : list;
+	  alleles := create list("string");
+	  s : string;
+
+	  row := VerifyMPReference.row;
+	  column := VerifyMPReference.column;
+	  reason := VerifyMPReference.reason;
+
+	  if (column != sourceWidget.jnum) then
+	    return;
+	  end if;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  refsKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.refsKey);
+	  if (refsKey.length = 0) then
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
+
+	  -- Generate list of Alleles from this Genotype that don't have this J:
+
+	  select : string := 
+	      "select g._Allele_key from GXD_AlleleGenotype g where g._Genotype_key = " + currentRecordKey +
+	      "\nand not exists (select 1 from MGI_Reference_Assoc a where a._MGIType_key = 11 " +
+	      "\nand a._Object_key = g._Allele_key and a._Refs_key = " + refsKey + ")";
+
+	  dbproc := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+	      alleles.append(mgi_getstr(dbproc, 1));
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	  -- Create an association between this J: and the Alleles that are missing this reference association
+
+	  if (alleles.count > 0) then
+
+	    -- Have user verify that the reference associations should be added
+
+	    mgi->VerifyItemAdd.doAdd := false;
+            mgi->VerifyItemAdd.managed := true;
+
+	    -- Keep busy while user verifies the add
+
+	    while (mgi->VerifyItemAdd.managed = true) do
+		(void) keep_busy();
+	    end while;
+
+	    (void) XmUpdateDisplay(top);
+
+	    -- If user verifies it is okay to add the reference association...
+
+	    if (mgi->VerifyItemAdd.doAdd) then
+	      alleles.open;
+	      while (alleles.more) do
+	        s := alleles.next;
+	        (void) mgi_sql1("exec MGI_insertReferenceAssoc 11," + s + "," + refsKey + ",'Used-FC'");
+	      end while;
+	      alleles.close;
+	    end if;
+	  end if;
+
+          (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  (void) reset_cursor(top);
 	end does;
 
 --
