@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jul  7 10:10:06 2006";
+      lastWritten = "Fri Jul  7 10:55:42 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1587,7 +1587,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Antibody spec. MGI ID";
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Antibody specificity was not detailed and may recognize a related gene; (MGI:) has been annotated.";
+                                                note = "Antibody specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated.";
                                             }
                                             {
                                               ProbeSpecMGI = AppendNotePush : mgiDataTypes;
@@ -1595,7 +1595,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Probe spec. MGI ID";
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Probe specificity was not detailed and may recognize a related gene; (MGI:) has been annotated.";
+                                                note = "Probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated.";
                                             }
                                             {
                                               Supplmentary = AppendNotePush : mgiDataTypes;
@@ -1627,7 +1627,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = Range;
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Authors state that expression was examined on dpc 8.5 ? 18.5; not all stages are detailed.";
+                                                note = "Authors state that expression was examined on dpc 8.5 - 18.5; not all stages are detailed.";
                                             }
                                             {
                                               PrimerSpec = AppendNotePush : mgiDataTypes;
@@ -1643,7 +1643,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 labelString = "Primer spec MGI ID";
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Primer specificity was not detailed and may amplify a related gene; (MGI:) has been annotated.";
+                                                note = "Primer specificity was not detailed and may amplify a related gene; (MGI:) has also been annotated.";
                                             }
                                             {
                                               Immuno = AppendNotePush : mgiDataTypes;
