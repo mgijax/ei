@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 20 19:23:52 2006";
+      lastWritten = "Fri Jul  7 10:10:06 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1545,6 +1545,236 @@ Shift<Key>Tab: prev-tab-group()
                                         AgeAssigned = AppendNotePush : mgiDataTypes;
                                         Group: User
                                           noteWidget = Note;
+                                      }
+                                }
+                                {
+                                  IndexNoteMenu = NoteMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "Pick List of Index Notes";
+                                    subMenuId = IndexNotePulldown;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = CVStagingNote;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = CVStagingNote;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    topOffset = 5;
+                                      Popups:
+                                      {
+                                        IndexNotePulldown : NotePulldown = OptionPulldown : mgiOption;
+                                            {
+                                              AntibodySpec = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Antibody spec.";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The specificity of the antibody used was not detailed; several/all family members have been annotated.";
+                                            }
+                                            {
+                                              ProbeSpec = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Probe spec.";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Probe specificity was not detailed and may recognize a related gene; several/all family members have been annotated.";
+                                            }
+                                            {
+                                              AntibodySpecMGI = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Antibody spec. MGI ID";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Antibody specificity was not detailed and may recognize a related gene; (MGI:) has been annotated.";
+                                            }
+                                            {
+                                              ProbeSpecMGI = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Probe spec. MGI ID";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Probe specificity was not detailed and may recognize a related gene; (MGI:) has been annotated.";
+                                            }
+                                            {
+                                              Supplmentary = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = Supplementary;
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Results are in the supplementary material.";
+                                            }
+                                            {
+                                              AbRecog = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Ab recog. Act/cleave/P";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The antibody recognized the activated/phosphorylated/cleaved form of the protein.";
+                                            }
+                                            {
+                                              SectionWM = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Section or WM";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Reference does not indicate whether specimen is a section or whole mount.";
+                                            }
+                                            {
+                                              Range = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = Range;
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Authors state that expression was examined on dpc 8.5 ? 18.5; not all stages are detailed.";
+                                            }
+                                            {
+                                              PrimerSpec = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Primer spec";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Primer specificity was not detailed and may amplify a related gene; several/all family members have been annotated.";
+                                            }
+                                            {
+                                              PrimerSpecMGI = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Primer spec MGI ID";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Primer specificity was not detailed and may amplify a related gene; (MGI:) has been annotated.";
+                                            }
+                                            {
+                                              Immuno = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = Immunoprecipitated;
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The protein was immunoprecipitated prior to Western blotting.";
+                                            }
+                                            {
+                                              DotBlot = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Dot Blot";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Northern data was obtained from a dot blot.";
+                                            }
+                                            {
+                                              EnzymaticAct = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Enzymatic act";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "Enzymatic activity was used to detect gene expression.";
+                                            }
+                                      }
+                                }
+                                Popups:
+                                {
+                                  MolSegNotePulldown : NotePulldown = OptionPulldown : mgiOption;
+                                      {
+                                        KFMemorial = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = MolNote;
+                                          note = "This clone is derived from a gene that produces alternate transcripts.";
+                                      }
+                                      {
+                                        Chimeric = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = Chimeric;
+                                        Group: User
+                                          note = "Chimeric:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence appears to be artifactually chimeric.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        Same5 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "5'-overlap same strand";
+                                        Group: User
+                                          note = "5'-overlap same strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that initiates at a site within a linked upstream gene, where the upstream gene is transcribed in the same direction.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        Same3 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "3'-overlap same strand";
+                                        Group: User
+                                          note = "3'-overlap same strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that extends (reads-through) into a linked downstream gene, where the downstream gene is transcribed in the same direction.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        Opposite5 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "5'-overlap opposite strand";
+                                        Group: User
+                                          note = "5'-overlap opposite strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that initiates at a site within a linked upstream gene, where the upstream gene is transcribed in the opposite direction.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        Opposite3 = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "3'-overlap opposite strand";
+                                        Group: User
+                                          note = "3'-overlap opposite strand:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This sequence is derived from a transcript for a gene that extends (reads-through) into a linked downstream gene, where the downstream gene is transcribed in the opposite direction.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        Intron = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Intron-Containing";
+                                        Group: User
+                                          note = "Intron-Containing:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. This cDNA sequence appears to contain intronic sequence as a consequence of incomplete transcript processing.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        FrameShift = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Frame-Shift";
+                                        Group: User
+                                          note = "Frame-Shift:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. Conceptual translation of this sequence reveals frame shift errors in the presumed coding region, which may be due to unreliable sequence data.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        Undetermined = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Undetermined Problem Sequence";
+                                        Group: User
+                                          note = "Undetermined:  MGI curatorial staff have found evidence of artifact in the sequence of this molecular segment. The artifact may have been introduced during the cloning process, or may be due to unreliable sequence data.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        SequenceSource = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Sequence Source Difference";
+                                        Group: User
+                                          note = "The source of the material used to create this cDNA probe was different than that used to create the Genbank sequence record.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        DownstreamArich = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Downstream A-rich region primed";
+                                        Group: User
+                                          note = "Downstream A-rich primed:  MGI curatorial staff have found evidence of \nartifact in the sequence of this molecular segment. This cDNA clone appears to \nbe the product of reverse transcription primed internally at downstream A-rich \nsequences.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        ReversedClone = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Reversed clone";
+                                        Group: User
+                                          note = "Reversed clone: MGI curatorial staff have found evidence of artifact in the \nsequence of this molecular segment. The sequence of this cDNA clone appears to be\nreversed.";
+                                          noteWidget = MolNote;
+                                      }
+                                      {
+                                        Contaiminated = AppendNotePush : mgiDataTypes;
+                                        Group: Widget
+                                          labelString = "Contaminated clone";
+                                        Group: User
+                                          note = "Contaminated clone: MGI curatorial staff have found evidence of artifact in the \nsequence of this molecular segment. The sequence of this cDNA clone appears to \nbe from species other than mouse.";
+                                          noteWidget = MolNote;
                                       }
                                 }
                           }
