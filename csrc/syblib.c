@@ -312,6 +312,8 @@ char *mgi_sql1(char *cmd)
   DBPROCESS *dbproc = mgi_dbopen();
 
   memset(buf, '\0', sizeof(buf));
+  (void) mgi_writeLog(cmd);
+  (void) mgi_writeLog("\n\n");
 
   dbcmd(dbproc, cmd);
   dbsqlexec(dbproc);

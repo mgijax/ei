@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jun 16 12:03:41 2006";
+      lastWritten = "Fri Jul  7 15:12:59 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13971,7 +13971,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-7 10)(all 8 15)(all 9 40)(all 10 4)(all 12 10)(all 13 3)(all 14 15)(all 16 15)(all 15 10)(all 17 10)";
                                           xrtTblDisplayHorizScrollBar = dispsb_never;
                                           userDefinedAttributes = "annotKey:Int(Int)=\"3\"\ntermKey:Int(Int)=\"4\"\nqualifierKey:Int(Int)=\"5\"\nrefsKey:Int(Int)=\"6\"\nevidenceKey:Int(Int)=\"7\"\ntermAccID:Int(Int)=\"8\"\nterm:Int(Int)=\"9\"\nqualifier:Int(Int)=\"10\"\njnum:Int(Int)=\"11\"\ncitation:Int(Int)=\"12\"\nevidence:Int(Int)=\"13\"\neditor:Int(Int)=\"14\"\nmodifiedDate:Int(Int)=\"15\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"16\"\ncreatedDate:Int(Int)=\"17\"\nannotEvidenceKey:Int(Int)=\"2\"\nmgiTypeKey:Int(Int)=\"25\"\nclipAnnotEvidenceKey:Int(Int)=\"1\"\nvocabQualifierKey:Int(Int)=\"0\"\n";
-                                          xrtTblValidateCellCallback = "D:CopyAnnotation,\nD:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:CopyAnnotation,\nD:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyMPReference,\nD:VerifyVocabEvidenceCode,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 12 False)";
                                           xrtTblEnterCellCallback = "D:LoadMPNotes,\nD:SetOptions,\nD:SetTableRow";
                                           width = 960;
@@ -14377,6 +14377,9 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                      Group: Widget
+                        messageString = "This reference is not associated to all Alleles of this Genotype.\nDo you want to the system to add a 'Used-FC' reference associations for these Alleles?";
+                        dialogTitle = "Add Reference Associations?";
                     }
                     {
                       WorkingDialog = WorkingDialog : mgiDialog;
