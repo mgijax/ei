@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jul  7 10:55:42 2006";
+      lastWritten = "Mon Jul 10 13:13:20 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -13,7 +13,7 @@ Module: GXD
             vip_y = 30;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
-            homeWidget = "Name\nmgiAccessionTable";
+            homeWidget = Name;
             editForms = "ControlForm\nEditForm\nSourceForm";
             activateButtonName = Antigen;
               {
@@ -423,7 +423,7 @@ Module: GXD
             vip_y = 85;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
-            homeWidget = "Name\nmgiAccessionTable\nMarker\nAlias";
+            homeWidget = Name;
             activateButtonName = Antibody;
               {
                 MainForm = XmForm;
@@ -2201,7 +2201,7 @@ Shift<Key>Tab: prev-tab-group()
             vip_x = 175;
             vip_y = 85;
           Group: User
-            homeWidget = "Jnum\nmgiAccessionTable";
+            homeWidget = Jnum;
             clearForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
             editForms = "ControlForm\nEditForm\nKnockInForm\nProbePrepForm\nAntibodyPrepForm\nInSituForm\nGelForm";
             activateButtonName = Assay;

@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 30 09:04:31 2006";
+      lastWritten = "Mon Jul 10 13:32:36 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -163,15 +163,13 @@ Module: MGI
         {
           Module = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:StringTable(StringTable)\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
+            userDefinedAttributes = "allowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nhomeWidget:Widget\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean(Boolean)=\"True\"\n";
             closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
             vip_x = 70;
             vip_y = 30;
             vipComment = "TopLevelShell is used for normal top-level windows such as any additional top-level widgets an application needs.";
-          Group: User
-            homeWidget = mgiAccessionTable;
               {
                 MainForm = XmForm;
                     {
@@ -333,10 +331,11 @@ Module: MGI
         {
           EditForm = XmForm;
           Group: Widget
-            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
+            userDefinedAttributes = "homeWidget:Widget(Widget)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
           Group: Control
             vip_x = 70;
             vip_y = 250;
+            vipComment = "XmForm is a container widget with no input semantics. Constraints are placed on its children to define attachments for each of the child's four sides. These attachments can be to the XmForm, to another child, to a relative position or to the initial position of the child. The attachments determine the layout behavior of XmForm when resizing occurs.";
               {
                 ID = ID : mgiDataTypes;
               }
@@ -344,7 +343,7 @@ Module: MGI
         {
           Module1 = TopLevelShell;
           Group: Widget
-            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean=\"True\"\n";
+            userDefinedAttributes = "homeWidget:Widget\nallowEdit:Boolean(Boolean)=\"True\"\neditForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nclearForms:StringTable(StringTable)=\"ControlForm\nEditForm\"\nallowMultiple:Boolean(Boolean)=\"False\"\nactivateButtonName:String(String)\nallowSelect:Boolean(Boolean)=\"True\"\n";
             closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
@@ -1116,10 +1115,11 @@ Module: MGI
         {
           SubEditForm = XmForm;
           Group: Widget
-            userDefinedAttributes = "homeWidget:StringTable(StringTable)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
+            userDefinedAttributes = "homeWidget:Widget(Widget)\nqueryList:String(String)=\"QueryList\"\nconditionalList:String(String)=\"QueryList\"\nsql:String(String)\n";
           Group: Control
             vip_x = 70;
             vip_y = 360;
+            vipComment = "XmForm is a container widget with no input semantics. Constraints are placed on its children to define attachments for each of the child's four sides. These attachments can be to the XmForm, to another child, to a relative position or to the initial position of the child. The attachments determine the layout behavior of XmForm when resizing occurs.";
         }
         {
           GenotypeModule = Module : MGI;
@@ -1249,6 +1249,9 @@ Module: MGI
                                               text = text;
                                               Group: Widget
                                                 columns = 75;
+                                                translations = "#override
+ Shift<Key>Tab: prev-tab-group()
+<Key>Tab:  VerifyItem()";
                                             }
                                       }
                                 }
@@ -1257,6 +1260,7 @@ Module: MGI
                                   Group: Widget
                                     rubberPositioning = False;
                                     resizePolicy = resize_any;
+                                    inTabGroup = True;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -1278,6 +1282,7 @@ Module: MGI
                                           xrtTblTraversableSeries = "(all 0-9 False)";
                                           xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
                                           userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"10\"\nmarkerChr:Int(Int)=\"9\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"13\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int(Int)=\"7\"\ncompoundKey:Int(Int)=\"8\"\ncompound:Int(Int)=\"14\"\n";
+                                          inTabGroup = True;
                                         Group: User
                                           alleleSymbol = "11\n12";
                                           alleleKey = "5\n6";
@@ -1894,7 +1899,7 @@ Module: MGI
             vip_y = 635;
           Group: User
             activateButtonName = Translation;
-            homeWidget = Name;
+            homeWidget = Term;
               {
                 MainForm = XmForm;
                 Group: Widget
@@ -2234,6 +2239,8 @@ Module: MGI
           Group: Control
             vip_x = 70;
             vip_y = 690;
+          Group: User
+            homeWidget = Tasks;
               {
                 MainForm = XmForm;
                     {
