@@ -322,8 +322,8 @@ rules:
 
 	  if (top->QueryList->List.sqlSuccessful) then
 	    send(PostProcess, 0);
-	    (void) XmListDeselectAllItems(top->QueryList->List);
 	    Clear.source_widget := top;
+	    Clear.reset := true;
             Clear.clearKeys := false;
             send(Clear, 0);
 	  end if;

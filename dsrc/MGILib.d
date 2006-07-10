@@ -86,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-5-0-31";
+	  global_version := "CVS ei-3-5-0-32";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -191,7 +191,7 @@ rules:
 	    -- If a Job Stream has not finished, then disallow Login
 	    -- If debugging is on, then allow the Login
 
-	    jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null");
+	    jobStream := mgi_sql1("select count(*) from " + global_radar + "..APP_JobStream where end_date is null and jobStreamName != 'IMSRLoad'");
 	    if ((getenv("EIDEBUG") = "0") and ((integer) jobStream > 0)) then
 	      StatusReport.source_widget := top;
 	      StatusReport.message := "\nERROR:  EI is unavailable.  A data load job is running.";

@@ -141,6 +141,7 @@ rules:
 --
 
 	PythonMarkerOMIMCacheEnd does
+	  (void) mgi_writeLog("OMIM Cache done.\n\n");
 	end does;
 
 --
@@ -148,6 +149,7 @@ rules:
 --
 
 	PythonAlleleCombinationEnd does
+	  (void) mgi_writeLog("Allele Combination Cache done.\n\n");
 	end does;
 
 --
@@ -155,6 +157,7 @@ rules:
 --
 
 	PythonMarkerHomologyCacheEnd does
+	  (void) mgi_writeLog("Homology Cache done.\n\n");
 	end does;
 
 end dmodule;
