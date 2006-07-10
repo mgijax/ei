@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Jul  7 15:12:59 2006";
+      lastWritten = "Mon Jul 10 08:36:28 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -14378,7 +14378,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       VerifyItemAdd = VerifyItemAdd : mgiDialog;
                       Group: Widget
-                        messageString = "This reference is not associated to all Alleles of this Genotype.\nDo you want to the system to add a 'Used-FC' reference associations for these Alleles?";
+                        messageString = "This reference is not associated to all Alleles of this Genotype.\nDo you want to the system to add a 'Used-FC' reference association for these Alleles?";
                         dialogTitle = "Add Reference Associations?";
                     }
                     {

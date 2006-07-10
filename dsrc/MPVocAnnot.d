@@ -1391,7 +1391,7 @@ rules:
 	  end if;
 
 	  refsKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.refsKey);
-	  if (refsKey.length = 0) then
+	  if (refsKey.length = 0 or refsKey = "NULL") then
 	    return;
 	  end if;
 
