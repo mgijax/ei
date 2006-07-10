@@ -314,8 +314,10 @@ rules:
 	  result := XrtTblMakeCellVisible(table, 0, 0);
 
 	  -- Traverse to the first cell
---	  TraverseToTableCell.table := table;
---	  send(TraverseToTableCell, 0);
+	  -- This makes it possible to tab into the table from a text widget
+	  -- This also makes the first cell, first column white
+	  TraverseToTableCell.table := table;
+	  send(TraverseToTableCell, 0);
 
 	  -- Re-set the table modification flag
 	  table.modified := false;
@@ -330,6 +332,11 @@ rules:
 	  if (ClearTable.clearCells) then
 	    table.xrtTblBackgroundSeries := table.saveBackgroundSeries;
 	  end if;
+
+	  -- Reset the form's home widget
+	  GoHome.source_widget := table.root;
+	  send(GoHome, 0);
+
 	end does;
 
 --

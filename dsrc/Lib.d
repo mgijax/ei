@@ -468,49 +468,35 @@ rules:
 	    return;
 	  end if;
 	  
-	  home : string_list := create string_list();
-	  home := top.homeWidget;
+	  home : widget := top.homeWidget;
+	  hw : widget;
 
-	  -- Work backwards for first home widget is
-	  -- traversed to last
+	  if (home = nil) then
+	    return;
+	  end if;
 
-	  i : integer := home.count;
-	  w, hw : widget;
-
-	  while (i > 0) do
-	    w := top->(home[i]);
-
-	    -- If home widget is Table...
-
-	    hw := w.child_by_class(TABLE_CLASS);
-
-	    if (hw != nil) then
-	      TraverseToTableCell.table := hw;
+	  if (mgi_tblIsTable(home)) then
+	      TraverseToTableCell.table := home;
 	      send(TraverseToTableCell, 0);
 
-	    -- Else, if home widget is Text...
+	  else
+	    hw := home.child_by_class("XmText");
 
-	    else
-	      hw := w.child_by_class("XmText");
-
-	      if (hw = nil) then
-	        hw := w.child_by_class("XmTextField");
-	      end if;
-
-	      if (hw = nil) then
-	        hw := w.child_by_class("XmScrolledText");
-	      end if;
-
-	      if (hw != nil) then
-	        (void) XmProcessTraversal(hw, XmTRAVERSE_CURRENT);
-              end if;
-
-	    -- Else, do nothing with home widget
-
+	    if (hw = nil) then
+	      hw := home.child_by_class("XmTextField");
 	    end if;
 
-	    i := i - 1;
-	  end while;
+	    if (hw = nil) then
+	      hw := home.child_by_class("XmScrolledText");
+	    end if;
+
+	    if (hw != nil) then
+	      (void) XmProcessTraversal(hw, XmTRAVERSE_CURRENT);
+            end if;
+
+	  -- Else, do nothing with home widget
+
+	  end if;
 
 	  top.allowEdit := true;
 	end does;

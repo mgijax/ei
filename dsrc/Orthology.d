@@ -1019,6 +1019,9 @@ rules:
 	  (void) dbclose(dbproc);
 
 	  table.xrtTblEditableSeries := "(all 0-4 False) (0-2 " + (string) table.organism + " False)";
+
+	  GoHome.source_widget := top;
+	  send(GoHome, 0);
 	end does;
 
 --

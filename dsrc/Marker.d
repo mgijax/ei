@@ -367,7 +367,6 @@ rules:
             InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
             send(InitSynTypeTable, 0);
 	  end if;
-
 	end does;
 
 --
