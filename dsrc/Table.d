@@ -316,8 +316,8 @@ rules:
 	  -- Traverse to the first cell
 	  -- This makes it possible to tab into the table from a text widget
 	  -- This also highlights the first cell, first column
---	  TraverseToTableCell.table := table;
---	  send(TraverseToTableCell, 0);
+	  TraverseToTableCell.table := table;
+	  send(TraverseToTableCell, 0);
 
 	  -- Re-set the table modification flag
 	  table.modified := false;
