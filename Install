@@ -1,0 +1,19 @@
+#!/bin/csh -f -x
+
+#
+# Program: Install
+#
+# Original Author: Lori Corbani
+#
+# Purpose: To install the EI
+#
+# Modification History:
+#
+# 07/11/2006	lec
+#	- new
+#
+
+cd `dirname $0` && source ./Configuration
+
+installall compiled
+

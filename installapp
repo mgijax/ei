@@ -12,7 +12,7 @@
 # as a compiled application, rather than an interpreted D app.
 #
 
-source Configuration
+source ./Configuration
 
 setenv EIAPP	$1
 setenv MODE	$2
@@ -31,15 +31,15 @@ endsw
 #
 
 # create the application directory if it isn't already there
-mkdir $EIINSTALLDIR >& /dev/null
-mkdir $EIINSTALLDIR/$EIAPP >& /dev/null
+mkdir ${EIINSTALLDIR} >& /dev/null
+mkdir ${EIINSTALLDIR}/${EIAPP} >& /dev/null
 
-cd $EIAPP
-uxb $OPTIONS -destdir $EIINSTALLDIR/$EIAPP install
+cd ${EIAPP}
+uxb $OPTIONS -destdir ${EIINSTALLDIR}/${EIAPP} install
 cd ..
 
 #
 # Copy main files to installation directory
 #
-cp Configuration $EIINSTALLDIR
-cp runapp $EIINSTALLDIR
+cp Configuration ${EIINSTALLDIR}
+cp runapp ${EIINSTALLDIR}

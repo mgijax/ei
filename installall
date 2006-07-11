@@ -12,7 +12,7 @@
 # Output: installall.log contains report of stdout and stderr messages
 #
 
-source Configuration
+source ./Configuration
 
 setenv LOG `pwd`/installall.log
 rm -f $LOG
@@ -22,4 +22,5 @@ foreach app ($EIAPPS)
    installapp $app compiled | tee >>& $LOG
 end
 
-cp -r system_docs $EIINSTALLDIR
+cp -r system_docs ${EIINSTALLDIR}
+
