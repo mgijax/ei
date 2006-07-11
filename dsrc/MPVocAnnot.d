@@ -1420,12 +1420,12 @@ rules:
 
 	    -- Have user verify that the reference associations should be added
 
-	    mgi->VerifyItemAdd.doAdd := false;
-            mgi->VerifyItemAdd.managed := true;
+	    top->VerifyItemAdd.doAdd := false;
+            top->VerifyItemAdd.managed := true;
 
 	    -- Keep busy while user verifies the add
 
-	    while (mgi->VerifyItemAdd.managed = true) do
+	    while (top->VerifyItemAdd.managed = true) do
 		(void) keep_busy();
 	    end while;
 
@@ -1433,7 +1433,7 @@ rules:
 
 	    -- If user verifies it is okay to add the reference association...
 
-	    if (mgi->VerifyItemAdd.doAdd) then
+	    if (top->VerifyItemAdd.doAdd) then
 	      alleles.open;
 	      while (alleles.more) do
 	        s := alleles.next;
