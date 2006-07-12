@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul 10 13:13:20 2006";
+      lastWritten = "Wed Jul 12 10:47:49 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1503,6 +1503,8 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblSelectedBackground = None;
                                           xrtTblSelectedForeground = None;
                                           userDefinedAttributes = "beginX:Int(Int)=\"1\"\nendX:Int(Int)=\"0\"\n";
+                                        Group: User
+                                          traverseOnClear = False;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
