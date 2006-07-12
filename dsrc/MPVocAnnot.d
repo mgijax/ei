@@ -1398,9 +1398,13 @@ rules:
 	  (void) busy_cursor(top);
 
 	  -- Generate list of Alleles from this Genotype that don't have this J:
+	  -- Ignore wild type alleles
 
 	  select : string := 
-	      "select g._Allele_key from GXD_AlleleGenotype g where g._Genotype_key = " + currentRecordKey +
+	      "select g._Allele_key from GXD_AlleleGenotype g, ALL_Allele a " +
+	      "where g._Genotype_key = " + currentRecordKey +
+	      "\nand g._Allele_key = a._Allele_key " +
+	      "\nand a.isWildType = 0 " +
 	      "\nand not exists (select 1 from MGI_Reference_Assoc a where a._MGIType_key = 11 " +
 	      "\nand a._Object_key = g._Allele_key and a._Refs_key = " + refsKey + ")";
 
