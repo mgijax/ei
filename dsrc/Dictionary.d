@@ -92,6 +92,9 @@ devents:
                              addStructureMode : boolean := false;];
         CheckTriggers:local [];
 
+	ADVersion1 :local [];
+	ADVersion2 :local [];
+
 locals:
         mgi : widget;                -- Main Application Widget
         top : widget;                -- Local Application Widget
@@ -629,11 +632,11 @@ rules:
 
             -- ids
 
-            if (top->ID->text.value.length > 0) then
+            if (top->ID->text.value.length > 0 and top->ID.sensitive) then
                  where := where + "\nand s._Structure_key = " + top->ID->text.value;
             end if;
 
-            if (top->edinburghKey->text.value.length > 0) then
+            if (top->edinburghKey->text.value.length > 0 and top->edinburghKey.sensitive) then
                  where := where + "\nand s.edinburghKey = " + top->edinburghKey->text.value;
             end if;
 
@@ -653,18 +656,18 @@ rules:
                  where := where + "\nand t.stage in (" + stages_query + ")";
             end if;
 
-            if (top->printStopMenu.menuHistory.searchValue != "%") then
+            if (top->printStopMenu.menuHistory.searchValue != "%" and top->printStopMenu.sensitive) then
               where := where + "\nand s.printStop = "  + top->printStopMenu.menuHistory.searchValue;
             end if;
 
-            if (top->MGIAddedMenu.menuHistory.searchValue != "%") then
+            if (top->MGIAddedMenu.menuHistory.searchValue != "%" and top->MGIAddedMenu.sensitive) then
               where := where + "\nand sn.mgiAdded = "  + top->MGIAddedMenu.menuHistory.searchValue +
 		"\nand s._StructureName_key = sn._StructureName_key";
             end if;
 
             -- structure note
 
-            if (top->structureNote->text.value.length > 0) then
+            if (top->structureNote->text.value.length > 0 and top->structureNote->text.sensitive) then
                  where := where + "\nand s.structureNote like " + mgi_DBprstr(top->structureNote->text.value);
             end if;
 
@@ -981,6 +984,34 @@ rules:
          top->CommandsPulldown->Delete.sensitive := false;
       end if;
 
+   end does;
+
+--
+-- ADVersion1
+--
+-- AD Version that ignores certain fields on queries
+-- 
+
+   ADVersion1 does
+     top->ID.sensitive := false;
+     top->edinburghKey.sensitive := false;
+     top->printStopMenu.sensitive := false;
+     top->MGIAddedMenu.sensitive := false;
+     top->structureNote->text.sensitive := false;
+   end does;
+
+--
+-- ADVersion2
+--
+-- AD Version that ignores certain fields on queries
+-- 
+
+   ADVersion2 does
+     top->ID.sensitive := true;
+     top->edinburghKey.sensitive := true;
+     top->printStopMenu.sensitive := true;
+     top->MGIAddedMenu.sensitive := true;
+     top->structureNote->text.sensitive := true;
    end does;
 
 end dmodule;
