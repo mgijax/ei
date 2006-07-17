@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 12 10:47:49 2006";
+      lastWritten = "Mon Jul 17 09:10:13 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1670,6 +1670,14 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: User
                                                 noteWidget = Note;
                                                 note = "Enzymatic activity was used to detect gene expression.";
+                                            }
+                                            {
+                                              Discrepancies = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = Discrepancies;
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "There are discrepancies between the text and the figure legend as to the age of the tissue/embryo.";
                                             }
                                       }
                                 }
