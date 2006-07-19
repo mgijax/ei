@@ -15,5 +15,13 @@
 
 cd `dirname $0` && source ./Configuration
 
+if ( ! -d ${EIINSTALLDIRPROD} ) then
+	mkdir ${EIINSTALLDIRPROD}
+endif
+
+if ( ! -d ${EIINSTALLDIRDEV} ) then
+	mkdir ${EIINSTALLDIRDEV}
+endif
+
 ./installall compiled
 
