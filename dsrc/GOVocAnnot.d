@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 08/18/2006	lec
+--	TR 7865/VerifyGOREference, VerifyVocabEvidenceCode, VerifyVocabTermAccID
+--
 -- 01/09/2006	lec
 --	TR 7376; change to GO note text (added 'external ref')
 --
