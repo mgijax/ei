@@ -244,6 +244,14 @@ rules:
 		i := i + 1;
 	      end while;
 	    end if;
+
+	    -- added to re-set home widget on sub-forms
+
+	    if (clearForm.class_name = "XmForm") then
+	      GoHome.source_widget := clearForm;
+	      send(GoHome, 0);
+	    end if;
+
 	    j := j + 1;
 	  end while;
 
@@ -458,6 +466,8 @@ rules:
 	  top : widget;
 
 	  if (GoHome.source_widget.parent.class_name = "XmDialogShell") then
+	    top := GoHome.source_widget;
+	  elsif (GoHome.source_widget.class_name = "XmForm") then
 	    top := GoHome.source_widget;
 	  else
 	    top := GoHome.source_widget.root;
@@ -862,8 +872,9 @@ rules:
             form2.managed := flag;
           end if;
  
-          GoHome.source_widget := top;
-          send(GoHome, 0);
+        GoHome.source_widget := top;
+        send(GoHome, 0);
+
         end does;
 
 end dmodule;

@@ -1771,6 +1771,8 @@ rules:
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byUser, ref_modifiedBy);
 	    (void) mgi_tblSetCell(modTable, modTable.createdBy, modTable.byDate, ref_creation_date);
 	    (void) mgi_tblSetCell(modTable, modTable.modifiedBy, modTable.byDate, ref_modification_date);
+	    GoHome.source_widget := top->MolReferenceForm;
+	    send(GoHome, 0);
 	  end if;
 	end does;
 
