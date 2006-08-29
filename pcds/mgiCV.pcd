@@ -2,7 +2,7 @@ Module: mgiCV
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 30 09:04:35 2006";
+      lastWritten = "Tue Aug 29 16:26:03 2006";
         {
           CVMenu = XmRowColumn;
           Group: Widget
@@ -385,6 +385,14 @@ Module: mgiCV
                                     tableOptionKey = 11;
                                     tableForm = Specimen;
                                 }
+                          }
+                          {
+                            NotePush = NotePush : mgiDataTypes;
+                            Group: Widget
+                              labelString = "Specimen Notes";
+                            Group: User
+                              targetWidget = Specimen;
+                              targetColumn = 22;
                           }
                           {
                             ResultsPush = TableDialogPush : mgiDataTypes;

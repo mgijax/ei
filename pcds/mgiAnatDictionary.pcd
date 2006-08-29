@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul 17 13:47:47 2006";
+      lastWritten = "Tue Jul 25 14:26:53 2006";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -411,12 +411,6 @@ Module: mgiAnatDictionary
                           {
                             panedWindow = XmPanedWindow;
                                 {
-                                  QueryList = QueryList;
-                                }
-                                {
-                                  ADEditClipboard = ADEditClipboard : mgiAnatDictionary;
-                                }
-                                {
                                   version1 = push : mgiDataTypes;
                                   Group: Widget
                                     activateCallback = "D:ADVersion1";
@@ -427,6 +421,12 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     activateCallback = "D:ADVersion2";
                                     labelString = "Not Ingeborg's Version";
+                                }
+                                {
+                                  QueryList = QueryList;
+                                }
+                                {
+                                  ADEditClipboard = ADEditClipboard : mgiAnatDictionary;
                                 }
                           }
                     }
