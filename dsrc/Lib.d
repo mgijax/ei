@@ -517,7 +517,10 @@ rules:
 
 	  end if;
 
-	  top.allowEdit := true;
+	  if (top.is_defined("allowEdit") != nil) then
+	    top.allowEdit := true;
+	  end if;
+
 	end does;
 
 --
