@@ -27,17 +27,6 @@ setenv EIBUILDDIR ${USRLOCALMGI}/ei
 # data directory
 setenv EIDATADIR /data/ei
 
-# TeleUSE
-setenv TeleUSE	/opt/teleuseXRT
-setenv XUSERFILESEARCHPATH	%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/lib/X11/app-defaults/%L/%N:/usr/lib/X11/app-defaults/%N
-setenv LD_LIBRARY_PATH	$SYBASE/ASE-12_5/lib:$SYBASE/OCS-12_5/lib:$TeleUSE/lib:$TeleUSE/conf/lib:/usr/lib:/usr/ucblib
-
-setenv OPENWINHOME	/usr/openwin
-setenv XKEYSYMDB        ${OPENWINHOME}/lib/XKeysymDB
-
-# PATH
-set path = ($path $TeleUSE/bin)
-
 # PYTHON OMIM Cache
 setenv OMIMCACHE        ${DBUTILS}/mrkcacheload
 
