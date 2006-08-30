@@ -816,6 +816,13 @@ rules:
 
 	      column := column + 1;
 	    end while;
+
+	    -- If there are no traversable columns, re-set to 0
+
+	    if (column >= mgi_tblNumColumns(table)) then
+	      column := 0;
+	    end if;
+
 	  end if;
 
 	  result := XrtTblTraverseToCell(table, row, column, true);
