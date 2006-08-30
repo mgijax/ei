@@ -3998,7 +3998,9 @@ rules:
 	      end if;
 
 	      -- TR 4262
-	      if (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674") then
+	      -- TR 7865
+	      --if (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674") then
+	      if (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554") then
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "74750");
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.jnum, "73796");
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "118");
