@@ -643,6 +643,9 @@ rules:
 	  (void) mgi_writeLog(get_time() + " " + cmdOut + "\n");
 
           proc_id : opaque := tu_fork_process(cmd_str[1], cmd_str, nil, DoStatisticsEnd);
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
 	  tu_fork_free(proc_id);
         end does;
 

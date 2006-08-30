@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.d
 --
+-- 08/30/2006	lec
+--	- TR 7867; added tu_fork_ok loop
+--
 -- 04/04/2006	lec
 --	- TR 7607; HomologyCache
 --
@@ -55,6 +58,11 @@ rules:
 
 	  -- Execute
           proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerOMIMCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
 	  tu_fork_free(proc_id);
 
 	end does;
@@ -97,6 +105,11 @@ rules:
 
 	  -- Execute
           proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonAlleleCombinationEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
 	  tu_fork_free(proc_id);
 
 	end does;
@@ -132,6 +145,11 @@ rules:
 
 	  -- Execute
           proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerHomologyCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
 	  tu_fork_free(proc_id);
 
 	end does;

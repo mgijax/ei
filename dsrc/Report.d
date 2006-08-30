@@ -143,8 +143,11 @@ rules:
 
      ReportEnd.dialog := dialog;
 
-     proc_p : opaque := tu_fork_process(commands[1], commands, dialog->Output, ReportEnd);
-     tu_fork_free(proc_p);
+     proc_id : opaque := tu_fork_process(commands[1], commands, dialog->Output, ReportEnd);
+     while (tu_fork_ok(proc_id)) do
+       (void) keep_busy();
+     end while;
+     tu_fork_free(proc_id);
    end does;
 
 --

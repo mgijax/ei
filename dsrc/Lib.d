@@ -417,6 +417,9 @@ rules:
 
 	  DeleteEnd.dialog := dialog;
           proc_id : opaque := tu_fork_process(cmd[1], cmd, dialog->Output, DeleteEnd);
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
 	  tu_fork_free(proc_id);
         end does;
 
@@ -473,11 +476,17 @@ rules:
 	    top := GoHome.source_widget.root;
 	  end if;
 
-	  if (not top.allowEdit) then
-	    top.allowEdit := true;
-	    return;
+	  if (top.is_defined("allowEdit") != nil) then
+	    if (not top.allowEdit) then
+	      top.allowEdit := true;
+	      return;
+	    end if;
 	  end if;
 	  
+	  if (top.is_defined("homeWidget") = nil) then
+	    return;
+	  end if;
+
 	  home : widget := top.homeWidget;
 	  hw : widget;
 
@@ -621,6 +630,9 @@ rules:
 	  PrintEnd.dialog := dialog;
 
           proc_id : opaque := tu_fork_process(print[1], print, dialog->Output, PrintEnd);
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
 	  tu_fork_free(proc_id);
         end does;
 

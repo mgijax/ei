@@ -723,6 +723,9 @@ rules:
           MarkerWithdrawalEnd.source_widget := dialog;
 	  dialog->Output.value := "";
           proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog->Output, MarkerWithdrawalEnd);
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
 	  tu_fork_free(proc_id);
 	end does;
 
@@ -751,14 +754,14 @@ rules:
 	  send(PythonAlleleCombination, 0);
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
 	  PythonAlleleCombination.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	  send(PythonAlleleCombination, 2000);
+	  send(PythonAlleleCombination, 0);
 
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 2000);
+	  send(PythonMarkerOMIMCache, 0);
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	  send(PythonMarkerOMIMCache, 2000);
+	  send(PythonMarkerOMIMCache, 0);
 
 	  -- Query for records
 
@@ -1010,7 +1013,7 @@ rules:
 
 	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	    send(PythonMarkerOMIMCache, 2000);
+	    send(PythonMarkerOMIMCache, 0);
 	  end if;
 
 --	  top->WorkingDialog.managed := false;

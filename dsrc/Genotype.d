@@ -318,6 +318,7 @@ rules:
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
+	  AddSQL.reselect := false;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
@@ -457,6 +458,7 @@ rules:
 
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := false;
           send(ModifySQL, 0);
 
 	  send(PostProcess, 0);
@@ -703,7 +705,9 @@ rules:
 
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYGENOTYPE;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 2000);
+	  send(PythonMarkerOMIMCache, 0);
+
+	  (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	end does;
 
 --
