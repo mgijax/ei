@@ -32,10 +32,6 @@ endsw
 
 # create the application directory if it isn't already there
 
-if ( ! -d ${EIINSTALLDIR} ) then
-	mkdir ${EIINSTALLDIR}
-endif
-
 if ( ! -d ${EIINSTALLDIR}/${EIAPP} ) then
 	mkdir ${EIINSTALLDIR}/${EIAPP}
 endif

@@ -8,27 +8,24 @@
 #	ex. 	source Configuration.default
 #
 
+if ( ${?MGICONFIG} == 0 ) then
+	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
+endif
+
+source ${MGICONFIG}/master.config.csh
+
 # install directory
-setenv EIINSTALLDIR /usr/local/mgi/live/ei/prod
+setenv EIINSTALLDIR ${USRLOCALMGI}/ei/prod
 
 # for MGI Menu, we can run both production and development versions
-setenv EIINSTALLDIRPROD /usr/local/mgi/live/ei/prod
-setenv EIINSTALLDIRDEV /usr/local/mgi/live/ei/dev
+setenv EIINSTALLDIRPROD ${USRLOCALMGI}/ei/prod
+setenv EIINSTALLDIRDEV ${USRLOCALMGI}/ei/dev
 
 # build directory
-setenv EIBUILDDIR /usr/local/mgi/live/ei/ei_build/ei
+setenv EIBUILDDIR ${USRLOCALMGI}/ei
 
 # data directory
 setenv EIDATADIR /data/ei
-
-# system doc directory
-setenv EISYSTEMDOCDIR $EIINSTALLDIR/system_docs
-
-# SYBASE
-setenv SYBASE /opt/sybase/12.5
-
-# DB Utilities
-setenv DBUTILITIESPATH /usr/local/mgi/live/dbutils/mgidbutilities
 
 # TeleUSE
 setenv TeleUSE	/opt/teleuseXRT
@@ -36,62 +33,41 @@ setenv XUSERFILESEARCHPATH	%N:$TeleUSE/appl_res/%L/%N:$TeleUSE/appl_res/%N:/usr/
 setenv LD_LIBRARY_PATH	$SYBASE/ASE-12_5/lib:$SYBASE/OCS-12_5/lib:$TeleUSE/lib:$TeleUSE/conf/lib:/usr/lib:/usr/ucblib
 
 setenv OPENWINHOME	/usr/openwin
-setenv XKEYSYMDB        $OPENWINHOME/lib/XKeysymDB
+setenv XKEYSYMDB        ${OPENWINHOME}/lib/XKeysymDB
 
 # PATH
-set path = ($DBUTILITIESPATH/bin $path $TeleUSE/bin:$SYBASE/bin:/usr/ucb:/usr/local/bin)
-
-# PYTHON PATH
-setenv PYTHONPATH /usr/local/mgi/live/lib/python
+set path = ($path $TeleUSE/bin)
 
 # PYTHON OMIM Cache
-setenv OMIMCACHE        /usr/local/mgi/live/dbutils/mrkcacheload
+setenv OMIMCACHE        ${DBUTILS}/mrkcacheload
 
 # PYTHON Allele Cache
-setenv ALLELECACHE      /usr/local/mgi/live/dbutils/allcacheload
+setenv ALLELECACHE      ${DBUTILS}/allcacheload
 
 # Debug mode
 setenv EIDEBUG	0
 
 # User log
-setenv USERLOG	$HOME/.ei-log
+setenv USERLOG	${HOME}/.ei-log
 
 # User password file
-setenv EIPASSWORDFILE  $HOME/.mgi_password
+setenv EIPASSWORDFILE  ${HOME}/.mgi_password
 
 # EI Applications
 setenv EIAPPS	"mgd gxd mgiadmin mgi"
 
-# DB server name
-setenv MGD_DBSERVER PROD_MGI
-setenv DSQUERY ${MGD_DBSERVER}
-
-# DB instance names
-setenv MGD_DBNAME mgd
-setenv MGD ${MGD_DBNAME}
-setenv RADAR_DBNAME radar
-setenv RADAR ${RADAR_DBNAME}
-
-# Database User
-#setenv DBUSER mgd_dbo
-
-# Database Password File
-#setenv DBPASSWORDFILE $DBUTILITIESPATH/.mgd_dbo_password
-
 # Data directories
-setenv EIREPORTDIR	$HOME/mgireport
-setenv EIARCHIVEDIR	$EIDATADIR
-setenv EIWITHDRAWALDIR	$EIDATADIR/withdrawals
-setenv EIBREAKSPLITDIR	$EIDATADIR/breakpointsplits
-
-setenv REPORTUSER	mgd_public
-setenv REPORTPASSWORD	mgdpub
+setenv EIREPORTDIR	${HOME}/mgireport
+setenv EIARCHIVEDIR	${EIDATADIR}
+setenv EIWITHDRAWALDIR	${EIDATADIR}/withdrawals
+setenv EIBREAKSPLITDIR	${EIDATADIR}/breakpointsplits
 
 # X Resource file
-setenv XRES	$EIBUILDDIR/XRes.in
+setenv XRES	${EIBUILDDIR}/XRes.in
 
 # Make file for XRT Authorization
-setenv XRTMAKE	$EIBUILDDIR/Makefile.xrt
+setenv XRTMAKE	${EIBUILDDIR}/Makefile.xrt
 
 # Set umask for permissions on files created
 umask 002
+
