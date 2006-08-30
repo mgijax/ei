@@ -82,7 +82,7 @@ devents:
         ADClipboardAdd :local [];
         ADClipboardAddAll :local [];
 
-        DictionaryClear:local [clearLists : integer := 1;
+        DictionaryClear:local [clearLists : integer := 7;
 			       clearStages : boolean := false;
 			       reset : boolean := false;];
 
@@ -177,7 +177,7 @@ rules:
             -- initialize the alias key list
             delaliaskey_list := create string_list();
 
-	    DictionaryClear.clearLists := 3;
+	    DictionaryClear.clearLists := 15;
 	    send(DictionaryClear, 0);
 
             send(CheckTriggers,0);
