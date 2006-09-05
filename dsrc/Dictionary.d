@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec 09/05/2006
+--	- TR 7889; make "Ingeborg's version" the default
+--
 -- lec	05/16/2006
 --	- TR 7673; added MGI key, Edinburgh key; search for keys and notes
 --

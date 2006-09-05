@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jul 25 14:26:53 2006";
+      lastWritten = "Tue Sep  5 09:29:03 2006";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -61,6 +61,7 @@ Module: mgiAnatDictionary
                                   ID = ID;
                                   Group: Widget
                                     managed = True;
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
@@ -86,6 +87,8 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   edinburghKey = CharText : mgiDataTypes;
+                                  Group: Widget
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_form;
@@ -203,6 +206,7 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     subMenuId = MGIAddedPulldown;
                                     labelString = "MGI Added?";
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = structureText;
@@ -220,6 +224,8 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   printStopMenu = printStopMenu : mgiAnatDictionary;
+                                  Group: Widget
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_form;
@@ -233,6 +239,8 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   structureNote = Notes : mgiDataTypes;
+                                  Group: Widget
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_form;
