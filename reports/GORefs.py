@@ -121,7 +121,6 @@ cmd = 'select r.jnumID, r.title, r.short_citation, r.abstract ' + \
 	'where r._Marker_key = %d ' % (markerKey) + \
 	' and not exists (select 1 from VOC_Annot a, VOC_Evidence e ' + \
 	' where a._AnnotType_key = 1000 ' + \
-	' and a._Object_key = %d ' % (markerKey) + \
 	' and a._Annot_key = e._Annot_key ' + \
 	' and e._Refs_key = r._Refs_key) ' + \
 	' order by r.jnum desc'
