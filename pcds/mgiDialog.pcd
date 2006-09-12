@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jul 25 14:29:09 2006";
+      lastWritten = "Wed Sep  6 10:25:25 2006";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -753,13 +753,14 @@ Module: mgiDialog
           EditDialog = XmFormDialog;
           Group: Widget
             managed = False;
-            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ntargetKeyColumn:Int(Int)\nclearForms:StringTable(StringTable)=\"EditForm\"\nhomeWidget:StringTable(StringTable)\nallowEdit:Boolean(Boolean)=\"True\"\n";
+            userDefinedAttributes = "targetWidget:Widget(Widget)\ntargetColumn:Int(Int)\ntargetKeyColumn:Int(Int)\nclearForms:StringTable(StringTable)=\"EditForm\"\nhomeWidget:Widget(Widget)\nallowEdit:Boolean(Boolean)=\"True\"\n";
             dialogStyle = dialog_primary_application_modal;
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
             vip_y = 1570;
+            vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
               {
                 EditForm = EditForm : MGI;
                 Group: Constraint
