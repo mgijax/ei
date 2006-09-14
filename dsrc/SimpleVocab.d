@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	09/14/2006
+--	- fix bug with ModifyNotes/key declaration
+--
 -- lec	12/27/2001
 --	- created
 --
@@ -297,6 +300,7 @@ rules:
 	  keyName : string := "termKey";
 	  keyDeclared : boolean := false;
 	  termModified : boolean := false;
+	  definitionModified : boolean := false;
 
           currentSeqNum : string;
           newSeqNum : string;
@@ -358,8 +362,12 @@ rules:
 	      ModifyNotes.key := "@" + keyName;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := termTable.definition;
+	      ModifyNotes.keyDeclared := definitionModified;
 	      send(ModifyNotes, 0);
 	      cmd := cmd + termTable.sqlCmd;
+	      if (termTable.sqlCmd.length > 0) then
+		definitionModified := true;
+	      end if;
 
               mgi_tblSetCell(termTable, row, termTable.termKey, "@" + keyName);
 
@@ -384,8 +392,12 @@ rules:
 	      ModifyNotes.key := termKey;
 	      ModifyNotes.row := row;
 	      ModifyNotes.column := termTable.definition;
+	      ModifyNotes.keyDeclared := definitionModified;
 	      send(ModifyNotes, 0);
 	      cmd := cmd + termTable.sqlCmd;
+	      if (termTable.sqlCmd.length > 0) then
+		definitionModified := true;
+	      end if;
 
 	      termModified := true;
 
