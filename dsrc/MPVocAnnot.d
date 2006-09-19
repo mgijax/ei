@@ -337,11 +337,18 @@ rules:
  
 	  (void) busy_cursor(top);
 
-	  -- First, sort the table by the Term so that all like Terms
           if (not top.allowEdit) then
 	    (void) reset_cursor(top);
             return;
           end if;
+
+	  if (currentRecordKey.length = 0) then
+	    (void) reset_cursor(top);
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot save this Annotation if a record is not selected.";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
 
 	  if (top->Annotation->SearchObsoleteTerm.set) then
 	    (void) reset_cursor(top);
@@ -351,6 +358,7 @@ rules:
 	    return;
 	  end if;
 
+	  -- First, sort the table by the Term so that all like Terms
 	  -- are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current row's Term is not equal to the previous row's Term,
@@ -529,6 +537,14 @@ rules:
 	  keyName : string := "annotHeaderKey";
 	  keyDefined : boolean := false;
 
+	  if (currentRecordKey.length = 0) then
+	    (void) reset_cursor(top);
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot save this Header if a record is not selected.";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
+
 	  -- Check for duplicate Seq # assignments
 
           DuplicateSeqNumInTable.table := headerTable;
@@ -614,6 +630,14 @@ rules:
 	  annotEvidenceKey : string;
 
           (void) busy_cursor(top);
+
+	  if (currentRecordKey.length = 0) then
+	    (void) reset_cursor(top);
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot save this Note if a record is not selected.";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
 
 	  row := mgi_tblGetCurrentRow(annotTable);
 	  annotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
