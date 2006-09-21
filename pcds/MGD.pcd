@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Aug 25 09:24:13 2006";
+      lastWritten = "Thu Sep 21 13:17:16 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -12894,7 +12894,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               text = scrolledText : mgiDataTypes;
                                               Group: Widget
-                                                columns = 75;
+                                                columns = 50;
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: SetDefault() Search()";
@@ -13039,13 +13039,31 @@ Shift<Key>Tab: prev-tab-group()
                                     orientation = horizontal;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = mgiAccession;
-                                    leftOffset = 30;
+                                    leftWidget = CompleteAnnotation;
+                                    leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    topWidget = CompleteAnnotation;
+                                    topOffset = "-5";
+                                }
+                                {
+                                  CompleteAnnotation = AppendNotePush : mgiDataTypes;
+                                  Group: Widget
+                                    labelString = "Append Completion Date\nto Annotation Notes\n(then click SAVE)";
+                                    activateCallback = "D:GOComplete";
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = mgiAccession;
                                     topWidget = mgiAccession;
+                                    leftOffset = 10;
+                                  Group: User
+                                    noteWidget = mgiNoteForm;
                                 }
                           }
                     }
