@@ -485,7 +485,7 @@ rules:
 
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, key, set);
 
-            elsif (editMode = TBL_ROW_DELETE) then
+            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
             end if;
  
