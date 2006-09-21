@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec	09/20/2006
+--	TR 7912; add check in Modify to make sure a record is selected
+--
 -- lec	07/07/2006
 --	TR 7686; add VerifyMPReference
 --
