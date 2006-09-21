@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 09/21/2006	lec
+--	TR 7906; added GOComplete
+--
 -- 08/18/2006	lec
 --	TR 7865/VerifyGOREference, VerifyVocabEvidenceCode, VerifyVocabTermAccID
 --
@@ -82,12 +85,13 @@ devents:
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
         ClearGO :local [reset : boolean := false;];
-	GOVocAnnotExit :local [];			-- Destroys D module instance & cleans up
+	GOComplete :local [];				-- Append Completion Date to GO Note
+	GONoteInit :local [];				-- Pre-initialization of Note Dialog
 	GOTraverse :local [];
+	GOVocAnnotExit :local [];			-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	NotePreCancel :local [];			-- Pre-cancellation of Note Dialog
-	GONoteInit :local [];				-- Pre-initialization of Note Dialog
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
@@ -1014,6 +1018,20 @@ rules:
 	  if (mgi_tblGetCell(annotTable, row, annotTable.notes) = goNoteTemplate) then
 	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, "");
 	  end if;
+	end does;
+
+--
+-- GOComplete
+-- (TR 7906)
+--
+-- Activated From:  CompleteAnnotation.activateCallback
+-- Does:            Appends "<d>MM/DD/YYYY</d>" to Go Annotation Notes using today's date
+--
+
+	GOComplete does
+	    GOComplete.source_widget.note := "<d>" + get_date("%m/%d/%Y") + "</d>";
+	    AppendNote.source_widget := GOComplete.source_widget;
+	    send(AppendNote, 0);
 	end does;
 
 --
