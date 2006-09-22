@@ -27,12 +27,6 @@ setenv EIBUILDDIR ${USRLOCALMGI}/ei
 # data directory
 setenv EIDATADIR /data/ei
 
-# PYTHON OMIM Cache
-setenv OMIMCACHE        ${DBUTILS}/mrkcacheload
-
-# PYTHON Allele Cache
-setenv ALLELECACHE      ${DBUTILS}/allcacheload
-
 # Debug mode
 setenv EIDEBUG	0
 

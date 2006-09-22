@@ -1,36 +1,28 @@
 
-1.  Export the EI you want to build into /usr/local/mgi/ei/ei_build:
+1.  Export the EI you want to build into your destiation directory:
+
+	/usr/local/mgi/live
 
     Note that exporting the EI is NOT an installation of the EI!!!
     
-    cd /usr/local/mgi/ei/ei_build
+    cd /usr/local/mgi/live
     cvs export -r ei-tag -d ei-tag ei
 
-2.  Link /usr/local/mgi/ei/ei_build/ei-tag to /usr/local/mgi/ei/ei_build/ei
+2.  Edit Configuration file:
 
-    rm -rf ei	(remove existing link)
-    ln -s ei-tag ei
-
-3.  Edit Configuration file:
-
-    cd ei-tag
+    cd /usr/local/mgi/live/ei
     cp Configuration.default Configuration
     edit Configuration file carefully and appropriately
-
-    on rohan (development):
-	setenv EIINSTALLDIR /usr/local/mgi/ei/dev
-	setenv USERLOG  $HOME/.eidev-log
-	setenv DSQUERY DEV_MGI
-	setenv MGD mgd_release
-	setenv NOMEN nomen_release
 
     on shire (production):
 	use defaults
 
-4.  Building
+3.  Building
 
-    note: install also does a build.  so, if you're ultimate
-    goal is to install the application, you can skip this step.
+    "Build" means to compile to code.
+
+    note: Install also does a Build.  so, if you're ultimate
+    goal is to Install the application, you can skip this step.
 
     one application:
 
@@ -43,7 +35,10 @@
     For production and integration/beta testing, install compiled.
     For debugging, leave off "compiled" option.
 
-5.  Installing
+4.  Installing
+
+    "Install" means to build and copy the built code 
+    to the "install" directory based on the application's uxb.config file.
 
     one application:
 
@@ -56,11 +51,11 @@
     For production and integration/beta testing, install compiled.
     For debugging, leave off "compiled" option.
 
-6.  Running:
+5.  Running:
 
     rohan:
-    	/usr/local/mgi/ei/dev/runapp mgi
+    	/usr/local/mgi/live/ei/dev/runapp mgi
 
     shire:
-    	/usr/local/mgi/ei/prod/runapp mgi
+    	/usr/local/mgi/live/ei/prod/runapp mgi
 

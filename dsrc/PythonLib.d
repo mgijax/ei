@@ -34,11 +34,11 @@ rules:
 	  buf : string;
 
 	  if (pythonevent = EVENT_OMIM_BYALLELE) then
-	    cmds.insert(getenv("OMIMCACHE") + "/mrkomimByAllele.py", cmds.count + 1);
+	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByAllele.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_OMIM_BYMARKER) then
-	    cmds.insert(getenv("OMIMCACHE") + "/mrkomimByMarker.py", cmds.count + 1);
+	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByMarker.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_OMIM_BYGENOTYPE) then
-	    cmds.insert(getenv("OMIMCACHE") + "/mrkomimByGenotype.py", cmds.count + 1);
+	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py", cmds.count + 1);
 	  end if;
 
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
@@ -81,11 +81,11 @@ rules:
 	  buf : string;
 
 	  if (pythonevent = EVENT_ALLELECOMB_BYALLELE) then
-	    cmds.insert(getenv("ALLELECACHE") + "/allelecombinationByAllele.py", cmds.count + 1);
+	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByAllele.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_ALLELECOMB_BYMARKER) then
-	    cmds.insert(getenv("ALLELECACHE") + "/allelecombinationByMarker.py", cmds.count + 1);
+	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByMarker.py", cmds.count + 1);
 	  elsif (pythonevent = EVENT_ALLELECOMB_BYGENOTYPE) then
-	    cmds.insert(getenv("ALLELECACHE") + "/allelecombinationByGenotype.py", cmds.count + 1);
+	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecombinationByGenotype.py", cmds.count + 1);
 	  end if;
 
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
