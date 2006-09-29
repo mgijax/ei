@@ -22,5 +22,3 @@ foreach app ($EIAPPS)
    installapp $app compiled | tee >>& $LOG
 end
 
-cp -r system_docs ${EIINSTALLDIR}
-

@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep  5 09:29:03 2006";
+      lastWritten = "Fri Sep 29 13:01:23 2006";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -422,13 +422,13 @@ Module: mgiAnatDictionary
                                   version1 = push : mgiDataTypes;
                                   Group: Widget
                                     activateCallback = "D:ADVersion1";
-                                    labelString = "Ingeborg's Version";
+                                    labelString = "Coding Version";
                                 }
                                 {
                                   version2 = push : mgiDataTypes;
                                   Group: Widget
                                     activateCallback = "D:ADVersion2";
-                                    labelString = "Not Ingeborg's Version";
+                                    labelString = "Ontological Version";
                                 }
                                 {
                                   QueryList = QueryList;

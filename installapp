@@ -17,7 +17,12 @@ source ./Configuration
 setenv EIAPP	$1
 setenv MODE	$2
 
-switch ("$MODE")
+setenv LOG	${EIINSTALLDIR}/install${EIAPP}.log
+rm -rf ${LOG}
+
+date > ${LOG}
+
+switch ("${MODE}")
 	case compiled:	
 			setenv OPTIONS "-dmode compiled"
 			breaksw
@@ -37,7 +42,7 @@ if ( ! -d ${EIINSTALLDIR}/${EIAPP} ) then
 endif
 
 cd ${EIAPP}
-uxb $OPTIONS -destdir ${EIINSTALLDIR}/${EIAPP} install
+uxb ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install | tee -a ${LOG}
 cd ..
 
 #
@@ -45,3 +50,5 @@ cd ..
 #
 cp Configuration ${EIINSTALLDIR}
 cp runapp ${EIINSTALLDIR}
+
+date > ${LOG}
