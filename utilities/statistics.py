@@ -48,7 +48,6 @@
 
 import sys
 import os
-import regex
 import re
 import string
 import math
@@ -212,7 +211,7 @@ def parseDatalines(datalines, columns = 0):
 	translate = 0
  
  	for i in range(len(datalines)):
-		if regex.search('\+', datalines[i]) > 0:
+		if re.search('\+', datalines[i]) is not None:
 			translate = 1
 
 	# don't translate RI matrix
