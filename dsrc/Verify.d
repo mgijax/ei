@@ -2735,16 +2735,15 @@ rules:
 
 	  -- TR 5874
 	  -- TR 7865
-	  -- not (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674")) then
 	  termAcc : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.termAccID);
 	  if (termAcc.length > 0 and value = "73796" and 
-	      not (termAcc = "GO:0000004" or termAcc = "GO:0005554" or termAcc = "GO:0008372")) then
+	      not (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674")) then
 	    VerifyGOReference.doit := (integer) false;
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "NULL");
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.jnum, "");
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.citation, "");
             StatusReport.source_widget := top.root;
-            StatusReport.message := "J:73796 can only be used with GO:0000004, GO:0005554 or GO:0008372";
+            StatusReport.message := "J:73796 can only be used with GO:0008150, GO:0005575 or GO:0003674";
             send(StatusReport);
 	  end if;
 
@@ -3721,18 +3720,16 @@ rules:
 
 	  -- TR 5874
 	  -- TR 7865
-	  -- not (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674")) then
-          -- StatusReport.message := "Evidence Code 'ND' can only be used with GO:0008150, GO:0005575 or GO:0003674";
 	  termAcc := mgi_tblGetCell(table, row, table.termAccID);
 	  if (termAcc.length > 0 and evidence = "ND" and 
-	      not (termAcc = "GO:0000004" or termAcc = "GO:0005554" or termAcc = "GO:0008372")) then
+	      not (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674")) then
 	    if (isTable) then
 	      VerifyVocabEvidenceCode.doit := (integer) false;
 	    end if;
 	    (void) mgi_tblSetCell(table, row, table.evidenceKey, "NULL");
 	    (void) mgi_tblSetCell(table, row, table.evidence, "");
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Evidence Code 'ND' can only be used with GO:0000004, GO:0005554 or GO:0008372";
+            StatusReport.message := "Evidence Code 'ND' can only be used with GO:0008150, GO:0005575 or GO:0003674";
             send(StatusReport);
 	  end if;
 
@@ -3999,8 +3996,7 @@ rules:
 
 	      -- TR 4262
 	      -- TR 7865
-	      --if (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674") then
-	      if (termAcc = "GO:0000004" or termAcc = "GO:0008372" or termAcc = "GO:0005554") then
+	      if (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674") then
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.refsKey, "74750");
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.jnum, "73796");
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidenceKey, "118");
