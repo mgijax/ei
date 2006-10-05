@@ -2736,6 +2736,7 @@ rules:
 	  -- TR 5874
 	  -- TR 7865
 	  termAcc : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.termAccID);
+	  termAcc := termAcc.raise_case;
 	  if (termAcc.length > 0 and value = "73796" and 
 	      not (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674")) then
 	    VerifyGOReference.doit := (integer) false;
@@ -3721,6 +3722,7 @@ rules:
 	  -- TR 5874
 	  -- TR 7865
 	  termAcc := mgi_tblGetCell(table, row, table.termAccID);
+	  termAcc := termAcc.raise_case;
 	  if (termAcc.length > 0 and evidence = "ND" and 
 	      not (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674")) then
 	    if (isTable) then
@@ -3986,6 +3988,9 @@ rules:
 	  --   Display an error message, set the key columns to null, disallow edit to the field
 
 	  if (termKey.length > 0) then
+
+	    termAcc := termAcc.raise_case;
+
 	    if (isTable) then
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termAccID, termAcc);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, termKey);

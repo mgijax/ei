@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 10/05/2006	lec
+--	TR 7865; GO Unknowns merged to root terms
+--
 -- 09/21/2006	lec
 --	TR 7906; added GOComplete
 --
@@ -859,14 +862,12 @@ rules:
 	    i := i + 1;
 	  end while;
 
-	  -- Set all "unknown" term rows to red
+	  -- Set all root term rows to red
 	  i := 0;
 	  while (i < mgi_tblNumRows(annotTable)) do
-	    value := mgi_tblGetCell(annotTable, i, annotTable.term);
-	    if (value.length >= 7) then
-	      if (value->substr(value.length - 6, value.length) = "unknown") then
-		newBackground := newBackground + "(" + (string) i + " all Red)";
-	      end if;
+	    value := mgi_tblGetCell(annotTable, i, annotTable.termAccID);
+	    if (value = "GO:0008150" or value = "GO:0005575" or value = "GO:0003674") then
+	      newBackground := newBackground + "(" + (string) i + " all Red)";
 	    end if;
 	    i := i + 1;
 	  end while;
