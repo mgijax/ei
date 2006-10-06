@@ -409,6 +409,5 @@ def parse_ref_key(mldpref_key):
  
 fp = None
 db.sql(sys.argv[1], parse_ref_key)
-reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 

@@ -129,6 +129,5 @@ elif reportType == "dupall":
 
 fp = reportlib.init(name, title, os.environ['EIREPORTDIR'], sqlOneConnection = 0, sqlLogging = 0)
 process_ref(fp, cmd)
-reportlib.trailer(fp)
 reportlib.finish_nonps(fp)
 
