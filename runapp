@@ -10,7 +10,8 @@ setenv EIAPP	$1
 
 cd `dirname $0`
 
+unsetenv MGICONFIG
 source ./Configuration
 
-cd $EIINSTALLDIR/$EIAPP
-exec $EIAPP >>& $USERLOG
+cd ${EIINSTALLDIR}/${EIAPP}
+exec ${EIAPP} >>& ${USERLOG}

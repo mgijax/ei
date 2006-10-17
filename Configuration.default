@@ -8,10 +8,7 @@
 #	ex. 	source Configuration.default
 #
 
-#
-# for firien, change only this:
-#setenv MGICONFIG /net/mtdoom/vol/firien/localmgi/3.5/mgiconfig
-#
+# setenv MGICONFIG /net/mtdoom/vol/firien/localmgi/3.5/mgiconfig
 
 if ( ${?MGICONFIG} == 0 ) then
 	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
@@ -20,14 +17,14 @@ endif
 source ${MGICONFIG}/master.config.csh
 
 # install directory
-setenv EIINSTALLDIR ${USRLOCALMGI}/ei/prod
+setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
 # for MGI Menu, we can run both production and development versions
-setenv EIINSTALLDIRPROD ${USRLOCALMGI}/ei/prod
-setenv EIINSTALLDIRDEV ${USRLOCALMGI}/ei/dev
+setenv EIINSTALLDIRPROD ${EI_USRLOCALMGI}/ei/prod
+setenv EIINSTALLDIRDEV ${EI_USRLOCALMGI}/ei/dev
 
 # build directory
-setenv EIBUILDDIR ${USRLOCALMGI}/ei
+setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
 
 # data directory
 setenv EIDATADIR /data/ei
