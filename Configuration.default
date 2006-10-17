@@ -8,6 +8,11 @@
 #	ex. 	source Configuration.default
 #
 
+#
+# for firien, change only this:
+#setenv MGICONFIG /net/mtdoom/vol/firien/localmgi/3.5/mgiconfig
+#
+
 if ( ${?MGICONFIG} == 0 ) then
 	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
 endif
