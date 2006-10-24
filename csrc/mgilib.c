@@ -548,6 +548,9 @@ char *mgi_DBkey(int table)
     case CROSS:
             strcpy(buf, "_Cross_key");
 	    break;
+    case GO_TRACKING:
+            strcpy(buf, "_Marker_key");
+	    break;
     case GXD_ANTIGEN:
             strcpy(buf, "_Antigen_key");
 	    break;
@@ -1129,6 +1132,12 @@ char *mgi_DBtable(int table)
 	    break;
     case DAG_NODE_VIEW:
             strcpy(buf, "DAG_Node_View");
+	    break;
+    case GO_TRACKING:
+            strcpy(buf, "GO_Tracking");
+	    break;
+    case GO_TRACKING_VIEW:
+            strcpy(buf, "GO_Tracking_View");
 	    break;
     case GXD_ANTIGEN:
             strcpy(buf, "GXD_Antigen");
@@ -2340,6 +2349,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_CELLLINE:
       case BIB_DATASET_ASSOC:
       case BIB_REFS:
+      case GO_TRACKING:
       case GXD_ANTIBODY:
       case GXD_ANTIGEN:
       case GXD_ASSAY:
@@ -2401,6 +2411,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_CELLLINE:
       case BIB_REFS:
       case BIB_DATASET_ASSOC:
+      case GO_TRACKING:
       case GXD_ANTIBODY:
       case GXD_ANTIGEN:
       case GXD_ASSAY:

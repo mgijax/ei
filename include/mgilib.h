@@ -298,6 +298,11 @@ extern char *global_version;
 #define SEQ_SEQUENCE		1000
 #define SEQ_SOURCE_ASSOC	1001
 
+/* Tracking Tables */
+
+#define GO_TRACKING		1100
+#define GO_TRACKING_VIEW	1101
+
 /* End of Table Definitions */
 
 /* Stored procedures */
