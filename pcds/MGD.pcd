@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 21 13:17:16 2006";
+      lastWritten = "Tue Oct 24 11:40:25 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -12912,7 +12912,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = mgiAccession;
-                                    topOffset = 10;
+                                    topOffset = 25;
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     bottomOffset = 5;
@@ -13038,32 +13038,52 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     orientation = horizontal;
                                   Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = VocAnnotTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = VocAnnotTypeMenu;
+                                    topOffset = 5;
+                                }
+                                {
+                                  CompleteMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = CompletePulldown;
+                                    labelString = "Annotation Complete?";
+                                  Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = CompleteAnnotation;
+                                    leftWidget = mgiAccession;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
+                                    topWidget = VocAnnotTypeMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = CompleteAnnotation;
-                                    topOffset = "-5";
+                                      Popups:
+                                      {
+                                        CompletePulldown : YesNoPulldown = OptionPulldown;
+                                      }
                                 }
                                 {
-                                  CompleteAnnotation = AppendNotePush : mgiDataTypes;
+                                  ReferenceGeneMenu = YesNoMenu : mgiOption;
                                   Group: Widget
-                                    labelString = "Append Completion Date\nto Annotation Notes\n(then click SAVE)";
-                                    activateCallback = "D:GOComplete";
+                                    subMenuId = ReferenceGenePulldown;
+                                    labelString = "Reference Gene?";
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CompleteMenu;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
+                                    topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = mgiAccession;
-                                    topWidget = mgiAccession;
-                                    leftOffset = 10;
-                                  Group: User
-                                    noteWidget = mgiNoteForm;
+                                    topWidget = CompleteMenu;
+                                    topOffset = 5;
+                                      Popups:
+                                      {
+                                        ReferenceGenePulldown : YesNoPulldown = OptionPulldown;
+                                      }
                                 }
                           }
                     }

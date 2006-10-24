@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 10/24/2006	lec
+--	TR 7533/7920; GO Tracking
+--
 -- 10/05/2006	lec
 --	TR 7865; GO Unknowns merged to root terms
 --
@@ -319,6 +322,8 @@ rules:
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
 	  notesModified : boolean := false;
+	  referenceGene : string;
+	  completedAnnotation : string;
  
           if (not top.allowEdit) then
             return;
@@ -494,6 +499,30 @@ rules:
             row := row + 1;
 	  end while;
 
+	  --
+	  -- GO Tracking; the record is added by the VOC_Annot trigger
+	  --
+
+	  referenceGene := top->ReferenceGeneMenu.menuHistory.defaultValue;
+	  completedAnnotation := top->CompleteMenu.menuHistory.defaultValue;
+
+	  if (referenceGene = "%") then
+	    referenceGene := NO;
+	  end if;
+
+	  set := "isReferenceGene = " + referenceGene + ",";
+	  if (completedAnnotation = YES) then
+	    set := set + "_CompletedBy_key = " + global_loginKey + ",completion_date = getdate()";
+	  else
+	    set := set + "_CompletedBy_key = null,completion_date = null";
+	  end if;
+
+	  cmd := cmd + mgi_DBupdate(GO_TRACKING, top->mgiAccession->ObjectID->text.value, set);
+
+	  --
+	  -- end GO Tracking
+	  --
+
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
@@ -514,6 +543,7 @@ rules:
 	  from_notes : boolean := false;
 	  from_user1 : boolean := false;
 	  from_user2 : boolean := false;
+	  from_tracking : boolean := false;
 
 	  from := "from " + dbView + " v";
 	  where := "";
@@ -593,6 +623,26 @@ rules:
 	    from_user2 := true;
 	  end if;
 
+	  -- Tracking
+
+	  if (top->ReferenceGeneMenu.menuHistory.modified and
+              top->ReferenceGeneMenu.menuHistory.searchValue != "%") then
+	    where := where + "\nand t.isReferenceGene = " + top->ReferenceGeneMenu.menuHistory.defaultValue;
+	    from_tracking := true;
+	  end if;
+
+	  if (top->CompleteMenu.menuHistory.modified and
+              top->CompleteMenu.menuHistory.searchValue = YES) then
+	    where := where + "\nand t.completion_date is not null";
+	    from_tracking := true;
+	  end if;
+
+	  if (top->CompleteMenu.menuHistory.modified and
+              top->CompleteMenu.menuHistory.searchValue = NO) then
+	    where := where + "\nand t.completion_date is null";
+	    from_tracking := true;
+	  end if;
+
 	  -- Modification date
 
 	  top->Annotation->Table.sqlCmd := "";
@@ -657,6 +707,11 @@ rules:
 	  if (from_notes) then
 	    from := from + "," + mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n";
 	    where := where + "\nand e._AnnotEvidence_key = n._Object_key";
+	  end if;
+
+	  if (from_tracking) then
+	    from := from + "," + mgi_DBtable(GO_TRACKING) + " t";
+	    where := where + "\nand v._Object_key = t._Marker_key";
 	  end if;
 
           if (where.length > 0) then
@@ -754,7 +809,10 @@ rules:
 			  " where a._Object_key = " + currentRecordKey +
 			  " and a._Annot_key = e._Annot_key" +
 			  " and e._AnnotEvidence_key = n._Object_key" +
-			  " order by n._Object_key, n.sequenceNum\n";
+			  " order by n._Object_key, n.sequenceNum\n" +
+			  "select isReferenceGene, completion_date " +
+			  " from " + mgi_DBtable(GO_TRACKING_VIEW) +
+			  " where _Marker_key = " + currentRecordKey;
 
 	  row : integer := 0;
 	  i : integer;
@@ -821,6 +879,20 @@ rules:
 		  end if;
 		  i := i + 1;
 		end while;
+	      elsif (results = 5) then
+
+                SetOption.source_widget := top->ReferenceGeneMenu;
+                SetOption.value := mgi_getstr(dbproc, 1);
+                send(SetOption, 0);
+
+		if (mgi_getstr(dbproc, 2) != "") then
+                  SetOption.value := YES;
+                else
+                  SetOption.value := NO;
+                end if;
+                SetOption.source_widget := top->CompleteMenu;
+                send(SetOption, 0);
+
 	      end if;
 	      row := row + 1;
             end while;
