@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 23 11:45:10 2006";
+      lastWritten = "Tue Oct 24 11:39:11 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13046,24 +13046,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     topWidget = VocAnnotTypeMenu;
                                     topOffset = 5;
-                                }
-                                {
-                                  CompleteAnnotation = AppendNotePush : mgiDataTypes;
-                                  Group: Widget
-                                    labelString = "Append Completion Date\nto Annotation Notes\n(then click SAVE)";
-                                    activateCallback = "D:GOComplete";
-                                    managed = False;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = mgiAccession;
-                                    topWidget = mgiAccession;
-                                    leftOffset = 10;
-                                  Group: User
-                                    noteWidget = mgiNoteForm;
                                 }
                                 {
                                   CompleteMenu = YesNoMenu : mgiOption;
