@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 24 11:39:11 2006";
+      lastWritten = "Tue Oct 24 11:40:25 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -12912,7 +12912,7 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_form;
                                     topAttachment = attach_widget;
                                     topWidget = mgiAccession;
-                                    topOffset = 20;
+                                    topOffset = 25;
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     bottomOffset = 5;
