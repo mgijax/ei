@@ -1,5 +1,5 @@
 TAG: ei-3-5-1-12
-DATE: 10/24/2006
+DATE: 10/30/2006
 STAFF: lec
 CHANGES:
 1) TR7533/7920; GO Tracking
@@ -16,6 +16,7 @@ STAFF: lec
 CHANGES:
 1) branch point tag for TR7683
 
+>>>>>>> 1.628
 TAG: ei-3-5-1-11
 DATE: 10/17/2006
 STAFF: lec
