@@ -643,6 +643,14 @@ rules:
 	    from_tracking := true;
 	  end if;
 
+          QueryDate.source_widget := top->CompleteDate;
+	  QueryDate.tag := "t";
+          send(QueryDate, 0);
+          where := where + top->CompleteDate.sql;
+	  if (top->CompleteDate.sql.length > 0) then
+	    from_tracking := true;
+	  end if;
+ 
 	  -- Modification date
 
 	  top->Annotation->Table.sqlCmd := "";
@@ -884,6 +892,8 @@ rules:
                 SetOption.source_widget := top->ReferenceGeneMenu;
                 SetOption.value := mgi_getstr(dbproc, 1);
                 send(SetOption, 0);
+
+		top->CompleteDate->text.value := mgi_getstr(dbproc, 2);
 
 		if (mgi_getstr(dbproc, 2) != "") then
                   SetOption.value := YES;

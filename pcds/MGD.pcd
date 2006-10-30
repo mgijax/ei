@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 24 11:40:25 2006";
+      lastWritten = "Mon Oct 30 11:33:00 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13064,6 +13064,25 @@ Shift<Key>Tab: prev-tab-group()
                                       Popups:
                                       {
                                         CompletePulldown : YesNoPulldown = OptionPulldown;
+                                      }
+                                }
+                                {
+                                  CompleteDate = Date : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = CompleteMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = CompleteMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = "-5";
+                                  Group: User
+                                    fieldName = completion_date;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = " ";
                                       }
                                 }
                                 {
