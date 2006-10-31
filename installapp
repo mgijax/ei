@@ -17,6 +17,12 @@ source ./Configuration
 setenv EIAPP	$1
 setenv MODE	$2
 
+# create the application directory if it isn't already there
+
+if ( ! -d ${EIINSTALLDIR}/${EIAPP} ) then
+	mkdir -p ${EIINSTALLDIR}/${EIAPP}
+endif
+
 setenv LOG	${EIINSTALLDIR}/install${EIAPP}.log
 rm -rf ${LOG}
 
@@ -35,12 +41,6 @@ endsw
 # uxb.conf is assumed...
 #
 
-# create the application directory if it isn't already there
-
-if ( ! -d ${EIINSTALLDIR}/${EIAPP} ) then
-	mkdir ${EIINSTALLDIR}/${EIAPP}
-endif
-
 cd ${EIAPP}
 uxb ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install | tee -a ${LOG}
 cd ..
@@ -48,7 +48,13 @@ cd ..
 #
 # Copy main files to installation directory
 #
-cp Configuration ${EIINSTALLDIR}
-cp runapp ${EIINSTALLDIR}
+
+if ( ! -f ${EIINSTALLDIR}/Configuration ) then
+	cp Configuration ${EIINSTALLDIR}
+endif
+
+if ( ! -f ${EIINSTALLDIR}/runapp ) then
+	cp runapp ${EIINSTALLDIR}
+endif
 
 date > ${LOG}

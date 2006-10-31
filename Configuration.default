@@ -17,6 +17,7 @@ endif
 source ${MGICONFIG}/master.config.csh
 
 # install directory
+# install directory cannot be the same as the source directory
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
 # for MGI Menu, we can run both production and development versions
