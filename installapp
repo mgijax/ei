@@ -42,7 +42,7 @@ endsw
 #
 
 cd ${EIAPP}
-uxb ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install | tee -a ${LOG}
+uxb ${OPTIONS} -destdir ${EIINSTALLDIR}/${EIAPP} install >>& ${LOG}
 cd ..
 
 #
@@ -57,4 +57,5 @@ if ( ! -f ${EIINSTALLDIR}/runapp ) then
 	cp runapp ${EIINSTALLDIR}
 endif
 
-date > ${LOG}
+date >> ${LOG}
+

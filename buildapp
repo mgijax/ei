@@ -16,6 +16,11 @@ source ./Configuration
 setenv EIAPP	$1
 setenv MODE	$2
 
+setenv LOG      ${EIINSTALLDIR}/buildapp${EIAPP}.log
+rm -rf ${LOG}
+
+date > ${LOG}
+
 switch ("$MODE")
 	case compiled:	
 			setenv OPTIONS "-dmode compiled"
