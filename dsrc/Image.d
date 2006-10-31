@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	10/31/2006
+--	- TR 7710; add MGIType menu; defaults; processing; allow no updates
+--
 -- lec  09/29/2005
 --	- TR 7018; don't query by copyright unless a "%" character is present
 --
@@ -94,6 +97,7 @@ locals:
 	from : string;
 	where : string;
 
+	defaultMGITypeKey : string;
 	defaultImageTypeKey : string;
 	defaultThumbNailKey : string;
 	panekeyName : string := "paneKey";
@@ -202,9 +206,11 @@ rules:
 	  accTable := top->mgiAccessionTable->Table;
 
 	  if (global_application = "MGD") then
+	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
 	      top->ControlForm->AddGXD.sensitive := false;
 	      top->ControlForm->AddPhenotype.sensitive := true;
 	  else
+	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
 	      top->ControlForm->AddGXD.sensitive := true;
 	      top->ControlForm->AddPhenotype.sensitive := false;
 	  end if;
@@ -248,6 +254,7 @@ rules:
 	    defaultImageTypeKey := mgi_sql1("select _Term_key from VOC_Term_IMGType_View where term = 'Thumbnail'");
 
             cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
+		   defaultMGITypeKey + "," +
 		   defaultImageTypeKey + "," +
 		   refsKey + "," +
 		   defaultThumbNailKey + "," +
@@ -273,6 +280,7 @@ rules:
 	  defaultImageTypeKey := mgi_sql1("select _Term_key from VOC_Term_IMGType_View where term = 'Full Size'");
 
           cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
+		 defaultMGITypeKey + "," +
 		 defaultImageTypeKey + "," +
 		 refsKey + "," +
 		 defaultThumbNailKey + "," +
@@ -579,6 +587,10 @@ rules:
 	    where := where + "\nand i.figureLabel like " + mgi_DBprstr(top->FigureLabel->text.value);
 	  end if;
 
+	  if (top->MGITypeMenu.menuHistory.searchValue != "%") then
+	    where := where + "\nand i._MGIType_key = " + top->MGITypeMenu.menuHistory.searchValue;
+	  end if;
+
 	  if (top->ImageTypeMenu.menuHistory.searchValue != "%") then
 	    where := where + "\nand i._ImageType_key = " + top->ImageTypeMenu.menuHistory.searchValue;
 	  end if;
@@ -728,20 +740,24 @@ rules:
 		table := top->Control->ModificationHistory->Table;
 
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->xDim->text.value           := mgi_getstr(dbproc, 5);
-	        top->yDim->text.value           := mgi_getstr(dbproc, 6);
-	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 7);
-                top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 3);
-                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 17);
-                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 18);
+	        top->xDim->text.value           := mgi_getstr(dbproc, 6);
+	        top->yDim->text.value           := mgi_getstr(dbproc, 7);
+	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 8);
+                top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 4);
+                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 19);
+                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 20);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 19));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 20));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 21));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 22));
+
+                SetOption.source_widget := top->MGITypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 2);
+                send(SetOption, 0);
 
                 SetOption.source_widget := top->ImageTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 2);
+                SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then

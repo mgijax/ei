@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct  5 10:58:35 2006";
+      lastWritten = "Tue Oct 31 14:11:46 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1170,7 +1170,7 @@ Shift<Key>Tab: prev-tab-group()
                   resizable = true;
                   topOffset = 5;
                 Group: User
-                  cmd = "select _ImagePane_key, paneLabel from IMG_ImagePaneRef_View where _Refs_key =";
+                  cmd = "select _ImagePane_key, paneLabel from IMG_ImagePaneGXD_View where _Refs_key =";
                     {
                       Label = LookupLabel;
                       Group: Widget

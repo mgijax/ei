@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep  6 10:25:25 2006";
+      lastWritten = "Tue Oct 31 14:13:27 2006";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -932,7 +932,7 @@ Module: mgiDialog
                           {
                             ImagePaneList = LookupList : mgiLookup;
                             Group: User
-                              cmd = "select _ImagePane_key, paneLabel from IMG_ImagePaneRef_View where _Refs_key =";
+                              cmd = "select _ImagePane_key, paneLabel from IMG_ImagePaneGXD_View where _Refs_key =";
                                 {
                                   Label = LookupLabel;
                                   Group: Widget

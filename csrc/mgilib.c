@@ -2003,7 +2003,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case IMG_IMAGE:
-            sprintf(buf, "insert %s (%s, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, _MGIType_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE:
