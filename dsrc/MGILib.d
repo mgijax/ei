@@ -86,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-5-1-16";
+	  global_version := "CVS ei-3-5-1-17";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -276,14 +276,6 @@ rules:
 
 	      if (top->Control->Add != nil) then
 	        top->Control->Add.sensitive := false;
-	      end if;
-
-	      if (top->Control->AddGXD != nil) then
-	        top->Control->AddGXD.sensitive := false;
-	      end if;
-
-	      if (top->Control->AddPhenotype != nil) then
-	        top->Control->AddPhenotype.sensitive := false;
 	      end if;
 
 	      top->Control->Modify.sensitive := false;
