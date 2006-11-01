@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Oct 31 14:39:54 2006";
+      lastWritten = "Wed Nov  1 12:46:14 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -2862,56 +2862,53 @@ Module: MGI
                                   Modify = ControlPush;
                                 }
                                 {
-                                  AddGXD : Add = ControlPush;
-                                  Group: Widget
-                                    labelString = "Add GXD Image";
-                                    activateCallback = "D:VerifyEdit(mode = 2),\nD:Add(createThumbnail = false),\nD:GoHome";
+                                  Add = ControlPush;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Search;
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Modify;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Search;
-                                    topOffset = 2;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Modify;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 0;
+                                    leftOffset = 2;
                                 }
                                 {
                                   Delete = ControlPush;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
-                                    leftWidget = Modify;
+                                    leftWidget = Add;
                                     leftOffset = 2;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = Modify;
+                                    topWidget = Add;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                 }
                                 {
                                   Previous = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_widget;
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = Next;
+                                    topWidget = RecordCount;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightWidget = Next;
-                                    rightOffset = 5;
+                                    leftWidget = RecordCount;
+                                    leftOffset = 5;
                                 }
                                 {
                                   Next = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_form;
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = Delete;
+                                    topWidget = Previous;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    leftWidget = Previous;
+                                    leftOffset = 2;
                                     topOffset = 2;
-                                    rightOffset = 5;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -2919,14 +2916,14 @@ Module: MGI
                                 {
                                   RecordCount = RecordCount : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_none;
-                                    rightAttachment = attach_form;
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Previous;
+                                    topWidget = Search;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    rightOffset = 5;
+                                    leftWidget = Search;
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
@@ -2947,7 +2944,7 @@ Module: MGI
                                     leftWidget = Search;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AddPhenotype;
+                                    topWidget = RecordCount;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
@@ -2957,21 +2954,6 @@ Module: MGI
                                           xrtTblDisplayVertScrollBar = dispsb_never;
                                           xrtTblNumRows = 2;
                                       }
-                                }
-                                {
-                                  AddPhenotype = ControlPush;
-                                  Group: Widget
-                                    labelString = "Add Phenotype Image";
-                                    activateCallback = "D:VerifyEdit(mode = 2),\nD:Add(createThumbnail = true),\nD:GoHome";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = AddGXD;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = AddGXD;
-                                    topOffset = 2;
                                 }
                           }
                     }

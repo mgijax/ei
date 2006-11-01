@@ -10,8 +10,8 @@
 --
 -- History
 --
--- lec	10/31/2006
---	- TR 7710; add MGIType menu; defaults; processing; allow no updates
+-- lec	10/31/2006-11/01/2006
+--	- TR 8002; add MGIType menu; defaults; processing; allow no updates
 --
 -- lec  09/29/2005
 --	- TR 7018; don't query by copyright unless a "%" character is present
@@ -71,7 +71,7 @@ devents:
 
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
-	Add :local [createThumbnail: boolean := false;];
+	Add :local [createThumbnail: boolean := true;];
 	BuildDynamicComponents :local [];
         ClearImage :local [clearKeys : boolean := true;
                            clearLists : integer := 3;
@@ -99,6 +99,8 @@ locals:
 
 	defaultMGITypeKey : string;
 	defaultImageTypeKey : string;
+	fullImageTypeKey : string;
+	thumbnailImageTypeKey : string;
 	defaultThumbNailKey : string;
 	panekeyName : string := "paneKey";
 	panekeyDeclared : boolean := false;
@@ -205,15 +207,15 @@ rules:
 
 	  accTable := top->mgiAccessionTable->Table;
 
+	  fullImageTypeKey := top->ImageTypePulldown->Full.defaultValue;
+	  thumbnailImageTypeKey := top->ImageTypePulldown->Thumbnail.defaultValue;
+
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
-	      top->ControlForm->AddGXD.sensitive := false;
-	      top->ControlForm->AddPhenotype.sensitive := true;
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
-	      top->ControlForm->AddGXD.sensitive := true;
-	      top->ControlForm->AddPhenotype.sensitive := false;
 	  end if;
+
 	end does;
 
 --
@@ -251,7 +253,7 @@ rules:
 	    -- Create the Thumbnail record first
 
 	    defaultThumbNailKey := "NULL";
-	    defaultImageTypeKey := mgi_sql1("select _Term_key from VOC_Term_IMGType_View where term = 'Thumbnail'");
+	    defaultImageTypeKey := thumbnailImageTypeKey;
 
             cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
 		   defaultMGITypeKey + "," +
@@ -262,6 +264,8 @@ rules:
 	           mgi_DBprstr(top->FigureLabel->text.value) + "," +
 		   global_loginKey + "," +
 		   global_loginKey + ")\n";
+
+	    -- Thumbnails get one placeholder Image Pane record
 
 	    send(ModifyImagePane, 0);
 
@@ -277,7 +281,7 @@ rules:
 
 	  -- Create the Full Size record
 
-	  defaultImageTypeKey := mgi_sql1("select _Term_key from VOC_Term_IMGType_View where term = 'Full Size'");
+	  defaultImageTypeKey := fullImageTypeKey;
 
           cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
 		 defaultMGITypeKey + "," +
@@ -503,9 +507,21 @@ rules:
               break;
             end if;
  
+	    -- only load one pane for a thumbnail image
+
+	    if (row > 0 and defaultImageTypeKey = thumbnailImageTypeKey) then
+	      break;
+	    end if;
+
             key := mgi_tblGetCell(table, row, table.imagePaneKey);
             paneLabel := mgi_tblGetCell(table, row, table.paneLabel);
  
+	    -- never load a value for a thumbnail image
+
+	    if (defaultImageTypeKey = thumbnailImageTypeKey) then
+	      paneLabel := "";
+	    end if;
+
             if (editMode = TBL_ROW_EMPTY or editMode = TBL_ROW_ADD) then
 
               if (not panekeyDeclared) then
@@ -759,6 +775,8 @@ rules:
                 SetOption.source_widget := top->ImageTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
+
+	        defaultImageTypeKey := top->ImageTypeMenu.menuHistory.defaultValue;
 
 	      elsif (results = 2) then
 		top->Caption->text.value := top->Caption->text.value + mgi_getstr(dbproc, 2);
