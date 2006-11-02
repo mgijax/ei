@@ -112,6 +112,7 @@ rules:
 		  k := 1;
 		  while (k < label.length) do
 		    if (label[k] = ' ') then
+		      k := k - 1;
 		      break;
 		    end if;
 		    k := k + 1;
