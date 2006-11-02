@@ -192,6 +192,10 @@ rules:
 	    top->Copyright.noteKey := -1;
 	  end if;
 
+          SetOption.source_widget := top->MGITypeMenu;
+          SetOption.value := defaultMGITypeKey;
+          send(SetOption, 0);
+
 	end does;
 
 --
@@ -215,7 +219,6 @@ rules:
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
 	  end if;
-
 	end does;
 
 --
@@ -425,20 +428,34 @@ rules:
 	  cmd := "";
 	  set := "";
 
-          if (top->mgiCitation->ObjectID->text.modified) then
-            set := set + "_Refs_key = " + top->mgiCitation->ObjectID->text.value + ",";
-          end if;
- 
-	  -- X Dim and Y Dim are not modfiable by the user thru this form
+	  -- Only allow modifications of these attibutes via the full size image
 
-          if (top->FigureLabel->text.modified) then
-            set := set + "figureLabel = " + mgi_DBprstr(top->FigureLabel->text.value) + ",";
-          end if;
+	  if (defaultImageTypeKey = fullImageTypeKey) then
+
+            if (top->mgiCitation->ObjectID->text.modified) then
+              set := set + "_Refs_key = " + top->mgiCitation->ObjectID->text.value + ",";
+            end if;
  
+	    -- X Dim and Y Dim are not modfiable by the user thru this form
+
+            if (top->FigureLabel->text.modified) then
+              set := set + "figureLabel = " + mgi_DBprstr(top->FigureLabel->text.value) + ",";
+            end if;
+
+	  end if;
+
 	  panekeyDeclared := false;
 	  send(ModifyImagePane, 0);
 
 	  cmd := cmd + mgi_DBupdate(IMG_IMAGE, currentRecordKey, set);
+
+	  -- if any of the above attributes are modified, then modify those attributes for the corresponding thumbnail
+
+	  if (defaultImageTypeKey = fullImageTypeKey 
+	      and set.length > 0
+	      and top->ThumbnailImage->ObjectID->text.value.length > 0) then
+	    cmd := cmd + mgi_DBupdate(IMG_IMAGE, top->ThumbnailImage->ObjectID->text.value, set);
+	  end if;
 
 	  -- Notes
 
