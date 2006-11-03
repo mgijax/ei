@@ -96,6 +96,7 @@ locals:
 	set : string;
 	from : string;
 	where : string;
+	orderBy : string;
 
 	defaultMGITypeKey : string;
 	defaultImageTypeKey : string;
@@ -215,8 +216,10 @@ rules:
 
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
+	      orderBy := "\norder by i.jnum\n";
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
+	      orderBy := "\norder by i.imageType, i.jnum\n";
 	  end if;
 	end does;
 
@@ -358,7 +361,7 @@ rules:
             QueryNoInterrupt.source_widget := top;
 	    QueryNoInterrupt.select := "select distinct i._Image_key, " + 
 			"i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
-			from + "\n" + where + "\norder by i.jnum\n";
+			from + "\n" + where + orderBy;
 	    QueryNoInterrupt.table := IMG_IMAGE;
             send(QueryNoInterrupt, 0);
 	  else
@@ -698,7 +701,7 @@ rules:
 	  Query.source_widget := top;
 	  Query.select := "select distinct i._Image_key, " + 
 			"i.jnumID + \"; \" + i.imageType + \"; \" + i.figureLabel\n" +
-			from + "\n" + where + "\norder by i.jnum\n";
+			from + "\n" + where + orderBy;
 	  Query.table := IMG_IMAGE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
