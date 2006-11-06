@@ -355,14 +355,16 @@ rules:
           end if;
 
 	  -- If a Thumbnail was also created, then select 
+
 	  if (createThumbnail) then
 	    from := "from IMG_Image_View i";
 	    where := "where _Refs_key = " + refsKey;
             QueryNoInterrupt.source_widget := top;
 	    QueryNoInterrupt.select := "select distinct i._Image_key, " + 
-			"i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
-			from + "\n" + where + orderBy;
+		  "i.jnumID + \";\" + i.figureLabel + \";\" + i.imageType\n" + 
+		  from + "\n" + where + orderBy;
 	    QueryNoInterrupt.table := IMG_IMAGE;
+	    QueryNoInterrupt.selectItem := false;
             send(QueryNoInterrupt, 0);
 	  else
 	    top->Caption->text.value := "";
