@@ -17,9 +17,12 @@ PythonAlleleCombination [pythonevent : string;
 
 PythonMarkerHomologyCache [objectKey : string;];
 
+PythonReferenceCache [objectKey : string;];
+
 PythonMarkerOMIMCacheEnd [];
 
 PythonAlleleCombinationEnd [];
 
 PythonMarkerHomologyCacheEnd [];
 
+PythonReferenceCacheEnd [];

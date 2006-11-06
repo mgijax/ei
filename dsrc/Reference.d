@@ -410,6 +410,10 @@ rules:
 
 	    NextJnum.source_widget := top;
 	    send(NextJnum, 0);
+
+	    PythonReferenceCache.objectKey := currentRecordKey;
+	    send(PythonReferenceCache, 0);
+
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -460,6 +464,7 @@ rules:
 	  NextJnum.source_widget := top;
 	  send(NextJnum, 0);
 	  (void) reset_cursor(top);
+
 	end does;
 
 --
@@ -595,6 +600,9 @@ rules:
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
+
+	  PythonReferenceCache.objectKey := currentRecordKey;
+	  send(PythonReferenceCache, 0);
 
 	  (void) reset_cursor(top);
 	end does;
