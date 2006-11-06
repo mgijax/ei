@@ -85,6 +85,9 @@
 #
 # History
 #
+#	lec	11/06/2006
+#	- TR 6812; add hooks into loading BIB_Citation_Cache
+#
 #	lec	04/06/2006
 #	- regex replaced by re; regsub replaced by re
 #
@@ -220,7 +223,7 @@ def showUsage():
 	#
 	'''
  
-        usage = 'usage: %s [-S server] -[D database] ' % sys.argv[0] + \
+        usage = 'usage: %s ' % sys.argv[0] + \
 		'-U user -P password file --mode=[nlm addnlm] -j [starting J#] input file'
         error(usage)
  
@@ -238,9 +241,10 @@ def init():
 	global nlmFile, diagFile, dupsFile, nomatchFile, submissionFile, outFile
 	global mode, nextJnum
 	global userKey
+	global passwordFile
  
         try:
-                optlist, args = getopt.getopt(sys.argv[1:], 'S:D:U:P:j:', ['mode='])
+                optlist, args = getopt.getopt(sys.argv[1:], 'U:P:j:', ['mode='])
         except:
                 showUsage()
  
@@ -257,14 +261,10 @@ def init():
                 showUsage()
  
         for opt in optlist:
-                if opt[0] == '-S':
-                        server = opt[1]
-                elif opt[0] == '-D':
-                        database = opt[1]
-                elif opt[0] == '-U':
+                if opt[0] == '-U':
                         user = opt[1]
                 elif opt[0] == '-P':
-                        password = string.strip(open(opt[1], 'r').readline())
+			passwordFile = opt[1]
                 elif opt[0] == '--mode':
 			mode = opt[1]
 		elif opt[0] == '-j':
@@ -272,6 +272,8 @@ def init():
                 else:
                         showUsage()
  
+        password = string.strip(open(passwordFile, 'r').readline())
+
 	if user is None or password is None:
 		showUsage()
 
@@ -800,6 +802,31 @@ def processFile():
 	if newRec:
 		processRec(rec, rectags)	# Process last record
 
+def citationCache():
+	'''
+	# requires:
+	#
+	# effects:
+	# update BIB_Citation_Cache for inserted and updated references
+	#
+	# returns:
+	#
+	'''
+
+	args = '%s -U%s -P%s -K' \
+		% (CITATIONCACHE, db.get_sqlUser(), passwordFile)
+
+	# if adding, then insert cache records for every reference that does not have a cache record
+	if mode == 'addnlm':
+		args = args + '-1'
+
+	# if updating, then update cache records for every reference that has been modified today
+	else:
+		args = args + '-2'
+
+	print str(args)
+	os.system(args)
+
 #
 # Main Routine
 #
@@ -813,6 +840,11 @@ REVIEWSTATUS = 3	# Peer Reviewed Status
 
 INSERTBIB = 'insert BIB_Refs (_Refs_key, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)\n'
 
+CITATIONCACHE = os.environ['MGICACHELOAD'] + '/bibcitation.py'
+
+passwordFile = ''
+
 init()
 processFile()
+citationCache()
 finish()
