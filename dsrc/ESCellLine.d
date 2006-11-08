@@ -292,16 +292,12 @@ rules:
 	  SearchAcc.tableID := ALL_CELLLINE;
           send(SearchAcc, 0);
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "a";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
- 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "a";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
- 
+	  QueryModificationHistory.table := top->ModificationHistory->Table;
+	  QueryModificationHistory.tag := "a";
+	  send(QueryModificationHistory, 0);
+          from := from + top->ModificationHistory->Table.sqlFrom;
+          where := where + top->ModificationHistory->Table.sqlWhere;
+
           if (top->ESCellLine->text.value.length > 0) then
 	    where := where + "\nand a.cellLine like " + mgi_DBprstr(top->ESCellLine->text.value);
 	  end if;
