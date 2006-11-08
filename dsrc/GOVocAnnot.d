@@ -773,6 +773,11 @@ rules:
 	  end while;
 	  tables.close;
 
+	  ClearOption.source_widget := top->ReferenceGeneMenu;
+	  send(ClearOption, 0);
+	  ClearOption.source_widget := top->CompleteMenu;
+	  send(ClearOption, 0);
+
           if (top->QueryList->List.selectedItemCount = 0) then
 	    currentRecordKey := "";
             top->QueryList->List.row := 0;

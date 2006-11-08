@@ -3,7 +3,7 @@ Module: mgiMenu
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 13:18:58 2005";
+      lastWritten = "Wed Nov  8 08:15:03 2006";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
@@ -78,17 +78,24 @@ Module: mgiMenu
               }
               {
                 Edit = Edit : mgiMenu;
+                Group: Widget
+                  managed = False;
               }
               {
                 View = View : mgiMenu;
+                Group: Widget
+                  managed = False;
               }
               {
                 Reports = MenuCascade;
                 Group: Widget
                   activateCallback = "C: TuManage(find = ReportDialog)";
+                  managed = False;
               }
               {
                 Utilities = Utilities : mgiMenu;
+                Group: Widget
+                  managed = False;
               }
         }
         {

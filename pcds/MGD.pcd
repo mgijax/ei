@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Oct 30 11:33:00 2006";
+      lastWritten = "Wed Nov  8 08:28:30 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -528,6 +528,20 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = True;
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -759,6 +773,20 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = True;
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -1162,6 +1190,20 @@ Module: MGD
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu;
+                          {
+                            File = File : mgiMenu;
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = True;
+                          }
                     }
                     {
                       Edit = XmFrame;
@@ -5374,6 +5416,8 @@ Module: MGD
                           }
                           {
                             Utilities = Utilities : mgiMenu;
+                            Group: Widget
+                              managed = True;
                                 Popups:
                                 {
                                   UtilitiesPulldown = MenuPulldown;
@@ -6805,6 +6849,8 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Reports = MenuCascade;
+                            Group: Widget
+                              managed = True;
                           }
                           {
                             Utilities = Utilities : mgiMenu;
@@ -7847,6 +7893,8 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Edit = Edit : mgiMenu;
+                            Group: Widget
+                              managed = True;
                                 Popups:
                                 {
                                   EditPulldown = MenuPulldown : mgiMenu;
@@ -7866,6 +7914,8 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Utilities = Utilities : mgiMenu;
+                            Group: Widget
+                              managed = True;
                                 Popups:
                                 {
                                   UtilitiesPulldown = MenuPulldown : mgiMenu;
@@ -8626,6 +8676,8 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             View = View;
+                            Group: Widget
+                              managed = True;
                           }
                           {
                             Merge = MenuCascade : mgiMenu;
@@ -11465,6 +11517,8 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Utilities = Utilities : mgiMenu;
+                            Group: Widget
+                              managed = True;
                                 Popups:
                                 {
                                   UtilitiesPulldown = MenuPulldown;
@@ -12805,6 +12859,17 @@ Shift<Key>Tab: prev-tab-group()
                                           activateCallback = "D:ClearGO";
                                       }
                                 }
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                          }
+                          {
+                            Reports = MenuCascade;
+                            Group: Widget
+                              managed = True;
                           }
                     }
                     {
@@ -14657,6 +14722,8 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             View = View;
+                            Group: Widget
+                              managed = True;
                                 Popups:
                                 {
                                   ViewPulldown = MenuPulldown;
@@ -14669,6 +14736,11 @@ Shift<Key>Tab: prev-tab-group()
                                           form2 = ExptDetailForm;
                                       }
                                 }
+                          }
+                          {
+                            Reports = MenuCascade;
+                            Group: Widget
+                              managed = True;
                           }
                     }
                     {

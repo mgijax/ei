@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  1 12:46:14 2006";
+      lastWritten = "Wed Nov  8 08:25:31 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -1176,6 +1176,8 @@ Module: MGI
                           }
                           {
                             Edit = Edit : mgiMenu;
+                            Group: Widget
+                              managed = True;
                                 Popups:
                                 {
                                   EditPulldown = MenuPulldown : mgiMenu;

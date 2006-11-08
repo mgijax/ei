@@ -1617,19 +1617,19 @@ rules:
 
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
               if (results = 1) then
-                top->MolReferenceForm->ReferenceID->text.value := mgi_getstr(dbproc, 4);
-                top->MolReferenceForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 3);
-                top->MolReferenceForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 1);
-                top->MolReferenceForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 6);
-                top->MolMasterForm->MJnum->Jnum->text.value := mgi_getstr(dbproc, 1);
-                top->MolMasterForm->MJnum->ObjectID->text.value := mgi_getstr(dbproc, 6);
-                top->MolMasterForm->MJnum->Citation->text.value := mgi_getstr(dbproc, 3);
-                top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 8));
-                top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 7));
-		ref_createdBy := mgi_getstr(dbproc, 15);
-		ref_modifiedBy := mgi_getstr(dbproc, 16);
-		ref_creation_date := mgi_getstr(dbproc, 11);
-		ref_modification_date := mgi_getstr(dbproc, 12);
+                top->MolReferenceForm->ReferenceID->text.value := mgi_getstr(dbproc, 1);
+                top->MolReferenceForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 12);
+                top->MolReferenceForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 10);
+                top->MolReferenceForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 3);
+                top->MolMasterForm->MJnum->Jnum->text.value := mgi_getstr(dbproc, 10);
+                top->MolMasterForm->MJnum->ObjectID->text.value := mgi_getstr(dbproc, 3);
+                top->MolMasterForm->MJnum->Citation->text.value := mgi_getstr(dbproc, 12);
+                top->MolReferenceForm->HasSequence.set := (boolean)((integer) mgi_getstr(dbproc, 5));
+                top->MolReferenceForm->RMAP.set := (boolean)((integer) mgi_getstr(dbproc, 4));
+		ref_createdBy := mgi_getstr(dbproc, 13);
+		ref_modifiedBy := mgi_getstr(dbproc, 14);
+		ref_creation_date := mgi_getstr(dbproc, 8);
+		ref_modification_date := mgi_getstr(dbproc, 9);
               elsif (results = 2) then
                 top->MolReferenceForm->Notes->text.value := top->MolReferenceForm->Notes->text.value + 
 			mgi_getstr(dbproc, 1);

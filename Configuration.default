@@ -54,6 +54,9 @@ setenv XRES	${EIBUILDDIR}/XRes.in
 # Make file for XRT Authorization
 setenv XRTMAKE	${EIBUILDDIR}/Makefile.xrt
 
+# Python script parameters
+setenv PYTHON_PARAMS    "-S${MGD_DBSERVER} -D${MGD_DBNAME}"
+
 # Set umask for permissions on files created
 umask 002
 
