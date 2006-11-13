@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul  6 09:37:28 2006";
+      lastWritten = "Mon Nov 13 07:11:05 2006";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -449,6 +449,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -720,6 +723,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;

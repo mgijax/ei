@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  8 08:26:29 2006";
+      lastWritten = "Mon Nov 13 07:11:09 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -948,6 +948,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -2787,6 +2790,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2883,7 +2889,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     InterPro = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGR = AccToggle : mgiOption;
+                                                    DFCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     DOTS = AccToggle : mgiOption;

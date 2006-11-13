@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov  8 08:28:30 2006";
+      lastWritten = "Mon Nov 13 07:11:35 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -330,6 +330,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -2712,6 +2715,9 @@ Module: MGD
                                   EntrezGene = AccToggle : mgiOption;
                                 }
                                 {
+                                  VEGAGeneModel = AccToggle : mgiOption;
+                                }
+                                {
                                   NCBIGeneModel = AccToggle : mgiOption;
                                 }
                                 {
@@ -3318,6 +3324,9 @@ Module: MGD
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3419,7 +3428,7 @@ Module: MGD
                                                     Taxon = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGR = AccToggle : mgiOption;
+                                                    DFCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     DOTS = AccToggle : mgiOption;
@@ -6638,6 +6647,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9309,6 +9321,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9405,7 +9420,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     InterPro = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGR = AccToggle : mgiOption;
+                                                    DFCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     DOTS = AccToggle : mgiOption;
@@ -9961,6 +9976,9 @@ Shift<Key>Tab: prev-tab-group()
                                               EntrezGene = AccToggle : mgiOption;
                                             }
                                             {
+                                              VEGAGeneModel = AccToggle : mgiOption;
+                                            }
+                                            {
                                               NCBIGeneModel = AccToggle : mgiOption;
                                             }
                                             {
@@ -10060,7 +10078,7 @@ Shift<Key>Tab: prev-tab-group()
                                               Taxon = AccToggle : mgiOption;
                                             }
                                             {
-                                              TIGR = AccToggle : mgiOption;
+                                              DFCI = AccToggle : mgiOption;
                                               Group: Widget
                                                 managed = True;
                                             }
@@ -10967,6 +10985,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -11078,7 +11099,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     Taxon = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGR = AccToggle : mgiOption;
+                                                    DFCI = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -11337,6 +11358,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -11972,6 +11996,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -12085,7 +12114,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     Taxon = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGR = AccToggle : mgiOption;
+                                                    DFCI = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12247,6 +12276,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
@@ -12630,6 +12662,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EntrezGene = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -12729,7 +12764,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     Taxon = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    TIGR = AccToggle : mgiOption;
+                                                    DFCI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     DOTS = AccToggle : mgiOption;
@@ -14786,9 +14821,33 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -14955,6 +15014,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Ensembl = AccToggle : mgiOption;

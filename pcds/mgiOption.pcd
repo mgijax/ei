@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 30 09:04:28 2006";
+      lastWritten = "Mon Nov 13 07:11:03 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -169,6 +169,13 @@ Module: mgiOption
                         labelString = "Entrez Gene";
                       Group: User
                         defaultValue = 55;
+                    }
+                    {
+                      VEGAGeneModel = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "VEGA Gene Model";
+                      Group: User
+                        defaultValue = 85;
                     }
                     {
                       NCBIGeneModel = AccToggle : mgiOption;
@@ -407,7 +414,7 @@ Module: mgiOption
                         defaultValue = 32;
                     }
                     {
-                      TIGR = AccToggle : mgiOption;
+                      DFCI = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 35;
                     }
