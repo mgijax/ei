@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 13 07:11:10 2006";
+      lastWritten = "Wed Nov 29 14:03:45 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -3028,6 +3028,9 @@ Module: MGI
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TreeFam = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;

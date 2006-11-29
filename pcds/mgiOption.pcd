@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 13 07:11:03 2006";
+      lastWritten = "Wed Nov 29 14:03:36 2006";
       copy = false;
       inCreateMenu = true;
         {
@@ -190,6 +190,11 @@ Module: mgiOption
                         labelString = "Ensembl Gene Model";
                       Group: User
                         defaultValue = 60;
+                    }
+                    {
+                      TreeFam = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 86;
                     }
                     {
                       UniGene = AccToggle : mgiOption;
@@ -477,6 +482,11 @@ Module: mgiOption
                       MMRRC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 38;
+                    }
+                    {
+                      MUGEN = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 87;
                     }
                     {
                       NMICE = AccToggle : mgiOption;

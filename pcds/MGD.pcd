@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Nov 13 07:11:35 2006";
+      lastWritten = "Wed Nov 29 14:04:18 2006";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -339,6 +339,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TreeFam = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
@@ -1788,6 +1791,8 @@ Module: MGD
                           }
                           {
                             View = View;
+                            Group: Widget
+                              managed = True;
                                 Popups:
                                 {
                                   ViewPulldown = MenuPulldown;
@@ -2724,6 +2729,9 @@ Module: MGD
                                   EnsemblGeneModel = AccToggle : mgiOption;
                                 }
                                 {
+                                  TreeFam = AccToggle : mgiOption;
+                                }
+                                {
                                   UniGene = AccToggle : mgiOption;
                                 }
                                 {
@@ -3333,6 +3341,9 @@ Module: MGD
                                                     EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    TreeFam = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3462,6 +3473,9 @@ Module: MGD
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
@@ -6656,6 +6670,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    TreeFam = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9330,6 +9347,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    TreeFam = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9470,6 +9490,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    MUGEN = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -9983,6 +10008,9 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               EnsemblGeneModel = AccToggle : mgiOption;
+                                            }
+                                            {
+                                              TreeFam = AccToggle : mgiOption;
                                             }
                                             {
                                               UniGene = AccToggle : mgiOption;
@@ -10998,6 +11026,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    TreeFam = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -11367,6 +11398,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TreeFam = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -12011,6 +12045,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    TreeFam = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -12285,6 +12324,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TreeFam = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ATCC = AccToggle;
@@ -12671,6 +12713,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    TreeFam = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     UniGene = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -12798,6 +12843,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MUGEN = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
@@ -15026,6 +15074,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TreeFam = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     UniGene = AccToggle : mgiOption;
