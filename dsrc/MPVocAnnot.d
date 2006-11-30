@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 11/30/2006	lec
+--	fix bleed problem; was creating orphan evidence records
+--
 -- lec	09/20/2006
 --	TR 7912; add check in Modify to make sure a record is selected
 --
@@ -325,6 +328,7 @@ rules:
           editMode : string;
 	  key : string;
           annotKey : string;
+          annotKey2: string;
           termKey : string;
 	  qualifierKey : string;
 	  refsKey : string;
@@ -333,7 +337,6 @@ rules:
 	  keyDeclared : boolean := false;
 	  keyName : string := "annotEvidenceKey";
 	  annotKeyDeclared : boolean := false;
-	  newAnnotKey : integer := 1;
 	  dupAnnot : boolean;
 	  editTerm : boolean := false;
 	  clipAnnotEvidenceKey : string;
@@ -361,8 +364,7 @@ rules:
 	    return;
 	  end if;
 
-	  -- First, sort the table by the Term so that all like Terms
-	  -- are grouped together.  
+	  -- First, sort the table by the Term so that all like Terms are grouped together.  
 	  -- This will enable us to easily create 1 _Annot_key per Term.
 	  -- If the current row's Term is not equal to the previous row's Term,
 	  -- then we have a new _Annot_key.
@@ -403,11 +405,20 @@ rules:
 	      -- _Annot_key value, else generate a new one.
 
   	      dupAnnot := false;
+	      annotKey := "@" + KEYNAME;
 
 	      if (row > 0) then
 	        if (termKey = mgi_tblGetCell(annotTable, row - 1, annotTable.termKey) and
 	            qualifierKey = mgi_tblGetCell(annotTable, row - 1, annotTable.qualifierKey)) then
-		  annotKey := mgi_tblGetCell(annotTable, row - 1, annotTable.annotKey);
+
+		  -- if this is an existing annotation, use the same annotation key as previous row
+		  annotKey2 := mgi_tblGetCell(annotTable, row - 1, annotTable.annotKey);
+
+		  if (annotKey2.length > 0) then
+		    annotKey := annotKey2;
+		    mgi_tblSetCell(annotTable, row, annotTable.annotKey, annotKey);
+		  end if;
+
 		  dupAnnot := true;
 		end if;
 	      end if;
@@ -421,10 +432,7 @@ rules:
                   cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
 
-	      -- If we need a new Annotation key...or if the Annotation key
-	      -- was created during this transaction...
-
-	      if (annotKey.length = 0 or (integer) annotKey < 1000) then
+	      if (not dupAnnot) then
 
 		-- if the key def was not already declared, declare it
                 if (not annotKeyDeclared) then
@@ -436,19 +444,6 @@ rules:
                   cmd := cmd + mgi_DBincKey(KEYNAME);
                 end if;
 
-		-- Save the new annotation key value as a simple integer
-		-- So that when we process the subsequent row with the same Term,
-		-- we don't create another new key.
-
-		(void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, (string) newAnnotKey);
-		newAnnotKey := newAnnotKey + 1;
-		annotKey := "@" + KEYNAME;
-
-	      end if;
-
-	      -- If not a duplicate Annotation, then create the Annotation record
-
-	      if (not dupAnnot) then
                 cmd := cmd +
                        mgi_DBinsert(VOC_ANNOT, KEYNAME) +
 		       annotTypeKey + "," +
