@@ -1,10 +1,11 @@
+TAG: ei-3-5-1-32
 TAG: ei-3-5-1-31
 TAG: ei-3-5-1-30
 DATE: 11/29/2006
 STAFF: lec
 CHANGES:
 1) TR 8052; added MUGEN to Strains
-2) fixed "bleeding" problem in annotation modules
+2) fixed "bleeding" problem in annotation modules (GO, MP, OMIM)
 
 TAG: ei-3-5-1-29
 DATE: 11/13/2006
