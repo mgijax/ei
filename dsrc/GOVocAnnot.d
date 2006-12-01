@@ -428,9 +428,7 @@ rules:
                 if (not annotKeyDeclared) then
                   cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, KEYNAME);
                   annotKeyDeclared := true;
-
-		-- if the Annotation key is blank, then it's a new Term
-                elsif (annotKey.length = 0) then
+                else
                   cmd := cmd + mgi_DBincKey(KEYNAME);
                 end if;
 
