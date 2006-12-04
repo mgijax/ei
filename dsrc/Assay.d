@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	12/04/2006
+--	- TR 7710; add calls to PythonImageCache
+--
 -- lec  12/14/2005
 --	- TR 7328; added VerifyProbePrep
 --	- removed AnitbodyPrepVerifyForm, ProbePrepVerifyForm;
