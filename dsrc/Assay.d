@@ -630,6 +630,9 @@ rules:
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
+	  PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	  send(PythonImageCache, 0);
+
           (void) reset_cursor(top);
 	end does;
 
@@ -1101,6 +1104,9 @@ rules:
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
 
+	  PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	  send(PythonImageCache, 0);
+
           if (top->QueryList->List.row = 0) then
             ClearAssay.clearKeys := false;
             send(ClearAssay, 0);
@@ -1329,6 +1335,9 @@ rules:
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
+
+	  PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	  send(PythonImageCache, 0);
 
 	  (void) reset_cursor(top);
 	end does;
