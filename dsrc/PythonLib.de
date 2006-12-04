@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.de
 --
+-- 12/04/2006	lec
+--	- TR 7710; Image Cache
+--
 -- 04/04/2006	lec
 --	- TR 7607; HomologyCache
 --
@@ -19,6 +22,8 @@ PythonMarkerHomologyCache [objectKey : string;];
 
 PythonReferenceCache [objectKey : string;];
 
+PythonImageCache [objectKey : string;];
+
 PythonMarkerOMIMCacheEnd [];
 
 PythonAlleleCombinationEnd [];
@@ -26,3 +31,6 @@ PythonAlleleCombinationEnd [];
 PythonMarkerHomologyCacheEnd [];
 
 PythonReferenceCacheEnd [];
+
+PythonImageCacheEnd [];
+

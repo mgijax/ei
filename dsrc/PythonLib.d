@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.d
 --
+-- 12/04/2006	lec
+--	- TR 7710; Image Cache
+--
 -- 08/30/2006	lec
 --	- TR 7867; added tu_fork_ok loop
 --
@@ -193,6 +196,44 @@ rules:
 	end does;
 
 --
+-- PythonImageCache
+--
+-- Activated from:  Assay module
+-- after an insert, update or delete
+--
+
+	PythonImageCache does
+	  objectKey : string := PythonImageCache.objectKey;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  cmds.insert(getenv("MGICACHELOAD") + "/imgcache.py", cmds.count + 1);
+
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonImageCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
+	  tu_fork_free(proc_id);
+
+	end does;
+
+--
 -- PythonMarkerOMIMCacheEnd
 --
 
@@ -222,6 +263,14 @@ rules:
 
 	PythonReferenceCacheEnd does
 	  (void) mgi_writeLog("Reference Cache done.\n\n");
+	end does;
+
+--
+-- PythonImageCacheEnd
+--
+
+	PythonImageCacheEnd does
+	  (void) mgi_writeLog("Image Cache done.\n\n");
 	end does;
 
 end dmodule;
