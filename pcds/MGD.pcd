@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov 29 14:04:18 2006";
+      lastWritten = "Tue Jan  2 10:19:36 2007";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -7935,27 +7935,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            View = View : mgiMenu;
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                            Group: Widget
-                              managed = True;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        AlleleMerge = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:AlleleMergeInit";
-                                          labelString = "Allele Merge";
-                                      }
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -8649,9 +8628,6 @@ Shift<Key>Tab: prev-tab-group()
                                     rows = 50;
                                 }
                           }
-                    }
-                    {
-                      AlleleMergeDialog = AlleleMergeDialog : mgiDialog;
                     }
                     {
                       VerifyESStrain = VerifyESStrain : mgiDialog;
