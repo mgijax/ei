@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 02/02/2007	lec
+--	- TR 8078; VerifyGOInferredFrom; added TAS, NAS
+--
 -- 08/18/2006   lec
 --      TR 7865/VerifyGOREference, VerifyVocabEvidenceCode, VerifyVocabTermAccID
 --
@@ -2590,7 +2593,7 @@ rules:
 -- VerifyGOInferredFrom
 --
 --	Verify that if the "Inferred From" value is not blank, 
---	then the Evidence Code is not IDA
+--	then the Evidence Code is not IDA, TAS or NAS
 --
 
 	VerifyGOInferredFrom does
@@ -2640,11 +2643,11 @@ rules:
 	  evidence : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.evidence);
 	  evidence := evidence.raise_case;
 
-	  -- If evidence is IDA, display an error message
+	  -- If evidence is IDA, TAS or NAS, display an error message
 
-	  if (evidence = "IDA") then
+	  if (evidence = "IDA" or evidence = "TAS" or evidence = "NAS") then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "ERROR:  When using Evidence Code IDA, the Inferred From value must be blank.";
+            StatusReport.message := "ERROR:  When using Evidence Code IDA, TAS or NAS, the Inferred From value must be blank.";
             send(StatusReport);
 	    VerifyGOInferredFrom.doit := (integer) false;
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.inferredFrom, "");
