@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 02/02/2007	lec
+--	TR 8076; remove Allele Merge function
+--
 -- 08/23/2005	lec
 --	Image Associations
 --
@@ -63,10 +66,6 @@ devents:
 
 	ClearAllele :local :exported [clearKeys : boolean := true;
 			              reset : boolean := false;];
-
-	-- Process Merge Events
-	AlleleMergeInit :local [];
-	AlleleMerge :local [];
 
 	DisplayESCellLine :translation [];
 
@@ -513,64 +512,6 @@ rules:
 	  end if;
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- AlleleMergeInit
---
--- Activated from:  top->Edit->Merge->AlleleMerge, activateCallback
---
--- Initialize Allele Merge Dialog fields
---
- 
-        AlleleMergeInit does
-          dialog : widget := top->AlleleMergeDialog;
-
-	  dialog->mgiMarker->ObjectID->text.value := "";
-	  dialog->mgiMarker->Marker->text.value := "";
-	  dialog->OldAllele->ObjectID->text.value := "";
-	  dialog->OldAllele->Allele->text.value := "";
-	  dialog->NewAllele->ObjectID->text.value := "";
-	  dialog->NewAllele->Allele->text.value := "";
-	  dialog.managed := true;
-	end does;
-
---
--- AlleleMerge
---
--- Activated from:  top->AlleleMergeDialog->Process
---
--- Execute the appropriate stored procedure to merge the entered Alleles.
---
- 
-        AlleleMerge does
-          dialog : widget := top->AlleleMergeDialog;
- 
-          if (dialog->OldAllele->ObjectID->text.value.length = 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "Old Allele Symbol required during this merge";
-            send(StatusReport);
-            return;
-          end if;
- 
-          if (dialog->NewAllele->ObjectID->text.value.length = 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "New Allele Symbol required during this merge";
-            send(StatusReport);
-            return;
-          end if;
- 
-          (void) busy_cursor(dialog);
-
-	  cmd := "\nexec ALL_mergeAllele " +
-		dialog->OldAllele->ObjectID->text.value + "," +
-		dialog->NewAllele->ObjectID->text.value + "\n";
-
-	  ExecSQL.cmd := cmd;
-	  send(ExecSQL, 0);
-
-	  (void) reset_cursor(dialog);
-
 	end does;
 
 --

@@ -432,6 +432,8 @@ rules:
                   cmd := cmd + mgi_DBincKey(keyName);
 	      end if;
 
+	      -- If not a duplicate Annotation, then create the Annotation record
+
 	      if (not dupAnnot) then
 
 		-- if the key def was not already declared, declare it
