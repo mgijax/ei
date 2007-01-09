@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb  8 08:13:40 2006";
+      lastWritten = "Mon Jan  8 10:57:27 2007";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -521,6 +521,9 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 2450;
               {
                 DataSetsForm = XmForm;
+                Group: Widget
+                  rubberPositioning = False;
+                  resizePolicy = resize_any;
                     {
                       RefDBSStatus = RefDBSStatus : mgiTable;
                       Group: Constraint
@@ -540,13 +543,12 @@ Shift<Key>Tab: prev-tab-group()
                       RefDBSNonStatus = RefDBSNonStatus : mgiTable;
                       Group: Constraint
                         leftAttachment = attach_widget;
-                        leftWidget = RefDBSStatus;
-                        leftOffset = 5;
                         rightAttachment = attach_form;
-                        topAttachment = attach_opposite_widget;
-                        topWidget = RefDBSStatus;
+                        topAttachment = attach_form;
                         bottomAttachment = attach_none;
                         resizable = true;
+                        leftWidget = RefDBSStatus;
+                        leftOffset = 5;
                           {
                             Table = mgiTable;
                             Group: Widget

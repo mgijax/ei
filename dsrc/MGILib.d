@@ -86,7 +86,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
-	  global_version := "CVS ei-3-5-1-35";
+	  global_version := "CVS ei-3-5-1-36";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
