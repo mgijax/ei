@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan  2 10:16:35 2007";
+      lastWritten = "Mon Jan 22 07:25:49 2007";
       copy = false;
       inCreateMenu = true;
         {
@@ -49,6 +49,14 @@ Module: GXD
                                           activateCallback = "D:Clear(clearLists = 3)";
                                       }
                                 }
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                          }
+                          {
+                            View = View : mgiMenu;
+                            Group: Widget
+                              managed = True;
                           }
                     }
                     {
