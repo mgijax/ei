@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan  2 10:19:36 2007";
+      lastWritten = "Tue Jan 23 08:47:59 2007";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -3451,6 +3451,9 @@ Module: MGD
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    APF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3461,6 +3464,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
@@ -3475,7 +3481,13 @@ Module: MGD
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MTG = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MUGEN = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
@@ -3485,6 +3497,9 @@ Module: MGD
                                                   }
                                                   {
                                                     RIKENBRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -9430,6 +9445,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    APF = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -9446,6 +9466,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    EMS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -9470,7 +9495,17 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    MTG = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     MUGEN = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    NIG = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -9486,6 +9521,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENBRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    TAC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12146,6 +12186,18 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                       }
                                 }
+                                {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
                           }
                     }
                     {
@@ -12797,6 +12849,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    APF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -12807,6 +12862,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
@@ -12821,7 +12879,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MTG = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MUGEN = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
@@ -12831,6 +12895,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENBRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;

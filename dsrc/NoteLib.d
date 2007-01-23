@@ -114,6 +114,7 @@ rules:
 	  if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
 	      tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTETYPE_IMAGE_VIEW or 
+	      tableID = MGI_NOTETYPE_MARKER_VIEW or 
 	      tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 	      tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 	      tableID = MGI_NOTETYPE_SOURCE_VIEW or
@@ -154,6 +155,7 @@ rules:
 	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
 	            tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	            tableID = MGI_NOTETYPE_IMAGE_VIEW or 
+	            tableID = MGI_NOTETYPE_MARKER_VIEW or 
 	            tableID = MGI_NOTETYPE_MRKGO_VIEW or 
 		    tableID = MGI_NOTETYPE_NOMEN_VIEW or 
 		    tableID = MGI_NOTETYPE_SOURCE_VIEW or 
@@ -196,6 +198,7 @@ rules:
 	  if (tableID = MGI_NOTE_ALLELE_VIEW or 
 	      tableID = MGI_NOTE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTE_IMAGE_VIEW or 
+	      tableID = MGI_NOTE_MARKER_VIEW or 
 	      tableID = MGI_NOTE_MRKGO_VIEW or 
 	      tableID = MGI_NOTE_NOMEN_VIEW or 
 	      tableID = MGI_NOTE_SOURCE_VIEW or 
@@ -230,6 +233,7 @@ rules:
 	      if (tableID = MGI_NOTE_ALLELE_VIEW or 
 	          tableID = MGI_NOTE_GENOTYPE_VIEW or 
 	          tableID = MGI_NOTE_IMAGE_VIEW or 
+	          tableID = MGI_NOTE_MARKER_VIEW or 
 	          tableID = MGI_NOTE_MRKGO_VIEW or 
 		  tableID = MGI_NOTE_NOMEN_VIEW or 
 		  tableID = MGI_NOTE_SOURCE_VIEW or 

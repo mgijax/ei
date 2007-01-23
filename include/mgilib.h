@@ -262,6 +262,8 @@ extern char *global_version;
 #define MGI_NOTE_IMAGE_VIEW		652
 #define MGI_NOTETYPE_IMAGE_VIEW		653
 #define MGI_TRANSLATIONSEQNUM		654
+#define MGI_NOTE_MARKER_VIEW            655
+#define MGI_NOTETYPE_MARKER_VIEW        656
 
 
 /* Strains Tables */

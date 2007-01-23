@@ -283,6 +283,12 @@ rules:
           InitSynTypeTable.tableID := MGI_SYNONYMTYPE_MUSMARKER_VIEW;
           send(InitSynTypeTable, 0);
 
+	  -- Initialize Notes form
+
+	  InitNoteForm.notew := top->mgiNoteForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_MARKER_VIEW;
+	  send(InitNoteForm, 0);
+
           top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := 
             "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
             " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
@@ -950,6 +956,14 @@ rules:
           send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
+	  -- Process Notes
+
+	  ProcessNoteForm.notew := top->mgiNoteForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  cmd := cmd + top->mgiNoteForm.sql;
+
           --  Process Accession IDs
 
           ProcessAcc.table := accTable;
@@ -1347,6 +1361,18 @@ rules:
           from := from + top->Synonym->Table.sqlFrom;
           where := where + top->Synonym->Table.sqlWhere;
 
+	  i : integer := 1;
+	  while (i <= top->mgiNoteForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_MARKER_VIEW;
+            SearchNoteForm.join := "m." + mgi_DBkey(MRK_MARKER);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteForm.sqlFrom;
+	    where := where + top->mgiNoteForm.sqlWhere;
+	    i := i + 1;
+	  end while;
+
           if (top->MarkerTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand m._Marker_Type_key = " + top->MarkerTypeMenu.menuHistory.searchValue;
           end if;
@@ -1715,6 +1741,11 @@ rules:
           LoadSynTypeTable.tableID := MGI_SYNONYM_MUSMARKER_VIEW;
           LoadSynTypeTable.objectKey := currentRecordKey;
           send(LoadSynTypeTable, 0);
+
+	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_MARKER_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Nov 29 14:03:36 2006";
+      lastWritten = "Tue Jan 23 08:46:48 2007";
       copy = false;
       inCreateMenu = true;
         {
@@ -444,6 +444,11 @@ Module: mgiOption
                         defaultValue = 22;
                     }
                     {
+                      APF = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 90;
+                    }
+                    {
                       BCBC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 58;
@@ -462,6 +467,11 @@ Module: mgiOption
                       EMMA = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 37;
+                    }
+                    {
+                      EMS = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 91;
                     }
                     {
                       Harwell = AccToggle : mgiOption;
@@ -484,9 +494,19 @@ Module: mgiOption
                         defaultValue = 38;
                     }
                     {
+                      MTG = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 92;
+                    }
+                    {
                       MUGEN = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 87;
+                    }
+                    {
+                      NIG = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 93;
                     }
                     {
                       NMICE = AccToggle : mgiOption;
@@ -504,6 +524,11 @@ Module: mgiOption
                         labelString = "RIKEN BRC";
                       Group: User
                         defaultValue = 70;
+                    }
+                    {
+                      TAC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 94;
                     }
                     {
                       IMAGELibrary = AccToggle : mgiOption;

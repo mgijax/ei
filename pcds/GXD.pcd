@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 22 07:25:49 2007";
+      lastWritten = "Tue Jan 23 08:46:53 2007";
       copy = false;
       inCreateMenu = true;
         {
@@ -2915,6 +2915,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    APF = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     BCBC = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2925,6 +2928,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EMMA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     Harwell = AccToggle : mgiOption;
@@ -2939,7 +2945,13 @@ Shift<Key>Tab: prev-tab-group()
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MTG = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     MUGEN = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIG = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
@@ -2949,6 +2961,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RIKENBRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TAC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
