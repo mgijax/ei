@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Sep 29 13:01:23 2006";
+      lastWritten = "Wed Jan 24 10:26:34 2007";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -239,8 +239,6 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   structureNote = Notes : mgiDataTypes;
-                                  Group: Widget
-                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_form;

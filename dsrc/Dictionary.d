@@ -1000,8 +1000,6 @@ rules:
      top->edinburghKey.sensitive := false;
      top->printStopMenu.sensitive := false;
      top->MGIAddedMenu.sensitive := false;
-     top->structureNote.sensitive := false;
-     top->structureNote->text.sensitive := false;
    end does;
 
 --
@@ -1015,8 +1013,6 @@ rules:
      top->edinburghKey.sensitive := true;
      top->printStopMenu.sensitive := true;
      top->MGIAddedMenu.sensitive := true;
-     top->structureNote.sensitive := true;
-     top->structureNote->text.sensitive := true;
    end does;
 
 end dmodule;
