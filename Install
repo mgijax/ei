@@ -15,12 +15,8 @@
 
 cd `dirname $0` && source ./Configuration
 
-if ( ! -d ${EIINSTALLDIRPROD} ) then
-	mkdir ${EIINSTALLDIRPROD}
-endif
-
-if ( ! -d ${EIINSTALLDIRDEV} ) then
-	mkdir ${EIINSTALLDIRDEV}
+if ( ! -d ${EIINSTALLDIR} ) then
+	mkdir ${EIINSTALLDIR}
 endif
 
 ./installall compiled

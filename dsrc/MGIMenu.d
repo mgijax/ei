@@ -12,10 +12,8 @@ dmodule MGIMenu is
 
 devents:
 
-	ForkIt :local [app : string; path : string;];
+	ForkIt :local [app : string;];
 		-- app is the name and arguments of the script to run
-		-- path is either "prod" or "dev" and is used to 
-		-- determine the path of app from an enviroment variable
 	ForkEnd :local [];
 	Exit :local [];
 
@@ -39,14 +37,7 @@ rules:
 
 	ForkIt does
 	  cmd_str : string_list;
-	  path : string;
-
-	  if (ForkIt.path = "prod") then
-	    path := getenv("EIINSTALLDIRPROD");
-	  else
-	    path := getenv("EIINSTALLDIRDEV");
-	  end if;
-
+	  path : string := getenv("EIINSTALLDIR");
 	  cmd_str := mgi_splitfields(ForkIt.app, " ");
 	  proc_id : opaque := tu_fork_process(path + "/" + cmd_str[1], cmd_str, nil, ForkEnd);
 	  subprocs.append(proc_id);

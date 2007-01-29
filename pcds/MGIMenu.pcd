@@ -2,7 +2,7 @@ Module: MGIMenu
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Apr  8 10:44:45 2005";
+      lastWritten = "Mon Jan 29 10:16:49 2007";
         {
           MGIMenu = TopLevelShell;
           Group: Widget
@@ -50,42 +50,20 @@ Module: MGIMenu
                               entryAlignment = alignment_center;
                               spacing = 5;
                                 {
-                                  MGDPROD = XmPushButton;
+                                  MGD = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"runapp mgd\", path = \"prod\")";
+                                    activateCallback = "D:ForkIt(app = \"runapp mgd\")";
                                     traversalOn = False;
                                     managed = True;
-                                    labelString = "MGD Production";
+                                    labelString = "Mouse Genome Database (MGD)";
                                 }
                                 {
-                                  GXDPROD = XmPushButton;
+                                  GXD = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"runapp gxd\", path = \"prod\")";
+                                    activateCallback = "D:ForkIt(app = \"runapp gxd\")";
                                     traversalOn = False;
                                     managed = True;
-                                    labelString = "GXD Production";
-                                }
-                                {
-                                  separatorGadget = XmSeparatorGadget;
-                                }
-                                {
-                                  MGDDEV = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"runapp mgd\", path = \"dev\")";
-                                    traversalOn = False;
-                                    managed = True;
-                                    labelString = "MGD Development";
-                                }
-                                {
-                                  GXDDEV = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:ForkIt(app = \"runapp gxd\", path = \"dev\")";
-                                    traversalOn = False;
-                                    managed = True;
-                                    labelString = "GXD Development";
-                                }
-                                {
-                                  separatorGadget1 = XmSeparatorGadget;
+                                    labelString = "Gene Expression Database (GXD)";
                                 }
                           }
                     }

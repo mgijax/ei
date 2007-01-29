@@ -8,21 +8,13 @@
 #	ex. 	source Configuration.default
 #
 
-# setenv MGICONFIG /net/mtdoom/vol/firien/localmgi/3.5/mgiconfig
-
 if ( ${?MGICONFIG} == 0 ) then
 	setenv MGICONFIG /usr/local/mgi/live/mgiconfig
 endif
 
 source ${MGICONFIG}/master.config.csh
 
-# install directory
-# install directory cannot be the same as the source directory
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
-
-# for MGI Menu, we can run both production and development versions
-setenv EIINSTALLDIRPROD ${EI_USRLOCALMGI}/ei/prod
-setenv EIINSTALLDIRDEV ${EI_USRLOCALMGI}/ei/dev
 
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
