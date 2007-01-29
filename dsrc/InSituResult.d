@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	01/29/2007
+--	- TR 7710; add calls to PythonImageCache
+--
 -- lec	08/28/2001
 --	- TR 2869
 --
@@ -413,6 +416,10 @@ rules:
           ModifySQL.list := nil;
           send(ModifySQL, 0);
  
+	  key := top.root->mgiCitation->ObjectID->text.value;
+	  PythonImageCache.objectKey := key;
+          send(PythonImageCache, 0);
+
 	  send(Select, 0);
 
           (void) reset_cursor(top);
