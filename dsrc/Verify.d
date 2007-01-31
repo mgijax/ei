@@ -16,7 +16,10 @@
 --
 -- History
 --
--- 02/02/2007	lec
+-- 01/31/2007	lec
+--	- TR 8135; VerifyGelControl; add Western blot
+--
+-- 01/02/2007	lec
 --	- TR 8078; VerifyGOInferredFrom; added TAS, NAS
 --
 -- 08/18/2006   lec
@@ -1088,7 +1091,13 @@ rules:
 --			ageRange, sexKey, sex, rnaKey, rna, sampleAmt (integer)
 --
 --  If Control != 'No', set Genotype, Sample, RNA, Age, Sex to Not Applicable
+--
 --  If Control = 'No', then set to blank
+--
+--  If Assay = Western and Control = 'No', then set RNA to Not Applicable (TR 8135)
+--
+--  If Assay = Northern, Nuclease S1, RT-PCR or RNase Protection
+--  and Control = 'No', then RNA should not be Not Applicable (TR 8135)
 --
 
 	VerifyGelLaneControl does
@@ -1098,6 +1107,7 @@ rules:
 	  tableForm : widget;
 	  table : widget;
 	  row : integer;
+	  assayType : string := top->AssayTypeMenu.menuHistory.defaultValue;
 
 	  tableForm := top->(pulldown.tableForm);
 	  table := tableForm->Table;
@@ -1109,8 +1119,15 @@ rules:
           -- Age range
 	  (void) mgi_tblSetCell(table, row, table.ageRange, "");
 
+	  -- If Assay is Western and Control is No, then RNA = Not Applicable
+	  if (assayType = "8" and mgi_tblGetCell(table, row, table.controlKey) = "1") then
+	    (void) mgi_tblSetCell(table, row, table.rnaKey,
+	           top->CVGel->GelRNATypePulldown->NotApplicable.defaultValue);
+	    (void) mgi_tblSetCell(table, row, table.rna,
+	           top->CVGel->GelRNATypePulldown->NotApplicable.labelString);
+
 	  -- If "No" is not selected
-	  if (mgi_tblGetCell(table, row, table.controlKey) != "1") then
+	  elsif (mgi_tblGetCell(table, row, table.controlKey) != "1") then
 	    -- Genotype
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, NOTAPPLICABLE);
 	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166309");
