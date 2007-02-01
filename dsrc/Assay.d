@@ -28,6 +28,11 @@
 --
 -- History
 --
+-- lec  02/01/2007
+--	- TR 8135; CopyGelLane
+--	- don't copy anything into a control lane
+--	- don't copy Not Applicable RNA Type into non-Control lanes
+--
 -- lec	12/04/2006
 --	- TR 7710; add calls to PythonImageCache
 --
@@ -920,6 +925,7 @@ rules:
 	  reason : integer := CopyGelLane.reason;
 	  doit : boolean := CopyGelLane.doit;
 	  keyColumn : integer;
+	  controlKey : string;
 
           if (CopyGelLane.reason = TBL_REASON_VALIDATE_CELL_BEGIN) then
             return;
@@ -938,6 +944,15 @@ rules:
 	    return;
 	  end if;
 
+	  -- If this lane is a control lane, then don't copy any values
+
+          controlKey := mgi_tblGetCell(table, row, table.controlKey);
+	  if (controlKey.length > 0) then
+	    if (controlKey != "1") then
+	      return;
+	    end if;
+	  end if;
+
 	  if (mgi_tblGetCell(table, row, column) = "" and
 	      mgi_tblGetCell(table, row - 1, column) != "") then
 
@@ -954,6 +969,12 @@ rules:
 	      keyColumn := table.rnaKey;
 	    elsif (column = table.sex) then
 	      keyColumn := table.sexKey;
+	    end if;
+
+	    -- if copying RNA Type, don't copy the "Not Applicable" value
+	    if (column = table.rna and mgi_tblGetCell(table, row - 1, keyColumn) = "-2") then
+	      mgi_tblSetCell(table, row, column, "");
+	      return;
 	    end if;
 
 	    -- For Age Prefix, copy Age Key columns

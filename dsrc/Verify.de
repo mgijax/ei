@@ -24,6 +24,8 @@ VerifyFloat [];
 
 VerifyGelLaneControl [];
 
+VerifyGelLaneRNAType [];
+
 VerifyGelRowUnits [];
 
 VerifyGenotype [];

@@ -18,6 +18,7 @@
 --
 -- 01/31/2007	lec
 --	- TR 8135; VerifyGelControl; add Western blot
+--	- TR 8135; VerifyGelRNAType
 --
 -- 01/02/2007	lec
 --	- TR 8078; VerifyGOInferredFrom; added TAS, NAS
@@ -1182,6 +1183,84 @@ rules:
 	end does;
 
 --
+-- VerifyGelLaneRNAType
+--
+-- Activated from:  GelRNATypeMenu->GelRNATypePulldown->GelRNATypeToggle:valueChangedCallback
+-- Activated from:  Gel Lane Table
+--
+--  If Assay = Northern, Nuclease S1, RT-PCR or RNase Protection
+--  and Control = 'No', then RNA should not be Not Applicable (TR 8135)
+--
+
+	VerifyGelLaneRNAType does
+	  sourceWidget : widget := VerifyGelLaneRNAType.source_widget;
+	  top : widget := VerifyGelLaneRNAType.source_widget.root;
+	  assayType : string := top->AssayTypeMenu.menuHistory.defaultValue;
+
+	  table : widget;
+	  row : integer;
+	  column : integer;
+	  reason : integer;
+
+	  controlKey : string;
+	  rnaKey : string;
+	  isTable : boolean;
+
+	  pulldown : widget;
+	  tableForm : widget;
+
+	  isTable := mgi_tblIsTable(sourceWidget);
+
+	  -- Processing for Table
+
+	  if (isTable) then
+	    table := sourceWidget;
+	    row := VerifyGelLaneRNAType.row;
+	    column := VerifyGelLaneRNAType.column;
+	    reason := VerifyGelLaneRNAType.reason;
+	    
+	    if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	      return;
+            end if;
+
+	    -- If not in rna type column, return
+
+	    if (column != table.rna) then
+	      return;
+	    end if;
+
+	  -- Processing for Pulldown
+
+          else
+	    if (sourceWidget.set = false) then
+	      return;
+	    end if;
+
+	    pulldown := top->CVGel->GelRNATypeMenu.subMenuId;
+	    tableForm := top->(pulldown.tableForm);
+	    table := tableForm->Table;
+            row := mgi_tblGetCurrentRow(table);
+          end if;
+
+	  controlKey := mgi_tblGetCell(table, row, table.controlKey);
+	  rnaKey := mgi_tblGetCell(table, row, table.rnaKey);
+
+	  if ((assayType = "2" or assayType = "3" or assayType = "4" or assayType = "5")
+	      and controlKey = "1" and rnaKey = "-2") then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Invalid RNA Type for this Assay Type and Control value";
+            send(StatusReport);
+	    (void) mgi_tblSetCell(table, row, table.rnaKey, "");
+	    (void) mgi_tblSetCell(table, row, table.rna, "");
+
+	    if (isTable) then
+              VerifyGelLaneRNAType.doit := (integer) false;
+	    end if;
+	  end if;
+
+	end does;
+
+--
 -- VerifyGelRowUnits
 --
 -- Activated from:  Table ValidateCellCallback
@@ -1266,11 +1345,13 @@ rules:
 	  if (genotypeID.length = 0) then
 
 	    -- a kludge...this really needs to be specific to GXD Assays
-	    -- where we want to default the Gentoype
+	    -- where we want to default the Gentoype for non-Control lanes
 
 	    if (table.is_defined("genotypeName") = nil) then
-	      (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
-	      (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
+	      if (mgi_tblGetCell(table, row, table.controlKey) = "1") then
+                (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
+	        (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
+	      end if;
 	    end if;
 	    return;
 
