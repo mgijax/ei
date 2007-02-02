@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  02/02/2007
+--	- TR 8138; set copyright value during Add if it is blank
+--
 -- lec	10/31/2006-11/01/2006
 --	- TR 8002; add MGIType menu; defaults; processing; allow no updates
 --
@@ -247,6 +250,12 @@ rules:
 	    end if;
 	  end if;
 
+	  -- get the copyright if it has not already been retrieved
+
+	  if (top->Copyright->text.value.length = 0) then
+	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+          end if;
+
 	  currentRecordKey := "@" + KEYNAME;
 	  panekeyDeclared := false;
 	  refsKey := top->mgiCitation->ObjectID->text.value;
@@ -428,6 +437,12 @@ rules:
 	      send(StatusReport);
 	    end if;
 	  end if;
+
+	  -- get the copyright if it has not already been retrieved
+
+	  if (top->Copyright->text.value.length = 0) then
+	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+          end if;
 
 	  cmd := "";
 	  set := "";

@@ -1108,11 +1108,18 @@ rules:
 	  tableForm : widget;
 	  table : widget;
 	  row : integer;
+	  value : string;
 	  assayType : string := top->AssayTypeMenu.menuHistory.defaultValue;
 
 	  tableForm := top->(pulldown.tableForm);
 	  table := tableForm->Table;
           row := mgi_tblGetCurrentRow(table);
+
+	  if (sourceWidget.set = false) then
+	    return;
+	  end if;
+
+	  value := sourceWidget.defaultValue;
 
 	  -- Sample amount
 	  (void) mgi_tblSetCell(table, row, table.sampleAmt, "");
@@ -1121,14 +1128,14 @@ rules:
 	  (void) mgi_tblSetCell(table, row, table.ageRange, "");
 
 	  -- If Assay is Western and Control is No, then RNA = Not Applicable
-	  if (assayType = "8" and mgi_tblGetCell(table, row, table.controlKey) = "1") then
+	  if (assayType = "8" and value = "1") then
 	    (void) mgi_tblSetCell(table, row, table.rnaKey,
 	           top->CVGel->GelRNATypePulldown->NotApplicable.defaultValue);
 	    (void) mgi_tblSetCell(table, row, table.rna,
 	           top->CVGel->GelRNATypePulldown->NotApplicable.labelString);
 
 	  -- If "No" is not selected
-	  elsif (mgi_tblGetCell(table, row, table.controlKey) != "1") then
+	  elsif (value != "1") then
 	    -- Genotype
 	    (void) mgi_tblSetCell(table, row, table.genotypeKey, NOTAPPLICABLE);
 	    (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166309");
@@ -2573,11 +2580,10 @@ rules:
 	  key : string;
 	  citation : string;
 	  isReview : string;
-	  journal : string;
 	  splitcopyright : string_list;
 
 	  select : string := 
-	      "select _Refs_key, short_citation, isReviewArticle, journal from BIB_View where jnum = " + value;
+	      "select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum = " + value;
 
 	  dbproc := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2587,7 +2593,6 @@ rules:
 	      key := mgi_getstr(dbproc, 1);
 	      citation := mgi_getstr(dbproc, 2);
 	      isReview := mgi_getstr(dbproc, 3);
-	      journal := mgi_getstr(dbproc, 4);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
@@ -2623,25 +2628,10 @@ rules:
 	      copyright := "";
 	      if (top->Copyright != nil) then
 		if (top->Copyright->text.value.length = 0) then
-	          select := "select c.note from VOC_Term t, MGI_Note n, MGI_NoteChunk c " +
-			"where t.term = " + mgi_DBprstr(journal) +
-			" and t._Term_key = n._Object_key " + 
-			" and n._MGIType_key = 13 " + 
-			" and n._NoteType_key = 1026 " +
-			" and n._Note_key = c._Note_key";
-	          dbproc := mgi_dbopen();
-                  (void) dbcmd(dbproc, select);
-                  (void) dbsqlexec(dbproc);
-                  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	              copyright := copyright + mgi_getstr(dbproc, 1);
-	            end while;
-	          end while;
-	          (void) dbclose(dbproc);
-
+	          copyright := copyright + mgi_sql1("exec BIB_getCopyright " + key);
 		  --
 		  -- If a Copyright for this Journal was found...
-		  -- replace the "*" with the journal's citation.
+		  -- replace the "*" with the Journal's citation.
 		  --
 		  -- If the Journal requires an Elsevier copyright, then fill in the J:
 		  --
