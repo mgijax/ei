@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 02/02/2007	lec
+--	- TR 7432; add defaults for MP Qualifiers/Header terms
+--
 -- 01/31/2007	lec
 --	- TR 8135; VerifyGelControl; add Western blot
 --	- TR 8135; VerifyGelRNAType
@@ -3937,7 +3940,9 @@ rules:
 	    return;
 	  end if;
 
-	  if (table.is_defined("dag") != nil) then
+	  -- for GO annotations...
+
+	  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1000") then
 	    dag := mgi_tblGetCell(table, row, table.dag);
 	    if ((qualifier = "col" or qualifier = "ncol") and dag != "C") then
 	      if (isTable) then
@@ -3957,6 +3962,31 @@ rules:
               StatusReport.source_widget := top.root;
               StatusReport.message := "Qualifier 'contributes to' can only be used with the Function Ontology";
               send(StatusReport);
+	    end if;
+	  end if;
+
+	  -- for MP annotations
+	  -- if Term is a Header Term, then Qualifier = normal, else none
+
+	  isHeader : string;
+	  termKey : string;
+	  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
+	    termKey := mgi_tblGetCell(table, row, table.termKey);
+	    if (termKey.length > 0) then
+	      isHeader := mgi_sql1("exec VOC_isMPHeader " + mgi_tblGetCell(table, row, table.termKey));
+	      if (isHeader = "1") then
+	        (void) mgi_tblSetCell(table, row, table.qualifierKey, "2181424");
+	        (void) mgi_tblSetCell(table, row, table.qualifier, "norm");
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Qualifier 'norm' is the default for MP header terms.";
+                send(StatusReport);
+	      else
+	        (void) mgi_tblSetCell(table, row, table.qualifierKey, "2181423");
+	        (void) mgi_tblSetCell(table, row, table.qualifier, "");
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Qualifier '(none)' is the default for MP non-header terms.";
+                send(StatusReport);
+	      end if;
 	    end if;
 	  end if;
 
@@ -4033,6 +4063,7 @@ rules:
 	  term : string;
 	  dag : string;
 	  results : integer := 1;
+	  isHeader : string;
 
 	  select : string := "select t.accID, t._Term_key, t.term " +
 		"from VOC_Term_View t " +
@@ -4083,6 +4114,7 @@ rules:
 	    termAcc := termAcc.raise_case;
 
 	    if (isTable) then
+
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termAccID, termAcc);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.termKey, termKey);
 	      (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.term, term);
@@ -4099,7 +4131,22 @@ rules:
 	        (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.evidence, "ND");
 	      end if;
 	       
+	      -- for MP annotations
+	      -- if Term is a Header Term, then Qualifier = normal, else none
+
+	      if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
+	        isHeader := mgi_sql1("exec VOC_isMPHeader " + mgi_tblGetCell(sourceWidget, row, sourceWidget.termKey));
+	        if (isHeader = "1") then
+	          (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181424");
+	          (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "norm");
+	        else
+	          (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifierKey, "2181423");
+	          (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.qualifier, "");
+	        end if;
+	      end if;
+
 	    end if;
+
 	  else
 	    if (isTable) then
 	      VerifyVocabTermAccID.doit := (integer) false;
