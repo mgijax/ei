@@ -944,9 +944,18 @@ rules:
 	    return;
 	  end if;
 
-	  -- If this lane is a control lane, then don't copy any values
+	  -- If the current lane is a control lane, then don't copy any values
 
           controlKey := mgi_tblGetCell(table, row, table.controlKey);
+	  if (controlKey.length > 0) then
+	    if (controlKey != "1") then
+	      return;
+	    end if;
+	  end if;
+
+	  -- If the previous lane is a control lane, then don't copy any values
+
+          controlKey := mgi_tblGetCell(table, row-1, table.controlKey);
 	  if (controlKey.length > 0) then
 	    if (controlKey != "1") then
 	      return;
@@ -969,12 +978,6 @@ rules:
 	      keyColumn := table.rnaKey;
 	    elsif (column = table.sex) then
 	      keyColumn := table.sexKey;
-	    end if;
-
-	    -- if copying RNA Type, don't copy the "Not Applicable" value
-	    if (column = table.rna and mgi_tblGetCell(table, row - 1, keyColumn) = "-2") then
-	      mgi_tblSetCell(table, row, column, "");
-	      return;
 	    end if;
 
 	    -- For Age Prefix, copy Age Key columns

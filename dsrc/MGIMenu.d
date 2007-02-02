@@ -31,6 +31,12 @@ rules:
 
 	INITIALLY does
 	  top := create widget("MGIMenu", nil, nil);
+
+	  if (getenv("MGD_DBSERVER") != "PROD_MGI") then
+	      top.title := "MGI Development";
+	      top.iconName := "MGIMenuDev";
+	  end if;
+
 	  subprocs := create list(nil);
 	  top.show;
 	end does;
