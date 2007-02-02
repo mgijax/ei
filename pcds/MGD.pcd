@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 23 08:47:59 2007";
+      lastWritten = "Fri Feb  2 08:26:13 2007";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13630,7 +13630,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 mgiTypeKey = 12;
                                                 vocabKey = 5;
                                                 defaultValue = 1002;
-                                                qualifierKey = 53;
+                                                qualifierKey = 54;
                                             }
                                       }
                                 }
@@ -14019,7 +14019,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         AnnotQualifierPulldown = OptionPulldown;
                                         Group: User
-                                          sql = "select _Term_key, abbreviation from VOC_Term \nwhere _Vocab_key = 53\norder by abbreviation";
+                                          sql = "select _Term_key, abbreviation from VOC_Term \nwhere _Vocab_key = 54\norder by abbreviation";
                                           tableForm = Annotation;
                                           tableOptionKey = 5;
                                           tableOption = 10;
