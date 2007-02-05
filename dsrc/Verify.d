@@ -3972,7 +3972,7 @@ rules:
 	  termKey : string;
 	  if (top->VocAnnotTypeMenu.menuHistory.defaultValue = "1002") then
 	    termKey := mgi_tblGetCell(table, row, table.termKey);
-	    if (termKey.length > 0) then
+	    if (termKey.length > 0 and termKey != "NULL") then
 	      isHeader := mgi_sql1("exec VOC_isMPHeader " + mgi_tblGetCell(table, row, table.termKey));
 	      if (isHeader = "1") then
 	        (void) mgi_tblSetCell(table, row, table.qualifierKey, "2181424");

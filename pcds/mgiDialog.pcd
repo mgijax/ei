@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan  2 10:16:47 2007";
+      lastWritten = "Fri Feb  2 14:29:44 2007";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1072,7 +1072,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1735;
+            vip_y = 1790;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1303,7 +1303,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1900;
+            vip_y = 1955;
             vipComment = "";
               {
                 AttributeHistoryTable = Table : mgiTable;
@@ -1380,7 +1380,7 @@ Shift<Key>Tab: prev-tab-group()
           MolecularSourceAttributeHistoryDialog = AttributeHistoryDialog;
           Group: Control
             vip_x = 120;
-            vip_y = 1845;
+            vip_y = 1900;
               {
                 AttributeHistoryTable = Table : mgiTable;
                     {
@@ -1406,7 +1406,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
             vip_x = 120;
-            vip_y = 1790;
+            vip_y = 1845;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
