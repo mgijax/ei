@@ -2,7 +2,7 @@ Module: MGIMenu
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb  1 12:51:24 2007";
+      lastWritten = "Tue Feb  6 15:16:08 2007";
         {
           MGIMenu = TopLevelShell;
           Group: Widget
@@ -65,6 +65,14 @@ Module: MGIMenu
                                     traversalOn = False;
                                     managed = True;
                                     labelString = "Gene Expression Database (GXD)";
+                                }
+                                {
+                                  MGIAdmin = XmPushButton;
+                                  Group: Widget
+                                    activateCallback = "D:ForkIt(app = \"runapp mgiadmin\")";
+                                    traversalOn = False;
+                                    managed = True;
+                                    labelString = "MGI Administration";
                                 }
                           }
                     }
