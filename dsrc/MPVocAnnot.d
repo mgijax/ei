@@ -667,7 +667,8 @@ rules:
 
 	LoadHeader does
 
-	  cmd : string := "select * from " + mgi_DBtable(VOC_ANNOTHEADER_VIEW) + 
+	  cmd : string := "select _AnnotHeader_key, _Term_key, term, approvedBy, approval_date, sequenceNum from " + 
+			  mgi_DBtable(VOC_ANNOTHEADER_VIEW) + 
 			  " where _AnnotType_key = " + annotTypeKey +
 			  " and _Object_key = " + currentRecordKey + 
 			  " order by sequenceNum";
@@ -680,12 +681,12 @@ rules:
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.annotHeaderKey, mgi_getstr(dbproc, 1));
-	      (void) mgi_tblSetCell(headerTable, row, headerTable.currentSeqNum, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(headerTable, row, headerTable.seqNum, mgi_getstr(dbproc, 5));
-	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTerm, mgi_getstr(dbproc, 12));
-	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTermKey, mgi_getstr(dbproc, 4));
-	      (void) mgi_tblSetCell(headerTable, row, headerTable.approvedBy, mgi_getstr(dbproc, 13));
-	      (void) mgi_tblSetCell(headerTable, row, headerTable.approvedDate, mgi_getstr(dbproc, 9));
+	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTermKey, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(headerTable, row, headerTable.headerTerm, mgi_getstr(dbproc, 3));
+	      (void) mgi_tblSetCell(headerTable, row, headerTable.approvedBy, mgi_getstr(dbproc, 4));
+	      (void) mgi_tblSetCell(headerTable, row, headerTable.approvedDate, mgi_getstr(dbproc, 5));
+	      (void) mgi_tblSetCell(headerTable, row, headerTable.currentSeqNum, mgi_getstr(dbproc, 6));
+	      (void) mgi_tblSetCell(headerTable, row, headerTable.seqNum, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(headerTable, row, headerTable.editMode, TBL_ROW_NOCHG);
 	      row := row + 1;
             end while;
