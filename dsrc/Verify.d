@@ -2586,7 +2586,6 @@ rules:
 	  key : string;
 	  citation : string;
 	  isReview : string;
-	  splitcopyright : string_list;
 
 	  select : string := 
 	      "select _Refs_key, short_citation, isReviewArticle from BIB_View where jnum = " + value;
