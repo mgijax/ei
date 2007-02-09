@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 02/09/2007	lec
+--	- TR 8147; VerifyReference; moved Copyright substitution into stored procedure
+--
 -- 02/02/2007	lec
 --	- TR 7432; add defaults for MP Qualifiers/Header terms
 --
@@ -2631,25 +2634,10 @@ rules:
 	      copyright := "";
 	      if (top->Copyright != nil) then
 		if (top->Copyright->text.value.length = 0) then
-	          copyright := copyright + mgi_sql1("exec BIB_getCopyright " + key);
-		  --
-		  -- If a Copyright for this Journal was found...
-		  -- replace the "*" with the Journal's citation.
-		  --
-		  -- If the Journal requires an Elsevier copyright, then fill in the J:
-		  --
-
+	          copyright := mgi_sql1("exec BIB_getCopyright " + key);
 		  if (copyright.length > 0) then
-		    if (strstr(copyright, "*") != nil) then
-		      splitcopyright := mgi_splitfields(copyright, "*");
-                      copyright := splitcopyright[1] + citation + splitcopyright[2];
-		    elsif (strstr(copyright, "Elsevier(") != nil) then
-		      splitcopyright := mgi_splitfields(copyright, "Elsevier(");
-                      copyright := splitcopyright[1] + "Elsevier(J:" + value + splitcopyright[2];
-		    end if;
 		    top->Copyright->text.value := copyright;
 		  end if;
-
 		end if;
 	      end if;
 
