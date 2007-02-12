@@ -2633,7 +2633,8 @@ rules:
 	      copyright := "";
 	      if (top->Copyright != nil) then
 		if (top->Copyright->text.value.length = 0) then
-	          copyright := mgi_sql1("exec BIB_getCopyright " + key);
+	          copyright := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + key + ", @copyright output\nselect @copyright");
+--	          copyright := mgi_sql1("exec BIB_getCopyright " + key);
 		  if (copyright.length > 0) then
 		    top->Copyright->text.value := copyright;
 		  end if;
