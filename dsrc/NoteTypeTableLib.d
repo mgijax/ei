@@ -15,6 +15,7 @@
 --
 -- lec	02/13/2007
 --	TR 8150; set default note type for MP module
+--	TR 8150; remove noteType as sort
 --
 -- lec  12/13/2005
 --	TR 7325;ProcessNoteTypeTable;re-use primary key if possible
@@ -156,7 +157,7 @@ rules:
           cmd := "select _Note_key, _NoteType_key, noteType, note, sequenceNum " +
 	  	 " from " + mgi_DBtable(tableID) +
 		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by noteType, _Note_key, sequenceNum";
+		 " order by _Note_key, sequenceNum";
 
 	  row : integer := -1;
           dbproc : opaque := mgi_dbopen();
