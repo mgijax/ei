@@ -376,4 +376,10 @@ extern char *global_version;
 #define ALL_GENERAL_NOTES	"General"
 #define ALL_MOLECULAR_NOTES	"Molecular"
 
+/* MP Notes */
+#define MP_NO_QUALIFIER_KEY	"2181423"
+#define MP_NORM_QUALIFIER_KEY	"2181424"
+#define MP_NO_QUALIFIER		""
+#define MP_NORM_QUALIFIER	"norm"
+
 #endif

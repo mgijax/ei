@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	02/13/2007
+--	TR 8150; set default note type for MP module
+--
 -- lec  12/13/2005
 --	TR 7325;ProcessNoteTypeTable;re-use primary key if possible
 --
@@ -215,13 +218,29 @@ rules:
 	  keyName : string := "noteKey";
 	  keyDefined : boolean := false;
  
-          -- Process 
+	  annotTable : widget;
+	  qualifierKey : string;
+
+          -- set default note type
  
 	  if (table.useDefaultNoteType) then
 	    defaultNoteTypeKey := mgi_sql1("select _NoteType_key from " + mgi_DBtable(tableID) +
 		" where noteType = " + mgi_DBprstr(table.defaultNoteType));
 	  end if;
 
+	  -- If MP module and qualifier is "norm", then default note type to "Normal"
+
+	  if (table.root.name = "MPVocAnnot") then
+	    annotTable := table.root->Annotation->Table;
+	    row := mgi_tblGetCurrentRow(annotTable);
+            qualifierKey := mgi_tblGetCell(annotTable, row, annotTable.qualifierKey);
+	    if (qualifierKey = MP_NORM_QUALIFIER_KEY) then
+	      defaultNoteTypeKey := mgi_sql1("select _NoteType_key from " + mgi_DBtable(tableID) +
+		" where noteType = " + mgi_DBprstr(table.defaultNoteNormal));
+	    end if;
+	  end if;
+
+	  row := 0;
           while (row < mgi_tblNumRows(table)) do
 
 	    i := 1;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Feb  2 08:26:13 2007";
+      lastWritten = "Tue Feb 13 08:27:13 2007";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13781,6 +13781,8 @@ Shift<Key>Tab: prev-tab-group()
                                     rightOffset = 5;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          userDefinedAttributes = "defaultNoteNormal:String(String)=\"Normal\"\n";
                                         Group: User
                                           defaultNoteType = General;
                                           useDefaultNoteType = True;
@@ -13804,6 +13806,9 @@ Shift<Key>Tab: prev-tab-group()
                                               NoteTypePulldown = OptionPulldown : mgiOption;
                                               Group: User
                                                 sql = "select _NoteType_key, noteType from MGI_NoteType_VocEvidence_View order by _NoteType_key";
+                                                tableForm = Note;
+                                                tableOptionKey = 2;
+                                                tableOption = 5;
                                             }
                                       }
                                       {

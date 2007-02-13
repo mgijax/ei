@@ -3963,14 +3963,14 @@ rules:
 	    if (termKey.length > 0 and termKey != "NULL") then
 	      isHeader := mgi_sql1("exec VOC_isMPHeader " + mgi_tblGetCell(table, row, table.termKey));
 	      if (isHeader = "1") then
-	        (void) mgi_tblSetCell(table, row, table.qualifierKey, "2181424");
-	        (void) mgi_tblSetCell(table, row, table.qualifier, "norm");
+	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NORM_QUALIFIER_KEY);
+	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NORM_QUALIFIER);
                 StatusReport.source_widget := top.root;
                 StatusReport.message := "Qualifier 'norm' is the default for MP header terms.";
                 send(StatusReport);
 	      else
-	        (void) mgi_tblSetCell(table, row, table.qualifierKey, "2181423");
-	        (void) mgi_tblSetCell(table, row, table.qualifier, "");
+	        (void) mgi_tblSetCell(table, row, table.qualifierKey, MP_NO_QUALIFIER_KEY);
+	        (void) mgi_tblSetCell(table, row, table.qualifier, MP_NO_QUALIFIER);
                 StatusReport.source_widget := top.root;
                 StatusReport.message := "Qualifier '(none)' is the default for MP non-header terms.";
                 send(StatusReport);
