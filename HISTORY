@@ -1,3 +1,9 @@
+TAG: ei-3-5-2-0
+DATE: 03/12/2007
+STAFF: jsb
+CHANGES:
+1) fixed Image.d file's call to BIB_getCopyright
+
 TAG: ei-3-5-1-49
 TAG: ei-3-5-1-48
 DATE: 02/13/2007
