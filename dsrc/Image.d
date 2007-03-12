@@ -253,7 +253,8 @@ rules:
 	  -- get the copyright if it has not already been retrieved
 
 	  if (top->Copyright->text.value.length = 0) then
-	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+	    top->Copyright->text.value := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value + ", @copyright output\nselect @copyright");
+--	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
           end if;
 
 	  currentRecordKey := "@" + KEYNAME;
@@ -441,7 +442,8 @@ rules:
 	  -- get the copyright if it has not already been retrieved
 
 	  if (top->Copyright->text.value.length = 0) then
-	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
+	    top->Copyright->text.value := mgi_sql1("declare @copyright varchar(255)\nexec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value + ", @copyright output\nselect @copyright");
+--	    top->Copyright->text.value := mgi_sql1("exec BIB_getCopyright " + top->mgiCitation->ObjectID->text.value);
           end if;
 
 	  cmd := "";
