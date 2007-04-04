@@ -1,3 +1,9 @@
+TAG: ei-3-5-2-2
+DATE: 04/04/2007
+STAFF: jsb
+CHANGES:
+1) updated re-ordering of MP headers to be aware of isNormal bit
+
 TAG: ei-3-5-2-1
 DATE: 03/20/2007
 STAFF: jsb

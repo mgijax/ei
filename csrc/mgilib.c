@@ -2251,7 +2251,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, sequenceNum, note)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_ANNOTHEADER:
-            sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, sequenceNum, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _AnnotType_key, _Object_key, _Term_key, sequenceNum, isNormal,_CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case VOC_ANNOTTYPE:
             sprintf(buf, "insert %s (%s, _MGIType_key, _Vocab_key, _EvidenceVocab_key, name)", mgi_DBtable(table), mgi_DBkey(table));

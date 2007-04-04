@@ -595,6 +595,7 @@ rules:
 			  currentRecordKey + "," +
 			  headerTermKey + "," +
 			  newSeqNum + "," +
+			  "0, " +
 			  global_loginKey + "," +
 			  global_loginKey + "," +
 			  global_loginKey + ",getdate())\n";
@@ -609,6 +610,17 @@ rules:
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
 	  ModifySQL.reselect := false;
+          send(ModifySQL, 0);
+
+	  -- When we insert the new header rows for these annotations, we
+	  -- lose their 'isNormal' bit.  We use a stored procedure to
+	  -- recompute these.
+
+	  cmd := "\nexec VOC_processAnnotHeader " + annotTypeKey + "," + currentRecordKey + "\n";
+	  ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := true;
+	  ModifySQL.transaction := false;
           send(ModifySQL, 0);
 
 	  send(LoadHeader, 0);
