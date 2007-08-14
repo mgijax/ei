@@ -129,6 +129,27 @@ def snapShot(markerKey):
 	except:
 		pass
 
+def excerpt (sqlMsg):
+	text = None
+	proc = None
+
+	lines = sqlMsg.split('\n')
+	for line in lines:
+		t = line.strip()
+		if t:
+			pos = t.find(' -- ')
+			if pos != -1:
+				if t[:pos] == 'procedure':
+					proc = t[pos+4:]
+				elif t[:pos] == 'msg text':
+					text = t[pos+4:]
+	if text and proc:
+		return '    msg text -- %s\n    procedure -- %s\n' % \
+			(text, proc)
+	elif text:
+		return '    msg text -- %s\n' % text
+	return '    Unspecified database error\n'
+
 #
 # Main
 #
@@ -268,6 +289,8 @@ except db.error:
 	diagFile.write(cmd)
 	diagFile.close()
         db.useOneConnection(0)
-	error('The withdrawal procedure could not be processed.\n' + db.sql_server_msg)
+	error('The withdrawal procedure could not be processed.\n' + excerpt(db.sql_server_msg))
+
+##	error('The withdrawal procedure could not be processed.\n' + db.sql_server_msg)
 
 db.useOneConnection(0)
