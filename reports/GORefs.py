@@ -15,6 +15,9 @@
 #
 # History
 #
+# 10/25/2007 lec
+#	- TR 8557; added anchor "2" to create_accession_anchor
+#
 # 06/26/2002 lec
 #	- TR 3772; created
 #
@@ -143,7 +146,7 @@ for r in results:
 
 	key = i + j		# number of non-redundant terms matched
 
-	value = '%s%s%s, ' % (reportlib.create_accession_anchor(r['jnumID']), r['jnumID'], reportlib.close_accession_anchor()) + \
+	value = '%s%s%s, ' % (reportlib.create_accession_anchor(r['jnumID'],2), r['jnumID'], reportlib.close_accession_anchor()) + \
 		r['short_citation'] + CRT + PB + \
 		mgi_utils.prvalue(title) + PB + CRT + \
 		mgi_utils.prvalue(abstract) + HR + CRT
