@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 23 08:46:59 2007";
+      lastWritten = "Thu Nov  1 11:29:53 2007";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -411,9 +411,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -450,12 +447,20 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     VEGAGeneModel = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                                   {
                                                     NCBIGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                    Group: User
+                                                      private = True;
                                                   }
                                                   {
                                                     TreeFam = AccToggle : mgiOption;
@@ -696,9 +701,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;

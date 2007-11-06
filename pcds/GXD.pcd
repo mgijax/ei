@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 31 09:58:07 2007";
+      lastWritten = "Thu Nov  1 10:30:52 2007";
       copy = false;
       inCreateMenu = true;
         {
@@ -926,9 +926,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -2769,9 +2766,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;

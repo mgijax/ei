@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb 13 08:27:13 2007";
+      lastWritten = "Thu Nov  1 10:30:50 2007";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -300,9 +300,6 @@ Module: MGD
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -2681,9 +2678,6 @@ Module: MGD
                                   PubMed = AccToggle : mgiOption;
                                 }
                                 {
-                                  Medline = AccToggle;
-                                }
-                                {
                                   NSequence = AccToggle;
                                   Group: Widget
                                     set = True;
@@ -3300,9 +3294,6 @@ Module: MGD
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -6568,9 +6559,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -6638,9 +6626,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -7458,11 +7443,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -9299,9 +9279,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Medline = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9977,9 +9954,6 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               PubMed = AccToggle : mgiOption;
-                                            }
-                                            {
-                                              Medline = AccToggle : mgiOption;
                                             }
                                             {
                                               NSequence = AccToggle : mgiOption;
@@ -10987,9 +10961,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -11375,9 +11346,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -12006,9 +11974,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    Medline = AccToggle;
-                                                  }
-                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -12313,9 +12278,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -12700,9 +12662,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -15080,9 +15039,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Medline = AccToggle;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
