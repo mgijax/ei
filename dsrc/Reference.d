@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- lec 11/08/2007
+--	- TR8275; do not report missing accession ids
+--
 -- lec 06/29/2004
 --	- TR 326/4190 - normalize data sets
 --
@@ -940,6 +943,7 @@ rules:
 	  LoadAcc.table := accTable;
 	  LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := BIB_REFS;
+	  LoadAcc.reportError := false;
 	  send(LoadAcc, 0);
 
 	  -- Re-set the modified attributes and the Next J:
