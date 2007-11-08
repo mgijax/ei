@@ -347,8 +347,10 @@ rules:
 	  send(ClearTable, 0);
 
 	  -- If no MGI Accession numbers loaded, inform user
+	  -- Skip References because their accession ids are added AFTER this is called
 
-	  if (LoadAcc.reportError and mgi_tblGetCell(table, 0, table.accKey) = "") then
+	  if (LoadAcc.reportError and 
+	      mgi_tblGetCell(table, 0, table.accKey) = "") then
             StatusReport.source_widget := table.top;
             StatusReport.message := "No MGI Accession ID found for this object.";
             send(StatusReport);

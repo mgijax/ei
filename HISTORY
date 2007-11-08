@@ -1,10 +1,8 @@
-TAG: ei-3-5-4-4
-TAG: ei-3-5-4-3
-DATE: 11/06/2007
+TAG: ei-3-5-4-5
+DATE: 11/08/2007
 STAFF: lec
 CHANGES:
-1) TR 8224/add ensemble/vega to Nomenclature accession ids
-2) TR 8092/remove Medline id from Reference
+1) TR 8275/Reference.d/Select/LoadAcc.reportError := false;
 
 TAG: ei-3-5-4-2
 TAG: ei-3-5-4-1
