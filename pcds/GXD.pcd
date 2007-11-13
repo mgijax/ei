@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov  1 10:30:52 2007";
+      lastWritten = "Tue Nov 13 12:30:15 2007";
       copy = false;
       inCreateMenu = true;
         {
@@ -766,7 +766,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AntibodyNote;
+                                    topWidget = CVAntibodyNote;
                                     topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
@@ -837,6 +837,23 @@ Shift<Key>Tab: prev-tab-group()
                                         NotePush = NotePushShort : mgiDataTypes;
                                         Group: Widget
                                           labelString = "Antigen Recognition Notes";
+                                      }
+                                }
+                                {
+                                  CVAntibodyNote = CVAntibodyNote : mgiCV;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AntibodyNote;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        AntibodyObtained = AppendNotePush : mgiDataTypes;
+                                        Group: User
+                                          noteWidget = AntibodyNote;
                                       }
                                 }
                           }
