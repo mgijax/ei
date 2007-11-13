@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec 11/13/2007
+--	- TR 8285; update Modify; add notesModified boolean
+--
 -- lec	10/15/2002
 --	- TR 4167; update of Abbrev2 was using Abbrev1
 --
@@ -668,6 +671,8 @@ rules:
 
 	Modify does
 
+	  notesModified : boolean := false;
+
           if (not top.allowEdit) then
 	    return;
           end if;
@@ -692,14 +697,19 @@ rules:
           ModifyNotes.source_widget := top->referenceNote->Note;
           ModifyNotes.tableID := MLD_NOTES;
           ModifyNotes.key := top->mgiCitation->ObjectID->text.value;
+          ModifyNotes.keyDeclared := notesModified;
           send(ModifyNotes, 0);
           cmd := cmd + top->referenceNote->Note.sql;
+          if (top->referenceNote->Note.sql.length > 0) then
+            notesModified := true;
+          end if;
 
           -- Process Experiment Notes
  
           ModifyNotes.source_widget := ExptForm->Notes;
           ModifyNotes.tableID := MLD_EXPT_NOTES;
           ModifyNotes.key := currentExptKey;
+          ModifyNotes.keyDeclared := notesModified;
           send(ModifyNotes, 0);
           cmd := cmd + ExptForm->Notes.sql;
 
