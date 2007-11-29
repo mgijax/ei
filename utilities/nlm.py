@@ -85,6 +85,15 @@
 #
 # History
 #
+#
+#	lec	11/27/2007
+#	- if PG, IP, VI don't exist, then create them
+#	- change Add routine:
+#         Add:  if duplicate PMID is in database, skip add
+#         Add:  if duplicate Journal/Year/Volumne/Page is in database, skip add
+#         Else, process Add
+#	  If the Volumne/Page is blank, then process Add
+#
 #	lec	11/06/2006
 #	- TR 6812; add hooks into loading BIB_Citation_Cache
 #
@@ -404,24 +413,42 @@ def processAU(value, currentValue = None):
 
 	return authors, primary
 
-def isDuplicate(rec, rectags, maxCount):
+def isDuplicate(rec, rectags):
 	'''
 	#
 	# requires: rec, a dictionary of NLM records (dictionary)
 	#           rectags, a list of ordered tags for the record
-	#           maxCount, the number or rows which will determine
-	#                     a duplication (integer)
 	#
 	# effects:
 	# Determines if the 'rec' already exists in the database
 	#
 	# returns:
-	# results, the list of results returned from the query
 	# ok (0|1), the flag which determines whether to continue processing
 	#
 	'''
 
 	ok = 1
+
+	# If pubmed id already exists in database, skip add
+
+	cmd = 'select ac.accID from ACC_Accession ac ' + \
+	      'where ac._MGIType_key = 1 ' + \
+	      'and ac._LogicalDB_key = 29 ' + \
+	      'and ac.accID = "' + rec['PMID'] + '"'
+
+        results = db.sql(cmd, 'auto')
+
+	if len(results) >= 1:
+		printRec(dupsFile, rec, rectags, "DUPLICATE PUBMEDID FOUND IN MGD")
+		ok = 0
+	        return ok
+
+	# If VI and PG is blank, then we will let the add go thru and assume this is not a duplicate
+	# There is no way to check if this is a duplicate if the VI and PG are null
+
+	if rec['VI'] == 'NULL' and rec['PG'] == 'NULL':
+		ok = 1
+	        return ok
 
         # If pages in format "x", check for pages = x and pages like "x-%"
         # If pages in format "x-y", check for pages = x and pages like "x-%"
@@ -432,20 +459,26 @@ def isDuplicate(rec, rectags, maxCount):
 	if idx > 0:
 		pgs = pgs[:idx]
 		  
-	cmd = 'select _Refs_key, title, abstract, jnum from BIB_All_View ' + \
-              'where journal = "' + rec['TA'] + '"' + \
-	      ' and year = ' + rec['YR'] + \
-	      ' and vol = "' + rec['VI'] + '"' + \
-	      ' and (pgs = "' + pgs + '" or pgs like "' + pgs + '-%")'
+	cmd = 'select v._Refs_key, v.title, v.abstract, v.jnum ' + \
+	      'from BIB_All_View v ' + \
+              'where v.journal = "' + rec['TA'] + '"' + \
+	      ' and v.year = ' + rec['YR']
+
+	if rec['VI'] != 'NULL':
+	      cmd = cmd + ' and v.vol = "' + rec['VI'] + '"'
+
+	if rec['PG'] != 'NULL':
+	      cmd = cmd + ' and (v.pgs = "' + pgs + '" or v.pgs like "' + pgs + '-%")'
+
 	results = db.sql(cmd, 'auto')
 
 	# If duplicate is found, report it and skip
 
-	if len(results) >= maxCount:
+	if len(results) >= 1:
 		printRec(dupsFile, rec, rectags, "DUPLICATE FOUND IN MGD")
 		ok = 0
 
-	return results, ok
+	return ok
 
 def isSubmission(rec, rectags):
 	'''
@@ -515,15 +548,29 @@ def doUpdate(rec, rectags):
 	if isSubmission(rec, rectags):
 		return
 
-	# Check if Duplicates; 
-	# For an update; 2 or more instances constitute a dup
+	# If pubmed id already exists in database, allow update
 
-	results, ok = isDuplicate(rec, rectags, 2)
+	cmd = 'select v._Refs_key, v.title, v.abstract, v.jnum, ac.accID ' + \
+	      'from BIB_All_View v, ACC_Accession ac ' + \
+	      'where ac._MGIType_key = 1 ' + \
+	      'and ac._LogicalDB_key = 29 ' + \
+	      'and ac.accID = "' + rec['PMID'] + '" ' + \
+	      'and ac._Object_key = v._Refs_key'
 
-	if not ok or len(results) == 0:
+        results = db.sql(cmd, 'auto')
+
+	# don't update if no pubmed match is found
+
+	if len(results) == 0:
 		printRec(nomatchFile, rec, rectags)
 		return
  
+	# don't update if more than 2 pubmed matches is found
+
+	if len(results) >= 2:
+		printRec(nomatchFile, rec, rectags)
+		return
+	
 	# Else, we've got one record in 'results'
 
 	for result in results:
@@ -531,12 +578,9 @@ def doUpdate(rec, rectags):
 		title = result['title']
 		abstract = result['abstract']
 		jnum = result['jnum']
+	        pmidKey = result['accID']
 
-	# Get PMID Accession key
-
-	pmidKey = accessionlib.get_Accession_key(refKey, 'Reference', PUBMEDSTR)
-
-	# Update existing entry if pmid, title or abstract is NULL
+	# Update existing entry if pubmed id or title or abstract is NULL
  
 	if pmidKey is None or title is None or abstract is None:
 
@@ -602,10 +646,9 @@ def doAdd(rec, rectags):
 
 		return 0
 
-	# Check for Duplicates;
-	# For an add, 1 or more instances constitute a dup
+	# Check for Duplicates
 
-	results, ok = isDuplicate(rec, rectags, 1)
+	ok = isDuplicate(rec, rectags)
 
 	if not ok:
 		return
@@ -676,10 +719,16 @@ def processRec(rec, rectags):
 		rectags.append('IP')
 
 	# If record missing any required field, skip
-	for t in ('PMID', 'AU', 'TI', 'TA', 'DP', 'YR', 'PG', 'IP', 'VI'):
+
+	for t in ('PMID', 'AU', 'TI', 'TA', 'DP', 'YR'):
 		if not rec.has_key(t):
 			printRec(nomatchFile, rec, rectags, 'Record missing (%s) Field' % (t))
 			return
+
+	# if page, issue, volume don't exist, then create them as null
+	for t in ('PG', 'IP', 'VI'):
+		if not rec.has_key(t):
+			rec[t] = 'NULL'
 
 	# Eliminate commas in author list
 	rec['AU'] = re.sub(',', '', rec['AU'])
