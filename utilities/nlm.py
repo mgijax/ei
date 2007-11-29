@@ -559,9 +559,15 @@ def doUpdate(rec, rectags):
 	# don't update if more than 2 pubmed matches is found
 
 	if len(results) >= 2:
-		printRec(nomatchFile, rec, rectags)
+		printRec(dupsFile, rec, rectags, "DUPLICATE FOUND IN MGD")
 		return
 	
+	# no match; nothing to update
+
+	if len(results) == 0:
+		printRec(nomatchFile, rec, rectags)
+		return
+
 	# Else, we've got one record in 'results'
 
 	for result in results:
