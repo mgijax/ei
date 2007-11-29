@@ -636,7 +636,6 @@ def doAdd(rec, rectags):
 	# Check for Submission
 
 	if isSubmission(rec, rectags):
-
 		return 0
 
 	# Check for Duplicates
@@ -722,6 +721,7 @@ def processRec(rec, rectags):
 	for t in ('PG', 'IP', 'VI'):
 		if not rec.has_key(t):
 			rec[t] = 'NULL'
+			rectags.append(t)
 
 	# Eliminate commas in author list
 	rec['AU'] = re.sub(',', '', rec['AU'])
