@@ -443,13 +443,6 @@ def isDuplicate(rec, rectags):
 		ok = 0
 	        return ok
 
-	# If VI and PG is blank, then we will let the add go thru and assume this is not a duplicate
-	# There is no way to check if this is a duplicate if the VI and PG are null
-
-	if rec['VI'] == 'NULL' and rec['PG'] == 'NULL':
-		ok = 1
-	        return ok
-
         # If pages in format "x", check for pages = x and pages like "x-%"
         # If pages in format "x-y", check for pages = x and pages like "x-%"
         # Strip off first page
@@ -466,9 +459,13 @@ def isDuplicate(rec, rectags):
 
 	if rec['VI'] != 'NULL':
 	      cmd = cmd + ' and v.vol = "' + rec['VI'] + '"'
+	else:
+	      cmd = cmd + ' and v.vol = ' + rec['VI']
 
 	if rec['PG'] != 'NULL':
 	      cmd = cmd + ' and (v.pgs = "' + pgs + '" or v.pgs like "' + pgs + '-%")'
+	else:
+	      cmd = cmd + ' and v.pgs = ' + pgs
 
 	results = db.sql(cmd, 'auto')
 
@@ -559,12 +556,6 @@ def doUpdate(rec, rectags):
 
         results = db.sql(cmd, 'auto')
 
-	# don't update if no pubmed match is found
-
-	if len(results) == 0:
-		printRec(nomatchFile, rec, rectags)
-		return
- 
 	# don't update if more than 2 pubmed matches is found
 
 	if len(results) >= 2:
@@ -610,14 +601,10 @@ def doUpdate(rec, rectags):
         	update.append('modification_date = getdate() where _Refs_key = %d' % refKey)
 		cmd.append(string.join(update, ','))
 
-		# Update/Add PubMed ID
+		# Add PubMed ID
 
-		if rec.has_key('PMID'):
-			if pmidKey is not None:
-          			cmd.append('exec ACC_update %s,%s' % (pmidKey, rec['PMID']))
-			else:	
-          			cmd.append('exec ACC_insert %d,%s,%d,%s' \
-				     	% (refKey, rec['PMID'], PUBMEDKEY, MGITYPE))
+		if rec.has_key('PMID') and pmidKey is None:
+          		cmd.append('exec ACC_insert %d,%s,%d,%s' % (refKey, rec['PMID'], PUBMEDKEY, MGITYPE))
 			
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
