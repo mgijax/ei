@@ -107,14 +107,21 @@ rules:
 	    vectorType := top->SourceVectorTypeMenu.menuHistory.defaultValue;
 	  end if;
 
+	  --
+	  -- if Cell Line = Not Specified, then Age default = Not Specified
+	  -- if Cell Line = Not Applicable, then Age default = Not Specified
+	  -- if Cell Line = other value, then Age default = Not Applicable
+	  --
+
 	  if (top->CellLine->CellLineID->text.value.length = 0) then
 	      if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
-	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"Not Specified\"");
+	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTSPECIFIED_TEXT + "\"");
 	      else
-	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"Not Applicable\"");
+	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTAPPLICABLE_TEXT + "\"");
 	      end if;
 	  else
 	    cellLine := top->CellLine->CellLineID->text.value;
+	    age := NOTAPPLICABLE_TEXT;
 	  end if;
 
 	  add := add +
@@ -131,7 +138,9 @@ rules:
 
 	  -- Construct Age value
 
-	  age := top->AgeMenu.menuHistory.defaultValue;
+	  if (age.length = 0) then
+	    age := top->AgeMenu.menuHistory.defaultValue;
+	  end if;
 
           if (top->Age->text.value.length > 0) then
             age := age + " " + top->Age->text.value;
@@ -484,7 +493,10 @@ rules:
           end if;
  
           if (top->CellLine->CellLineID->text.modified) then
-            set := set + "_CellLine_key = " + top->CellLine->CellLineID->text.value + ",";
+	    set := set + "_CellLine_key = " + top->CellLine->CellLineID->text.value + ",";
+	    if (top->CellLine->CellLineID->text.value.length != 0) then
+	      age := NOTAPPLICABLE_TEXT;
+	    end if;
           end if;
 
           if (top->Description->text.modified) then
@@ -492,7 +504,10 @@ rules:
           end if;
  
           if (top->AgeMenu.menuHistory.modified or top->Age->text.modified) then
-	    age := top->AgeMenu.menuHistory.defaultValue;
+
+	    if (age.length = 0) then
+	      age := top->AgeMenu.menuHistory.defaultValue;
+	    end if;
 
             if (top->Age->text.value.length > 0) then
               age := age + " " + top->Age->text.value;

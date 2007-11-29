@@ -37,6 +37,8 @@ extern char *global_version;
 
 #define	NOTSPECIFIED	"-1"
 #define NOTAPPLICABLE	"-2"
+#define NOTSPECIFIED_TEXT  "Not Specified"
+#define NOTAPPLICABLE_TEXT "Not Applicable"
 
 #define YES		"1"
 #define NO 		"0"
