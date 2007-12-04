@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 12/04/2007	lec
+--	TR 8622: add "modification" to GO note field
+--
 -- 11/30/2006	lec
 --	fix bleed problem; was creating orphan evidence records
 --
@@ -132,7 +135,7 @@ locals:
 
 	annotTable : widget;		-- Annotation table
 
-	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nqualifier:\ntarget:\nexternal ref:\ntext:";
+	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nmodification:\nqualifier:\ntarget:\nexternal ref:\ntext:";
 
 rules:
 
