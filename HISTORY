@@ -1,3 +1,10 @@
+TAG: ei-3-5-4-10
+DATE: 12/06/2007
+STAFF: lec
+CHANGES:
+1) TR 8293; added new _LogicalDB_keys to 
+   mgiOption/AccSourceMenu and MarkerModule
+
 TAG: ei-3-5-4-9
 DATE: 12/04/2007
 STAFF: lec

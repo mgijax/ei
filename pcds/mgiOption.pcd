@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov  1 10:30:43 2007";
+      lastWritten = "Thu Dec  6 10:20:49 2007";
       copy = false;
       inCreateMenu = true;
         {
@@ -550,6 +550,76 @@ Module: mgiOption
                         labelString = "Lexicon Genetics";
                       Group: User
                         defaultValue = 67;
+                    }
+                    {
+                      LexiconGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Lexicon Genetics";
+                      Group: User
+                        defaultValue = 96;
+                    }
+                    {
+                      BayGenomicGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Bay Area Functional Genomics Consortium";
+                      Group: User
+                        defaultValue = 95;
+                    }
+                    {
+                      TexasGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Texas Institute for Genomic Medicine";
+                      Group: User
+                        defaultValue = 97;
+                    }
+                    {
+                      TIGEMGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "TIGEM-IRBM Gene Trap";
+                      Group: User
+                        defaultValue = 98;
+                    }
+                    {
+                      ModellingHumanGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Centre for Modelling Human Disease";
+                      Group: User
+                        defaultValue = 99;
+                    }
+                    {
+                      ESCDGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Embryonic Stem Cell Database";
+                      Group: User
+                        defaultValue = 100;
+                    }
+                    {
+                      ExchangeableClonesGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Exchangeable Gene Trap Clones";
+                      Group: User
+                        defaultValue = 101;
+                    }
+                    {
+                      GermanGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "German Gene Trap Consortium";
+                      Group: User
+                        defaultValue = 102;
+                    }
+                    {
+                      SangerGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Sanger Institute Gene Trap Resource";
+                      Group: User
+                        defaultValue = 103;
+                    }
+                    {
+                      HutchinsonGeneTrap = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Fred Hutchinson Cancer Research Center";
+                      Group: User
+                        defaultValue = 104;
                     }
               }
         }
