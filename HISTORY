@@ -1,3 +1,4 @@
+TAG: ei-3-5-4-12
 TAG: ei-3-5-4-11
 TAG: ei-3-5-4-10
 DATE: 12/06/2007
@@ -6,6 +7,7 @@ CHANGES:
 1) TR 8293; added new _LogicalDB_keys to 
    mgiOption/AccSourceMenu and MarkerModule
 2) TR 8603; utilities/markerWithdrawal.py
+3) TR 8672; add new note to MolMarkerForm/MolSeqNoteMenu
 
 TAG: ei-3-5-4-9
 DATE: 12/04/2007
