@@ -10,6 +10,8 @@
 
 CopyInSituRow [];					-- Copy Result Rows
 
+CopyInSituColumn [];					-- Copy Result Rows
+
 InSituResultCancel [];					-- Cancel Dialog
 
 InSituResultExit [];					-- Exit Dialog

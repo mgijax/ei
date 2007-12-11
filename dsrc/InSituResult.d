@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	12/11/2007
+--	- TR 8468; add 'copy column' for image pane, strength and pattern
+--
 -- lec	01/29/2007
 --	- TR 7710; add calls to PythonImageCache
 --
@@ -149,6 +152,62 @@ rules:
 
         end does;
  
+--
+-- CopyInSituColumn
+--
+--	Copy the current InSitu column value to all rows
+--
+
+	CopyInSituColumn does
+	  table : widget := CopyInSituColumn.source_widget.parent.child_by_class(TABLE_CLASS);
+	  editMode : string;
+	  i : integer := 0;
+          row : integer := 0;
+          column : integer;
+	  keyColumn : integer;
+	  value : string;
+
+          row := mgi_tblGetCurrentRow(table);
+          column := mgi_tblGetCurrentColumn(table);
+	  value := mgi_tblGetCell(table, row, column);
+
+	  i := 0;
+          while (i < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, i, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+
+	    mgi_tblSetCell(table, i, column, value);
+
+	    -- Copy the Key Column, if applicable
+
+	    keyColumn := -1;
+
+	    if (column = table.imagePanes) then
+	      keyColumn := table.imagePaneKeys;
+	    elsif (column = table.strength) then
+	      keyColumn := table.strengthKey;
+	    elsif (column = table.pattern) then
+	      keyColumn := table.patternKey;
+	    end if;
+
+	    -- Copy key column
+
+	    if (keyColumn > -1) then
+	      mgi_tblSetCell(table, i, keyColumn, mgi_tblGetCell(table, row, keyColumn));
+	    end if;
+
+	    CommitTableCellEdit.source_widget := table;
+	    CommitTableCellEdit.row := i;
+	    CommitTableCellEdit.value_changed := true;
+	    send(CommitTableCellEdit, 0);
+
+	    i := i + 1;
+	  end while;
+	end does;
+
 --
 -- InSituResultCancel
 --
