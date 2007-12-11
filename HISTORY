@@ -1,3 +1,9 @@
+TAG: ei-3-5-4-13
+DATE: 12/11/2007
+STAFF: lec
+CHANGES:
+1) TR 8468; add CopyInSituColumn to InSituResult.d/InSituResult.de
+
 TAG: ei-3-5-4-12
 TAG: ei-3-5-4-11
 TAG: ei-3-5-4-10

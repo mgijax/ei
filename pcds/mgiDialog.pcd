@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Feb  2 14:29:44 2007";
+      lastWritten = "Tue Dec 11 09:58:10 2007";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -30,7 +30,7 @@ Module: mgiDialog
             cancelLabelString = No;
           Group: Control
             vip_x = 120;
-            vip_y = 30;
+            vip_y = 525;
         }
         {
           FileSelection = XmFileSelectionBox;
@@ -40,7 +40,7 @@ Module: mgiDialog
             showHelpButton = False;
           Group: Control
             vip_x = 120;
-            vip_y = 745;
+            vip_y = 30;
               {
                 filler = XmSeparator;
                 Group: Widget
@@ -60,7 +60,7 @@ Module: mgiDialog
             autoUnmanage = False;
           Group: Control
             vip_x = 120;
-            vip_y = 525;
+            vip_y = 415;
         }
         {
           ReportDialog = FileDialog : mgiDialog;
@@ -71,7 +71,7 @@ Module: mgiDialog
             width = 600;
           Group: Control
             vip_x = 120;
-            vip_y = 360;
+            vip_y = 1075;
               {
                 FileSelection = FileSelection;
                 Group: Widget
@@ -155,7 +155,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1020;
+            vip_y = 1240;
               {
                 FileSelection = FileSelection : mgiDialog;
                 Group: Constraint
@@ -261,7 +261,7 @@ Module: mgiDialog
             okLabelString = Yes;
           Group: Control
             vip_x = 120;
-            vip_y = 635;
+            vip_y = 800;
         }
         {
           WhichItem = XmFormDialog;
@@ -273,7 +273,7 @@ Module: mgiDialog
             dialogTitle = "Which Item?";
           Group: Control
             vip_x = 120;
-            vip_y = 855;
+            vip_y = 1130;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -341,7 +341,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 120;
-            vip_y = 1185;
+            vip_y = 85;
         }
         {
           WorkingDialog = XmWorkingDialog;
@@ -356,7 +356,7 @@ Module: mgiDialog
             dialogTitle = "Working Dialog";
           Group: Control
             vip_x = 120;
-            vip_y = 415;
+            vip_y = 360;
         }
         {
           NLMDialog = ReportDialog : mgiDialog;
@@ -366,7 +366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 965;
+            vip_y = 1185;
           Group: User
             useReportDir = False;
               {
@@ -474,7 +474,7 @@ Module: mgiDialog
             userDefinedAttributes = "doAdd:Boolean=\"False\"\n";
           Group: Control
             vip_x = 120;
-            vip_y = 1075;
+            vip_y = 965;
         }
         {
           SelectDialog = XmFormDialog;
@@ -486,7 +486,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1240;
+            vip_y = 1295;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -574,7 +574,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1350;
+            vip_y = 1405;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -613,7 +613,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1295;
+            vip_y = 1350;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -654,7 +654,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 120;
-            vip_y = 1405;
+            vip_y = 1460;
               {
                 label = XmLabel;
                 Group: Widget
@@ -738,7 +738,7 @@ Module: mgiDialog
             traversalOn = False;
           Group: Control
             vip_x = 120;
-            vip_y = 1460;
+            vip_y = 140;
               {
                 OK = DialogPush : mgiDialog;
               }
@@ -829,6 +829,9 @@ Module: mgiDialog
                     }
                     {
                       Results = OrderedTableLabel : mgiTable;
+                      Group: Widget
+                        rubberPositioning = False;
+                        resizePolicy = resize_any;
                       Group: Constraint
                         leftAttachment = attach_form;
                         leftOffset = 5;
@@ -866,6 +869,40 @@ Module: mgiDialog
                                   Group: Widget
                                     labelString = "InSitu Results";
                                 }
+                          }
+                          {
+                            AddRow = TablePush;
+                          }
+                          {
+                            DeleteRow = TablePush;
+                          }
+                          {
+                            InsertRow = TablePush : mgiTable;
+                          }
+                          {
+                            EditOrder = toggle : mgiDataTypes;
+                            Group: Constraint
+                              leftAttachment = attach_widget;
+                              leftWidget = CopyColumn;
+                              rightAttachment = attach_none;
+                              topAttachment = attach_opposite_widget;
+                              topWidget = CopyColumn;
+                              bottomAttachment = attach_none;
+                              resizable = true;
+                          }
+                          {
+                            CopyColumn = TablePush : mgiTable;
+                            Group: Widget
+                              activateCallback = "D:CopyInSituColumn,\nD:GoHome";
+                              labelString = "Copy Column";
+                            Group: Constraint
+                              leftAttachment = attach_widget;
+                              leftWidget = InsertRow;
+                              rightAttachment = attach_none;
+                              topAttachment = attach_opposite_widget;
+                              topWidget = InsertRow;
+                              bottomAttachment = attach_none;
+                              resizable = true;
                           }
                     }
               }
@@ -1072,7 +1109,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1790;
+            vip_y = 1735;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1189,7 +1226,7 @@ Module: mgiDialog
             navigationType = none;
           Group: Control
             vip_x = 120;
-            vip_y = 800;
+            vip_y = 305;
               {
                 mgiMarker = mgiMarker : mgiDataTypes;
                     {
@@ -1225,7 +1262,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "Changes have not been saved!\nAre you sure you want to exit this form?";
           Group: Control
             vip_x = 120;
-            vip_y = 580;
+            vip_y = 745;
         }
         {
           VerifyRecord = VerifyDialog;
@@ -1235,7 +1272,7 @@ Shift<Key>Tab: prev-tab-group()
             okCallback = "C: TuUnmanage";
           Group: Control
             vip_x = 120;
-            vip_y = 690;
+            vip_y = 855;
         }
         {
           SelectionDialog = XmSelectionDialog;
@@ -1247,7 +1284,7 @@ Shift<Key>Tab: prev-tab-group()
             cancelLabelString = Close;
           Group: Control
             vip_x = 120;
-            vip_y = 140;
+            vip_y = 195;
         }
         {
           ClearDialog = VerifyDialog;
@@ -1257,7 +1294,7 @@ Shift<Key>Tab: prev-tab-group()
             cancelCallback = "C: TuUnmanage";
           Group: Control
             vip_x = 120;
-            vip_y = 195;
+            vip_y = 635;
         }
         {
           BroadcastDialog = XmQuestionDialog;
@@ -1272,7 +1309,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "";
             vip_x = 120;
-            vip_y = 85;
+            vip_y = 580;
         }
         {
           NextRecordDialog = VerifyDialog;
@@ -1281,7 +1318,7 @@ Shift<Key>Tab: prev-tab-group()
             dialogTitle = "Continue to Next Record?";
           Group: Control
             vip_x = 120;
-            vip_y = 305;
+            vip_y = 690;
         }
         {
           VerifyValueChange = VerifyDialog;
@@ -1303,7 +1340,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1955;
+            vip_y = 1900;
             vipComment = "";
               {
                 AttributeHistoryTable = Table : mgiTable;
@@ -1380,7 +1417,7 @@ Shift<Key>Tab: prev-tab-group()
           MolecularSourceAttributeHistoryDialog = AttributeHistoryDialog;
           Group: Control
             vip_x = 120;
-            vip_y = 1900;
+            vip_y = 1845;
               {
                 AttributeHistoryTable = Table : mgiTable;
                     {
@@ -1406,7 +1443,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
             vip_x = 120;
-            vip_y = 1845;
+            vip_y = 1790;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1733,7 +1770,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "You are about to modify the Mutant ES Cell Line or the ES Cell Line or Strain of Origin.\nAre you sure you want to modify those values?";
           Group: Control
             vip_x = 120;
-            vip_y = 1130;
+            vip_y = 1020;
         }
 }
 
