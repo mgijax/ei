@@ -147,6 +147,7 @@ locals:
 	clearReference : integer;
 	clearAllLists : integer;
 	clearRefLists : integer;
+	clearDelLists : integer;
 
         currentMasterKey : string;      -- Primary Key value of currently selected Master record
                                         -- Initialized in Select[] and Add[] events
@@ -285,6 +286,7 @@ rules:
 	  clearAllLists := 7;
 	  clearReference := 65;
 	  clearRefLists := 4;
+	  clearDelLists := 5;
 
           -- Clear all
  
@@ -512,7 +514,7 @@ rules:
 	  if (not top->Control->References.set) then
 	    if (top->QueryList->List.row = 0) then
               Clear.clearForms := clearAll;
-	      Clear.clearLists := clearRefLists;
+	      Clear.clearLists := clearDelLists;
               send(Clear, 0);
 	    end if;
 	  else
