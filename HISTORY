@@ -1,8 +1,10 @@
+TAG: ei-3-5-4-14
 TAG: ei-3-5-4-13
-DATE: 12/11/2007
+DATE: 12/11/2007-12/13/2007
 STAFF: lec
 CHANGES:
 1) TR 8468; add CopyInSituColumn to InSituResult.d/InSituResult.de
+2) Molecular.d; add clearDelLists
 
 TAG: ei-3-5-4-12
 TAG: ei-3-5-4-11

@@ -72,6 +72,8 @@ rules:
 -- Bit 0 corresponds to form 1, value = 1
 -- Bit 1 corresponds to form 2, value = 2
 -- Bit 2 corresponds to form 3, value = 4
+-- Bit 3 corresponds to form 4, value = 8
+-- Bit 4 corresponds to form 5, value = 16
 --
 -- Example:
 -- 	top.clearForms = "Form1, Form2, Form3"
