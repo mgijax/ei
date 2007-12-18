@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  6 10:20:56 2007";
+      lastWritten = "Tue Dec 18 08:14:26 2007";
       copy = false;
       inCreateMenu = true;
         {
@@ -1182,7 +1182,7 @@ Module: MGI
                                 {
                                   EditPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        MPAnnotation = MenuPush : mgiMenu;
+                                        MPVocAnnot = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"MPVocAnnot\")";
                                           labelString = "Mammalian Phenotype Annotations";
@@ -1190,7 +1190,7 @@ Module: MGI
                                           managed = True;
                                       }
                                       {
-                                        OMIMAnnotation = MenuPush : mgiMenu;
+                                        OMIMVocAnnot = MenuPush : mgiMenu;
                                         Group: Widget
                                           activateCallback = "D:CreateMGIModule(name = \"OMIMVocAnnot\")";
                                           labelString = "OMIM Annotations";

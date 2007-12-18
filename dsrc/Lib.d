@@ -69,11 +69,14 @@ rules:
 -- Clear.clearForms is an integer which represents which forms should be cleared by
 -- checking the bits of the integer which correspond to the appropriate form in top.clearForms.
 --
--- Bit 0 corresponds to form 1, value = 1
--- Bit 1 corresponds to form 2, value = 2
--- Bit 2 corresponds to form 3, value = 4
--- Bit 3 corresponds to form 4, value = 8
--- Bit 4 corresponds to form 5, value = 16
+-- Bit 0 corresponds to form 1, value = 1 (2 to the zero)
+-- Bit 1 corresponds to form 2, value = 2 (2 to the first)
+-- Bit 2 corresponds to form 3, value = 4 (2 to the second)
+-- Bit 3 corresponds to form 4, value = 8 (2 to the third)
+-- Bit 4 corresponds to form 5, value = 16 (2 to the fourth)
+-- Bit 5 corresponds to form 6, value = 32 (2 to the fifth)
+-- Bit 6 corresponds to form 7, value = 64 (2 to the sixth)
+-- Bit 7 corresponds to form 8, value = 128 (2 to the seventh)
 --
 -- Example:
 -- 	top.clearForms = "Form1, Form2, Form3"
