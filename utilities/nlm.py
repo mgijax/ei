@@ -85,6 +85,8 @@
 #
 # History
 #
+#	lec	01/22/2008
+#	- if AU doesn't exist, then create it and allow add
 #
 #	lec	11/27/2007
 #	- if PG, IP, VI don't exist, then create them
@@ -492,10 +494,21 @@ def isSubmission(rec, rectags):
 	'''
 
 	cmd = 'select _Refs_key from BIB_Refs ' + \
-               'where journal = "Submission" and _primary = "%s" ' % rec['PAU'] + \
-	       'and (authors like "%s" ' % rec['AU'] + \
-	       'or authors2 like "%s" ' % rec['AU2'] + \
-	       'or substring(title,1,25) = "%s") ' % rec['TISHORT']
+               'where journal = "Submission" '
+
+	if rec['PAU'] != 'NULL':
+	      cmd = cmd + ' and _primary = "' + rec['PAU'] + '"'
+	else:
+	      cmd = cmd + ' and _primary = ' + rec['PAU']
+
+	if rec['AU'] != 'NULL':
+	      cmd = cmd + ' and (authors like "' + rec['AU'] + '"' + \
+	                  ' or authors2 like "%s" ' % rec['AU2']
+	else:
+	      cmd = cmd + ' and (authors = ' + rec['AU'] + \
+	                  ' or authors2 = ' + rec['AU2']
+
+        cmd = cmd + ' or substring(title,1,25) = "%s") ' % rec['TISHORT']
 
 	submission = db.sql(cmd, 'auto')
 
@@ -712,13 +725,13 @@ def processRec(rec, rectags):
 
 	# If record missing any required field, skip
 
-	for t in ('PMID', 'AU', 'TI', 'TA', 'DP', 'YR'):
+	for t in ('PMID', 'TI', 'TA', 'DP', 'YR'):
 		if not rec.has_key(t):
 			printRec(nomatchFile, rec, rectags, 'Record missing (%s) Field' % (t))
 			return
 
-	# if page, issue, volume don't exist, then create them as null
-	for t in ('PG', 'IP', 'VI'):
+	# if author, page, issue, volume don't exist, then create them as null
+	for t in ('AU', 'PAU', 'PG', 'IP', 'VI'):
 		if not rec.has_key(t):
 			rec[t] = 'NULL'
 			rectags.append(t)
