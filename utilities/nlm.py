@@ -85,6 +85,10 @@
 #
 # History
 #
+#
+#	lec	03/06/2008
+#	- TR8763; doUpdate; allow update if pubmed id is null OR not null
+#
 #	lec	01/22/2008
 #	- if AU doesn't exist, then create it and allow add
 #
@@ -591,8 +595,13 @@ def doUpdate(rec, rectags):
 	        pmidKey = result['accID']
 
 	# Update existing entry if pubmed id or title or abstract is NULL
+	# or if the pubmed id is not NULL (exists)
+	# perhaps this entire "if" statement needs to be removed and allow the update
+	# no matter what...the origianl logic was to only update the reference
+	# information if the pubmed id, title or abstract were null
+	# but that may no longer be necessary
  
-	if pmidKey is None or title is None or abstract is None:
+	if pmidKey is not None or pmidKey is None or title is None or abstract is None:
 
 		attachQuotes(rec)
 		cmd = []
