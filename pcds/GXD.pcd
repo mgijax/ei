@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  6 10:20:57 2007";
+      lastWritten = "Thu Feb 21 10:57:55 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -1125,7 +1125,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblNumRows = 21;
                         xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-11 0)";
                         xrtTblTraversableSeries = "(all 0-11 False)";
-                        xrtTblValidateCellCallback = "D:CopySpecimen,\nD:VerifyGenotype,\nD:CommitTableCellEdit";
+                        xrtTblValidateCellCallback = "D:CopySpecimen,\nD:VerifyGenotype,\nD:VerifyAge,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 20;
                         xrtTblTraverseCellCallback = "D:DetectISResultModification";
                         xrtTblAllowCellResize = resize_horizontal;
@@ -1239,7 +1239,7 @@ Shift<Key>Tab: prev-tab-group()
                         xrtTblEditableSeries = "(all all False) (all 12 True) (all 14 True) (all 16 True) (all 19 True)(all 20 True)(all 22 True)";
                         xrtTblNumRows = 16;
                         xrtTblPixelWidthSeries = "(all 0-10 0)";
-                        xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyGelLaneRNAType,\nD:CommitTableCellEdit";
+                        xrtTblValidateCellCallback = "D:CopyGelLane,\nD:VerifyFloat,\nD:VerifyGenotype,\nD:VerifyAge,\nD:VerifyGelLaneRNAType,\nD:CommitTableCellEdit";
                         xrtTblVisibleRows = 15;
                         userDefinedAttributes = "laneKey:Int(Int)=\"2\"\ncontrolKey:Int(Int)=\"3\"\ngenotypeKey:Int(Int)=\"4\"\nstructureKeys:Int(Int)=\"5\"\nrnaKey:Int(Int)=\"6\"\nageKey:Int(Int)=\"7\"\nageMin:Int(Int)=\"8\"\nageMax:Int(Int)=\"9\"\nsexKey:Int(Int)=\"10\"\nlabel:Int(Int)=\"12\"\ncontrol:Int(Int)=\"13\"\ngenotype:Int(Int)=\"14\"\nstructures:Int(Int)=\"15\"\nsampleAmt:Int(Int)=\"16\"\nrna:Int(Int)=\"17\"\nagePrefix:Int(Int)=\"18\"\nageRange:Int(Int)=\"19\"\nageNote:Int(Int)=\"20\"\nsex:Int(Int)=\"21\"\nlaneNote:Int(Int)=\"22\"\nverifyFloat:StringTable(StringTable)=\"16\"\nclipboard:String=\"CVGel\"\n";
                         xrtTblTraversableSeries = "(all 0-11 False)";
@@ -1434,7 +1434,7 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: Widget
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMarker() VerifyNonGeneMarker()";
+<Key>Tab: VerifyMarker()";
                                             }
                                       }
                                 }
@@ -2415,7 +2415,7 @@ Shift<Key>Tab: prev-tab-group()
                                                 userDefinedAttributes = "verifyAccessionID:Widget\n";
                                                 translations = "#override
 Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyMarker() VerifyMarkerInTable() VerifyNonGeneMarker()";
+<Key>Tab: VerifyMarker() VerifyMarkerInTable()";
                                                 columns = 30;
                                               Group: User
                                                 verifyAccessionID = ProbeAccession;

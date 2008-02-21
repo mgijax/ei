@@ -16,6 +16,12 @@
 --
 -- History
 --
+-- 02/21/2008	lec
+--	- TR 8737; VerifyAge; aa check for age range
+--
+-- 02/20/2008	lec
+--	- TR 8792; VerifyNonGeneMarker; remove; original TR 3402
+--
 -- 02/09/2007	lec
 --	- TR 8147; VerifyReference; moved Copyright substitution into stored procedure
 --
@@ -468,6 +474,51 @@ rules:
 
 	    j := j + 1;
 	  end while;
+	end does;
+
+
+--
+-- VerifyAge
+--
+-- Activated from:  Table ValidateCellCallback
+--	if the age is postnatal day, week, month or year 
+--		and if there is no age range,
+--	then this is an invalid age vaue.
+--
+
+	VerifyAge does
+	  table : widget := VerifyAge.source_widget;
+	  top : widget := VerifyAge.source_widget.top;
+	  row : integer := VerifyAge.row;
+	  column : integer := VerifyAge.column;
+	  reason : integer := VerifyAge.reason;
+	  value : string := VerifyAge.value;
+	  agePrefix : string;
+
+	  -- If not in the Age, return
+
+	  if (column != table.ageRange) then
+	    return;
+	  end if;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+					   
+          agePrefix := mgi_tblGetCell(table, row, table.agePrefix);
+
+	  if ((agePrefix = "embryonic day"
+	      or agePrefix = "postnatal day"
+	      or agePrefix = "postnatal week"
+	      or agePrefix = "postnatal month"
+	      or agePrefix = "postnatal year")
+	      and value.length = 0) then
+            StatusReport.source_widget := top;
+	    StatusReport.message := "Missing Age Value";
+	    send(StatusReport);
+            VerifyAge.doit := (integer) false;
+	  end if;
+
 	end does;
 
 --
@@ -2477,41 +2528,6 @@ rules:
 	  VerifyMarker.source_widget := VerifyNomenMarker.source_widget;
 	  VerifyMarker.allowNomen := true;
 	  send(VerifyMarker, 0);
-	end does;
-
---
--- VerifyNonGeneMarker
---
--- If the Marker is not of type "Gene", then display a warning to the user.
--- Allow the edit.
---
-
-	VerifyNonGeneMarker does
-	  sourceWidget : widget := VerifyNonGeneMarker.source_widget;
-	  top : widget := sourceWidget.top;
-	  value : string;
-	  markerType : string;
-
-	  value := top->mgiMarker->ObjectID->text.value;
-
-	  -- If no value entered, return
-
-	  if (value.length = 0 or value = "NULL") then
-	    return;
-	  end if;
-
-	  (void) busy_cursor(top);
-
-	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
-		" where _Marker_key = " + value);
-
-	  if (markerType != "1") then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "\nWARNING:  This Marker is not a Gene.";
-            send(StatusReport);
-	  end if;
-
-	  (void) reset_cursor(top);
 	end does;
 
 --

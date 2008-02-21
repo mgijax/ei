@@ -10,6 +10,8 @@
 
 VerifyEdit [mode : integer := 0;];
 
+VerifyAge [];
+
 VerifyAllele :translation [verifyAdd : boolean := false;];
 
 VerifyAntibodyType [];

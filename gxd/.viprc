@@ -1,14 +1,14 @@
 
 !
 ! VIP init file
-! written: Tue Jan  5 07:58:37 1999
+! written: Wed Feb 15 11:15:01 2006
 !
 
 session_information {
-  x       = 446
-  y       = 226
-  width   = 814
-  height  = 750
+  x       = 851
+  y       = 0
+  width   = 1054
+  height  = 1044
   display = ":0.0"
 }
 
@@ -16,97 +16,115 @@ pcds
 {
   load "/opt/teleuseXRT/lib/pcds/xm.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 228
 
   load "/opt/teleuseXRT/lib/pcds/xrt.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 209
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGI.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/MGI.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
-    height      = 121
-    vsb_pos     = 72
+    height      = 561
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/GXD.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/GXD.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 396
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGD.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/MGD.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 836
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiDialog.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiDialog.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 561
     vsb_pos     = 1430
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiLookup.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiLookup.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 231
+    vsb_pos     = 608
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiOption.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiOption.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 3861
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiControl.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiControl.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 121
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiMenu.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiMenu.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 396
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiTable.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiTable.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 176
     vsb_pos     = 74
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/mgiDataTypes.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiDataTypes.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 1166
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/gxdDictionary.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/mgiAnatDictionary.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 671
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGIAdmin.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/MGIAdmin.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 66
     vsb_pos     = 55
 
-  load "/home/lec/ei/ei-mgi3.4/pcds/MGINomen.pcd"
+  load "/home/lec/mgi4.0/ei/pcds/MGINomen.pcd"
     floating    = false
-    opened      = true
+    opened      = false
     show_names  = false
     height      = 120
+
+  load "/home/lec/mgi4.0/ei/pcds/MGIMenu.pcd"
+    floating    = false
+    opened      = false
+    show_names  = false
+    height      = 120
+
+  load "/home/lec/mgi4.0/ei/pcds/mgiCV.pcd"
+    floating    = false
+    opened      = false
+    show_names  = false
+    height      = 231
+
+  load "/home/lec/mgi4.0/ei/pcds/mgiNoteBook.pcd"
+    floating    = false
+    opened      = false
+    show_names  = false
+    height      = 66
 
 }
 
