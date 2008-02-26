@@ -10,19 +10,25 @@
 --
 -- History
 --
--- 09/21/2005
+-- 02/26/2008	lec
+--	- TR 8811; AddMolecularSource, fix TR 8336
+--
+-- 11/29/2007	lec
+--	- TR 8336; AddMolecularSource
+--
+-- 09/21/2005	lec
 --	- TR 7130; change default Cell Line behavior
 --
--- 09/15/2003
+-- 09/15/2003	lec
 --	- SAO; added table processing to ModifyNamedMolecularSource
 --
--- 07/25/2003
+-- 07/25/2003	lec
 --	- JSAM
 --
--- 02/27/2003
+-- 02/27/2003	lec
 --	- add ModificationHistory table
 --
--- 08/15/2002
+-- 08/15/2002	lec
 --	- TR 1463; Species replaced with Organism
 --
 -- lec 06/05/2002
@@ -113,6 +119,13 @@ rules:
 	  -- if Cell Line = other value, then Age default = Not Applicable
 	  --
 
+	  -- Construct Age value
+
+	  age := top->AgeMenu.menuHistory.defaultValue;
+	  if (top->Age->text.value.length > 0) then
+	    age := age + " " + top->Age->text.value;
+	  end if;
+
 	  if (top->CellLine->CellLineID->text.value.length = 0) then
 	      if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
 	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTSPECIFIED_TEXT + "\"");
@@ -121,7 +134,9 @@ rules:
 	      end if;
 	  else
 	    cellLine := top->CellLine->CellLineID->text.value;
-	    age := NOTAPPLICABLE_TEXT;
+	    if (age.length = 0) then
+	      age := NOTAPPLICABLE_TEXT;
+	    end if;
 	  end if;
 
 	  add := add +
@@ -136,16 +151,6 @@ rules:
 	         mgi_DBprstr(top->Library->text.value) + "," +
                  mgi_DBprstr(top->Description->text.value) + ",";
 
-	  -- Construct Age value
-
-	  if (age.length = 0) then
-	    age := top->AgeMenu.menuHistory.defaultValue;
-	  end if;
-
-          if (top->Age->text.value.length > 0) then
-            age := age + " " + top->Age->text.value;
-          end if;
- 
 	  -- ageMin/ageMax are set from the stored procedure MGI_resetAgeMinMax
 
           add := add + mgi_DBprstr(age) + "," +

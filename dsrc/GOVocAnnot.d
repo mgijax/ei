@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 02/26/2008	lec
+--	TR 8824; remove "qualifier:"
+--
 -- 12/04/2007	lec
 --	TR 8622: add "modification" to GO note field
 --
@@ -135,7 +138,7 @@ locals:
 
 	annotTable : widget;		-- Annotation table
 
-	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nmodification:\nqualifier:\ntarget:\nexternal ref:\ntext:";
+	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nmodification:\ntarget:\nexternal ref:\ntext:";
 
 rules:
 
