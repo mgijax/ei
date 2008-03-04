@@ -1,5 +1,12 @@
+TAG: ei-3-5-4-19
+DATE: 03/04/2008
+STAFF: lec
+CHANGES:
+1) TR 8811/unexpected default for molecular probes (MolSourceLib.d)
+2) TR 8824/remove "qualifier" field from GO EI (GOVocAnnot.d)
+
 TAG: ei-3-5-4-18
-DATE: 03/21/2008
+DATE: 02/21/2008
 STAFF: lec
 CHANGES:
 1) TR 8737; Verify.d/VerifyAge; call from InSituForm/GelForm
