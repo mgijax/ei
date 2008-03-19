@@ -352,27 +352,27 @@ rules:
 
 	  -- cannot save annotations where marker is not a gene
 
-	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
-		" where _Marker_key = " + currentRecordKey);
-
-	  if (markerType != "1") then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "\nCannot save this Annotation because this Marker is not a Gene.";
-            send(StatusReport);
-	    return;
-	  end if;
+--	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
+--		" where _Marker_key = " + currentRecordKey);
+--
+--	  if (markerType != "1") then
+--            StatusReport.source_widget := top.root;
+--            StatusReport.message := "\nCannot save this Annotation because this Marker is not a Gene.";
+--            send(StatusReport);
+--	    return;
+--	  end if;
 
 	  -- cannot save annotations where marker is withdrawn
 
-	  markerStatus := mgi_sql1("select _Marker_Status_key from " + mgi_DBtable(MRK_MARKER) + 
-		" where _Marker_key = " + currentRecordKey);
+--	  markerStatus := mgi_sql1("select _Marker_Status_key from " + mgi_DBtable(MRK_MARKER) + 
+--		" where _Marker_key = " + currentRecordKey);
 
-	  if (markerStatus = "2") then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "\nCannot save this Annotation because this Marker is withdrawn.";
-            send(StatusReport);
-	    return;
-	  end if;
+--	  if (markerStatus = "2") then
+--            StatusReport.source_widget := top.root;
+--            StatusReport.message := "\nCannot save this Annotation because this Marker is withdrawn.";
+--            send(StatusReport);
+--	    return;
+--	  end if;
 
 	  (void) busy_cursor(top);
 
