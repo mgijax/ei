@@ -86,6 +86,9 @@
 # History
 #
 #
+#	lec	03/19/2008
+#	- TR8763 fix; do not check for duplicates if VI/PG are null
+#
 #	lec	03/06/2008
 #	- TR8763; doUpdate; allow update if pubmed id is null OR not null
 #
@@ -448,6 +451,11 @@ def isDuplicate(rec, rectags):
 		printRec(dupsFile, rec, rectags, "DUPLICATE PUBMEDID FOUND IN MGD")
 		ok = 0
 	        return ok
+
+	# If VI and PG are both null, the don't bother checking for duplicates
+
+	if rec['VI'] == 'NULL' and rec['PG'] == 'NULL':
+		return ok
 
         # If pages in format "x", check for pages = x and pages like "x-%"
         # If pages in format "x-y", check for pages = x and pages like "x-%"
