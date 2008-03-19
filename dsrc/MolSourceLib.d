@@ -88,6 +88,8 @@ rules:
 	  segmentType : string := "";
 	  vectorType : string := "";
 	  cellLine : string := "";
+	  cellLineNotSpecified : string;
+	  cellLineNotApplicable : string;
 
 	  top.sql := "";
 
@@ -113,29 +115,40 @@ rules:
 	    vectorType := top->SourceVectorTypeMenu.menuHistory.defaultValue;
 	  end if;
 
-	  --
-	  -- if Cell Line = Not Specified, then Age default = Not Specified
-	  -- if Cell Line = Not Applicable, then Age default = Not Specified
-	  -- if Cell Line = other value, then Age default = Not Applicable
-	  --
+	  -- Determine Cell Line value
 
-	  -- Construct Age value
+	  cellLineNotSpecified := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTSPECIFIED_TEXT + "\"");
+	  cellLineNotApplicable := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTAPPLICABLE_TEXT + "\"");
 
 	  if (top->CellLine->CellLineID->text.value.length = 0) then
-	      if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
-	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTSPECIFIED_TEXT + "\"");
-	      else
-	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTAPPLICABLE_TEXT + "\"");
-	      end if;
+	    if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
+	      cellLine := cellLineNotSpecified;
+	    else
+	      cellLine := cellLineNotApplicable;
+	    end if;
 	  else
 	    cellLine := top->CellLine->CellLineID->text.value;
-	    if (age.length = 0) then
-	      age := NOTAPPLICABLE_TEXT;
-	    end if;
 	  end if;
 
+	  -- Determine Age value
+
 	  if (age.length = 0) then
-	    age := top->AgeMenu.menuHistory.defaultValue;
+	    if (top->Tissue->TissueID->text.value != NOTSPECIFIED and
+		top->Tissue->TissueID->text.value != NOTAPPLICABLE and
+		cellLine = cellLineNotApplicable) then
+	      age := NOTSPECIFIED_TEXT;
+	    elsif (top->Tissue->TissueID->text.value = NOTSPECIFIED and
+		   cellLine = cellLineNotSpecified) then
+	      age := NOTSPECIFIED_TEXT;
+	    elsif (top->Tissue->TissueID->text.value = NOTSPECIFIED and
+		   cellLine = cellLineNotApplicable) then
+	      age := NOTSPECIFIED_TEXT;
+	    elsif (top->Tissue->TissueID->text.value = NOTSPECIFIED and
+		   top->CellLine->CellLineID->text.value.length = 0) then
+	      age := NOTSPECIFIED_TEXT;
+	    else
+	      age := NOTAPPLICABLE_TEXT;
+	    end if;
 	  end if;
 
 	  if (top->Age->text.value.length > 0) then
