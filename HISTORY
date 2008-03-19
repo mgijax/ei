@@ -1,3 +1,10 @@
+TAG: ei-3-5-4-20
+DATE: 03/19/2008
+STAFF: lec
+CHANGES:
+1) TR 8811/unexpected default for molecular probes (MolSourceLib.d)
+2) TR 8824/remove "qualifier" field from GO EI (GOVocAnnot.d)
+
 TAG: ei-3-5-4-19
 DATE: 03/04/2008
 STAFF: lec

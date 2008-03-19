@@ -121,11 +121,6 @@ rules:
 
 	  -- Construct Age value
 
-	  age := top->AgeMenu.menuHistory.defaultValue;
-	  if (top->Age->text.value.length > 0) then
-	    age := age + " " + top->Age->text.value;
-	  end if;
-
 	  if (top->CellLine->CellLineID->text.value.length = 0) then
 	      if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
 	        cellLine := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTSPECIFIED_TEXT + "\"");
@@ -137,6 +132,14 @@ rules:
 	    if (age.length = 0) then
 	      age := NOTAPPLICABLE_TEXT;
 	    end if;
+	  end if;
+
+	  if (age.length = 0) then
+	    age := top->AgeMenu.menuHistory.defaultValue;
+	  end if;
+
+	  if (top->Age->text.value.length > 0) then
+	    age := age + " " + top->Age->text.value;
 	  end if;
 
 	  add := add +

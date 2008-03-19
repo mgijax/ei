@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 03/18/2008
+--	TR 8877; add checks for non-gene or withdrawn markers
+--
 -- 02/26/2008	lec
 --	TR 8824; remove "qualifier:"
 --
@@ -333,6 +336,8 @@ rules:
 	  notesModified : boolean := false;
 	  referenceGene : string;
 	  completedAnnotation : string;
+	  markerType : string;
+	  markerStatus : string;
  
           if (not top.allowEdit) then
             return;
@@ -342,6 +347,30 @@ rules:
 	    StatusReport.source_widget := top;
 	    StatusReport.message := "Cannot save this Annotation if the 'Search Obsolete Term' toggle is set.";
 	    send(StatusReport, 0);
+	    return;
+	  end if;
+
+	  -- cannot save annotations where marker is not a gene
+
+	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
+		" where _Marker_key = " + currentRecordKey);
+
+	  if (markerType != "1") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "\nCannot save this Annotation because this Marker is not a Gene.";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  -- cannot save annotations where marker is withdrawn
+
+	  markerStatus := mgi_sql1("select _Marker_Status_key from " + mgi_DBtable(MRK_MARKER) + 
+		" where _Marker_key = " + currentRecordKey);
+
+	  if (markerStatus = "2") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "\nCannot save this Annotation because this Marker is withdrawn.";
+            send(StatusReport);
 	    return;
 	  end if;
 
