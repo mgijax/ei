@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 18 10:02:10 2008";
+      lastWritten = "Wed Mar 26 08:13:35 2008";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -12271,6 +12271,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     HutchinsonGeneTrap = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                  }
+                                                  {
+                                                    AllenBrainAtlas = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
                                                   }
                                             }
                                       }

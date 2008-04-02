@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  6 10:20:49 2007";
+      lastWritten = "Wed Mar 26 08:15:11 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -620,6 +620,13 @@ Module: mgiOption
                         labelString = "Fred Hutchinson Cancer Research Center";
                       Group: User
                         defaultValue = 104;
+                    }
+                    {
+                      AllenBrainAtlas = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Allen Brain Atlas";
+                      Group: User
+                        defaultValue = 107;
                     }
               }
         }
