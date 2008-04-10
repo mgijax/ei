@@ -235,7 +235,7 @@ devents:
 	Delete :local [];
 	DeleteGelBand :local [];
 	DetectISResultModification :local [];
-	DuplicateAssay :local [duplicate : integer := 1;];
+	DuplicateAssay :local [duplicate : integer;];
 
 	Exit :local [];
 
