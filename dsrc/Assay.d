@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  04/10/2008
+--	- TR 8591/Select/Clear Prep forms
+--
 -- lec  02/01/2007
 --	- TR 8135; CopyGelLane
 --	- don't copy anything into a control lane
@@ -2288,13 +2291,13 @@ rules:
           tables.close;
  
 	  -- Clear Prep forms
---	  prepForms.open;
---	  while (prepForms.more) do
---	    ClearForm.source_widget := top;
---	    ClearForm.form := prepForms.next;
---	    send(ClearForm, 0);
---          end while;
---	  prepForms.close;
+	  prepForms.open;
+	  while (prepForms.more) do
+	    ClearForm.source_widget := top;
+	    ClearForm.form := prepForms.next;
+	    send(ClearForm, 0);
+          end while;
+	  prepForms.close;
 
 	  -- Clear out the Notes
 
