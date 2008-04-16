@@ -545,6 +545,7 @@ rules:
 	  end if;
 
 	  set := "isReferenceGene = " + referenceGene + ",";
+
 	  if (completedAnnotation = YES) then
 	    set := set + "_CompletedBy_key = " + global_loginKey + ",completion_date = getdate()";
 	  else

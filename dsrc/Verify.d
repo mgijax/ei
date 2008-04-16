@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 04/16/2008	lec
+--	- TR 8900; VerifyGOInferredFrom; check ISO/ISA
+--
 -- 02/21/2008	lec
 --	- TR 8737; VerifyAge; aa check for age range
 --
@@ -2690,6 +2693,9 @@ rules:
 --	Verify that if the "Inferred From" value is not blank, 
 --	then the Evidence Code is not IDA, TAS or NAS
 --
+--      Verify that if the Evidence Code is ISO or ISA,
+--      then the "Inferred From" value must be entered
+--
 
 	VerifyGOInferredFrom does
 	  sourceWidget : widget := VerifyGOInferredFrom.source_widget;
@@ -2729,14 +2735,24 @@ rules:
 	    return;
 	  end if;
 
+	  evidence : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.evidence);
+	  evidence := evidence.raise_case;
+
+	  -- If the evidence is ISO or ISA, then the Inferred From must be entered
+
+	  if ((evidence = "ISO" or evidence = "ISA") and (value.length = 0 or value = "%")) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "ERROR:  When using Evidence Code ISO or ISA, the Inferred From value must be used.";
+            send(StatusReport);
+	    VerifyGOInferredFrom.doit := (integer) false;
+	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.inferredFrom, "");
+	  end if;
+
 	  -- If Inferred From is null, it's okay, return
 
 	  if (value.length = 0 or value = "%") then
 	    return;
 	  end if;
-
-	  evidence : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.evidence);
-	  evidence := evidence.raise_case;
 
 	  -- If evidence is IDA, TAS or NAS, display an error message
 
