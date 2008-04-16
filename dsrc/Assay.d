@@ -28,9 +28,6 @@
 --
 -- History
 --
--- lec  04/10/2008
---	- TR 8591/Select/Clear Prep forms
---
 -- lec  02/01/2007
 --	- TR 8135; CopyGelLane
 --	- don't copy anything into a control lane
@@ -238,7 +235,7 @@ devents:
 	Delete :local [];
 	DeleteGelBand :local [];
 	DetectISResultModification :local [];
-	DuplicateAssay :local [dupAll : integer := 1;];
+	DuplicateAssay :local [duplicate : integer;];
 
 	Exit :local [];
 
@@ -1229,10 +1226,10 @@ rules:
 
         DuplicateAssay does
 	  newAssayKey : string;
-	  dupAll : integer := DuplicateAssay.dupAll;
+	  duplicate : integer := DuplicateAssay.duplicate;
 
 	  (void) busy_cursor(top);
-	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + "," + (string) dupAll);
+	  newAssayKey := mgi_sql1("exec GXD_duplicateAssay " + currentAssay + "," + (string) duplicate);
 	  (void) reset_cursor(top);
 
           InsertList.list := top->QueryList;

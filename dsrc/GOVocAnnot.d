@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 04/16/2008
+--	TR 8633; add PythonInferredFrom
+--
 -- 03/18/2008
 --	TR 8877; add checks for non-gene or withdrawn markers
 --
@@ -557,6 +560,9 @@ rules:
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
+
+	  PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
+	  send(PythonInferredFromCache, 0);
 
 	  (void) reset_cursor(top);
 	end does;

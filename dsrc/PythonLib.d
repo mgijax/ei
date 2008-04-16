@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.d
 --
+-- 04/15/2008	lec
+--	- TR 8633; Inferred From Cache
+--
 -- 12/04/2006	lec
 --	- TR 7710; Image Cache
 --
@@ -209,8 +212,8 @@ rules:
 
 	  cmds.insert(getenv("MGICACHELOAD") + "/imgcache.py", cmds.count + 1);
 
-	  cmds.insert("-S" + global_server, cmds.count + 1);
-	  cmds.insert("-D" + global_database, cmds.count + 1);
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
@@ -226,6 +229,46 @@ rules:
 
 	  -- Execute
           proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonImageCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
+	  tu_fork_free(proc_id);
+
+	end does;
+
+--
+-- PythonInferredFromCache
+--
+-- Activated from:  GO Annotation module
+-- after an insert, update or delete
+--
+
+	PythonInferredFromCache does
+	  objectKey : string := PythonInferredFromCache.objectKey;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  cmds.insert(getenv("MGICACHELOAD") + "/inferredfrom.py", cmds.count + 1);
+
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-U" + getenv("MGI_DBUSER"), cmds.count + 1);
+	  cmds.insert("-P" + getenv("MGI_DBPASSWORDFILE"), cmds.count + 1);
+	  cmds.insert("-M" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonInferredFromCacheEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
@@ -273,6 +316,14 @@ rules:
 
 	PythonImageCacheEnd does
 	  (void) mgi_writeLog("Image Cache done.\n\n");
+	end does;
+
+--
+-- PythonInferredFromCacheEnd
+--
+
+	PythonInferredFromCacheEnd does
+	  (void) mgi_writeLog("Inferred From Cache done.\n\n");
 	end does;
 
 end dmodule;

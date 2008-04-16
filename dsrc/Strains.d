@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	04/15/2008
+--	TR 8511; remove IMSRMenu
+--
 -- lec	10/31/2005
 --	TR 7153; added IMSRMenu
 --
@@ -304,7 +307,6 @@ rules:
                  top->StandardMenu.menuHistory.defaultValue + "," +
                  top->NeedsReviewMenu.menuHistory.defaultValue + "," +
                  top->PrivateMenu.menuHistory.defaultValue + "," +
-                 top->IMSRMenu.menuHistory.defaultValue + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
  
 	  send(ModifyType, 0);
@@ -435,11 +437,6 @@ rules:
           if (top->PrivateMenu.menuHistory.modified and
               top->PrivateMenu.menuHistory.searchValue != "%") then
             set := set + "private = "  + top->PrivateMenu.menuHistory.defaultValue + ",";
-          end if;
- 
-          if (top->IMSRMenu.menuHistory.modified and
-              top->IMSRMenu.menuHistory.searchValue != "%") then
-            set := set + "imsrOK = "  + top->IMSRMenu.menuHistory.defaultValue + ",";
           end if;
  
           cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
@@ -708,10 +705,6 @@ rules:
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
           end if;
 
-          if (top->IMSRMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand s.imsrOK = " + top->IMSRMenu.menuHistory.searchValue;
-          end if;
-
 	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
             where := where + "\nand exists (select 1 from VOC_Annot a " +
 		"where s._Strain_key = a._Object_key" + 
@@ -879,9 +872,6 @@ rules:
                 send(SetOption, 0);
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
-                send(SetOption, 0);
-                SetOption.source_widget := top->IMSRMenu;
-                SetOption.value := mgi_getstr(dbproc, 7);
                 send(SetOption, 0);
 
 	      elsif (results = 2) then
