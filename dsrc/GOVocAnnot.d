@@ -13,6 +13,7 @@
 --
 -- 04/16/2008
 --	TR 8633; add PythonInferredFrom
+--	TR 8898; fix completeAnnotation
 --
 -- 03/18/2008
 --	TR 8877; add checks for non-gene or withdrawn markers
@@ -338,7 +339,8 @@ rules:
 	  editTerm : boolean := false;
 	  notesModified : boolean := false;
 	  referenceGene : string;
-	  completedAnnotation : string;
+	  completeAnnotation : string;
+	  completeDate : string;
 	  markerType : string;
 	  markerStatus : string;
  
@@ -537,8 +539,9 @@ rules:
 	  -- GO Tracking; the record is added by the VOC_Annot trigger
 	  --
 
-	  referenceGene := top->ReferenceGeneMenu.menuHistory.defaultValue;
-	  completedAnnotation := top->CompleteMenu.menuHistory.defaultValue;
+	  referenceGene := top->ReferenceGeneMenu.menuHistory.searchValue;
+	  completeAnnotation := top->CompleteMenu.menuHistory.searchValue;
+	  completeDate := top->CompleteDate->text.value;
 
 	  if (referenceGene = "%") then
 	    referenceGene := NO;
@@ -546,9 +549,13 @@ rules:
 
 	  set := "isReferenceGene = " + referenceGene + ",";
 
-	  if (completedAnnotation = YES) then
+	  -- if "Annotation Complete?" = YES and date = null, then date = today
+	  -- else if "Annotation Complete?" = NO, then date = null
+	  -- else leave date alone
+
+	  if (completeAnnotation = YES and completeDate.length = 0) then
 	    set := set + "_CompletedBy_key = " + global_loginKey + ",completion_date = getdate()";
-	  else
+	  elsif (completeAnnotation = NO) then
 	    set := set + "_CompletedBy_key = null,completion_date = null";
 	  end if;
 
