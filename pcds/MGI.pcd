@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 26 08:12:25 2008";
+      lastWritten = "Tue Apr 15 09:22:44 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -1840,6 +1840,26 @@ Module: MGI
                     }
                     {
                       Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                  Group: Widget
+                                    sensitive = False;
+                                }
+                          }
                     }
                     {
                       Lookup = Lookup : mgiLookup;

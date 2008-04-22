@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 26 08:12:23 2008";
+      lastWritten = "Thu Apr 10 13:58:16 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -2639,10 +2639,10 @@ Shift<Key>Tab: prev-tab-group()
                                   Delete = ControlPush;
                                 }
                                 {
-                                  DuplicatePartial = ControlPush : mgiControl;
+                                  DuplicatePrep = ControlPush : mgiControl;
                                   Group: Widget
-                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAssay(dupAll = 0),\nD:GoHome";
-                                    labelString = "Duplicate Partial";
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAssay(duplicate = 3),\nD:GoHome";
+                                    labelString = "Duplicate Prep";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Search;
@@ -2654,10 +2654,24 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                 }
                                 {
+                                  DuplicatePartial = ControlPush : mgiControl;
+                                  Group: Widget
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAssay(duplicate = 2),\nD:GoHome";
+                                    labelString = Partial;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = DuplicatePrep;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = DuplicatePrep;
+                                }
+                                {
                                   DuplicateAll = ControlPush : mgiControl;
                                   Group: Widget
-                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAssay,\nD:GoHome";
-                                    labelString = "Duplicate All";
+                                    activateCallback = "D:VerifyEdit(mode = 4),\nD:DuplicateAssay(duplicate = 1),\nD:GoHome";
+                                    labelString = All;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = DuplicatePartial;
@@ -2675,12 +2689,12 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = "Add Assay Structures To AD Clipboard";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = DuplicatePartial;
+                                    leftWidget = DuplicatePrep;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = DuplicatePartial;
+                                    topWidget = DuplicatePrep;
                                     topOffset = 2;
                                 }
                                 {
