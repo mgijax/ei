@@ -29,7 +29,10 @@
 -- History
 --
 -- lec  04/23/2008
---	- TR 8775/Cre
+--	- TR 8775/Cre; added new assays checks for using knock-in form:
+--		In situ transgenic (10)
+--		Indirect transgenic (11)
+--		In situ knock in (12)
 --
 -- lec  02/01/2007
 --	- TR 8135; CopyGelLane
