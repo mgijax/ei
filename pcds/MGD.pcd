@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr 15 13:06:44 2008";
+      lastWritten = "Wed Apr 23 07:12:38 2008";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8745,6 +8745,18 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
+                                  strainTypes = strainTypes : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = strainSpecies;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = strainSpecies;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
                                   PrivateMenu = YesNoMenu : mgiOption;
                                   Group: Widget
                                     subMenuId = PrivatePulldown;
@@ -8797,56 +8809,50 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  NeedsReviewMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = NeedsReviewPulldown;
-                                    labelString = "Needs Review?";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = SuperStandardMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = SuperStandardMenu;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                  Group: User
-                                    defaultOption = NoReview;
-                                      Popups:
-                                      {
-                                        NeedsReviewPulldown : YesNoPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              YesReview : Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              NoReview : No = No : mgiOption;
-                                            }
-                                      }
-                                }
-                                {
-                                  StrainType = Table : mgiTable;
+                                  StrainAttribute = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = strainSpecies;
+                                    topWidget = strainTypes;
                                     topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = strainSpecies;
+                                    leftWidget = strainTypes;
                                     leftOffset = 5;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblColumnLabels = "Mode,Current Key,Key,Strain Type";
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Strain Attribute";
                                           xrtTblNumColumns = 4;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          userDefinedAttributes = "strainTypeCurrentKey:Int=\"1\"\nstrainTypeKey:Int=\"2\"\nstrainType:Int=\"3\"\n";
+                                          userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
+                                          xrtTblVisibleRows = 2;
+                                      }
+                                }
+                                {
+                                  NeedsReview = Table : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = StrainAttribute;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = StrainAttribute;
+                                    leftOffset = 5;
+                                    rightOffset = 5;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblColumnLabels = "Mode,Current Key,Key,Needs Review";
+                                          xrtTblNumColumns = 4;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 50)";
+                                          xrtTblEditableSeries = "(all 0-2 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          userDefinedAttributes = "annotCurrentKey:Int(Int)=\"1\"\ntermKey:Int(Int)=\"2\"\nterm:Int(Int)=\"3\"\n";
                                           xrtTblVisibleRows = 2;
                                       }
                                 }
@@ -8859,11 +8865,11 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = StrainType;
+                                    topWidget = StrainAttribute;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = StrainType;
+                                    leftWidget = StrainAttribute;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
@@ -9498,6 +9504,14 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   QueryList = QueryList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: Widget
+                                          visibleItemCount = 5;
+                                      }
                                 }
                                 {
                                   SpeciesList = OrganismList : mgiLookup;
@@ -9524,11 +9538,41 @@ Shift<Key>Tab: prev-tab-group()
                                         Label = LookupLabel;
                                       }
                                       {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = StrainType;
+                                          targetWidget = strainTypes;
+                                      }
+                                }
+                                {
+                                  StrainAttributeList = StrainAttributeList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                        Group: Widget
+                                          labelString = "Strain Attribute";
+                                      }
+                                      {
                                         List = list;
                                         Group: User
-                                          targetWidget = StrainType;
+                                          targetWidget = StrainAttribute;
                                           targetKey = 2;
                                           targetText = 3;
+                                      }
+                                }
+                                {
+                                  NeedsReviewList = NeedsReviewList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: Widget
+                                          visibleItemCount = 2;
+                                        Group: User
+                                          targetKey = 2;
+                                          targetText = 3;
+                                          targetWidget = NeedsReview;
                                       }
                                 }
                           }

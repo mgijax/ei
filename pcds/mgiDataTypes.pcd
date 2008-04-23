@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan  8 10:57:27 2007";
+      lastWritten = "Tue Apr 22 11:08:46 2008";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -518,7 +518,7 @@ Shift<Key>Tab: prev-tab-group()
           DataSets = XmFrame;
           Group: Control
             vip_x = 70;
-            vip_y = 2450;
+            vip_y = 2505;
               {
                 DataSetsForm = XmForm;
                 Group: Widget
@@ -655,7 +655,7 @@ Shift<Key>Tab: prev-tab-group()
             orientation = horizontal;
           Group: Control
             vip_x = 70;
-            vip_y = 2505;
+            vip_y = 2560;
           Group: User
             verifyTable = 321;
             verifyDialog = RIDialog;
@@ -737,7 +737,7 @@ Shift<Key>Tab: prev-tab-group()
           mgiCross = mgiVerify : mgiDataTypes;
           Group: Control
             vip_x = 70;
-            vip_y = 2615;
+            vip_y = 2670;
           Group: User
             verifyDialog = CrossDialog;
             verifyKey = CrossID;
@@ -821,7 +821,7 @@ Shift<Key>Tab: prev-tab-group()
           mgiAllele = mgiObject;
           Group: Control
             vip_x = 70;
-            vip_y = 2835;
+            vip_y = 2890;
           Group: User
             tableID = 115;
               {
@@ -851,7 +851,7 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "verifyDialog:String(String)\nverifyTable:Int(Int)\nverifyAdd:Boolean(Boolean)=\"True\"\nverifyChars:Int(Int)=\"-1\"\nverifyNotSpecified:Boolean(Boolean)=\"True\"\nverifyKey:Widget(Widget)\nverifyPrivate:Boolean=\"True\"\n";
           Group: Control
             vip_x = 70;
-            vip_y = 2670;
+            vip_y = 2725;
               {
                 Verify = CharText : mgiDataTypes;
                     {
@@ -884,7 +884,7 @@ Shift<Key>Tab: prev-tab-group()
           mgiDate = XmRowColumn;
           Group: Control
             vip_x = 70;
-            vip_y = 2725;
+            vip_y = 2780;
               {
                 Date = Date : mgiDataTypes;
                     {
@@ -932,7 +932,7 @@ Shift<Key>Tab: prev-tab-group()
             background = Wheat;
           Group: Control
             vip_x = 70;
-            vip_y = 2395;
+            vip_y = 2450;
         }
         {
           strainSpecies = mgiObject;
@@ -1001,7 +1001,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "";
             vip_x = 70;
-            vip_y = 2780;
+            vip_y = 2835;
         }
         {
           SingleNote = Notes;
@@ -1025,7 +1025,7 @@ Shift<Key>Tab: prev-tab-group()
             userDefinedAttributes = "note:String(String)\nnoteWidget:String(String)\n";
           Group: Control
             vip_x = 70;
-            vip_y = 2560;
+            vip_y = 2615;
         }
         {
           mgiNoteShort = XmRowColumn;
@@ -1160,6 +1160,31 @@ Shift<Key>Tab: prev-tab-group()
                             Group: User
                               defaultValue = "Not Applicable";
                           }
+                    }
+              }
+        }
+        {
+          strainTypes = mgiObject;
+          Group: Control
+            vip_x = 70;
+            vip_y = 2395;
+              {
+                ObjectID = ID : mgiDataTypes;
+              }
+              {
+                StrainType : CharText = CharText : mgiDataTypes;
+                    {
+                      label = XmLabel;
+                      Group: Widget
+                        labelString = "Strain Type";
+                    }
+                    {
+                      text = text : mgiDataTypes;
+                      Group: Widget
+                        columns = 50;
+                        translations = "#override
+Shift<Key>Tab: prev-tab-group()
+<Key>Tab: VerifyStrainSpecies()";
                     }
               }
         }

@@ -841,9 +841,6 @@ char *mgi_DBkey(int table)
     case PRB_STRAIN_MARKER:
             strcpy(buf, "_StrainMarker_key");
 	    break;
-    case PRB_STRAIN_TYPE:
-            strcpy(buf, "_Type_key");
-	    break;
     case RISET:
             strcpy(buf, "_RISet_key");
 	    break;
@@ -1633,14 +1630,8 @@ char *mgi_DBtable(int table)
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");
 	    break;
-    case PRB_STRAIN_TYPE:
-            strcpy(buf, "PRB_Strain_Type");
-	    break;
     case PRB_STRAIN_MARKER_VIEW:
 	    strcpy(buf, "PRB_Strain_Marker_View");
-	    break;
-    case PRB_STRAIN_TYPE_VIEW:
-	    strcpy(buf, "PRB_Strain_Type_View");
 	    break;
     case VOC_TERM_STRAINALLELE_VIEW:
             strcpy(buf, "VOC_Term_StrainAllele_View");
@@ -1844,7 +1835,6 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_SOURCE:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
-    case PRB_STRAIN_TYPE:
     case VOC_ANNOT:
     case VOC_ANNOTHEADER:
     case VOC_TEXT:
@@ -2227,15 +2217,12 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_STRAIN_MARKER:
             sprintf(buf, "insert %s (%s, _Strain_key, _Marker_key, _Allele_key, _Qualifier_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
-    case PRB_STRAIN_TYPE:
-            sprintf(buf, "insert %s (%s, _Strain_key, _StrainType_key)", mgi_DBtable(table), mgi_DBkey(table));
-	    break;
     case RISET:
             sprintf(buf, "insert %s (%s, _Strain_key_1, _Strain_key_2, designation, abbrev1, abbrev2, RI_IdList)", 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case STRAIN:
-            sprintf(buf, "insert %s (%s, _Species_key, strain, standard, needsReview, private, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Species_key, _StrainType_key, strain, standard, private, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case TISSUE:
             sprintf(buf, "insert %s (%s, %s, standard)", mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
@@ -2392,7 +2379,6 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_SOURCE:
       case PRB_STRAIN_GENOTYPE:
       case PRB_STRAIN_MARKER:
-      case PRB_STRAIN_TYPE:
       case SEQ_SEQUENCE:
       case STRAIN:
       case VOC_EVIDENCE:
