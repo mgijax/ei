@@ -786,15 +786,13 @@ rules:
           end if;
 
 	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
-            where := where + "\nand exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key" + 
-		" and a._AnnotType_key = " + superAnnotTypeKey + 
-		" and a._Term_key = " + superTermKey + ") ";
+            where := where + "\nand exists (select 1 from PRB_Strain_Super_View v " +
+		"where s._Strain_key = v._Strain_key" + 
+		" and v._Term_key = " + superTermKey + ") ";
 	  elsif (top->SuperStandardMenu.menuHistory.searchValue = NO) then
-            where := where + "\nand not exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key" + 
-		" and a._AnnotType_key = " + superAnnotTypeKey + 
-		" and a._Term_key = " + superTermKey + ") ";
+            where := where + "\nand not exists (select 1 from PRB_Strain_Super_View v " +
+		"where s._Strain_key = v._Strain_key" + 
+		" and v._Term_key = " + superTermKey + ") ";
           end if;
 
 	  -- Strain Attributes
@@ -804,10 +802,9 @@ rules:
             value := mgi_tblGetCell(top->StrainAttribute->Table, row, top->StrainAttribute->Table.termKey);
 
             if (value.length > 0 and value != "NULL") then
-	      from := from + ",VOC_Annot v";
-	      where := where + "\nand s._Strain_key = v._Object_key";
+	      from := from + ",PRB_Strain_Attribute_View v";
+	      where := where + "\nand s._Strain_key = v._Strain_key";
 	      where := where + "\nand v._Term_key = " + value;
-	      where := where + "\nand v._AnnotType_key = " + attributeAnnotTypeKey;
 	    end if;
 
 	    row := row + 1;
@@ -820,10 +817,9 @@ rules:
             value := mgi_tblGetCell(top->NeedsReview->Table, row, top->NeedsReview->Table.termKey);
 
             if (value.length > 0 and value != "NULL") then
-	      from := from + ",VOC_Annot v";
-	      where := where + "\nand s._Strain_key = v._Object_key";
+	      from := from + ",PRB_Strain_NeedsReview_View v";
+	      where := where + "\nand s._Strain_key = v._Strain_key";
 	      where := where + "\nand v._Term_key = " + value;
-	      where := where + "\nand v._AnnotType_key = " + reviewAnnotTypeKey;
 	    end if;
 
 	    row := row + 1;
@@ -933,18 +929,12 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(STRAIN_VIEW) +
 		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n" +
-		 "select v._Annot_key, v._Term_key, t.term from VOC_Annot v, VOC_Term t " +
-		 "where v._AnnotType_key = " + attributeAnnotTypeKey +
-		 " and v._Term_key = t._Term_key " +
-		 " and v._Object_key = " + currentRecordKey + "\n" +
-		 "select v._Annot_key, v._Term_key, t.term from VOC_Annot v, VOC_Term t " +
-		 "where v._AnnotType_key = " + reviewAnnotTypeKey +
-		 " and v._Term_key = t._Term_key " +
-		 " and v._Object_key = " + currentRecordKey + "\n" +
-		 "select _Annot_key from VOC_Annot " +
-		 "where _AnnotType_key = " + superAnnotTypeKey +
-		 " and _Term_key = " + superTermKey +
-		 " and _Object_key = " + currentRecordKey + "\n" +
+		 "select * from PRB_Strain_Attribute_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n" +
+		 "select * from PRB_Strain_NeedsReview_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n" +
+		 "select _Annot_key from PRB_Strain_Super_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n" +
 		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
 		 "from PRB_Strain_Genotype_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n";
@@ -981,15 +971,15 @@ rules:
 	      elsif (results = 2) then
 		table := top->StrainAttribute->Table;
                 (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 3) then
 		table := top->NeedsReview->Table;
                 (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
-                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 4) then
