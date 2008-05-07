@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  7 10:10:57 2008";
+      lastWritten = "Wed May  7 13:40:51 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -631,21 +631,21 @@ Module: mgiOption
                     {
                       KOMPCSD = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "KOMP-CSD";
+                        labelString = "CSD-KOMP";
                       Group: User
                         defaultValue = 108;
                     }
                     {
                       KOMPRegeneron = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "KOMP-Regeneron";
+                        labelString = "Regeneron-KOMP";
                       Group: User
                         defaultValue = 109;
                     }
                     {
-                      Regeneron = AccToggle : mgiOption;
+                      RegeneronOther = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = Regeneron;
+                        labelString = "Regeneron-Other";
                       Group: User
                         defaultValue = 110;
                     }

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  7 10:14:21 2008";
+      lastWritten = "Wed May  7 13:40:57 2008";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -13070,7 +13070,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    Regeneron = AccToggle : mgiOption;
+                                                    RegeneronOther = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
