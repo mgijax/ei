@@ -10,7 +10,7 @@
 --
 -- History
 --
--- 02/26/2008	lec
+-- 05/08/2008, 02/26/2008	lec
 --	- TR 8811; AddMolecularSource, fix TR 8336
 --
 -- 11/29/2007	lec
@@ -131,6 +131,8 @@ rules:
 	  end if;
 
 	  -- Determine Age value
+
+	  age := top->AgeMenu.menuHistory.defaultValue;
 
 	  if (age.length = 0) then
 	    if (top->Tissue->TissueID->text.value != NOTSPECIFIED and

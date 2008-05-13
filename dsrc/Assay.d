@@ -28,6 +28,11 @@
 --
 -- History
 --
+-- lec  04/23/2008
+--	- TR 8775/Cre; added new assays checks for using knock-in form:
+--		"In situ reporter (transgenic)" (10)
+--		"Recombinase reporter" (11)
+--
 -- lec  02/01/2007
 --	- TR 8135; CopyGelLane
 --	- don't copy anything into a control lane
@@ -3198,7 +3203,9 @@ rules:
 	  top->GXDKnockInMenu.required := false;
 
 	  -- If Knock In Assay...
-	  if (top->AssayTypeMenu.menuHistory.defaultValue= "9") then
+	  if (top->AssayTypeMenu.menuHistory.defaultValue= "9" or
+	      top->AssayTypeMenu.menuHistory.defaultValue= "10" or
+	      top->AssayTypeMenu.menuHistory.defaultValue= "11") then
 	    top->mgiMarker->Marker->text.verifyAccessionID := nil;
 	    top->KnockInForm.sensitive := true;
 	    top->GXDReporterGeneMenu.required := true;

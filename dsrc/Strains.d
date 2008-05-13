@@ -13,6 +13,9 @@
 --
 -- History
 --
+-- lec	04/15/2008
+--	TR 8511; remove IMSRMenu
+--
 -- lec	10/31/2005
 --	TR 7153; added IMSRMenu
 --
@@ -95,8 +98,9 @@ devents:
 	Init :local [];
 
 	Modify :local [];
+	ModifyAttribute :local [];
+	ModifyNeedsReview :local [];
 	ModifyGenotype :local [];
-	ModifyType :local [];
 	ModifySuperStandard :local [];
 
         -- Process Strain Merge Events
@@ -129,10 +133,15 @@ locals:
                                         -- Initialized in Select[] and Add[] events
  
 	origStrainName : string;	-- original strain name
-	superStandardKey : string;
 	speciesNotSpecified : string;
-	annotKey : string;
-	annotTypeKey : string := "1004";
+	strainTypeNotSpecified : string;
+
+	superTermKey : string;
+	superAnnotKey : string;
+	superAnnotTypeKey : string := "1004";
+	attributeAnnotTypeKey : string := "1009";
+	reviewAnnotTypeKey : string := "1008";
+	genericQualifierKey : string := "53"; -- generic annotation qualifier key
 
 	tables : list;
 
@@ -215,7 +224,8 @@ rules:
         Init does
 	  tables := create list("widget");
 
-	  tables.append(top->StrainType->Table);
+	  tables.append(top->StrainAttribute->Table);
+	  tables.append(top->NeedsReview->Table);
 	  tables.append(top->Genotype->Table);
 	  tables.append(top->ReferenceMGI->Table);
 	  tables.append(top->DataSets->Table);
@@ -230,8 +240,15 @@ rules:
           LoadList.list := top->StrainTypeList;
 	  send(LoadList, 0);
 
-	  superStandardKey := mgi_sql1("select _Term_key from VOC_Term where term = 'super standard'");
+          LoadList.list := top->StrainAttributeList;
+	  send(LoadList, 0);
+
+          LoadList.list := top->NeedsReviewList;
+	  send(LoadList, 0);
+
+	  superTermKey := mgi_sql1("select _Term_key from VOC_Term where term = 'super standard'");
 	  speciesNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'Not Specified'");
+	  strainTypeNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -297,19 +314,23 @@ rules:
 	    top->strainSpecies->ObjectID->text.value := speciesNotSpecified;
 	  end if;
 
+	  if (top->strainTypes->ObjectID->text.value.length = 0) then
+	    top->strainTypes->ObjectID->text.value := strainTypeNotSpecified;
+	  end if;
+
           cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
 	         mgi_DBinsert(STRAIN, KEYNAME) +
 		 top->strainSpecies->ObjectID->text.value + "," +
+		 top->strainTypes->ObjectID->text.value + "," +
                  mgi_DBprstr(top->Name->text.value) + "," +
                  top->StandardMenu.menuHistory.defaultValue + "," +
-                 top->NeedsReviewMenu.menuHistory.defaultValue + "," +
                  top->PrivateMenu.menuHistory.defaultValue + "," +
-                 top->IMSRMenu.menuHistory.defaultValue + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
  
-	  send(ModifyType, 0);
+	  send(ModifyAttribute, 0);
+	  send(ModifyNeedsReview, 0);
 	  send(ModifyGenotype, 0);
-	  annotKey := NO;
+	  superAnnotKey := NO;
 	  send(ModifySuperStandard, 0);
 
 	  --  Process Markers/Alleles
@@ -422,14 +443,13 @@ rules:
 	    set := set + "_Species_key = " + top->strainSpecies->ObjectID->text.value + ",";
 	  end if;
 
+	  if (top->strainTypes->StrainType->text.modified) then
+	    set := set + "_StrainType_key = " + top->strainTypes->ObjectID->text.value + ",";
+	  end if;
+
           if (top->StandardMenu.menuHistory.modified and
               top->StandardMenu.menuHistory.searchValue != "%") then
             set := set + "standard = "  + top->StandardMenu.menuHistory.defaultValue + ",";
-          end if;
- 
-          if (top->NeedsReviewMenu.menuHistory.modified and
-              top->NeedsReviewMenu.menuHistory.searchValue != "%") then
-            set := set + "needsReview = "  + top->NeedsReviewMenu.menuHistory.defaultValue + ",";
           end if;
  
           if (top->PrivateMenu.menuHistory.modified and
@@ -437,14 +457,10 @@ rules:
             set := set + "private = "  + top->PrivateMenu.menuHistory.defaultValue + ",";
           end if;
  
-          if (top->IMSRMenu.menuHistory.modified and
-              top->IMSRMenu.menuHistory.searchValue != "%") then
-            set := set + "imsrOK = "  + top->IMSRMenu.menuHistory.defaultValue + ",";
-          end if;
- 
           cmd := mgi_DBupdate(STRAIN, currentRecordKey, set);
 
-	  send(ModifyType, 0);
+	  send(ModifyAttribute, 0);
+	  send(ModifyNeedsReview, 0);
 	  send(ModifyGenotype, 0);
 	  send(ModifySuperStandard, 0);
 
@@ -492,23 +508,23 @@ rules:
 	end does;
 
 --
--- ModifyType
+-- ModifyAttribute
 --
 -- Activated from: devent Modify
 --
--- Construct insert/update/delete for Strain Types
+-- Construct insert/update/delete for Strain Attribute
 -- Appends to global "cmd" string
 --
  
-	ModifyType does
-	  table : widget := top->StrainType->Table;
+	ModifyAttribute does
+	  table : widget := top->StrainAttribute->Table;
 	  row : integer := 0;
 	  editMode : string;
 	  key : string;
 	  newKey : string;
 	  set : string := "";
 	  keyDeclared : boolean := false;
-	  keyName : string := "typeKey";
+	  keyName : string := "attributeAnnotKey";
  
 	  -- Process while non-empty rows are found
  
@@ -519,25 +535,84 @@ rules:
 	      break;
 	    end if;
  
-	    key := mgi_tblGetCell(table, row, table.strainTypeCurrentKey);
-	    newKey := mgi_tblGetCell(table, row, table.strainTypeKey);
+	    key := mgi_tblGetCell(table, row, table.annotCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.termKey);
 
 	    if (editMode = TBL_ROW_ADD) then
               if (not keyDeclared) then
-                cmd := cmd + mgi_setDBkey(PRB_STRAIN_TYPE, NEWKEY, keyName);
+                cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, keyName);
                 keyDeclared := true;
               else
                 cmd := cmd + mgi_DBincKey(keyName);
               end if;
 
-              cmd := cmd + mgi_DBinsert(PRB_STRAIN_TYPE, keyName) + 
-		     currentRecordKey + "," + newKey + ")\n";
+              cmd := cmd + mgi_DBinsert(VOC_ANNOT, keyName) + 
+		     attributeAnnotTypeKey + "," +
+                     currentRecordKey + "," + 
+		     newKey + "," +
+		     genericQualifierKey + ")\n";
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
-	      set := "_StrainType_key = " + newKey;
-	      cmd := cmd + mgi_DBupdate(PRB_STRAIN_TYPE, key, set);
+	      set := "_Term_key = " + newKey;
+	      cmd := cmd + mgi_DBupdate(VOC_ANNOT, key, set);
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-	      cmd := cmd + mgi_DBdelete(PRB_STRAIN_TYPE, key);
+	      cmd := cmd + mgi_DBdelete(VOC_ANNOT, key);
+	    end if;
+ 
+	    row := row + 1;
+	  end while;
+	end does;
+ 
+--
+-- ModifyNeedsReview
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Strain Needs Review
+-- Appends to global "cmd" string
+--
+ 
+	ModifyNeedsReview does
+	  table : widget := top->NeedsReview->Table;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  newKey : string;
+	  set : string := "";
+	  keyDeclared : boolean := false;
+	  keyName : string := "reviewAnnotKey";
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.annotCurrentKey);
+	    newKey := mgi_tblGetCell(table, row, table.termKey);
+
+	    if (editMode = TBL_ROW_ADD) then
+              if (not keyDeclared) then
+                cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, keyName);
+                keyDeclared := true;
+              else
+                cmd := cmd + mgi_DBincKey(keyName);
+              end if;
+
+              cmd := cmd + mgi_DBinsert(VOC_ANNOT, keyName) + 
+		     reviewAnnotTypeKey + "," +
+                     currentRecordKey + "," + 
+		     newKey + "," +
+		     genericQualifierKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Term_key = " + newKey;
+	      cmd := cmd + mgi_DBupdate(VOC_ANNOT, key, set);
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(VOC_ANNOT, key);
 	    end if;
  
 	    row := row + 1;
@@ -614,17 +689,17 @@ rules:
 
 	  -- add a new Annotation record if set and one does not already exist
 
-	  if (annotKey = NO and top->SuperStandardMenu.menuHistory.defaultValue = YES) then
-		cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, "annotKey") +
-		      mgi_DBinsert(VOC_ANNOT, "annotKey") +
-		      annotTypeKey + "," +
+	  if (superAnnotKey = NO and top->SuperStandardMenu.menuHistory.defaultValue = YES) then
+		cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, "superAnnotKey") +
+		      mgi_DBinsert(VOC_ANNOT, "superAnnotKey") +
+		      superAnnotTypeKey + "," +
 		      currentRecordKey + "," +
-		      superStandardKey + ",0)\n";
+		      superTermKey + ",0)\n";
 
 	  -- remove Annotation record if not set and one does already exist
 
-	  elsif (annotKey != NO and top->SuperStandardMenu.menuHistory.defaultValue = NO) then
-		cmd := cmd + mgi_DBdelete(VOC_ANNOT, annotKey);
+	  elsif (superAnnotKey != NO and top->SuperStandardMenu.menuHistory.defaultValue = NO) then
+		cmd := cmd + mgi_DBdelete(VOC_ANNOT, superAnnotKey);
 	  end if;
 
 	end does;
@@ -642,6 +717,8 @@ rules:
 	  from := "from " + mgi_DBtable(STRAIN_VIEW) + " s";
 	  from_reference := false;
 	  where := "";
+
+	  row : integer := 0;
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "s";
@@ -696,42 +773,53 @@ rules:
 	    where := where + "\nand s.species like " + mgi_DBprstr(top->strainSpecies->Species->text.value);
 	  end if;
 
+	  if (top->strainTypes->StrainType->text.value.length > 0) then
+	    where := where + "\nand s.strainType like " + mgi_DBprstr(top->strainTypes->StrainType->text.value);
+	  end if;
+
           if (top->StandardMenu.menuHistory.searchValue != "%") then
             where := where + "\nand s.standard = " + top->StandardMenu.menuHistory.searchValue;
-          end if;
- 
-          if (top->NeedsReviewMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand s.needsReview = " + top->NeedsReviewMenu.menuHistory.searchValue;
           end if;
  
           if (top->PrivateMenu.menuHistory.searchValue != "%") then
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
           end if;
 
-          if (top->IMSRMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand s.imsrOK = " + top->IMSRMenu.menuHistory.searchValue;
-          end if;
-
 	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
-            where := where + "\nand exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key" + 
-		" and a._AnnotType_key = " + annotTypeKey + 
-		" and a._Term_key = " + superStandardKey + ") ";
+            where := where + "\nand exists (select 1 from PRB_Strain_Super_View v " +
+		"where s._Strain_key = v._Strain_key" + 
+		" and v._Term_key = " + superTermKey + ") ";
 	  elsif (top->SuperStandardMenu.menuHistory.searchValue = NO) then
-            where := where + "\nand not exists (select 1 from VOC_Annot a " +
-		"where s._Strain_key = a._Object_key" + 
-		" and a._AnnotType_key = " + annotTypeKey + 
-		" and a._Term_key = " + superStandardKey + ") ";
+            where := where + "\nand not exists (select 1 from PRB_Strain_Super_View v " +
+		"where s._Strain_key = v._Strain_key" + 
+		" and v._Term_key = " + superTermKey + ") ";
           end if;
 
-	  row : integer := 0;
-	  while (row < mgi_tblNumRows(top->StrainType->Table)) do
-            value := mgi_tblGetCell(top->StrainType->Table, row, top->StrainType->Table.strainTypeKey);
+	  -- Strain Attributes
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(top->StrainAttribute->Table)) do
+            value := mgi_tblGetCell(top->StrainAttribute->Table, row, top->StrainAttribute->Table.termKey);
 
             if (value.length > 0 and value != "NULL") then
-	      from := from + "," + mgi_DBtable(PRB_STRAIN_TYPE) + " st" + (string)row;
-	      where := where + "\nand s._Strain_key = st" + (string)row + "._Strain_key";
-	      where := where + "\nand st" + (string)row + "._StrainType_key = " + value;
+	      from := from + ",PRB_Strain_Attribute_View v";
+	      where := where + "\nand s._Strain_key = v._Strain_key";
+	      where := where + "\nand v._Term_key = " + value;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  -- Needs Review
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(top->NeedsReview->Table)) do
+            value := mgi_tblGetCell(top->NeedsReview->Table, row, top->NeedsReview->Table.termKey);
+
+            if (value.length > 0 and value != "NULL") then
+	      from := from + ",PRB_Strain_NeedsReview_View v";
+	      where := where + "\nand s._Strain_key = v._Strain_key";
+	      where := where + "\nand v._Term_key = " + value;
 	    end if;
 
 	    row := row + 1;
@@ -834,19 +922,19 @@ rules:
           end if;
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
-	  annotKey := NO;
+	  superAnnotKey := NO;
 	  results : integer := 1;
 	  row : integer;
 	  table : widget;
 
 	  cmd := "select * from " + mgi_DBtable(STRAIN_VIEW) +
 		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n" +
-		 "select * from " + mgi_DBtable(PRB_STRAIN_TYPE_VIEW) +
-		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n" +
-		 "select _Annot_key from VOC_Annot " +
-		 "where _AnnotType_key = " + annotTypeKey +
-		 " and _Term_key = " + superStandardKey +
-		 " and _Object_key = " + currentRecordKey + "\n" +
+		 "select * from PRB_Strain_Attribute_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n" +
+		 "select * from PRB_Strain_NeedsReview_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n" +
+		 "select _Annot_key from PRB_Strain_Super_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n" +
 		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
 		 "from PRB_Strain_Genotype_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n";
@@ -861,40 +949,43 @@ rules:
 	      if (results = 1) then
 	        top->ID->text.value := mgi_getstr(dbproc, 1);
 		top->strainSpecies->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 12);
-                top->Name->text.value := mgi_getstr(dbproc, 3);
+		top->strainSpecies->Species->text.value := mgi_getstr(dbproc, 11);
+		top->strainTypes->ObjectID->text.value := mgi_getstr(dbproc, 3);
+		top->strainTypes->StrainType->text.value := mgi_getstr(dbproc, 12);
+                top->Name->text.value := mgi_getstr(dbproc, 4);
 		origStrainName := top->Name->text.value;
 
 	        table := top->ModificationHistory->Table;
 		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 10));
 
                 SetOption.source_widget := top->StandardMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
-                send(SetOption, 0);
-                SetOption.source_widget := top->NeedsReviewMenu;
                 SetOption.value := mgi_getstr(dbproc, 5);
                 send(SetOption, 0);
                 SetOption.source_widget := top->PrivateMenu;
                 SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
-                SetOption.source_widget := top->IMSRMenu;
-                SetOption.value := mgi_getstr(dbproc, 7);
-                send(SetOption, 0);
 
 	      elsif (results = 2) then
-		table := top->StrainType->Table;
-                (void) mgi_tblSetCell(table, row, table.strainTypeCurrentKey, mgi_getstr(dbproc, 1));
-                (void) mgi_tblSetCell(table, row, table.strainTypeKey, mgi_getstr(dbproc, 3));
-                (void) mgi_tblSetCell(table, row, table.strainType, mgi_getstr(dbproc, 8));
+		table := top->StrainAttribute->Table;
+                (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 3) then
-		annotKey := mgi_getstr(dbproc, 1);
+		table := top->NeedsReview->Table;
+                (void) mgi_tblSetCell(table, row, table.annotCurrentKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 4) then
+		superAnnotKey := mgi_getstr(dbproc, 1);
+
+	      elsif (results = 5) then
 		table := top->Genotype->Table;
                 (void) mgi_tblSetCell(table, row, table.strainGenotypeKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 2));
@@ -911,7 +1002,7 @@ rules:
  
 	  (void) dbclose(dbproc);
 
-	  if (annotKey = NO) then
+	  if (superAnnotKey = NO) then
             SetOption.value := NO;
 	  else
             SetOption.value := YES;

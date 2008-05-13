@@ -85,6 +85,8 @@
 #
 # History
 #
+#	lec	04/29/2008
+#	- TR8980 fix; only check PMID on isDuplicate
 #
 #	lec	03/19/2008
 #	- TR8763 fix; do not check for duplicates if VI/PG are null
@@ -451,43 +453,6 @@ def isDuplicate(rec, rectags):
 		printRec(dupsFile, rec, rectags, "DUPLICATE PUBMEDID FOUND IN MGD")
 		ok = 0
 	        return ok
-
-	# If VI and PG are both null, the don't bother checking for duplicates
-
-	if rec['VI'] == 'NULL' and rec['PG'] == 'NULL':
-		return ok
-
-        # If pages in format "x", check for pages = x and pages like "x-%"
-        # If pages in format "x-y", check for pages = x and pages like "x-%"
-        # Strip off first page
-
-	pgs = rec['PG']
-	idx = string.find(pgs, '-')
-	if idx > 0:
-		pgs = pgs[:idx]
-		  
-	cmd = 'select v._Refs_key, v.title, v.abstract, v.jnum ' + \
-	      'from BIB_All_View v ' + \
-              'where v.journal = "' + rec['TA'] + '"' + \
-	      ' and v.year = ' + rec['YR']
-
-	if rec['VI'] != 'NULL':
-	      cmd = cmd + ' and v.vol = "' + rec['VI'] + '"'
-	else:
-	      cmd = cmd + ' and v.vol = ' + rec['VI']
-
-	if rec['PG'] != 'NULL':
-	      cmd = cmd + ' and (v.pgs = "' + pgs + '" or v.pgs like "' + pgs + '-%")'
-	else:
-	      cmd = cmd + ' and v.pgs = ' + pgs
-
-	results = db.sql(cmd, 'auto')
-
-	# If duplicate is found, report it and skip
-
-	if len(results) >= 1:
-		printRec(dupsFile, rec, rectags, "DUPLICATE FOUND IN MGD")
-		ok = 0
 
 	return ok
 

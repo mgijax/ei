@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 26 08:15:11 2008";
+      lastWritten = "Wed May  7 13:40:51 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -627,6 +627,27 @@ Module: mgiOption
                         labelString = "Allen Brain Atlas";
                       Group: User
                         defaultValue = 107;
+                    }
+                    {
+                      KOMPCSD = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "CSD-KOMP";
+                      Group: User
+                        defaultValue = 108;
+                    }
+                    {
+                      KOMPRegeneron = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Regeneron-KOMP";
+                      Group: User
+                        defaultValue = 109;
+                    }
+                    {
+                      RegeneronOther = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Regeneron-Other";
+                      Group: User
+                        defaultValue = 110;
                     }
               }
         }

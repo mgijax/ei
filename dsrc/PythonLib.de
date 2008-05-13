@@ -24,6 +24,8 @@ PythonReferenceCache [objectKey : string;];
 
 PythonImageCache [objectKey : string;];
 
+PythonInferredFromCache [objectKey : string;];
+
 PythonMarkerOMIMCacheEnd [];
 
 PythonAlleleCombinationEnd [];
@@ -33,4 +35,6 @@ PythonMarkerHomologyCacheEnd [];
 PythonReferenceCacheEnd [];
 
 PythonImageCacheEnd [];
+
+PythonInferredFromCacheEnd [];
 

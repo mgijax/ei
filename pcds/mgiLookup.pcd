@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Dec  8 09:06:20 2005";
+      lastWritten = "Wed Apr 23 07:10:29 2008";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -231,7 +231,7 @@ Module: mgiLookup
           MappingAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1295;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -248,18 +248,18 @@ Module: mgiLookup
               }
         }
         {
-          StrainTypeList = LookupList;
+          StrainAttributeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1185;
           Group: User
-            cmd = "select _Term_key, term from VOC_Term_StrainType_View order by term";
+            cmd = "select _Term_key, term from VOC_Term_StrainAttribute_View order by term";
               {
                 Label = LookupLabel;
                 Group: Widget
-                  labelString = "Strain Types";
+                  labelString = "Strain Attributes";
                 Group: User
-                  defaultLabel = "Strain Types";
+                  defaultLabel = "Strain Attributes";
               }
               {
                 List = list : mgiDataTypes;
@@ -444,7 +444,7 @@ Module: mgiLookup
           EvidenceCodeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1350;
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -480,7 +480,7 @@ Module: mgiLookup
           OrganismMGITypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1460;
           Group: User
             cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,18,19) order by name";
               {
@@ -500,7 +500,7 @@ Module: mgiLookup
           CloneLibrarySetList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1405;
           Group: User
             cmd = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
               {
@@ -515,7 +515,7 @@ Module: mgiLookup
           CellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1515;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_CellLine_View order by term";
               {
@@ -535,7 +535,7 @@ Module: mgiLookup
           OrganismSequenceList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1570;
           Group: User
             cmd = "select _Organism_key, commonName from MGI_Organism_Sequence_View order by commonName";
               {
@@ -652,6 +652,46 @@ Module: mgiLookup
                   resizable = true;
                   topWidget = AddAll;
                   topOffset = 5;
+              }
+        }
+        {
+          StrainTypeList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1240;
+          Group: User
+            cmd = "select _Term_key, term from VOC_Term_StrainType_View order by term";
+              {
+                Label = LookupLabel;
+                Group: Widget
+                  labelString = "Strain Types";
+                Group: User
+                  defaultLabel = "Strain Types";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          NeedsReviewList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1130;
+          Group: User
+            cmd = "select _Term_key, term from VOC_Term_NeedsReview_View order by term";
+              {
+                Label = LookupLabel;
+                Group: Widget
+                  labelString = "Needs Review";
+                Group: User
+                  defaultLabel = "Needs Review";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
         }
 }
