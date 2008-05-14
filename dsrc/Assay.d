@@ -3203,9 +3203,9 @@ rules:
 	  top->GXDKnockInMenu.required := false;
 
 	  -- If Knock In Assay...
-	  if (top->AssayTypeMenu.menuHistory.defaultValue= "9" or
-	      top->AssayTypeMenu.menuHistory.defaultValue= "10" or
-	      top->AssayTypeMenu.menuHistory.defaultValue= "11") then
+	  if (top->AssayTypeMenu.menuHistory.defaultValue = "9" or
+	      top->AssayTypeMenu.menuHistory.defaultValue = "10" or
+	      top->AssayTypeMenu.menuHistory.defaultValue = "11") then
 	    top->mgiMarker->Marker->text.verifyAccessionID := nil;
 	    top->KnockInForm.sensitive := true;
 	    top->GXDReporterGeneMenu.required := true;

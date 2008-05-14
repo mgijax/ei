@@ -15,6 +15,11 @@
 --
 -- History:
 --
+--	lec	05/14/2008
+--	TR 8775/Cre; added new assays checks for using knock-in form:
+--		"In situ reporter (transgenic)" (10)
+--		"Recombinase reporter" (11)
+--	
 --	lec	05/23/2003
 --	TR 3710; set x.prepform in InitOptionMenu
 --
@@ -155,7 +160,9 @@ rules:
 		  x.isRNAAssay := (integer) mgi_getstr(dbproc, 3);
 		  x.isGelAssay := (integer) mgi_getstr(dbproc, 4);
 
-		  if (mgi_getstr(dbproc, 1) = "9") then
+		  if (mgi_getstr(dbproc, 1) = "9"
+		      or mgi_getstr(dbproc, 1) = "10"
+		      or mgi_getstr(dbproc, 1) = "11") then
 		    -- no default for knock in
 		    x.prepForm := "";
 		  elsif (mgi_getstr(dbproc, 3) = "0") then
