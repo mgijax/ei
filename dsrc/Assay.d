@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	05/142008
+--	- TR 9010; load clipboard when Assay Type is selected (ViewAssayDetail)
+--
 -- lec  04/23/2008
 --	- TR 8775/Cre; added new assays checks for using knock-in form:
 --		"In situ reporter (transgenic)" (10)
@@ -3176,6 +3179,9 @@ rules:
 	    ClearForm.form := "KnockInForm";
 	    send(ClearForm, 0);
 	  end if;
+
+	  -- refresh the clipboard
+	  send(LoadClipboards, 0);
         end
  
 --
