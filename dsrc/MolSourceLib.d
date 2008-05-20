@@ -132,9 +132,9 @@ rules:
 
 	  -- Determine Age value
 
-	  age := top->AgeMenu.menuHistory.defaultValue;
+	  age := top->AgeMenu.menuHistory.searchValue;
 
-	  if (age.length = 0) then
+          if (age = NOTSPECIFIED_TEXT) then
 	    if (top->Tissue->TissueID->text.value != NOTSPECIFIED and
 		top->Tissue->TissueID->text.value != NOTAPPLICABLE and
 		cellLine = cellLineNotApplicable) then
