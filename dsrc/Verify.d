@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 05/21/2008	lec
+--	- fix STRAIN adds due to schema changes
+--
 -- 04/16/2008	lec
 --	- TR 8900; VerifyGOInferredFrom; check ISO/ISA
 --
@@ -1622,6 +1625,7 @@ rules:
 	  selectedItem : integer;
 	  found : boolean := false;
 	  defaultSpecies : string;
+	  defaultStrainType : string;
 
 	  select := "select count(*) from " + table + " where ";
 	  where := name + " = \"" + item.value + "\"";
@@ -1665,6 +1669,7 @@ rules:
 	  if (tableID = STRAIN) then
 	    select := "select _Strain_key, strain, standard, private from " + table + " where ";
 	    defaultSpecies := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'laboratory mouse'");
+	    defaultStrainType := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
 	  elsif (tableID = TISSUE) then
 	    select := "select _Tissue_key, tissue, standard, private = 0 from " + table + " where ";
 	  elsif (tableID = BIB_REFS) then
@@ -1784,7 +1789,8 @@ rules:
 	      if (tableID = STRAIN) then
 	        cmd := mgi_setDBkey(tableID, NEWKEY, KEYNAME) +
 		       mgi_DBinsert(tableID, KEYNAME) +
-                       defaultSpecies + "," + mgi_DBprstr(item.value) + ",0,0,0,0," +
+                       defaultSpecies + "," + defaultStrainType + "," + 
+		       mgi_DBprstr(item.value) + ",0,0," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 	      elsif (tableID = VOC_CELLLINE_VIEW) then
 		nextSeqNum := mgi_sql1("select max(sequenceNum) + 1 from " + 
@@ -3364,9 +3370,11 @@ rules:
           s : string;
 	  sUpper : string;
 	  defaultSpecies : string;
+	  defaultStrainType : string;
           i : integer;
 
 	  defaultSpecies := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'laboratory mouse'");
+	  defaultStrainType := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
  
           -- Parse Strains
  
@@ -3430,7 +3438,8 @@ rules:
               if (top->VerifyItemAdd.doAdd) then
                 ExecSQL.cmd := mgi_setDBkey(STRAIN, NEWKEY, KEYNAME) +
                                mgi_DBinsert(STRAIN, KEYNAME) +
-                               defaultSpecies + "," + mgi_DBprstr(s) + ",0,0,0,0," +
+                               defaultSpecies + "," + defaultStrainType + "," + 
+			       mgi_DBprstr(s) + ",0,0," +
 			       global_loginKey + "," + global_loginKey + ")\n";
                 send(ExecSQL, 0);
                 added := added + s + "\n";
