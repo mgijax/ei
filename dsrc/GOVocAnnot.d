@@ -569,6 +569,7 @@ rules:
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
+	  PythonInferredFromCache.source_widget := top;
 	  PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
 	  send(PythonInferredFromCache, 0);
 

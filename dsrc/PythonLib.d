@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.d
 --
+-- 06/17/2008	lec
+--	- TR 9057; Inferred From Cache; errors are printed
+--
 -- 04/15/2008	lec
 --	- TR 8633; Inferred From Cache
 --
@@ -246,6 +249,8 @@ rules:
 --
 
 	PythonInferredFromCache does
+	  top : widget := PythonInferredFromCache.source_widget.root;
+	  dialog : widget := top->ReportDialog->Output;
 	  objectKey : string := PythonInferredFromCache.objectKey;
 	  cmds : string_list := create string_list();
 	  buf : string;
@@ -256,7 +261,7 @@ rules:
 	  cmds.insert("-D" + global_database, cmds.count + 1);
 	  cmds.insert("-U" + getenv("MGI_DBUSER"), cmds.count + 1);
 	  cmds.insert("-P" + getenv("MGI_DBPASSWORDFILE"), cmds.count + 1);
-	  cmds.insert("-M" + objectKey, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
 
 	  -- Write cmds to user log
 	  buf := "";
@@ -268,7 +273,11 @@ rules:
 	  (void) mgi_writeLog(buf);
 
 	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonInferredFromCacheEnd);
+
+	  dialog.value := "";
+	  PythonInferredFromCacheEnd.dialog := dialog;
+
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog->Output, PythonInferredFromCacheEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
@@ -323,6 +332,15 @@ rules:
 --
 
 	PythonInferredFromCacheEnd does
+	  top : widget := PythonInferredFromCacheEnd.dialog.root;
+	  dialog : widget := PythonInferredFromCacheEnd.dialog;
+
+	  if (dialog.value.length > 0) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := dialog.value;
+	      send(StatusReport);
+	  end if;
+
 	  (void) mgi_writeLog("Inferred From Cache done.\n\n");
 	end does;
 

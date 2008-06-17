@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.de
 --
+-- 06/17/2008	lec
+--	- TR 9057; Inferred From Cache; errors are printed
+--
 -- 12/04/2006	lec
 --	- TR 7710; Image Cache
 --
@@ -24,7 +27,8 @@ PythonReferenceCache [objectKey : string;];
 
 PythonImageCache [objectKey : string;];
 
-PythonInferredFromCache [objectKey : string;];
+PythonInferredFromCache [source_widget : widget;
+			 objectKey : string;];
 
 PythonMarkerOMIMCacheEnd [];
 
@@ -36,5 +40,7 @@ PythonReferenceCacheEnd [];
 
 PythonImageCacheEnd [];
 
-PythonInferredFromCacheEnd [];
+PythonInferredFromCacheEnd [source_widget : widget;
+			    dialog : widget;
+			    status : integer;];
 
