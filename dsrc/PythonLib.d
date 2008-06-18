@@ -275,13 +275,17 @@ rules:
 	  -- Execute
 
 	  dialog.value := "";
-	  PythonInferredFromCacheEnd.dialog := dialog;
-
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog->Output, PythonInferredFromCacheEnd);
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog, PythonInferredFromCacheEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
 	  end while;
+
+	  if (dialog.value.length > 0) then
+	      StatusReport.source_widget := top;
+	      StatusReport.message := dialog.value;
+	      send(StatusReport);
+	  end if;
 
 	  tu_fork_free(proc_id);
 
@@ -332,15 +336,6 @@ rules:
 --
 
 	PythonInferredFromCacheEnd does
-	  top : widget := PythonInferredFromCacheEnd.dialog.root;
-	  dialog : widget := PythonInferredFromCacheEnd.dialog;
-
-	  if (dialog.value.length > 0) then
-	      StatusReport.source_widget := top;
-	      StatusReport.message := dialog.value;
-	      send(StatusReport);
-	  end if;
-
 	  (void) mgi_writeLog("Inferred From Cache done.\n\n");
 	end does;
 
