@@ -40,7 +40,5 @@ PythonReferenceCacheEnd [];
 
 PythonImageCacheEnd [];
 
-PythonInferredFromCacheEnd [source_widget : widget;
-			    dialog : widget;
-			    status : integer;];
+PythonInferredFromCacheEnd [];
 

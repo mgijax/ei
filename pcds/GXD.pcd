@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  7 13:40:58 2008";
+      lastWritten = "Wed Jun 18 13:09:58 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -1706,6 +1706,14 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: User
                                                 noteWidget = Note;
                                                 note = "There are discrepancies between the text and the figure legend as to the age of the tissue/embryo.";
+                                            }
+                                            {
+                                              Fractionated = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = Fractionated;
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The material used in the Western blot was fractionated.";
                                             }
                                       }
                                 }

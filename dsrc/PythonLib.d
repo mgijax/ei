@@ -259,8 +259,8 @@ rules:
 
 	  cmds.insert("-S" + global_server, cmds.count + 1);
 	  cmds.insert("-D" + global_database, cmds.count + 1);
-	  cmds.insert("-U" + getenv("MGI_DBUSER"), cmds.count + 1);
-	  cmds.insert("-P" + getenv("MGI_DBPASSWORDFILE"), cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
 	  cmds.insert("-K" + objectKey, cmds.count + 1);
 
 	  -- Write cmds to user log
@@ -280,6 +280,8 @@ rules:
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
 	  end while;
+
+	  -- Print out the output from the subroutine
 
 	  if (dialog.value.length > 0) then
 	      StatusReport.source_widget := top;
