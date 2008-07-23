@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec  07/23/2008
+--	- TR 8920; PrepareSearch; search by Assay/Stage
+--
 -- lec	10/31/2003
 --	- TR 5271
 --
@@ -505,6 +508,53 @@ rules:
 	    end if;
 	  end if;
 
+          -- Search Stages & Assay
+
+	  table : widget := top->Stage->Table;
+          row : integer := 0;
+	  column : integer := table.beginX;
+	  assayKey : string;
+	  stageSearchFound : boolean := false;
+	  stageSearch : string := "\nand sg._StageID_key in (";
+	  assaySearch : string := "\nand sg._IndexAssay_key in (";
+ 
+	  -- Search all rows/columns
+
+	  while (row < mgi_tblNumRows(table)) do
+	    assayKey := assayKeys[row + 1];
+	    column := table.beginX;
+
+	    while (column < mgi_tblNumColumns(table)) do
+
+	      -- search for records in the stage table
+
+	      if (mgi_tblGetCell(table, row, column) = "X") then
+
+		if (stageSearchFound = true) then
+		    stageSearch := stageSearch + ",";
+		    assaySearch := assaySearch + ",";
+                end if;
+
+		stageSearch := stageSearch + stageKeys[column];
+		assaySearch := assaySearch + assayKey;
+		stageSearchFound := true;
+
+	      end if;
+
+              column := column + 1;
+	    end while;
+
+            row := row + 1;
+	  end while;
+
+	  stageSearch := stageSearch + ")";
+	  assaySearch := assaySearch + ")";
+
+	  if (stageSearchFound) then
+	      from := from + ",GXD_Index_Stages sg";
+	      where := where + "\nand i._Index_key = sg._Index_key" + stageSearch + assaySearch;
+	  end if;
+
 	  -- Chop off leading "\nand"
 
           if (where.length > 0) then
@@ -522,9 +572,9 @@ rules:
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct _Index_key, " +
-		"symbol + \", \" + jnumID + \", \" + short_citation\n" +
-		from + "\n" + where + "\norder by symbol, short_citation\n";
+	  Query.select := "select distinct i._Index_key, " +
+		"i.symbol + \", \" + i.jnumID + \", \" + short_citation\n" +
+		from + "\n" + where + "\norder by i.symbol, i.short_citation\n";
 	  Query.table := GXD_INDEX;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
