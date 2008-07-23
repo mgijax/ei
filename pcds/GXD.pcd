@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 18 13:09:58 2008";
+      lastWritten = "Wed Jul 23 09:12:01 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -1096,7 +1096,7 @@ Shift<Key>Tab: prev-tab-group()
           InSituForm = SubEditForm : MGI;
           Group: Widget
             rubberPositioning = False;
-            width = 900;
+            width = 1000;
             resizePolicy = resize_none;
           Group: Control
             vip_x = 60;
@@ -1183,7 +1183,7 @@ Shift<Key>Tab: prev-tab-group()
             managed = False;
             rubberPositioning = False;
             resizePolicy = resize_none;
-            width = 900;
+            width = 1000;
           Group: Control
             vip_x = 175;
             vip_y = 140;
@@ -1391,6 +1391,15 @@ Shift<Key>Tab: prev-tab-group()
                                         Delete = MenuPush : mgiMenu;
                                       }
                                       {
+                                        Duplicate = ControlPush : mgiControl;
+                                        Group: Widget
+                                          activateCallback = "D:VerifyEdit(mode = 4),\nD:Duplicate,\nD:GoHome";
+                                          labelString = "Add Copy";
+                                          accelerator = "Ctrl<Key>y";
+                                          background = Thistle;
+                                          mnemonic = y;
+                                      }
+                                      {
                                         separator1 = XmSeparator;
                                       }
                                       {
@@ -1524,7 +1533,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumColumns = 43;
                                           xrtTblCharWidthSeries = "(all label 10) (all 0 1)(all 1-42 4)";
                                           xrtTblDisplayHorizScrollBar = dispsb_always;
-                                          xrtTblVisibleColumns = 19;
+                                          xrtTblVisibleColumns = 27;
                                           xrtTblEditableSeries = "(all all False)";
                                           xrtTblSelectionPolicy = select_single;
                                           xrtTblSelectCallback = "D:SetCellToX";
@@ -1854,15 +1863,15 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     activateCallback = "D:VerifyEdit(mode = 4),\nD:Duplicate,\nD:GoHome";
                                     labelString = "Add Copy";
+                                    accelerator = "Ctrl<Key>y";
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Search;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
+                                    topWidget = Search;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topWidget = Search;
-                                    topOffset = 2;
                                 }
                                 {
                                   Previous = ControlArrow;
@@ -2242,7 +2251,7 @@ Shift<Key>Tab: prev-tab-group()
           AssayModule = Module : MGI;
           Group: Widget
             height = 900;
-            width = 1200;
+            width = 1300;
           Group: Control
             vip_x = 175;
             vip_y = 85;
@@ -2341,7 +2350,7 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             EditForm = EditForm : MGI;
                             Group: Widget
-                              width = 915;
+                              width = 1000;
                               rubberPositioning = False;
                               resizePolicy = resize_any;
                                 {

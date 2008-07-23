@@ -1,3 +1,11 @@
+TAG: ei-4-1-1-1
+DATE: 07/23/2008
+STAFF: lec
+CHANGES:
+1) TR9135;width on Assay and Index modules
+2) TR8920; search by Index Assay/Stage (IndexStage.d)
+3) TR9172; addition of shortcut to GXD index module (IndexStage.d)
+
 TAG: ei-4-0-2-10
 TAG: ei-4-0-2-9
 TAG: ei-4-0-2-8
