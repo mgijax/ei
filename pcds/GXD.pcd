@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug  6 09:36:12 2008";
+      lastWritten = "Wed Aug  6 09:50:50 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -1540,6 +1540,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblSelectedBackground = None;
                                           xrtTblSelectedForeground = None;
                                           userDefinedAttributes = "beginX:Int(Int)=\"1\"\nendX:Int(Int)=\"0\"\n";
+                                          xrtTblHorizScrollBarPlacement = place_top;
                                         Group: User
                                           traverseOnClear = False;
                                             {
