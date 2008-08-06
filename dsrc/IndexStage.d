@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec	08/06/2008
+--	- TR 9196; change Image display to 9.5-A
+--
 -- lec  07/23/2008
 --	- TR 8920; PrepareSearch; search by Assay/Stage
 --
@@ -227,8 +230,8 @@ rules:
 	  Clear.reset := ClearIndex.reset;
 	  send(Clear, 0);
 
-	  -- set column to DPC 8.5 (18)
-	  top->Stage->Table.xrtTblLeftColumn := stageTerms.find("8.5");
+	  -- set column to DPC 9.5 (20)
+	  top->Stage->Table.xrtTblLeftColumn := stageTerms.find("9.5");
 	end does;
 
 --
