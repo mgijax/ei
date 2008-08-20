@@ -12,6 +12,11 @@
 --
 -- History
 --
+-- 08/19/2008	lec
+--      - TR 9220; see PostProcess
+--	set reorderingAlleles = true for Modify
+--	set reorderingAlleles = false for Add
+--
 -- 09/29/2005	lec
 --	- TR 7070
 --
@@ -492,7 +497,7 @@ rules:
 	  ordergenotypes : boolean := false;
  
 	  keyName := "allele" + KEYNAME;
-	  reorderingAlleles := false;
+	  reorderingAlleles := true;
 	  allelePairString := "";
 	  alleleList.reset;
 
@@ -561,15 +566,15 @@ rules:
 		     global_loginKey + "," + global_loginKey + ")\n";
 
 	      ordergenotypes := true;
+	      reorderingAlleles := false;
 
             elsif (editMode = TBL_ROW_MODIFY) then
 
-              -- If current Seq # not equal to new Seq #, then re-ordering is taking place
+              -- If current Seq # not equal to new Seq #, then we're manually re-ordering
  
               if (currentSeqNum != newSeqNum) then
 		set := "sequenceNum = " + newSeqNum;
                 cmd := cmd + mgi_DBupdate(GXD_ALLELEPAIR, key, set);
-		reorderingAlleles := true;
 
               -- Else, a simple update
  
@@ -690,6 +695,7 @@ rules:
 	    cmd := cmd + "exec GXD_orderGenotypes " +  alleleList.next + "\n";
 	  end while;
 
+	  -- process auto re-ordering if not manually re-ordering
 	  if (not reorderingAlleles) then
 	    cmd := cmd + "exec GXD_orderAllelePairs " + top->ID->text.value + "\n";
 	  end if;
