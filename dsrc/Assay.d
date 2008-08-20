@@ -28,6 +28,10 @@
 --
 -- History
 --
+-- lec  08/20/2008
+--	- TR 9221; update sequenceNum if editMode = TBL_ROW_EMPTY
+--	  and current sequenceNum != new sequenceNum
+--
 -- lec	05/142008
 --	- TR 9010; load clipboard when Assay Type is selected (ViewAssayDetail)
 --
@@ -1584,29 +1588,30 @@ rules:
 
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
+              update := "_Embedding_key = " + embeddingKey + "," +
+                        "_Fixation_key = " + fixationKey + "," +
+                        "_Genotype_key = " + genotypeKey + "," +
+                        "specimenLabel = " + mgi_DBprstr(label) + "," +
+                        "sex = " + mgi_DBprstr(sexKey) + "," +
+                        "age = " + mgi_DBprstr(ageKey) + "," +
+                        "ageNote = " + mgi_DBprstr(ageNote) + "," +
+                        "hybridization = " + mgi_DBprstr(hybridizationKey) + "," +
+                        "specimenNote = " + mgi_DBprstr(specimenNote) + "," +
+			"sequenceNum = " + newSeqNum;
+              cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update) + "\n" +
+		          "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_SPECIMEN) + "'," + key + "\n";
+
+            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+              cmd := cmd + mgi_DBdelete(GXD_SPECIMEN, key);
+
+            else
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place
  
               if (currentSeqNum != newSeqNum) then
 		update := "sequenceNum = " + newSeqNum;
                 cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
-
-              -- Else, a simple update
- 
-              else
-                update := "_Embedding_key = " + embeddingKey + "," +
-                          "_Fixation_key = " + fixationKey + "," +
-                          "_Genotype_key = " + genotypeKey + "," +
-                          "specimenLabel = " + mgi_DBprstr(label) + "," +
-                          "sex = " + mgi_DBprstr(sexKey) + "," +
-                          "age = " + mgi_DBprstr(ageKey) + "," +
-                          "ageNote = " + mgi_DBprstr(ageNote) + "," +
-                          "hybridization = " + mgi_DBprstr(hybridizationKey) + "," +
-                          "specimenNote = " + mgi_DBprstr(specimenNote);
-                cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update) + "\n" +
-		          "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_SPECIMEN) + "'," + key + "\n";
 	      end if;
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-              cmd := cmd + mgi_DBdelete(GXD_SPECIMEN, key);
+
             end if;
  
             row := row + 1;
@@ -1744,39 +1749,39 @@ rules:
  
             elsif (editMode = TBL_ROW_MODIFY and key.length > 0) then
 
+              update := "_Genotype_key = " + genotypeKey + "," +
+		        "_GelRNAType_key = " + rnaKey + "," +
+                        "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
+		        "_GelControl_key = " + controlKey + "," +
+		        "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
+                        "sex = " + mgi_DBprstr(sexKey) + "," +
+                        "age = " + mgi_DBprstr(ageKey) + "," +
+	    	        "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
+	    	        "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote)) + "," +
+			"sequenceNum = " + newSeqNum;
+              cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update) +
+		        "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_GELLANE) + "'," + key + "\n";
+
+              -- Process Gel Lane Structures
+  
+              ModifyStructure.source_widget := table;
+              ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
+              ModifyStructure.key := key;
+              ModifyStructure.row := row;
+              send(ModifyStructure, 0);
+              cmd := cmd + top->CVGel->ADClipboard.updateCmd;
+
+            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+              cmd := cmd + mgi_DBdelete(GXD_GELLANE, key);
+
+            else
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place
  
               if (currentSeqNum != newSeqNum) then
 		update := "sequenceNum = " + newSeqNum;
                 cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update);
-
-              -- Else, a simple update
- 
-              else
-                update := "_Genotype_key = " + genotypeKey + "," +
-		          "_GelRNAType_key = " + rnaKey + "," +
-                          "laneLabel = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.label)) + "," +
-		          "_GelControl_key = " + controlKey + "," +
-		          "sampleAmount = " + mgi_DBprstr(sampleAmt) + "," +
-                          "sex = " + mgi_DBprstr(sexKey) + "," +
-                          "age = " + mgi_DBprstr(ageKey) + "," +
-	    	          "ageNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.ageNote)) + "," +
-	    	          "laneNote = " + mgi_DBprstr(mgi_tblGetCell(table, row, table.laneNote));
-                cmd := cmd + mgi_DBupdate(GXD_GELLANE, key, update) +
-		          "exec MGI_resetAgeMinMax '" + mgi_DBtable(GXD_GELLANE) + "'," + key + "\n";
-
-                -- Process Gel Lane Structures
-  
-                ModifyStructure.source_widget := table;
-                ModifyStructure.primaryID := GXD_GELLANESTRUCTURE;
-                ModifyStructure.key := key;
-                ModifyStructure.row := row;
-                send(ModifyStructure, 0);
-                cmd := cmd + top->CVGel->ADClipboard.updateCmd;
 	      end if;
 
-            elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
-              cmd := cmd + mgi_DBdelete(GXD_GELLANE, key);
             end if;
  
             row := row + 1;

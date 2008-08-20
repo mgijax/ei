@@ -1,8 +1,10 @@
+TAG: ei-4-1-1-6
 TAG: ei-4-1-1-5
 DATE: 08/20/2008
 STAFF: lec
 CHANGES:
 1) TR 9220; Genotype.d/reorderingAlleles
+2) TR 9221; Assay (ModifyGelLane, ModifySpecimen)
 
 TAG: ei-4-1-1-4
 TAG: ei-4-1-1-3
