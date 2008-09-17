@@ -27,6 +27,9 @@
 #
 # History
 #
+# 09/17/2008 lec
+#	- TR 9236; add eventType = 6 (deleted)
+#
 # 11/19/2002 lec
 #	- TR 3928; removed constraint that new mgi id must be preferred
 #
@@ -43,6 +46,7 @@ import os
 import getopt
 import string
 import db
+import mgi_utils
 
 def error(msg = None, quit = 1):
 	'''
@@ -84,7 +88,7 @@ def showUsage():
 		'--refKey=reference key\n' + \
 		'--addAsSynonym=add old symbol as synonym of new symbol\n'
 	error(usage)
- 
+
 #
 # Main
 #
@@ -150,7 +154,7 @@ db.set_sqlLogFunction(db.sqlLogAll)
 
 # Initialize logging file descriptor
 try:
-	diagFileName = '%s/%s.diagnostics' % (os.environ['EIWITHDRAWALDIR'], os.path.basename(inputFileName))
+	diagFileName = '%s/%s-%s.diagnostics' % (os.environ['EIWITHDRAWALDIR'], os.path.basename(inputFileName), mgi_utils.date('%m%d%Y-%H%M'))
 
 	# Save one old copy of file if this program is re-run for the same inputFileName
 
@@ -201,7 +205,7 @@ for line in inputFile.readlines():
 		error('Invalid New Marker Acc ID %s' % (newID), 0)
 		errorFound = 1
 
-	if eventKey in [3, 4]:
+	if eventKey in [3, 4, 6]:
 		results = db.sql('select symbol, name from MRK_Marker where _Marker_key = %s' % (newKey), 'auto')
 
 		if results[0]['symbol'] is not None:
