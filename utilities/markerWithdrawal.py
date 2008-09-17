@@ -23,6 +23,9 @@
 #
 # History
 #
+# 09/17/2008 lec
+#	- TR 9236; write snapshot for all types of withdrawals
+#
 # 04/09/2001 lec
 #	- TR 2237 - added "addAsSynonym" parameter
 #
@@ -96,7 +99,7 @@ def snapShot(markerKey):
 	'''
 
 	# Create a temp SQL file
-	outFileName = '/tmp/MRK_Snapshot-%d.sql' % (markerKey)
+	outFileName = '/tmp/MRK_Snapshot-%d-%s.sql' % (markerKey, mgi_utils.date('%m%d%Y-%H%M'))
 
 	# Read the Snapshot template 
 	try:
@@ -129,11 +132,16 @@ def snapShot(markerKey):
 	except:
 		pass
 
-def excerpt (sqlMsg):
+def excerpt(sqlMsg):
+	'''
+	# some exception handling
+	'''
+
 	text = None
 	proc = None
 
 	lines = sqlMsg.split('\n')
+
 	for line in lines:
 		t = line.strip()
 		if t:
@@ -143,11 +151,13 @@ def excerpt (sqlMsg):
 					proc = t[pos+4:]
 				elif t[:pos] == 'msg text':
 					text = t[pos+4:]
+
 	if text and proc:
 		return '    msg text -- %s\n    procedure -- %s\n' % \
 			(text, proc)
 	elif text:
 		return '    msg text -- %s\n' % text
+
 	return '    Unspecified database error\n'
 
 #
@@ -240,26 +250,20 @@ db.set_sqlLogFunction(db.sqlLogAll)
 
 # Initialize logging file descriptor
 try:
-	diagFileName = '%s/Withdrawal-%d.diagnostics' % (os.environ['EIWITHDRAWALDIR'], oldKey)
-
-	# Save one old copy of file if this program is re-run for the same oldKey
-
-	if os.path.isfile(diagFileName) and not os.path.isfile(diagFileName + '.old'):
-		os.rename(diagFileName, diagFileName + '.old')
-
+	diagFileName = '%s/Withdrawal-%d-%s.diagnostics' % (os.environ['EIWITHDRAWALDIR'], oldKey,  mgi_utils.date('%m%d%Y-%H%M'))
 	diagFile = open(diagFileName, 'w')
 except:
 	error('Could not open file %s' % diagFileName)
 
 db.set_sqlLogFD(diagFile)
 
-# Snapshot if merged, allele of, split
+# produce the Snapshot
 
-if eventKey in [MERGED, ALLELEOF]:
+if eventKey in [SPLIT, DELETED]:
+	snapShot(oldKey)
+else:
 	snapShot(oldKey)
 	snapShot(newKey)
-elif eventKey == SPLIT:
-	snapShot(oldKey)
 
 # Execute appropriate stored procedure
 
@@ -291,7 +295,5 @@ except db.error:
 	diagFile.close()
         db.useOneConnection(0)
 	error('The withdrawal procedure could not be processed.\n' + excerpt(db.sql_server_msg))
-
-##	error('The withdrawal procedure could not be processed.\n' + db.sql_server_msg)
 
 db.useOneConnection(0)
