@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  7 13:40:55 2008";
+      lastWritten = "Tue Sep 16 13:45:29 2008";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -12,7 +12,7 @@ Module: mgiTable
             xrtTblBackgroundSeries = "(all all Wheat) (label all Thistle)(all label Thistle)";
             xrtTblVisibleRows = 5;
             xrtTblMarginHeight = 4;
-            userDefinedAttributes = "requiredColumns:StringTable(StringTable)\nrequired:Boolean(Boolean)=\"False\"\nsqlCmd:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\neditMode:Int(Int)=\"0\"\naddSeqNum:Boolean(Boolean)=\"False\"\nduplicateSeqNum:Boolean(Boolean)=\"False\"\nsaveBackgroundSeries:String(String)=\"(all all Wheat) (label all Thistle)(all label Thistle)\"\nmodified:Boolean(Boolean)=\"False\"\nsaveEditableSeries:String(String)\nsaveTraversableSeries:String(String)\nrow:Int(Int)=\"0\"\ntraverseOnClear:Boolean(Boolean)=\"True\"\n";
+            userDefinedAttributes = "requiredColumns:StringTable(StringTable)\nrequired:Boolean(Boolean)=\"False\"\nsqlCmd:String(String)\nsqlFrom:String(String)\nsqlWhere:String(String)\neditMode:Int(Int)=\"0\"\naddSeqNum:Boolean(Boolean)=\"False\"\nduplicateSeqNum:Boolean(Boolean)=\"False\"\nsaveBackgroundSeries:String(String)=\"(all all Wheat) (label all Thistle)(all label Thistle)\"\nmodified:Boolean(Boolean)=\"False\"\nsaveEditableSeries:String(String)\nsaveTraversableSeries:String(String)\nrow:Int(Int)=\"0\"\ntraverseOnClear:Boolean(Boolean)=\"True\"\nsqlList:XmString(XmString)\n";
             xrtTblEditableSeries = "(all 0 False)";
             xrtTblTraversableSeries = "(all 0 False)";
             xrtTblPixelWidthSeries = "(all 0 0)";
