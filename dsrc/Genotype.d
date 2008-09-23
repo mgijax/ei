@@ -323,7 +323,6 @@ rules:
 	  AddSQL.list := top->QueryList;
           AddSQL.item := top->EditForm->Strain->Verify->text.value + "," + allelePairString;
           AddSQL.key := top->ID->text;
-	  AddSQL.reselect := false;
           send(AddSQL, 0);
 
 	  if (top->QueryList->List.sqlSuccessful) then
