@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 09/24/2008	lec
+--	- TR9277; VerifyAlleleState
+--
 -- 08/19/2008	lec
 --      - TR 9220; see PostProcess
 --	set reorderingAlleles = true for Modify
@@ -92,6 +95,7 @@ devents:
 
 	GenotypeClipboardAdd :local [];
 
+	VerifyAlleleState :local [];
 	VerifyAlleleCombination :local [];
 
 locals:
@@ -112,10 +116,10 @@ locals:
 	tables : list;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
-                                        -- Initialized in Select[] and Add[] events
  
 	alleleList : string_list;
 	allelePairString : string;
+	alleleStateOK : boolean;
 	alleleCombinationOK : boolean;
 	reorderingAlleles : boolean;
 
@@ -284,8 +288,13 @@ rules:
 
           (void) busy_cursor(top);
 
-	  send(VerifyAlleleCombination, 0);
+	  send(VerifyAlleleState, 0);
+	  if (not alleleStateOK) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
 
+	  send(VerifyAlleleCombination, 0);
 	  if (not alleleCombinationOK) then
 	    (void) reset_cursor(top);
 	    return;
@@ -426,8 +435,13 @@ rules:
 
 	  (void) busy_cursor(top);
 
-	  send(VerifyAlleleCombination, 0);
+	  send(VerifyAlleleState, 0);
+	  if (not alleleStateOK) then
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
 
+	  send(VerifyAlleleCombination, 0);
 	  if (not alleleCombinationOK) then
 	    (void) reset_cursor(top);
 	    return;
@@ -1200,6 +1214,87 @@ rules:
        ClipboardAdd.accID := accID;
        send(ClipboardAdd, 0);
    end does;
+
+ 
+--
+-- VerifyAlleleState
+--
+--	Verify that the Allele State matches the number of Alleles
+--
+--      Homozygous                 2 alleles
+--      Heterozygous               2 alleles
+--      Hemizygous X-linked        1 allele
+--      Hemizygous Y-linked        1 allele
+--      Hemizygous Insertion       1 allele
+--      Hemizygous Deletion        1 allele
+--      Indeterminate              1 allele
+--
+
+	VerifyAlleleState does
+	  table : widget := top->AllelePair->Table;
+	  row : integer;
+	  editMode : string;
+	  alleleState : string;
+	  alleleKey1 : string;
+	  alleleKey2 : string;
+
+	  alleleStateOK := true;
+
+          -- Process while non-empty rows are found
+ 
+	  row := 0;
+          while (row < mgi_tblNumRows(table)) do
+            editMode := mgi_tblGetCell(table, row, table.editMode);
+ 
+            if (editMode = TBL_ROW_EMPTY) then
+              break;
+            end if;
+ 
+            if (editMode != TBL_ROW_DELETE) then
+
+	      alleleState := mgi_tblGetCell(table, row, table.state);
+	      alleleKey1 := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
+	      alleleKey2 := mgi_tblGetCell(table, row, (integer) table.alleleKey[2]);
+
+	      if ((alleleState = "Homozygous" or alleleState = "Heterozygous") and (alleleKey2 = "" or alleleKey2 = "NULL")) then
+		alleleStateOK := false;
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "If Allele State = 'Homozygous' or 'Heterozygous', then Allele 2 must exsist.";
+                send(StatusReport);
+		return;
+	      end if;
+
+	      if (alleleState = "Homozygous" and alleleKey2 != "" and alleleKey1 != alleleKey2) then
+		alleleStateOK := false;
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "If Allele State = 'Homozygous', then Allele 1 must equal Allele 2.";
+                send(StatusReport);
+		return;
+	      end if;
+
+	      if (alleleState = "Heterozygous" and alleleKey1 = alleleKey2) then
+		alleleStateOK := false;
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "If Allele State = 'Heterozygous', then Allele 2 must exist but Allele 1 cannot equal Allele 2.";
+                send(StatusReport);
+		return;
+	      end if;
+
+	      if (alleleState != "" and alleleState != "Homozygous" and 
+	          alleleState != "Heterozygous" and alleleKey2 != "" and alleleKey2 != "NULL") then
+		alleleStateOK := false;
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "For this Allele State, only Allele 1 is required.";
+                send(StatusReport);
+		return;
+	      end if;
+
+            end if;
+
+	    row := row + 1;
+	  end while;
+
+	end does;
 
 --
 -- VerifyAlleleCombination

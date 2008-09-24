@@ -743,7 +743,6 @@ rules:
  
 --
 --
---
 -- VerifyAntibodyType
 --
 -- Activated from:  AntibodyTypeMenu->AntibodyTypePulldown->toggle valueChangedCallback

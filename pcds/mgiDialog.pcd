@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec 11 09:58:10 2007";
+      lastWritten = "Thu Sep 18 11:34:10 2008";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1771,6 +1771,129 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 120;
             vip_y = 1020;
+        }
+        {
+          GenotypeMergeDialog = XmFormDialog;
+          Group: Widget
+            dialogStyle = dialog_primary_application_modal;
+            dialogTitle = "Strain Merge";
+            managed = False;
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 120;
+            vip_y = 1955;
+            vipComment = "";
+              {
+                mgiCitation = mgiCitation : mgiDataTypes;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 5;
+              }
+              {
+                mgiAccession = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  orientation = horizontal;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topOffset = 5;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftWidget = mgiCitation;
+                  topWidget = mgiCitation;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      AccessionID = CharText : mgiDataTypes;
+                    }
+                    {
+                      AccessionName = CharSText : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "Current Genotype";
+                          }
+                    }
+              }
+              {
+                mgiAccession1 = mgiAccession : mgiDataTypes;
+                Group: Widget
+                  orientation = horizontal;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = mgiAccession;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = mgiAccession;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      AccessionID = CharText : mgiDataTypes;
+                    }
+                    {
+                      AccessionName = CharSText : mgiDataTypes;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = "New Genotype";
+                          }
+                    }
+              }
+              {
+                separator = XmSeparator;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_widget;
+                  topWidget = mgiAccession1;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 2;
+                  rightOffset = 2;
+              }
+              {
+                Buttons = XmWorkArea;
+                Group: Widget
+                  orientation = horizontal;
+                  entryAlignment = alignment_center;
+                  inTabGroup = True;
+                  spacing = 25;
+                  packing = pack_column;
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = separator;
+                  bottomAttachment = attach_form;
+                  bottomOffset = 2;
+                  resizable = true;
+                    {
+                      Process = DialogPush : mgiDialog;
+                      Group: Widget
+                        labelString = "Process Merge";
+                        traversalOn = False;
+                    }
+                    {
+                      Done = DialogPush : mgiDialog;
+                      Group: Widget
+                        activateCallback = "C: TuUnmanage";
+                        traversalOn = False;
+                    }
+              }
         }
 }
 
