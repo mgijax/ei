@@ -1259,7 +1259,7 @@ rules:
 	      if ((alleleState = "Homozygous" or alleleState = "Heterozygous") and (alleleKey2 = "" or alleleKey2 = "NULL")) then
 		alleleStateOK := false;
                 StatusReport.source_widget := top.root;
-                StatusReport.message := "If Allele State = 'Homozygous' or 'Heterozygous', then Allele 2 must exsist.";
+                StatusReport.message := "If Allele State = 'Homozygous' or 'Heterozygous', then Allele 2 must exist.";
                 send(StatusReport);
 		return;
 	      end if;
