@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 24 13:20:40 2008";
+      lastWritten = "Tue Sep 30 08:18:54 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -1154,6 +1154,8 @@ Module: MGI
                                   CommandsPulldown = MenuPulldown : mgiMenu;
                                       {
                                         Search = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:SearchGenotype,\nD:GoHome";
                                       }
                                       {
                                         Modify = MenuPush : mgiMenu;

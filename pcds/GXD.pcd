@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 18 11:40:02 2008";
+      lastWritten = "Wed Oct  8 07:51:20 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -2290,6 +2290,22 @@ Shift<Key>Tab: prev-tab-group()
                                         Delete = MenuPush : mgiMenu;
                                       }
                                       {
+                                        CopySpecimenColumn = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          accelerator = "Ctrl<Key>l";
+                                          mnemonic = l;
+                                          labelString = "Copy Specimen Column";
+                                          activateCallback = "D:CopySpecimenColumn,\nD:GoHome";
+                                      }
+                                      {
+                                        CopyGelColumn = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          accelerator = "Ctrl<Key>u";
+                                          mnemonic = u;
+                                          labelString = "Copy Gel Column";
+                                          activateCallback = "D:CopyGelLaneColumn,\nD:GoHome";
+                                      }
+                                      {
                                         separator1 = XmSeparator;
                                       }
                                       {
@@ -2303,16 +2319,6 @@ Shift<Key>Tab: prev-tab-group()
                             Edit = Edit;
                             Group: Widget
                               managed = True;
-                                Popups:
-                                {
-                                  EditPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Genotype = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
-                                          labelString = Genotypes;
-                                      }
-                                }
                           }
                           {
                             View = View;
@@ -2569,6 +2575,27 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     topWidget = separator1;
+                                      {
+                                        Specimen = OrderedTableLabel : mgiTable;
+                                            {
+                                              Table = mgiTable;
+                                            }
+                                            {
+                                              AddRow = TablePush;
+                                            }
+                                            {
+                                              DeleteRow = TablePush;
+                                            }
+                                            {
+                                              InsertRow = TablePush : mgiTable;
+                                            }
+                                            {
+                                              EditOrder = toggle : mgiDataTypes;
+                                              Group: Constraint
+                                                leftWidget = CopyColumn;
+                                                topWidget = CopyColumn;
+                                            }
+                                      }
                                 }
                                 {
                                   GelForm = GelForm : GXD;
