@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct  8 07:51:20 2008";
+      lastWritten = "Wed Oct  8 09:51:42 2008";
       copy = false;
       inCreateMenu = true;
         {
@@ -2319,6 +2319,16 @@ Shift<Key>Tab: prev-tab-group()
                             Edit = Edit;
                             Group: Widget
                               managed = True;
+                                Popups:
+                                {
+                                  EditPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Genotype = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:CreateMGIModule(name = \"Genotype\")";
+                                          labelString = Genotypes;
+                                      }
+                                }
                           }
                           {
                             View = View;
@@ -2350,16 +2360,6 @@ Shift<Key>Tab: prev-tab-group()
                             Utilities = Utilities : mgiMenu;
                             Group: Widget
                               managed = True;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Genotype = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          labelString = "Genotype Merge";
-                                          accelerator = "D:CreateMGIModule(name = \"Genotype\")";
-                                      }
-                                }
                           }
                     }
                     {
