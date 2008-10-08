@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	10/08/2008
+--	- TR 9289; add keyboard short cuts; CopySpecimenColumn (l), CopyGelLaneColumn (u)
+--
 -- lec  08/20/2008
 --	- TR 9221; update sequenceNum if editMode = TBL_ROW_EMPTY
 --	  and current sequenceNum != new sequenceNum
@@ -864,7 +867,7 @@ rules:
 --
 
 	CopySpecimenColumn does
-	  table : widget := CopySpecimenColumn.source_widget.parent.child_by_class(TABLE_CLASS);
+	  table : widget := top->InSituForm->Specimen->Table;
 	  editMode : string;
 	  i : integer := 0;
 	  row : integer := 0;
@@ -1017,7 +1020,7 @@ rules:
 --
 
 	CopyGelLaneColumn does
-	  table : widget := CopyGelLaneColumn.source_widget.parent.child_by_class(TABLE_CLASS);
+	  table : widget := top->GelForm->GelLane->Table;
 	  editMode : string;
 	  i : integer := 0;
 	  row : integer := 0;
