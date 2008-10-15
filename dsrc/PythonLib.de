@@ -18,7 +18,8 @@
 PythonMarkerOMIMCache [pythonevent : string;
 		       objectKey : string;];
 
-PythonAlleleCombination [pythonevent : string;
+PythonAlleleCombination [source_widget : widget;
+			 pythonevent : string;
 		         objectKey : string;];
 
 PythonMarkerHomologyCache [objectKey : string;];

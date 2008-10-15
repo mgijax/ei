@@ -84,8 +84,10 @@ rules:
 --
 
 	PythonAlleleCombination does
+	  top : widget := PythonAlleleCombination.source_widget.root;
 	  pythonevent : string := PythonAlleleCombination.pythonevent;
 	  objectKey : string := PythonAlleleCombination.objectKey;
+	  dialog : widget := top->ReportDialog->Output;
 	  cmds : string_list := create string_list();
 	  buf : string;
 
@@ -113,11 +115,16 @@ rules:
 	  (void) mgi_writeLog(buf);
 
 	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonAlleleCombinationEnd);
+	  dialog.value := "";
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog, PythonAlleleCombinationEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
 	  end while;
+
+	  if (dialog.value.length > 0) then
+	      (void) mgi_writeLog(dialog.value);
+	  end if;
 
 	  tu_fork_free(proc_id);
 

@@ -796,13 +796,14 @@ rules:
 	    send(ModifySQL, 0);
           end if;
 
+	  PythonAlleleCombination.source_widget := top;
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
 	  PythonAlleleCombination.objectKey := currentRecordKey;
 	  send(PythonAlleleCombination, 0);
 
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
-	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
-	  send(PythonMarkerOMIMCache, 0);
+--	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
+--	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
+--	  send(PythonMarkerOMIMCache, 0);
 
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
