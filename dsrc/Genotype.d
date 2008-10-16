@@ -718,6 +718,7 @@ rules:
 	    send(ExecSQL, 0);
           end if;
 
+	  PythonAlleleCombination.source_widget := top;
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYGENOTYPE;
 	  PythonAlleleCombination.objectKey := currentRecordKey;
 	  send(PythonAlleleCombination, 0);

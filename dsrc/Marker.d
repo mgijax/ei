@@ -755,9 +755,11 @@ rules:
 	    return;
 	  end if;
 
+	  PythonAlleleCombination.source_widget := top;
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
 	  PythonAlleleCombination.objectKey := currentRecordKey;
 	  send(PythonAlleleCombination, 0);
+	  PythonAlleleCombination.source_widget := top;
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
 	  PythonAlleleCombination.objectKey := dialog->mgiMarker->ObjectID->text.value;
 	  send(PythonAlleleCombination, 0);
@@ -1014,6 +1016,7 @@ rules:
           end if;
 
 	  if (modifySymbol) then
+	    PythonAlleleCombination.source_widget := top;
 	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
 	    PythonAlleleCombination.objectKey := currentRecordKey;
 	    send(PythonAlleleCombination, 0);
