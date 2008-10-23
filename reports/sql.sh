@@ -12,9 +12,9 @@ setenv DATABASE	$1
 setenv SQL	$2
 
 if (${#argv} > 2) then
-	setenv OUTPUT	$3/`basename $SQL`.rpt
+	setenv OUTPUT	$3/`basename $SQL`
 else
-	setenv OUTPUT	$EIREPORTDIR/$SQL.rpt
+	setenv OUTPUT	$EIREPORTDIR/$SQL
 endif
 
 cat > $OUTPUT <<END

@@ -294,33 +294,33 @@ else:
 
 # Execute appropriate stored procedure
 
-#if eventKey == WITHDRAWAL:
-# remove the check for multiple new symbols because commas can be part of the a symbol
-#	newSymbolsList = string.split(newSymbols, ',')
-#	newSymbol = newSymbolsList[0]
-#	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
-#		% (oldKey, refKey, eventReasonKey, newSymbols, newName, addAsSynonym)
-#elif eventKey == MERGED:
-#	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d' \
-#		% (oldKey, newKey, refKey, eventKey, eventReasonKey, addAsSynonym)
-#elif eventKey == ALLELEOF:
-#	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d' \
-#		% (oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
-#elif eventKey == SPLIT:
-#	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
-#		% (oldKey, refKey, eventReasonKey, newSymbols)
-#elif eventKey == DELETED:
-#	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d' \
-#		% (oldKey, refKey, eventReasonKey)
+if eventKey == WITHDRAWAL:
+ remove the check for multiple new symbols because commas can be part of the a symbol
+	newSymbolsList = string.split(newSymbols, ',')
+	newSymbol = newSymbolsList[0]
+	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
+		% (oldKey, refKey, eventReasonKey, newSymbols, newName, addAsSynonym)
+elif eventKey == MERGED:
+	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d' \
+		% (oldKey, newKey, refKey, eventKey, eventReasonKey, addAsSynonym)
+elif eventKey == ALLELEOF:
+	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d' \
+		% (oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
+elif eventKey == SPLIT:
+	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
+		% (oldKey, refKey, eventReasonKey, newSymbols)
+elif eventKey == DELETED:
+	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d' \
+		% (oldKey, refKey, eventReasonKey)
 
-#try:
-#	db.sql(cmd, None)
-#	diagFile.close()
-#
-#except db.error:
-#	diagFile.write(cmd)
-#	diagFile.close()
-#        db.useOneConnection(0)
-#	error('The withdrawal procedure could not be processed.\n' + excerpt(db.sql_server_msg))
+try:
+	db.sql(cmd, None)
+	diagFile.close()
+
+except db.error:
+	diagFile.write(cmd)
+	diagFile.close()
+        db.useOneConnection(0)
+	error('The withdrawal procedure could not be processed.\n' + excerpt(db.sql_server_msg))
 
 db.useOneConnection(0)
