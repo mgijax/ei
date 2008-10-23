@@ -93,19 +93,21 @@ def snapShot(markerKey):
 	#	markerKey - the marker key of the symbol
 	#
 	# effects:
-	# generates a snapshot of the marker symbol using MRK_Snapshot.sql
+	# generates a snapshot of the marker symbol using snapshot.sql
 	# report is placed in the EIWITHDRAWALDIR directory 
 	#
 	'''
 
-	# Create a temp SQL file
-	outFileName = '/tmp/MRK_Snapshot-%s-%s.sql' % (markerKey, mgi_utils.date('%m%d%Y-%H%M'))
+        mgiID, symbol = getFileName(markerKey)
 
-	# Read the Snapshot template 
+	# Create a temp SQL file
+	outFileName = '/tmp/%s-%s-%s.sql' % (mgiID, symbol, mgi_utils.date('%m%d%Y-%H%M'))
+
+	# Read the snapshot template file
 	try:
-		insql = open('MRK_Snapshot.sql', 'r')
+		insql = open('snapshot.sql', 'r')
 	except:
-		error('Could not open MRK_Snapshot.sql.\n')
+		error('Could not open snapshot.sql.\n')
 		
 	# Open the temp file
 	try:	
@@ -131,6 +133,30 @@ def snapShot(markerKey):
 		os.unlink(outFileName)
 	except:
 		pass
+
+def getFileName(markerKey):
+	'''
+	# select the symbol and MGI id for the file names
+	'''
+
+	symbol = None
+	mgiID = None
+
+	results = db.sql('''
+    		select m.symbol, a.accID
+    		from MRK_Marker m, ACC_Accession a
+    		where m._Marker_key = %s
+    		and m._Marker_key = a._Object_key
+    		and a._MGIType_key = 2
+    		and a._LogicalDB_key = 1
+    		and a.preferred = 1
+    		''' % (markerKey), 'auto')
+
+	for r in results:
+    		symbol = r['symbol']
+    		mgiID = r['accID']
+	    
+        return mgiID, symbol
 
 def excerpt(sqlMsg):
 	'''
@@ -250,7 +276,8 @@ db.set_sqlLogFunction(db.sqlLogAll)
 
 # Initialize logging file descriptor
 try:
-	diagFileName = '%s/Withdrawal-%d-%s.diagnostics' % (os.environ['EIWITHDRAWALDIR'], oldKey,  mgi_utils.date('%m%d%Y-%H%M'))
+	mgiID, symbol = getFileName(oldKey)
+	diagFileName = '%s/%s-%s-%s.diagnostics' % (os.environ['EIWITHDRAWALDIR'], mgiID, symbol,  mgi_utils.date('%m%d%Y-%H%M'))
 	diagFile = open(diagFileName, 'w')
 except:
 	error('Could not open file %s' % diagFileName)
@@ -267,33 +294,33 @@ else:
 
 # Execute appropriate stored procedure
 
-if eventKey == WITHDRAWAL:
+#if eventKey == WITHDRAWAL:
 # remove the check for multiple new symbols because commas can be part of the a symbol
 #	newSymbolsList = string.split(newSymbols, ',')
 #	newSymbol = newSymbolsList[0]
-	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
-		% (oldKey, refKey, eventReasonKey, newSymbols, newName, addAsSynonym)
-elif eventKey == MERGED:
-	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d' \
-		% (oldKey, newKey, refKey, eventKey, eventReasonKey, addAsSynonym)
-elif eventKey == ALLELEOF:
-	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d' \
-		% (oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
-elif eventKey == SPLIT:
-	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
-		% (oldKey, refKey, eventReasonKey, newSymbols)
-elif eventKey == DELETED:
-	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d' \
-		% (oldKey, refKey, eventReasonKey)
+#	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
+#		% (oldKey, refKey, eventReasonKey, newSymbols, newName, addAsSynonym)
+#elif eventKey == MERGED:
+#	cmd = 'execute MRK_mergeWithdrawal %d,%d,%d,%d,%d,%d' \
+#		% (oldKey, newKey, refKey, eventKey, eventReasonKey, addAsSynonym)
+#elif eventKey == ALLELEOF:
+#	cmd = 'execute MRK_alleleWithdrawal %d,%d,%d,%d,%d' \
+#		% (oldKey, newKey, refKey, eventReasonKey, addAsSynonym)
+#elif eventKey == SPLIT:
+#	cmd = 'execute MRK_splitWithdrawal %d,%d,%d,%s' \
+#		% (oldKey, refKey, eventReasonKey, newSymbols)
+#elif eventKey == DELETED:
+#	cmd = 'execute MRK_deleteWithdrawal %d,%d,%d' \
+#		% (oldKey, refKey, eventReasonKey)
 
-try:
-	db.sql(cmd, None)
-	diagFile.close()
-
-except db.error:
-	diagFile.write(cmd)
-	diagFile.close()
-        db.useOneConnection(0)
-	error('The withdrawal procedure could not be processed.\n' + excerpt(db.sql_server_msg))
+#try:
+#	db.sql(cmd, None)
+#	diagFile.close()
+#
+#except db.error:
+#	diagFile.write(cmd)
+#	diagFile.close()
+#        db.useOneConnection(0)
+#	error('The withdrawal procedure could not be processed.\n' + excerpt(db.sql_server_msg))
 
 db.useOneConnection(0)
