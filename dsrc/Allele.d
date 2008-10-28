@@ -796,6 +796,8 @@ rules:
 	    send(ModifySQL, 0);
           end if;
 
+	  -- change this to ONLY call the cache tables if the SYMBOL is changed
+
 	  PythonAlleleCombination.source_widget := top;
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
 	  PythonAlleleCombination.objectKey := currentRecordKey;

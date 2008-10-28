@@ -295,9 +295,9 @@ else:
 # Execute appropriate stored procedure
 
 if eventKey == WITHDRAWAL:
- remove the check for multiple new symbols because commas can be part of the a symbol
-	newSymbolsList = string.split(newSymbols, ',')
-	newSymbol = newSymbolsList[0]
+# remove the check for multiple new symbols because commas can be part of the a symbol
+#	newSymbolsList = string.split(newSymbols, ',')
+#	newSymbol = newSymbolsList[0]
 	cmd = 'execute MRK_simpleWithdrawal %d,%d,%d,%s,%s,%d' \
 		% (oldKey, refKey, eventReasonKey, newSymbols, newName, addAsSynonym)
 elif eventKey == MERGED:
