@@ -10,6 +10,9 @@
 --
 -- History:
 --
+-- lec 11/18/2008
+--	- mgi_DBprstr changed to mgi_DBprstr2 so that blanks, etc. are not stripped
+--
 -- lec 11/08/2007
 --	- TR8275; do not report missing accession ids
 --
@@ -343,7 +346,7 @@ rules:
           end if;
  
 	  cmd := cmd + top->IsReviewMenu.menuHistory.defaultValue + ",";
-	  cmd := cmd + mgi_DBprstr(top->Abstract->text.value) + ",";
+	  cmd := cmd + mgi_DBprstr2(top->Abstract->text.value) + ",";
 	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
 
 	  -- System will assign the J: unless it is overridden by the user
@@ -560,7 +563,7 @@ rules:
 	  end if;
 
 	  if (top->Abstract->text.modified) then
-	    set := set + "abstract = " + mgi_DBprstr(top->Abstract->text.value) + ",";
+	    set := set + "abstract = " + mgi_DBprstr2(top->Abstract->text.value) + ",";
 	  end if;
 
 	  assocKeyDeclared := false;
@@ -732,7 +735,7 @@ rules:
 	  end if;
 
 	  if (top->Abstract->text.value.length > 0) then
-	    where := where + "\nand r.abstract like " + mgi_DBprstr(top->Abstract->text.value);
+	    where := where + "\nand r.abstract like " + mgi_DBprstr2(top->Abstract->text.value);
 	  end if;
 
 	  if (top->Notes->text.value.length > 0) then
