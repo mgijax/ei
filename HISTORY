@@ -1,3 +1,10 @@
+TAG: ei-4-1-3-1
+DATE: 11/20/2008
+STAFF: lec
+CHANGES:
+1) TR9381/Reference.d/Abstract
+mgi_DBprstr changed to mgi_DBprstr2 so that blanks, etc. are not stripped
+
 TAG: ei-4-1-2-13
 TAG: ei-4-1-2-12
 TAG: ei-4-1-2-11

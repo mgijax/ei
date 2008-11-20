@@ -11,7 +11,7 @@
 -- History:
 --
 -- lec 11/18/2008
---	- mgi_DBprstr changed to mgi_DBprstr2 so that blanks, etc. are not stripped
+--	- TR9381/mgi_DBprstr changed to mgi_DBprstr2 so that blanks, etc. are not stripped
 --
 -- lec 11/08/2007
 --	- TR8275; do not report missing accession ids
