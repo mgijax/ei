@@ -16,6 +16,7 @@
 --	- TR9277; VerifyAlleleState
 --
 -- 08/19/2008	lec
+--	- TR 9323; add reorderingAlleles = false for Delete
 --      - TR 9220; see PostProcess
 --	set reorderingAlleles = true for Modify
 --	set reorderingAlleles = false for Add
@@ -604,6 +605,7 @@ rules:
             elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
               localCmd := localCmd + mgi_DBdelete(GXD_ALLELEPAIR, key);
 	      ordergenotypes := true;
+	      reorderingAlleles := false;
             end if;
 
 	    -- keep track of list of alleles to process later
