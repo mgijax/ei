@@ -1,8 +1,10 @@
+TAG: ei-4-1-3-3
 TAG: ei-4-1-3-2
 DATE: 11/26/2008
 STAFF: lec
 CHANGES:
 1) TR9356/InSituResult.d/CopyInSituRow, add call to 'CommitTableCellEdit'
+2) TR9323/Genotype.d/ModifyAllelePair; add reorderingAlleles = false for Delete
 
 TAG: ei-4-1-3-1
 DATE: 11/20/2008

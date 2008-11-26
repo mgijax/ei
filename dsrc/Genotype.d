@@ -15,6 +15,7 @@
 -- 09/24/2008	lec
 --	- TR9277; VerifyAlleleState
 --
+-- 11/26/2008	lec
 -- 08/19/2008	lec
 --	- TR 9323; add reorderingAlleles = false for Delete
 --      - TR 9220; see PostProcess
