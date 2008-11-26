@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec	11/26/2008
+--	- TR 9356; CopyInSituRow, add call to 'CommitTableCellEdit'
+--
 -- lec	12/11/2007
 --	- TR 8468; add 'copy column' for image pane, strength and pattern
 --
@@ -140,6 +143,12 @@ rules:
               if (keyColumn > -1) then
                 mgi_tblSetCell(table, row, keyColumn, mgi_tblGetCell(table, row - 1, keyColumn));
               end if;
+
+	      CommitTableCellEdit.source_widget := table;
+	      CommitTableCellEdit.row := row;
+	      CommitTableCellEdit.value_changed := true;
+	      send(CommitTableCellEdit, 0);
+
             end if;
           end if;
 
