@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 02/17/2009	lec
+--	TR9473; "wild-type", "wild type" are both acceptable
+--
 -- 02/02/2007	lec
 --	TR 8076; remove Allele Merge function
 --
@@ -387,7 +390,7 @@ rules:
 	        top->mgiMarker->ObjectID->text.value := "NULL";
 	  end if;
 
-	  if (top->Name->text.value = "wild type") then
+	  if (top->Name->text.value = "wild type" or top->Name->text.value = "wild-type") then
 	    isWildType := 1;
 	  end if;
 
@@ -723,7 +726,7 @@ rules:
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
 	  end if;
 
-	  if (top->Name->text.value = "wild type") then
+	  if (top->Name->text.value = "wild type" or top->Name->text.value = "wild-type") then
 	    isWildType := 1;
 	  end if;
 
