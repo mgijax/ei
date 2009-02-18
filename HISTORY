@@ -1,3 +1,15 @@
+TAG: ei-tr7493-BP
+DATE: 02/18/2009
+STAFF: lec
+CHANGES:
+1) branch point tag for TR7493
+
+TAG: ei-4-2-0-1
+DATE: 02/17/2009
+STAFF: lec
+CHANGES:
+1) TR9473/Allele.d; "wild-type" and "wild type" are both acceptable
+
 TAG: ei-4-2-0-1
 DATE: 02/17/2009
 STAFF: lec
