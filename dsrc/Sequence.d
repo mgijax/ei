@@ -11,6 +11,10 @@
 --
 -- History
 --
+-- lec	02/24/2009
+--	- TR 7493, gene traps less filling
+--	- added select for alleles
+--
 -- lec	10/13/2005
 --	- TR 7094, MGI 3.5
 --
@@ -702,7 +706,8 @@ rules:
 		"and p._CellLine_key = t._Term_key " +
 		"order by p._Organism_key\n" +
 		"select distinct mgiType, jnum, markerID, symbol from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
-		"select distinct mgiType, jnum, probeID, name from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n";
+		"select distinct mgiType, jnum, probeID, name from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n" +
+		"select distinct mgiType, jnumID, alleleID, symbol from SEQ_Allele_View where _Sequence_key = " + currentKey + "\n";
 
 	  results : integer := 1;
 	  nonRawRow : integer := 1;
@@ -812,7 +817,7 @@ rules:
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 9 or results = 10) then
+	      elsif (results >= 9) then
 		table := top->ObjectAssociation->Table;
 		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));
