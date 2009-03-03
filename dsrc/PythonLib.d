@@ -142,7 +142,7 @@ rules:
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  cmds.insert(getenv("HOMOLOGYCACHE") + "/mrkhomologyByClass.py", cmds.count + 1);
+	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkhomologyByClass.py", cmds.count + 1);
 
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
