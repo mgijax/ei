@@ -152,11 +152,16 @@ extern char *global_version;
 /* Allele Tables */
 
 #define ALL_ALLELE		230
-#define ALL_ALLELE_MUTATION	231
-#define ALL_ALLELE_VIEW		232
+#define ALL_ALLELE_CELLLINE	231
+#define ALL_ALLELE_MUTATION	232
+#define ALL_ALLELE_VIEW		233
 #define ALL_CELLLINE		234
-#define ALL_CELLLINE_VIEW	235
-#define ALL_MUTATION_VIEW	236
+#define ALL_ALLELE_CELLLINE_VIEW 235
+#define ALL_CELLLINE_VIEW	236
+#define ALL_MUTATION_VIEW	237
+#define ALL_MARKER_ASSOC	238
+#define ALL_MARKER_ASSOC_VIEW	239
+#define SEQ_ALLELE_ASSOC_VIEW	240
 
 /* MGI Controlled Vocabulary Tables */
 

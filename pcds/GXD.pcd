@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct  8 09:51:42 2008";
+      lastWritten = "Wed Mar  4 11:18:49 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -2137,16 +2137,16 @@ Shift<Key>Tab: prev-tab-group()
                                   ID = ID : mgiDataTypes;
                                 }
                                 {
-                                  mgiMarker = mgiMarker : mgiDataTypes;
+                                  Symbol = CharText : mgiDataTypes;
+                                }
+                                {
+                                  Name = CharText : mgiDataTypes;
                                 }
                                 {
                                   messageText = messageText : mgiDataTypes;
                                 }
                                 {
-                                  Symbol = CharText : mgiDataTypes;
-                                }
-                                {
-                                  Name = CharText : mgiDataTypes;
+                                  Marker = ReferenceTable : mgiTable;
                                 }
                                 {
                                   Reference = ReferenceTypeTable : mgiTable;

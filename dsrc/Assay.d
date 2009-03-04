@@ -1610,7 +1610,7 @@ rules:
             else
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place
  
-              if (currentSeqNum != newSeqNum) then
+              if (currentSeqNum != newSeqNum and newSeqNum.length > 0) then
 		update := "sequenceNum = " + newSeqNum;
                 cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
 	      end if;

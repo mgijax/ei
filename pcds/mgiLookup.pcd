@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 23 07:10:29 2008";
+      lastWritten = "Wed Feb 18 10:47:07 2009";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -268,7 +268,7 @@ Module: mgiLookup
               }
         }
         {
-          ESCellLineList = LookupList;
+          StemCellLineList = LookupList;
           Group: Control
             vip_x = 90;
             vip_y = 1075;
@@ -277,14 +277,14 @@ Module: mgiLookup
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "0 ES Cell Lines";
+                  labelString = "0 Stem Cell Lines";
                 Group: User
-                  defaultLabel = "ES Cell Lines";
+                  defaultLabel = "Stem Cell Lines";
               }
               {
                 List = list : mgiDataTypes;
                 Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayESCellLine";
+                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayStemCellLine";
               }
         }
         {
@@ -552,7 +552,7 @@ Module: mgiLookup
               }
         }
         {
-          MutantESCellLineList = LookupList;
+          MutantStemCellLineList = LookupList;
           Group: Control
             vip_x = 90;
             vip_y = 1020;
@@ -561,9 +561,9 @@ Module: mgiLookup
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "0 Mutant ES Cell Lines";
+                  labelString = "0 Mutant Stem Cell Lines";
                 Group: User
-                  defaultLabel = "Mutant ES Cell Lines";
+                  defaultLabel = "Mutant Stem Cell Lines";
               }
               {
                 List = list : mgiDataTypes;

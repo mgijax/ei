@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 02/18/2009
+ *	- TR 7493/gene trap less filling
+ *
  * lec 08/11/2005
  *	- TR 3557/OMIM/added IMG_IMAGEPANE_ASSOC
  *
@@ -527,12 +530,19 @@ char *mgi_DBkey(int table)
     case ALL_ALLELE:
     case ALL_ALLELE_MUTATION:
     case ALL_ALLELE_VIEW:
+    case ALL_ALLELE_CELLLINE_VIEW:
     case ALL_MUTATION_VIEW:
+    case ALL_MARKER_ASSOC_VIEW:
+    case SEQ_ALLELE_ASSOC_VIEW:
             strcpy(buf, "_Allele_key");
 	    break;
     case ALL_CELLLINE:
     case ALL_CELLLINE_VIEW:
             strcpy(buf, "_CellLine_key");
+	    break;
+    case ALL_ALLELE_CELLLINE:
+    case ALL_MARKER_ASSOC:
+            strcpy(buf, "_Assoc_key");
 	    break;
     case BIB_REFS:
     case BIB_BOOKS:
@@ -996,6 +1006,9 @@ char *mgi_DBaccTable(int table)
     case ALL_ALLELE:
             strcpy(buf, "ALL_Acc_View");
             break;
+    case SEQ_ALLELE_ASSOC_VIEW:
+            strcpy(buf, "SEQ_Allele_Assoc_View");
+            break;
     case ALL_CELLLINE:
             strcpy(buf, "ALL_CellLine_Acc_View");
             break;
@@ -1095,6 +1108,12 @@ char *mgi_DBtable(int table)
     case ALL_ALLELE:
             strcpy(buf, "ALL_Allele");
 	    break;
+    case ALL_ALLELE_CELLLINE:
+            strcpy(buf, "ALL_Allele_CellLine");
+	    break;
+    case ALL_ALLELE_CELLLINE_VIEW:
+            strcpy(buf, "ALL_Allele_CellLine_View");
+	    break;
     case ALL_CELLLINE:
             strcpy(buf, "ALL_CellLine");
 	    break;
@@ -1109,6 +1128,15 @@ char *mgi_DBtable(int table)
 	    break;
     case ALL_MUTATION_VIEW:
             strcpy(buf, "ALL_Allele_Mutation_View");
+	    break;
+    case ALL_MARKER_ASSOC:
+            strcpy(buf, "ALL_Marker_Assoc");
+	    break;
+    case ALL_MARKER_ASSOC_VIEW:
+            strcpy(buf, "ALL_Marker_Assoc_View");
+	    break;
+    case SEQ_ALLELE_ASSOC_VIEW:
+            strcpy(buf, "SEQ_Allele_Assoc_View");
 	    break;
     case BIB_REFS:
             strcpy(buf, "BIB_Refs");
@@ -1857,14 +1885,21 @@ char *mgi_DBinsert(int table, char *keyName)
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE:
-            sprintf(buf, "insert %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _ESCellLine_key, _MutantESCellLine_key, symbol, name, nomenSymbol, isWildType, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+            sprintf(buf, "insert %s (%s, _Marker_key, _Strain_key, _Mode_key, _Allele_Type_key, _Allele_Status_key, _Transmission_key, symbol, name, nomenSymbol, isWildType, isExtinct, isMixed, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+    case ALL_MARKER_ASSOC:
+            sprintf(buf, "insert %s (%s, _Allele_key, _Marker_key, _Qualifier_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key, _ApprovedBy_key, approval_date)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_ALLELE_MUTATION:
             sprintf(buf, "insert %s (%s, _Mutation_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case ALL_ALLELE_CELLLINE:
+            sprintf(buf, "insert %s (%s, _Allele_key, _MutantCellLine_key, _CreatedBy_key, _ModifiedBy_key)", 
+		mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case ALL_CELLLINE:
     case ALL_CELLLINE_VIEW:
-            sprintf(buf, "insert %s (%s, %s, _Strain_key, provider, isMutant, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, %s, _CellLineType_key, _Strain_key, _Derivation_key, isMutant, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case BIB_REFS:
@@ -2341,6 +2376,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
 	      break;
       case ALL_ALLELE:
       case ALL_CELLLINE:
+      case ALL_MARKER_ASSOC:
       case BIB_DATASET_ASSOC:
       case BIB_REFS:
       case GO_TRACKING:
@@ -2402,6 +2438,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
     {
       case ALL_ALLELE:
       case ALL_CELLLINE:
+      case ALL_MARKER_ASSOC:
       case BIB_REFS:
       case BIB_DATASET_ASSOC:
       case GO_TRACKING:

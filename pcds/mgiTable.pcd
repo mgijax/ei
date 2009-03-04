@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 16 13:45:29 2008";
+      lastWritten = "Wed Mar  4 11:03:27 2009";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -25,7 +25,7 @@ Module: mgiTable
             xrtTblPreviewScrolling = preview_both;
             inTabGroup = True;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 85;
         }
         {
@@ -35,7 +35,7 @@ Module: mgiTable
             resizePolicy = resize_any;
             nodeAccess = access_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 195;
               {
                 Table = mgiTable : mgiTable;
@@ -92,7 +92,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 305;
               {
                 Table = mgiTable;
@@ -154,7 +154,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 250;
               {
                 Table = mgiTable : mgiTable;
@@ -215,7 +215,7 @@ Module: mgiTable
           Group: Widget
             traversalOn = False;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 30;
         }
         {
@@ -225,7 +225,7 @@ Module: mgiTable
             resizePolicy = resize_any;
             nodeAccess = access_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 140;
               {
                 Table = mgiTable : mgiTable;
@@ -274,7 +274,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 415;
               {
                 Table = mgiTable;
@@ -329,7 +329,7 @@ Module: mgiTable
         {
           Statistics = OrderedTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 525;
               {
                 Table = mgiTable;
@@ -353,7 +353,7 @@ Module: mgiTable
         {
           OrderedTableLabel = OrderedTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 360;
               {
                 Table = mgiTable;
@@ -370,7 +370,7 @@ Module: mgiTable
         {
           ReferenceTable = Table : mgiTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 470;
               {
                 Table = mgiTable;
@@ -389,7 +389,7 @@ Module: mgiTable
         {
           RefDBSStatus = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 635;
               {
                 Table = mgiTable;
@@ -420,7 +420,7 @@ Module: mgiTable
         {
           RefDBSNonStatus = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 580;
               {
                 Table = mgiTable;
@@ -450,7 +450,7 @@ Module: mgiTable
         {
           AccessionReference = mgiAccessionTable : mgiTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 800;
               {
                 Table = mgiTable;
@@ -489,7 +489,7 @@ Module: mgiTable
         {
           ModificationHistory = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 910;
               {
                 Table = mgiTable : mgiTable;
@@ -519,7 +519,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 690;
               {
                 Table = mgiTable;
@@ -614,7 +614,7 @@ Module: mgiTable
         {
           ObjectAssociationTable = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 1020;
               {
                 Table = mgiTable : mgiTable;
@@ -648,7 +648,7 @@ Module: mgiTable
         {
           Accession = mgiAccessionTable : mgiTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 855;
               {
                 Table = mgiTable;
@@ -693,7 +693,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 745;
               {
                 Table = mgiTable : mgiTable;
@@ -757,7 +757,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 965;
               {
                 Table = mgiTable;
@@ -891,7 +891,7 @@ Module: mgiTable
             resizePolicy = resize_any;
           Group: Control
             vipComment = "";
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 1075;
               {
                 Table = mgiTable : mgiTable;
@@ -942,6 +942,262 @@ Module: mgiTable
                             SearchAll = SearchAll : mgiOption;
                             Group: Widget
                               managed = False;
+                          }
+                    }
+              }
+        }
+        {
+          SequenceAlleleTable = mgiAccessionTable : mgiTable;
+          Group: Control
+            vip_x = 84;
+            vip_y = 1122;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblNumColumns = 11;
+                  xrtTblColumnLabels = "Mode,Logical Key,Assoc Key,Sequence Key,Ref Key,Sequence Name,Sequence ID,J#,Citation,Modified By,Date";
+                  xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 40)(all 9 20)(all 10 10)";
+                  xrtTblEditableSeries = "(all 0 False) (all 5 False)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
+                  userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\n";
+                  xrtTblVisibleRows = 5;
+                  xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                Group: User
+                  accName = 5;
+                  accID = 6;
+                  requiredColumns = "4\n6";
+              }
+              {
+                Add = TablePush;
+              }
+              {
+                Delete = TablePush;
+              }
+              {
+                AccSourceMenu = AccSourceMenu : mgiOption;
+                    Popups:
+                    {
+                      AccSourcePulldown = OptionPulldown;
+                      Group: User
+                        tableOptionKey = 1;
+                        tableOption = 5;
+                          {
+                            MGI = AccToggle : mgiOption;
+                          }
+                          {
+                            J = AccToggle : mgiOption;
+                          }
+                          {
+                            PubMed = AccToggle : mgiOption;
+                          }
+                          {
+                            NSequence = AccToggle : mgiOption;
+                            Group: Widget
+                              managed = True;
+                          }
+                          {
+                            RefSeq = AccToggle : mgiOption;
+                          }
+                          {
+                            SWISSPROT = AccToggle : mgiOption;
+                          }
+                          {
+                            TrEMBL = AccToggle : mgiOption;
+                          }
+                          {
+                            PDB = AccToggle : mgiOption;
+                          }
+                          {
+                            IMAGE = AccToggle : mgiOption;
+                          }
+                          {
+                            MGC = AccToggle : mgiOption;
+                          }
+                          {
+                            WashU = AccToggle : mgiOption;
+                          }
+                          {
+                            EntrezGene = AccToggle : mgiOption;
+                          }
+                          {
+                            VEGAGeneModel = AccToggle : mgiOption;
+                          }
+                          {
+                            NCBIGeneModel = AccToggle : mgiOption;
+                          }
+                          {
+                            EnsemblGeneModel = AccToggle : mgiOption;
+                          }
+                          {
+                            TreeFam = AccToggle : mgiOption;
+                          }
+                          {
+                            UniGene = AccToggle : mgiOption;
+                          }
+                          {
+                            miRBase = AccToggle : mgiOption;
+                          }
+                          {
+                            EC = AccToggle : mgiOption;
+                          }
+                          {
+                            ATCC = AccToggle : mgiOption;
+                          }
+                          {
+                            MRK = AccToggle : mgiOption;
+                          }
+                          {
+                            MGIImage = AccToggle : mgiOption;
+                          }
+                          {
+                            CREX = AccToggle : mgiOption;
+                          }
+                          {
+                            HYEX = AccToggle : mgiOption;
+                          }
+                          {
+                            INEX = AccToggle : mgiOption;
+                          }
+                          {
+                            FSEX = AccToggle : mgiOption;
+                          }
+                          {
+                            RIEX = AccToggle : mgiOption;
+                          }
+                          {
+                            TEXT = AccToggle : mgiOption;
+                          }
+                          {
+                            TXEX = AccToggle : mgiOption;
+                          }
+                          {
+                            PMEX = AccToggle : mgiOption;
+                          }
+                          {
+                            E = AccToggle : mgiOption;
+                          }
+                          {
+                            HGNC = AccToggle : mgiOption;
+                          }
+                          {
+                            OMIM = AccToggle : mgiOption;
+                          }
+                          {
+                            RGD = AccToggle : mgiOption;
+                          }
+                          {
+                            HomoloGene = AccToggle : mgiOption;
+                          }
+                          {
+                            RIKENCluster = AccToggle : mgiOption;
+                          }
+                          {
+                            RIKENClone = AccToggle : mgiOption;
+                          }
+                          {
+                            RIKENFANTOM = AccToggle : mgiOption;
+                          }
+                          {
+                            NIA = AccToggle : mgiOption;
+                          }
+                          {
+                            NIA7 = AccToggle : mgiOption;
+                          }
+                          {
+                            NIA15K = AccToggle : mgiOption;
+                          }
+                          {
+                            RPCI23 = AccToggle : mgiOption;
+                          }
+                          {
+                            RPCI24 = AccToggle : mgiOption;
+                          }
+                          {
+                            UniSTS = AccToggle : mgiOption;
+                          }
+                          {
+                            BROAD = AccToggle : mgiOption;
+                          }
+                          {
+                            InterPro = AccToggle : mgiOption;
+                          }
+                          {
+                            Taxon = AccToggle : mgiOption;
+                          }
+                          {
+                            DFCI = AccToggle : mgiOption;
+                          }
+                          {
+                            DOTS = AccToggle : mgiOption;
+                          }
+                          {
+                            NIAGeneIndex = AccToggle : mgiOption;
+                          }
+                          {
+                            JRS = AccToggle : mgiOption;
+                          }
+                          {
+                            APF = AccToggle : mgiOption;
+                          }
+                          {
+                            BCBC = AccToggle : mgiOption;
+                          }
+                          {
+                            CARD = AccToggle : mgiOption;
+                          }
+                          {
+                            CMMR = AccToggle : mgiOption;
+                          }
+                          {
+                            EMMA = AccToggle : mgiOption;
+                          }
+                          {
+                            EMS = AccToggle : mgiOption;
+                          }
+                          {
+                            Harwell = AccToggle : mgiOption;
+                          }
+                          {
+                            JPGA = AccToggle : mgiOption;
+                          }
+                          {
+                            MMHCC = AccToggle : mgiOption;
+                          }
+                          {
+                            MMRRC = AccToggle : mgiOption;
+                          }
+                          {
+                            MTG = AccToggle : mgiOption;
+                          }
+                          {
+                            MUGEN = AccToggle : mgiOption;
+                          }
+                          {
+                            NIG = AccToggle : mgiOption;
+                          }
+                          {
+                            NMICE = AccToggle : mgiOption;
+                          }
+                          {
+                            ORNL = AccToggle : mgiOption;
+                          }
+                          {
+                            RIKENBRC = AccToggle : mgiOption;
+                          }
+                          {
+                            TAC = AccToggle : mgiOption;
+                          }
+                          {
+                            IMAGELibrary = AccToggle : mgiOption;
+                          }
+                          {
+                            dbESTLibrary = AccToggle : mgiOption;
+                          }
+                          {
+                            IGTC = AccToggle : mgiOption;
+                            Group: Widget
+                              managed = True;
                           }
                     }
               }
