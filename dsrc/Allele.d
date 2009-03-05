@@ -1407,10 +1407,7 @@ rules:
 		 "order by ip.isPrimary desc, a1.accID\n" +
 
 		 "select * from " + mgi_DBtable(ALL_ALLELE_CELLLINE_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
-
-		 "select * from " + mgi_DBtable(SEQ_ALLELE_ASSOC_VIEW) +
-		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey;
+		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1513,17 +1510,6 @@ rules:
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 15));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
 
-	      elsif (results = 7) then
-		(void) mgi_tblSetCell(seqTable, row, seqTable.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.sequenceKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.refsKey, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.accName, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.accID, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.jnum, mgi_getstr(dbproc, 15));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.citation, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.modifiedBy, mgi_getstr(dbproc, 18));
-		(void) mgi_tblSetCell(seqTable, row, seqTable.modifiedDate, mgi_getstr(dbproc, 9));
-
 	      end if;
 	      row := row + 1;
 	    end while;
@@ -1550,6 +1536,11 @@ rules:
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := ALL_ALLELE;
+          send(LoadAcc, 0);
+ 
+          LoadAcc.table := seqTable;
+          LoadAcc.objectKey := currentRecordKey;
+	  LoadAcc.tableID := SEQ_ALLELE_ASSOC_VIEW;
           send(LoadAcc, 0);
  
 	  top->QueryList->List.row := Select.item_position;

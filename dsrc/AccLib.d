@@ -205,6 +205,7 @@ rules:
 	  source : widget := table.parent.child_by_class("XmRowColumn");
 	  tableID : integer := LoadAcc.tableID;
 	  sortColumn : integer := LoadAcc.sortColumn;
+	  cmd : string;
 	  logicalDBkey : string;
 	  prefix : string;
 	  accID : string;
@@ -213,11 +214,17 @@ rules:
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
 	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart desc, numericPart";
+	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
+	    orderBy := " order by _Assoc_key, _LogicalDB_key";
 	  else
 	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart, numericPart";
 	  end if;
 
-          cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
+	  if (tableID = SEQ_ALLELE_ASSOC_VIEW) then
+            cmd := "select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred";
+	  else
+            cmd := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
+	  end if;
 
 	  if (table.is_defined("refsKey") != nil) then
 	    cmd := cmd + ", _Refs_key, jnum, short_citation";
@@ -225,6 +232,10 @@ rules:
 
 	  if (table.is_defined("modifiedBy") != nil) then
 	    cmd := cmd + ", modifiedBy, modification_date";
+	  end if;
+
+	  if (table.is_defined("sequenceKey") != nil) then
+	    cmd := cmd + ", _Sequence_key";
 	  end if;
 
 	  cmd := cmd + " from " + mgi_DBaccTable(tableID) +
@@ -307,6 +318,10 @@ rules:
 	      if (table.is_defined("modifiedBy") != nil) then
 	        (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
 	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
+	      end if;
+
+	      if (table.is_defined("sequenceKey") != nil) then
+	        (void) mgi_tblSetCell(table, row, table.sequenceKey, mgi_getstr(dbproc, 12));
 	      end if;
 
 	      if (table.is_defined("accStatus") != nil) then
