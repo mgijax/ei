@@ -373,6 +373,7 @@ extern char *global_version;
 #define ALL_STATUS_DELETED	"Deleted"
 #define ALL_STATUS_RESERVED	"Reserved"
 #define ALL_STATUS_APPROVED	"Approved"
+#define ALL_STATUS_AUTOLOAD	"Autoload"
 #define GENE_TRAPPED		"Gene trapped"
 
 /* This CV term requires Notes */

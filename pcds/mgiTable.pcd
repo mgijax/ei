@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  4 11:03:27 2009";
+      lastWritten = "Wed Mar 11 13:44:57 2009";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -960,8 +960,8 @@ Module: mgiTable
                   xrtTblEditableSeries = "(all 0 False) (all 5 False)";
                   xrtTblPixelWidthSeries = "(all 0-4 0)";
                   xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
-                  userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\n";
-                  xrtTblVisibleRows = 5;
+                  userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\nrefsCurrentKey:Int=\"4\"\n";
+                  xrtTblVisibleRows = 3;
                   xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                 Group: User
                   accName = 5;
@@ -976,6 +976,8 @@ Module: mgiTable
               }
               {
                 AccSourceMenu = AccSourceMenu : mgiOption;
+                Group: User
+                  defaultOption = NSequence;
                     Popups:
                     {
                       AccSourcePulldown = OptionPulldown;

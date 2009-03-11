@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar  4 10:59:52 2009";
+      lastWritten = "Wed Mar 11 12:50:21 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -2911,7 +2911,7 @@ Module: mgiOption
             labelString = "Image Type";
           Group: Control
             vip_x = 80;
-            vip_y = 6135;
+            vip_y = 6190;
               Popups:
               {
                 ImageTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2998,7 +2998,27 @@ Module: mgiOption
               {
                 AlleleTransmissionPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select t._Term_key, t.abbreviation from VOC_Vocab v, VOC_Term t where v.name = \"Allele Transmission\" and v._Vocab_key = t._Vocab_key order by abbreviation";
+                  sql = "select t._Term_key, t.term from VOC_Vocab v, VOC_Term t where v.name = \"Allele Transmission\" and v._Vocab_key = t._Vocab_key order by term";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          GenotypeExistsAsMenu = OptionMenu;
+          Group: Widget
+            subMenuId = GenotypeExistsAsPulldown;
+            labelString = "Genotype Exists As";
+          Group: Control
+            vip_x = 80;
+            vip_y = 6135;
+          Group: User
+            defaultValue = "Not Applicable";
+              Popups:
+              {
+                GenotypeExistsAsPulldown : OptionPulldown = OptionPulldown;
+                Group: User
+                  sql = "select t._Term_key, t.term from VOC_Vocab v, VOC_Term t where v.name = \"Genotype Exists As\" and v._Vocab_key = t._Vocab_key order by term";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
