@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Mar 11 12:51:46 2009";
+      lastWritten = "Wed Mar 11 14:02:42 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -1290,7 +1290,7 @@ Module: MGI
                                         Group: User
                                           alleleSymbol = "11\n12";
                                           alleleKey = "5\n6";
-                                          requiredColumns = "4\n7";
+                                          requiredColumns = 7;
                                           saveEditableSeries = "(all 0-8 False)";
                                           saveTraversableSeries = "(all 0-9 False)";
                                             {

@@ -561,6 +561,10 @@ rules:
 			+ mgi_tblGetCell(table, row, (integer) table.alleleSymbol[2]);
 	    end if;
 
+	    if (markerKey.length = 0) then
+	      markerKey := "NULL";
+	    end if;
+
 	    if (alleleKey1.length = 0) then
 	      alleleKey1 := "NULL";
 	    end if;

@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 03/11/2009	lec
+--	- TR7493/Gene Trap Lite/VerifyAllele
+--
 -- 05/21/2008	lec
 --	- fix STRAIN adds due to schema changes
 --
