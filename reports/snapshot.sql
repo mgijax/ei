@@ -100,7 +100,7 @@ print ""
 print "Marker Mapping"
 print ""
 
-select jnum, substring(short_citation,1,25), _Marker_key, sequenceNum, symbol
+select jnum, substring(short_citation,1,25), _Expt_key, _Marker_key, sequenceNum, symbol
 from MLD_Expt_Marker_View where _Marker_key = KEY order by sequenceNum
 go
 
