@@ -13,7 +13,7 @@
 -- History
 --
 -- 03/11/2009	lec
---	- TR7493/Gene Trap Lite/GenotypeExistsAsMenu
+--	- TR7493/Gene Trap Lite
 --
 -- 09/24/2008	lec
 --	- TR9277; VerifyAlleleState
@@ -1045,21 +1045,11 @@ rules:
 		 " where _Object_key = " + currentRecordKey + 
 		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n" +
 
-		 "select ip._Assoc_key, ip._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID, ip.isPrimary " +
-		 "from IMG_ImagePane_Assoc ip, IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2 " +
-		 "where ip._Object_key = " + currentRecordKey +
-		 "and ip._MGIType_key = " + mgiTypeKey +
-		 "and ip._ImagePane_key = p._ImagePane_key " +
-		 "and p._Image_key = i._Image_key " +
-		 "and p._Image_key = a1._Object_key " +
-		 "and a1._MGIType_key = 9 " +
-		 "and a1._LogicalDB_key = 1 " +
-		 "and a1.prefixPart = 'MGI:' " +
-		 "and a1.preferred = 1 " +
-		 "and p._Image_key = a2._Object_key " +
-		 "and a2._MGIType_key = 9 " +
-		 "and a2._LogicalDB_key = 19 " +
-		 "order by ip.isPrimary desc, a1.accID";
+		 "select _Assoc_key, _ImagePane_key, figureLabel, mgiID, pixID, isPrimary from " +
+		 mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) +
+		 " where _Object_key = " + currentRecordKey +
+		 " and _MGIType_key = " + mgiTypeKey +
+		 " order by isPrimary desc, mgiID\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

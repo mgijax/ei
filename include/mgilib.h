@@ -148,6 +148,7 @@ extern char *global_version;
 #define GXD_GENOTYPE_VIEW	225
 #define GXD_ALLELEPAIR_VIEW	226
 #define IMG_IMAGEPANE_ASSOC	227
+#define IMG_IMAGEPANE_ASSOC_VIEW 228
 
 /* Allele Tables */
 

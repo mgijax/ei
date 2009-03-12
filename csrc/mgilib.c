@@ -686,6 +686,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_ImagePane_key");
 	    break;
     case IMG_IMAGEPANE_ASSOC:
+    case IMG_IMAGEPANE_ASSOC_VIEW:
             strcpy(buf, "_Assoc_key");
 	    break;
     case MGI_COLUMNS:
@@ -1314,6 +1315,9 @@ char *mgi_DBtable(int table)
 	    break;
     case IMG_IMAGEPANE_ASSOC:
             strcpy(buf, "IMG_ImagePane_Assoc");
+	    break;
+    case IMG_IMAGEPANE_ASSOC_VIEW:
+            strcpy(buf, "IMG_ImagePane_Assoc_View");
 	    break;
     case MGI_TABLES:
             strcpy(buf, "MGI_Tables");
