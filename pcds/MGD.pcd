@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 12 10:31:43 2009";
+      lastWritten = "Thu Mar 12 14:17:32 2009";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8023,8 +8023,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_form;
-                                    rightOffset = 2;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Name;
                                     topOffset = 5;
@@ -8035,7 +8034,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblColumnLabels = "Mode,Assoc Key,Marker Key,Refs Key,Status Key,Marker,J#,Citation,Modified By,Date,Status";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 15)(all 6 10)(all 7 50)(all 8 12)(all 9 10)(all 10 10)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 15)(all 6 10)(all 7 50)(all 8 12)(all 9 10)(all 10 20)";
                                           xrtTblVisibleRows = 1;
                                           xrtTblNumRows = 1;
                                           xrtTblEditableSeries = "(all 0-4 False)";
@@ -8060,11 +8059,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          managed = False;
-                                      }
-                                      {
-                                        AlleleMarkerStatus = AlleleMarkerStatus : mgiOption;
                                         Group: Constraint
                                           leftAttachment = attach_opposite_widget;
                                           leftWidget = Table;
@@ -8074,6 +8068,18 @@ Shift<Key>Tab: prev-tab-group()
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                           topOffset = 2;
+                                      }
+                                      {
+                                        AlleleMarkerStatusMenu = AlleleMarkerStatusMenu : mgiOption;
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          topOffset = 2;
+                                          rightWidget = Table;
                                       }
                                 }
                                 {

@@ -121,6 +121,8 @@ locals:
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
 
 	pendingStatusKey : string;
+	defaultQualifierKey : string;
+	defaultStatusKey : string;
 	defaultInheritanceKey : string;
 	defaultTransmissionKey : string;
 	defaultStemCellLineKeyNS : string;
@@ -191,7 +193,10 @@ rules:
 	  InitOptionMenu.option := top->InheritanceModeMenu;
 	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->MolecularMutationMenu;
+	  InitOptionMenu.option := top->MolecularMutation->MolecularMutationMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->Marker->AlleleMarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
           LoadList.list := top->StemCellLineList;
@@ -236,10 +241,10 @@ rules:
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->Control->ModificationHistory->Table);
+	  tables.append(top->Marker->Table);
 	  tables.append(top->Reference->Table);
 	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->ImagePane->Table);
-	  tables.append(top->Marker->Table);
 	  tables.append(top->MutantCellLine->Table);
 	  tables.append(top->SequenceAllele->Table);
 
@@ -263,6 +268,12 @@ rules:
 	  send(ClearAllele, 0);
 
 	  pendingStatusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
+
+	  defaultQualifierKey := mgi_sql1("select _Term_key from VOC_Term " +
+		"where _Vocab_key = 70 and term = 'Not Specified'");
+
+	  defaultStatusKey := mgi_sql1("select _Term_key from VOC_Term " +
+		"where _Vocab_key = 73 and term = " + mgi_DBprstr(top->Marker->AlleleMarkerStatusMenu.defaultValue));
 
 	  defaultInheritanceKey := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
 		"where term = " + mgi_DBprstr(top->InheritanceModeMenu.defaultValue));
@@ -891,6 +902,7 @@ rules:
 	  refsKey : string;
 	  nomenSymbol : string;
 	  qualifierKey : string;
+	  statusKey : string;
 	  set : string := "";
 	  keyName : string := "mrkassocKey";
 	  keyDefined : boolean := false;
@@ -919,10 +931,15 @@ rules:
 	    key := mgi_tblGetCell(table, row, table.assocKey);
 	    markerKey := mgi_tblGetCell(table, row, table.markerKey);
 	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
-	    qualifierKey := "NULL";
+	    statusKey := mgi_tblGetCell(table, row, table.statusKey);
+	    qualifierKey := defaultQualifierKey;
 
 	    if (refsKey.length = 0) then
 	      refsKey := "NULL";
+	    end if;
+
+	    if (statusKey.length = 0) then
+	      statusKey := defaultStatusKey;
 	    end if;
 
 	    if (editMode = TBL_ROW_ADD) then
@@ -939,23 +956,25 @@ rules:
 		     markerKey + "," +
 		     qualifierKey + "," +
 		     refsKey + "," +
+		     statusKey + "," +
 		     global_loginKey + "," + global_loginKey + ")\n";
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      --set := "_Marker_key = " + markerKey +
-	      set := "_Refs_key = " + refsKey;
+	      set := "_Refs_key = " + refsKey +
+	             ",_Status_key = " + statusKey;
 	      cmd := cmd + mgi_DBupdate(ALL_MARKER_ASSOC, key, set);
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
 	      cmd := cmd + mgi_DBdelete(ALL_MARKER_ASSOC, key);
 	    end if;
 
-	    if (markerKey != "" and markerKey != "NULL") then
+-- 	    if (markerKey != "" and markerKey != "NULL") then
 	      -- update the cache of the _Marker_key in ALL_Allele
-	      cmd := cmd + "exec ALL_cacheMarker " + markerKey + "," + currentRecordKey + "\n";
+	      -- cmd := cmd + "exec ALL_cacheMarker " + markerKey + "," + currentRecordKey + "\n";
 
 	      -- need to update the MRK_reloadLabel table for each marker that was updated
 	      -- cmd := cmd + "exec MRK_reloadLabel " + markerKey + "\n";
-	    end if;
+-- 	    end if;
 
 	    row := row + 1;
 	  end while;
@@ -1274,7 +1293,19 @@ rules:
             from_marker := true;
           end if;
 
-	  -- End Marker Assoc
+	  value := mgi_tblGetCell(markerTable, 0, markerTable.statusKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand ma._Status_key = " + value;
+            from_marker := true;
+	  else
+	    value := mgi_tblGetCell(markerTable, 0, markerTable.status);
+	    if (value.length > 0) then
+	      where := where + "\nand ma.status like " + mgi_DBprstr(value);
+              from_marker := true;
+	    end if;
+	  end if;
+
+	  -- Molecular Mutation
 
 	  value := mgi_tblGetCell(molmutationTable, 0, molmutationTable.mutationKey);
 	  if (value.length > 0 and value != "NULL") then
@@ -1446,7 +1477,9 @@ rules:
 	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 
-	         "select * from " + mgi_DBtable(ALL_MARKER_ASSOC_VIEW) +
+	         "select _Assoc_key, _Marker_key, symbol, _Refs_key, " +
+		 "jnum, short_citation, _Status_key, status, modifiedBy, modification_date from " +
+		 mgi_DBtable(ALL_MARKER_ASSOC_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
 
 	         "select _Mutation_key, mutation from " + mgi_DBtable(ALL_MUTATION_VIEW) +
@@ -1526,12 +1559,16 @@ rules:
 
 	      elsif (results = 2) then
 		(void) mgi_tblSetCell(markerTable, row, markerTable.assocKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(markerTable, row, markerTable.modifiedBy, mgi_getstr(dbproc, 16));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.modifiedBy, mgi_getstr(dbproc, 9));
 		(void) mgi_tblSetCell(markerTable, row, markerTable.modifiedDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 3) then
 		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutationCurrentKey, mgi_getstr(dbproc, 1));

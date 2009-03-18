@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 12 10:31:38 2009";
+      lastWritten = "Wed Mar 18 07:27:20 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -3025,7 +3025,7 @@ Module: mgiOption
               }
         }
         {
-          AlleleMarkerStatus = OptionMenu;
+          AlleleMarkerStatusMenu = OptionMenu;
           Group: Widget
             subMenuId = AlleleMarkerStatusPulldown;
             labelString = "Marker-Allele Status";
@@ -3033,12 +3033,12 @@ Module: mgiOption
             vip_x = 80;
             vip_y = 6135;
           Group: User
-            defaultValue = "Not Applicable";
+            defaultValue = Curated;
               Popups:
               {
                 AlleleMarkerStatusPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term where _Term_key = 73 order by term";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 73 order by term";
                   tableForm = Marker;
                   tableOptionKey = 4;
                   tableOption = 10;
