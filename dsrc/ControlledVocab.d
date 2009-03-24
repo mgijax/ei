@@ -15,7 +15,7 @@
 -- Marker Types, Molecuar Segment Vector Types,
 -- Antibody Classes, Antibody Types, Assay Types, Expression Patterns,
 -- Expression Strengths, Gel RNA Types, Gel Units, Image Field Types,
--- Labels, Probe Label Coverage, Probe Sense, Probe Visualization,
+-- Labels, Probe Sense, Probe Visualization,
 -- Secondary Labelling, Embedding Methods, Fixation Methods.
 --
 -- History

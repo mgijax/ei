@@ -5,7 +5,7 @@
 --
 -- TopLevelShell:		Assay
 -- Database Tables Affected:	GXD_Assay, GXD_AntibodyPrep, GXD_ProbePrep
--- Cross Reference Tables:	GXD_Label, GXD_LabelCoverage, GXD_VisualizationMethod,
+-- Cross Reference Tables:	GXD_Label, GXD_VisualizationMethod,
 --				GXD_Secondary, PRB_Probe, GXD_AssayType, GXD_ProbeSense
 -- Actions Allowed:		Add, Modify, Delete
 --
