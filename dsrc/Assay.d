@@ -375,7 +375,6 @@ rules:
           options.append(top->ProbePrepForm->PrepTypeMenu);
           options.append(top->ProbePrepForm->SenseMenu);
           options.append(top->ProbePrepForm->LabelTypeMenu);
-          options.append(top->ProbePrepForm->CoverageMenu);
           options.append(top->ProbePrepForm->VisualizationMenu);
           options.append(top->AntibodyPrepForm->SecondaryMenu);
           options.append(top->AntibodyPrepForm->LabelTypeMenu);
@@ -694,8 +693,7 @@ rules:
 	         mgi_DBinsert(GXD_PROBEPREP, probePrepLabel) +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "," +
 	         prepDetailForm->SenseMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->CoverageMenu.menuHistory.defaultValue + "," +
+	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",-1"," +
 	         prepDetailForm->VisualizationMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
 
@@ -1447,11 +1445,6 @@ rules:
 		prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-          if (prepDetailForm->CoverageMenu.menuHistory.modified) then
-            update := update + "_Coverage_key = " + 
-		prepDetailForm->CoverageMenu.menuHistory.defaultValue + ",";
-          end if;
-
           if (prepDetailForm->VisualizationMenu.menuHistory.modified) then
             update := update + "_Visualization_key = " + 
 		prepDetailForm->VisualizationMenu.menuHistory.defaultValue + ",";
@@ -2094,11 +2087,6 @@ rules:
 	      from_probePrep := true;
             end if;
 
-            if (prepDetailForm->CoverageMenu.menuHistory.searchValue != "%") then
-              where := where + " and pp._Coverage_key = " + prepDetailForm->CoverageMenu.menuHistory.searchValue;
-	      from_probePrep := true;
-            end if;
-
             if (prepDetailForm->VisualizationMenu.menuHistory.searchValue != "%") then
               where := where + " and pp._Visualization_key = " + prepDetailForm->VisualizationMenu.menuHistory.searchValue;
 	      from_probePrep := true;
@@ -2459,10 +2447,6 @@ rules:
 
 		  SetOption.source_widget := prepDetailForm->LabelTypeMenu;
 		  SetOption.value := mgi_getstr(dbproc, 5);
-		  send(SetOption, 0);
-
-		  SetOption.source_widget := prepDetailForm->CoverageMenu;
-		  SetOption.value := mgi_getstr(dbproc, 6);
 		  send(SetOption, 0);
 
 		  SetOption.source_widget := prepDetailForm->VisualizationMenu;

@@ -75,6 +75,7 @@ devents:
 	DisplayStemCellLine :translation [];
 
 	Modify :local [];
+	ModifyAlleleCellLine :local [];
 	ModifyAlleleNotes :local [];
 	ModifyImagePaneAssociation :local [];
 	ModifyMarkerAssoc :local [];
@@ -342,6 +343,7 @@ rules:
 	  isExtinct : integer := 0;
 	  isMixed : integer := 0;
 	  nomenSymbol : string := "NULL";
+	  markerKey : string := "NULL";
 	  statusKey : string;
 	  inheritanceKey : string;
 	  strainKey : string;
@@ -418,13 +420,6 @@ rules:
 
           currentRecordKey := "@" + KEYNAME;
  
-	  -- if validated NomenDB symbol, the set Marker key to NULL
-
---	  if (top->mgiMarker->ObjectID->text.value = "-1") then
---		nomenSymbol := top->mgiMarker->Marker->text.value;
---	        top->mgiMarker->ObjectID->text.value := "NULL";
---	  end if;
-
 	  if (top->Name->text.value = "wild type" or top->Name->text.value = "wild-type") then
 	    isWildType := 1;
 	  end if;
@@ -449,7 +444,6 @@ rules:
 	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
           end if;
 
---	  if (top->EditForm->mgiParentCellLine->ObjectID->text.value.length = 0) then
 --            if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
 --		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
 --		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
@@ -481,7 +475,7 @@ rules:
 
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
-		 top->mgiMarker->ObjectID->text.value + "," +
+		 markerKey + "," +
 		 strainKey + "," +
                  inheritanceKey + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
@@ -826,6 +820,63 @@ rules:
 	end does;
 
 --
+-- ModifyAlleleCellLine
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Allele CellLine
+-- Appends to global "cmd" string
+--
+ 
+	ModifyAlleleCellLine does
+	  table : widget := cellLineTable;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  set : string := "";
+	  keyName : string := "cellassocKey";
+	  keyDefined : boolean := false;
+	  cellLineKey : string;
+ 
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.assocKey);
+	    cellLineKey := mgi_tblGetCell(table, row, table.mutantKey);
+
+	    if (editMode = TBL_ROW_ADD) then
+
+	      if (not keyDefined) then
+		cmd := cmd + mgi_setDBkey(ALL_ALLELE_CELLLINE, NEWKEY, keyName);
+		keyDefined := true;
+	      else
+		cmd := cmd + mgi_DBincKey(keyName);
+	      end if;
+
+	      -- DO THIS NOW....
+	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_CELLLINE, keyName) +
+		     currentRecordKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_MutantCellLine_key = " + cellLineKey;
+	      cmd := cmd + mgi_DBupdate(ALL_ALLELE_CELLLINE, key, set);
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_CELLLINE, key);
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	end does;
+ 
+--
 -- ModifyAlleleNotes
 --
 -- Activated from: devent Modify
@@ -960,8 +1011,8 @@ rules:
 		     global_loginKey + "," + global_loginKey + ")\n";
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
-	      --set := "_Marker_key = " + markerKey +
-	      set := "_Refs_key = " + refsKey +
+	      set := "_Marker_key = " + markerKey +
+	             ",_Refs_key = " + refsKey +
 	             ",_Status_key = " + statusKey;
 	      cmd := cmd + mgi_DBupdate(ALL_MARKER_ASSOC, key, set);
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
@@ -969,9 +1020,6 @@ rules:
 	    end if;
 
 -- 	    if (markerKey != "" and markerKey != "NULL") then
-	      -- update the cache of the _Marker_key in ALL_Allele
-	      -- cmd := cmd + "exec ALL_cacheMarker " + markerKey + "," + currentRecordKey + "\n";
-
 	      -- need to update the MRK_reloadLabel table for each marker that was updated
 	      -- cmd := cmd + "exec MRK_reloadLabel " + markerKey + "\n";
 -- 	    end if;
