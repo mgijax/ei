@@ -693,7 +693,7 @@ rules:
 	         mgi_DBinsert(GXD_PROBEPREP, probePrepLabel) +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "," +
 	         prepDetailForm->SenseMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",-1"," +
+	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",-1," +
 	         prepDetailForm->VisualizationMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
 
