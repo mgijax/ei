@@ -13,8 +13,11 @@
 --
 -- History:
 --
+-- lec  03/25/2009
+--	- TR 7493, gene trap lite
+--
 -- lec	03/2005
---	TR 4289, MPR
+--	- TR 4289, MPR
 --
 -- lec	09/17/2003
 --	- TR 4724; added EditRefType
@@ -93,14 +96,20 @@ rules:
 	  tableID : integer := InitRefTypeTable.tableID;
 
 	  cmd : string;
+	  orderBy : string;
 	  row : integer := 0;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
+	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
+	     orderBy := "\norder by _RefAssocType_key";
+	  else
+	     orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
+	  end if;
+
 	  cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
-		  mgi_DBtable(tableID) + 
-		  "\norder by allowOnlyOne desc, _RefAssocType_key";
+		  mgi_DBtable(tableID) + orderBy;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -147,15 +156,21 @@ rules:
 	  tableID : integer := LoadRefTypeTable.tableID;
 	  objectKey : string := LoadRefTypeTable.objectKey;
 	  cmd : string;
+	  orderBy : string;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
+	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
+	     orderBy := "\norder by _RefAssocType_key";
+	  else
+	     orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
+	  end if;
+
           cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
 		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
-		  " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		  " order by allowOnlyOne desc, _RefAssocType_key";
+		  " where " + mgi_DBkey(tableID) + " = " + objectKey + orderBy;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
