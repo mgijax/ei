@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Mar 12 14:17:32 2009";
+      lastWritten = "Thu Mar 19 13:01:50 2009";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -8234,6 +8234,8 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     leftOffset = 20;
                                     topOffset = 20;
+                                  Group: User
+                                    defaultOption = No;
                                       Popups:
                                       {
                                         MixedPulldown : YesNoPulldown = OptionPulldown;
@@ -8253,6 +8255,8 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                  Group: User
+                                    defaultOption = No;
                                       Popups:
                                       {
                                         ExtinctPulldown : YesNoPulldown = OptionPulldown;
@@ -8277,7 +8281,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblEditableSeries = "(all 0-2 False)";
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 65)";
-                                          userDefinedAttributes = "mutationCurrentKey:Int=\"1\"\nmutationKey:Int=\"2\"\nmutation:Int=\"3\"\n";
+                                          userDefinedAttributes = "mutationCurrentKey:Int(Int)=\"1\"\nmutationKey:Int(Int)=\"2\"\nmutation:Int(Int)=\"3\"\n";
                                           xrtTblVisibleRows = 3;
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblTraversableSeries = "(all 0-2 False)";

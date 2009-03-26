@@ -169,7 +169,6 @@ extern char *global_version;
 #define GXD_ANTIBODYCLASS	300
 #define GXD_PROBESENSE		301
 #define GXD_LABEL		302
-#define GXD_LABELCOVERAGE	303
 #define GXD_VISUALIZATION	304
 #define GXD_SECONDARY		305
 #define GXD_ASSAYTYPE		306

@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 03/24/2009
+ *	- TR 9560/remove gxd label coverage
+ *
  * lec 02/18/2009
  *	- TR 7493/gene trap less filling
  *
@@ -594,9 +597,6 @@ char *mgi_DBkey(int table)
 	    break;
     case GXD_LABEL:
             strcpy(buf, "_Label_key");
-	    break;
-    case GXD_LABELCOVERAGE:
-            strcpy(buf, "_Coverage_key");
 	    break;
     case GXD_VISUALIZATION:
             strcpy(buf, "_Visualization_key");
@@ -1202,9 +1202,6 @@ char *mgi_DBtable(int table)
     case GXD_LABEL:
             strcpy(buf, "GXD_Label");
 	    break;
-    case GXD_LABELCOVERAGE:
-            strcpy(buf, "GXD_LabelCoverage");
-	    break;
     case GXD_VISUALIZATION:
             strcpy(buf, "GXD_VisualizationMethod");
 	    break;
@@ -1794,6 +1791,7 @@ char *mgi_DBinsert(int table, char *keyName)
   switch (table)
   {
     case ACC_ACTUALDB:
+    case ALL_ALLELE_CELLLINE:
     case ALL_ALLELE_MUTATION:
     case BIB_BOOKS:
     case BIB_NOTES:
@@ -2382,6 +2380,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
 		mgi_DBtable(table), str, mgi_DBkey(table), key);
 	      break;
       case ALL_ALLELE:
+      case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
       case ALL_MARKER_ASSOC:
       case BIB_DATASET_ASSOC:
@@ -2444,6 +2443,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
     switch (table)
     {
       case ALL_ALLELE:
+      case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
       case ALL_MARKER_ASSOC:
       case BIB_REFS:
@@ -2710,9 +2710,6 @@ char *mgi_DBcvname(int table)
 	    break;
     case GXD_LABEL:
             strcpy(buf, "label");
-	    break;
-    case GXD_LABELCOVERAGE:
-            strcpy(buf, "coverage");
 	    break;
     case GXD_VISUALIZATION:
             strcpy(buf, "visualization");
