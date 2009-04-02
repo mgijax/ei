@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 24 12:58:08 2009";
+      lastWritten = "Tue Mar 31 11:30:45 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -34,6 +34,7 @@ Module: mgiOption
             radioBehavior = True;
             radioAlwaysOne = True;
             userDefinedAttributes = "sql:String(String)\nchildTemplate:String(String)=\"OptionToggle\"\ntableOption:Int(Int)\ntableOptionKey:Int(Int)\ntableForm:String\n";
+            background = Wheat;
           Group: Control
             vip_x = 80;
             vip_y = 30;

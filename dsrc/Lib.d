@@ -791,7 +791,10 @@ rules:
 	        -- Set the colors BEFORE assigning top.menuHistory...
 
 	        if (top.name = "MarkerStatusMenu" or
-		    top.name = "AlleleStatusMenu") then
+		    top.name = "AlleleStatusMenu" or
+		    top.name = "MixedMenu" or
+		    top.name = "ExtinctMenu") then
+
 		  top.background := "Wheat";
 		  option.background := "Wheat";
 		  option.child(i).background := "Wheat";
@@ -801,6 +804,12 @@ rules:
 		    top.background := "Yellow";
 		    option.background := "Yellow";
 		    option.child(i).background := "Yellow";
+		  end if;
+
+		  if (option.child(i).labelString = "Yes") then
+		    top.background := "Violet";
+		    option.background := "Violet";
+		    option.child(i).background := "Violet";
 		  end if;
 	        end if;
 

@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 10 13:54:50 2009";
+      lastWritten = "Thu Apr  2 12:59:36 2009";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1104,6 +1104,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 161;
             vip_y = 2777;
+            vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
               {
                 ObjectID = ID : mgiDataTypes;
               }
@@ -1117,7 +1118,7 @@ Shift<Key>Tab: prev-tab-group()
                     {
                       text = text : mgiDataTypes;
                       Group: Widget
-                        columns = 30;
+                        columns = 35;
                         translations = "#override
 Shift<Key>Tab: prev-tab-group()
 <Key>Tab: VerifyParentCellLine()";
@@ -1146,7 +1147,33 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             text = text;
                             Group: User
-                              defaultValue = "Not Applicable";
+                              defaultValue = " ";
+                          }
+                    }
+              }
+              {
+                Derivation = mgiObject : mgiDataTypes;
+                Group: Widget
+                  managed = True;
+                Group: Control
+                  vipComment = "";
+                    {
+                      ObjectID = ID : mgiDataTypes;
+                    }
+                    {
+                      CharText = CharText : mgiDataTypes;
+                      Group: Widget
+                        managed = False;
+                          {
+                            label = XmLabel;
+                            Group: Widget
+                              labelString = Derivation;
+                              managed = False;
+                          }
+                          {
+                            text = text : mgiDataTypes;
+                            Group: Widget
+                              columns = 40;
                           }
                     }
               }
