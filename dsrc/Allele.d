@@ -90,6 +90,8 @@ devents:
 			   reason : integer;];
 
 	-- in Allele module top...do we need this?
+	-- ths asks the user to confirm that they are modifying the
+	-- mutant, parent or strain
 	VerifyESStrain :local [];
 
 	VerifyMutantCellLine :translation [];
@@ -1127,7 +1129,7 @@ rules:
 
 	      -- do not default 'not applicable'
 	      else
-		    addAssociation := false;
+	        addAssociation := false;
               --    mutantCellLine := NOTAPPLICABLE_TEXT;
 
 	      end if;
@@ -1154,7 +1156,7 @@ rules:
 	    -- as long as isMutant has been selected...
 	    -- elsif (not isParent and isMutant) then
 	    -- elsif (isParent and isMutant) then
-	    -- use defaults (see above) (addCellLine = false, derivationKey)
+	    -- use defaults (see above) (addCellLine = false, etc.)
 
 	    end if;
 
@@ -1189,11 +1191,11 @@ rules:
 
 	    -- end if addCellLine
 
-	    -- if ADD or if no Mutant Cell Line entered on first row...
-
 	    if (not addAssociation) then
 		return;
 	    end if;
+
+	    -- if ADD or if no Mutant Cell Line entered on first row...
 
 	    if (editMode = TBL_ROW_ADD or 
 	        (editMode = TBL_ROW_EMPTY and row = 0 and not isMutant)) then
@@ -1889,6 +1891,7 @@ rules:
 	  end if;
 
 	  -- If no value entered, use default
+
 	  if (value.length = 0) then
             if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
@@ -1938,7 +1941,7 @@ rules:
 
 	  if (mgi_tblGetCell(cellLineTable, row, cellLineTable.cellLineKey) = "") then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Mutant Cell Line '" + value + "\n\n" + "Invalid Mutant Cell Line";
+            StatusReport.message := "Invalid Mutant Cell Line";
             send(StatusReport);
 	    (void) mgi_tblSetCell(table, row, cellLineTable.cellLine, "");
 	    (void) mgi_tblSetCell(table, row, cellLineTable.cellLineKey, "");
@@ -1976,6 +1979,7 @@ rules:
 	  top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
 	  -- If no value entered, use default
+
 	  if (value.length = 0) then
             if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
@@ -2020,7 +2024,7 @@ rules:
 
 	  if (top->mgiParentCellLine->ObjectID->text.value = "NULL") then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Parental Cell Line '" + value + "' is invalid.";
+            StatusReport.message := "Invalid Parent Cell Line";
             send(StatusReport);
 	  else
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
