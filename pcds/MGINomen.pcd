@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  7 13:40:54 2008";
+      lastWritten = "Thu Apr  9 09:38:06 2009";
         {
           NomenModule = Module : MGI;
           Group: Control

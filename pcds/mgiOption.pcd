@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 31 11:30:45 2009";
+      lastWritten = "Thu Apr  9 14:10:05 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -649,6 +649,20 @@ Module: mgiOption
                         labelString = "Regeneron-Other";
                       Group: User
                         defaultValue = 110;
+                    }
+                    {
+                      KOMPRegeneronProject = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "KOMP Regenron Project";
+                      Group: User
+                        defaultValue = 125;
+                    }
+                    {
+                      KOMPCSDProject = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "KOMP CSD Project";
+                      Group: User
+                        defaultValue = 126;
                     }
               }
         }
@@ -3025,6 +3039,86 @@ Module: mgiOption
                   tableForm = Marker;
                   tableOptionKey = 4;
                   tableOption = 10;
+              }
+        }
+        {
+          AlleleVectorTypeMenu = OptionMenu;
+          Group: Widget
+            subMenuId = AlleleVectorTypePulldown;
+            labelString = "Vector Type";
+          Group: Control
+            vip_x = 198;
+            vip_y = 6124;
+          Group: User
+            defaultValue = "Not Specified";
+              Popups:
+              {
+                AlleleVectorTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 64 order by term";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          AlleleCellLineTypeMenu = OptionMenu;
+          Group: Widget
+            subMenuId = AlleleCellLineTypePulldown;
+            labelString = "Cell Line Type";
+          Group: Control
+            vip_x = 189;
+            vip_y = 6185;
+          Group: User
+            defaultValue = "Not Specified";
+              Popups:
+              {
+                AlleleCellLineTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 63 order by term";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          AlleleDerivationTypeMenu = OptionMenu;
+          Group: Widget
+            subMenuId = AlleleDerivationTypePulldown;
+            labelString = "Derivation Type";
+          Group: Control
+            vip_x = 194;
+            vip_y = 6056;
+          Group: User
+            defaultValue = "Not Specified";
+              Popups:
+              {
+                AlleleDerivationTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 38 order by term";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
+              }
+        }
+        {
+          AlleleCreatorMenu = OptionMenu;
+          Group: Widget
+            subMenuId = AlleleCreatorPulldown;
+            labelString = Creator;
+          Group: Control
+            vip_x = 193;
+            vip_y = 5993;
+          Group: User
+            defaultValue = "Not Specified";
+              Popups:
+              {
+                AlleleCreatorPulldown : OptionPulldown = OptionPulldown : mgiOption;
+                Group: User
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 62 order by term";
+                    {
+                      SearchAll = SearchAll : mgiOption;
+                    }
               }
         }
 }

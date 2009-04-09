@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 10 10:09:00 2009";
+      lastWritten = "Tue Apr  7 08:30:46 2009";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1762,12 +1762,12 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          VerifyESStrain = VerifyDialog;
+          VerifyMutantParentStrain = VerifyDialog;
           Group: Widget
             userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
             dialogTitle = "Are You Sure?";
-            okCallback = "D:VerifyESStrain";
-            messageString = "You are about to modify the Mutant Cell Line or the Parent Cell Line or Strain of Origin.\nAre you sure you want to modify those values?";
+            okCallback = "D:VerifyMutantParentStrain";
+            messageString = "You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?";
           Group: Control
             vip_x = 120;
             vip_y = 1020;

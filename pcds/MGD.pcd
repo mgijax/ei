@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar 31 10:27:41 2009";
+      lastWritten = "Thu Apr  9 14:10:50 2009";
         {
           OrganismModule = Module : MGI;
           Group: Control
@@ -2172,8 +2172,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 80;
-            vip_y = 1185;
+            vip_x = 77;
+            vip_y = 1244;
               {
                 ID = ID;
               }
@@ -2418,7 +2418,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1240;
+            vip_y = 1295;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -2610,7 +2610,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1405;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -2978,7 +2978,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1460;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3603,7 +3603,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1515;
               {
                 ID = ID;
               }
@@ -3638,7 +3638,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1570;
               {
                 ID = ID;
               }
@@ -3675,7 +3675,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1680;
               {
                 ID = ID;
               }
@@ -3759,7 +3759,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1625;
               {
                 ID = ID;
               }
@@ -4036,7 +4036,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1735;
               {
                 ID = ID;
               }
@@ -4296,7 +4296,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1790;
               {
                 ID = ID;
               }
@@ -4467,7 +4467,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1845;
               {
                 ID = ID;
               }
@@ -4850,7 +4850,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1955;
               {
                 ID = ID;
               }
@@ -5010,7 +5010,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 80;
-            vip_y = 2010;
+            vip_y = 2065;
           Group: User
             homeWidget = Jnum;
               {
@@ -5121,7 +5121,7 @@ Module: MGD
             height = 800;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 2010;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -7618,7 +7618,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 1350;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -7931,10 +7931,10 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   EditPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        ESCellLine = MenuPush : mgiMenu;
+                                        MutantCellLineModule = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"ESCellLine\")";
-                                          labelString = "ES Cell Line";
+                                          activateCallback = "D:CreateMGIModule(name = \"MutantCellLine\")";
+                                          labelString = "Mutant Cell Line";
                                       }
                                 }
                           }
@@ -8975,7 +8975,7 @@ Shift<Key>Tab: prev-tab-group()
                           }
                     }
                     {
-                      VerifyESStrain = VerifyESStrain : mgiDialog;
+                      VerifyMutantParentStrain = VerifyMutantParentStrain : mgiDialog;
                     }
               }
         }
@@ -12930,12 +12930,12 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          ESCellLineModule = Module : MGI;
+          MutantCellLineModule = Module : MGI;
           Group: Control
             vip_x = 80;
             vip_y = 1130;
           Group: User
-            homeWidget = ESCellLine;
+            homeWidget = CellLine;
               {
                 MainForm = XmForm;
                     {
@@ -12980,38 +12980,85 @@ Shift<Key>Tab: prev-tab-group()
                               resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          columns = 50;
+                                      }
                                 }
                                 {
-                                  ESCellLine = CharText : mgiDataTypes;
+                                  CellLine = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
-                                    rightAttachment = attach_none;
+                                    rightAttachment = attach_form;
                                     topAttachment = attach_form;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
+                                  Group: Control
+                                    vipComment = "";
                                       {
                                         label = XmLabel;
                                         Group: Widget
-                                          labelString = "ES Cell Line";
+                                          labelString = "Mutant Cell Line";
                                       }
                                       {
                                         text = text : mgiDataTypes;
                                         Group: Widget
                                           columns = 50;
-                                        Group: User
-                                          required = True;
                                       }
+                                }
+                                {
+                                  mgiAlleleCreator = mgiAlleleCreator : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = CellLine;
+                                    topWidget = CellLine;
+                                }
+                                {
+                                  AlleleCreatorMenu = AlleleCreatorMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = CellLine;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  AlleleDerivationTypeMenu = AlleleDerivationTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleCreatorMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   Strain = Strain : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = ESCellLine;
+                                    leftWidget = CellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = ESCellLine;
+                                    topWidget = AlleleDerivationTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -13022,55 +13069,66 @@ Shift<Key>Tab: prev-tab-group()
                                         Verify = CharText;
                                             {
                                               label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                required = True;
+                                              Group: Widget
+                                                labelString = "Cell Line Strain";
                                             }
                                       }
                                 }
                                 {
-                                  Provider = CharText : mgiDataTypes;
+                                  mgiParentCellLine = mgiParentCellLine : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Strain;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topWidget = Strain;
-                                    topOffset = 5;
-                                    rightOffset = 5;
-                                      {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Provider \n(mutants only)";
-                                      }
-                                      {
-                                        text = text : mgiDataTypes;
-                                        Group: Widget
-                                          columns = 50;
-                                      }
-                                }
-                                {
-                                  IsMutantMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = IsMutantPulldown;
-                                    labelString = "Is Mutant?";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Provider;
+                                    leftWidget = CellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Provider;
+                                    topWidget = Strain;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      Popups:
                                       {
-                                        IsMutantPulldown : YesNoPulldown = OptionPulldown;
+                                        ObjectID = ID : mgiDataTypes;
                                       }
+                                      {
+                                        CellLine = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = ID;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = "Parent Cell Line\nStrain";
+                                                  }
+                                            }
+                                      }
+                                }
+                                {
+                                  mgiAlleleVector = mgiAlleleVector : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = CellLine;
+                                    topWidget = mgiParentCellLine;
+                                }
+                                {
+                                  AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiAlleleVector;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                           }
                     }
@@ -13132,6 +13190,8 @@ Shift<Key>Tab: prev-tab-group()
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 5;
                                         Group: User
                                           showMGI = False;
                                       }
@@ -13373,6 +13433,8 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     TexasGeneTrap = AccToggle : mgiOption;
@@ -13417,6 +13479,58 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                             }
+                                      }
+                                }
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: Widget
+                                          visibleItemCount = 5;
+                                      }
+                                }
+                                {
+                                  AlleleCreatorList = AlleleCreatorList : mgiLookup;
+                                  Group: Widget
+                                    managed = False;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = Creator;
+                                          targetWidget = mgiAlleleCreator;
+                                      }
+                                }
+                                {
+                                  StemCellLineList = StemCellLineList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = CellLine;
+                                          targetWidget = mgiParentCellLine;
+                                      }
+                                }
+                                {
+                                  AlleleVectorList = AlleleVectorList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = Vector;
+                                          targetWidget = mgiAlleleVector;
                                       }
                                 }
                           }
@@ -15007,7 +15121,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1900;
           Group: User
             homeWidget = Jnum;
               {
@@ -15776,6 +15890,983 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       NoteDialog = NoteDialog : mgiDialog;
+                    }
+              }
+        }
+        {
+          NonMutantCellLineModule = Module : MGI;
+          Group: Control
+            vip_x = 84;
+            vip_y = 1190;
+          Group: User
+            homeWidget = MutantCellLine;
+              {
+                MainForm = XmForm;
+                    {
+                      MainMenu = MainMenu : mgiMenu;
+                          {
+                            File = File : mgiMenu;
+                                Popups:
+                                {
+                                  FilePulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Exit = MenuPush : mgiMenu;
+                                      }
+                                }
+                          }
+                          {
+                            Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Delete = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator1 = XmSeparator;
+                                      }
+                                      {
+                                        Clear = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:Clear(clearLists = 3)";
+                                      }
+                                      {
+                                        Clear1 = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Clear2 = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        separator2 = XmSeparator;
+                                      }
+                                      {
+                                        Previous = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Next = MenuPush : mgiMenu;
+                                      }
+                                }
+                          }
+                          {
+                            Edit = Edit : mgiMenu;
+                                Popups:
+                                {
+                                  EditPulldown = MenuPulldown : mgiMenu;
+                                }
+                          }
+                          {
+                            View = View : mgiMenu;
+                                Popups:
+                                {
+                                  ViewPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Strain = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Tissue = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Cross = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        RI = MenuPush : mgiMenu;
+                                      }
+                                }
+                          }
+                          {
+                            Reports = MenuCascade;
+                          }
+                          {
+                            Utilities = Utilities : mgiMenu;
+                                Popups:
+                                {
+                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
+                                }
+                          }
+                    }
+                    {
+                      Edit = XmFrame;
+                          {
+                            EditForm = EditForm : MGI;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
+                                {
+                                  ID = ID : mgiDataTypes;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          columns = 50;
+                                      }
+                                }
+                                {
+                                  YesNoMenu = YesNoMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_form;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 10;
+                                  Group: User
+                                    defaultOption = Yes;
+                                      Popups:
+                                      {
+                                        YesNoPulldown = OptionPulldown;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                              Group: Widget
+                                                managed = False;
+                                            }
+                                            {
+                                              Yes = Yes : mgiOption;
+                                              Group: Widget
+                                                labelString = "Mutant Cell Line";
+                                            }
+                                            {
+                                              No = No : mgiOption;
+                                              Group: Widget
+                                                labelString = "Non-Mutant Cell Line";
+                                            }
+                                      }
+                                }
+                                {
+                                  CellLine = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
+                                    leftWidget = YesNoMenu;
+                                    topWidget = YesNoMenu;
+                                  Group: Control
+                                    vipComment = "";
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "      Cell Line";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 50;
+                                      }
+                                }
+                                {
+                                  mgiAlleleCreator = mgiAlleleCreator : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = CellLine;
+                                    topWidget = CellLine;
+                                      {
+                                        ObjectID = ID;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
+                                      {
+                                        Creator = CharText;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
+                                }
+                                {
+                                  Strain = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiAlleleCreator;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiAlleleCreator;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        StrainID = ID;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
+                                      {
+                                        Verify = CharText;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Cell Line Strain";
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
+                                }
+                                {
+                                  mgiParentCellLine = mgiParentCellLine : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Strain;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Strain;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
+                                      {
+                                        CellLine = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text : mgiDataTypes;
+                                            }
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = ID;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                  }
+                                            }
+                                            {
+                                              Verify = CharText;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = "Parent Cell Line\nStrain";
+                                                  }
+                                                  {
+                                                    text = text;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        Derivation = mgiObject : mgiDataTypes;
+                                            {
+                                              ObjectID = ID : mgiDataTypes;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text;
+                                                  }
+                                            }
+                                            {
+                                              CharText = CharText : mgiDataTypes;
+                                                  {
+                                                    label = XmLabel;
+                                                  }
+                                                  {
+                                                    text = text : mgiDataTypes;
+                                                  }
+                                            }
+                                      }
+                                }
+                                {
+                                  mgiAlleleVector = mgiAlleleVector : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = mgiParentCellLine;
+                                    topWidget = mgiParentCellLine;
+                                      {
+                                        ObjectID = ID;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
+                                      {
+                                        Vector = CharText;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                            }
+                                      }
+                                }
+                                {
+                                  AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiAlleleVector;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiAlleleVector;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      Popups:
+                                      {
+                                        AlleleVectorTypePulldown = OptionPulldown : mgiOption;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                      }
+                                }
+                                {
+                                  AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleVectorTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleVectorTypeMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      Popups:
+                                      {
+                                        AlleleCellLineTypePulldown = OptionPulldown : mgiOption;
+                                            {
+                                              SearchAll = SearchAll : mgiOption;
+                                            }
+                                      }
+                                }
+                                {
+                                  NumberOfCellLines = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleCellLineTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleCellLineTypeMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Number of Mutant Cell Lines\nfor this parent...";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 10;
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Control = Control : mgiControl;
+                          {
+                            ControlForm = XmForm;
+                                {
+                                  Search = ControlPush;
+                                }
+                                {
+                                  Clear = ControlPush;
+                                  Group: Widget
+                                    activateCallback = "D:Clear(clearLists = 3)";
+                                }
+                                {
+                                  Modify = ControlPush;
+                                }
+                                {
+                                  Add = ControlPush;
+                                }
+                                {
+                                  Delete = ControlPush;
+                                }
+                                {
+                                  Previous = ControlArrow;
+                                }
+                                {
+                                  Next = ControlArrow;
+                                }
+                                {
+                                  Clear1 = XmMenuBar;
+                                      {
+                                        Clear = XmCascadeButton;
+                                            Popups:
+                                            {
+                                              ClearPulldown = XmPulldownMenu;
+                                            }
+                                      }
+                                }
+                                {
+                                  RecordCount = RecordCount : mgiDataTypes;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = text;
+                                      }
+                                }
+                                {
+                                  CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = text;
+                                      }
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    managed = False;
+                                      {
+                                        label = XmLabel;
+                                      }
+                                      {
+                                        text = text;
+                                      }
+                                }
+                                {
+                                  ModificationHistory = ModificationHistory : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      Lookup = Lookup : mgiLookup;
+                          {
+                            panedWindow = XmPanedWindow;
+                                {
+                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 5;
+                                        Group: User
+                                          showMGI = False;
+                                      }
+                                      {
+                                        Add = TablePush;
+                                      }
+                                      {
+                                        Delete = TablePush;
+                                      }
+                                      {
+                                        AccSourceMenu = AccSourceMenu : mgiOption;
+                                        Group: User
+                                          defaultOption = IGTC;
+                                            Popups:
+                                            {
+                                              AccSourcePulldown = OptionPulldown;
+                                                  {
+                                                    MGI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    J = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NSequence = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RefSeq = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SWISSPROT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TrEMBL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PDB = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    WashU = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EntrezGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    VEGAGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NCBIGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EnsemblGeneModel = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TreeFam = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ATCC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MRK = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CREX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HYEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    INEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    FSEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TEXT = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TXEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    PMEX = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    E = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HGNC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OMIM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RGD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HomoloGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENCluster = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENClone = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENFANTOM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA7 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIA15K = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI23 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RPCI24 = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    UniSTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BROAD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    InterPro = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Taxon = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DFCI = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DOTS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIAGeneIndex = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JRS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    APF = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BCBC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CARD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    CMMR = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMMA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EMS = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Harwell = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    JPGA = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MMHCC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MTG = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MUGEN = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NIG = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ORNL = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RIKENBRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IMAGELibrary = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    dbESTLibrary = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    IGTC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    Lexicon = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    LexiconGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    TexasGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TIGEMGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ESCDGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GermanGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    SangerGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    AllenBrainAtlas = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPCSD = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    KOMPRegeneron = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    RegeneronOther = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    KOMPRegeneronProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                            }
+                                      }
+                                }
+                                {
+                                  QueryList = QueryList : mgiLookup;
+                                      {
+                                        Label = LookupLabel;
+                                      }
+                                      {
+                                        List = list;
+                                        Group: Widget
+                                          visibleItemCount = 5;
+                                      }
+                                }
+                                {
+                                  AlleleCreatorList = AlleleCreatorList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = Creator;
+                                          targetWidget = mgiAlleleCreator;
+                                      }
+                                }
+                                {
+                                  StemCellLineList = StemCellLineList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = CellLine;
+                                          targetWidget = mgiParentCellLine;
+                                      }
+                                }
+                                {
+                                  AlleleVectorList = AlleleVectorList : mgiLookup;
+                                      {
+                                        Label = LookupLabel : mgiLookup;
+                                      }
+                                      {
+                                        List = list : mgiDataTypes;
+                                        Group: User
+                                          targetKey = ObjectID;
+                                          targetText = Vector;
+                                          targetWidget = mgiAlleleVector;
+                                      }
+                                }
+                          }
+                    }
+                    Popups:
+                    {
+                      StatusDialog = StatusDialog : mgiDialog;
+                    }
+                    {
+                      DeleteDialog = DeleteDialog : mgiDialog;
+                    }
+                    {
+                      ReportDialog = ReportDialog : mgiDialog;
+                          {
+                            FileSelection = FileSelection;
+                                {
+                                  filler = XmSeparator;
+                                }
+                                {
+                                  Print = XmPushButton;
+                                }
+                                {
+                                  Delete = XmPushButton;
+                                }
+                          }
+                          {
+                            Lookup = XmFrame;
+                                {
+                                  panedWindow = XmPanedWindow;
+                                      {
+                                        ReportList = LookupList : mgiLookup;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                            }
+                                      }
+                                      {
+                                        PrinterList = LookupList;
+                                            {
+                                              Label = LookupLabel;
+                                            }
+                                            {
+                                              List = list;
+                                            }
+                                      }
+                                      {
+                                        PrintOrient = Choice : mgiDataTypes;
+                                            {
+                                              PrintOrientBox = XmRowColumn;
+                                                  {
+                                                    Portrait = toggle : mgiDataTypes;
+                                                  }
+                                                  {
+                                                    Landscape = toggle : mgiDataTypes;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        PrintColumn = Choice : mgiDataTypes;
+                                            {
+                                              PrintColumnBox = XmRowColumn;
+                                                  {
+                                                    OneColumn = toggle : mgiDataTypes;
+                                                  }
+                                                  {
+                                                    TwoColumn = toggle : mgiDataTypes;
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        Output = XmScrolledText;
+                                      }
+                                }
+                          }
+                    }
+                    {
+                      SearchDialog = SearchDialog : mgiDialog;
+                    }
+                    {
+                      WhichItem = WhichItem : mgiDialog;
+                          {
+                            ItemList = LookupList : mgiLookup;
+                                {
+                                  Label = LookupLabel;
+                                }
+                                {
+                                  List = list;
+                                }
+                          }
+                          {
+                            separator = XmSeparator;
+                          }
+                          {
+                            Buttons = XmRowColumn;
+                                {
+                                  Cancel = DialogPush : mgiDialog;
+                                }
+                          }
+                    }
+                    {
+                      VerifyItemAdd = VerifyItemAdd : mgiDialog;
+                    }
+                    {
+                      WorkingDialog = WorkingDialog : mgiDialog;
+                    }
+                    {
+                      NoteDialog = NoteDialog : mgiDialog;
+                          {
+                            label = XmLabel;
+                          }
+                          {
+                            Note = Notes : mgiDataTypes;
+                                {
+                                  label = XmLabel;
+                                }
+                                {
+                                  text = scrolledText;
+                                }
+                          }
+                          {
+                            separator = XmSeparator;
+                          }
+                          {
+                            Buttons = Buttons : mgiDialog;
+                                {
+                                  OK = DialogPush;
+                                }
+                                {
+                                  Cancel = DialogPush;
+                                }
+                          }
                     }
               }
         }

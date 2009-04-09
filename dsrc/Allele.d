@@ -10,7 +10,7 @@
 --
 -- History
 --
--- 02/18/2009-03/03/2009	lec
+-- 02/18/2009-?/2009	lec
 --	TR7493; gene trap less filling
 --
 -- 02/17/2009	lec
@@ -89,10 +89,7 @@ devents:
 			   row : integer;
 			   reason : integer;];
 
-	-- in Allele module top...do we need this?
-	-- ths asks the user to confirm that they are modifying the
-	-- mutant, parent or strain
-	VerifyESStrain :local [];
+	VerifyMutantParentStrain :local [];
 
 	VerifyMutantCellLine :translation [];
 	VerifyParentCellLine :translation [];
@@ -450,7 +447,7 @@ rules:
 
 	  -- set defaults based on allele type
 
-	  if (top->EditForm->mgiParentCellLine->ObjectID->text.value.length = 0) then
+	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
               if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
 		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
 		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
@@ -464,7 +461,7 @@ rules:
 	        transmissionKey := defaultTransmissionKeyNA;
 	      end if;
 	  else
-	    strainKey := top->EditForm->mgiParentCellLine->Strain->StrainID->text.value;
+	    strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
 	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
 	  end if;
 
@@ -658,13 +655,39 @@ rules:
             return;
 	  end if;
 
+	  -- end Primary Image
+
+	  -- Confirm changes to Mutant, Parent, Strain
+
+	  editMode := mgi_tblGetCell(cellLineTable, 0, cellLineTable.editMode);
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
+	      (editMode = TBL_ROW_MODIFY or
+	       top->mgiParentCellLine->ObjectID->text.modified or
+	       top->mgiParentCellLine->Strain->StrainID->text.modified)) then
+
+	    top->VerifyMutantParentStrain.doModify := false;
+            top->VerifyMutantParentStrain.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyMutantParentStrain.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyMutantParentStrain.doModify) then
+	      return;
+	    end if;
+	  end if;
+
+	  -- end Confirm changes
+
 	  (void) busy_cursor(top);
 
 	  cmd := "";
 	  set : string := "";
 
-	  if (top->EditForm->Strain->StrainID->text.modified) then
-	    set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
+	  if (top->mgiParentCellLine->Strain->StrainID->text.modified) then
+	    set := set + "_Strain_key = " + mgi_DBprkey(top->mgiParentCellLine->Strain->StrainID->text.value) + ",";
 	  end if;
 
           if (top->InheritanceModeMenu.menuHistory.modified and
@@ -939,9 +962,9 @@ rules:
 
 	    -- need to update the MRK_reloadLabel table for each marker that was updated
 
--- 	    if (markerKey != "" and markerKey != "NULL") then
-	      -- cmd := cmd + "exec MRK_reloadLabel " + markerKey + "\n";
--- 	    end if;
+ 	    if (markerKey != "" and markerKey != "NULL") then
+	      cmd := cmd + "exec MRK_reloadLabel " + markerKey + "\n";
+ 	    end if;
 
 	    row := row + 1;
 	  end while;
@@ -1309,7 +1332,6 @@ rules:
 	  from_notes      : boolean := false;
 	  from_cellline  : boolean := false;
 	  from_sequence   : boolean := false;
-	  from_strain     : boolean := false;
 
 	  value : string;
 
@@ -1492,19 +1514,18 @@ rules:
 
 	  -- Parent Cell Line and Strain
 
-	  if (top->EditForm->mgiParentCellLine->ObjectID->text.value.length > 0) then
-            where := where + "\nand c.parentCellLine_key = " + top->EditForm->mgiParentCellLine->ObjectID->text.value;
+	  if (top->mgiParentCellLine->ObjectID->text.value.length > 0) then
+            where := where + "\nand c.parentCellLine_key = " + top->mgiParentCellLine->ObjectID->text.value;
 	    from_cellline := true;
-	  elsif (top->EditForm->mgiParentCellLine->CellLine->text.value.length > 0) then
-            where := where + "\nand c.parentCellLine like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
+	  elsif (top->mgiParentCellLine->CellLine->text.value.length > 0) then
+            where := where + "\nand c.parentCellLine like " + mgi_DBprstr(top->mgiParentCellLine->CellLine->text.value);
 	    from_cellline := true;
 	  end if;
 
-	  if (top->EditForm->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
-            where := where + "\nand a._Strain_key = " + top->EditForm->mgiParentCellLine->Strain->StrainID->text.value;;
-	  elsif (top->EditForm->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
-            where := where + "\nand s.strain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Strain->Verify->text.value);
-	    from_strain := true;
+	  if (top->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
+            where := where + "\nand a._Strain_key = " + top->mgiParentCellLine->Strain->StrainID->text.value;;
+	  elsif (top->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
+            where := where + "\nand a.cellLineStrain like " + mgi_DBprstr(top->mgiParentCellLine->Strain->Verify->text.value);
 	  end if;
 
 	  -- get the additional tables using the "from" values
@@ -1524,11 +1545,6 @@ rules:
 	  if (from_mutation) then
 	    from := from + "," + mgi_DBtable(ALL_MUTATION_VIEW) + " m";
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = m." + mgi_DBkey(ALL_ALLELE);
-	  end if;
-
-	  if (from_strain) then
-	    from := from + "," + mgi_DBtable(STRAIN) + " s";
-	    where := where + "\nand a." + mgi_DBkey(STRAIN) + " = s." + mgi_DBkey(STRAIN);
 	  end if;
 
 	  if (from_cellline) then
@@ -1851,14 +1867,14 @@ rules:
 	end does;
 
 --
--- VerifyESStrain
+-- VerifyMutantParentStrain
 --
---	Called when user chooses YES from VerifyESStrain dialog
+--	Called when user chooses YES from VerifyMutantParentStrain dialog
 --
 
-	VerifyESStrain does
-	  top->VerifyESStrain.doModify := true;
-	  top->VerifyESStrain.managed := false;
+	VerifyMutantParentStrain does
+	  top->VerifyMutantParentStrain.doModify := true;
+	  top->VerifyMutantParentStrain.managed := false;
 	end does;
 
 --
@@ -1926,13 +1942,13 @@ rules:
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 2));
-	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 12));
-	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 13);
-	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 14);
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 14));
+	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
+	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
 	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 4);
 	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 11);
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 5);
-	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 15);
+	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 17);
             end while;
           end while;
 	  (void) dbclose(dbproc);
