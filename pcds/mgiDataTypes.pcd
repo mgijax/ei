@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr  9 08:43:28 2009";
+      lastWritten = "Tue Apr 14 09:19:37 2009";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1183,8 +1183,6 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 162;
             vip_y = 2711;
-          Group: User
-            tableID = 115;
               {
                 ObjectID = ID;
               }
@@ -1200,9 +1198,6 @@ Shift<Key>Tab: prev-tab-group()
                       Group: Widget
                         columns = 50;
                         maxLength = 50;
-                        translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyAllele()";
                     }
               }
         }
@@ -1211,8 +1206,6 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 165;
             vip_y = 2650;
-          Group: User
-            tableID = 115;
               {
                 ObjectID = ID;
               }
@@ -1228,9 +1221,6 @@ Shift<Key>Tab: prev-tab-group()
                       Group: Widget
                         columns = 50;
                         maxLength = 50;
-                        translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyAllele()";
                     }
               }
         }
@@ -1239,8 +1229,6 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vip_x = 171;
             vip_y = 2584;
-          Group: User
-            tableID = 115;
               {
                 ObjectID = ID;
               }
@@ -1256,9 +1244,6 @@ Shift<Key>Tab: prev-tab-group()
                       Group: Widget
                         columns = 50;
                         maxLength = 50;
-                        translations = "#override
-Shift<Key>Tab: prev-tab-group()
-<Key>Tab: VerifyAllele()";
                     }
               }
         }

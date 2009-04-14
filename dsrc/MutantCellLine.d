@@ -58,8 +58,6 @@ locals:
                                         -- Initialized in Select[] and Add[] events
 	clearList : integer := 3;
 
-        cellLineTypeKey : string := "3982968";
-
 rules:
 
 --
@@ -108,6 +106,9 @@ rules:
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->EditForm->AlleleDerivationTypeMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->EditForm->AlleleCellLineTypeMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->EditForm->AlleleVectorTypeMenu;
@@ -164,6 +165,7 @@ rules:
 --
 
 	Add does
+	  cellLineTypeKey : string;
 	  strainKey : string;
 	  derivationKey : string;
 
@@ -179,6 +181,7 @@ rules:
  
 	  -- Insert master record
 
+	  cellLineTypeKey := top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue;
 	  strainKey := top->EditForm->Strain->StrainID->text.value;
 	  derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
 
@@ -274,6 +277,11 @@ rules:
             set := set + "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
           end if;
 
+          if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.modified and
+              top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            set := set + "_CellLine_Type_key = "  + top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
+          end if;
+
 	  if (set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE, currentRecordKey, set);
 	  end if;
@@ -316,19 +324,11 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
 
-	  where := where + "\nand a.isMutant = 1";
+	  where := where + "\nand a.isMutant = 0";
 
           if (top->EditForm->CellLine->text.value.length > 0) then
 	    where := where + "\nand a.cellline like " + mgi_DBprstr(top->EditForm->CellLine->text.value);
 	  end if;
-
-          if (top->EditForm->AlleleCreatorMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand a._Creator_key = " + top->EditForm->AlleleCreatorMenu.menuHistory.searchValue;
-          end if;
-
-          if (top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand a._DerivationType_key = " + top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
-          end if;
 
           if (top->EditForm->Strain->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->EditForm->Strain->StrainID->text.value;;
@@ -353,6 +353,18 @@ rules:
 	  elsif (top->EditForm->mgiAlleleVector->Vector->text.value.length > 0) then
 	    where := where + "\nand a.vector like " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
 	  end if;
+
+          if (top->EditForm->AlleleCreatorMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._Creator_key = " + top->EditForm->AlleleCreatorMenu.menuHistory.searchValue;
+          end if;
+
+          if (top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._DerivationType_key = " + top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
+          end if;
+
+          if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._CellLine_Type_key = " + top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue;
+          end if;
 
           if (top->EditForm->AlleleVectorTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._VectorType_key = " + top->EditForm->AlleleVectorTypeMenu.menuHistory.searchValue;
@@ -443,6 +455,10 @@ rules:
 
               SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 18);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->EditForm->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
 
               SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
