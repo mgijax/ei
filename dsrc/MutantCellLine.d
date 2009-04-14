@@ -58,7 +58,6 @@ locals:
                                         -- Initialized in Select[] and Add[] events
 	clearList : integer := 3;
 
-	isMutant : string := "1";
         cellLineTypeKey : string := "3982968";
 
 rules:
@@ -267,19 +266,13 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
-	  set := set + "isMutant = " + isMutant + ",";
-
-	  if (top->CellLine->text.modified) then
-	    set := set + "cellLine = " + mgi_DBprstr(top->CellLine->text.value) + ",";
+	  if (top->EditForm->CellLine->text.modified) then
+	    set := set + "cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value) + ",";
 	  end if;
 
           if (top->EditForm->Strain->StrainID->text.modified) then
             set := set + "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
           end if;
-
-	  if (top->EditForm->AlleleCreator->text.modified) then
-	    set := set + "provider = " + mgi_DBprstr(top->EditForm->AlleleCreator->text.value) + ",";
-	  end if;
 
 	  if (set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE, currentRecordKey, set);
@@ -307,8 +300,6 @@ rules:
 --
 
 	PrepareSearch does
-	  value : string;
-
 	  from := " from " + mgi_DBtable(ALL_CELLLINE_VIEW) + " a";
 	  where := "";
 
@@ -325,7 +316,7 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
 
-	  where := where + "\nand a.isMutant = " + isMutant;
+	  where := where + "\nand a.isMutant = 1";
 
           if (top->EditForm->CellLine->text.value.length > 0) then
 	    where := where + "\nand a.cellline like " + mgi_DBprstr(top->EditForm->CellLine->text.value);
@@ -336,7 +327,7 @@ rules:
           end if;
 
           if (top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand a._Derivation_key = " + top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
+            where := where + "\nand a._DerivationType_key = " + top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
           end if;
 
           if (top->EditForm->Strain->StrainID->text.value.length > 0) then
@@ -351,10 +342,10 @@ rules:
 	    where := where + "\nand a.parentCellLine like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value);
 	  end if;
 
-          if (top->EditForm->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
-            where := where + "\nand a.parentCellLineStrain_key = " + top->EditForm->mgiParentCellLine->Strain->StrainID->text.value;;
-          elsif (top->EditForm->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
-            where := where + "\nand a.parentCellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Strain->Verify->text.value);
+          if (top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value.length > 0) then
+            where := where + "\nand a.parentCellLineStrain_key = " + top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value;;
+          elsif (top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value.length > 0) then
+            where := where + "\nand a.parentCellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value);
           end if;
 
 	  if (top->EditForm->mgiAlleleVector->ObjectID->text.value.length > 0) then
@@ -435,8 +426,8 @@ rules:
 
               top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
               top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
-              top->EditForm->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 23);
-              top->EditForm->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 24);
+              top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 23);
+              top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 24);
 
 	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 19);
 	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 20);
@@ -493,10 +484,12 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
+	  cmd := "select distinct _CellLine_key, cellLine, " +
+		"_Strain_key, cellLineStrain, " +
+		"_Vector_key, vector, " +
+		"_Creator_key, _DerivationType_key, _VectorType_key from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
-		" = " + top->mgiParentCellLine->ObjectID->text.value;
+		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + " = " + top->mgiParentCellLine->ObjectID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -504,14 +497,31 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		 top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
-		 top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
-	         top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-	         top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+
+	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
+	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 4);
+
+	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 5);
+	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 6);
+
+              SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
+              SetOption.value := mgi_getstr(dbproc, 7);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 8);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 9);
+              send(SetOption, 0);
+
 	    end while;
 	  end while;
-
 	  (void) dbclose(dbproc);
+
 	end does;
 
 --
@@ -528,21 +538,28 @@ rules:
 
 	  -- If a wildcard '%' appears in the field,,
 
-	  if (strstr(value, "%") != nil) then
+	  if (strstr(value, "%") != nil or value.length = 0) then
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;
 	  end if;
 
 	  top->mgiParentCellLine->ObjectID->text.value := "NULL";
 	  top->mgiParentCellLine->CellLine->text.value := "";
-	  top->mgiParentCellLine->Strain->StrainID->text.value := "";
-	  top->mgiParentCellLine->Strain->Verify->text.value := "";
+	  top->mgiParentCellLine->ParentStrain->StrainID->text.value := "";
+	  top->mgiParentCellLine->ParentStrain->Verify->text.value := "";
+	  top->EditForm->mgiAlleleVector->ObjectID->text.value := "";
+	  top->EditForm->mgiAlleleVector->Vector->text.value := "";
+	  ClearOption.source_widget := top->EditForm->AlleleCreatorMenu;
+	  send(ClearOption, 0);
 
 	  (void) busy_cursor(top);
 
 	  -- Search for value in the database
 
-	  select : string := "select  _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
+	  select : string := "select distinct _CellLine_key, cellLine, " +
+		"_Strain_key, cellLineStrain, " +
+		"_Vector_key, vector, " +
+		"_Creator_key, _DerivationType_key, _VectorType_key from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
 
@@ -551,10 +568,27 @@ rules:
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
-	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
+	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 4);
+
+	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 5);
+	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 6);
+
+              SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
+              SetOption.value := mgi_getstr(dbproc, 7);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 8);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 9);
+              send(SetOption, 0);
+
             end while;
           end while;
 	  (void) dbclose(dbproc);
