@@ -165,9 +165,6 @@ rules:
 --
 
 	Add does
-	  cellLineTypeKey : string;
-	  strainKey : string;
-	  derivationKey : string;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -181,16 +178,12 @@ rules:
  
 	  -- Insert master record
 
-	  cellLineTypeKey := top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue;
-	  strainKey := top->EditForm->Strain->StrainID->text.value;
-	  derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
-
           cmd := mgi_setDBkey(ALL_CELLLINE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE, KEYNAME) +
-	         mgi_DBprstr(top->CellLine->text.value) + "," +
-                 cellLineTypeKey + "," +
-                 strainKey + "," +
-                 derivationKey + ",1" +
+	         mgi_DBprstr(top->EditForm->CellLine->text.value) + "," +
+                 top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValu + "," +
+                 top->EditForm->Strain->StrainID->text.value + "," +
+                 top->mgiParentCellLine->Derivation->ObjectID->text.value + ",1," +
                  global_loginKey + "," + global_loginKey + ")\n";
 
 	  --  Process Accession numbers
@@ -273,13 +266,13 @@ rules:
 	    set := set + "cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value) + ",";
 	  end if;
 
-          if (top->EditForm->Strain->StrainID->text.modified) then
-            set := set + "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
-          end if;
-
           if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.modified and
               top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
             set := set + "_CellLine_Type_key = "  + top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
+          end if;
+
+          if (top->EditForm->Strain->StrainID->text.modified) then
+            set := set + "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
           end if;
 
 	  if (set.length > 0) then
@@ -324,7 +317,7 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
 
-	  where := where + "\nand a.isMutant = 0";
+	  where := where + "\nand a.isMutant = 1";
 
           if (top->EditForm->CellLine->text.value.length > 0) then
 	    where := where + "\nand a.cellline like " + mgi_DBprstr(top->EditForm->CellLine->text.value);

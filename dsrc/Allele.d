@@ -485,8 +485,11 @@ rules:
 
 	  send(ModifyMarkerAssoc, 0);
 	  send(ModifyMolecularMutation, 0);
-	  send(ModifyMutantCellLine, 0);
 	  send(ModifyImagePaneAssociation, 0);
+
+	  if (isWildType = 0) then
+	    send(ModifyMutantCellLine, 0);
+          end if;
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -740,9 +743,12 @@ rules:
 
 	  send(ModifyMarkerAssoc, 0);
 	  send(ModifyMolecularMutation, 0);
-	  send(ModifyMutantCellLine, 0);
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
+
+	  if (isWildType = 0) then
+	    send(ModifyMutantCellLine, 0);
+	  end if;
 
 	  if (not top.allowEdit) then
 	    (void) reset_cursor(top);
@@ -1900,30 +1906,23 @@ rules:
 	    return;
 	  end if;
 
-	  -- If a wildcard '%' appears in the field,,
+	  -- If a wildcard '%' appears in the field, return
 
 	  if (strstr(value, "%") != nil) then
 	    return;
 	  end if;
 
-	  -- If no value entered, use default
+	  -- If no value entered, return
 
 	  if (value.length = 0) then
-            if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
-	      value := "Not Specified";
+	    return;
+	  end if;
 
-	    -- do not default 'not applicable'
-	    --else
-	    --  value := "Not Applicable";
+	  -- If 'Not Specified' or 'Not Applicable', return
 
-	    else
-	      return;
-	    end if;
+	  if (value.lower_case = "not specified" or 
+	      value.lower_case = "not applicable") then
+	    return;
 	  end if;
 
 	  (void) busy_cursor(top);
@@ -1946,7 +1945,7 @@ rules:
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
 	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 4);
-	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 11);
+	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 12);
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 5);
 	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 17);
             end while;
