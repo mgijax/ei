@@ -1799,6 +1799,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case ACC_ACTUALDB:
     case ALL_ALLELE_CELLLINE:
     case ALL_ALLELE_MUTATION:
+    case ALL_CELLLINE:
     case BIB_BOOKS:
     case BIB_NOTES:
     case BIB_DATASET_ASSOC:
