@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr 14 10:19:09 2009";
+      lastWritten = "Thu Apr 16 11:00:50 2009";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -697,8 +697,8 @@ Module: mgiLookup
         {
           AlleleVectorList = LookupList;
           Group: Control
-            vip_x = 180;
-            vip_y = 1098;
+            vip_x = 190;
+            vip_y = 1083;
           Group: User
             cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 72 order by term";
               {
@@ -711,27 +711,27 @@ Module: mgiLookup
               {
                 List = list : mgiDataTypes;
                 Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayStemCellLine";
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
         }
         {
-          AlleleCreatorList = LookupList;
+          AlleleDerivationList = LookupList;
           Group: Control
-            vip_x = 188;
-            vip_y = 1146;
+            vip_x = 189;
+            vip_y = 1134;
           Group: User
-            cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 62 order by term";
+            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like \"Not Specified%\"\nand name not like \"Not Applicable%\"\norder by name";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "0 Creators";
+                  labelString = "0 Derivations";
                 Group: User
-                  defaultLabel = Creators;
+                  defaultLabel = Derivations;
               }
               {
                 List = list : mgiDataTypes;
                 Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayStemCellLine";
+                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayDerivation";
               }
         }
 }

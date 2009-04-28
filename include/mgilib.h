@@ -163,6 +163,7 @@ extern char *global_version;
 #define ALL_MARKER_ASSOC	238
 #define ALL_MARKER_ASSOC_VIEW	239
 #define SEQ_ALLELE_ASSOC_VIEW	240
+#define ALL_CELLLINE_DERIVATION_VIEW	241
 
 /* MGI Controlled Vocabulary Tables */
 

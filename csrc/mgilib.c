@@ -546,6 +546,9 @@ char *mgi_DBkey(int table)
     case ALL_CELLLINE_VIEW:
             strcpy(buf, "_CellLine_key");
 	    break;
+    case ALL_CELLLINE_DERIVATION_VIEW:
+            strcpy(buf, "_Derivation_key");
+	    break;
     case ALL_ALLELE_CELLLINE:
     case ALL_MARKER_ASSOC:
             strcpy(buf, "_Assoc_key");
@@ -1129,6 +1132,9 @@ char *mgi_DBtable(int table)
 	    break;
     case ALL_CELLLINE_VIEW:
             strcpy(buf, "ALL_CellLine_View");
+	    break;
+    case ALL_CELLLINE_DERIVATION_VIEW:
+            strcpy(buf, "ALL_CellLine_Derivation_View");
 	    break;
     case ALL_MUTATION_VIEW:
             strcpy(buf, "ALL_Allele_Mutation_View");
@@ -1904,7 +1910,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    break;
     case ALL_CELLLINE:
     case ALL_CELLLINE_VIEW:
-            sprintf(buf, "insert %s (%s, %s, _CellLineType_key, _Strain_key, _Derivation_key, isMutant, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, %s, _CellLine_Type_key, _Strain_key, _Derivation_key, isMutant, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case BIB_REFS:

@@ -30,7 +30,6 @@ devents:
 	Add :local [];
 	BuildDynamicComponents :local [];
 	Delete :local [];
-	DisplayStemCellLine :translation [];
 	Exit :local [];
 	Init :local [];
 
@@ -41,6 +40,8 @@ devents:
 	Search :local [];
 	Select :local [item_position : integer;];
 
+	DisplayStemCellLine :translation [];
+	DisplayDerivation :translation [];
 	VerifyParentCellLine :translation [];
 
 locals:
@@ -102,13 +103,13 @@ rules:
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
 
+	  InitOptionMenu.option := top->EditForm->AlleleCellLineTypeMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->EditForm->AlleleCreatorMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->EditForm->AlleleDerivationTypeMenu;
-	  send(InitOptionMenu, 0);
-
-	  InitOptionMenu.option := top->EditForm->AlleleCellLineTypeMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->EditForm->AlleleVectorTypeMenu;
@@ -116,6 +117,9 @@ rules:
 
           LoadList.list := top->StemCellLineList;
           send(LoadList, 0);
+
+          LoadList.list := top->AlleleDerivationList;
+	  send(LoadList, 0);
 
           LoadList.list := top->AlleleVectorList;
 	  send(LoadList, 0);
@@ -181,7 +185,7 @@ rules:
           cmd := mgi_setDBkey(ALL_CELLLINE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE, KEYNAME) +
 	         mgi_DBprstr(top->EditForm->CellLine->text.value) + "," +
-                 top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValu + "," +
+                 top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + "," +
                  top->EditForm->Strain->StrainID->text.value + "," +
                  top->mgiParentCellLine->Derivation->ObjectID->text.value + ",1," +
                  global_loginKey + "," + global_loginKey + ")\n";
@@ -275,6 +279,10 @@ rules:
             set := set + "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
           end if;
 
+          if (top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.modified) then
+            set := set + "_Derivation_key = " + top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value;
+          end if;
+
 	  if (set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE, currentRecordKey, set);
 	  end if;
@@ -341,11 +349,21 @@ rules:
             where := where + "\nand a.parentCellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value);
           end if;
 
+	  if (top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value.length > 0) then
+	    where := where + "\nand a._Derivation_key = " + top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value;
+	  elsif (top->EditForm->mgiParentCellLine->Derivation->CharText->text.value.length > 0) then
+	    where := where + "\nand a.derivationName like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Derivation->CharText->text.value);
+	  end if;
+
 	  if (top->EditForm->mgiAlleleVector->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a._Vector_key = " + top->EditForm->mgiAlleleVector->ObjectID->text.value;
 	  elsif (top->EditForm->mgiAlleleVector->Vector->text.value.length > 0) then
 	    where := where + "\nand a.vector like " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
 	  end if;
+
+          if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._CellLine_Type_key = " + top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue;
+          end if;
 
           if (top->EditForm->AlleleCreatorMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._Creator_key = " + top->EditForm->AlleleCreatorMenu.menuHistory.searchValue;
@@ -353,10 +371,6 @@ rules:
 
           if (top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._DerivationType_key = " + top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
-          end if;
-
-          if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand a._CellLine_Type_key = " + top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue;
           end if;
 
           if (top->EditForm->AlleleVectorTypeMenu.menuHistory.searchValue != "%") then
@@ -433,6 +447,8 @@ rules:
               top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
               top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 23);
               top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 24);
+	      top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 5);
+	      top->EditForm->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 17);
 
 	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 19);
 	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 20);
@@ -442,16 +458,16 @@ rules:
               (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 26));
               (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byDate, mgi_getstr(dbproc, 10));
 
+              SetOption.source_widget := top->EditForm->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
+
               SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
               SetOption.value := mgi_getstr(dbproc, 13);
               send(SetOption, 0);
 
               SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 18);
-              send(SetOption, 0);
-
-              SetOption.source_widget := top->EditForm->AlleleCellLineTypeMenu;
-              SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
 
               SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
@@ -512,19 +528,72 @@ rules:
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 4);
 
-	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 5);
-	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 6);
+	      top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
+	      top->mgiParentCellLine->Derivation->CharText->text.value := "";
+	      top->EditForm->mgiAlleleVector->ObjectID->text.value := "";
+	      top->EditForm->mgiAlleleVector->Vector->text.value := "";
+
+	      ClearOption.source_widget := top->EditForm->AlleleCreatorMenu;
+	      send(ClearOption, 0);
+	      ClearOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+	      send(ClearOption, 0);
+	      ClearOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
+	      send(ClearOption, 0);
+	    end while;
+	  end while;
+	  (void) dbclose(dbproc);
+
+	end does;
+
+--
+-- DisplayDerivation
+--
+-- Activated from:  widget top->StemCellLineList->List.singleSelectionCallback
+--
+-- Display Derivation information
+--
+
+	DisplayDerivation does
+
+	  if (top->mgiParentCellLine->Derivation->ObjectID->text.value.length = 0) then
+	      return;
+	  end if;
+
+	  cmd := "select _Derivation_key, name, " +
+	        "parentCellLine_key, parentCellLine, " +
+		"parentCellLineStrain_key, parentCellLineStrain, " +
+		"_Vector_key, vector, " +
+		"_Creator_key, _DerivationType_key, _VectorType_key " +
+		"from " + mgi_DBtable(ALL_CELLLINE_DERIVATION_VIEW) +
+		" where _Derivation_key = " + top->mgiParentCellLine->Derivation->ObjectID->text.value;
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+
+	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+
+	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 3);
+	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 4);
+	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 5);
+	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 6);
+
+	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 7);
+	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 8);
 
               SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
-              SetOption.value := mgi_getstr(dbproc, 7);
+              SetOption.value := mgi_getstr(dbproc, 9);
               send(SetOption, 0);
 
               SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
-              SetOption.value := mgi_getstr(dbproc, 8);
+              SetOption.value := mgi_getstr(dbproc, 10);
               send(SetOption, 0);
 
               SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
-              SetOption.value := mgi_getstr(dbproc, 9);
+              SetOption.value := mgi_getstr(dbproc, 11);
               send(SetOption, 0);
 
 	    end while;
@@ -552,13 +621,19 @@ rules:
 	    return;
 	  end if;
 
-	  top->mgiParentCellLine->ObjectID->text.value := "NULL";
+	  top->mgiParentCellLine->ObjectID->text.value := "";
 	  top->mgiParentCellLine->CellLine->text.value := "";
 	  top->mgiParentCellLine->ParentStrain->StrainID->text.value := "";
 	  top->mgiParentCellLine->ParentStrain->Verify->text.value := "";
+	  top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
+	  top->mgiParentCellLine->Derivation->CharText->text.value := "";
 	  top->EditForm->mgiAlleleVector->ObjectID->text.value := "";
 	  top->EditForm->mgiAlleleVector->Vector->text.value := "";
 	  ClearOption.source_widget := top->EditForm->AlleleCreatorMenu;
+	  send(ClearOption, 0);
+	  ClearOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+	  send(ClearOption, 0);
+	  ClearOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
 	  send(ClearOption, 0);
 
 	  (void) busy_cursor(top);
