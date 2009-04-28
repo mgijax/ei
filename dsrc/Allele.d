@@ -1208,10 +1208,10 @@ rules:
 	      end if;
 
 	      cmd := cmd + mgi_DBinsert(ALL_CELLLINE, cellLineKey) +
-		     mutantCellLine + "," +
+		     mgi_DBprstr(mutantCellLine) + "," +
 		     cellLineTypeKey + "," +
 		     strainKey + "," +
-		     derivationKey + ",1" +
+		     derivationKey + ",1," +
 		     global_loginKey + "," + global_loginKey + ")\n";
 
 	      mutantCellLineKey := cellLineKey;

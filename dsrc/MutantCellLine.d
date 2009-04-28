@@ -40,7 +40,7 @@ devents:
 	Search :local [];
 	Select :local [item_position : integer;];
 
-	DisplayStemCellLine :translation [];
+	DisplayStemCellLine2 :translation [];
 	DisplayDerivation :translation [];
 	VerifyParentCellLine :translation [];
 
@@ -495,7 +495,7 @@ rules:
 	end does;
 
 --
--- DisplayStemCellLine
+-- DisplayStemCellLine2
 --
 -- Activated from:  widget top->StemCellLineList->List.singleSelectionCallback
 --
@@ -503,7 +503,7 @@ rules:
 -- This is the Parent Cell Line itself (where isMutnat = 0)
 --
 
-	DisplayStemCellLine does
+	DisplayStemCellLine2 does
 
 	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      return;

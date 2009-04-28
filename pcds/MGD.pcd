@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 16 14:19:49 2009";
+      lastWritten = "Tue Apr 28 10:45:42 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13491,11 +13491,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     LexiconGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     BayGenomicGeneTrap = AccToggle : mgiOption;
@@ -13504,35 +13504,49 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TexasGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     TIGEMGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     ModellingHumanGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     ESCDGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     ExchangeableClonesGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     GermanGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     SangerGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     HutchinsonGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMPCSD = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
                                                   }
                                                   {
                                                     KOMPRegeneron = AccToggle : mgiOption;
@@ -13541,6 +13555,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RegeneronOther = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPRegeneronProject = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -13565,6 +13582,8 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         List = list : mgiDataTypes;
+                                        Group: Widget
+                                          singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayStemCellLine2";
                                         Group: User
                                           targetKey = ObjectID;
                                           targetText = CellLine;
