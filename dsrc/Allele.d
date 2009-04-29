@@ -136,6 +136,8 @@ locals:
 
 	--defaultMutantCellLineKeyNA : string := "-4";
 	defaultParentCellLineKeyNS : string := "-1";
+	defaultCreatorKeyNS : string := "3982966";
+	defaultVectorKeyNS : string := "4311225";
 
 rules:
 
@@ -1052,9 +1054,9 @@ rules:
 	  mutantCellLineKey : string;
 
 	  parentKey : string;
+	  strainKey : string;
 	  derivationKey : string;
 	  cellLineTypeKey : string;
-	  strainKey : string;
 
 	  cellAssocKey : string := "maxCellAssoc";
 	  cellAssocDefined : boolean := false;
@@ -1070,11 +1072,13 @@ rules:
  
 	  -- set the allele type and type key
 	  -- set the parent
+	  -- set the strain
 	  -- set the derivation
 
 	  alleleType := top->AlleleTypeMenu.menuHistory.labelString;
 	  alleleTypeKey := top->AlleleTypeMenu.menuHistory.searchValue;
 	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
+	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
 	  derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
 
 	  -- set the isParent
@@ -1116,15 +1120,23 @@ rules:
 		  alleleType = "Targeted (other)") then
 
 		--
-		-- select the derivation key that is associated
-	        -- with the specified allele type
-		-- and parent/strain = Not Specified
+		-- select the derivation key that is associated with the specified 
+		--   allele type
+		--   creator = Not Specified
+		--   vector = Not Specified
+		--   parent cell line = Not Specified
+		--   strain = Not Specified
 		--
 
-	        derivationKey := mgi_sql1("select _Derivation_key " +
-			"from ALL_CellLine_Derivation " +
-			"where _ParentCellLine_key = " + defaultParentCellLineKeyNS +
-			" and _DerivationType_key = " + alleleTypeKey);
+	        derivationKey := mgi_sql1("select d._Derivation_key " +
+			"from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			"where d._DerivationType_key = " + alleleTypeKey +
+			" and d._Creator_key = " + defaultCreatorKeyNS +
+			" and d._Vector_key = " + defaultVectorKeyNS +
+			" and d._ParentCellLine_key = " + defaultParentCellLineKeyNS +
+			" and d._ParentCellLine_key = c._CellLine_key " +
+			" and c._Strain_key = " + defaultStrainKeyNS +
+			" and c.isMutant = 0 ");
 
 	        if (derivationKey.length = 0) then
                   StatusReport.source_widget := top.root;
@@ -1164,14 +1176,19 @@ rules:
 	      end if;
 
 	      --
-	      -- select the derivation key that is associated
-	      -- with the specified parent and allele type
+	      -- select the derivation key that is associated with the specified 
+	      --   allele type
+	      --   parent cell line
+	      --   strain
 	      --
 
-	      derivationKey := mgi_sql1("select _Derivation_key " +
-			"from ALL_CellLine_Derivation " +
-			"where _ParentCellLine_key = " + parentKey + 
-			" and _DerivationType_key = " + alleleTypeKey);
+	      derivationKey := mgi_sql1("select d._Derivation_key " +
+			"from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			"where d._DerivationType_key = " + alleleTypeKey +
+			" and d._ParentCellLine_key = " + parentKey +
+			" and d._ParentCellLine_key = c._CellLine_key " +
+			" and c._Strain_key = " + strainKey +
+			" and c.isMutant = 0 ");
 
 	      if (derivationKey.length = 0) then
                 StatusReport.source_widget := top.root;
@@ -1214,7 +1231,7 @@ rules:
 		     derivationKey + ",1," +
 		     global_loginKey + "," + global_loginKey + ")\n";
 
-	      mutantCellLineKey := cellLineKey;
+	      mutantCellLineKey := "@" + cellLineKey;
 
 	    end if;
 

@@ -1800,6 +1800,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case ALL_ALLELE_CELLLINE:
     case ALL_ALLELE_MUTATION:
     case ALL_CELLLINE:
+    case ALL_MARKER_ASSOC:
     case BIB_BOOKS:
     case BIB_NOTES:
     case BIB_DATASET_ASSOC:
