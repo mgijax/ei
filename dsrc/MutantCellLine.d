@@ -148,7 +148,7 @@ rules:
 
           -- Set Row Count
           SetRowCount.source_widget := top;
-          SetRowCount.tableID := ALL_CELLLINE;
+          SetRowCount.tableID := ALL_CELLLINE_NONMUTANT;
           send(SetRowCount, 0);
  
 	  -- Clear the form
@@ -182,8 +182,8 @@ rules:
  
 	  -- Insert master record
 
-          cmd := mgi_setDBkey(ALL_CELLLINE, NEWKEY, KEYNAME) +
-                 mgi_DBinsert(ALL_CELLLINE, KEYNAME) +
+          cmd := mgi_setDBkey(ALL_CELLLINE_NONMUTANT, NEWKEY, KEYNAME) +
+                 mgi_DBinsert(ALL_CELLLINE_NONMUTANT, KEYNAME) +
 	         mgi_DBprstr(top->EditForm->CellLine->text.value) + "," +
                  top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + "," +
                  top->EditForm->Strain->StrainID->text.value + "," +
@@ -194,13 +194,13 @@ rules:
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := ALL_CELLLINE;
+          ProcessAcc.tableID := ALL_CELLLINE_NONMUTANT;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
 	  -- Execute the add
 
-	  AddSQL.tableID := ALL_CELLLINE;
+	  AddSQL.tableID := ALL_CELLLINE_NONMUTANT;
           AddSQL.cmd := cmd;
           AddSQL.list := top->QueryList;
           AddSQL.item := top->CellLine->text.value;
@@ -231,7 +231,7 @@ rules:
 	Delete does
 	  (void) busy_cursor(top);
 
-	  DeleteSQL.tableID := ALL_CELLLINE;
+	  DeleteSQL.tableID := ALL_CELLLINE_NONMUTANT;
 	  DeleteSQL.key := currentRecordKey;
 	  DeleteSQL.list := top->QueryList;
 	  send(DeleteSQL, 0);
@@ -284,12 +284,12 @@ rules:
           end if;
 
 	  if (set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE, currentRecordKey, set);
+	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE_NONMUTANT, currentRecordKey, set);
 	  end if;
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := ALL_CELLLINE;
+          ProcessAcc.tableID := ALL_CELLLINE_NONMUTANT;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
@@ -315,8 +315,8 @@ rules:
 	  -- Cannot search both Accession tables at once
 
           SearchAcc.table := accTable;
-          SearchAcc.objectKey := "a." + mgi_DBkey(ALL_CELLLINE);
-	  SearchAcc.tableID := ALL_CELLLINE;
+          SearchAcc.objectKey := "a." + mgi_DBkey(ALL_CELLLINE_NONMUTANT);
+	  SearchAcc.tableID := ALL_CELLLINE_NONMUTANT;
           send(SearchAcc, 0);
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
@@ -481,7 +481,7 @@ rules:
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
-	  LoadAcc.tableID := ALL_CELLLINE;
+	  LoadAcc.tableID := ALL_CELLLINE_NONMUTANT;
 	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  

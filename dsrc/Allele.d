@@ -253,6 +253,7 @@ rules:
 	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->ImagePane->Table);
 	  tables.append(top->MutantCellLine->Table);
+	  tables.append(top->Synonym->Table);
 	  tables.append(top->SequenceAllele->Table);
 
 	  -- Global Accession number Tables
@@ -1785,6 +1786,7 @@ rules:
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 11));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 17));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
 
 	      end if;
 	      row := row + 1;
