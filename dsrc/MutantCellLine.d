@@ -148,7 +148,7 @@ rules:
 
           -- Set Row Count
           SetRowCount.source_widget := top;
-          SetRowCount.tableID := ALL_CELLLINE_NONMUTANT;
+          SetRowCount.tableID := ALL_CELLLINE;
           send(SetRowCount, 0);
  
 	  -- Clear the form
@@ -182,6 +182,11 @@ rules:
  
 	  -- Insert master record
 
+	 -- ADD
+	 --top->mgiParentCellLine->ParentStrain->StrainID->text.value + "," +
+         -- REMOVE
+	 --top->EditForm->Strain->StrainID->text.value + "," +
+
           cmd := mgi_setDBkey(ALL_CELLLINE_NONMUTANT, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE_NONMUTANT, KEYNAME) +
 	         mgi_DBprstr(top->EditForm->CellLine->text.value) + "," +
@@ -194,7 +199,7 @@ rules:
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := ALL_CELLLINE_NONMUTANT;
+          ProcessAcc.tableID := ALL_CELLLINE;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
@@ -275,21 +280,24 @@ rules:
             set := set + "_CellLine_Type_key = "  + top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
+	  -- strain modifications are made via the non-mutant module
+	  -- REMOVE
           if (top->EditForm->Strain->StrainID->text.modified) then
             set := set + "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
           end if;
+	  -- REMOVE
 
           if (top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.modified) then
             set := set + "_Derivation_key = " + top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value;
           end if;
 
 	  if (set.length > 0) then
-	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE_NONMUTANT, currentRecordKey, set);
+	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE, currentRecordKey, set);
 	  end if;
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := ALL_CELLLINE_NONMUTANT;
+          ProcessAcc.tableID := ALL_CELLLINE;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
@@ -315,8 +323,8 @@ rules:
 	  -- Cannot search both Accession tables at once
 
           SearchAcc.table := accTable;
-          SearchAcc.objectKey := "a." + mgi_DBkey(ALL_CELLLINE_NONMUTANT);
-	  SearchAcc.tableID := ALL_CELLLINE_NONMUTANT;
+          SearchAcc.objectKey := "a." + mgi_DBkey(ALL_CELLLINE);
+	  SearchAcc.tableID := ALL_CELLLINE;
           send(SearchAcc, 0);
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
@@ -331,11 +339,13 @@ rules:
 	    where := where + "\nand a.cellline like " + mgi_DBprstr(top->EditForm->CellLine->text.value);
 	  end if;
 
+	  -- REMOVE
           if (top->EditForm->Strain->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->EditForm->Strain->StrainID->text.value;;
           elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
             where := where + "\nand a.cellLineStrain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
           end if;
+	  -- REMOVE
 
 	  if (top->EditForm->mgiParentCellLine->ObjectID->text.value.length > 0) then
 	    where := where + "\nand a.parentCellLine_key = " + top->EditForm->mgiParentCellLine->ObjectID->text.value;
@@ -440,8 +450,10 @@ rules:
 	      top->ID->text.value := mgi_getstr(dbproc, 1);
 	      top->EditForm->CellLine->text.value := mgi_getstr(dbproc, 2);
 
+              -- REMOVE
               top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 4);
               top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 12);
+              -- REMOVE
 
               top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
               top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
@@ -481,7 +493,7 @@ rules:
 
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
-	  LoadAcc.tableID := ALL_CELLLINE_NONMUTANT;
+	  LoadAcc.tableID := ALL_CELLLINE;
 	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  
