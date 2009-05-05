@@ -1359,7 +1359,7 @@ rules:
 
 	  value : string;
 
-	  from := " from " + mgi_DBtable(ALL_ALLELE) + " a";
+	  from := " from " + mgi_DBtable(ALL_ALLELE_VIEW) + " a";
 	  where := "";
 	  union := "";
 
@@ -1549,7 +1549,7 @@ rules:
 	  if (top->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->mgiParentCellLine->Strain->StrainID->text.value;;
 	  elsif (top->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
-            where := where + "\nand a.cellLineStrain like " + mgi_DBprstr(top->mgiParentCellLine->Strain->Verify->text.value);
+            where := where + "\nand a.strain like " + mgi_DBprstr(top->mgiParentCellLine->Strain->Verify->text.value);
 	  end if;
 
 	  -- get the additional tables using the "from" values
