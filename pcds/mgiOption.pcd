@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr  9 14:10:05 2009";
+      lastWritten = "Thu Apr 30 13:34:07 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -562,14 +562,14 @@ Module: mgiOption
                     {
                       BayGenomicGeneTrap = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "Bay Area Functional Genomics Consortium";
+                        labelString = BayGenomics;
                       Group: User
                         defaultValue = 95;
                     }
                     {
                       TexasGeneTrap = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "Texas Institute for Genomic Medicine";
+                        labelString = TIGM;
                       Group: User
                         defaultValue = 97;
                     }

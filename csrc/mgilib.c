@@ -543,9 +543,11 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Allele_key");
 	    break;
     case ALL_CELLLINE:
+    case ALL_CELLLINE_NONMUTANT:
     case ALL_CELLLINE_VIEW:
             strcpy(buf, "_CellLine_key");
 	    break;
+    case ALL_CELLLINE_DERIVATION:
     case ALL_CELLLINE_DERIVATION_VIEW:
             strcpy(buf, "_Derivation_key");
 	    break;
@@ -1017,6 +1019,7 @@ char *mgi_DBaccTable(int table)
             strcpy(buf, "SEQ_Allele_Assoc_View");
             break;
     case ALL_CELLLINE:
+    case ALL_CELLLINE_NONMUTANT:
             strcpy(buf, "ALL_CellLine_Acc_View");
             break;
     case BIB_REFS:
@@ -1122,6 +1125,7 @@ char *mgi_DBtable(int table)
             strcpy(buf, "ALL_Allele_CellLine_View");
 	    break;
     case ALL_CELLLINE:
+    case ALL_CELLLINE_NONMUTANT:
             strcpy(buf, "ALL_CellLine");
 	    break;
     case ALL_ALLELE_MUTATION:
@@ -1132,6 +1136,9 @@ char *mgi_DBtable(int table)
 	    break;
     case ALL_CELLLINE_VIEW:
             strcpy(buf, "ALL_CellLine_View");
+	    break;
+    case ALL_CELLLINE_DERIVATION:
+            strcpy(buf, "ALL_CellLine_Derivation");
 	    break;
     case ALL_CELLLINE_DERIVATION_VIEW:
             strcpy(buf, "ALL_CellLine_Derivation_View");
@@ -1911,9 +1918,14 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case ALL_CELLLINE:
+    case ALL_CELLLINE_NONMUTANT:
     case ALL_CELLLINE_VIEW:
             sprintf(buf, "insert %s (%s, %s, _CellLine_Type_key, _Strain_key, _Derivation_key, isMutant, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
+	    break;
+    case ALL_CELLLINE_DERIVATION:
+            sprintf(buf, "insert %s (%s, name, description, _Vector_key, _VectorType_key, _ParentCellLine_key, _DerivationType_key, _Creator_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)", 
+		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case BIB_REFS:
 	    sprintf(buf, "insert %s (%s, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)",
@@ -2390,6 +2402,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_ALLELE:
       case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
+      case ALL_CELLLINE_NONMUTANT:
       case ALL_MARKER_ASSOC:
       case BIB_DATASET_ASSOC:
       case BIB_REFS:
@@ -2453,6 +2466,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case ALL_ALLELE:
       case ALL_ALLELE_CELLLINE:
       case ALL_CELLLINE:
+      case ALL_CELLLINE_NONMUTANT:
       case ALL_MARKER_ASSOC:
       case BIB_REFS:
       case BIB_DATASET_ASSOC:
@@ -2682,6 +2696,7 @@ char *mgi_DBcvname(int table)
   switch (table)
   {
     case ALL_CELLLINE:
+    case ALL_CELLLINE_NONMUTANT:
             strcpy(buf, "cellLine");
 	    break;
     case BIB_REFS:

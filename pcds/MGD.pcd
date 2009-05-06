@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr 28 10:45:42 2009";
+      lastWritten = "Wed May  6 13:22:33 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6111,7 +6111,7 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"Marker\")";
                                     labelString = "Markers (NoteBook)";
                                     traversalOn = False;
-                                    managed = False;
+                                    managed = True;
                                 }
                                 {
                                   Allele = XmPushButton;
@@ -7943,6 +7943,12 @@ Shift<Key>Tab: prev-tab-group()
                                           activateCallback = "D:CreateMGIModule(name = \"NonMutantCellLine\")";
                                           labelString = "Non-Mutant Cell Line";
                                       }
+                                      {
+                                        AlleleDerivationModule = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:CreateMGIModule(name = \"AlleleDerivation\")";
+                                          labelString = Derivation;
+                                      }
                                 }
                           }
                     }
@@ -8106,7 +8112,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 12;
+                                          xrtTblVisibleRows = 7;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 40)";
                                           xrtTblNumRows = 13;
                                         Group: User
@@ -8289,7 +8295,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 65)";
                                           userDefinedAttributes = "mutationCurrentKey:Int(Int)=\"1\"\nmutationKey:Int(Int)=\"2\"\nmutation:Int(Int)=\"3\"\n";
-                                          xrtTblVisibleRows = 3;
+                                          xrtTblVisibleRows = 2;
                                           xrtTblEnterCellCallback = "D:SetOptions";
                                           xrtTblTraversableSeries = "(all 0-2 False)";
                                         Group: Constraint
@@ -8356,6 +8362,8 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                       {
                                         Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 2;
                                         Group: User
                                           mgiTypeKey = 11;
                                       }
@@ -8378,7 +8386,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblColumnLabels = "Mode,Assoc Key,Mutation Key,Mutant Cell Line,Creator,Modified By,Date";
                                           xrtTblNumColumns = 7;
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblVisibleRows = 3;
+                                          xrtTblVisibleRows = 2;
                                           userDefinedAttributes = "assocKey:Int(Int)=\"1\"\ncellLineKey:Int(Int)=\"2\"\ncellLine:Int(Int)=\"3\"\nmodifiedBy:Int(Int)=\"5\"\nmodifiedDate:Int(Int)=\"6\"\ncreator:Int(Int)=\"4\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyMutantCellLine,\nD:CommitTableCellEdit";
                                       }
@@ -8517,7 +8525,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
                                           userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\nrefsCurrentKey:Int=\"4\"\n";
-                                          xrtTblVisibleRows = 3;
+                                          xrtTblVisibleRows = 1;
                                           xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                                         Group: User
                                           accName = 5;
@@ -11525,12 +11533,12 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
                                                       xrtTblEditableSeries = "(all 0-6 False)";
                                                       xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 40)(all 8 255)(all 9-10 10)(all 11-13 255)";
-                                                      xrtTblNumColumns = 20;
+                                                      xrtTblNumColumns = 15;
                                                       xrtTblPixelWidthSeries = "(all 0-5 0)";
                                                       xrtTblTraversableSeries = "(all 0-6 False)";
                                                       xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
                                                       userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
-                                                      xrtTblVisibleRows = 15;
+                                                      xrtTblVisibleRows = 20;
                                                       xrtTblAllowCellResize = resize_horizontal;
                                                       xrtTblEnterCellCallback = "D:SetOptions";
                                                       xrtTblNumRows = 25;
@@ -11568,25 +11576,63 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                             {
-                                              Reference = ReferenceTable : mgiTable;
+                                              Reference = ReferenceTypeTable : mgiTable;
+                                              Group: Widget
+                                                rubberPositioning = False;
+                                                resizePolicy = resize_any;
                                               Group: Constraint
                                                 resizable = true;
                                                   {
                                                     Table = mgiTable;
                                                     Group: Widget
+                                                      xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 100)";
                                                       xrtTblVisibleRows = 20;
-                                                      userDefinedAttributes = "reviewKey:Int(Int)=\"3\"\nreview:Int(Int)=\"6\"\n";
-                                                      xrtTblEnterCellCallback = "D:SetOptions";
-                                                      xrtTblNumColumns = 7;
-                                                      xrtTblColumnLabels = "Mode,Current Key,New Key,Review Key,J#,Citation,Review?";
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 60)(all 6 7)";
-                                                      xrtTblEditableSeries = "(all 0-3 False)";
-                                                      xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                                      xrtTblTraversableSeries = "(all 0-3 False)";
                                                       xrtTblNumRows = 25;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_form;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_form;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
                                                     Group: User
-                                                      jnum = 4;
-                                                      citation = 5;
+                                                      requiredColumns = 2;
+                                                      useDefaultRefType = True;
+                                                      defaultRefType = General;
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                    Group: Widget
+                                                      labelString = "Add Row";
+                                                      activateCallback = "D:AddTableRow";
+                                                    Group: Constraint
+                                                      leftAttachment = attach_opposite_widget;
+                                                      leftWidget = Table;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_widget;
+                                                      topWidget = Table;
+                                                      topOffset = 2;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  Popups:
+                                                  {
+                                                    ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                                    Group: User
+                                                      sql = "select _RefAssocType_key, assocType from MGI_RefType_Marker_View order by _RefAssocType_key";
+                                                  }
+                                                  }
+                                                  {
+                                                    ReviewMenu = YesNoMenu : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                             }
                                             {
@@ -11610,6 +11656,18 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                       }
+                                }
+                                {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                           }
                     }
@@ -13023,13 +13081,25 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Strain = Strain : mgiDataTypes;
+                                  AlleleCreatorMenu = AlleleCreatorMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = CellLine;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  Strain = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleCreatorMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -13122,6 +13192,18 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  AlleleDerivationTypeMenu = AlleleDerivationTypeMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = CellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiParentCellLine;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
                                   mgiAlleleVector = mgiAlleleVector : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -13131,7 +13213,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = CellLine;
-                                    topWidget = mgiParentCellLine;
+                                    topWidget = AlleleDerivationTypeMenu;
                                       {
                                         ObjectID = ID;
                                       }
@@ -13149,7 +13231,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
+                                  AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
@@ -13161,37 +13243,13 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  AlleleCreatorMenu = AlleleCreatorMenu : mgiOption;
+                                  AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AlleleCellLineTypeMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  AlleleDerivationTypeMenu = AlleleDerivationTypeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = CellLine;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleCreatorMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = CellLine;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleDerivationTypeMenu;
+                                    topWidget = AlleleVectorTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -13550,14 +13608,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPRegeneron = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    RegeneronOther = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneronProject = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -16099,7 +16149,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = AlleleCellLineTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
-                                    resizable = true;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -16109,6 +16158,7 @@ Shift<Key>Tab: prev-tab-group()
                                         text = text : mgiDataTypes;
                                         Group: Widget
                                           columns = 5;
+                                          inTabGroup = False;
                                       }
                                 }
                           }
@@ -16166,46 +16216,16 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          AlleleDerivationMenu = Module : MGI;
+          AlleleDerivationModule = Module : MGI;
           Group: Control
             vip_x = 169;
             vip_y = 1100;
           Group: User
-            homeWidget = CellLine;
+            homeWidget = DerivationName;
               {
                 MainForm = XmForm;
                     {
                       MainMenu = MainMenu : mgiMenu;
-                          {
-                            File = File : mgiMenu;
-                          }
-                          {
-                            Commands = Commands : mgiMenu;
-                                Popups:
-                                {
-                                  CommandsPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Search = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Modify = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Add = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Delete = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator1 = XmSeparator;
-                                      }
-                                      {
-                                        Clear = MenuPush : mgiMenu;
-                                        Group: Widget
-                                          activateCallback = "D:Clear(clearLists = 3)";
-                                      }
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -16225,9 +16245,7 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  Derivation = mgiObject : mgiDataTypes;
-                                  Group: Widget
-                                    managed = True;
+                                  AlleleDerivationTypeMenu = AlleleDerivationTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
@@ -16236,18 +16254,96 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
+                                }
+                                {
+                                  mgiCitation = mgiCitation : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleDerivationTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleDerivationTypeMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                       {
                                         ObjectID = ID : mgiDataTypes;
                                       }
                                       {
-                                        CharText = CharText : mgiDataTypes;
-                                        Group: Widget
-                                          managed = True;
+                                        Jnum = Jnum : mgiDataTypes;
                                             {
                                               label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Cell Line       \nLibrary Name";
-                                                managed = True;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = False;
+                                            }
+                                      }
+                                      {
+                                        Citation = Citation : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                required = False;
+                                            }
+                                      }
+                                }
+                                {
+                                  DerivationName = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleDerivationTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiCitation;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Cell Line       \nLibrary Name";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 50;
+                                      }
+                                }
+                                {
+                                  AlleleCreatorMenu = AlleleCreatorMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleDerivationTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = DerivationName;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  mgiParentCellLine = mgiParentCellLine : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleDerivationTypeMenu;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleCreatorMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        CellLine = CharText : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
                                             }
                                             {
                                               text = text : mgiDataTypes;
@@ -16255,58 +16351,18 @@ Shift<Key>Tab: prev-tab-group()
                                                 columns = 50;
                                             }
                                       }
-                                }
-                                {
-                                  CellLine = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    rightOffset = 5;
-                                    leftWidget = Derivation;
-                                    topWidget = Derivation;
                                       {
-                                        label = XmLabel;
-                                        Group: Widget
-                                          labelString = "Parent Cell Line";
-                                      }
-                                      {
-                                        text = text : mgiDataTypes;
-                                        Group: Widget
-                                          columns = 50;
-                                        Group: User
-                                          required = True;
-                                      }
-                                }
-                                {
-                                  Strain = Strain : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Derivation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = CellLine;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        StrainID = ID;
-                                      }
-                                      {
-                                        Verify = CharText;
+                                        ParentStrain : Strain = Strain : mgiDataTypes;
                                             {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Parent Cell Line\nStrain";
+                                              StrainID = ID;
                                             }
                                             {
-                                              text = text;
-                                              Group: User
-                                                required = True;
+                                              Verify = CharText;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = "Parent Cell Line\nStrain";
+                                                  }
                                             }
                                       }
                                 }
@@ -16319,8 +16375,8 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Derivation;
-                                    topWidget = Strain;
+                                    leftWidget = AlleleDerivationTypeMenu;
+                                    topWidget = mgiParentCellLine;
                                       {
                                         ObjectID = ID;
                                       }
@@ -16338,10 +16394,10 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AlleleCreatorMenu = AlleleCreatorMenu : mgiOption;
+                                  AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Derivation;
+                                    leftWidget = AlleleDerivationTypeMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = mgiAlleleVector;
@@ -16350,28 +16406,27 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  AlleleDerivationTypeMenu = AlleleDerivationTypeMenu : mgiOption;
+                                  NumberOfMutants = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleDerivationTypeMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
+                                    topWidget = AlleleVectorTypeMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Derivation;
-                                    topWidget = AlleleCreatorMenu;
-                                }
-                                {
-                                  AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Derivation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleDerivationTypeMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Number of Mutant Cell Lines";
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 5;
+                                          inTabGroup = False;
+                                      }
                                 }
                           }
                     }
@@ -16384,8 +16439,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Clear = ControlPush;
-                                  Group: Widget
-                                    activateCallback = "D:Clear(clearLists = 3)";
                                 }
                                 {
                                   Modify = ControlPush;
@@ -16430,301 +16483,6 @@ Shift<Key>Tab: prev-tab-group()
                           {
                             panedWindow = XmPanedWindow;
                                 {
-                                  mgiAccessionTable = mgiAccessionTable : mgiTable;
-                                      {
-                                        Table = mgiTable;
-                                        Group: Widget
-                                          xrtTblVisibleRows = 5;
-                                        Group: User
-                                          showMGI = False;
-                                      }
-                                      {
-                                        Add = TablePush;
-                                      }
-                                      {
-                                        Delete = TablePush;
-                                      }
-                                      {
-                                        AccSourceMenu = AccSourceMenu : mgiOption;
-                                        Group: User
-                                          defaultOption = IGTC;
-                                            Popups:
-                                            {
-                                              AccSourcePulldown = OptionPulldown;
-                                                  {
-                                                    MGI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    J = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PubMed = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NSequence = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RefSeq = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SWISSPROT = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TrEMBL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PDB = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MGC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    WashU = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EntrezGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    VEGAGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NCBIGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EnsemblGeneModel = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TreeFam = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UniGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    miRBase = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ATCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MRK = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MGIImage = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    CREX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HYEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    INEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    FSEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TEXT = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TXEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    PMEX = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    E = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HGNC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    OMIM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RGD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HomoloGene = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENCluster = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENClone = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENFANTOM = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA7 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIA15K = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RPCI23 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RPCI24 = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    UniSTS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    BROAD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    InterPro = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Taxon = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DFCI = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    DOTS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIAGeneIndex = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    JRS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    APF = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    BCBC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    CARD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    CMMR = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EMMA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    EMS = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    Harwell = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    JPGA = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MTG = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MUGEN = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NIG = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    NMICE = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ORNL = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RIKENBRC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TAC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IMAGELibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    dbESTLibrary = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    IGTC = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    Lexicon = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    LexiconGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    TexasGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    TIGEMGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ESCDGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GermanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SangerGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AllenBrainAtlas = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSD = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    KOMPRegeneron = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    RegeneronOther = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                            }
-                                      }
-                                }
-                                {
                                   QueryList = QueryList : mgiLookup;
                                       {
                                         Label = LookupLabel;
@@ -16742,23 +16500,12 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         List = list : mgiDataTypes;
+                                        Group: Widget
+                                          singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayStemCellLine3";
                                         Group: User
                                           targetKey = ObjectID;
                                           targetText = CellLine;
                                           targetWidget = mgiParentCellLine;
-                                      }
-                                }
-                                {
-                                  AlleleDerivationList = AlleleDerivationList : mgiLookup;
-                                      {
-                                        Label = LookupLabel : mgiLookup;
-                                      }
-                                      {
-                                        List = list : mgiDataTypes;
-                                        Group: User
-                                          targetWidget = Derivation;
-                                          targetKey = ObjectID;
-                                          targetText = CharText;
                                       }
                                 }
                                 {
