@@ -11,10 +11,6 @@
 --
 -- 04/08/2009	lec
 --	TR 7493; gene trap lite
---	renamed ESCellLine to MutantCellLine
---
--- 03/21/2005	lec
---	TR 4289, MPR
 --
 
 dmodule MutantCellLine is
@@ -365,12 +361,6 @@ rules:
 	    where := where + "\nand a.derivationName like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Derivation->CharText->text.value);
 	  end if;
 
-	  if (top->EditForm->mgiAlleleVector->ObjectID->text.value.length > 0) then
-	    where := where + "\nand a._Vector_key = " + top->EditForm->mgiAlleleVector->ObjectID->text.value;
-	  elsif (top->EditForm->mgiAlleleVector->Vector->text.value.length > 0) then
-	    where := where + "\nand a.vector like " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
-	  end if;
-
           if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._CellLine_Type_key = " + top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue;
           end if;
@@ -382,6 +372,12 @@ rules:
           if (top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._DerivationType_key = " + top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
           end if;
+
+	  if (top->EditForm->mgiAlleleVector->ObjectID->text.value.length > 0) then
+	    where := where + "\nand a._Vector_key = " + top->EditForm->mgiAlleleVector->ObjectID->text.value;
+	  elsif (top->EditForm->mgiAlleleVector->Vector->text.value.length > 0) then
+	    where := where + "\nand a.vector like " + mgi_DBprstr(top->EditForm->mgiAlleleVector->Vector->text.value);
+	  end if;
 
           if (top->EditForm->AlleleVectorTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._VectorType_key = " + top->EditForm->AlleleVectorTypeMenu.menuHistory.searchValue;
