@@ -1167,38 +1167,37 @@ rules:
 		  alleleType = "Targeted (Floxed/Frt)" or
 		  alleleType = "Targeted (Reporter)" or
 		  alleleType = "Targeted (other)") then
+
+	        addCellLine := true;
 		mutantCellLine := NOTSPECIFIED_TEXT;
+
+	        --
+	        -- select the derivation key that is associated with the specified 
+	        --   allele type
+	        --   parent cell line
+	        --   strain
+	        --
+
+	        derivationKey := mgi_sql1("select d._Derivation_key " +
+			  "from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			  "where d._DerivationType_key = " + alleleTypeKey +
+			  " and d._ParentCellLine_key = " + parentKey +
+			  " and d._ParentCellLine_key = c._CellLine_key " +
+			  " and c._Strain_key = " + strainKey +
+			  " and c.isMutant = 0 ");
+
+	        if (derivationKey.length = 0) then
+                  StatusReport.source_widget := top.root;
+                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                  send(StatusReport);
+		  return;
+	        end if;
 
 	      -- do not default 'not applicable'
 	      else
 	        addAssociation := false;
-              --    mutantCellLine := NOTAPPLICABLE_TEXT;
-
+                mutantCellLine := NOTAPPLICABLE_TEXT;
 	      end if;
-
-	      --
-	      -- select the derivation key that is associated with the specified 
-	      --   allele type
-	      --   parent cell line
-	      --   strain
-	      --
-
-	      derivationKey := mgi_sql1("select d._Derivation_key " +
-			"from ALL_CellLine_Derivation d, ALL_CellLine c " +
-			"where d._DerivationType_key = " + alleleTypeKey +
-			" and d._ParentCellLine_key = " + parentKey +
-			" and d._ParentCellLine_key = c._CellLine_key " +
-			" and c._Strain_key = " + strainKey +
-			" and c.isMutant = 0 ");
-
-	      if (derivationKey.length = 0) then
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
-                send(StatusReport);
-		return;
-	      end if;
-
-	      addCellLine := true;
 
 	    -- as long as isMutant has been selected...
 	    -- elsif (not isParent and isMutant) then
@@ -1711,6 +1710,10 @@ rules:
 
 		top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 22);
+		top->mgiParentCellLine->ObjectID->text.value := "";
+		top->mgiParentCellLine->CellLine->text.value := "";
+		top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
+		top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);

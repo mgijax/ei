@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  6 13:22:33 2009";
+      lastWritten = "Thu May  7 11:43:54 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6106,14 +6106,6 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  Marker1 = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"Marker\")";
-                                    labelString = "Markers (NoteBook)";
-                                    traversalOn = False;
-                                    managed = True;
-                                }
-                                {
                                   Allele = XmPushButton;
                                   Group: Widget
                                     activateCallback = "D:CreateMGIModule(name = \"Allele\")";
@@ -7890,6 +7882,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: User
             homeWidget = Symbol;
             activateButtonName = Allele;
+            clearForms = "ControlForm\nEditForm\nnotebook";
               {
                 MainForm = XmForm;
                     {
@@ -8112,9 +8105,9 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblVisibleRows = 7;
+                                          xrtTblVisibleRows = 10;
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 40)";
-                                          xrtTblNumRows = 13;
+                                          xrtTblNumRows = 15;
                                         Group: User
                                           mgiTypeKey = 11;
                                       }
@@ -8276,105 +8269,12 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  MolecularMutation = TableLabel : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Reference;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Reference;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblNumColumns = 4;
-                                          xrtTblColumnLabels = "Mode,Current Key,Key,Molecular Mutation";
-                                          xrtTblEditableSeries = "(all 0-2 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 65)";
-                                          userDefinedAttributes = "mutationCurrentKey:Int(Int)=\"1\"\nmutationKey:Int(Int)=\"2\"\nmutation:Int(Int)=\"3\"\n";
-                                          xrtTblVisibleRows = 2;
-                                          xrtTblEnterCellCallback = "D:SetOptions";
-                                          xrtTblTraversableSeries = "(all 0-2 False)";
-                                        Group: Constraint
-                                          leftAttachment = attach_form;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_form;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
-                                            {
-                                              label = XtXrtLabel;
-                                              Group: Widget
-                                                labelString = "Molecular Characterization";
-                                            }
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                        Group: Constraint
-                                          leftAttachment = attach_opposite_widget;
-                                          leftWidget = Table;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_widget;
-                                          topWidget = Table;
-                                          topOffset = 2;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        MolecularMutationMenu = MolecularMutationMenu : mgiOption;
-                                        Group: Constraint
-                                          leftAttachment = attach_widget;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_widget;
-                                          topWidget = Table;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
-                                          topOffset = 2;
-                                          leftWidget = DeleteRow;
-                                          leftOffset = 5;
-                                            Popups:
-                                            {
-                                              MolecularMutationPulldown = OptionPulldown : mgiOption;
-                                              Group: User
-                                                tableForm = MolecularMutation;
-                                                tableOptionKey = 2;
-                                                tableOption = 3;
-                                            }
-                                      }
-                                }
-                                {
-                                  ImagePane = ImagePane : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = MolecularMutation;
-                                    leftOffset = 5;
-                                    rightAttachment = attach_form;
-                                    topAttachment = attach_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    rightOffset = 5;
-                                    topWidget = Reference;
-                                    topOffset = 5;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblVisibleRows = 2;
-                                        Group: User
-                                          mgiTypeKey = 11;
-                                      }
-                                }
-                                {
                                   MutantCellLine = Table : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = MolecularMutation;
+                                    topWidget = Reference;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -8402,61 +8302,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = MutantCellLine;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                }
-                                {
-                                  Synonym = SynonymTypeTable : mgiTable;
-                                  Group: Widget
-                                    rubberPositioning = False;
-                                    resizePolicy = resize_any;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = MutantCellLine;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = MutantCellLine;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-4 0)(all 8-9 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 40)(all 8 12)(all 9 10)";
-                                          xrtTblVisibleRows = 3;
-                                        Group: User
-                                          requiredColumns = "3\n5";
-                                          useDefaultSynType = True;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                        Group: Widget
-                                          labelString = "Add Row";
-                                          activateCallback = "D:AddTableRow";
-                                        Group: Constraint
-                                          leftAttachment = attach_opposite_widget;
-                                          leftWidget = Table;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_widget;
-                                          topWidget = Table;
-                                          topOffset = 2;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
-                                          leftOffset = 0;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        SynonymTypeMenu = SynonymTypeMenu : mgiOption;
-                                        Group: Widget
-                                          managed = False;
-                                            Popups:
-                                            {
-                                              SynonymTypePulldown = OptionPulldown : mgiOption;
-                                              Group: User
-                                                sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Allele_View where allowOnlyOne = 0 order by _SynonymType_key";
-                                            }
-                                      }
                                 }
                                 {
                                   markerDescription = mgiNoteShort : mgiDataTypes;
@@ -8504,50 +8349,191 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = markerDescription;
                                 }
                                 {
-                                  SequenceAllele = mgiAccessionTable : mgiTable;
+                                  notebookForm = notebookForm : mgiNoteBook;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Synonym;
+                                    leftWidget = Symbol;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Synonym;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_form;
+                                    topWidget = MutantCellLine;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
-                                    bottomOffset = 2;
                                       {
-                                        Table = mgiTable;
+                                        separator = XmSeparatorGadget;
+                                      }
+                                      {
+                                        legend = XmLabelGadget;
                                         Group: Widget
-                                          xrtTblNumColumns = 11;
-                                          xrtTblColumnLabels = "Mode,Logical Key,Assoc Key,Sequence Key,Ref Key,Sequence Name,Sequence ID,J#,Citation,Modified By,Date";
-                                          xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 40)(all 9 20)(all 10 10)";
-                                          xrtTblEditableSeries = "(all 0 False) (all 5 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
-                                          xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
-                                          userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\nrefsCurrentKey:Int=\"4\"\n";
-                                          xrtTblVisibleRows = 1;
-                                          xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
-                                        Group: User
-                                          accName = 5;
-                                          accID = 6;
-                                          requiredColumns = "4\n6";
+                                          labelString = "1 = Synonyms, 2 = Molecular Mutations, 3 = Image, 4 = Sequence";
                                       }
                                       {
-                                        Add = TablePush;
-                                      }
-                                      {
-                                        Delete = TablePush;
-                                      }
-                                      {
-                                        AccSourceMenu = AccSourceMenu : mgiOption;
-                                        Group: User
-                                          defaultOption = NSequence;
-                                            Popups:
+                                        notebook = notebook : mgiNoteBook;
                                             {
-                                              AccSourcePulldown = OptionPulldown;
-                                              Group: User
-                                                tableOptionKey = 1;
-                                                tableOption = 5;
+                                              Synonym = SynonymTypeTable : mgiTable;
+                                              Group: Widget
+                                                rubberPositioning = False;
+                                                resizePolicy = resize_any;
+                                              Group: Constraint
+                                                resizable = true;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      xrtTblPixelWidthSeries = "(all 0-4 0)(all 8-9 0)";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 50)(all 6 10)(all 7 40)(all 8 12)(all 9 10)";
+                                                      xrtTblVisibleRows = 5;
+                                                      xrtTblNumRows = 10;
+                                                    Group: User
+                                                      requiredColumns = "3\n5";
+                                                      useDefaultSynType = True;
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                    Group: Widget
+                                                      labelString = "Add Row";
+                                                      activateCallback = "D:AddTableRow";
+                                                    Group: Constraint
+                                                      leftAttachment = attach_opposite_widget;
+                                                      leftWidget = Table;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_widget;
+                                                      topWidget = Table;
+                                                      topOffset = 2;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                      leftOffset = 0;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    SynonymTypeMenu = SynonymTypeMenu : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  Popups:
+                                                  {
+                                                    SynonymTypePulldown = OptionPulldown : mgiOption;
+                                                    Group: User
+                                                      sql = "select _SynonymType_key, synonymType from MGI_SynonymType_Allele_View where allowOnlyOne = 0 order by _SynonymType_key";
+                                                  }
+                                                  }
+                                            }
+                                            {
+                                              MolecularMutation = TableLabel : mgiTable;
+                                              Group: Constraint
+                                                resizable = true;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      xrtTblNumColumns = 4;
+                                                      xrtTblColumnLabels = "Mode,Current Key,Key,Molecular Mutation";
+                                                      xrtTblEditableSeries = "(all 0-2 False)";
+                                                      xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 65)";
+                                                      userDefinedAttributes = "mutationCurrentKey:Int(Int)=\"1\"\nmutationKey:Int(Int)=\"2\"\nmutation:Int(Int)=\"3\"\n";
+                                                      xrtTblVisibleRows = 5;
+                                                      xrtTblEnterCellCallback = "D:SetOptions";
+                                                      xrtTblTraversableSeries = "(all 0-2 False)";
+                                                      xrtTblNumRows = 10;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_form;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_form;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                  {
+                                                    label = XtXrtLabel;
+                                                    Group: Widget
+                                                      labelString = "Molecular Characterization";
+                                                  }
+                                                  }
+                                                  {
+                                                    AddRow = TablePush : mgiTable;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_opposite_widget;
+                                                      leftWidget = Table;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_widget;
+                                                      topWidget = Table;
+                                                      topOffset = 2;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                  }
+                                                  {
+                                                    DeleteRow = TablePush : mgiTable;
+                                                  }
+                                                  {
+                                                    MolecularMutationMenu = MolecularMutationMenu : mgiOption;
+                                                    Group: Constraint
+                                                      leftAttachment = attach_widget;
+                                                      rightAttachment = attach_none;
+                                                      topAttachment = attach_widget;
+                                                      topWidget = Table;
+                                                      bottomAttachment = attach_none;
+                                                      resizable = true;
+                                                      topOffset = 2;
+                                                      leftWidget = DeleteRow;
+                                                      leftOffset = 5;
+                                                  Popups:
+                                                  {
+                                                    MolecularMutationPulldown = OptionPulldown : mgiOption;
+                                                    Group: User
+                                                      tableForm = MolecularMutation;
+                                                      tableOptionKey = 2;
+                                                      tableOption = 3;
+                                                  }
+                                                  }
+                                            }
+                                            {
+                                              ImagePane = ImagePane : mgiTable;
+                                              Group: Constraint
+                                                resizable = true;
+                                                  {
+                                                    Table = mgiTable : mgiTable;
+                                                    Group: Widget
+                                                      xrtTblVisibleRows = 5;
+                                                      xrtTblNumRows = 10;
+                                                    Group: User
+                                                      mgiTypeKey = 11;
+                                                  }
+                                            }
+                                            {
+                                              SequenceAllele = mgiAccessionTable : mgiTable;
+                                              Group: Constraint
+                                                resizable = true;
+                                                  {
+                                                    Table = mgiTable;
+                                                    Group: Widget
+                                                      xrtTblNumColumns = 11;
+                                                      xrtTblColumnLabels = "Mode,Logical Key,Assoc Key,Sequence Key,Ref Key,Sequence Name,Sequence ID,J#,Citation,Modified By,Date";
+                                                      xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 40)(all 9 20)(all 10 10)";
+                                                      xrtTblEditableSeries = "(all 0 False) (all 5 False)";
+                                                      xrtTblPixelWidthSeries = "(all 0-4 0)";
+                                                      xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
+                                                      userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\nrefsCurrentKey:Int=\"4\"\n";
+                                                      xrtTblVisibleRows = 5;
+                                                      xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
+                                                      xrtTblNumRows = 10;
+                                                    Group: User
+                                                      accName = 5;
+                                                      accID = 6;
+                                                      requiredColumns = "4\n6";
+                                                  }
+                                                  {
+                                                    Add = TablePush;
+                                                  }
+                                                  {
+                                                    Delete = TablePush;
+                                                  }
+                                                  {
+                                                    AccSourceMenu = AccSourceMenu : mgiOption;
+                                                    Group: User
+                                                      defaultOption = NSequence;
+                                                  Popups:
+                                                  {
+                                                    AccSourcePulldown = OptionPulldown;
+                                                    Group: User
+                                                      tableOptionKey = 1;
+                                                      tableOption = 5;
                                                   {
                                                     MGI = AccToggle : mgiOption;
                                                   }
@@ -8764,6 +8750,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     IGTC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                  }
+                                                  }
                                                   }
                                             }
                                       }
@@ -11292,6 +11280,18 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Name;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
                                   NotebookForm = notebookForm : mgiNoteBook;
                                   Group: Constraint
                                     leftAttachment = attach_form;
@@ -11656,18 +11656,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                       }
-                                }
-                                {
-                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Name;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
                                 }
                           }
                     }
@@ -13093,41 +13081,13 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  Strain = Strain : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = CellLine;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleCreatorMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        StrainID = ID;
-                                      }
-                                      {
-                                        Verify = CharText;
-                                            {
-                                              label = XmLabel;
-                                              Group: Widget
-                                                labelString = "Cell Line Strain";
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                required = True;
-                                            }
-                                      }
-                                }
-                                {
                                   mgiParentCellLine = mgiParentCellLine : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Strain;
+                                    topWidget = AlleleCreatorMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -16287,6 +16247,8 @@ Shift<Key>Tab: prev-tab-group()
                                             }
                                             {
                                               text = text;
+                                              Group: Widget
+                                                columns = 40;
                                               Group: User
                                                 required = False;
                                             }
