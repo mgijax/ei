@@ -36,7 +36,7 @@ devents:
 	Search :local [];
 	Select :local [item_position : integer;];
 
-	DisplayStemCellLine3 :translation [];
+	DisplayStemCellLine :translation [];
 	VerifyParentCellLine :translation [];
 
 locals:
@@ -474,14 +474,14 @@ rules:
 	end does;
 
 --
--- DisplayStemCellLine3
+-- DisplayStemCellLine
 --
 -- Activated from:  widget top->StemCellLineList->List.singleSelectionCallback
 --
 -- Display Stem Cell Line information
 --
 
-	DisplayStemCellLine3 does
+	DisplayStemCellLine does
 
 	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      return;

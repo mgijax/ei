@@ -1160,25 +1160,17 @@ rules:
 
 	    elsif (isParent and not isMutant) then
 
-	      -- not specified
-              if (alleleType = "Gene trapped" or
-		  alleleType = "Targeted (knock-out)" or
-		  alleleType = "Targeted (knock-in)" or
-		  alleleType = "Targeted (Floxed/Frt)" or
-		  alleleType = "Targeted (Reporter)" or
-		  alleleType = "Targeted (other)") then
+	      addCellLine := true;
+	      mutantCellLine := NOTSPECIFIED_TEXT;
 
-	        addCellLine := true;
-		mutantCellLine := NOTSPECIFIED_TEXT;
+	      --
+	      -- select the derivation key that is associated with the specified 
+	      --   allele type
+	      --   parent cell line
+	      --   strain
+	      --
 
-	        --
-	        -- select the derivation key that is associated with the specified 
-	        --   allele type
-	        --   parent cell line
-	        --   strain
-	        --
-
-	        derivationKey := mgi_sql1("select d._Derivation_key " +
+	      derivationKey := mgi_sql1("select d._Derivation_key " +
 			  "from ALL_CellLine_Derivation d, ALL_CellLine c " +
 			  "where d._DerivationType_key = " + alleleTypeKey +
 			  " and d._ParentCellLine_key = " + parentKey +
@@ -1186,17 +1178,11 @@ rules:
 			  " and c._Strain_key = " + strainKey +
 			  " and c.isMutant = 0 ");
 
-	        if (derivationKey.length = 0) then
-                  StatusReport.source_widget := top.root;
-                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
-                  send(StatusReport);
-		  return;
-	        end if;
-
-	      -- do not default 'not applicable'
-	      else
-	        addAssociation := false;
-                mutantCellLine := NOTAPPLICABLE_TEXT;
+	      if (derivationKey.length = 0) then
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                send(StatusReport);
+	        return;
 	      end if;
 
 	    -- as long as isMutant has been selected...
