@@ -1056,6 +1056,7 @@ rules:
 
 	  parentKey : string;
 	  strainKey : string;
+	  strainName : string;
 	  derivationKey : string;
 	  cellLineTypeKey : string;
 
@@ -1080,6 +1081,7 @@ rules:
 	  alleleTypeKey := top->AlleleTypeMenu.menuHistory.searchValue;
 	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
 	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
+	  strainName := top->mgiParentCellLine->Strain->Verify->text.value;
 	  derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
 
 	  -- set the isParent
@@ -1153,40 +1155,50 @@ rules:
 	      -- do not default 'not applicable'
 	      else
 		  addAssociation := false;
-              --  mutantCellLine := NOTAPPLICABLE_TEXT;
-              --  mutantCellLineKey := defaultMutantCellLineKeyNA;
-              --  strainKey := defaultStrainKeyNA;
 	      end if;
 
 	    elsif (isParent and not isMutant) then
 
-	      addCellLine := true;
-	      mutantCellLine := NOTSPECIFIED_TEXT;
+	      if (strainName = "Not Applicable") then
+		addAssociation := false;
+		addCellLine := false;
 
-	      --
-	      -- select the derivation key that is associated with the specified 
-	      --   allele type
-	      --   parent cell line
-	      --   strain
-	      --
+	      else
 
-	      derivationKey := mgi_sql1("select d._Derivation_key " +
-			  "from ALL_CellLine_Derivation d, ALL_CellLine c " +
-			  "where d._DerivationType_key = " + alleleTypeKey +
-			  " and d._ParentCellLine_key = " + parentKey +
-			  " and d._ParentCellLine_key = c._CellLine_key " +
-			  " and c._Strain_key = " + strainKey +
-			  " and c.isMutant = 0 ");
+		addCellLine := true;
+	        mutantCellLine := NOTSPECIFIED_TEXT;
 
-	      if (derivationKey.length = 0) then
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
-                send(StatusReport);
-	        return;
+	        --
+	        -- select the derivation key that is associated with the specified 
+	        --   allele type
+	        --   parent cell line
+	        --   strain
+	        --
+
+	        derivationKey := mgi_sql1("select d._Derivation_key " +
+			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			    "where d._DerivationType_key = " + alleleTypeKey +
+			    " and d._ParentCellLine_key = " + parentKey +
+			    " and d._ParentCellLine_key = c._CellLine_key " +
+			    " and c._Strain_key = " + strainKey +
+			    " and c.isMutant = 0 ");
+
+	        if (derivationKey.length = 0) then
+                  StatusReport.source_widget := top.root;
+                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                  send(StatusReport);
+	          return;
+	        end if;
+
 	      end if;
 
-	    -- as long as isMutant has been selected...
-	    -- elsif (not isParent and isMutant) then
+	    elsif (not isParent and isMutant) then
+
+	      if (strainName = "Not Applicable") then
+		addAssociation := false;
+		addCellLine := false;
+	      end if;
+
 	    -- elsif (isParent and isMutant) then
 	    -- use defaults (see above) (addCellLine = false, etc.)
 
