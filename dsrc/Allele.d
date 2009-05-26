@@ -134,7 +134,7 @@ locals:
 	defaultStrainKeyNS : string;
 	defaultStrainKeyNA : string;
 
-	--defaultMutantCellLineKeyNA : string := "-4";
+        defaultMutantCellLineKeyNA : string := "-4";
 	defaultParentCellLineKeyNS : string := "-1";
 	defaultCreatorKeyNS : string := "3982966";
 	defaultVectorKeyNS : string := "4311225";
@@ -278,22 +278,22 @@ rules:
 	  pendingStatusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
 
 	  defaultQualifierKey := mgi_sql1("select _Term_key from VOC_Term " +
-		"where _Vocab_key = 70 and term = 'Not Specified'");
+		"where _Vocab_key = 70 and term = '" + NOTSPECIFIED_TEXT + "'");
 
 	  defaultStatusKey := mgi_sql1("select _Term_key from VOC_Term " +
 		"where _Vocab_key = 73 and term = " + mgi_DBprstr(top->Marker->AlleleMarkerStatusMenu.defaultValue));
 
 	  defaultInheritanceKeyNA := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
-		"where term = 'Not Applicable'");
+		"where term = '" + NOTAPPLICABLE_TEXT + "'");
 
 	  defaultInheritanceKeyNS := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
-		"where term = 'Not Specified'");
+		"where term = '" + NOTSPECIFIED_TEXT + "'");
 
 	  defaultTransmissionKeyNA := mgi_sql1("select _Term_key from VOC_Term_ALLTransmission_View " +
-		"where term = 'Not Applicable'");
+		"where term = '" + NOTAPPLICABLE_TEXT + "'");
 
 	  defaultTransmissionKeyNS := mgi_sql1("select _Term_key from VOC_Term_ALLTransmission_View " +
-		"where term = 'Not Specified'");
+		"where term = '" + NOTSPECIFIED_TEXT + "'");
 
 	  defaultStrainKeyNS := NOTSPECIFIED;
 	  defaultStrainKeyNA := NOTAPPLICABLE;
@@ -350,23 +350,24 @@ rules:
 
 	Add does
 	  isWildType : integer := 0;
-	  isExtinct : integer := 0;
-	  isMixed : integer := 0;
 	  nomenSymbol : string := "NULL";
 	  markerKey : string := "NULL";
 	  statusKey : string;
 	  inheritanceKey : string;
-	  strainKey : string;
 	  transmissionKey : string;
+	  strainKey : string;
 	  approvalLoginDate : string;
 	  editMode : string;
-	  refsKey : string;
-	  refsType : string;
-	  originalRefs : integer := 0;
 	  paneKey : string;
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 	  row : integer := 0;
+
+	  refsKey : string;
+	  refsType : string;
+	  originalRefs : integer := 0;
+	  mixedRefs : integer := 0;
+	  isMixed : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -389,6 +390,10 @@ rules:
 	      originalRefs := originalRefs + 1;
 	    end if;
 
+	    if (refsType = "Mixed" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      mixedRefs := mixedRefs + 1;
+	    end if;
+
 	    row := row + 1;
 	  end while;
 
@@ -396,6 +401,22 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
             send(StatusReport);
+            return;
+	  end if;
+
+	  -- Mixed 
+	  if (mixedRefs > 0) then
+	    isMixed := 1;
+	  else
+	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
+	  end if;
+
+	  -- If Mixed Reference is required if false, Mixed = Yes, Status != Autoload
+	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
 	  end if;
 
@@ -448,6 +469,19 @@ rules:
 	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
 	  end if;
 
+	  -- set the germ line transmission default
+	  mutantCellLineKey : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLineKey);
+	  if (mutantCellLineKey.length = 0
+	      or mutantCellLineKey = defaultTransmissionKeyNA
+	      or mutantCellLineKey = defaultTransmissionKeyNS) then
+            transmissionKey := defaultTransmissionKeyNA;
+          elsif (top->AlleleTransmissionMenu.menuHistory.defaultValue = defaultTransmissionKeyNA) then
+            transmissionKey := defaultTransmissionKeyNS;
+	  else
+	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+          end if;
+	  -- end set the germ line transmission default
+
 	  -- set defaults based on allele type
 
 	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
@@ -458,14 +492,11 @@ rules:
 		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
 		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
 	        strainKey := defaultStrainKeyNS;
-	        transmissionKey := defaultTransmissionKeyNS;
 	      else
 	        strainKey := defaultStrainKeyNA;
-	        transmissionKey := defaultTransmissionKeyNA;
 	      end if;
 	  else
 	    strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
-	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
 	  end if;
 
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
@@ -481,7 +512,7 @@ rules:
 		 mgi_DBprstr(nomenSymbol) + "," +
 		 (string) isWildType + "," +
 		 top->ExtinctMenu.menuHistory.defaultValue + "," +
-		 top->MixedMenu.menuHistory.defaultValue + "," +
+		 (string) isMixed + "," +
 		 global_loginKey + "," +
 		 global_loginKey + "," +
 		 approvalLoginDate;
@@ -593,13 +624,17 @@ rules:
 	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
 	  editMode : string;
-	  refsKey : string;
-	  refsType : string;
-	  originalRefs : integer := 0;
+	  transmissionKey : string;
 	  paneKey : string;
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 	  row : integer := 0;
+
+	  refsKey : string;
+	  refsType : string;
+	  originalRefs : integer := 0;
+	  mixedRefs : integer := 0;
+	  isMixed : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -622,12 +657,32 @@ rules:
 	      originalRefs := originalRefs + 1;
 	    end if;
 
+	    if (refsType = "Mixed" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      mixedRefs := mixedRefs + 1;
+	    end if;
+
 	    row := row + 1;
 	  end while;
 
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
+
+	  -- Mixed 
+	  if (mixedRefs > 0) then
+	    isMixed := 1;
+	  else
+	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
+	  end if;
+
+	  -- If Mixed Reference is required if false, Mixed = Yes, Status != Autoload
+	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
@@ -716,15 +771,29 @@ rules:
 	    end if;
           end if;
 
-          if (top->AlleleTransmissionMenu.menuHistory.modified and
-	      top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
-            set := set + "_Transmission_key = "  + top->AlleleTransmissionMenu.menuHistory.defaultValue + ",";
+	  -- set the germ line transmission default
+	  mutantCellLineKey : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLineKey);
+	  if (mutantCellLineKey.length = 0
+	      or mutantCellLineKey = defaultTransmissionKeyNA
+	      or mutantCellLineKey = defaultTransmissionKeyNS) then
+            transmissionKey := defaultTransmissionKeyNA;
+          elsif (top->AlleleTransmissionMenu.menuHistory.defaultValue = defaultTransmissionKeyNA) then
+            transmissionKey := defaultTransmissionKeyNS;
+	  else
+	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
           end if;
+	  -- end set the germ line transmission default
 
-          if (top->MixedMenu.menuHistory.modified and
-	      top->MixedMenu.menuHistory.searchValue != "%") then
-            set := set + "isMixed = "  + top->MixedMenu.menuHistory.defaultValue + ",";
-          end if;
+          --if (top->AlleleTransmissionMenu.menuHistory.modified and
+	  --    top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
+          set := set + "_Transmission_key = "  + transmissionKey + ",";
+          --end if;
+
+	  -- Mixed Reference determines the setting of isMixed
+          --if (top->MixedMenu.menuHistory.modified and
+	  --    top->MixedMenu.menuHistory.searchValue != "%") then
+          set := set + "isMixed = "  + (string) isMixed + ",";
+          --end if;
 
           if (top->ExtinctMenu.menuHistory.modified and
 	      top->ExtinctMenu.menuHistory.searchValue != "%") then
@@ -1069,8 +1138,8 @@ rules:
 	  isParent : boolean := true;
 	  isMutant : boolean := true;
 
-	  addAssociation : boolean := true;
 	  addCellLine : boolean := false;
+	  addAssociation : boolean := true;
  
 	  -- set the allele type and type key
 	  -- set the parent
@@ -1151,21 +1220,26 @@ rules:
 		mutantCellLine := NOTSPECIFIED_TEXT;
 		strainKey := defaultStrainKeyNS;
 	        addCellLine := true;
+	        addAssociation := true;
 
 	      -- do not default 'not applicable'
 	      else
+	          addCellLine := false;
 		  addAssociation := false;
 	      end if;
 
 	    elsif (isParent and not isMutant) then
 
-	      if (strainName = "Not Applicable") then
-		addAssociation := false;
-		addCellLine := false;
+	      if (strainName = NOTAPPLICABLE_TEXT) then
+		mutantCellLineKey := defaultMutantCellLineKeyNA;
+		strainKey := defaultStrainKeyNA;
+	        addCellLine := false;
+	        addAssociation := true;
 
 	      else
 
 		addCellLine := true;
+	        addAssociation := true;
 	        mutantCellLine := NOTSPECIFIED_TEXT;
 
 	        --
@@ -1194,13 +1268,32 @@ rules:
 
 	    elsif (not isParent and isMutant) then
 
-	      if (strainName = "Not Applicable") then
-		addAssociation := false;
+	      if (strainName = NOTSPECIFIED_TEXT) then
+		addCellLine := true;
+		addAssociation := true;
+	      elsif (strainName = NOTAPPLICABLE_TEXT) then
+		mutantCellLineKey := defaultMutantCellLineKeyNA;
+		strainKey := defaultStrainKeyNA;
 		addCellLine := false;
+		addAssociation := true;
+	      else
+		addCellLine := false;
+		addAssociation := true;
 	      end if;
 
-	    -- elsif (isParent and isMutant) then
-	    -- use defaults (see above) (addCellLine = false, etc.)
+	    elsif (isParent and isMutant) then
+
+	      if (strainName = NOTSPECIFIED_TEXT) then
+	        addCellLine := true;
+	        addAssociation := true;
+	      elsif (strainName = NOTAPPLICABLE_TEXT) then
+		mutantCellLineKey := defaultMutantCellLineKeyNA;
+	        addCellLine := false;
+	        addAssociation := true;
+	      else
+	        addCellLine := false;
+	        addAssociation := true;
+	      end if;
 
 	    end if;
 
@@ -2022,11 +2115,11 @@ rules:
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
-	      value := "Not Specified";
+	      value := NOTSPECIFIED_TEXT;
 
 	    -- do not default 'not applicable'
 	    --else
-	    --  value := "Not Applicable";
+	    --  value := NOTAPPLICABLE_TEXT;
 
 	    else
               (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
