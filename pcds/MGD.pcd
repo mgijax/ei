@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 12 12:31:58 2009";
+      lastWritten = "Tue May 26 14:33:05 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8510,7 +8510,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblEditableSeries = "(all 0 False) (all 5 False)";
                                                       xrtTblPixelWidthSeries = "(all 0-4 0)";
                                                       xrtTblTraversableSeries = "(all 0 False) (all 5 False)";
-                                                      userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\nrefsCurrentKey:Int=\"4\"\n";
+                                                      userDefinedAttributes = "assocKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"4\"\njnum:Int(Int)=\"7\"\ncitation:Int(Int)=\"8\"\nmodifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\nsequenceKey:Int(Int)=\"3\"\nrefsCurrentKey:Int(Int)=\"4\"\n";
                                                       xrtTblVisibleRows = 5;
                                                       xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                                                       xrtTblNumRows = 10;
@@ -8751,6 +8751,34 @@ Shift<Key>Tab: prev-tab-group()
                                                     IGTC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      allowAdd = False;
+                                                      allowDelete = False;
+                                                      allowModify = False;
+                                                  }
+                                                  {
+                                                    Lexicon = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                    Group: User
+                                                      allowAdd = False;
+                                                      allowDelete = False;
+                                                      allowModify = False;
+                                                  }
+                                                  {
+                                                    LexiconGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BayGenomicGeneTrap = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    TexasGeneTrap = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                    Group: User
+                                                      allowAdd = False;
+                                                      allowDelete = False;
+                                                      allowModify = False;
                                                   }
                                                   }
                                                   }
@@ -16657,6 +16685,9 @@ Shift<Key>Tab: prev-tab-group()
                                           columns = 5;
                                           inTabGroup = False;
                                       }
+                                }
+                                {
+                                  mgiNoteForm = mgiNoteForm : mgiDataTypes;
                                 }
                           }
                     }

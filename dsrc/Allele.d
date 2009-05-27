@@ -90,7 +90,6 @@ devents:
 			   reason : integer;];
 
 	VerifyMutantParentStrain :local [];
-
 	VerifyMutantCellLine :translation [];
 	VerifyParentCellLine :translation [];
 
@@ -366,6 +365,7 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
+
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
 
@@ -633,6 +633,7 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
+
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
 

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr 30 13:34:07 2009";
+      lastWritten = "Thu May 14 10:00:07 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -653,7 +653,7 @@ Module: mgiOption
                     {
                       KOMPRegeneronProject = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "KOMP Regenron Project";
+                        labelString = "KOMP Regeneron Project";
                       Group: User
                         defaultValue = 125;
                     }
