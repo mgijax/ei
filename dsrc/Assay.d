@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  05/27/2009
+--	- TR 9665; set currentAssay key before call to CreateGelBandColumns
+--
 -- lec	10/08/2008
 --	- TR 9289; add keyboard short cuts; CopySpecimenColumn (l), CopyGelLaneColumn (u)
 --
@@ -425,6 +428,7 @@ rules:
           send(SetNotesDisplay, 0);
 
 	  if (not ClearAssay.select) then
+	    currentAssay := "";
 	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
@@ -432,7 +436,6 @@ rules:
 	    top->KnockInForm.sensitive := false;
 	    top->GXDReporterGeneMenu.required := false;
 	    top->GXDKnockInMenu.required := false;
-	    currentAssay := "";
 	  end if;
 	end does;
 
@@ -2290,7 +2293,7 @@ rules:
             send(ClearTable, 0);
           end while;
           tables.close;
- 
+
 	  -- Clear Prep forms
 	  prepForms.open;
 	  while (prepForms.more) do
@@ -2309,6 +2312,7 @@ rules:
             top->QueryList->List.row := 0;
             top->ID->text.value := "";
 	    send(LoadClipboards, 0);
+	    send(CreateGelBandColumns, 0);
             return;
           end if;
 
