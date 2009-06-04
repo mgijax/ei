@@ -10,7 +10,7 @@
 --
 -- History
 --
--- 02/18/2009-?/2009	lec
+-- 02/18/2009-06/2009	lec
 --	TR7493; gene trap less filling
 --
 -- 02/17/2009	lec
@@ -369,6 +369,8 @@ rules:
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
 
+	  transmissionRefs : integer := 0;
+
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
@@ -394,6 +396,10 @@ rules:
 	      mixedRefs := mixedRefs + 1;
 	    end if;
 
+	    if (refsType = "Transmission" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      transmissionRefs := transmissionRefs + 1;
+	    end if;
+
 	    row := row + 1;
 	  end while;
 
@@ -411,10 +417,21 @@ rules:
 	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
 	  end if;
 
-	  -- If Mixed Reference is required if false, Mixed = Yes, Status != Autoload
+	  -- Mixed Reference is required if false, Mixed = Yes, Status != Autoload
 	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
             StatusReport.source_widget := top;
             StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
+
+	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
+	  if (transmissionRefs = 0 and 
+	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
+	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "If Germ Line Transmission = Chimeric or Germline, then a Transmission Reference must be attached.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
@@ -564,6 +581,14 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
+	  -- Process Sequence/Allele Associations
+
+          ProcessAcc.table := seqTable;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := SEQ_ALLELE_ASSOC;
+          send(ProcessAcc, 0);
+          cmd := cmd + seqTable.sqlCmd;
+
 	  -- Execute the add
 
 	  cmd := cmd + "exec ALL_reloadLabel " + currentRecordKey + "\n";
@@ -637,6 +662,8 @@ rules:
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
 
+	  transmissionRefs : integer := 0;
+
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
@@ -662,6 +689,10 @@ rules:
 	      mixedRefs := mixedRefs + 1;
 	    end if;
 
+	    if (refsType = "Transmission" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      transmissionRefs := transmissionRefs + 1;
+	    end if;
+
 	    row := row + 1;
 	  end while;
 
@@ -680,10 +711,21 @@ rules:
 	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
 	  end if;
 
-	  -- If Mixed Reference is required if false, Mixed = Yes, Status != Autoload
+	  -- Mixed Reference is required if false, Mixed = Yes, Status != Autoload
 	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
             StatusReport.source_widget := top;
             StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
+
+	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
+	  if (transmissionRefs = 0 and 
+	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
+	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "If Germ Line Transmission = Chimeric or Germline, then a Transmission Reference must be attached.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
@@ -850,6 +892,14 @@ rules:
           ProcessAcc.tableID := ALL_ALLELE;
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
+
+	  -- Process Sequence/Allele Associations
+
+          ProcessAcc.table := seqTable;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := SEQ_ALLELE_ASSOC;
+          send(ProcessAcc, 0);
+          cmd := cmd + seqTable.sqlCmd;
 
 	  if ((cmd.length > 0 and cmd != accTable.sqlCmd and cmd != top->mgiNoteForm.sql) or
 	      set.length > 0) then

@@ -47,3 +47,6 @@ VerifyAccDelete [];
 
 -- Verify MGI Accession number entered in text field
 VerifyMGIAcc : translation [];
+
+-- Verify Sequence numbers in Accession Table
+VerifyAccSequence [];

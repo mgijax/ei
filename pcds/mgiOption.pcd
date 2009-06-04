@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May 14 10:00:07 2009";
+      lastWritten = "Tue Jun  2 14:29:17 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -3070,7 +3070,7 @@ Module: mgiOption
             vip_x = 189;
             vip_y = 6185;
           Group: User
-            defaultValue = "Not Specified";
+            defaultValue = "Embryonic Stem Cell";
               Popups:
               {
                 AlleleCellLineTypePulldown : OptionPulldown = OptionPulldown : mgiOption;

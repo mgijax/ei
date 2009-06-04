@@ -553,6 +553,7 @@ char *mgi_DBkey(int table)
 	    break;
     case ALL_ALLELE_CELLLINE:
     case ALL_MARKER_ASSOC:
+    case SEQ_ALLELE_ASSOC:
             strcpy(buf, "_Assoc_key");
 	    break;
     case BIB_REFS:
@@ -1015,9 +1016,6 @@ char *mgi_DBaccTable(int table)
     case ALL_ALLELE:
             strcpy(buf, "ALL_Acc_View");
             break;
-    case SEQ_ALLELE_ASSOC_VIEW:
-            strcpy(buf, "SEQ_Allele_Assoc_View");
-            break;
     case ALL_CELLLINE:
     case ALL_CELLLINE_NONMUTANT:
             strcpy(buf, "ALL_CellLine_Acc_View");
@@ -1054,10 +1052,10 @@ char *mgi_DBaccTable(int table)
             strcpy(buf, "MRK_AccRef_View");
             break;
     case NOM_MARKER:
-	    sprintf(buf, "NOM_AccNoRef_View");
+	    strcpy(buf, "NOM_AccNoRef_View");
             break;
     case NOM_ACC_REFERENCE:
-	    sprintf(buf, "NOM_AccRef_View");
+	    strcpy(buf, "NOM_AccRef_View");
             break;
     case PRB_PROBE:
             strcpy(buf, "PRB_AccNoRef_View");
@@ -1069,13 +1067,16 @@ char *mgi_DBaccTable(int table)
 	    strcpy(buf, "PRB_Source_Acc_View");
 	    break;
     case STRAIN:
-	    sprintf(buf, "PRB_Strain_Acc_View");
+	    strcpy(buf, "PRB_Strain_Acc_View");
+            break;
+    case SEQ_ALLELE_ASSOC_VIEW:
+            strcpy(buf, "SEQ_Allele_Assoc_View");
             break;
     case SEQ_SEQUENCE:
-	    sprintf(buf, "SEQ_Sequence_Acc_View");
+	    strcpy(buf, "SEQ_Sequence_Acc_View");
             break;
     case VOC_TERM:
-	    sprintf(buf, "VOC_Term_Acc_View");
+	    strcpy(buf, "VOC_Term_Acc_View");
             break;
     default:
             sprintf(buf, "Invalid Table: %d", table);
@@ -1618,13 +1619,13 @@ char *mgi_DBtable(int table)
             strcpy(buf, "MRK_Types");
 	    break;
     case MRK_EVENT:
-	    sprintf(buf, "MRK_Event");
+	    strcpy(buf, "MRK_Event");
 	    break;
     case MRK_EVENTREASON:
-	    sprintf(buf, "MRK_EventReason");
+	    strcpy(buf, "MRK_EventReason");
 	    break;
     case MRK_STATUS:
-	    sprintf(buf, "MRK_Status");
+	    strcpy(buf, "MRK_Status");
 	    break;
     case NOM_MARKER:
 	    strcpy(buf, "NOM_Marker");
@@ -1689,6 +1690,9 @@ char *mgi_DBtable(int table)
 	    break;
     case RISET_VIEW:
             strcpy(buf, "RI_RISet_View");
+	    break;
+    case SEQ_ALLELE_ASSOC:
+	    strcpy(buf, "SEQ_Allele_Assoc");
 	    break;
     case SEQ_SEQUENCE:
 	    strcpy(buf, "SEQ_Sequence");
@@ -1886,6 +1890,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case PRB_SOURCE:
     case PRB_STRAIN_GENOTYPE:
     case PRB_STRAIN_MARKER:
+    case SEQ_ALLELE_ASSOC:
     case VOC_ANNOT:
     case VOC_ANNOTHEADER:
     case VOC_TEXT:
@@ -2284,6 +2289,9 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Strain_key_1, _Strain_key_2, designation, abbrev1, abbrev2, RI_IdList)", 
 	      mgi_DBtable(table), mgi_DBkey(table));
 	    break;
+    case SEQ_ALLELE_ASSOC:
+            sprintf(buf, "insert %s (%s, _Sequence_key, _Allele_key, _Qualifier_key, _Refs_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
     case STRAIN:
             sprintf(buf, "insert %s (%s, _Species_key, _StrainType_key, strain, standard, private, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
@@ -2445,6 +2453,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_SOURCE:
       case PRB_STRAIN_GENOTYPE:
       case PRB_STRAIN_MARKER:
+      case SEQ_ALLELE_ASSOC:
       case SEQ_SEQUENCE:
       case STRAIN:
       case VOC_EVIDENCE:
@@ -2506,6 +2515,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case PRB_REFERENCE:
       case PRB_RFLV:
       case PRB_SOURCE:
+      case SEQ_ALLELE_ASSOC:
       case SEQ_SEQUENCE:
       case STRAIN:
       case VOC_EVIDENCE:
