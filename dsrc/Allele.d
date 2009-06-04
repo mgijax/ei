@@ -1747,7 +1747,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct a._Allele_key, a.symbol\n" + from + "\n" + 
-			  where + union + "\norder by a.symbol\n";
+			  where + union + "\norder by a.statusNum, a.symbol\n";
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);
@@ -1840,9 +1840,9 @@ rules:
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 19));
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 26));
 
 		-- If the Marker key is null, then use the Nomen Symbol field
 		if (mgi_getstr(dbproc, 2) = "") then
@@ -1851,7 +1851,7 @@ rules:
 		end if;
 
 		top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 22);
+		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 23);
 		top->mgiParentCellLine->ObjectID->text.value := "";
 		top->mgiParentCellLine->CellLine->text.value := "";
 		top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
