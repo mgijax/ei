@@ -1019,6 +1019,7 @@ rules:
 	  row : integer := 0;
 	  editMode : string;
 	  key : string;
+	  markerSymbol : string;
 	  markerKey : string;
 	  refsKey : string;
 	  nomenSymbol : string;
@@ -1028,6 +1029,15 @@ rules:
 	  keyName : string := "mrkassocKey";
 	  keyDefined : boolean := false;
  
+	  -- if the marker symbol is blank, verify that the user is not going to add a marker
+	  markerSymbol := mgi_tblGetCell(table, 0, table.markerSymbol);
+	  if (markerSymbol = "" or markerSymbol = "NULL") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "There is no Marker association for this Allele.";
+            send(StatusReport);
+	    return;
+	  end if;
+
 	  -- there is only one nomen symbol per allele...
 	  -- if the marker key is NULL, then this is a nomen symbol and we're done
 
@@ -1167,6 +1177,7 @@ rules:
 	  editMode : string;
 	  key : string;
 	  set : string := "";
+	  isError : boolean := false;
 
 	  alleleType : string;
 	  alleleTypeKey : string;
@@ -1265,7 +1276,7 @@ rules:
                   StatusReport.source_widget := top.root;
                   StatusReport.message := "Cannot find Derivation for this Allele Type and Parent = 'Not Specified'";
                   send(StatusReport);
-		  return;
+		  isError := true;
 	        end if;
 
 		mutantCellLine := NOTSPECIFIED_TEXT;
@@ -1312,7 +1323,7 @@ rules:
                   StatusReport.source_widget := top.root;
                   StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
                   send(StatusReport);
-	          return;
+	          isError := true;
 	        end if;
 
 	      end if;
@@ -1323,10 +1334,14 @@ rules:
 		addCellLine := true;
 		addAssociation := true;
 	      elsif (strainName = NOTAPPLICABLE_TEXT) then
-		mutantCellLineKey := defaultMutantCellLineKeyNA;
-		strainKey := defaultStrainKeyNA;
-		addCellLine := false;
-		addAssociation := true;
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "The Strain of Origin cannot be set to 'Not Applicable'";
+                send(StatusReport);
+	        isError := true;
+		--mutantCellLineKey := defaultMutantCellLineKeyNA;
+		--strainKey := defaultStrainKeyNA;
+		--addCellLine := false;
+		--addAssociation := true;
 	      else
 		addCellLine := false;
 		addAssociation := true;
@@ -1338,9 +1353,13 @@ rules:
 	        addCellLine := true;
 	        addAssociation := true;
 	      elsif (strainName = NOTAPPLICABLE_TEXT) then
-		mutantCellLineKey := defaultMutantCellLineKeyNA;
-	        addCellLine := false;
-	        addAssociation := true;
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "The Strain of Origin cannot be set to 'Not Applicable'";
+                send(StatusReport);
+	        isError := true;
+		--mutantCellLineKey := defaultMutantCellLineKeyNA;
+	        --addCellLine := false;
+	        --addAssociation := true;
 	      else
 	        addCellLine := false;
 	        addAssociation := true;
@@ -1351,6 +1370,10 @@ rules:
 	    --
 	    -- end check isParent, isMutant
 	    --
+
+	    if (isError) then
+	      return;
+	    end if;
 
 	    --
 	    -- if addCellLine, then add the ALL_CellLine record
@@ -1411,6 +1434,7 @@ rules:
 	    end if;
 
 	    row := row + 1;
+
 	  end while;
 
 	  -- (void) mgi_writeLog(cmd);
@@ -2061,6 +2085,7 @@ rules:
 	  reason : integer := VerifyMutantCellLine.reason;
 	  value : string := VerifyMutantCellLine.value;
 	  select : string;
+	  mutantCellLineKey : string;
 
 	  if (column != table.cellLine) then
 	    return;
@@ -2118,7 +2143,8 @@ rules:
 
 	  -- If ID is empty, then value is invalid
 
-	  if (mgi_tblGetCell(cellLineTable, row, cellLineTable.cellLineKey) = "") then
+	  mutantCellLineKey := mgi_tblGetCell(cellLineTable, row, cellLineTable.cellLineKey);
+	  if (mutantCellLineKey = "") then
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Mutant Cell Line";
             send(StatusReport);
@@ -2126,6 +2152,14 @@ rules:
 	    (void) mgi_tblSetCell(table, row, cellLineTable.cellLineKey, "");
 	    (void) mgi_tblSetCell(table, row, cellLineTable.creator, "");
 	    VerifyMutantCellLine.doit := (integer) false;
+	  end if;
+
+	  cellLineCount : integer := (integer) mgi_sql1("select count(*) from ALL_Allele_CellLine " + \
+		  "where _MutantCellLine_key = " + mutantCellLineKey);
+	  if (cellLineCount > 0) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "There is at least one Allele that is associated with this Mutant Cell Line";
+            send(StatusReport);
 	  end if;
 
 	  (void) reset_cursor(top);
