@@ -26,10 +26,10 @@ setenv EIDATADIR /data/ei
 setenv EIDEBUG	0
 
 # User log
-setenv USERLOG	${HOME}/.ei-log
+setenv USERLOG	${HOME}/${EI_LOGFILE}
 
 # User password file
-setenv EIPASSWORDFILE  ${HOME}/.mgi_password
+setenv EIPASSWORDFILE  ${HOME}/${EI_PASSWORDFILE}
 
 # EI Applications
 setenv EIAPPS	"mgd gxd mgiadmin mgi"
