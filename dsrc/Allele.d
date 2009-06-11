@@ -1349,10 +1349,41 @@ rules:
 
 	    elsif (isParent and isMutant) then
 
-	      if (strainName = NOTSPECIFIED_TEXT) then
+	      if (strainName = NOTSPECIFIED_TEXT or
+		  mutantCellLine = NOTSPECIFIED_TEXT) then
+
 	        addCellLine := true;
 	        addAssociation := true;
-	      elsif (strainName = NOTAPPLICABLE_TEXT) then
+
+		if (editMode = TBL_ROW_NOCHG) then
+		  editMode := TBL_ROW_MODIFY;
+                end if;
+
+	        --
+	        -- select the derivation key that is associated with the specified 
+	        --   allele type
+	        --   parent cell line
+	        --   strain
+	        --
+
+	        derivationKey := mgi_sql1("select d._Derivation_key " +
+			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			    "where d._DerivationType_key = " + alleleTypeKey +
+			    " and d._ParentCellLine_key = " + parentKey +
+			    " and d._ParentCellLine_key = c._CellLine_key " +
+			    " and c._Strain_key = " + strainKey +
+			    " and c.isMutant = 0 ");
+
+	        if (derivationKey.length = 0) then
+                  StatusReport.source_widget := top.root;
+                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                  send(StatusReport);
+	          isError := true;
+	        end if;
+
+	      elsif (strainName = NOTAPPLICABLE_TEXT or
+		     mutantCellLine = NOTAPPLICABLE_TEXT) then
+
                 StatusReport.source_widget := top.root;
                 StatusReport.message := "The Strain of Origin cannot be set to 'Not Applicable'";
                 send(StatusReport);
@@ -1360,6 +1391,7 @@ rules:
 		--mutantCellLineKey := defaultMutantCellLineKeyNA;
 	        --addCellLine := false;
 	        --addAssociation := true;
+
 	      else
 	        addCellLine := false;
 	        addAssociation := true;
