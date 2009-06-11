@@ -2176,7 +2176,7 @@ rules:
 	  -- If ID is empty, then value is invalid
 
 	  mutantCellLineKey := mgi_tblGetCell(cellLineTable, row, cellLineTable.cellLineKey);
-	  if (mutantCellLineKey = "") then
+	  if (mutantCellLineKey = "" or mutantCellLineKey = "NULL") then
             StatusReport.source_widget := top.root;
             StatusReport.message := "Invalid Mutant Cell Line";
             send(StatusReport);
@@ -2186,13 +2186,13 @@ rules:
 	    VerifyMutantCellLine.doit := (integer) false;
 	  end if;
 
-	  cellLineCount : integer := (integer) mgi_sql1("select count(*) from ALL_Allele_CellLine " + \
-		  "where _MutantCellLine_key = " + mutantCellLineKey);
-	  if (cellLineCount > 0) then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "There is at least one Allele that is associated with this Mutant Cell Line";
-            send(StatusReport);
-	  end if;
+--	  cellLineCount : integer := (integer) mgi_sql1("select count(*) from ALL_Allele_CellLine " + \
+--		  "where _MutantCellLine_key = " + mutantCellLineKey);
+--	  if (cellLineCount > 0) then
+--            StatusReport.source_widget := top.root;
+--            StatusReport.message := "There is at least one Allele that is associated with this Mutant Cell Line";
+--            send(StatusReport);
+--	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
