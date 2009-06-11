@@ -350,7 +350,7 @@ rules:
 	Add does
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
-	  markerKey : string := "NULL";
+	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  statusKey : string;
 	  inheritanceKey : string;
 	  transmissionKey : string;

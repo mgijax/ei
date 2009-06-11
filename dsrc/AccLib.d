@@ -959,6 +959,13 @@ rules:
             return;
           end if;
  
+          if (logicalKey.length = 0) then
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Select a Sequence Name and then choose 'Add Row' before entering a Sequence ID";
+	    send(StatusReport);
+	    return;
+	  end if;
+
 	  sequenceKey : string;
 	  accID : string;
 
