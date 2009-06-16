@@ -1202,13 +1202,14 @@ rules:
 
 	  addCellLine : boolean := false;
 	  addAssociation : boolean := true;
+
+	  getDerivation : boolean := true;
  
 	  -- set the allele type and type key
 	  -- set the parent
 	  -- set the strain
 	  -- set the derivation
 
-	  alleleType := top->AlleleTypeMenu.menuHistory.labelString;
 	  alleleTypeKey := top->AlleleTypeMenu.menuHistory.searchValue;
 	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
 	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
@@ -1230,6 +1231,15 @@ rules:
 	      break;
 	    end if;
  
+	    if (editMode = TBL_ROW_NOCHG and top->mgiParentCellLine->ObjectID->text.modified) then
+	      editMode := TBL_ROW_MODIFY;
+            end if;
+
+	    -- check if changes have been made to the mutant and the derivation...
+	    if (editMode = TBL_ROW_NOCHG and not top->mgiParentCellLine->ObjectID->text.modified) then
+	      getDerivation := false;
+            end if;
+
 	    key := mgi_tblGetCell(table, row, table.assocKey);
 	    mutantCellLine := mgi_tblGetCell(table, row, table.cellLine);
 	    mutantCellLineKey := mgi_tblGetCell(table, row, table.cellLineKey);
@@ -1273,11 +1283,11 @@ rules:
 			" and c.isMutant = 0 ");
 
 	        if (derivationKey.length = 0) then
-                  StatusReport.source_widget := top.root;
-                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent = 'Not Specified'";
-                  send(StatusReport);
-		  isError := true;
-	        end if;
+                   StatusReport.source_widget := top.root;
+                   StatusReport.message := "Cannot find Derivation for this Allele Type and Parent = 'Not Specified'";
+                   send(StatusReport);
+		   isError := true;
+		end if;
 
 		mutantCellLine := NOTSPECIFIED_TEXT;
 		strainKey := defaultStrainKeyNS;
@@ -1355,18 +1365,17 @@ rules:
 	        addCellLine := true;
 	        addAssociation := true;
 
-		if (editMode = TBL_ROW_NOCHG) then
-		  editMode := TBL_ROW_MODIFY;
-                end if;
-
 	        --
+		-- only if we're changing the derivation...
 	        -- select the derivation key that is associated with the specified 
 	        --   allele type
 	        --   parent cell line
 	        --   strain
 	        --
 
-	        derivationKey := mgi_sql1("select d._Derivation_key " +
+		if (getDerivation) then
+
+	           derivationKey := mgi_sql1("select d._Derivation_key " +
 			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
 			    "where d._DerivationType_key = " + alleleTypeKey +
 			    " and d._ParentCellLine_key = " + parentKey +
@@ -1374,11 +1383,13 @@ rules:
 			    " and c._Strain_key = " + strainKey +
 			    " and c.isMutant = 0 ");
 
-	        if (derivationKey.length = 0) then
-                  StatusReport.source_widget := top.root;
-                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
-                  send(StatusReport);
-	          isError := true;
+	           if (derivationKey.length = 0) then
+                     StatusReport.source_widget := top.root;
+                     StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                     send(StatusReport);
+	             isError := true;
+		   end if;
+
 	        end if;
 
 	      elsif (strainName = NOTAPPLICABLE_TEXT or
