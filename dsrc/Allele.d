@@ -1758,7 +1758,7 @@ rules:
 
 	  if (from_nomen) then
 	    union := "\nunion" +
-	  	"\nselect distinct a._Allele_key, a.symbol" +
+	  	"\nselect distinct a._Allele_key, a.symbol, 1" +
 		"\nfrom ALL_Allele a" +
 		"\nwhere a.nomenSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
 	  end if;
@@ -1802,7 +1802,7 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct a._Allele_key, a.symbol\n" + from + "\n" + 
+	  Query.select := "select distinct a._Allele_key, a.symbol, a.statusNum\n" + from + "\n" + 
 			  where + union + "\norder by a.statusNum, a.symbol\n";
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
