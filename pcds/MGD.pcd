@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun  9 08:10:57 2009";
+      lastWritten = "Tue Jun 16 14:48:49 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9276,6 +9276,9 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       VerifyMutantParentStrain = VerifyMutantParentStrain : mgiDialog;
+                    }
+                    {
+                      VerifyAlleleStatusStrain = VerifyAlleleStatusStrain : mgiDialog;
                     }
               }
         }

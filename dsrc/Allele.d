@@ -89,7 +89,9 @@ devents:
 			   row : integer;
 			   reason : integer;];
 
+	VerifyAlleleStatusStrain :local [];
 	VerifyMutantParentStrain :local [];
+
 	VerifyMutantCellLine :translation [];
 	VerifyParentCellLine :translation [];
 
@@ -785,6 +787,27 @@ rules:
 
 	  -- end Confirm changes
 
+	  -- Confirm changes to Allele Status, Strain
+
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
+	      top->mgiParentCellLine->Strain->StrainID->text.value = defaultStrainKeyNS) then
+
+	    top->VerifyAlleleStatusStrain.doModify := false;
+            top->VerifyAlleleStatusStrain.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyAlleleStatusStrain.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyAlleleStatusStrain.doModify) then
+	      return;
+	    end if;
+	  end if;
+
+	  -- end Confirm changes
+
 	  (void) busy_cursor(top);
 
 	  cmd := "";
@@ -1375,7 +1398,7 @@ rules:
 
 		if (getDerivation) then
 
-	           derivationKey := mgi_sql1("select d._Derivation_key " +
+	          derivationKey := mgi_sql1("select d._Derivation_key " +
 			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
 			    "where d._DerivationType_key = " + alleleTypeKey +
 			    " and d._ParentCellLine_key = " + parentKey +
@@ -1383,12 +1406,12 @@ rules:
 			    " and c._Strain_key = " + strainKey +
 			    " and c.isMutant = 0 ");
 
-	           if (derivationKey.length = 0) then
-                     StatusReport.source_widget := top.root;
-                     StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
-                     send(StatusReport);
-	             isError := true;
-		   end if;
+	          if (derivationKey.length = 0) then
+                    StatusReport.source_widget := top.root;
+                    StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                    send(StatusReport);
+	            isError := true;
+		  end if;
 
 	        end if;
 
@@ -2101,6 +2124,17 @@ rules:
 	  end while;
 
 	  (void) dbclose(dbproc);
+	end does;
+
+--
+-- VerifyAlleleStatusStrain
+--
+--	Called when user chooses YES from VerifyAlleleStatusStrain dialog
+--
+
+	VerifyAlleleStatusStrain does
+	  top->VerifyAlleleStatusStrain.doModify := true;
+	  top->VerifyAlleleStatusStrain.managed := false;
 	end does;
 
 --
