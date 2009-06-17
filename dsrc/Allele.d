@@ -507,7 +507,8 @@ rules:
 
 	  -- set defaults based on allele type
 
-	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
+	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
+	  if (strainKey.length = 0 and top->mgiParentCellLine->ObjectID->text.value.length = 0) then
               if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
 		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
 		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
@@ -518,8 +519,6 @@ rules:
 	      else
 	        strainKey := defaultStrainKeyNA;
 	      end if;
-	  else
-	    strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
 	  end if;
 
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
