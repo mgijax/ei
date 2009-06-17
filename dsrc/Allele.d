@@ -390,6 +390,10 @@ rules:
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
 
+	    if (markerKey.length = 0) then
+	      markerKey := "NULL";
+	    end if;
+
 	    if (refsType = "Original" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      originalRefs := originalRefs + 1;
 	    end if;
@@ -1052,9 +1056,11 @@ rules:
 	  keyName : string := "mrkassocKey";
 	  keyDefined : boolean := false;
  
-	  -- if the marker symbol is blank, verify that the user is not going to add a marker
+	  -- if the marker symbol is blank, print a warning
+	  editMode := mgi_tblGetCell(table, 0, table.editMode);
 	  markerSymbol := mgi_tblGetCell(table, 0, table.markerSymbol);
-	  if (markerSymbol = "" or markerSymbol = "NULL") then
+
+	  if (editMode != TBL_ROW_DELETE and (markerSymbol = "" or markerSymbol = "NULL")) then
             StatusReport.source_widget := top.root;
             StatusReport.message := "There is no Marker association for this Allele.";
             send(StatusReport);
@@ -1088,6 +1094,10 @@ rules:
 	    statusKey := mgi_tblGetCell(table, row, table.statusKey);
 	    qualifierKey := defaultQualifierKey;
 
+	    if (markerKey.length = 0) then
+	      markerKey := "NULL";
+	    end if;
+
 	    if (refsKey.length = 0) then
 	      refsKey := "NULL";
 	    end if;
@@ -1118,6 +1128,7 @@ rules:
 	             ",_Refs_key = " + refsKey +
 	             ",_Status_key = " + statusKey;
 	      cmd := cmd + mgi_DBupdate(ALL_MARKER_ASSOC, key, set);
+
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
 	      cmd := cmd + mgi_DBdelete(ALL_MARKER_ASSOC, key);
 	    end if;
