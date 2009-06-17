@@ -160,6 +160,9 @@ rules:
 
 	Add does
 
+	  vectorKey : string;
+	  parentCellLineKey : string;
+
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
@@ -172,14 +175,23 @@ rules:
  
 	  -- Insert master record
 
+	  vectorKey := top->EditForm->mgiAlleleVector->ObjectID->text.value;
+	  if (vectorKey.length = 0) then
+	    vectorKey := top->EditForm->mgiAlleleVector->ObjectID->text.defaultValue;
+	  end if;
+
+	  parentCellLineKey := top->EditForm->mgiParentCellLine->ObjectID->text.value;
+	  if (parentCellLineKey.length = 0) then
+	    parentCellLineKey := top->EditForm->mgiParentCellLine->ObjectID->text.defaultValue;
+	  end if;
 
           cmd := mgi_setDBkey(ALL_CELLLINE_DERIVATION, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE_DERIVATION, KEYNAME) +
 	         mgi_DBprstr(top->EditForm->DerivationName->text.value) + "," +
 		 "NULL," +
-		 top->EditForm->mgiAlleleVector->ObjectID->text.value + "," +
+		 vectorKey + "," +
 		 top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue + "," +
-		 top->EditForm->mgiParentCellLine->ObjectID->text.value + "," +
+		 parentCellLineKey + "," +
 		 top->EditForm->AlleleDerivationTypeMenu.menuHistory.defaultValue + "," +
 		 top->EditForm->AlleleCreatorMenu.menuHistory.defaultValue + ",";
 
@@ -427,8 +439,6 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_DERIVATION_VIEW) + " where _Derivation_key = " + currentRecordKey;
 
-	  results : integer := 1;
-
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -436,45 +446,39 @@ rules:
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      if (results = 1) then
-	        top->ID->text.value := mgi_getstr(dbproc, 1);
-	        top->EditForm->DerivationName->text.value := mgi_getstr(dbproc, 2);
+	      top->ID->text.value := mgi_getstr(dbproc, 1);
+	      top->EditForm->DerivationName->text.value := mgi_getstr(dbproc, 2);
 
-                top->EditForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 9);
-                top->EditForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 22);
-                top->EditForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 23);
+              top->EditForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 9);
+              top->EditForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 22);
+              top->EditForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 23);
 
-                top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 14);
-                top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 15);
-                top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 16);
-                top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 17);
+              top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 14);
+              top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 15);
+              top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 16);
+              top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 17);
 
-	        top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 4);
-	        top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 19);
+	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 4);
+	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 19);
 
-                (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byUser, mgi_getstr(dbproc, 24));
-                (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byDate, mgi_getstr(dbproc, 12));
-                (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 25));
-                (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byDate, mgi_getstr(dbproc, 13));
+              (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byUser, mgi_getstr(dbproc, 24));
+              (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byDate, mgi_getstr(dbproc, 12));
+              (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 25));
+              (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byDate, mgi_getstr(dbproc, 13));
 
-                SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
-                SetOption.value := mgi_getstr(dbproc, 8);
-                send(SetOption, 0);
+              SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
+              SetOption.value := mgi_getstr(dbproc, 8);
+              send(SetOption, 0);
 
-                SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 7);
-                send(SetOption, 0);
+              SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 7);
+              send(SetOption, 0);
 
-                SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
-                send(SetOption, 0);
-
-	      elsif (results = 2) then
-		top->NumberOfMutants->text.value := mgi_getstr(dbproc, 1);
-	      end if;
+              SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
 
 	    end while;
-	    results := results + 1;
 	  end while;
 
 	  cmd := "select count(_CellLine_key) from " + mgi_DBtable(ALL_CELLLINE_VIEW) + 
@@ -486,7 +490,6 @@ rules:
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 	      top->NumberOfMutants->text.value := mgi_getstr(dbproc, 1);
 	    end while;
-	    results := results + 1;
 	  end while;
 	  (void) dbclose(dbproc);
 
