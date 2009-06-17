@@ -2,7 +2,7 @@ Module: mgiDataTypes
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  6 13:14:57 2009";
+      lastWritten = "Wed Jun 17 12:28:33 2009";
         {
           toggle = XmToggleButton;
           Group: Widget
@@ -1172,6 +1172,14 @@ Shift<Key>Tab: prev-tab-group()
             vip_y = 2705;
               {
                 ObjectID = ID;
+                    {
+                      label = XmLabel;
+                    }
+                    {
+                      text = text;
+                      Group: User
+                        defaultValue = 4311225;
+                    }
               }
               {
                 Vector : CharText = CharText;

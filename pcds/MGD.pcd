@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 16 14:48:49 2009";
+      lastWritten = "Wed Jun 17 12:41:55 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -16574,6 +16574,8 @@ Shift<Key>Tab: prev-tab-group()
                                         text = text : mgiDataTypes;
                                         Group: Widget
                                           columns = 50;
+                                        Group: User
+                                          required = True;
                                       }
                                 }
                                 {
@@ -16601,6 +16603,14 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                       {
                                         ObjectID = ID : mgiDataTypes;
+                                            {
+                                              label = XmLabel;
+                                            }
+                                            {
+                                              text = text;
+                                              Group: User
+                                                defaultValue = "-1";
+                                            }
                                       }
                                       {
                                         CellLine = CharText : mgiDataTypes;
@@ -16639,21 +16649,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     leftWidget = AlleleDerivationTypeMenu;
                                     topWidget = mgiParentCellLine;
-                                      {
-                                        ObjectID = ID;
-                                      }
-                                      {
-                                        Vector = CharText;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                              Group: User
-                                                required = True;
-                                                defaultValue = "Not Specified";
-                                            }
-                                      }
                                 }
                                 {
                                   AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;

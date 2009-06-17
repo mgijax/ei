@@ -1,18 +1,31 @@
+TAG: ei-tr7493-10
+STAFF: lec
+DATE: 06/17/2009
+1) moved runstatistics and statistics.py to mgddbutilities
+2) default #2244, #2277, #2286
+
 TAG: ei-tr7493-9
-1) defect #2224
 TAG: ei-tr7493-8
-1) defect #2279, #2278/part 2
+STAFF: lec
+DATE: 06/16/2009
+1) defect #2224
+2) defect #2279, #2278/part 2
+
 TAG: ei-tr7493-7
+STAFF: lec
+DATE: 06/09/2009
 1) defect ID: 2270, 2270
+
 TAG: ei-tr7493-6
+STAFF: lec
+DATE: 06/04/2009
 1) defect ID: 2223,2228,2245
+
 TAG: ei-tr7493-5
 TAG: ei-tr7493-4
 TAG: ei-tr7493-3
 TAG: ei-tr7493-2
 TAG: ei-tr7493-1
-DATE: 06/09/2009
-DATE: 06/04/2009
 DATE: 05/27/2009
 STAFF: lec
 CHANGES:
