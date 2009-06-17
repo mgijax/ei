@@ -280,7 +280,7 @@ rules:
 	  end if;
 
           if (top->EditForm->mgiParentCellLine->ObjectID->text.modified) then
-	    set := set + "_ParentCellLine_key = " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ObjectID->text.value) + ",";
+	    set := set + "_ParentCellLine_key = " + top->EditForm->mgiParentCellLine->ObjectID->text.value + ",";
 	  end if;
 
           if (top->EditForm->AlleleVectorTypeMenu.menuHistory.modified and
@@ -482,7 +482,7 @@ rules:
 	  end while;
 
 	  cmd := "select count(_CellLine_key) from " + mgi_DBtable(ALL_CELLLINE_VIEW) + 
-		     " where parentCellLine_key = " + top->EditForm->mgiParentCellLine->ObjectID->text.value;
+		     " where _Derivation_key = " + top->ID->text.value;
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
