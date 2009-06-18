@@ -1054,6 +1054,7 @@ rules:
 	  set : string := "";
 	  keyName : string := "mrkassocKey";
 	  keyDefined : boolean := false;
+	  printWarning : boolean := false;
  
 	  -- if the marker symbol is blank, print a warning
 	  editMode := mgi_tblGetCell(table, 0, table.editMode);
@@ -1122,14 +1123,19 @@ rules:
 		     statusKey + "," +
 		     global_loginKey + "," + global_loginKey + ")\n";
 
+
+	      printWarning := true;
+
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Marker_key = " + markerKey +
 	             ",_Refs_key = " + refsKey +
 	             ",_Status_key = " + statusKey;
 	      cmd := cmd + mgi_DBupdate(ALL_MARKER_ASSOC, key, set);
+	      printWarning := true;
 
 	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
 	      cmd := cmd + mgi_DBdelete(ALL_MARKER_ASSOC, key);
+	      printWarning := true;
 	    end if;
 
 	    -- need to update the MRK_reloadLabel table for each marker that was updated
@@ -1140,6 +1146,12 @@ rules:
 
 	    row := row + 1;
 	  end while;
+
+	  if (printWarning) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "A Marker has been changed or deleted.\nPlease verify the Allele Symbol.";
+            send(StatusReport);
+          end if;
 
 	end does;
  
