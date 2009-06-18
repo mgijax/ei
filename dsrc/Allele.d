@@ -1243,6 +1243,7 @@ rules:
 	  -- set the strain
 	  -- set the derivation
 
+	  alleleType := top->AlleleTypeMenu.menuHistory.labelString;
 	  alleleTypeKey := top->AlleleTypeMenu.menuHistory.searchValue;
 	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
 	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
@@ -2261,12 +2262,22 @@ rules:
 
 	VerifyParentCellLine does
 	  value : string;
+	  strainKey : string;
 
 	  value := top->mgiParentCellLine->CellLine->text.value;
+	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
 
 	  -- If a wildcard '%' appears in the field,,
 
 	  if (strstr(value, "%") != nil) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  -- If any of these values are selected and the strain has already been determined, skip
+
+	  if (value = NOTSPECIFIED_TEXT or value = NOTAPPLICABLE_TEXT or value = OTHERNOTES
+	      and strainKey.length > 0) then
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;
 	  end if;
