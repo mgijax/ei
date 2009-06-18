@@ -1,3 +1,4 @@
+TAG: ei-tr7493-12
 TAG: ei-tr7493-11
 TAG: ei-tr7493-10
 STAFF: lec
@@ -5,6 +6,7 @@ DATE: 06/17/2009
 1) moved runstatistics and statistics.py to mgddbutilities
 2) default #2244, #2277, #2286
 3) default #2273
+4) default #2241, #2246, #2267, #2273
 
 TAG: ei-tr7493-9
 TAG: ei-tr7493-8
