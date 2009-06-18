@@ -659,6 +659,7 @@ rules:
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 	  row : integer := 0;
+	  printWarning : boolean := false;
 
 	  refsKey : string;
 	  refsType : string;
@@ -853,10 +854,11 @@ rules:
           end if;
 	  -- end set the germ line transmission default
 
-          --if (top->AlleleTransmissionMenu.menuHistory.modified and
-	  --    top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
           set := set + "_Transmission_key = "  + transmissionKey + ",";
-          --end if;
+          if (top->AlleleTransmissionMenu.menuHistory.modified and
+	      top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
+	    printWarning := true;
+          end if;
 
 	  -- Mixed Reference determines the setting of isMixed
           --if (top->MixedMenu.menuHistory.modified and
@@ -968,6 +970,12 @@ rules:
 
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
+
+	  if (printWarning) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Germ Line Transmission value has been changed.\nTransmission reference needs to be reviewed.";
+            send(StatusReport);
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
