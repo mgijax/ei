@@ -160,8 +160,16 @@ rules:
 
 	Add does
 
-	  vectorKey : string;
-	  parentCellLineKey : string;
+	  refsKey : string := top->EditForm->mgiCitation->ObjectID->text.value;
+	  parentCellLineKey : string := top->EditForm->mgiParentCellLine->ObjectID->text.value;
+	  vectorKey : string := top->EditForm->mgiAlleleVector->ObjectID->text.value;
+
+	  derivationName : string := top->EditForm->DerivationName->text.value;
+	  creator : string := top->EditForm->AlleleCreatorMenu.menuHistory.labelString;
+	  derivationType : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.labelString;
+	  vector : string := top->EditForm->mgiAlleleVector->ObjectID->text.value;
+	  parentCellLine : string := top->EditForm->mgiParentCellLine->CellLine->text.value;
+	  parentStrain : string := top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -175,20 +183,50 @@ rules:
  
 	  -- Insert master record
 
-	  vectorKey := top->EditForm->mgiAlleleVector->ObjectID->text.value;
-	  if (vectorKey.length = 0) then
-	    vectorKey := top->EditForm->mgiAlleleVector->ObjectID->text.defaultValue;
+	  if (refsKey.length = 0) then
+	    refsKey := "NULL";
 	  end if;
 
-	  parentCellLineKey := top->EditForm->mgiParentCellLine->ObjectID->text.value;
 	  if (parentCellLineKey.length = 0) then
 	    parentCellLineKey := top->EditForm->mgiParentCellLine->ObjectID->text.defaultValue;
 	  end if;
 
+	  if (vectorKey.length = 0) then
+	    vectorKey := top->EditForm->mgiAlleleVector->ObjectID->text.defaultValue;
+	  end if;
+
+	  --
+	  -- Derivation Name default:
+	  -- ~~creator~~ ~~derivType~~ Library ~~parent~~ ~~strain~~ ~~vectorName~~
+	  --
+
+	  if (derivationName.length = 0) then
+
+	    if (derivationType.length = 0) then
+	      derivationType := NOTSPECIFIED_TEXT;
+	    end if;
+	    
+	    if (parentCellLine.length = 0) then
+	      parentCellLine := NOTSPECIFIED_TEXT;
+	    end if;
+	    
+	    if (parentStrain.length = 0) then
+	      parentStrain := NOTSPECIFIED_TEXT;
+	    end if;
+	    
+	    if (vector.length = 0) then
+	      vector := NOTSPECIFIED_TEXT;
+	    end if;
+	    
+	    derivationName := creator + " " + derivationType + " Library " + parentCellLine + " " + parentStrain + " " + vector;
+	    top->EditForm->DerivationName->text.value := derivationName;
+
+	  end if;
+
           cmd := mgi_setDBkey(ALL_CELLLINE_DERIVATION, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE_DERIVATION, KEYNAME) +
-	         mgi_DBprstr(top->EditForm->DerivationName->text.value) + "," +
-		 "NULL," +
+	         mgi_DBprstr(derivationName) + "," +
+		 refsKey + "," +
 		 vectorKey + "," +
 		 top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue + "," +
 		 parentCellLineKey + "," +
