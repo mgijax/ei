@@ -574,7 +574,7 @@ rules:
 	  select : string := "select distinct _CellLine_key, cellLine, " +
 		"_Strain_key, cellLineStrain " +
 		"from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
+		" where cellLine = " + mgi_DBprstr(value);
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
