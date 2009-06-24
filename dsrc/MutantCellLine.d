@@ -33,7 +33,7 @@ devents:
 
 	PrepareSearch :local [];
 
-	Search :local [];
+	Search :local [prepareSearch : boolean := true;];
 	Select :local [item_position : integer;];
 
 	DisplayStemCellLine2 :translation [];
@@ -136,6 +136,8 @@ rules:
 --
 
 	Init does
+	  alleleModule : widget := ab.root->AlleleModule;
+	  alleleKey : string;
 
 	  -- Global Accession number Tables
 
@@ -152,6 +154,21 @@ rules:
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearList;
 	  send(Clear, 0);
+
+	  -- If launched from the Allele Module...
+	  if (alleleModule != nil) then
+
+	    -- find the cellline of the selected allele
+	    alleleKey := alleleModule->ID->text.value;
+	    if (alleleKey.length > 0) then
+	      from := " from " + mgi_DBtable(ALL_ALLELE_CELLLINE) + " c," + 
+				 mgi_DBtable(ALL_CELLLINE) + " a";
+	      where := "where c._Allele_key = " + alleleKey +
+	      "\nand c._MutantCellLine_key = a._CellLine_key";
+	      Search.prepareSearch := false;
+	      send(Search, 0);
+	    end if;
+	  end if;
 
 	end does;
 
@@ -266,16 +283,11 @@ rules:
 	    set := set + "cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value) + ",";
 	  end if;
 
-          if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.modified and
-              top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
-            set := set + "_CellLine_Type_key = "  + top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
-          end if;
-
-	  -- strain modifications are made via the non-mutant module
-
           if (top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.modified) then
             set := set + "_Derivation_key = " + top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value;
           end if;
+
+	  -- strain modifications are made via the non-mutant module
 
 	  if (set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE, currentRecordKey, set);
@@ -381,7 +393,11 @@ rules:
 
 	Search does
 	  (void) busy_cursor(top);
-	  send(PrepareSearch, 0);
+
+          if (Search.prepareSearch) then
+            send(PrepareSearch, 0);
+          end if;
+
 	  Query.source_widget := top;
 	  Query.select := "select distinct a._CellLine_key, a.cellLine\n" + from + "\n" + 
 			  where + "\norder by a.cellLine\n";

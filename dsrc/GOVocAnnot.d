@@ -740,6 +740,8 @@ rules:
 	  if (from_annot) then
 	    from := from + "," + mgi_DBtable(VOC_ANNOT) + " a";
 	    where := where + "\nand v._Object_key = a._Object_key";
+	    where := where + "\nand v._LogicalDB_key = 1";
+	    where := where + "\nand v.preferred = 1";
 	    where := where + "\nand a._AnnotType_key = " + annotTypeKey;
 	  end if;
 

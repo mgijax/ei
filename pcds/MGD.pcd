@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 23 09:33:47 2009";
+      lastWritten = "Tue Jun 23 15:00:41 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13370,6 +13370,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   AlleleCreatorMenu = AlleleCreatorMenu : mgiOption;
+                                  Group: Widget
+                                    foreground = Red;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
@@ -13398,6 +13400,8 @@ Shift<Key>Tab: prev-tab-group()
                                         CellLine = CharText : mgiDataTypes;
                                             {
                                               label = XmLabel;
+                                              Group: Widget
+                                                foreground = Red;
                                             }
                                             {
                                               text = text : mgiDataTypes;
@@ -13418,6 +13422,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     label = XmLabel;
                                                     Group: Widget
                                                       labelString = "Parent \nCell Line Strain";
+                                                      foreground = Red;
                                                   }
                                                   {
                                                     text = text;
@@ -13453,6 +13458,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   AlleleDerivationTypeMenu = AlleleDerivationTypeMenu : mgiOption;
+                                  Group: Widget
+                                    foreground = Red;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
@@ -13465,6 +13472,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   mgiAlleleVector = mgiAlleleVector : mgiDataTypes;
+                                  Group: Widget
+                                    foreground = Red;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
@@ -13479,8 +13488,12 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Vector = CharText;
+                                        Group: Widget
+                                          foreground = Red;
                                             {
                                               label = XmLabel;
+                                              Group: Widget
+                                                foreground = Red;
                                             }
                                             {
                                               text = text;
@@ -13492,6 +13505,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   AlleleVectorTypeMenu = AlleleVectorTypeMenu : mgiOption;
+                                  Group: Widget
+                                    foreground = Red;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
@@ -13504,6 +13519,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
+                                  Group: Widget
+                                    foreground = Red;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
