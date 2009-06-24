@@ -1,3 +1,9 @@
+TAG: ei-tr7493-14
+STAFF: lec
+DATE: 06/24/2009
+1) MutantCellLine.d: show RED on all attributes that are not changed by a "Modify"
+2) MutantCellLine.d: if called from Allele module, search by Allele
+
 TAG: ei-tr7493-13
 STAFF: lec
 DATE: 06/23/2009
