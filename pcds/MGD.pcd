@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 25 06:07:23 2009";
+      lastWritten = "Thu Jun 25 12:28:22 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13332,6 +13332,8 @@ Shift<Key>Tab: prev-tab-group()
                             Group: Widget
                               rubberPositioning = False;
                               resizePolicy = resize_any;
+                            Group: User
+                              homeWidget = CellLine;
                                 {
                                   ID = ID : mgiDataTypes;
                                   Group: Constraint
@@ -13455,8 +13457,6 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   AlleleDerivationTypeMenu = AlleleDerivationTypeMenu : mgiOption;
-                                  Group: Widget
-                                    foreground = Red;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = CellLine;
@@ -13527,6 +13527,30 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  Symbol = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftWidget = CellLine;
+                                    topWidget = AlleleCellLineTypeMenu;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Allele Symbol";
+                                          foreground = Red;
+                                      }
+                                      {
+                                        text = text : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 50;
+                                          maxLength = 60;
+                                      }
                                 }
                           }
                     }
@@ -16700,6 +16724,14 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = NumberOfMutants;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = NumberOfMutants;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                           }
                     }
