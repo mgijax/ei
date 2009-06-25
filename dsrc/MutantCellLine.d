@@ -287,8 +287,6 @@ rules:
             set := set + "_Derivation_key = " + top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.value;
           end if;
 
-	  -- strain modifications are made via the non-mutant module
-
 	  if (set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_CELLLINE, currentRecordKey, set);
 	  end if;
@@ -505,6 +503,10 @@ rules:
 --
 
 	DisplayStemCellLine2 does
+	  derivationKey : string;
+	  derivationTypeKey : string;
+	  parentKey : string;
+	  strainKey : string;
 
 	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      return;
@@ -536,13 +538,39 @@ rules:
 
 	      ClearOption.source_widget := top->EditForm->AlleleCreatorMenu;
 	      send(ClearOption, 0);
-	      ClearOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
-	      send(ClearOption, 0);
+--	      ClearOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+--	      send(ClearOption, 0);
 	      ClearOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
 	      send(ClearOption, 0);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
+
+	  -- determine the derivation based on the derivaiton type, parent, strain
+
+          derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
+	  derivationTypeKey := top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
+	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
+	  strainKey := top->mgiParentCellLine->ParentStrain->StrainID->text.value;
+
+	  -- if the derivation type has not been set, then return
+	  if (derivationTypeKey.length = 0 or derivationTypeKey = "%") then
+	    return;
+	  end if;
+
+          derivationKey := mgi_sql1("select d._Derivation_key " +
+                         "from ALL_CellLine_Derivation d, ALL_CellLine c " +
+                         "where d._DerivationType_key = " + derivationTypeKey +
+                         " and d._ParentCellLine_key = " + parentKey +
+                         " and d._ParentCellLine_key = c._CellLine_key " +
+                         " and c._Strain_key = " + strainKey +
+                         " and c.isMutant = 0 ");
+
+	  -- if derivation has been determined, then display the rest of the derivation attributes
+	  if (derivationKey.length > 0) then
+	    top->mgiParentCellLine->Derivation->ObjectID->text.value := derivationKey;
+	    send(DisplayDerivation, 0);
+	  end if;
 
 	end does;
 

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 23 15:00:41 2009";
+      lastWritten = "Thu Jun 25 06:07:23 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13400,8 +13400,6 @@ Shift<Key>Tab: prev-tab-group()
                                         CellLine = CharText : mgiDataTypes;
                                             {
                                               label = XmLabel;
-                                              Group: Widget
-                                                foreground = Red;
                                             }
                                             {
                                               text = text : mgiDataTypes;
@@ -13422,7 +13420,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     label = XmLabel;
                                                     Group: Widget
                                                       labelString = "Parent \nCell Line Strain";
-                                                      foreground = Red;
                                                   }
                                                   {
                                                     text = text;
@@ -13451,7 +13448,7 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     text = text : mgiDataTypes;
                                                     Group: Widget
-                                                      columns = 50;
+                                                      columns = 75;
                                                   }
                                             }
                                       }

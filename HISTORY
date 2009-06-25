@@ -1,8 +1,11 @@
+TAG: ei-tr7493-15
 TAG: ei-tr7493-14
 STAFF: lec
 DATE: 06/24/2009
 1) MutantCellLine.d: show RED on all attributes that are not changed by a "Modify"
 2) MutantCellLine.d: if called from Allele module, search by Allele
+3) NonMutantCellLine.d: if called from Allele module, search by Allele
+4) MutantCellLine.d: determine Derivation based on PCL/Strain/Derivation Type
 
 TAG: ei-tr7493-13
 STAFF: lec
