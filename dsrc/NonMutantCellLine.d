@@ -33,7 +33,7 @@ devents:
 
 	PrepareSearch :local [];
 
-	Search :local [prepareSearch : boolean := true;];
+	Search :local [];
 	Select :local [item_position : integer;];
 
 	VerifyParentCellLine :translation [];
@@ -112,8 +112,6 @@ rules:
 --
 
 	Init does
-	  alleleModule : widget := ab.root->AlleleModule;
-	  alleleKey : string;
 	  userTable := top->ModificationHistory->Table;
 
           -- Set Row Count
@@ -125,21 +123,6 @@ rules:
 
 	  Clear.source_widget := top;
 	  send(Clear, 0);
-
-	  -- If launched from the Allele Module...
-	  if (alleleModule != nil) then
-
-	    -- find the cellline of the selected allele
-	    alleleKey := alleleModule->ID->text.value;
-	    if (alleleKey.length > 0) then
-	      from := " from " + mgi_DBtable(ALL_ALLELE_CELLLINE_VIEW) + " c," + 
-				 mgi_DBtable(ALL_CELLLINE) + " a";
-	      where := "where c._Allele_key = " + alleleKey +
-	      "\nand c.parentCellLine_key = a._CellLine_key";
-	      Search.prepareSearch := false;
-	      send(Search, 0);
-	    end if;
-	  end if;
 
 	end does;
 
@@ -317,11 +300,7 @@ rules:
 
 	Search does
 	  (void) busy_cursor(top);
-
-          if (Search.prepareSearch) then
-            send(PrepareSearch, 0);
-          end if;
-
+          send(PrepareSearch, 0);
 	  Query.source_widget := top;
 	  Query.select := "select distinct a._CellLine_key, a.cellLine\n" + from + "\n" + 
 			  where + "\norder by a.cellLine\n";
@@ -353,8 +332,10 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_VIEW) + " where _CellLine_key = " + currentRecordKey;
+	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_VIEW) + " where _CellLine_key = " + currentRecordKey + "\n";
 	  
+          results : integer := 1;
+
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -362,20 +343,23 @@ rules:
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 
-	      top->ID->text.value := mgi_getstr(dbproc, 1);
-              top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
-              top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
-              top->EditForm->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 4);
-              top->EditForm->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 12);
+	      if (results = 1) then
+	        top->ID->text.value := mgi_getstr(dbproc, 1);
+                top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+                top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+                top->EditForm->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 4);
+                top->EditForm->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 12);
 
-              (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byUser, mgi_getstr(dbproc, 25));
-              (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byDate, mgi_getstr(dbproc, 9));
-              (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 26));
-              (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byDate, mgi_getstr(dbproc, 10));
+                (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byUser, mgi_getstr(dbproc, 25));
+                (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byDate, mgi_getstr(dbproc, 9));
+                (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 26));
+                (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byDate, mgi_getstr(dbproc, 10));
   
-              SetOption.source_widget := top->EditForm->AlleleCellLineTypeMenu;
-              SetOption.value := mgi_getstr(dbproc, 3);
-              send(SetOption, 0);
+                SetOption.source_widget := top->EditForm->AlleleCellLineTypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 3);
+                send(SetOption, 0);
+
+	      end if;
 
 	    end while;
 	  end while;

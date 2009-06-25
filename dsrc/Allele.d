@@ -139,6 +139,7 @@ locals:
 	defaultParentCellLineKeyNS : string := "-1";
 	defaultCreatorKeyNS : string := "3982966";
 	defaultVectorKeyNS : string := "4311225";
+	defaultCellLineTypeKey : string := "3982968"; -- default is 63 ("Embryonic Stem Cell")
 
 rules:
 
@@ -1297,7 +1298,7 @@ rules:
 	    key := mgi_tblGetCell(table, row, table.assocKey);
 	    mutantCellLine := mgi_tblGetCell(table, row, table.cellLine);
 	    mutantCellLineKey := mgi_tblGetCell(table, row, table.cellLineKey);
-	    cellLineTypeKey := "3982968"; -- default is 63 ("Embryonic Stem Cell")
+	    cellLineTypeKey := defaultCellLineTypeKey;
 
 	    if (mutantCellLineKey.length = 0) then
 		isMutant := false;
@@ -2050,7 +2051,7 @@ rules:
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 18));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
 
