@@ -709,6 +709,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_NoteType_key");
 	    break;
     case MGI_NOTE_ALLELE_VIEW:
+    case MGI_NOTE_DERIVATION_VIEW:
     case MGI_NOTE_GENOTYPE_VIEW:
     case MGI_NOTE_IMAGE_VIEW:
     case MGI_NOTE_MARKER_VIEW:
@@ -1347,6 +1348,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_NOTE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_Note_Allele_View");
+	    break;
+    case MGI_NOTE_DERIVATION_VIEW:
+	    strcpy(buf, "MGI_Note_Derivation_View");
 	    break;
     case MGI_NOTE_GENOTYPE_VIEW:
 	    strcpy(buf, "MGI_Note_Genotype_View");

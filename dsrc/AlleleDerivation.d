@@ -381,12 +381,12 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
 
-          --SearchNoteForm.notew := top->mgiNoteForm;
-          --SearchNoteForm.tableID := MGI_NOTE_STRAIN_VIEW;
-          --SearchNoteForm.join := "s." + mgi_DBkey(STRAIN);
-          --send(SearchNoteForm, 0);
-          --from := from + top->mgiNoteForm.sqlFrom;
-          --where := where + top->mgiNoteForm.sqlWhere;
+          SearchNoteForm.notew := top->mgiNoteForm;
+          SearchNoteForm.tableID := MGI_NOTE_DERIVATION_VIEW;
+          SearchNoteForm.join := "s." + mgi_DBkey(STRAIN);
+          send(SearchNoteForm, 0);
+          from := from + top->mgiNoteForm.sqlFrom;
+          where := where + top->mgiNoteForm.sqlWhere;
 
           if (top->EditForm->DerivationName->text.value.length > 0) then
 	    where := where + "\nand a.name like " + mgi_DBprstr(top->EditForm->DerivationName->text.value);
@@ -531,10 +531,10 @@ rules:
 	  end while;
 	  (void) dbclose(dbproc);
 
-          --LoadNoteForm.notew := top->mgiNoteForm;
-          --LoadNoteForm.tableID := MGI_NOTE_DERIVATION_VIEW;
-          --LoadNoteForm.objectKey := currentRecordKey;
-          --send(LoadNoteForm, 0);
+          LoadNoteForm.notew := top->mgiNoteForm;
+          LoadNoteForm.tableID := MGI_NOTE_DERIVATION_VIEW;
+          LoadNoteForm.objectKey := currentRecordKey;
+          send(LoadNoteForm, 0);
 
 	  top->QueryList->List.row := Select.item_position;
 	  Clear.source_widget := top;
