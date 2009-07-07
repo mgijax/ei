@@ -167,7 +167,7 @@ rules:
 	  derivationName : string := top->EditForm->DerivationName->text.value;
 	  creator : string := top->EditForm->AlleleCreatorMenu.menuHistory.labelString;
 	  derivationType : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.labelString;
-	  vector : string := top->EditForm->mgiAlleleVector->ObjectID->text.value;
+	  vector : string := top->EditForm->mgiAlleleVector->Vector->text.value;
 	  parentCellLine : string := top->EditForm->mgiParentCellLine->CellLine->text.value;
 	  parentStrain : string := top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value;
 
