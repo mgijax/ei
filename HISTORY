@@ -1,3 +1,12 @@
+TAG: ei-tr7493-18
+STAFF: lec
+DATE: 07/08/2009
+1) QA#2301: Allele.d, AlleleDerivation.d, MutantCellLine.d, NonMutantCellLine.d
+   added "Cell Line Type" to mgiParentCellLine component
+2) QA#2337: Allele.d
+3) QA#2338: Allele.d
+4) QA#2339: Allele.d
+
 TAG: ei-tr7493-17
 STAFF: lec
 DATE: 07/07/2009

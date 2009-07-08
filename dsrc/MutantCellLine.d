@@ -693,6 +693,8 @@ rules:
 	  top->mgiParentCellLine->Derivation->CharText->text.value := "";
 	  top->EditForm->mgiAlleleVector->ObjectID->text.value := "";
 	  top->EditForm->mgiAlleleVector->Vector->text.value := "";
+	  ClearOption.source_widget := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
+	  send(ClearOption, 0);
 	  ClearOption.source_widget := top->EditForm->AlleleCreatorMenu;
 	  send(ClearOption, 0);
 	  ClearOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
@@ -705,7 +707,7 @@ rules:
 	  -- Search for value in the database
 
 	  select : string := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, " +
+		"_Strain_key, cellLineStrain, _CellLine_Type_key, " +
 		"_Vector_key, vector, " +
 		"_Creator_key, _DerivationType_key, _VectorType_key from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
@@ -722,19 +724,23 @@ rules:
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 4);
 
-	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 5);
-	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 6);
+	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 6);
+	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 7);
 
-              SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
-              SetOption.value := mgi_getstr(dbproc, 7);
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
               send(SetOption, 0);
 
-              SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+              SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
               SetOption.value := mgi_getstr(dbproc, 8);
               send(SetOption, 0);
 
-              SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
+              SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 9);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 10);
               send(SetOption, 0);
 
             end while;

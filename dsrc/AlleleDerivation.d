@@ -616,9 +616,8 @@ rules:
 	  top->mgiParentCellLine->CellLine->text.value := "";
 	  top->mgiParentCellLine->ParentStrain->StrainID->text.value := "";
 	  top->mgiParentCellLine->ParentStrain->Verify->text.value := "";
-          SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
-          SetOption.value := "%";
-          send(SetOption, 0);
+          ClearOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+          send(ClearOption, 0);
 
 	  (void) busy_cursor(top);
 

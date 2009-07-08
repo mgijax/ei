@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul  8 12:34:30 2009";
+      lastWritten = "Wed Jul  8 13:05:50 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -16464,7 +16464,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
+                                  NumberOfMutants = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = mgiParentCellLine;
@@ -16474,17 +16474,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                }
-                                {
-                                  NumberOfMutants = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiParentCellLine;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleCellLineTypeMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
                                       {
                                         label = XmLabel;
                                         Group: Widget
