@@ -104,6 +104,9 @@ rules:
 	  InitOptionMenu.option := top->EditForm->AlleleVectorTypeMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+	  send(InitOptionMenu, 0);
+
           LoadList.list := top->StemCellLineList;
           send(LoadList, 0);
 
@@ -404,9 +407,13 @@ rules:
 	  end if;
 
           if (top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value.length > 0) then
-            where := where + "\nand a.parentCellLineStrain_key = " + top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value;;
+            where := where + "\nand a.parentCellLineStrain_key = " + top->EditForm->mgiParentCellLine->ParentStrain->StrainID->text.value;
           elsif (top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value.length > 0) then
             where := where + "\nand a.parentCellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value);
+          end if;
+
+          if (top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a.parentCellLineType_key = " + top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue;
           end if;
 
           if (top->EditForm->AlleleCreatorMenu.menuHistory.searchValue != "%") then
@@ -488,8 +495,8 @@ rules:
 	      top->EditForm->DerivationName->text.value := mgi_getstr(dbproc, 2);
 
               top->EditForm->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 9);
-              top->EditForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 22);
-              top->EditForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 23);
+              top->EditForm->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 24);
+              top->EditForm->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 25);
 
               top->EditForm->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 14);
               top->EditForm->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 15);
@@ -497,11 +504,11 @@ rules:
               top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 17);
 
 	      top->EditForm->mgiAlleleVector->ObjectID->text.value := mgi_getstr(dbproc, 4);
-	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 19);
+	      top->EditForm->mgiAlleleVector->Vector->text.value := mgi_getstr(dbproc, 21);
 
-              (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byUser, mgi_getstr(dbproc, 24));
+              (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byUser, mgi_getstr(dbproc, 26));
               (void) mgi_tblSetCell(userTable, userTable.createdBy, userTable.byDate, mgi_getstr(dbproc, 12));
-              (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 25));
+              (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 27));
               (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byDate, mgi_getstr(dbproc, 13));
 
               SetOption.source_widget := top->EditForm->AlleleCreatorMenu;
@@ -514,6 +521,10 @@ rules:
 
               SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 18);
               send(SetOption, 0);
 
 	    end while;
@@ -559,7 +570,7 @@ rules:
 	  end if;
 
 	  cmd := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain " +
+		"_Strain_key, cellLineStrain, _CellLine_Type_key " +
 		"from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + " = " + top->mgiParentCellLine->ObjectID->text.value;
 
@@ -569,12 +580,13 @@ rules:
 
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
 	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 4);
-
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
@@ -604,13 +616,16 @@ rules:
 	  top->mgiParentCellLine->CellLine->text.value := "";
 	  top->mgiParentCellLine->ParentStrain->StrainID->text.value := "";
 	  top->mgiParentCellLine->ParentStrain->Verify->text.value := "";
+          SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+          SetOption.value := "%";
+          send(SetOption, 0);
 
 	  (void) busy_cursor(top);
 
 	  -- Search for value in the database
 
 	  select : string := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain " +
+		"_Strain_key, cellLineStrain, _CellLine_Type_key " +
 		"from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where cellLine = " + mgi_DBprstr(value);
 
@@ -619,12 +634,13 @@ rules:
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->ParentStrain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->mgiParentCellLine->ParentStrain->Verify->text.value := mgi_getstr(dbproc, 4);
-
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
             end while;
           end while;
 	  (void) dbclose(dbproc);

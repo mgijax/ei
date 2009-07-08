@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jul  7 08:13:28 2009";
+      lastWritten = "Wed Jul  8 12:34:30 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2173,8 +2173,8 @@ Module: MGD
             resizePolicy = resize_any;
             width = 600;
           Group: Control
-            vip_x = 77;
-            vip_y = 1244;
+            vip_x = 80;
+            vip_y = 1295;
               {
                 ID = ID;
               }
@@ -2419,7 +2419,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 1350;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -2611,7 +2611,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1460;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -2979,7 +2979,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1515;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3604,7 +3604,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1570;
               {
                 ID = ID;
               }
@@ -3639,7 +3639,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1625;
               {
                 ID = ID;
               }
@@ -3676,7 +3676,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1735;
               {
                 ID = ID;
               }
@@ -3760,7 +3760,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1680;
               {
                 ID = ID;
               }
@@ -4037,7 +4037,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1790;
               {
                 ID = ID;
               }
@@ -4297,7 +4297,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1845;
               {
                 ID = ID;
               }
@@ -4468,7 +4468,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1900;
               {
                 ID = ID;
               }
@@ -4851,7 +4851,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 2010;
               {
                 ID = ID;
               }
@@ -5011,7 +5011,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 80;
-            vip_y = 2065;
+            vip_y = 2120;
           Group: User
             homeWidget = Jnum;
               {
@@ -5122,7 +5122,7 @@ Module: MGD
             height = 800;
           Group: Control
             vip_x = 80;
-            vip_y = 2010;
+            vip_y = 2065;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -7618,7 +7618,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1405;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -8303,6 +8303,38 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = MutantCellLine;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    topOffset = "-20";
+                                      {
+                                        ObjectID = ID : mgiDataTypes;
+                                      }
+                                      {
+                                        CellLine = CharText : mgiDataTypes;
+                                      }
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                      }
+                                      {
+                                        Derivation = mgiObject : mgiDataTypes;
+                                            {
+                                              ObjectID = ID : mgiDataTypes;
+                                            }
+                                            {
+                                              CharText = CharText : mgiDataTypes;
+                                              Group: Widget
+                                                managed = False;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = Derivation;
+                                                      managed = False;
+                                                  }
+                                                  {
+                                                    text = text : mgiDataTypes;
+                                                    Group: Widget
+                                                      columns = 40;
+                                                  }
+                                            }
+                                      }
                                 }
                                 {
                                   markerDescription = mgiNoteShort : mgiDataTypes;
@@ -13432,25 +13464,23 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Derivation = mgiObject : mgiDataTypes;
-                                        Group: Widget
-                                          managed = True;
                                             {
                                               ObjectID = ID : mgiDataTypes;
                                             }
                                             {
                                               CharText = CharText : mgiDataTypes;
                                               Group: Widget
-                                                managed = True;
+                                                managed = False;
                                                   {
                                                     label = XmLabel;
                                                     Group: Widget
-                                                      labelString = "      Derivation";
-                                                      managed = True;
+                                                      labelString = Derivation;
+                                                      managed = False;
                                                   }
                                                   {
                                                     text = text : mgiDataTypes;
                                                     Group: Widget
-                                                      columns = 75;
+                                                      columns = 40;
                                                   }
                                             }
                                       }
@@ -13515,20 +13545,6 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
-                                  AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
-                                  Group: Widget
-                                    foreground = Red;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = CellLine;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AlleleVectorTypeMenu;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
                                   Symbol = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -13538,7 +13554,7 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftWidget = CellLine;
-                                    topWidget = AlleleCellLineTypeMenu;
+                                    topWidget = AlleleVectorTypeMenu;
                                       {
                                         label = XmLabel;
                                         Group: Widget
@@ -15552,7 +15568,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1955;
           Group: User
             homeWidget = Jnum;
               {
@@ -16327,8 +16343,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           NonMutantCellLineModule = Module : MGI;
           Group: Control
-            vip_x = 93;
-            vip_y = 1186;
+            vip_x = 80;
+            vip_y = 1185;
           Group: User
             homeWidget = CellLine;
               {
@@ -16424,6 +16440,28 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                       }
+                                      {
+                                        Derivation = mgiObject : mgiDataTypes;
+                                            {
+                                              ObjectID = ID : mgiDataTypes;
+                                            }
+                                            {
+                                              CharText = CharText : mgiDataTypes;
+                                              Group: Widget
+                                                managed = False;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = Derivation;
+                                                      managed = False;
+                                                  }
+                                                  {
+                                                    text = text : mgiDataTypes;
+                                                    Group: Widget
+                                                      columns = 40;
+                                                  }
+                                            }
+                                      }
                                 }
                                 {
                                   AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
@@ -16516,8 +16554,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           AlleleDerivationModule = Module : MGI;
           Group: Control
-            vip_x = 169;
-            vip_y = 1100;
+            vip_x = 80;
+            vip_y = 1240;
           Group: User
             homeWidget = DerivationName;
               {
@@ -16673,6 +16711,28 @@ Shift<Key>Tab: prev-tab-group()
                                                     label = XmLabel;
                                                     Group: Widget
                                                       labelString = "Parent Cell Line\nStrain";
+                                                  }
+                                            }
+                                      }
+                                      {
+                                        Derivation = mgiObject : mgiDataTypes;
+                                            {
+                                              ObjectID = ID : mgiDataTypes;
+                                            }
+                                            {
+                                              CharText = CharText : mgiDataTypes;
+                                              Group: Widget
+                                                managed = False;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = Derivation;
+                                                      managed = False;
+                                                  }
+                                                  {
+                                                    text = text : mgiDataTypes;
+                                                    Group: Widget
+                                                      columns = 40;
                                                   }
                                             }
                                       }

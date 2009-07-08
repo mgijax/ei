@@ -208,6 +208,9 @@ rules:
 	  InitOptionMenu.option := top->Marker->AlleleMarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+	  send(InitOptionMenu, 0);
+
           LoadList.list := top->StemCellLineList;
 	  send(LoadList, 0);
 
@@ -494,10 +497,10 @@ rules:
 	  end if;
 
 	  -- set the germ line transmission default
-	  mutantCellLineKey : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLineKey);
-	  if (mutantCellLineKey.length = 0
-	      or mutantCellLineKey = defaultTransmissionKeyNA
-	      or mutantCellLineKey = defaultTransmissionKeyNS) then
+	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
+	  if (mutantCellLine.length = 0
+	      or mutantCellLine = NOTAPPLICABLE_TEXT
+	      or mutantCellLine = NOTSPECIFIED_TEXT) then
             transmissionKey := defaultTransmissionKeyNA;
           elsif (top->AlleleTransmissionMenu.menuHistory.defaultValue = defaultTransmissionKeyNA) then
             transmissionKey := defaultTransmissionKeyNS;
@@ -795,6 +798,7 @@ rules:
 	  -- Confirm changes to Allele Status, Strain
 
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
+	      top->AlleleStatusMenu.menuHistory.modified and
 	      top->mgiParentCellLine->Strain->StrainID->text.value = defaultStrainKeyNS) then
 
 	    top->VerifyAlleleStatusStrain.doModify := false;
@@ -843,10 +847,14 @@ rules:
           end if;
 
 	  -- set the germ line transmission default
-	  mutantCellLineKey : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLineKey);
-	  if (mutantCellLineKey.length = 0
-	      or mutantCellLineKey = defaultTransmissionKeyNA
-	      or mutantCellLineKey = defaultTransmissionKeyNS) then
+	  -- if the mutant is blank, NA, NS then transmission = NA (regardless of what user has selected)
+	  -- else if user has set transmission = NA then transmission will be reset to NS
+	  -- else set transmission to whatever the user has decided
+
+	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
+	  if (mutantCellLine.length = 0
+	      or mutantCellLine = NOTAPPLICABLE_TEXT
+	      or mutantCellLine = NOTSPECIFIED_TEXT) then
             transmissionKey := defaultTransmissionKeyNA;
           elsif (top->AlleleTransmissionMenu.menuHistory.defaultValue = defaultTransmissionKeyNA) then
             transmissionKey := defaultTransmissionKeyNS;
@@ -1131,9 +1139,6 @@ rules:
 		     refsKey + "," +
 		     statusKey + "," +
 		     global_loginKey + "," + global_loginKey + ")\n";
-
-
-	      printWarning := true;
 
 	    elsif (editMode = TBL_ROW_MODIFY) then
 	      set := "_Marker_key = " + markerKey +
@@ -2051,9 +2056,13 @@ rules:
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 19));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
+
+                SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 16);
+                send(SetOption, 0);
 
 	      end if;
 	      row := row + 1;
@@ -2137,7 +2146,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
+	  cmd := "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
 		" = " + top->mgiParentCellLine->ObjectID->text.value;
@@ -2152,6 +2161,9 @@ rules:
 		 top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	         top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	         top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+                 SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+                 SetOption.value := mgi_getstr(dbproc, 5);
+                 send(SetOption, 0);
 	    end while;
 	  end while;
 

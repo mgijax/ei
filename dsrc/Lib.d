@@ -209,7 +209,18 @@ rules:
 		            child.value := "";
 		          end if;
 		          child.modified := false;
+
+			-- this seems to take care of submenus that contain XmOptionMenu
+
+		        elsif (clearForm.child(i).child(l).class_name = "XmRowColumn" and
+			       clearForm.child(i).child(l).is_defined("subMenuId") != nil) then
+		          if (not Clear.reset) then
+		            ClearOption.source_widget := clearForm.child(i).child(l);
+		            send(ClearOption, 0);
+		          end if;
+		        clearForm.child(i).child(l).modified := false;
 		        end if;
+
 		        m := m + 1;
 		      end while;
 		      l := l + 1;

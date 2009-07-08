@@ -111,6 +111,9 @@ rules:
 	  InitOptionMenu.option := top->EditForm->AlleleVectorTypeMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+	  send(InitOptionMenu, 0);
+
           LoadList.list := top->StemCellLineList;
           send(LoadList, 0);
 
@@ -542,9 +545,7 @@ rules:
 	  end if;
 
 	  cmd := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, " +
-		"_Vector_key, vector, " +
-		"_Creator_key, _DerivationType_key, _VectorType_key from " + 
+		"_Strain_key, cellLineStrain, _CellLine_Type_key from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + " = " + top->mgiParentCellLine->ObjectID->text.value;
 
@@ -571,6 +572,11 @@ rules:
 --	      send(ClearOption, 0);
 	      ClearOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
 	      send(ClearOption, 0);
+
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
+
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
