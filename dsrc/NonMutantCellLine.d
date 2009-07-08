@@ -94,7 +94,7 @@ rules:
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
 
-	  InitOptionMenu.option := top->EditForm->AlleleCellLineTypeMenu;
+	  InitOptionMenu.option := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
 	  send(InitOptionMenu, 0);
 	end does;
 
@@ -152,7 +152,7 @@ rules:
           cmd := mgi_setDBkey(ALL_CELLLINE_NONMUTANT, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE_NONMUTANT, KEYNAME) +
 		 mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value) + "," +
-		 top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + "," +
+		 top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue + "," +
                  top->EditForm->mgiParentCellLine->Strain->StrainID->text.value + "," +
                  "NULL,0," +
                  global_loginKey + "," + global_loginKey + ")\n";
@@ -227,9 +227,9 @@ rules:
 	    set := set + "cellLine = " + mgi_DBprstr(top->EditForm->mgiParentCellLine->CellLine->text.value) + ",";
 	  end if;
 
-          if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.modified and
-              top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
-            set := set + "_CellLine_Type_key = "  + top->EditForm->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
+          if (top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.modified and
+              top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            set := set + "_CellLine_Type_key = "  + top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
 	  -- the update to the mutant strains will be done via a trigger
@@ -280,8 +280,8 @@ rules:
             where := where + "\nand a.cellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Strain->Verify->text.value);
           end if;
 
-          if (top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand a._CellLine_Type_key = " + top->EditForm->AlleleCellLineTypeMenu.menuHistory.searchValue;
+          if (top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._CellLine_Type_key = " + top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue;
           end if;
 
 	  if (where.length > 0) then
@@ -355,7 +355,7 @@ rules:
                 (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byUser, mgi_getstr(dbproc, 26));
                 (void) mgi_tblSetCell(userTable, userTable.modifiedBy, userTable.byDate, mgi_getstr(dbproc, 10));
   
-                SetOption.source_widget := top->EditForm->AlleleCellLineTypeMenu;
+                SetOption.source_widget := top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
 
