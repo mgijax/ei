@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul  8 13:05:50 2009";
+      lastWritten = "Wed Jul  8 14:11:42 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -5429,6 +5429,8 @@ Module: MGD
                                       }
                                       {
                                         Add = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:VerifyEdit(mode = 2),\nD:GoHome";
                                       }
                                       {
                                         Delete = MenuPush : mgiMenu;
