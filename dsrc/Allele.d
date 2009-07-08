@@ -1804,7 +1804,7 @@ rules:
 	    from_cellline := true;
 	  end if;
 
-	  -- Parent Cell Line and Strain
+	  -- Parent Cell Line, Strain, Cell Line Type
 
 	  if (top->mgiParentCellLine->ObjectID->text.value.length > 0) then
             where := where + "\nand c.parentCellLine_key = " + top->mgiParentCellLine->ObjectID->text.value;
@@ -1819,6 +1819,11 @@ rules:
 	  elsif (top->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
             where := where + "\nand a.strain like " + mgi_DBprstr(top->mgiParentCellLine->Strain->Verify->text.value);
 	  end if;
+
+          if (top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand c.parentCellLineType_key = " + top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue;
+	    from_cellline := true;
+          end if;
 
 	  -- get the additional tables using the "from" values
 
