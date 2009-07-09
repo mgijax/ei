@@ -39,6 +39,7 @@ devents:
 	DisplayStemCellLine2 :translation [];
 	DisplayDerivation :translation [];
 	VerifyParentCellLine :translation [];
+	VerifyDerivation :local [];
 
 locals:
 	mgi : widget;
@@ -192,6 +193,8 @@ rules:
 
 	  (void) busy_cursor(top);
 
+	  send(VerifyDerivation, 0);
+
           -- If adding, then @KEYNAME must be used in all Modify events
  
           currentRecordKey := "@" + KEYNAME;
@@ -278,6 +281,8 @@ rules:
 	  end if;
 
 	  (void) busy_cursor(top);
+
+	  send(VerifyDerivation, 0);
 
 	  cmd := "";
 	  set : string := "";
@@ -535,10 +540,6 @@ rules:
 --
 
 	DisplayStemCellLine2 does
-	  derivationKey : string;
-	  derivationTypeKey : string;
-	  parentKey : string;
-	  strainKey : string;
 
 	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      return;
@@ -568,8 +569,6 @@ rules:
 
 	      ClearOption.source_widget := top->EditForm->AlleleCreatorMenu;
 	      send(ClearOption, 0);
---	      ClearOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
---	      send(ClearOption, 0);
 	      ClearOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
 	      send(ClearOption, 0);
 
@@ -580,32 +579,6 @@ rules:
 	    end while;
 	  end while;
 	  (void) dbclose(dbproc);
-
-	  -- determine the derivation based on the derivaiton type, parent, strain
-
-          derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
-	  derivationTypeKey := top->EditForm->AlleleDerivationTypeMenu.menuHistory.searchValue;
-	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
-	  strainKey := top->mgiParentCellLine->ParentStrain->StrainID->text.value;
-
-	  -- if the derivation type has not been set, then return
-	  if (derivationTypeKey.length = 0 or derivationTypeKey = "%") then
-	    return;
-	  end if;
-
-          derivationKey := mgi_sql1("select d._Derivation_key " +
-                         "from ALL_CellLine_Derivation d, ALL_CellLine c " +
-                         "where d._DerivationType_key = " + derivationTypeKey +
-                         " and d._ParentCellLine_key = " + parentKey +
-                         " and d._ParentCellLine_key = c._CellLine_key " +
-                         " and c._Strain_key = " + strainKey +
-                         " and c.isMutant = 0 ");
-
-	  -- if derivation has been determined, then display the rest of the derivation attributes
-	  if (derivationKey.length > 0) then
-	    top->mgiParentCellLine->Derivation->ObjectID->text.value := derivationKey;
-	    send(DisplayDerivation, 0);
-	  end if;
 
 	end does;
 
@@ -697,8 +670,6 @@ rules:
 	  send(ClearOption, 0);
 	  ClearOption.source_widget := top->EditForm->AlleleCreatorMenu;
 	  send(ClearOption, 0);
-	  ClearOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
-	  send(ClearOption, 0);
 	  ClearOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
 	  send(ClearOption, 0);
 
@@ -709,7 +680,7 @@ rules:
 	  select : string := "select distinct _CellLine_key, cellLine, " +
 		"_Strain_key, cellLineStrain, _CellLine_Type_key, " +
 		"_Vector_key, vector, " +
-		"_Creator_key, _DerivationType_key, _VectorType_key from " + 
+		"_Creator_key, _VectorType_key from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
 
@@ -735,12 +706,12 @@ rules:
               SetOption.value := mgi_getstr(dbproc, 8);
               send(SetOption, 0);
 
-              SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
-              SetOption.value := mgi_getstr(dbproc, 9);
-              send(SetOption, 0);
+              --SetOption.source_widget := top->EditForm->AlleleDerivationTypeMenu;
+              --SetOption.value := mgi_getstr(dbproc, 9);
+              --send(SetOption, 0);
 
               SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
-              SetOption.value := mgi_getstr(dbproc, 10);
+              SetOption.value := mgi_getstr(dbproc, 9);
               send(SetOption, 0);
 
             end while;
@@ -758,6 +729,49 @@ rules:
 	  end if;
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- VerifyDerivation
+--
+-- Deterimne the Derivation
+--
+
+	VerifyDerivation does
+	  derivationKey : string;
+	  derivationTypeKey : string;
+	  parentKey : string;
+	  strainKey : string;
+
+	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
+	      return;
+	  end if;
+
+	  -- determine the derivation based on the derivaiton type, parent, strain
+
+          derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
+	  derivationTypeKey := top->EditForm->AlleleDerivationTypeMenu.menuHistory.defaultValue;
+	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
+	  strainKey := top->mgiParentCellLine->ParentStrain->StrainID->text.value;
+
+	  -- if the derivation type has not been set, then return
+	  if (derivationTypeKey.length = 0 or derivationTypeKey = "%") then
+	    return;
+	  end if;
+
+          derivationKey := mgi_sql1("select d._Derivation_key " +
+                         "from ALL_CellLine_Derivation d, ALL_CellLine c " +
+                         "where d._DerivationType_key = " + derivationTypeKey +
+                         " and d._ParentCellLine_key = " + parentKey +
+                         " and d._ParentCellLine_key = c._CellLine_key " +
+                         " and c._Strain_key = " + strainKey +
+                         " and c.isMutant = 0 ");
+
+	  -- if derivation has been determined, then display the rest of the derivation attributes
+	  if (derivationKey.length > 0) then
+	    top->mgiParentCellLine->Derivation->ObjectID->text.value := derivationKey;
+	    send(DisplayDerivation, 0);
+	  end if;
 	end does;
 
 --
