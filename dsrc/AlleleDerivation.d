@@ -163,7 +163,6 @@ rules:
 
 	Add does
 
-	  refsKey : string := top->EditForm->mgiCitation->ObjectID->text.value;
 	  parentCellLineKey : string := top->EditForm->mgiParentCellLine->ObjectID->text.value;
 	  vectorKey : string := top->EditForm->mgiAlleleVector->ObjectID->text.value;
 
@@ -185,10 +184,6 @@ rules:
           currentRecordKey := "@" + KEYNAME;
  
 	  -- Insert master record
-
-	  if (refsKey.length = 0) then
-	    refsKey := "NULL";
-	  end if;
 
 	  if (parentCellLineKey.length = 0) then
 	    parentCellLineKey := top->EditForm->mgiParentCellLine->ObjectID->text.defaultValue;
@@ -229,7 +224,7 @@ rules:
           cmd := mgi_setDBkey(ALL_CELLLINE_DERIVATION, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE_DERIVATION, KEYNAME) +
 	         mgi_DBprstr(derivationName) + "," +
-		 refsKey + "," +
+		 "NULL," +
 		 vectorKey + "," +
 		 top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue + "," +
 		 parentCellLineKey + "," +
