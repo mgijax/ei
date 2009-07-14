@@ -526,6 +526,8 @@ rules:
             transmissionKey := defaultTransmissionKeyNA;
 	  elsif (transmissionRefs > 0) then
 	    transmissionKey := defaultTransmissionGermLine;
+	  elsif (transmissionKey = "%") then
+            transmissionKey := defaultTransmissionKeyNA;
           end if;
 
 	  -- end set the germ line transmission default
