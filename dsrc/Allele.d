@@ -360,7 +360,7 @@ rules:
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  statusKey : string;
 	  inheritanceKey : string;
-	  transmissionKey : string;
+	  transmissionKey : string := top->AlleleTransmissionMenu.menuHistory.defaultValue;
 	  strainKey : string;
 	  approvalLoginDate : string;
 	  editMode : string;
@@ -377,8 +377,6 @@ rules:
 	  isMixed : integer := 0;
 
 	  transmissionRefs : integer := 0;
-	  printTransmissionWarning : boolean := false;
-	  printReferenceWarning : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -390,9 +388,9 @@ rules:
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
-	    if (editMode = TBL_ROW_EMPTY) then
-	      break;
-	    end if;
+	    --if (editMode = TBL_ROW_EMPTY) then
+	    --  break;
+	    --end if;
  
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
@@ -441,9 +439,27 @@ rules:
 
 	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
 	  if (transmissionRefs = 0 and 
+	      transmissionKey != "%" and
 	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
 	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
-	    printReferenceWarning := true;
+            StatusReport.source_widget := top;
+            StatusReport.message := "If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+	    return;
+	  end if;
+
+	  -- If Germ Line Transmission 'Chimeric' or 'Germline' is selected, then a Transmission Reference is required
+	  if (transmissionRefs > 0 and 
+	      transmissionKey != "%" and
+	      top->AlleleTransmissionMenu.menuHistory.labelString != "Chimeric" and
+	      top->AlleleTransmissionMenu.menuHistory.labelString != "Germline") then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+		"If a Transmission Reference is selected\nthen Germ Line Transmission must be Chimeric or Germline.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+	    return;
 	  end if;
 
 	  -- Verify at most one Primary Image Pane Association
@@ -496,24 +512,20 @@ rules:
 	  end if;
 
 	  -- set the germ line transmission default
+	  -- set to user-entered value
 	  -- if no mutant or mutant = NA then GermLineTrans = NA
 	  -- else if mutant = NS, default GermLineTrans = NA
 
 	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
-	  transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+
 	  if (mutantCellLine.length = 0
 	      or mutantCellLine = NOTAPPLICABLE_TEXT) then
             transmissionKey := defaultTransmissionKeyNA;
 	  elsif (mutantCellLine = NOTSPECIFIED_TEXT
 		 and transmissionKey.length = 0) then
             transmissionKey := defaultTransmissionKeyNA;
-	  elsif (mutantCellLine.length > 0
-		 and 
-		 (transmissionKey.length = 0 or transmissionKey = "%")) then
-            transmissionKey := defaultTransmissionGermLine;
-	    printTransmissionWarning := true;
-          else
-	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+	  elsif (transmissionRefs > 0) then
+	    transmissionKey := defaultTransmissionGermLine;
           end if;
 
 	  -- end set the germ line transmission default
@@ -626,24 +638,6 @@ rules:
 	    send(ClearAllele, 0);
 	  end if;
 
-	  -- Transmission Reference
-	  if (printReferenceWarning) then
-            StatusReport.source_widget := top;
-            StatusReport.message := 
-	        "If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
-            send(StatusReport);
-	  end if;
-
-	  -- Germ Line Transmission Term
-	  if (printTransmissionWarning) then
-            StatusReport.source_widget := top;
-            StatusReport.message := 
-	      "Germ Line Transmission value may have been changed.\n" +
-	      "Confirm value and review transmission reference.\n" +
-	      "Not all values are allowed for all allele types.";
-            send(StatusReport);
-	  end if;
-
 	  (void) reset_cursor(top);
 	end does;
 
@@ -700,7 +694,6 @@ rules:
 
 	  transmissionRefs : integer := 0;
 	  printTransmissionWarning : boolean := false;
-	  printReferenceWarning : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -712,9 +705,9 @@ rules:
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
-	    if (editMode = TBL_ROW_EMPTY) then
-	      break;
-	    end if;
+	    --if (editMode = TBL_ROW_EMPTY) then
+	    --  break;
+	    --end if;
  
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
@@ -759,10 +752,27 @@ rules:
 	  end if;
 
 	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
-	  if (transmissionRefs = 0 and 
+	  if ((transmissionRefs = 0 and 
 	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
-	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
-	    printReferenceWarning := true;
+	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline"))) then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+		"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+	    return;
+	  end if;
+
+	  -- If Germ Line Transmission 'Chimeric' or 'Germline' is selected, then a Transmission Reference is required
+	  if (transmissionRefs > 0 and 
+	      top->AlleleTransmissionMenu.menuHistory.labelString != "Chimeric" and
+	      top->AlleleTransmissionMenu.menuHistory.labelString != "Germline") then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+		"If a Transmission Reference is selected\nthen Germ Line Transmission must be Chimeric or Germline.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+	    return;
 	  end if;
 
 	  -- Verify at most one Primary Image Pane Association
@@ -870,25 +880,22 @@ rules:
 	    end if;
           end if;
 
-	  -- set the germ line transmission default
-	  -- if no mutnat or mutant = NA then GermLineTrans = NA
-	  -- else GermLineTrans = whatever user says
+	  -- print transmission note any time the transmission is modified
 
-	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
-	  if (mutantCellLine.length = 0
-	      or mutantCellLine = NOTAPPLICABLE_TEXT) then
-            transmissionKey := defaultTransmissionKeyNA;
-	  else
-	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+	  transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+	  if (top->AlleleTransmissionMenu.menuHistory.modified) then
 	    printTransmissionWarning := true;
 	  end if;
-	  -- end set the germ line transmission default
+
+	  -- system-override of transmission term for mutant = 0 or NA
+	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
+	  if (mutantCellLine.length = 0 or mutantCellLine = NOTAPPLICABLE_TEXT) then
+            transmissionKey := defaultTransmissionKeyNA;
+	  end if;
 
           set := set + "_Transmission_key = "  + transmissionKey + ",";
-          if (top->AlleleTransmissionMenu.menuHistory.modified and
-	      top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
-	    printReferenceWarning := true;
-          end if;
+
+	  -- end set the germ line transmission default
 
 	  -- Mixed Reference determines the setting of isMixed
           --if (top->MixedMenu.menuHistory.modified and
@@ -1000,14 +1007,6 @@ rules:
 
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
-
-	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
-	  if (printReferenceWarning) then
-            StatusReport.source_widget := top;
-            StatusReport.message := 
-	      "If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
-            send(StatusReport);
-	  end if;
 
 	  -- Germ Line Transmission Term
 	  if (printTransmissionWarning) then
