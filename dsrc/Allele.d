@@ -496,7 +496,7 @@ rules:
 	  end if;
 
 	  -- set the germ line transmission default
-	  -- if no mutnat or mutant = NA then GermLineTrans = NA
+	  -- if no mutant or mutant = NA then GermLineTrans = NA
 	  -- else if mutant = NS, default GermLineTrans = NA
 
 	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
@@ -699,6 +699,7 @@ rules:
 	  isMixed : integer := 0;
 
 	  transmissionRefs : integer := 0;
+	  printTransmissionWarning : boolean := false;
 	  printReferenceWarning : boolean := false;
 
 	  if (not top.allowEdit) then
@@ -879,6 +880,7 @@ rules:
             transmissionKey := defaultTransmissionKeyNA;
 	  else
 	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+	    printTransmissionWarning := true;
 	  end if;
 	  -- end set the germ line transmission default
 
@@ -1004,6 +1006,16 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := 
 	      "If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            send(StatusReport);
+	  end if;
+
+	  -- Germ Line Transmission Term
+	  if (printTransmissionWarning) then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+	      "Germ Line Transmission value may have been changed.\n" +
+	      "Confirm value and review transmission reference.\n" +
+	      "Not all values are allowed for all allele types.";
             send(StatusReport);
 	  end if;
 
