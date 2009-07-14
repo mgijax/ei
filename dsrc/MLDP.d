@@ -100,8 +100,6 @@ devents:
 			            reset : boolean := false;];
 
 	Delete :local [];
-	DoStatistics :local [table : string;];
-	DoStatisticsEnd :local;
 	Exit :local [];
 
 	Init :local [];
@@ -379,7 +377,6 @@ rules:
 
 	  if (ExptForm = top->ExptDetailForm->ExptCrossForm) then
 	    send(AddCross, 0);
-	    DoStatistics.table := "CR";
 	  elsif (ExptForm = top->ExptDetailForm->ExptFISHForm) then
 	    send(AddFISH, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptHybridForm) then
@@ -390,7 +387,6 @@ rules:
 	    send(AddPhysMap, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptRIForm) then
 	    send(AddRI, 0);
-	    DoStatistics.table := "RI";
 	  end if;
 
 	  -- Process Accession numbers
@@ -409,13 +405,6 @@ rules:
 			", Chr " + top->ExptDetailForm->ChromosomeMenu.menuHistory.defaultValue;
           AddSQL.key := top->ExptDetailForm->ID->text;
           send(AddSQL, 0);
-
-	  -- Generate Statistics for Cross or RI Experiment
-
-	  if (ExptForm = top->ExptDetailForm->ExptCrossForm or
-	      ExptForm = top->ExptDetailForm->ExptRIForm) then
-	    send(DoStatistics, 0);
-	  end if;
 
 	  -- If add was successful...
 
@@ -624,45 +613,6 @@ rules:
         end does;
 
 --
---  DoStatistics
---
---  Execute Program to Calculate & Insert Recombination Statistics into MLD_Statistics
---
-
-	DoStatistics does
-          cmd_str : string_list := create string_list();
-          cmd_str.insert("statistics.py", cmd_str.count + 1);
-          cmd_str.insert("-U" + global_login, cmd_str.count + 1);
-	  cmd_str.insert("-P" + global_passwd_file, cmd_str.count + 1);
-          cmd_str.insert("-m" + DoStatistics.table, cmd_str.count + 1);
-          cmd_str.insert("-e" + top->ExptDetailForm->ID->text.value, cmd_str.count + 1);
-
-	  cmdOut : string := "";
-	  cmd_str.rewind;
-	  while (cmd_str.more) do
-	    cmdOut := cmdOut + cmd_str.next + " ";
-          end while;
-
-	  (void) mgi_writeLog(get_time() + " " + cmdOut + "\n");
-
-          proc_id : opaque := tu_fork_process(cmd_str[1], cmd_str, nil, DoStatisticsEnd);
-	  while (tu_fork_ok(proc_id)) do
-	    (void) keep_busy();
-	  end while;
-	  tu_fork_free(proc_id);
-        end does;
-
---
--- DoStatisticsEnd
---
---  Event called after child process forked from DoStatistics is finished
---
- 
-        DoStatisticsEnd does
-	  send(SelectStatistics, 0);
-        end does;
- 
---
 -- Modify
 --
 -- Constructs update statement for MLD_Expts
@@ -721,7 +671,6 @@ rules:
 
 	  if (ExptForm = top->ExptDetailForm->ExptCrossForm) then
 	    send(ModifyCross, 0);
-	    DoStatistics.table := "CR";
 	  elsif (ExptForm = top->ExptDetailForm->ExptFISHForm) then
 	    send(ModifyFISH, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptHybridForm) then
@@ -732,7 +681,6 @@ rules:
 	    send(ModifyPhysMap, 0);
 	  elsif (ExptForm = top->ExptDetailForm->ExptRIForm) then
 	    send(ModifyRI, 0);
-	    DoStatistics.table := "RI";
 	  end if;
 
           if (cmd.length > 0 or set.length > 0) then
@@ -750,13 +698,6 @@ rules:
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
-
-	  -- Re-generate Statistics for Cross or RI Experiment
-
-	  if (ExptForm = top->ExptDetailForm->ExptCrossForm or
-	      ExptForm = top->ExptDetailForm->ExptRIForm) then
-	    send(DoStatistics, 0);
-	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -957,13 +898,6 @@ rules:
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
-
-	  -- Re-generate Statistics for Cross or RI Experiment
-
-	  if (ExptForm = top->ExptDetailForm->ExptCrossForm or
-	      ExptForm = top->ExptDetailForm->ExptRIForm) then
-	    send(DoStatistics, 0);
-	  end if;
 
 	  (void) reset_cursor(top);
         end does;

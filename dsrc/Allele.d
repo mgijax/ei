@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 02/18/2009-06/2009	lec
+--	TR7493; gene trap less filling
+--
 -- 02/17/2009	lec
 --	TR9473; "wild-type", "wild type" are both acceptable
 --
@@ -26,7 +29,7 @@
 --	TR 4289, MPR
 --
 -- 05/05/2004 lec
---	- TR 5673; prevent accidental changes to ES Cell Line/Strain of Origin
+--	- TR 5673; prevent accidental changes to Stem Cell Line/Strain of Origin
 --
 -- 05/23/2003 lec
 --	- replaced global_login with global_loginKey
@@ -69,13 +72,14 @@ devents:
 
 	ClearAllele :local :exported [clearKeys : boolean := true;
 			              reset : boolean := false;];
-
-	DisplayESCellLine :translation [];
+	DisplayStemCellLine :translation [];
 
 	Modify :local [];
 	ModifyAlleleNotes :local [];
 	ModifyImagePaneAssociation :local [];
+	ModifyMarkerAssoc :local [];
 	ModifyMolecularMutation :local [];
+	ModifyMutantCellLine :local [];
 
 	PrepareSearch :local [];
 
@@ -85,9 +89,11 @@ devents:
 			   row : integer;
 			   reason : integer;];
 
-	VerifyESStrain :local [];
-	VerifyMutantESCellLine :translation [];
-	VerifyParentalESCellLine :translation [];
+	VerifyAlleleStatusStrain :local [];
+	VerifyMutantParentStrain :local [];
+
+	VerifyMutantCellLine :translation [];
+	VerifyParentCellLine :translation [];
 
 locals:
 	mgi : widget;
@@ -95,7 +101,11 @@ locals:
 	ab : widget;
 	accTable : widget;
 	refTable : widget;
+	molmutationTable : widget;
 	imgTable : widget;
+	markerTable : widget;
+	cellLineTable : widget;
+	seqTable : widget;
 	mgiTypeKey : string;
 
 	cmd : string;
@@ -113,13 +123,24 @@ locals:
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
 
 	pendingStatusKey : string;
-	defaultInheritanceKey : string;
-	defaultESCellLineKeyNS : string;
-	defaultESCellLineKeyNA : string;
+	defaultQualifierKey : string;
+	defaultStatusKey : string;
+
+	defaultInheritanceKeyNS : string;
+	defaultInheritanceKeyNA : string;
+
+	defaultTransmissionKeyNS : string;
+	defaultTransmissionKeyNA : string;
+	defaultTransmissionGermLine : string := "3982951";
+
 	defaultStrainKeyNS : string;
 	defaultStrainKeyNA : string;
-	defaultMutantESCellLineKeyNS : string;
-	defaultMutantESCellLineKeyNA : string;
+
+        defaultMutantCellLineKeyNA : string := "-4";
+	defaultParentCellLineKeyNS : string := "-1";
+	defaultCreatorKeyNS : string := "3982966";
+	defaultVectorKeyNS : string := "4311225";
+	defaultCellLineTypeKey : string := "3982968"; -- default is 63 ("Embryonic Stem Cell")
 
 rules:
 
@@ -176,13 +197,22 @@ rules:
 	  InitOptionMenu.option := top->AlleleStatusMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->AlleleTransmissionMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->InheritanceModeMenu;
 	  send(InitOptionMenu, 0);
 
-	  InitOptionMenu.option := top->MolecularMutationMenu;
+	  InitOptionMenu.option := top->MolecularMutation->MolecularMutationMenu;
 	  send(InitOptionMenu, 0);
 
-          LoadList.list := top->ESCellLineList;
+	  InitOptionMenu.option := top->Marker->AlleleMarkerStatusMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+	  send(InitOptionMenu, 0);
+
+          LoadList.list := top->StemCellLineList;
 	  send(LoadList, 0);
 
 	  -- Initialize Reference table
@@ -223,15 +253,24 @@ rules:
 
 	  -- List of all Table widgets used in form
 
-	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
+	  tables.append(top->Marker->Table);
+	  tables.append(top->Reference->Table);
+	  tables.append(top->MolecularMutation->Table);
 	  tables.append(top->ImagePane->Table);
+	  tables.append(top->MutantCellLine->Table);
+	  tables.append(top->Synonym->Table);
+	  tables.append(top->SequenceAllele->Table);
 
 	  -- Global Accession number Tables
 
 	  accTable := top->mgiAccessionTable->Table;
 	  refTable := top->Reference->Table;
+	  molmutationTable := top->MolecularMutation->Table;
 	  imgTable := top->ImagePane->Table;
+	  markerTable := top->Marker->Table;
+	  cellLineTable := top->MutantCellLine->Table;
+	  seqTable := top->SequenceAllele->Table;
 	  mgiTypeKey := imgTable.mgiTypeKey;
 
           -- Set Row Count
@@ -244,23 +283,26 @@ rules:
 
 	  pendingStatusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
 
-	  defaultInheritanceKey := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
-		"where term = " + mgi_DBprstr(top->InheritanceModeMenu.defaultValue));
+	  defaultQualifierKey := mgi_sql1("select _Term_key from VOC_Term " +
+		"where _Vocab_key = 70 and term = '" + NOTSPECIFIED_TEXT + "'");
+
+	  defaultStatusKey := mgi_sql1("select _Term_key from VOC_Term " +
+		"where _Vocab_key = 73 and term = " + mgi_DBprstr(top->Marker->AlleleMarkerStatusMenu.defaultValue));
+
+	  defaultInheritanceKeyNA := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
+		"where term = '" + NOTAPPLICABLE_TEXT + "'");
+
+	  defaultInheritanceKeyNS := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
+		"where term = '" + NOTSPECIFIED_TEXT + "'");
+
+	  defaultTransmissionKeyNA := mgi_sql1("select _Term_key from VOC_Term_ALLTransmission_View " +
+		"where term = '" + NOTAPPLICABLE_TEXT + "'");
+
+	  defaultTransmissionKeyNS := mgi_sql1("select _Term_key from VOC_Term_ALLTransmission_View " +
+		"where term = '" + NOTSPECIFIED_TEXT + "'");
 
 	  defaultStrainKeyNS := NOTSPECIFIED;
 	  defaultStrainKeyNA := NOTAPPLICABLE;
-
-	  defaultESCellLineKeyNS := mgi_sql1("select _CellLine_key from ALL_CellLine " +
-		"where isMutant = 0 and cellLine = 'Not Specified' and _Strain_key = -1");
-
-	  defaultESCellLineKeyNA := mgi_sql1("select _CellLine_key from ALL_CellLine " +
-		"where isMutant = 0 and cellLine = 'Not Applicable' and _Strain_key = -2");
-
-	  defaultMutantESCellLineKeyNS := mgi_sql1("select _CellLine_key from ALL_CellLine " + 
-		"where isMutant = 1 and cellLine = 'Not Specified' and _Strain_key = -1");
-
-	  defaultMutantESCellLineKeyNA := mgi_sql1("select _CellLine_key from ALL_CellLine " + 
-		"where isMutant = 1 and cellLine = 'Not Applicable' and _Strain_key = -2");
 
 	end does;
 
@@ -283,6 +325,15 @@ rules:
             top->AlleleStatusPulldown.background := "Wheat";
             top->AlleleStatusPulldown->SearchAll.background := "Wheat";
             top->AlleleStatusMenu.menuHistory.background := "Wheat";
+	    top->MixedMenu.background := "Wheat";
+            top->MixedPulldown.background := "Wheat";
+            top->MixedPulldown->SearchAll.background := "Wheat";
+            top->MixedMenu.menuHistory.background := "Wheat";
+	    top->ExtinctMenu.background := "Wheat";
+            top->ExtinctPulldown.background := "Wheat";
+            top->ExtinctPulldown->SearchAll.background := "Wheat";
+            top->ExtinctMenu.menuHistory.background := "Wheat";
+
 	    InitRefTypeTable.table := top->Reference->Table;
 	    InitRefTypeTable.tableID := MGI_REFTYPE_ALLELE_VIEW;
 	    send(InitRefTypeTable, 0);
@@ -306,20 +357,28 @@ rules:
 	Add does
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
+	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  statusKey : string;
 	  inheritanceKey : string;
-	  esCellLineKey : string;
+	  transmissionKey : string;
 	  strainKey : string;
-	  mutantesCellLineKey : string;
 	  approvalLoginDate : string;
 	  editMode : string;
-	  refsKey : string;
-	  refsType : string;
-	  originalRefs : integer := 0;
 	  paneKey : string;
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 	  row : integer := 0;
+
+	  refsKey : string;
+	  refsType : string;
+	  originalRefs : integer := 0;
+
+	  mixedRefs : integer := 0;
+	  isMixed : integer := 0;
+
+	  transmissionRefs : integer := 0;
+	  printTransmissionWarning : boolean := false;
+	  printReferenceWarning : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -338,8 +397,20 @@ rules:
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
 
+	    if (markerKey.length = 0) then
+	      markerKey := "NULL";
+	    end if;
+
 	    if (refsType = "Original" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      originalRefs := originalRefs + 1;
+	    end if;
+
+	    if (refsType = "Mixed" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      mixedRefs := mixedRefs + 1;
+	    end if;
+
+	    if (refsType = "Transmission" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      transmissionRefs := transmissionRefs + 1;
 	    end if;
 
 	    row := row + 1;
@@ -350,6 +421,29 @@ rules:
             StatusReport.message := "At most one Original Reference is required.";
             send(StatusReport);
             return;
+	  end if;
+
+	  -- Mixed 
+	  if (mixedRefs > 0) then
+	    isMixed := 1;
+	  else
+	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
+	  end if;
+
+	  -- Mixed Reference is required if false, Mixed = Yes, Status != Autoload
+	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
+
+	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
+	  if (transmissionRefs = 0 and 
+	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
+	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
+	    printReferenceWarning := true;
 	  end if;
 
 	  -- Verify at most one Primary Image Pane Association
@@ -383,13 +477,6 @@ rules:
 
           currentRecordKey := "@" + KEYNAME;
  
-	  -- if validated NomenDB symbol, the set Marker key to NULL
-
-	  if (top->mgiMarker->ObjectID->text.value = "-1") then
-		nomenSymbol := top->mgiMarker->Marker->text.value;
-	        top->mgiMarker->ObjectID->text.value := "NULL";
-	  end if;
-
 	  if (top->Name->text.value = "wild type" or top->Name->text.value = "wild-type") then
 	    isWildType := 1;
 	  end if;
@@ -403,58 +490,75 @@ rules:
 	  end if;
 
 	  if (top->InheritanceModeMenu.menuHistory.defaultValue = "%") then
-	    inheritanceKey := defaultInheritanceKey;
+	    inheritanceKey := defaultInheritanceKeyNA;
 	  else
 	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
 	  end if;
 
-	  if (top->EditForm->mgiParentalESCellLine->ObjectID->text.value.length = 0) then
-            if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
-		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
-	      esCellLineKey := defaultESCellLineKeyNS;
-	      strainKey := defaultStrainKeyNS;
-	    else
-	      esCellLineKey := defaultESCellLineKeyNA;
-	      strainKey := defaultStrainKeyNA;
-	    end if;
-	  else
-	    esCellLineKey := top->EditForm->mgiParentalESCellLine->ObjectID->text.value;
-	    strainKey := top->EditForm->mgiParentalESCellLine->StrainID->text.value;
-	  end if;
+	  -- set the germ line transmission default
+	  -- if no mutnat or mutant = NA then GermLineTrans = NA
+	  -- else if mutant = NS, default GermLineTrans = NA
 
-	  if (top->EditForm->mgiMutantESCellLine->ObjectID->text.value.length = 0) then
-            if (top->AlleleTypeMenu.menuHistory.labelString = GENE_TRAPPED) then
-	      mutantesCellLineKey := defaultMutantESCellLineKeyNS;
-	    else
-	      mutantesCellLineKey := defaultMutantESCellLineKeyNA;
-	    end if;
-	  else
-	    mutantesCellLineKey := top->EditForm->mgiMutantESCellLine->ObjectID->text.value;
+	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
+	  transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+	  if (mutantCellLine.length = 0
+	      or mutantCellLine = NOTAPPLICABLE_TEXT) then
+            transmissionKey := defaultTransmissionKeyNA;
+	  elsif (mutantCellLine = NOTSPECIFIED_TEXT
+		 and transmissionKey.length = 0) then
+            transmissionKey := defaultTransmissionKeyNA;
+	  elsif (mutantCellLine.length > 0
+		 and 
+		 (transmissionKey.length = 0 or transmissionKey = "%")) then
+            transmissionKey := defaultTransmissionGermLine;
+	    printTransmissionWarning := true;
+          else
+	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+          end if;
+
+	  -- end set the germ line transmission default
+
+	  -- set defaults based on allele type
+
+	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
+	  if (strainKey.length = 0 and top->mgiParentCellLine->ObjectID->text.value.length = 0) then
+              if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
+		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
+		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
+		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
+		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
+		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
+	        strainKey := defaultStrainKeyNS;
+	      else
+	        strainKey := defaultStrainKeyNA;
+	      end if;
 	  end if;
 
           cmd := mgi_setDBkey(ALL_ALLELE, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_ALLELE, KEYNAME) +
-		 top->mgiMarker->ObjectID->text.value + "," +
+		 markerKey + "," +
 		 strainKey + "," +
                  inheritanceKey + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  statusKey + "," +
-                 esCellLineKey + "," +
-                 mutantesCellLineKey + "," +
+		 transmissionKey + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
 		 (string) isWildType + "," +
+		 top->ExtinctMenu.menuHistory.defaultValue + "," +
+		 (string) isMixed + "," +
 		 global_loginKey + "," +
 		 global_loginKey + "," +
 		 approvalLoginDate;
 
+	  send(ModifyMarkerAssoc, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
+
+	  if (isWildType = 0) then
+	    send(ModifyMutantCellLine, 0);
+          end if;
 
 	  -- TR 5672
 	  -- always set note modified = true so if user has used
@@ -495,6 +599,14 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
+	  -- Process Sequence/Allele Associations
+
+          ProcessAcc.table := seqTable;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := SEQ_ALLELE_ASSOC;
+          send(ProcessAcc, 0);
+          cmd := cmd + seqTable.sqlCmd;
+
 	  -- Execute the add
 
 	  cmd := cmd + "exec ALL_reloadLabel " + currentRecordKey + "\n";
@@ -512,6 +624,24 @@ rules:
 	  if (top->QueryList->List.sqlSuccessful) then
 	    ClearAllele.clearKeys := false;
 	    send(ClearAllele, 0);
+	  end if;
+
+	  -- Transmission Reference
+	  if (printReferenceWarning) then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+	        "If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            send(StatusReport);
+	  end if;
+
+	  -- Germ Line Transmission Term
+	  if (printTransmissionWarning) then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+	      "Germ Line Transmission value may have been changed.\n" +
+	      "Confirm value and review transmission reference.\n" +
+	      "Not all values are allowed for all allele types.";
+            send(StatusReport);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -543,37 +673,6 @@ rules:
 	end does;
 
 --
--- DisplayESCellLine
---
--- Activated from:  widget top->ESCellLineList->List.singleSelectionCallback
---
--- Display ES Cell Line information
---
-
-	DisplayESCellLine does
-
-	  cmd := "select _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
-		mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
-		" = " + top->mgiParentalESCellLine->ObjectID->text.value;
-
-	  dbproc : opaque := mgi_dbopen();
-          (void) dbcmd(dbproc, cmd);
-          (void) dbsqlexec(dbproc);
-
-	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
-	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	         top->mgiParentalESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
-	         top->mgiParentalESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
-		 top->mgiParentalESCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-		 top->mgiParentalESCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
-	    end while;
-	  end while;
-
-	  (void) dbclose(dbproc);
-	end does;
-
---
 -- Modify
 --
 -- Activated from:  widget top->Control->Modify
@@ -586,13 +685,21 @@ rules:
 	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
 	  editMode : string;
-	  refsKey : string;
-	  refsType : string;
-	  originalRefs : integer := 0;
+	  transmissionKey : string;
 	  paneKey : string;
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 	  row : integer := 0;
+
+	  refsKey : string;
+	  refsType : string;
+	  originalRefs : integer := 0;
+
+	  mixedRefs : integer := 0;
+	  isMixed : integer := 0;
+
+	  transmissionRefs : integer := 0;
+	  printReferenceWarning : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -615,6 +722,14 @@ rules:
 	      originalRefs := originalRefs + 1;
 	    end if;
 
+	    if (refsType = "Mixed" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      mixedRefs := mixedRefs + 1;
+	    end if;
+
+	    if (refsType = "Transmission" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      transmissionRefs := transmissionRefs + 1;
+	    end if;
+
 	    row := row + 1;
 	  end while;
 
@@ -624,6 +739,29 @@ rules:
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
+	  end if;
+
+	  -- Mixed 
+	  if (mixedRefs > 0) then
+	    isMixed := 1;
+	  else
+	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
+	  end if;
+
+	  -- Mixed Reference is required if false, Mixed = Yes, Status != Autoload
+	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
+
+	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
+	  if (transmissionRefs = 0 and 
+	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
+	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
+	    printReferenceWarning := true;
 	  end if;
 
 	  -- Verify at most one Primary Image Pane Association
@@ -654,44 +792,61 @@ rules:
             return;
 	  end if;
 
-	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
-	      (top->mgiParentalESCellLine->ObjectID->text.modified or 
-	       top->mgiMutantESCellLine->ObjectID->text.modified or 
-	       top->EditForm->Strain->StrainID->text.modified)) then
+	  -- end Primary Image
 
-	    top->VerifyESStrain.doModify := false;
-            top->VerifyESStrain.managed := true;
+	  -- Confirm changes to Mutant, Parent, Strain
+
+	  editMode := mgi_tblGetCell(cellLineTable, 0, cellLineTable.editMode);
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
+	      (editMode = TBL_ROW_MODIFY or
+	       top->mgiParentCellLine->ObjectID->text.modified or
+	       top->mgiParentCellLine->Strain->StrainID->text.modified)) then
+
+	    top->VerifyMutantParentStrain.doModify := false;
+            top->VerifyMutantParentStrain.managed := true;
  
             -- Keep busy while user verifies the modification is okay
  
-            while (top->VerifyESStrain.managed = true) do
+            while (top->VerifyMutantParentStrain.managed = true) do
               (void) keep_busy();
             end while;
  
---            (void) XmUpdateDisplay(top);
-            if (not top->VerifyESStrain.doModify) then
+            if (not top->VerifyMutantParentStrain.doModify) then
 	      return;
 	    end if;
 	  end if;
+
+	  -- end Confirm changes
+
+	  -- Confirm changes to Allele Status, Strain
+
+	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
+	      top->AlleleStatusMenu.menuHistory.modified and
+	      top->mgiParentCellLine->Strain->StrainID->text.value = defaultStrainKeyNS) then
+
+	    top->VerifyAlleleStatusStrain.doModify := false;
+            top->VerifyAlleleStatusStrain.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyAlleleStatusStrain.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyAlleleStatusStrain.doModify) then
+	      return;
+	    end if;
+	  end if;
+
+	  -- end Confirm changes
 
 	  (void) busy_cursor(top);
 
 	  cmd := "";
 	  set : string := "";
 
-	  if (top->mgiMarker->ObjectID->text.modified) then
-	    -- if validated NomenDB symbol, the set Marker key to NULL
-	    if (top->mgiMarker->ObjectID->text.value = "-1") then
-	      set := set + "_Marker_key = NULL," +
-		     "nomenSymbol = " + mgi_DBprstr(top->mgiMarker->Marker->text.value) + ",";
-	    else
-	      set := set + "_Marker_key = " + top->mgiMarker->ObjectID->text.value + "," +
-		     "nomenSymbol = NULL,";
-	    end if;
-	  end if;
-
-	  if (top->EditForm->Strain->StrainID->text.modified) then
-	    set := set + "_Strain_key = " + mgi_DBprkey(top->EditForm->Strain->StrainID->text.value) + ",";
+	  if (top->mgiParentCellLine->Strain->StrainID->text.modified) then
+	    set := set + "_Strain_key = " + mgi_DBprkey(top->mgiParentCellLine->Strain->StrainID->text.value) + ",";
 	  end if;
 
           if (top->InheritanceModeMenu.menuHistory.modified and
@@ -714,13 +869,35 @@ rules:
 	    end if;
           end if;
 
-	  if (top->mgiParentalESCellLine->ObjectID->text.modified) then
-	    set := set + "_ESCellLine_key = " + mgi_DBprkey(top->mgiParentalESCellLine->ObjectID->text.value) + ",";
-	  end if;
+	  -- set the germ line transmission default
+	  -- if no mutnat or mutant = NA then GermLineTrans = NA
+	  -- else GermLineTrans = whatever user says
 
-	  if (top->mgiMutantESCellLine->ObjectID->text.modified) then
-	    set := set + "_MutantESCellLine_key = " + mgi_DBprkey(top->mgiMutantESCellLine->ObjectID->text.value) + ",";
+	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
+	  if (mutantCellLine.length = 0
+	      or mutantCellLine = NOTAPPLICABLE_TEXT) then
+            transmissionKey := defaultTransmissionKeyNA;
+	  else
+	    transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
 	  end if;
+	  -- end set the germ line transmission default
+
+          set := set + "_Transmission_key = "  + transmissionKey + ",";
+          if (top->AlleleTransmissionMenu.menuHistory.modified and
+	      top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
+	    printReferenceWarning := true;
+          end if;
+
+	  -- Mixed Reference determines the setting of isMixed
+          --if (top->MixedMenu.menuHistory.modified and
+	  --    top->MixedMenu.menuHistory.searchValue != "%") then
+          set := set + "isMixed = "  + (string) isMixed + ",";
+          --end if;
+
+          if (top->ExtinctMenu.menuHistory.modified and
+	      top->ExtinctMenu.menuHistory.searchValue != "%") then
+            set := set + "isExtinct = "  + top->ExtinctMenu.menuHistory.defaultValue + ",";
+          end if;
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
@@ -735,9 +912,14 @@ rules:
 	    set := set + "isWildType = " + (string) isWildType + ",";
 	  end if;
 
+	  send(ModifyMarkerAssoc, 0);
 	  send(ModifyMolecularMutation, 0);
 	  send(ModifyImagePaneAssociation, 0);
 	  send(ModifyAlleleNotes, 0);
+
+	  if (isWildType = 0) then
+	    send(ModifyMutantCellLine, 0);
+	  end if;
 
 	  if (not top.allowEdit) then
 	    (void) reset_cursor(top);
@@ -767,6 +949,14 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
+	  -- Process Sequence/Allele Associations
+
+          ProcessAcc.table := seqTable;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := SEQ_ALLELE_ASSOC;
+          send(ProcessAcc, 0);
+          cmd := cmd + seqTable.sqlCmd;
+
 	  if ((cmd.length > 0 and cmd != accTable.sqlCmd and cmd != top->mgiNoteForm.sql) or
 	      set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
@@ -787,10 +977,6 @@ rules:
 	  if (cmd.length > 0) then
 	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
 		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
-
-	    if (top->mgiMarker->ObjectID->text.value != "") then
-		cmd := cmd + "exec MRK_reloadLabel " + top->mgiMarker->ObjectID->text.value + "\n";
-	    end if;
 
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
@@ -813,13 +999,21 @@ rules:
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
 
+	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
+	  if (printReferenceWarning) then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+	      "If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            send(StatusReport);
+	  end if;
+
 	  (void) reset_cursor(top);
 	end does;
 
 --
 -- ModifyAlleleNotes
 --
--- Activated from: devent Modify
+-- Activated from: devent Add/Modify
 --
 -- Appends to global "cmd" string
 --
@@ -858,14 +1052,16 @@ rules:
 	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  -- Modify Marker Description
+	  -- For now, we have only one Marker per Allele
 
-	  if (top->mgiMarker->ObjectID->text.value.length > 0) then
+	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  if (markerKey != "NULL") then
             if (top->mgiNoteForm.sql.length > 0) then
 		noteKeyDeclared := true;
 	    end if;
             ModifyNotes.source_widget := top->markerDescription->Note;
             ModifyNotes.tableID := MRK_NOTES;
-            ModifyNotes.key := top->mgiMarker->ObjectID->text.value;
+            ModifyNotes.key := markerKey;
 	    ModifyNotes.keyDeclared := noteKeyDeclared;
             send(ModifyNotes, 0);
             cmd := cmd + top->markerDescription->Note.sql;
@@ -874,16 +1070,137 @@ rules:
 	end does;
 
 --
+-- ModifyMarkerAssoc
+--
+-- Activated from: devent Add/Modify
+--
+-- Construct insert/update/delete for Marker Association
+-- Appends to global "cmd" string
+--
+ 
+	ModifyMarkerAssoc does
+	  table : widget := markerTable;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  markerSymbol : string;
+	  markerKey : string;
+	  refsKey : string;
+	  nomenSymbol : string;
+	  qualifierKey : string;
+	  statusKey : string;
+	  set : string := "";
+	  keyName : string := "mrkassocKey";
+	  keyDefined : boolean := false;
+	  printWarning : boolean := false;
+ 
+	  -- if the marker symbol is blank, print a warning
+	  editMode := mgi_tblGetCell(table, 0, table.editMode);
+	  markerSymbol := mgi_tblGetCell(table, 0, table.markerSymbol);
+
+	  if (editMode != TBL_ROW_DELETE and (markerSymbol = "" or markerSymbol = "NULL")) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "There is no Marker association for this Allele.";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  -- there is only one nomen symbol per allele...
+	  -- if the marker key is NULL, then this is a nomen symbol and we're done
+
+	  markerKey := mgi_tblGetCell(table, 0, table.markerKey);
+	  if (markerKey = "-1" or markerKey = "" or markerKey = "NULL") then
+	    markerKey := "NULL";
+	    nomenSymbol := mgi_tblGetCell(table, 0, table.markerSymbol);
+	    set := "_Marker_key = NULL, nomenSymbol = " + mgi_DBprstr(nomenSymbol);
+	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
+	    return;
+          end if;
+
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY) then
+	      break;
+	    end if;
+ 
+	    key := mgi_tblGetCell(table, row, table.assocKey);
+	    markerKey := mgi_tblGetCell(table, row, table.markerKey);
+	    refsKey := mgi_tblGetCell(table, row, table.refsKey);
+	    statusKey := mgi_tblGetCell(table, row, table.statusKey);
+	    qualifierKey := defaultQualifierKey;
+
+	    if (markerKey.length = 0) then
+	      markerKey := "NULL";
+	    end if;
+
+	    if (refsKey.length = 0) then
+	      refsKey := "NULL";
+	    end if;
+
+	    if (statusKey.length = 0) then
+	      statusKey := defaultStatusKey;
+	    end if;
+
+	    if (editMode = TBL_ROW_ADD) then
+
+	      if (not keyDefined) then
+		cmd := cmd + mgi_setDBkey(ALL_MARKER_ASSOC, NEWKEY, keyName);
+		keyDefined := true;
+	      else
+		cmd := cmd + mgi_DBincKey(keyName);
+	      end if;
+
+	      cmd := cmd + mgi_DBinsert(ALL_MARKER_ASSOC, keyName) +
+		     currentRecordKey + "," +
+		     markerKey + "," +
+		     qualifierKey + "," +
+		     refsKey + "," +
+		     statusKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_Marker_key = " + markerKey +
+	             ",_Refs_key = " + refsKey +
+	             ",_Status_key = " + statusKey;
+	      cmd := cmd + mgi_DBupdate(ALL_MARKER_ASSOC, key, set);
+	      printWarning := true;
+
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(ALL_MARKER_ASSOC, key);
+	      printWarning := true;
+	    end if;
+
+	    -- need to update the MRK_reloadLabel table for each marker that was updated
+
+ 	    if (markerKey != "" and markerKey != "NULL") then
+	      cmd := cmd + "exec MRK_reloadLabel " + markerKey + "\n";
+ 	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  if (printWarning) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "A Marker has been changed or deleted.\nPlease verify the Allele Symbol.";
+            send(StatusReport);
+          end if;
+
+	end does;
+ 
+--
 -- ModifyMolecularMutation
 --
--- Activated from: devent Modify
+-- Activated from: devent Add/Modify
 --
 -- Construct insert/update/delete for Molecular Mutations
 -- Appends to global "cmd" string
 --
  
 	ModifyMolecularMutation does
-	  table : widget := top->MolecularMutation->Table;
+	  table : widget := molmutationTable;
 	  row : integer := 0;
 	  editMode : string;
 	  key : string;
@@ -926,9 +1243,332 @@ rules:
 	end does;
  
 --
+-- ModifyMutantCellLine
+--
+-- Activated from: devent Add/Modify
+--
+-- Construct insert/update/delete for Mutant Cell Line
+-- Appends to global "cmd" string
+--
+ 
+	ModifyMutantCellLine does
+	  table : widget := cellLineTable;
+	  row : integer := 0;
+	  editMode : string;
+	  key : string;
+	  set : string := "";
+	  isError : boolean := false;
+
+	  alleleType : string;
+	  alleleTypeKey : string;
+
+	  mutantCellLine : string;
+	  mutantCellLineKey : string;
+
+	  parentKey : string;
+	  strainKey : string;
+	  strainName : string;
+	  derivationKey : string;
+	  cellLineTypeKey : string;
+
+	  cellAssocKey : string := "maxCellAssoc";
+	  cellAssocDefined : boolean := false;
+
+	  cellLineKey : string := "maxCellLine";
+	  cellLineDefined : boolean := false;
+
+	  isParent : boolean := true;
+	  isMutant : boolean := true;
+
+	  addCellLine : boolean := false;
+	  addAssociation : boolean := true;
+
+	  getDerivation : boolean := true;
+ 
+	  -- set the allele type and type key
+	  -- set the parent
+	  -- set the strain
+	  -- set the derivation
+
+	  alleleType := top->AlleleTypeMenu.menuHistory.labelString;
+	  alleleTypeKey := top->AlleleTypeMenu.menuHistory.searchValue;
+	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
+	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
+	  strainName := top->mgiParentCellLine->Strain->Verify->text.value;
+	  derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
+
+	  -- set the isParent
+
+	  if (parentKey.length = 0) then
+	      isParent := false;
+	  end if;
+
+	  -- Process while non-empty rows are found
+ 
+	  while (row < mgi_tblNumRows(table)) do
+	    editMode := mgi_tblGetCell(table, row, table.editMode);
+
+	    if (editMode = TBL_ROW_EMPTY and row > 0) then
+	      break;
+	    end if;
+ 
+	    if (editMode = TBL_ROW_NOCHG and top->mgiParentCellLine->ObjectID->text.modified) then
+	      editMode := TBL_ROW_MODIFY;
+            end if;
+
+	    -- check if changes have been made to the mutant and the derivation...
+	    if (editMode = TBL_ROW_NOCHG and not top->mgiParentCellLine->ObjectID->text.modified) then
+	      getDerivation := false;
+            end if;
+
+	    key := mgi_tblGetCell(table, row, table.assocKey);
+	    mutantCellLine := mgi_tblGetCell(table, row, table.cellLine);
+	    mutantCellLineKey := mgi_tblGetCell(table, row, table.cellLineKey);
+	    cellLineTypeKey := defaultCellLineTypeKey;
+
+	    if (mutantCellLineKey.length = 0) then
+		isMutant := false;
+            end if;
+
+	    --
+	    -- check isParent, isMutant
+	    --
+
+	    if (not isParent and not isMutant) then
+
+	      -- not specified
+              if (alleleType = "Gene trapped" or
+		  alleleType = "Targeted (knock-out)" or
+		  alleleType = "Targeted (knock-in)" or
+		  alleleType = "Targeted (Floxed/Frt)" or
+		  alleleType = "Targeted (Reporter)" or
+		  alleleType = "Targeted (other)") then
+
+		--
+		-- select the derivation key that is associated with the specified 
+		--   allele type
+		--   creator = Not Specified
+		--   vector = Not Specified
+		--   parent cell line = Not Specified
+		--   strain = Not Specified
+		--
+
+	        derivationKey := mgi_sql1("select d._Derivation_key " +
+			"from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			"where d._DerivationType_key = " + alleleTypeKey +
+			" and d._Creator_key = " + defaultCreatorKeyNS +
+			" and d._Vector_key = " + defaultVectorKeyNS +
+			" and d._ParentCellLine_key = " + defaultParentCellLineKeyNS +
+			" and d._ParentCellLine_key = c._CellLine_key " +
+			" and c._Strain_key = " + defaultStrainKeyNS +
+			" and c.isMutant = 0 ");
+
+	        if (derivationKey.length = 0) then
+                   StatusReport.source_widget := top.root;
+                   StatusReport.message := "Cannot find Derivation for this Allele Type and Parent = 'Not Specified'";
+                   send(StatusReport);
+		   isError := true;
+		end if;
+
+		mutantCellLine := NOTSPECIFIED_TEXT;
+		strainKey := defaultStrainKeyNS;
+	        addCellLine := true;
+	        addAssociation := true;
+
+	      -- do not default 'not applicable'
+	      else
+	          addCellLine := false;
+		  addAssociation := false;
+	      end if;
+
+	    elsif (isParent and not isMutant) then
+
+	      if (strainName = NOTAPPLICABLE_TEXT) then
+		mutantCellLineKey := defaultMutantCellLineKeyNA;
+		strainKey := defaultStrainKeyNA;
+	        addCellLine := false;
+	        addAssociation := true;
+
+	      else
+
+		addCellLine := true;
+	        addAssociation := true;
+	        mutantCellLine := NOTSPECIFIED_TEXT;
+
+	        --
+	        -- select the derivation key that is associated with the specified 
+	        --   allele type
+	        --   parent cell line
+	        --   strain
+	        --
+
+	        derivationKey := mgi_sql1("select d._Derivation_key " +
+			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			    "where d._DerivationType_key = " + alleleTypeKey +
+			    " and d._ParentCellLine_key = " + parentKey +
+			    " and d._ParentCellLine_key = c._CellLine_key " +
+			    " and c._Strain_key = " + strainKey +
+			    " and c.isMutant = 0 ");
+
+	        if (derivationKey.length = 0) then
+                  StatusReport.source_widget := top.root;
+                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                  send(StatusReport);
+	          isError := true;
+	        end if;
+
+	      end if;
+
+	    elsif (not isParent and isMutant) then
+
+	      if (strainName = NOTSPECIFIED_TEXT) then
+		addCellLine := true;
+		addAssociation := true;
+	      elsif (strainName = NOTAPPLICABLE_TEXT) then
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "The Strain of Origin cannot be set to 'Not Applicable'";
+                send(StatusReport);
+	        isError := true;
+		--mutantCellLineKey := defaultMutantCellLineKeyNA;
+		--strainKey := defaultStrainKeyNA;
+		--addCellLine := false;
+		--addAssociation := true;
+	      else
+		addCellLine := false;
+		addAssociation := true;
+	      end if;
+
+	    elsif (isParent and isMutant) then
+
+	      if (strainName = NOTSPECIFIED_TEXT or
+		  mutantCellLine = NOTSPECIFIED_TEXT) then
+
+	        addCellLine := true;
+	        addAssociation := true;
+
+	        --
+		-- only if we're changing the derivation...
+	        -- select the derivation key that is associated with the specified 
+	        --   allele type
+	        --   parent cell line
+	        --   strain
+	        --
+
+		if (getDerivation) then
+
+	          derivationKey := mgi_sql1("select d._Derivation_key " +
+			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
+			    "where d._DerivationType_key = " + alleleTypeKey +
+			    " and d._ParentCellLine_key = " + parentKey +
+			    " and d._ParentCellLine_key = c._CellLine_key " +
+			    " and c._Strain_key = " + strainKey +
+			    " and c.isMutant = 0 ");
+
+	          if (derivationKey.length = 0) then
+                    StatusReport.source_widget := top.root;
+                    StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                    send(StatusReport);
+	            isError := true;
+		  end if;
+
+	        end if;
+
+	      elsif (strainName = NOTAPPLICABLE_TEXT or
+		     mutantCellLine = NOTAPPLICABLE_TEXT) then
+
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "The Strain of Origin cannot be set to 'Not Applicable'";
+                send(StatusReport);
+	        isError := true;
+		--mutantCellLineKey := defaultMutantCellLineKeyNA;
+	        --addCellLine := false;
+	        --addAssociation := true;
+
+	      else
+	        addCellLine := false;
+	        addAssociation := true;
+	      end if;
+
+	    end if;
+
+	    --
+	    -- end check isParent, isMutant
+	    --
+
+	    if (isError) then
+	      return;
+	    end if;
+
+	    --
+	    -- if addCellLine, then add the ALL_CellLine record
+	    -- set isMutant = 1 (true)
+	    --
+
+	    if (addCellLine) then
+
+	      if (not cellLineDefined) then
+		cmd := cmd + mgi_setDBkey(ALL_CELLLINE, NEWKEY, cellLineKey);
+		cellLineDefined := true;
+	      else
+		cmd := cmd + mgi_DBincKey(cellLineKey);
+	      end if;
+
+	      cmd := cmd + mgi_DBinsert(ALL_CELLLINE, cellLineKey) +
+		     mgi_DBprstr(mutantCellLine) + "," +
+		     cellLineTypeKey + "," +
+		     strainKey + "," +
+		     derivationKey + ",1," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+	      mutantCellLineKey := "@" + cellLineKey;
+
+	    end if;
+
+	    -- end if addCellLine
+
+	    if (not addAssociation) then
+		return;
+	    end if;
+
+	    -- if ADD or if no Mutant Cell Line entered on first row...
+
+	    if (editMode = TBL_ROW_ADD or 
+	        (editMode = TBL_ROW_EMPTY and row = 0 and not isMutant)) then
+
+	      if (not cellAssocDefined) then
+		cmd := cmd + mgi_setDBkey(ALL_ALLELE_CELLLINE, NEWKEY, cellAssocKey);
+		cellAssocDefined := true;
+	      else
+		cmd := cmd + mgi_DBincKey(cellAssocKey);
+	      end if;
+
+	      cmd := cmd + mgi_DBinsert(ALL_ALLELE_CELLLINE, cellAssocKey) +
+		     currentRecordKey + "," +
+		     mutantCellLineKey + "," +
+		     global_loginKey + "," + global_loginKey + ")\n";
+
+	    elsif (editMode = TBL_ROW_MODIFY) then
+	      set := "_MutantCellLine_key = " + mutantCellLineKey;
+	      cmd := cmd + mgi_DBupdate(ALL_ALLELE_CELLLINE, key, set);
+
+	    -- NEED TO DO:  disallow deletion of the first cell line
+
+	    elsif (editMode = TBL_ROW_DELETE and key.length > 0) then
+	      cmd := cmd + mgi_DBdelete(ALL_ALLELE_CELLLINE, key);
+	    end if;
+
+	    row := row + 1;
+
+	  end while;
+
+	  -- (void) mgi_writeLog(cmd);
+
+	end does;
+ 
+--
 -- ModifyImagePaneAssociation
 --
--- Activated from: devent Modify
+-- Activated from: devent Add/Modify
 --
 -- Construct insert/update/delete for Image Associations
 -- Appends to global "cmd" string
@@ -1003,13 +1643,12 @@ rules:
 	  from_nomen	  : boolean := false;
 	  from_mutation   : boolean := false;
 	  from_notes      : boolean := false;
-	  from_strain     : boolean := false;
-	  from_cellline1  : boolean := false;
-	  from_cellline2  : boolean := false;
+	  from_cellline  : boolean := false;
+	  from_sequence   : boolean := false;
 
 	  value : string;
 
-	  from := " from " + mgi_DBtable(ALL_ALLELE) + " a";
+	  from := " from " + mgi_DBtable(ALL_ALLELE_VIEW) + " a";
 	  where := "";
 	  union := "";
 
@@ -1017,8 +1656,18 @@ rules:
           SearchAcc.objectKey := "a." + mgi_DBkey(ALL_ALLELE);
 	  SearchAcc.tableID := ALL_ALLELE;
           send(SearchAcc, 0);
-	  from := from + accTable.sqlFrom;
-	  where := where + accTable.sqlWhere;
+
+	  if (accTable.sqlFrom.length > 0) then
+	    from := from + accTable.sqlFrom;
+	    where := where + accTable.sqlWhere;
+	  else
+            SearchAcc.table := seqTable;
+            SearchAcc.objectKey := "a." + mgi_DBkey(ALL_ALLELE);
+	    SearchAcc.tableID := SEQ_ALLELE_ASSOC_VIEW;
+            send(SearchAcc, 0);
+	    from := from + seqTable.sqlFrom;
+	    where := where + seqTable.sqlWhere;
+	  end if;
 
 	  SearchRefTypeTable.table := top->Reference->Table;
 	  SearchRefTypeTable.tableID := MGI_REFERENCE_ALLELE_VIEW;
@@ -1056,16 +1705,6 @@ rules:
           from := from + top->ModificationHistory->Table.sqlFrom;
           where := where + top->ModificationHistory->Table.sqlWhere;
  
-	  value := top->mgiMarker->ObjectID->text.value;
-	  if (value.length > 0 and value != "NULL" and value != "-1") then
-	    where := where + "\nand a._Marker_key = " + top->mgiMarker->ObjectID->text.value;
-	    from_marker := true;
-	  elsif (top->mgiMarker->Marker->text.value.length > 0) then
-	    where := where + "\nand mk.symbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
-	    from_marker := true;
-	    from_nomen := true;
-	  end if;
-
           if (top->Symbol->text.value.length > 0) then
 	    where := where + "\nand a.symbol like " + mgi_DBprstr(top->Symbol->text.value);
 	  end if;
@@ -1086,38 +1725,68 @@ rules:
             where := where + "\nand a._Allele_Status_key = " + top->AlleleStatusMenu.menuHistory.searchValue;
           end if;
 
-          if (top->mgiParentalESCellLine->ObjectID->text.value.length > 0) then
-            where := where + "\nand a._ESCellLine_key = " + top->mgiParentalESCellLine->ObjectID->text.value;
-          elsif (top->mgiParentalESCellLine->CellLine->text.value.length > 0) then
-            where := where + "\nand c1.cellLine like " + mgi_DBprstr(top->mgiParentalESCellLine->CellLine->text.value);
-	    from_cellline1 := true;
+          if (top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a._Transmission_key = " + top->AlleleTransmissionMenu.menuHistory.searchValue;
           end if;
 
-          if (top->mgiMutantESCellLine->ObjectID->text.value.length > 0) then
-            where := where + "\nand a._MutantESCellLine_key = " + top->mgiMutantESCellLine->ObjectID->text.value;
-          elsif (top->mgiMutantESCellLine->CellLine->text.value.length > 0) then
-            where := where + "\nand c2.cellLine like " + mgi_DBprstr(top->mgiMutantESCellLine->CellLine->text.value);
-	    from_cellline2 := true;
+          if (top->MixedMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a.isMixed = " + top->MixedMenu.menuHistory.searchValue;
           end if;
 
-          if (top->mgiMutantESCellLine->Provider->text.value.length > 0) then
-            where := where + "\nand c2.provider like " + mgi_DBprstr(top->mgiMutantESCellLine->Provider->text.value);
-	    from_cellline2 := true;
+          if (top->ExtinctMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand a.isExtinct = " + top->ExtinctMenu.menuHistory.searchValue;
           end if;
 
-	  if (top->EditForm->Strain->StrainID->text.value.length > 0) then
-            where := where + "\nand a._Strain_key = " + top->EditForm->Strain->StrainID->text.value;;
-	  elsif (top->EditForm->Strain->Verify->text.value.length > 0) then
-            where := where + "\nand s.strain like " + mgi_DBprstr(top->EditForm->Strain->Verify->text.value);
-	    from_strain := true;
+	  -- Marker Assoc
+
+	  value := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  if (value.length > 0 and value != "NULL" and value != "-1") then
+	    where := where + "\nand ma._Marker_key = " + mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	    from_marker := true;
+	  elsif (mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol).length > 0) then
+	    where := where + "\nand ma.symbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
+	    from_marker := true;
+	    from_nomen := true;
 	  end if;
 
-	  value := mgi_tblGetCell(top->MolecularMutation->Table, 0, top->MolecularMutation->Table.mutationKey);
+	  value := mgi_tblGetCell(markerTable, 0, markerTable.refsKey);
+          if (value.length > 0 and value != "NULL") then
+	    where := where + " and ma._Refs_key = " + value;
+	    from_marker := true;
+	  else
+            value := mgi_tblGetCell(markerTable, 0, markerTable.jnum + 1);
+            if (value.length > 0) then
+	      where := where + "\nand ma.short_citation like " + mgi_DBprstr(value);
+	      from_marker := true;
+	    end if;
+	  end if;
+
+          value := mgi_tblGetCell(markerTable, 0, markerTable.modifiedBy);
+          if (value.length > 0) then
+            where := where + "\nand ma.modifiedBy like " + mgi_DBprstr(value);
+            from_marker := true;
+          end if;
+
+	  value := mgi_tblGetCell(markerTable, 0, markerTable.statusKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand ma._Status_key = " + value;
+            from_marker := true;
+	  else
+	    value := mgi_tblGetCell(markerTable, 0, markerTable.status);
+	    if (value.length > 0) then
+	      where := where + "\nand ma.status like " + mgi_DBprstr(value);
+              from_marker := true;
+	    end if;
+	  end if;
+
+	  -- Molecular Mutation
+
+	  value := mgi_tblGetCell(molmutationTable, 0, molmutationTable.mutationKey);
 	  if (value.length > 0 and value != "NULL") then
 	    where := where + "\nand m._Mutation_key = " + value;
 	    from_mutation := true;
 	  else
-	    value := mgi_tblGetCell(top->MolecularMutation->Table, 0, top->MolecularMutation->Table.mutation);
+	    value := mgi_tblGetCell(molmutationTable, 0, molmutationTable.mutation);
 	    if (value.length > 0) then
 	      where := where + "\nand m.mutation like " + mgi_DBprstr(value);
 	      from_mutation := true;
@@ -1130,26 +1799,65 @@ rules:
 	    from_marker := true;
           end if;
       
+	  -- Mutant Cell Line
+
+	  value := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLineKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand c._MutantCellLine_key = " + value;
+	    from_cellline := true;
+	  else
+	    value := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
+	    if (value.length > 0) then
+	      where := where + "\nand c.cellLine like " + mgi_DBprstr(value);
+	      from_cellline := true;
+	    end if;
+	  end if;
+
+	  value := mgi_tblGetCell(cellLineTable, 0, cellLineTable.creator);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand c.creator like " + mgi_DBprstr(value);
+	    from_cellline := true;
+	  end if;
+
+	  value := mgi_tblGetCell(cellLineTable, 0, cellLineTable.modifiedBy);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand c.modifiedBy like " + mgi_DBprstr(value);
+	    from_cellline := true;
+	  end if;
+
+	  -- Parent Cell Line, Strain, Cell Line Type
+
+	  if (top->mgiParentCellLine->ObjectID->text.value.length > 0) then
+            where := where + "\nand c.parentCellLine_key = " + top->mgiParentCellLine->ObjectID->text.value;
+	    from_cellline := true;
+	  elsif (top->mgiParentCellLine->CellLine->text.value.length > 0) then
+            where := where + "\nand c.parentCellLine like " + mgi_DBprstr(top->mgiParentCellLine->CellLine->text.value);
+	    from_cellline := true;
+	  end if;
+
+	  if (top->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
+            where := where + "\nand a._Strain_key = " + top->mgiParentCellLine->Strain->StrainID->text.value;;
+	  elsif (top->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
+            where := where + "\nand a.strain like " + mgi_DBprstr(top->mgiParentCellLine->Strain->Verify->text.value);
+	  end if;
+
+          if (top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand c.parentCellLineType_key = " + top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue;
+	    from_cellline := true;
+          end if;
+
+	  -- get the additional tables using the "from" values
+
 	  if (from_marker) then
-	    from := from + "," + mgi_DBtable(MRK_MARKER) + " mk";
-	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = mk." + mgi_DBkey(MRK_MARKER);
+	    from := from + "," + mgi_DBtable(ALL_MARKER_ASSOC_VIEW) + " ma";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = ma." + mgi_DBkey(ALL_ALLELE);
 	  end if;
 
 	  if (from_nomen) then
 	    union := "\nunion" +
-	  	"\nselect distinct a._Allele_key, a.symbol" +
+	  	"\nselect distinct a._Allele_key, a.symbol, 1" +
 		"\nfrom ALL_Allele a" +
-		"\nwhere a.nomenSymbol like " + mgi_DBprstr(top->mgiMarker->Marker->text.value);
-	  end if;
-
-	  if (from_cellline1) then
-	    from := from + "," + mgi_DBtable(ALL_CELLLINE) + " c1";
-	    where := where + "\nand a._ESCellLine_key = c1." + mgi_DBkey(ALL_CELLLINE);
-	  end if;
-
-	  if (from_cellline2) then
-	    from := from + "," + mgi_DBtable(ALL_CELLLINE) + " c2";
-	    where := where + "\nand a._MutantESCellLine_key = c2." + mgi_DBkey(ALL_CELLLINE);
+		"\nwhere a.nomenSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
 	  end if;
 
 	  if (from_mutation) then
@@ -1157,14 +1865,19 @@ rules:
 	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = m." + mgi_DBkey(ALL_ALLELE);
 	  end if;
 
+	  if (from_cellline) then
+	    from := from + "," + mgi_DBtable(ALL_ALLELE_CELLLINE_VIEW) + " c";
+	    where := where + "\nand a." + mgi_DBkey(ALL_ALLELE) + " = c." + mgi_DBkey(ALL_ALLELE);
+	  end if;
+
 	  if (from_notes) then
 	    from := from + "," + mgi_DBtable(MRK_NOTES) + " mn";
 	    where := where + "\nand a." + mgi_DBkey(MRK_MARKER) + " = mn." + mgi_DBkey(MRK_MARKER);
 	  end if;
 
-	  if (from_strain) then
-	    from := from + "," + mgi_DBtable(STRAIN) + " s";
-	    where := where + "\nand a." + mgi_DBkey(STRAIN) + " = s." + mgi_DBkey(STRAIN);
+	  if (from_sequence) then
+	    from := from + "," + mgi_DBtable(SEQ_ALLELE_ASSOC_VIEW) + " r";
+	    where := where + "\nand a." + mgi_DBkey(SEQ_ALLELE_ASSOC_VIEW) + " = r." + mgi_DBkey(STRAIN);
 	  end if;
 
 	  if (where.length > 0) then
@@ -1186,8 +1899,8 @@ rules:
 	  (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct a._Allele_key, a.symbol\n" + from + "\n" + 
-			  where + union + "\norder by a.symbol\n";
+	  Query.select := "select distinct a._Allele_key, a.symbol, a.statusNum\n" + from + "\n" + 
+			  where + union + "\norder by a.statusNum, a.symbol\n";
 	  Query.table := ALL_ALLELE;
 	  send(Query, 0);
           (void) reset_cursor(top);
@@ -1226,8 +1939,8 @@ rules:
           (void) busy_cursor(top);
 
 	  -- TR 5672
-	  -- don't wipe out the Marker Clip if the record is de-selected, so if user has used
-	  -- another allele as a template for the new allele,
+	  -- don't wipe out the Marker Clip if the record is de-selected, 
+	  -- so if user has used another allele as a template for the new allele,
 	  -- the marker clip of the template allele is preserved
 
 	  top->markerDescription->Note->text.value := "";
@@ -1236,28 +1949,29 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(ALL_ALLELE_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
+
+	         "select _Assoc_key, _Marker_key, symbol, _Refs_key, " +
+		 "jnum, short_citation, _Status_key, status, modifiedBy, modification_date from " +
+		 mgi_DBtable(ALL_MARKER_ASSOC_VIEW) +
+		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
+
 	         "select _Mutation_key, mutation from " + mgi_DBtable(ALL_MUTATION_VIEW) +
 		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n" +
+
                  "select rtrim(m.note) from " + mgi_DBtable(ALL_ALLELE) + " a, " +
 		 mgi_DBtable(MRK_NOTES) + " m " +
                  " where a." + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + 
                  " and a." + mgi_DBkey(MRK_MARKER) + " = m." + mgi_DBkey(MRK_MARKER) +
 		 " order by m.sequenceNum\n" +
-		 "select ip._Assoc_key, ip._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID, ip.isPrimary " +
-		 "from IMG_ImagePane_Assoc ip, IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2 " +
-		 "where ip._Object_key = " + currentRecordKey +
-		 "and ip._ImagePane_key = p._ImagePane_key " +
-		 "and ip._MGIType_key = " + mgiTypeKey +
-		 "and p._Image_key = i._Image_key " +
-		 "and p._Image_key = a1._Object_key " +
-		 "and a1._MGIType_key = 9 " +
-		 "and a1._LogicalDB_key = 1 " +
-		 "and a1.prefixPart = 'MGI:' " +
-		 "and a1.preferred = 1 " +
-		 "and p._Image_key = a2._Object_key " +
-		 "and a2._MGIType_key = 9 " +
-		 "and a2._LogicalDB_key = 19 " +
-		 "order by ip.isPrimary desc, a1.accID";
+
+		 "select _Assoc_key, _ImagePane_key, figureLabel, mgiID, pixID, isPrimary from " +
+		 mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) +
+		 " where _Object_key = " + currentRecordKey +
+		 " and _MGIType_key = " + mgiTypeKey +
+		 " order by isPrimary desc, mgiID\n" +
+
+		 "select * from " + mgi_DBtable(ALL_ALLELE_CELLLINE_VIEW) +
+		 " where " + mgi_DBkey(ALL_ALLELE) + " = " + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1272,34 +1986,29 @@ rules:
 	      if (results = 1) then
 		table := top->Control->ModificationHistory->Table;
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Symbol->text.value       := mgi_getstr(dbproc, 9);
-	        top->Name->text.value         := mgi_getstr(dbproc, 10);
+	        top->Symbol->text.value       := mgi_getstr(dbproc, 8);
+	        top->Name->text.value         := mgi_getstr(dbproc, 9);
 
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 16));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 17));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 17));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 19));
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 26));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 27));
-		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 28));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
+		(void) mgi_tblSetCell(table, table.approvedBy, table.byUser, mgi_getstr(dbproc, 26));
 
 		-- If the Marker key is null, then use the Nomen Symbol field
 		if (mgi_getstr(dbproc, 2) = "") then
-		  top->mgiMarker->ObjectID->text.value := "";
-		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 11);
-		else
-		  top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 2);
-		  top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 19);
+		  (void) mgi_tblSetCell(markerTable, 0, markerTable.markerKey, mgi_getstr(dbproc, 2));
+		  (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 10));
 		end if;
 
-		top->mgiParentalESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 7);
-		top->mgiParentalESCellLine->CellLine->text.value := mgi_getstr(dbproc, 21);
-		top->mgiParentalESCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-		top->mgiParentalESCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 20);
-
-		top->mgiMutantESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 8);
-		top->mgiMutantESCellLine->CellLine->text.value := mgi_getstr(dbproc, 23);
-		top->mgiMutantESCellLine->Provider->text.value := mgi_getstr(dbproc, 25);
+		top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 23);
+		top->mgiParentCellLine->ObjectID->text.value := "";
+		top->mgiParentCellLine->CellLine->text.value := "";
+		top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
+		top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
@@ -1313,18 +2022,42 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 6);
                 send(SetOption, 0);
 
+                SetOption.source_widget := top->AlleleTransmissionMenu;
+                SetOption.value := mgi_getstr(dbproc, 7);
+                send(SetOption, 0);
+
+                SetOption.source_widget := top->MixedMenu;
+                SetOption.value := mgi_getstr(dbproc, 13);
+                send(SetOption, 0);
+
+                SetOption.source_widget := top->ExtinctMenu;
+                SetOption.value := mgi_getstr(dbproc, 12);
+                send(SetOption, 0);
+
 	      elsif (results = 2) then
-		table := top->MolecularMutation->Table;
-		(void) mgi_tblSetCell(table, row, table.mutationCurrentKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.mutationKey, mgi_getstr(dbproc, 1));
-		(void) mgi_tblSetCell(table, row, table.mutation, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
+		(void) mgi_tblSetCell(markerTable, row, markerTable.assocKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.markerKey, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.markerSymbol, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.refsKey, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.jnum, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.citation, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.statusKey, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.status, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.modifiedBy, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.modifiedDate, mgi_getstr(dbproc, 10));
+		(void) mgi_tblSetCell(markerTable, row, markerTable.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 3) then
+		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutationCurrentKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutationKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.mutation, mgi_getstr(dbproc, 2));
+		(void) mgi_tblSetCell(molmutationTable, row, molmutationTable.editMode, TBL_ROW_NOCHG);
+
+	      elsif (results = 4) then
                 top->markerDescription->Note->text.value := 
 			top->markerDescription->Note->text.value + mgi_getstr(dbproc, 1);
 
-	      elsif (results = 4) then
+	      elsif (results = 5) then
 		(void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 3));
@@ -1338,6 +2071,24 @@ rules:
 	        else
 		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
 		end if;
+
+	      elsif (results = 6) then
+		top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 12);
+		top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 13);
+		top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 14);
+		top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 15);
+
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.assocKey, mgi_getstr(dbproc, 1));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 19));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
+
+                SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+                SetOption.value := mgi_getstr(dbproc, 16);
+                send(SetOption, 0);
 
 	      end if;
 	      row := row + 1;
@@ -1363,8 +2114,14 @@ rules:
 	  send(LoadNoteForm, 0);
 
           LoadAcc.table := accTable;
-          LoadAcc.objectKey := currentRecordKey;
 	  LoadAcc.tableID := ALL_ALLELE;
+          LoadAcc.objectKey := currentRecordKey;
+          send(LoadAcc, 0);
+ 
+          LoadAcc.table := seqTable;
+	  LoadAcc.tableID := SEQ_ALLELE_ASSOC_VIEW;
+          LoadAcc.objectKey := currentRecordKey;
+	  LoadAcc.reportError := false;
           send(LoadAcc, 0);
  
 	  top->QueryList->List.row := Select.item_position;
@@ -1401,92 +2158,173 @@ rules:
         end does;
 
 --
--- VerifyESStrain
+-- DisplayStemCellLine
 --
---	Called when user chooses YES from VerifyESStrain dialog
+-- Activated from:  widget top->StemCellLineList->List.singleSelectionCallback
+--
+-- Display Stem Cell Line information
+-- This is the Parent Cell Line itself (where isMutnat = 0)
 --
 
-	VerifyESStrain does
-	  top->VerifyESStrain.doModify := true;
-	  top->VerifyESStrain.managed := false;
+	DisplayStemCellLine does
+
+	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
+	      return;
+	  end if;
+
+	  cmd := "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key from " + 
+		mgi_DBtable(ALL_CELLLINE_VIEW) +
+		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + 
+		" = " + top->mgiParentCellLine->ObjectID->text.value;
+
+	  dbproc : opaque := mgi_dbopen();
+          (void) dbcmd(dbproc, cmd);
+          (void) dbsqlexec(dbproc);
+
+	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
+	    while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+		 top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+		 top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+	         top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+	         top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+                 SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+                 SetOption.value := mgi_getstr(dbproc, 5);
+                 send(SetOption, 0);
+	    end while;
+	  end while;
+
+	  (void) dbclose(dbproc);
 	end does;
 
 --
--- VerifyMutantESCellLine
+-- VerifyAlleleStatusStrain
 --
---	Verify MutantESCellLine entered by User.
--- 	Uses mgiMutantESCellLine template.
+--	Called when user chooses YES from VerifyAlleleStatusStrain dialog
 --
 
-	VerifyMutantESCellLine does
-	  value : string;
+	VerifyAlleleStatusStrain does
+	  top->VerifyAlleleStatusStrain.doModify := true;
+	  top->VerifyAlleleStatusStrain.managed := false;
+	end does;
 
-	  value := top->mgiMutantESCellLine->CellLine->text.value;
+--
+-- VerifyMutantParentStrain
+--
+--	Called when user chooses YES from VerifyMutantParentStrain dialog
+--
 
-	  -- If a wildcard '%' appears in the field,,
+	VerifyMutantParentStrain does
+	  top->VerifyMutantParentStrain.doModify := true;
+	  top->VerifyMutantParentStrain.managed := false;
+	end does;
+
+--
+-- VerifyMutantCellLine
+--
+--	Verify Mutant Cell Line entered by User.
+-- 	Uses cellLineTable template.
+--
+
+	VerifyMutantCellLine does
+	  table : widget := VerifyMutantCellLine.source_widget;
+	  row : integer := VerifyMutantCellLine.row;
+	  column : integer := VerifyMutantCellLine.column;
+	  reason : integer := VerifyMutantCellLine.reason;
+	  value : string := VerifyMutantCellLine.value;
+	  select : string;
+	  mutantCellLineKey : string;
+
+	  if (column != table.cellLine) then
+	    return;
+	  end if;
+
+	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
+	    return;
+	  end if;
+
+	  -- If a wildcard '%' appears in the field, return
 
 	  if (strstr(value, "%") != nil) then
-            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  -- If no value entered, return
+
+	  if (value.length = 0) then
+	    return;
+	  end if;
+
+	  -- If 'Not Specified' or 'Not Applicable', return
+
+	  if (value.lower_case = "not specified" or 
+	      value.lower_case = "not applicable") then
 	    return;
 	  end if;
 
 	  (void) busy_cursor(top);
 
-	  top->mgiMutantESCellLine->ObjectID->text.value := "NULL";
-	  top->mgiMutantESCellLine->CellLine->text.value := "";
-	  top->mgiMutantESCellLine->Provider->text.value := "";
-
-	  -- If no value entered, use default
-	  if (value.length = 0) then
-            if (top->AlleleTypeMenu.menuHistory.labelString = GENE_TRAPPED) then
-	      value := "Not Specified";
-	    else
-	      value := "Not Applicable";
-	    end if;
-	  end if;
-
 	  -- Search for value in the database
 
-	  select : string := "select _CellLine_key, cellLine, provider from " + 
-		mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where isMutant = 1 and cellLine = " + mgi_DBprstr(value);
+	  select := "select * from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
+		  " where isMutant = 1 and cellLine = " + mgi_DBprstr(value) + "\n";
+
+	  (void) mgi_writeLog(select);
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->mgiMutantESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
-	      top->mgiMutantESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
-	      top->mgiMutantESCellLine->Provider->text.value := mgi_getstr(dbproc, 3);
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 1));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 2));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 14));
+	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
+	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
+	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 4);
+	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 12);
+	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 5);
+	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 17);
             end while;
           end while;
 	  (void) dbclose(dbproc);
 
-	  -- If ID is null, then value is invalid
+	  -- If ID is empty, then value is invalid
 
-	  if (top->mgiMutantESCellLine->ObjectID->text.value = "NULL") then
+	  mutantCellLineKey := mgi_tblGetCell(cellLineTable, row, cellLineTable.cellLineKey);
+	  if (mutantCellLineKey = "" or mutantCellLineKey = "NULL") then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Mutant ES CellLine '" + value + "' is invalid.";
+            StatusReport.message := "Invalid Mutant Cell Line";
             send(StatusReport);
-	  else
-            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    (void) mgi_tblSetCell(table, row, cellLineTable.cellLine, "");
+	    (void) mgi_tblSetCell(table, row, cellLineTable.cellLineKey, "");
+	    (void) mgi_tblSetCell(table, row, cellLineTable.creator, "");
+	    VerifyMutantCellLine.doit := (integer) false;
 	  end if;
+
+--	  cellLineCount : integer := (integer) mgi_sql1("select count(*) from ALL_Allele_CellLine " + \
+--		  "where _MutantCellLine_key = " + mutantCellLineKey);
+--	  if (cellLineCount > 0) then
+--            StatusReport.source_widget := top.root;
+--            StatusReport.message := "There is at least one Allele that is associated with this Mutant Cell Line";
+--            send(StatusReport);
+--	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
 
 --
--- VerifyParentalESCellLine
+-- VerifyParentCellLine
 --
---	Verify ParentalESCellLine entered by User.
--- 	Uses mgiParentalESCellLine template.
+--	Verify ParentCellLine entered by User.
+-- 	Uses mgiParentCellLine template.
 --
 
-	VerifyParentalESCellLine does
+	VerifyParentCellLine does
 	  value : string;
+	  strainKey : string;
 
-	  value := top->mgiParentalESCellLine->CellLine->text.value;
+	  value := top->mgiParentCellLine->CellLine->text.value;
+	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
 
 	  -- If a wildcard '%' appears in the field,,
 
@@ -1495,14 +2333,23 @@ rules:
 	    return;
 	  end if;
 
-	  (void) busy_cursor(top);
+	  -- If any of these values are selected and the strain has already been determined, skip
 
-	  top->mgiParentalESCellLine->ObjectID->text.value := "NULL";
-	  top->mgiParentalESCellLine->CellLine->text.value := "";
-	  top->mgiParentalESCellLine->Strain->StrainID->text.value := "";
-	  top->mgiParentalESCellLine->Strain->Verify->text.value := "";
+	  if (value = NOTSPECIFIED_TEXT or value = NOTAPPLICABLE_TEXT or value = OTHERNOTES
+	      and strainKey.length > 0) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	    return;
+	  end if;
+
+	  top->mgiParentCellLine->ObjectID->text.value := "NULL";
+	  top->mgiParentCellLine->CellLine->text.value := "";
+	  top->mgiParentCellLine->Strain->StrainID->text.value := "";
+	  top->mgiParentCellLine->Strain->Verify->text.value := "";
+	  top->mgiParentCellLine->Derivation->ObjectID->text.value := "NULL";
+	  top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
 	  -- If no value entered, use default
+
 	  if (value.length = 0) then
             if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
@@ -1510,15 +2357,23 @@ rules:
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
 		top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
-	      value := "Not Specified";
+	      value := NOTSPECIFIED_TEXT;
+
+	    -- do not default 'not applicable'
+	    --else
+	    --  value := NOTAPPLICABLE_TEXT;
+
 	    else
-	      value := "Not Applicable";
+              (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	      return;
 	    end if;
 	  end if;
 
+	  (void) busy_cursor(top);
+
 	  -- Search for value in the database
 
-	  select : string := "select _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
+	  select : string := "select  _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
 
@@ -1527,19 +2382,19 @@ rules:
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-	      top->mgiParentalESCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
-	      top->mgiParentalESCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
-	      top->mgiParentalESCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-	      top->mgiParentalESCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 1);
+	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
+	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
+	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
             end while;
           end while;
 	  (void) dbclose(dbproc);
 
 	  -- If ID is null, then value is invalid
 
-	  if (top->mgiParentalESCellLine->ObjectID->text.value = "NULL") then
+	  if (top->mgiParentCellLine->ObjectID->text.value = "NULL") then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Parental ES CellLine '" + value + "' is invalid.";
+            StatusReport.message := "Invalid Parent Cell Line";
             send(StatusReport);
 	  else
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);

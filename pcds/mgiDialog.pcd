@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 18 11:34:10 2008";
+      lastWritten = "Tue Jun 16 14:28:17 2009";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -1762,12 +1762,12 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          VerifyESStrain = VerifyDialog;
+          VerifyMutantParentStrain = VerifyDialog;
           Group: Widget
             userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
             dialogTitle = "Are You Sure?";
-            okCallback = "D:VerifyESStrain";
-            messageString = "You are about to modify the Mutant ES Cell Line or the ES Cell Line or Strain of Origin.\nAre you sure you want to modify those values?";
+            okCallback = "D:VerifyMutantParentStrain";
+            messageString = "You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?";
           Group: Control
             vip_x = 120;
             vip_y = 1020;
@@ -1894,6 +1894,17 @@ Shift<Key>Tab: prev-tab-group()
                         traversalOn = False;
                     }
               }
+        }
+        {
+          VerifyAlleleStatusStrain = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyAlleleStatusStrain";
+            messageString = "You are about to modify the Allele Status of this Not Specified Strain.\nAre you sure you want to modify this value?";
+          Group: Control
+            vip_x = 187;
+            vip_y = 1055;
         }
 }
 

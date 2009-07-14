@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 03/11/2009	lec
+--	- TR7493/Gene Trap Lite
+--
 -- 09/24/2008	lec
 --	- TR9277; VerifyAlleleState
 --
@@ -232,6 +235,9 @@ rules:
 	  InitOptionMenu.option := top->AlleleCompoundMenu;
 	  send(InitOptionMenu, 0);
 
+	  InitOptionMenu.option := top->GenotypeExistsAsMenu;
+	  send(InitOptionMenu, 0);
+
 	  -- Initialize Notes form
 
 	  InitNoteForm.notew := top->mgiNoteForm;
@@ -316,7 +322,9 @@ rules:
 	  end if;
  
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
-		 "NULL," + global_loginKey + "," + global_loginKey + ")\n";
+		 "NULL," + 
+		 top->EditForm->GenotypeExistsAsMenu.menuHistory.defaultVaclue + "," +
+		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
 	  send(ModifyImagePaneAssociation, 0);
@@ -461,6 +469,11 @@ rules:
             set := set + "isConditional = " + top->ConditionalMenu.menuHistory.defaultValue + ",";
           end if;
 
+          if (top->GenotypeExistsAsMenu.menuHistory.modified and
+	      top->GenotypeExistsAsMenu.menuHistory.searchValue != "%") then
+            set := set + "_ExistsAs_key = " + top->GenotypeExistsAsMenu.menuHistory.defaultValue + ",";
+          end if;
+
 	  send(ModifyAllelePair, 0);
 	  send(ModifyImagePaneAssociation, 0);
 
@@ -546,6 +559,10 @@ rules:
 	    if (row = 0) then
 	      allelePairString := mgi_tblGetCell(table, row, (integer) table.alleleSymbol[1]) + "," 
 			+ mgi_tblGetCell(table, row, (integer) table.alleleSymbol[2]);
+	    end if;
+
+	    if (markerKey.length = 0) then
+	      markerKey := "NULL";
 	    end if;
 
 	    if (alleleKey1.length = 0) then
@@ -803,6 +820,10 @@ rules:
             where := where + "\nand g.isConditional = " + top->ConditionalMenu.menuHistory.searchValue;
           end if;
 
+          if (top->GenotypeExistsAsMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand g._ExistsAs_key = " + top->GenotypeExistsAsMenu.menuHistory.searchValue;
+          end if;
+
           value := mgi_tblGetCell(top->AllelePair->Table, 0, top->AllelePair->Table.markerKey);
 
           if (value.length > 0 and value != "NULL") then
@@ -1016,26 +1037,19 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(GXD_GENOTYPE_VIEW) +
 		" where _Genotype_key = " + currentRecordKey + "\n" +
+
 	         "select * from " + mgi_DBtable(GXD_ALLELEPAIR_VIEW) + 
 		 " where _Genotype_key = " + currentRecordKey + "\norder by sequenceNum\n" +
+
 		 "select note, sequenceNum from " + mgi_DBtable(MGI_NOTE_GENOTYPE_VIEW) +
 		 " where _Object_key = " + currentRecordKey + 
 		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n" +
-		 "select ip._Assoc_key, ip._ImagePane_key, substring(i.figureLabel,1,20), a1.accID , a2.accID, ip.isPrimary " +
-		 "from IMG_ImagePane_Assoc ip, IMG_ImagePane p, IMG_Image i, ACC_Accession a1, ACC_Accession a2 " +
-		 "where ip._Object_key = " + currentRecordKey +
-		 "and ip._MGIType_key = " + mgiTypeKey +
-		 "and ip._ImagePane_key = p._ImagePane_key " +
-		 "and p._Image_key = i._Image_key " +
-		 "and p._Image_key = a1._Object_key " +
-		 "and a1._MGIType_key = 9 " +
-		 "and a1._LogicalDB_key = 1 " +
-		 "and a1.prefixPart = 'MGI:' " +
-		 "and a1.preferred = 1 " +
-		 "and p._Image_key = a2._Object_key " +
-		 "and a2._MGIType_key = 9 " +
-		 "and a2._LogicalDB_key = 19 " +
-		 "order by ip.isPrimary desc, a1.accID";
+
+		 "select _Assoc_key, _ImagePane_key, figureLabel, mgiID, pixID, isPrimary from " +
+		 mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) +
+		 " where _Object_key = " + currentRecordKey +
+		 " and _MGIType_key = " + mgiTypeKey +
+		 " order by isPrimary desc, mgiID\n";
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -1047,16 +1061,21 @@ rules:
 	      if (results = 1) then
                 top->ID->text.value := mgi_getstr(dbproc, 1);
                 top->EditForm->Strain->StrainID->text.value := mgi_getstr(dbproc, 2);
-                top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 9);
+                top->EditForm->Strain->Verify->text.value := mgi_getstr(dbproc, 10);
 		table := top->Control->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 7));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
 
                 SetOption.source_widget := top->ConditionalMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
+
+                SetOption.source_widget := top->GenotypeExistsAsMenu;
+                SetOption.value := mgi_getstr(dbproc, 5);
+                send(SetOption, 0);
+
 	      elsif (results = 2) then
 	  	table := top->AllelePair->Table;
 	        (void) mgi_tblSetCell(table, row, table.pairKey, mgi_getstr(dbproc, 1));
@@ -1188,6 +1207,7 @@ rules:
           SetOption.source_widget := top->AlleleCompoundMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.compoundKey);
           send(SetOption, 0);
+
         end does;
 
 --

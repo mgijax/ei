@@ -1,9 +1,93 @@
+TAG: ei-4-3-0-1
+DATE: 07/14/2009
+STAFF: lec
+CHANGES:
+1) merge TR7493 branch to trunk
+
 TAG: ei-4-2-0-2
 DATE: 03/03/2009
 STAFF: lec
 CHANGES:
 1) PythonLib.d;change HOMOLOGYCACHE to MRKCACHELOAD
 
+TAG: ei-tr7493-20
+STAFF: lec
+DATE: 07/14/2009
+1) QA#2342: MutantCellLine.d
+2) QA#2318: Allele.d
+
+TAG: ei-tr7493-19
+TAG: ei-tr7493-18
+STAFF: lec
+DATE: 07/08/2009
+1) QA#2301: Allele.d, AlleleDerivation.d, MutantCellLine.d, NonMutantCellLine.d
+   added "Cell Line Type" to mgiParentCellLine component
+2) QA#2337: Allele.d
+3) QA#2338: Allele.d
+4) QA#2339: Allele.d
+
+TAG: ei-tr7493-17
+STAFF: lec
+DATE: 07/07/2009
+1) MutantCellLine.d: add Allele Symbol, remove auto-launch (2302/2319)
+2) AlleleDerivation.d: fix vector name (2329)
+3) AlleleDerivation.d: no default for Derivation Type (2330)
+4) AlleleDerivation.d: note (2332)
+
+TAG: ei-tr7493-16
+TAG: ei-tr7493-15
+TAG: ei-tr7493-14
+STAFF: lec
+DATE: 06/24/2009
+1) MutantCellLine.d: show RED on all attributes that are not changed by a "Modify"
+2) MutantCellLine.d: if called from Allele module, search by Allele
+3) NonMutantCellLine.d: if called from Allele module, search by Allele
+4) MutantCellLine.d: determine Derivation based on PCL/Strain/Derivation Type
+
+TAG: ei-tr7493-13
+STAFF: lec
+DATE: 06/23/2009
+1) default #2262, AlleleDerivation.d
+2) default #2273, AlleleDerivation.d
+
+TAG: ei-tr7493-12
+TAG: ei-tr7493-11
+TAG: ei-tr7493-10
+STAFF: lec
+DATE: 06/17/2009
+1) moved runstatistics and statistics.py to mgddbutilities
+2) default #2244, #2277, #2286
+3) default #2273
+4) default #2241, #2246, #2267, #2273
+
+TAG: ei-tr7493-9
+TAG: ei-tr7493-8
+STAFF: lec
+DATE: 06/16/2009
+1) defect #2224
+2) defect #2279, #2278/part 2
+
+TAG: ei-tr7493-7
+STAFF: lec
+DATE: 06/09/2009
+1) defect ID: 2270, 2270
+
+TAG: ei-tr7493-6
+STAFF: lec
+DATE: 06/04/2009
+1) defect ID: 2223,2228,2245
+
+TAG: ei-tr7493-5
+TAG: ei-tr7493-4
+TAG: ei-tr7493-3
+TAG: ei-tr7493-2
+TAG: ei-tr7493-1
+DATE: 05/27/2009
+STAFF: lec
+CHANGES:
+1) TR7493/gene trap less filling
+
+>>>>>>> 1.731.2.21
 TAG: ei-tr7493-BP
 DATE: 02/18/2009
 STAFF: lec

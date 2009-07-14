@@ -23,6 +23,11 @@
 --
 -- History:
 --
+-- lec	06/04/2009
+--	TR 7493; gene trap less filling
+--	ProcessAcc; add coding for SEQ_ALLELE_ASSOC
+--	VerifyAccSequence; new
+--
 -- lec	12/08/2004
 --	TR 6394; display/query Modified By/Modification Date 
 --
@@ -205,6 +210,7 @@ rules:
 	  source : widget := table.parent.child_by_class("XmRowColumn");
 	  tableID : integer := LoadAcc.tableID;
 	  sortColumn : integer := LoadAcc.sortColumn;
+	  cmd : string;
 	  logicalDBkey : string;
 	  prefix : string;
 	  accID : string;
@@ -213,11 +219,17 @@ rules:
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
 	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart desc, numericPart";
+	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
+	    orderBy := " order by _Assoc_key, _LogicalDB_key";
 	  else
 	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart, numericPart";
 	  end if;
 
-          cmd : string := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
+	  if (tableID = SEQ_ALLELE_ASSOC_VIEW) then
+            cmd := "select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred";
+	  else
+            cmd := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
+	  end if;
 
 	  if (table.is_defined("refsKey") != nil) then
 	    cmd := cmd + ", _Refs_key, jnum, short_citation";
@@ -225,6 +237,10 @@ rules:
 
 	  if (table.is_defined("modifiedBy") != nil) then
 	    cmd := cmd + ", modifiedBy, modification_date";
+	  end if;
+
+	  if (table.is_defined("sequenceKey") != nil) then
+	    cmd := cmd + ", _Sequence_key";
 	  end if;
 
 	  cmd := cmd + " from " + mgi_DBaccTable(tableID) +
@@ -309,6 +325,10 @@ rules:
 	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
 	      end if;
 
+	      if (table.is_defined("sequenceKey") != nil) then
+	        (void) mgi_tblSetCell(table, row, table.sequenceKey, mgi_getstr(dbproc, 12));
+	      end if;
+
 	      if (table.is_defined("accStatus") != nil) then
 		if (preferred = "1") then
 	          (void) mgi_tblSetCell(table, row, table.accStatus, "Primary");
@@ -371,6 +391,11 @@ rules:
 --	It allows edits to any Accession number EXCEPT MGI Accession
 --	Numbers.
 --
+--  For SEQ_ALLELE_ASSOC:  
+--	accKey == Assoc Key
+--	objectKey == Allele key
+--	sequenceKey == Sequence key
+--
 
         ProcessAcc does
 	  table : widget := ProcessAcc.table;
@@ -390,9 +415,16 @@ rules:
 	  accName : string;
 	  origRefsKey : string;
 	  cmd : string := "";
+	  set : string := "";
 	  preferred : string := "";
 	  private : string := "";
 	  exec : string := "exec ";
+
+	  -- for SEQ_ALLELE_ASSOC
+	  sequenceKey : string;
+	  qualifierKey : string := "3983019";	-- Not Specified
+	  keyName : string := "seqalleleassocKey";
+	  keyDefined : boolean := false;
 
 	  -- For each required Accession ID, if blank print message
 	  i := 1;
@@ -497,10 +529,28 @@ rules:
 	      if (source.menuHistory.allowAdd and 
 		  editMode = TBL_ROW_ADD) then
 
+		if (tableID = SEQ_ALLELE_ASSOC) then
+
+		  sequenceKey := mgi_tblGetCell(table, r, table.sequenceKey);
+
+                  if (not keyDefined) then
+                    cmd := cmd + mgi_setDBkey(tableID, NEWKEY, keyName);
+                    keyDefined := true;
+                  else
+                    cmd := cmd + mgi_DBincKey(keyName);
+                  end if;
+
+                  cmd := cmd + mgi_DBinsert(tableID, keyName) +
+                         sequenceKey + "," +
+                         objectKey + "," +
+                         qualifierKey + "," +
+                         refsKey + "," +
+                         global_loginKey + "," + global_loginKey + ")\n";
+
 	        -- If refsKey is not given, then just insert into Accession table
 	        -- If refsKey is given, then use a different process
 
-                if (accName != "J:" and refsKey = "-1") then
+                elsif (accName != "J:" and refsKey = "-1") then
                   cmd := cmd + exec + " ACC_insert " + objectKey + "," + 
 		         accID + "," + logicalKey + ",\"" + mgi_DBtype(tableID) + "\"," +
 			 refsKey + "," + preferred + "," + private + "\n";
@@ -512,13 +562,26 @@ rules:
 
 	      elsif (source.menuHistory.allowModify and 
 		     editMode = TBL_ROW_MODIFY) then
-                cmd := cmd + exec + " ACC_update " + accKey + "," + accID + "," + 
+
+		if (tableID = SEQ_ALLELE_ASSOC) then
+		  sequenceKey := mgi_tblGetCell(table, r, table.sequenceKey);
+		  set := set + "_Sequence_key = " + sequenceKey +
+		               ",_Refs_key = " + refsKey;
+		  cmd := cmd + mgi_DBupdate(tableID, accKey, set);
+                else
+		  cmd := cmd + exec + " ACC_update " + accKey + "," + accID + "," + 
 				origRefsKey + "," + refsKey + "\n";
+		end if;
 
 	      elsif (source.menuHistory.allowDelete and 
 		     editMode = TBL_ROW_DELETE and
 		     accKey.length > 0) then
-                cmd := cmd + exec + " ACC_delete_byAccKey " + accKey + "," + refsKey + "\n";
+
+		if (tableID = SEQ_ALLELE_ASSOC) then
+		  cmd := cmd + mgi_DBdelete(tableID, accKey);
+		else
+                  cmd := cmd + exec + " ACC_delete_byAccKey " + accKey + "," + refsKey + "\n";
+		end if;
 
 	      elsif (not source.menuHistory.allowAdd and 
 		     editMode = TBL_ROW_ADD) then
@@ -702,6 +765,7 @@ rules:
 --
 	VerifyAcc does
 	  table : widget := VerifyAcc.source_widget;
+	  top : widget := table.top;
 	  row : integer := VerifyAcc.row;
 	  column : integer := VerifyAcc.column;
 	  value : string := VerifyAcc.value;
@@ -869,4 +933,70 @@ rules:
           (void) reset_cursor(top);
         end does;
  
+--
+-- VerifyAccSequence
+--
+-- Verify accession number in mgiAccessionTable->Table row.
+-- for SEQ_SEQUENCE table
+--
+	VerifyAccSequence does
+	  table : widget := VerifyAccSequence.source_widget;
+	  top : widget := table.top;
+	  row : integer := VerifyAccSequence.row;
+	  column : integer := VerifyAccSequence.column;
+	  value : string := VerifyAccSequence.value;
+	  logicalKey : string := mgi_tblGetCell(table, row, table.logicalKey);
+	  dbproc : opaque;
+
+	  if (column != table.accID) then
+	    return;
+	  end if;
+
+          -- If the Acc ID is null, do nothing
+ 
+          if (value.length = 0) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+            return;
+          end if;
+ 
+          if (logicalKey.length = 0) then
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Select a Sequence Name and then choose 'Add Row' before entering a Sequence ID";
+	    send(StatusReport);
+	    return;
+	  end if;
+
+	  sequenceKey : string;
+	  accID : string;
+
+	  select : string :=
+		"select _Object_key, accID from " + mgi_DBaccTable(SEQ_SEQUENCE) +
+		" where _LogicalDB_key = " + logicalKey + " and accID = " + mgi_DBprstr(value);
+
+          dbproc := mgi_dbopen();
+          (void) dbcmd(dbproc, select);
+          (void) dbsqlexec(dbproc);
+          while (dbresults(dbproc) != NO_MORE_RESULTS) do
+            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
+              sequenceKey := mgi_getstr(dbproc, 1);
+              accID := mgi_getstr(dbproc, 2);
+            end while;
+          end while;
+          (void) dbclose(dbproc);
+
+	  if (accID.length > 0) then
+	    (void) mgi_tblSetCell(table, row, table.sequenceKey, sequenceKey);
+	    (void) mgi_tblSetCell(table, row, table.accID, accID);
+	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+	  else
+	    VerifyAccSequence.doit := (integer) false;
+	    (void) mgi_tblSetCell(table, row, table.sequenceKey, "NULL");
+	    (void) mgi_tblSetCell(table, row, table.accID, "");
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Invalid Sequence Accession ID";
+	    send(StatusReport);
+	  end if;
+
+	end does;
+
  end dmodule;

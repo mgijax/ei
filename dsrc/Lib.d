@@ -209,7 +209,18 @@ rules:
 		            child.value := "";
 		          end if;
 		          child.modified := false;
+
+			-- this seems to take care of submenus that contain XmOptionMenu
+
+		        elsif (clearForm.child(i).child(l).class_name = "XmRowColumn" and
+			       clearForm.child(i).child(l).is_defined("subMenuId") != nil) then
+		          if (not Clear.reset) then
+		            ClearOption.source_widget := clearForm.child(i).child(l);
+		            send(ClearOption, 0);
+		          end if;
+		        clearForm.child(i).child(l).modified := false;
 		        end if;
+
 		        m := m + 1;
 		      end while;
 		      l := l + 1;
@@ -791,7 +802,10 @@ rules:
 	        -- Set the colors BEFORE assigning top.menuHistory...
 
 	        if (top.name = "MarkerStatusMenu" or
-		    top.name = "AlleleStatusMenu") then
+		    top.name = "AlleleStatusMenu" or
+		    top.name = "MixedMenu" or
+		    top.name = "ExtinctMenu") then
+
 		  top.background := "Wheat";
 		  option.background := "Wheat";
 		  option.child(i).background := "Wheat";
@@ -801,6 +815,12 @@ rules:
 		    top.background := "Yellow";
 		    option.background := "Yellow";
 		    option.child(i).background := "Yellow";
+		  end if;
+
+		  if (option.child(i).labelString = "Yes") then
+		    top.background := "Violet";
+		    option.background := "Violet";
+		    option.child(i).background := "Violet";
 		  end if;
 	        end if;
 

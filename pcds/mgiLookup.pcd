@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Apr 23 07:10:29 2008";
+      lastWritten = "Wed Jul  8 09:09:13 2009";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -231,7 +231,7 @@ Module: mgiLookup
           MappingAssayList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1295;
+            vip_y = 1350;
           Group: User
             cmd = "select * from MLD_Assay_Types order by description";
               {
@@ -251,7 +251,7 @@ Module: mgiLookup
           StrainAttributeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1185;
+            vip_y = 1240;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_StrainAttribute_View order by term";
               {
@@ -268,23 +268,23 @@ Module: mgiLookup
               }
         }
         {
-          ESCellLineList = LookupList;
+          StemCellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1075;
+            vip_y = 1020;
           Group: User
-            cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View where isMutant = 0 order by cellLine";
+            cmd = "select _CellLine_key, c = cellLine + \";\" + cellLineStrain\nfrom ALL_CellLine_View \nwhere isMutant = 0 and _CellLine_Type_key = 3982968\nunion\nselect _CellLine_key, c = cellLine + \";\" + cellLineStrain + \";\" + cellLineType\nfrom ALL_CellLine_View \nwhere isMutant = 0 and _CellLine_Type_key != 3982968\norder by c\n";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
-                  labelString = "0 ES Cell Lines";
+                  labelString = "0 Stem Cell Lines";
                 Group: User
-                  defaultLabel = "ES Cell Lines";
+                  defaultLabel = "Stem Cell Lines";
               }
               {
                 List = list : mgiDataTypes;
                 Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayESCellLine";
+                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayStemCellLine";
               }
         }
         {
@@ -444,7 +444,7 @@ Module: mgiLookup
           EvidenceCodeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1350;
+            vip_y = 1405;
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
@@ -480,7 +480,7 @@ Module: mgiLookup
           OrganismMGITypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1460;
+            vip_y = 1515;
           Group: User
             cmd = "select _MGIType_key, name from ACC_MGIType where _MGIType_key in (2,3,6,7,18,19) order by name";
               {
@@ -500,7 +500,7 @@ Module: mgiLookup
           CloneLibrarySetList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1405;
+            vip_y = 1460;
           Group: User
             cmd = "select _Set_key, name from MGI_Set_CloneLibrary_View order by name";
               {
@@ -515,7 +515,7 @@ Module: mgiLookup
           CellLineList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1515;
+            vip_y = 1570;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_CellLine_View order by term";
               {
@@ -535,7 +535,7 @@ Module: mgiLookup
           OrganismSequenceList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1570;
+            vip_y = 1625;
           Group: User
             cmd = "select _Organism_key, commonName from MGI_Organism_Sequence_View order by commonName";
               {
@@ -544,26 +544,6 @@ Module: mgiLookup
                   labelString = Organisms;
                 Group: User
                   defaultLabel = Organisms;
-              }
-              {
-                List = list : mgiDataTypes;
-                Group: Widget
-                  singleSelectionCallback = "D:SelectLookupListItem";
-              }
-        }
-        {
-          MutantESCellLineList = LookupList;
-          Group: Control
-            vip_x = 90;
-            vip_y = 1020;
-          Group: User
-            cmd = "select _CellLine_key, cellLine + \";\" + cellLineStrain from ALL_CellLine_View where isMutant = 1 order by cellLine";
-              {
-                Label = LookupLabel : mgiLookup;
-                Group: Widget
-                  labelString = "0 Mutant ES Cell Lines";
-                Group: User
-                  defaultLabel = "Mutant ES Cell Lines";
               }
               {
                 List = list : mgiDataTypes;
@@ -658,7 +638,7 @@ Module: mgiLookup
           StrainTypeList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1240;
+            vip_y = 1295;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_StrainType_View order by term";
               {
@@ -678,7 +658,7 @@ Module: mgiLookup
           NeedsReviewList = LookupList;
           Group: Control
             vip_x = 90;
-            vip_y = 1130;
+            vip_y = 1185;
           Group: User
             cmd = "select _Term_key, term from VOC_Term_NeedsReview_View order by term";
               {
@@ -692,6 +672,46 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          AlleleVectorList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1075;
+          Group: User
+            cmd = "select _Term_key, term from VOC_Term where _Vocab_key = 72 order by term";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "0 Vectors";
+                Group: User
+                  defaultLabel = Vectors;
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
+              }
+        }
+        {
+          AlleleDerivationList = LookupList;
+          Group: Control
+            vip_x = 90;
+            vip_y = 1130;
+          Group: User
+            cmd = "select _Derivation_key, name from ALL_CellLine_Derivation \nwhere name not like \"Not Specified%\"\nand name not like \"Not Applicable%\"\norder by name";
+              {
+                Label = LookupLabel : mgiLookup;
+                Group: Widget
+                  labelString = "0 Derivations";
+                Group: User
+                  defaultLabel = Derivations;
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayDerivation";
               }
         }
 }

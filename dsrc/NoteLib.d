@@ -112,6 +112,7 @@ rules:
 	  k : integer;
 
 	  if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	      tableID = MGI_NOTETYPE_DERIVATION_VIEW or 
 	      tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTETYPE_IMAGE_VIEW or 
 	      tableID = MGI_NOTETYPE_MARKER_VIEW or 
@@ -153,6 +154,7 @@ rules:
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
 	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	            tableID = MGI_NOTETYPE_DERIVATION_VIEW or 
 	            tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	            tableID = MGI_NOTETYPE_IMAGE_VIEW or 
 	            tableID = MGI_NOTETYPE_MARKER_VIEW or 
@@ -196,6 +198,7 @@ rules:
 	  send(ClearSetNoteForm, 0);
 
 	  if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	      tableID = MGI_NOTE_DERIVATION_VIEW or 
 	      tableID = MGI_NOTE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTE_IMAGE_VIEW or 
 	      tableID = MGI_NOTE_MARKER_VIEW or 
@@ -231,6 +234,7 @@ rules:
 	      note := mgi_getstr(dbproc, 2);
 
 	      if (tableID = MGI_NOTE_ALLELE_VIEW or 
+	          tableID = MGI_NOTE_DERIVATION_VIEW or 
 	          tableID = MGI_NOTE_GENOTYPE_VIEW or 
 	          tableID = MGI_NOTE_IMAGE_VIEW or 
 	          tableID = MGI_NOTE_MARKER_VIEW or 

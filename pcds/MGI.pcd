@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 30 08:18:54 2008";
+      lastWritten = "Thu Apr  9 09:38:03 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -1290,7 +1290,7 @@ Module: MGI
                                         Group: User
                                           alleleSymbol = "11\n12";
                                           alleleKey = "5\n6";
-                                          requiredColumns = "4\n7";
+                                          requiredColumns = 7;
                                           saveEditableSeries = "(all 0-8 False)";
                                           saveTraversableSeries = "(all 0-9 False)";
                                             {
@@ -1372,6 +1372,18 @@ Module: MGI
                                       {
                                         ConditionalPulldown : YesNoPulldown = OptionPulldown;
                                       }
+                                }
+                                {
+                                  GenotypeExistsAsMenu = GenotypeExistsAsMenu : mgiOption;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = ConditionalMenu;
+                                    leftOffset = 25;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = ConditionalMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   CombinationNote1 = Notes : mgiDataTypes;

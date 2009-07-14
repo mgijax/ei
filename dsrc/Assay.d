@@ -5,7 +5,7 @@
 --
 -- TopLevelShell:		Assay
 -- Database Tables Affected:	GXD_Assay, GXD_AntibodyPrep, GXD_ProbePrep
--- Cross Reference Tables:	GXD_Label, GXD_LabelCoverage, GXD_VisualizationMethod,
+-- Cross Reference Tables:	GXD_Label, GXD_VisualizationMethod,
 --				GXD_Secondary, PRB_Probe, GXD_AssayType, GXD_ProbeSense
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -27,6 +27,9 @@
 --	and Gel Rows which exist for a given Assay.
 --
 -- History
+--
+-- lec  05/27/2009
+--	- TR 9665; set currentAssay key before call to CreateGelBandColumns
 --
 -- lec	10/08/2008
 --	- TR 9289; add keyboard short cuts; CopySpecimenColumn (l), CopyGelLaneColumn (u)
@@ -375,7 +378,6 @@ rules:
           options.append(top->ProbePrepForm->PrepTypeMenu);
           options.append(top->ProbePrepForm->SenseMenu);
           options.append(top->ProbePrepForm->LabelTypeMenu);
-          options.append(top->ProbePrepForm->CoverageMenu);
           options.append(top->ProbePrepForm->VisualizationMenu);
           options.append(top->AntibodyPrepForm->SecondaryMenu);
           options.append(top->AntibodyPrepForm->LabelTypeMenu);
@@ -426,6 +428,7 @@ rules:
           send(SetNotesDisplay, 0);
 
 	  if (not ClearAssay.select) then
+	    currentAssay := "";
 	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
@@ -433,7 +436,6 @@ rules:
 	    top->KnockInForm.sensitive := false;
 	    top->GXDReporterGeneMenu.required := false;
 	    top->GXDKnockInMenu.required := false;
-	    currentAssay := "";
 	  end if;
 	end does;
 
@@ -694,8 +696,7 @@ rules:
 	         mgi_DBinsert(GXD_PROBEPREP, probePrepLabel) +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "," +
 	         prepDetailForm->SenseMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->CoverageMenu.menuHistory.defaultValue + "," +
+	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",-1," +
 	         prepDetailForm->VisualizationMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
 
@@ -1447,11 +1448,6 @@ rules:
 		prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
-          if (prepDetailForm->CoverageMenu.menuHistory.modified) then
-            update := update + "_Coverage_key = " + 
-		prepDetailForm->CoverageMenu.menuHistory.defaultValue + ",";
-          end if;
-
           if (prepDetailForm->VisualizationMenu.menuHistory.modified) then
             update := update + "_Visualization_key = " + 
 		prepDetailForm->VisualizationMenu.menuHistory.defaultValue + ",";
@@ -1610,7 +1606,7 @@ rules:
             else
               -- If current Seq # not equal to new Seq #, then re-ordering is taking place
  
-              if (currentSeqNum != newSeqNum) then
+              if (currentSeqNum != newSeqNum and newSeqNum.length > 0) then
 		update := "sequenceNum = " + newSeqNum;
                 cmd := cmd + mgi_DBupdate(GXD_SPECIMEN, key, update);
 	      end if;
@@ -2094,11 +2090,6 @@ rules:
 	      from_probePrep := true;
             end if;
 
-            if (prepDetailForm->CoverageMenu.menuHistory.searchValue != "%") then
-              where := where + " and pp._Coverage_key = " + prepDetailForm->CoverageMenu.menuHistory.searchValue;
-	      from_probePrep := true;
-            end if;
-
             if (prepDetailForm->VisualizationMenu.menuHistory.searchValue != "%") then
               where := where + " and pp._Visualization_key = " + prepDetailForm->VisualizationMenu.menuHistory.searchValue;
 	      from_probePrep := true;
@@ -2302,7 +2293,7 @@ rules:
             send(ClearTable, 0);
           end while;
           tables.close;
- 
+
 	  -- Clear Prep forms
 	  prepForms.open;
 	  while (prepForms.more) do
@@ -2321,6 +2312,7 @@ rules:
             top->QueryList->List.row := 0;
             top->ID->text.value := "";
 	    send(LoadClipboards, 0);
+	    send(CreateGelBandColumns, 0);
             return;
           end if;
 
@@ -2459,10 +2451,6 @@ rules:
 
 		  SetOption.source_widget := prepDetailForm->LabelTypeMenu;
 		  SetOption.value := mgi_getstr(dbproc, 5);
-		  send(SetOption, 0);
-
-		  SetOption.source_widget := prepDetailForm->CoverageMenu;
-		  SetOption.value := mgi_getstr(dbproc, 6);
 		  send(SetOption, 0);
 
 		  SetOption.source_widget := prepDetailForm->VisualizationMenu;

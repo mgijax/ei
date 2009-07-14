@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 16 13:45:29 2008";
+      lastWritten = "Thu Apr  9 09:38:05 2009";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -25,7 +25,7 @@ Module: mgiTable
             xrtTblPreviewScrolling = preview_both;
             inTabGroup = True;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 85;
         }
         {
@@ -35,7 +35,7 @@ Module: mgiTable
             resizePolicy = resize_any;
             nodeAccess = access_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 195;
               {
                 Table = mgiTable : mgiTable;
@@ -92,7 +92,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 305;
               {
                 Table = mgiTable;
@@ -154,7 +154,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 250;
               {
                 Table = mgiTable : mgiTable;
@@ -215,7 +215,7 @@ Module: mgiTable
           Group: Widget
             traversalOn = False;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 30;
         }
         {
@@ -225,7 +225,7 @@ Module: mgiTable
             resizePolicy = resize_any;
             nodeAccess = access_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 140;
               {
                 Table = mgiTable : mgiTable;
@@ -274,7 +274,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 415;
               {
                 Table = mgiTable;
@@ -329,7 +329,7 @@ Module: mgiTable
         {
           Statistics = OrderedTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 525;
               {
                 Table = mgiTable;
@@ -353,7 +353,7 @@ Module: mgiTable
         {
           OrderedTableLabel = OrderedTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 360;
               {
                 Table = mgiTable;
@@ -370,7 +370,7 @@ Module: mgiTable
         {
           ReferenceTable = Table : mgiTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 470;
               {
                 Table = mgiTable;
@@ -389,7 +389,7 @@ Module: mgiTable
         {
           RefDBSStatus = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 635;
               {
                 Table = mgiTable;
@@ -420,7 +420,7 @@ Module: mgiTable
         {
           RefDBSNonStatus = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 580;
               {
                 Table = mgiTable;
@@ -450,7 +450,7 @@ Module: mgiTable
         {
           AccessionReference = mgiAccessionTable : mgiTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 800;
               {
                 Table = mgiTable;
@@ -489,7 +489,7 @@ Module: mgiTable
         {
           ModificationHistory = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 910;
               {
                 Table = mgiTable : mgiTable;
@@ -519,7 +519,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 690;
               {
                 Table = mgiTable;
@@ -614,7 +614,7 @@ Module: mgiTable
         {
           ObjectAssociationTable = Table;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 1020;
               {
                 Table = mgiTable : mgiTable;
@@ -648,7 +648,7 @@ Module: mgiTable
         {
           Accession = mgiAccessionTable : mgiTable;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 855;
               {
                 Table = mgiTable;
@@ -693,7 +693,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 745;
               {
                 Table = mgiTable : mgiTable;
@@ -757,7 +757,7 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 965;
               {
                 Table = mgiTable;
@@ -891,7 +891,7 @@ Module: mgiTable
             resizePolicy = resize_any;
           Group: Control
             vipComment = "";
-            vip_x = 75;
+            vip_x = 85;
             vip_y = 1075;
               {
                 Table = mgiTable : mgiTable;

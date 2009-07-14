@@ -11,6 +11,13 @@
 --
 -- History
 --
+-- lec  05/07/2009
+--	- gene trap less filling; added Alleles
+--
+-- lec	02/24/2009
+--	- TR 7493, gene traps less filling
+--	- added select for alleles
+--
 -- lec	10/13/2005
 --	- TR 7094, MGI 3.5
 --
@@ -57,7 +64,6 @@ locals:
 	top : widget;
 	ab : widget;
 	tables : list;
---	clearLists : integer := 7;
 
 	cmd : string;
 	select : string := "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID, ac.preferred\n";
@@ -205,7 +211,6 @@ rules:
 
 	ClearSequence does
 	  Clear.source_widget := top;
---	  Clear.clearLists := 3;
 	  Clear.clearKeys := ClearSequence.clearKeys;
 	  Clear.reset := ClearSequence.reset;
 	  send(Clear, 0);
@@ -671,38 +676,47 @@ rules:
 	  currentKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from SEQ_Sequence_View where _Sequence_key = " + currentKey + "\n" +
+
 		"select * from SEQ_Sequence_Raw where _Sequence_key = " + currentKey + "\n" +
+
 		"select s._Assoc_key, p._Source_key, p.name, p.age from SEQ_Source_Assoc s, PRB_Source p\n" +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = p._Source_key\n" +
 		"order by p._Organism_key\n" +
+
 		"select s._Assoc_key, p._Organism_key, t.commonName from SEQ_Source_Assoc s, PRB_Source p, MGI_Organism t " +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = p._Source_key\n" +
 		"and p._Organism_key = t._Organism_key " +
 		"order by p._Organism_key\n" +
+
 		"select s._Assoc_key, p._Strain_key, t.strain from SEQ_Source_Assoc s, PRB_Source p, PRB_Strain t " +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = p._Source_key\n" +
 		"and p._Strain_key = t._Strain_key " +
 		"order by p._Organism_key\n" +
+
 		"select s._Assoc_key, p._Tissue_key, t.tissue from SEQ_Source_Assoc s, PRB_Source p, PRB_Tissue t " +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = p._Source_key\n" +
 		"and p._Tissue_key = t._Tissue_key " +
 		"order by p._Organism_key\n" +
+
 		"select s._Assoc_key, p._Gender_key, t.term from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t " +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = p._Source_key\n" +
 		"and p._Gender_key = t._Term_key " +
 		"order by p._Organism_key\n" +
+
 		"select s._Assoc_key, p._CellLine_key, t.term from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t " +
 		"where s._Sequence_key = " + currentKey + "\n" +
 		"and s._Source_key = p._Source_key\n" +
 		"and p._CellLine_key = t._Term_key " +
 		"order by p._Organism_key\n" +
+
 		"select distinct mgiType, jnum, markerID, symbol from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
-		"select distinct mgiType, jnum, probeID, name from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n";
+		"select distinct mgiType, jnum, probeID, name from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n" +
+		"select distinct mgiType, jnum, alleleID, symbol from SEQ_Allele_View where _Sequence_key = " + currentKey + "\n";
 
 	  results : integer := 1;
 	  nonRawRow : integer := 1;
@@ -812,7 +826,7 @@ rules:
 
 		nonRawRow := nonRawRow + 1;
 
-	      elsif (results = 9 or results = 10) then
+	      elsif (results >= 9) then
 		table := top->ObjectAssociation->Table;
 		(void) mgi_tblSetCell(table, row, table.objectType, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.mgiID, mgi_getstr(dbproc, 3));

@@ -148,22 +148,31 @@ extern char *global_version;
 #define GXD_GENOTYPE_VIEW	225
 #define GXD_ALLELEPAIR_VIEW	226
 #define IMG_IMAGEPANE_ASSOC	227
+#define IMG_IMAGEPANE_ASSOC_VIEW 228
 
 /* Allele Tables */
 
 #define ALL_ALLELE		230
-#define ALL_ALLELE_MUTATION	231
-#define ALL_ALLELE_VIEW		232
-#define ALL_CELLLINE		234
-#define ALL_CELLLINE_VIEW	235
-#define ALL_MUTATION_VIEW	236
+#define ALL_ALLELE_CELLLINE	231
+#define ALL_ALLELE_CELLLINE_VIEW 232
+#define ALL_ALLELE_MUTATION	233
+#define ALL_ALLELE_VIEW		234
+#define ALL_CELLLINE		235
+#define ALL_CELLLINE_VIEW	236
+#define ALL_MUTATION_VIEW	237
+#define ALL_MARKER_ASSOC	238
+#define ALL_MARKER_ASSOC_VIEW	239
+#define ALL_CELLLINE_DERIVATION	240
+#define ALL_CELLLINE_DERIVATION_VIEW	241
+#define ALL_CELLLINE_NONMUTANT	242
+#define SEQ_ALLELE_ASSOC	243
+#define SEQ_ALLELE_ASSOC_VIEW	244
 
 /* MGI Controlled Vocabulary Tables */
 
 #define GXD_ANTIBODYCLASS	300
 #define GXD_PROBESENSE		301
 #define GXD_LABEL		302
-#define GXD_LABELCOVERAGE	303
 #define GXD_VISUALIZATION	304
 #define GXD_SECONDARY		305
 #define GXD_ASSAYTYPE		306
@@ -266,7 +275,8 @@ extern char *global_version;
 #define MGI_TRANSLATIONSEQNUM		654
 #define MGI_NOTE_MARKER_VIEW            655
 #define MGI_NOTETYPE_MARKER_VIEW        656
-
+#define MGI_NOTE_DERIVATION_VIEW        657
+#define MGI_NOTETYPE_DERIVATION_VIEW	658
 
 /* Strains Tables */
 
@@ -368,7 +378,7 @@ extern char *global_version;
 #define ALL_STATUS_DELETED	"Deleted"
 #define ALL_STATUS_RESERVED	"Reserved"
 #define ALL_STATUS_APPROVED	"Approved"
-#define GENE_TRAPPED		"Gene trapped"
+#define ALL_STATUS_AUTOLOAD	"Autoload"
 
 /* This CV term requires Notes */
 
