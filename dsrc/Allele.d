@@ -355,12 +355,15 @@ rules:
 --
 
 	Add does
+
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
+	  transmissionKey : string := top->AlleleTransmissionMenu.menuHistory.defaultValue;
+	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
+
 	  statusKey : string;
 	  inheritanceKey : string;
-	  transmissionKey : string := top->AlleleTransmissionMenu.menuHistory.defaultValue;
 	  strainKey : string;
 	  approvalLoginDate : string;
 	  editMode : string;
@@ -437,19 +440,32 @@ rules:
             return;
 	  end if;
 
-	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
+	  -- If no transmission ref, germ line term not blank, germ line = chimeric or germline
 	  if (transmissionRefs = 0 and 
 	      transmissionKey != "%" and
 	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
 	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
             StatusReport.source_widget := top;
-            StatusReport.message := "If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            StatusReport.message := 
+	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
-	  -- If Germ Line Transmission 'Chimeric' or 'Germline' is selected, then a Transmission Reference is required
+	  -- If no transmission ref, germ line term blank, mutant = true
+	  if (transmissionRefs = 0 and 
+	      transmissionKey = "%" and
+	      mutantCellLine.length > 0) then
+            StatusReport.source_widget := top;
+            StatusReport.message := 
+	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+	    return;
+	  end if;
+
+	  -- If transmission ref, germ line term not blank, germ line != chimeric or germline
 	  if (transmissionRefs > 0 and 
 	      transmissionKey != "%" and
 	      top->AlleleTransmissionMenu.menuHistory.labelString != "Chimeric" and
@@ -511,21 +527,23 @@ rules:
 	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
 	  end if;
 
-	  -- set the germ line transmission default
-	  -- set to user-entered value
+	  -- set default germ line transmission
+
 	  -- if no mutant or mutant = NA then GermLineTrans = NA
-	  -- else if mutant = NS, default GermLineTrans = NA
-
-	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
-
 	  if (mutantCellLine.length = 0
 	      or mutantCellLine = NOTAPPLICABLE_TEXT) then
             transmissionKey := defaultTransmissionKeyNA;
+
+	  -- else if mutant = NS, default GermLineTrans = NA
 	  elsif (mutantCellLine = NOTSPECIFIED_TEXT
 		 and transmissionKey.length = 0) then
             transmissionKey := defaultTransmissionKeyNA;
+
+	  -- else if transmission reference is given, default GermLineTrans = germ line
 	  elsif (transmissionRefs > 0) then
 	    transmissionKey := defaultTransmissionGermLine;
+
+	  -- else if transmission term is blank, default GermLineTrans = NA
 	  elsif (transmissionKey = "%") then
             transmissionKey := defaultTransmissionKeyNA;
           end if;
@@ -753,7 +771,7 @@ rules:
             return;
 	  end if;
 
-	  -- Transmission Reference is required if false, Germ Line Transmission = 'Chimeric', 'Germline'
+	  -- If no transmission ref, germ line = chimeric or germline
 	  if ((transmissionRefs = 0 and 
 	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
 	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline"))) then
@@ -765,7 +783,7 @@ rules:
 	    return;
 	  end if;
 
-	  -- If Germ Line Transmission 'Chimeric' or 'Germline' is selected, then a Transmission Reference is required
+	  -- If transmission ref, germ line != chimeric or germline
 	  if (transmissionRefs > 0 and 
 	      top->AlleleTransmissionMenu.menuHistory.labelString != "Chimeric" and
 	      top->AlleleTransmissionMenu.menuHistory.labelString != "Germline") then

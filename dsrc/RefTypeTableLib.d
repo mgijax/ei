@@ -102,11 +102,11 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
-	     orderBy := "\norder by _RefAssocType_key";
-	  else
-	     orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
-	  end if;
+	  --if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
+	  --   orderBy := "\norder by _RefAssocType_key";
+	  --else
+	  orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
+	  --end if;
 
 	  cmd := "select _RefAssocType_key, assocType, allowOnlyOne, _MGIType_key from " + 
 		  mgi_DBtable(tableID) + orderBy;
