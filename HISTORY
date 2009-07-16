@@ -1,12 +1,15 @@
+TAG: ei-4-3-0-6
 TAG: ei-4-3-0-5
 TAG: ei-4-3-0-4
 TAG: ei-4-3-0-3
 TAG: ei-4-3-0-2
 TAG: ei-4-3-0-1
+DATE: 07/16/2009
 DATE: 07/14/2009
 STAFF: lec
 CHANGES:
 1) merge TR7493 branch to trunk
+2) QC#2327: MutantCellLine.d/VerifyMCLName
 
 TAG: ei-4-2-0-2
 DATE: 03/03/2009
