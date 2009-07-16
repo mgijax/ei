@@ -31,6 +31,8 @@ GoHome [source_widget : widget;];		-- Return Cursor to Home Widget
 
 Next [];					-- Return Next QueryList item
 
+Bottom [];					-- Return Next QueryList item
+
 NextJnum [source_widget : widget;];		-- Get Next Available J#
 
 Previous [];					-- Return Previous QueryList item

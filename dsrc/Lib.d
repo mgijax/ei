@@ -555,6 +555,21 @@ rules:
         end does;
 
 --
+-- Bottom
+--
+--	Select bottom item in selection list
+--
+
+        Bottom does
+	  top : widget := Bottom.source_widget.root;
+
+          if (top->QueryList->List.row + 1 <= top->QueryList->List.itemCount) then
+            (void) XmListSelectPos(top->QueryList->List, 0, true);
+            (void) XmListSetBottomPos(top->QueryList->List, top->QueryList->List.row);
+	  end if;
+        end does;
+
+--
 -- NextJnum
 --
 -- Returns Next Available J#
