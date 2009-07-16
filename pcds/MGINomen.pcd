@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr  9 09:38:06 2009";
+      lastWritten = "Thu Jul 16 06:52:16 2009";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -569,12 +569,16 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                   Group: Constraint
                                     leftAttachment = attach_none;
-                                    rightAttachment = attach_form;
-                                    rightOffset = 10;
+                                    rightAttachment = attach_widget;
+                                    rightOffset = 5;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = RecordCount;
+                                    topWidget = Bottom;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightWidget = Bottom;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;

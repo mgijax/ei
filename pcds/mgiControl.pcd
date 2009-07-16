@@ -3,7 +3,7 @@ Module: mgiControl
       autoCuil = False;
       dDialogFile = "mgiControl_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Fri Oct  7 08:53:20 2005";
+      lastWritten = "Thu Jul 16 06:38:22 2009";
         {
           Control = XmFrame;
           Group: Control
@@ -111,13 +111,28 @@ Module: mgiControl
                         activateCallback = "D:Next,\nD:GoHome";
                       Group: Constraint
                         leftAttachment = attach_none;
+                        rightAttachment = attach_widget;
+                        topAttachment = attach_opposite_widget;
+                        topWidget = Bottom;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        rightWidget = Bottom;
+                        rightOffset = 5;
+                    }
+                    {
+                      Bottom = ControlArrow : mgiControl;
+                      Group: Widget
+                        arrowDirection = arrow_right;
+                        activateCallback = "D:Bottom,\nD:GoHome";
+                      Group: Constraint
+                        leftAttachment = attach_none;
                         rightAttachment = attach_opposite_widget;
                         topAttachment = attach_widget;
                         topWidget = Delete;
                         bottomAttachment = attach_none;
                         resizable = true;
-                        topOffset = 2;
                         rightWidget = Delete;
+                        rightOffset = 2;
                     }
                     {
                       Clear1 = XmMenuBar;

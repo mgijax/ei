@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Apr  9 09:38:03 2009";
+      lastWritten = "Thu Jul 16 06:54:53 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -229,6 +229,9 @@ Module: MGI
                                   Next = ControlArrow;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                       {
                                         Clear = XmCascadeButton;
@@ -406,6 +409,9 @@ Module: MGI
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -1568,13 +1574,16 @@ Module: MGI
                                   Next = ControlArrow;
                                   Group: Constraint
                                     leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
-                                    topAttachment = attach_widget;
-                                    topWidget = Delete;
+                                    rightAttachment = attach_widget;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Bottom;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 2;
-                                    rightWidget = Delete;
+                                    rightWidget = Bottom;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -2192,6 +2201,9 @@ Module: MGI
                                     resizable = true;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -2423,6 +2435,11 @@ Module: MGI
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -2924,27 +2941,29 @@ Module: MGI
                                 {
                                   Previous = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_widget;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = RecordCount;
+                                    topWidget = Next;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = RecordCount;
-                                    leftOffset = 5;
+                                    rightWidget = Next;
+                                    rightOffset = 5;
                                 }
                                 {
                                   Next = ControlArrow;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    rightAttachment = attach_none;
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_widget;
                                     topAttachment = attach_opposite_widget;
-                                    topWidget = Previous;
+                                    topWidget = Bottom;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Previous;
-                                    leftOffset = 2;
-                                    topOffset = 2;
+                                    rightWidget = Bottom;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;

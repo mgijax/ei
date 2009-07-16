@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 15 08:02:49 2009";
+      lastWritten = "Thu Jul 16 06:51:08 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -247,6 +247,9 @@ Module: MGD
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -1298,6 +1301,9 @@ Module: MGD
                                   Next = ControlArrow;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -1973,6 +1979,9 @@ Module: MGD
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   References = ViewToggle : mgiControl;
@@ -3247,6 +3256,9 @@ Module: MGD
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -5894,6 +5906,9 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -7399,6 +7414,9 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -8862,13 +8880,16 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                   Group: Constraint
                                     leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
-                                    rightWidget = Delete;
-                                    topAttachment = attach_widget;
-                                    topWidget = Delete;
-                                    topOffset = 2;
+                                    rightAttachment = attach_widget;
+                                    rightWidget = Bottom;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Bottom;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -9864,6 +9885,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -11159,6 +11183,9 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -12042,6 +12069,9 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -13088,13 +13118,16 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                   Group: Constraint
                                     leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
-                                    rightWidget = Delete;
-                                    topAttachment = attach_widget;
-                                    topWidget = Delete;
-                                    topOffset = 2;
+                                    rightAttachment = attach_widget;
+                                    rightWidget = Bottom;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Bottom;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -13598,6 +13631,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -14450,6 +14486,9 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
@@ -15037,6 +15076,9 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -15431,6 +15473,9 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -16032,13 +16077,26 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                   Group: Constraint
                                     leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
-                                    rightWidget = Delete;
-                                    topAttachment = attach_widget;
-                                    topWidget = ModifyMarker;
-                                    topOffset = 2;
+                                    rightAttachment = attach_widget;
+                                    rightWidget = Bottom;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Bottom;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    rightWidget = Delete;
+                                    rightOffset = 5;
+                                    topAttachment = attach_widget;
+                                    topWidget = ModifyMarker;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 2;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -16518,6 +16576,9 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -16812,6 +16873,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;

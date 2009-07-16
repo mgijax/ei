@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul  8 14:21:18 2009";
+      lastWritten = "Thu Jul 16 06:45:24 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -293,12 +293,24 @@ Module: GXD
                                 }
                                 {
                                   Delete = ControlPush;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Add;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Add;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   Previous = ControlArrow;
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -862,6 +874,9 @@ Shift<Key>Tab: prev-tab-group()
                       Control = Control;
                           {
                             ControlForm = XmForm;
+                            Group: Widget
+                              rubberPositioning = False;
+                              resizePolicy = resize_any;
                                 {
                                   Search = ControlPush;
                                 }
@@ -878,12 +893,24 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Delete = ControlPush;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Add;
+                                    leftOffset = 2;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Add;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   Previous = ControlArrow;
                                 }
                                 {
                                   Next = ControlArrow;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -1881,6 +1908,9 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -2658,6 +2688,18 @@ Shift<Key>Tab: prev-tab-group()
                                     leftOffset = 5;
                                 }
                                 {
+                                  Bottom = ControlArrow : mgiControl;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Next;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Next;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                }
+                                {
                                   Clear1 = XmMenuBar;
                                 }
                                 {
@@ -3321,13 +3363,6 @@ Shift<Key>Tab: prev-tab-group()
                       MainMenu = MainMenu : mgiMenu;
                           {
                             File = File : mgiMenu;
-                                Popups:
-                                {
-                                  FilePulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Exit = MenuPush : mgiMenu;
-                                      }
-                                }
                           }
                           {
                             Commands = Commands : mgiMenu;
@@ -3354,21 +3389,6 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           activateCallback = "D:ClearAllele";
                                       }
-                                      {
-                                        Clear1 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Clear2 = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        separator2 = XmSeparator;
-                                      }
-                                      {
-                                        Previous = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Next = MenuPush : mgiMenu;
-                                      }
                                 }
                           }
                           {
@@ -3392,35 +3412,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            View = View : mgiMenu;
-                                Popups:
-                                {
-                                  ViewPulldown = MenuPulldown : mgiMenu;
-                                      {
-                                        Strain = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Tissue = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        Cross = MenuPush : mgiMenu;
-                                      }
-                                      {
-                                        RI = MenuPush : mgiMenu;
-                                      }
-                                }
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                                Popups:
-                                {
-                                  UtilitiesPulldown = MenuPulldown : mgiMenu;
-                                }
-                          }
                     }
                     {
                       Edit = XmFrame;
@@ -3431,12 +3422,6 @@ Shift<Key>Tab: prev-tab-group()
                               resizePolicy = resize_any;
                                 {
                                   ID = ID : mgiDataTypes;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   Symbol = CharText : mgiDataTypes;
@@ -3569,10 +3554,6 @@ Shift<Key>Tab: prev-tab-group()
                                           resizable = true;
                                           topOffset = 2;
                                           rightWidget = Table;
-                                            Popups:
-                                            {
-                                              AlleleMarkerStatusPulldown = OptionPulldown;
-                                            }
                                       }
                                 }
                                 {
@@ -3675,13 +3656,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                   Group: User
                                     defaultChild = 4;
-                                      Popups:
-                                      {
-                                        AlleleStatusPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                      }
                                 }
                                 {
                                   AlleleTypeMenu = AlleleTypeMenu : mgiOption;
@@ -3694,13 +3668,6 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
-                                      Popups:
-                                      {
-                                        AlleleTypePulldown = OptionPulldown : mgiOption;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                      }
                                 }
                                 {
                                   InheritanceModeMenu = InheritanceModeMenu : mgiOption;
@@ -3713,13 +3680,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      Popups:
-                                      {
-                                        InheritanceModePulldown = OptionPulldown : mgiOption;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                      }
                                 }
                                 {
                                   AlleleTransmissionMenu = AlleleTransmissionMenu : mgiOption;
@@ -3732,13 +3692,6 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
-                                      Popups:
-                                      {
-                                        AlleleTransmissionPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                      }
                                 }
                                 {
                                   MixedMenu = YesNoMenu : mgiOption;
@@ -3760,15 +3713,6 @@ Shift<Key>Tab: prev-tab-group()
                                       Popups:
                                       {
                                         MixedPulldown : YesNoPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
                                       }
                                 }
                                 {
@@ -3790,15 +3734,6 @@ Shift<Key>Tab: prev-tab-group()
                                       Popups:
                                       {
                                         ExtinctPulldown : YesNoPulldown = OptionPulldown;
-                                            {
-                                              SearchAll = SearchAll : mgiOption;
-                                            }
-                                            {
-                                              Yes = Yes : mgiOption;
-                                            }
-                                            {
-                                              No = No : mgiOption;
-                                            }
                                       }
                                 }
                                 {
@@ -3823,12 +3758,6 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "assocKey:Int(Int)=\"1\"\ncellLineKey:Int(Int)=\"2\"\ncellLine:Int(Int)=\"3\"\nmodifiedBy:Int(Int)=\"5\"\nmodifiedDate:Int(Int)=\"6\"\ncreator:Int(Int)=\"4\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyMutantCellLine,\nD:CommitTableCellEdit";
                                       }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
                                 }
                                 {
                                   mgiParentCellLine = mgiParentCellLine : mgiDataTypes;
@@ -3844,53 +3773,17 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = "-20";
                                       {
                                         ObjectID = ID : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text;
-                                            }
                                       }
                                       {
                                         CellLine = CharText : mgiDataTypes;
-                                            {
-                                              label = XmLabel;
-                                            }
-                                            {
-                                              text = text : mgiDataTypes;
-                                            }
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = ID;
-                                                  {
-                                                    label = XmLabel;
-                                                  }
-                                                  {
-                                                    text = text;
-                                                  }
-                                            }
-                                            {
-                                              Verify = CharText;
-                                                  {
-                                                    label = XmLabel;
-                                                  }
-                                                  {
-                                                    text = text;
-                                                  }
-                                            }
                                       }
                                       {
                                         Derivation = mgiObject : mgiDataTypes;
                                             {
                                               ObjectID = ID : mgiDataTypes;
-                                                  {
-                                                    label = XmLabel;
-                                                  }
-                                                  {
-                                                    text = text;
-                                                  }
                                             }
                                             {
                                               CharText = CharText : mgiDataTypes;
@@ -3906,16 +3799,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     text = text : mgiDataTypes;
                                                     Group: Widget
                                                       columns = 40;
-                                                  }
-                                            }
-                                      }
-                                      {
-                                        AlleleCellLineTypeMenu = AlleleCellLineTypeMenu : mgiOption;
-                                            Popups:
-                                            {
-                                              AlleleCellLineTypePulldown = OptionPulldown : mgiOption;
-                                                  {
-                                                    SearchAll = SearchAll : mgiOption;
                                                   }
                                             }
                                       }
@@ -4111,31 +3994,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblNumRows = 10;
                                                     Group: User
                                                       mgiTypeKey = 11;
-                                                  {
-                                                    label = XtXrtLabel;
-                                                  }
-                                                  }
-                                                  {
-                                                    AddRow = TablePush : mgiTable;
-                                                  }
-                                                  {
-                                                    DeleteRow = TablePush : mgiTable;
-                                                  }
-                                                  {
-                                                    IsPrimaryMenu = YesNoMenu : mgiOption;
-                                                  Popups:
-                                                  {
-                                                    IsPrimaryPulldown = OptionPulldown;
-                                                  {
-                                                    SearchAll = SearchAll : mgiOption;
-                                                  }
-                                                  {
-                                                    Yes = Yes : mgiOption;
-                                                  }
-                                                  {
-                                                    No = No : mgiOption;
-                                                  }
-                                                  }
                                                   }
                                             }
                                             {
@@ -4422,45 +4280,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       allowDelete = False;
                                                       allowModify = False;
                                                   }
-                                                  {
-                                                    TIGEMGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ModellingHumanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ESCDGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    ExchangeableClonesGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    GermanGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    SangerGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    HutchinsonGeneTrap = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    AllenBrainAtlas = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSD = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneron = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    RegeneronOther = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPRegeneronProject = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    KOMPCSDProject = AccToggle : mgiOption;
-                                                  }
                                                   }
                                                   }
                                             }
@@ -4508,43 +4327,27 @@ Shift<Key>Tab: prev-tab-group()
                                   Next = ControlArrow;
                                   Group: Constraint
                                     leftAttachment = attach_none;
-                                    rightAttachment = attach_opposite_widget;
-                                    rightWidget = Delete;
-                                    topAttachment = attach_widget;
-                                    topWidget = Delete;
-                                    topOffset = 2;
+                                    rightAttachment = attach_widget;
+                                    rightWidget = Bottom;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Bottom;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                    rightOffset = 5;
+                                }
+                                {
+                                  Bottom = ControlArrow : mgiControl;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
-                                      {
-                                        Clear = XmCascadeButton;
-                                            Popups:
-                                            {
-                                              ClearPulldown = XmPulldownMenu;
-                                            }
-                                      }
                                 }
                                 {
                                   RecordCount = RecordCount : mgiDataTypes;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
                                   Group: Widget
                                     managed = False;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   ModifiedDate = ModifiedDate : mgiDataTypes;
@@ -4558,12 +4361,6 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = CreationDate;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      {
-                                        label = XmLabel;
-                                      }
-                                      {
-                                        text = text;
-                                      }
                                 }
                                 {
                                   ModificationHistory = ModificationHistory : mgiTable;
@@ -4576,12 +4373,6 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblNumRows = 3;
                                           xrtTblRowLabels = "Created,Modified,Approved";
                                           xrtTblVisibleRows = 3;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
                                       }
                                 }
                           }
@@ -4875,20 +4666,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
-                                                  {
-                                                    KOMPCSDProject = AccToggle : mgiOption;
-                                                  }
                                             }
                                       }
                                 }
                                 {
                                   QueryList = QueryList : mgiLookup;
-                                      {
-                                        Label = LookupLabel;
-                                      }
-                                      {
-                                        List = list;
-                                      }
                                 }
                                 {
                                   StemCellLineList = StemCellLineList : mgiLookup;
@@ -4916,15 +4698,6 @@ Shift<Key>Tab: prev-tab-group()
                       ReportDialog = ReportDialog : mgiDialog;
                           {
                             FileSelection = FileSelection;
-                                {
-                                  filler = XmSeparator;
-                                }
-                                {
-                                  Print = XmPushButton;
-                                }
-                                {
-                                  Delete = XmPushButton;
-                                }
                           }
                           {
                             Lookup = XmFrame;
@@ -4932,21 +4705,9 @@ Shift<Key>Tab: prev-tab-group()
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList : mgiLookup;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                            }
                                       }
                                       {
                                         PrintOrient = Choice : mgiDataTypes;
@@ -4982,9 +4743,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                       }
-                                      {
-                                        Output = XmScrolledText;
-                                      }
                                 }
                           }
                     }
@@ -4993,24 +4751,6 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       WhichItem = WhichItem : mgiDialog;
-                          {
-                            ItemList = LookupList : mgiLookup;
-                                {
-                                  Label = LookupLabel;
-                                }
-                                {
-                                  List = list;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = XmRowColumn;
-                                {
-                                  Cancel = DialogPush : mgiDialog;
-                                }
-                          }
                     }
                     {
                       VerifyItemAdd = VerifyItemAdd : mgiDialog;
@@ -5033,18 +4773,6 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Widget
                                     columns = 100;
                                     rows = 50;
-                                }
-                          }
-                          {
-                            separator = XmSeparator;
-                          }
-                          {
-                            Buttons = Buttons : mgiDialog;
-                                {
-                                  OK = DialogPush;
-                                }
-                                {
-                                  Cancel = DialogPush;
                                 }
                           }
                     }

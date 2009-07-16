@@ -3,7 +3,7 @@ Module: mgiMenu
       autoCuil = False;
       dDialogFile = "mgimenus_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May 28 10:14:56 2008";
+      lastWritten = "Thu Jul 16 06:11:40 2009";
         {
           MenuCascade = XmCascadeButton;
           Group: Widget
@@ -205,6 +205,13 @@ Module: mgiMenu
                         accelerator = "Ctrl<Key>n";
                         activateCallback = "D:Next,\nD:GoHome";
                         mnemonic = N;
+                    }
+                    {
+                      Bottom = MenuPush : mgiMenu;
+                      Group: Widget
+                        accelerator = "Ctrl<Key>b";
+                        activateCallback = "D:Bottom,\nD:GoHome";
+                        mnemonic = B;
                     }
               }
         }
