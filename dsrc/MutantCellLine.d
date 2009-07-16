@@ -40,6 +40,7 @@ devents:
 	DisplayDerivation :translation [];
 	VerifyParentCellLine :translation [];
 	VerifyDerivation :local [];
+	VerifyMCLName :local [];
 
 locals:
 	mgi : widget;
@@ -191,6 +192,29 @@ rules:
 	    return;
 	  end if;
 
+	  -- Confirm changes to MCL Name
+
+          mclName : string := mgi_sql1("select cellLine from ALL_CellLine " +
+		"where cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value));
+
+	  if (mclName.length > 0) then
+
+	    top->VerifyMCLName.doModify := false;
+            top->VerifyMCLName.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyMCLName.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyMCLName.doModify) then
+	      return;
+	    end if;
+	  end if;
+
+	  -- end Confirm changes
+
 	  (void) busy_cursor(top);
 
 	  send(VerifyDerivation, 0);
@@ -279,6 +303,29 @@ rules:
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
+
+	  -- Confirm changes to MCL Name
+
+          mclName : string := mgi_sql1("select cellLine from ALL_CellLine " +
+		"where cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value));
+
+	  if (top->EditForm->CellLine->text.modified and mclName.length > 0) then
+
+	    top->VerifyMCLName.doModify := false;
+            top->VerifyMCLName.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyMCLName.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyMCLName.doModify) then
+	      return;
+	    end if;
+	  end if;
+
+	  -- end Confirm changes
 
 	  (void) busy_cursor(top);
 
@@ -772,6 +819,17 @@ rules:
 	    top->mgiParentCellLine->Derivation->ObjectID->text.value := derivationKey;
 	    send(DisplayDerivation, 0);
 	  end if;
+	end does;
+
+--
+-- VerifyMCLName
+--
+--	Called when user chooses YES from VerifyMCLName dialog
+--
+
+	VerifyMCLName does
+	  top->VerifyMCLName.doModify := true;
+	  top->VerifyMCLName.managed := false;
 	end does;
 
 --
