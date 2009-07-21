@@ -1671,13 +1671,15 @@ rules:
 	  from_nomen	  : boolean := false;
 	  from_mutation   : boolean := false;
 	  from_notes      : boolean := false;
-	  from_cellline  : boolean := false;
+	  from_cellline   : boolean := false;
 	  from_sequence   : boolean := false;
 
 	  value : string;
+	  whereA : string;
 
 	  from := " from " + mgi_DBtable(ALL_ALLELE_VIEW) + " a";
 	  where := "";
+	  whereA := "";
 	  union := "";
 
           SearchAcc.table := accTable;
@@ -1735,34 +1737,42 @@ rules:
  
           if (top->Symbol->text.value.length > 0) then
 	    where := where + "\nand a.symbol like " + mgi_DBprstr(top->Symbol->text.value);
+	    whereA := whereA + "\nand a.symbol like " + mgi_DBprstr(top->Symbol->text.value);
 	  end if;
 	    
           if (top->Name->text.value.length > 0) then
 	    where := where + "\nand a.name like " + mgi_DBprstr(top->Name->text.value);
+	    whereA := whereA + "\nand a.name like " + mgi_DBprstr(top->Name->text.value);
 	  end if;
 	    
           if (top->AlleleTypeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._Allele_Type_key = " + top->AlleleTypeMenu.menuHistory.searchValue;
+            whereA := whereA + "\nand a._Allele_Type_key = " + top->AlleleTypeMenu.menuHistory.searchValue;
           end if;
 
           if (top->InheritanceModeMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._Mode_key = " + top->InheritanceModeMenu.menuHistory.searchValue;
+            whereA := whereA + "\nand a._Mode_key = " + top->InheritanceModeMenu.menuHistory.searchValue;
           end if;
 
           if (top->AlleleStatusMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._Allele_Status_key = " + top->AlleleStatusMenu.menuHistory.searchValue;
+            whereA := whereA + "\nand a._Allele_Status_key = " + top->AlleleStatusMenu.menuHistory.searchValue;
           end if;
 
           if (top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a._Transmission_key = " + top->AlleleTransmissionMenu.menuHistory.searchValue;
+            whereA := whereA + "\nand a._Transmission_key = " + top->AlleleTransmissionMenu.menuHistory.searchValue;
           end if;
 
           if (top->MixedMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a.isMixed = " + top->MixedMenu.menuHistory.searchValue;
+            whereA := whereA + "\nand a.isMixed = " + top->MixedMenu.menuHistory.searchValue;
           end if;
 
           if (top->ExtinctMenu.menuHistory.searchValue != "%") then
             where := where + "\nand a.isExtinct = " + top->ExtinctMenu.menuHistory.searchValue;
+            whereA := whereA + "\nand a.isExtinct = " + top->ExtinctMenu.menuHistory.searchValue;
           end if;
 
 	  -- Marker Assoc
@@ -1885,7 +1895,7 @@ rules:
 	    union := "\nunion" +
 	  	"\nselect distinct a._Allele_key, a.symbol, 1" +
 		"\nfrom ALL_Allele a" +
-		"\nwhere a.nomenSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol));
+	        "\nwhere a.nomenSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol)) + whereA;
 	  end if;
 
 	  if (from_mutation) then
