@@ -323,7 +323,7 @@ rules:
  
 	  cmd := cmd + top->EditForm->ConditionalMenu.menuHistory.defaultValue + "," +
 		 "NULL," + 
-		 top->EditForm->GenotypeExistsAsMenu.menuHistory.defaultVaclue + "," +
+		 top->EditForm->GenotypeExistsAsMenu.menuHistory.defaultValue + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAllelePair, 0);
