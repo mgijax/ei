@@ -10,7 +10,7 @@
 --
 -- History
 --
--- 02/18/2009-06/2009	lec
+-- 02/18/2009-07/2009	lec
 --	TR7493; gene trap less filling
 --
 -- 02/17/2009	lec
@@ -436,7 +436,6 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
             send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
 	  end if;
 
@@ -449,7 +448,6 @@ rules:
             StatusReport.message := 
 	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
             send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
@@ -461,7 +459,6 @@ rules:
             StatusReport.message := 
 	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
             send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
@@ -474,7 +471,6 @@ rules:
             StatusReport.message := 
 		"If a Transmission Reference is selected\nthen Germ Line Transmission must be Chimeric or Germline.";
             send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
@@ -1526,6 +1522,7 @@ rules:
 	    -- end check isParent, isMutant
 	    --
 
+	    -- if there is an error, return and do not update the MCL
 	    if (isError) then
 	      return;
 	    end if;
@@ -2334,14 +2331,6 @@ rules:
 	    (void) mgi_tblSetCell(table, row, cellLineTable.creator, "");
 	    VerifyMutantCellLine.doit := (integer) false;
 	  end if;
-
---	  cellLineCount : integer := (integer) mgi_sql1("select count(*) from ALL_Allele_CellLine " + \
---		  "where _MutantCellLine_key = " + mutantCellLineKey);
---	  if (cellLineCount > 0) then
---            StatusReport.source_widget := top.root;
---            StatusReport.message := "There is at least one Allele that is associated with this Mutant Cell Line";
---            send(StatusReport);
---	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
