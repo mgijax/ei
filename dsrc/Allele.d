@@ -402,15 +402,15 @@ rules:
 	      markerKey := "NULL";
 	    end if;
 
-	    if (refsType = "Original" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	    if (refsType = "Original" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      originalRefs := originalRefs + 1;
 	    end if;
 
-	    if (refsType = "Mixed" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	    if (refsType = "Mixed" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      mixedRefs := mixedRefs + 1;
 	    end if;
 
-	    if (refsType = "Transmission" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	    if (refsType = "Transmission" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      transmissionRefs := transmissionRefs + 1;
 	    end if;
 
@@ -436,6 +436,7 @@ rules:
             StatusReport.source_widget := top;
             StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
             send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
 	  end if;
 
@@ -448,6 +449,7 @@ rules:
             StatusReport.message := 
 	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
             send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
@@ -459,6 +461,7 @@ rules:
             StatusReport.message := 
 	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
             send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
@@ -471,6 +474,7 @@ rules:
             StatusReport.message := 
 		"If a Transmission Reference is selected\nthen Germ Line Transmission must be Chimeric or Germline.";
             send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	    return;
 	  end if;
 
@@ -728,15 +732,15 @@ rules:
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
 
-	    if (refsType = "Original" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	    if (refsType = "Original" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      originalRefs := originalRefs + 1;
 	    end if;
 
-	    if (refsType = "Mixed" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	    if (refsType = "Mixed" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      mixedRefs := mixedRefs + 1;
 	    end if;
 
-	    if (refsType = "Transmission" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	    if (refsType = "Transmission" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 	      transmissionRefs := transmissionRefs + 1;
 	    end if;
 
