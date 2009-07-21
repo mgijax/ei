@@ -391,27 +391,23 @@ rules:
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
-	    --if (editMode = TBL_ROW_EMPTY) then
-	    --  break;
-	    --end if;
- 
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
 
-	    if (markerKey.length = 0) then
-	      markerKey := "NULL";
-	    end if;
+	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 
-	    if (refsType = "Original" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
-	      originalRefs := originalRefs + 1;
-	    end if;
+	      if (refsType = "Original") then
+	        originalRefs := originalRefs + 1;
+	      end if;
 
-	    if (refsType = "Mixed" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
-	      mixedRefs := mixedRefs + 1;
-	    end if;
+	      if (refsType = "Mixed") then
+	        mixedRefs := mixedRefs + 1;
+	      end if;
 
-	    if (refsType = "Transmission" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
-	      transmissionRefs := transmissionRefs + 1;
+	      if (refsType = "Transmission") then
+	        transmissionRefs := transmissionRefs + 1;
+	      end if;
+
 	    end if;
 
 	    row := row + 1;
@@ -509,6 +505,10 @@ rules:
 
           currentRecordKey := "@" + KEYNAME;
  
+	  if (markerKey.length = 0) then
+	    markerKey := "NULL";
+	  end if;
+
 	  if (top->Name->text.value = "wild type" or top->Name->text.value = "wild-type") then
 	    isWildType := 1;
 	  end if;
@@ -725,23 +725,23 @@ rules:
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
-	    --if (editMode = TBL_ROW_EMPTY) then
-	    --  break;
-	    --end if;
- 
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
 
-	    if (refsType = "Original" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
-	      originalRefs := originalRefs + 1;
-	    end if;
+	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 
-	    if (refsType = "Mixed" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
-	      mixedRefs := mixedRefs + 1;
-	    end if;
+	      if (refsType = "Original") then
+	        originalRefs := originalRefs + 1;
+	      end if;
 
-	    if (refsType = "Transmission" and refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
-	      transmissionRefs := transmissionRefs + 1;
+	      if (refsType = "Mixed") then
+	        mixedRefs := mixedRefs + 1;
+	      end if;
+
+	      if (refsType = "Transmission") then
+	        transmissionRefs := transmissionRefs + 1;
+	      end if;
+
 	    end if;
 
 	    row := row + 1;
