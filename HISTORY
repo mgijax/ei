@@ -1,9 +1,11 @@
+TAG: ei-4-3-0-8
 TAG: ei-4-3-0-7
 DATE: 07/21/2009
 STAFF: lec
 CHANGES:
 1) QC#2344: MutantCellLine.d
-2) Allele.d/Add
+2) QC#2357: Allele.d/PrepareSearch
+3) QC#2363: Allele.d/Add/Modify
 
 TAG: ei-4-3-0-6
 TAG: ei-4-3-0-5
