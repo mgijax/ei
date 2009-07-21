@@ -101,9 +101,6 @@ rules:
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
 
-	  InitOptionMenu.option := top->EditForm->AlleleCellLineTypeMenu;
-	  send(InitOptionMenu, 0);
-
 	  InitOptionMenu.option := top->EditForm->AlleleCreatorMenu;
 	  send(InitOptionMenu, 0);
 
