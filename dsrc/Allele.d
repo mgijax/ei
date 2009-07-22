@@ -3,7 +3,9 @@
 -- Creator : lec
 --
 -- TopLevelShell:		Allele
--- Database Tables Affected:	ALL_Allele, ALL_Allele_Mutation, MGI_Note, MGI_Synonym, MGI_Reference_Assoc
+-- Database Tables Affected:	ALL_Allele, ALL_Allele_Mutation, 
+--				ALL_Allele_CellLine, ALL_Marker_Assoc
+--				MGI_Note, MGI_Synonym, MGI_Reference_Assoc
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- Module process edits for Allele tables.
@@ -281,6 +283,9 @@ rules:
 	  -- Clear
 	  send(ClearAllele, 0);
 
+
+	  -- Set defaults
+
 	  pendingStatusKey := mgi_sql1("select _Term_key from VOC_Term_ALLStatus_View where term = " + mgi_DBprstr(ALL_STATUS_PENDING));
 
 	  defaultQualifierKey := mgi_sql1("select _Term_key from VOC_Term " +
@@ -385,7 +390,7 @@ rules:
 	    return;
 	  end if;
 
-	  -- Verify at most one Original Reference
+	  -- Verify References
 
 	  row := 0;
 	  while (row < mgi_tblNumRows(refTable)) do
@@ -413,6 +418,7 @@ rules:
 	    row := row + 1;
 	  end while;
 
+	  -- Original; must have at most one original reference
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";

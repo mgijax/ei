@@ -1,3 +1,10 @@
+TAG: ei-4-3-0-10
+DATE: 07/22/2009
+STAFF: lec
+CHANGES:
+1) QC#2374: Genotype.d/Add
+2) QC#2375: MutantCellLine.d/VerifyMCLDuplicate/VerifyMCLName
+
 TAG: ei-4-3-0-9
 TAG: ei-4-3-0-8
 TAG: ei-4-3-0-7
@@ -7,7 +14,7 @@ CHANGES:
 1) QC#2344: MutantCellLine.d
 2) QC#2357: Allele.d/PrepareSearch
 3) QC#2363: Allele.d/Add/Modify
-4) AC#2374: Genotype.d/Add
+4) QC#2374: Genotype.d/Add
 
 TAG: ei-4-3-0-6
 TAG: ei-4-3-0-5

@@ -40,6 +40,7 @@ devents:
 	DisplayDerivation :translation [];
 	VerifyParentCellLine :translation [];
 	VerifyDerivation :local [];
+	VerifyMCLDuplicateName :local [];
 	VerifyMCLName :local [];
 
 locals:
@@ -138,8 +139,6 @@ rules:
 --
 
 	Init does
-	  alleleModule : widget := ab.root->AlleleModule;
-	  alleleKey : string;
 
 	  -- Global Accession number Tables
 
@@ -156,21 +155,6 @@ rules:
 	  Clear.source_widget := top;
 	  Clear.clearLists := clearList;
 	  send(Clear, 0);
-
-	  -- If launched from the Allele Module...
-	  --if (alleleModule != nil) then
-
-	    -- find the cellline of the selected allele
-	  --  alleleKey := alleleModule->ID->text.value;
-	  --  if (alleleKey.length > 0) then
-	  --    from := " from " + mgi_DBtable(ALL_ALLELE_CELLLINE) + " c," + 
---				 mgi_DBtable(ALL_CELLLINE) + " a";
-	  --    where := "where c._Allele_key = " + alleleKey +
-	  --    "\nand c._MutantCellLine_key = a._CellLine_key";
-	  --    Search.prepareSearch := false;
-	  --    send(Search, 0);
-	  --  end if;
-	  --end if;
 
 	end does;
 
@@ -196,16 +180,16 @@ rules:
 
 	  if (mclName.length > 0) then
 
-	    top->VerifyMCLName.doModify := false;
-            top->VerifyMCLName.managed := true;
+	    top->VerifyMCLDuplicateName.doModify := false;
+            top->VerifyMCLDuplicateName.managed := true;
  
             -- Keep busy while user verifies the modification is okay
  
-            while (top->VerifyMCLName.managed = true) do
+            while (top->VerifyMCLDuplicateName.managed = true) do
               (void) keep_busy();
             end while;
  
-            if (not top->VerifyMCLName.doModify) then
+            if (not top->VerifyMCLDuplicateName.doModify) then
 	      return;
 	    end if;
 	  end if;
@@ -306,7 +290,7 @@ rules:
           mclName : string := mgi_sql1("select cellLine from ALL_CellLine " +
 		"where cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value));
 
-	  if (top->EditForm->CellLine->text.modified and mclName.length > 0) then
+	  if (top->EditForm->CellLine->text.modified) then
 
 	    top->VerifyMCLName.doModify := false;
             top->VerifyMCLName.managed := true;
@@ -320,6 +304,23 @@ rules:
             if (not top->VerifyMCLName.doModify) then
 	      return;
 	    end if;
+
+	    if (mclName.length > 0) then
+	      top->VerifyMCLDuplicateName.doModify := false;
+              top->VerifyMCLDuplicateName.managed := true;
+ 
+              -- Keep busy while user verifies the modification is okay
+ 
+              while (top->VerifyMCLDuplicateName.managed = true) do
+                (void) keep_busy();
+              end while;
+   
+              if (not top->VerifyMCLDuplicateName.doModify) then
+	        return;
+	      end if;
+
+	    end if;
+
 	  end if;
 
 	  -- end Confirm changes
@@ -816,6 +817,17 @@ rules:
 	    top->mgiParentCellLine->Derivation->ObjectID->text.value := derivationKey;
 	    send(DisplayDerivation, 0);
 	  end if;
+	end does;
+
+--
+-- VerifyMCLDuplicateName
+--
+--	Called when user chooses YES from VerifyMCLDuplicateName dialog
+--
+
+	VerifyMCLDuplicateName does
+	  top->VerifyMCLDuplicateName.doModify := true;
+	  top->VerifyMCLDuplicateName.managed := false;
 	end does;
 
 --
