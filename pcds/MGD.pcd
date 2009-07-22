@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 16 07:15:38 2009";
+      lastWritten = "Wed Jul 22 14:05:19 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -14047,6 +14047,9 @@ Shift<Key>Tab: prev-tab-group()
                     }
                     {
                       VerifyMCLName = VerifyMCLName : mgiDialog;
+                    }
+                    {
+                      VerifyMCLDuplicateName = VerifyMCLDuplicateName : mgiDialog;
                     }
               }
         }
