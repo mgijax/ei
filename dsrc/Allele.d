@@ -133,7 +133,7 @@ locals:
 
 	defaultTransmissionKeyNS : string;
 	defaultTransmissionKeyNA : string;
-	defaultTransmissionGermLine : string := "3982951";
+	defaultTransmissionGermLine : string := "3982951"; -- default is 61 ("Germline")
 
 	defaultStrainKeyNS : string;
 	defaultStrainKeyNA : string;
@@ -1775,13 +1775,15 @@ rules:
           end if;
 
 	  -- Marker Assoc
+	  -- if a marker symbol contains "%", then search by both marker symbol and nomen symbol
 
 	  value := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  if (value.length > 0 and value != "NULL" and value != "-1") then
 	    where := where + "\nand ma._Marker_key = " + mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	    from_marker := true;
 	  elsif (mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol).length > 0) then
-	    where := where + "\nand (ma.symbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol)) +
+	    where := where + 
+		"\nand (ma.symbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol)) +
 		" or a.nomenSymbol like " + mgi_DBprstr(mgi_tblGetCell(markerTable, 0, markerTable.markerSymbol)) + ")";
 	    from_marker := true;
 	  end if;

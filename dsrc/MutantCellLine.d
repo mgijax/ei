@@ -285,12 +285,10 @@ rules:
 	    return;
 	  end if;
 
-	  -- Confirm changes to MCL Name
+	  -- Confirm changes to MCL Name or Parent Cell Line
 
-          mclName : string := mgi_sql1("select cellLine from ALL_CellLine " +
-		"where cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value));
-
-	  if (top->EditForm->CellLine->text.modified) then
+	  if (top->EditForm->CellLine->text.modified or
+	      top->EditForm->mgiParentCellLine->Derivation->ObjectID->text.modified) then
 
 	    top->VerifyMCLName.doModify := false;
             top->VerifyMCLName.managed := true;
@@ -305,20 +303,26 @@ rules:
 	      return;
 	    end if;
 
-	    if (mclName.length > 0) then
-	      top->VerifyMCLDuplicateName.doModify := false;
-              top->VerifyMCLDuplicateName.managed := true;
- 
-              -- Keep busy while user verifies the modification is okay
- 
-              while (top->VerifyMCLDuplicateName.managed = true) do
-                (void) keep_busy();
-              end while;
-   
-              if (not top->VerifyMCLDuplicateName.doModify) then
-	        return;
-	      end if;
+	  end if;
 
+	  -- Confirm changes to MCL Name
+
+          mclName : string := mgi_sql1("select cellLine from ALL_CellLine " +
+		"where cellLine = " + mgi_DBprstr(top->EditForm->CellLine->text.value));
+
+	  if (top->EditForm->CellLine->text.modified and mclName.length > 0) then
+
+	    top->VerifyMCLDuplicateName.doModify := false;
+            top->VerifyMCLDuplicateName.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyMCLDuplicateName.managed = true) do
+              (void) keep_busy();
+            end while;
+   
+            if (not top->VerifyMCLDuplicateName.doModify) then
+	      return;
 	    end if;
 
 	  end if;
@@ -779,7 +783,11 @@ rules:
 --
 -- VerifyDerivation
 --
--- Deterimne the Derivation
+-- Deterimne the Derivation key based on the info entered by the user:
+-- 	derivation type
+--	parent cell line
+--	strain
+--	is mutant = 0
 --
 
 	VerifyDerivation does

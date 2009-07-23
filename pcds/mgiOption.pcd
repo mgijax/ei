@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul  9 14:04:42 2009";
+      lastWritten = "Thu Jul 23 09:51:20 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -66,7 +66,7 @@ Module: mgiOption
             labelString = "Search All";
           Group: Control
             vip_x = 80;
-            vip_y = 305;
+            vip_y = 250;
           Group: User
             defaultValue = "%";
         }
@@ -673,7 +673,7 @@ Module: mgiOption
             userDefinedAttributes = "allowAdd:Boolean(Boolean)=\"True\"\nallowModify:Boolean(Boolean)=\"True\"\nallowDelete:Boolean(Boolean)=\"True\"\npreferred:Boolean(Boolean)=\"True\"\nprivate:Boolean(Boolean)=\"False\"\nrequired:Boolean=\"False\"\n";
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 305;
         }
         {
           SourceToggle = OptionToggle;
@@ -681,7 +681,7 @@ Module: mgiOption
             valueChangedCallback = "D:SelectMolecularSource,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 910;
+            vip_y = 1295;
         }
         {
           ControlledVocabToggle = OptionToggle;
@@ -690,7 +690,7 @@ Module: mgiOption
             valueChangedCallback = "D:SelectControlledVocab,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 415;
+            vip_y = 580;
         }
         {
           NotSpecified = OptionToggle : mgiOption;
@@ -699,7 +699,7 @@ Module: mgiOption
             background = Thistle;
           Group: Control
             vip_x = 80;
-            vip_y = 1020;
+            vip_y = 1570;
           Group: User
             searchValue = "Not Specified";
             defaultValue = "Not Specified";
@@ -710,7 +710,7 @@ Module: mgiOption
             background = Thistle;
           Group: Control
             vip_x = 80;
-            vip_y = 745;
+            vip_y = 635;
         }
         {
           GenderMenu = OptionMenu;
@@ -860,7 +860,7 @@ Module: mgiOption
             labelString = "Not Applicable";
           Group: Control
             vip_x = 80;
-            vip_y = 855;
+            vip_y = 1515;
           Group: User
             searchValue = "Not Applicable";
             defaultValue = "Not Applicable";
@@ -944,7 +944,7 @@ Module: mgiOption
           AgeToggle = OptionToggle;
           Group: Control
             vip_x = 80;
-            vip_y = 1185;
+            vip_y = 360;
         }
         {
           AntibodyClassMenu = OptionMenu;
@@ -1041,7 +1041,7 @@ Module: mgiOption
           Yes = OptionToggle : mgiOption;
           Group: Control
             vip_x = 80;
-            vip_y = 360;
+            vip_y = 1680;
           Group: User
             searchValue = Yes;
             defaultValue = Yes;
@@ -1050,7 +1050,7 @@ Module: mgiOption
           No = OptionToggle : mgiOption;
           Group: Control
             vip_x = 80;
-            vip_y = 470;
+            vip_y = 1625;
           Group: User
             searchValue = No;
             defaultValue = No;
@@ -1522,7 +1522,7 @@ Module: mgiOption
             userDefinedAttributes = "prepForm:String(String)\nassayForm:String(String)\nisRNAAssay:Int=\"0\"\nisGelAssay:Int=\"0\"\n";
           Group: Control
             vip_x = 80;
-            vip_y = 635;
+            vip_y = 470;
         }
         {
           StrengthMenu = OptionMenu;
@@ -1609,7 +1609,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyAntibodyType,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 800;
+            vip_y = 415;
         }
         {
           NLMStatusMenu = OptionMenu;
@@ -2103,7 +2103,7 @@ Module: mgiOption
             valueChangedCallback = "D:ViewExpt";
           Group: Control
             vip_x = 80;
-            vip_y = 580;
+            vip_y = 855;
         }
         {
           MLCModeMenu = OptionMenu;
@@ -2191,7 +2191,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyGelLaneControl,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 965;
+            vip_y = 910;
         }
         {
           ServerToggle = OptionToggle;
@@ -2199,7 +2199,7 @@ Module: mgiOption
             userDefinedAttributes = "development:Boolean=\"True\"\n";
           Group: Control
             vip_x = 80;
-            vip_y = 690;
+            vip_y = 1185;
         }
         {
           DatabaseMenu = OptionMenu;
@@ -2223,7 +2223,7 @@ Module: mgiOption
             valueChangedCallback = "D:NewDatabase,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1240;
+            vip_y = 690;
         }
         {
           MarkerEventReasonMenu = OptionMenu;
@@ -2302,7 +2302,7 @@ Module: mgiOption
             valueChangedCallback = "D:SetMarkerWithdrawalFields,\nD:CopyOptionToTable,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 745;
         }
         {
           AlleleStatusMenu = OptionMenu;
@@ -2634,7 +2634,7 @@ Module: mgiOption
             userDefinedAttributes = "prepForm:String(String)\n";
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1020;
         }
         {
           SegmentTypeToggle = OptionToggle;
@@ -2643,7 +2643,7 @@ Module: mgiOption
             valueChangedCallback = "D:ViewMolSegDetail,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 250;
+            vip_y = 1130;
         }
         {
           CloneLibrarySetMenu = OptionMenu;
@@ -2784,7 +2784,7 @@ Module: mgiOption
             valueChangedCallback = "D:SetMGIType,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1075;
         }
         {
           SortToggle = OptionToggle : mgiOption;
@@ -2792,7 +2792,7 @@ Module: mgiOption
             userDefinedAttributes = "dbField:String\ncolumnValue:Int\n";
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 1240;
         }
         {
           SortMenu = OptionMenu : mgiOption;
@@ -2853,7 +2853,7 @@ Module: mgiOption
             subMenuId = StrainGenoQualPulldown;
           Group: Control
             vip_x = 80;
-            vip_y = 6025;
+            vip_y = 6080;
               Popups:
               {
                 StrainGenoQualPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2884,7 +2884,7 @@ Module: mgiOption
             valueChangedCallback = "D:LoadRoleTasks,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 1405;
         }
         {
           AlleleCompoundMenu = OptionMenu;
@@ -2908,7 +2908,7 @@ Module: mgiOption
             labelString = "Image Type";
           Group: Control
             vip_x = 80;
-            vip_y = 6190;
+            vip_y = 6410;
               Popups:
               {
                 ImageTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -2925,7 +2925,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyStrengthPattern,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1130;
+            vip_y = 1350;
         }
         {
           EvidenceCodeMenu = OptionMenu;
@@ -2963,7 +2963,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyVocabQualifier,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1460;
         }
         {
           EvidenceToggle = OptionToggle;
@@ -2971,7 +2971,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyVocabEvidenceCode,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 800;
         }
         {
           GelRNAToggle = OptionToggle;
@@ -2979,7 +2979,7 @@ Module: mgiOption
             valueChangedCallback = "D:CopyOptionToTable,\nD:VerifyGelLaneRNAType,\nD:SetModify";
           Group: Control
             vip_x = 80;
-            vip_y = 1075;
+            vip_y = 965;
         }
         {
           AlleleTransmissionMenu = OptionMenu;
@@ -3009,7 +3009,7 @@ Module: mgiOption
             labelString = "Genotype Exists As";
           Group: Control
             vip_x = 80;
-            vip_y = 6135;
+            vip_y = 6300;
           Group: User
             defaultValue = "Not Applicable";
               Popups:
@@ -3029,7 +3029,7 @@ Module: mgiOption
             labelString = Status;
           Group: Control
             vip_x = 80;
-            vip_y = 6080;
+            vip_y = 6190;
           Group: User
             defaultValue = Curated;
               Popups:
@@ -3048,8 +3048,8 @@ Module: mgiOption
             subMenuId = AlleleVectorTypePulldown;
             labelString = "Vector Type";
           Group: Control
-            vip_x = 198;
-            vip_y = 6124;
+            vip_x = 80;
+            vip_y = 6245;
           Group: User
             defaultValue = "Not Specified";
               Popups:
@@ -3068,8 +3068,8 @@ Module: mgiOption
             subMenuId = AlleleCellLineTypePulldown;
             labelString = "Cell Line Type";
           Group: Control
-            vip_x = 189;
-            vip_y = 6185;
+            vip_x = 80;
+            vip_y = 6355;
           Group: User
             defaultValue = "Embryonic Stem Cell";
               Popups:
@@ -3088,8 +3088,8 @@ Module: mgiOption
             subMenuId = AlleleDerivationTypePulldown;
             labelString = "Derivation Type";
           Group: Control
-            vip_x = 194;
-            vip_y = 6056;
+            vip_x = 80;
+            vip_y = 6135;
           Group: User
             defaultValue = "Not Specified";
               Popups:
@@ -3108,8 +3108,8 @@ Module: mgiOption
             subMenuId = AlleleCreatorPulldown;
             labelString = Creator;
           Group: Control
-            vip_x = 193;
-            vip_y = 5993;
+            vip_x = 80;
+            vip_y = 6025;
           Group: User
             defaultValue = "Not Specified";
               Popups:

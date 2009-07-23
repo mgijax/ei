@@ -9,7 +9,7 @@
 --
 -- History
 --
--- 04/08/2009	lec
+-- 04/08/2009-07/2009	lec
 --	TR 7493; gene trap lite
 --
 
@@ -229,7 +229,8 @@ rules:
 
           if (top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.modified and
               top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
-            set := set + "_CellLine_Type_key = "  + top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
+            set := set + "_CellLine_Type_key = "  + 
+		top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue + ",";
           end if;
 
 	  -- the update to the mutant strains will be done via a trigger
@@ -277,11 +278,13 @@ rules:
           if (top->EditForm->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->EditForm->mgiParentCellLine->Strain->StrainID->text.value;;
           elsif (top->EditForm->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
-            where := where + "\nand a.cellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Strain->Verify->text.value);
+            where := where + 
+		"\nand a.cellLineStrain like " + mgi_DBprstr(top->EditForm->mgiParentCellLine->Strain->Verify->text.value);
           end if;
 
           if (top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
-            where := where + "\nand a._CellLine_Type_key = " + top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue;
+            where := where + 
+		"\nand a._CellLine_Type_key = " + top->EditForm->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue;
           end if;
 
 	  if (where.length > 0) then
