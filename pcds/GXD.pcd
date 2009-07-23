@@ -3,14 +3,14 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 16 06:45:24 2009";
+      lastWritten = "Thu Jul 23 13:43:44 2009";
       copy = false;
       inCreateMenu = true;
         {
           AntigenModule = Module : MGI;
           Group: Control
             vip_x = 175;
-            vip_y = 30;
+            vip_y = 85;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
             homeWidget = Name;
@@ -439,8 +439,8 @@ Module: GXD
         {
           AntibodyModule = Module : MGI;
           Group: Control
-            vip_x = 60;
-            vip_y = 85;
+            vip_x = 175;
+            vip_y = 30;
           Group: User
             clearForms = "ControlForm\nEditForm\nSourceForm";
             homeWidget = Name;
@@ -1126,8 +1126,8 @@ Shift<Key>Tab: prev-tab-group()
             width = 1000;
             resizePolicy = resize_none;
           Group: Control
-            vip_x = 60;
-            vip_y = 140;
+            vip_x = 175;
+            vip_y = 250;
               {
                 Specimen = OrderedTableLabel : mgiTable;
                 Group: Widget
@@ -1212,8 +1212,8 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_none;
             width = 1000;
           Group: Control
-            vip_x = 175;
-            vip_y = 140;
+            vip_x = 60;
+            vip_y = 195;
               {
                 ImagePaneList = LookupList : mgiLookup;
                 Group: Constraint
@@ -1388,8 +1388,8 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             title = "GXD Index";
           Group: Control
-            vip_x = 60;
-            vip_y = 195;
+            vip_x = 175;
+            vip_y = 140;
           Group: User
             homeWidget = Marker;
             activateButtonName = IndexStage;
@@ -2155,7 +2155,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
             width = 1300;
           Group: Control
-            vip_x = 175;
+            vip_x = 60;
             vip_y = 85;
           Group: User
             homeWidget = Jnum;
@@ -3110,7 +3110,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 60;
-            vip_y = 250;
+            vip_y = 305;
               {
                 PrepID : ID = ID;
               }
@@ -3230,7 +3230,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 175;
-            vip_y = 250;
+            vip_y = 195;
               {
                 PrepID : ID = ID;
               }
@@ -3322,7 +3322,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 60;
-            vip_y = 305;
+            vip_y = 250;
               {
                 ID = ID : mgiDataTypes;
               }
@@ -3351,8 +3351,8 @@ Shift<Key>Tab: prev-tab-group()
         {
           AlleleModule = Module : MGI;
           Group: Control
-            vip_x = 178;
-            vip_y = 188;
+            vip_x = 60;
+            vip_y = 140;
           Group: User
             homeWidget = Symbol;
             activateButtonName = Allele;

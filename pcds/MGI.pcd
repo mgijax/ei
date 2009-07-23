@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 16 06:54:53 2009";
+      lastWritten = "Thu Jul 23 12:52:15 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -845,7 +845,7 @@ Module: MGI
             title = "MGI Controlled Vocabulary";
           Group: Control
             vip_x = 70;
-            vip_y = 470;
+            vip_y = 415;
           Group: User
             homeWidget = Name;
             activateButtonName = ControlledVocab;
@@ -1133,7 +1133,7 @@ Module: MGI
             closeWindowCallback = "D:GenotypeExit";
           Group: Control
             vip_x = 70;
-            vip_y = 525;
+            vip_y = 470;
           Group: User
             homeWidget = Verify;
             activateButtonName = GenotypePush;
@@ -2483,7 +2483,7 @@ Module: MGI
           ImageModule = Module : MGI;
           Group: Control
             vip_x = 70;
-            vip_y = 415;
+            vip_y = 525;
           Group: User
             homeWidget = Jnum;
             activateButtonName = Image;

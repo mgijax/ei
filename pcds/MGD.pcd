@@ -2,13 +2,13 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 22 14:05:19 2009";
+      lastWritten = "Thu Jul 23 12:58:47 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 305;
+            vip_y = 910;
           Group: User
             homeWidget = Latin;
             activateButtonName = Organism;
@@ -527,7 +527,7 @@ Module: MGD
             title = "RI Sets";
           Group: Control
             vip_x = 80;
-            vip_y = 140;
+            vip_y = 1075;
           Group: User
             homeWidget = Designation;
             activateButtonName = RISet;
@@ -772,7 +772,7 @@ Module: MGD
           CrossModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 635;
+            vip_y = 195;
           Group: User
             homeWidget = Name;
             activateButtonName = Cross;
@@ -1189,7 +1189,7 @@ Module: MGD
           TissueModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 195;
+            vip_y = 1240;
           Group: User
             homeWidget = Name;
             activateButtonName = Tissue;
@@ -1406,7 +1406,7 @@ Module: MGD
           OrthologyModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 470;
+            vip_y = 965;
           Group: User
             homeWidget = Jnum;
             activateButtonName = Orthology;
@@ -1750,7 +1750,7 @@ Module: MGD
           MolecularSegmentModule = Module1 : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 690;
+            vip_y = 580;
           Group: User
             homeWidget = Name;
             editForms = "ControlForm\nMolMasterForm\nMolDetailForm\nMolMarkerForm\nMolPrimerForm\nSourceForm\nMolReferenceForm";
@@ -2183,7 +2183,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1295;
+            vip_y = 2010;
               {
                 ID = ID;
               }
@@ -2428,7 +2428,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1350;
+            vip_y = 1955;
               {
                 Marker = ReferenceTable : mgiTable;
                 Group: Constraint
@@ -2620,7 +2620,7 @@ Module: MGD
             managed = False;
           Group: Control
             vip_x = 80;
-            vip_y = 1460;
+            vip_y = 2120;
           Group: User
             homeWidget = Jnum;
             queryList = ReferenceList;
@@ -2988,7 +2988,7 @@ Module: MGD
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1515;
+            vip_y = 2065;
               {
                 Sequence1 = CharText : mgiDataTypes;
                 Group: Constraint
@@ -3065,7 +3065,7 @@ Module: MGD
             closeWindowCallback = "D:MolecularSourceExit";
           Group: Control
             vip_x = 80;
-            vip_y = 800;
+            vip_y = 635;
           Group: User
             editForms = "ControlForm\nEditForm\nSourceForm";
             clearForms = "ControlForm\nEditForm\nSourceForm";
@@ -3616,7 +3616,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1570;
+            vip_y = 1790;
               {
                 ID = ID;
               }
@@ -3651,7 +3651,7 @@ Module: MGD
             resizePolicy = resize_any;
           Group: Control
             vip_x = 80;
-            vip_y = 1625;
+            vip_y = 1460;
               {
                 ID = ID;
               }
@@ -3688,7 +3688,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1735;
+            vip_y = 1570;
               {
                 ID = ID;
               }
@@ -3772,7 +3772,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1680;
+            vip_y = 1625;
               {
                 ID = ID;
               }
@@ -4049,7 +4049,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1790;
+            vip_y = 1515;
               {
                 ID = ID;
               }
@@ -4309,7 +4309,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1845;
+            vip_y = 1735;
               {
                 ID = ID;
               }
@@ -4480,7 +4480,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 1900;
+            vip_y = 1295;
               {
                 ID = ID;
               }
@@ -4863,7 +4863,7 @@ Module: MGD
             height = 700;
           Group: Control
             vip_x = 80;
-            vip_y = 2010;
+            vip_y = 1680;
               {
                 ID = ID;
               }
@@ -5023,7 +5023,7 @@ Module: MGD
             height = 775;
           Group: Control
             vip_x = 80;
-            vip_y = 2120;
+            vip_y = 1845;
           Group: User
             homeWidget = Jnum;
               {
@@ -5134,7 +5134,7 @@ Module: MGD
             height = 800;
           Group: Control
             vip_x = 80;
-            vip_y = 2065;
+            vip_y = 1405;
           Group: User
             homeWidget = Chromosome;
             queryList = ExperimentList;
@@ -5408,7 +5408,7 @@ Module: MGD
             closeWindowCallback = "D:ExitMLC";
           Group: Control
             vip_x = 80;
-            vip_y = 855;
+            vip_y = 525;
           Group: User
             homeWidget = Marker;
             activateButtonName = MLC;
@@ -6326,7 +6326,7 @@ Shift<Key>Tab: prev-tab-group()
           MarkerNonMouseModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 525;
+            vip_y = 415;
           Group: User
             homeWidget = Symbol;
             activateButtonName = MarkerNonMouse;
@@ -6852,7 +6852,7 @@ Shift<Key>Tab: prev-tab-group()
             title = "Master Bibliography";
           Group: Control
             vip_x = 80;
-            vip_y = 85;
+            vip_y = 1020;
           Group: User
             homeWidget = Authors;
             clearForms = "ControlForm\nEditForm\nDataSetsForm\nBookForm";
@@ -7638,7 +7638,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 600;
           Group: Control
             vip_x = 80;
-            vip_y = 1405;
+            vip_y = 1900;
               {
                 ParentClone = mgiAccession : mgiDataTypes;
                 Group: Widget
@@ -7905,7 +7905,7 @@ Shift<Key>Tab: prev-tab-group()
           AlleleModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 580;
+            vip_y = 85;
           Group: User
             homeWidget = Symbol;
             activateButtonName = Allele;
@@ -9341,7 +9341,7 @@ Shift<Key>Tab: prev-tab-group()
           StrainModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 250;
+            vip_y = 1185;
           Group: User
             homeWidget = Name;
             activateButtonName = Strain;
@@ -10368,7 +10368,7 @@ Shift<Key>Tab: prev-tab-group()
           SequenceModule = Module1 : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 910;
+            vip_y = 1130;
           Group: User
             homeWidget = Description;
               {
@@ -11378,7 +11378,7 @@ Shift<Key>Tab: prev-tab-group()
           MarkerNoteBookModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 415;
+            vip_y = 470;
           Group: User
             homeWidget = Symbol;
             activateButtonName = Marker;
@@ -13353,7 +13353,7 @@ Shift<Key>Tab: prev-tab-group()
           MutantCellLineModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 1130;
+            vip_y = 745;
             vip_show_name = true;
           Group: User
             homeWidget = CellLine;
@@ -14061,7 +14061,7 @@ Shift<Key>Tab: prev-tab-group()
             closeWindowCallback = "D:GOVocAnnotExit";
           Group: Control
             vip_x = 80;
-            vip_y = 1020;
+            vip_y = 250;
           Group: User
             activateButtonName = GOVocAnnot;
             homeWidget = mgiAccession;
@@ -14518,6 +14518,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Bottom = ControlArrow : mgiControl;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -14678,7 +14680,7 @@ Shift<Key>Tab: prev-tab-group()
             closeWindowCallback = "D:MPVocAnnotExit";
           Group: Control
             vip_x = 80;
-            vip_y = 965;
+            vip_y = 690;
           Group: User
             activateButtonName = MPVocAnnot;
             homeWidget = mgiAccession;
@@ -15108,6 +15110,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Bottom = ControlArrow : mgiControl;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -15277,7 +15281,7 @@ Shift<Key>Tab: prev-tab-group()
             closeWindowCallback = "D:OMIMVocAnnotExit";
           Group: Control
             vip_x = 80;
-            vip_y = 1075;
+            vip_y = 855;
           Group: User
             activateButtonName = OMIMVocAnnot;
             homeWidget = mgiAccession;
@@ -15507,6 +15511,8 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Bottom = ControlArrow : mgiControl;
+                                  Group: Widget
+                                    managed = False;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
@@ -15646,7 +15652,7 @@ Shift<Key>Tab: prev-tab-group()
             height = 900;
           Group: Control
             vip_x = 80;
-            vip_y = 1955;
+            vip_y = 1350;
           Group: User
             homeWidget = Jnum;
               {
@@ -15936,7 +15942,7 @@ Shift<Key>Tab: prev-tab-group()
           MappingModule = Module1 : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 745;
+            vip_y = 305;
           Group: User
             homeWidget = Jnum;
             editForms = "ControlForm\nExptDetailForm\nExptCrossForm\nExptHybridForm\nExptInSituForm\nExptFISHForm\nExptRIForm\nExptTextForm\nExptPhysicalForm";
@@ -16435,7 +16441,7 @@ Shift<Key>Tab: prev-tab-group()
           NonMutantCellLineModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 1185;
+            vip_y = 800;
           Group: User
             homeWidget = CellLine;
               {
@@ -16638,7 +16644,7 @@ Shift<Key>Tab: prev-tab-group()
           AlleleDerivationModule = Module : MGI;
           Group: Control
             vip_x = 80;
-            vip_y = 1240;
+            vip_y = 140;
           Group: User
             homeWidget = DerivationName;
               {
