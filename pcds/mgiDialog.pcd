@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 23 13:42:49 2009";
+      lastWritten = "Wed Jul 29 14:12:06 2009";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -71,7 +71,7 @@ Module: mgiDialog
             width = 600;
           Group: Control
             vip_x = 120;
-            vip_y = 1295;
+            vip_y = 1405;
               {
                 FileSelection = FileSelection;
                 Group: Widget
@@ -155,7 +155,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1350;
+            vip_y = 1460;
               {
                 FileSelection = FileSelection : mgiDialog;
                 Group: Constraint
@@ -273,7 +273,7 @@ Module: mgiDialog
             dialogTitle = "Which Item?";
           Group: Control
             vip_x = 120;
-            vip_y = 1405;
+            vip_y = 1515;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -366,7 +366,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1735;
+            vip_y = 1845;
           Group: User
             useReportDir = False;
               {
@@ -486,7 +486,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1900;
+            vip_y = 2010;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: Constraint
@@ -574,7 +574,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1955;
+            vip_y = 2065;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -613,7 +613,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2065;
+            vip_y = 2175;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -654,7 +654,7 @@ Module: mgiDialog
             dialogTitle = "Notes Dialog";
           Group: Control
             vip_x = 120;
-            vip_y = 1790;
+            vip_y = 1900;
               {
                 label = XmLabel;
                 Group: Widget
@@ -759,7 +759,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1240;
+            vip_y = 1350;
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
               {
                 EditForm = EditForm : MGI;
@@ -811,7 +811,7 @@ Module: mgiDialog
             height = 500;
           Group: Control
             vip_x = 120;
-            vip_y = 1625;
+            vip_y = 1735;
               {
                 EditForm = EditForm : MGI;
                 Group: Widget
@@ -1020,7 +1020,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1845;
+            vip_y = 1955;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -1063,7 +1063,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1515;
+            vip_y = 1625;
               {
                 ItemList = LookupList : mgiLookup;
                 Group: User
@@ -1109,7 +1109,7 @@ Module: mgiDialog
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 2010;
+            vip_y = 2120;
               {
                 Strain1 = Strain : mgiDataTypes;
                 Group: Constraint
@@ -1340,7 +1340,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1460;
+            vip_y = 1570;
             vipComment = "";
               {
                 AttributeHistoryTable = Table : mgiTable;
@@ -1417,7 +1417,7 @@ Shift<Key>Tab: prev-tab-group()
           MolecularSourceAttributeHistoryDialog = AttributeHistoryDialog;
           Group: Control
             vip_x = 120;
-            vip_y = 1680;
+            vip_y = 1790;
               {
                 AttributeHistoryTable = Table : mgiTable;
                     {
@@ -1443,7 +1443,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Control
             vipComment = "XmFormDialog is a convenience widget combining an unmanaged XmForm within an XmDialogShell parent. It is used for interactions not supported by the standard dialog set. No labels, buttons or other dialog components are automatically available.";
             vip_x = 120;
-            vip_y = 2120;
+            vip_y = 2230;
               {
                 currentMarker = mgiMarker : mgiDataTypes;
                 Group: Constraint
@@ -1770,7 +1770,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "You are about to modify the Mutant Cell Line, Parent Cell Line or Strain of Origin.\nAre you sure you want to modify these values?";
           Group: Control
             vip_x = 120;
-            vip_y = 1020;
+            vip_y = 1295;
         }
         {
           GenotypeMergeDialog = XmFormDialog;
@@ -1782,7 +1782,7 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_any;
           Group: Control
             vip_x = 120;
-            vip_y = 1570;
+            vip_y = 1680;
             vipComment = "";
               {
                 mgiCitation = mgiCitation : mgiDataTypes;
@@ -1904,7 +1904,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "You are about to modify the Allele Status of this Not Specified Strain.\nAre you sure you want to modify this value?";
           Group: Control
             vip_x = 120;
-            vip_y = 1075;
+            vip_y = 1130;
         }
         {
           VerifyMCLDuplicateName = VerifyDialog;
@@ -1915,7 +1915,7 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "You are about to add/modify a Mutant Cell Line Name that already exists.\nAre you sure you want to add/modify this value?";
           Group: Control
             vip_x = 120;
-            vip_y = 1130;
+            vip_y = 1185;
         }
         {
           VerifyMCLName = VerifyDialog;
@@ -1926,7 +1926,29 @@ Shift<Key>Tab: prev-tab-group()
             messageString = "You are about to modify the Mutant Cell Line Name.\nAre you sure you want to modify this value?";
           Group: Control
             vip_x = 120;
-            vip_y = 1185;
+            vip_y = 1240;
+        }
+        {
+          VerifyAlleleMixed = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyAlleleMixed";
+            messageString = "You are about to modify the Allele Mixed reference or status.\nAre you sure you want to modify this value?";
+          Group: Control
+            vip_x = 120;
+            vip_y = 1075;
+        }
+        {
+          VerifyAlleleGermlineTransmission = VerifyDialog;
+          Group: Widget
+            userDefinedAttributes = "doModify:Boolean(Boolean)=\"False\"\n";
+            dialogTitle = "Are You Sure?";
+            okCallback = "D:VerifyAlleleGermlineTransmission";
+            messageString = "You are about to modify the Germline Transmission reference or status.\nAre you sure you want to modify this value?";
+          Group: Control
+            vip_x = 120;
+            vip_y = 1020;
         }
 }
 

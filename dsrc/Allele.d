@@ -91,6 +91,8 @@ devents:
 			   row : integer;
 			   reason : integer;];
 
+	VerifyAlleleGermlineTransmission :local [];
+	VerifyAlleleMixed :local [];
 	VerifyAlleleStatusStrain :local [];
 	VerifyMutantParentStrain :local [];
 
@@ -120,8 +122,6 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
-	currentIsMixed : integer;
-
 	clearLists : integer := 3;
 
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
@@ -141,9 +141,6 @@ locals:
 	defaultCreatorKeyNS : string := "3982966";
 	defaultVectorKeyNS : string := "4311225";
 	defaultCellLineTypeKey : string := "3982968"; -- default is 63 ("Embryonic Stem Cell")
-
-	printTransMessage : boolean := false;
-	transMessage : string := "Germline transmission status or reference has changed.  Confirm that the new values are correct.";
 
 rules:
 
@@ -417,16 +414,7 @@ rules:
 	  if (mixedRefs > 0) then
 	    isMixed := 1;
 	  else
-	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
-	  end if;
-
-	  -- Mixed Reference is required if false, Mixed = Yes, Status != Autoload
-	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-            return;
+	    isMixed := 0;
 	  end if;
 
 	  --
@@ -645,11 +633,8 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
-
-	  mixedRefs : integer := 0;
-	  isMixed : integer := 0;
-
-	  printTransMessage := false;
+	  mixedKey : integer := 0;
+	  transKey : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -661,25 +646,25 @@ rules:
 	  while (row < mgi_tblNumRows(refTable)) do
 	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
 
-	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
-	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
+	    refsKey := mgi_tblGetCell(refTable, row, refTable.refsKey);
+	    refsType := mgi_tblGetCell(refTable, row, refTable.refsType);
 
-	    -- any change to the transmission reference will print user message
-	    if (refsType = "Transmission" and 
-		editMode != TBL_ROW_EMPTY) then
-              printTransMessage := true;
+	    -- any change to the mixed reference will be verified
+	    if (refsType = "Mixed" and refsKey != "NULL" and 
+		(editMode = TBL_ROW_MODIFY or editMode = TBL_ROW_DELETE)) then
+              mixedKey := mixedKey + 1;
+	    end if;
+
+	    -- any change to the transmission reference will be verified
+	    if (refsType = "Transmission" and refsKey != "NULL" and 
+		(editMode = TBL_ROW_MODIFY or editMode = TBL_ROW_DELETE)) then
+              transKey := transKey + 1;
 	    end if;
 
 	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
-
 	      if (refsType = "Original") then
 	        originalRefs := originalRefs + 1;
 	      end if;
-
-	      if (refsType = "Mixed") then
-	        mixedRefs := mixedRefs + 1;
-	      end if;
-
 	    end if;
 
 	    row := row + 1;
@@ -688,28 +673,6 @@ rules:
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-            return;
-	  end if;
-
-	  -- Mixed 
-	  isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
-
-	  -- Mixed Reference is required if false, Mixed = Yes, Status != Autoload
-	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "If Mixed = Yes, then a Mixed Reference must be attached.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-            return;
-	  end if;
-
-	  -- Mixed Reference is required if false, Mixed changed from Yes to No, Status != Autoload
-	  if (mixedRefs = 0 and currentIsMixed = 1 and isMixed = 0 and 
-	      top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
-            StatusReport.source_widget := top;
-            StatusReport.message := "If Mixed is changed from Yes to No, then a Mixed Reference must be attached.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
@@ -763,6 +726,46 @@ rules:
             end while;
  
             if (not top->VerifyMutantParentStrain.doModify) then
+	      return;
+	    end if;
+	  end if;
+
+	  -- end Confirm changes
+
+	  -- Confirm changes to Allele Germline Transmission
+
+	  if (transKey > 0 or top->AlleleTransmissionMenu.menuHistory.modified) then
+
+	    top->VerifyAlleleGermlineTransmission.doModify := false;
+            top->VerifyAlleleGermlineTransmission.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyAlleleGermlineTransmission.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyAlleleGermlineTransmission.doModify) then
+	      return;
+	    end if;
+	  end if;
+
+	  -- end Confirm changes
+
+	  -- Confirm changes to Allele Mixed
+
+	  if (mixedKey > 0 or top->MixedMenu.menuHistory.modified) then
+
+	    top->VerifyAlleleMixed.doModify := false;
+            top->VerifyAlleleMixed.managed := true;
+ 
+            -- Keep busy while user verifies the modification is okay
+ 
+            while (top->VerifyAlleleMixed.managed = true) do
+              (void) keep_busy();
+            end while;
+ 
+            if (not top->VerifyAlleleMixed.doModify) then
 	      return;
 	    end if;
 	  end if;
@@ -823,14 +826,12 @@ rules:
           if (top->AlleleTransmissionMenu.menuHistory.modified and
 	      top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
             set := set + "_Transmission_key = "  + top->AlleleTransmissionMenu.menuHistory.defaultValue + ",";
-	    printTransMessage := true;
 	  end if;
 
-	  -- Mixed Reference determines the setting of isMixed
-          --if (top->MixedMenu.menuHistory.modified and
-	  --    top->MixedMenu.menuHistory.searchValue != "%") then
-          set := set + "isMixed = "  + (string) isMixed + ",";
-          --end if;
+          if (top->MixedMenu.menuHistory.modified and
+	      top->MixedMenu.menuHistory.searchValue != "%") then
+            set := set + "isMixed = "  + top->MixedMenu.menuHistory.defaultValue + ",";
+          end if;
 
           if (top->ExtinctMenu.menuHistory.modified and
 	      top->ExtinctMenu.menuHistory.searchValue != "%") then
@@ -936,13 +937,6 @@ rules:
 
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
-
-	  if (printTransMessage) then
-            StatusReport.source_widget := top;
-            StatusReport.message := transMessage;
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
@@ -1964,7 +1958,6 @@ rules:
                 SetOption.source_widget := top->MixedMenu;
                 SetOption.value := mgi_getstr(dbproc, 13);
                 send(SetOption, 0);
-		currentIsMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
 
                 SetOption.source_widget := top->ExtinctMenu;
                 SetOption.value := mgi_getstr(dbproc, 12);
@@ -2130,6 +2123,28 @@ rules:
 	  end while;
 
 	  (void) dbclose(dbproc);
+	end does;
+
+--
+-- VerifyAlleleGermlineTransmission
+--
+--	Called when user chooses YES from VerifyAlleleGermlineTransmission dialog
+--
+
+	VerifyAlleleGermlineTransmission does
+	  top->VerifyAlleleGermlineTransmission.doModify := true;
+	  top->VerifyAlleleGermlineTransmission.managed := false;
+	end does;
+
+--
+-- VerifyAlleleMixed
+--
+--	Called when user chooses YES from VerifyAlleleMixed dialog
+--
+
+	VerifyAlleleMixed does
+	  top->VerifyAlleleMixed.doModify := true;
+	  top->VerifyAlleleMixed.managed := false;
 	end does;
 
 --
