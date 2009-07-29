@@ -120,6 +120,8 @@ locals:
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
  
+	currentIsMixed : integer;
+
 	clearLists : integer := 3;
 
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
@@ -131,10 +133,6 @@ locals:
 	defaultInheritanceKeyNS : string;
 	defaultInheritanceKeyNA : string;
 
-	defaultTransmissionKeyNS : string;
-	defaultTransmissionKeyNA : string;
-	defaultTransmissionGermLine : string := "3982951"; -- default is 61 ("Germline")
-
 	defaultStrainKeyNS : string;
 	defaultStrainKeyNA : string;
 
@@ -143,6 +141,9 @@ locals:
 	defaultCreatorKeyNS : string := "3982966";
 	defaultVectorKeyNS : string := "4311225";
 	defaultCellLineTypeKey : string := "3982968"; -- default is 63 ("Embryonic Stem Cell")
+
+	printTransMessage : boolean := false;
+	transMessage : string := "Germline transmission status or reference has changed.  Confirm that the new values are correct.";
 
 rules:
 
@@ -300,12 +301,6 @@ rules:
 	  defaultInheritanceKeyNS := mgi_sql1("select _Term_key from VOC_Term_ALLInheritMode_View " +
 		"where term = '" + NOTSPECIFIED_TEXT + "'");
 
-	  defaultTransmissionKeyNA := mgi_sql1("select _Term_key from VOC_Term_ALLTransmission_View " +
-		"where term = '" + NOTAPPLICABLE_TEXT + "'");
-
-	  defaultTransmissionKeyNS := mgi_sql1("select _Term_key from VOC_Term_ALLTransmission_View " +
-		"where term = '" + NOTSPECIFIED_TEXT + "'");
-
 	  defaultStrainKeyNS := NOTSPECIFIED;
 	  defaultStrainKeyNA := NOTAPPLICABLE;
 
@@ -364,8 +359,6 @@ rules:
 	  isWildType : integer := 0;
 	  nomenSymbol : string := "NULL";
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
-	  transmissionKey : string := top->AlleleTransmissionMenu.menuHistory.defaultValue;
-	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
 
 	  statusKey : string;
 	  inheritanceKey : string;
@@ -383,8 +376,6 @@ rules:
 
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
-
-	  transmissionRefs : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -407,10 +398,6 @@ rules:
 
 	      if (refsType = "Mixed") then
 	        mixedRefs := mixedRefs + 1;
-	      end if;
-
-	      if (refsType = "Transmission") then
-	        transmissionRefs := transmissionRefs + 1;
 	      end if;
 
 	    end if;
@@ -442,45 +429,9 @@ rules:
             return;
 	  end if;
 
-	  -- If no transmission ref, germ line term not blank, germ line = chimeric or germline
-	  if (transmissionRefs = 0 and 
-	      transmissionKey != "%" and
-	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
-	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline")) then
-            StatusReport.source_widget := top;
-            StatusReport.message := 
-	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-	    return;
-	  end if;
-
-	  -- If no transmission ref, germ line term blank, mutant = true
-	  if (transmissionRefs = 0 and 
-	      transmissionKey = "%" and
-	      mutantCellLine.length > 0) then
-            StatusReport.source_widget := top;
-            StatusReport.message := 
-	    	"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-	    return;
-	  end if;
-
-	  -- If transmission ref, germ line term not blank, germ line != chimeric or germline
-	  if (transmissionRefs > 0 and 
-	      transmissionKey != "%" and
-	      top->AlleleTransmissionMenu.menuHistory.labelString != "Chimeric" and
-	      top->AlleleTransmissionMenu.menuHistory.labelString != "Germline") then
-            StatusReport.source_widget := top;
-            StatusReport.message := 
-		"If a Transmission Reference is selected\nthen Germ Line Transmission must be Chimeric or Germline.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-	    return;
-	  end if;
-
-	  -- Verify at most one Primary Image Pane Association
+	  --
+	  -- Start Verify at most one Primary Image Pane Association
+	  --
 
 	  row := 0;
 	  while (row < mgi_tblNumRows(imgTable)) do
@@ -506,6 +457,10 @@ rules:
             send(StatusReport);
             return;
 	  end if;
+
+	  --
+	  -- End Verify at most one Primary Image Pane Association
+	  --
 
 	  (void) busy_cursor(top);
 
@@ -533,39 +488,16 @@ rules:
 	    inheritanceKey := top->InheritanceModeMenu.menuHistory.defaultValue;
 	  end if;
 
-	  -- set default germ line transmission
-
-	  -- if no mutant or mutant = NA then GermLineTrans = NA
-	  if (mutantCellLine.length = 0
-	      or mutantCellLine = NOTAPPLICABLE_TEXT) then
-            transmissionKey := defaultTransmissionKeyNA;
-
-	  -- else if mutant = NS, default GermLineTrans = NA
-	  elsif (mutantCellLine = NOTSPECIFIED_TEXT
-		 and transmissionKey.length = 0) then
-            transmissionKey := defaultTransmissionKeyNA;
-
-	  -- else if transmission reference is given, default GermLineTrans = germ line
-	  elsif (transmissionRefs > 0) then
-	    transmissionKey := defaultTransmissionGermLine;
-
-	  -- else if transmission term is blank, default GermLineTrans = NA
-	  elsif (transmissionKey = "%") then
-            transmissionKey := defaultTransmissionKeyNA;
-          end if;
-
-	  -- end set the germ line transmission default
-
 	  -- set defaults based on allele type
 
 	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
 	  if (strainKey.length = 0 and top->mgiParentCellLine->ObjectID->text.value.length = 0) then
-              if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
-		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
-		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
-		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
-		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
-		  top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
+	      if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
+	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
+	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-in)" or
+	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Floxed/Frt)" or
+	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (Reporter)" or
+	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (other)") then
 	        strainKey := defaultStrainKeyNS;
 	      else
 	        strainKey := defaultStrainKeyNA;
@@ -579,7 +511,7 @@ rules:
                  inheritanceKey + "," +
                  top->AlleleTypeMenu.menuHistory.defaultValue + "," +
                  statusKey + "," +
-		 transmissionKey + "," +
+		 top->AlleleTransmissionMenu.menuHistory.defaultValue + "," +
 	         mgi_DBprstr(top->Symbol->text.value) + "," +
 	         mgi_DBprstr(top->Name->text.value) + "," +
 		 mgi_DBprstr(nomenSymbol) + "," +
@@ -705,7 +637,6 @@ rules:
 	  table : widget := top->Reference->Table;
 	  isWildType : integer := 0;
 	  editMode : string;
-	  transmissionKey : string;
 	  paneKey : string;
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
@@ -718,8 +649,7 @@ rules:
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
 
-	  transmissionRefs : integer := 0;
-	  printTransmissionWarning : boolean := false;
+	  printTransMessage := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -734,6 +664,12 @@ rules:
 	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
 	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
 
+	    -- any change to the transmission reference will print user message
+	    if (refsType = "Transmission" and 
+		editMode != TBL_ROW_EMPTY) then
+              printTransMessage := true;
+	    end if;
+
 	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
 
 	      if (refsType = "Original") then
@@ -742,10 +678,6 @@ rules:
 
 	      if (refsType = "Mixed") then
 	        mixedRefs := mixedRefs + 1;
-	      end if;
-
-	      if (refsType = "Transmission") then
-	        transmissionRefs := transmissionRefs + 1;
 	      end if;
 
 	    end if;
@@ -762,11 +694,7 @@ rules:
 	  end if;
 
 	  -- Mixed 
-	  if (mixedRefs > 0) then
-	    isMixed := 1;
-	  else
-	    isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
-	  end if;
+	  isMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
 
 	  -- Mixed Reference is required if false, Mixed = Yes, Status != Autoload
 	  if (mixedRefs = 0 and isMixed = 1 and top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
@@ -777,28 +705,14 @@ rules:
             return;
 	  end if;
 
-	  -- If no transmission ref, germ line = chimeric or germline
-	  if ((transmissionRefs = 0 and 
-	      (top->AlleleTransmissionMenu.menuHistory.labelString = "Chimeric" or
-	       top->AlleleTransmissionMenu.menuHistory.labelString = "Germline"))) then
+	  -- Mixed Reference is required if false, Mixed changed from Yes to No, Status != Autoload
+	  if (mixedRefs = 0 and currentIsMixed = 1 and isMixed = 0 and 
+	      top->AlleleStatusMenu.menuHistory.labelString != ALL_STATUS_AUTOLOAD) then
             StatusReport.source_widget := top;
-            StatusReport.message := 
-		"If Germ Line Transmission = Chimeric or Germline\nthen a Transmission Reference must be attached.";
+            StatusReport.message := "If Mixed is changed from Yes to No, then a Mixed Reference must be attached.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-	    return;
-	  end if;
-
-	  -- If transmission ref, germ line != chimeric or germline
-	  if (transmissionRefs > 0 and 
-	      top->AlleleTransmissionMenu.menuHistory.labelString != "Chimeric" and
-	      top->AlleleTransmissionMenu.menuHistory.labelString != "Germline") then
-            StatusReport.source_widget := top;
-            StatusReport.message := 
-		"If a Transmission Reference is selected\nthen Germ Line Transmission must be Chimeric or Germline.";
-            send(StatusReport);
-	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-	    return;
+            return;
 	  end if;
 
 	  -- Verify at most one Primary Image Pane Association
@@ -906,22 +820,11 @@ rules:
 	    end if;
           end if;
 
-	  -- print transmission note any time the transmission is modified
-
-	  transmissionKey := top->AlleleTransmissionMenu.menuHistory.defaultValue;
-	  if (top->AlleleTransmissionMenu.menuHistory.modified) then
-	    printTransmissionWarning := true;
+          if (top->AlleleTransmissionMenu.menuHistory.modified and
+	      top->AlleleTransmissionMenu.menuHistory.searchValue != "%") then
+            set := set + "_Transmission_key = "  + top->AlleleTransmissionMenu.menuHistory.defaultValue + ",";
+	    printTransMessage := true;
 	  end if;
-
-	  -- system-override of transmission term for mutant = 0 or NA
-	  mutantCellLine : string := mgi_tblGetCell(cellLineTable, 0, cellLineTable.cellLine);
-	  if (mutantCellLine.length = 0 or mutantCellLine = NOTAPPLICABLE_TEXT) then
-            transmissionKey := defaultTransmissionKeyNA;
-	  end if;
-
-          set := set + "_Transmission_key = "  + transmissionKey + ",";
-
-	  -- end set the germ line transmission default
 
 	  -- Mixed Reference determines the setting of isMixed
           --if (top->MixedMenu.menuHistory.modified and
@@ -1034,14 +937,11 @@ rules:
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
 
-	  -- Germ Line Transmission Term
-	  if (printTransmissionWarning) then
+	  if (printTransMessage) then
             StatusReport.source_widget := top;
-            StatusReport.message := 
-	      "Germ Line Transmission value may have been changed.\n" +
-	      "Confirm value and review transmission reference.\n" +
-	      "Not all values are allowed for all allele types.";
+            StatusReport.message := transMessage;
             send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	  end if;
 
 	  (void) reset_cursor(top);
@@ -2064,6 +1964,7 @@ rules:
                 SetOption.source_widget := top->MixedMenu;
                 SetOption.value := mgi_getstr(dbproc, 13);
                 send(SetOption, 0);
+		currentIsMixed := (integer) top->MixedMenu.menuHistory.defaultValue;
 
                 SetOption.source_widget := top->ExtinctMenu;
                 SetOption.value := mgi_getstr(dbproc, 12);
