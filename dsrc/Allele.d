@@ -663,12 +663,16 @@ rules:
 	    refsType := mgi_tblGetCell(refTable, row, refTable.refsType);
 
 	    -- any change to the mixed reference will be verified
-	    if (refsType = "Mixed" and refsKey != "NULL" and editMode != TBL_ROW_EMPTY) then
+	    if (refsType = "Mixed" and refsKey != "NULL" and 
+		editMode != TBL_ROW_EMPTY and
+		editMode != TBL_ROW_NOCHG) then
               mixedRefs := mixedRefs + 1;
 	    end if;
 
 	    -- any change to the transmission reference will be verified
-	    if (refsType = "Transmission" and refsKey != "NULL" and editMode != TBL_ROW_EMPTY) then
+	    if (refsType = "Transmission" and refsKey != "NULL" and
+		editMode != TBL_ROW_EMPTY and
+		editMode != TBL_ROW_NOCHG) then
               transRefs1 := transRefs1 + 1;
 	    end if;
 
