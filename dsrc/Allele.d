@@ -370,7 +370,7 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
-
+	  transRefs : integer := 0;
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
 
@@ -393,6 +393,10 @@ rules:
 	        originalRefs := originalRefs + 1;
 	      end if;
 
+	      if (refsType = "Transmission") then
+	        transRefs := transRefs + 1;
+	      end if;
+
 	      if (refsType = "Mixed") then
 	        mixedRefs := mixedRefs + 1;
 	      end if;
@@ -402,10 +406,18 @@ rules:
 	    row := row + 1;
 	  end while;
 
-	  -- Original; must have at most one original reference
+	  -- Original; must have at most one reference
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
+            send(StatusReport);
+            return;
+	  end if;
+
+	  -- Transmission; must have at most one reference
+	  if (transRefs > 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Transmission Reference is allowed.";
             send(StatusReport);
             return;
 	  end if;
@@ -633,8 +645,9 @@ rules:
 	  refsKey : string;
 	  refsType : string;
 	  originalRefs : integer := 0;
-	  mixedKey : integer := 0;
-	  transKey : integer := 0;
+	  transRefs1 : integer := 0;
+	  transRefs2 : integer := 0;
+	  mixedRefs : integer := 0;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -650,21 +663,25 @@ rules:
 	    refsType := mgi_tblGetCell(refTable, row, refTable.refsType);
 
 	    -- any change to the mixed reference will be verified
-	    if (refsType = "Mixed" and refsKey != "NULL" and 
-		(editMode = TBL_ROW_MODIFY or editMode = TBL_ROW_DELETE)) then
-              mixedKey := mixedKey + 1;
+	    if (refsType = "Mixed" and refsKey != "NULL" and editMode != TBL_ROW_EMPTY) then
+              mixedRefs := mixedRefs + 1;
 	    end if;
 
 	    -- any change to the transmission reference will be verified
-	    if (refsType = "Transmission" and refsKey != "NULL" and 
-		(editMode = TBL_ROW_MODIFY or editMode = TBL_ROW_DELETE)) then
-              transKey := transKey + 1;
+	    if (refsType = "Transmission" and refsKey != "NULL" and editMode != TBL_ROW_EMPTY) then
+              transRefs1 := transRefs1 + 1;
 	    end if;
 
 	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+
 	      if (refsType = "Original") then
 	        originalRefs := originalRefs + 1;
 	      end if;
+
+	      if (refsType = "Transmission") then
+	        transRefs2 := transRefs2 + 1;
+	      end if;
+
 	    end if;
 
 	    row := row + 1;
@@ -673,6 +690,14 @@ rules:
 	  if (originalRefs != 1) then
             StatusReport.source_widget := top;
             StatusReport.message := "At most one Original Reference is required.";
+            send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
+            return;
+	  end if;
+
+	  if (transRefs2 > 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Transmission Reference is allowed.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
             return;
@@ -734,7 +759,7 @@ rules:
 
 	  -- Confirm changes to Allele Germline Transmission
 
-	  if (transKey > 0 or top->AlleleTransmissionMenu.menuHistory.modified) then
+	  if (transRefs1 > 0 or top->AlleleTransmissionMenu.menuHistory.modified) then
 
 	    top->VerifyAlleleGermlineTransmission.doModify := false;
             top->VerifyAlleleGermlineTransmission.managed := true;
@@ -754,7 +779,7 @@ rules:
 
 	  -- Confirm changes to Allele Mixed
 
-	  if (mixedKey > 0 or top->MixedMenu.menuHistory.modified) then
+	  if (mixedRefs > 0 or top->MixedMenu.menuHistory.modified) then
 
 	    top->VerifyAlleleMixed.doModify := false;
             top->VerifyAlleleMixed.managed := true;
