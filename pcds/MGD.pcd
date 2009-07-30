@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 29 14:14:10 2009";
+      lastWritten = "Thu Jul 30 08:40:18 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8252,15 +8252,14 @@ Shift<Key>Tab: prev-tab-group()
                                     subMenuId = MixedPulldown;
                                     labelString = Mixed;
                                   Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftWidget = markerDescription;
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AlleleStatusMenu;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = markerDescription;
+                                    topAttachment = attach_widget;
+                                    topWidget = AlleleTransmissionMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftOffset = 20;
-                                    topOffset = 20;
+                                    topOffset = 5;
                                   Group: User
                                     defaultOption = No;
                                       Popups:
@@ -8275,7 +8274,7 @@ Shift<Key>Tab: prev-tab-group()
                                     labelString = Extinct;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = MixedMenu;
+                                    leftWidget = AlleleStatusMenu;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = MixedMenu;
@@ -8323,7 +8322,7 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = MutantCellLine;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = "-20";
+                                    topOffset = "-15";
                                       {
                                         ObjectID = ID : mgiDataTypes;
                                       }
@@ -8362,7 +8361,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_opposite_widget;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AlleleTransmissionMenu;
+                                    topWidget = ExtinctMenu;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -8392,14 +8391,14 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   mgiNoteForm = mgiNoteForm : mgiDataTypes;
                                   Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
+                                    leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = markerDescription;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = MixedMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    topOffset = 5;
-                                    leftWidget = markerDescription;
+                                    leftWidget = MixedMenu;
+                                    leftOffset = 50;
                                 }
                                 {
                                   notebookForm = notebookForm : mgiNoteBook;
@@ -8804,19 +8803,11 @@ Shift<Key>Tab: prev-tab-group()
                                                     IGTC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                    Group: User
-                                                      allowAdd = False;
-                                                      allowDelete = False;
-                                                      allowModify = False;
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                    Group: User
-                                                      allowAdd = False;
-                                                      allowDelete = False;
-                                                      allowModify = False;
                                                   }
                                                   {
                                                     LexiconGeneTrap = AccToggle : mgiOption;
@@ -8828,10 +8819,6 @@ Shift<Key>Tab: prev-tab-group()
                                                     TexasGeneTrap = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
-                                                    Group: User
-                                                      allowAdd = False;
-                                                      allowDelete = False;
-                                                      allowModify = False;
                                                   }
                                                   }
                                                   }
