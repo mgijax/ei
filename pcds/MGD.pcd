@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 30 08:40:18 2009";
+      lastWritten = "Thu Jul 30 13:08:54 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8803,11 +8803,19 @@ Shift<Key>Tab: prev-tab-group()
                                                     IGTC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      allowAdd = False;
+                                                      allowDelete = False;
+                                                      allowModify = False;
                                                   }
                                                   {
                                                     Lexicon = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      allowAdd = False;
+                                                      allowDelete = False;
+                                                      allowModify = False;
                                                   }
                                                   {
                                                     LexiconGeneTrap = AccToggle : mgiOption;
@@ -8819,6 +8827,10 @@ Shift<Key>Tab: prev-tab-group()
                                                     TexasGeneTrap = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                    Group: User
+                                                      allowAdd = False;
+                                                      allowDelete = False;
+                                                      allowModify = False;
                                                   }
                                                   }
                                                   }

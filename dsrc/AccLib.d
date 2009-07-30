@@ -596,6 +596,14 @@ rules:
                 StatusReport.message := "Cannot modify this class of Accession Number:\n\n" +
 			accName + "\n";
                 send(StatusReport);
+
+	      elsif (not source.menuHistory.allowDelete and 
+		     editMode = TBL_ROW_DELETE) then
+                StatusReport.source_widget := table.top;
+                StatusReport.message := "Cannot delete this class of Accession Number:\n\n" +
+			accName + "\n";
+                send(StatusReport);
+
 	      end if;
 	    end if;
             r := r + 1;
