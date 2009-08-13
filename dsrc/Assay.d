@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- jsb  08/13/2009
+--	- temporarily removed calls to genotype clipboard re: performance
+--
 -- lec  05/27/2009
 --	- TR 9665; set currentAssay key before call to CreateGelBandColumns
 --
@@ -429,7 +432,7 @@ rules:
 
 	  if (not ClearAssay.select) then
 	    currentAssay := "";
-	    send(LoadClipboards, 0);
+	    -- send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
 	    prepDetailForm.sensitive := true;
@@ -2311,7 +2314,7 @@ rules:
 	    currentAssay := "";
             top->QueryList->List.row := 0;
             top->ID->text.value := "";
-	    send(LoadClipboards, 0);
+	    -- send(LoadClipboards, 0);
 	    send(CreateGelBandColumns, 0);
             return;
           end if;
@@ -2489,7 +2492,7 @@ rules:
           send(LoadAcc, 0);
  
           -- Load the Clipboards
-	  send(LoadClipboards, 0);
+	  -- send(LoadClipboards, 0);
 
 	  -- If the Genotype Module is active, then search for the Genotype records
 
@@ -3177,7 +3180,7 @@ rules:
 	  end if;
 
 	  -- refresh the clipboard
-	  send(LoadClipboards, 0);
+	  -- send(LoadClipboards, 0);
         end
  
 --
