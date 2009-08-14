@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 29 09:23:43 2009";
+      lastWritten = "Fri Aug 14 07:25:00 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -3010,7 +3010,7 @@ Module: mgiOption
             vip_x = 80;
             vip_y = 3550;
           Group: User
-            defaultValue = "Not Applicable";
+            defaultValue = "Mouse Line";
               Popups:
               {
                 GenotypeExistsAsPulldown : OptionPulldown = OptionPulldown;

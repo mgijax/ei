@@ -461,7 +461,7 @@ rules:
 	  set := "";
 
           if (top->EditForm->Strain->StrainID->text.modified) then
-            set := "_Strain_key = " + top->EditForm->Strain->StrainID->text.value;
+            set := "_Strain_key = " + top->EditForm->Strain->StrainID->text.value + ",";
           end if;
 
           if (top->ConditionalMenu.menuHistory.modified and
