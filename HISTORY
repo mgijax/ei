@@ -1,9 +1,11 @@
+TAG: ei-4-3-0-21
 TAG: ei-4-3-0-20
 DATE: 08/14/2009
 STAFF: lec
 CHANGES:
 1) QC#2402/Genotype.d
-2) QC#2405/Gneotype Exists default
+2) QC#2405/Genotype Exists default
+3) QC#2404/MutantCellLine.d/VerifyDerivation
 
 TAG: ei-4-3-0-19
 DATE: 08/13/2009
