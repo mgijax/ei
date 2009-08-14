@@ -432,7 +432,7 @@ rules:
 
 	  if (not ClearAssay.select) then
 	    currentAssay := "";
-	    -- send(LoadClipboards, 0);
+	    send(LoadClipboards, 0);
 	    send(InitImagePane, 0);
 	    send(CreateGelBandColumns, 0);
 	    prepDetailForm.sensitive := true;
@@ -1271,13 +1271,13 @@ rules:
           ClipboardLoad.source_widget := top->CVGel->ADClipboard->Label;
           send(ClipboardLoad, 0);
 
-	  if (assayDetailForm.name = "InSituForm") then
-            ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
-            send(ClipboardLoad, 0);
-	  elsif (assayDetailForm.name = "GelForm") then
-            ClipboardLoad.source_widget := top->CVGel->GenotypeGelClipboard->Label;
-            send(ClipboardLoad, 0);
-	  end if;
+	  --if (assayDetailForm.name = "InSituForm") then
+          --  ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
+          --  send(ClipboardLoad, 0);
+	  --elsif (assayDetailForm.name = "GelForm") then
+          --  ClipboardLoad.source_widget := top->CVGel->GenotypeGelClipboard->Label;
+          --  send(ClipboardLoad, 0);
+	  --end if;
  
 	end does;
 
@@ -2314,7 +2314,7 @@ rules:
 	    currentAssay := "";
             top->QueryList->List.row := 0;
             top->ID->text.value := "";
-	    -- send(LoadClipboards, 0);
+	    send(LoadClipboards, 0);
 	    send(CreateGelBandColumns, 0);
             return;
           end if;
@@ -3180,7 +3180,7 @@ rules:
 	  end if;
 
 	  -- refresh the clipboard
-	  -- send(LoadClipboards, 0);
+	  send(LoadClipboards, 0);
         end
  
 --
