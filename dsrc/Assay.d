@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	08/18/2009
+--	- TR7493/LoadClipboards
+--
 -- jsb  08/13/2009
 --	- temporarily removed calls to genotype clipboard re: performance
 --
@@ -1271,13 +1274,36 @@ rules:
           ClipboardLoad.source_widget := top->CVGel->ADClipboard->Label;
           send(ClipboardLoad, 0);
 
-	  --if (assayDetailForm.name = "InSituForm") then
-          --  ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
-          --  send(ClipboardLoad, 0);
-	  --elsif (assayDetailForm.name = "GelForm") then
-          --  ClipboardLoad.source_widget := top->CVGel->GenotypeGelClipboard->Label;
-          --  send(ClipboardLoad, 0);
-	  --end if;
+	  if (assayDetailForm.name = "InSituForm") then
+
+	    top->CVSpecimen->GenotypeSpecimenClipboard.orderBy := "g._Genotype_key";
+
+	    -- execute each query and append to clipboard
+	    top->CVSpecimen->GenotypeSpecimenClipboard.cmd := 
+		"select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair1_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
+            send(ClipboardLoad, 0);
+
+	    top->CVSpecimen->GenotypeSpecimenClipboard.cmd := 
+		"select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID from GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair2_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            ClipboardLoad.source_widget := top->CVSpecimen->GenotypeSpecimenClipboard->Label;
+            send(ClipboardLoad, 0);
+
+	  elsif (assayDetailForm.name = "GelForm") then
+
+	    top->CVGel->GenotypeGelClipboard.orderBy := "g._Genotype_key";
+
+	    top->CVGel->GenotypeGelClipboard.cmd := 
+		"select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair1_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            ClipboardLoad.source_widget := top->CVGel->GenotypeGelClipboard->Label;
+            send(ClipboardLoad, 0);
+
+	    top->CVGel->GenotypeGelClipboard.cmd := 
+		"select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID from GXD_Genotype_View g, GXD_GelLane s, GXD_AllelePair2_View ap where s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            ClipboardLoad.source_widget := top->CVGel->GenotypeGelClipboard->Label;
+            send(ClipboardLoad, 0);
+
+	  end if;
  
 	end does;
 

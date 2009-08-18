@@ -929,12 +929,16 @@ rules:
 
 	  cmd := "select * from " + mgi_DBtable(STRAIN_VIEW) +
 		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n" +
+
 		 "select * from PRB_Strain_Attribute_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n" +
+
 		 "select * from PRB_Strain_NeedsReview_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n" +
+
 		 "select _Annot_key from PRB_Strain_Super_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n" +
+
 		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
 		 "from PRB_Strain_Genotype_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n";
