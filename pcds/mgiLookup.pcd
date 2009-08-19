@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 19 08:11:49 2009";
+      lastWritten = "Wed Aug 19 08:36:08 2009";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -410,7 +410,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 965;
           Group: User
-            cmd = "select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair1_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
+            cmd = "select distinct g._Genotype_key, g.dbName  + ',' + ap.allele1 + ',' + ap.allele2, g.mgiID \nfrom GXD_Genotype_View g, GXD_Specimen s, GXD_AllelePair_View ap \nwhere s._Genotype_key = g._Genotype_key and g._Genotype_key *= ap._Genotype_key and s._Assay_key =";
               {
                 Label = LookupLabel : mgiLookup;
               }
