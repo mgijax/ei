@@ -1262,6 +1262,12 @@ char *mgi_DBtable(int table)
     case GXD_ALLELEPAIR_VIEW:
             strcpy(buf, "GXD_AllelePair_View");
 	    break;
+    case GXD_ALLELEPAIR1_VIEW:
+            strcpy(buf, "GXD_AllelePair1_View");
+	    break;
+    case GXD_ALLELEPAIR2_VIEW:
+            strcpy(buf, "GXD_AllelePair2_View");
+	    break;
     case GXD_SPECIMEN:
             strcpy(buf, "GXD_Specimen");
 	    break;
