@@ -11,6 +11,10 @@
 --
 -- History
 --
+-- 08/26/2009
+--	TR9247; change non-gene marker "cannot modify" message to "warning" message
+--	because we need to allow a modification of "delete row".
+--
 -- 06/17/2008, 04/16/2008
 --	TR 8633; add PythonInferredFrom
 --	TR 8898; fix completeAnnotation
@@ -355,16 +359,16 @@ rules:
 	    return;
 	  end if;
 
-	  -- cannot save annotations where marker is not a gene
+	  -- warning for non-gene markers
 
 	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
 		" where _Marker_key = " + currentRecordKey);
 
 	  if (markerType != "1") then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "\nCannot save this Annotation because this Marker is not a Gene.";
+            StatusReport.message := "\nWARNING:  This Marker is not a Gene.";
             send(StatusReport);
-	    return;
+	    --return;
 	  end if;
 
 	  -- cannot save annotations where marker is withdrawn
