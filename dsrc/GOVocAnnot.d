@@ -12,8 +12,11 @@
 -- History
 --
 -- 08/26/2009
---	TR9247; change non-gene marker "cannot modify" message to "warning" message
+--	TR 9247; change non-gene marker "cannot modify" message to "warning" message
 --	because we need to allow a modification of "delete row".
+--
+--	TR 9567; print IEA message; do not allow add/modify/delete using IEA
+--	IEA annotations are only added by loads
 --
 -- 06/17/2008, 04/16/2008
 --	TR 8633; add PythonInferredFrom
@@ -347,6 +350,7 @@ rules:
 	  completeDate : string;
 	  markerType : string;
 	  markerStatus : string;
+	  printIEAmessage : boolean := false;
  
           if (not top.allowEdit) then
             return;
@@ -423,6 +427,13 @@ rules:
             inferredFrom := mgi_tblGetCell(annotTable, row, annotTable.inferredFrom);
             notes := mgi_tblGetCell(annotTable, row, annotTable.notes);
  
+	    if (evidenceKey = "115" and
+	       (editMode = TBL_ROW_ADD or 
+		editMode = TBL_ROW_MODIFY or
+		editMode = TBL_ROW_DELETE)) then
+	      printIEAmessage := true;
+	    end if;
+
 	    if (qualifierKey = "NULL" or qualifierKey.length = 0) then
 	      qualifierKey := defaultQualifierKey;
 	      -- set it in the table because we need to check it later on...
@@ -569,13 +580,19 @@ rules:
 	  -- end GO Tracking
 	  --
 
-          ModifySQL.cmd := cmd;
-	  ModifySQL.list := top->QueryList;
-          send(ModifySQL, 0);
+	  if (printIEAmessage) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "\nCannot add/modify/delete any IEA annotation.";
+            send(StatusReport);
+	  else
+            ModifySQL.cmd := cmd;
+	    ModifySQL.list := top->QueryList;
+            send(ModifySQL, 0);
 
-	  PythonInferredFromCache.source_widget := top;
-	  PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
-	  send(PythonInferredFromCache, 0);
+	    PythonInferredFromCache.source_widget := top;
+	    PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
+	    send(PythonInferredFromCache, 0);
+	  end if;
 
 	  (void) reset_cursor(top);
 	end does;
