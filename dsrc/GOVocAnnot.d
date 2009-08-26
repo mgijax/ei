@@ -584,6 +584,7 @@ rules:
             StatusReport.source_widget := top.root;
             StatusReport.message := "\nCannot add/modify/delete any IEA annotation.";
             send(StatusReport);
+	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
 	  else
             ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
