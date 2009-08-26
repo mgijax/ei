@@ -363,18 +363,6 @@ rules:
 	    return;
 	  end if;
 
-	  -- warning for non-gene markers
-
-	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
-		" where _Marker_key = " + currentRecordKey);
-
-	  if (markerType != "1") then
-            StatusReport.source_widget := top.root;
-            StatusReport.message := "\nWARNING:  This Marker is not a Gene.";
-            send(StatusReport);
-	    --return;
-	  end if;
-
 	  -- cannot save annotations where marker is withdrawn
 
 	  markerStatus := mgi_sql1("select _Marker_Status_key from " + mgi_DBtable(MRK_MARKER) + 
@@ -429,8 +417,7 @@ rules:
  
 	    if (evidenceKey = "115" and
 	       (editMode = TBL_ROW_ADD or 
-		editMode = TBL_ROW_MODIFY or
-		editMode = TBL_ROW_DELETE)) then
+		editMode = TBL_ROW_MODIFY)) then
 	      printIEAmessage := true;
 	    end if;
 
@@ -582,18 +569,31 @@ rules:
 
 	  if (printIEAmessage) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "\nCannot add/modify/delete any IEA annotation.";
+            StatusReport.message := "\nCannot add/modify any IEA annotation.";
             send(StatusReport);
 	    (void) XmListSelectPos(top->QueryList->List, top->QueryList->List.row, true);
-	  else
-            ModifySQL.cmd := cmd;
-	    ModifySQL.list := top->QueryList;
-            send(ModifySQL, 0);
+	    (void) reset_cursor(top);
+	    return;
+          end if;
 
-	    PythonInferredFromCache.source_widget := top;
-	    PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
-	    send(PythonInferredFromCache, 0);
+	  -- warning for non-gene markers
+
+	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
+		" where _Marker_key = " + currentRecordKey);
+
+	  if (markerType != "1") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "\nWARNING:  This Marker is not a Gene.";
+            send(StatusReport);
 	  end if;
+
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+          send(ModifySQL, 0);
+
+	  PythonInferredFromCache.source_widget := top;
+	  PythonInferredFromCache.objectKey := top->mgiAccession->ObjectID->text.value;
+	  send(PythonInferredFromCache, 0);
 
 	  (void) reset_cursor(top);
 	end does;
