@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 26 10:33:11 2009";
+      lastWritten = "Thu Aug 27 11:01:51 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -3125,10 +3125,12 @@ Module: mgiOption
           GXDIndexConditionalMutantsMenu = OptionMenu;
           Group: Widget
             subMenuId = GXDIndexConditionalMutantsPulldown;
-            labelString = "Conditional Mutants";
+            labelString = Conditional;
           Group: Control
             vip_x = 80;
             vip_y = 3715;
+          Group: User
+            required = False;
               Popups:
               {
                 GXDIndexConditionalMutantsPulldown : OptionPulldown = OptionPulldown : mgiOption;
@@ -3136,8 +3138,6 @@ Module: mgiOption
                   sql = "select _Term_key, term from VOC_Term_GXDIndexCondMut_View order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
-                      Group: User
-                        defaultValue = "Not Applicable";
                     }
               }
         }

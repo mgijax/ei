@@ -2042,7 +2042,7 @@ char *mgi_DBinsert(int table, char *keyName)
 	    sprintf(buf, "insert %s (_StructureName_key, _Structure_key, structure, mgiAdded)", mgi_DBtable(table));
 	    break;
     case GXD_INDEX:
-	    sprintf(buf, "insert %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, comments, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Index_key, _Refs_key, _Marker_key, _Priority_key, _ConditionalMutants_key, comments, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
 	    break;
     case GXD_INDEXSTAGES:
 	    sprintf(buf, "insert %s (_Index_key, _IndexAssay_key, _StageID_key, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table));
