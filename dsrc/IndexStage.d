@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec	08/26/2009
+--	- TR 9300; added condiational mutation
+--
 -- lec	08/06/2008
 --	- TR 9196; change Image display to 9.5-A
 --
@@ -150,6 +153,9 @@ rules:
 
 	  InitOptionMenu.option := top->GXDIndexPriorityMenu;
 	  send(InitOptionMenu, 0);
+
+	  --InitOptionMenu.option := top->GXDIndexConditionalMutantsMenu;
+	  --send(InitOptionMenu, 0);
 
 	  -- Set Row labels/Assay keys
 	  table : widget := top->Stage->Table;

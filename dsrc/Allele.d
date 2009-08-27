@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- 08/26/2009	lec
+--	VerifyMutantCellLine; select parent cell line strain information
+--      should equal mutant cell line strain
+--
 -- 02/18/2009-07/2009	lec
 --	TR7493; gene trap less filling
 --
@@ -1252,6 +1256,7 @@ rules:
 	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
 	  strainName := top->mgiParentCellLine->Strain->Verify->text.value;
 	  derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
+	  cellLineTypeKey := top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue;
 
 	  -- set the isParent
 
@@ -1275,12 +1280,11 @@ rules:
 	    -- check if changes have been made to the mutant and the derivation...
 	    if (editMode = TBL_ROW_NOCHG and not top->mgiParentCellLine->ObjectID->text.modified) then
 	      getDerivation := false;
-            end if;
+	    end if;
 
 	    key := mgi_tblGetCell(table, row, table.assocKey);
 	    mutantCellLine := mgi_tblGetCell(table, row, table.cellLine);
 	    mutantCellLineKey := mgi_tblGetCell(table, row, table.cellLineKey);
-	    cellLineTypeKey := defaultCellLineTypeKey;
 
 	    if (mutantCellLineKey.length = 0) then
 		isMutant := false;
@@ -1456,6 +1460,12 @@ rules:
 	      return;
 	    end if;
 
+	    -- check if changes have been made to the mutant and the derivation...
+	    if (editMode = TBL_ROW_NOCHG and not top->mgiParentCellLine->ObjectID->text.modified) then
+	      addCellLine := false;
+	      addAssociation := false;
+	    end if;
+
 	    --
 	    -- if addCellLine, then add the ALL_CellLine record
 	    -- set isMutant = 1 (true)
@@ -1469,6 +1479,10 @@ rules:
 	      else
 		cmd := cmd + mgi_DBincKey(cellLineKey);
 	      end if;
+
+	      if (cellLineTypeKey = "%") then
+	        cellLineTypeKey := defaultCellLineTypeKey;
+              end if;
 
 	      cmd := cmd + mgi_DBinsert(ALL_CELLLINE, cellLineKey) +
 		     mgi_DBprstr(mutantCellLine) + "," +
@@ -2256,10 +2270,13 @@ rules:
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 14));
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
-	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 4);
-	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 12);
+	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 23);
+	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 24);
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 5);
 	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 17);
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 3);
+              send(SetOption, 0);
             end while;
           end while;
 	  (void) dbclose(dbproc);

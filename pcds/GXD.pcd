@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 23 13:43:44 2009";
+      lastWritten = "Wed Aug 26 10:33:37 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -1500,10 +1500,7 @@ Shift<Key>Tab: prev-tab-group()
                                     topOffset = 10;
                                 }
                                 {
-                                  CodedMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    labelString = "Coded?";
-                                    subMenuId = CodedPulldown;
+                                  GXDIndexConditionalMutantsMenu = GXDIndexConditionalMutantsMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     leftWidget = GXDIndexPriorityMenu;
@@ -1511,6 +1508,21 @@ Shift<Key>Tab: prev-tab-group()
                                     rightAttachment = attach_none;
                                     topAttachment = attach_opposite_widget;
                                     topWidget = GXDIndexPriorityMenu;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
+                                  CodedMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    labelString = "Coded?";
+                                    subMenuId = CodedPulldown;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = GXDIndexConditionalMutantsMenu;
+                                    leftOffset = 20;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = GXDIndexConditionalMutantsMenu;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       Popups:
