@@ -86,6 +86,7 @@ devents:
 	Search :local [];
 	Select :local [];
 	SetPriority :local [];
+	SetConditionalMutants :local [];
 
 locals:
 	mgi : widget;		-- Main Application Widget
@@ -154,8 +155,8 @@ rules:
 	  InitOptionMenu.option := top->GXDIndexPriorityMenu;
 	  send(InitOptionMenu, 0);
 
-	  --InitOptionMenu.option := top->GXDIndexConditionalMutantsMenu;
-	  --send(InitOptionMenu, 0);
+	  InitOptionMenu.option := top->GXDIndexConditionalMutantsMenu;
+	  send(InitOptionMenu, 0);
 
 	  -- Set Row labels/Assay keys
 	  table : widget := top->Stage->Table;
@@ -265,6 +266,10 @@ rules:
             return;
 	  end if;
 
+	  if (top->GXDIndexConditionalMutantsMenu.menuHistory.defaultValue = "%") then
+	    send(SetConditionalMutants, 0);
+	  end if;
+
           (void) busy_cursor(top);
 
 	  -- If adding, then @KEYNAME must be used in all Modify events
@@ -276,6 +281,7 @@ rules:
                  top->mgiCitation->ObjectID->text.value + "," +
                  top->mgiMarker->ObjectID->text.value + "," +
 		 top->GXDIndexPriorityMenu.menuHistory.defaultValue + "," +
+		 top->GXDIndexConditionalMutantsMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(top->Note->text.value) + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
 
@@ -381,6 +387,10 @@ rules:
             set := set + "_Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.defaultValue + ",";
 	  end if;
 
+          if (top->GXDIndexConditionalMutantsMenu.menuHistory.modified) then
+            set := set + "_ConditionalMutants_key = " + top->GXDIndexConditionalMutantsMenu.menuHistory.defaultValue + ",";
+	  end if;
+
           if (top->mgiMarker->ObjectID->text.modified) then
             set := set + "_Marker_key = " + top->mgiMarker->ObjectID->text.value + ",";
           end if;
@@ -477,6 +487,10 @@ rules:
  
           if (top->GXDIndexPriorityMenu.menuHistory.searchValue != "%") then
             where := where + "\nand _Priority_key = " + top->GXDIndexPriorityMenu.menuHistory.searchValue;
+	  end if;
+
+          if (top->GXDIndexConditionalMutantsMenu.menuHistory.searchValue != "%") then
+            where := where + "\nand _ConditionalMutants_key = " + top->GXDIndexConditionalMutantsMenu.menuHistory.searchValue;
 	  end if;
 
           if (top->mgiMarker->ObjectID->text.value.length > 0 and
@@ -635,20 +649,24 @@ rules:
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
 	        top->mgiMarker->ObjectID->text.value := mgi_getstr(dbproc, 3);
-	        top->Note->text.value := mgi_getstr(dbproc, 5);
-	        top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 10);
-	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 12);
-	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 13);
+	        top->Note->text.value := mgi_getstr(dbproc, 6);
+	        top->mgiMarker->Marker->text.value := mgi_getstr(dbproc, 11);
+	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 13);
+	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 14);
 
                 SetOption.source_widget := top->GXDIndexPriorityMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
+                SetOption.source_widget := top->GXDIndexConditionalMutantsMenu;
+                SetOption.value := mgi_getstr(dbproc, 5);
+                send(SetOption, 0);
+
 		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 15));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 15));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 9));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 16));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 10));
 
 	      elsif (results = 2) then
 		table := top->Stage->Table;
@@ -706,11 +724,42 @@ rules:
 	    return;
 	  end if;
 
-	  priority := mgi_sql1("select _Priority_key from GXD_Index where _Refs_key = " + top->mgiCitation->ObjectID->text.value);
+	  priority := mgi_sql1("select _Priority_key from GXD_Index where _Refs_key = " 
+	     + top->mgiCitation->ObjectID->text.value);
 		
 	  if (priority.length > 0) then
             SetOption.source_widget := top->GXDIndexPriorityMenu;
             SetOption.value := priority;
+            send(SetOption, 0);
+	  end if;
+
+	end does;
+
+--
+-- SetConditionalMutants
+--
+-- Sets Conditional Mutants if an existing Index record for the Reference already exists
+-- Translation of top->mgiCitation->Jnum->text.
+--
+
+	SetConditionalMutants does
+	  mutants : string;
+
+	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
+	    return;
+	  end if;
+
+	  mutants := mgi_sql1("select _ConditionalMutants_key from GXD_Index where _Refs_key = " 
+	     + top->mgiCitation->ObjectID->text.value);
+		
+	  -- default to 'not applicable'
+	  if (mutants.length = 0) then
+	    mutants := "4834242";
+          end if;
+
+	  if (mutants.length > 0) then
+            SetOption.source_widget := top->GXDIndexConditionalMutantsMenu;
+            SetOption.value := mutants;
             send(SetOption, 0);
 	  end if;
 
