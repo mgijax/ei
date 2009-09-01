@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 16 06:42:04 2009";
+      lastWritten = "Tue Sep  1 07:00:59 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -228,14 +228,34 @@ Module: mgiAnatDictionary
                                     sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    rightAttachment = attach_form;
+                                    rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topWidget = MGIAddedMenu;
                                     topOffset = 5;
                                     leftWidget = MGIAddedMenu;
+                                }
+                                {
+                                  GXDStructureSystemMenu = GXDStructureSystemMenu : mgiOption;
+                                  Group: Widget
+                                    sensitive = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = printStopMenu;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topWidget = printStopMenu;
+                                    topOffset = 5;
                                     rightOffset = 5;
+                                      Popups:
+                                      {
+                                        GXDStructureSystemPulldown = OptionPulldown;
+                                        Group: Widget
+                                          sensitive = False;
+                                      }
                                 }
                                 {
                                   structureNote = Notes : mgiDataTypes;

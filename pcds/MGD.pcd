@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 26 08:31:01 2009";
+      lastWritten = "Tue Sep  1 11:19:02 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8302,12 +8302,12 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 10)(all 3 20)(all 4 15)(all 5 20)(all 6 10)";
-                                          xrtTblColumnLabels = "Mode,Assoc Key,Mutation Key,Mutant Cell Line,Creator,Modified By,Date";
-                                          xrtTblNumColumns = 7;
-                                          xrtTblPixelWidthSeries = "(all 0-2 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 20)(all 6 15)(all 7 20)(all 8 10)";
+                                          xrtTblColumnLabels = "Mode,Assoc Key,Mutation Key,Creator Key,Vector Key,Mutant Cell Line,Creator,Modified By,Date";
+                                          xrtTblNumColumns = 9;
+                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
                                           xrtTblVisibleRows = 2;
-                                          userDefinedAttributes = "assocKey:Int(Int)=\"1\"\ncellLineKey:Int(Int)=\"2\"\ncellLine:Int(Int)=\"3\"\nmodifiedBy:Int(Int)=\"5\"\nmodifiedDate:Int(Int)=\"6\"\ncreator:Int(Int)=\"4\"\n";
+                                          userDefinedAttributes = "assocKey:Int(Int)=\"1\"\ncellLineKey:Int(Int)=\"2\"\ncellLine:Int(Int)=\"5\"\nmodifiedBy:Int(Int)=\"7\"\nmodifiedDate:Int(Int)=\"8\"\ncreator:Int(Int)=\"6\"\ncreatorKey:Int(Int)=\"3\"\nvectorKey:Int=\"4\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyMutantCellLine,\nD:CommitTableCellEdit";
                                       }
                                 }
@@ -8331,6 +8331,19 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         Strain = Strain : mgiDataTypes;
+                                        Group: Widget
+                                          managed = True;
+                                            {
+                                              StrainID = ID;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                                  {
+                                                    label = XmLabel;
+                                                    Group: Widget
+                                                      labelString = "Parent Cell Line \nStrain";
+                                                  }
+                                            }
                                       }
                                       {
                                         Derivation = mgiObject : mgiDataTypes;
@@ -8352,6 +8365,28 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       columns = 40;
                                                   }
+                                            }
+                                      }
+                                }
+                                {
+                                  StrainOfOrigin = Strain : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiParentCellLine;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiParentCellLine;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        StrainID = ID;
+                                      }
+                                      {
+                                        Verify = CharText;
+                                            {
+                                              label = XmLabel;
+                                              Group: Widget
+                                                labelString = "Strain\nof Origin";
                                             }
                                       }
                                 }

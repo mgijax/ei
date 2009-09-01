@@ -44,6 +44,7 @@ CALLS
      structurename_getName("StructureName *") : "char *"; 
      structurename_getStructureNameKey("StructureName *") : "int"; 
      structurename_getMgiAdded("StructureName *") : "Boolean";
+     structurename_getStructureSystemKey("StructureName *") : "char *";
 
      format_stagenum("int") : "char *";
 

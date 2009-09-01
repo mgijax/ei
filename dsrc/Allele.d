@@ -12,6 +12,10 @@
 --
 -- History
 --
+-- 09/01/2009	lec
+--	TR9801/add creator/vector to derivation query
+--	TR9802/add Strain of Origin vs. Parent Strain
+--
 -- 08/26/2009	lec
 --	VerifyMutantCellLine; select parent cell line strain information
 --      should equal mutant cell line strain
@@ -494,7 +498,7 @@ rules:
 
 	  -- set defaults based on allele type
 
-	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
+	  strainKey := top->StrainOfOrigin->StrainID->text.value;
 	  if (strainKey.length = 0 and top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      if (top->AlleleTypeMenu.menuHistory.labelString = "Gene trapped" or
 	          top->AlleleTypeMenu.menuHistory.labelString = "Targeted (knock-out)" or
@@ -743,7 +747,7 @@ rules:
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
 	      (editMode = TBL_ROW_MODIFY or
 	       top->mgiParentCellLine->ObjectID->text.modified or
-	       top->mgiParentCellLine->Strain->StrainID->text.modified)) then
+	       top->StrainOfOrigin->StrainID->text.modified)) then
 
 	    top->VerifyMutantParentStrain.doModify := false;
             top->VerifyMutantParentStrain.managed := true;
@@ -805,7 +809,7 @@ rules:
 
 	  if (top->AlleleStatusMenu.menuHistory.labelString = ALL_STATUS_APPROVED and
 	      top->AlleleStatusMenu.menuHistory.modified and
-	      top->mgiParentCellLine->Strain->StrainID->text.value = defaultStrainKeyNS) then
+	      top->StrainOfOrigin->StrainID->text.value = defaultStrainKeyNS) then
 
 	    top->VerifyAlleleStatusStrain.doModify := false;
             top->VerifyAlleleStatusStrain.managed := true;
@@ -828,8 +832,8 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
-	  if (top->mgiParentCellLine->Strain->StrainID->text.modified) then
-	    set := set + "_Strain_key = " + mgi_DBprkey(top->mgiParentCellLine->Strain->StrainID->text.value) + ",";
+	  if (top->StrainOfOrigin->StrainID->text.modified) then
+	    set := set + "_Strain_key = " + mgi_DBprkey(top->StrainOfOrigin->StrainID->text.value) + ",";
 	  end if;
 
           if (top->InheritanceModeMenu.menuHistory.modified and
@@ -1230,6 +1234,8 @@ rules:
 	  strainName : string;
 	  derivationKey : string;
 	  cellLineTypeKey : string;
+	  creatorKey : string;
+	  vectorKey : string;
 
 	  cellAssocKey : string := "maxCellAssoc";
 	  cellAssocDefined : boolean := false;
@@ -1247,6 +1253,7 @@ rules:
  
 	  -- set the allele type and type key
 	  -- set the parent
+	  -- NOTE:  use the PARENT strain (not the Strain of Origin)
 	  -- set the strain
 	  -- set the derivation
 
@@ -1285,6 +1292,8 @@ rules:
 	    key := mgi_tblGetCell(table, row, table.assocKey);
 	    mutantCellLine := mgi_tblGetCell(table, row, table.cellLine);
 	    mutantCellLineKey := mgi_tblGetCell(table, row, table.cellLineKey);
+	    creatorKey := mgi_tblGetCell(table, row, table.creatorKey);
+	    vectorKey := mgi_tblGetCell(table, row, table.vectorKey);
 
 	    if (mutantCellLineKey.length = 0) then
 		isMutant := false;
@@ -1351,13 +1360,15 @@ rules:
 
 	      else
 
+	        mutantCellLine := NOTSPECIFIED_TEXT;
 		addCellLine := true;
 	        addAssociation := true;
-	        mutantCellLine := NOTSPECIFIED_TEXT;
 
 	        --
 	        -- select the derivation key that is associated with the specified 
 	        --   allele type
+		--   creator = Not Specified
+		--   vector = Not Specified
 	        --   parent cell line
 	        --   strain
 	        --
@@ -1365,6 +1376,8 @@ rules:
 	        derivationKey := mgi_sql1("select d._Derivation_key " +
 			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
 			    "where d._DerivationType_key = " + alleleTypeKey +
+			    " and d._Creator_key = " + defaultCreatorKeyNS +
+			    " and d._Vector_key = " + defaultVectorKeyNS +
 			    " and d._ParentCellLine_key = " + parentKey +
 			    " and d._ParentCellLine_key = c._CellLine_key " +
 			    " and c._Strain_key = " + strainKey +
@@ -1410,6 +1423,8 @@ rules:
 		-- only if we're changing the derivation...
 	        -- select the derivation key that is associated with the specified 
 	        --   allele type
+		--   creator
+		--   vector
 	        --   parent cell line
 	        --   strain
 	        --
@@ -1419,6 +1434,8 @@ rules:
 	          derivationKey := mgi_sql1("select d._Derivation_key " +
 			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
 			    "where d._DerivationType_key = " + alleleTypeKey +
+			    " and d._Creator_key = " + creatorKey +
+			    " and d._Vector_key = " + vectorKey +
 			    " and d._ParentCellLine_key = " + parentKey +
 			    " and d._ParentCellLine_key = c._CellLine_key " +
 			    " and c._Strain_key = " + strainKey +
@@ -1807,10 +1824,10 @@ rules:
 	    from_cellline := true;
 	  end if;
 
-	  if (top->mgiParentCellLine->Strain->StrainID->text.value.length > 0) then
-            where := where + "\nand a._Strain_key = " + top->mgiParentCellLine->Strain->StrainID->text.value;;
-	  elsif (top->mgiParentCellLine->Strain->Verify->text.value.length > 0) then
-            where := where + "\nand a.strain like " + mgi_DBprstr(top->mgiParentCellLine->Strain->Verify->text.value);
+	  if (top->StrainOfOrigin->StrainID->text.value.length > 0) then
+            where := where + "\nand a._Strain_key = " + top->StrainOfOrigin->StrainID->text.value;;
+	  elsif (top->StrainOfOrigin->Verify->text.value.length > 0) then
+            where := where + "\nand a.strain like " + mgi_DBprstr(top->StrainOfOrigin->Verify->text.value);
 	  end if;
 
           if (top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.searchValue != "%") then
@@ -1971,6 +1988,8 @@ rules:
 		  (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 10));
 		end if;
 
+		top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
+		top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 23);
 		top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 23);
 		top->mgiParentCellLine->ObjectID->text.value := "";
@@ -2041,21 +2060,23 @@ rules:
 		end if;
 
 	      elsif (results = 6) then
-		top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 12);
-		top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 13);
-		top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 14);
-		top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 15);
+		top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
+		top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
+		top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 17);
+		top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 18);
 
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.assocKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 19));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, mgi_getstr(dbproc, 11));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.vectorKey, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 22));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
 
                 SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 16);
+                SetOption.value := mgi_getstr(dbproc, 19);
                 send(SetOption, 0);
 
 	      end if;
@@ -2158,6 +2179,8 @@ rules:
                  SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
                  SetOption.value := mgi_getstr(dbproc, 5);
                  send(SetOption, 0);
+	         top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
+	         top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 4);
 	    end while;
 	  end while;
 
@@ -2277,6 +2300,8 @@ rules:
               SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
+	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 23);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 24);
             end while;
           end while;
 	  (void) dbclose(dbproc);
@@ -2302,6 +2327,7 @@ rules:
 --
 --	Verify ParentCellLine entered by User.
 -- 	Uses mgiParentCellLine template.
+--	Uses StrainOfOrigin
 --
 
 	VerifyParentCellLine does
@@ -2309,7 +2335,7 @@ rules:
 	  strainKey : string;
 
 	  value := top->mgiParentCellLine->CellLine->text.value;
-	  strainKey := top->mgiParentCellLine->Strain->StrainID->text.value;
+	  strainKey := top->StrainOfOrigin->StrainID->text.value;
 
 	  -- If a wildcard '%' appears in the field,,
 
@@ -2332,6 +2358,8 @@ rules:
 	  top->mgiParentCellLine->Strain->Verify->text.value := "";
 	  top->mgiParentCellLine->Derivation->ObjectID->text.value := "NULL";
 	  top->mgiParentCellLine->Derivation->CharText->text.value := "";
+	  top->StrainOfOrigin->StrainID->text.value := "";
+	  top->StrainOfOrigin->Verify->text.value := "";
 
 	  -- If no value entered, use default
 
@@ -2371,6 +2399,8 @@ rules:
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 4);
             end while;
           end while;
 	  (void) dbclose(dbproc);

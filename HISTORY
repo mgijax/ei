@@ -1,3 +1,10 @@
+TAG: ei-4-3-0-32
+DATE: 09/01/2009
+STAFF: lec
+CHANGES:
+1) TR9801/add creator/vector to derivation query
+2) TR9802/add Strain of Origin vs. Parent Strain
+
 TAG: ei-4-3-0-31
 TAG: ei-4-3-0-30
 TAG: ei-4-3-0-29

@@ -1326,6 +1326,12 @@ DBINT structurename_getStructureNameKey(StructureName *stn)
     return stn->_StructureName_key;
 }
 
+DBINT structurename_getStructureSystemKey(StructureName *stn)
+{
+    /*return stn->_System_key; */
+    return stn->_StructureName_key;
+}
+
 xrtlist createStructureNameList()
 {
     xrtlist list = XrtGearListCreate(sizeof(StructureName *));

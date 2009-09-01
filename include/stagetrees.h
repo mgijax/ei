@@ -308,6 +308,9 @@ char *structurename_getName(StructureName *stn);
 DBINT structurename_getStructureNameKey(StructureName *stn);
    /* returns StructureName's _StructureName_key attribute */ 
 
+DBINT structurename_getStructureSystemKey(StructureName *stn);
+   /* returns StructureName's _System_key attribute */ 
+
 Boolean structurename_getMgiAdded(StructureName *stn);
    /* returns StructureName's mgiAdded attribute */ 
    

@@ -75,6 +75,7 @@ devents:
         Init :local [];
         Add :local [];
         AddDialog :local [];
+        BuildDynamicComponents :local [];
         Delete :local [];
 	Exit : local [];
         Modify :local [];
@@ -93,7 +94,6 @@ devents:
                                    skvariable : string := "";];
         ModifyAliases:local [table : widget;
                              addStructureMode : boolean := false;];
-        CheckTriggers:local [];
 
 	ADVersion1 :local [];
 	ADVersion2 :local [];
@@ -137,6 +137,9 @@ rules:
         INITIALLY does
           current_structure := nil;
           treesLoaded := false;  -- no trees are loaded initially 
+
+          -- Build Dynamic GUI Components
+          send(BuildDynamicComponents, 0);
 
           -- register callbacks
           init_callbacks();
@@ -183,11 +186,27 @@ rules:
 	    DictionaryClear.clearLists := 15;
 	    send(DictionaryClear, 0);
 
-            send(CheckTriggers,0);
-
 	    GoHome.source_widget := top;
 	    send(GoHome, 0);
         end does;
+
+--
+-- BuildDynamicComponents
+--
+-- Activated from:  devent IndexStages
+--
+-- For initializing dynamic GUI components prior to managing the top form.
+--
+-- Initialize dynamic option menus
+-- Initialize lookup lists
+--
+
+        BuildDynamicComponents does
+
+          --InitOptionMenu.option := top->GXDStructureSystemMenu;
+          --send(InitOptionMenu, 0);
+
+	end does;
 
 --
 -- DictionaryClear 
@@ -297,9 +316,13 @@ rules:
 
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
+
           cmd := cmd + "declare @stagekey int\n";
-          cmd := cmd + "select @stagekey=_Stage_key from GXD_TheilerStage " + 
+          cmd := cmd + "select @stagekey = _Stage_key from GXD_TheilerStage " + 
                        "where stage = " + (string) current_stagenum + "\n";
+
+	  --top->GXDStructureSystemMenu.menuHistory.defaultValue + "," +
+
           cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, "@" + skeyName) + 
                             parentKey + "," +
                             "@" + snkeyName + "," +
@@ -558,6 +581,12 @@ rules:
             set := set + "printStop = "  + top->printStopMenu.menuHistory.defaultValue + ",";
           end if;
 
+	  -- anatomical system
+          --if (top->GXDStructureSystemMenu.menuHistory.modified and
+	  --    top->GXDStructureSystemMenu.menuHistory.searchValue != "%") then
+          --  set := set + "_System_key = "  + top->GXDStructureSystemMenu.menuHistory.defaultValue + ",";
+          --end if;
+
           -- ignore Stage(s) query field.  The stage of a node is never modified once set.
 
           -- now deal with the MGI aliases table
@@ -667,6 +696,10 @@ rules:
               where := where + "\nand sn.mgiAdded = "  + top->MGIAddedMenu.menuHistory.searchValue +
 		"\nand s._StructureName_key = sn._StructureName_key";
             end if;
+
+            --if (top->GXDStructureSystemMenu.menuHistory.searchValue != "%") then
+            --  where := where + "\nand s._System_key = "  + top->GXDSructureSystemMenu.menuHistory.searchValue;
+            --end if;
 
             -- structure note
 
@@ -813,6 +846,11 @@ rules:
         SetOption.value := (string) (integer) structurename_getMgiAdded(preferredStructureName);
         send(SetOption, 0);
 
+        -- set the Anatomical System
+        --SetOption.source_widget := top->GXDStructureSystemMenu;
+        --SetOption.value := (string) (integer) structurename_getStructureSystemKey(preferredStructureName);
+        --send(SetOption, 0);
+
         -- get the aliases assoc. w/ the structure 
         mgiAliases := structure_getAliases(structure, true, createStructureNameList());
         edinburghAliases := structure_getAliases(structure, false, createStructureNameList()); 
@@ -937,56 +975,6 @@ rules:
       destroy self;		-- destroy D module instance
       ExitWindow.source_widget := top;
       send(ExitWindow, 0);     	-- the usual exit procedure
-   end does;
-
---
--- CheckTriggers 
---
--- Verifies that the appropriate triggers exist on the structure table.
--- If they don't exist, the Add/Modify/Delete buttons are desensitized.
--- 
-
-   CheckTriggers does
-       count : integer := 0;
-       select : string;
-       dbproc : opaque := mgi_dbopen();
-
-       select := "select count(*) from sysobjects " +
-                          "where type = 'TR' and name in " +
-                          "('GXD_Structure_Insert', " + 
-                          " 'GXD_Structure_Update', " +
-                          " 'GXD_Structure_Delete', " +
-                          " 'GXD_StructureName_Insert', " + 
-                          " 'GXD_StructureName_Update', " + 
-                          " 'GXD_StructureName_Delete', " + 
-                          " 'GXD_StructureClosure_Insert', " + 
-                          " 'GXD_StructureClosure_Update', " + 
-                          " 'GXD_StructureClosure_Delete')\n";
-
-      (void) dbcmd(dbproc, select);
-      (void) dbsqlexec(dbproc);
-      while (dbresults(dbproc) != NO_MORE_RESULTS) do
-          while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-             count := (integer) mgi_getstr(dbproc, 1);
-          end while;
-      end while;
-      (void) dbclose(dbproc);
-
-      if count != 9 then
-	 StatusReport.source_widget := top;
-         StatusReport.message := "Missing triggers on the Structure tables, ADI continuing in read-only mode"; 
-         send(StatusReport, 0);
-
-         -- desensitize the buttons/menu choices that allow database mods.
-
-         top->ControlForm->Add.sensitive := false;
-         top->ControlForm->Modify.sensitive := false;
-         top->ControlForm->Delete.sensitive := false;
-         top->CommandsPulldown->Add.sensitive := false;
-         top->CommandsPulldown->Modify.sensitive := false;
-         top->CommandsPulldown->Delete.sensitive := false;
-      end if;
-
    end does;
 
 --
