@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep  1 07:00:59 2009";
+      lastWritten = "Wed Sep  2 13:45:56 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -250,6 +250,8 @@ Module: mgiAnatDictionary
                                     topWidget = printStopMenu;
                                     topOffset = 5;
                                     rightOffset = 5;
+                                  Group: User
+                                    required = False;
                                       Popups:
                                       {
                                         GXDStructureSystemPulldown = OptionPulldown;
