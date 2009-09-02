@@ -314,8 +314,25 @@ rules:
 	  cmd := "";
 	  set : string := "";
 
+	  --
+	  -- Derivation Name default:
+	  -- ~~creator~~ ~~derivType~~ Library ~~parent~~ ~~strain~~ ~~vectorName~~
+	  --
+
+	  derivationName : string := top->EditForm->DerivationName->text.value;
+	  creator : string := top->EditForm->AlleleCreatorMenu.menuHistory.labelString;
+	  derivationType : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.labelString;
+	  vector : string := top->EditForm->mgiAlleleVector->Vector->text.value;
+	  parentCellLine : string := top->EditForm->mgiParentCellLine->CellLine->text.value;
+	  parentStrain : string := top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value;
+
+	  if (derivationName.length = 0) then
+	    derivationName := creator + " " + derivationType + " Library " + parentCellLine + " " + parentStrain + " " + vector;
+	    top->EditForm->DerivationName->text.value := derivationName;
+	  end if;
+
 	  if (top->EditForm->DerivationName->text.modified) then
-	    set := set + "name = " + mgi_DBprstr(top->EditForm->CellLine->text.value) + ",";
+	    set := set + "name = " + mgi_DBprstr(derivationName) + ",";
 	  end if;
 
           if (top->EditForm->mgiParentCellLine->ObjectID->text.modified) then
