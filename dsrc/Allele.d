@@ -1268,8 +1268,12 @@ rules:
 	  -- set the isParent
 
 	  if (parentKey.length = 0) then
-	      isParent := false;
+	    isParent := false;
 	  end if;
+
+	  if (cellLineTypeKey = "%") then
+	    cellLineTypeKey := defaultCellLineTypeKey;
+          end if;
 
 	  -- Process while non-empty rows are found
  
@@ -1320,6 +1324,7 @@ rules:
 		--   vector = Not Specified
 		--   parent cell line = Not Specified
 		--   strain = Not Specified
+		--   cell line type
 		--
 
 	        derivationKey := mgi_sql1("select d._Derivation_key " +
@@ -1330,6 +1335,7 @@ rules:
 			" and d._ParentCellLine_key = " + defaultParentCellLineKeyNS +
 			" and d._ParentCellLine_key = c._CellLine_key " +
 			" and c._Strain_key = " + defaultStrainKeyNS +
+			" and c._CellLine_Type_key = " + cellLineTypeKey +
 			" and c.isMutant = 0 ");
 
 	        if (derivationKey.length = 0) then
@@ -1371,6 +1377,7 @@ rules:
 		--   vector = Not Specified
 	        --   parent cell line
 	        --   strain
+		--   cell line type
 	        --
 
 	        derivationKey := mgi_sql1("select d._Derivation_key " +
@@ -1381,6 +1388,7 @@ rules:
 			    " and d._ParentCellLine_key = " + parentKey +
 			    " and d._ParentCellLine_key = c._CellLine_key " +
 			    " and c._Strain_key = " + strainKey +
+			    " and c._CellLine_Type_key = " + cellLineTypeKey +
 			    " and c.isMutant = 0 ");
 
 	        if (derivationKey.length = 0) then
@@ -1427,6 +1435,7 @@ rules:
 		--   vector
 	        --   parent cell line
 	        --   strain
+		--   cell line type
 	        --
 
 		if (getDerivation) then
@@ -1439,6 +1448,7 @@ rules:
 			    " and d._ParentCellLine_key = " + parentKey +
 			    " and d._ParentCellLine_key = c._CellLine_key " +
 			    " and c._Strain_key = " + strainKey +
+			    " and c._CellLine_Type_key = " + cellLineTypeKey +
 			    " and c.isMutant = 0 ");
 
 	          if (derivationKey.length = 0) then
@@ -1496,10 +1506,6 @@ rules:
 	      else
 		cmd := cmd + mgi_DBincKey(cellLineKey);
 	      end if;
-
-	      if (cellLineTypeKey = "%") then
-	        cellLineTypeKey := defaultCellLineTypeKey;
-              end if;
 
 	      cmd := cmd + mgi_DBinsert(ALL_CELLLINE, cellLineKey) +
 		     mgi_DBprstr(mutantCellLine) + "," +
