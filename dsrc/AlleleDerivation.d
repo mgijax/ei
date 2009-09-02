@@ -9,6 +9,9 @@
 --
 -- History
 --
+-- 09/01/2009	lec
+--	TR 9804; skip VerifyParentCellLine for "not specified"
+--
 -- 05/06/2009	lec
 --	TR 7493; gene trap lite
 --
@@ -598,11 +601,12 @@ rules:
 	VerifyParentCellLine does
 	  value : string;
 
-	  value := top->mgiParentCellLine->CellLine->text.value;
+	  value := top->mgiParentCellLine->CellLine->text.value.lower_case;
 
-	  -- If a wildcard '%' appears in the field,,
+	  -- If a wildcard '%' appears in the field, then skip
+	  -- If 'not specified' then skip
 
-	  if (strstr(value, "%") != nil or value.length = 0) then
+	  if (strstr(value, "%") != nil or value.length = 0 or value = "not specified") then
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;
 	  end if;

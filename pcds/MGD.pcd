@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep  1 11:19:02 2009";
+      lastWritten = "Wed Sep  2 06:49:43 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8442,7 +8442,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftWidget = Symbol;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = MutantCellLine;
+                                    topWidget = StrainOfOrigin;
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                       {

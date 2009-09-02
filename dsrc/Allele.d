@@ -1988,14 +1988,9 @@ rules:
 		  (void) mgi_tblSetCell(markerTable, 0, markerTable.markerSymbol, mgi_getstr(dbproc, 10));
 		end if;
 
+		-- Strain of Origin
 		top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
 		top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 23);
-		top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
-		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 23);
-		top->mgiParentCellLine->ObjectID->text.value := "";
-		top->mgiParentCellLine->CellLine->text.value := "";
-		top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
-		top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
                 SetOption.source_widget := top->InheritanceModeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
@@ -2020,6 +2015,14 @@ rules:
                 SetOption.source_widget := top->ExtinctMenu;
                 SetOption.value := mgi_getstr(dbproc, 12);
                 send(SetOption, 0);
+
+		-- Parent Cell Line info
+		top->mgiParentCellLine->Strain->StrainID->text.value := "";
+		top->mgiParentCellLine->Strain->Verify->text.value := "";
+		top->mgiParentCellLine->ObjectID->text.value := "";
+		top->mgiParentCellLine->CellLine->text.value := "";
+		top->mgiParentCellLine->Derivation->ObjectID->text.value := "";
+		top->mgiParentCellLine->Derivation->CharText->text.value := "";
 
 	      elsif (results = 2) then
 		(void) mgi_tblSetCell(markerTable, row, markerTable.assocKey, mgi_getstr(dbproc, 1));
@@ -2060,23 +2063,25 @@ rules:
 		end if;
 
 	      elsif (results = 6) then
-		top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
-		top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
-		top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 17);
-		top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 18);
+		top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 10);
+		top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 11);
+		top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 16);
+		top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 17);
+		top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 18);
+		top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 19);
 
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.assocKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 3));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 8));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.vectorKey, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.vectorKey, mgi_getstr(dbproc, 14));
+		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedBy, mgi_getstr(dbproc, 23));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.modifiedDate, mgi_getstr(dbproc, 7));
 		(void) mgi_tblSetCell(cellLineTable, row, cellLineTable.editMode, TBL_ROW_NOCHG);
 
                 SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 19);
+                SetOption.value := mgi_getstr(dbproc, 20);
                 send(SetOption, 0);
 
 	      end if;
@@ -2176,11 +2181,11 @@ rules:
 		 top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 2);
 	         top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 3);
 	         top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
+	         top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
+	         top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 4);
                  SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
                  SetOption.value := mgi_getstr(dbproc, 5);
                  send(SetOption, 0);
-	         top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
-	         top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 4);
 	    end while;
 	  end while;
 
@@ -2297,11 +2302,11 @@ rules:
 	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 24);
 	      top->mgiParentCellLine->Derivation->ObjectID->text.value := mgi_getstr(dbproc, 5);
 	      top->mgiParentCellLine->Derivation->CharText->text.value := mgi_getstr(dbproc, 17);
+	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 23);
+	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 24);
               SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
-	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 23);
-	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 24);
             end while;
           end while;
 	  (void) dbclose(dbproc);
@@ -2334,12 +2339,13 @@ rules:
 	  value : string;
 	  strainKey : string;
 
-	  value := top->mgiParentCellLine->CellLine->text.value;
+	  value := top->mgiParentCellLine->CellLine->text.value.lower_case;
 	  strainKey := top->StrainOfOrigin->StrainID->text.value;
 
-	  -- If a wildcard '%' appears in the field,,
+	  -- If a wildcard '%' appears in the field then skip
+	  -- If 'not specified' then skip
 
-	  if (strstr(value, "%") != nil) then
+	  if (strstr(value, "%") != nil or value.length = 0 or value = "not specified") then
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;
 	  end if;
@@ -2386,7 +2392,8 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := "select  _CellLine_key, cellLine, _Strain_key, cellLineStrain from " + 
+	  select : string := "select  _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key " +
+		" from " + 
 		mgi_DBtable(ALL_CELLLINE_VIEW) +
 		" where isMutant = 0 and cellLine = " + mgi_DBprstr(value);
 
@@ -2401,6 +2408,9 @@ rules:
 	      top->mgiParentCellLine->Strain->Verify->text.value := mgi_getstr(dbproc, 4);
 	      top->StrainOfOrigin->StrainID->text.value := mgi_getstr(dbproc, 3);
 	      top->StrainOfOrigin->Verify->text.value := mgi_getstr(dbproc, 4);
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 5);
+              send(SetOption, 0);
             end while;
           end while;
 	  (void) dbclose(dbproc);
