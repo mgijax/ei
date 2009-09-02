@@ -1,3 +1,4 @@
+TAG: ei-4-3-0-34
 TAG: ei-4-3-0-33
 TAG: ei-4-3-0-32
 DATE: 09/01/2009
@@ -5,6 +6,7 @@ STAFF: lec
 CHANGES:
 1) TR9801/add creator/vector to derivation query
 2) TR9802/add Strain of Origin vs. Parent Strain
+3) AlleleDerivation:  fix update of derivation name
 
 TAG: ei-4-3-0-31
 TAG: ei-4-3-0-30
