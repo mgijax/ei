@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Aug 27 13:32:48 2009";
+      lastWritten = "Thu Sep  3 09:28:10 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -3015,7 +3015,7 @@ Module: mgiOption
               {
                 GenotypeExistsAsPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 4 order by term";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 60 order by term";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
