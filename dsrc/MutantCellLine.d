@@ -9,6 +9,9 @@
 --
 -- History
 --
+-- 09/08/2009	lec
+--	- select cell line type on derivation pick-list (DisplayDerivation,VerifyDerivation)
+--
 -- 04/08/2009-07/2009	lec
 --	TR 7493; gene trap lite
 --
@@ -650,7 +653,7 @@ rules:
                 "parentCellLine_key, parentCellLine, " +
 		"parentCellLineStrain_key, parentCellLineStrain, " +
 		"_Vector_key, vector, " +
-		"_Creator_key, _DerivationType_key, _VectorType_key " +
+		"_Creator_key, _DerivationType_key, _VectorType_key, parentCellLineType_key " +
 		"from " + mgi_DBtable(ALL_CELLLINE_DERIVATION_VIEW) +
 		" where _Derivation_key = " + top->mgiParentCellLine->Derivation->ObjectID->text.value;
 
@@ -681,6 +684,10 @@ rules:
 
               SetOption.source_widget := top->EditForm->AlleleVectorTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 11);
+              send(SetOption, 0);
+
+              SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
+              SetOption.value := mgi_getstr(dbproc, 12);
               send(SetOption, 0);
 
 	    end while;
@@ -789,6 +796,8 @@ rules:
 -- 	derivation type
 --	parent cell line
 --	strain
+--      vector
+--	cellLineType
 --	is mutant = 0
 --
 
@@ -800,6 +809,7 @@ rules:
 	  creatorKey : string;
 	  vectorKey : string;
 	  vectorTypeKey : string;
+	  cellLineTypeKey : string;
 
 	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
 	      return;
@@ -812,8 +822,9 @@ rules:
 	  parentKey := top->mgiParentCellLine->ObjectID->text.value;
 	  strainKey := top->mgiParentCellLine->ParentStrain->StrainID->text.value;
 
-	  -- ...creator, vector type, vector
+	  -- ...creator, cellline type, vector type, vector
 	  creatorKey := top->EditForm->AlleleCreatorMenu.menuHistory.defaultValue;
+	  cellLineTypeKey := top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue;
 	  vectorTypeKey := top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue;
 	  vectorKey := top->mgiAlleleVector->ObjectID->text.value;
 
@@ -831,6 +842,7 @@ rules:
                          " and d._Vector_key = " + vectorKey +
                          " and d._ParentCellLine_key = c._CellLine_key " +
                          " and c._Strain_key = " + strainKey +
+                         " and c._CellLine_Type_key = " + cellLineTypeKey +
                          " and c.isMutant = 0 ");
 
 	  -- if derivation has been determined, then display the rest of the derivation attributes
