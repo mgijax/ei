@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.de
 --
+-- 09/09/2009	lec
+--	- TR 9797; add PythonAlleleCreCache
+--
 -- 06/17/2008	lec
 --	- TR 9057; Inferred From Cache; errors are printed
 --
@@ -22,6 +25,10 @@ PythonAlleleCombination [source_widget : widget;
 			 pythonevent : string;
 		         objectKey : string;];
 
+PythonAlleleCreCache [source_widget : widget;
+		      pythonevent : string;
+		      objectKey : string;];
+
 PythonMarkerHomologyCache [objectKey : string;];
 
 PythonReferenceCache [objectKey : string;];
@@ -34,6 +41,8 @@ PythonInferredFromCache [source_widget : widget;
 PythonMarkerOMIMCacheEnd [];
 
 PythonAlleleCombinationEnd [];
+
+PythonAlleleCreCacheEnd [];
 
 PythonMarkerHomologyCacheEnd [];
 

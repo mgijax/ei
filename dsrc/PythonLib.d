@@ -1,6 +1,9 @@
 --
 -- Name: PythonLib.d
 --
+-- 09/09/2009	lec
+--	- TR 9797; add PythonAlleleCreCache
+--
 -- 06/17/2008	lec
 --	- TR 9057; Inferred From Cache; errors are printed
 --
@@ -117,6 +120,57 @@ rules:
 	  -- Execute
 	  dialog.value := "";
           proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog, PythonAlleleCombinationEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
+	  if (dialog.value.length > 0) then
+	      (void) mgi_writeLog(dialog.value);
+	  end if;
+
+	  tu_fork_free(proc_id);
+
+	end does;
+
+--
+-- PythonAlleleCreCache
+--
+-- Activated from:  Allele module, Assay module
+--
+
+	PythonAlleleCreCache does
+	  top : widget := PythonAlleleCreCache.source_widget.root;
+	  pythonevent : string := PythonAlleleCreCache.pythonevent;
+	  objectKey : string := PythonAlleleCreCache.objectKey;
+	  dialog : widget := top->ReportDialog->Output;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  if (pythonevent = EVENT_ALLELECRE_BYALLELE) then
+	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecrecacheByAllele.py", cmds.count + 1);
+	  elsif (pythonevent = EVENT_ALLELECRE_BYASSAY) then
+	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecrecacheByAssay.py", cmds.count + 1);
+	  end if;
+
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+	  dialog.value := "";
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog, PythonAlleleCreCacheEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
@@ -314,6 +368,14 @@ rules:
 
 	PythonAlleleCombinationEnd does
 	  (void) mgi_writeLog("Allele Combination Cache done.\n\n");
+	end does;
+
+--
+-- PythonAlleleCreCacheEnd
+--
+
+	PythonAlleleCreCacheEnd does
+	  (void) mgi_writeLog("Allele Cre Cache done.\n\n");
 	end does;
 
 --

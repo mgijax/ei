@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 09/09/2009	lec
+--      - TR9797/call PythonAlleleCreCache from Add/Modify
+--
 -- 09/01/2009	lec
 --	TR9801/add creator/vector to derivation query
 --	TR9802/add Strain of Origin vs. Parent Strain
@@ -657,6 +660,8 @@ rules:
 	  transRefs2 : integer := 0;
 	  mixedRefs : integer := 0;
 
+	  modifyCache : boolean := false;
+
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
@@ -873,6 +878,7 @@ rules:
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
+	    modifyCache := true;
 	  end if;
 
 	  if (top->Name->text.value = "wild type" or top->Name->text.value = "wild-type") then
@@ -943,9 +949,6 @@ rules:
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
 
-	  top->WorkingDialog.messageString := "Re-loading Cache Tables....";
-	  XmUpdateDisplay(top->WorkingDialog);
-
 	  if (cmd.length > 0) then
 	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
 		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
@@ -957,16 +960,28 @@ rules:
 	    send(ModifySQL, 0);
           end if;
 
-	  -- change this to ONLY call the cache tables if the SYMBOL is changed
+	  -- only update the cache tables if the SYMBOL is changed
 
-	  PythonAlleleCombination.source_widget := top;
-	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
-	  PythonAlleleCombination.objectKey := currentRecordKey;
-	  send(PythonAlleleCombination, 0);
+	  if (modifyCache) then
 
---	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
---	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
---	  send(PythonMarkerOMIMCache, 0);
+	    top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+	    XmUpdateDisplay(top->WorkingDialog);
+
+	    PythonAlleleCombination.source_widget := top;
+	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
+	    PythonAlleleCombination.objectKey := currentRecordKey;
+	    send(PythonAlleleCombination, 0);
+
+            PythonAlleleCreCache.source_widget := top;
+            PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYALLELE;
+            PythonAlleleCreCache.objectKey := currentRecordKey;
+            send(PythonAlleleCreCache, 0);
+
+--	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
+--	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
+--	    send(PythonMarkerOMIMCache, 0);
+
+	  end if;
 
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);

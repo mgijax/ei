@@ -138,9 +138,6 @@ rules:
           current_structure := nil;
           treesLoaded := false;  -- no trees are loaded initially 
 
-          -- Build Dynamic GUI Components
-          send(BuildDynamicComponents, 0);
-
           -- register callbacks
           init_callbacks();
 
@@ -152,6 +149,10 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
+
+          -- Build Dynamic GUI Components
+          send(BuildDynamicComponents, 0);
+
           top.show;
 
           send(Init, 0);
@@ -203,8 +204,8 @@ rules:
 
         BuildDynamicComponents does
 
-          --InitOptionMenu.option := top->GXDStructureSystemMenu;
-          --send(InitOptionMenu, 0);
+          InitOptionMenu.option := top->GXDSystemMenu;
+          send(InitOptionMenu, 0);
 
 	end does;
 
@@ -321,17 +322,18 @@ rules:
           cmd := cmd + "select @stagekey = _Stage_key from GXD_TheilerStage " + 
                        "where stage = " + (string) current_stagenum + "\n";
 
-	  --top->GXDStructureSystemMenu.menuHistory.defaultValue + "," +
 
           cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, "@" + skeyName) + 
                             parentKey + "," +
                             "@" + snkeyName + "," +
                             "@stagekey," +
+	                    top->GXDSystemMenu.menuHistory.defaultValue + "," +
                             nullval + "," +   /* edinburgh key */
                             nullval + "," +   /* printName */
                              " 0, " +          /* treeDepth - set by trg */
                             addDialog->printStopMenu.menuHistory.defaultValue + "," +
 			    "0," +	/* topoSort */
+			    top->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    mgi_DBprstr(addDialog->structureNote->text.value) + ")\n";
 
           -- StructureName will be created for the preferred name
@@ -582,10 +584,17 @@ rules:
           end if;
 
 	  -- anatomical system
-          --if (top->GXDStructureSystemMenu.menuHistory.modified and
-	  --    top->GXDStructureSystemMenu.menuHistory.searchValue != "%") then
-          --  set := set + "_System_key = "  + top->GXDStructureSystemMenu.menuHistory.defaultValue + ",";
-          --end if;
+          if (top->GXDSystemMenu.menuHistory.modified and
+	      top->GXDSystemMenu.menuHistory.searchValue != "%") then
+            set := set + "_System_key = "  + top->GXDSystemMenu.menuHistory.defaultValue + ",";
+          end if;
+
+	  -- inherit system (if yes, then this is NOT a rollup term)
+	  -- inherit system (if no, then this IS a rollup term)
+          if (top->inheritSystemMenu.menuHistory.modified and
+	      top->inheritSystemMenu.menuHistory.searchValue != "%") then
+            set := set + "inheritSystem = "  + top->inheritSystemMenu.menuHistory.defaultValue + ",";
+          end if;
 
           -- ignore Stage(s) query field.  The stage of a node is never modified once set.
 
@@ -697,9 +706,13 @@ rules:
 		"\nand s._StructureName_key = sn._StructureName_key";
             end if;
 
-            --if (top->GXDStructureSystemMenu.menuHistory.searchValue != "%") then
-            --  where := where + "\nand s._System_key = "  + top->GXDSructureSystemMenu.menuHistory.searchValue;
-            --end if;
+            if (top->GXDSystemMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand s._System_key = "  + top->GXDSystemMenu.menuHistory.searchValue;
+            end if;
+
+            if (top->inheritSystemMenu.menuHistory.searchValue != "%" and top->inheritSystemMenu.sensitive) then
+              where := where + "\nand s.inheritSystem = "  + top->inheritSystemMenu.menuHistory.searchValue;
+            end if;
 
             -- structure note
 
@@ -748,6 +761,7 @@ rules:
 --
 
     Select does
+
         if (top->QueryList->List.selectedItemCount = 0) then
             current_structurekey := "";     
             top->QueryList->List.row := 0;
@@ -810,6 +824,16 @@ rules:
 	  end if;
         end if;
 
+        -- set the Anatomical System
+        SetOption.source_widget := top->GXDSystemMenu;
+        SetOption.value := (string) (integer) structure_getSystemKey(structure);
+        send(SetOption, 0);
+
+	-- set the inherit system
+        SetOption.source_widget := top->inheritSystemMenu;
+        SetOption.value := (string) (integer) structure_getInheritSystem(structure);
+        send(SetOption, 0);
+
 	-- if Stage Node, we're done
         if (stagetrees_isStageNodeKey(structure_key)) then 
            return;
@@ -845,11 +869,6 @@ rules:
         SetOption.source_widget := top->MGIAddedMenu;
         SetOption.value := (string) (integer) structurename_getMgiAdded(preferredStructureName);
         send(SetOption, 0);
-
-        -- set the Anatomical System
-        --SetOption.source_widget := top->GXDStructureSystemMenu;
-        --SetOption.value := (string) (integer) structurename_getStructureSystemKey(preferredStructureName);
-        --send(SetOption, 0);
 
         -- get the aliases assoc. w/ the structure 
         mgiAliases := structure_getAliases(structure, true, createStructureNameList());
