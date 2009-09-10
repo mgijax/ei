@@ -356,6 +356,11 @@ extern char *global_version;
 #define EVENT_ALLELECOMB_BYMARKER	"2"
 #define EVENT_ALLELECOMB_BYGENOTYPE	"3"
 
+/* Allele Cre Cache Events */
+
+#define EVENT_ALLELECRE_BYALLELE	"1"
+#define EVENT_ALLELECRE_BYASSAY		"2"
+
 /* keys of Marker Status */
 
 /* MGD */

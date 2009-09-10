@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep  2 13:45:56 2009";
+      lastWritten = "Thu Sep 10 07:41:59 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -158,7 +158,7 @@ Module: mgiAnatDictionary
                                     resizable = true;
                                     leftWidget = structureText;
                                     topWidget = stagesText;
-                                    topOffset = 5;
+                                    topOffset = 30;
                                       {
                                         Table = mgiTable;
                                             {
@@ -237,9 +237,7 @@ Module: mgiAnatDictionary
                                     leftWidget = MGIAddedMenu;
                                 }
                                 {
-                                  GXDStructureSystemMenu = GXDStructureSystemMenu : mgiOption;
-                                  Group: Widget
-                                    sensitive = False;
+                                  ADSystemMenu = ADSystemMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = printStopMenu;
@@ -250,13 +248,27 @@ Module: mgiAnatDictionary
                                     topWidget = printStopMenu;
                                     topOffset = 5;
                                     rightOffset = 5;
+                                }
+                                {
+                                  inheritSystemMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = inheritSystemPulldown;
+                                    labelString = "Inherit System Term?";
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = ADSystemMenu;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = ADSystemMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
                                   Group: User
-                                    required = False;
+                                    defaultOption = Yes;
                                       Popups:
                                       {
-                                        GXDStructureSystemPulldown = OptionPulldown;
-                                        Group: Widget
-                                          sensitive = False;
+                                        inheritSystemPulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
@@ -452,6 +464,12 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     activateCallback = "D:ADVersion2";
                                     labelString = "Ontological Version";
+                                }
+                                {
+                                  RefreshADSystem = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:RefreshADSystem";
+                                    labelString = "Refresh AD System Terms";
                                 }
                                 {
                                   QueryList = QueryList;

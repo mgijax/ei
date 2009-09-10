@@ -72,11 +72,13 @@ typedef struct structure
    DBINT _Parent_key;
    DBINT _StructureName_key;
    DBINT _Stage_key;
+   DBINT _System_key;
    DBINT edinburghKey;
    char printName[PRINTNAMELEN];
    DBINT treeDepth;
    DBBIT printStop;
    DBINT topoSort;
+   DBINT inheritSystem;
    char structureNote[STRUCTURENOTELEN];
    DBDATETIME creation_date;
    DBDATETIME modification_date;
@@ -191,6 +193,14 @@ DBINT structure_getStageKey(Structure *structure);
    /* returns _Stage_key attribute for structure */ 
 
 
+DBINT structure_getSystemKey(Structure *structure);
+   /* returns _System_key attribute for structure */ 
+
+
+DBINT structure_getInheritSystem(Structure *structure);
+   /* returns inheritSystem attribute for structure */ 
+
+
 DBINT structure_getEdinburghKey(Structure *structure);
    /* returns edinburghKey attribute for structure */ 
 
@@ -209,7 +219,6 @@ Boolean structure_getPrintStop(Structure *structure);
 
 int structure_getStage(Structure *structure);
    /* returns the stage number to which this structure belongs */ 
-
 
 
 xrtlist structure_getAliases(Structure *structure, Boolean mgi, xrtlist alist);
@@ -307,9 +316,6 @@ char *structurename_getName(StructureName *stn);
 
 DBINT structurename_getStructureNameKey(StructureName *stn);
    /* returns StructureName's _StructureName_key attribute */ 
-
-DBINT structurename_getStructureSystemKey(StructureName *stn);
-   /* returns StructureName's _System_key attribute */ 
 
 Boolean structurename_getMgiAdded(StructureName *stn);
    /* returns StructureName's mgiAdded attribute */ 

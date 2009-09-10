@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep  3 09:28:10 2009";
+      lastWritten = "Thu Sep 10 07:33:08 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -3142,16 +3142,16 @@ Module: mgiOption
               }
         }
         {
-          GXDStructureSystemMenu = OptionMenu;
+          ADSystemMenu = OptionMenu;
           Group: Widget
-            subMenuId = GXDStructureSystemPulldown;
+            subMenuId = ADSystemPulldown;
             labelString = "Anatomical System";
           Group: Control
             vip_x = 105;
             vip_y = 3935;
               Popups:
               {
-                GXDStructureSystemPulldown : OptionPulldown = OptionPulldown;
+                ADSystemPulldown : OptionPulldown = OptionPulldown;
                 Group: User
                   sql = "select _Term_key, term from VOC_Term where _Vocab_key = 75 order by term";
                     {

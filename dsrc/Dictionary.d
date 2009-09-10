@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec 09/09-09/10/2009
+--	- TR 9797; add RefreshADSystem.d, ADSystemMenu
+--
 -- lec 09/05/2006
 --	- TR 7889; make "Ingeborg's version" the default
 --
@@ -86,17 +89,18 @@ devents:
         ADClipboardAdd :local [];
         ADClipboardAddAll :local [];
 
-        DictionaryClear:local [clearLists : integer := 7;
+        DictionaryClear :local [clearLists : integer := 7;
 			       clearStages : boolean := false;
 			       reset : boolean := false;];
 
-        ModifyStructureText:local [field : widget; 
+        ModifyStructureText :local [field : widget; 
                                    skvariable : string := "";];
-        ModifyAliases:local [table : widget;
+        ModifyAliases :local [table : widget;
                              addStructureMode : boolean := false;];
 
 	ADVersion1 :local [];
 	ADVersion2 :local [];
+	RefreshADSystem :local [];
 
 locals:
         mgi : widget;                -- Main Application Widget
@@ -204,7 +208,7 @@ rules:
 
         BuildDynamicComponents does
 
-          InitOptionMenu.option := top->GXDSystemMenu;
+          InitOptionMenu.option := top->ADSystemMenu;
           send(InitOptionMenu, 0);
 
 	end does;
@@ -327,7 +331,7 @@ rules:
                             parentKey + "," +
                             "@" + snkeyName + "," +
                             "@stagekey," +
-	                    top->GXDSystemMenu.menuHistory.defaultValue + "," +
+	                    top->ADSystemMenu.menuHistory.defaultValue + "," +
                             nullval + "," +   /* edinburgh key */
                             nullval + "," +   /* printName */
                              " 0, " +          /* treeDepth - set by trg */
@@ -584,9 +588,9 @@ rules:
           end if;
 
 	  -- anatomical system
-          if (top->GXDSystemMenu.menuHistory.modified and
-	      top->GXDSystemMenu.menuHistory.searchValue != "%") then
-            set := set + "_System_key = "  + top->GXDSystemMenu.menuHistory.defaultValue + ",";
+          if (top->ADSystemMenu.menuHistory.modified and
+	      top->ADSystemMenu.menuHistory.searchValue != "%") then
+            set := set + "_System_key = "  + top->ADSystemMenu.menuHistory.defaultValue + ",";
           end if;
 
 	  -- inherit system (if yes, then this is NOT a rollup term)
@@ -706,8 +710,8 @@ rules:
 		"\nand s._StructureName_key = sn._StructureName_key";
             end if;
 
-            if (top->GXDSystemMenu.menuHistory.searchValue != "%") then
-              where := where + "\nand s._System_key = "  + top->GXDSystemMenu.menuHistory.searchValue;
+            if (top->ADSystemMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand s._System_key = "  + top->ADSystemMenu.menuHistory.searchValue;
             end if;
 
             if (top->inheritSystemMenu.menuHistory.searchValue != "%" and top->inheritSystemMenu.sensitive) then
@@ -825,7 +829,7 @@ rules:
         end if;
 
         -- set the Anatomical System
-        SetOption.source_widget := top->GXDSystemMenu;
+        SetOption.source_widget := top->ADSystemMenu;
         SetOption.value := (string) (integer) structure_getSystemKey(structure);
         send(SetOption, 0);
 
@@ -979,6 +983,27 @@ rules:
        end while;
 
    end does;
+
+--
+-- RefreshADSystem
+--
+-- Execute the Python product that will refresh the AD System keys
+--
+--
+
+	RefreshADSystem does
+
+          top->WorkingDialog.messageString := "Re-freshing the AD System keys...";
+          top->WorkingDialog.managed := true;
+          XmUpdateDisplay(top->WorkingDialog);
+
+          PythonADSystemLoad.source_widget := top;
+          send(PythonADSystemLoad, 0);
+
+          top->WorkingDialog.managed := false;
+          XmUpdateDisplay(top->WorkingDialog);
+
+	end does;
 
 --
 -- Exit
