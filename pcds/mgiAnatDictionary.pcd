@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 10 07:41:59 2009";
+      lastWritten = "Thu Sep 10 11:24:41 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -238,6 +238,8 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   ADSystemMenu = ADSystemMenu : mgiOption;
+                                  Group: Widget
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = printStopMenu;
@@ -254,6 +256,7 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     subMenuId = inheritSystemPulldown;
                                     labelString = "Inherit System Term?";
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = ADSystemMenu;
@@ -770,13 +773,26 @@ Module: mgiAnatDictionary
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = mgiAliasTable;
-                        rightAttachment = attach_none;
+                        rightAttachment = attach_form;
                         topAttachment = attach_opposite_widget;
                         topWidget = mgiAliasTable;
                         bottomAttachment = attach_none;
                         resizable = true;
+                        rightOffset = 5;
                       Group: User
                         defaultOption = Yes;
+                    }
+                    {
+                      inheritSystemMenu = inheritSystemMenu : mgiAnatDictionary;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = mgiAliasTable;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = printStopMenu;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        rightOffset = 5;
                     }
               }
               {
@@ -832,6 +848,21 @@ Module: mgiAnatDictionary
               Popups:
               {
                 printStopPulldown : YesNoPulldown = OptionPulldown;
+              }
+        }
+        {
+          inheritSystemMenu = YesNoMenu : mgiOption;
+          Group: Widget
+            subMenuId = inheritSystemPulldown;
+            labelString = "Inherit System Term?";
+          Group: Control
+            vip_x = 177;
+            vip_y = 208;
+          Group: User
+            defaultOption = Yes;
+              Popups:
+              {
+                inheritSystemPulldown : YesNoPulldown = OptionPulldown;
               }
         }
 }

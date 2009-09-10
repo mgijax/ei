@@ -130,6 +130,9 @@ locals:
         -- list of "deleted" alias structurename keys
         delaliaskey_list : string_list;  
 
+	defaultStageKey : string;
+	defaultSystemKey : string;
+
 rules:
 
 --
@@ -245,6 +248,7 @@ rules:
 --
 
          AddDialog does
+
            if (not top.allowEdit) then
              return;
            end if;
@@ -272,6 +276,19 @@ rules:
            SetOption.value := YES;
            send(SetOption, 0);  
            addDialog->printStopPulldown->Yes.modified := true;
+
+           SetOption.source_widget := addDialog->inheritSystemMenu; 
+           SetOption.value := YES;
+           send(SetOption, 0);  
+           addDialog->inheritSystemPulldown->Yes.modified := true;
+
+	   -- set stage key
+	   defaultStageKey := 
+	     mgi_sql1("select _Stage_key from GXD_TheilerStage where stage = " + (string) current_stagenum );
+
+	   -- set system key = TS default
+	   defaultSystemKey := 
+	     mgi_sql1("select _defaultSystem_key from GXD_TheilerStage where _Stage_key = " + defaultStageKey);
 
            addDialog.managed := true;
          end does;
@@ -322,22 +339,17 @@ rules:
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
 
-          cmd := cmd + "declare @stagekey int\n";
-          cmd := cmd + "select @stagekey = _Stage_key from GXD_TheilerStage " + 
-                       "where stage = " + (string) current_stagenum + "\n";
-
-
           cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, "@" + skeyName) + 
                             parentKey + "," +
                             "@" + snkeyName + "," +
-                            "@stagekey," +
-	                    top->ADSystemMenu.menuHistory.defaultValue + "," +
+			    defaultStageKey + "," +
+	                    defaultSystemKey + "," +
                             nullval + "," +   /* edinburgh key */
                             nullval + "," +   /* printName */
-                             " 0, " +          /* treeDepth - set by trg */
+                            "0, " +           /* treeDepth - set by trg */
                             addDialog->printStopMenu.menuHistory.defaultValue + "," +
-			    "0," +	/* topoSort */
-			    top->inheritSystemMenu.menuHistory.defaultValue + "," +
+			    "0," +	     /* topoSort */
+			    addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    mgi_DBprstr(addDialog->structureNote->text.value) + ")\n";
 
           -- StructureName will be created for the preferred name
@@ -993,7 +1005,8 @@ rules:
 
 	RefreshADSystem does
 
-          top->WorkingDialog.messageString := "Re-freshing the AD System keys...";
+          top->WorkingDialog.messageString := "Re-freshing the AD System keys...\n" +
+		"Must select 'Clear Form and Stages' to re-cache the revised data.";
           top->WorkingDialog.managed := true;
           XmUpdateDisplay(top->WorkingDialog);
 
@@ -1031,6 +1044,8 @@ rules:
      top->ID.sensitive := false;
      top->edinburghKey.sensitive := false;
      top->printStopMenu.sensitive := false;
+     top->ADSystemMenu.sensitive := false;
+     top->inheritSystemMenu.sensitive := false;
      top->MGIAddedMenu.sensitive := false;
    end does;
 
@@ -1044,6 +1059,8 @@ rules:
      top->ID.sensitive := true;
      top->edinburghKey.sensitive := true;
      top->printStopMenu.sensitive := true;
+     top->ADSystemMenu.sensitive := true;
+     top->inheritSystemMenu.sensitive := true;
      top->MGIAddedMenu.sensitive := true;
    end does;
 
