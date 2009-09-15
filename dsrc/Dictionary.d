@@ -282,15 +282,23 @@ rules:
            send(SetOption, 0);  
            addDialog->inheritSystemPulldown->Yes.modified := true;
 
+	   -- set system key = user selection or TS default
+
+	   defaultSystemKey := 
+	     mgi_sql1("select _defaultSystem_key from GXD_TheilerStage where _Stage_key = " + defaultStageKey);
+
+           InitOptionMenu.option := addDialog->ADSystemMenu;
+           send(InitOptionMenu, 0);
+           SetOption.source_widget := addDialog->ADSystemMenu; 
+           SetOption.value := defaultSystemKey;
+           send(SetOption, 0);  
+
 	   -- set stage key
 	   defaultStageKey := 
 	     mgi_sql1("select _Stage_key from GXD_TheilerStage where stage = " + (string) current_stagenum );
 
-	   -- set system key = TS default
-	   defaultSystemKey := 
-	     mgi_sql1("select _defaultSystem_key from GXD_TheilerStage where _Stage_key = " + defaultStageKey);
-
            addDialog.managed := true;
+
          end does;
 
 --
@@ -343,7 +351,7 @@ rules:
                             parentKey + "," +
                             "@" + snkeyName + "," +
 			    defaultStageKey + "," +
-	                    defaultSystemKey + "," +
+			    addDialog->ADSystemMenu.menuHistory.defaultValue + "," +
                             nullval + "," +   /* edinburgh key */
                             nullval + "," +   /* printName */
                             "0, " +           /* treeDepth - set by trg */
