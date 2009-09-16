@@ -126,6 +126,7 @@ locals:
         clipboard : widget;      -- the clipboard list.
 
         addDialog : widget;      -- Add node dialog
+	isADSystem : boolean := false;
 
         -- list of "deleted" alias structurename keys
         delaliaskey_list : string_list;  
@@ -282,20 +283,24 @@ rules:
            send(SetOption, 0);  
            addDialog->inheritSystemPulldown->Yes.modified := true;
 
+	   -- set stage key
+	   defaultStageKey := 
+	     mgi_sql1("select _Stage_key from GXD_TheilerStage where stage = " + (string) current_stagenum );
+
 	   -- set system key = user selection or TS default
 
 	   defaultSystemKey := 
 	     mgi_sql1("select _defaultSystem_key from GXD_TheilerStage where _Stage_key = " + defaultStageKey);
 
-           InitOptionMenu.option := addDialog->ADSystemMenu;
-           send(InitOptionMenu, 0);
+	   if (not isADSystem) then
+             InitOptionMenu.option := addDialog->ADSystemMenu;
+             send(InitOptionMenu, 0);
+	     isADSystem := true;
+           end if;
+
            SetOption.source_widget := addDialog->ADSystemMenu; 
            SetOption.value := defaultSystemKey;
            send(SetOption, 0);  
-
-	   -- set stage key
-	   defaultStageKey := 
-	     mgi_sql1("select _Stage_key from GXD_TheilerStage where stage = " + (string) current_stagenum );
 
            addDialog.managed := true;
 
