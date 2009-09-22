@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec  09/22/2009
+--	- TR 9851; gene trap less filling; allow null markers
+--
 -- lec	10/08/2004
 --	- TR 6147; derived from SynTypeTableLib
 --
@@ -202,6 +205,10 @@ rules:
 	    alleleKey := mgi_tblGetCell(table, row, (integer) table.alleleKey[1]);
 	    qualifierKey := mgi_tblGetCell(table, row, table.qualifierKey);
  
+	    if (markerKey.length = 0) then
+	      markerKey := "NULL";
+	    end if;
+
 	    if (alleleKey.length = 0) then
 	      alleleKey := "NULL";
 	    end if;
