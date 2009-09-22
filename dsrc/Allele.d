@@ -136,6 +136,7 @@ locals:
 	clearLists : integer := 3;
 
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
+	modifyCache : boolean;
 
 	pendingStatusKey : string;
 	defaultQualifierKey : string;
@@ -384,6 +385,8 @@ rules:
 	  transRefs : integer := 0;
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
+
+	  modifyCache := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -660,7 +663,7 @@ rules:
 	  transRefs2 : integer := 0;
 	  mixedRefs : integer := 0;
 
-	  modifyCache : boolean := false;
+	  modifyCache := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -1028,6 +1031,11 @@ rules:
 	  ProcessNoteForm.tableID := MGI_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  send(ProcessNoteForm, 0);
+
+	  if (top->mgiNoteForm.sql.length > 0) then
+	    modifyCache := true;
+	  end if;
+
 	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  -- Modify Marker Description
