@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep  2 06:49:43 2009";
+      lastWritten = "Wed Sep 23 11:28:33 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8434,6 +8434,17 @@ Shift<Key>Tab: prev-tab-group()
                                     resizable = true;
                                     leftWidget = MixedMenu;
                                     leftOffset = 50;
+                                }
+                                {
+                                  mgiNoteDriverForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiNoteForm;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiNoteForm;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   notebookForm = notebookForm : mgiNoteBook;

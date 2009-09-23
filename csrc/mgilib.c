@@ -1367,6 +1367,9 @@ char *mgi_DBtable(int table)
     case MGI_NOTETYPE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_NoteType_Allele_View");
 	    break;
+    case MGI_NOTETYPE_ALLDRIVER_VIEW:
+	    strcpy(buf, "MGI_NoteType_AllDriver_View");
+	    break;
     case MGI_NOTETYPE_DERIVATION_VIEW:
 	    strcpy(buf, "MGI_NoteType_Derivation_View");
 	    break;

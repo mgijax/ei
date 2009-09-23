@@ -14,7 +14,7 @@
 -- History:
 --
 -- lec  09/22/2009
---	- TR 9851; gene trap less filling; allow null markers/alleles
+--	- TR 9851; gene trap less filling; allow null markers
 --
 -- lec	10/08/2004
 --	- TR 6147; derived from SynTypeTableLib

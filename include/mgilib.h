@@ -277,6 +277,7 @@ extern char *global_version;
 #define MGI_NOTETYPE_MARKER_VIEW        656
 #define MGI_NOTE_DERIVATION_VIEW        657
 #define MGI_NOTETYPE_DERIVATION_VIEW	658
+#define MGI_NOTETYPE_ALLDRIVER_VIEW	659
 
 /* Strains Tables */
 

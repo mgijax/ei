@@ -137,6 +137,7 @@ locals:
 
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
 	modifyCache : boolean;
+	modifyCacheCre : boolean;
 
 	pendingStatusKey : string;
 	defaultQualifierKey : string;
@@ -237,6 +238,10 @@ rules:
 
 	  InitNoteForm.notew := top->mgiNoteForm;
 	  InitNoteForm.tableID := MGI_NOTETYPE_ALLELE_VIEW;
+	  send(InitNoteForm, 0);
+
+	  InitNoteForm.notew := top->mgiNoteDriverForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_ALLDRIVER_VIEW;
 	  send(InitNoteForm, 0);
 
 	  -- Initialize Synonym table
@@ -387,6 +392,7 @@ rules:
 	  isMixed : integer := 0;
 
 	  modifyCache := false;
+	  modifyCacheCre := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -664,6 +670,7 @@ rules:
 	  mixedRefs : integer := 0;
 
 	  modifyCache := false;
+	  modifyCacheCre := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -938,7 +945,10 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + seqTable.sqlCmd;
 
-	  if ((cmd.length > 0 and cmd != accTable.sqlCmd and cmd != top->mgiNoteForm.sql) or
+	  if ((cmd.length > 0 
+	       and cmd != accTable.sqlCmd 
+	       and cmd != top->mgiNoteForm.sql
+	       and cmd != top->mgiNoteDriverForm.sql) or
 	      set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
 	  end if;
@@ -975,14 +985,21 @@ rules:
 	    PythonAlleleCombination.objectKey := currentRecordKey;
 	    send(PythonAlleleCombination, 0);
 
+--	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
+--	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
+--	    send(PythonMarkerOMIMCache, 0);
+
+	  end if;
+
+	  if (modifyCacheCre) then
+
+	    top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+	    XmUpdateDisplay(top->WorkingDialog);
+
             PythonAlleleCreCache.source_widget := top;
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYALLELE;
             PythonAlleleCreCache.objectKey := currentRecordKey;
             send(PythonAlleleCreCache, 0);
-
---	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
---	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
---	    send(PythonMarkerOMIMCache, 0);
 
 	  end if;
 
@@ -1031,19 +1048,23 @@ rules:
 	  ProcessNoteForm.tableID := MGI_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  send(ProcessNoteForm, 0);
-
-	  if (top->mgiNoteForm.sql.length > 0) then
-	    modifyCache := true;
-	  end if;
-
 	  cmd := cmd + top->mgiNoteForm.sql;
+
+	  ProcessNoteForm.notew := top->mgiNoteDriverForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  if (top->mgiNoteDriverForm.sql.length > 0) then
+	    modifyCacheCre := true;
+	  end if;
+	  cmd := cmd + top->mgiNoteDriverForm.sql;
 
 	  -- Modify Marker Description
 	  -- For now, we have only one Marker per Allele
 
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  if (markerKey != "NULL") then
-            if (top->mgiNoteForm.sql.length > 0) then
+            if (top->mgiNoteForm.sql.length > 0 or top->mgiNoteDriverForm.sql.length > 0) then
 		noteKeyDeclared := true;
 	    end if;
             ModifyNotes.source_widget := top->markerDescription->Note;
@@ -1715,6 +1736,18 @@ rules:
 	    i := i + 1;
 	  end while;
 
+	  i := 1;
+	  while (i <= top->mgiNoteDriverForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteDriverForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteDriverForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
+            SearchNoteForm.join := "a." + mgi_DBkey(ALL_ALLELE);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteDriverForm.sqlFrom;
+	    where := where + top->mgiNoteDriverForm.sqlWhere;
+	    i := i + 1;
+	  end while;
+
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "a";
 	  send(QueryModificationHistory, 0);
@@ -2132,6 +2165,11 @@ rules:
           send(LoadSynTypeTable, 0);
 
 	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
+
+	  LoadNoteForm.notew := top->mgiNoteDriverForm;
 	  LoadNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
 	  LoadNoteForm.objectKey := currentRecordKey;
 	  send(LoadNoteForm, 0);
