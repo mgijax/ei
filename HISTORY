@@ -1,3 +1,10 @@
+TAG: ei-4-3-0-39
+DATE: 09/24/2009
+STAFF: lec
+CHANGES:
+1) add logical DB "EUCOMM Gene Trap Cell Line":128 to Mutant Cell Line module
+   add logical DB "EUCOMM Gene Trap Sequence Tag":129 to Allele module
+
 TAG: ei-4-3-0-38
 DATE: 09/22/2009
 STAFF: lec
