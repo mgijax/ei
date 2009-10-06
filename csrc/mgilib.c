@@ -1367,6 +1367,9 @@ char *mgi_DBtable(int table)
     case MGI_NOTETYPE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_NoteType_Allele_View");
 	    break;
+    case MGI_NOTETYPE_ALLDRIVER_VIEW:
+	    strcpy(buf, "MGI_NoteType_AllDriver_View");
+	    break;
     case MGI_NOTETYPE_DERIVATION_VIEW:
 	    strcpy(buf, "MGI_NoteType_Derivation_View");
 	    break;
@@ -2036,7 +2039,7 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (_GelLane_key, _Structure_key)", mgi_DBtable(table));
 	    break;
     case GXD_STRUCTURE:
-	    sprintf(buf, "insert %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, edinburghKey, printName, treeDepth, printStop, topoSort, structureNote)", mgi_DBtable(table));
+	    sprintf(buf, "insert %s (_Structure_key, _Parent_key, _StructureName_key, _Stage_key, _System_key, edinburghKey, printName, treeDepth, printStop, topoSort, inheritSystem, structureNote)", mgi_DBtable(table));
 	    break;
     case GXD_STRUCTURENAME:
 	    sprintf(buf, "insert %s (_StructureName_key, _Structure_key, structure, mgiAdded)", mgi_DBtable(table));

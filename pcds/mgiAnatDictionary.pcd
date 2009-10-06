@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep  2 13:45:56 2009";
+      lastWritten = "Wed Sep 16 13:29:54 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -158,7 +158,7 @@ Module: mgiAnatDictionary
                                     resizable = true;
                                     leftWidget = structureText;
                                     topWidget = stagesText;
-                                    topOffset = 5;
+                                    topOffset = 40;
                                       {
                                         Table = mgiTable;
                                             {
@@ -237,7 +237,7 @@ Module: mgiAnatDictionary
                                     leftWidget = MGIAddedMenu;
                                 }
                                 {
-                                  GXDStructureSystemMenu = GXDStructureSystemMenu : mgiOption;
+                                  ADSystemMenu = ADSystemMenu : mgiOption;
                                   Group: Widget
                                     sensitive = False;
                                   Group: Constraint
@@ -250,13 +250,28 @@ Module: mgiAnatDictionary
                                     topWidget = printStopMenu;
                                     topOffset = 5;
                                     rightOffset = 5;
+                                }
+                                {
+                                  inheritSystemMenu = YesNoMenu : mgiOption;
+                                  Group: Widget
+                                    subMenuId = inheritSystemPulldown;
+                                    labelString = "Inherit System Term?";
+                                    sensitive = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = ADSystemMenu;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = ADSystemMenu;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    rightOffset = 5;
                                   Group: User
-                                    required = False;
+                                    defaultOption = Yes;
                                       Popups:
                                       {
-                                        GXDStructureSystemPulldown = OptionPulldown;
-                                        Group: Widget
-                                          sensitive = False;
+                                        inheritSystemPulldown : YesNoPulldown = OptionPulldown;
                                       }
                                 }
                                 {
@@ -452,6 +467,12 @@ Module: mgiAnatDictionary
                                   Group: Widget
                                     activateCallback = "D:ADVersion2";
                                     labelString = "Ontological Version";
+                                }
+                                {
+                                  RefreshADSystem = push : mgiDataTypes;
+                                  Group: Widget
+                                    activateCallback = "D:RefreshADSystem";
+                                    labelString = "Refresh AD System Terms";
                                 }
                                 {
                                   QueryList = QueryList;
@@ -752,13 +773,37 @@ Module: mgiAnatDictionary
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = mgiAliasTable;
-                        rightAttachment = attach_none;
+                        rightAttachment = attach_form;
                         topAttachment = attach_opposite_widget;
                         topWidget = mgiAliasTable;
                         bottomAttachment = attach_none;
                         resizable = true;
+                        rightOffset = 5;
                       Group: User
                         defaultOption = Yes;
+                    }
+                    {
+                      inheritSystemMenu = inheritSystemMenu : mgiAnatDictionary;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = mgiAliasTable;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = printStopMenu;
+                        bottomAttachment = attach_none;
+                        resizable = true;
+                        rightOffset = 5;
+                    }
+                    {
+                      ADSystemMenu = ADSystemMenu : mgiOption;
+                      Group: Constraint
+                        leftAttachment = attach_widget;
+                        leftWidget = mgiAliasTable;
+                        rightAttachment = attach_form;
+                        topAttachment = attach_widget;
+                        topWidget = inheritSystemMenu;
+                        bottomAttachment = attach_none;
+                        resizable = true;
                     }
               }
               {
@@ -814,6 +859,21 @@ Module: mgiAnatDictionary
               Popups:
               {
                 printStopPulldown : YesNoPulldown = OptionPulldown;
+              }
+        }
+        {
+          inheritSystemMenu = YesNoMenu : mgiOption;
+          Group: Widget
+            subMenuId = inheritSystemPulldown;
+            labelString = "Inherit System Term?";
+          Group: Control
+            vip_x = 177;
+            vip_y = 208;
+          Group: User
+            defaultOption = Yes;
+              Popups:
+              {
+                inheritSystemPulldown : YesNoPulldown = OptionPulldown;
               }
         }
 }

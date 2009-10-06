@@ -277,6 +277,7 @@ extern char *global_version;
 #define MGI_NOTETYPE_MARKER_VIEW        656
 #define MGI_NOTE_DERIVATION_VIEW        657
 #define MGI_NOTETYPE_DERIVATION_VIEW	658
+#define MGI_NOTETYPE_ALLDRIVER_VIEW	659
 
 /* Strains Tables */
 
@@ -355,6 +356,11 @@ extern char *global_version;
 #define EVENT_ALLELECOMB_BYALLELE	"1"
 #define EVENT_ALLELECOMB_BYMARKER	"2"
 #define EVENT_ALLELECOMB_BYGENOTYPE	"3"
+
+/* Allele Cre Cache Events */
+
+#define EVENT_ALLELECRE_BYALLELE	"1"
+#define EVENT_ALLELECRE_BYASSAY		"2"
 
 /* keys of Marker Status */
 

@@ -33,6 +33,8 @@ CALLS
      structure_getNotes("Structure *") : "char *";
      structure_getPrintStop("Structure *") : "Boolean";
      structure_getStage("Structure *") : "int";
+     structure_getSystemKey("Structure *") : "int";
+     structure_getInheritSystem("Structure *") : "int";
      structure_getAliases("Structure *", "Boolean", "xrtlist") : "xrtlist";
      structure_getStructureKey("Structure *") : "int";
      structure_getEdinburghKey("Structure *") : "int";
@@ -44,7 +46,6 @@ CALLS
      structurename_getName("StructureName *") : "char *"; 
      structurename_getStructureNameKey("StructureName *") : "int"; 
      structurename_getMgiAdded("StructureName *") : "Boolean";
-     structurename_getStructureSystemKey("StructureName *") : "char *";
 
      format_stagenum("int") : "char *";
 

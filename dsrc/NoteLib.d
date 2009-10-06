@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec 09/23/2009
+--	- TR 9797; added mgi_notetype_alldriver_view
+--
 -- lec 09/18/2003
 --	- TR 4579
 --
@@ -112,6 +115,7 @@ rules:
 	  k : integer;
 
 	  if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	      tableID = MGI_NOTETYPE_ALLDRIVER_VIEW or 
 	      tableID = MGI_NOTETYPE_DERIVATION_VIEW or 
 	      tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	      tableID = MGI_NOTETYPE_IMAGE_VIEW or 
@@ -154,6 +158,7 @@ rules:
 		x->Note.noteType := label;
 		x->Note.private := (integer) mgi_getstr(dbproc, 3);
 	        if (tableID = MGI_NOTETYPE_ALLELE_VIEW or 
+	            tableID = MGI_NOTETYPE_ALLDRIVER_VIEW or 
 	            tableID = MGI_NOTETYPE_DERIVATION_VIEW or 
 	            tableID = MGI_NOTETYPE_GENOTYPE_VIEW or 
 	            tableID = MGI_NOTETYPE_IMAGE_VIEW or 

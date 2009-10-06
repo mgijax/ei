@@ -1013,17 +1013,19 @@ void stagetree_AddStructures(StageTree *stagetree, char *smaxmod)
        dbbind(dbproc, 3, INTBIND, (DBINT) 0, 
               (BYTE *) &(tmpst._StructureName_key));
        dbbind(dbproc, 4, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._Stage_key));
-       dbbind(dbproc, 5, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.edinburghKey));
-       dbbind(dbproc, 6, STRINGBIND, (DBINT) 0, tmpst.printName);
-       dbbind(dbproc, 7, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.treeDepth));
-       dbbind(dbproc, 8, BITBIND, (DBINT) 0, (BYTE *) &(tmpst.printStop));
-       dbbind(dbproc, 9, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.topoSort));
-       dbbind(dbproc, 10, STRINGBIND, (DBINT) 0, tmpst.structureNote);
-       dbbind(dbproc, 11, DATETIMEBIND, (DBINT) 0, 
+       dbbind(dbproc, 5, INTBIND, (DBINT) 0, (BYTE *) &(tmpst._System_key));
+       dbbind(dbproc, 6, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.edinburghKey));
+       dbbind(dbproc, 7, STRINGBIND, (DBINT) 0, tmpst.printName);
+       dbbind(dbproc, 8, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.treeDepth));
+       dbbind(dbproc, 9, BITBIND, (DBINT) 0, (BYTE *) &(tmpst.printStop));
+       dbbind(dbproc, 10, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.topoSort));
+       dbbind(dbproc, 11, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.inheritSystem));
+       dbbind(dbproc, 12, STRINGBIND, (DBINT) 0, tmpst.structureNote);
+       dbbind(dbproc, 13, DATETIMEBIND, (DBINT) 0, 
               (BYTE *) &(tmpst.creation_date));
-       dbbind(dbproc, 12, DATETIMEBIND, (DBINT) 0, 
+       dbbind(dbproc, 14, DATETIMEBIND, (DBINT) 0, 
               (BYTE *) &(tmpst.modification_date));
-       dbbind(dbproc, 13, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
+       dbbind(dbproc, 15, INTBIND, (DBINT) 0, (BYTE *) &(tmpst.stage)); 
 
        /* iterate through the Structure results. */
        while (dbnextrow(dbproc) != NO_MORE_ROWS)
@@ -1219,6 +1221,16 @@ DBINT structure_getStageKey(Structure *structure)
     return structure->_Stage_key;
 }
 
+DBINT structure_getSystemKey(Structure *structure)
+{
+    return structure->_System_key;
+}
+
+DBINT structure_getInheritSystem(Structure *structure)
+{
+    return structure->inheritSystem;
+}
+
 DBINT structure_getEdinburghKey(Structure *structure)
 {
     return structure->edinburghKey; 
@@ -1323,12 +1335,6 @@ Boolean structurename_getMgiAdded(StructureName *stn)
 
 DBINT structurename_getStructureNameKey(StructureName *stn)
 {
-    return stn->_StructureName_key;
-}
-
-DBINT structurename_getStructureSystemKey(StructureName *stn)
-{
-    /*return stn->_System_key; */
     return stn->_StructureName_key;
 }
 

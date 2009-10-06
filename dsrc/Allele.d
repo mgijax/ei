@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 09/09/2009	lec
+--      - TR9797/call PythonAlleleCreCache from Add/Modify
+--
 -- 09/01/2009	lec
 --	TR9801/add creator/vector to derivation query
 --	TR9802/add Strain of Origin vs. Parent Strain
@@ -133,6 +136,8 @@ locals:
 	clearLists : integer := 3;
 
 	molecularNotesRequired : boolean;  -- Are Molecular Notes a required field for the edit?
+	modifyCache : boolean;
+	modifyCacheCre : boolean;
 
 	pendingStatusKey : string;
 	defaultQualifierKey : string;
@@ -233,6 +238,10 @@ rules:
 
 	  InitNoteForm.notew := top->mgiNoteForm;
 	  InitNoteForm.tableID := MGI_NOTETYPE_ALLELE_VIEW;
+	  send(InitNoteForm, 0);
+
+	  InitNoteForm.notew := top->mgiNoteDriverForm;
+	  InitNoteForm.tableID := MGI_NOTETYPE_ALLDRIVER_VIEW;
 	  send(InitNoteForm, 0);
 
 	  -- Initialize Synonym table
@@ -381,6 +390,9 @@ rules:
 	  transRefs : integer := 0;
 	  mixedRefs : integer := 0;
 	  isMixed : integer := 0;
+
+	  modifyCache := false;
+	  modifyCacheCre := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -657,6 +669,9 @@ rules:
 	  transRefs2 : integer := 0;
 	  mixedRefs : integer := 0;
 
+	  modifyCache := false;
+	  modifyCacheCre := false;
+
 	  if (not top.allowEdit) then
 	    return;
 	  end if;
@@ -873,6 +888,7 @@ rules:
 
 	  if (top->Symbol->text.modified) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
+	    modifyCache := true;
 	  end if;
 
 	  if (top->Name->text.value = "wild type" or top->Name->text.value = "wild-type") then
@@ -929,7 +945,10 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + seqTable.sqlCmd;
 
-	  if ((cmd.length > 0 and cmd != accTable.sqlCmd and cmd != top->mgiNoteForm.sql) or
+	  if ((cmd.length > 0 
+	       and cmd != accTable.sqlCmd 
+	       and cmd != top->mgiNoteForm.sql
+	       and cmd != top->mgiNoteDriverForm.sql) or
 	      set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(ALL_ALLELE, currentRecordKey, set);
 	  end if;
@@ -943,9 +962,6 @@ rules:
 	  ModifySQL.reselect := false;
 	  send(ModifySQL, 0);
 
-	  top->WorkingDialog.messageString := "Re-loading Cache Tables....";
-	  XmUpdateDisplay(top->WorkingDialog);
-
 	  if (cmd.length > 0) then
 	    cmd := "exec ALL_reloadLabel " + currentRecordKey + "\n" +
 		   "exec GXD_orderGenotypes " + currentRecordKey + "\n";
@@ -957,16 +973,35 @@ rules:
 	    send(ModifySQL, 0);
           end if;
 
-	  -- change this to ONLY call the cache tables if the SYMBOL is changed
+	  -- only update the cache tables if the SYMBOL is changed
 
-	  PythonAlleleCombination.source_widget := top;
-	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
-	  PythonAlleleCombination.objectKey := currentRecordKey;
-	  send(PythonAlleleCombination, 0);
+	  if (modifyCache) then
 
---	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
---	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
---	  send(PythonMarkerOMIMCache, 0);
+	    top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+	    XmUpdateDisplay(top->WorkingDialog);
+
+	    PythonAlleleCombination.source_widget := top;
+	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYALLELE;
+	    PythonAlleleCombination.objectKey := currentRecordKey;
+	    send(PythonAlleleCombination, 0);
+
+--	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYALLELE;
+--	    PythonMarkerOMIMCache.objectKey := currentRecordKey;
+--	    send(PythonMarkerOMIMCache, 0);
+
+	  end if;
+
+	  if (modifyCacheCre) then
+
+	    top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+	    XmUpdateDisplay(top->WorkingDialog);
+
+            PythonAlleleCreCache.source_widget := top;
+            PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYALLELE;
+            PythonAlleleCreCache.objectKey := currentRecordKey;
+            send(PythonAlleleCreCache, 0);
+
+	  end if;
 
 	  top->WorkingDialog.managed := false;
 	  XmUpdateDisplay(top->WorkingDialog);
@@ -1015,12 +1050,21 @@ rules:
 	  send(ProcessNoteForm, 0);
 	  cmd := cmd + top->mgiNoteForm.sql;
 
+	  ProcessNoteForm.notew := top->mgiNoteDriverForm;
+	  ProcessNoteForm.tableID := MGI_NOTE;
+	  ProcessNoteForm.objectKey := currentRecordKey;
+	  send(ProcessNoteForm, 0);
+	  if (top->mgiNoteDriverForm.sql.length > 0) then
+	    modifyCacheCre := true;
+	  end if;
+	  cmd := cmd + top->mgiNoteDriverForm.sql;
+
 	  -- Modify Marker Description
 	  -- For now, we have only one Marker per Allele
 
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  if (markerKey != "NULL") then
-            if (top->mgiNoteForm.sql.length > 0) then
+            if (top->mgiNoteForm.sql.length > 0 or top->mgiNoteDriverForm.sql.length > 0) then
 		noteKeyDeclared := true;
 	    end if;
             ModifyNotes.source_widget := top->markerDescription->Note;
@@ -1692,6 +1736,18 @@ rules:
 	    i := i + 1;
 	  end while;
 
+	  i := 1;
+	  while (i <= top->mgiNoteDriverForm.numChildren) do
+	    SearchNoteForm.notew := top->mgiNoteDriverForm;
+	    SearchNoteForm.noteTypeKey := top->mgiNoteDriverForm.child(i)->Note.noteTypeKey;
+	    SearchNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
+            SearchNoteForm.join := "a." + mgi_DBkey(ALL_ALLELE);
+	    send(SearchNoteForm, 0);
+	    from := from + top->mgiNoteDriverForm.sqlFrom;
+	    where := where + top->mgiNoteDriverForm.sqlWhere;
+	    i := i + 1;
+	  end while;
+
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "a";
 	  send(QueryModificationHistory, 0);
@@ -2109,6 +2165,11 @@ rules:
           send(LoadSynTypeTable, 0);
 
 	  LoadNoteForm.notew := top->mgiNoteForm;
+	  LoadNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
+	  LoadNoteForm.objectKey := currentRecordKey;
+	  send(LoadNoteForm, 0);
+
+	  LoadNoteForm.notew := top->mgiNoteDriverForm;
 	  LoadNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
 	  LoadNoteForm.objectKey := currentRecordKey;
 	  send(LoadNoteForm, 0);

@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec 09/09-09/10/2009
+--	- TR 9797; add RefreshADSystem.d, ADSystemMenu
+--
 -- lec 09/05/2006
 --	- TR 7889; make "Ingeborg's version" the default
 --
@@ -86,17 +89,18 @@ devents:
         ADClipboardAdd :local [];
         ADClipboardAddAll :local [];
 
-        DictionaryClear:local [clearLists : integer := 7;
+        DictionaryClear :local [clearLists : integer := 7;
 			       clearStages : boolean := false;
 			       reset : boolean := false;];
 
-        ModifyStructureText:local [field : widget; 
+        ModifyStructureText :local [field : widget; 
                                    skvariable : string := "";];
-        ModifyAliases:local [table : widget;
+        ModifyAliases :local [table : widget;
                              addStructureMode : boolean := false;];
 
 	ADVersion1 :local [];
 	ADVersion2 :local [];
+	RefreshADSystem :local [];
 
 locals:
         mgi : widget;                -- Main Application Widget
@@ -122,9 +126,13 @@ locals:
         clipboard : widget;      -- the clipboard list.
 
         addDialog : widget;      -- Add node dialog
+	isADSystem : boolean := false;
 
         -- list of "deleted" alias structurename keys
         delaliaskey_list : string_list;  
+
+	defaultStageKey : string;
+	defaultSystemKey : string;
 
 rules:
 
@@ -138,9 +146,6 @@ rules:
           current_structure := nil;
           treesLoaded := false;  -- no trees are loaded initially 
 
-          -- Build Dynamic GUI Components
-          send(BuildDynamicComponents, 0);
-
           -- register callbacks
           init_callbacks();
 
@@ -152,6 +157,10 @@ rules:
 
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
+
+          -- Build Dynamic GUI Components
+          send(BuildDynamicComponents, 0);
+
           top.show;
 
           send(Init, 0);
@@ -203,8 +212,8 @@ rules:
 
         BuildDynamicComponents does
 
-          --InitOptionMenu.option := top->GXDStructureSystemMenu;
-          --send(InitOptionMenu, 0);
+          InitOptionMenu.option := top->ADSystemMenu;
+          send(InitOptionMenu, 0);
 
 	end does;
 
@@ -240,6 +249,7 @@ rules:
 --
 
          AddDialog does
+
            if (not top.allowEdit) then
              return;
            end if;
@@ -268,7 +278,32 @@ rules:
            send(SetOption, 0);  
            addDialog->printStopPulldown->Yes.modified := true;
 
+           SetOption.source_widget := addDialog->inheritSystemMenu; 
+           SetOption.value := YES;
+           send(SetOption, 0);  
+           addDialog->inheritSystemPulldown->Yes.modified := true;
+
+	   -- set stage key
+	   defaultStageKey := 
+	     mgi_sql1("select _Stage_key from GXD_TheilerStage where stage = " + (string) current_stagenum );
+
+	   -- set system key = user selection or TS default
+
+	   defaultSystemKey := 
+	     mgi_sql1("select _defaultSystem_key from GXD_TheilerStage where _Stage_key = " + defaultStageKey);
+
+	   if (not isADSystem) then
+             InitOptionMenu.option := addDialog->ADSystemMenu;
+             send(InitOptionMenu, 0);
+	     isADSystem := true;
+           end if;
+
+           SetOption.source_widget := addDialog->ADSystemMenu; 
+           SetOption.value := defaultSystemKey;
+           send(SetOption, 0);  
+
            addDialog.managed := true;
+
          end does;
 
 --
@@ -317,21 +352,17 @@ rules:
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURE, NEWKEY, skeyName);
           cmd := cmd + mgi_setDBkey(GXD_STRUCTURENAME, NEWKEY, snkeyName);
 
-          cmd := cmd + "declare @stagekey int\n";
-          cmd := cmd + "select @stagekey = _Stage_key from GXD_TheilerStage " + 
-                       "where stage = " + (string) current_stagenum + "\n";
-
-	  --top->GXDStructureSystemMenu.menuHistory.defaultValue + "," +
-
           cmd := cmd + mgi_DBinsert(GXD_STRUCTURE, "@" + skeyName) + 
                             parentKey + "," +
                             "@" + snkeyName + "," +
-                            "@stagekey," +
+			    defaultStageKey + "," +
+			    addDialog->ADSystemMenu.menuHistory.defaultValue + "," +
                             nullval + "," +   /* edinburgh key */
                             nullval + "," +   /* printName */
-                             " 0, " +          /* treeDepth - set by trg */
+                            "0, " +           /* treeDepth - set by trg */
                             addDialog->printStopMenu.menuHistory.defaultValue + "," +
-			    "0," +	/* topoSort */
+			    "0," +	     /* topoSort */
+			    addDialog->inheritSystemMenu.menuHistory.defaultValue + "," +
 			    mgi_DBprstr(addDialog->structureNote->text.value) + ")\n";
 
           -- StructureName will be created for the preferred name
@@ -582,10 +613,17 @@ rules:
           end if;
 
 	  -- anatomical system
-          --if (top->GXDStructureSystemMenu.menuHistory.modified and
-	  --    top->GXDStructureSystemMenu.menuHistory.searchValue != "%") then
-          --  set := set + "_System_key = "  + top->GXDStructureSystemMenu.menuHistory.defaultValue + ",";
-          --end if;
+          if (top->ADSystemMenu.menuHistory.modified and
+	      top->ADSystemMenu.menuHistory.searchValue != "%") then
+            set := set + "_System_key = "  + top->ADSystemMenu.menuHistory.defaultValue + ",";
+          end if;
+
+	  -- inherit system (if yes, then this is NOT a rollup term)
+	  -- inherit system (if no, then this IS a rollup term)
+          if (top->inheritSystemMenu.menuHistory.modified and
+	      top->inheritSystemMenu.menuHistory.searchValue != "%") then
+            set := set + "inheritSystem = "  + top->inheritSystemMenu.menuHistory.defaultValue + ",";
+          end if;
 
           -- ignore Stage(s) query field.  The stage of a node is never modified once set.
 
@@ -697,9 +735,13 @@ rules:
 		"\nand s._StructureName_key = sn._StructureName_key";
             end if;
 
-            --if (top->GXDStructureSystemMenu.menuHistory.searchValue != "%") then
-            --  where := where + "\nand s._System_key = "  + top->GXDSructureSystemMenu.menuHistory.searchValue;
-            --end if;
+            if (top->ADSystemMenu.menuHistory.searchValue != "%") then
+              where := where + "\nand s._System_key = "  + top->ADSystemMenu.menuHistory.searchValue;
+            end if;
+
+            if (top->inheritSystemMenu.menuHistory.searchValue != "%" and top->inheritSystemMenu.sensitive) then
+              where := where + "\nand s.inheritSystem = "  + top->inheritSystemMenu.menuHistory.searchValue;
+            end if;
 
             -- structure note
 
@@ -748,6 +790,7 @@ rules:
 --
 
     Select does
+
         if (top->QueryList->List.selectedItemCount = 0) then
             current_structurekey := "";     
             top->QueryList->List.row := 0;
@@ -810,6 +853,16 @@ rules:
 	  end if;
         end if;
 
+        -- set the Anatomical System
+        SetOption.source_widget := top->ADSystemMenu;
+        SetOption.value := (string) (integer) structure_getSystemKey(structure);
+        send(SetOption, 0);
+
+	-- set the inherit system
+        SetOption.source_widget := top->inheritSystemMenu;
+        SetOption.value := (string) (integer) structure_getInheritSystem(structure);
+        send(SetOption, 0);
+
 	-- if Stage Node, we're done
         if (stagetrees_isStageNodeKey(structure_key)) then 
            return;
@@ -845,11 +898,6 @@ rules:
         SetOption.source_widget := top->MGIAddedMenu;
         SetOption.value := (string) (integer) structurename_getMgiAdded(preferredStructureName);
         send(SetOption, 0);
-
-        -- set the Anatomical System
-        --SetOption.source_widget := top->GXDStructureSystemMenu;
-        --SetOption.value := (string) (integer) structurename_getStructureSystemKey(preferredStructureName);
-        --send(SetOption, 0);
 
         -- get the aliases assoc. w/ the structure 
         mgiAliases := structure_getAliases(structure, true, createStructureNameList());
@@ -962,6 +1010,28 @@ rules:
    end does;
 
 --
+-- RefreshADSystem
+--
+-- Execute the Python product that will refresh the AD System keys
+--
+--
+
+	RefreshADSystem does
+
+          top->WorkingDialog.messageString := "Re-freshing the AD System keys...\n" +
+		"Must select 'Clear Form and Stages' to re-cache the revised data.";
+          top->WorkingDialog.managed := true;
+          XmUpdateDisplay(top->WorkingDialog);
+
+          PythonADSystemLoad.source_widget := top;
+          send(PythonADSystemLoad, 0);
+
+          top->WorkingDialog.managed := false;
+          XmUpdateDisplay(top->WorkingDialog);
+
+	end does;
+
+--
 -- Exit
 --
 -- Called to exit the application.
@@ -987,6 +1057,8 @@ rules:
      top->ID.sensitive := false;
      top->edinburghKey.sensitive := false;
      top->printStopMenu.sensitive := false;
+     top->ADSystemMenu.sensitive := false;
+     top->inheritSystemMenu.sensitive := false;
      top->MGIAddedMenu.sensitive := false;
    end does;
 
@@ -1000,6 +1072,8 @@ rules:
      top->ID.sensitive := true;
      top->edinburghKey.sensitive := true;
      top->printStopMenu.sensitive := true;
+     top->ADSystemMenu.sensitive := true;
+     top->inheritSystemMenu.sensitive := true;
      top->MGIAddedMenu.sensitive := true;
    end does;
 

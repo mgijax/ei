@@ -7,6 +7,10 @@
 --
 -- History
 --
+-- lec 09/23/2009
+--	- TR 9797/mgiNoteDriverForm
+--
+-- lec 10/24/2002
 -- lec	03/2005
 --	TR 4289, MPR
 --
@@ -158,9 +162,10 @@ rules:
 		  end if;
 		  clearForm.child(i).modified := false;
 
-		-- For mgiNoteForm
+		-- For mgiNoteForm, mgiNoteDriverForm
 
-		elsif (clearForm.child(i).name = "mgiNoteForm") then
+		elsif (clearForm.child(i).name = "mgiNoteForm"
+		       or clearForm.child(i).name = "mgiNoteDriverForm") then
 	          -- Clear/Set Notes
 	          ClearSetNoteForm.notew := clearForm.child(i);
 	          ClearSetNoteForm.clearNote := not Clear.reset;

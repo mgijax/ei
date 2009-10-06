@@ -8436,6 +8436,17 @@ Shift<Key>Tab: prev-tab-group()
                                     leftOffset = 50;
                                 }
                                 {
+                                  mgiNoteDriverForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = mgiNoteForm;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = mgiNoteForm;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                }
+                                {
                                   notebookForm = notebookForm : mgiNoteBook;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;

@@ -1,6 +1,11 @@
 --
 -- Name: PythonLib.d
 --
+-- 09/09/2009	lec
+--	- TR 9797
+--        PythonAlleleCreCache
+--	  PythonADSystemLoad
+--
 -- 06/17/2008	lec
 --	- TR 9057; Inferred From Cache; errors are printed
 --
@@ -30,31 +35,23 @@ dmodule PythonLib is
 rules:
 
 --
--- PythonMarkerOMIMCache
+-- PythonADSystemLoad
 --
--- Activated from:  Genotype module, Allele module, Marker module
--- after an update or Marker withdrawal
+-- Activated from:  Anatomical Dictionary module
 --
 
-	PythonMarkerOMIMCache does
-	  pythonevent : string := PythonMarkerOMIMCache.pythonevent;
-	  objectKey : string := PythonMarkerOMIMCache.objectKey;
+	PythonADSystemLoad does
+	  top : widget := PythonADSystemLoad.source_widget.root;
+	  dialog : widget := top->ReportDialog->Output;
 	  cmds : string_list := create string_list();
 	  buf : string;
 
-	  if (pythonevent = EVENT_OMIM_BYALLELE) then
-	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByAllele.py", cmds.count + 1);
-	  elsif (pythonevent = EVENT_OMIM_BYMARKER) then
-	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByMarker.py", cmds.count + 1);
-	  elsif (pythonevent = EVENT_OMIM_BYGENOTYPE) then
-	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py", cmds.count + 1);
-	  end if;
+	  cmds.insert(getenv("ADSYSTEMLOAD") + "/adsystemload.py", cmds.count + 1);
 
 	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
 	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
 	  cmds.insert("-U" + global_login, cmds.count + 1);
 	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
-	  cmds.insert("-K" + objectKey, cmds.count + 1);
 
 	  -- Write cmds to user log
 	  buf := "";
@@ -66,11 +63,16 @@ rules:
 	  (void) mgi_writeLog(buf);
 
 	  -- Execute
-          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerOMIMCacheEnd);
+	  dialog.value := "";
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog, PythonADSystemLoadEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
 	  end while;
+
+	  if (dialog.value.length > 0) then
+	      (void) mgi_writeLog(dialog.value);
+	  end if;
 
 	  tu_fork_free(proc_id);
 
@@ -131,6 +133,57 @@ rules:
 	end does;
 
 --
+-- PythonAlleleCreCache
+--
+-- Activated from:  Allele module, Assay module
+--
+
+	PythonAlleleCreCache does
+	  top : widget := PythonAlleleCreCache.source_widget.root;
+	  pythonevent : string := PythonAlleleCreCache.pythonevent;
+	  objectKey : string := PythonAlleleCreCache.objectKey;
+	  dialog : widget := top->ReportDialog->Output;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  if (pythonevent = EVENT_ALLELECRE_BYALLELE) then
+	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecrecacheByAllele.py", cmds.count + 1);
+	  elsif (pythonevent = EVENT_ALLELECRE_BYASSAY) then
+	    cmds.insert(getenv("ALLCACHELOAD") + "/allelecrecacheByAssay.py", cmds.count + 1);
+	  end if;
+
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+	  dialog.value := "";
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, dialog, PythonAlleleCreCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
+	  if (dialog.value.length > 0) then
+	      (void) mgi_writeLog(dialog.value);
+	  end if;
+
+	  tu_fork_free(proc_id);
+
+	end does;
+
+--
 -- PythonMarkerHomologyCache
 --
 -- Activated from:  Orthology module
@@ -161,6 +214,53 @@ rules:
 
 	  -- Execute
           proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerHomologyCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
+
+	  tu_fork_free(proc_id);
+
+	end does;
+
+--
+-- PythonMarkerOMIMCache
+--
+-- Activated from:  Genotype module, Allele module, Marker module
+-- after an update or Marker withdrawal
+--
+
+	PythonMarkerOMIMCache does
+	  pythonevent : string := PythonMarkerOMIMCache.pythonevent;
+	  objectKey : string := PythonMarkerOMIMCache.objectKey;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  if (pythonevent = EVENT_OMIM_BYALLELE) then
+	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByAllele.py", cmds.count + 1);
+	  elsif (pythonevent = EVENT_OMIM_BYMARKER) then
+	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByMarker.py", cmds.count + 1);
+	  elsif (pythonevent = EVENT_OMIM_BYGENOTYPE) then
+	    cmds.insert(getenv("MRKCACHELOAD") + "/mrkomimByGenotype.py", cmds.count + 1);
+	  end if;
+
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerOMIMCacheEnd);
 
 	  while (tu_fork_ok(proc_id)) do
 	    (void) keep_busy();
@@ -301,11 +401,11 @@ rules:
 	end does;
 
 --
--- PythonMarkerOMIMCacheEnd
+-- PythonADSystemLoadEnd
 --
 
-	PythonMarkerOMIMCacheEnd does
-	  (void) mgi_writeLog("OMIM Cache done.\n\n");
+	PythonADSystemLoadEnd does
+	  (void) mgi_writeLog("AD System Load done.\n\n");
 	end does;
 
 --
@@ -317,11 +417,27 @@ rules:
 	end does;
 
 --
+-- PythonAlleleCreCacheEnd
+--
+
+	PythonAlleleCreCacheEnd does
+	  (void) mgi_writeLog("Allele Cre Cache done.\n\n");
+	end does;
+
+--
 -- PythonMarkerHomologyCacheEnd
 --
 
 	PythonMarkerHomologyCacheEnd does
 	  (void) mgi_writeLog("Homology Cache done.\n\n");
+	end does;
+
+--
+-- PythonMarkerOMIMCacheEnd
+--
+
+	PythonMarkerOMIMCacheEnd does
+	  (void) mgi_writeLog("OMIM Cache done.\n\n");
 	end does;
 
 --
