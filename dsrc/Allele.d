@@ -12,8 +12,11 @@
 --
 -- History
 --
+-- 10/07/2009	lec
+--	TR9860/store original allele symbol
+--
 -- 09/09/2009	lec
---      - TR9797/call PythonAlleleCreCache from Add/Modify
+--      TR9797/call PythonAlleleCreCache from Add/Modify
 --
 -- 09/01/2009	lec
 --	TR9801/add creator/vector to derivation query
@@ -154,6 +157,8 @@ locals:
 	defaultCreatorKeyNS : string := "3982966";
 	defaultVectorKeyNS : string := "4311225";
 	defaultCellLineTypeKey : string := "3982968"; -- default is 63 ("Embryonic Stem Cell")
+
+	origAlleleSymbol : string;
 
 rules:
 
@@ -886,7 +891,7 @@ rules:
             set := set + "isExtinct = "  + top->ExtinctMenu.menuHistory.defaultValue + ",";
           end if;
 
-	  if (top->Symbol->text.modified) then
+	  if (top->Symbol->text.modified and top->Symbol->text.value != origAlleleSymbol) then
 	    set := set + "symbol = " + mgi_DBprstr(top->Symbol->text.value) + ",";
 	    modifyCache := true;
 	  end if;
@@ -1963,6 +1968,8 @@ rules:
         Select does
 	  table : widget;
 
+	  origAlleleSymbol := "";
+
 	  InitAcc.table := accTable;
           send(InitAcc, 0);
  
@@ -2035,6 +2042,7 @@ rules:
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Symbol->text.value       := mgi_getstr(dbproc, 8);
 	        top->Name->text.value         := mgi_getstr(dbproc, 9);
+		origAlleleSymbol := top->Symbol->text.value;
 
 		(void) mgi_tblSetCell(table, table.approvedBy, table.byDate, mgi_getstr(dbproc, 17));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 18));
