@@ -776,9 +776,14 @@ rules:
 	  top : widget := table.top;
 	  row : integer := VerifyAcc.row;
 	  column : integer := VerifyAcc.column;
+          reason : integer := VerifyAcc.reason;
 	  value : string := VerifyAcc.value;
 	  logicalKey : string := mgi_tblGetCell(table, row, table.logicalKey);
 	  isDuplicate : boolean := false;
+
+          if (reason = TBL_REASON_VALIDATE_CELL_END) then
+            return;
+          end if;
 
 	  if (column != table.accID) then
 	    return;
@@ -805,7 +810,7 @@ rules:
 
 	  if (isDuplicate) then
             StatusReport.source_widget := table.top;
-            StatusReport.message := "Duplicate. This Accession Number is already associated with this Object.\n\n" + value;
+            StatusReport.message := "Duplicate. This Accession ID is already associated with this Object.\n\n" + value;
             send(StatusReport);
 	  end if;
 
@@ -952,9 +957,13 @@ rules:
 	  top : widget := table.top;
 	  row : integer := VerifyAccSequence.row;
 	  column : integer := VerifyAccSequence.column;
+          reason : integer := VerifyAccSequence.reason;
 	  value : string := VerifyAccSequence.value;
 	  logicalKey : string := mgi_tblGetCell(table, row, table.logicalKey);
-	  dbproc : opaque;
+
+          if (reason = TBL_REASON_VALIDATE_CELL_END) then
+            return;
+          end if;
 
 	  if (column != table.accID) then
 	    return;
@@ -974,32 +983,11 @@ rules:
 	    return;
 	  end if;
 
-	  sequenceKey : string;
-	  accID : string;
+	  accID : string := mgi_sql1("select _Object_key, accID from " + mgi_DBaccTable(SEQ_SEQUENCE) +
+		" where _LogicalDB_key = " + logicalKey + " and accID = " + mgi_DBprstr(value));
 
-	  select : string :=
-		"select _Object_key, accID from " + mgi_DBaccTable(SEQ_SEQUENCE) +
-		" where _LogicalDB_key = " + logicalKey + " and accID = " + mgi_DBprstr(value);
-
-          dbproc := mgi_dbopen();
-          (void) dbcmd(dbproc, select);
-          (void) dbsqlexec(dbproc);
-          while (dbresults(dbproc) != NO_MORE_RESULTS) do
-            while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-              sequenceKey := mgi_getstr(dbproc, 1);
-              accID := mgi_getstr(dbproc, 2);
-            end while;
-          end while;
-          (void) dbclose(dbproc);
-
-	  if (accID.length > 0) then
-	    (void) mgi_tblSetCell(table, row, table.sequenceKey, sequenceKey);
-	    (void) mgi_tblSetCell(table, row, table.accID, accID);
-	    (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
-	  else
+	  if (accID.length = 0) then
 	    VerifyAccSequence.doit := (integer) false;
-	    (void) mgi_tblSetCell(table, row, table.sequenceKey, "NULL");
-	    (void) mgi_tblSetCell(table, row, table.accID, "");
 	    StatusReport.source_widget := top.root;
 	    StatusReport.message := "Invalid Sequence Accession ID";
 	    send(StatusReport);
@@ -1008,3 +996,4 @@ rules:
 	end does;
 
  end dmodule;
+

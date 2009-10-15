@@ -50,3 +50,4 @@ VerifyMGIAcc : translation [];
 
 -- Verify Sequence numbers in Accession Table
 VerifyAccSequence [];
+

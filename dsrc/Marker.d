@@ -14,6 +14,10 @@
 --
 -- History
 --
+-- 10/14/2009	lec
+--	TR 8070; VerifyMarkerAcc
+--      TR 8019; VerifyProblemNote
+--
 -- 10/07/2005	lec
 --	-- TR 6223; ModifyChromosome;add warning message 
 --
@@ -183,6 +187,9 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
+
+	VerifyMarkerAcc :local [];
+	VerifyProblemNote :local [];
 
 locals:
 	mgi : widget;
@@ -1801,6 +1808,129 @@ rules:
 	  end if;
 
         end does;
+
+--
+-- VerifyMarkerAcc
+--
+-- Verify accession id in AccessionReference->Table row for _MGIType_key = 2 (Markers)
+-- Verify if the accession id is already associated with another marker
+--
+
+	VerifyMarkerAcc does
+	  table : widget := VerifyMarkerAcc.source_widget;
+	  row : integer := VerifyMarkerAcc.row;
+	  column : integer := VerifyMarkerAcc.column;
+	  reason : integer := VerifyMarkerAcc.reason;
+	  value : string := VerifyMarkerAcc.value;
+	  logicalKey : string := mgi_tblGetCell(table, row, table.logicalKey);
+
+          if (reason = TBL_REASON_VALIDATE_CELL_END) then
+            return;
+          end if;
+
+	  if (column != table.accID) then
+	    return;
+	  end if;
+
+          -- If the Acc ID is null, do nothing
+ 
+          if (value.length = 0) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+            return;
+          end if;
+ 
+          if (logicalKey.length = 0) then
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Select an Acc Name and then choose 'Add Row' before entering a Sequence ID";
+	    send(StatusReport);
+	    return;
+	  end if;
+
+	  -- select statement
+
+	  accID : string := mgi_sql1("select accID from ACC_Accession " +
+				"where _MGIType_key = 2 " +
+				" and _LogicalDB_key = " + logicalKey + 
+				" and _Object_key != " + currentRecordKey +
+				" and accID = " + mgi_DBprstr(value));
+
+	  -- if the accession ID is already associated with another marker
+	  -- then print the error, edit is NOT allowed
+
+	  if (accID.length > 0) then
+	    VerifyMarkerAcc.doit := (integer) false;
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "This Accession ID is already associated with another marker\n\n" + value;
+	    send(StatusReport);
+	  end if;
+
+	end does;
+
+--
+-- VerifyProblemNote
+--
+-- Verify accession number in AccessionReference->Table row for _MGIType_key = 2 (Markers)
+-- Verify if the sequence accession id is associated with a problem clone (via its note)
+--
+
+	VerifyProblemNote does
+	  table : widget := VerifyProblemNote.source_widget;
+	  row : integer := VerifyProblemNote.row;
+	  column : integer := VerifyProblemNote.column;
+	  reason : integer := VerifyProblemNote.reason;
+	  value : string := VerifyProblemNote.value;
+	  logicalKey : string := mgi_tblGetCell(table, row, table.logicalKey);
+
+          if (reason = TBL_REASON_VALIDATE_CELL_END) then
+            return;
+          end if;
+
+	  if (column != table.accID) then
+	    return;
+	  end if;
+
+          -- If the Acc ID is null, do nothing
+ 
+          if (value.length = 0) then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+            return;
+          end if;
+ 
+          if (logicalKey.length = 0) then
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Select an Acc Name and then choose 'Add Row' before entering a Sequence ID";
+	    send(StatusReport);
+	    return;
+	  end if;
+
+	  -- If the Logical DB is not a nucleotide sequence (9), return
+	  if (logicalKey != "9") then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+            return;
+	  end if;
+
+	  -- select statement
+
+	  accID : string := mgi_sql1("select a.accID from PRB_Notes p, ACC_Accession a " +
+		" where p.note like '%staff have found evidence of artifact in the sequence of this molecular%' " +
+		" and p._Probe_key = a._Object_key " +
+		" and a._MGIType_key = 3 " +
+		" and a._LogicalDB_key = " + logicalKey +
+		" and a.accID = " + mgi_DBprstr(value));
+
+	  -- if the sequence accession ID is associated with a problem clone (via its note)
+	  -- then print the error, edit is allowed
+
+	  if (accID.length > 0) then
+	    --turn on to allow the edit
+	    --VerifyProblemNote.doit := (integer) false;
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "This Accession ID is curated as a problem sequence.\n" +
+		"Please review carefully whether this is a good sequence for the marker.\n\n" + value;
+	    send(StatusReport);
+	  end if;
+
+	end does;
 
 --
 -- Exit

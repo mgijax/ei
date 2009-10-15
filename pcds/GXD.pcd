@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 26 10:33:37 2009";
+      lastWritten = "Thu Oct 15 08:24:47 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -4672,6 +4672,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RegeneronOther = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MouseFunc = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;

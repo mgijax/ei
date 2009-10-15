@@ -1,3 +1,13 @@
+TAG: ei-4-3-1-?
+DATE: 10/14/2009
+STAFF: lec
+CHANGES:
+1) TR8070/Marker.d/VerifyMarkerAcc; add to Marker/verification callback
+2) TR8019/Marker.d/VerifyProblemNote; add to Marker/verification callback
+   the routines are added as part of the Cre release, but are not being called
+   by the callbacks...test these callbacks AFTER the Cre release
+3) added new logical dbs to mgiOption/MouseFunc (124) that are needed for Marker module
+
 TAG: ei-4-3-1-1
 DATE: 10/07/2009
 STAFF: lec

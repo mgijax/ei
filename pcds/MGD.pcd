@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 24 10:25:25 2009";
+      lastWritten = "Thu Oct 15 10:15:32 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8912,6 +8912,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     RegeneronOther = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MouseFunc = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9305,6 +9308,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RegeneronOther = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MouseFunc = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;
@@ -12980,6 +12986,8 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     HomoloGene = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     RIKENCluster = AccToggle : mgiOption;
@@ -13155,7 +13163,21 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     AllenBrainAtlas = AccToggle : mgiOption;
                                                     Group: Widget
-                                                      managed = False;
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    KOMPCSD = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    KOMPRegeneron = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RegeneronOther = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MouseFunc = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                             }
                                       }
@@ -14063,6 +14085,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     RegeneronOther = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    MouseFunc = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;
@@ -16175,9 +16200,33 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
