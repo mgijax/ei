@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct 15 13:17:25 2009";
+      lastWritten = "Thu Oct 15 13:47:59 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -37,7 +37,7 @@ Module: mgiAnatDictionary
                                       {
                                         Add = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:VerifyEdit(mode = 2),\nD:AddDisplay,\nD:GoHome";
+                                          activateCallback = "D:VerifyEdit(mode = 2),\nD:AddDialog,\nD:GoHome";
                                           accelerator = " ";
                                           sensitive = False;
                                       }

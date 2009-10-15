@@ -1594,21 +1594,26 @@ rules:
 	  cmd := "select _Marker_key, _Marker_Type_key, _Marker_Status_key, symbol, name, chromosome, " +
 		 "cytogeneticOffset, createdBy, creation_date, modifiedBy, modification_date " +
 		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
+
 	         "select source, str(offset,10,2) from MRK_Offset " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by source\n" +
+
 	         "select _Marker_Event_key, _Marker_EventReason_key, _History_key, sequenceNum, " +
 		 "name, event_display, event, eventReason, history, modifiedBy " +
 		 "from MRK_History_View " +
 		 "where _Marker_key = " + currentRecordKey +
 		 " order by sequenceNum, _History_key\n" +
+
 	         "select h.sequenceNum, h._Refs_key, b.jnum, b.short_citation " +
 		 "from MRK_History h, BIB_View b " +
 		 "where h._Marker_key = " + currentRecordKey +
 		 "and h._Refs_key = b._Refs_key " + 
 		 " order by h.sequenceNum, h._History_key\n" +
+
 	         "select _Current_key, current_symbol from MRK_Current_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
+
 	         "select _Alias_key, alias from MRK_Alias_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n";
 
