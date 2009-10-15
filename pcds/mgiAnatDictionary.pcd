@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 16 13:29:54 2009";
+      lastWritten = "Thu Oct 15 13:17:25 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -25,6 +25,23 @@ Module: mgiAnatDictionary
                           }
                           {
                             Commands = Commands : mgiMenu;
+                                Popups:
+                                {
+                                  CommandsPulldown = MenuPulldown : mgiMenu;
+                                      {
+                                        Search = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Modify = MenuPush : mgiMenu;
+                                      }
+                                      {
+                                        Add = MenuPush : mgiMenu;
+                                        Group: Widget
+                                          activateCallback = "D:VerifyEdit(mode = 2),\nD:AddDisplay,\nD:GoHome";
+                                          accelerator = " ";
+                                          sensitive = False;
+                                      }
+                                }
                           }
                           {
                             Edit = Edit;

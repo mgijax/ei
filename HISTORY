@@ -7,6 +7,10 @@ CHANGES:
    the routines are added as part of the Cre release, but are not being called
    by the callbacks...test these callbacks AFTER the Cre release
 3) added new logical dbs to mgiOption/MouseFunc (124) that are needed for Marker module
+4) mgiAnatDictionary:  turn off AD Commands->Add and the "ctrl-key-a"
+   it was calledin the Dictionary/Add instead of Dictionary/AddDialog
+   which was adding an bogus Stage structure
+   this has been fixed, but we'll still turn it off - just to be safe
 
 TAG: ei-4-3-1-1
 DATE: 10/07/2009
