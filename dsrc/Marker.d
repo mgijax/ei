@@ -14,6 +14,10 @@
 --
 -- History
 --
+-- 10/21/2009	lec
+--	MarkerWithdrawalEnd; check dialog->mgiMarker->ObjectID->text.value.length
+--	before calling python script
+--
 -- 10/14/2009	lec
 --	TR 8070; VerifyMarkerAcc
 --      TR 8019; VerifyProblemNote
@@ -766,17 +770,23 @@ rules:
 	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
 	  PythonAlleleCombination.objectKey := currentRecordKey;
 	  send(PythonAlleleCombination, 0);
-	  PythonAlleleCombination.source_widget := top;
-	  PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
-	  PythonAlleleCombination.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	  send(PythonAlleleCombination, 0);
+
+	  if (dialog->mgiMarker->ObjectID->text.value.length > 0) then
+	    PythonAlleleCombination.source_widget := top;
+	    PythonAlleleCombination.pythonevent := EVENT_ALLELECOMB_BYMARKER;
+	    PythonAlleleCombination.objectKey := dialog->mgiMarker->ObjectID->text.value;
+	    send(PythonAlleleCombination, 0);
+	  end if;
 
 	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
 	  PythonMarkerOMIMCache.objectKey := currentRecordKey;
 	  send(PythonMarkerOMIMCache, 0);
-	  PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
-	  PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
-	  send(PythonMarkerOMIMCache, 0);
+
+	  if (dialog->mgiMarker->ObjectID->text.value.length > 0) then
+	    PythonMarkerOMIMCache.pythonevent := EVENT_OMIM_BYMARKER;
+	    PythonMarkerOMIMCache.objectKey := dialog->mgiMarker->ObjectID->text.value;
+	    send(PythonMarkerOMIMCache, 0);
+	  end if;
 
 	  -- Query for records
 
