@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct 22 11:40:25 2009";
+      lastWritten = "Thu Oct 22 12:56:14 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9048,8 +9048,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AccSourceMenu = AccSourceMenu : mgiOption;
-                                        Group: Widget
-                                          managed = False;
                                             Popups:
                                             {
                                               AccSourcePulldown = OptionPulldown;
