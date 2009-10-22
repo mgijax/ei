@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct 15 14:28:06 2009";
+      lastWritten = "Thu Oct 22 11:40:25 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9033,6 +9033,8 @@ Shift<Key>Tab: prev-tab-group()
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
                                       {
                                         Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 3;
                                       }
                                       {
                                         Add = TablePush;
@@ -9314,6 +9316,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    KOMPCSDProject = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
