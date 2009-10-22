@@ -706,7 +706,7 @@ rules:
         AddProbePrep does
 	  add : string;
 
-	  # TR9560; remove 'coverage' (-1)
+	  -- TR9560; remove 'coverage' (-1)
 
 	  add := mgi_setDBkey(GXD_PROBEPREP, NEWKEY, probePrepLabel) +
 	         mgi_DBinsert(GXD_PROBEPREP, probePrepLabel) +
@@ -2480,7 +2480,7 @@ rules:
 		  send(SetOption, 0);
 	        elsif (probePrep) then
 
-		  # TR9560; remove 'coverage'
+		  -- TR9560; remove 'coverage'
 	          prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
 	          prepDetailForm->ProbeAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
 	          prepDetailForm->ProbeAccession->AccessionID->text.value := mgi_getstr(dbproc, 16);
