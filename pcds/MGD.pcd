@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct 15 10:15:32 2009";
+      lastWritten = "Thu Oct 15 14:28:06 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -11745,13 +11745,46 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  History = OrderedTable : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    leftOffset = 5;
+                                    rightAttachment = attach_form;
+                                    rightOffset = 2;
+                                    topAttachment = attach_widget;
+                                    topWidget = Current;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)(all 14 12)";
+                                          xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
+                                          xrtTblEditableSeries = "(all 0-6 False)";
+                                          xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 40)(all 8 255)(all 9-10 10)(all 11-13 255)";
+                                          xrtTblNumColumns = 15;
+                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
+                                          xrtTblTraversableSeries = "(all 0-6 False)";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
+                                          xrtTblVisibleRows = 5;
+                                          xrtTblAllowCellResize = resize_horizontal;
+                                          xrtTblEnterCellCallback = "D:SetOptions";
+                                        Group: User
+                                          saveTraversableSeries = "(all 0-6 False)";
+                                          saveEditableSeries = "(all 0-6 False)";
+                                          seqNum = 6;
+                                      }
+                                }
+                                {
                                   mgiNoteForm = mgiNoteForm : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
+                                    leftWidget = History;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = Name;
+                                    topWidget = History;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -11788,8 +11821,8 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblNumColumns = 11;
                                                       xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation,Modified By,Date";
                                                       userDefinedAttributes = "modifiedBy:Int=\"9\"\nmodifiedDate:Int=\"10\"\n";
-                                                      xrtTblNumRows = 25;
-                                                      xrtTblVisibleRows = 20;
+                                                      xrtTblNumRows = 20;
+                                                      xrtTblVisibleRows = 19;
                                                   }
                                                   {
                                                     Add = TablePush;
@@ -11988,40 +12021,14 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                             }
                                             {
-                                              History = OrderedTable : mgiTable;
-                                              Group: Constraint
-                                                resizable = true;
-                                                  {
-                                                    Table = mgiTable;
-                                                    Group: Widget
-                                                      xrtTblCharWidthSeries = "(all 0 1)(all 1 3)(all 6 3)(all 7 15)(all 8 20)(all 9-10 10)(all 11 20)(all 12 10)(all 13 15)(all 14 12)";
-                                                      xrtTblColumnLabels = "Mode,Current Order,Marker key,Ref key,Event key,Event Reason key,#,Symbol,Name,Date,J#,Citation,Event,Reason,Modified By";
-                                                      xrtTblEditableSeries = "(all 0-6 False)";
-                                                      xrtTblMaxLengthSeries = "(all 1-6 10)(all 7 40)(all 8 255)(all 9-10 10)(all 11-13 255)";
-                                                      xrtTblNumColumns = 15;
-                                                      xrtTblPixelWidthSeries = "(all 0-5 0)";
-                                                      xrtTblTraversableSeries = "(all 0-6 False)";
-                                                      xrtTblValidateCellCallback = "D:VerifyMarker(allowWithdrawn = true),\nD:VerifyReference,\nD:VerifyDate,\nD:CommitTableCellEdit";
-                                                      userDefinedAttributes = "markerKey:Int(Int)=\"2\"\nrefsKey:Int(Int)=\"3\"\nmarkerSymbol:Int(Int)=\"7\"\nmarkerName:Int(Int)=\"8\"\neventDate:Int(Int)=\"9\"\njnum:Int(Int)=\"10\"\ncitation:Int(Int)=\"11\"\nevent:Int(Int)=\"12\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int(Int)=\"1\"\ndate:Int(Int)=\"9\"\neventKey:Int(Int)=\"4\"\neventReasonKey:Int(Int)=\"5\"\neventReason:Int(Int)=\"13\"\nmodifiedBy:Int=\"14\"\n";
-                                                      xrtTblVisibleRows = 20;
-                                                      xrtTblAllowCellResize = resize_horizontal;
-                                                      xrtTblEnterCellCallback = "D:SetOptions";
-                                                      xrtTblNumRows = 25;
-                                                    Group: User
-                                                      saveTraversableSeries = "(all 0-6 False)";
-                                                      saveEditableSeries = "(all 0-6 False)";
-                                                      seqNum = 6;
-                                                  }
-                                            }
-                                            {
                                               Synonym = SynonymTypeTable : mgiTable;
                                               Group: Constraint
                                                 resizable = true;
                                                   {
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
-                                                      xrtTblNumRows = 25;
-                                                      xrtTblVisibleRows = 20;
+                                                      xrtTblNumRows = 20;
+                                                      xrtTblVisibleRows = 19;
                                                       xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 10)(all 5 40)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
                                                   }
                                                   {
@@ -12052,8 +12059,8 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       xrtTblPixelWidthSeries = "(all 0-5 0)";
                                                       xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 100)";
-                                                      xrtTblVisibleRows = 20;
-                                                      xrtTblNumRows = 25;
+                                                      xrtTblVisibleRows = 19;
+                                                      xrtTblNumRows = 20;
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
                                                       rightAttachment = attach_none;
@@ -12115,9 +12122,9 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblMaxLengthSeries = "(all 3 25)";
                                                       xrtTblTraversableSeries = "(all 0-2 False)";
                                                       userDefinedAttributes = "markerCurrentKey:Int(Int)=\"1\"\nmarkerKey:Int(Int)=\"2\"\nmarkerSymbol:Int(Int)=\"3\"\nmarkerChr:Int(Int)=\"-1\"\nmarkerColumns:Int=\"1\"\n";
-                                                      xrtTblVisibleRows = 20;
+                                                      xrtTblVisibleRows = 19;
                                                       xrtTblEditableSeries = "(all 0-2 False)";
-                                                      xrtTblNumRows = 25;
+                                                      xrtTblNumRows = 20;
                                                   }
                                             }
                                       }
@@ -16200,33 +16207,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
