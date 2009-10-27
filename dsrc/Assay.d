@@ -667,10 +667,10 @@ rules:
 	  PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	  send(PythonImageCache, 0);
 
-          PythonAlleleCreCache.source_widget := top;
-          PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
-          PythonAlleleCreCache.objectKey := currentAssay;
-          send(PythonAlleleCreCache, 0);
+          --PythonAlleleCreCache.source_widget := top;
+          --PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
+          --PythonAlleleCreCache.objectKey := currentAssay;
+          --send(PythonAlleleCreCache, 0);
 
           (void) reset_cursor(top);
 	end does;
@@ -1166,10 +1166,10 @@ rules:
 	  PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	  send(PythonImageCache, 0);
 
-          PythonAlleleCreCache.source_widget := top;
-          PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
-          PythonAlleleCreCache.objectKey := currentAssay;
-          send(PythonAlleleCreCache, 0);
+          --PythonAlleleCreCache.source_widget := top;
+          --PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
+          --PythonAlleleCreCache.objectKey := currentAssay;
+          --send(PythonAlleleCreCache, 0);
 
           if (top->QueryList->List.row = 0) then
             ClearAssay.clearKeys := false;
@@ -1411,10 +1411,10 @@ rules:
 	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	    send(PythonImageCache, 0);
 
-            PythonAlleleCreCache.source_widget := top;
-            PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
-            PythonAlleleCreCache.objectKey := currentAssay;
-            send(PythonAlleleCreCache, 0);
+            --PythonAlleleCreCache.source_widget := top;
+            --PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
+            --PythonAlleleCreCache.objectKey := currentAssay;
+            --send(PythonAlleleCreCache, 0);
 
 	    top->WorkingDialog.managed := false;
             XmUpdateDisplay(top->WorkingDialog);
