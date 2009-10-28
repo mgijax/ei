@@ -1060,6 +1060,7 @@ rules:
      top->ADSystemMenu.sensitive := false;
      top->inheritSystemMenu.sensitive := false;
      top->MGIAddedMenu.sensitive := false;
+     top->RefreshADSystem.sensitive := false;
    end does;
 
 --
@@ -1075,6 +1076,7 @@ rules:
      top->ADSystemMenu.sensitive := true;
      top->inheritSystemMenu.sensitive := true;
      top->MGIAddedMenu.sensitive := true;
+     top->RefreshADSystem.sensitive := true;
    end does;
 
 end dmodule;

@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 28 06:49:57 2009";
+      lastWritten = "Wed Oct 28 10:31:31 2009";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -486,16 +486,17 @@ Module: mgiAnatDictionary
                                     labelString = "Ontological Version";
                                 }
                                 {
-                                  QueryList = QueryList;
-                                }
-                                {
-                                  ADEditClipboard = ADEditClipboard : mgiAnatDictionary;
-                                }
-                                {
                                   RefreshADSystem = push : mgiDataTypes;
                                   Group: Widget
                                     activateCallback = "D:RefreshADSystem";
                                     labelString = "Refresh AD System Terms";
+                                    sensitive = False;
+                                }
+                                {
+                                  QueryList = QueryList;
+                                }
+                                {
+                                  ADEditClipboard = ADEditClipboard : mgiAnatDictionary;
                                 }
                           }
                     }
