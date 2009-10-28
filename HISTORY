@@ -1,3 +1,10 @@
+TAG: ei-4-3-1-12
+DATE: 10/28/2009
+STAFF: lec
+CHANGES:
+1) TR8070/Marker.d/VerifyMarkerAcc; add to Marker/verification callback
+2) TR8019/Marker.d/VerifyProblemNote; add to Marker/verification callback
+
 TAG: ei-4-3-1-11
 TAG: ei-4-3-1-10
 TAG: ei-4-3-1-9
