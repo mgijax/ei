@@ -735,7 +735,7 @@ rules:
 		"\nand s._StructureName_key = sn._StructureName_key";
             end if;
 
-            if (top->ADSystemMenu.menuHistory.searchValue != "%") then
+            if (top->ADSystemMenu.menuHistory.searchValue != "%" and top->ADSystemMenu.sensitive) then
               where := where + "\nand s._System_key = "  + top->ADSystemMenu.menuHistory.searchValue;
             end if;
 
