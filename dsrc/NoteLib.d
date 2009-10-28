@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 10/28/2009   lec
+--      TR9922/ProcessNoteForm.keyDeclared
+--
 -- lec 09/23/2009
 --	- TR 9797; added mgi_notetype_alldriver_view
 --
@@ -323,8 +326,8 @@ rules:
           notew : widget := ProcessNoteForm.notew;
 	  tableID : integer := ProcessNoteForm.tableID;
 	  objectKey : string := ProcessNoteForm.objectKey;
+	  keyDeclared : boolean := ProcessNoteForm.keyDeclared;
 	  textw : widget;
-	  keyDeclared : boolean := false;
 
 	  notew.sql := "";
 

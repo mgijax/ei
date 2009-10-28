@@ -27,7 +27,8 @@ LoadNoteForm [notew : widget;              -- mgiNoteForm widget
 -- Process NoteForm data from tableID for given objectKey
 ProcessNoteForm [notew : widget;              -- mgiNoteForm widget
                  tableID : integer;           -- ID of table
-                 objectKey : string;];        -- primary key of object to process
+                 objectKey : string;          -- primary key of object to process
+                 keyDeclared : boolean := false;];     -- key declared?
 
 -- Search NoteForm; construct SQL commands
 SearchNoteForm [notew : widget;              -- mgiNoteForm widget

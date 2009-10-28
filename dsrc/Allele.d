@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 10/28/2009	lec
+--	TR9922/ProcessNoteForm.keyDeclared
+--
 -- 10/07/2009	lec
 --	TR9860/store original allele symbol
 --
@@ -1053,14 +1056,19 @@ rules:
 	  ProcessNoteForm.tableID := MGI_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
 	  send(ProcessNoteForm, 0);
+	  if (top->mgiNoteForm.sql.length > 0) then
+	    noteKeyDeclared := true;
+	  end if;
 	  cmd := cmd + top->mgiNoteForm.sql;
 
 	  ProcessNoteForm.notew := top->mgiNoteDriverForm;
 	  ProcessNoteForm.tableID := MGI_NOTE;
 	  ProcessNoteForm.objectKey := currentRecordKey;
+	  ProcessNoteForm.keyDeclared := noteKeyDeclared;
 	  send(ProcessNoteForm, 0);
 	  if (top->mgiNoteDriverForm.sql.length > 0) then
 	    modifyCacheCre := true;
+	    noteKeyDeclared := true;
 	  end if;
 	  cmd := cmd + top->mgiNoteDriverForm.sql;
 
@@ -1069,9 +1077,6 @@ rules:
 
 	  markerKey : string := mgi_tblGetCell(markerTable, 0, markerTable.markerKey);
 	  if (markerKey != "NULL") then
-            if (top->mgiNoteForm.sql.length > 0 or top->mgiNoteDriverForm.sql.length > 0) then
-		noteKeyDeclared := true;
-	    end if;
             ModifyNotes.source_widget := top->markerDescription->Note;
             ModifyNotes.tableID := MRK_NOTES;
             ModifyNotes.key := markerKey;
