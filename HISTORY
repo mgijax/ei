@@ -1,3 +1,9 @@
+TAG: ei-4-3-1-9
+DATE: 10/28/2009
+STAFF: lec
+CHANGES:
+1) TR9922/Allele.d,NoteLib.d,NoteLib.de; add keyDeclared
+
 TAG: ei-4-3-1-8
 DATE: 10/28/2009
 STAFF: lec
