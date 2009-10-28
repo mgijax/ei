@@ -1402,24 +1402,24 @@ rules:
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
 
-          if (modifyCache) then
+          --if (modifyCache) then
 
-            top->WorkingDialog.messageString := "Re-loading Cache Tables....";
-	    top->WorkingDialog.managed := true;
-            XmUpdateDisplay(top->WorkingDialog);
+            --top->WorkingDialog.messageString := "Re-loading Cache Tables....";
+	    --top->WorkingDialog.managed := true;
+            --XmUpdateDisplay(top->WorkingDialog);
 
-	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	    send(PythonImageCache, 0);
+	    --PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	    --send(PythonImageCache, 0);
 
             --PythonAlleleCreCache.source_widget := top;
             --PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
             --PythonAlleleCreCache.objectKey := currentAssay;
             --send(PythonAlleleCreCache, 0);
 
-	    top->WorkingDialog.managed := false;
-            XmUpdateDisplay(top->WorkingDialog);
+	    --top->WorkingDialog.managed := false;
+            --XmUpdateDisplay(top->WorkingDialog);
 
-          end if;
+          --end if;
 
 	  (void) reset_cursor(top);
 	end does;
