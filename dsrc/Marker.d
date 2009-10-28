@@ -376,6 +376,7 @@ rules:
 	  send(Clear, 0);
 
 	  if (not ClearMarker.reset) then
+	    currentRecordKey := "";
 	    top->MarkerStatusMenu.background := "Wheat";
             top->MarkerStatusPulldown.background := "Wheat";
             top->MarkerStatusPulldown->SearchAll.background := "Wheat";
@@ -1844,6 +1845,10 @@ rules:
           end if;
 
 	  if (column != table.accID) then
+	    return;
+	  end if;
+
+	  if (currentRecordKey.length = 0) then
 	    return;
 	  end if;
 
