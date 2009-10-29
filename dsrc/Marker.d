@@ -1839,16 +1839,14 @@ rules:
 	  reason : integer := VerifyMarkerAcc.reason;
 	  value : string := VerifyMarkerAcc.value;
 	  logicalKey : string := mgi_tblGetCell(table, row, table.logicalKey);
+	  accID : string;
+	  isInvalid : string;
 
           if (reason = TBL_REASON_VALIDATE_CELL_END) then
             return;
           end if;
 
 	  if (column != table.accID) then
-	    return;
-	  end if;
-
-	  if (currentRecordKey.length = 0) then
 	    return;
 	  end if;
 
@@ -1866,19 +1864,47 @@ rules:
 	    return;
 	  end if;
 
-	  -- select statement
+	  -- If the Logical DB is not a nucleotide sequence (9), return
+	  if (logicalKey != "9") then
+            (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
+            return;
+	  end if;
 
-	  accID : string := mgi_sql1("select accID from ACC_Accession " +
+	  -- Check if the accession ID is in the right format
+	  -- edit is still allowed
+
+	  isInvalid := mgi_sql1("declare @isInvalid integer " +
+		   "select @isInvalid = 0 " +
+		   "if " +
+		   "(select " + mgi_DBprstr(value) + ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and " +
+		   "(select " + mgi_DBprstr(value) + ") not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' " +
+		   "begin select @isInvalid = 1 end select @isInvalid");
+
+	  if (isInvalid = "1") then
+	    --turn on to allow the edit
+	    --VerifyMarkerAcc.doit := (integer) false;
+	    StatusReport.source_widget := top.root;
+	    StatusReport.message := "Invalid Nucleotide Sequence Accession Number\n" +
+		    "Number must be single uppercase letter + 5 numbers OR 2 uppercase letters + 6 numbers.\n\n" + value;
+	    send(StatusReport);
+	  end if;
+
+	  -- Check if the accession ID is already associated with another marker
+	  -- edit is still allowed
+
+	  if (accID.length > 0) then
+	  if (currentRecordKey.length = 0) then
+	    return;
+	  end if;
+
+	  accID := mgi_sql1("select accID from ACC_Accession " +
 				"where _MGIType_key = 2 " +
 				" and _LogicalDB_key = " + logicalKey + 
 				" and _Object_key != " + currentRecordKey +
 				" and accID = " + mgi_DBprstr(value));
 
-	  -- if the accession ID is already associated with another marker
-	  -- then print the error, edit is NOT allowed
-
-	  if (accID.length > 0) then
-	    VerifyMarkerAcc.doit := (integer) false;
+	    --turn on to allow the edit
+	    --VerifyMarkerAcc.doit := (integer) false;
 	    StatusReport.source_widget := top.root;
 	    StatusReport.message := "This Accession ID is already associated with another marker\n\n" + value;
 	    send(StatusReport);
