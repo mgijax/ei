@@ -1829,7 +1829,9 @@ rules:
 -- VerifyMarkerAcc
 --
 -- Verify accession id in AccessionReference->Table row for _MGIType_key = 2 (Markers)
--- Verify if the accession id is already associated with another marker
+-- Verify for nucleotide (genbank) accession ids only
+--   Verify if the accession id format is valid
+--   Verify if the accession id is already associated with another marker
 --
 
 	VerifyMarkerAcc does
@@ -1871,12 +1873,11 @@ rules:
 	  end if;
 
 	  -- Check if the accession ID is in the right format
+	  -- see ACC_Accession_Insert trigger
 	  -- edit is still allowed
 
-	  isInvalid := mgi_sql1("declare @isInvalid integer " +
-		   "select @isInvalid = 0 " +
-		   "if " +
-		   "(select " + mgi_DBprstr(value) + ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and " +
+	  isInvalid := mgi_sql1("declare @isInvalid integer select @isInvalid = 0 " +
+		   "if (select " + mgi_DBprstr(value) + ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and " +
 		   "(select " + mgi_DBprstr(value) + ") not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' " +
 		   "begin select @isInvalid = 1 end select @isInvalid");
 
@@ -1884,15 +1885,15 @@ rules:
 	    --turn on to allow the edit
 	    --VerifyMarkerAcc.doit := (integer) false;
 	    StatusReport.source_widget := top.root;
-	    StatusReport.message := "Invalid Nucleotide Sequence Accession Number\n" +
-		    "Number must be single uppercase letter + 5 numbers OR 2 uppercase letters + 6 numbers.\n\n" + value;
+	    StatusReport.message := "Invalid Nucleotide Sequence Accession Number.\n" +
+		    "Number must be single uppercase letter + 5 numbers OR 2 uppercase letters + 6 numbers.\n\n" + 
+		    value;
 	    send(StatusReport);
 	  end if;
 
 	  -- Check if the accession ID is already associated with another marker
 	  -- edit is still allowed
 
-	  if (accID.length > 0) then
 	  if (currentRecordKey.length = 0) then
 	    return;
 	  end if;
@@ -1903,10 +1904,11 @@ rules:
 				" and _Object_key != " + currentRecordKey +
 				" and accID = " + mgi_DBprstr(value));
 
+	  if (accID.length > 0) then
 	    --turn on to allow the edit
 	    --VerifyMarkerAcc.doit := (integer) false;
 	    StatusReport.source_widget := top.root;
-	    StatusReport.message := "This Accession ID is already associated with another marker\n\n" + value;
+	    StatusReport.message := "This Accession ID is already associated with another marker.\n\n" + value;
 	    send(StatusReport);
 	  end if;
 
@@ -1916,7 +1918,8 @@ rules:
 -- VerifyProblemNote
 --
 -- Verify accession number in AccessionReference->Table row for _MGIType_key = 2 (Markers)
--- Verify if the sequence accession id is associated with a problem clone (via its note)
+-- Verify for nucleotide (genbank) accession ids only
+--   Verify if the sequence accession id is associated with a problem clone (via its note)
 --
 
 	VerifyProblemNote does
