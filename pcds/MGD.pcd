@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Oct 28 12:47:03 2009";
+      lastWritten = "Thu Oct 29 12:27:49 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -12853,7 +12853,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblValidateCellCallback = "D:VerifyMarkerAcc,\nD:VerifyProblemNote,\nD:VerifyAcc,\nD:VerifyReference,\nD:CommitTableCellEdit";
+                                          xrtTblValidateCellCallback = "D:VerifyMarkerAcc,\nD:VerifyAcc,\nD:VerifyReference,\nD:CommitTableCellEdit";
                                           xrtTblCharWidthSeries = "(all 0 1) (all 5 20) (all 6 20)(all 7 10)(all 8 40)(all 9 12)(all 10 10)";
                                           xrtTblNumColumns = 11;
                                           xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation,Modified By,Date";

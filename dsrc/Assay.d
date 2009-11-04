@@ -1403,10 +1403,7 @@ rules:
           send(ModifySQL, 0);
 
           if (modifyCache) then
-
-            --top->WorkingDialog.messageString := "Re-loading Cache Tables....";
-	    --top->WorkingDialog.managed := true;
-            --XmUpdateDisplay(top->WorkingDialog);
+	    -- don't show a working dialog...it drives the GXD folks crazy!
 
 	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	    send(PythonImageCache, 0);
@@ -1415,10 +1412,6 @@ rules:
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
             PythonAlleleCreCache.objectKey := currentAssay;
             send(PythonAlleleCreCache, 0);
-
-	    --top->WorkingDialog.managed := false;
-            --XmUpdateDisplay(top->WorkingDialog);
-
           end if;
 
 	  (void) reset_cursor(top);
