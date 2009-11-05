@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Oct 29 12:27:49 2009";
+      lastWritten = "Thu Nov  5 07:11:44 2009";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -8912,7 +8912,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     RegeneronOther = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MouseFunc = AccToggle : mgiOption;
+                                                    FuncBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;
@@ -9312,7 +9312,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     RegeneronOther = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MouseFunc = AccToggle : mgiOption;
+                                                    FuncBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;
@@ -13189,7 +13189,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     RegeneronOther = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MouseFunc = AccToggle : mgiOption;
+                                                    FuncBase = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -14101,7 +14101,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     RegeneronOther = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MouseFunc = AccToggle : mgiOption;
+                                                    FuncBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     KOMPRegeneronProject = AccToggle : mgiOption;

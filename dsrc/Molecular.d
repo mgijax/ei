@@ -329,6 +329,12 @@ rules:
           if (detailForm = top->MolDetailForm) then
 	    if (detailForm->SourceForm->SourceID->text.value.length = 0 or
 	        detailForm->SourceForm->SourceID->text.value = "-1") then
+
+	      --
+	      -- I think we should....
+	      -- set top->SourceSegmentTypeMenu.menuHistory.defaultValue 
+	      -- equal to  top->MolMasterForm->SegmentTypeMenu.menuHistory.defaultValue
+
               AddMolecularSource.source_widget := detailForm;
               AddMolecularSource.keyLabel := sourceKeyName;
               send(AddMolecularSource, 0);
