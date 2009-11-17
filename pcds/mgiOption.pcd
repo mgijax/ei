@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov  5 07:11:42 2009";
+      lastWritten = "Tue Nov 17 11:19:25 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -684,6 +684,41 @@ Module: mgiOption
                         labelString = "EUCOMM Gene Trap Sequence Tag";
                       Group: User
                         defaultValue = 129;
+                    }
+                    {
+                      ArrayExpress = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = ArrayExpress;
+                      Group: User
+                        defaultValue = 130;
+                    }
+                    {
+                      VEGATranscript = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "VEGA Transcript";
+                      Group: User
+                        defaultValue = 131;
+                    }
+                    {
+                      VEGAProtein = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "VEGA Protein";
+                      Group: User
+                        defaultValue = 132;
+                    }
+                    {
+                      EnsemblTranscript = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Ensembl Transcript";
+                      Group: User
+                        defaultValue = 133;
+                    }
+                    {
+                      EnsemblProtein = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Ensembl Protein";
+                      Group: User
+                        defaultValue = 134;
                     }
               }
         }
