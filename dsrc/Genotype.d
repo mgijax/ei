@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 12/16/2009	lec
+--	- TR9871/GXD_orderGenoytpesAll replaces GXD_orderGenotypes
+--
 -- 03/11/2009	lec
 --	- TR7493/Gene Trap Lite
 --
@@ -122,7 +125,6 @@ locals:
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
  
-	alleleList : string_list;
 	allelePairString : string;
 	alleleStateOK : boolean;
 	alleleCombinationOK : boolean;
@@ -211,8 +213,6 @@ rules:
 	    end if;
 	  end if;
 	
-	  alleleList := create string_list();
-
 	end does;
 
 --
@@ -527,7 +527,6 @@ rules:
 	  keyName := "allele" + KEYNAME;
 	  reorderingAlleles := true;
 	  allelePairString := "";
-	  alleleList.reset;
 
 	  -- Check for duplicate Seq # assignments
 
@@ -626,24 +625,10 @@ rules:
 	      reorderingAlleles := false;
             end if;
 
-	    -- keep track of list of alleles to process later
-
-	    if (ordergenotypes) then
-	      if (alleleKey1 != "NULL") then
-	        alleleList.insert(alleleKey1, alleleList.count + 1);
-	      end if;
-
-	      if (alleleKey2 != "NULL") then
-	        alleleList.insert(alleleKey2, alleleList.count + 1);
-	      end if;
-            end if;
-
             row := row + 1;
           end while;
 
 	  cmd := cmd + localCmd;
-	  alleleList.reduce;
-	  alleleList.rewind;
 
         end does;
 
@@ -723,15 +708,13 @@ rules:
 
 	  cmd := "";
 
-	  -- process distinct alleles
-	  while alleleList.more do
-	    cmd := cmd + "exec GXD_orderGenotypes " +  alleleList.next + "\n";
-	  end while;
-
 	  -- process auto re-ordering if not manually re-ordering
 	  if (not reorderingAlleles) then
 	    cmd := cmd + "exec GXD_orderAllelePairs " + top->ID->text.value + "\n";
 	  end if;
+
+	  -- refresh gxd_allelegenotype cache
+	  cmd := cmd + "exec GXD_orderGenotypesAll " + currentRecordKey + "\n";
 
 	  if (cmd.length > 0) then
 	    ExecSQL.cmd := cmd;
