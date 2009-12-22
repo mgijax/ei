@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Nov 17 11:19:25 2009";
+      lastWritten = "Tue Dec 22 07:46:18 2009";
       copy = false;
       inCreateMenu = true;
         {
@@ -719,6 +719,13 @@ Module: mgiOption
                         labelString = "Ensembl Protein";
                       Group: User
                         defaultValue = 134;
+                    }
+                    {
+                      ProteinOntology = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Protein Ontology";
+                      Group: User
+                        defaultValue = 135;
                     }
               }
         }
