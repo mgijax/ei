@@ -1,3 +1,10 @@
+TAG: ei-4-3-2-2
+DATE: 12/29/2009
+STAFF: lec
+CHANGES:
+1) TR9988/Molecular.d/added unionalias search
+2) TR10001/GXD.d; removed Alleles, Strains; added References
+
 TAG: ei-4-3-2-1
 DATE: 12/17/2009
 STAFF: lec

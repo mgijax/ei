@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  12/23/2009
+--	- cleaned up unionalias
+--
 -- lec  12/23/2004
 --	- TR 6438; don't clear newly added item after add
 --
@@ -89,6 +92,7 @@ locals:
 
 	cmd : string;
 	set : string;
+	select : string := "select distinct g._Antibody_key, g.antibodyName\n";
 	from : string;
 	where : string;
 	unionalias : string;
@@ -497,7 +501,6 @@ rules:
 	  from_alias : boolean := false;
 	  from_amarker : boolean := false;
 	  from_marker : boolean := false;
-	  query_name : boolean := false;
 
 	  from := "from " + mgi_DBtable(GXD_ANTIBODY) + " g";
 	  where := "";
@@ -529,7 +532,12 @@ rules:
           where := where + top->ModifiedDate.sql;
  
           if (top->Name->text.value.length > 0) then
-	    query_name := true;
+	    where := where + " and g.antibodyName like " + mgi_DBprstr(top->Name->text.value);
+
+	    -- union the antibody alias-es
+            unionalias := "\nunion\n" + select + from + "," + mgi_DBtable(GXD_ANTIBODYALIAS) + " aa" +
+                "\nwhere aa.alias like " + mgi_DBprstr(top->Name->text.value) +
+		"\nand g." + mgi_DBkey(GXD_ANTIBODY) + " = aa." + mgi_DBkey(GXD_ANTIBODY);
 	  end if;
 
           if (top->AntibodyTypeMenu.menuHistory.searchValue != "%") then
@@ -645,20 +653,6 @@ rules:
             where := where + " and m." + mgi_DBkey(MRK_MOUSE) + " = am." + mgi_DBkey(MRK_MOUSE);
 	  end if;
 
-	  -- Query both Name and Alias
-	  -- Not every Antibody has an Alias, so we have to do a union
-
-	  if (query_name) then
-            unionalias := from + "," + mgi_DBtable(GXD_ANTIBODYALIAS) + " aa\n";
-            unionalias := unionalias + " where (g.antibodyName like " + 
-		mgi_DBprstr(top->Name->text.value) +
-		" or aa.alias like " + mgi_DBprstr(top->Name->text.value) + ")" + where;
-            unionalias := unionalias + 
-		" and g." + mgi_DBkey(GXD_ANTIBODY) + " = aa." + mgi_DBkey(GXD_ANTIBODY);
-	    where := where + " and g.antibodyName like " + 
-		mgi_DBprstr(top->Name->text.value);
-	  end if;
-
 	  -- Chop off extra " and "
 
           if (where.length > 0) then
@@ -673,22 +667,11 @@ rules:
 --
 
 	Search does
-	  select : string;
 	  
           (void) busy_cursor(top);
 	  send(PrepareSearch, 0);
-
-	  select := "select distinct g._Antibody_key, g.antibodyName\n" + from + "\n" + where;
-
-	  if (unionalias != "") then
-	    select := select + "\nunion\n" +
-		"select distinct g._Antibody_key, g.antibodyName\n" + unionalias;
-	  end if;
-
-	  select := select + "\norder by g.antibodyName\n";
-
 	  Query.source_widget := top;
-	  Query.select := select;
+	  Query.select := select + from + "\n" + where + unionalias + "\norder by g.antibodyName\n";
 	  Query.table := GXD_ANTIBODY;
 	  send(Query, 0);
 	  (void) reset_cursor(top);

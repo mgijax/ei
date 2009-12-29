@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec  12/23/2009
+--	- TR 9988; add unionalias select
+--
 -- lec	01/18/2006
 --	- TR 7303; default Segment Type for primers
 --
@@ -137,8 +140,10 @@ locals:
 	detailForm : widget;
 
 	cmd : string;
+	select : string := "select distinct p._Probe_key, p.name\n";
 	from : string;
 	where : string;
+	unionalias : string;
 	sourceOptions : list;
 	prbTables : list;
 	refTables : list;
@@ -1055,6 +1060,7 @@ rules:
 
 	  from := "from " + mgi_DBtable(PRB_PROBE) + " p";
 	  where := "";
+	  unionalias := "";
 
 	  table : widget;
 
@@ -1093,6 +1099,14 @@ rules:
 
           if (top->MolMasterForm->Name->text.value.length > 0) then
 	    where := where + "\nand p.name like " + mgi_DBprstr(top->MolMasterForm->Name->text.value);
+
+	    -- union the probe alias-es
+            unionalias := "\nunion\n" + select + from + 
+		"," + mgi_DBtable(PRB_REFERENCE) + " r," + mgi_DBtable(PRB_ALIAS) + " ra" +
+                "\nwhere ra.alias like " + mgi_DBprstr(top->MolMasterForm->Name->text.value) +
+		"\nand p." + mgi_DBkey(PRB_PROBE) + " = r." + mgi_DBkey(PRB_PROBE) +
+		"\nand r." + mgi_DBkey(PRB_REFERENCE) + " = ra." + mgi_DBkey(PRB_REFERENCE);
+
 	  end if;
 
           if (top->MolMasterForm->Region->text.value.length > 0) then
@@ -1381,7 +1395,7 @@ rules:
 	  ClearList.source_widget := top->ReferenceList;
 	  send(ClearList, 0);
 	  Query.source_widget := top;
-	  Query.select := "select distinct p._Probe_key, p.name\n" + from + "\n" + where + "\norder by p.name\n";
+	  Query.select := select + from + "\n" + where + unionalias + "\norder by p.name\n";
 	  Query.table := PRB_PROBE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
