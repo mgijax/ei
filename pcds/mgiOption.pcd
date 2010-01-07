@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  6 10:48:11 2010";
+      lastWritten = "Thu Jan  7 10:20:29 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -730,7 +730,7 @@ Module: mgiOption
                     {
                       CCDS = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = CCDS;
+                        labelString = "Consensus CDS Project";
                       Group: User
                         defaultValue = 136;
                     }
