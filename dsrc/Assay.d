@@ -712,7 +712,7 @@ rules:
 	         mgi_DBinsert(GXD_PROBEPREP, probePrepLabel) +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "," +
 	         prepDetailForm->SenseMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",-1," +
+	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + "," +
 	         prepDetailForm->VisualizationMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
 
@@ -2476,8 +2476,8 @@ rules:
 		  -- TR9560; remove 'coverage'
 	          prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
 	          prepDetailForm->ProbeAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
-	          prepDetailForm->ProbeAccession->AccessionID->text.value := mgi_getstr(dbproc, 16);
-	          prepDetailForm->ProbeAccession->AccessionName->text.value := mgi_getstr(dbproc, 15);
+	          prepDetailForm->ProbeAccession->AccessionID->text.value := mgi_getstr(dbproc, 14);
+	          prepDetailForm->ProbeAccession->AccessionName->text.value := mgi_getstr(dbproc, 13);
 
 		  SetOption.source_widget := prepDetailForm->SenseMenu;
 		  SetOption.value := mgi_getstr(dbproc, 4);
@@ -2488,11 +2488,11 @@ rules:
 		  send(SetOption, 0);
 
 		  SetOption.source_widget := prepDetailForm->VisualizationMenu;
-		  SetOption.value := mgi_getstr(dbproc, 7);
+		  SetOption.value := mgi_getstr(dbproc, 6);
 		  send(SetOption, 0);
 
 		  SetOption.source_widget := prepDetailForm->PrepTypeMenu;
-		  SetOption.value := mgi_getstr(dbproc, 8);
+		  SetOption.value := mgi_getstr(dbproc, 7);
 		  send(SetOption, 0);
 	        end if;
 	      end while;
