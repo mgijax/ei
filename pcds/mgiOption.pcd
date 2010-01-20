@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan  7 10:20:29 2010";
+      lastWritten = "Wed Jan 20 10:30:02 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -1520,13 +1520,6 @@ Module: mgiOption
                         labelString = "Antibody/Probe Labels";
                       Group: User
                         dbTable = 302;
-                    }
-                    {
-                      ProbeLabelCoverage = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Probe Label Coverages";
-                      Group: User
-                        dbTable = 303;
                     }
                     {
                       ProbeSense = ControlledVocabToggle : mgiOption;
