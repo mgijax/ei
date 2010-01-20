@@ -1999,7 +1999,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_PROBEPREP:
-            sprintf(buf, "insert %s (%s, _Probe_key, _Sense_key, _Label_key, _Coverage_key, _Visualization_key, type)", 
+            sprintf(buf, "insert %s (%s, _Probe_key, _Sense_key, _Label_key, _Visualization_key, type)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_GENOTYPE:
