@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  6 10:48:23 2010";
+      lastWritten = "Thu Jan 21 13:41:54 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -514,26 +514,13 @@ Module: GXD
                                       }
                                 }
                                 {
-                                  mgiCitation = mgiCitation : mgiDataTypes;
-                                  Group: Widget
-                                    orientation = horizontal;
+                                  AntibodyTypeMenu = AntibodyTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Name;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  AntibodyTypeMenu = AntibodyTypeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = mgiCitation;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -791,7 +778,7 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblColumnLabels = "Mode, Key, Ref Key,  Alias, J:, Citation";
                                           xrtTblMaxLengthSeries = "(all 3 255) (all 4 10) (all 5 255)";
-                                          xrtTblCharWidthSeries = "(all 0 1) (all 3 20) (all 4 10) (all 5 35)";
+                                          xrtTblCharWidthSeries = "(all 0 1) (all 3 15) (all 4 10) (all 5 30)";
                                           userDefinedAttributes = "aliasKey:Int=\"1\"\nrefsKey:Int=\"2\"\nalias:Int=\"3\"\njnum:Int=\"4\"\ncitation:Int=\"5\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                                           xrtTblVisibleRows = 3;
@@ -799,6 +786,41 @@ Shift<Key>Tab: prev-tab-group()
                                               label = XtXrtLabel;
                                               Group: Widget
                                                 labelString = Aliases;
+                                            }
+                                      }
+                                }
+                                {
+                                  Reference = ReferenceTypeTable : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    leftWidget = Alias;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Alias;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    topOffset = 20;
+                                    rightOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 30)";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = Reference;
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Antibody_View order by assocType";
                                             }
                                       }
                                 }

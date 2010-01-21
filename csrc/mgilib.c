@@ -732,6 +732,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_RefAssocType_key");
 	    break;
     case MGI_REFERENCE_ALLELE_VIEW:
+    case MGI_REFERENCE_ANTIBODY_VIEW:
     case MGI_REFERENCE_MARKER_VIEW:
     case MGI_REFERENCE_NOMEN_VIEW:
     case MGI_REFERENCE_SEQUENCE_VIEW:
@@ -1430,6 +1431,9 @@ char *mgi_DBtable(int table)
     case MGI_REFERENCE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_Reference_Allele_View");
 	    break;
+    case MGI_REFERENCE_ANTIBODY_VIEW:
+	    strcpy(buf, "MGI_Reference_Antibody_View");
+	    break;
     case MGI_REFERENCE_MARKER_VIEW:
 	    strcpy(buf, "MGI_Reference_Marker_View");
 	    break;
@@ -1444,6 +1448,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_REFTYPE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_RefType_Allele_View");
+	    break;
+    case MGI_REFTYPE_ANTIBODY_VIEW:
+	    strcpy(buf, "MGI_RefType_Antibody_View");
 	    break;
     case MGI_REFTYPE_MARKER_VIEW:
 	    strcpy(buf, "MGI_RefType_Marker_View");

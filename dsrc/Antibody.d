@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	01/21/2010
+--	- TR8156/moved GXD_Antibody._Refs_key to MGI_Reference_Assoc table
+--
 -- lec  12/23/2009
 --	- cleaned up unionalias
 --
@@ -62,10 +65,8 @@ devents:
 	INITIALLY [parent : widget;
 		   launchedFrom : widget;];
 	Add :local [];
-
 	ClearAntibody :local [clearKeys : boolean := true;
 			      reset : boolean := false;];
-
 	Delete :local [];
 	DisplayAntigenSource : translation [];
 	Exit :local [];
@@ -158,6 +159,7 @@ rules:
 
 	  tables.append(top->Marker->Table);
 	  tables.append(top->Alias->Table);
+	  tables.append(top->Reference->Table);
 
 	  notes.append(top->AntibodyNote);
 	  notes.append(top->AntigenNote->Note);
@@ -173,6 +175,12 @@ rules:
           end while;
 	  options.close;
 				
+	  -- Initialize Reference table
+
+	  InitRefTypeTable.table := top->Reference->Table;
+	  InitRefTypeTable.tableID := MGI_REFTYPE_ANTIBODY_VIEW;
+	  send(InitRefTypeTable, 0);
+
 	end does;
 
 --
@@ -195,6 +203,15 @@ rules:
 	    send(SetNotesDisplay, 0);
 	  end while;
 	  notes.close;
+
+	  -- Initialize Reference table
+
+	  if (not ClearAntibody.reset) then
+	    InitRefTypeTable.table := top->Reference->Table;
+	    InitRefTypeTable.tableID := MGI_REFTYPE_ANTIBODY_VIEW;
+	    send(InitRefTypeTable, 0);
+	  end if;
+
 	end does;
 
 --
@@ -218,15 +235,8 @@ rules:
 	  currentRecordKey := "@" + KEYNAME;
 
           cmd := mgi_setDBkey(GXD_ANTIBODY, NEWKEY, KEYNAME) + 
-		 mgi_DBinsert(GXD_ANTIBODY, KEYNAME);
-
-	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
-            cmd := cmd + "NULL,";
-	  else
-            cmd := cmd + top->mgiCitation->ObjectID->text.value + ",";
-	  end if;
-
-          cmd := cmd + top->AntibodyClassMenu.menuHistory.defaultValue + "," +
+		 mgi_DBinsert(GXD_ANTIBODY, KEYNAME) +
+                 top->AntibodyClassMenu.menuHistory.defaultValue + "," +
                  top->AntibodyTypeMenu.menuHistory.defaultValue + "," +
                  top->AntibodyOrganismMenu.menuHistory.defaultValue + ",";
 
@@ -245,6 +255,13 @@ rules:
 
 	  send(ModifyAlias, 0);
 	  send(ModifyMarker, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
 	  -- Process any Accession numbers
 
@@ -320,10 +337,6 @@ rules:
             set := set + "antibodyName = " + mgi_DBprstr(top->Name->text.value) + ",";
           end if;
 
-          if (top->mgiCitation->ObjectID->text.modified) then
-            set := set + "_Refs_key = " + top->mgiCitation->ObjectID->text.value + ",";
-          end if;
-
           if (top->AntigenAccession->ObjectID->text.modified) then
             set := set + "_Antigen_key = " + top->AntigenAccession->ObjectID->text.value + ",";
           end if;
@@ -367,6 +380,13 @@ rules:
  
 	  send(ModifyAlias, 0);
 	  send(ModifyMarker, 0);
+
+	  --  Process References
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
 
           ProcessAcc.table := accTable;
           ProcessAcc.objectKey := currentRecordKey;
@@ -531,6 +551,13 @@ rules:
           send(QueryDate, 0);
           where := where + top->ModifiedDate.sql;
  
+	  SearchRefTypeTable.table := top->Reference->Table;
+	  SearchRefTypeTable.tableID := MGI_REFERENCE_ANTIBODY_VIEW;
+          SearchRefTypeTable.join := "g." + mgi_DBkey(GXD_ANTIBODY);
+	  send(SearchRefTypeTable, 0);
+	  from := from + top->Reference->Table.sqlFrom;
+	  where := where + top->Reference->Table.sqlWhere;
+
           if (top->Name->text.value.length > 0) then
 	    where := where + " and g.antibodyName like " + mgi_DBprstr(top->Name->text.value);
 
@@ -562,11 +589,6 @@ rules:
 		mgi_DBprstr(top->ImmunoMenu.menuHistory.searchValue);
           end if;
  
-          if (top->mgiCitation->ObjectID->text.value.length > 0 and
-	      top->mgiCitation->ObjectID->text.value != "NULL") then
-            where := where + " and g._Refs_key = " + top->mgiCitation->ObjectID->text.value;
-	  end if;
-
           if (top->AntigenAccession->ObjectID->text.value.length > 0) then
             where := where + " and g._Antigen_key = " + top->AntigenAccession->ObjectID->text.value;
 	  end if;
@@ -714,9 +736,6 @@ rules:
 
 	  -- Initialize optional text fields
 
-	  top->mgiCitation->ObjectID->text.value := "";
-	  top->mgiCitation->Jnum->text.value := "";
-	  top->mgiCitation->Citation->text.value := "";
 	  top->AntigenAccession->ObjectID->text.value := "";
 	  top->AntigenAccession->AccessionName->text.value := "";
 	  top->AntigenAccession->AccessionID->text.value := "";
@@ -729,7 +748,6 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from GXD_Antibody_View where _Antibody_key = " + currentRecordKey + "\n" +
-		 "select * from GXD_AntibodyRef_View where _Antibody_key = " + currentRecordKey + "\n" +
 		 "select _Antigen_key, _Source_key, antigenName, mgiID " +
 		 "from GXD_AntibodyAntigen_View where _Antibody_key = " + currentRecordKey + "\n" +
 		 "select _Marker_key, symbol, chromosome " +
@@ -760,44 +778,38 @@ rules:
 	      -- Required Antibody Information
 	      if (results = 1) then
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
-	        top->Name->text.value         := mgi_getstr(dbproc, 7);
-	        top->AntibodyNote->text.value := mgi_getstr(dbproc, 8);
-	        top->AntigenNote->text.value  := mgi_getstr(dbproc, 11);
+	        top->Name->text.value         := mgi_getstr(dbproc, 6);
+	        top->AntibodyNote->text.value := mgi_getstr(dbproc, 7);
+	        top->AntigenNote->text.value  := mgi_getstr(dbproc, 10);
 
                 SetOption.source_widget := top->AntibodyClassMenu;
-                SetOption.value := mgi_getstr(dbproc, 3);
+                SetOption.value := mgi_getstr(dbproc, 2);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->AntibodyTypeMenu;
-                SetOption.value := mgi_getstr(dbproc, 4);
+                SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->AntibodyOrganismMenu;
-                SetOption.value := mgi_getstr(dbproc, 5);
+                SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->WesternMenu;
-                SetOption.value := mgi_getstr(dbproc, 9);
+                SetOption.value := mgi_getstr(dbproc, 8);
                 send(SetOption, 0);
 
                 SetOption.source_widget := top->ImmunoMenu;
-                SetOption.value := mgi_getstr(dbproc, 10);
+                SetOption.value := mgi_getstr(dbproc, 9);
                 send(SetOption, 0);
 
 		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 23));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 14));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 24));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 15));
-
-	      -- Optional Antibody Reference
-	      elsif (results = 2) then
-	        top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 2);
-	        top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 4);
-	        top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 5);
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 14));
 
 	      -- Optional Antibody Antigen
-	      elsif (results = 3) then
+	      elsif (results = 2) then
 	        top->AntigenAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	        top->AntigenAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
 	        top->AntigenAccession->AccessionID->text.value := mgi_getstr(dbproc, 4);
@@ -806,7 +818,7 @@ rules:
 	        send(DisplayMolecularSource, 0);
 
 	      -- Optional Antibody Markers
-	      elsif (results = 4) then
+	      elsif (results = 3) then
           	table := top->Marker->Table;
 		(void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
@@ -815,7 +827,7 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      -- Optional Antibody Aliases
-	      elsif (results = 5) then
+	      elsif (results = 4) then
           	table := top->Alias->Table;
 		(void) mgi_tblSetCell(table, row, table.aliasKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(table, row, table.refsKey, mgi_getstr(dbproc, 2));
@@ -823,7 +835,7 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      -- Optional Antibody Alias References
-	      elsif (results = 6) then
+	      elsif (results = 5) then
           	table := top->Alias->Table;
 
 		-- Match up correct alias w/ correct Jnum values
@@ -855,6 +867,11 @@ rules:
           end while;
 
 	  (void) dbclose(dbproc);
+ 
+          LoadRefTypeTable.table := top->Reference->Table;
+	  LoadRefTypeTable.tableID := MGI_REFERENCE_ANTIBODY_VIEW;
+          LoadRefTypeTable.objectKey := currentRecordKey;
+          send(LoadRefTypeTable, 0);
  
           LoadAcc.table := accTable;
           LoadAcc.objectKey := currentRecordKey;
