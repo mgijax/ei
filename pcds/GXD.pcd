@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 26 08:04:35 2010";
+      lastWritten = "Tue Jan 26 08:56:14 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -775,7 +775,7 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 30)";
-                                          xrtTblNumRows = 20;
+                                          xrtTblNumRows = 50;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
