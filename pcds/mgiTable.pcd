@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  6 10:48:25 2010";
+      lastWritten = "Tue Jan 26 07:34:01 2010";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -938,6 +938,112 @@ Module: mgiTable
                         tableOption = 7;
                         tableOptionKey = 3;
                         tableForm = ImagePane;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+        }
+        {
+          ReferenceTypeTable1 = ReferenceTable;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 163;
+            vip_y = 848;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  userDefinedAttributes = "refsType:Int(Int)=\"5\"\nassocKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"-1\"\nrefsTypeKey:Int(Int)=\"3\"\nreviewKey:Int(Int)=\"4\"\nreview:Int(Int)=\"8\"\nuseDefaultRefType:Boolean(Boolean)=\"False\"\ndefaultRefType:String\n";
+                  xrtTblNumColumns = 9;
+                  xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Type key,Review key,Type,J#,Citation,Review?";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 60)";
+                  xrtTblMaxLengthSeries = "(all 7 255)";
+                  xrtTblPixelWidthSeries = "(all 0-4 0)(all 8 0)";
+                  xrtTblEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  xrtTblTraversableSeries = "(all 0-5 False)(all 7-8 False)";
+                Group: User
+                  citation = 7;
+                  jnum = 6;
+                  refsKey = 2;
+                  requiredColumns = "2\n3";
+                  refsType = 5;
+                  saveEditableSeries = "(all 0-5 False)(all 7-8 False)";
+                  saveTraversableSeries = "(all 0-5 False)(all 7-8 False)";
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        xrtLblBorderType = border_none;
+                        marginHeight = 0;
+                      Group: Constraint
+                        xrtTblLocation = location_top;
+                    }
+              }
+              {
+                AddRow = TablePush : mgiTable;
+                Group: Widget
+                  activateCallback = "D:AddRefTypeRow";
+                  labelString = "Add Ref Type";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = ReferenceTypeMenu;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = ReferenceTypeMenu;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  leftOffset = 5;
+                  topOffset = 2;
+              }
+              {
+                DeleteRow = TablePush : mgiTable;
+              }
+              {
+                ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 2;
+                    Popups:
+                    {
+                      ReferenceTypePulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableOption = 5;
+                        tableOptionKey = 3;
+                    }
+              }
+              {
+                ReviewMenu = YesNoMenu : mgiOption;
+                Group: Widget
+                  labelString = "Review?";
+                  subMenuId = ReviewPulldown;
+                  managed = False;
+                Group: Constraint
+                  leftAttachment = attach_none;
+                  rightAttachment = attach_opposite_widget;
+                  rightWidget = Table;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                Group: User
+                  defaultOption = No;
+                    Popups:
+                    {
+                      ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                      Group: User
+                        tableForm = Reference;
+                        tableOptionKey = 4;
+                        tableOption = 8;
                           {
                             SearchAll = SearchAll : mgiOption;
                             Group: Widget

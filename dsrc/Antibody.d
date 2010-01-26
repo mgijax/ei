@@ -83,6 +83,7 @@ locals:
 	top : widget;		-- Local Application Widget
 	ab : widget;
 	accTable : widget;	-- Accession Table Widget
+	refTable : widget;	-- Accession Table Widget
 
 	options : list;		-- List of Option Menus
 	tables : list;		-- List of Tables
@@ -165,6 +166,7 @@ rules:
 	  notes.append(top->AntigenNote->Note);
 
 	  accTable := top->mgiAccessionTable->Table;
+	  refTable := top->Reference->Table;
 
           -- Dynamically create option menus
 	   
@@ -223,6 +225,38 @@ rules:
 --
 
         Add does
+	  row : integer := 0;
+	  editMode : string;
+	  refsKey : string;
+	  refsType : string;
+	  primaryRefs : integer := 0;
+
+	  -- Verify References
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(refTable)) do
+	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
+
+	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
+	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
+
+	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      if (refsType = "Primary") then
+	        primaryRefs := primaryRefs + 1;
+	      end if;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  -- Primary; must have at most one reference
+	  if (primaryRefs != 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Primary Reference is required.";
+            send(StatusReport);
+	    --top->QueryList->List.sqlSuccessful := false;
+            return;
+	  end if;
 
           if (not top.allowEdit) then
             return;
@@ -323,6 +357,38 @@ rules:
 --
 
 	Modify does
+	  row : integer := 0;
+	  editMode : string;
+	  refsKey : string;
+	  refsType : string;
+	  primaryRefs : integer := 0;
+
+	  -- Verify References
+
+	  row := 0;
+	  while (row < mgi_tblNumRows(refTable)) do
+	    editMode := mgi_tblGetCell(refTable, row, refTable.editMode);
+
+	    refsKey :=  mgi_tblGetCell(refTable, row, refTable.refsKey);
+	    refsType :=  mgi_tblGetCell(refTable, row, refTable.refsType);
+
+	    if (refsKey != "NULL" and refsKey.length > 0 and editMode != TBL_ROW_DELETE) then
+	      if (refsType = "Primary") then
+	        primaryRefs := primaryRefs + 1;
+	      end if;
+	    end if;
+
+	    row := row + 1;
+	  end while;
+
+	  -- Primary; must have at most one reference
+	  if (primaryRefs != 1) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "At most one Primary Reference is required.";
+            send(StatusReport);
+	    --top->QueryList->List.sqlSuccessful := false;
+            return;
+	  end if;
 
           if (not top.allowEdit) then 
             return; 
