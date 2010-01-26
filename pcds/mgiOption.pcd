@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan  7 10:20:29 2010";
+      lastWritten = "Tue Jan 26 09:06:47 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -440,6 +440,11 @@ Module: mgiOption
                         defaultValue = 22;
                     }
                     {
+                      MMRRC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 38;
+                    }
+                    {
                       APF = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 90;
@@ -483,11 +488,6 @@ Module: mgiOption
                       MMHCC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 54;
-                    }
-                    {
-                      MMRRC = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 38;
                     }
                     {
                       MTG = AccToggle : mgiOption;

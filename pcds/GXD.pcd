@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  6 10:48:23 2010";
+      lastWritten = "Tue Jan 26 09:06:53 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -2921,6 +2921,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2946,9 +2949,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
