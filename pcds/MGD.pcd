@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  6 10:49:00 2010";
+      lastWritten = "Tue Jan 26 09:05:37 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -3463,6 +3463,9 @@ Module: MGD
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3488,9 +3491,6 @@ Module: MGD
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -8789,6 +8789,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -8814,9 +8817,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -9207,6 +9207,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9232,9 +9235,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -10229,6 +10229,11 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -10270,11 +10275,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -13062,6 +13062,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -13087,9 +13090,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -14019,6 +14019,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -14044,9 +14047,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -16261,9 +16261,33 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;

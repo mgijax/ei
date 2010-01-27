@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 26 08:56:14 2010";
+      lastWritten = "Tue Jan 26 14:34:02 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -761,6 +761,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   Reference = ReferenceTypeTable1 : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
@@ -775,7 +778,8 @@ Shift<Key>Tab: prev-tab-group()
                                         Table = mgiTable;
                                         Group: Widget
                                           xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 30)";
-                                          xrtTblNumRows = 50;
+                                          xrtTblNumRows = 10;
+                                          xrtTblImportDelimiter = 10;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -784,9 +788,19 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          labelString = "Add Row & Ref Type";
                                       }
                                       {
                                         DeleteRow = TablePush : mgiTable;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = AddRow;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = AddRow;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                       }
                                       {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
@@ -1152,7 +1166,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 1000;
             resizePolicy = resize_none;
           Group: Control
-            vip_x = 175;
+            vip_x = 60;
             vip_y = 250;
               {
                 Specimen = OrderedTableLabel : mgiTable;
@@ -1238,8 +1252,8 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_none;
             width = 1000;
           Group: Control
-            vip_x = 60;
-            vip_y = 195;
+            vip_x = 175;
+            vip_y = 140;
               {
                 ImagePaneList = LookupList : mgiLookup;
                 Group: Constraint
@@ -1414,7 +1428,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             title = "GXD Index";
           Group: Control
-            vip_x = 175;
+            vip_x = 60;
             vip_y = 140;
           Group: User
             homeWidget = Marker;
@@ -2947,6 +2961,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     JRS = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    MMRRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     APF = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -2972,9 +2989,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MMHCC = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -3140,8 +3154,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 305;
+            vip_x = 175;
+            vip_y = 250;
               {
                 PrepID : ID = ID;
               }
@@ -3260,7 +3274,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 175;
+            vip_x = 60;
             vip_y = 195;
               {
                 PrepID : ID = ID;
@@ -3352,8 +3366,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 250;
+            vip_x = 175;
+            vip_y = 195;
               {
                 ID = ID : mgiDataTypes;
               }
