@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	01/27/2010
+--	- TR 8156; AddAntibodyReference
+--
 -- lec	09/09/2009
 --	- TR9797/call PythonAlleleCreCache from Add/Modify
 --
@@ -241,6 +244,7 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [];
 	AddAntibodyPrep :local [];
+	AddAntibodyReference :local [];
 	AddProbePrep :local [];
 	AddProbeReference :local [];
 	AddToEditClipboard :local [];
@@ -337,6 +341,9 @@ locals:
 
 	ageMin : string := "NULL";
 	ageMax : string := "NULL";
+
+	mgiTypeKey : string := "6";
+	refsType : string := "Related";
 
 rules:
 
@@ -615,6 +622,12 @@ rules:
 
 	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
 
+	  -- Antibody Reference
+
+	  if (antibodyPrep) then
+	    send(AddAntibodyReference, 0);
+	  end if;
+
 	  -- Probe Reference
 
 	  if (probePrep) then
@@ -693,6 +706,23 @@ rules:
 	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ")\n";
 
 	  prepDetailForm.sql := add;
+	end
+
+--
+-- AddAntibodyReference
+--
+-- Constructs SQL insert for MGI_Reference_Assoc table
+--
+
+        AddAntibodyReference does
+
+	  -- TR 8156; new
+
+	  cmd := cmd + "execute MGI_insertReferenceAssoc " +
+		 mgiTypeKey + "," +
+	         prepDetailForm->AntibodyAccession->ObjectID->text.value + "," +
+	         top->mgiCitation->ObjectID->text.value + "," +
+	         refsType + "\n";
 	end
 
 --
@@ -1346,6 +1376,7 @@ rules:
 	  end if;
 
 	  if (antibodyPrep) then
+	    send(AddAntibodyReference, 0);
 	    send(ModifyAntibodyPrep, 0);
 	  elsif (probePrep) then
 	    send(AddProbeReference, 0);

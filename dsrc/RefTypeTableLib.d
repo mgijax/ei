@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec  01/26/2010
+--	- TR 8156; added ModifyRefTypeRow
+--
 -- lec  03/25/2009
 --	- TR 7493, gene trap lite
 --
@@ -163,6 +166,8 @@ rules:
 
 	  if (tableID = MGI_REFTYPE_ALLELE_VIEW) then
 	     orderBy := "\norder by _RefAssocType_key";
+	  elsif (tableID = MGI_REFTYPE_ANTIBODY_VIEW) then
+	     orderBy := "\norder by _RefAssocType_key, jnum";
 	  else
 	     orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
 	  end if;
