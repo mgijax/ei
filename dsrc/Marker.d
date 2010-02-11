@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 02/10/2010	lec
+--	- TR 9784/added 2nd reference type
+--
 -- 10/21/2009	lec
 --	MarkerWithdrawalEnd; check dialog->mgiMarker->ObjectID->text.value.length
 --	before calling python script
@@ -962,7 +965,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFTYPE_MARKER_VIEW;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
