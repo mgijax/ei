@@ -8,7 +8,7 @@
 -- History
 --
 -- lec 03/04/2010
---	- TR 10101/make "Deleted" Allele Status = red
+--	- TR 10101/ClearOption/make "Deleted" Allele Status = red
 --
 -- lec 09/23/2009
 --	- TR 9797/mgiNoteDriverForm
