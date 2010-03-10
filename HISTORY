@@ -1,3 +1,10 @@
+TAG: ei-tr9782-7
+DATE: 03/10/2010
+STAFF: lec
+CHANGES:
+1) Marker.d/Modify
+   only run MRK_reloadSequence if accession ids are edite
+
 TAG: ei-tr9782-6
 DATE: 03/04/2010
 STAFF: lec

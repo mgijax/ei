@@ -918,6 +918,7 @@ rules:
 	Modify does
 	  modifyName : boolean := false;
 	  modifySymbol : boolean := false;
+	  modifySequenceCache : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -997,6 +998,9 @@ rules:
           ProcessAcc.tableID := MRK_ACC_REFERENCE;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
+	  if (accRefTable.sqlCmd.length > 0) then
+	    modifySequenceCache := true;
+	  end if;
 
 	  --
 	  -- If modifying name, then also modify all corresponding History records
@@ -1023,9 +1027,14 @@ rules:
 
 	  if (cmd.length > 0) then
 	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
-		   "\nexec MRK_reloadReference " + currentRecordKey +
-		   "\nexec MRK_reloadSequence " + currentRecordKey +
-		   "\nexec MRK_reloadLocation " + currentRecordKey;
+		   "\nexec MRK_reloadReference " + currentRecordKey;
+
+            if (modifySequenceCache) then
+	      cmd := cmd + "\nexec MRK_reloadSequence " + currentRecordKey;
+	    end if;
+
+	    cmd := cmd + "\nexec MRK_reloadLocation " + currentRecordKey;
+
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := true;
