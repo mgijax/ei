@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 26 09:06:47 2010";
+      lastWritten = "Wed Feb 10 07:44:38 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -733,6 +733,13 @@ Module: mgiOption
                         labelString = "Consensus CDS Project";
                       Group: User
                         defaultValue = 136;
+                    }
+                    {
+                      NCBIGeneModelEvidence = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NCBI Gene Model Evidence";
+                      Group: User
+                        defaultValue = 139;
                     }
               }
         }
@@ -1520,13 +1527,6 @@ Module: mgiOption
                         labelString = "Antibody/Probe Labels";
                       Group: User
                         dbTable = 302;
-                    }
-                    {
-                      ProbeLabelCoverage = ControlledVocabToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Probe Label Coverages";
-                      Group: User
-                        dbTable = 303;
                     }
                     {
                       ProbeSense = ControlledVocabToggle : mgiOption;
