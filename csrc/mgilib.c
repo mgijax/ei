@@ -732,6 +732,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_RefAssocType_key");
 	    break;
     case MGI_REFERENCE_ALLELE_VIEW:
+    case MGI_REFERENCE_ANTIBODY_VIEW:
     case MGI_REFERENCE_MARKER_VIEW:
     case MGI_REFERENCE_NOMEN_VIEW:
     case MGI_REFERENCE_SEQUENCE_VIEW:
@@ -1430,6 +1431,9 @@ char *mgi_DBtable(int table)
     case MGI_REFERENCE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_Reference_Allele_View");
 	    break;
+    case MGI_REFERENCE_ANTIBODY_VIEW:
+	    strcpy(buf, "MGI_Reference_Antibody_View");
+	    break;
     case MGI_REFERENCE_MARKER_VIEW:
 	    strcpy(buf, "MGI_Reference_Marker_View");
 	    break;
@@ -1444,6 +1448,9 @@ char *mgi_DBtable(int table)
 	    break;
     case MGI_REFTYPE_ALLELE_VIEW:
 	    strcpy(buf, "MGI_RefType_Allele_View");
+	    break;
+    case MGI_REFTYPE_ANTIBODY_VIEW:
+	    strcpy(buf, "MGI_RefType_Antibody_View");
 	    break;
     case MGI_REFTYPE_MARKER_VIEW:
 	    strcpy(buf, "MGI_RefType_Marker_View");
@@ -1976,7 +1983,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case GXD_ANTIBODY:
-            sprintf(buf, "insert %s (%s, _Refs_key, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, _AntibodyClass_key, _AntibodyType_key, _Organism_key, _Antigen_key, antibodyName, antibodyNote, recogWestern, recogImmunPrecip, recogNote, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_ANTIBODYMARKER:
@@ -1999,7 +2006,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_PROBEPREP:
-            sprintf(buf, "insert %s (%s, _Probe_key, _Sense_key, _Label_key, _Coverage_key, _Visualization_key, type)", 
+            sprintf(buf, "insert %s (%s, _Probe_key, _Sense_key, _Label_key, _Visualization_key, type)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case GXD_GENOTYPE:

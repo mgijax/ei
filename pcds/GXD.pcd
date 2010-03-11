@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 26 09:06:53 2010";
+      lastWritten = "Wed Feb 10 07:44:46 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -514,26 +514,13 @@ Module: GXD
                                       }
                                 }
                                 {
-                                  mgiCitation = mgiCitation : mgiDataTypes;
-                                  Group: Widget
-                                    orientation = horizontal;
+                                  AntibodyTypeMenu = AntibodyTypeMenu : mgiOption;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
                                     topWidget = Name;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                }
-                                {
-                                  AntibodyTypeMenu = AntibodyTypeMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = mgiCitation;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = mgiCitation;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -773,17 +760,70 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Alias = TableLabel : mgiTable;
+                                  Reference = ReferenceTypeTable1 : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = CVAntibodyNote;
-                                    topOffset = 5;
                                     bottomAttachment = attach_form;
                                     resizable = true;
                                     leftOffset = 5;
+                                    topWidget = CVAntibodyNote;
+                                    topOffset = 5;
                                     bottomOffset = 5;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 30)";
+                                          xrtTblNumRows = 10;
+                                          xrtTblImportDelimiter = 10;
+                                            {
+                                              label = XtXrtLabel;
+                                              Group: Widget
+                                                labelString = Reference;
+                                            }
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Widget
+                                          labelString = "Add Row & Ref Type";
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = AddRow;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = AddRow;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                      {
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Antibody_View order by assocType";
+                                            }
+                                      }
+                                }
+                                {
+                                  Alias = TableLabel : mgiTable;
+                                  Group: Constraint
+                                    leftAttachment = attach_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_opposite_widget;
+                                    topWidget = Reference;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    leftWidget = Reference;
+                                    rightOffset = 5;
                                       {
                                         Table = mgiTable;
                                         Group: Widget
@@ -791,14 +831,14 @@ Shift<Key>Tab: prev-tab-group()
                                           xrtTblPixelWidthSeries = "(all 0-2 0)";
                                           xrtTblColumnLabels = "Mode, Key, Ref Key,  Alias, J:, Citation";
                                           xrtTblMaxLengthSeries = "(all 3 255) (all 4 10) (all 5 255)";
-                                          xrtTblCharWidthSeries = "(all 0 1) (all 3 20) (all 4 10) (all 5 35)";
+                                          xrtTblCharWidthSeries = "(all 0 1) (all 3 15) (all 4 10) (all 5 30)";
                                           userDefinedAttributes = "aliasKey:Int=\"1\"\nrefsKey:Int=\"2\"\nalias:Int=\"3\"\njnum:Int=\"4\"\ncitation:Int=\"5\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyReference,\nD:CommitTableCellEdit";
                                           xrtTblVisibleRows = 3;
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
-                                                labelString = Aliases;
+                                                labelString = Alias;
                                             }
                                       }
                                 }
@@ -829,12 +869,12 @@ Shift<Key>Tab: prev-tab-group()
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = AntibodyNote;
-                                    topOffset = 5;
+                                    topAttachment = attach_opposite_widget;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                    leftWidget = Alias;
+                                    leftWidget = CVAntibodyNote;
+                                    topWidget = CVAntibodyNote;
+                                    leftOffset = 55;
                                   Group: Control
                                     vipComment = "The XmRowColumn widget is a general purpose manager capable of containing any widget type as a child. In general, it requires no special knowledge about how its children function and provides nothing beyond support for several different layout styles. However, it can be configured as a menu, in which case, it expects only certain children, and it configures to a particular layout. The menus supported are XmMenuBar, XmPulldownMenu, XmPopupMenu, and XmOptionMenu.";
                                       {
@@ -1126,7 +1166,7 @@ Shift<Key>Tab: prev-tab-group()
             width = 1000;
             resizePolicy = resize_none;
           Group: Control
-            vip_x = 175;
+            vip_x = 60;
             vip_y = 250;
               {
                 Specimen = OrderedTableLabel : mgiTable;
@@ -1212,8 +1252,8 @@ Shift<Key>Tab: prev-tab-group()
             resizePolicy = resize_none;
             width = 1000;
           Group: Control
-            vip_x = 60;
-            vip_y = 195;
+            vip_x = 175;
+            vip_y = 140;
               {
                 ImagePaneList = LookupList : mgiLookup;
                 Group: Constraint
@@ -1388,7 +1428,7 @@ Shift<Key>Tab: prev-tab-group()
           Group: Widget
             title = "GXD Index";
           Group: Control
-            vip_x = 175;
+            vip_x = 60;
             vip_y = 140;
           Group: User
             homeWidget = Marker;
@@ -3114,8 +3154,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 305;
+            vip_x = 175;
+            vip_y = 250;
               {
                 PrepID : ID = ID;
               }
@@ -3234,7 +3274,7 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 175;
+            vip_x = 60;
             vip_y = 195;
               {
                 PrepID : ID = ID;
@@ -3326,8 +3366,8 @@ Shift<Key>Tab: prev-tab-group()
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 60;
-            vip_y = 250;
+            vip_x = 175;
+            vip_y = 195;
               {
                 ID = ID : mgiDataTypes;
               }

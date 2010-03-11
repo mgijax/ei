@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 26 09:06:52 2010";
+      lastWritten = "Wed Feb 10 10:49:53 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -12790,8 +12790,8 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblPixelWidthSeries = "(all 0-5 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 100)";
+                                          xrtTblPixelWidthSeries = "(all 0-4 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 25)(all 6 10)(all 7 80)";
                                         Group: Constraint
                                           leftAttachment = attach_form;
                                           rightAttachment = attach_none;
@@ -12800,21 +12800,17 @@ Shift<Key>Tab: prev-tab-group()
                                           resizable = true;
                                         Group: User
                                           requiredColumns = 2;
-                                          useDefaultRefType = True;
-                                          defaultRefType = General;
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;
                                         Group: Widget
                                           labelString = "Add Row";
-                                          activateCallback = "D:AddTableRow";
                                         Group: Constraint
-                                          leftAttachment = attach_opposite_widget;
-                                          leftWidget = Table;
+                                          leftAttachment = attach_widget;
+                                          leftWidget = ReferenceTypeMenu;
                                           rightAttachment = attach_none;
-                                          topAttachment = attach_widget;
-                                          topWidget = Table;
-                                          topOffset = 2;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = ReferenceTypeMenu;
                                           bottomAttachment = attach_none;
                                           resizable = true;
                                       }
@@ -12823,8 +12819,16 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                       {
                                         ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
-                                        Group: Widget
-                                          managed = False;
+                                        Group: Constraint
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
+                                          leftOffset = 5;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
@@ -13240,11 +13244,18 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       managed = True;
                                                   }
+                                                  {
+                                                    NCBIGeneModelEvidence = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
                                             }
                                       }
                                 }
                                 {
                                   mgiNoteForm = mgiNoteForm : mgiDataTypes;
+                                  Group: Widget
+                                    orientation = horizontal;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Name;

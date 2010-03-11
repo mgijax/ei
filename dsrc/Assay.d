@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec	01/27/2010
+--	- TR 8156; AddAntibodyReference
+--
 -- lec	09/09/2009
 --	- TR9797/call PythonAlleleCreCache from Add/Modify
 --
@@ -241,6 +244,7 @@ devents:
 		   launchedFrom : widget;];
 	Add :local [];
 	AddAntibodyPrep :local [];
+	AddAntibodyReference :local [];
 	AddProbePrep :local [];
 	AddProbeReference :local [];
 	AddToEditClipboard :local [];
@@ -337,6 +341,9 @@ locals:
 
 	ageMin : string := "NULL";
 	ageMax : string := "NULL";
+
+	mgiTypeKey : string := "6";
+	refsType : string := "Related";
 
 rules:
 
@@ -615,6 +622,12 @@ rules:
 
 	  cmd := cmd + global_loginKey + "," + global_loginKey + ")\n";
 
+	  -- Antibody Reference
+
+	  if (antibodyPrep) then
+	    send(AddAntibodyReference, 0);
+	  end if;
+
 	  -- Probe Reference
 
 	  if (probePrep) then
@@ -696,6 +709,23 @@ rules:
 	end
 
 --
+-- AddAntibodyReference
+--
+-- Constructs SQL insert for MGI_Reference_Assoc table
+--
+
+        AddAntibodyReference does
+
+	  -- TR 8156; new
+
+	  cmd := cmd + "execute MGI_insertReferenceAssoc " +
+		 mgiTypeKey + "," +
+	         prepDetailForm->AntibodyAccession->ObjectID->text.value + "," +
+	         top->mgiCitation->ObjectID->text.value + "," +
+	         refsType + "\n";
+	end
+
+--
 -- AddProbePrep
 --
 -- Constructs SQL insert for ProbePrep table
@@ -712,7 +742,7 @@ rules:
 	         mgi_DBinsert(GXD_PROBEPREP, probePrepLabel) +
 	         prepDetailForm->ProbeAccession->ObjectID->text.value + "," +
 	         prepDetailForm->SenseMenu.menuHistory.defaultValue + "," +
-	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + ",-1," +
+	         prepDetailForm->LabelTypeMenu.menuHistory.defaultValue + "," +
 	         prepDetailForm->VisualizationMenu.menuHistory.defaultValue + "," +
 		 mgi_DBprstr(prepDetailForm->PrepTypeMenu.menuHistory.defaultValue) + ")\n";
 
@@ -1346,6 +1376,7 @@ rules:
 	  end if;
 
 	  if (antibodyPrep) then
+	    send(AddAntibodyReference, 0);
 	    send(ModifyAntibodyPrep, 0);
 	  elsif (probePrep) then
 	    send(AddProbeReference, 0);
@@ -2476,8 +2507,8 @@ rules:
 		  -- TR9560; remove 'coverage'
 	          prepDetailForm->PrepID->text.value := mgi_getstr(dbproc, 2);
 	          prepDetailForm->ProbeAccession->ObjectID->text.value := mgi_getstr(dbproc, 3);
-	          prepDetailForm->ProbeAccession->AccessionID->text.value := mgi_getstr(dbproc, 16);
-	          prepDetailForm->ProbeAccession->AccessionName->text.value := mgi_getstr(dbproc, 15);
+	          prepDetailForm->ProbeAccession->AccessionID->text.value := mgi_getstr(dbproc, 14);
+	          prepDetailForm->ProbeAccession->AccessionName->text.value := mgi_getstr(dbproc, 13);
 
 		  SetOption.source_widget := prepDetailForm->SenseMenu;
 		  SetOption.value := mgi_getstr(dbproc, 4);
@@ -2488,11 +2519,11 @@ rules:
 		  send(SetOption, 0);
 
 		  SetOption.source_widget := prepDetailForm->VisualizationMenu;
-		  SetOption.value := mgi_getstr(dbproc, 7);
+		  SetOption.value := mgi_getstr(dbproc, 6);
 		  send(SetOption, 0);
 
 		  SetOption.source_widget := prepDetailForm->PrepTypeMenu;
-		  SetOption.value := mgi_getstr(dbproc, 8);
+		  SetOption.value := mgi_getstr(dbproc, 7);
 		  send(SetOption, 0);
 	        end if;
 	      end while;

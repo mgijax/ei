@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- lec 03/04/2010
+--	- TR 10101/ClearOption/make "Deleted" Allele Status = red
+--
 -- lec 09/23/2009
 --	- TR 9797/mgiNoteDriverForm
 --
@@ -389,6 +392,10 @@ rules:
 	    i := i + 1;
 	  end while;
 
+	  -- set back to original color
+          top.background := "Wheat";
+          top.menuHistory.background := "Wheat";
+
 	  -- If still no default, then use top.defaultOption (if set)
 
 	  if (default = nil and top.defaultOption != nil) then
@@ -402,6 +409,7 @@ rules:
 	  if (top.menuHistory != nil) then
 	    top.menuHistory.set := true;
 	  end if;
+
 	end does;
 
 --
@@ -831,6 +839,12 @@ rules:
 		  option.child(i).background := "Wheat";
 		  top.menuHistory.background := "Wheat";
   
+		  if (option.child(i).labelString = "Deleted") then
+		    top.background := "Red";
+		    option.background := "Red";
+		    option.child(i).background := "Red";
+		  end if;
+
 		  if (option.child(i).labelString = "Reserved") then
 		    top.background := "Yellow";
 		    option.background := "Yellow";

@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 02/10/2010	lec
+--	- TR 9784/added 2nd reference type
+--
 -- 10/21/2009	lec
 --	MarkerWithdrawalEnd; check dialog->mgiMarker->ObjectID->text.value.length
 --	before calling python script
@@ -915,6 +918,7 @@ rules:
 	Modify does
 	  modifyName : boolean := false;
 	  modifySymbol : boolean := false;
+	  modifySequenceCache : boolean := false;
 
 	  if (not top.allowEdit) then
 	    return;
@@ -962,7 +966,6 @@ rules:
 	  --  Process References
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
-	  ProcessRefTypeTable.tableID := MGI_REFTYPE_MARKER_VIEW;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
@@ -995,6 +998,9 @@ rules:
           ProcessAcc.tableID := MRK_ACC_REFERENCE;
           send(ProcessAcc, 0);
           cmd := cmd + accRefTable.sqlCmd;
+	  if (accRefTable.sqlCmd.length > 0) then
+	    modifySequenceCache := true;
+	  end if;
 
 	  --
 	  -- If modifying name, then also modify all corresponding History records
@@ -1021,9 +1027,14 @@ rules:
 
 	  if (cmd.length > 0) then
 	    cmd := "exec MRK_reloadLabel " + currentRecordKey +
-		   "\nexec MRK_reloadReference " + currentRecordKey +
-		   "\nexec MRK_reloadSequence " + currentRecordKey +
-		   "\nexec MRK_reloadLocation " + currentRecordKey;
+		   "\nexec MRK_reloadReference " + currentRecordKey;
+
+            if (modifySequenceCache) then
+	      cmd := cmd + "\nexec MRK_reloadSequence " + currentRecordKey;
+	    end if;
+
+	    cmd := cmd + "\nexec MRK_reloadLocation " + currentRecordKey;
+
 	    ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := true;

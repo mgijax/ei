@@ -387,7 +387,7 @@ rules:
             StatusReport.message := "Primary Reference Required.";
             send(StatusReport);
 	    top->QueryList->List.sqlSuccessful := false;
-           return;
+            return;
 	  end if;
 
 	  if (not top.allowEdit) then
