@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- lec  04/06/2010
+--	- TR 10148/remove unionalias select
+--
 -- lec  12/23/2009
 --	- TR 9988; add unionalias select
 --
@@ -1060,7 +1063,7 @@ rules:
 
 	  from := "from " + mgi_DBtable(PRB_PROBE) + " p";
 	  where := "";
-	  unionalias := "";
+	  --unionalias := "";
 
 	  table : widget;
 
@@ -1101,11 +1104,11 @@ rules:
 	    where := where + "\nand p.name like " + mgi_DBprstr(top->MolMasterForm->Name->text.value);
 
 	    -- union the probe alias-es
-            unionalias := "\nunion\n" + select + from + 
-		"," + mgi_DBtable(PRB_REFERENCE) + " r," + mgi_DBtable(PRB_ALIAS) + " ra" +
-                "\nwhere ra.alias like " + mgi_DBprstr(top->MolMasterForm->Name->text.value) +
-		"\nand p." + mgi_DBkey(PRB_PROBE) + " = r." + mgi_DBkey(PRB_PROBE) +
-		"\nand r." + mgi_DBkey(PRB_REFERENCE) + " = ra." + mgi_DBkey(PRB_REFERENCE);
+            --unionalias := "\nunion\n" + select + from + 
+	--	"," + mgi_DBtable(PRB_REFERENCE) + " r," + mgi_DBtable(PRB_ALIAS) + " ra" +
+        --       "\nwhere ra.alias like " + mgi_DBprstr(top->MolMasterForm->Name->text.value) +
+	--	"\nand p." + mgi_DBkey(PRB_PROBE) + " = r." + mgi_DBkey(PRB_PROBE) +
+	--	"\nand r." + mgi_DBkey(PRB_REFERENCE) + " = ra." + mgi_DBkey(PRB_REFERENCE);
 
 	  end if;
 
@@ -1395,7 +1398,7 @@ rules:
 	  ClearList.source_widget := top->ReferenceList;
 	  send(ClearList, 0);
 	  Query.source_widget := top;
-	  Query.select := select + from + "\n" + where + unionalias + "\norder by p.name\n";
+	  Query.select := select + from + "\n" + where + "\norder by p.name\n";
 	  Query.table := PRB_PROBE;
 	  send(Query, 0);
 	  (void) reset_cursor(top);
