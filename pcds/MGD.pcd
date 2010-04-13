@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Feb 10 10:49:53 2010";
+      lastWritten = "Tue Apr 13 08:48:27 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13246,6 +13246,16 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NCBIGeneModelEvidence = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    Affy430 = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    AffyU74 = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
