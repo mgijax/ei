@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Apr 13 08:47:44 2010";
+      lastWritten = "Wed May  5 11:02:07 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -52,7 +52,7 @@ Module: MGI
                               rightAttachment = attach_form;
                               rightOffset = 2;
                               topAttachment = attach_widget;
-                              topWidget = LoginDB;
+                              topWidget = LoginServer;
                               topOffset = 5;
                               bottomAttachment = attach_none;
                               resizable = true;
@@ -167,8 +167,8 @@ Module: MGI
             closeWindowCallback = "D:Exit";
             createCallback = "D:SetTitle";
           Group: Control
-            vip_x = 70;
-            vip_y = 30;
+            vip_x = 68;
+            vip_y = 32;
             vipComment = "TopLevelShell is used for normal top-level windows such as any additional top-level widgets an application needs.";
               {
                 MainForm = XmForm;
