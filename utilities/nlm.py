@@ -85,6 +85,9 @@
 #
 # History
 #
+#	lec	05/13/2010
+#	- TR10215; add _ModifiedBy_key = userKey for updates to BIB_Refs
+#
 #	lec	04/29/2008
 #	- TR8980 fix; only check PMID on isDuplicate
 #
@@ -599,7 +602,9 @@ def doUpdate(rec, rectags):
 		if rec.has_key('AB') and rec['AB'] != 'NULL':
 			update.append('abstract = %s' % rec['AB'])
 
-        	update.append('modification_date = getdate() where _Refs_key = %d' % refKey)
+        	update.append('_ModifiedBy_key = %s, ' % userKey + \
+			'modification_date = getdate() ' + \
+			'where _Refs_key = %d' % refKey)
 		cmd.append(string.join(update, ','))
 
 		# Add PubMed ID
