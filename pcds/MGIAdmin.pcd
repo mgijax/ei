@@ -2,7 +2,7 @@ Module: MGIAdmin
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jul 16 06:25:15 2009";
+      lastWritten = "Wed May 19 11:39:05 2010";
         {
           MGIAdmin = Application : MGI;
           Group: Control
@@ -394,63 +394,14 @@ Module: MGIAdmin
                                       }
                                 }
                                 {
-                                  LoginServer = LoginServer : mgiOption;
+                                  Name = CharText : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_form;
                                     leftOffset = 5;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_form;
-                                    topOffset = 10;
                                     bottomAttachment = attach_none;
                                     resizable = true;
-                                      Popups:
-                                      {
-                                        LoginServerPulldown = OptionPulldown;
-                                            {
-                                              Production = ServerToggle;
-                                              Group: Widget
-                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
-                                            }
-                                            {
-                                              Development = ServerToggle;
-                                              Group: Widget
-                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
-                                            }
-                                            {
-                                              Development1 = ServerToggle : mgiOption;
-                                            }
-                                            {
-                                              Development2 = ServerToggle : mgiOption;
-                                            }
-                                            {
-                                              Public = ServerToggle;
-                                              Group: Widget
-                                                valueChangedCallback = "D:NewServer,\nD:SetModify";
-                                            }
-                                      }
-                                }
-                                {
-                                  DatabaseMenu = DatabaseMenu : mgiOption;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftOffset = 25;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_opposite_widget;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = LoginServer;
-                                    topWidget = LoginServer;
-                                }
-                                {
-                                  Name = CharText : mgiDataTypes;
-                                  Group: Constraint
-                                    leftAttachment = attach_widget;
-                                    leftOffset = 25;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_form;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    leftWidget = DatabaseMenu;
                                     topOffset = 5;
                                       {
                                         label = XmLabel;
@@ -468,10 +419,10 @@ Module: MGIAdmin
                                   Description = Text : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
-                                    leftWidget = LoginServer;
+                                    leftWidget = Name;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = DatabaseMenu;
+                                    topWidget = Name;
                                     topOffset = 5;
                                     bottomAttachment = attach_none;
                                     resizable = true;

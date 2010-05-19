@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 11:02:03 2010";
+      lastWritten = "Wed May 19 11:39:21 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -955,81 +955,6 @@ Module: mgiOption
           Group: User
             searchValue = "Not Applicable";
             defaultValue = "Not Applicable";
-        }
-        {
-          LoginServer = OptionMenu;
-          Group: Widget
-            subMenuId = LoginServerPulldown;
-            labelString = Server;
-          Group: Control
-            vip_x = 105;
-            vip_y = 4320;
-              Popups:
-              {
-                LoginServerPulldown : OptionPulldown = OptionPulldown;
-                    {
-                      Production = ServerToggle : mgiOption;
-                      Group: User
-                        defaultValue = PROD_MGI;
-                        development = False;
-                    }
-                    {
-                      Development = ServerToggle : mgiOption;
-                      Group: User
-                        defaultValue = DEV_MGI;
-                    }
-                    {
-                      Development1 = ServerToggle : mgiOption;
-                      Group: User
-                        defaultValue = DEV1_MGI;
-                    }
-                    {
-                      Development2 = ServerToggle : mgiOption;
-                      Group: User
-                        defaultValue = DEV2_MGI;
-                    }
-                    {
-                      Public = ServerToggle : mgiOption;
-                      Group: User
-                        defaultValue = PUB_MGI;
-                        development = False;
-                    }
-              }
-        }
-        {
-          LoginDB = OptionMenu;
-          Group: Widget
-            subMenuId = LoginDBPulldown;
-            labelString = Database;
-          Group: Control
-            vip_x = 105;
-            vip_y = 4265;
-              Popups:
-              {
-                LoginDBPulldown : OptionPulldown = OptionPulldown;
-                Group: User
-                  sql = "select id = name, name from master..sysdatabases where name like 'mgd%'  order by name";
-                    {
-                      se = OptionToggle : mgiOption;
-                      Group: Widget
-                        labelString = "SE development";
-                    }
-                    {
-                      mgd = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = mgd;
-                    }
-                    {
-                      pub_1 = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = pub_1;
-                    }
-                    {
-                      pub_2 = OptionToggle : mgiOption;
-                      Group: User
-                        defaultValue = pub_2;
-                    }
-              }
         }
         {
           AgeToggle = OptionToggle;

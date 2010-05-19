@@ -50,9 +50,6 @@ devents:
 	Search :local [];
 	Select :local [item_position : integer;];
 
-	NewDatabase [];
-	NewServer [];
-
 locals:
 	mgi : widget;
 	top : widget;
@@ -139,14 +136,6 @@ rules:
 	Init does
           tables := create list("widget");
  
-          SetOption.source_widget := top->LoginServer;
-          SetOption.value := global_server;
-          send(SetOption, 0);
-
-          SetOption.source_widget := top->DatabaseMenu;
-          SetOption.value := global_database;
-          send(SetOption, 0);
-
           -- List of all Table widgets used in form
  
           tables.append(top->Columns->Table);
@@ -408,92 +397,6 @@ rules:
 	  send(Clear, 0);
 
 	  (void) reset_cursor(top);
-	end does;
-
---
--- NewDatabase
---
--- New database selected.
---
-
-	NewDatabase does
-	  oldDB : string;
-
-	  if (not top->DatabaseMenu.menuHistory.set) then
-	    return;
-	  end if;
-
-	  -- Save current global database value
-
-	  oldDB := global_database;
-	  global_database := top->DatabaseMenu.menuHistory.defaultValue;
-
-	  -- exit current DB connection
-	  (void) mgi_dbexit();
-
-	  -- Clear the form
-  
-	  Clear.source_widget := top;
-	  send(Clear, 0);
-
-	  -- new DB connection
-
-	  if (mgi_dbinit(global_login, global_passwd) = 1) then
-
-            -- Set Row Count
-            SetRowCount.source_widget := top;
-            SetRowCount.tableID := MGI_TABLES;
-            send(SetRowCount, 0);
- 
-	    -- Perform a Search
-	    send(Search, 0);
-	  else
-	    global_database := oldDB;
-	  end if;
-
-	end does;
-
---
--- NewServer
---
--- New Server selected.
---
-
-	NewServer does
-	  oldServer : string;
-
-	  if (not top->LoginServer.menuHistory.set) then
-	    return;
-	  end if;
-
-	  -- Save current global server value
-
-	  oldServer := global_server;
-	  global_server := top->LoginServer.menuHistory.defaultValue;
-
-	  -- exit current DB connection
-	  (void) mgi_dbexit();
-
-	  -- Clear the form
-  
-	  Clear.source_widget := top;
-	  send(Clear, 0);
-
-	  -- new DB connection
-
-	  if (mgi_dbinit(global_login, global_passwd) = 1) then
-
-            -- Set Row Count
-            SetRowCount.source_widget := top;
-            SetRowCount.tableID := MGI_TABLES;
-            send(SetRowCount, 0);
- 
-	    -- Perform a Search
-	    send(Search, 0);
-	  else
-	    global_server := oldServer;
-	  end if;
-
 	end does;
 
 --
