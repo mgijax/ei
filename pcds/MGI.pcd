@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 11:02:07 2010";
+      lastWritten = "Wed May 19 11:24:40 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -22,28 +22,47 @@ Module: MGI
                         resizePolicy = resize_any;
                         defaultButton = Login;
                           {
-                            LoginServer = LoginServer : mgiOption;
+                            LoginServer = CharText : mgiDataTypes;
                             Group: Constraint
                               leftAttachment = attach_form;
                               rightAttachment = attach_none;
                               topAttachment = attach_form;
-                              topOffset = 5;
                               bottomAttachment = attach_none;
                               resizable = true;
+                              topOffset = 5;
                               leftOffset = 5;
+                                {
+                                  label = XmLabel;
+                                  Group: Widget
+                                    labelString = Server;
+                                }
+                                {
+                                  text = text : mgiDataTypes;
+                                  Group: Widget
+                                    traversalOn = False;
+                                }
                           }
                           {
-                            LoginDB = LoginDB : mgiOption;
+                            LoginDB = CharText : mgiDataTypes;
                             Group: Constraint
                               leftAttachment = attach_widget;
+                              leftWidget = LoginServer;
                               rightAttachment = attach_form;
+                              rightOffset = 5;
                               topAttachment = attach_opposite_widget;
+                              topWidget = LoginServer;
                               bottomAttachment = attach_none;
                               resizable = true;
-                              topWidget = LoginServer;
-                              leftWidget = LoginServer;
-                              leftOffset = 4;
-                              rightOffset = 5;
+                                {
+                                  label = XmLabel;
+                                  Group: Widget
+                                    labelString = Database;
+                                }
+                                {
+                                  text = text : mgiDataTypes;
+                                  Group: Widget
+                                    traversalOn = False;
+                                }
                           }
                           {
                             separator = XmSeparator;

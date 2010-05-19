@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- 05/19/2010 lec
+--	- revised LoginServer/LoginDB to use Configuration file
+--
 -- 01/27/2006 lec
 --	- remove StatusReportFront
 --
@@ -87,26 +90,16 @@ rules:
 	  top := create widget("Login", nil, nil);
 
 --	  global_version := "CVS ei-TAG_NUMBER";
-	  global_version := "CVS ei-4-3-4-1";
+	  global_version := "CVS ei-4-3-4-2";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
 
-	  SetOption.source_widget := top->LoginServer;
-	  SetOption.value := getenv("MGD_DBSERVER");
-	  send(SetOption, 0);
-
-	  SetOption.source_widget := top->LoginDB;
-	  SetOption.value := getenv("MGD_DBNAME");
-	  send(SetOption, 0);
+	  top->LoginServer->text.value := getenv("MGD_DBSERVER");
+	  top->LoginDB->text.value := getenv("MGD_DBNAME");
 
 	  -- If Server is a Development server, then don't allow selection
 	  -- of Production or Public server
-
-	  if (top->LoginServer.menuHistory.development) then
-	    top->LoginServerPulldown->Production.sensitive := false;
-	    top->LoginServerPulldown->Public.sensitive := false;
-	  end if;
 
 	  (void) mgi_tblSetReasonValues();
 
@@ -148,8 +141,8 @@ rules:
 
 	  -- Set Global variables
 
-	  global_server := top->LoginServer.menuHistory.defaultValue;
-	  global_database := top->LoginDB.menuHistory.defaultValue;
+	  global_server := top->LoginServer->text.value;
+	  global_database := top->LoginDB->text.value;
 
 	  if (global_database = nil) then
 		global_database := getenv("MGD_DBNAME");
@@ -174,8 +167,11 @@ rules:
 	  -- Login to Server; Set MGD_DBSERVER and MGD_DBNAME env variables
 	  -- If successful, destroy Login window and create main menu window
 
+	  --(void) mgi_writeLog(global_login + "\n");
+	  --(void) mgi_writeLog(global_passwd + "\n");
+
 	  if (mgi_dbinit(global_login, global_passwd) = 1) then
-	    title := top->LoginServer.menuHistory.name;
+	    title := global_server + ":" + global_database;
 	    mgi := top;
 
 	    global_loginKey := 

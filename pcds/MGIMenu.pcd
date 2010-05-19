@@ -2,12 +2,11 @@ Module: MGIMenu
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb  6 15:16:08 2007";
+      lastWritten = "Wed May 19 11:15:51 2010";
         {
           MGIMenu = TopLevelShell;
           Group: Widget
             closeWindowCallback = "D:Exit";
-            title = "MGI Production";
           Group: Control
             vipComment = "";
             vip_x = 30;

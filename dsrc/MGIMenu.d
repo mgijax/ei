@@ -5,6 +5,9 @@
 -- This module processes a master MGI menu for accessing 
 -- all MGI TeleUSE applications.
 --
+-- 05/19/2010 lec
+--      - revised top.title/iconName to use Configuration file
+
 
 dmodule MGIMenu is
 
@@ -31,12 +34,8 @@ rules:
 
 	INITIALLY does
 	  top := create widget("MGIMenu", nil, nil);
-
-	  if (getenv("MGD_DBSERVER") != "PROD_MGI") then
-	      top.title := "MGI Development";
-	      top.iconName := "MGIMenuDev";
-	  end if;
-
+	  top.title := getenv("MGD_DBSERVER") + ":" + getenv("MGD_DBNAME");
+	  top.iconName := "MGIMenu:" + getenv("MGD_DBNAME");
 	  subprocs := create list(nil);
 	  top.show;
 	end does;
