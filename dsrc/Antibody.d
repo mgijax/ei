@@ -724,6 +724,13 @@ rules:
 	  -- the rest of the source information
 
           if (top->AntigenAccession->ObjectID->text.value.length = 0) then
+
+            if (top->AntigenAccession->AccessionName->text.value.length > 0) then
+	      from_antigen := true;
+	      where := where + " and g1.antigenName like " + 
+		  mgi_DBprstr(top->AntigenAccession->AccessionName->text.value);
+	    end if;
+
 	    SelectMolecularSource.source_widget := top;
 	    SelectMolecularSource.alias := "g1";
 	    send(SelectMolecularSource, 0);
@@ -734,6 +741,7 @@ rules:
 	      from_antigen := true;
 	      from_antigenSource := true;
 	    end if;
+
 	  end if;
 
           if (top->Region->text.value.length > 0) then

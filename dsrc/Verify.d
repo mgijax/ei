@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 95/27/2010	lec
+--	- TR9316/marker types project
+--
 -- 03/11/2009	lec
 --	- TR7493/Gene Trap Lite/VerifyAllele
 --

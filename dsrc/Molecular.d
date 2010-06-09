@@ -146,7 +146,7 @@ locals:
 	select : string := "select distinct p._Probe_key, p.name\n";
 	from : string;
 	where : string;
-	unionalias : string;
+	--unionalias : string;
 	sourceOptions : list;
 	prbTables : list;
 	refTables : list;
