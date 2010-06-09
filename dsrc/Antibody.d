@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	06/09/2010
+--	- TR10240/add region covered/anitgen notes
+--
 -- lec	01/21/2010
 --	- TR8156/moved GXD_Antibody._Refs_key to MGI_Reference_Assoc table
 --
@@ -163,7 +166,7 @@ rules:
 	  tables.append(top->Reference->Table);
 
 	  notes.append(top->AntibodyNote);
-	  notes.append(top->AntigenNote->Note);
+	  notes.append(top->RecogNote->Note);
 
 	  accTable := top->mgiAccessionTable->Table;
 	  refTable := top->Reference->Table;
@@ -284,7 +287,7 @@ rules:
                  mgi_DBprstr(top->AntibodyNote->text.value) + "," +
                  mgi_DBprstr(top->WesternMenu.menuHistory.defaultValue) + "," +
                  mgi_DBprstr(top->ImmunoMenu.menuHistory.defaultValue) + "," +
-                 mgi_DBprstr(top->AntigenNote->text.value) + "," +
+                 mgi_DBprstr(top->RecogNote->text.value) + "," +
 		 global_loginKey + "," + global_loginKey + ")\n";
 
 	  send(ModifyAlias, 0);
@@ -351,6 +354,7 @@ rules:
 -- Modify
 --
 -- Modifies current record
+ 
 -- Calls ModifyAlias[] and ModifyMarker[] to process Alias/Marker tables
 -- Calls ModifyAntigenSource[] to process Molecular Source info
 -- Calls ProcessAcc[] to process Accession numbers
@@ -433,8 +437,8 @@ rules:
             set := set + "antibodyNote = " + mgi_DBprstr(top->AntibodyNote->text.value) + ",";
           end if;
  
-          if (top->AntigenNote->text.modified) then
-            set := set + "recogNote = " + mgi_DBprstr(top->AntigenNote->text.value) + ",";
+          if (top->RecogNote->text.modified) then
+            set := set + "recogNote = " + mgi_DBprstr(top->RecogNote->text.value) + ",";
           end if;
  
           -- ModifyAntigenSource will set top->SourceForm.sql appropriately
@@ -587,6 +591,8 @@ rules:
 	  from_alias : boolean := false;
 	  from_amarker : boolean := false;
 	  from_marker : boolean := false;
+	  from_antigen : boolean := false;
+	  from_antigenSource : boolean := false;
 
 	  from := "from " + mgi_DBtable(GXD_ANTIBODY) + " g";
 	  where := "";
@@ -664,9 +670,14 @@ rules:
 		mgi_DBprstr(top->AntibodyNote->text.value);
 	  end if;
 
-          if (top->AntigenNote->text.value.length > 0) then
+          if (top->RecogNote->text.value.length > 0) then
 	    where := where + " and g.recogNote like " + 
-		mgi_DBprstr(top->AntigenNote->text.value);
+		mgi_DBprstr(top->RecogNote->text.value);
+	  end if;
+
+          if (top->RecogNote->text.value.length > 0) then
+	    where := where + " and g.recogNote like " + 
+		mgi_DBprstr(top->RecogNote->text.value);
 	  end if;
 
 	  -- Aliases
@@ -720,10 +731,19 @@ rules:
 	    -- Need to join Source info through Antigen table....
 
 	    if (top->SourceForm.sqlFrom.length > 0) then
-	      from := from + "," + mgi_DBtable(GXD_ANTIGEN) + " g1" + top->SourceForm.sqlFrom;
-	      where := where + " and g." + mgi_DBkey(GXD_ANTIGEN) + " = g1." + mgi_DBkey(GXD_ANTIGEN) + " " 
-			  + top->SourceForm.sqlWhere;
+	      from_antigen := true;
+	      from_antigenSource := true;
 	    end if;
+	  end if;
+
+          if (top->Region->text.value.length > 0) then
+	    from_antigen := true;
+	    where := where + " and g1.regionCovered like " + mgi_DBprstr(top->Region->text.value);
+	  end if;
+
+          if (top->AntigenNote->text.value.length > 0) then
+	    from_antigen := true;
+	    where := where + " and g1.antigenNote like " + mgi_DBprstr(top->AntigenNote->text.value);
 	  end if;
 
 	  if (from_alias) then
@@ -739,6 +759,16 @@ rules:
 	  if (from_marker) then
             from := from + "," + mgi_DBtable(MRK_MOUSE) + " m";
             where := where + " and m." + mgi_DBkey(MRK_MOUSE) + " = am." + mgi_DBkey(MRK_MOUSE);
+	  end if;
+
+	  if (from_antigen) then
+            from := from + "," + mgi_DBtable(GXD_ANTIGEN) + " g1";
+            where := where + " and g." + mgi_DBkey(GXD_ANTIGEN) + " = g1." + mgi_DBkey(GXD_ANTIGEN);
+	  end if;
+
+	  if (from_antigenSource) then
+            from := from + top->SourceForm.sqlFrom;
+            where := where + top->SourceForm.sqlWhere;
 	  end if;
 
 	  -- Chop off extra " and "
@@ -814,14 +844,18 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from GXD_Antibody_View where _Antibody_key = " + currentRecordKey + "\n" +
-		 "select _Antigen_key, _Source_key, antigenName, mgiID " +
+
+		 "select _Antigen_key, _Source_key, antigenName, mgiID, regionCovered, antigenNote " +
 		 "from GXD_AntibodyAntigen_View where _Antibody_key = " + currentRecordKey + "\n" +
+
 		 "select _Marker_key, symbol, chromosome " +
 		 "from GXD_AntibodyMarker_View where _Antibody_key = " + currentRecordKey + 
 		 "\norder by symbol\n" +
+
 		 "select _AntibodyAlias_key, _Refs_key, alias " + 
 		 "from GXD_AntibodyAlias_View where _Antibody_key = " + currentRecordKey + 
 		 "\norder by alias, _AntibodyAlias_key\n" +
+
 		 "select _AntibodyAlias_key, _Refs_key, alias, jnum, short_citation " + 
 		 "from GXD_AntibodyAliasRef_View where _Antibody_key = " + currentRecordKey + 
 		 "\norder by alias, _AntibodyAlias_key\n";
@@ -846,7 +880,7 @@ rules:
 	        top->ID->text.value           := mgi_getstr(dbproc, 1);
 	        top->Name->text.value         := mgi_getstr(dbproc, 6);
 	        top->AntibodyNote->text.value := mgi_getstr(dbproc, 7);
-	        top->AntigenNote->text.value  := mgi_getstr(dbproc, 10);
+	        top->RecogNote->text.value  := mgi_getstr(dbproc, 10);
 
                 SetOption.source_widget := top->AntibodyClassMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -869,9 +903,9 @@ rules:
                 send(SetOption, 0);
 
 		table := top->ModificationHistory->Table;
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 24));
 		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 13));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 25));
 		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 14));
 
 	      -- Optional Antibody Antigen
@@ -879,6 +913,8 @@ rules:
 	        top->AntigenAccession->ObjectID->text.value := mgi_getstr(dbproc, 1);
 	        top->AntigenAccession->AccessionName->text.value := mgi_getstr(dbproc, 3);
 	        top->AntigenAccession->AccessionID->text.value := mgi_getstr(dbproc, 4);
+	        top->Region->text.value := mgi_getstr(dbproc, 5);
+	        top->AntigenNote->text.value := mgi_getstr(dbproc, 6);
 	        top->SourceForm->SourceID->text.value := mgi_getstr(dbproc, 2);
 	        DisplayMolecularSource.source_widget := top;
 	        send(DisplayMolecularSource, 0);
