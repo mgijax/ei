@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- 06/10/2010	lec
+--	- TR 10248/during add deterimine strain key
+--
 -- 05/08/2008, 02/26/2008	lec
 --	- TR 8811; AddMolecularSource, fix TR 8336
 --
@@ -91,6 +94,12 @@ rules:
 	  cellLineNotSpecified : string;
 	  cellLineNotApplicable : string;
 
+	  organismKey : string := "";
+	  strainKey : string := "";
+	  defaultStrainKeyNS : string := NOTSPECIFIED;
+	  defaultStrainKeyNA : string := NOTAPPLICABLE;
+	  defaultOrganismKey : string := MOUSE;
+
 	  top.sql := "";
 
           if (AddMolecularSource.master) then
@@ -113,6 +122,14 @@ rules:
 		"where term = \"" + top->SourceVectorTypeMenu.defaultValue + "\"");
 	  else
 	    vectorType := top->SourceVectorTypeMenu.menuHistory.defaultValue;
+	  end if;
+
+	  -- Determine Strain value
+
+	  organismKey := top->ProbeOrganismMenu.menuHistory.defaultValue;
+	  strainKey := top->Strain->StrainID->text.value;
+	  if (organismKey != defaultOrganismKey and strainKey = defaultStrainKeyNS) then
+	      strainKey := defaultStrainKeyNA;
 	  end if;
 
 	  -- Determine Cell Line value
@@ -161,7 +178,7 @@ rules:
                  segmentType + "," +
                  vectorType + "," +
                  top->ProbeOrganismMenu.menuHistory.defaultValue + "," +
-                 top->Strain->StrainID->text.value + "," +
+                 strainKey + "," +
                  top->Tissue->TissueID->text.value + "," +
                  top->GenderMenu.menuHistory.defaultValue + "," +
                  cellLine + "," +
