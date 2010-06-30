@@ -1,3 +1,11 @@
+TAG: ei-4-3-5-4
+DATE: 06/30/2010
+STAFF: lec
+CHANGES:
+1) TR10240/modify antigen display
+2) TR10248/default strain for non-mouse probes/antigens
+   MolSourceLib.d/AddMolecularSource
+
 TAG: ei-4-3-4-3
 TAG: ei-4-3-4-2
 DATE: 05/19/2010

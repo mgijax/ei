@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 11:02:07 2010";
+      lastWritten = "Wed Jun  9 08:05:05 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -644,6 +644,54 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
+                                  Region = CharText : mgiDataTypes;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = AntigenAccession;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = AntigenAccession;
+                                    topOffset = 2;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Region\nCovered";
+                                      }
+                                      {
+                                        text = text;
+                                        Group: Widget
+                                          columns = 65;
+                                      }
+                                }
+                                {
+                                  AntigenNote = Notes : mgiDataTypes;
+                                  Group: Widget
+                                    xrtGearOrientation = horizontal;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Region;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = Region;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    topOffset = 2;
+                                      {
+                                        label = XmLabel;
+                                        Group: Widget
+                                          labelString = "Antigen\nNotes";
+                                      }
+                                      {
+                                        text = scrolledText : mgiDataTypes;
+                                        Group: Widget
+                                          columns = 65;
+                                          editMode = single_line_edit;
+                                          rows = 1;
+                                      }
+                                }
+                                {
                                   SourceForm = SourceForm : MGI;
                                   Group: Widget
                                     rubberPositioning = False;
@@ -652,7 +700,7 @@ Shift<Key>Tab: prev-tab-group()
                                     leftAttachment = attach_form;
                                     rightAttachment = attach_none;
                                     topAttachment = attach_widget;
-                                    topWidget = AntigenAccession;
+                                    topWidget = AntigenNote;
                                     topOffset = 2;
                                     bottomAttachment = attach_none;
                                     resizable = true;
@@ -738,7 +786,7 @@ Shift<Key>Tab: prev-tab-group()
                                     topWidget = separator;
                                     topOffset = 5;
                                     rightOffset = 5;
-                                    leftWidget = SourceForm;
+                                    leftWidget = Region;
                                     leftOffset = 5;
                                       {
                                         Table = mgiTable;
@@ -865,7 +913,7 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  AntigenNote = mgiNoteShort : mgiDataTypes;
+                                  RecogNote = mgiNoteShort : mgiDataTypes;
                                   Group: Constraint
                                     leftAttachment = attach_widget;
                                     rightAttachment = attach_none;

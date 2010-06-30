@@ -99,6 +99,7 @@ rules:
 	  defaultStrainKeyNS : string := NOTSPECIFIED;
 	  defaultStrainKeyNA : string := NOTAPPLICABLE;
 	  defaultOrganismKey : string := MOUSE;
+	  defaultOrganismKeyNS : string := "76";
 
 	  top.sql := "";
 
@@ -128,7 +129,7 @@ rules:
 
 	  organismKey := top->ProbeOrganismMenu.menuHistory.defaultValue;
 	  strainKey := top->Strain->StrainID->text.value;
-	  if (organismKey != defaultOrganismKey and strainKey = defaultStrainKeyNS) then
+	  if (organismKey != defaultOrganismKey and organismKey != defaultOrganismKeyNS) then
 	      strainKey := defaultStrainKeyNA;
 	  end if;
 
