@@ -1,6 +1,10 @@
 --
 -- Name: PythonLib.de
 --
+-- 06/30/2010	lec
+--	- TR 9316
+--	  PythonMarkerCVCache
+--
 -- 09/09/2009	lec
 --	- TR 9797 
 --	  PythonAlleleCreCache
@@ -30,6 +34,8 @@ PythonAlleleCreCache [source_widget : widget;
 		      pythonevent : string;
 		      objectKey : string;];
 
+PythonMarkerCVCache [objectKey : string;];
+
 PythonMarkerHomologyCache [objectKey : string;];
 
 PythonMarkerOMIMCache [pythonevent : string;
@@ -47,6 +53,8 @@ PythonADSystemLoadEnd [];
 PythonAlleleCombinationEnd [];
 
 PythonAlleleCreCacheEnd [];
+
+PythonMarkerCVCacheEnd [];
 
 PythonMarkerHomologyCacheEnd [];
 

@@ -1,6 +1,10 @@
 --
 -- Name: PythonLib.d
 --
+-- 06/30/2010	lec
+--	- TR 9316
+--	  PythonMarkerCVCache
+--
 -- 09/09/2009	lec
 --	- TR 9797
 --        PythonAlleleCreCache
@@ -178,6 +182,45 @@ rules:
 	  if (dialog.value.length > 0) then
 	      (void) mgi_writeLog(dialog.value);
 	  end if;
+
+	  tu_fork_free(proc_id);
+
+	end does;
+
+--
+-- PythonMarkerCVCache
+--
+-- Activated from:  MCV module, Marker Category Vocabulary
+--
+
+	PythonMarkerCVCache does
+	  objectKey : string := PythonMarkerCVCache.objectKey;
+	  cmds : string_list := create string_list();
+	  buf : string;
+
+	  cmds.insert(getenv("MRKCACHELOAD") + "/mrkmcv.py", cmds.count + 1);
+
+	  cmds.insert("-S" + getenv("MGD_DBSERVER"), cmds.count + 1);
+	  cmds.insert("-D" + getenv("MGD_DBNAME"), cmds.count + 1);
+	  cmds.insert("-U" + global_login, cmds.count + 1);
+	  cmds.insert("-P" + global_passwd_file, cmds.count + 1);
+	  cmds.insert("-K" + objectKey, cmds.count + 1);
+
+	  -- Write cmds to user log
+	  buf := "";
+	  cmds.rewind;
+	  while (cmds.more) do
+	    buf := buf + cmds.next + " ";
+	  end while;
+	  buf := buf + "\n\n";
+	  (void) mgi_writeLog(buf);
+
+	  -- Execute
+          proc_id : opaque := tu_fork_process(cmds[1], cmds, nil, PythonMarkerCVCacheEnd);
+
+	  while (tu_fork_ok(proc_id)) do
+	    (void) keep_busy();
+	  end while;
 
 	  tu_fork_free(proc_id);
 
@@ -422,6 +465,14 @@ rules:
 
 	PythonAlleleCreCacheEnd does
 	  (void) mgi_writeLog("Allele Cre Cache done.\n\n");
+	end does;
+
+--
+-- PythonMarkerCVCacheEnd
+--
+
+	PythonMarkerCVCacheEnd does
+	  (void) mgi_writeLog("Marker Category Vocabulary Cache done.\n\n");
 	end does;
 
 --
