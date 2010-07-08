@@ -14,6 +14,9 @@
 --
 -- History
 --
+-- 07/07/2010	lec
+--	- TR 9316/remove call to ModifyOffset
+--
 -- 02/10/2010	lec
 --	- TR 9784/added 2nd reference type
 --
@@ -214,6 +217,8 @@ locals:
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
+
+        allowOffsetUpdate : boolean := false;
  
 rules:
 
@@ -865,6 +870,7 @@ rules:
 
 	  if (top->ChromosomeMenu.menuHistory.defaultValue = "UN") then
 	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-999.00");
+	    allowOffsetUpdate := true;
 
 	  -- Changing from one known chromosome to another, change MGD and CC Offsets to -1
 
@@ -888,6 +894,7 @@ rules:
 	    end if;
 
 	    (void) mgi_tblSetCell(top->Offset->Table, 0, top->Offset->Table.offset, "-1.00");
+	    allowOffsetUpdate := true;
 
 	    if (mgi_tblGetCell(top->Offset->Table, 1, top->Offset->Table.offset) != "") then
 	      (void) mgi_tblSetCell(top->Offset->Table, 1, top->Offset->Table.offset, "-1.00");
@@ -1280,6 +1287,12 @@ rules:
 	  offset : string;
 	  set : string := "";
  
+	  -- If not allowed to update the offset, return
+
+	  if (not allowOffsetUpdate) then
+	      return;
+          end if;
+
           -- Process while non-empty rows are found
  
           while (row < mgi_tblNumRows(table)) do
