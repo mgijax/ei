@@ -139,9 +139,7 @@ rules:
         Init does
 	  tables := create list("widget");
 	  markerModule : widget := ab.root->MarkerModule;
-	  mclipboardList : widget;
 	  i : integer := 0;
-	  mKey : string;
 
 	  -- List of all Table widgets used in form
 
@@ -165,26 +163,10 @@ rules:
             send(SetOption, 0);
 	    send(SetAnnotTypeDefaults, 0);
 
-	    -- if the Marker clipboard contains entries, 
-	    -- then retrieve the annotations for those entries
-
-	    mclipboardList := markerModule->MarkerEditClipboard->List;
-	    if (mclipboardList.itemCount > 0) then
-	      from := "from " + dbView + " v";
-	      where := where + "v._Object_key in (";
-	      while (i < mclipboardList.keys.count) do
-		mKey := mclipboardList.keys[i];
-		where := where + mKey + ",";
-		i := i + 1;
-	      end while;
-	      where := "where " + where->substr(1, where.length - 1) + ")";
-	      Search.prepareSearch := false;
-	      send(Search, 0);
-
-	    -- else if a Marker record is currently selected,
+	    -- if a Marker record is currently selected,
 	    -- then retrieve the annotation records for that Marker
 
-	    elsif (markerModule->ID->text.value.length != 0) then
+	    if (markerModule->ID->text.value.length != 0) then
 	      top->mgiAccession->ObjectID->text.value := markerModule->EditForm->ID->text.value;
 	      send(Search, 0);
 	    end if;
