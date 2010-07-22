@@ -166,14 +166,23 @@ rules:
 
 	Add does
 
-	  parentCellLineKey : string := top->EditForm->mgiParentCellLine->ObjectID->text.value;
+	  derivationKey : string;
+
+	  vector : string := top->EditForm->mgiAlleleVector->Vector->text.value;
 	  vectorKey : string := top->EditForm->mgiAlleleVector->ObjectID->text.value;
+          vectorTypeKey : string := top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue;
 
 	  derivationName : string := top->EditForm->DerivationName->text.value;
+
 	  creator : string := top->EditForm->AlleleCreatorMenu.menuHistory.labelString;
+	  creatorKey : string := top->EditForm->AlleleCreatorMenu.menuHistory.defaultValue;
+
 	  derivationType : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.labelString;
-	  vector : string := top->EditForm->mgiAlleleVector->Vector->text.value;
+	  derivationTypeKey : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.defaultValue;
+
 	  parentCellLine : string := top->EditForm->mgiParentCellLine->CellLine->text.value;
+	  parentCellLineKey : string := top->EditForm->mgiParentCellLine->ObjectID->text.value;
+
 	  parentStrain : string := top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value;
 
 	  if (not top.allowEdit) then
@@ -224,15 +233,33 @@ rules:
 
 	  end if;
 
+	  --
+	  -- check duplicate
+	  --
+	  derivationKey := mgi_sql1("select _Derivation_key from " + mgi_DBtable(ALL_CELLLINE_DERIVATION) +
+		" where _Vector_key = " + vectorKey +
+		" and _VectorType_key = " + vectorTypeKey +
+		" and _ParentCellLine_key = " + parentCellLineKey +
+		" and _DerivationType_key = " + derivationTypeKey +
+		" and _Creator_key = " + creatorKey);
+
+          if (derivationKey.length > 0) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Duplicate Derivation";
+            send(StatusReport);
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
+
           cmd := mgi_setDBkey(ALL_CELLLINE_DERIVATION, NEWKEY, KEYNAME) +
                  mgi_DBinsert(ALL_CELLLINE_DERIVATION, KEYNAME) +
 	         mgi_DBprstr(derivationName) + "," +
 		 "NULL," +
 		 vectorKey + "," +
-		 top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue + "," +
+		 vectorTypeKey + "," +
 		 parentCellLineKey + "," +
-		 top->EditForm->AlleleDerivationTypeMenu.menuHistory.defaultValue + "," +
-		 top->EditForm->AlleleCreatorMenu.menuHistory.defaultValue + ",";
+		 derivationTypeKey + "," +
+		 creatorKey + ",";
 
 	  if (top->mgiCitation->ObjectID->text.value.length = 0) then
 	    cmd := cmd + "NULL,";

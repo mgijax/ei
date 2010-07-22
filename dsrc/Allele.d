@@ -1475,8 +1475,8 @@ rules:
 
 	    elsif (isParent and isMutant) then
 
-	      if (strainName = NOTSPECIFIED_TEXT or
-		  mutantCellLine = NOTSPECIFIED_TEXT) then
+	      --if (strainName = NOTSPECIFIED_TEXT or
+	      if (mutantCellLine = NOTSPECIFIED_TEXT) then
 
 	        addCellLine := true;
 	        addAssociation := true;
@@ -2376,6 +2376,8 @@ rules:
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLineKey, mgi_getstr(dbproc, 1));
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.cellLine, mgi_getstr(dbproc, 2));
 	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creator, mgi_getstr(dbproc, 14));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.creatorKey, mgi_getstr(dbproc, 13));
+	      (void) mgi_tblSetCell(cellLineTable, row, cellLineTable.vectorKey, mgi_getstr(dbproc, 19));
 	      top->mgiParentCellLine->ObjectID->text.value := mgi_getstr(dbproc, 15);
 	      top->mgiParentCellLine->CellLine->text.value := mgi_getstr(dbproc, 16);
 	      top->mgiParentCellLine->Strain->StrainID->text.value := mgi_getstr(dbproc, 23);

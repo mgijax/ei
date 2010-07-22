@@ -199,9 +199,17 @@ rules:
 
 	  -- end Confirm changes
 
-	  (void) busy_cursor(top);
-
 	  send(VerifyDerivation, 0);
+	  derivationKey : string := top->mgiParentCellLine->Derivation->ObjectID->text.value;
+
+	  if (derivationKey.length = 0) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nDerivation";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  (void) busy_cursor(top);
 
           -- If adding, then @KEYNAME must be used in all Modify events
  
@@ -811,10 +819,6 @@ rules:
 	  vectorTypeKey : string;
 	  cellLineTypeKey : string;
 
-	  if (top->mgiParentCellLine->ObjectID->text.value.length = 0) then
-	      return;
-	  end if;
-
 	  -- determine the derivation based on the derivaiton type, parent, strain
 
           derivationKey := top->mgiParentCellLine->Derivation->ObjectID->text.value;
@@ -826,13 +830,60 @@ rules:
 	  creatorKey := top->EditForm->AlleleCreatorMenu.menuHistory.defaultValue;
 	  cellLineTypeKey := top->mgiParentCellLine->AlleleCellLineTypeMenu.menuHistory.defaultValue;
 	  vectorTypeKey := top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue;
-	  vectorKey := top->mgiAlleleVector->ObjectID->text.value;
+	  vectorKey := top->mgiAlleleVector->ObjectID->text.defaultValue;
+	  --vectorKey := top->mgiAlleleVector->ObjectID->text.value;
 
-	  -- if the derivation type has not been set, then return
+	  -- if any of the required fields have not been set...
+
 	  if (derivationTypeKey.length = 0 or derivationTypeKey = "%") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nDerivation Type";
+            send(StatusReport);
 	    return;
 	  end if;
 
+	  if (parentKey.length = 0 or parentKey = "%") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nParent Cell Line";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	   if (strainKey.length = 0 or strainKey = "%") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nParent Cell Line Strain";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  if (creatorKey.length = 0 or creatorKey = "%") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nCreator";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  if (cellLineTypeKey.length = 0 or cellLineTypeKey = "%") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nCell Line Type";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  if (vectorTypeKey.length = 0 or vectorTypeKey = "%") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nVector Type";
+            send(StatusReport);
+	    return;
+	  end if;
+
+	  if (vectorKey.length = 0 or vectorKey = "%") then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "This fields is required:\n\nVector Name";
+            send(StatusReport);
+	    return;
+	  end if;
+	      
           derivationKey := mgi_sql1("select d._Derivation_key " +
                          "from ALL_CellLine_Derivation d, ALL_CellLine c " +
                          "where d._DerivationType_key = " + derivationTypeKey +
