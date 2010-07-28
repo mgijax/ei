@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 14 13:28:29 2010";
+      lastWritten = "Tue Jul 27 13:49:22 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;

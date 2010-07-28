@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- 07/27/2010	lec
+--	TR10295/EE changed to EXP
+--
 -- 11/30/2006	lec
 --	fix bleed problem; was creating orphan evidence records
 --
@@ -1184,11 +1187,11 @@ rules:
             return;
           end if;
  
-	  -- if in first row and evidence and evidence is blank, default to "EE"
+	  -- if in first row and evidence and evidence is blank, default to "EXP"
 
 	  if (row = 0 and column = annotTable.evidence and mgi_tblGetCell(annotTable, row, annotTable.evidence) = "") then
-            pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("EE"));
-	    mgi_tblSetCell(annotTable, row, annotTable.evidence, "EE");
+            pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("EXP"));
+	    mgi_tblSetCell(annotTable, row, annotTable.evidence, "EXP");
 	    mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, top->EvidenceCodeList->List.keys[pos]);
 	    return;
 	  end if;

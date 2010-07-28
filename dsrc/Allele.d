@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 07/27/2010	lec
+--	TR10158/MCL issues/ModifyMutantCellLine
+--
 -- 10/28/2009	lec
 --	TR9922/ProcessNoteForm.keyDeclared
 --
@@ -1456,26 +1459,13 @@ rules:
 
 	    elsif (not isParent and isMutant) then
 
-	      if (strainName = NOTSPECIFIED_TEXT) then
-		addCellLine := true;
-		addAssociation := true;
-	      elsif (strainName = NOTAPPLICABLE_TEXT) then
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "The Strain of Origin cannot be set to 'Not Applicable'";
-                send(StatusReport);
-	        isError := true;
-		--mutantCellLineKey := defaultMutantCellLineKeyNA;
-		--strainKey := defaultStrainKeyNA;
-		--addCellLine := false;
-		--addAssociation := true;
-	      else
-		addCellLine := false;
-		addAssociation := true;
-	      end if;
+              StatusReport.source_widget := top.root;
+              StatusReport.message := "Only specified MCL's may be entered in the Mutant Cell Line field";
+              send(StatusReport);
+	      isError := true;
 
 	    elsif (isParent and isMutant) then
 
-	      --if (strainName = NOTSPECIFIED_TEXT or
 	      if (mutantCellLine = NOTSPECIFIED_TEXT) then
 
 	        addCellLine := true;
@@ -1513,17 +1503,6 @@ rules:
 		  end if;
 
 	        end if;
-
-	      elsif (strainName = NOTAPPLICABLE_TEXT or
-		     mutantCellLine = NOTAPPLICABLE_TEXT) then
-
-                StatusReport.source_widget := top.root;
-                StatusReport.message := "The Strain of Origin cannot be set to 'Not Applicable'";
-                send(StatusReport);
-	        isError := true;
-		--mutantCellLineKey := defaultMutantCellLineKeyNA;
-	        --addCellLine := false;
-	        --addAssociation := true;
 
 	      else
 	        addCellLine := false;
@@ -1896,7 +1875,13 @@ rules:
 	    from_cellline := true;
 	  end if;
 
-	  if (top->StrainOfOrigin->StrainID->text.value.length > 0) then
+	  if (top->mgiParentCellLine->StrainID->text.value.length > 0) then
+            where := where + "\nand c.cellLineStrain_key = " + top->mgiParentCellLine->StrainID->text.value;;
+	    from_cellline := true;
+	  elsif (top->mgiParentCellLine->Verify->text.value.length > 0) then
+            where := where + "\nand c.cellLineStrain like " + mgi_DBprstr(top->mgiParentCellLine->Verify->text.value);
+	    from_cellline := true;
+	  elsif (top->StrainOfOrigin->StrainID->text.value.length > 0) then
             where := where + "\nand a._Strain_key = " + top->StrainOfOrigin->StrainID->text.value;;
 	  elsif (top->StrainOfOrigin->Verify->text.value.length > 0) then
             where := where + "\nand a.strain like " + mgi_DBprstr(top->StrainOfOrigin->Verify->text.value);
@@ -2434,7 +2419,7 @@ rules:
 
 	  -- If any of these values are selected and the strain has already been determined, skip
 
-	  if (value = NOTSPECIFIED_TEXT or value = NOTAPPLICABLE_TEXT or value = OTHERNOTES
+	  if ((value = NOTSPECIFIED_TEXT or value = NOTAPPLICABLE_TEXT or value = OTHERNOTES)
 	      and strainKey.length > 0) then
             (void) XmProcessTraversal(top, XmTRAVERSE_NEXT_TAB_GROUP);
 	    return;

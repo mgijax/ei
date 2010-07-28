@@ -346,12 +346,41 @@ rules:
 	  -- ~~creator~~ ~~derivType~~ Library ~~parent~~ ~~strain~~ ~~vectorName~~
 	  --
 
-	  derivationName : string := top->EditForm->DerivationName->text.value;
-	  creator : string := top->EditForm->AlleleCreatorMenu.menuHistory.labelString;
-	  derivationType : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.labelString;
+	  derivationKey : string;
+
 	  vector : string := top->EditForm->mgiAlleleVector->Vector->text.value;
+	  vectorKey : string := top->EditForm->mgiAlleleVector->ObjectID->text.value;
+          vectorTypeKey : string := top->EditForm->AlleleVectorTypeMenu.menuHistory.defaultValue;
+
+	  creator : string := top->EditForm->AlleleCreatorMenu.menuHistory.labelString;
+	  creatorKey : string := top->EditForm->AlleleCreatorMenu.menuHistory.defaultValue;
+
+	  derivationName : string := top->EditForm->DerivationName->text.value;
+	  derivationType : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.labelString;
+	  derivationTypeKey : string := top->EditForm->AlleleDerivationTypeMenu.menuHistory.defaultValue;
+
 	  parentCellLine : string := top->EditForm->mgiParentCellLine->CellLine->text.value;
+	  parentCellLineKey : string := top->EditForm->mgiParentCellLine->ObjectID->text.value;
+
 	  parentStrain : string := top->EditForm->mgiParentCellLine->ParentStrain->Verify->text.value;
+
+	  --
+	  -- check duplicate
+	  --
+	  derivationKey := mgi_sql1("select _Derivation_key from " + mgi_DBtable(ALL_CELLLINE_DERIVATION) +
+		" where _Vector_key = " + vectorKey +
+		" and _VectorType_key = " + vectorTypeKey +
+		" and _ParentCellLine_key = " + parentCellLineKey +
+		" and _DerivationType_key = " + derivationTypeKey +
+		" and _Creator_key = " + creatorKey);
+
+          if (derivationKey.length > 0) then
+            StatusReport.source_widget := top.root;
+            StatusReport.message := "Duplicate Derivation";
+            send(StatusReport);
+	    (void) reset_cursor(top);
+	    return;
+	  end if;
 
 	  if (derivationName.length = 0) then
 	    derivationName := creator + " " + derivationType + " Library " + parentCellLine + " " + parentStrain + " " + vector;

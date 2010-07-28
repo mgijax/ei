@@ -16,7 +16,10 @@
 --
 -- History
 --
--- 95/27/2010	lec
+-- 07/27/2010	lec
+--	- TR10295/VerifyVocabEvidence/add MP:0003012
+--
+-- 05/27/2010	lec
 --	- TR9316/marker types project
 --
 -- 03/11/2009	lec
@@ -3851,17 +3854,22 @@ rules:
 
 	  -- TR 5874
 	  -- TR 7865
+	  -- TR 10295; added MP:0003012
 	  termAcc := mgi_tblGetCell(table, row, table.termAccID);
 	  termAcc := termAcc.raise_case;
 	  if (termAcc.length > 0 and evidence = "ND" and 
-	      not (termAcc = "GO:0008150" or termAcc = "GO:0005575" or termAcc = "GO:0003674")) then
+	      not (termAcc = "GO:0008150" 
+		   or termAcc = "GO:0005575" 
+		   or termAcc = "GO:0003674"
+		   or termAcc = "MP:0003012")) then
 	    if (isTable) then
 	      VerifyVocabEvidenceCode.doit := (integer) false;
 	    end if;
 	    (void) mgi_tblSetCell(table, row, table.evidenceKey, "NULL");
 	    (void) mgi_tblSetCell(table, row, table.evidence, "");
             StatusReport.source_widget := top.root;
-            StatusReport.message := "Evidence Code 'ND' can only be used with GO:0008150, GO:0005575 or GO:0003674";
+            StatusReport.message := "Evidence Code 'ND' can only be used with\n\n" +
+				    "GO:0008150, GO:0005575 or GO:0003674, MP:0003012";
             send(StatusReport);
 	  end if;
 
