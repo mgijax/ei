@@ -190,7 +190,7 @@ rules:
 --
 -- PythonMarkerCVCache
 --
--- Activated from:  MCV module, Marker Category Vocabulary
+-- Activated from:  TCD module, Marker Category Vocabulary
 --
 
 	PythonMarkerCVCache does

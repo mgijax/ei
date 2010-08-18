@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 28 06:26:48 2010";
+      lastWritten = "Wed Aug 18 09:01:00 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6198,12 +6198,12 @@ Shift<Key>Tab: prev-tab-group()
                                     traversalOn = False;
                                 }
                                 {
-                                  MCVocAnnot = XmPushButton;
+                                  TDCVocAnnot = XmPushButton;
                                   Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"MCVocAnnot\")";
-                                    labelString = "MC Vocabulary Annotations";
+                                    activateCallback = "D:CreateMGIModule(name = \"TDCVocAnnot\")";
+                                    labelString = "TDC Annotations";
                                     traversalOn = False;
-                                    managed = False;
+                                    managed = True;
                                 }
                                 {
                                   Image = XmPushButton;
@@ -12472,10 +12472,10 @@ Shift<Key>Tab: prev-tab-group()
                                 {
                                   EditPulldown = MenuPulldown : mgiMenu;
                                       {
-                                        MCVocAnnot = MenuPush : mgiMenu;
+                                        TDCModule = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:CreateMGIModule(name = \"MCVocAnnot\")";
-                                          labelString = "MC Annotations";
+                                          activateCallback = "D:CreateMGIModule(name = \"TDCVocAnnot\")";
+                                          labelString = "TDC Annotations";
                                           userDefinedAttributes = "annotTypeKey:Int(Int)=\"1011\"\n";
                                           managed = True;
                                       }
@@ -17247,16 +17247,16 @@ Shift<Key>Tab: prev-tab-group()
               }
         }
         {
-          MCVocAnnotModule = Module : MGI;
+          TDCVocAnnotModule = Module : MGI;
           Group: Widget
             width = 1225;
             height = 900;
-            closeWindowCallback = "D:MCVocAnnotExit";
+            closeWindowCallback = "D:TDCVocAnnotExit";
           Group: Control
             vip_x = 80;
             vip_y = 525;
           Group: User
-            activateButtonName = MCVocAnnot;
+            activateButtonName = TDCVocAnnot;
             homeWidget = mgiAccession;
               {
                 MainForm = XmForm;
@@ -17273,7 +17273,7 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         Exit = MenuPush : mgiMenu;
                                         Group: Widget
-                                          activateCallback = "D:MCVocAnnotExit";
+                                          activateCallback = "D:TDCVocAnnotExit";
                                       }
                                 }
                           }
@@ -17302,13 +17302,13 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         VocAnnotTypePulldown = OptionPulldown;
                                             {
-                                              MCV = OptionToggle;
+                                              TDC = OptionToggle;
                                               Group: Widget
                                                 valueChangedCallback = "D:SetModify,\nD:SetAnnotTypeDefaults";
                                                 userDefinedAttributes = "evidenceKey:Int(Int)=\"0\"\nmgiTypeKey:Int(Int)=\"0\"\nvocabKey:Int(Int)=\"0\"\nannotVocab:String(String)\nqualifierKey:Int=\"0\"\n";
-                                                labelString = "MC/Marker";
+                                                labelString = "TDC/Marker";
                                               Group: User
-                                                annotVocab = "MC/Marker";
+                                                annotVocab = "TDC/Marker";
                                                 evidenceKey = 80;
                                                 mgiTypeKey = 2;
                                                 vocabKey = 79;

@@ -2374,12 +2374,16 @@ rules:
               SetOption.source_widget := top->mgiParentCellLine->AlleleCellLineTypeMenu;
               SetOption.value := mgi_getstr(dbproc, 3);
               send(SetOption, 0);
+	      --turning this on will display MCL's with the same name on separate lines
+	      --else it will only display the last row it finds
+	      --row := row + 1;
             end while;
           end while;
 	  (void) dbclose(dbproc);
 
 	  -- If ID is empty, then value is invalid
 
+	  row := 0;
 	  mutantCellLineKey := mgi_tblGetCell(cellLineTable, row, cellLineTable.cellLineKey);
 	  if (mutantCellLineKey = "" or mutantCellLineKey = "NULL") then
             StatusReport.source_widget := top.root;

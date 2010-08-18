@@ -1,9 +1,9 @@
 --
--- Name    : MCVocAnnot.d
+-- Name    : TDCVocAnnot.d
 -- Creator : 
--- MCVocAnnot.d
+-- TDCVocAnnot.d
 --
--- TopLevelShell:		MCVocAnnotModule
+-- TopLevelShell:		TDCVocAnnotModule
 -- Database Tables Affected:	Voc_Annot, VOC_Evidence
 -- Actions Allowed:		Add, Modify, Delete
 --
@@ -15,7 +15,7 @@
 --	TR 6839; Marker Types project
 --
 
-dmodule MCVocAnnot is
+dmodule TDCVocAnnot is
 
 #include <mgilib.h>
 #include <syblib.h>
@@ -28,7 +28,7 @@ devents:
 	Add :local [];					-- Add record
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
-	MCVocAnnotExit :local [];			-- Destroys D module instance & cleans up
+	TDCVocAnnotExit :local [];			-- Destroys D module instance & cleans up
 	MCTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
@@ -71,7 +71,7 @@ rules:
 --
 -- Activated from:  MGI:CreateMGIModule
 --
--- Creates and manages D Module "MCVocAnnot"
+-- Creates and manages D Module "TDCVocAnnot"
 --
 
 	INITIALLY does
@@ -85,7 +85,7 @@ rules:
           ab.sensitive := false;
 
 	  -- Create the widget hierarchy in memory
-	  top := create widget("MCVocAnnotModule", ab.name, mgi);
+	  top := create widget("TDCVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
 --	  SetPermissions.source_widget := top;
@@ -839,7 +839,7 @@ rules:
 -- Destroy D module instance and call ExitWindow to destroy widgets
 --
  
-        MCVocAnnotExit does
+        TDCVocAnnotExit does
 	  ab.sensitive := true;
           destroy self;
           ExitWindow.source_widget := top;
