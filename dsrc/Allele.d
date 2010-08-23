@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 08/23/2010	lec
+--	TR10317/remove isParent/not isMutant strainName = Not Applicable check
+--
 -- 07/27/2010	lec
 --	TR10158/MCL issues/ModifyMutantCellLine
 --
@@ -158,7 +161,6 @@ locals:
 	defaultStrainKeyNS : string;
 	defaultStrainKeyNA : string;
 
-        defaultMutantCellLineKeyNA : string := "-4";
 	defaultParentCellLineKeyNS : string := "-1";
 	defaultCreatorKeyNS : string := "3982966";
 	defaultVectorKeyNS : string := "4311225";
@@ -1415,29 +1417,21 @@ rules:
 
 	    elsif (isParent and not isMutant) then
 
-	      if (strainName = NOTAPPLICABLE_TEXT) then
-		mutantCellLineKey := defaultMutantCellLineKeyNA;
-		strainKey := defaultStrainKeyNA;
-	        addCellLine := false;
-	        addAssociation := true;
+	      mutantCellLine := NOTSPECIFIED_TEXT;
+	      addCellLine := true;
+	      addAssociation := true;
 
-	      else
+	      --
+	      -- select the derivation key that is associated with the specified 
+	      --   allele type
+	      --   creator = Not Specified
+	      --   vector = Not Specified
+	      --   parent cell line
+	      --   strain
+	      --   cell line type
+	      --
 
-	        mutantCellLine := NOTSPECIFIED_TEXT;
-		addCellLine := true;
-	        addAssociation := true;
-
-	        --
-	        -- select the derivation key that is associated with the specified 
-	        --   allele type
-		--   creator = Not Specified
-		--   vector = Not Specified
-	        --   parent cell line
-	        --   strain
-		--   cell line type
-	        --
-
-	        derivationKey := mgi_sql1("select d._Derivation_key " +
+	      derivationKey := mgi_sql1("select d._Derivation_key " +
 			    "from ALL_CellLine_Derivation d, ALL_CellLine c " +
 			    "where d._DerivationType_key = " + alleleTypeKey +
 			    " and d._Creator_key = " + defaultCreatorKeyNS +
@@ -1448,13 +1442,11 @@ rules:
 			    " and c._CellLine_Type_key = " + cellLineTypeKey +
 			    " and c.isMutant = 0 ");
 
-	        if (derivationKey.length = 0) then
-                  StatusReport.source_widget := top.root;
-                  StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
-                  send(StatusReport);
-	          isError := true;
-	        end if;
-
+	      if (derivationKey.length = 0) then
+                StatusReport.source_widget := top.root;
+                StatusReport.message := "Cannot find Derivation for this Allele Type and Parent";
+                send(StatusReport);
+	        isError := true;
 	      end if;
 
 	    elsif (not isParent and isMutant) then
@@ -1731,6 +1723,7 @@ rules:
 	    SearchNoteForm.noteTypeKey := top->mgiNoteDriverForm.child(i)->Note.noteTypeKey;
 	    SearchNoteForm.tableID := MGI_NOTE_ALLELE_VIEW;
             SearchNoteForm.join := "a." + mgi_DBkey(ALL_ALLELE);
+            SearchNoteForm.tableTag := "noteDriver";
 	    send(SearchNoteForm, 0);
 	    from := from + top->mgiNoteDriverForm.sqlFrom;
 	    where := where + top->mgiNoteDriverForm.sqlWhere;
