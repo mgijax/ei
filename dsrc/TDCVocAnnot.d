@@ -29,7 +29,7 @@ devents:
 	BuildDynamicComponents :local [];
 	Delete :local [];				-- Delete record
 	TDCVocAnnotExit :local [];			-- Destroys D module instance & cleans up
-	MCTraverse :local [];
+	TDCTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
@@ -120,6 +120,9 @@ rules:
 
 	  InitOptionMenu.option := top->MarkerTypeMenu;
 	  send(InitOptionMenu, 0);
+
+          LoadList.list := top->TDCList;
+          send(LoadList, 0);
 
 	end does;
 
@@ -804,7 +807,7 @@ rules:
         end does;
 
 --
--- MCTraverse
+-- TDCTraverse
 --
 --  Skips over the Modified By/Modification Date/Created By/Creation Date columns
 --  These cells need to be traversable in order to enter search criteria,
@@ -812,11 +815,11 @@ rules:
 --
 --
 
-	MCTraverse does;
-	  table : widget := MCTraverse.source_widget;
-	  row : integer := MCTraverse.row;
-	  column : integer := MCTraverse.column;
-	  reason : integer := MCTraverse.reason;
+	TDCTraverse does;
+	  table : widget := TDCTraverse.source_widget;
+	  row : integer := TDCTraverse.row;
+	  column : integer := TDCTraverse.column;
+	  reason : integer := TDCTraverse.reason;
 
 	  if (row < 0) then
 	    return;
@@ -827,8 +830,8 @@ rules:
 	      AddTableRow.table := annotTable;
 	      send(AddTableRow, 0);
 	    end if;
-	    MCTraverse.next_row := row + 1;
-	    MCTraverse.next_column := annotTable.termAccID;
+	    TDCTraverse.next_row := row + 1;
+	    TDCTraverse.next_column := annotTable.termAccID;
 	  end if;
 
 	end does;

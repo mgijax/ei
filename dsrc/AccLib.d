@@ -23,6 +23,9 @@
 --
 -- History:
 --
+-- lec	09/02/2010
+--	TR10342; fix VerifyAccSequence
+--
 -- lec	06/04/2009
 --	TR 7493; gene trap less filling
 --	ProcessAcc; add coding for SEQ_ALLELE_ASSOC
@@ -983,14 +986,16 @@ rules:
 	    return;
 	  end if;
 
-	  accID : string := mgi_sql1("select _Object_key, accID from " + mgi_DBaccTable(SEQ_SEQUENCE) +
+	  objectKey : string := mgi_sql1("select _Object_key from " + mgi_DBaccTable(SEQ_SEQUENCE) +
 		" where _LogicalDB_key = " + logicalKey + " and accID = " + mgi_DBprstr(value));
 
-	  if (accID.length = 0) then
+	  if (objectKey.length = 0) then
 	    VerifyAccSequence.doit := (integer) false;
 	    StatusReport.source_widget := top.root;
 	    StatusReport.message := "Invalid Sequence Accession ID";
 	    send(StatusReport);
+	  else
+	    (void) mgi_tblSetCell(table, row, table.accKey, objectKey);
 	  end if;
 
 	end does;

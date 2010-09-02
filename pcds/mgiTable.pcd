@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed May  5 11:02:11 2010";
+      lastWritten = "Wed Sep  1 10:44:07 2010";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -330,7 +330,7 @@ Module: mgiTable
           Statistics = OrderedTable;
           Group: Control
             vip_x = 75;
-            vip_y = 1020;
+            vip_y = 1075;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -390,7 +390,7 @@ Module: mgiTable
           RefDBSStatus = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 965;
+            vip_y = 1020;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -421,7 +421,7 @@ Module: mgiTable
           RefDBSNonStatus = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 910;
+            vip_y = 965;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -694,7 +694,7 @@ Module: mgiTable
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 1075;
+            vip_y = 1130;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -952,8 +952,8 @@ Module: mgiTable
             rubberPositioning = False;
             resizePolicy = resize_any;
           Group: Control
-            vip_x = 163;
-            vip_y = 848;
+            vip_x = 75;
+            vip_y = 910;
               {
                 Table = mgiTable;
                 Group: Widget

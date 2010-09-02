@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Aug 19 08:36:08 2009";
+      lastWritten = "Wed Sep  1 13:02:39 2010";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -712,6 +712,26 @@ Module: mgiLookup
                 List = list : mgiDataTypes;
                 Group: Widget
                   singleSelectionCallback = "D:SelectLookupListItem,\nD:DisplayDerivation";
+              }
+        }
+        {
+          TDCList = LookupList;
+          Group: Control
+            vip_x = 91;
+            vip_y = 1687;
+          Group: User
+            cmd = "select t._Term_key, t.term, a.accID\nfrom VOC_Term t, ACC_Accession a\nwhere t._Vocab_key = 79\nand t._Term_key = a._Object_key\nand a._MGIType_key = 13\nand a._LogicalDB_key = 146\nand a.accID in ('MCV:0000002',\n  'MCV:0000015',\n  'MCV:0000014',\n  'MCV:0000013',\n  'MCV:0000011',\n  'MCV:0000005',\n  'MCV:0000004',\n  'MCV:0000026',\n  'MCV:0000025',\n  'MCV:0000007',\n  'MCV:0000012',\n  'MCV:0000010',\n  'MCV:0000009',\n  'MCV:0000024',\n  'MCV:0000027',\n  'MCV:0000008',\n  'MCV:0000028',\n  'MCV:0000030')\norder by t.term\n";
+              {
+                Label = LookupLabel;
+                Group: Widget
+                  labelString = "0 TDC List";
+                Group: User
+                  defaultLabel = "TDC List";
+              }
+              {
+                List = list : mgiDataTypes;
+                Group: Widget
+                  singleSelectionCallback = "D:SelectLookupListItem";
               }
         }
 }
