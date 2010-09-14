@@ -222,6 +222,11 @@ rules:
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
 	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart desc, numericPart";
+	  elsif (tableID = MRK_ACC_REFERENCE or 
+		 tableID = MRK_ACC_REFERENCE1 or
+		 tableID = MRK_ACC_REFERENCE2 or
+		 tableID = MRK_ACC_REFERENCE3) then
+	    orderBy := " order by LogicalDB, preferred desc, prefixPart, numericPart";
 	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
 	    orderBy := " order by _Assoc_key, _LogicalDB_key";
 	  else

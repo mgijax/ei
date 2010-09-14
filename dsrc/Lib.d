@@ -394,7 +394,10 @@ rules:
 
 	  -- set back to original color
           top.background := "Wheat";
-          top.menuHistory.background := "Wheat";
+
+	  if (top.menuHistory != nil) then
+            top.menuHistory.background := "Wheat";
+          end if;
 
 	  -- If still no default, then use top.defaultOption (if set)
 

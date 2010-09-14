@@ -640,9 +640,9 @@ rules:
 			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
 			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
 		          " where a._AnnotType_key = " + annotTypeKey +
+			  " and a._LogicalDB_key = " + defaultLogicalDBKey +
 			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Annot_key = e._Annot_key " +
-			  " and a._LogicalDB_key = " + defaultLogicalDBKey +
 			  " order by a.term\n" +
 
 			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 

@@ -71,6 +71,9 @@ extern char *global_version;
 #define MRK_OFFSET		120
 #define MRK_MOUSE  		123
 #define MRK_ACC_REFERENCE	124
+#define MRK_ACC_REFERENCE1	125
+#define MRK_ACC_REFERENCE2	121
+#define MRK_ACC_REFERENCE3	122
 #define MLC_MARKER		126
 #define MLC_REFERENCE		127
 #define MLC_TEXT		128

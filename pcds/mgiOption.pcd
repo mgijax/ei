@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Aug 31 07:36:18 2010";
+      lastWritten = "Tue Sep 14 07:47:14 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -93,6 +93,14 @@ Module: mgiOption
                         allowDelete = False;
                     }
                     {
+                      MRK = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "MGD-MRK-";
+                      Group: User
+                        defaultValue = 1;
+                        preferred = False;
+                    }
+                    {
                       J = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "J:";
@@ -113,6 +121,55 @@ Module: mgiOption
                         labelString = "Nucleotide Sequence";
                       Group: User
                         defaultValue = 9;
+                    }
+                    {
+                      miRBase = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = miRBase;
+                      Group: User
+                        defaultValue = 83;
+                    }
+                    {
+                      EnsemblGeneModel = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Ensembl Gene Model";
+                      Group: User
+                        defaultValue = 60;
+                    }
+                    {
+                      EnsemblProtein = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Ensembl Protein";
+                      Group: User
+                        defaultValue = 134;
+                    }
+                    {
+                      EnsemblTranscript = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Ensembl Transcript";
+                      Group: User
+                        defaultValue = 133;
+                    }
+                    {
+                      EntrezGene = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Entrez Gene";
+                      Group: User
+                        defaultValue = 55;
+                    }
+                    {
+                      NCBIGeneModel = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NCBI Gene Model";
+                      Group: User
+                        defaultValue = 59;
+                    }
+                    {
+                      NCBIGeneModelEvidence = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NCBI Gene Model Evidence";
+                      Group: User
+                        defaultValue = 139;
                     }
                     {
                       RefSeq = AccToggle : mgiOption;
@@ -136,11 +193,167 @@ Module: mgiOption
                         defaultValue = 41;
                     }
                     {
+                      VEGAGeneModel = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "VEGA Gene Model";
+                      Group: User
+                        defaultValue = 85;
+                    }
+                    {
+                      VEGAProtein = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "VEGA Protein";
+                      Group: User
+                        defaultValue = 132;
+                    }
+                    {
+                      VEGATranscript = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "VEGA Transcript";
+                      Group: User
+                        defaultValue = 131;
+                    }
+                    {
+                      AllenBrainAtlas = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Allen Brain Atlas";
+                      Group: User
+                        defaultValue = 107;
+                    }
+                    {
+                      Affy1 = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Affy 1.0 ST";
+                      Group: User
+                        defaultValue = 122;
+                    }
+                    {
+                      Affy430 = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Affy 430 2.0";
+                      Group: User
+                        defaultValue = 123;
+                    }
+                    {
+                      AffyU74 = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Affy U74";
+                      Group: User
+                        defaultValue = 144;
+                    }
+                    {
+                      ArrayExpress = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = ArrayExpress;
+                      Group: User
+                        defaultValue = 130;
+                    }
+                    {
+                      CCDS = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Consensus CDS Project";
+                      Group: User
+                        defaultValue = 136;
+                    }
+                    {
+                      DFCI = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 35;
+                    }
+                    {
+                      DOTS = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 36;
+                    }
+                    {
+                      EC = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 8;
+                    }
+                    {
+                      FuncBase = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = FuncBase;
+                      Group: User
+                        defaultValue = 124;
+                    }
+                    {
+                      HomoloGene = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = HomoloGene;
+                      Group: User
+                        defaultValue = 81;
+                    }
+                    {
+                      NIAGeneIndex = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NIA Mouse Gene Index";
+                      Group: User
+                        defaultValue = 53;
+                    }
+                    {
                       PDB = AccToggle : mgiOption;
                       Group: Widget
                         labelString = PDB;
                       Group: User
                         defaultValue = 45;
+                    }
+                    {
+                      ProteinOntology = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "Protein Ontology";
+                      Group: User
+                        defaultValue = 135;
+                    }
+                    {
+                      RIKENCluster = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "RIKEN Cluster";
+                      Group: Control
+                        collapsed = True;
+                      Group: User
+                        defaultValue = 25;
+                        private = True;
+                    }
+                    {
+                      RIKENClone = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "RIKEN Clone";
+                      Group: User
+                        defaultValue = 51;
+                    }
+                    {
+                      RIKENFANTOM = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "RIKEN (FANTOM)";
+                      Group: User
+                        defaultValue = 26;
+                    }
+                    {
+                      TreeFam = AccToggle : mgiOption;
+                      Group: User
+                        defaultValue = 86;
+                    }
+                    {
+                      TreeFamGene = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "TreeFam/Gene";
+                      Group: User
+                        defaultValue = 88;
+                    }
+                    {
+                      UniGene = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = UniGene;
+                      Group: User
+                        defaultValue = 23;
+                    }
+                    {
+                      InterPro = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = InterPro;
+                      Group: User
+                        defaultValue = 28;
                     }
                     {
                       IMAGE = AccToggle : mgiOption;
@@ -160,69 +373,9 @@ Module: mgiOption
                         defaultValue = 16;
                     }
                     {
-                      EntrezGene = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Entrez Gene";
-                      Group: User
-                        defaultValue = 55;
-                    }
-                    {
-                      VEGAGeneModel = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "VEGA Gene Model";
-                      Group: User
-                        defaultValue = 85;
-                    }
-                    {
-                      NCBIGeneModel = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "NCBI Gene Model";
-                      Group: User
-                        defaultValue = 59;
-                    }
-                    {
-                      EnsemblGeneModel = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Ensembl Gene Model";
-                      Group: User
-                        defaultValue = 60;
-                    }
-                    {
-                      TreeFam = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 86;
-                    }
-                    {
-                      UniGene = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = UniGene;
-                      Group: User
-                        defaultValue = 23;
-                    }
-                    {
-                      miRBase = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = miRBase;
-                      Group: User
-                        defaultValue = 83;
-                    }
-                    {
-                      EC = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 8;
-                    }
-                    {
                       ATCC = AccToggle : mgiOption;
                       Group: User
                         defaultValue = 12;
-                    }
-                    {
-                      MRK = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "MGD-MRK-";
-                      Group: User
-                        defaultValue = 1;
-                        preferred = False;
                     }
                     {
                       MGIImage = AccToggle : mgiOption;
@@ -321,37 +474,6 @@ Module: mgiOption
                         defaultValue = 47;
                     }
                     {
-                      HomoloGene = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = HomoloGene;
-                      Group: User
-                        defaultValue = 81;
-                    }
-                    {
-                      RIKENCluster = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "RIKEN Cluster";
-                      Group: Control
-                        collapsed = True;
-                      Group: User
-                        defaultValue = 25;
-                        private = True;
-                    }
-                    {
-                      RIKENClone = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "RIKEN Clone";
-                      Group: User
-                        defaultValue = 51;
-                    }
-                    {
-                      RIKENFANTOM = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "RIKEN (FANTOM)";
-                      Group: User
-                        defaultValue = 26;
-                    }
-                    {
                       NIA = AccToggle : mgiOption;
                       Group: Widget
                         labelString = NIA;
@@ -401,35 +523,11 @@ Module: mgiOption
                         defaultValue = 82;
                     }
                     {
-                      InterPro = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = InterPro;
-                      Group: User
-                        defaultValue = 28;
-                    }
-                    {
                       Taxon = AccToggle : mgiOption;
                       Group: Widget
                         labelString = Taxonomy;
                       Group: User
                         defaultValue = 32;
-                    }
-                    {
-                      DFCI = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 35;
-                    }
-                    {
-                      DOTS = AccToggle : mgiOption;
-                      Group: User
-                        defaultValue = 36;
-                    }
-                    {
-                      NIAGeneIndex = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "NIA Mouse Gene Index";
-                      Group: User
-                        defaultValue = 53;
                     }
                     {
                       JRS = AccToggle : mgiOption;
@@ -546,13 +644,6 @@ Module: mgiOption
                         defaultValue = 66;
                     }
                     {
-                      Lexicon = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Lexicon Genetics";
-                      Group: User
-                        defaultValue = 67;
-                    }
-                    {
                       LexiconGeneTrap = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Lexicon Genetics";
@@ -623,11 +714,11 @@ Module: mgiOption
                         defaultValue = 104;
                     }
                     {
-                      AllenBrainAtlas = AccToggle : mgiOption;
+                      KOMPRegeneron = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "Allen Brain Atlas";
+                        labelString = "Regeneron-KOMP";
                       Group: User
-                        defaultValue = 107;
+                        defaultValue = 109;
                     }
                     {
                       KOMPCSD = AccToggle : mgiOption;
@@ -637,25 +728,11 @@ Module: mgiOption
                         defaultValue = 108;
                     }
                     {
-                      KOMPRegeneron = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Regeneron-KOMP";
-                      Group: User
-                        defaultValue = 109;
-                    }
-                    {
                       RegeneronOther = AccToggle : mgiOption;
                       Group: Widget
                         labelString = "Regeneron-Other";
                       Group: User
                         defaultValue = 110;
-                    }
-                    {
-                      FuncBase = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = FuncBase;
-                      Group: User
-                        defaultValue = 124;
                     }
                     {
                       KOMPRegeneronProject = AccToggle : mgiOption;
@@ -686,74 +763,25 @@ Module: mgiOption
                         defaultValue = 129;
                     }
                     {
-                      ArrayExpress = AccToggle : mgiOption;
+                      RuleyHECellLine = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = ArrayExpress;
+                        labelString = "Ruley HE Cell Line";
                       Group: User
-                        defaultValue = 130;
+                        defaultValue = 150;
                     }
                     {
-                      VEGATranscript = AccToggle : mgiOption;
+                      IshidaYCellLine = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "VEGA Transcript";
+                        labelString = "Ishida Y Cell Line";
                       Group: User
-                        defaultValue = 131;
+                        defaultValue = 152;
                     }
                     {
-                      VEGAProtein = AccToggle : mgiOption;
+                      Lexicon = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = "VEGA Protein";
+                        labelString = "Lexicon Genetics";
                       Group: User
-                        defaultValue = 132;
-                    }
-                    {
-                      EnsemblTranscript = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Ensembl Transcript";
-                      Group: User
-                        defaultValue = 133;
-                    }
-                    {
-                      EnsemblProtein = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Ensembl Protein";
-                      Group: User
-                        defaultValue = 134;
-                    }
-                    {
-                      ProteinOntology = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Protein Ontology";
-                      Group: User
-                        defaultValue = 135;
-                    }
-                    {
-                      CCDS = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Consensus CDS Project";
-                      Group: User
-                        defaultValue = 136;
-                    }
-                    {
-                      NCBIGeneModelEvidence = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "NCBI Gene Model Evidence";
-                      Group: User
-                        defaultValue = 139;
-                    }
-                    {
-                      Affy430 = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Affy 430 2.0";
-                      Group: User
-                        defaultValue = 123;
-                    }
-                    {
-                      AffyU74 = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = "Affy U74";
-                      Group: User
-                        defaultValue = 144;
+                        defaultValue = 67;
                     }
               }
         }

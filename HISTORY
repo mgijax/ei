@@ -1,3 +1,10 @@
+TAG: ei-4-4-0-3
+DATE: 09/14/2010
+STAFF: lec
+CHANGES:
+1) MCL ids: added "Ruley HE Cell Line", and "Ishida Y Cell Line"
+to mgiOption/AccSource
+
 TAG: ei-4-4-0-2
 DATE: 09/02/2010
 STAFF: lec

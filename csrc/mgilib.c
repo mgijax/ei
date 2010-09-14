@@ -962,6 +962,9 @@ char *mgi_DBtype(int table)
     case MRK_MARKER:
     case MRK_MOUSE:
     case MRK_ACC_REFERENCE:
+    case MRK_ACC_REFERENCE1:
+    case MRK_ACC_REFERENCE2:
+    case MRK_ACC_REFERENCE3:
             strcpy(buf, "Marker");
 	    break;
     case NOM_MARKER:
@@ -1052,6 +1055,15 @@ char *mgi_DBaccTable(int table)
             break;
     case MRK_ACC_REFERENCE:
             strcpy(buf, "MRK_AccRef_View");
+            break;
+    case MRK_ACC_REFERENCE1:
+            strcpy(buf, "MRK_AccRef1_View");
+            break;
+    case MRK_ACC_REFERENCE2:
+            strcpy(buf, "MRK_AccRef2_View");
+            break;
+    case MRK_ACC_REFERENCE3:
+            strcpy(buf, "MRK_AccRef3_View");
             break;
     case NOM_MARKER:
 	    strcpy(buf, "NOM_AccNoRef_View");

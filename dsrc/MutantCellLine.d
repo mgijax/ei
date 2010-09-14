@@ -391,12 +391,15 @@ rules:
 	  from := " from " + mgi_DBtable(ALL_CELLLINE_VIEW) + " a";
 	  where := "";
 
-	  -- Cannot search both Accession tables at once
-
           SearchAcc.table := accTable;
           SearchAcc.objectKey := "a." + mgi_DBkey(ALL_CELLLINE);
 	  SearchAcc.tableID := ALL_CELLLINE;
           send(SearchAcc, 0);
+
+          if (accTable.sqlFrom.length > 0) then
+            from := from + accTable.sqlFrom;
+            where := where + accTable.sqlWhere;
+          end if;
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
 	  QueryModificationHistory.tag := "a";
