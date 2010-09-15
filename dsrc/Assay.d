@@ -525,8 +525,11 @@ rules:
           imageList.cmd := newCmd + "\norder by paneLabel";
 
 	  -- Load the Image list
-	  LoadList.list := imageList;
-	  send(LoadList, 0);
+	  -- ignore J:153498/key = 154591
+	  if refKey != "154591" then
+	    LoadList.list := imageList;
+	    send(LoadList, 0);
+	  end if;
 
           -- Restore original SQL command
           imageList.cmd := saveCmd;
