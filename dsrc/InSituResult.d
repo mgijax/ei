@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec  09/15/2010
+--	- TR 9695/skip J:153498
+--
 -- lec	11/26/2008
 --	- TR 9356; CopyInSituRow, add call to 'CommitTableCellEdit'
 --
@@ -517,9 +520,12 @@ rules:
 	  newCmd := saveCmd + " " + key;
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
-	  -- Load the Pane list for the current Reference
-	  LoadList.list := top->ImagePaneList;
-	  send(LoadList, 0);
+	  -- skip J:153498/key = 154591
+	  if key != "154591" then
+	    -- Load the Pane list for the current Reference
+	    LoadList.list := top->ImagePaneList;
+	    send(LoadList, 0);
+	  end if;
 
 	  -- Restore original lookup command
 	  top->ImagePaneList.cmd := saveCmd;

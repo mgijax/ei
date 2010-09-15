@@ -28,6 +28,9 @@
 --
 -- History
 --
+-- lec  09/15/2010
+--	- TR 9695/skip J:153498
+--
 -- lec	01/27/2010
 --	- TR 8156; AddAntibodyReference
 --

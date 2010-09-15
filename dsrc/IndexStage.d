@@ -11,6 +11,9 @@
 -- History
 --
 --
+-- lec  09/15/2010
+--	- TR 9695/skip J:153498
+--
 -- lec	08/26/2009
 --	- TR 9300; added condiational mutation
 --
@@ -630,10 +633,15 @@ rules:
 
 	  cmd := "select * from GXD_Index_View where _Index_key = " + currentRecordKey + "\n" +
 		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
-			" order by _IndexAssay_key, _StageID_key\n" +
+			" order by _IndexAssay_key, _StageID_key\n";
+
+	  -- skip J:153498 (key = 154591)
+          if top->mgiCitation->ObjectID->text.value != "154591" then
+	    cmd := cmd + 
 		 "select assays = count(distinct e._Assay_key) from GXD_Index i, GXD_Expression e " +
 		 "where i._Index_key = " + currentRecordKey + 
 		 " and i._Refs_key = e._Refs_key";
+          end if;
 
 	  table : widget;
 	  results : integer := 1;
