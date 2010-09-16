@@ -344,6 +344,7 @@ rules:
         LoadList does
           list_w : widget := LoadList.list;
 	  allowDups : boolean := LoadList.allowDups;
+	  skipit : boolean := LoadList.skipit;
           results : xm_string_list := create xm_string_list();
           keys : string_list := create string_list();
           accIDs : string_list := create string_list();
@@ -368,6 +369,15 @@ rules:
             send(ClearList, 0);
           end if;
  
+	  -- skip the loading of the lookup
+
+	  if (skipit) then
+            if (LoadList.source_widget != nil) then
+              (void) reset_cursor(LoadList.source_widget.top);
+            end if;
+	    return;
+	  end if;
+
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, list_w.cmd);
           (void) dbsqlexec(dbproc);

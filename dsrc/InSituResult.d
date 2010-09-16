@@ -19,6 +19,7 @@
 --
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
+--	  added LoadList.skipit
 --
 -- lec	11/26/2008
 --	- TR 9356; CopyInSituRow, add call to 'CommitTableCellEdit'
@@ -509,6 +510,7 @@ rules:
 	  key : string;
 	  saveCmd : string;
 	  newCmd : string;
+	  refCount : string;
 
 	  -- Get current Reference key
 	  key := top.root->mgiCitation->ObjectID->text.value;
@@ -520,12 +522,14 @@ rules:
 	  newCmd := saveCmd + " " + key;
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
-	  -- skip J:153498/key = 154591
-	  if key != "154591" then
-	    -- Load the Pane list for the current Reference
-	    LoadList.list := top->ImagePaneList;
-	    send(LoadList, 0);
+	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + key);
+	  if (integer) refCount > 25000 then
+	    LoadList.skipit := true;
 	  end if;
+
+	  -- Load the Pane list for the current Reference
+	  LoadList.list := top->ImagePaneList;
+	  send(LoadList, 0);
 
 	  -- Restore original lookup command
 	  top->ImagePaneList.cmd := saveCmd;

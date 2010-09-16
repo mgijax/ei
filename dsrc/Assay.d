@@ -30,6 +30,7 @@
 --
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
+--	  added LoadList.skipit
 --
 -- lec	01/27/2010
 --	- TR 8156; AddAntibodyReference
@@ -502,6 +503,7 @@ rules:
           newCmd : string;
 	  imageList : widget := top->GelForm->ImagePaneList;
 	  currentPane : integer := -1;
+	  refCount : string;
 	  
 	  -- Get currently selected image pane
 
@@ -528,11 +530,13 @@ rules:
           imageList.cmd := newCmd + "\norder by paneLabel";
 
 	  -- Load the Image list
-	  -- ignore J:153498/key = 154591
-	  if refKey != "154591" then
-	    LoadList.list := imageList;
-	    send(LoadList, 0);
-	  end if;
+	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	  if (integer) refCount > 25000 then
+	    LoadList.skipit := true;
+          end if;
+
+	  LoadList.list := imageList;
+	  send(LoadList, 0);
 
           -- Restore original SQL command
           imageList.cmd := saveCmd;
@@ -1199,13 +1203,17 @@ rules:
 	  DeleteSQL.list := top->QueryList;
           send(DeleteSQL, 0);
 
-	  PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	  send(PythonImageCache, 0);
+	  if top->Control->Delete.deleteReturn then
 
-          PythonAlleleCreCache.source_widget := top;
-          PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
-          PythonAlleleCreCache.objectKey := currentAssay;
-          send(PythonAlleleCreCache, 0);
+	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	    send(PythonImageCache, 0);
+
+            PythonAlleleCreCache.source_widget := top;
+            PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
+            PythonAlleleCreCache.objectKey := currentAssay;
+            send(PythonAlleleCreCache, 0);
+
+	  end if;
 
           if (top->QueryList->List.row = 0) then
             ClearAssay.clearKeys := false;
