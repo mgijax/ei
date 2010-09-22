@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec  09/22/2010
+--	TR 10337/allow user to edit the Marker Type
+--
 -- lec	05/26/2010
 --	TR 6839; Marker Types project
 --
@@ -32,6 +35,7 @@ devents:
 	TDCTraverse :local [];
 	Init :local [];					-- Initialize globals, etc.
 	Modify :local [];				-- Modify record
+	ModifyMarkerType :local [];				-- Modify record
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
@@ -45,6 +49,7 @@ locals:
 	top : widget;			-- Top-level shell of Module
 	ab : widget;			-- Activate Button from whichh this Module was launched
 
+	cmd : string;
 	from : string;			-- global SQL from clause
 	where : string;			-- global SQL where clause
 
@@ -226,7 +231,6 @@ rules:
 --
 
 	Modify does
-	  cmd : string;
           row : integer := 0;
           editMode : string;
 	  key : string;
@@ -399,6 +403,8 @@ rules:
             row := row + 1;
 	  end while;
 
+	  send(ModifyMarkerType, 0);
+
           ModifySQL.cmd := cmd;
 	  ModifySQL.list := top->QueryList;
           send(ModifySQL, 0);
@@ -407,6 +413,26 @@ rules:
 	  send(PythonMarkerCVCache, 0);
 
 	  (void) reset_cursor(top);
+	end does;
+
+--
+-- ModifyMarkerType
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/update/delete for Marker Type
+--
+
+	ModifyMarkerType does
+ 
+	  set : string := "";
+
+          if (top->MarkerTypeMenu.menuHistory.modified and
+	      top->MarkerTypeMenu.menuHistory.searchValue != "%") then
+            set := set + "_Marker_Type_key = "  + top->MarkerTypeMenu.menuHistory.defaultValue + ",";
+          end if;
+
+	  cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set);
 	end does;
 
 --
@@ -630,33 +656,33 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd : string := "select _Object_key, accID, description, short_description" +
-			  " from " + dbView + 
-			  " where _Object_key = " + currentRecordKey + 
-			  " and prefixPart = 'MGI:' and preferred = 1 " + 
-			  " order by description\n" +
+	  cmd := "select _Object_key, accID, description, short_description" +
+		  " from " + dbView + 
+		  " where _Object_key = " + currentRecordKey + 
+		  " and prefixPart = 'MGI:' and preferred = 1 " + 
+		  " order by description\n" +
 
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
-			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-		          " where a._AnnotType_key = " + annotTypeKey +
-			  " and a._LogicalDB_key = " + defaultLogicalDBKey +
-			  " and a._Object_key = " + currentRecordKey + 
-			  " and a._Annot_key = e._Annot_key " +
-			  " order by a.term\n" +
+	          "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
+		  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
+		    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
+		  " where a._AnnotType_key = " + annotTypeKey +
+		  " and a._LogicalDB_key = " + defaultLogicalDBKey +
+		  " and a._Object_key = " + currentRecordKey + 
+		  " and a._Annot_key = e._Annot_key " +
+		  " order by a.term\n" +
 
-			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
-			  " from " + 
-			    mgi_DBtable(VOC_ANNOT) + " a, " +
-			    mgi_DBtable(VOC_EVIDENCE) + " e, " +
-			    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
-			  " where a._Object_key = " + currentRecordKey +
-			  " and a._Annot_key = e._Annot_key" +
-			  " and e._AnnotEvidence_key = n._Object_key" +
-			  " order by n._Object_key, n.sequenceNum\n" +
+		  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
+		  " from " + 
+		    mgi_DBtable(VOC_ANNOT) + " a, " +
+		    mgi_DBtable(VOC_EVIDENCE) + " e, " +
+		    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
+		  " where a._Object_key = " + currentRecordKey +
+		  " and a._Annot_key = e._Annot_key" +
+		  " and e._AnnotEvidence_key = n._Object_key" +
+		  " order by n._Object_key, n.sequenceNum\n" +
 			  
-			  "select _Marker_Type_key from MRK_Marker" +
-			  " where _Marker_key = " + currentRecordKey + "\n";
+		  "select _Marker_Type_key from MRK_Marker" +
+		  " where _Marker_key = " + currentRecordKey + "\n";
 
 	  row : integer := 0;
 	  i : integer;
