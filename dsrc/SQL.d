@@ -199,6 +199,9 @@ rules:
             DeleteList.list := DeleteSQL.list;
             send(DeleteList, 0);
 	    top->RecordCount->text.value := mgi_DBrecordCount(DeleteSQL.tableID);
+	    if (top->Control->Delete != nil) then
+	      top->Control->Delete.deleteReturn := true;
+	    end if;
           end if;
         end does;
  

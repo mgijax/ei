@@ -31,7 +31,8 @@ InsertList [list : widget;			-- Insert item into LookupList
 	    allowDups : boolean := false;];
 
 LoadList [list : widget;  			-- Load Lookup List; Allow Duplicate entries?
-	  allowDups : boolean := false;];
+	  allowDups : boolean := false;
+	  skipit : boolean := false;];
 
 ManageSelectionList [dialog : string;];		-- Manage Selection List Dialog
 	       

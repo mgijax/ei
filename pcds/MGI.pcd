@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 14 07:33:19 2010";
+      lastWritten = "Tue Sep 21 09:29:55 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -3069,9 +3069,6 @@ Module: MGI
                                                     NSequence = AccToggle;
                                                   }
                                                   {
-                                                    miRBase = AccToggle : mgiOption;
-                                                  }
-                                                  {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3130,6 +3127,9 @@ Module: MGI
                                                   }
                                                   {
                                                     HomoloGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NIAGeneIndex = AccToggle : mgiOption;

@@ -201,7 +201,9 @@ locals:
 	top : widget;
 	ab : widget;
 	accTable : widget;
-	accRefTable : widget;
+	accRefTable1 : widget;	-- Nucleotide Sequence, miRBase
+	accRefTable2 : widget;  -- EntrezGene, RefSeq, etc.
+	accRefTable3 : widget;  -- all others
 
 	cmd : string;
 	from : string;
@@ -214,6 +216,9 @@ locals:
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
                                         -- Initialized in Select[] and Add[] events
+
+	annotTypeKey : string;
+	defaultLogicalDBKey : string := "146";
  
 rules:
 
@@ -301,6 +306,9 @@ rules:
 	  InitNoteForm.tableID := MGI_NOTETYPE_MARKER_VIEW;
 	  send(InitNoteForm, 0);
 
+          LoadList.list := top->TDCList;
+          send(LoadList, 0);
+
           top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := 
             "select * from " + mgi_DBtable(MRK_EVENTREASON) + 
             " where " + mgi_DBkey(MRK_EVENTREASON) + " >= -1 order by " + mgi_DBcvname(MRK_EVENTREASON);
@@ -331,13 +339,21 @@ rules:
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
 	  tables.append(top->Offset->Table);
-	  tables.append(top->AccessionReference->Table);
+	  tables.append(top->AccessionReference1->Table);
+	  tables.append(top->AccessionReference2->Table);
+	  tables.append(top->AccessionReference3->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 
 	  -- Global Accession number Tables
 
 	  accTable := top->mgiAccessionTable->Table;
-	  accRefTable := top->AccessionReference->Table;
+	  accRefTable1 := top->AccessionReference1->Table;
+	  accRefTable2 := top->AccessionReference2->Table;
+	  accRefTable3 := top->AccessionReference3->Table;
+
+	  -- TDC stuff
+	  annotTypeKey := "1011";
+	  top->TDCVocab->Table.vocabKey := "79";
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -993,12 +1009,30 @@ rules:
           send(ProcessAcc, 0);
           cmd := cmd + accTable.sqlCmd;
 
-          ProcessAcc.table := accRefTable;
+          ProcessAcc.table := accRefTable1;
           ProcessAcc.objectKey := currentRecordKey;
-          ProcessAcc.tableID := MRK_ACC_REFERENCE;
+          ProcessAcc.tableID := MRK_ACC_REFERENCE1;
           send(ProcessAcc, 0);
-          cmd := cmd + accRefTable.sqlCmd;
-	  if (accRefTable.sqlCmd.length > 0) then
+          cmd := cmd + accRefTable1.sqlCmd;
+	  if (accRefTable1.sqlCmd.length > 0) then
+	    modifySequenceCache := true;
+	  end if;
+
+          ProcessAcc.table := accRefTable2;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := MRK_ACC_REFERENCE2;
+          send(ProcessAcc, 0);
+          cmd := cmd + accRefTable2.sqlCmd;
+	  if (accRefTable2.sqlCmd.length > 0) then
+	    modifySequenceCache := true;
+	  end if;
+
+          ProcessAcc.table := accRefTable3;
+          ProcessAcc.objectKey := currentRecordKey;
+          ProcessAcc.tableID := MRK_ACC_REFERENCE3;
+          send(ProcessAcc, 0);
+          cmd := cmd + accRefTable3.sqlCmd;
+	  if (accRefTable3.sqlCmd.length > 0) then
 	    modifySequenceCache := true;
 	  end if;
 
@@ -1012,7 +1046,11 @@ rules:
                         "and name = " + mgi_DBprstr(currentName) + "\n";
 	  end if;
 
-	  if ((cmd.length > 0 and cmd != accRefTable.sqlCmd and cmd != accTable.sqlCmd) or
+	  if ((cmd.length > 0 and 
+	       cmd != accRefTable1.sqlCmd and 
+	       cmd != accRefTable2.sqlCmd and 
+	       cmd != accRefTable3.sqlCmd and 
+	       cmd != accTable.sqlCmd) or
 	       set.length > 0) then
 	    cmd := cmd + mgi_DBupdate(MRK_MARKER, currentRecordKey, set);
 	  end if;
@@ -1346,6 +1384,7 @@ rules:
 	  from_history  : boolean := false;
 	  from_offset   : boolean := false;
 	  from_reference: boolean := false;
+	  from_annot    : boolean := false;
 
 	  value : string;
 
@@ -1363,12 +1402,26 @@ rules:
 	    from := from + accTable.sqlFrom;
 	    where := where + accTable.sqlWhere;
 	  else
-            SearchAcc.table := accRefTable;
+            SearchAcc.table := accRefTable1;
             SearchAcc.objectKey := "m." + mgi_DBkey(MRK_MARKER);
-	    SearchAcc.tableID := MRK_ACC_REFERENCE;
+	    SearchAcc.tableID := MRK_ACC_REFERENCE1;
             send(SearchAcc, 0);
-	    from := from + accRefTable.sqlFrom;
-	    where := where + accRefTable.sqlWhere;
+	    from := from + accRefTable1.sqlFrom;
+	    where := where + accRefTable1.sqlWhere;
+
+            SearchAcc.table := accRefTable2;
+            SearchAcc.objectKey := "m." + mgi_DBkey(MRK_MARKER);
+	    SearchAcc.tableID := MRK_ACC_REFERENCE2;
+            send(SearchAcc, 0);
+	    from := from + accRefTable2.sqlFrom;
+	    where := where + accRefTable2.sqlWhere;
+
+            SearchAcc.table := accRefTable3;
+            SearchAcc.objectKey := "m." + mgi_DBkey(MRK_MARKER);
+	    SearchAcc.tableID := MRK_ACC_REFERENCE3;
+            send(SearchAcc, 0);
+	    from := from + accRefTable3.sqlFrom;
+	    where := where + accRefTable3.sqlWhere;
 	  end if;
 
 	  QueryModificationHistory.table := top->ModificationHistory->Table;
@@ -1425,6 +1478,11 @@ rules:
 
 	  if (top->Cyto->text.modified) then
 	    where := where + "\nand m.cytogeneticOffset like " + mgi_DBprstr(top->Cyto->text.value);
+	  end if;
+
+	  if (top->cMposition->text.modified) then
+	    where := where + "\nand moff.source = 0 and moff.offset = " + top->cMposition->text.value;
+	    from_offset := true;
 	  end if;
 
 	  -- Query for MGD Offset
@@ -1527,6 +1585,18 @@ rules:
 	    from_reference := true;
 	  end if;
 
+	  -- Annotations
+
+	  value := mgi_tblGetCell(top->TDCVocab->Table, 0, top->TDCVocab->Table.termKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand tdc._Term_key = " + value;
+	    from_annot := true;
+	  end if;
+
+	  --
+	  -- concatenate the from/and clauses
+	  --
+
 	  if (from_offset) then
 	    from := from + ",MRK_Offset moff";
 	    where := where + "\nand m._Marker_key = moff._Marker_key";
@@ -1550,6 +1620,12 @@ rules:
 	  if (from_reference) then
 	    from := from + ",MRK_Reference_View mr";
 	    where := where + "\nand m._Marker_key = mr._Marker_key";
+	  end if;
+
+	  if (from_annot) then
+	    from := from + "," + mgi_DBtable(VOC_ANNOT) + " tdc";
+	    where := where + "\nand m._Marker_key = tdc._Object_key";
+	    where := where + "\nand tdc._AnnotType_key = " + annotTypeKey;
 	  end if;
 
 	end does;
@@ -1589,7 +1665,13 @@ rules:
 	  InitAcc.table := accTable;
           send(InitAcc, 0);
  
-	  InitAcc.table := accRefTable;
+	  InitAcc.table := accRefTable1;
+          send(InitAcc, 0);
+ 
+	  InitAcc.table := accRefTable2;
+          send(InitAcc, 0);
+ 
+	  InitAcc.table := accRefTable3;
           send(InitAcc, 0);
  
 	  tables.open;
@@ -1634,6 +1716,12 @@ rules:
 	         "select _Current_key, current_symbol from MRK_Current_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n" +
 
+	         "select tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term " +
+		 " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " tdc " +
+		 "where tdc._AnnotType_key = " + annotTypeKey +
+		 " and tdc._LogicalDB_key = " + defaultLogicalDBKey +
+		 " and tdc._Object_key = " + currentRecordKey + "\n" +
+
 	         "select _Alias_key, alias from MRK_Alias_View " +
 		 "where _Marker_key = " + currentRecordKey + "\n";
 
@@ -1675,6 +1763,11 @@ rules:
                 (void) mgi_tblSetCell(table, (integer) source, table.sourceKey, source);
                 (void) mgi_tblSetCell(table, (integer) source, table.offset, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, (integer) source, table.editMode, TBL_ROW_NOCHG);
+
+		if (integer) source = 0 then
+	            top->cMposition->text.value := mgi_getstr(dbproc, 2);
+                end if;
+
 	      elsif (results = 3) then
 		table := top->History->Table;
                 (void) mgi_tblSetCell(table, row, table.currentSeqNum, mgi_getstr(dbproc, 4));
@@ -1733,6 +1826,12 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.markerSymbol, mgi_getstr(dbproc, 2));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 6) then
+		table := top->TDCVocab->Table;
+                (void) mgi_tblSetCell(table, row, table.annotKey, mgi_getstr(dbproc, 1));
+                (void) mgi_tblSetCell(table, row, table.termKey, mgi_getstr(dbproc, 2));
+                (void) mgi_tblSetCell(table, row, table.termAccID, mgi_getstr(dbproc, 3));
+                (void) mgi_tblSetCell(table, row, table.term, mgi_getstr(dbproc, 4));
+	      elsif (results = 7) then
 		table := top->Alias->Table;
                 (void) mgi_tblSetCell(table, row, table.markerCurrentKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.markerKey, mgi_getstr(dbproc, 1));
@@ -1787,9 +1886,21 @@ rules:
 	  LoadAcc.tableID := MRK_MARKER;
           send(LoadAcc, 0);
  
-          LoadAcc.table := accRefTable;
+          LoadAcc.table := accRefTable1;
           LoadAcc.objectKey := currentRecordKey;
-          LoadAcc.tableID := MRK_ACC_REFERENCE;
+          LoadAcc.tableID := MRK_ACC_REFERENCE1;
+          LoadAcc.reportError := false;
+          send(LoadAcc, 0);
+ 
+          LoadAcc.table := accRefTable2;
+          LoadAcc.objectKey := currentRecordKey;
+          LoadAcc.tableID := MRK_ACC_REFERENCE2;
+          LoadAcc.reportError := false;
+          send(LoadAcc, 0);
+ 
+          LoadAcc.table := accRefTable3;
+          LoadAcc.objectKey := currentRecordKey;
+          LoadAcc.tableID := MRK_ACC_REFERENCE3;
           LoadAcc.reportError := false;
           send(LoadAcc, 0);
  

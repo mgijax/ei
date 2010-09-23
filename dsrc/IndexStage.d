@@ -635,14 +635,6 @@ rules:
 		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
 			" order by _IndexAssay_key, _StageID_key\n";
 
-	  -- skip J:153498 (key = 154591)
-          if top->mgiCitation->ObjectID->text.value != "154591" then
-	    cmd := cmd + 
-		 "select assays = count(distinct e._Assay_key) from GXD_Index i, GXD_Expression e " +
-		 "where i._Index_key = " + currentRecordKey + 
-		 " and i._Refs_key = e._Refs_key";
-          end if;
-
 	  table : widget;
 	  results : integer := 1;
 	  row : integer;
@@ -691,7 +683,23 @@ rules:
 		-- place an "X" in the correct column (stage)
 		(void) mgi_tblSetCell(table, row, stageKeys.find(mgi_getstr(dbproc, 3)), "X");
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
-	      elsif (results = 3) then
+	      end if;
+	    end while;
+	    results := results + 1;
+          end while;
+
+	  -- skip J:153498 (key = 154591)
+          if top->mgiCitation->ObjectID->text.value != "154591" then
+	    cmd := cmd + 
+		 "select assays = count(distinct e._Assay_key) from GXD_Index i, GXD_Expression e " +
+		 "where i._Index_key = " + currentRecordKey + 
+		 " and i._Refs_key = e._Refs_key";
+
+            (void) dbcmd(dbproc, cmd);
+            (void) dbsqlexec(dbproc);
+ 
+            while (dbresults(dbproc) != NO_MORE_RESULTS) do
+              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
 		if (mgi_getstr(dbproc, 1) = "0") then
                   SetOption.source_widget := top->CodedMenu;
                   SetOption.value := NO;
@@ -701,10 +709,9 @@ rules:
                   SetOption.value := YES;
                   send(SetOption, 0);
 		end if;
-	      end if;
-	    end while;
-	    results := results + 1;
-          end while;
+	      end while;
+            end while;
+          end if;
 
 	  (void) dbclose(dbproc);
  
