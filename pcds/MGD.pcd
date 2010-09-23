@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Sep 22 10:37:37 2010";
+      lastWritten = "Thu Sep 23 06:52:24 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6599,6 +6599,7 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"Marker\")";
                                     labelString = Markers;
                                     traversalOn = False;
+                                    managed = False;
                                 }
                                 {
                                   MarkerNoteBook = XmPushButton;

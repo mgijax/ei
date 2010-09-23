@@ -3,7 +3,7 @@ Module: mgiControl
       autoCuil = False;
       dDialogFile = "mgiControl_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jul 21 14:31:45 2009";
+      lastWritten = "Thu Sep 16 09:08:28 2010";
         {
           Control = XmFrame;
           Group: Control
@@ -80,6 +80,7 @@ Module: mgiControl
                       Group: Widget
                         activateCallback = "D:VerifyEdit(mode = 3),\nD:GoHome";
                         accelerator = "Ctrl<Key>d";
+                        userDefinedAttributes = "deleteReturn:Boolean(Boolean)=\"False\"\n";
                       Group: Constraint
                         leftAttachment = attach_widget;
                         leftWidget = Add;

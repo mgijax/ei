@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 14 07:33:23 2010";
+      lastWritten = "Tue Sep 21 09:29:52 2010";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -421,11 +421,6 @@ Shift<Key>Tab: prev-tab-group()
                                                       private = True;
                                                   }
                                                   {
-                                                    miRBase = AccToggle : mgiOption;
-                                                    Group: Widget
-                                                      managed = True;
-                                                  }
-                                                  {
                                                     EnsemblGeneModel = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
@@ -509,6 +504,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     HomoloGene = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    miRBase = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
                                                   }
                                                   {
                                                     NIAGeneIndex = AccToggle : mgiOption;
@@ -702,9 +702,6 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
-                                                  }
-                                                  {
-                                                    miRBase = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EnsemblGeneModel = AccToggle : mgiOption;

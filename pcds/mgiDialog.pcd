@@ -3,7 +3,7 @@ Module: mgiDialog
       autoCuil = False;
       dDialogFile = "mgiDialog_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jul 29 14:12:06 2009";
+      lastWritten = "Tue Sep 21 13:21:18 2010";
         {
           StatusDialog = XmWarningDialog;
           Group: Widget
@@ -844,7 +844,7 @@ Module: mgiDialog
                             Table = mgiTable;
                             Group: Widget
                               userDefinedAttributes = "resultKey:Int(Int)=\"3\"\nstrengthKey:Int(Int)=\"5\"\npatternKey:Int(Int)=\"6\"\nimagePaneKeys:Int(Int)=\"7\"\nstructures:Int(Int)=\"8\"\nstrength:Int(Int)=\"9\"\npattern:Int(Int)=\"10\"\nimagePanes:Int(Int)=\"11\"\nnotes:Int(Int)=\"12\"\nstructureKeys:Int(Int)=\"4\"\nclipboard:String=\"Lookup\"\n";
-                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9 11)(all 10-11 15)(all 12 100)";
+                              xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 8 10)(all 9 11)(all 10-11 25)(all 12 100)";
                               xrtTblColumnLabels = "Mode,Current Order,#,Result key,Struct keys,Strength key,Pattern key,Image Pane keys,Structures,Strength,Pattern,Image Panes,Notes";
                               xrtTblNumColumns = 13;
                               xrtTblEditableSeries = "(all 0-2 False)(all 8-11 False)";

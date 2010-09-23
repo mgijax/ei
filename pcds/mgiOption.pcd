@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 14 07:47:14 2010";
+      lastWritten = "Tue Sep 21 09:29:49 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -121,13 +121,6 @@ Module: mgiOption
                         labelString = "Nucleotide Sequence";
                       Group: User
                         defaultValue = 9;
-                    }
-                    {
-                      miRBase = AccToggle : mgiOption;
-                      Group: Widget
-                        labelString = miRBase;
-                      Group: User
-                        defaultValue = 83;
                     }
                     {
                       EnsemblGeneModel = AccToggle : mgiOption;
@@ -283,6 +276,13 @@ Module: mgiOption
                         labelString = HomoloGene;
                       Group: User
                         defaultValue = 81;
+                    }
+                    {
+                      miRBase = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = miRBase;
+                      Group: User
+                        defaultValue = 83;
                     }
                     {
                       NIAGeneIndex = AccToggle : mgiOption;
@@ -1854,7 +1854,7 @@ Module: mgiOption
           MarkerTypeMenu = OptionMenu;
           Group: Widget
             subMenuId = MarkerTypePulldown;
-            labelString = Type;
+            labelString = "Marker Type";
           Group: Control
             vip_x = 105;
             vip_y = 4430;
