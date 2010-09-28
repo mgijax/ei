@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 23 06:52:24 2010";
+      lastWritten = "Tue Sep 28 06:55:07 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -17634,7 +17634,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     Table = mgiTable : mgiTable;
                                                     Group: Widget
                                                       xrtTblNumRows = 20;
-                                                      xrtTblVisibleRows = 15;
+                                                      xrtTblVisibleRows = 10;
                                                       xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 20)(all 5 30)(all 6 10)(all 7 30)(all 8 12)(all 9 10)";
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
@@ -17689,7 +17689,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     Group: Widget
                                                       xrtTblCharWidthSeries = "(all 0 1)(all 1-4 10)(all 5 25)(all 6 10)(all 7 80)";
                                                       xrtTblNumRows = 20;
-                                                      xrtTblVisibleRows = 15;
+                                                      xrtTblVisibleRows = 10;
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
                                                       rightAttachment = attach_none;
@@ -17749,7 +17749,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation,Modified By,Date";
                                                       userDefinedAttributes = "modifiedBy:Int=\"9\"\nmodifiedDate:Int=\"10\"\n";
                                                       xrtTblNumRows = 20;
-                                                      xrtTblVisibleRows = 15;
+                                                      xrtTblVisibleRows = 10;
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
                                                       rightAttachment = attach_form;
@@ -17814,7 +17814,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation,Modified By,Date";
                                                       userDefinedAttributes = "modifiedBy:Int=\"9\"\nmodifiedDate:Int=\"10\"\n";
                                                       xrtTblNumRows = 20;
-                                                      xrtTblVisibleRows = 15;
+                                                      xrtTblVisibleRows = 10;
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
                                                       rightAttachment = attach_form;
@@ -17937,7 +17937,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       xrtTblColumnLabels = "Mode,Logical Key,Acc Key,Ref Current Key,Ref Key,Acc Name,Acc ID,J#,Citation,Modified By,Date";
                                                       userDefinedAttributes = "modifiedBy:Int=\"9\"\nmodifiedDate:Int=\"10\"\n";
                                                       xrtTblNumRows = 20;
-                                                      xrtTblVisibleRows = 15;
+                                                      xrtTblVisibleRows = 10;
                                                     Group: Constraint
                                                       leftAttachment = attach_form;
                                                       rightAttachment = attach_form;
