@@ -235,15 +235,11 @@ rules:
 
 	  (void) busy_cursor(mgi);
 
+	  top := create widget("MarkerModule", nil, mgi);
+
 	  -- Prevent multiple instances of the Marker form
           ab := INITIALLY.launchedFrom;
           ab.sensitive := false;
-
-	  if (ab.labelString = "Markers (NoteBook)") then
-	    top := create widget("MarkerNoteBookModule", nil, mgi);
-	  else
-	    top := create widget("MarkerModule", nil, mgi);
-	  end if;
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
