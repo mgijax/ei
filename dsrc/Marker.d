@@ -331,6 +331,7 @@ rules:
 
 	  -- List of all Table widgets used in form
 
+	  tables.append(top->TDCVocab->Table);
 	  tables.append(top->History->Table);
 	  tables.append(top->Current->Table);
 	  tables.append(top->Alias->Table);
