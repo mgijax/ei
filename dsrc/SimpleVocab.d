@@ -583,7 +583,7 @@ rules:
 		(void) mgi_tblSetCell(termTable, row, termTable.mgiID, mgi_getstr(dbproc, 12));
 		(void) mgi_tblSetCell(termTable, row, termTable.abbreviation, mgi_getstr(dbproc, 4));
 		(void) mgi_tblSetCell(termTable, row, termTable.obsoleteKey, mgi_getstr(dbproc, 6));
-		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(termTable, row, termTable.isObsolete, mgi_getstr(dbproc, 14));
 		(void) mgi_tblSetCell(termTable, row, termTable.editMode, TBL_ROW_NOCHG);
 		row := row + 1;
 	      elsif (results = 3) then
