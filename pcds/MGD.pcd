@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 28 10:46:51 2010";
+      lastWritten = "Thu Nov 18 10:47:18 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2302,6 +2302,12 @@ Module: MGD
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -9517,6 +9523,12 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMPCSDProject = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9967,6 +9979,16 @@ Shift<Key>Tab: prev-tab-group()
                                                     KOMPCSDProject = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
                                                   }
                                             }
                                       }
@@ -12769,6 +12791,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

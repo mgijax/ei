@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 21 09:29:49 2010";
+      lastWritten = "Thu Nov 18 10:47:22 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -747,6 +747,20 @@ Module: mgiOption
                         labelString = "KOMP CSD Project";
                       Group: User
                         defaultValue = 126;
+                    }
+                    {
+                      NORCOMMProject = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "NorComm Project";
+                      Group: User
+                        defaultValue = 143;
+                    }
+                    {
+                      EUCOMMProject = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = "EuComm Project";
+                      Group: User
+                        defaultValue = 138;
                     }
                     {
                       EUCOMMCellLine = AccToggle : mgiOption;

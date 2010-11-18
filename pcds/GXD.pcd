@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 21 13:23:33 2010";
+      lastWritten = "Thu Nov 18 10:47:16 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -664,6 +664,12 @@ Module: GXD
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -1652,6 +1658,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -3704,6 +3716,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

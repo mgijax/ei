@@ -1,3 +1,11 @@
+TAG: ei-4-4-0-12
+DATE: 11/18/2010
+STAFF: lec
+CHANGES:
+1) TR10463/added NorCommProjects (ldb 143)
+   EuComProjects (ldb 138)
+   to Allele module
+
 TAG: ei-tr10044-BP
 DATE: 11/09/2010
 STAFF: lec

@@ -237,33 +237,6 @@ def gxd():
     # gxd
     #
 
-    fp.write('#\n# GXD\n#\n')
-    fp.write('# assay id\n')
-    fp.write('# reference id\n')
-    fp.write('# genotype id\n')
-    fp.write('# assay type\n')
-
-    results = db.sql('''
-	    select assayID = a.accID, refID = a1.accID, genotypeID = a2.accID, t.assayType
-	    from GXD_Expression e, ACC_Accession a, ACC_Accession a1, ACC_Accession a2, GXD_AssayType t
-	    where e._Marker_key = %s
-	    and e._Assay_key = a._Object_key
-	    and a._MGIType_key = 8
-	    and e._Refs_key = a1._Object_key
-	    and a1._MGIType_key = 1
-	    and a1.prefixPart = "J:"
-	    and e._Genotype_key = a2._Object_key
-	    and a2._MGIType_key = 12
-	    and e._AssayType_key = t._AssayType_key
-	    ''' % (markerKey), 'auto')
-
-    for r in results:
-        fp.write(string.ljust(r['assayID'],30) + TAB)
-        fp.write(string.ljust(r['refID'],30) + TAB)
-        fp.write(string.ljust(r['genotypeID'],30) + TAB)
-        fp.write(string.ljust(r['assayType'],30) + TAB)
-        fp.write(CRT)
-
     fp.write('#\n# GXD index\n#\n')
     fp.write('# reference id\n')
 
