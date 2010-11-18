@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov 18 10:47:18 2010";
+      lastWritten = "Thu Nov 18 11:12:25 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9988,7 +9988,7 @@ Shift<Key>Tab: prev-tab-group()
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
                                                     Group: Widget
-                                                      managed = False;
+                                                      managed = True;
                                                   }
                                             }
                                       }
