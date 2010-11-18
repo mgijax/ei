@@ -2,7 +2,7 @@ Module: mgiTable
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 21 09:29:51 2010";
+      lastWritten = "Thu Nov 18 13:27:09 2010";
         {
           mgiTable = XtXrtTable;
           Group: Widget
@@ -330,7 +330,7 @@ Module: mgiTable
           Statistics = OrderedTable;
           Group: Control
             vip_x = 75;
-            vip_y = 1075;
+            vip_y = 1130;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -371,7 +371,7 @@ Module: mgiTable
           ReferenceTable = Table : mgiTable;
           Group: Control
             vip_x = 75;
-            vip_y = 800;
+            vip_y = 855;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -390,7 +390,7 @@ Module: mgiTable
           RefDBSStatus = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 1020;
+            vip_y = 1075;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -421,7 +421,7 @@ Module: mgiTable
           RefDBSNonStatus = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 965;
+            vip_y = 1020;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -490,7 +490,7 @@ Module: mgiTable
           ModificationHistory = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 635;
+            vip_y = 690;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -520,7 +520,7 @@ Module: mgiTable
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 855;
+            vip_y = 910;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -615,7 +615,7 @@ Module: mgiTable
           ObjectAssociationTable = Table;
           Group: Control
             vip_x = 75;
-            vip_y = 745;
+            vip_y = 800;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -694,7 +694,7 @@ Module: mgiTable
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 1130;
+            vip_y = 1185;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -758,7 +758,7 @@ Module: mgiTable
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 690;
+            vip_y = 745;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -892,7 +892,7 @@ Module: mgiTable
           Group: Control
             vipComment = "";
             vip_x = 75;
-            vip_y = 580;
+            vip_y = 635;
               {
                 Table = mgiTable : mgiTable;
                 Group: Widget
@@ -953,7 +953,7 @@ Module: mgiTable
             resizePolicy = resize_any;
           Group: Control
             vip_x = 75;
-            vip_y = 910;
+            vip_y = 965;
               {
                 Table = mgiTable;
                 Group: Widget
@@ -1051,6 +1051,111 @@ Module: mgiTable
                               managed = False;
                           }
                     }
+              }
+        }
+        {
+          EvidencePropertyTable = OrderedTableLabel;
+          Group: Widget
+            rubberPositioning = False;
+            resizePolicy = resize_any;
+          Group: Control
+            vip_x = 75;
+            vip_y = 580;
+              {
+                Table = mgiTable;
+                Group: Widget
+                  xrtTblColumnLabels = "Mode,Key,AnnotEvidence Key,Term key,#,Stanza,Property,Value";
+                  xrtTblNumColumns = 8;
+                  xrtTblPixelWidthSeries = "(all 0-4 0)";
+                  xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 3)(all 5 6)(all 6 25)(all 7 125)";
+                  width = 800;
+                  xrtTblFrozenColumns = 7;
+                  xrtTblEditableSeries = "(all 0-4 False)(all 6 False)";
+                  xrtTblTraversableSeries = "(all 0-4 False)(all 6 False)";
+                  userDefinedAttributes = "propertyTermKey:Int(Int)=\"3\"\npropertyTerm:Int(Int)=\"6\"\npropertyValue:Int(Int)=\"7\"\npropertyKey:Int(Int)=\"1\"\npropertyLoaded:Boolean(Boolean)=\"False\"\nuseDefaultPropertyTerm:Boolean(Boolean)=\"False\"\ndefaultPropertyTerm:String(String)\npropertyStanza:Int(Int)=\"5\"\nannotEvidenceKey:Int(Int)=\"2\"\n";
+                Group: Constraint
+                  leftAttachment = attach_form;
+                  rightAttachment = attach_form;
+                  topAttachment = attach_form;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                  topOffset = 5;
+                  rightOffset = 5;
+                Group: User
+                  saveEditableSeries = "(all 0-4 False)(all 6 False)";
+                  saveTraversableSeries = "(all 0-4 False)(all 6 False)";
+                  seqNum = 4;
+                    {
+                      label = XtXrtLabel;
+                      Group: Widget
+                        labelString = Properties;
+                        alignment = alignment_beginning;
+                    }
+              }
+              {
+                AddRow = TablePush;
+                Group: Widget
+                  activateCallback = "D:AddEvidencePropertyRow";
+                Group: Constraint
+                  leftAttachment = attach_widget;
+                  leftWidget = EvidencePropertyMenu;
+                  leftOffset = 2;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_opposite_widget;
+                  topWidget = EvidencePropertyMenu;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+              }
+              {
+                DeleteRow = TablePush;
+              }
+              {
+                InsertRow = TablePush : mgiTable;
+              }
+              {
+                EditOrder = toggle : mgiDataTypes;
+                Group: Widget
+                  managed = False;
+              }
+              {
+                EvidencePropertyMenu = EvidencePropertyMenu : mgiOption;
+                Group: Constraint
+                  leftAttachment = attach_opposite_widget;
+                  leftWidget = Table;
+                  rightAttachment = attach_none;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
+                    Popups:
+                    {
+                      EvidencePropertyPulldown = OptionPulldown;
+                      Group: User
+                        tableOption = 6;
+                        tableOptionKey = 3;
+                          {
+                            SearchAll = SearchAll : mgiOption;
+                            Group: Widget
+                              managed = False;
+                          }
+                    }
+              }
+              {
+                Save = ControlPush : mgiControl;
+                Group: Widget
+                  labelString = "Save Properties";
+                  activateCallback = "D:ModifyGOProperty";
+                Group: Constraint
+                  leftAttachment = attach_none;
+                  rightAttachment = attach_opposite_widget;
+                  rightWidget = Table;
+                  topAttachment = attach_widget;
+                  topWidget = Table;
+                  topOffset = 2;
+                  bottomAttachment = attach_none;
+                  resizable = true;
               }
         }
 }

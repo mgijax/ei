@@ -635,7 +635,7 @@ rules:
 --
 -- Activated from:	top->Note->Save
 --
--- Construct and execute command for record modifcations to Header
+-- Construct and execute command for record modifcations to Notes
 --
 
 	ModifyMPNotes does
@@ -1163,6 +1163,8 @@ rules:
           SetOption.source_widget := top->AnnotQualifierMenu;
           SetOption.value := mgi_tblGetCell(table, row, table.qualifierKey);
           send(SetOption, 0);
+
+	  annotTable.row := row;
         end does;
 
 --

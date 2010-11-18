@@ -312,6 +312,8 @@ extern char *global_version;
 #define DAG_NODE_VIEW		813
 #define VOC_ANNOTHEADER		814
 #define VOC_ANNOTHEADER_VIEW	815
+#define VOC_EVIDENCE_PROPERTY	816
+#define VOC_EVIDENCEPROPERTY_VIEW	817
 
 /* Sequence Tables */
 

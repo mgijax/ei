@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 28 10:46:51 2010";
+      lastWritten = "Thu Nov 18 08:33:13 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -13059,14 +13059,13 @@ Shift<Key>Tab: prev-tab-group()
                                     topAttachment = attach_widget;
                                     topWidget = mgiAccession;
                                     topOffset = 25;
-                                    bottomAttachment = attach_form;
+                                    bottomAttachment = attach_none;
                                     resizable = true;
-                                    bottomOffset = 5;
                                       {
                                         Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblNumRows = 20;
-                                          xrtTblVisibleRows = 15;
+                                          xrtTblVisibleRows = 10;
                                           xrtTblNumColumns = 21;
                                           xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Qualifier key,Refs key,Evidence key,Note key,Term Acc ID,DAG,Vocabulary Term,Qual,J:,Citation,Evi,Inferred From,Notes,Modified By,Date,Created By,Date";
                                           xrtTblPixelWidthSeries = "(all 0-7 0)";
@@ -13074,11 +13073,17 @@ Shift<Key>Tab: prev-tab-group()
                                           userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nqualifierKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"6\"\ntermAccID:Int(Int)=\"8\"\ndag:Int(Int)=\"9\"\nterm:Int(Int)=\"10\"\nqualifier:Int(Int)=\"11\"\njnum:Int(Int)=\"12\"\ncitation:Int(Int)=\"13\"\nevidence:Int(Int)=\"14\"\ninferredFrom:Int(Int)=\"15\"\neditor:Int(Int)=\"17\"\nmodifiedDate:Int(Int)=\"18\"\nnotes:Int(Int)=\"16\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"19\"\ncreatedDate:Int(Int)=\"20\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nnoteTypeKey:Int(Int)=\"1008\"\nnoteKey:Int(Int)=\"7\"\nvocabQualifierKey:Int=\"0\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabQualifier,\nD:VerifyVocabEvidenceCode,\nD:VerifyGOInferredFrom,\nD:CommitTableCellEdit";
                                           xrtTblTraversableSeries = "(all 0-7 False)(all 9-10 False)(all 13 False)";
-                                          xrtTblEnterCellCallback = "D:SetOptions";
+                                          xrtTblEnterCellCallback = "D:LoadEvidenceProperty\nD:SetOptions";
                                           xrtTblFrozenColumns = 17;
                                           xrtTblAllowCellResize = resize_all;
                                           width = 950;
                                           xrtTblTraverseCellCallback = "D:GOTraverse";
+                                        Group: Constraint
+                                          leftAttachment = attach_form;
+                                          rightAttachment = attach_form;
+                                          topAttachment = attach_form;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                         Group: User
                                           requiredColumns = "3\n5\n6";
                                           saveTraversableSeries = "(all 0-7 False)(all 9-11 False)(all 13 False)";
@@ -13177,6 +13182,74 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: User
                                           targetColumn = 16;
                                           targetWidget = Annotation;
+                                      }
+                                      {
+                                        Save = ControlPush : mgiControl;
+                                        Group: Widget
+                                          labelString = "Save Annotations";
+                                          activateCallback = "D:Modify";
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                          rightWidget = Table;
+                                          rightOffset = 250;
+                                      }
+                                }
+                                {
+                                  EvidenceProperty = EvidencePropertyTable : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    leftWidget = Annotation;
+                                    topWidget = Annotation;
+                                      {
+                                        Table = mgiTable;
+                                      }
+                                      {
+                                        AddRow = TablePush;
+                                      }
+                                      {
+                                        DeleteRow = TablePush;
+                                      }
+                                      {
+                                        InsertRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        EditOrder = toggle : mgiDataTypes;
+                                      }
+                                      {
+                                        EvidencePropertyMenu = EvidencePropertyMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              EvidencePropertyPulldown = OptionPulldown;
+                                              Group: User
+                                                sql = "select _Term_key, term from VOC_Term where _Vocab_key = 81 order by term";
+                                                tableForm = EvidenceProperty;
+                                            }
+                                      }
+                                      {
+                                        Save = ControlPush : mgiControl;
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          rightWidget = Table;
+                                          rightOffset = 250;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
                                       }
                                 }
                                 {
@@ -13288,19 +13361,19 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:ClearGO";
                                   Group: Constraint
                                     leftAttachment = attach_none;
-                                    rightAttachment = attach_widget;
-                                    topAttachment = attach_opposite_widget;
-                                    topWidget = Modify;
-                                    bottomAttachment = attach_opposite_widget;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_form;
+                                    bottomAttachment = attach_form;
                                     resizable = true;
-                                    rightWidget = Modify;
                                     rightOffset = 10;
-                                    bottomWidget = Modify;
+                                    bottomOffset = 2;
+                                    topOffset = 2;
                                 }
                                 {
                                   Modify = ControlPush;
                                   Group: Widget
                                     labelString = Save;
+                                    managed = False;
                                   Group: Constraint
                                     leftAttachment = attach_none;
                                     rightAttachment = attach_form;
