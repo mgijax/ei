@@ -14,6 +14,8 @@
  *
  * History:
  *
+ * lec 11/11/2010
+ *	- TR 10044/added VOC_EVIDENCE_PROPERTY
  * lec 03/24/2009
  *	- TR 9560/remove gxd label coverage
  *
@@ -895,7 +897,11 @@ char *mgi_DBkey(int table)
 	    strcpy(buf, "_Annot_key");
 	    break;
     case VOC_EVIDENCE:
+    case VOC_EVIDENCEPROPERTY_VIEW:
 	    strcpy(buf, "_AnnotEvidence_key");
+	    break;
+    case VOC_EVIDENCE_PROPERTY:
+	    strcpy(buf, "_EvidenceProperty_key");
 	    break;
     case VOC_CELLLINE_VIEW:
 	    strcpy(buf, "_Term_key");
@@ -1777,8 +1783,14 @@ char *mgi_DBtable(int table)
     case VOC_EVIDENCE:
             strcpy(buf, "VOC_Evidence");
 	    break;
+    case VOC_EVIDENCE_PROPERTY:
+            strcpy(buf, "VOC_Evidence_Property");
+	    break;
     case VOC_EVIDENCE_VIEW:
             strcpy(buf, "VOC_Evidence_View");
+	    break;
+    case VOC_EVIDENCEPROPERTY_VIEW:
+            strcpy(buf, "VOC_EvidenceProperty_View");
 	    break;
     case VOC_VOCABDAG_VIEW:
             strcpy(buf, "VOC_VocabDAG_View");
@@ -1921,6 +1933,7 @@ char *mgi_DBinsert(int table, char *keyName)
     case VOC_ANNOTHEADER:
     case VOC_TEXT:
     case VOC_EVIDENCE:
+    case VOC_EVIDENCE_PROPERTY:
 	selectKey = 0;
 	break;
     default:
@@ -2347,6 +2360,10 @@ char *mgi_DBinsert(int table, char *keyName)
             sprintf(buf, "insert %s (%s, _Annot_key, _EvidenceTerm_key, _Refs_key, inferredFrom, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
 	    break;
 
+    case VOC_EVIDENCE_PROPERTY:
+            sprintf(buf, "insert %s (%s, _AnnotEvidence_key, _PropertyTerm_key, stanza, sequenceNum, value, _CreatedBy_key, _ModifiedBy_key)", mgi_DBtable(table), mgi_DBkey(table));
+	    break;
+
     /* All Controlled Vocabulary tables w/ key/description columns call fall through to this default */
 
     default:
@@ -2483,6 +2500,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case SEQ_SEQUENCE:
       case STRAIN:
       case VOC_EVIDENCE:
+      case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
               sprintf(buf, "update %s set %s, _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), str, global_loginKey, mgi_DBkey(table), key);
@@ -2545,6 +2563,7 @@ char *mgi_DBupdate(int table, char *key, char *str)
       case SEQ_SEQUENCE:
       case STRAIN:
       case VOC_EVIDENCE:
+      case VOC_EVIDENCE_PROPERTY:
       case VOC_TERM:
               sprintf(buf, "update %s set _ModifiedBy_key = %s, modification_date = getdate() where %s = %s\n", 
 		  mgi_DBtable(table), global_loginKey, mgi_DBkey(table), key);
