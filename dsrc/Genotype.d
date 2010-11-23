@@ -12,6 +12,9 @@
 --
 -- History
 --
+-- 11/23/2010	lec
+--	- TR10033/added image class
+--
 -- 12/16/2009	lec
 --	- TR9871/GXD_orderGenoytpesAll replaces GXD_orderGenotypes
 --
@@ -1028,8 +1031,9 @@ rules:
 		 " where _Object_key = " + currentRecordKey + 
 		 " and noteType = 'Combination Type 1'" + "\norder by sequenceNum\n" +
 
-		 "select _Assoc_key, _ImagePane_key, figureLabel, mgiID, pixID, isPrimary from " +
-		 mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) +
+		 "select _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, term, " +
+		 "mgiID, pixID, isPrimary " +
+		 "from " + mgi_DBtable(IMG_IMAGEPANE_ASSOC_VIEW) +
 		 " where _Object_key = " + currentRecordKey +
 		 " and _MGIType_key = " + mgiTypeKey +
 		 " order by isPrimary desc, mgiID\n";
@@ -1083,10 +1087,12 @@ rules:
 	      elsif (results = 4) then
 		(void) mgi_tblSetCell(imgTable, row, imgTable.assocKey, mgi_getstr(dbproc, 1));
 		(void) mgi_tblSetCell(imgTable, row, imgTable.paneKey, mgi_getstr(dbproc, 2));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 3));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 4));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 5));
-		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClassKey, mgi_getstr(dbproc, 3));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.figureLabel, mgi_getstr(dbproc, 4));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.imageClass, mgi_getstr(dbproc, 5));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.mgiID, mgi_getstr(dbproc, 6));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.pixID, mgi_getstr(dbproc, 7));
+		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
 
 		if (mgi_getstr(dbproc, 6) = YES) then

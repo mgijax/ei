@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec	11/23/2010
+--	- TR 10033/added image class
+--
 -- lec  02/02/2007
 --	- TR 8138; set copyright value during Add if it is blank
 --
@@ -102,6 +105,7 @@ locals:
 	orderBy : string;
 
 	defaultMGITypeKey : string;
+	defaultImageClassKey : string;
 	defaultImageTypeKey : string;
 	fullImageTypeKey : string;
 	thumbnailImageTypeKey : string;
@@ -164,6 +168,9 @@ rules:
 	BuildDynamicComponents does
 	  -- Dynamically create Menus
 
+	  InitOptionMenu.option := top->ImageClassMenu;
+	  send(InitOptionMenu, 0);
+
 	  InitOptionMenu.option := top->ImageTypeMenu;
 	  send(InitOptionMenu, 0);
 
@@ -197,6 +204,9 @@ rules:
             SetOption.source_widget := top->MGITypeMenu;
             SetOption.value := defaultMGITypeKey;
             send(SetOption, 0);
+            SetOption.source_widget := top->ImageClassMenu;
+            SetOption.value := defaultImageClassKey;
+            send(SetOption, 0);
 	  end if;
 
 	end does;
@@ -219,9 +229,11 @@ rules:
 
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
+	      defaultImageClassKey := "6463859";
 	      orderBy := "\norder by i.jnum\n";
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
+	      defaultImageClassKey := "6463858";
 	      orderBy := "\norder by i.imageType, i.jnum\n";
 	  end if;
 	end does;
@@ -269,9 +281,11 @@ rules:
 
 	    defaultThumbNailKey := "NULL";
 	    defaultImageTypeKey := thumbnailImageTypeKey;
+	    defaultImageClassKey := top->ImageClassMenu.menuHistory.defaultValue;
 
             cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
 		   defaultMGITypeKey + "," +
+		   defaultImageClassKey + "," +
 		   defaultImageTypeKey + "," +
 		   refsKey + "," +
 		   defaultThumbNailKey + "," +
@@ -300,6 +314,7 @@ rules:
 
           cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
 		 defaultMGITypeKey + "," +
+		 defaultImageClassKey + "," +
 		 defaultImageTypeKey + "," +
 		 refsKey + "," +
 		 defaultThumbNailKey + "," +
@@ -452,6 +467,10 @@ rules:
 	  -- Only allow modifications of these attibutes via the full size image
 
 	  if (defaultImageTypeKey = fullImageTypeKey) then
+
+            if (top->ImageClassMenu.menuHistory.modified) then
+              set := set + "_ImageClass_key = " + top->ImageClassMenu.menuHistory.defaultValue + ",";
+            end if;
 
             if (top->mgiCitation->ObjectID->text.modified) then
               set := set + "_Refs_key = " + top->mgiCitation->ObjectID->text.value + ",";
@@ -641,6 +660,10 @@ rules:
 	    where := where + "\nand i.figureLabel like " + mgi_DBprstr(top->FigureLabel->text.value);
 	  end if;
 
+	  if (top->ImageClassMenu.menuHistory.searchValue != "%") then
+	    where := where + "\nand i._ImageClass_key = " + top->ImageClassMenu.menuHistory.searchValue;
+	  end if;
+
 	  if (top->MGITypeMenu.menuHistory.searchValue != "%") then
 	    where := where + "\nand i._MGIType_key = " + top->MGITypeMenu.menuHistory.searchValue;
 	  end if;
@@ -767,13 +790,17 @@ rules:
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
 	  cmd := "select * from IMG_Image_View where _Image_key = " + currentRecordKey + "\n" +
+
 		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
 		 "where n.noteType = 'Caption' and n._Object_key = " + currentRecordKey + "\n" +
 		 "order by n.sequenceNum\n" +
+
 		 "select n._Note_key, n.note from MGI_Note_Image_View n \n" + 
 		 "where n.noteType = 'Copyright' and n._Object_key = " + currentRecordKey + "\n" +
 		 "order by n.sequenceNum\n" +
+
 	         "select * from IMG_ImagePane where _Image_key = " + currentRecordKey + "\n" +
+
 		 "select a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i " +
 		 "where i._Image_key = " + currentRecordKey + "\n" +
 		 "and i._ThumbnailImage_key = a._Object_key\n" +
@@ -794,17 +821,17 @@ rules:
 		table := top->Control->ModificationHistory->Table;
 
 	        top->ID->text.value             := mgi_getstr(dbproc, 1);
-	        top->xDim->text.value           := mgi_getstr(dbproc, 6);
-	        top->yDim->text.value           := mgi_getstr(dbproc, 7);
-	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 8);
-                top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 4);
-                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 19);
-                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 20);
+	        top->xDim->text.value           := mgi_getstr(dbproc, 7);
+	        top->yDim->text.value           := mgi_getstr(dbproc, 8);
+	        top->FigureLabel->text.value    := mgi_getstr(dbproc, 9);
+                top->mgiCitation->ObjectID->text.value := mgi_getstr(dbproc, 5);
+                top->mgiCitation->Jnum->text.value := mgi_getstr(dbproc, 20);
+                top->mgiCitation->Citation->text.value := mgi_getstr(dbproc, 21);
 
-		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 11));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 12));
-		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 21));
-		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byDate, mgi_getstr(dbproc, 12));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byDate, mgi_getstr(dbproc, 13));
+		(void) mgi_tblSetCell(table, table.createdBy, table.byUser, mgi_getstr(dbproc, 22));
+		(void) mgi_tblSetCell(table, table.modifiedBy, table.byUser, mgi_getstr(dbproc, 23));
 
                 SetOption.source_widget := top->MGITypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 2);
@@ -812,6 +839,10 @@ rules:
 
                 SetOption.source_widget := top->ImageTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
+                send(SetOption, 0);
+
+                SetOption.source_widget := top->ImageClassMenu;
+                SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
 	        defaultImageTypeKey := top->ImageTypeMenu.menuHistory.defaultValue;
