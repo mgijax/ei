@@ -1,0 +1,37 @@
+--
+-- Name    : EvidencePropertyTableLib.de
+-- Creator : lec
+-- Date	   : 11/11/2010
+-- TR10044
+--
+-- Purpose:
+--
+-- This is the companion D event declarations file for EvidencePropertyTableLib.d.
+--
+
+-- Add Row to Evidence Property Table
+AddEvidencePropertyRow [table : widget;];	 -- Evidence Property Table
+
+-- Initialize Evidence Property Table
+InitEvidencePropertyTable [table : widget;       -- Evidence Property Table
+	 tableID : integer;
+         clearCells : boolean := true;]; -- Clear Cells flag
+
+-- Load Evidence Property Table
+LoadEvidencePropertyTable [table : widget;       -- Evidence Property Table
+            tableID : integer;           -- ID of table
+            objectKey : string;          -- Unique identifier of Object
+	    labelString: string; 	 -- Label String for Note Label
+	    editMode : string;];	 -- Edit Mode for each row entry
+
+-- Process Evidence Property Table; Sets table.sqlcmd 
+ProcessEvidencePropertyTable [table : widget;    -- Evidence Property Table
+            tableID : integer := 0;      -- ID of table
+            objectKey : string;];        -- Unique identifier of Object
+
+-- Search Evidence Property Table
+SearchEvidencePropertyTable [table : widget;     -- Evidence Property Table
+            tableID : integer;           -- ID of table
+            tableTag : string := "ep";   -- Table Alias Tag for Query
+            join : string;];             -- Join command
+
