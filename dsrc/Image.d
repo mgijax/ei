@@ -281,11 +281,10 @@ rules:
 
 	    defaultThumbNailKey := "NULL";
 	    defaultImageTypeKey := thumbnailImageTypeKey;
-	    defaultImageClassKey := top->ImageClassMenu.menuHistory.defaultValue;
 
             cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
 		   defaultMGITypeKey + "," +
-		   defaultImageClassKey + "," +
+		   top->ImageClassMenu.menuHistory.defaultValue + "," +
 		   defaultImageTypeKey + "," +
 		   refsKey + "," +
 		   defaultThumbNailKey + "," +
@@ -314,7 +313,7 @@ rules:
 
           cmd := cmd + mgi_DBinsert(IMG_IMAGE, KEYNAME) +
 		 defaultMGITypeKey + "," +
-		 defaultImageClassKey + "," +
+		 top->ImageClassMenu.menuHistory.defaultValue + "," +
 		 defaultImageTypeKey + "," +
 		 refsKey + "," +
 		 defaultThumbNailKey + "," +
@@ -464,13 +463,16 @@ rules:
 	  cmd := "";
 	  set := "";
 
+	  -- slippery slope...really need to check that the _MGIType_key is appropriate
+	  -- for the Image Class
+
+          if (top->ImageClassMenu.menuHistory.modified) then
+            set := set + "_ImageClass_key = " + top->ImageClassMenu.menuHistory.defaultValue + ",";
+          end if;
+
 	  -- Only allow modifications of these attibutes via the full size image
 
 	  if (defaultImageTypeKey = fullImageTypeKey) then
-
-            if (top->ImageClassMenu.menuHistory.modified) then
-              set := set + "_ImageClass_key = " + top->ImageClassMenu.menuHistory.defaultValue + ",";
-            end if;
 
             if (top->mgiCitation->ObjectID->text.modified) then
               set := set + "_Refs_key = " + top->mgiCitation->ObjectID->text.value + ",";
@@ -664,9 +666,9 @@ rules:
 	    where := where + "\nand i._ImageClass_key = " + top->ImageClassMenu.menuHistory.searchValue;
 	  end if;
 
-	  if (top->MGITypeMenu.menuHistory.searchValue != "%") then
-	    where := where + "\nand i._MGIType_key = " + top->MGITypeMenu.menuHistory.searchValue;
-	  end if;
+	  --if (top->MGITypeMenu.menuHistory.searchValue != "%") then
+	  --  where := where + "\nand i._MGIType_key = " + top->MGITypeMenu.menuHistory.searchValue;
+	  --end if;
 
 	  if (top->ImageTypeMenu.menuHistory.searchValue != "%") then
 	    where := where + "\nand i._ImageType_key = " + top->ImageTypeMenu.menuHistory.searchValue;
@@ -837,11 +839,11 @@ rules:
                 SetOption.value := mgi_getstr(dbproc, 2);
                 send(SetOption, 0);
 
-                SetOption.source_widget := top->ImageTypeMenu;
+                SetOption.source_widget := top->ImageClassMenu;
                 SetOption.value := mgi_getstr(dbproc, 3);
                 send(SetOption, 0);
 
-                SetOption.source_widget := top->ImageClassMenu;
+                SetOption.source_widget := top->ImageTypeMenu;
                 SetOption.value := mgi_getstr(dbproc, 4);
                 send(SetOption, 0);
 
