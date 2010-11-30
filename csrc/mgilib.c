@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 11/23/2010
+ *	- TR 10033/IMG_IMAGEPANE_ASSOC
+ *
  * lec 11/11/2010
  *	- TR 10044/added VOC_EVIDENCE_PROPERTY
  * lec 03/24/2009
@@ -2107,7 +2110,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table), mgi_DBcvname(table));
 	    break;
     case IMG_IMAGE:
-            sprintf(buf, "insert %s (%s, _MGIType_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, _MGIType_key, _ImageClass_key, _ImageType_key, _Refs_key, _ThumbnailImage_key, xDim, yDim, figureLabel, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE:
@@ -2115,7 +2118,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE_ASSOC:
-            sprintf(buf, "insert %s (%s, _ImagePane_key, _MGIType_key, _Object_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, _ImagePane_key, _MGIType_key, _Object_key, _ImageAssocType_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_COLUMNS:

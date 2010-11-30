@@ -463,8 +463,7 @@ rules:
 	  cmd := "";
 	  set := "";
 
-	  -- slippery slope...really need to check that the _MGIType_key is appropriate
-	  -- for the Image Class
+	  -- really should check that the _MGIType_key is appropriate for the Image Class
 
           if (top->ImageClassMenu.menuHistory.modified) then
             set := set + "_ImageClass_key = " + top->ImageClassMenu.menuHistory.defaultValue + ",";
