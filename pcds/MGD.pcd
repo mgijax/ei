@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Nov 30 08:36:14 2010";
+      lastWritten = "Wed Dec  1 10:04:41 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -17884,7 +17884,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               EvidencePropertyPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select _Term_key, term from VOC_Term where _Vocab_key = 81 order by term";
+                                                sql = "select _Term_key, term from VOC_Term where _Vocab_key = 82 order by term";
                                                 tableForm = EvidenceProperty;
                                             }
                                       }

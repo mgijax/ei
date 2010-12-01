@@ -229,11 +229,11 @@ rules:
 
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
-	      defaultImageClassKey := "6463859";
+	      defaultImageClassKey := "6481782";
 	      orderBy := "\norder by i.jnum\n";
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
-	      defaultImageClassKey := "6463858";
+	      defaultImageClassKey := "6481781";
 	      orderBy := "\norder by i.imageType, i.jnum\n";
 	  end if;
 	end does;

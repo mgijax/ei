@@ -830,7 +830,6 @@ rules:
 --
 
 	Select does
-	  orderBy : string;
           objectKey : string;
 	  value : string;
 
@@ -863,27 +862,24 @@ rules:
 	  top->ReportDialog.select := "select distinct _Object_key, description " +
 			  "from " + dbView + " where _Object_key = " + currentRecordKey;
 
-	  orderBy := "e.evidenceSeqNum, e.modification_date\n";
-
 	  cmd : string := "select _Object_key, accID, description, short_description" +
 			  " from " + dbView + 
 			  " where _Object_key = " + currentRecordKey + 
 			  " and prefixPart = 'MGI:' and preferred = 1 " + 
 			  " order by description\n" +
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
+
+	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, " +
+			  "dagAbbrev = substring(v.dagAbbrev,1,3), e.*" +
 			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
+			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e, " +
+			    mgi_DBtable(DAG_NODE_VIEW) + " v" +
 		          " where a._AnnotType_key = " + annotTypeKey +
 			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Annot_key = e._Annot_key " +
-			  " order by " + orderBy +
-			  "select distinct a._Annot_key, substring(v.dagAbbrev,1,3)" +
-			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			  	mgi_DBtable(DAG_NODE_VIEW) + " v" +
-		          " where a._AnnotType_key = " + annotTypeKey +
-			  " and a._Object_key = " + currentRecordKey + 
 			  " and a._Vocab_key = v._Vocab_key" +
 			  " and a._Term_key = v._Object_key\n" +
+			  " order by v.dagAbbrev, e.modification_date desc, a.term\n" +
+
 			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
 			  " from " + 
 			    mgi_DBtable(VOC_ANNOT) + " a, " +
@@ -893,6 +889,7 @@ rules:
 			  " and a._Annot_key = e._Annot_key" +
 			  " and e._AnnotEvidence_key = n._Object_key" +
 			  " order by n._Object_key, n.sequenceNum\n" +
+
 			  "select isReferenceGene, completion_date " +
 			  " from " + mgi_DBtable(GO_TRACKING_VIEW) +
 			  " where _Marker_key = " + currentRecordKey;
@@ -918,40 +915,33 @@ rules:
 		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 		end if;
 	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 8));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 9));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.dag, mgi_getstr(dbproc, 7));
+
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 17));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 20));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 21));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 11));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 12));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 23));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 16));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 22));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 15));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 	      elsif (results = 3) then
-                objectKey := mgi_getstr(dbproc, 1);
-		i := 0;
-		while (i < mgi_tblNumRows(annotTable)) do
-		  if (mgi_tblGetCell(annotTable, i, annotTable.annotKey) = objectKey) then
-	            (void) mgi_tblSetCell(annotTable, i, annotTable.dag, mgi_getstr(dbproc, 2));
-		  end if;
-		  i := i + 1;
-		end while;
-	      elsif (results = 4) then
                 objectKey := mgi_getstr(dbproc, 2);
 		i := 0;
 		while (i < mgi_tblNumRows(annotTable)) do
@@ -962,7 +952,7 @@ rules:
 		  end if;
 		  i := i + 1;
 		end while;
-	      elsif (results = 5) then
+	      elsif (results = 4) then
 
                 SetOption.source_widget := top->ReferenceGeneMenu;
                 SetOption.value := mgi_getstr(dbproc, 1);
@@ -985,10 +975,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  (void) dbclose(dbproc);
-
-	  -- Sort by DAG
-	  (void) mgi_tblSort(annotTable, annotTable.dag);
+	  --(void) dbclose(dbproc);
 
 	  -- Reset Background
 
