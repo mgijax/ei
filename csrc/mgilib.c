@@ -2118,7 +2118,7 @@ char *mgi_DBinsert(int table, char *keyName)
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case IMG_IMAGEPANE_ASSOC:
-            sprintf(buf, "insert %s (%s, _ImagePane_key, _MGIType_key, _Object_key, _ImageAssocType_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
+            sprintf(buf, "insert %s (%s, _ImagePane_key, _MGIType_key, _Object_key, isPrimary, _CreatedBy_key, _ModifiedBy_key)", 
 		mgi_DBtable(table), mgi_DBkey(table));
 	    break;
     case MGI_COLUMNS:
