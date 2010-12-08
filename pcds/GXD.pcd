@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Nov 18 10:47:16 2010";
+      lastWritten = "Wed Dec  8 06:47:20 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -601,6 +601,9 @@ Module: GXD
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -1595,6 +1598,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -3650,6 +3656,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;

@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Dec  7 09:47:20 2010";
+      lastWritten = "Wed Dec  8 06:47:32 2010";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2241,6 +2241,9 @@ Module: MGD
                                                     NMICE = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    OBS = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     ORNL = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3987,6 +3990,9 @@ Module: MGD
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -9171,7 +9177,7 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: Constraint
                                                 resizable = true;
                                                   {
-                                                    Table = mgiTable : mgiTable;
+                                                    Table = XtXrtTable : mgiTable;
                                                     Group: Widget
                                                       xrtTblVisibleRows = 5;
                                                       xrtTblNumRows = 10;
@@ -9454,6 +9460,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -9920,6 +9929,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -11011,6 +11023,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12712,6 +12729,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
