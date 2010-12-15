@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec  8 06:46:55 2010";
+      lastWritten = "Wed Dec 15 12:23:33 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -801,6 +801,20 @@ Module: mgiOption
                         labelString = "Lexicon Genetics";
                       Group: User
                         defaultValue = 67;
+                    }
+                    {
+                      EMAP = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = EMAP;
+                      Group: User
+                        defaultValue = 158;
+                    }
+                    {
+                      AdultMouseAntatomy = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = MA;
+                      Group: User
+                        defaultValue = 42;
                     }
               }
         }

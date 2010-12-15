@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 12/15/2010
+ *	- TR 10456/TR10457; add gxd_structure
+ *
  * lec 11/23/2010
  *	- TR 10033/IMG_IMAGEPANE_ASSOC
  *
@@ -959,6 +962,9 @@ char *mgi_DBtype(int table)
     case GXD_ASSAY:
             strcpy(buf, "Assay");
 	    break;
+    case GXD_STRUCTURE:
+            strcpy(buf, "GXD Structures");
+	    break;
     case IMG_IMAGE:
             strcpy(buf, "Image");
 	    break;
@@ -1048,6 +1054,9 @@ char *mgi_DBaccTable(int table)
             break;
     case GXD_GENOTYPE:
             strcpy(buf, "GXD_Genotype_Acc_View");
+            break;
+    case GXD_STRUCTURE:
+            strcpy(buf, "GXD_Structure_Acc_View");
             break;
     case IMG_IMAGE:
             strcpy(buf, "IMG_Image_Acc_View");

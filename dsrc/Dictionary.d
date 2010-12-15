@@ -19,6 +19,12 @@
 --
 -- History
 --
+-- lec 12/14/2010
+--	- TR 10456/10457/Accession ids
+--	  1 = acc,2 = version1,4 = version2,8 = refresh, 16 = query)
+--	  clearLists = 15 (1,2,4,8)
+--	  clearLists = 31 (1,2,4,8,16)
+--
 -- lec 09/09-09/10/2009
 --	- TR 9797; add RefreshADSystem.d, ADSystemMenu
 --
@@ -89,7 +95,7 @@ devents:
         ADClipboardAdd :local [];
         ADClipboardAddAll :local [];
 
-        DictionaryClear :local [clearLists : integer := 7;
+        DictionaryClear :local [clearLists : integer := 15;
 			       clearStages : boolean := false;
 			       reset : boolean := false;];
 
@@ -107,6 +113,7 @@ locals:
         top : widget;                -- Local Application Widget
 	ab : widget;
 
+        accTable : widget;
         tables : list;               -- List of Tables in interface
 
         cmd : string;                -- variables used to construct queries
@@ -189,10 +196,12 @@ rules:
             tables.append(top->mgiAliasTable->Table);
             tables.append(top->edinburghAliasTable->Table);
 
+            accTable := top->mgiAccessionTable->Table;
+
             -- initialize the alias key list
             delaliaskey_list := create string_list();
 
-	    DictionaryClear.clearLists := 15;
+	    DictionaryClear.clearLists := 31;
 	    send(DictionaryClear, 0);
 
 	    GoHome.source_widget := top;
@@ -633,6 +642,14 @@ rules:
           ModifyAliases.addStructureMode := false;
           send(ModifyAliases, 0);
 
+          --  Process Accession IDs
+
+          ProcessAcc.table := accTable;
+          ProcessAcc.objectKey := current_structurekey;
+          ProcessAcc.tableID := GXD_STRUCTURE;
+          send(ProcessAcc, 0);
+          cmd := cmd + accTable.sqlCmd;
+
           if (set.length > 0) then
              cmd := cmd + mgi_DBupdate(GXD_STRUCTURE, top->ID->text.value, set);
           end if;
@@ -696,58 +713,67 @@ rules:
 
         PrepareSearch does
 
-            from := "\nfrom GXD_Structure s, GXD_StructureName sn, GXD_TheilerStage t ";
-            where := "\nwhere s._Stage_key = t._Stage_key " + 
-                     "\nand s._Structure_key = sn._Structure_key";
+          from := "\nfrom GXD_Structure s, GXD_StructureName sn, GXD_TheilerStage t ";
+          where := "\nwhere s._Stage_key = t._Stage_key " + 
+                   "\nand s._Structure_key = sn._Structure_key";
 
-            -- ids
+          SearchAcc.table := accTable;
+          SearchAcc.objectKey := "s." + mgi_DBkey(GXD_STRUCTURE);
+          SearchAcc.tableID := GXD_STRUCTURE;
+          send(SearchAcc, 0);
 
-            if (top->ID->text.value.length > 0 and top->ID.sensitive) then
-                 where := where + "\nand s._Structure_key = " + top->ID->text.value;
-            end if;
+          if (accTable.sqlFrom.length > 0) then
+            from := from + accTable.sqlFrom;
+            where := where + accTable.sqlWhere;
+          end if;
 
-            if (top->edinburghKey->text.value.length > 0 and top->edinburghKey.sensitive) then
-                 where := where + "\nand s.edinburghKey = " + top->edinburghKey->text.value;
-            end if;
+          -- ids
 
-            -- structure name
+          if (top->ID->text.value.length > 0 and top->ID.sensitive) then
+            where := where + "\nand s._Structure_key = " + top->ID->text.value;
+          end if;
 
-            if (top->structureText->text.value.length > 0) then
-                 where := where + "\nand sn.structure like " + 
-			mgi_DBprstr(top->structureText->text.value);
-            end if;
+          if (top->edinburghKey->text.value.length > 0 and top->edinburghKey.sensitive) then
+            where := where + "\nand s.edinburghKey = " + top->edinburghKey->text.value;
+          end if;
 
-            -- Stages text field
+          -- structure name
+
+          if (top->structureText->text.value.length > 0) then
+            where := where + "\nand sn.structure like " + mgi_DBprstr(top->structureText->text.value);
+          end if;
+
+          -- Stages text field
             
-            stages_query : string := "";
-            stages_query := parseStages(top->stagesText->text.value);
+          stages_query : string := "";
+          stages_query := parseStages(top->stagesText->text.value);
 
-            if (stages_query != "") then
-                 where := where + "\nand t.stage in (" + stages_query + ")";
-            end if;
+          if (stages_query != "") then
+            where := where + "\nand t.stage in (" + stages_query + ")";
+          end if;
 
-            if (top->printStopMenu.menuHistory.searchValue != "%" and top->printStopMenu.sensitive) then
-              where := where + "\nand s.printStop = "  + top->printStopMenu.menuHistory.searchValue;
-            end if;
+          if (top->printStopMenu.menuHistory.searchValue != "%" and top->printStopMenu.sensitive) then
+            where := where + "\nand s.printStop = "  + top->printStopMenu.menuHistory.searchValue;
+          end if;
 
-            if (top->MGIAddedMenu.menuHistory.searchValue != "%" and top->MGIAddedMenu.sensitive) then
-              where := where + "\nand sn.mgiAdded = "  + top->MGIAddedMenu.menuHistory.searchValue +
+          if (top->MGIAddedMenu.menuHistory.searchValue != "%" and top->MGIAddedMenu.sensitive) then
+            where := where + "\nand sn.mgiAdded = "  + top->MGIAddedMenu.menuHistory.searchValue +
 		"\nand s._StructureName_key = sn._StructureName_key";
-            end if;
+          end if;
 
-            if (top->ADSystemMenu.menuHistory.searchValue != "%" and top->ADSystemMenu.sensitive) then
-              where := where + "\nand s._System_key = "  + top->ADSystemMenu.menuHistory.searchValue;
-            end if;
+          if (top->ADSystemMenu.menuHistory.searchValue != "%" and top->ADSystemMenu.sensitive) then
+            where := where + "\nand s._System_key = "  + top->ADSystemMenu.menuHistory.searchValue;
+          end if;
 
-            if (top->inheritSystemMenu.menuHistory.searchValue != "%" and top->inheritSystemMenu.sensitive) then
-              where := where + "\nand s.inheritSystem = "  + top->inheritSystemMenu.menuHistory.searchValue;
-            end if;
+          if (top->inheritSystemMenu.menuHistory.searchValue != "%" and top->inheritSystemMenu.sensitive) then
+            where := where + "\nand s.inheritSystem = "  + top->inheritSystemMenu.menuHistory.searchValue;
+          end if;
 
-            -- structure note
+          -- structure note
 
-            if (top->structureNote->text.value.length > 0 and top->structureNote->text.sensitive) then
-                 where := where + "\nand s.structureNote like " + mgi_DBprstr(top->structureNote->text.value);
-            end if;
+          if (top->structureNote->text.value.length > 0 and top->structureNote->text.sensitive) then
+            where := where + "\nand s.structureNote like " + mgi_DBprstr(top->structureNote->text.value);
+          end if;
 
         end does;
 
@@ -791,6 +817,9 @@ rules:
 
     Select does
 
+        InitAcc.table := accTable;
+        send(InitAcc, 0);
+
         if (top->QueryList->List.selectedItemCount = 0) then
             current_structurekey := "";     
             top->QueryList->List.row := 0;
@@ -804,6 +833,12 @@ rules:
 
         SelectNode.structure_key := (integer)current_structurekey;
         send(SelectNode, 0);
+
+        LoadAcc.table := accTable;
+        LoadAcc.objectKey := current_structurekey;
+        LoadAcc.tableID := GXD_STRUCTURE;
+        send(LoadAcc, 0);
+
     end does;
 
 
