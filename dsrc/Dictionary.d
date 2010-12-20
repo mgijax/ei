@@ -834,11 +834,6 @@ rules:
         SelectNode.structure_key := (integer)current_structurekey;
         send(SelectNode, 0);
 
-        LoadAcc.table := accTable;
-        LoadAcc.objectKey := current_structurekey;
-        LoadAcc.tableID := GXD_STRUCTURE;
-        send(LoadAcc, 0);
-
     end does;
 
 
@@ -971,6 +966,11 @@ rules:
 		stagetrees_convertDateToString(structure_getCreationDatePtr(structure)); 
         top->ModifiedDate->text.value := 
 		stagetrees_convertDateToString(structure_getModificationDatePtr(structure)); 
+
+        LoadAcc.table := accTable;
+        LoadAcc.objectKey := current_structurekey;
+        LoadAcc.tableID := GXD_STRUCTURE;
+        send(LoadAcc, 0);
 
 	DictionaryClear.reset := true;
 	send(DictionaryClear, 0);
