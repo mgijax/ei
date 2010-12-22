@@ -137,8 +137,15 @@ rules:
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
 
-          cmd := "select * from " + mgi_DBtable(tableID) + 
-	      " where " + mgi_DBkey(STRAIN) + " = " + objectKey + "\norder by symbol, sequenceNum";
+          cmd := "select *, c = convert(integer, chromosome) from " + mgi_DBtable(tableID) + 
+	      " where " + mgi_DBkey(STRAIN) + " = " + objectKey + 
+	      "\nand chromosome not in ('X', 'Y', 'MT', 'UN', 'XY') " +
+	      "union " +
+              "select *, c = 20 from " + mgi_DBtable(tableID) + 
+	      " where " + mgi_DBkey(STRAIN) + " = " + objectKey + 
+	      "\nand chromosome in ('X', 'Y', 'MT', 'UN', 'XY') " +
+	      "\norder by _Qualifier_key, c, symbol"
+	      ;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();

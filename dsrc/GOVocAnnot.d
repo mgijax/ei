@@ -1058,6 +1058,7 @@ rules:
 --	TR 6036; exclude any reference which has a GO annotation
 --			" where a._Object_key = r._Marker_key " +
 
+	  --(void) mgi_writeLog('selecting GO reference:begin\n');
 	  cmd : string;
 	  cmd := "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r " + 
 		 "where r._Marker_key = " + currentRecordKey + 

@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 15 12:23:33 2010";
+      lastWritten = "Wed Dec 22 11:29:08 2010";
       copy = false;
       inCreateMenu = true;
         {
@@ -812,7 +812,7 @@ Module: mgiOption
                     {
                       AdultMouseAntatomy = AccToggle : mgiOption;
                       Group: Widget
-                        labelString = MA;
+                        labelString = "MA:";
                       Group: User
                         defaultValue = 42;
                     }
