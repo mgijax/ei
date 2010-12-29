@@ -856,6 +856,9 @@ rules:
         alias : opaque;
         preferredStructureName : opaque;
 
+        InitAcc.table := accTable;
+        send(InitAcc, 0);
+
         if (treesLoaded != true) then
            return;
         end if;
@@ -974,6 +977,7 @@ rules:
 
 	DictionaryClear.reset := true;
 	send(DictionaryClear, 0);
+
     end does;
 
 --
