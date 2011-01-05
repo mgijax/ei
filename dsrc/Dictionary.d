@@ -19,6 +19,10 @@
 --
 -- History
 --
+-- lec 01/05/2010
+--	- TR 10511/making GXD AD searchable by date
+--	  PrepareSearch->QueryDate
+--
 -- lec 12/14/2010
 --	- TR 10456/10457/Accession ids
 --	  1 = acc,2 = version1,4 = version2,8 = refresh, 16 = query)
@@ -721,6 +725,23 @@ rules:
           SearchAcc.objectKey := "s." + mgi_DBkey(GXD_STRUCTURE);
           SearchAcc.tableID := GXD_STRUCTURE;
           send(SearchAcc, 0);
+
+          QueryDate.source_widget := top->CreationDate;
+          QueryDate.tag := "s";
+          send(QueryDate, 0);
+          where := where + top->CreationDate.sql;
+
+          QueryDate.source_widget := top->ModifiedDate;
+          QueryDate.tag := "s";
+          send(QueryDate, 0);
+          where := where + top->ModifiedDate.sql;
+
+	  --need to migrate CreationDate to ModificationHistory
+          --QueryModificationHistory.table := top->ModificationHistory->Table;
+          --QueryModificationHistory.tag := "s";
+          --send(QueryModificationHistory, 0);
+          --from := from + top->ModificationHistory->Table.sqlFrom;
+          --where := where + top->ModificationHistory->Table.sqlWhere;
 
           if (accTable.sqlFrom.length > 0) then
             from := from + accTable.sqlFrom;
