@@ -22,6 +22,7 @@
 -- lec 01/05/2010
 --	- TR 10511/making GXD AD searchable by date
 --	  PrepareSearch->QueryDate
+--	- TR10457/add created/modified by/accession is to ADVersion1/ADVersion2
 --
 -- lec 12/14/2010
 --	- TR 10456/10457/Accession ids
@@ -721,20 +722,26 @@ rules:
           where := "\nwhere s._Stage_key = t._Stage_key " + 
                    "\nand s._Structure_key = sn._Structure_key";
 
-          SearchAcc.table := accTable;
-          SearchAcc.objectKey := "s." + mgi_DBkey(GXD_STRUCTURE);
-          SearchAcc.tableID := GXD_STRUCTURE;
-          send(SearchAcc, 0);
+	  if (top->mgiAccessionTable.sensitive) then
+            SearchAcc.table := accTable;
+            SearchAcc.objectKey := "s." + mgi_DBkey(GXD_STRUCTURE);
+            SearchAcc.tableID := GXD_STRUCTURE;
+            send(SearchAcc, 0);
+          end if;
 
-          QueryDate.source_widget := top->CreationDate;
-          QueryDate.tag := "s";
-          send(QueryDate, 0);
-          where := where + top->CreationDate.sql;
+	  if (top->CreationDate.sensitive) then
+            QueryDate.source_widget := top->CreationDate;
+            QueryDate.tag := "s";
+            send(QueryDate, 0);
+            where := where + top->CreationDate.sql;
+          end if;
 
-          QueryDate.source_widget := top->ModifiedDate;
-          QueryDate.tag := "s";
-          send(QueryDate, 0);
-          where := where + top->ModifiedDate.sql;
+	  if (top->ModifiedDate.sensitive) then
+            QueryDate.source_widget := top->ModifiedDate;
+            QueryDate.tag := "s";
+            send(QueryDate, 0);
+            where := where + top->ModifiedDate.sql;
+	  end if;
 
 	  --need to migrate CreationDate to ModificationHistory
           --QueryModificationHistory.table := top->ModificationHistory->Table;
@@ -1121,6 +1128,9 @@ rules:
      top->inheritSystemMenu.sensitive := false;
      top->MGIAddedMenu.sensitive := false;
      top->RefreshADSystem.sensitive := false;
+     top->CreationDate.sensitive := false;
+     top->ModifiedDate.sensitive := false;
+     top->mgiAccessionTable.sensitive := false;
    end does;
 
 --
@@ -1137,6 +1147,9 @@ rules:
      top->inheritSystemMenu.sensitive := true;
      top->MGIAddedMenu.sensitive := true;
      top->RefreshADSystem.sensitive := true;
+     top->CreationDate.sensitive := true;
+     top->ModifiedDate.sensitive := true;
+     top->mgiAccessionTable.sensitive := true;
    end does;
 
 end dmodule;

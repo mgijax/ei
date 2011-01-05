@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 15 12:27:20 2010";
+      lastWritten = "Wed Jan  5 12:36:26 2011";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -450,6 +450,8 @@ Module: mgiAnatDictionary
                                 }
                                 {
                                   CreationDate = CreationDate : mgiDataTypes;
+                                  Group: Widget
+                                    sensitive = False;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
                                     leftWidget = Search;
@@ -458,6 +460,11 @@ Module: mgiAnatDictionary
                                     topWidget = Previous;
                                     bottomAttachment = attach_none;
                                     resizable = true;
+                                }
+                                {
+                                  ModifiedDate = ModifiedDate : mgiDataTypes;
+                                  Group: Widget
+                                    sensitive = False;
                                 }
                           }
                     }
@@ -475,6 +482,8 @@ Module: mgiAnatDictionary
                             panedWindow = XmPanedWindow;
                                 {
                                   mgiAccessionTable = mgiAccessionTable : mgiTable;
+                                  Group: Widget
+                                    sensitive = False;
                                       {
                                         Table = mgiTable;
                                       }
