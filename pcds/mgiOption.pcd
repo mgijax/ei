@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 22 11:29:08 2010";
+      lastWritten = "Thu Jan  6 08:49:09 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -26,6 +26,8 @@ Module: mgiOption
               Popups:
               {
                 OptionPulldown = OptionPulldown : mgiOption;
+                Group: Widget
+                  tearOffModel = tear_off_enabled;
               }
         }
         {
