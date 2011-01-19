@@ -14,6 +14,9 @@
 --
 -- History:
 --
+-- lec	01/18/2011
+--	TR 10273/Europhenome; add ClearTable/propertyLoad check
+--
 -- lec  11/08/2005
 --	TR 7217; AddTableRow
 --
@@ -276,6 +279,10 @@ rules:
 
 	    if (table.is_defined("notesLoaded") != nil) then
 	      table.notesLoaded := false;
+	    end if;
+
+	    if (table.is_defined("propertyLoaded") != nil) then
+	      table.propertyLoaded := false;
 	    end if;
 	  else
 	    -- Re-set Table Row edit mode to No Change

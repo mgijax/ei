@@ -100,6 +100,7 @@ devents:
 	PostProcess :local [];
 
 	ResetEditMode :local [];
+	ResetPerms :local [];
 
 	Select :local [item_position : integer;];
 	SelectReferences :local [];
@@ -129,6 +130,7 @@ locals:
 	mgiTypeKey : string;
 
 	tables : list;
+	perms : list;
 
         currentRecordKey : string;      -- Primary Key value of currently selected record
  
@@ -181,6 +183,7 @@ rules:
 
 	Init does
 	  tables := create list("widget");
+	  perms := create list("string");
 
 	  -- List of all Table widgets used in form
 
@@ -188,6 +191,8 @@ rules:
 	  tables.append(top->Reference->Table);
 	  tables.append(top->Control->ModificationHistory->Table);
 	  tables.append(top->ImagePane->Table);
+
+	  perms.append("eurogenoannot_load");
 
 	  if (mgi->AssayModule != nil) then
 	    if (mgi->AssayModule->InSituForm.managed) then
@@ -370,7 +375,12 @@ rules:
 
         Delete does
 
-	  if (top->ID->text.value = NOTAPPLICABLE or
+	  -- Lib.d/GoHome re-sets the allowEdit to its default
+	  -- so the override must happen here
+	  send(ResetPerms, 0);
+
+	  if (not top.allowEdit or
+	      top->ID->text.value = NOTAPPLICABLE or
 	      top->ID->text.value = NOTSPECIFIED) then
             StatusReport.source_widget := top;
             StatusReport.message := "Cannot delete this record.";
@@ -410,7 +420,14 @@ rules:
 	  panePrimaryKey : string;
 	  primaryPane : integer := 0;
 
+	  -- Lib.d/GoHome re-sets the allowEdit to its default
+	  -- so the override must happen here
+	  send(ResetPerms, 0);
+
           if (not top.allowEdit) then
+            StatusReport.source_widget := top;
+            StatusReport.message := "Permission denied for this user.";
+            send(StatusReport);
             return;
           end if;
 
@@ -1016,6 +1033,36 @@ rules:
         end does;
 
 --
+-- ResetPerms
+--
+-- Sets top.allowEdit = false for each control users found in the permissions list (perms)
+--
+
+        ResetPerms does
+	  controlTable : widget := top->Control->ModificationHistory->Table;
+	  controlUser : string := mgi_tblGetCell(controlTable, controlTable.createdBy, controlTable.byUser);
+          deniedUser : string;
+
+	  -- note that Lib.d/GoHome re-sets the allowEdit to its default
+	  -- if controlUser exists in the perms list, then set top.allowEdit = false
+
+	  perms.open;
+	  while (perms.more) do
+
+	    deniedUser := perms.next;
+
+	    if (controlUser = deniedUser) then
+	      top.allowEdit := false;
+	    else
+	      top.allowEdit := true;
+	    end if;
+
+	  end while;
+	  perms.close;
+
+        end does;
+
+--
 -- Select
 --
 -- Retrieve and display detail information for specific record
@@ -1469,7 +1516,6 @@ rules:
 	  row : integer := VerifyAlleleMCL.row;
 	  column : integer := VerifyAlleleMCL.column;
 	  reason : integer := VerifyAlleleMCL.reason;
-	  value : string;
 
 	  if (reason = TBL_REASON_VALIDATE_CELL_END) then
 	    return;
@@ -1486,7 +1532,6 @@ rules:
 
 	  results : xm_string_list := create xm_string_list();
 	  select : string;
-	  message : string;
 
           dbproc :opaque;
 	  whichMCL : integer;
