@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Dec 15 12:23:37 2010";
+      lastWritten = "Mon Jan 17 12:07:12 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -1303,21 +1303,24 @@ Module: MGI
                                       {
                                         Table = mgiTable;
                                         Group: Widget
-                                          xrtTblNumColumns = 15;
-                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,State Key,Comp Key,Chr,Marker,Allele1,Allele 2,State,Compound";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 9 3)(all 10 30)(all 11-12 30)(all 13 20)(all 14 15)";
-                                          xrtTblEditableSeries = "(all 0-8 False)";
-                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-8 0)";
-                                          xrtTblTraversableSeries = "(all 0-9 False)";
-                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:CommitTableCellEdit";
-                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"10\"\nmarkerChr:Int(Int)=\"9\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"13\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int(Int)=\"7\"\ncompoundKey:Int(Int)=\"8\"\ncompound:Int(Int)=\"14\"\n";
+                                          xrtTblNumColumns = 21;
+                                          xrtTblColumnLabels = "Mode,Current Order,#,Key,M Key, A1 Key,A2 Key,State Key,Comp Key,MCL1 Key,MCL2 Key,isNotReported1,isNotReported2,Chr,Marker,Allele1,Allele 2,State,Compound,MCL 1,MCL 2";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-2 3)(all 13 3)(all 14 30)(all 15-16 30)(all 17 20)(all 18 15)(all 19-20 15)";
+                                          xrtTblEditableSeries = "(all 0-12 False)";
+                                          xrtTblPixelWidthSeries = "(all 0-1 0)(all 3-12 0)";
+                                          xrtTblTraversableSeries = "(all 0-13 False)";
+                                          xrtTblValidateCellCallback = "D:VerifyMarker,\nD:VerifyAllele,\nD:VerifyAlleleMCL,\nD:CommitTableCellEdit";
+                                          userDefinedAttributes = "markerKey:Int(Int)=\"4\"\nmarkerSymbol:Int(Int)=\"14\"\nmarkerChr:Int(Int)=\"13\"\nalleleSymbol:StringTable(StringTable)\nalleleKey:StringTable(StringTable)\npairKey:Int(Int)=\"3\"\nstate:Int(Int)=\"17\"\nmarkerColumns:Int(Int)=\"1\"\nstateKey:Int(Int)=\"7\"\ncompoundKey:Int(Int)=\"8\"\ncompound:Int(Int)=\"18\"\nmcl1Key:Int(Int)=\"9\"\nmcl2Key:Int(Int)=\"10\"\nmcl1:Int(Int)=\"19\"\nmcl2:Int(Int)=\"20\"\nisNotReported1:Int(Int)=\"11\"\nisNotReported2:Int(Int)=\"12\"\n";
                                           inTabGroup = True;
+                                          xrtTblDisplayHorizScrollBar = dispsb_always;
+                                          xrtTblFrozenColumns = 17;
+                                          width = 900;
                                         Group: User
-                                          alleleSymbol = "11\n12";
+                                          alleleSymbol = "15\n16";
                                           alleleKey = "5\n6";
                                           requiredColumns = 7;
-                                          saveEditableSeries = "(all 0-8 False)";
-                                          saveTraversableSeries = "(all 0-9 False)";
+                                          saveEditableSeries = "(all 0-12 False)";
+                                          saveTraversableSeries = "(all 0-13 False)";
                                             {
                                               label = XtXrtLabel;
                                               Group: Widget
@@ -1512,7 +1515,7 @@ Module: MGI
                                     resizable = true;
                                     topOffset = "-25";
                                       {
-                                        Table = XtXrtTable : mgiTable;
+                                        Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 5;
                                         Group: User

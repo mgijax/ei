@@ -11,6 +11,12 @@
 --
 -- History
 --
+-- 01/18/2011	lec
+--	TR10273/Europhenome
+--	add notebook
+--	add properties table to notebook
+--	VerifyMPReference/exclude check for J:165965
+--
 -- 07/27/2010	lec
 --	TR10295/EE changed to EXP
 --
@@ -53,6 +59,8 @@ devents:
 	LoadHeader :local [];				-- Load Header Terms
 	LoadMPNotes :local [reason : integer;  		-- Load Notes
 			    row : integer := -1;];
+        LoadEvidenceProperty :local [reason : integer;  -- Load Evidence Properties
+                            row : integer := -1;];
 	Modify :local [];				-- Modify Annotations
 	ModifyHeader :local [];				-- Modify Header Order
 	ModifyMPNotes :local [];			-- Modify Notes
@@ -94,6 +102,7 @@ locals:
 	defaultQualifierKey : string;
 
 	annotTable : widget;		-- Annotation table
+	propertyTable : widget;		-- Property table
 	headerTable : widget;		-- Header table
 	noteTable : widget;		-- Notes table
 
@@ -176,6 +185,9 @@ rules:
 	  InitOptionMenu.option := top->AnnotQualifierMenu;
 	  send(InitOptionMenu, 0);
 
+          InitOptionMenu.option := top->EvidencePropertyMenu;
+          send(InitOptionMenu, 0);
+
 	  -- Initialize Note Type table
 
 	  InitNoteTypeTable.table := top->Note->Table;
@@ -183,6 +195,7 @@ rules:
 	  send(InitNoteTypeTable, 0);
 
 	  annotTable := top->Annotation->Table;
+          propertyTable := top->EvidenceProperty->Table;
 	  headerTable := top->Header->Table;
 	  noteTable := top->Note->Table;
           annotclipboard := top->MPAnnotClipboard;
@@ -277,6 +290,8 @@ rules:
 	  if (not ClearMP.reset) then
 	    noteTable->label.labelString := "Notes";
 	  end if;
+
+          propertyTable.propertyLoaded := false;
 
 	end does;
 
@@ -766,6 +781,60 @@ rules:
 	end does;
 
 --
+-- LoadEvidenceProperty
+--
+-- Activated from:      propertyTable.xrtTblEnterCellCallback
+--
+-- Load Evidence/Properties of current row into Property table only if we haven't yet loaded them
+--
+
+        LoadEvidenceProperty does
+          reason : integer := LoadEvidenceProperty.reason;
+          row : integer := LoadEvidenceProperty.row;
+          annotEvidenceKey : string;
+
+          if (reason != TBL_REASON_ENTER_CELL_END) then
+            return;
+          end if;
+
+          if (row < 0) then
+            row := mgi_tblGetCurrentRow(annotTable);
+          end if;
+
+          if (annotTable.row != row) then
+            propertyTable.propertyLoaded := false;
+          end if;
+
+          if (propertyTable.propertyLoaded) then
+            return;
+          end if;
+
+          annotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
+
+          if (annotEvidenceKey.length = 0) then
+            ClearTable.table := propertyTable;
+            send(ClearTable, 0);
+            propertyTable->label.labelString := "Properties";
+            return;
+          end if;
+
+          (void) busy_cursor(top);
+
+          termID : string := mgi_tblGetCell(annotTable, row, annotTable.termAccID);
+          jnum : string := "J:" + mgi_tblGetCell(annotTable, row, annotTable.jnum);
+
+          LoadEvidencePropertyTable.table := propertyTable;
+          LoadEvidencePropertyTable.tableID := VOC_EVIDENCEPROPERTY_VIEW;
+          LoadEvidencePropertyTable.objectKey := annotEvidenceKey;
+          LoadEvidencePropertyTable.labelString := termID + ", " + jnum;
+          send(LoadEvidencePropertyTable, 0);
+
+          propertyTable.propertyLoaded := true;
+
+          (void) reset_cursor(top);
+        end does;
+
+--
 -- PrepareSearch
 --
 -- Construct select statement based on values entered by user
@@ -775,6 +844,7 @@ rules:
 	  value : string;
 	  from_annot : boolean := false;
 	  from_evidence : boolean := false;
+	  from_property : boolean := false;
 	  from_user1 : boolean := false;
 	  from_user2 : boolean := false;
 
@@ -853,6 +923,22 @@ rules:
 	    from_evidence := true;
           end if;
 
+	  -- Evidence Property
+
+	  value := mgi_tblGetCell(propertyTable, 0, propertyTable.propertyTermKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand p._PropertyTerm_key = " + value;
+	    from_evidence := true;
+	    from_property := true;
+	  end if;
+
+	  value := mgi_tblGetCell(propertyTable, 0, propertyTable.propertyValue);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand p.value like" + mgi_DBprstr(value);
+	    from_evidence := true;
+	    from_property := true;
+	  end if;
+
 	  -- Modification date
 
 	  top->Annotation->Table.sqlCmd := "";
@@ -896,6 +982,11 @@ rules:
 	  if (from_evidence) then
 	    from := from + "," + mgi_DBtable(VOC_EVIDENCE) + " e";
 	    where := where + "\nand a._Annot_key = e._Annot_key";
+	  end if;
+
+	  if (from_property) then
+	    from := from + "," + mgi_DBtable(VOC_EVIDENCE_PROPERTY) + " p";
+	    where := where + "\nand e._AnnotEvidence_key = p._AnnotEvidence_key";
 	  end if;
 
 	  if (from_user1) then
@@ -1088,6 +1179,10 @@ rules:
 	  LoadMPNotes.reason := TBL_REASON_ENTER_CELL_END;
 	  LoadMPNotes.row := 0;
 	  send(LoadMPNotes, 0);
+
+          LoadEvidenceProperty.reason := TBL_REASON_ENTER_CELL_END;
+          LoadEvidenceProperty.row := 0;
+          send(LoadEvidenceProperty, 0);
 
           top->QueryList->List.row := Select.item_position;
 
@@ -1403,7 +1498,10 @@ rules:
 -- VerifyMPReference
 --
 --	If the J: is not associated with all Alleles of the Genotype, 
---      then inform the user and ask them to verify that the Reference should be added to each Allele that does not have the Reference.
+--      then inform the user and 
+--           ask them to verify that the Reference should be added to each Allele that does not have the Reference.
+--
+--      exclude check for J:165965 (TR10273/Eurphenome)
 --
 
 	VerifyMPReference does
@@ -1434,6 +1532,11 @@ rules:
 
 	  refsKey := mgi_tblGetCell(sourceWidget, row, sourceWidget.refsKey);
 	  if (refsKey.length = 0 or refsKey = "NULL") then
+	    return;
+	  end if;
+
+	  -- exclude check for J:165965 (TR10273/Eurphenome)
+	  if (refsKey = "167061") then
 	    return;
 	  end if;
 
