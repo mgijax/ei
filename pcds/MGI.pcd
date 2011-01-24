@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 17 12:07:12 2011";
+      lastWritten = "Thu Jan 20 09:46:43 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -1355,7 +1355,7 @@ Module: MGI
                                               AllelePairStatePulldown = OptionPulldown;
                                               Group: User
                                                 tableForm = AllelePair;
-                                                tableOption = 13;
+                                                tableOption = 17;
                                                 tableOptionKey = 7;
                                             }
                                       }
@@ -1376,7 +1376,7 @@ Module: MGI
                                               Group: User
                                                 tableForm = AllelePair;
                                                 tableOptionKey = 8;
-                                                tableOption = 14;
+                                                tableOption = 18;
                                             }
                                       }
                                 }

@@ -14,6 +14,9 @@
 --
 -- History:
 --
+-- lec	01/20/2011
+--	TR10535/tear-off issue/CopyOptionToTable
+--
 -- lec	01/18/2011
 --	TR 10273/Europhenome; add ClearTable/propertyLoad check
 --
@@ -422,7 +425,27 @@ rules:
 	    return;
 	  end if;
 
-	  tableForm : widget := top->(pulldown.tableForm);
+          tableForm : widget;
+
+	  -- TR10535
+	  -- try this first...
+          tableForm := top->(pulldown.tableForm);
+
+	  -- but if the "tableTop" user-defined attribute exists
+	  -- and is not-null...then use it to help retrieve the correct top shell
+	  -- we need to specify the exact parent because the tear-off
+	  -- uses a transient shell and I cannot figure out how
+	  -- to get the TopLevelShell of the pulldown when using the tear-off
+
+          if (pulldown.is_defined("tableTop") != nil) then
+	    if (pulldown.tableTop != nil) then
+	      if (top.name != pulldown.tableTop) then
+                tableForm := top->(pulldown.tableTop);
+                tableForm := tableForm->(pulldown.tableForm);
+	      end if;
+	    end if;
+          end if;
+
 	  table : widget := tableForm->Table;
 	  column : integer := mgi_tblGetCurrentColumn(table);
 	  row : integer;

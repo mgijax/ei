@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan  6 08:49:09 2011";
+      lastWritten = "Thu Jan 20 09:25:08 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -35,11 +35,12 @@ Module: mgiOption
           Group: Widget
             radioBehavior = True;
             radioAlwaysOne = True;
-            userDefinedAttributes = "sql:String(String)\nchildTemplate:String(String)=\"OptionToggle\"\ntableOption:Int(Int)\ntableOptionKey:Int(Int)\ntableForm:String\n";
+            userDefinedAttributes = "sql:String(String)\nchildTemplate:String(String)=\"OptionToggle\"\ntableOption:Int(Int)\ntableOptionKey:Int(Int)\ntableForm:String(String)\ntableTop:String\n";
             background = Wheat;
           Group: Control
             vip_x = 105;
             vip_y = 30;
+            vipComment = "XmPulldownMenu is a special configuration of XmRowColumn containing only XmLabel, XmPushButton, XmCascadeButton, XmToggleButton and XmSeparator widgets or gadgets. An XmMenuShell is inserted as the parent if no previous menu shell exists.";
         }
         {
           OptionToggle = XmToggleButton;
