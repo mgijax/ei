@@ -19,6 +19,9 @@
 --
 -- History
 --
+-- lec 01/25/2010
+--	- display mgi ids for stage nodes
+--
 -- lec 01/05/2010
 --	- TR 10511/making GXD AD searchable by date
 --	  PrepareSearch->QueryDate
@@ -924,10 +927,11 @@ rules:
         SetOption.value := (string) (integer) structure_getInheritSystem(structure);
         send(SetOption, 0);
 
+	-- TR10457/not done/want to display all information and MGI id
 	-- if Stage Node, we're done
-        if (stagetrees_isStageNodeKey(structure_key)) then 
-           return;
-        end if;
+        --if (stagetrees_isStageNodeKey(structure_key)) then 
+        --   return;
+        --end if;
 
         -- Set the preferredName and the key associated with the preferred name
 
