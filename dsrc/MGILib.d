@@ -90,7 +90,7 @@ rules:
 	  top := create widget("Login", nil, nil);
 
 --	  global_version := "CVS ei-TAG_NUMBER";
-	  global_version := "CVS ei-tr10273-3";
+	  global_version := "CVS ei-tr10273-4";
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
