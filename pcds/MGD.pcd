@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan  6 11:21:04 2011";
+      lastWritten = "Thu Jan 20 10:48:17 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6679,7 +6679,7 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"GOVocAnnot1\")";
                                     labelString = "GO Vocabulary Annotations NEW!";
                                     traversalOn = False;
-                                    managed = False;
+                                    managed = True;
                                 }
                                 {
                                   MPVocAnnot = XmPushButton;
@@ -10478,6 +10478,8 @@ Shift<Key>Tab: prev-tab-group()
                                             Popups:
                                             {
                                               ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                              Group: Widget
+                                                tearOffModel = tear_off_disabled;
                                               Group: User
                                                 sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Strain_View where allowOnlyOne = 0 order by _RefAssocType_key";
                                                 tableForm = Reference;
@@ -14044,6 +14046,8 @@ Shift<Key>Tab: prev-tab-group()
                                       Popups:
                                       {
                                         AnnotQualifierPulldown = OptionPulldown;
+                                        Group: Widget
+                                          tearOffModel = tear_off_disabled;
                                         Group: User
                                           sql = "select _Term_key, abbreviation from VOC_Term \nwhere _Vocab_key = 54\norder by abbreviation";
                                           tableForm = Annotation;
@@ -14442,6 +14446,8 @@ Shift<Key>Tab: prev-tab-group()
                                       Popups:
                                       {
                                         AnnotQualifierPulldown = OptionPulldown;
+                                        Group: Widget
+                                          tearOffModel = tear_off_disabled;
                                         Group: User
                                           tableForm = Annotation;
                                           tableOption = 10;
