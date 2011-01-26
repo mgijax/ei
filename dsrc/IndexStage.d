@@ -10,6 +10,9 @@
 --
 -- History
 --
+-- lec  01/26/2011
+--	- TR 10432
+--      - change 'is coded (or not) by checking the count from Index->Expression by Reference
 --
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
@@ -688,33 +691,33 @@ rules:
 	    results := results + 1;
           end while;
 
+	  -- start set coded bit
 	  -- skip J:153498 (key = 154591)
+	  -- check if index has been coded (or not) 
+	  -- by checking the count from Index->Expression by Reference
+
+	  assayCount : string;
+
           if top->mgiCitation->ObjectID->text.value != "154591" then
-	    cmd := cmd + 
-		 "select assays = count(distinct e._Assay_key) from GXD_Index i, GXD_Expression e " +
+	    assayCount := mgi_sql1("select count(e._Assay_key) " +
+		 "from GXD_Index i, GXD_Expression e " +
 		 "where i._Index_key = " + currentRecordKey + 
-		 " and i._Refs_key = e._Refs_key";
+		 " and i._Refs_key = e._Refs_key");
 
-            (void) dbcmd(dbproc, cmd);
-            (void) dbsqlexec(dbproc);
- 
-            while (dbresults(dbproc) != NO_MORE_RESULTS) do
-              while (dbnextrow(dbproc) != NO_MORE_ROWS) do
-		if (mgi_getstr(dbproc, 1) = "0") then
-                  SetOption.source_widget := top->CodedMenu;
-                  SetOption.value := NO;
-                  send(SetOption, 0);
-		else
-                  SetOption.source_widget := top->CodedMenu;
-                  SetOption.value := YES;
-                  send(SetOption, 0);
-		end if;
-	      end while;
-            end while;
-          end if;
+	    if (assayCount = NO) then
+              SetOption.source_widget := top->CodedMenu;
+              SetOption.value := NO;
+              send(SetOption, 0);
+	    else
+              SetOption.source_widget := top->CodedMenu;
+              SetOption.value := YES;
+              send(SetOption, 0);
+            end if;
 
-	  (void) dbclose(dbproc);
- 
+	  end if;
+
+	  -- end set coded bit
+
           top->QueryList->List.row := Select.item_position;
           ClearIndex.reset := true;
           send(ClearIndex, 0);
