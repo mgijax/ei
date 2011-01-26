@@ -527,13 +527,13 @@ rules:
 
           if (top->CodedMenu.menuHistory.searchValue != "%") then
             if (top->CodedMenu.menuHistory.searchValue = YES) then
-	      where := where + "\nand exists (select 1 from GXD_Assay a, GXD_Expression e " +
-		" where i._Refs_key = a._Refs_key and i._Marker_key = a._Marker_key\n" +
-		" and a._Assay_key = e._Assay_key)\n";
+	      where := where + "\nand exists (select 1 from GXD_Expression e " +
+		" where i._Marker_key = e._Marker_key " +
+		" and i._Refs_key = e._Refs_key)\n";
 	    else
-	      where := where + "\nand not exists (select 1 from GXD_Assay a, GXD_Expression e " +
-		" where i._Refs_key = a._Refs_key and i._Marker_key = a._Marker_key\n" +
-		" and a._Assay_key = e._Assay_key)\n";
+	      where := where + "\nand not exists (select 1 from GXD_Expression e " +
+		" where i._Marker_key = e._Marker_key " +
+		" and i._Refs_key = e._Refs_key)\n";
 	    end if;
 	  end if;
 
@@ -692,19 +692,22 @@ rules:
           end while;
 
 	  -- start set coded bit
+	  -- TR 10432
 	  -- skip J:153498 (key = 154591)
 	  -- check if index has been coded (or not) 
 	  -- by checking the count from Index->Expression by Reference
 
-	  assayCount : string;
+	  hasAssay : string;
 
           if top->mgiCitation->ObjectID->text.value != "154591" then
-	    assayCount := mgi_sql1("select count(e._Assay_key) " +
-		 "from GXD_Index i, GXD_Expression e " +
-		 "where i._Index_key = " + currentRecordKey + 
-		 " and i._Refs_key = e._Refs_key");
+	    hasAssay := mgi_sql1("select i._Index_key " +
+		 "from GXD_Index i " +
+		 "where exists (select 1 from GXD_Expression e " +
+		 " where i._Index_key = " + currentRecordKey + 
+	         " and i._Marker_key = e._Marker_key " +
+		 " and i._Refs_key = e._Refs_key)");
 
-	    if (assayCount = NO) then
+	    if (hasAssay.length = 0) then
               SetOption.source_widget := top->CodedMenu;
               SetOption.value := NO;
               send(SetOption, 0);
