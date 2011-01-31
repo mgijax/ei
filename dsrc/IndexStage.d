@@ -690,6 +690,7 @@ rules:
 	    end while;
 	    results := results + 1;
           end while;
+	  (void) dbclose(dbproc);
 
 	  -- start set coded bit
 	  -- TR 10432
