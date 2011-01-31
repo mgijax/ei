@@ -14,6 +14,9 @@
  *
  * History:
  *
+ * lec 01/27/2011
+ *	- TR10556;mgi_DBprnotestr;skip non-printable characters
+ *
  * lec 12/15/2010
  *	- TR 10456/TR10457; add gxd_structure
  *
@@ -251,7 +254,6 @@ char *mgi_DBprstr2(char *value)
 {
   static char buf[TEXTBUFSIZ];
   int allSpaces = 1;
-  int i;
   char *s;
 
   memset(buf, '\0', sizeof(buf));
@@ -282,6 +284,10 @@ char *mgi_DBprstr2(char *value)
    If the value is null, return NULL.
    If the value = "NULL", return NULL.
    If the value is a string of blanks, return NULL.
+   If the value contains a non-printable character,
+      or a non-control character, then replace the
+      character with '[?]', as a cue to the user that
+      there are non-printable characters in their text
 
    requires:	
 	value (char *), the value
@@ -307,11 +313,13 @@ char *mgi_DBprstr2(char *value)
 char *mgi_DBprnotestr(char *value)
 {
   static char buf[TEXTBUFSIZ];
+  char newValue[TEXTBUFSIZ];
   int allSpaces = 1;
-  int i;
+  int i = 0;
   char *s;
 
   memset(buf, '\0', sizeof(buf));
+  memset(newValue, '\0', sizeof(buf));
 
   for (s = value; *s != '\0'; s++)
   {
@@ -326,7 +334,21 @@ char *mgi_DBprnotestr(char *value)
   }
   else
   {
-    sprintf(buf, "\"%s\"", mgi_escape_quotes(value));
+    /* get rid of non-printable characters */
+
+    for (s = value; *s != '\0'; s++)
+    {
+      while (!isprint(*s) && !iscntrl(*s))
+      {
+        s++;
+	newValue[i++] = '[';
+	newValue[i++] = '?';
+	newValue[i++] = ']';
+      }
+      newValue[i++] = *s;
+    }
+
+    sprintf(buf, "\"%s\"", mgi_escape_quotes(newValue));
   }
 
   return(buf);

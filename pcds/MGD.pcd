@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan 26 07:57:41 2011";
+      lastWritten = "Thu Jan 27 07:43:17 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -6672,14 +6672,6 @@ Shift<Key>Tab: prev-tab-group()
                                     activateCallback = "D:CreateMGIModule(name = \"GOVocAnnot\")";
                                     labelString = "GO Vocabulary Annotations";
                                     traversalOn = False;
-                                }
-                                {
-                                  GOVocAnnot1 = XmPushButton;
-                                  Group: Widget
-                                    activateCallback = "D:CreateMGIModule(name = \"GOVocAnnot1\")";
-                                    labelString = "GO Vocabulary Annotations NEW!";
-                                    traversalOn = False;
-                                    managed = False;
                                 }
                                 {
                                   MPVocAnnot = XmPushButton;

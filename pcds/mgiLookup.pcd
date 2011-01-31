@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Sep 16 07:55:37 2010";
+      lastWritten = "Thu Jan 27 06:33:59 2011";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -273,7 +273,7 @@ Module: mgiLookup
             vip_x = 90;
             vip_y = 1515;
           Group: User
-            cmd = "select _CellLine_key, c = cellLine + \";\" + cellLineStrain\nfrom ALL_CellLine_View \nwhere isMutant = 0 and _CellLine_Type_key = 3982968\nunion\nselect _CellLine_key, c = cellLine + \";\" + cellLineStrain + \";\" + cellLineType\nfrom ALL_CellLine_View \nwhere isMutant = 0 and _CellLine_Type_key != 3982968\norder by c\n";
+            cmd = "select c._CellLine_key, cellLine = c.cellLine + \";\" + s.strain\nfrom ALL_CellLine c, PRB_Strain s\nwhere c.isMutant = 0 and c._CellLine_Type_key = 3982968\nand c._Strain_key = s._Strain_key\nunion\nselect c._CellLine_key, c.cellLine + \";\" + s.strain + \";\" + vt.term\nfrom ALL_CellLine c, PRB_Strain s, VOC_Term vt\nwhere c.isMutant = 0 and c._CellLine_Type_key != 3982968\nand c._Strain_key = s._Strain_key\nand c._CellLine_Type_key = vt._Term_key\norder by cellLine\n";
               {
                 Label = LookupLabel : mgiLookup;
                 Group: Widget
