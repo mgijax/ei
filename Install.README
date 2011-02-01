@@ -14,14 +14,14 @@
     cp Configuration.default Configuration
     edit Configuration file carefully and appropriately
 
-    on shire (production):
+    on lindon (production):
 	use defaults
 
 3.  Building
 
     "Build" means to compile to code.
 
-    note: Install also does a Build.  so, if you're ultimate
+    note: Install also does a Build.  so, if your ultimate
     goal is to Install the application, you can skip this step.
 
     one application:
@@ -56,6 +56,6 @@
     rohan:
     	/usr/local/mgi/live/ei/dev/runapp mgi
 
-    shire:
+    lindon:
     	/usr/local/mgi/live/ei/prod/runapp mgi
 

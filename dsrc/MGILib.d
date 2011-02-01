@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- 02/01/2011 lec
+--	- CVS_TAG added
+--
 -- 05/19/2010 lec
 --	- revised LoginServer/LoginDB to use Configuration file
 --
@@ -89,8 +92,7 @@ rules:
 
 	  top := create widget("Login", nil, nil);
 
---	  global_version := "CVS ei-TAG_NUMBER";
-	  global_version := "CVS ei-4-4-1-18";
+	  global_version := getenv("CVS_TAG");
 
 	  SetTitle.source_widget := top;
 	  send(SetTitle, 0);
@@ -291,7 +293,7 @@ rules:
 --
  
         SetServer does
-          SetServer.source_widget.dbInfo := "  (" + global_login +
+          SetServer.source_widget.dbInfo := "   (" + global_login +
                                             ", " + global_server + 
                                             ", " + global_database + ")";
         end does;
@@ -305,8 +307,9 @@ rules:
         SetTitle does
           root : widget := SetTitle.source_widget.find_ancestor(global_application);
  
-          SetTitle.source_widget.title := global_application + " " + global_version +
-                                          "  Form:  " + SetTitle.source_widget.title;
+          SetTitle.source_widget.title := global_application + " " + 
+                                          SetTitle.source_widget.title + "   " +
+					  global_version;
  
           if (root != nil) then
             SetTitle.source_widget.title := SetTitle.source_widget.title + root.dbInfo;

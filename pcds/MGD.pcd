@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 27 07:43:17 2011";
+      lastWritten = "Tue Feb  1 13:56:13 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -9169,7 +9169,7 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: Constraint
                                                 resizable = true;
                                                   {
-                                                    Table = XtXrtTable : mgiTable;
+                                                    Table = mgiTable : mgiTable;
                                                     Group: Widget
                                                       xrtTblVisibleRows = 5;
                                                       xrtTblNumRows = 10;
@@ -14892,11 +14892,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                           }
-                          {
-                            Reports = MenuCascade;
-                            Group: Widget
-                              managed = True;
-                          }
                     }
                     {
                       EditForm = EditForm;
@@ -14941,33 +14936,9 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
-                                      {
-                                        Strain = Strain : mgiDataTypes;
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                            {
-                                              Verify = CharText;
-                                            }
-                                            {
-                                              StrainID = XmXrtAligner;
-                                            }
-                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
@@ -15337,16 +15308,6 @@ Shift<Key>Tab: prev-tab-group()
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = MLDP;
-                                              Group: User
-                                                keys = "Mldp.py";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;
