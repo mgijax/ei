@@ -1,6 +1,12 @@
+TAG: ei-4-4-1-18
+DATE: 02/01/2011
+STAFF: lec
+CHANGES:
+1) fix dsrc/GOVocAnnot.d/Select:(void) dbclose(dbproc); was turnned off;
+
 TAG: ei-4-4-1-17
 TAG: ei-4-4-1-16
-DATE: 01/31/2010
+DATE: 01/31/2011
 STAFF: lec
 CHANGES:
 1) TR10556/csrc/mgilib.c/mgi_DBprnotestr
@@ -9,8 +15,8 @@ CHANGES:
 
 TAG: ei-4-4-1-15
 TAG: ei-4-4-1-14
-DATE: 01/26/2010
-DATE: 01/25/2010
+DATE: 01/26/2011
+DATE: 01/25/2011
 STAFF: lec
 CHANGES:
 1) TR10456/display mgi ids for stage notes
@@ -18,13 +24,13 @@ CHANGES:
 3) TR10432/IndexStage.d/Select/"is coded?" check
 
 TAG: ei-tr10273-BP
-DATE: 01/06/2010
+DATE: 01/06/2011
 STAFF: lec
 CHANGES:
 1) branch point tag for TR10273
 
 TAG: ei-4-4-1-13
-DATE: 01/06/2010
+DATE: 01/06/2011
 STAFF: lec
 CHANGES:
 1) TR10515/mgiOption/OptionMenu/OptionPulldown
@@ -32,7 +38,7 @@ CHANGES:
 
 TAG: ei-4-4-1-12
 TAG: ei-4-4-1-11
-DATE: 01/05/2010
+DATE: 01/05/2011
 STAFF: lec
 CHANGES:
 1) TR10511/Dictionary.d/QueryDate

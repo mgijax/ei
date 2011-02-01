@@ -975,7 +975,7 @@ rules:
 	    results := results + 1;
           end while;
  
-	  --(void) dbclose(dbproc);
+	  (void) dbclose(dbproc);
 
 	  -- Reset Background
 
