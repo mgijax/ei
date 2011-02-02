@@ -1,14 +1,14 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
-DATE: 02/01/2011
+TAG: ei-4-4-1-19
+DATE: 02/02/2011
 STAFF: lec
 CHANGES:
 1) Configuration.default:added CVS_TAG
 2) MGILib.d:added CVS_TAG
 3) removed:reports/Mldp.py
+4) Allele.d/Genotype.d; Select/isPrimary fix
 
-TAG: ei-4-4-1-17
-TAG: ei-4-4-1-16
 TAG: ei-4-4-1-18
 DATE: 02/01/2011
 STAFF: lec

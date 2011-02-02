@@ -1095,7 +1095,7 @@ rules:
 		(void) mgi_tblSetCell(imgTable, row, imgTable.isPrimaryKey, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(imgTable, row, imgTable.editMode, TBL_ROW_NOCHG);
 
-		if (mgi_getstr(dbproc, 6) = YES) then
+		if (mgi_getstr(dbproc, 8) = YES) then
 		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "Yes");
 	        else
 		    (void) mgi_tblSetCell(imgTable, row, imgTable.isPrimary, "No");
