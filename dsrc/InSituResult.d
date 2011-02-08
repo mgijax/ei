@@ -17,6 +17,9 @@
 --
 -- History
 --
+-- lec  02/08/2011
+--	- TR10583/LoadList.loadsmall
+--
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
 --	  added LoadList.skipit
@@ -95,6 +98,7 @@ locals:
 	structureID : integer;		-- Table ID of Structures table
 	imageID : integer;		-- Table ID of Images table
 	assayID : integer;		-- Table ID of Assay table
+	assay_image_lookup : string;
 
 rules:
 
@@ -319,6 +323,7 @@ rules:
 	  imageID := GXD_ISRESULTIMAGE;
 	  assayID := GXD_ASSAY;
 	  assayKey := root->ID->text.value;
+	  assay_image_lookup := getenv("ASSAY_IMAGE_LOOKUP");
 
 	  -- Get the Specimen key value from the target table
 
@@ -523,11 +528,12 @@ rules:
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
 	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + key);
-	  if (integer) refCount > 25000 then
-	    LoadList.skipit := true;
+	  if (integer) refCount > (integer) assay_image_lookup then
+	    LoadList.loadsmall := true;
 	  end if;
 
 	  -- Load the Pane list for the current Reference
+	  LoadList.source_widget := top->ImagePaneList;
 	  LoadList.list := top->ImagePaneList;
 	  send(LoadList, 0);
 

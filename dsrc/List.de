@@ -30,9 +30,11 @@ InsertList [list : widget;			-- Insert item into LookupList
 	    accID : string := "";
 	    allowDups : boolean := false;];
 
-LoadList [list : widget;  			-- Load Lookup List; Allow Duplicate entries?
+LoadList [source_widget : widget;
+	  list : widget;  			-- Load Lookup List; Allow Duplicate entries?
 	  allowDups : boolean := false;
-	  skipit : boolean := false;];
+	  skipit : boolean := false;
+	  loadsmall : boolean := false;];
 
 ManageSelectionList [dialog : string;];		-- Manage Selection List Dialog
 	       

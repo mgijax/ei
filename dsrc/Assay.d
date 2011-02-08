@@ -28,6 +28,10 @@
 --
 -- History
 --
+-- lec  02/08/2011
+--	- TR10583/LoadList.loadsmall
+--	- don't run PythonImageCache if > python_image_cache
+--
 -- lec  09/15/2010
 --	- TR 9695/skip J:153498
 --	  added LoadList.skipit
@@ -349,6 +353,9 @@ locals:
 	mgiTypeKey : string := "6";
 	refsType : string := "Related";
 
+	assay_image_lookup : string;
+	python_image_cache : string;
+
 rules:
 
 --
@@ -477,6 +484,9 @@ rules:
 	  antibodyPrep := false;
 	  probePrep := true;
 
+	  assay_image_lookup := getenv("ASSAY_IMAGE_LOOKUP");
+	  python_image_cache := getenv("PYTHON_IMAGE_CACHE");
+
 	  -- Initialize Tables
 
 	  tables.append(top->InSituForm->Specimen->Table);
@@ -531,10 +541,11 @@ rules:
 
 	  -- Load the Image list
 	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
-	  if (integer) refCount > 25000 then
-	    LoadList.skipit := true;
+	  if (integer) refCount > (integer) assay_image_lookup then
+	    LoadList.loadsmall := true;
           end if;
 
+	  LoadList.source_widget := imageList;
 	  LoadList.list := imageList;
 	  send(LoadList, 0);
 
@@ -687,8 +698,14 @@ rules:
           AddSQL.key := top->ID->text;
           send(AddSQL, 0);
 
-	  PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	  send(PythonImageCache, 0);
+	  -- check image list
+	  -- if image cache count <= our configured value, then ok
+          refKey : string := top->mgiCitation->ObjectID->text.value;
+	  refCount : string := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	  if (integer) refCount <= (integer) python_image_cache then
+	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	    send(PythonImageCache, 0);
+          end if;
 
           PythonAlleleCreCache.source_widget := top;
           PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
@@ -1196,6 +1213,9 @@ rules:
 --
 
         Delete does
+          refKey : string;
+	  refCount : string;
+
           (void) busy_cursor(top);
 
 	  DeleteSQL.tableID := GXD_ASSAY;
@@ -1205,8 +1225,14 @@ rules:
 
 	  if top->Control->Delete.deleteReturn then
 
-	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	    send(PythonImageCache, 0);
+	    -- check image list
+	    -- if image cache count <= our configured value, then ok
+            refKey := top->mgiCitation->ObjectID->text.value;
+	    refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	    if (integer) refCount <= (integer) python_image_cache then
+	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	      send(PythonImageCache, 0);
+            end if;
 
             PythonAlleleCreCache.source_widget := top;
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;
@@ -1350,6 +1376,8 @@ rules:
 --
 
 	Modify does
+          refKey : string;
+	  refCount : string;
 
 	  modifyCache : boolean := true;
 
@@ -1450,8 +1478,14 @@ rules:
           if (modifyCache) then
 	    -- don't show a working dialog...it drives the GXD folks crazy!
 
-	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
-	    send(PythonImageCache, 0);
+	    -- check image list
+	    -- if image cache count <= our configured value, then ok
+            refKey := top->mgiCitation->ObjectID->text.value;
+	    refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	    if (integer) refCount <= (integer) python_image_cache then
+	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
+	      send(PythonImageCache, 0);
+            end if;
 
             PythonAlleleCreCache.source_widget := top;
             PythonAlleleCreCache.pythonevent := EVENT_ALLELECRE_BYASSAY;

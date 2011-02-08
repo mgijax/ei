@@ -11,6 +11,9 @@
 --
 -- History
 --
+-- lec  02/08/2011
+--	TR10583/LoadList.loadsmall/maxList
+--
 -- lec  05/03/2002
 --	fix bug in DeleteList; if (list_w.accIDs.count > 0) then remove item
 --
@@ -345,10 +348,13 @@ rules:
           list_w : widget := LoadList.list;
 	  allowDups : boolean := LoadList.allowDups;
 	  skipit : boolean := LoadList.skipit;
+	  loadsmall : boolean := LoadList.loadsmall;
           results : xm_string_list := create xm_string_list();
           keys : string_list := create string_list();
           accIDs : string_list := create string_list();
 	  item : string;
+	  row: integer := 0;
+	  maxList : integer := list_w->List.maxList;
  
           if (LoadList.source_widget != nil) then
             (void) busy_cursor(LoadList.source_widget.top);
@@ -408,7 +414,19 @@ rules:
                 results.insert(mgi_getstr(dbproc, 2), results.count + 1);
                 accIDs.insert(mgi_getstr(dbproc, 3), accIDs.count + 1);
 	      end if;
+
+	      row := row + 1;
+
+	      if (loadsmall and row > maxList) then
+	        break;
+	      end if;
+
             end while;
+
+	    if (loadsmall and row > maxList) then
+	      break;
+	    end if;
+
           end while;
  
           (void) dbclose(dbproc);

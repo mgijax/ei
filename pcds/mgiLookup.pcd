@@ -3,7 +3,7 @@ Module: mgiLookup
       autoCuil = False;
       dDialogFile = "mgiList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jan 27 06:33:59 2011";
+      lastWritten = "Tue Feb  8 08:31:39 2011";
         {
           LookupLabel = XmPushButton;
           Group: Widget
@@ -36,7 +36,7 @@ Module: mgiLookup
               {
                 List = list : mgiDataTypes;
                 Group: Widget
-                  userDefinedAttributes = "keys:StringTable(StringTable)\nmodified:Boolean(Boolean)=\"False\"\nsqlSuccessful:Boolean(Boolean)=\"True\"\ntargetWidget:Widget(Widget)\ntargetText:String(String)=\"-1\"\ntargetKey:String(String)=\"-1\"\naccIDs:StringTable(StringTable)\ntargetAccID:String(String)=\"-1\"\n";
+                  userDefinedAttributes = "keys:StringTable(StringTable)\nmodified:Boolean(Boolean)=\"False\"\nsqlSuccessful:Boolean(Boolean)=\"True\"\ntargetWidget:Widget(Widget)\ntargetText:String(String)=\"-1\"\ntargetKey:String(String)=\"-1\"\naccIDs:StringTable(StringTable)\ntargetAccID:String(String)=\"-1\"\nmaxList:Int=\"100\"\n";
                 Group: Constraint
                   leftAttachment = attach_form;
                   rightAttachment = attach_form;
