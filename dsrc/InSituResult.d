@@ -99,6 +99,7 @@ locals:
 	imageID : integer;		-- Table ID of Images table
 	assayID : integer;		-- Table ID of Assay table
 	assay_image_lookup : string;
+	python_image_cache : string;
 
 rules:
 
@@ -324,6 +325,7 @@ rules:
 	  assayID := GXD_ASSAY;
 	  assayKey := root->ID->text.value;
 	  assay_image_lookup := getenv("ASSAY_IMAGE_LOOKUP");
+	  python_image_cache := getenv("PYTHON_IMAGE_CACHE");
 
 	  -- Get the Specimen key value from the target table
 
@@ -493,9 +495,14 @@ rules:
           ModifySQL.list := nil;
           send(ModifySQL, 0);
  
-	  key := top.root->mgiCitation->ObjectID->text.value;
-	  PythonImageCache.objectKey := key;
-          send(PythonImageCache, 0);
+	  -- check image list
+	  -- if image cache count <= our configured value, then ok
+	  refKey : string := top.root->mgiCitation->ObjectID->text.value;
+	  refCount : string := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	  if (integer) refCount <= (integer) python_image_cache then
+	    PythonImageCache.objectKey := refKey;
+	    send(PythonImageCache, 0);
+          end if;
 
 	  send(Select, 0);
 
