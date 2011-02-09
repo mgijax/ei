@@ -381,6 +381,9 @@ rules:
 	  -- If a Thumbnail was also created, then select 
 
 	  if (createThumbnail) then
+	    -- for big loads (like J:153498), this will take a while
+	    -- we may want to attach the reference check (see Assay.d/python_image_cache)
+	    -- in order to skip this step, if it's taking too long
 	    from := "from IMG_Image_View i";
 	    where := "where _Refs_key = " + refsKey;
             QueryNoInterrupt.source_widget := top;
