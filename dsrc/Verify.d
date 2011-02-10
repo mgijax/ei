@@ -1425,7 +1425,8 @@ rules:
 	    -- a kludge...this really needs to be specific to GXD Assays
 	    -- where we want to default the Gentoype for non-Control lanes
 
-	    if (table.is_defined("genotypeName") = nil) then
+	    if (table.is_defined("genotypeName") = nil and
+		table.is_defined("controlKey") != nil) then
 	      if (mgi_tblGetCell(table, row, table.controlKey) = "1") then
                 (void) mgi_tblSetCell(table, row, table.genotypeKey, "-1");
 	        (void) mgi_tblSetCell(table, row, table.genotype, "MGI:2166310");
