@@ -281,7 +281,8 @@ rules:
 	  row := 0;
 
 	  cmd := "select usertask from MGI_RoleTask_View where _Role_key = " +
-		top->UserRoleMenu.menuHistory.searchValue;
+		top->UserRoleMenu.menuHistory.searchValue +
+		" order by usertask";
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -296,7 +297,8 @@ rules:
 	  row := 0;
 
 	  cmd := "select * from MGI_UserRole_View where _Role_key = " + 
-		top->UserRoleMenu.menuHistory.searchValue;
+		top->UserRoleMenu.menuHistory.searchValue +
+		" order by login";
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);

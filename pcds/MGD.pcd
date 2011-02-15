@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Feb  1 13:56:13 2011";
+      lastWritten = "Thu Feb 10 14:23:55 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -7483,8 +7483,6 @@ Shift<Key>Tab: prev-tab-group()
                           }
                           {
                             Reports = MenuCascade;
-                            Group: Widget
-                              managed = True;
                           }
                           {
                             Utilities = Utilities : mgiMenu;
@@ -8093,16 +8091,6 @@ Shift<Key>Tab: prev-tab-group()
                                   panedWindow = XmPanedWindow;
                                       {
                                         ReportList = LookupList;
-                                            {
-                                              Label = LookupLabel;
-                                            }
-                                            {
-                                              List = list;
-                                              Group: Widget
-                                                items = "Bibliography\nAll Duplicate References";
-                                              Group: User
-                                                keys = "Bibliographic.py dynamic\nBibliographic.py dupall";
-                                            }
                                       }
                                       {
                                         PrinterList = LookupList;

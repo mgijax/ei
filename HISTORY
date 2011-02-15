@@ -1,5 +1,13 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-1-23
+DATE: 02/15/2011, 02/10/2011, 02/07/2011
+STAFF: lec
+CHANGES:
+1) Reference/removed reports
+2) Verify/VerifyGenotype.d/check for controlKey
+3) UserRole.d/change order
+
 TAG: ei-4-4-1-22
 TAG: ei-4-4-1-21
 DATE: 02/08/2011, 02/07/2011

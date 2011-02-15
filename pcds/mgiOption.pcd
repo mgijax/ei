@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jan 25 11:04:51 2011";
+      lastWritten = "Tue Feb 15 09:16:42 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -2949,7 +2949,7 @@ Module: mgiOption
               {
                 UserRolePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_UserRole_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term_UserRole_View order by term";
                   childTemplate = UserRoleToggle;
               }
         }
