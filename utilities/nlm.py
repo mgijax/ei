@@ -584,6 +584,11 @@ def doUpdate(rec, rectags):
 		cmd.append('begin transaction')
 		update = []
 
+		# if len(AU2) > 255, then remove the last author's name
+		# and replace with 'et al'
+		# TR10592
+		# to-be-done
+
 		update.append('update BIB_Refs set ' + \
 			'refType = "ART",' + \
         		'authors = %s,' % rec['AU'] + \

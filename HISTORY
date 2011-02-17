@@ -1,5 +1,14 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-1-24
+DATE: 02/17/2011, 02/10/2011, 02/07/2011
+STAFF: lec
+CHANGES:
+1) TR10584/GOVocAnnot.d, MPVocAnnot.d, OMIMVocAnnot.d
+   add/fix permissions
+
+TAG: ei-4-4-1-22
+TAG: ei-4-4-1-21
 TAG: ei-4-4-1-23
 DATE: 02/15/2011, 02/10/2011, 02/07/2011
 STAFF: lec
