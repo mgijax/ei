@@ -93,8 +93,8 @@ rules:
 	  top := create widget("TDCVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
---	  SetPermissions.source_widget := top;
---	  send(SetPermissions, 0);
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
