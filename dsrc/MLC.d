@@ -162,6 +162,10 @@ rules:
 
 	  top := create widget("MLCModule", nil, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  (void) cleanup_handler(top); -- protection against unwanted sigs
 
 	  -- Initialize the classification list

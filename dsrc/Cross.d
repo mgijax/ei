@@ -65,6 +65,10 @@ rules:
           ab.sensitive := false;
 	  top.show;
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  send(Init, 0);
 
 	  (void) reset_cursor(mgi);
