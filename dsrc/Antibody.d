@@ -125,6 +125,10 @@ rules:
 
 	  top->AntigenAccession.tableID := GXD_ANTIGEN;
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Set Row Count
 
 	  SetRowCount.source_widget := top;

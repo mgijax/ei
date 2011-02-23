@@ -81,6 +81,10 @@ rules:
 	  -- Create the widget hierarchy in memory
 	  top := create widget("SimpleVocabModule", nil, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 

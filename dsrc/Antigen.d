@@ -95,6 +95,10 @@ rules:
           ab.sensitive := false;
 	  top.show;
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  SetRowCount.source_widget := top;
 	  SetRowCount.tableID := GXD_ANTIGEN;
 	  send(SetRowCount, 0);

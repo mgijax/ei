@@ -83,6 +83,10 @@ rules:
           ab.sensitive := false;
 	  top.show;
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Global Accession number Table
 
 	  accTable := top->mgiAccessionTable->Table;

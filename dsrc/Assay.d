@@ -371,6 +371,10 @@ rules:
 
 	  top := create widget("AssayModule", nil, mgi);
 
+	  -- Set Permissions
+	  SetPermissions.source_widget := top;
+	  send(SetPermissions, 0);
+
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
 
