@@ -63,7 +63,7 @@ devents:
 	SetOptions :local [source_widget : widget;
 			   row : integer;
 			   reason : integer;];
-	SetMPPermissions :local [];
+	SetPermissionsMP :local [];
 
 	MPClipboardAdd :local [];
 	MPClipboardAddAll :local [];
@@ -123,7 +123,7 @@ rules:
 	  top := create widget("MPVocAnnotModule", ab.name, mgi);
 
 	  -- Set Permissions
-	  send(SetMPPermissions, 0);
+	  send(SetPermissionsMP, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -139,12 +139,12 @@ rules:
 	end does;
 
 --
--- SetMPPermissions
+-- SetPermissionsMP
 --
 --      Set Save buttons permissions based on EI module
 --
  
-        SetMPPermissions does
+        SetPermissionsMP does
 	   cmd : string;
 	   permOK : integer;
 

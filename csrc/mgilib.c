@@ -888,6 +888,7 @@ char *mgi_DBkey(int table)
             strcpy(buf, "_Source_key");
 	    break;
     case PRB_STRAIN_GENOTYPE:
+    case PRB_STRAIN_GENOTYPE_VIEW:
             strcpy(buf, "_StrainGenotype_key");
 	    break;
     case PRB_STRAIN_MARKER:
@@ -1741,6 +1742,9 @@ char *mgi_DBtable(int table)
 	    break;
     case PRB_STRAIN_GENOTYPE:
             strcpy(buf, "PRB_Strain_Genotype");
+	    break;
+    case PRB_STRAIN_GENOTYPE_VIEW:
+            strcpy(buf, "PRB_Strain_Genotype_View");
 	    break;
     case PRB_STRAIN_MARKER:
             strcpy(buf, "PRB_Strain_Marker");

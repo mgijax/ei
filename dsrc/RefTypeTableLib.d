@@ -13,6 +13,9 @@
 --
 -- History:
 --
+-- lec	02/28/2011
+--	- TR 10584/add modification date/by to MGI_REFERENCE_STRAIN_VIEW
+--
 -- lec  01/26/2010
 --	- TR 8156; added ModifyRefTypeRow
 --
@@ -172,10 +175,18 @@ rules:
 	     orderBy := "\norder by allowOnlyOne desc, _RefAssocType_key";
 	  end if;
 
-          cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
+	  if (tableID = MGI_REFERENCE_STRAIN_VIEW) then
+            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
+		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString, " +
+		  "modifiedBy, modification_date" +
+	  	  " from " + mgi_DBtable(tableID) +
+		  " where " + mgi_DBkey(tableID) + " = " + objectKey + orderBy;
+	  else
+            cmd := "select _Refs_key, _RefAssocType_key, assocType, allowOnlyOne, " +
 		  "jnum, short_citation, _Assoc_key, isReviewArticle, isReviewArticleString" +
 	  	  " from " + mgi_DBtable(tableID) +
 		  " where " + mgi_DBkey(tableID) + " = " + objectKey + orderBy;
+	  end  if;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
@@ -194,6 +205,11 @@ rules:
 	      if (table.is_defined("reviewKey") != nil) then
 	        (void) mgi_tblSetCell(table, row, table.reviewKey, mgi_getstr(dbproc, 8));
 	        (void) mgi_tblSetCell(table, row, table.review, mgi_getstr(dbproc, 9));
+	      end if;
+
+	      if (table.is_defined("modifiedBy") != nil) then
+	        (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 11));
 	      end if;
 
 	      (void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
@@ -332,6 +348,7 @@ rules:
 	  editMode : string;
 	  refsKey : string;
 	  citation : string;
+	  modifiedBy : string;
 	  cmd : string := "";
  
 	  table.sqlFrom := "";
@@ -346,7 +363,7 @@ rules:
               refsKey := mgi_tblGetCell(table, r, table.refsKey);
               citation := mgi_tblGetCell(table, r, table.citation);
  
-	      if (refsKey.length > 0) then
+	      if (refsKey != "NULL" and refsKey.length > 0) then
 	        table.sqlWhere := table.sqlWhere + "\nand " + 
 			tableTag + "._Refs_key = " + refsKey;
 	      elsif (citation.length > 0) then
@@ -354,16 +371,40 @@ rules:
 			tableTag + ".citation like " + mgi_DBprstr(citation);
 	      end if;
 
+	      if (table.is_defined("modifiedBy") != nil) then
+		modifiedBy := mgi_tblGetCell(table, r, table.modifiedBy);
+	        if (modifiedBy.length > 0) then
+	          table.sqlWhere := table.sqlWhere + "\nand " + 
+			  tableTag + ".modifiedBy like " + mgi_DBprstr(modifiedBy);
+		end if;
+	      end if;
+
 	      break;
 	    end if;
             r := r + 1;
 	  end while;
+
+	  -- Modification date
+
+	  if (table.is_defined("modifiedBy") != nil) then
+	    table.sqlCmd := "";
+            QueryDate.source_widget := table;
+	    QueryDate.row := 0;
+	    QueryDate.column := table.modifiedDate;
+	    QueryDate.fieldName := "modification_date";
+	    QueryDate.tag := tableTag;
+            send(QueryDate, 0);
+	    if (table.sqlCmd.length > 0) then
+	      table.sqlWhere := table.sqlWhere + table.sqlCmd;
+	    end if;
+	  end if;
 
 	  if (table.sqlWhere.length > 0) then
 	    table.sqlFrom := "," + mgi_DBtable(tableID) + " " + tableTag;
 	    table.sqlWhere := table.sqlWhere + "\nand " + tableTag + "." + 
 		mgi_DBkey(tableID) + " = " + join;
 	  end if;
+
 	end does;
 
  end dmodule;

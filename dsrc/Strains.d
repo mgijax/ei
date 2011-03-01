@@ -100,6 +100,7 @@ devents:
 	Modify :local [];
 	ModifyAttribute :local [];
 	ModifyNeedsReview :local [];
+	ModifyJAX :local [];
 	ModifyGenotype :local [];
 	ModifySuperStandard :local [];
 
@@ -113,6 +114,7 @@ devents:
 	Select :local [item_position : integer;];
 	SelectReferenceMGI :local [doCount : boolean := false;];
 	SelectDataSets :local [doCount : boolean := false;];
+	SetPermissionsJAX :local [];
 
 	ResetModificationFlags :local [];
 	VerifyStrainMarker :local [];
@@ -163,6 +165,9 @@ rules:
 	  -- Set Permissions
 	  SetPermissions.source_widget := top;
 	  send(SetPermissions, 0);
+
+	  -- Set Permissions JAX
+	  send(SetPermissionsJAX, 0);
 
 	  -- Build Dynamic GUI Components
 	  send(BuildDynamicComponents, 0);
@@ -296,6 +301,26 @@ rules:
 
 	end does;
 
+--
+-- SetPermissionsJAX
+--
+--      Set Save buttons permissions based on EI module
+--
+ 
+        SetPermissionsJAX does
+	   pcmd : string;
+	   permOK : integer;
+
+	   pcmd := "exec MGI_checkUserRole 'StrainJAXModule'," + mgi_DBprstr(global_login);
+		
+	   permOK := (integer) mgi_sql1(pcmd);
+
+	   if (permOK = 0) then
+	     top->Reference->Save.sensitive := false;
+	     top->Genotype->Save.sensitive := false;
+	   end if;
+
+        end does;
 --
 -- Add
 --
@@ -465,8 +490,8 @@ rules:
 
 	  send(ModifyAttribute, 0);
 	  send(ModifyNeedsReview, 0);
-	  send(ModifyGenotype, 0);
 	  send(ModifySuperStandard, 0);
+	  send(ModifyGenotype, 0);
 
 	  --  Process Markers/Alleles
 
@@ -483,12 +508,14 @@ rules:
 	  send(ProcessSynTypeTable, 0);
           cmd := cmd + top->Synonym->Table.sqlCmd;
 
-	  --  Process ReferenceMGI
+	  --  Process Reference
 
 	  ProcessRefTypeTable.table := top->Reference->Table;
 	  ProcessRefTypeTable.objectKey := currentRecordKey;
 	  send(ProcessRefTypeTable, 0);
           cmd := cmd + top->Reference->Table.sqlCmd;
+
+	  -- Process Notes
 
 	  ProcessNoteForm.notew := top->mgiNoteForm;
 	  ProcessNoteForm.tableID := MGI_NOTE;
@@ -623,6 +650,42 @@ rules:
 	  end while;
 	end does;
  
+--
+-- ModifyJAX
+--
+-- Activated from:	Save References moddule & Genotype module
+--
+-- Construct and execute command for record modifcations to References and Genotypes only --
+
+	ModifyJAX does
+          (void) busy_cursor(top);
+
+	  if (currentRecordKey.length = 0) then
+	    (void) reset_cursor(top);
+	    StatusReport.source_widget := top;
+	    StatusReport.message := "Cannot save this Genotype information if a record is not selected.";
+	    send(StatusReport, 0);
+	    return;
+	  end if;
+
+	  cmd := "";
+
+	  send(ModifyGenotype, 0);
+
+	  --  Process Reference
+
+	  ProcessRefTypeTable.table := top->Reference->Table;
+	  ProcessRefTypeTable.objectKey := currentRecordKey;
+	  send(ProcessRefTypeTable, 0);
+          cmd := cmd + top->Reference->Table.sqlCmd;
+
+          ModifySQL.cmd := cmd;
+	  ModifySQL.list := top->QueryList;
+          send(ModifySQL, 0);
+
+          (void) reset_cursor(top);
+	end does;
+
 --
 -- ModifyGenotype
 --
@@ -841,9 +904,29 @@ rules:
 	    from_straingenotype := true;
           end if;
 
+          value := mgi_tblGetCell(top->Genotype->Table, 0, top->Genotype->Table.modifiedBy);
+          if (value.length > 0) then
+            where := where + "\nand sg.modifiedBy like " + mgi_DBprstr(value);
+	    from_straingenotype := true;
+          end if;
+
+	  -- Modification date
+
+	  top->Genotype->Table.sqlCmd := "";
+          QueryDate.source_widget := top->Genotype->Table;
+	  QueryDate.row := 0;
+	  QueryDate.column := top->Genotype->Table.modifiedDate;
+	  QueryDate.fieldName := "modification_date";
+	  QueryDate.tag := "sg";
+          send(QueryDate, 0);
+	  if (top->Genotype->Table.sqlCmd.length > 0) then
+	    where := where + top->Genotype->Table.sqlCmd;
+	    from_straingenotype := true;
+	  end if;
+
 	  if (from_straingenotype) then
 	    where := where + "\nand s._Strain_key = sg._Strain_key";
-	    from := from + "," + mgi_DBtable(PRB_STRAIN_GENOTYPE) + " sg";
+	    from := from + "," + mgi_DBtable(PRB_STRAIN_GENOTYPE_VIEW) + " sg";
 	  end if;
 
 	  if (not from_reference) then
@@ -943,7 +1026,8 @@ rules:
 		 "select _Annot_key from PRB_Strain_Super_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n" +
 
-		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, mgiID, description " +
+		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, " +
+				  "mgiID, description, modifiedBy, modification_date " +
 		 "from PRB_Strain_Genotype_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n";
 
@@ -1001,6 +1085,8 @@ rules:
                 (void) mgi_tblSetCell(table, row, table.qualifier, mgi_getstr(dbproc, 4));
                 (void) mgi_tblSetCell(table, row, table.genotype, mgi_getstr(dbproc, 5));
                 (void) mgi_tblSetCell(table, row, table.genotypeName, mgi_getstr(dbproc, 6));
+                (void) mgi_tblSetCell(table, row, table.modifiedBy, mgi_getstr(dbproc, 7));
+                (void) mgi_tblSetCell(table, row, table.modifiedDate, mgi_getstr(dbproc, 8));
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 	      end if;
 	      row := row + 1;

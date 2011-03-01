@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Feb 10 14:23:55 2011";
+      lastWritten = "Tue Mar  1 06:53:43 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -10432,130 +10432,6 @@ Shift<Key>Tab: prev-tab-group()
                                       }
                                 }
                                 {
-                                  Reference = ReferenceTypeTable : mgiTable;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Name;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = ReferenceMGI;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                      {
-                                        Table = mgiTable;
-                                        Group: User
-                                          mgiTypeKey = 10;
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
-                                            Popups:
-                                            {
-                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
-                                              Group: Widget
-                                                tearOffModel = tear_off_disabled;
-                                              Group: User
-                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Strain_View where allowOnlyOne = 0 order by _RefAssocType_key";
-                                                tableForm = Reference;
-                                            }
-                                      }
-                                      {
-                                        ReviewMenu = YesNoMenu : mgiOption;
-                                            Popups:
-                                            {
-                                              ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
-                                              Group: User
-                                                tableForm = Reference;
-                                                tableOptionKey = 3;
-                                                tableOption = 6;
-                                                  {
-                                                    SearchAll = SearchAll : mgiOption;
-                                                    Group: Widget
-                                                      managed = False;
-                                                  }
-                                                  {
-                                                    Yes = Yes : mgiOption;
-                                                  }
-                                                  {
-                                                    No = No : mgiOption;
-                                                  }
-                                            }
-                                      }
-                                }
-                                {
-                                  Genotype = Table : mgiTable;
-                                  Group: Widget
-                                    rubberPositioning = False;
-                                    resizePolicy = resize_any;
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = Reference;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = Reference;
-                                    topOffset = 5;
-                                    bottomAttachment = attach_form;
-                                    resizable = true;
-                                    bottomOffset = 5;
-                                      {
-                                        Table = mgiTable : mgiTable;
-                                        Group: Widget
-                                          xrtTblVisibleRows = 3;
-                                          xrtTblNumColumns = 7;
-                                          xrtTblColumnLabels = "Mode,Key,G Key,Q Key,Qualifier,MGI ID,Genotype";
-                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 15)(all 6 60)";
-                                          userDefinedAttributes = "strainGenotypeKey:Int(Int)=\"1\"\ngenotypeKey:Int(Int)=\"2\"\nqualifierKey:Int(Int)=\"3\"\ngenotype:Int(Int)=\"5\"\ngenotypeName:Int(Int)=\"6\"\nqualifier:Int(Int)=\"4\"\n";
-                                          xrtTblValidateCellCallback = "D:VerifyGenotype\nD:CommitTableCellEdit";
-                                          xrtTblDisplayHorizScrollBar = dispsb_never;
-                                          xrtTblTraversableSeries = "(all 0-4 False)";
-                                          xrtTblEditableSeries = "(all 0-4 False)";
-                                        Group: User
-                                          requiredColumns = "2\n3";
-                                      }
-                                      {
-                                        AddRow = TablePush : mgiTable;
-                                        Group: Constraint
-                                          leftAttachment = attach_widget;
-                                          leftWidget = StrainGenoQualMenu;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_opposite_widget;
-                                          topWidget = StrainGenoQualMenu;
-                                          topOffset = 2;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
-                                      }
-                                      {
-                                        DeleteRow = TablePush : mgiTable;
-                                      }
-                                      {
-                                        StrainGenoQualMenu = StrainGenoQualMenu : mgiOption;
-                                        Group: Constraint
-                                          leftAttachment = attach_opposite_widget;
-                                          leftWidget = Table;
-                                          rightAttachment = attach_none;
-                                          topAttachment = attach_widget;
-                                          topWidget = Table;
-                                          topOffset = 2;
-                                          bottomAttachment = attach_none;
-                                          resizable = true;
-                                            Popups:
-                                            {
-                                              StrainGenoQualPulldown = OptionPulldown : mgiOption;
-                                              Group: User
-                                                tableForm = Genotype;
-                                                tableOption = 4;
-                                                tableOptionKey = 3;
-                                            }
-                                      }
-                                }
-                                {
                                   ReferenceMGI = DataSetForm : mgiTable;
                                   Group: Constraint
                                     leftAttachment = attach_opposite_widget;
@@ -10632,6 +10508,167 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     leftOffset = 5;
+                                }
+                                {
+                                  separator = XmSeparator;
+                                  Group: Constraint
+                                    leftAttachment = attach_form;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = ReferenceMGI;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                    leftOffset = 5;
+                                    rightOffset = 5;
+                                    topOffset = 5;
+                                }
+                                {
+                                  Reference = ReferenceTypeTable : mgiTable;
+                                  Group: Widget
+                                    managed = True;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Name;
+                                    rightAttachment = attach_none;
+                                    topAttachment = attach_widget;
+                                    topWidget = separator;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
+                                      {
+                                        Table = mgiTable;
+                                        Group: Widget
+                                          xrtTblColumnLabels = "Mode,Assoc Key,Ref key,Type key,Review key,Type,J#,Citation,Reviewed?,Modified By,Date";
+                                          xrtTblNumColumns = 11;
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 50)(all 9 15)";
+                                          userDefinedAttributes = "modifiedBy:Int(Int)=\"9\"\nmodifiedDate:Int(Int)=\"10\"\n";
+                                        Group: User
+                                          mgiTypeKey = 10;
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        ReferenceTypeMenu = ReferenceTypeMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReferenceTypePulldown = OptionPulldown : mgiOption;
+                                              Group: Widget
+                                                tearOffModel = tear_off_disabled;
+                                              Group: User
+                                                sql = "select _RefAssocType_key, assocType, allowOnlyOne from MGI_RefType_Strain_View where allowOnlyOne = 0 order by _RefAssocType_key";
+                                                tableForm = Reference;
+                                            }
+                                      }
+                                      {
+                                        ReviewMenu = YesNoMenu : mgiOption;
+                                            Popups:
+                                            {
+                                              ReviewPulldown : YesNoPulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = Reference;
+                                                tableOptionKey = 3;
+                                                tableOption = 6;
+                                                  {
+                                                    SearchAll = SearchAll : mgiOption;
+                                                    Group: Widget
+                                                      managed = False;
+                                                  }
+                                                  {
+                                                    Yes = Yes : mgiOption;
+                                                  }
+                                                  {
+                                                    No = No : mgiOption;
+                                                  }
+                                            }
+                                      }
+                                }
+                                {
+                                  Genotype = Table : mgiTable;
+                                  Group: Widget
+                                    rubberPositioning = False;
+                                    resizePolicy = resize_any;
+                                    managed = True;
+                                  Group: Constraint
+                                    leftAttachment = attach_opposite_widget;
+                                    leftWidget = Reference;
+                                    rightAttachment = attach_form;
+                                    topAttachment = attach_widget;
+                                    topWidget = Reference;
+                                    topOffset = 5;
+                                    bottomAttachment = attach_form;
+                                    resizable = true;
+                                    bottomOffset = 5;
+                                    rightOffset = 5;
+                                      {
+                                        Table = mgiTable : mgiTable;
+                                        Group: Widget
+                                          xrtTblVisibleRows = 3;
+                                          xrtTblNumColumns = 9;
+                                          xrtTblColumnLabels = "Mode,Key,G Key,Q Key,Qualifier,MGI ID,Genotype,Modified By,Date";
+                                          xrtTblPixelWidthSeries = "(all 0-3 0)";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-3 10)(all 4 15)(all 5 15)(all 6 50))(all 7 15)";
+                                          userDefinedAttributes = "strainGenotypeKey:Int(Int)=\"1\"\ngenotypeKey:Int(Int)=\"2\"\nqualifierKey:Int(Int)=\"3\"\ngenotype:Int(Int)=\"5\"\ngenotypeName:Int(Int)=\"6\"\nqualifier:Int(Int)=\"4\"\nmodifiedBy:Int=\"7\"\nmodifiedDate:Int=\"8\"\n";
+                                          xrtTblValidateCellCallback = "D:VerifyGenotype\nD:CommitTableCellEdit";
+                                          xrtTblDisplayHorizScrollBar = dispsb_never;
+                                          xrtTblTraversableSeries = "(all 0-4 False)";
+                                          xrtTblEditableSeries = "(all 0-4 False)";
+                                        Group: User
+                                          requiredColumns = "2\n3";
+                                      }
+                                      {
+                                        AddRow = TablePush : mgiTable;
+                                        Group: Constraint
+                                          leftAttachment = attach_widget;
+                                          leftWidget = StrainGenoQualMenu;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_opposite_widget;
+                                          topWidget = StrainGenoQualMenu;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
+                                      {
+                                        DeleteRow = TablePush : mgiTable;
+                                      }
+                                      {
+                                        StrainGenoQualMenu = StrainGenoQualMenu : mgiOption;
+                                        Group: Constraint
+                                          leftAttachment = attach_opposite_widget;
+                                          leftWidget = Table;
+                                          rightAttachment = attach_none;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                            Popups:
+                                            {
+                                              StrainGenoQualPulldown = OptionPulldown : mgiOption;
+                                              Group: User
+                                                tableForm = Genotype;
+                                                tableOption = 4;
+                                                tableOptionKey = 3;
+                                            }
+                                      }
+                                      {
+                                        Save = ControlPush : mgiControl;
+                                        Group: Widget
+                                          labelString = "Save References and Genotypes Only";
+                                          activateCallback = "D:ModifyJAX";
+                                        Group: Constraint
+                                          leftAttachment = attach_none;
+                                          rightAttachment = attach_opposite_widget;
+                                          rightWidget = Table;
+                                          topAttachment = attach_widget;
+                                          topWidget = Table;
+                                          topOffset = 2;
+                                          bottomAttachment = attach_none;
+                                          resizable = true;
+                                      }
                                 }
                           }
                     }
