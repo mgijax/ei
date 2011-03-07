@@ -7,6 +7,9 @@
 --
 -- History
 --
+-- 03/07/2011 lec
+--	- SetPermissions; add Utilities
+--
 -- 02/01/2011 lec
 --	- CVS_TAG added
 --
@@ -282,6 +285,8 @@ rules:
 	      top->CommandsPulldown->Add.sensitive := false;
 	      top->CommandsPulldown->Modify.sensitive := false;
 	      top->CommandsPulldown->Delete.sensitive := false;
+
+	      top->MainMenu->Utilities.managed := false;
 	   end if;
 
         end does;

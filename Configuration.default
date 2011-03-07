@@ -18,7 +18,7 @@ source ${MGICONFIG}/master.config.csh
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
 # CVS tag; keep updated with current tag
-setenv CVS_TAG	ei-4-4-1-26
+setenv CVS_TAG	ei-4-4-1-27
 
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
@@ -56,4 +56,8 @@ setenv PYTHON_IMAGE_CACHE       10000
 
 # Set umask for permissions on files created
 umask 002
+
+# archive area for "old" log files
+setenv USERHOME /userhome
+setenv LOGEI	/logs/ei
 

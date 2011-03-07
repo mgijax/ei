@@ -1,5 +1,13 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-1-27
+DATE: 03/07/2011
+STAFF: lec
+CHANGES:
+1) MGILib:SetPermissions;
+
+TAG: ei-4-4-1-22
+TAG: ei-4-4-1-21
 TAG: ei-4-4-1-26
 TAG: ei-4-4-1-25
 DATE: 02/21/2011

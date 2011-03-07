@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jan 17 08:35:52 2011";
+      lastWritten = "Tue Mar  1 11:15:30 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -1512,7 +1512,7 @@ Module: MGI
                                     resizable = true;
                                     topOffset = "-25";
                                       {
-                                        Table = XtXrtTable : mgiTable;
+                                        Table = mgiTable : mgiTable;
                                         Group: Widget
                                           xrtTblVisibleRows = 5;
                                         Group: User
@@ -3261,7 +3261,7 @@ Module: MGI
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;

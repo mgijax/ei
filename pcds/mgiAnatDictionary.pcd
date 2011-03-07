@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jan  5 12:36:26 2011";
+      lastWritten = "Tue Mar  1 11:15:34 2011";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -699,7 +699,7 @@ Module: mgiAnatDictionary
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
