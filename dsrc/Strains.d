@@ -316,7 +316,6 @@ rules:
 	   permOK := (integer) mgi_sql1(pcmd);
 
 	   if (permOK = 0) then
-	     top->Reference->Save.sensitive := false;
 	     top->Genotype->Save.sensitive := false;
 	   end if;
 

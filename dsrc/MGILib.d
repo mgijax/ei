@@ -287,6 +287,12 @@ rules:
 	      top->CommandsPulldown->Delete.sensitive := false;
 
 	      top->MainMenu->Utilities.managed := false;
+
+	      --don't need this right now...but may in the future...
+	      --if (top->MainMenu->NLM != nil) then
+	      --  top->MainMenu->NLM.managed := false;
+	      --end if;
+
 	   end if;
 
         end does;
