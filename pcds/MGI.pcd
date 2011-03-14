@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Mar  1 11:15:30 2011";
+      lastWritten = "Mon Mar 14 09:51:43 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -2221,6 +2221,17 @@ Module: MGI
                                 }
                                 {
                                   Bottom = ControlArrow : mgiControl;
+                                  Group: Widget
+                                    managed = False;
+                                  Group: Constraint
+                                    leftAttachment = attach_none;
+                                    rightAttachment = attach_opposite_widget;
+                                    rightWidget = Modify;
+                                    rightOffset = 2;
+                                    topAttachment = attach_widget;
+                                    topWidget = Modify;
+                                    bottomAttachment = attach_none;
+                                    resizable = true;
                                 }
                                 {
                                   Clear1 = XmMenuBar;
