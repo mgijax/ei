@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Sep 21 13:23:33 2010";
+      lastWritten = "Mon Mar 28 14:33:54 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -564,7 +564,7 @@ Module: GXD
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
@@ -601,6 +601,9 @@ Module: GXD
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -664,6 +667,12 @@ Module: GXD
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -1552,7 +1561,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
@@ -1589,6 +1598,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -1652,6 +1664,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -2289,36 +2307,60 @@ Shift<Key>Tab: prev-tab-group()
                                       {
                                         IndexNotePulldown : NotePulldown = OptionPulldown : mgiOption;
                                             {
-                                              AntibodySpec = AppendNotePush : mgiDataTypes;
+                                              Activated = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Antibody spec.";
+                                                labelString = Activated;
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "The specificity of the antibody used was not detailed; several/all family members have been annotated.";
+                                                note = "The antibody used recognizes the activated form of the protein.";
                                             }
                                             {
-                                              ProbeSpec = AppendNotePush : mgiDataTypes;
+                                              Cleaved = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Probe spec.";
+                                                labelString = Cleaved;
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Probe specificity was not detailed and may recognize a related gene; several/all family members have been annotated.";
+                                                note = "The antibody used recognizes the cleaved form of the protein.";
                                             }
                                             {
-                                              AntibodySpecMGI = AppendNotePush : mgiDataTypes;
+                                              Phosphorylated = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Antibody spec. MGI ID";
+                                                labelString = Phosphorylated;
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "The specificity of the antibody used was not detailed; (MGI:) has also been annotated.";
+                                                note = "The antibody used recognizes the phosphorylated form of the protein.";
                                             }
                                             {
-                                              ProbeSpecMGI = AppendNotePush : mgiDataTypes;
+                                              AbProbeSpec = AppendNotePush : mgiDataTypes;
                                               Group: Widget
-                                                labelString = "Probe spec. MGI ID";
+                                                labelString = "Ab/probe spec.";
                                               Group: User
                                                 noteWidget = Note;
-                                                note = "Probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated.";
+                                                note = "The specificity of the antibody/probe used was not detailed; both/all family members have been annotated.";
+                                            }
+                                            {
+                                              AbProdeSpecMGI = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "Ab/probe spec. MGI ID";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The antibody/probe specificity was not detailed and may recognize a related gene; (MGI:) has also been annotated.";
+                                            }
+                                            {
+                                              gRTPCR = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = "qRT-PCR";
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The RT-PCR data was obtained using quantitative RT-PCR.";
+                                            }
+                                            {
+                                              microRNA = AppendNotePush : mgiDataTypes;
+                                              Group: Widget
+                                                labelString = microRNA;
+                                              Group: User
+                                                noteWidget = Note;
+                                                note = "The mature microRNA is encoded at multiple sites in the genome.";
                                             }
                                             {
                                               Supplmentary = AppendNotePush : mgiDataTypes;
@@ -2327,14 +2369,6 @@ Shift<Key>Tab: prev-tab-group()
                                               Group: User
                                                 noteWidget = Note;
                                                 note = "Results are in the supplementary material.";
-                                            }
-                                            {
-                                              AbRecog = AppendNotePush : mgiDataTypes;
-                                              Group: Widget
-                                                labelString = "Ab recog. Act/cleave/P";
-                                              Group: User
-                                                noteWidget = Note;
-                                                note = "The antibody recognized the activated/phosphorylated/cleaved form of the protein.";
                                             }
                                             {
                                               SectionWM = AppendNotePush : mgiDataTypes;
@@ -2902,14 +2936,6 @@ Shift<Key>Tab: prev-tab-group()
                                           managed = False;
                                       }
                                 }
-                          }
-                          {
-                            Reports = MenuCascade;
-                          }
-                          {
-                            Utilities = Utilities : mgiMenu;
-                            Group: Widget
-                              managed = True;
                           }
                     }
                     {
@@ -3601,7 +3627,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     MMRRC = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    APF = AccToggle : mgiOption;
+                                                    APB = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     BCBC = AccToggle : mgiOption;
@@ -3638,6 +3664,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     NMICE = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    OBS = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     ORNL = AccToggle : mgiOption;
@@ -3704,6 +3733,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     KOMPCSDProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    NORCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

@@ -294,6 +294,7 @@ extern char *global_version;
 #define STRAIN_VIEW		705
 #define VOC_TERM_STRAINALLELE_VIEW		706
 #define PRB_STRAIN_GENOTYPE	707
+#define PRB_STRAIN_GENOTYPE_VIEW	708
 
 /* VOC & DAG Tables */
 
