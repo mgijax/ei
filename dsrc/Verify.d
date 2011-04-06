@@ -16,6 +16,9 @@
 --
 -- History
 --
+-- 03/29/2011	lec
+--	- TR 10650; VerifyGOInferredFrom; add 'IC'
+--
 -- 07/27/2010	lec
 --	- TR10295/VerifyVocabEvidence/add MP:0003012
 --
@@ -2755,11 +2758,11 @@ rules:
 	  evidence : string := mgi_tblGetCell(sourceWidget, row, sourceWidget.evidence);
 	  evidence := evidence.raise_case;
 
-	  -- If the evidence is ISO or ISA, then the Inferred From must be entered
+	  -- If the evidence is ISO, ISA, IC, then the Inferred From must be entered
 
-	  if ((evidence = "ISO" or evidence = "ISA") and (value.length = 0 or value = "%")) then
+	  if ((evidence = "ISO" or evidence = "ISA" or evidence = "IC") and (value.length = 0 or value = "%")) then
             StatusReport.source_widget := top.root;
-            StatusReport.message := "ERROR:  When using Evidence Code ISO or ISA, the Inferred From value must be used.";
+            StatusReport.message := "ERROR:  When using Evidence Code ISO, ISA or IC, the Inferred From value must be used.";
             send(StatusReport);
 	    VerifyGOInferredFrom.doit := (integer) false;
 	    (void) mgi_tblSetCell(sourceWidget, row, sourceWidget.inferredFrom, "");
