@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Mar  7 08:09:40 2011";
+      lastWritten = "Mon Apr 25 12:33:22 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2226,7 +2226,7 @@ Module: MGD
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -3977,7 +3977,7 @@ Module: MGD
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -9427,7 +9427,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -9896,7 +9896,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
@@ -11021,7 +11021,7 @@ Shift<Key>Tab: prev-tab-group()
                                                       managed = True;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    NCIMR = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12735,7 +12735,7 @@ Shift<Key>Tab: prev-tab-group()
                                                     JPGA = AccToggle : mgiOption;
                                                   }
                                                   {
-                                                    MMHCC = AccToggle : mgiOption;
+                                                    NCIMR = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     MTG = AccToggle : mgiOption;
