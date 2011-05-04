@@ -85,6 +85,9 @@
 #
 # History
 #
+#	lec	05/04/2011
+#	- TR 10699 (remove TR1937); remove numeric stripping in AU
+#
 #	lec	05/13/2010
 #	- TR10215; add _ModifiedBy_key = userKey for updates to BIB_Refs
 #
@@ -404,8 +407,11 @@ def processAU(value, currentValue = None):
 	#
 	'''
 
+	#TR 10699 (remove TR1937)
+	# remove this stripping...no longer valid
 	# strip out numerics from author names
-	newvalue = re.sub('[0-9]', '', value)
+	#newvalue = re.sub('[0-9]', '', value)
+	newvalue = value
 
 	# If List of authors...convert to 'NAME II; ' format
 	# Primary Author is first in list
@@ -583,11 +589,6 @@ def doUpdate(rec, rectags):
 		cmd = []
 		cmd.append('begin transaction')
 		update = []
-
-		# if len(AU2) > 255, then remove the last author's name
-		# and replace with 'et al'
-		# TR10592
-		# to-be-done
 
 		update.append('update BIB_Refs set ' + \
 			'refType = "ART",' + \
