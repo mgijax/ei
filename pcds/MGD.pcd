@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Apr 25 12:33:22 2011";
+      lastWritten = "Thu May  5 08:10:27 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2253,6 +2253,9 @@ Module: MGD
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     IMAGELibrary = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -4002,6 +4005,9 @@ Module: MGD
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -9454,6 +9460,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     TAC = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    RMRC = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     IMAGELibrary = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9921,6 +9930,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -11062,6 +11074,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12760,6 +12777,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     TAC = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    RMRC = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     IMAGELibrary = AccToggle : mgiOption;
@@ -14961,9 +14981,33 @@ Shift<Key>Tab: prev-tab-group()
                                 }
                                 {
                                   ExptInSituForm = ExptInSituForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptFISHForm = ExptFISHForm;
+                                      {
+                                        Strain = Strain : mgiDataTypes;
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                            {
+                                              Verify = CharText;
+                                            }
+                                            {
+                                              StrainID = XmXrtAligner;
+                                            }
+                                      }
                                 }
                                 {
                                   ExptCrossForm = ExptCrossForm;
