@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May  5 08:10:27 2011";
+      lastWritten = "Tue May 10 09:30:03 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -10277,25 +10277,6 @@ Shift<Key>Tab: prev-tab-group()
                                     bottomAttachment = attach_none;
                                     resizable = true;
                                     topOffset = 5;
-                                }
-                                {
-                                  SuperStandardMenu = YesNoMenu : mgiOption;
-                                  Group: Widget
-                                    subMenuId = SuperStandardPulldown;
-                                    labelString = "Super Standard?";
-                                  Group: Constraint
-                                    leftAttachment = attach_opposite_widget;
-                                    leftWidget = StandardMenu;
-                                    rightAttachment = attach_none;
-                                    topAttachment = attach_widget;
-                                    topWidget = StandardMenu;
-                                    bottomAttachment = attach_none;
-                                    resizable = true;
-                                    topOffset = 5;
-                                      Popups:
-                                      {
-                                        SuperStandardPulldown : YesNoPulldown = OptionPulldown;
-                                      }
                                 }
                                 {
                                   StrainAttribute = Table : mgiTable;
