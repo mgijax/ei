@@ -112,6 +112,7 @@ dmodule AccLib is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 
 -- See AccLib.de for D event declarations

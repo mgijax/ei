@@ -90,6 +90,7 @@ dmodule MLC is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <pglib.h>
 #include <tables.h>
 #include <mlced_scan.h>
 #include <mlced_nomen.h>

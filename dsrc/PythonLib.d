@@ -32,8 +32,9 @@
 
 dmodule PythonLib is
 
-#include <syblib.h>
 #include <mgilib.h>
+#include <syblib.h>
+#include <pglib.h>
 #include <teleuse/tu_file.h>
 
 rules:
