@@ -28,6 +28,7 @@ dmodule ActualLogical is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <sql.h>
 
 devents:
 
@@ -379,11 +380,8 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from ACC_LogicalDB_View " +
-		 "where _LogicalDB_key = " + currentRecordKey +
-		 " order by name\n" +
-	         "select * from ACC_ActualDB where _LogicalDB_key = " + currentRecordKey + 
-		 " order by name\n";
+	  cmd := actuallogical_module_1a + currentRecordKey + actuallogical_module_1b +
+		 actuallogical_module_2a + currentRecordKey + actuallogical_module_2b;
 
 	  results : integer := 1;
 	  row : integer := 0;

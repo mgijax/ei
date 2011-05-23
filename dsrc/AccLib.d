@@ -113,6 +113,7 @@ dmodule AccLib is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <sql.h>
 
 -- See AccLib.de for D event declarations
 
@@ -221,34 +222,34 @@ rules:
 	  orderBy : string;
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
-	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart desc, numericPart";
+	    orderBy := acclib_module_6;
 	  elsif (tableID = MRK_ACC_REFERENCE or 
 		 tableID = MRK_ACC_REFERENCE1 or
 		 tableID = MRK_ACC_REFERENCE2 or
 		 tableID = MRK_ACC_REFERENCE3) then
-	    orderBy := " order by LogicalDB, preferred desc, prefixPart, numericPart";
+	    orderBy := acclib_module_7;
 	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
-	    orderBy := " order by _Assoc_key, _LogicalDB_key";
+	    orderBy := acclib_module_8;
 	  else
-	    orderBy := " order by _LogicalDB_key, preferred desc, prefixPart, numericPart";
+	    orderBy := acclib_module_9;
 	  end if;
 
 	  if (tableID = SEQ_ALLELE_ASSOC_VIEW) then
-            cmd := "select _LogicalDB_Key, _Assoc_key, accID, prefixPart, numericPart, preferred";
+            cmd := acclib_module_1;
 	  else
-            cmd := "select _LogicalDB_Key, _Accession_key, accID, prefixPart, numericPart, preferred";
+            cmd := acclib_module_2;
 	  end if;
 
 	  if (table.is_defined("refsKey") != nil) then
-	    cmd := cmd + ", _Refs_key, jnum, short_citation";
+	    cmd := cmd + acclib_module_3;
 	  end if;
 
 	  if (table.is_defined("modifiedBy") != nil) then
-	    cmd := cmd + ", modifiedBy, modification_date";
+	    cmd := cmd + acclib_module_4;
 	  end if;
 
 	  if (table.is_defined("sequenceKey") != nil) then
-	    cmd := cmd + ", _Sequence_key";
+	    cmd := cmd + acclib_module_5;
 	  end if;
 
 	  cmd := cmd + " from " + mgi_DBaccTable(tableID) +
@@ -991,8 +992,8 @@ rules:
 	    return;
 	  end if;
 
-	  objectKey : string := mgi_sql1("select _Object_key from " + mgi_DBaccTable(SEQ_SEQUENCE) +
-		" where _LogicalDB_key = " + logicalKey + " and accID = " + mgi_DBprstr(value));
+	  objectKey : string := mgi_sql1(acclib_module_10a + logicalKey + 
+		                         acclib_module_10b + mgi_DBprstr(value));
 
 	  if (objectKey.length = 0) then
 	    VerifyAccSequence.doit := (integer) false;
