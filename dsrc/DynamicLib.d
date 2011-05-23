@@ -62,7 +62,6 @@ dmodule DynamicLib is
 
 #include <mgilib.h>
 #include <syblib.h>
-#include <pglib.h>
 #include <tables.h>
 
 rules:

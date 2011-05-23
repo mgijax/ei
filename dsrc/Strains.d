@@ -13,9 +13,6 @@
 --
 -- History
 --
--- lec	05/10/2011
---	- TR10648/remove Super Standard
---
 -- lec	04/15/2008
 --	TR 8511; remove IMSRMenu
 --
@@ -86,7 +83,6 @@ dmodule Strains is
 
 #include <mgilib.h>
 #include <syblib.h>
-#include <pglib.h>
 #include <tables.h>
 
 devents:
@@ -106,6 +102,7 @@ devents:
 	ModifyNeedsReview :local [];
 	ModifyJAX :local [];
 	ModifyGenotype :local [];
+	ModifySuperStandard :local [];
 
         -- Process Strain Merge Events
         StrainMergeInit :local [];
@@ -362,6 +359,7 @@ rules:
 	  send(ModifyNeedsReview, 0);
 	  send(ModifyGenotype, 0);
 	  superAnnotKey := NO;
+	  send(ModifySuperStandard, 0);
 
 	  --  Process Markers/Alleles
 
@@ -491,6 +489,7 @@ rules:
 
 	  send(ModifyAttribute, 0);
 	  send(ModifyNeedsReview, 0);
+	  send(ModifySuperStandard, 0);
 	  send(ModifyGenotype, 0);
 
 	  --  Process Markers/Alleles
@@ -744,6 +743,34 @@ rules:
 	end does;
  
 --
+-- ModifySuperStandard
+--
+-- Activated from: devent Modify
+--
+-- Construct insert/delete for Super Standard Info (Annotation)
+-- Appends to global "cmd" string
+--
+
+	ModifySuperStandard does
+
+	  -- add a new Annotation record if set and one does not already exist
+
+	  if (superAnnotKey = NO and top->SuperStandardMenu.menuHistory.defaultValue = YES) then
+		cmd := cmd + mgi_setDBkey(VOC_ANNOT, NEWKEY, "superAnnotKey") +
+		      mgi_DBinsert(VOC_ANNOT, "superAnnotKey") +
+		      superAnnotTypeKey + "," +
+		      currentRecordKey + "," +
+		      superTermKey + ",0)\n";
+
+	  -- remove Annotation record if not set and one does already exist
+
+	  elsif (superAnnotKey != NO and top->SuperStandardMenu.menuHistory.defaultValue = NO) then
+		cmd := cmd + mgi_DBdelete(VOC_ANNOT, superAnnotKey);
+	  end if;
+
+	end does;
+
+--
 -- PrepareSearch
 --
 -- Construct select statement based on values entered by user
@@ -822,6 +849,16 @@ rules:
  
           if (top->PrivateMenu.menuHistory.searchValue != "%") then
             where := where + "\nand s.private = " + top->PrivateMenu.menuHistory.searchValue;
+          end if;
+
+	  if (top->SuperStandardMenu.menuHistory.searchValue = YES) then
+            where := where + "\nand exists (select 1 from PRB_Strain_Super_View v " +
+		"where s._Strain_key = v._Strain_key" + 
+		" and v._Term_key = " + superTermKey + ") ";
+	  elsif (top->SuperStandardMenu.menuHistory.searchValue = NO) then
+            where := where + "\nand not exists (select 1 from PRB_Strain_Super_View v " +
+		"where s._Strain_key = v._Strain_key" + 
+		" and v._Term_key = " + superTermKey + ") ";
           end if;
 
 	  -- Strain Attributes
@@ -985,6 +1022,9 @@ rules:
 		 "select * from PRB_Strain_NeedsReview_View " +
 		 "where _Strain_key = " + currentRecordKey + "\n" +
 
+		 "select _Annot_key from PRB_Strain_Super_View " +
+		 "where _Strain_key = " + currentRecordKey + "\n" +
+
 		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, " +
 				  "mgiID, description, modifiedBy, modification_date " +
 		 "from PRB_Strain_Genotype_View " +
@@ -1034,6 +1074,9 @@ rules:
 		(void) mgi_tblSetCell(table, row, table.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 4) then
+		superAnnotKey := mgi_getstr(dbproc, 1);
+
+	      elsif (results = 5) then
 		table := top->Genotype->Table;
                 (void) mgi_tblSetCell(table, row, table.strainGenotypeKey, mgi_getstr(dbproc, 1));
                 (void) mgi_tblSetCell(table, row, table.genotypeKey, mgi_getstr(dbproc, 2));
@@ -1051,6 +1094,14 @@ rules:
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  if (superAnnotKey = NO) then
+            SetOption.value := NO;
+	  else
+            SetOption.value := YES;
+	  end if;
+          SetOption.source_widget := top->SuperStandardMenu;
+          send(SetOption, 0);
 
           LoadStrainAlleleTypeTable.table := top->Marker->Table;
 	  LoadStrainAlleleTypeTable.tableID := PRB_STRAIN_MARKER_VIEW;

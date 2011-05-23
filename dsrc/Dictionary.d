@@ -79,7 +79,6 @@ dmodule Dictionary is
 -- standard includes
 #include <mgilib.h>
 #include <syblib.h>
-#include <pglib.h>
 #include <tables.h>
 
 -- ADI-specific includes

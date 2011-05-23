@@ -24,7 +24,6 @@ dmodule StrainAlleleTypeTableLib is
 
 #include <mgilib.h>
 #include <syblib.h>
-#include <pglib.h>
 #include <tables.h>
 
 -- See StrainAlleleTypeTableLib.de for D event declarations

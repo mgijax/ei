@@ -16,7 +16,6 @@
 dmodule Report is
 
 #include <syblib.h>
-#include <pglib.h>
 #include <teleuse/tu_file.h>
 
 devents:

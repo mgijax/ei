@@ -77,7 +77,6 @@ dmodule SQL is
 
 #include <mgilib.h>
 #include <syblib.h>
-#include <pglib.h>
 
 locals:
 	queryList : widget;

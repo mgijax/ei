@@ -22,7 +22,6 @@ dmodule EvidencePropertyTableLib is
 
 #include <mgilib.h>
 #include <syblib.h>
-#include <pglib.h>
 #include <tables.h>
 
 -- See EvidencePropertyTableLib.de for D event declarations

@@ -82,7 +82,6 @@
 dmodule Table is
 
 #include <syblib.h>
-#include <pglib.h>
 #include <tables.h>
 
 rules:
