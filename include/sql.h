@@ -76,6 +76,43 @@ from ALL_CellLine_View where _CellLine_key = "
 #define allele_module_15 "select _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
 from ALL_CellLine_View where isMutant = 0 and cellLine = "
 
+/* AlleleDerivation.d */
+
+#define derivation_module_1a "select _Derivation_key from ALL_CellLine_Derivation \
+where _Vector_key = "
+#define derivation_module_1b " and _VectorType_key = "
+#define derivation_module_1c " and _ParentCellLine_key = "
+#define derivation_module_1d " and _DerivationType_key = "
+#define derivation_module_1e " and _Creator_key = "
+
+#define derivation_module_2 "select * from ALL_CellLine_Derivation_View where _Derivation_key = "
+#define derivation_module_3 "select count(_CellLine_key) \
+from ALL_CellLine_View where _Derivation_key = "
+#define derivation_module_4 "select distinct _CellLine_key, cellLine, _Strain_key, \
+cellLineStrain, _CellLine_Type_key \
+from ALL_CellLine_View \
+where _CellLine_key = "
+#define derivation_module_5 "select distinct _CellLine_key, cellLine, _Strain_key, \
+cellLineStrain, _CellLine_Type_key \
+from ALL_CellLine_View \
+where cellline = "
+
+/* Antibody.d */
+
+#define antibody_module_1 "select distinct g._Antibody_key, g.antibodyName\n"
+#define antibody_module_2 "select * from GXD_Antibody_View where _Antibody_key = "
+#define antibody_module_3 "\nselect _Antigen_key, _Source_key, antigenName, mgiID, regionCovered, antigenNote \
+from GXD_AntibodyAntigen_View where _Antibody_key = "
+#define antibody_module_4a "\nselect _Marker_key, symbol, chromosome \
+from GXD_AntibodyMarker_View where _Antibody_key = "
+#define antibody_module_4b "\norder by symbol"
+#define antibody_module_5a "\nselect _AntibodyAlias_key, _Refs_key, alias \
+from GXD_AntibodyAlias_View where _Antibody_key = "
+#define antibody_module_5b "\norder by alias, _AntibodyAlias_key\n"
+#define antibody_module_6a "\nselect _AntibodyAlias_key, _Refs_key, alias, jnum, short_citation \
+from GXD_AntibodyAliasRef_View where _Antibody_key = "
+#define antibody_module_6b "\norder by alias, _AntibodyAlias_key\n"
+
 /* Marker.d */
 
 #define marker_module_1	"\nselect _Marker_key, _Marker_Type_key, _Marker_Status_key, \

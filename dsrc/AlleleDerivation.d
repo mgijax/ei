@@ -21,6 +21,7 @@ dmodule AlleleDerivation is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <sql.h>
 
 devents:
 
@@ -240,12 +241,11 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1("select _Derivation_key from " + mgi_DBtable(ALL_CELLLINE_DERIVATION) +
-		" where _Vector_key = " + vectorKey +
-		" and _VectorType_key = " + vectorTypeKey +
-		" and _ParentCellLine_key = " + parentCellLineKey +
-		" and _DerivationType_key = " + derivationTypeKey +
-		" and _Creator_key = " + creatorKey);
+	  derivationKey := mgi_sql1(derivation_module_1a + vectorKey +
+		derivation_module_1b + vectorTypeKey +
+		derivation_module_1c + parentCellLineKey +
+		derivation_module_1d + derivationTypeKey +
+		derivation_module_1e + creatorKey);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -371,12 +371,11 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1("select _Derivation_key from " + mgi_DBtable(ALL_CELLLINE_DERIVATION) +
-		" where _Vector_key = " + vectorKey +
-		" and _VectorType_key = " + vectorTypeKey +
-		" and _ParentCellLine_key = " + parentCellLineKey +
-		" and _DerivationType_key = " + derivationTypeKey +
-		" and _Creator_key = " + creatorKey);
+	  derivationKey := mgi_sql1(derivation_module_1a + vectorKey +
+		derivation_module_1b + vectorTypeKey +
+		derivation_module_1c + parentCellLineKey +
+		derivation_module_1d + derivationTypeKey +
+		derivation_module_1e + creatorKey);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -557,7 +556,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_DERIVATION_VIEW) + " where _Derivation_key = " + currentRecordKey;
+	  cmd := derivation_module_2 + currentRecordKey;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -605,8 +604,7 @@ rules:
 	    end while;
 	  end while;
 
-	  cmd := "select count(_CellLine_key) from " + mgi_DBtable(ALL_CELLLINE_VIEW) + 
-		     " where _Derivation_key = " + top->ID->text.value;
+	  cmd := derivation_module_3 + top->ID->text.value;
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -644,10 +642,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, _CellLine_Type_key " +
-		"from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where " + mgi_DBkey(ALL_CELLLINE_VIEW) + " = " + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := derivation_module_4 + top->mgiParentCellLine->ObjectID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -699,10 +694,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := "select distinct _CellLine_key, cellLine, " +
-		"_Strain_key, cellLineStrain, _CellLine_Type_key " +
-		"from " + mgi_DBtable(ALL_CELLLINE_VIEW) +
-		" where cellLine = " + mgi_DBprstr(value);
+	  select : string := derivation_module_5 + mgi_DBprstr(value);
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);

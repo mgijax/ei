@@ -62,6 +62,7 @@ dmodule Antibody is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <sql.h>
 
 devents:
 
@@ -97,7 +98,7 @@ locals:
 
 	cmd : string;
 	set : string;
-	select : string := "select distinct g._Antibody_key, g.antibodyName\n";
+	select : string := antibody_module_1;
 	from : string;
 	where : string;
 	unionalias : string;
@@ -855,22 +856,15 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Antibody_View where _Antibody_key = " + currentRecordKey + "\n" +
+	  cmd := antibody_module_2 + currentRecordKey + "\n" +
 
-		 "select _Antigen_key, _Source_key, antigenName, mgiID, regionCovered, antigenNote " +
-		 "from GXD_AntibodyAntigen_View where _Antibody_key = " + currentRecordKey + "\n" +
+		 antibody_module_3 + currentRecordKey + "\n" +
 
-		 "select _Marker_key, symbol, chromosome " +
-		 "from GXD_AntibodyMarker_View where _Antibody_key = " + currentRecordKey + 
-		 "\norder by symbol\n" +
+		 antibody_module_4a + currentRecordKey + antibody_module_4b +
 
-		 "select _AntibodyAlias_key, _Refs_key, alias " + 
-		 "from GXD_AntibodyAlias_View where _Antibody_key = " + currentRecordKey + 
-		 "\norder by alias, _AntibodyAlias_key\n" +
+		 antibody_module_5a + currentRecordKey + antibody_module_5b +
 
-		 "select _AntibodyAlias_key, _Refs_key, alias, jnum, short_citation " + 
-		 "from GXD_AntibodyAliasRef_View where _Antibody_key = " + currentRecordKey + 
-		 "\norder by alias, _AntibodyAlias_key\n";
+		 antibody_module_6a + currentRecordKey + antibody_module_6b;
 
 	  table : widget;
 	  results : integer := 1;
