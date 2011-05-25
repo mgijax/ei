@@ -245,6 +245,7 @@ dmodule Assay is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -544,7 +545,7 @@ rules:
           imageList.cmd := newCmd + "\norder by paneLabel";
 
 	  -- Load the Image list
-	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	  refCount := mgi_sql1(assay_module_1 + refKey);
 	  if (integer) refCount > (integer) assay_image_lookup then
 	    LoadList.loadsmall := true;
           end if;
@@ -569,9 +570,7 @@ rules:
 
 	  imageKey : string;
 	  if (currentAssay.length > 0) then
-	    imageKey := mgi_sql1(
-		  "select _ImagePane_key from " + mgi_DBtable(GXD_ASSAY) + " where " + 
-		  mgi_DBkey(GXD_ASSAY) + " = " + currentAssay);
+	    imageKey := mgi_sql1(assay_module_2 + currentAssay);
 	    currentPane := imageList->List.keys.find(imageKey);
 	  end if;
 
@@ -705,7 +704,7 @@ rules:
 	  -- check image list
 	  -- if image cache count <= our configured value, then ok
           refKey : string := top->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	  refCount : string := mgi_sql1(assay_module_1 + refKey);
 	  if (integer) refCount <= (integer) python_image_cache then
 	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	    send(PythonImageCache, 0);
@@ -1232,7 +1231,7 @@ rules:
 	    -- check image list
 	    -- if image cache count <= our configured value, then ok
             refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	    refCount := mgi_sql1(assay_module_1 + refKey);
 	    if (integer) refCount <= (integer) python_image_cache then
 	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	      send(PythonImageCache, 0);
@@ -1485,7 +1484,7 @@ rules:
 	    -- check image list
 	    -- if image cache count <= our configured value, then ok
             refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	    refCount := mgi_sql1(assay_module_1 + refKey);
 	    if (integer) refCount <= (integer) python_image_cache then
 	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	      send(PythonImageCache, 0);
@@ -2443,10 +2442,8 @@ rules:
 
 	  -- Select general Assay information
 
-	  select := "select * from GXD_Assay_View where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n" +
-		 "select rtrim(assayNote) from GXD_AssayNote " +
-			"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-			"\norder by sequenceNum\n";
+	  select := assay_module_3 + currentAssay +
+		    assay_module_4a + currentAssay + assay_module_4b;
 
 	  results : integer := 1;
 	  reporterGene : string;
@@ -2528,11 +2525,9 @@ rules:
           end while;
 
 	  if (antibodyPrep) then
-	    select := "select * from GXD_AntibodyPrep_View " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n";
+	    select := assay_module_5 + currentAssay + "\n";
 	  elsif (probePrep) then
-	    select := "select * from GXD_ProbePrep_View " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n";
+	    select := assay_module_6 + currentAssay + "\n";
 	  end if;
 
 	  if (antibodyPrep or probePrep) then
@@ -2648,11 +2643,8 @@ rules:
 	  row : integer := 0;
 	  numRows : integer := 0;
 
-	  select := "select count(*) from GXD_Specimen " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n" +
-	        "select * from GXD_Specimen_View " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-		"\norder by sequenceNum\n";
+	  select := assay_module_7 + currentAssay +
+		    assay_module_8a + currentAssay + assay_module_8b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2709,7 +2701,7 @@ rules:
 	      break;
 	    end if;
 
-	    select := "select count(*) from GXD_InSituResult where _Specimen_key = " + key;
+	    select :=  assay_module_9 + key;
             (void) dbcmd(dbproc, select);
             (void) dbsqlexec(dbproc);
  
@@ -2746,13 +2738,9 @@ rules:
 	  structureGel : string := "";
 	  structureKeys : string := "";
 
-	  select := "select count(*) from GXD_GelLane " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay + "\n" +
-	        "select * from GXD_GelLane_View " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-		"\norder by sequenceNum\n" +
-                "select _GelLane_key, _Structure_key from GXD_GelLaneStructure_View " +
-                "where _Assay_key = " + currentAssay + "\norder by sequenceNum\n";
+	  select := assay_module_10 + currentAssay +
+	            assay_module_11a + currentAssay + assay_module_11b +
+	            assay_module_12 + currentAssay;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2854,9 +2842,7 @@ rules:
 	  table : widget := assayDetailForm->GelRow->Table;
 	  row : integer := 0;
 
-	  select := "select * from GXD_GelRow_View " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-		"\norder by sequenceNum\n";
+	  select := assay_module_13a + currentAssay + assay_module_13b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2904,8 +2890,7 @@ rules:
 	  -- Retrieve number of Gel Lanes for Assay
 
 	  if (currentAssay.length > 0) then
-	    numLanes := (integer) mgi_sql1("select count(*) from " + mgi_DBtable(GXD_GELLANE) +
-		  " where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay);
+	    numLanes := (integer) mgi_sql1(assay_module_14 + currentAssay);
 	  end if;
 
 	  -- Add/Delete columns to support needed number of Bands
@@ -2981,9 +2966,7 @@ rules:
 
 	  lanes := create string_list();
 
-	  select := "select _GelLane_key from " + mgi_DBtable(GXD_GELLANE) +
-                " where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-                "\norder by sequenceNum\n";
+	  select := assay_module_15a + currentAssay + assay_module_15b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -3040,9 +3023,8 @@ rules:
 
 	  send(CreateGelBandColumns, 0);
 
-	  select := "select * from GXD_GelBand_View " +
-		"where " + mgi_DBkey(GXD_ASSAY) + " = " + currentAssay +
-		"\norder by rowNum, laneNum\n";
+	  select := assay_module_16a + currentAssay + assay_module_16b;
+
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
           (void) dbsqlexec(dbproc);
@@ -3217,7 +3199,7 @@ rules:
 	     return;
 	   end if;
 
-	   segmentType := mgi_sql1("select _SegmentType_key from PRB_Probe where _Probe_key = " + objectKey);
+	   segmentType := mgi_sql1(assay_module_17 + objectKey);
 
 	   -- if no Assay selected, don't do the verification
 

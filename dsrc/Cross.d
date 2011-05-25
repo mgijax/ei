@@ -22,6 +22,7 @@ dmodule Cross is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -422,8 +423,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from CRS_Cross_View where _Cross_key = " + currentRecordKey + 
-		 " order by whoseCross\n";
+	  cmd := cross_module_1a + currentRecordKey + cross_module_1b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

@@ -21,7 +21,7 @@ dmodule AlleleDerivation is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
-#include <sql.h>
+#include <mgdsql.h>
 
 devents:
 

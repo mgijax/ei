@@ -44,6 +44,7 @@ dmodule Antigen is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -417,8 +418,8 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Antigen_View where _Antigen_key = " + currentRecordKey + "\n" +
-		"select mgiID, antibodyName from GXD_Antibody_View where _Antigen_key = " + currentRecordKey + " order by antibodyName\n";
+	  cmd := antigen_module_1 + currentRecordKey + "\n" +
+		 antigen_module_2a + currentRecordKey + antigen_module_2b;
 
 	  results : integer := 1;
 	  row : integer := 0;
