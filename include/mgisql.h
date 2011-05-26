@@ -45,4 +45,17 @@
 #define evidenceproperty_module_2c " = "
 #define evidenceproperty_module_2d " order by stanza, sequenceNum"
 
+/* DynamicLib.d */
+/* Lib.d */
+/* List.d */
+/* MGILib.d */
+/* MolSourceLib.d */
+/* NoteLib.d */
+/* NoteTypeTableLib.d */
+/* Organism.d */
+/* PythonLib.d */
+/* Report.d */
+/* SimpleVocab.d */
+
+
 #endif

@@ -32,7 +32,7 @@ from GXD_AntibodyAliasRef_View where _Antibody_key = "
 
 #define assay_module_1 "select count(*) from IMG_Image where _Refs_key = "
 #define assay_module_2 "select _ImagePane_key from GXD_Assay where _Assay_key = "
-#define assay_module_3 "select * from GXD_Assay_View where GXD_Assay where _Assay_key = "
+#define assay_module_3 "select * from GXD_Assay_View where _Assay_key = "
 #define assay_module_4a "\nselect rtrim(assayNote) from GXD_AssayNote where _Assay_key = "
 #define assay_module_4b "\norder by sequenceNum\n"
 #define assay_module_5 "select * from GXD_AntibodyPrep_View where _Assay_key = "
@@ -99,5 +99,24 @@ where i._Marker_key = e._Marker_key and i._Refs_key = e._Refs_key and i._Index_k
 #define index_module_7 "select _ConditionalMutants_key from GXD_Index where _Refs_key = "
 
 /* InSituResult.d */
+
+#define insitu_module_1 "select count(*) from GXD_InSituResult where _Specimen_key = "
+#define insitu_module_2 "select count(*) from IMG_Image where _Refs_key = "
+#define insitu_module_3a "select * from GXD_InSituResult_View where _Specimen_key = "
+#define insitu_module_3b "\norder by sequenceNum\n"
+#define insitu_module_4a "\nselect _Result_key, _ImagePane_key, figurepaneLabel \
+from GXD_ISResultImage_View \
+where _Specimen_key = "
+#define insitu_module_4b "\norder by sequenceNum\n"
+#define insitu_module_5a "\nselect _Result_key, _Structure_key from GXD_ISResultStructure_View \
+where _Specimen_key = "
+#define insitu_module_5b "\norder by sequenceNum\n"
+
+/* Dictionary.d */
+
+#define dictionary_module_1 "select _Stage_key from GXD_TheilerStage where stage = "
+#define dictionary_module_2 "select _defaultSystem_key from GXD_TheilerStage where _Stage_key = "
+
+/* DictionaryLib.d */
 
 #endif

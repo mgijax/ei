@@ -140,4 +140,22 @@ and a._LogicalDB_key = "
 #define marker_module_13 "select * from MRK_EventReason where _Marker_EventReason_key >= -1 \
 order by eventReason"
 
+/* Genotype.d */
+/* GOVocAnnot.d */
+/* MarkerNonMouse.d */
+/* MGD.d */
+/* MLC.d */
+/* MLDP.d */
+/* Molecular.d */
+/* MolecularSource.d */
+/* MPVocAnnot.d */
+/* MutantCellLine.d */
+/* Nomen.d */
+/* NonMutantCellLine.d */
+/* OMIMVocAnnot.d */
+/* Orthology.d */
+/* Reference.d */
+/* RI.d */
+/* Sequence.d */
+
 #endif
