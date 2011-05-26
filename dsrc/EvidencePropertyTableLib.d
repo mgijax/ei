@@ -23,6 +23,7 @@ dmodule EvidencePropertyTableLib is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 -- See EvidencePropertyTableLib.de for D event declarations
 
@@ -87,8 +88,7 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  cmd := "select _EvidenceProperty_key, propertyTerm from " + mgi_DBtable(tableID) + 
-		  "\norder by propertyTerm";
+	  cmd := evidenceproperty_module_1a + mgi_DBtable(tableID) + evidenceproperty_module_1b;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -141,10 +141,10 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := "select * " +
-	  	 " from " + mgi_DBtable(tableID) +
-		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by stanza, sequenceNum";
+          cmd := evidenceproperty_module_2a + mgi_DBtable(tableID) +
+		 evidenceproperty_module_2b + mgi_DBkey(tableID) + 
+		 evidenceproperty_module_2c + objectKey +
+		 evidenceproperty_module_2d;
 
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();

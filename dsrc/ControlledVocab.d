@@ -45,7 +45,7 @@ dmodule ControlledVocab is
 
 #include <mgilib.h>
 #include <syblib.h>
-#include <sql.h>
+#include <mgisql.h>
 
 devents:
 

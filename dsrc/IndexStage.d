@@ -74,6 +74,7 @@ dmodule IndexStage is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -181,7 +182,7 @@ rules:
 	  -- create a string list of row/assay key pairs
 	  assayKeys := create string_list();
 	  
-          (void) dbcmd(dbproc, "select _Term_key, term from VOC_Term_GXDIndexAssay_View order by sequenceNum");
+          (void) dbcmd(dbproc, index_module_1);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -208,7 +209,7 @@ rules:
 	  -- create a string list of column/term pairs
 	  stageTerms := create string_list();
 
-          (void) dbcmd(dbproc, "select _Term_key, term from VOC_Term_GXDIndexStage_View order by sequenceNum");
+          (void) dbcmd(dbproc, index_module_2);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -638,9 +639,8 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from GXD_Index_View where _Index_key = " + currentRecordKey + "\n" +
-		 "select * from GXD_Index_Stages where _Index_key = " + currentRecordKey +
-			" order by _IndexAssay_key, _StageID_key\n";
+	  cmd := index_module_3 + currentRecordKey +
+		 index_module_4a + currentRecordKey + index_module_4b;
 
 	  table : widget;
 	  results : integer := 1;
@@ -705,12 +705,7 @@ rules:
 	  hasAssay : string;
 
           if top->mgiCitation->ObjectID->text.value != "154591" then
-	    hasAssay := mgi_sql1("select i._Index_key " +
-		 "from GXD_Index i " +
-		 "where exists (select 1 from GXD_Expression e " +
-		 " where i._Index_key = " + currentRecordKey + 
-	         " and i._Marker_key = e._Marker_key " +
-		 " and i._Refs_key = e._Refs_key)");
+	    hasAssay := mgi_sql1(index_module_5a + currentRecordKey + index_module_5b);
 
 	    if (hasAssay.length = 0) then
               SetOption.source_widget := top->CodedMenu;
@@ -733,8 +728,7 @@ rules:
 	  SetXCellsToFlash.source_widget := top->Stage->Table;
 	  send(SetXCellsToFlash, 0);
 
-	  (void) reset_cursor(top);
-	end does;
+	  (void) reset_cursor(top); end does;
 
 --
 -- SetPriority
@@ -750,8 +744,7 @@ rules:
 	    return;
 	  end if;
 
-	  priority := mgi_sql1("select _Priority_key from GXD_Index where _Refs_key = " 
-	     + top->mgiCitation->ObjectID->text.value);
+	  priority := mgi_sql1(index_module_6 + top->mgiCitation->ObjectID->text.value);
 		
 	  if (priority.length > 0) then
             SetOption.source_widget := top->GXDIndexPriorityMenu;
@@ -775,8 +768,7 @@ rules:
 	    return;
 	  end if;
 
-	  mutants := mgi_sql1("select _ConditionalMutants_key from GXD_Index where _Refs_key = " 
-	     + top->mgiCitation->ObjectID->text.value);
+	  mutants := mgi_sql1(index_module_7 + top->mgiCitation->ObjectID->text.value);
 		
 	  -- default to 'not applicable'
 	  if (mutants.length = 0) then

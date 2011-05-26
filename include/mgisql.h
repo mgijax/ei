@@ -1,5 +1,5 @@
-#ifndef SQL_H
-#define SQL_H
+#ifndef MGISQL_H
+#define MGISQL_H
 
 /*
  * select statements
@@ -34,5 +34,15 @@
 #define controlledvocab_module_3 "select _SynonymType_key, synonymType, _MGIType_key, creation_date, modification_date"
 #define controlledvocab_module_4 "select distinct *"
 #define controlledvocab_module_5 "select *"
+
+/* EvidencePropertyTableLib.d */
+
+#define evidenceproperty_module_1a "select _EvidenceProperty_key, propertyTerm from "
+#define evidenceproperty_module_1b "\norder by propertyTerm"
+
+#define evidenceproperty_module_2a "select * from "
+#define evidenceproperty_module_2b " where "
+#define evidenceproperty_module_2c " = "
+#define evidenceproperty_module_2d " order by stanza, sequenceNum"
 
 #endif

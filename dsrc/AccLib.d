@@ -113,7 +113,7 @@ dmodule AccLib is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
-#include <sql.h>
+#include <mgisql.h>
 
 -- See AccLib.de for D event declarations
 

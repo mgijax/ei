@@ -60,4 +60,44 @@ from GXD_GelLaneStructure_View where _Assay_key = "
 
 #define assay_module_17 "select _SegmentType_key from PRB_Probe where _Probe_key = "
 
+/* Image.d */
+
+#define image_module_1a "declare @copyright varchar(255)\nexec BIB_getCopyright "
+#define image_module_1b ", @copyright output\nselect @copyright"
+
+#define image_module_2 "select * from IMG_Image_View where _Image_key = "
+#define image_module_3a "\nselect n._Note_key, n.note from MGI_Note_Image_View n \
+where n.noteType = 'Caption' and n._Object_key = "
+#define image_module_3b "\norder by n.sequenceNum\n"
+#define image_module_4a "\nselect n._Note_key, n.note from MGI_Note_Image_View n \
+where n.noteType = 'Copyright' and n._Object_key = "
+#define image_module_4b "order by n.sequenceNum\n"
+#define image_module_5 "\nselect * from IMG_ImagePane where _Image_key = "
+#define image_module_6a "\nselect a._Object_key, a.accID from IMG_Image_Acc_View a, IMG_Image i \
+where i._Image_key = "
+#define image_module_6b " and i._ThumbnailImage_key = a._Object_key \
+and a._LogicalDB_key = 1 and a.prefixPart = 'MGI:' and a.preferred = 1"
+#define image_module_7 "select distinct i._Image_key, \
+i.jnumID + ';' + i.figureLabel + ';' + i.imageType \
+from IMG_Image_View i \
+where _Refs_key = "
+#define image_module_8 "\norder by i.jnum\n"
+#define image_module_9 "\norder by i.imageType, i.jnum\n"
+
+/* IndexStage.d */
+
+#define index_module_1 "select _Term_key, term from VOC_Term_GXDIndexAssay_View order by sequenceNum"
+#define index_module_2 "select _Term_key, term from VOC_Term_GXDIndexStage_View order by sequenceNum"
+#define index_module_3 "select * from GXD_Index_View where _Index_key = "
+#define index_module_4a "\nselect * from GXD_Index_Stages where _Index_key = "
+#define index_module_4b "\norder by _IndexAssay_key, _StageID_key\n"
+#define index_module_5a"select i._Index_key from GXD_Index i \
+where exists (select 1 from GXD_Expression e \
+where i._Marker_key = e._Marker_key and i._Refs_key = e._Refs_key and i._Index_key = "
+#define index_module_5b ")"
+#define index_module_6 "select _Priority_key from GXD_Index where _Refs_key = "
+#define index_module_7 "select _ConditionalMutants_key from GXD_Index where _Refs_key = "
+
+/* InSituResult.d */
+
 #endif
