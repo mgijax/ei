@@ -141,7 +141,57 @@ and a._LogicalDB_key = "
 order by eventReason"
 
 /* Genotype.d */
+
+#define genotype_sql_1 "select _Term_key from VOC_Term_ALLCompound_View where term = 'Not Applicable'"
+#define genotype_sql_2 "exec MGI_searchGenotypeByRef "
+#define genotype_sql_3 "select * from GXD_Genotype_View where _Genotype_key = "
+#define genotype_sql_4a "\nselect * from GXD_AllelePair_View where _Genotype_key = "
+#define genotype_sql_4b "\norder by sequenceNum\n"
+#define genotype_sql_5a "\nselect note, sequenceNum from MGI_Note_Genotype_View \
+where noteType = 'Combination Type 1' \
+and _Object_key = "
+#define genotype_sql_5b "\norder by sequenceNum\n"
+#define genotype_sql_6a "\nselect _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, term, mgiID, pixID, isPrimary \
+from IMG_ImagePane_Assoc_View \
+where _Object_key = "
+#define genotype_sql_6b " and _MGIType_key = "
+#define genotype_sql_6c " order by isPrimary desc, mgiID\n"
+
 /* GOVocAnnot.d */
+
+#define govoc_sql_1 "select _Marker_Status_key from  MRK_Marker where _Marker_key = "
+#define govoc_sql_2 "select _Marker_Type_key from  MRK_Marker where _Marker_key = "
+#define govoc_sql_3 "select dbView from ACC_MGIType where _MGIType_key = "
+#define govoc_sql_4 "select _Term_key from VOC_Term where term is null and _Vocab_key = "
+#define govoc_sql_5a "select distinct _Object_key, description from "
+#define govoc_sql_5b " where _Object_key = "
+#define govoc_sql_6a "select _Object_key, accID, description, short_description from "
+#define govoc_sql_6b " where prefixPart = 'MGI:' and preferred = 1 and _Object_key = "
+#define govoc_sql_6c " order by description\n"
+#define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, dagAbbrev = substring(v.dagAbbrev,1,3), e.* \
+from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
+where a._AnnotType_key = "
+#define govoc_sql_7b " and a._Object_key = "
+#define govoc_sql_7c " and a._Annot_key = e._Annot_key \
+and a._Vocab_key = v._Vocab_key \
+and a._Term_key = v._Object_key \
+order by v.dagAbbrev, e.modification_date desc, a.term\n"
+#define govoc_sql_8a "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum \
+from VOC_Annot a, VOC_Evidence e, MGI_Note_VocEvidence_View n \
+where a._Annot_key = e._Annot_key \
+and e._AnnotEvidence_key = n._Object_key \
+and a._Object_key = "
+#define govoc_sql_8b "\norder by n._Object_key, n.sequenceNum\n"
+#define govoc_sql_9 "select isReferenceGene, completion_date \
+from GO_Tracking_View where _Marker_key = "
+#define govoc_sql_10a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r  \
+where r._Marker_key = "
+#define govoc_sql_10b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e \
+where _AnnotType_key = "
+#define govoc_sql_10c "\nand a._Annot_key = e._Annot_key  \
+and e._Refs_key = r._Refs_key)  \
+order by r.jnum desc\n"
+
 /* MarkerNonMouse.d */
 /* MGD.d */
 /* MLC.d */

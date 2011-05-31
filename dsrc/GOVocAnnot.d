@@ -105,6 +105,7 @@ dmodule GOVocAnnot is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -365,8 +366,7 @@ rules:
 
 	  -- cannot save annotations where marker is withdrawn
 
-	  markerStatus := mgi_sql1("select _Marker_Status_key from " + mgi_DBtable(MRK_MARKER) + 
-		" where _Marker_key = " + currentRecordKey);
+	  markerStatus := mgi_sql1(govoc_sql_1 + currentRecordKey);
 
 	  if (markerStatus = "2") then
             StatusReport.source_widget := top.root;
@@ -578,8 +578,7 @@ rules:
 
 	  -- warning for non-gene markers
 
-	  markerType := mgi_sql1("select _Marker_Type_key from " + mgi_DBtable(MRK_MARKER) + 
-		" where _Marker_key = " + currentRecordKey);
+	  markerType := mgi_sql1(govoc_sql_2 + currentRecordKey);
 
 	  if (markerType != "1") then
             StatusReport.source_widget := top.root;
@@ -859,40 +858,12 @@ rules:
 
 	  -- Set the ReportDialog.select to query the currently selected record only
 
-	  top->ReportDialog.select := "select distinct _Object_key, description " +
-			  "from " + dbView + " where _Object_key = " + currentRecordKey;
+	  top->ReportDialog.select := govoc_sql_5a + dbView + govoc_sql_5b + currentRecordKey;
 
-	  cmd : string := "select _Object_key, accID, description, short_description" +
-			  " from " + dbView + 
-			  " where _Object_key = " + currentRecordKey + 
-			  " and prefixPart = 'MGI:' and preferred = 1 " + 
-			  " order by description\n" +
-
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, " +
-			  "dagAbbrev = substring(v.dagAbbrev,1,3), e.*" +
-			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e, " +
-			    mgi_DBtable(DAG_NODE_VIEW) + " v" +
-		          " where a._AnnotType_key = " + annotTypeKey +
-			  " and a._Object_key = " + currentRecordKey + 
-			  " and a._Annot_key = e._Annot_key " +
-			  " and a._Vocab_key = v._Vocab_key" +
-			  " and a._Term_key = v._Object_key\n" +
-			  " order by v.dagAbbrev, e.modification_date desc, a.term\n" +
-
-			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
-			  " from " + 
-			    mgi_DBtable(VOC_ANNOT) + " a, " +
-			    mgi_DBtable(VOC_EVIDENCE) + " e, " +
-			    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
-			  " where a._Object_key = " + currentRecordKey +
-			  " and a._Annot_key = e._Annot_key" +
-			  " and e._AnnotEvidence_key = n._Object_key" +
-			  " order by n._Object_key, n.sequenceNum\n" +
-
-			  "select isReferenceGene, completion_date " +
-			  " from " + mgi_DBtable(GO_TRACKING_VIEW) +
-			  " where _Marker_key = " + currentRecordKey;
+	  cmd : string := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c +
+	                  govoc_sql_7a + annotTypeKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c +
+			  govoc_sql_8a + currentRecordKey + govoc_sql_8b +
+			  govoc_sql_9 + currentRecordKey;
 
 	  row : integer := 0;
 	  i : integer;
@@ -1060,16 +1031,7 @@ rules:
 
 	  --(void) mgi_writeLog('selecting GO reference:begin\n');
 	  cmd : string;
-	  cmd := "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r " + 
-		 "where r._Marker_key = " + currentRecordKey + 
-		 " and not exists (select 1 from " +
-			mgi_DBtable(VOC_ANNOT) + " a," +
-			mgi_DBtable(VOC_EVIDENCE) + " e" +
-			" where a._AnnotType_key = " + annotTypeKey +
-			" and a._Annot_key = e._Annot_key " +
-			" and e._Refs_key = r._Refs_key) " +
-		" order by r.jnum desc\n";
-
+	  cmd := govoc_sql_10a + currentRecordKey +  govoc_sql_10b + annotTypeKey + govoc_sql_10c;
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -1108,7 +1070,7 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
+	  dbView := mgi_sql1(govoc_sql_3 + mgiTypeKey);
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
@@ -1116,7 +1078,7 @@ rules:
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 
 	  defaultQualifierKey := 
-	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + (string) annotTable.vocabQualifierKey + " and term is null");
+	      mgi_sql1(govoc_sql_4 + (string) annotTable.vocabQualifierKey);
 
 	  (void) reset_cursor(mgi);
 	end does;
