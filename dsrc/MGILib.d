@@ -50,6 +50,7 @@ dmodule MGILib is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <mgisql.h>
 
 locals:
 	top : widget;
@@ -180,7 +181,7 @@ rules:
 	    mgi := top;
 
 	    global_loginKey := 
-		mgi_sql1("select _User_key from MGI_User_Active_View where login = '" + global_login + "'");
+		mgi_sql1(mgilib_sql_1a + global_login + mgilib_sql_1b);
 
             if (global_loginKey.length = 0) then
 	      StatusReport.source_widget := top;

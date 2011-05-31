@@ -393,13 +393,13 @@ rules:
 	  Query.source_widget := top;
 
 	  if (tableID = MGI_NOTETYPE) then
-	    qry := controlledvocab_module_1;
+	    qry := controlledvocab_sql_1;
 	  elsif (tableID = MGI_REFASSOCTYPE) then
-	    qry := controlledvocab_module_2;
+	    qry := controlledvocab_sql_2;
 	  elsif (tableID = MGI_SYNONYMTYPE) then
-	    qry := controlledvocab_module_3;
+	    qry := controlledvocab_sql_3;
 	  else
-	    qry := controlledvocab_module_4;
+	    qry := controlledvocab_sql_4;
 	  end if;
 
 	  Query.select := qry + " " + from + " " + where + "\norder by " + tableName;
@@ -428,13 +428,13 @@ rules:
 	  key : string := top->QueryList->List.keys[Select.item_position];
 
 	  if (tableID = MGI_NOTETYPE) then
-	    cmd := controlledvocab_module_1;
+	    cmd := controlledvocab_sql_1;
 	  elsif (tableID = MGI_REFASSOCTYPE) then
-	    cmd := controlledvocab_module_2;
+	    cmd := controlledvocab_sql_2;
 	  elsif (tableID = MGI_SYNONYMTYPE) then
-	    cmd := controlledvocab_module_3;
+	    cmd := controlledvocab_sql_3;
 	  else
-	    cmd := controlledvocab_module_5;
+	    cmd := controlledvocab_sql_5;
 	  end if;
 
 	  cmd := cmd + " from ";

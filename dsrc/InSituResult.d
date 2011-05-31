@@ -80,6 +80,7 @@ dmodule InSituResult is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <gxdsql.h>
 
 devents:
 
@@ -277,8 +278,7 @@ rules:
 	  -- Copy the appropriate values to the target table
 
 	  count : string;
-          count := mgi_sql1("select count(*) from GXD_InSituResult " +
-			    "where _Specimen_key = " + specimenKey);
+          count := mgi_sql1(insitu_module_1 + specimenKey);
 	  (void) mgi_tblSetCell(target, mgi_tblGetCurrentRow(target), top.targetColumn, count);
 
 	  if (InSituResultCommit.quit) then
@@ -498,7 +498,7 @@ rules:
 	  -- check image list
 	  -- if image cache count <= our configured value, then ok
 	  refKey : string := top.root->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + refKey);
+	  refCount : string := mgi_sql1(insitu_module_2 + refKey);
 	  if (integer) refCount <= (integer) python_image_cache then
 	    PythonImageCache.objectKey := refKey;
 	    send(PythonImageCache, 0);
@@ -534,7 +534,7 @@ rules:
 	  newCmd := saveCmd + " " + key;
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
-	  refCount := mgi_sql1("select count(*) from IMG_Image where _Refs_key = " + key);
+	  refCount := mgi_sql1(insitu_module_2 + key);
 	  if (integer) refCount > (integer) assay_image_lookup then
 	    LoadList.loadsmall := true;
 	  end if;
@@ -578,12 +578,9 @@ rules:
 	  ClipboardLoad.source_widget := top->ADClipboard->Label;
 	  send(ClipboardLoad, 0);
 
-	  cmd := "select * from GXD_InSituResult_View where _Specimen_key = " + specimenKey +
-		"\norder by sequenceNum\n" +
-		"select _Result_key, _ImagePane_key, figurepaneLabel from GXD_ISResultImage_View " +
-		"where _Specimen_key = " + specimenKey + "\norder by sequenceNum\n" +
-		"select _Result_key, _Structure_key from GXD_ISResultStructure_View " +
-		"where _Specimen_key = " + specimenKey + "\norder by sequenceNum\n";
+	  cmd := insitu_module_3a + specimenKey + insitu_module_3b +
+		 insitu_module_4a + specimenKey + insitu_module_4b +
+		 insitu_module_5a + specimenKey + insitu_module_5b;
 
           dbproc :opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

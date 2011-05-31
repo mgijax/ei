@@ -68,6 +68,7 @@ dmodule MolSourceLib is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 locals:
 
@@ -112,15 +113,13 @@ rules:
 	  end if;
 
 	  if (top->SourceSegmentTypeMenu.menuHistory.defaultValue = "%") then
-	    segmentType := mgi_sql1("select _Term_key from VOC_Term_SegmentType_View " + 
-		"where term = \"" + top->SourceSegmentTypeMenu.defaultValue + "\"");
+	    segmentType := mgi_sql1(molsource_sql_1a + top->SourceSegmentTypeMenu.defaultValue + molsource_sql_1b);
 	  else
 	    segmentType := top->SourceSegmentTypeMenu.menuHistory.defaultValue;
 	  end if;
 
 	  if (top->SourceVectorTypeMenu.menuHistory.defaultValue = "%") then
-	    vectorType := mgi_sql1("select _Term_key from VOC_Term_SegVectorType_View " + 
-		"where term = \"" + top->SourceVectorTypeMenu.defaultValue + "\"");
+	    vectorType := mgi_sql1(molsource_sql_2a + top->SourceVectorTypeMenu.defaultValue + molsource_sql_2b);
 	  else
 	    vectorType := top->SourceVectorTypeMenu.menuHistory.defaultValue;
 	  end if;
@@ -135,8 +134,8 @@ rules:
 
 	  -- Determine Cell Line value
 
-	  cellLineNotSpecified := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTSPECIFIED_TEXT + "\"");
-	  cellLineNotApplicable := mgi_sql1("select _Term_key from VOC_Term_CellLine_View where term = \"" + NOTAPPLICABLE_TEXT + "\"");
+	  cellLineNotSpecified := mgi_sql1(molsource_sql_3);
+	  cellLineNotApplicable := mgi_sql1(molsource_sql_4);
 
 	  if (top->CellLine->CellLineID->text.value.length = 0) then
 	    if (top->Tissue->TissueID->text.value = NOTSPECIFIED) then
@@ -317,19 +316,12 @@ rules:
 
 	  table : widget;
 	  results : integer := 1;
-          cmd :string := "select * from PRB_Source where _Source_key = " + key + "\n" +
-			 "select p._Strain_key, s.strain from PRB_Source p, PRB_Strain s " +
-			 "where p._Source_key = " + key + " and p._Strain_key = s._Strain_key " +
-			 "select p._Tissue_key, s.tissue from PRB_Source p, PRB_Tissue s " +
-			 "where p._Source_key = " + key + " and p._Tissue_key = s._Tissue_key " +
-			 "select p._CellLine_key, t.term from PRB_Source p, VOC_Term t " +
-			 "where p._Source_key = " + key + " and p._CellLine_key = t._Term_key " +
-			 "select p.creation_date, p.modification_date, u1.login, u2.login " +
-			 "from PRB_Source p, MGI_User u1, MGI_User u2 " +
-			 "where p._Source_key = " + key +
-			 " and p._CreatedBy_key = u1._User_key " +
-			 " and p._ModifiedBy_key = u2._User_key\n" +
-			 "select jnum, short_citation from PRB_SourceRef_View where _Source_key = " + key;
+          cmd :string := molsource_sql_5 + key +
+			 molsource_sql_6 + key +
+			 molsource_sql_7 + key +
+			 molsource_sql_8 + key +
+			 molsource_sql_9 + key +
+			 molsource_sql_10 + key;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -886,8 +878,7 @@ rules:
 	    return;
           end if;
 
-	  cmd := "select columnName, modifiedBy, modification_date " +
-	      "from MGI_AttrHistory_Source_View where _Object_key = " + sourceKey;
+	  cmd := molsource_sql_11 + sourceKey;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

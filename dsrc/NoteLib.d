@@ -64,6 +64,7 @@ dmodule NoteLib is
 
 #include <mgilib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -129,12 +130,9 @@ rules:
 	      tableID = MGI_NOTETYPE_SEQUENCE_VIEW or 
 	      tableID = MGI_NOTETYPE_STRAIN_VIEW or 
 	      tableID = MGI_NOTETYPE_VOCEVIDENCE_VIEW) then
-	    cmd := "select _NoteType_key, noteType, private = -1, _MGIType_key from " + mgi_DBtable(tableID) +
-		  "\norder by _NoteType_key";
+	    cmd := notelib_sql_1a + mgi_DBtable(tableID) + notelib_sql_1b;
 	  else
-	    cmd := "select _NoteType_key, noteType, private from " + mgi_DBtable(tableID) +
-		  "\nwhere _NoteType_key > 0 " +
-		  "\norder by _NoteType_key";
+	    cmd := notelib_sql_2a + mgi_DBtable(tableID) + notelib_sql_2b;
 	  end if;
 
           dbproc : opaque := mgi_dbopen();
@@ -216,20 +214,19 @@ rules:
 	      tableID = MGI_NOTE_SEQUENCE_VIEW or 
 	      tableID = MGI_NOTE_STRAIN_VIEW or 
 	      tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
-            cmd := "select _NoteType_key, note, sequenceNum, _Note_key" +
-	  	  " from " + mgi_DBtable(tableID) +
-		   " where " + mgi_DBkey(tableID) + " = " + objectKey;
+            cmd := notelib_sql_3a + mgi_DBtable(tableID) +
+		   notelib_sql_3b + mgi_DBkey(tableID) + 
+		   notelib_sql_3c + objectKey;
 
             if (noteTypeKey > 0) then
-	      cmd := cmd + "and _NoteType_key = " + (string) noteTypeKey;
+	      cmd := cmd + notelib_sql_3d + (string) noteTypeKey;
 	    end if;
 
-	    cmd := cmd + " order by _NoteType_key, _Note_key, sequenceNum";
+	    cmd := cmd + notelib_sql_3e;
 	  else
-            cmd := "select _NoteType_key, note, sequenceNum" +
-	  	  " from " + mgi_DBtable(tableID) +
-		   " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		   " order by _NoteType_key, sequenceNum";
+            cmd := notelib_sql_4a + mgi_DBtable(tableID) +
+		   notelib_sql_4b + mgi_DBkey(tableID) + 
+		   notelib_sql_4c + objectKey + notelib_sql_4d;
 	  end if;
 
           dbproc : opaque := mgi_dbopen();

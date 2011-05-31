@@ -32,6 +32,7 @@ dmodule NoteTypeTableLib is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 -- See NoteTypeTableLib.de for D event declarations
 
@@ -96,8 +97,7 @@ rules:
 	  cmd : string;
 	  row : integer := 0;
 
-	  cmd := "select _NoteType_key, _MGIType_key, noteType from " + mgi_DBtable(tableID) + 
-		  "\norder by noteType";
+	  cmd := notetype_sql_1a + mgi_DBtable(tableID) + notetype_sql_1b;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -154,10 +154,10 @@ rules:
 	    editMode := TBL_ROW_NOCHG;
 	  end if;
 
-          cmd := "select _Note_key, _NoteType_key, noteType, note, sequenceNum " +
-	  	 " from " + mgi_DBtable(tableID) +
-		 " where " + mgi_DBkey(tableID) + " = " + objectKey +
-		 " order by _Note_key, sequenceNum";
+          cmd := notetype_sql_2a + mgi_DBtable(tableID) +
+		 notetype_sql_2b + mgi_DBkey(tableID) + 
+		 notetype_sql_2c + objectKey +
+		 notetype_sql_2d;
 
 	  row : integer := -1;
           dbproc : opaque := mgi_dbopen();
@@ -225,8 +225,8 @@ rules:
           -- set default note type
  
 	  if (table.useDefaultNoteType) then
-	    defaultNoteTypeKey := mgi_sql1("select _NoteType_key from " + mgi_DBtable(tableID) +
-		" where noteType = " + mgi_DBprstr(table.defaultNoteType));
+	    defaultNoteTypeKey := mgi_sql1(notetype_sql_3a + mgi_DBtable(tableID) +
+					   notetype_sql_3b + mgi_DBprstr(table.defaultNoteType));
 	  end if;
 
 	  -- If MP module and qualifier is "norm", then default note type to "Normal"
@@ -236,8 +236,8 @@ rules:
 	    row := mgi_tblGetCurrentRow(annotTable);
             qualifierKey := mgi_tblGetCell(annotTable, row, annotTable.qualifierKey);
 	    if (qualifierKey = MP_NORM_QUALIFIER_KEY) then
-	      defaultNoteTypeKey := mgi_sql1("select _NoteType_key from " + mgi_DBtable(tableID) +
-		" where noteType = " + mgi_DBprstr(table.defaultNoteNormal));
+	      defaultNoteTypeKey := mgi_sql1(notetype_sql_3a + mgi_DBtable(tableID) +
+		                             notetype_sql_3b + mgi_DBprstr(table.defaultNoteNormal));
 	    end if;
 	  end if;
 

@@ -222,34 +222,34 @@ rules:
 	  orderBy : string;
 
 	  if (tableID = MRK_MARKER or tableID = MLD_EXPTS) then
-	    orderBy := acclib_module_6;
+	    orderBy := acclib_sql_6;
 	  elsif (tableID = MRK_ACC_REFERENCE or 
 		 tableID = MRK_ACC_REFERENCE1 or
 		 tableID = MRK_ACC_REFERENCE2 or
 		 tableID = MRK_ACC_REFERENCE3) then
-	    orderBy := acclib_module_7;
+	    orderBy := acclib_sql_7;
 	  elsif (tableID = SEQ_ALLELE_ASSOC_VIEW) then
-	    orderBy := acclib_module_8;
+	    orderBy := acclib_sql_8;
 	  else
-	    orderBy := acclib_module_9;
+	    orderBy := acclib_sql_9;
 	  end if;
 
 	  if (tableID = SEQ_ALLELE_ASSOC_VIEW) then
-            cmd := acclib_module_1;
+            cmd := acclib_sql_1;
 	  else
-            cmd := acclib_module_2;
+            cmd := acclib_sql_2;
 	  end if;
 
 	  if (table.is_defined("refsKey") != nil) then
-	    cmd := cmd + acclib_module_3;
+	    cmd := cmd + acclib_sql_3;
 	  end if;
 
 	  if (table.is_defined("modifiedBy") != nil) then
-	    cmd := cmd + acclib_module_4;
+	    cmd := cmd + acclib_sql_4;
 	  end if;
 
 	  if (table.is_defined("sequenceKey") != nil) then
-	    cmd := cmd + acclib_module_5;
+	    cmd := cmd + acclib_sql_5;
 	  end if;
 
 	  cmd := cmd + " from " + mgi_DBaccTable(tableID) +
@@ -992,8 +992,8 @@ rules:
 	    return;
 	  end if;
 
-	  objectKey : string := mgi_sql1(acclib_module_10a + logicalKey + 
-		                         acclib_module_10b + mgi_DBprstr(value));
+	  objectKey : string := mgi_sql1(acclib_sql_10a + logicalKey + 
+		                         acclib_sql_10b + mgi_DBprstr(value));
 
 	  if (objectKey.length = 0) then
 	    VerifyAccSequence.doit := (integer) false;

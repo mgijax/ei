@@ -380,8 +380,8 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := actuallogical_module_1a + currentRecordKey + actuallogical_module_1b +
-		 actuallogical_module_2a + currentRecordKey + actuallogical_module_2b;
+	  cmd := actuallogical_sql_1a + currentRecordKey + actuallogical_sql_1b +
+		 actuallogical_sql_2a + currentRecordKey + actuallogical_sql_2b;
 
 	  results : integer := 1;
 	  row : integer := 0;

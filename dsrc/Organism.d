@@ -34,6 +34,7 @@ dmodule Organism is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -531,18 +532,14 @@ rules:
           table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from MGI_Organism_View where _Organism_key = " + currentRecordKey +
-		 " order by commonName\n" +
-	         "select _MGIType_key, typeName from MGI_Organism_MGIType_View " +
-		 "where _Organism_key = " + currentRecordKey + "order by typeName\n" +
-	         "select * from MRK_Chromosome where _Organism_key = " + currentRecordKey + 
-		 " order by sequenceNum\n";
+	  cmd := organism_sql_1a + currentRecordKey + organism_sql_1b +
+	         organism_sql_2a + currentRecordKey + organism_sql_2b +
+	         organism_sql_3a + currentRecordKey + organism_sql_3b;
 
 	  -- For Mouse, retrieve Anchor information
 
 	  if (currentRecordKey = "1") then
-		cmd := cmd + "select chromosome, _Marker_key, symbol from MRK_Anchors_View " +
-                             "order by chromosome\n";
+		cmd := cmd + organism_sql_4;
 	  end if;
 
 	  results : integer := 1;

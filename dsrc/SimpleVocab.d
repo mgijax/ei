@@ -25,6 +25,7 @@ dmodule SimpleVocab is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgisql.h>
 
 devents:
 
@@ -157,7 +158,7 @@ rules:
 	  send(PrepareSearch, 0);
 	  send(Search, 0);
 
-	  synTypeKey := mgi_sql1("select _SynonymType_key from MGI_SynonymType where _MGIType_key = 13 and synonymType = 'exact'");
+	  synTypeKey := mgi_sql1(simple_sql_1);
 
 	end does;
 
@@ -546,14 +547,9 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(VOC_VOCAB_VIEW) + 
-		 " where " + mgi_DBkey(VOC_VOCAB) + " = " + currentRecordKey + "\n" +
-		 "select * from " + mgi_DBtable(VOC_TERM_VIEW) +
-		 " where " + mgi_DBkey(VOC_VOCAB) + " = " + currentRecordKey + 
-		 " order by sequenceNum\n" +
-		 "select * from " + mgi_DBtable(VOC_TEXT_VIEW) +
-		 " where " + mgi_DBkey(VOC_VOCAB) + " = " + currentRecordKey + 
-		 " order by termsequenceNum, sequenceNum\n";
+	  cmd := simple_sql_2 + currentRecordKey +
+		 simple_sql_3a + currentRecordKey + simple_sql_3b +
+		 simple_sql_4a + currentRecordKey + simple_sql_4b;
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -648,11 +644,7 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select _Synonym_key, synonym from " + mgi_DBtable(MGI_SYNONYM) + 
-		 " where _SynonymType_key = " + synTypeKey +
-		 " and _Object_key = " + termKey + "\n" +
-		 " order by synonym\n";
-
+	  cmd := simple_sql_5a + synTypeKey + simple_sql_5b + termKey + simple_sql_5c;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
