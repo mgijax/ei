@@ -117,6 +117,6 @@ where _Specimen_key = "
 #define dictionary_module_1 "select _Stage_key from GXD_TheilerStage where stage = "
 #define dictionary_module_2 "select _defaultSystem_key from GXD_TheilerStage where _Stage_key = "
 
-/* DictionaryLib.d */
+/* DictionaryLib.d : no sql */
 
 #endif
