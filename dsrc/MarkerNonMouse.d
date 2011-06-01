@@ -38,6 +38,7 @@ dmodule MarkerNonMouse is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -174,7 +175,7 @@ rules:
 --
 
 	Add does
-	  curationState : string := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = 'internal'");
+	  curationState : string := mgi_sql1(nonmouse_sql_1);
 
 	  if (not top.allowEdit) then
 	    return;
@@ -471,12 +472,8 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select _Marker_key, _Organism_key, symbol, name, chromosome, " +
-		 "cytogeneticOffset, organism, creation_date, modification_date " +
-		 "from MRK_Marker_View where _Marker_key = " + currentRecordKey + "\n" +
-	         "select rtrim(note) from MRK_Notes " +
-		 "where _Marker_key = " + currentRecordKey +
-		 " order by sequenceNum\n";
+	  cmd := nonmouse_sql_2 + currentRecordKey +
+	         nonmouse_sql_3a + currentRecordKey + nonmouse_sql_3b;
 
 	  results : integer := 1;
 

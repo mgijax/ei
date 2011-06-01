@@ -93,6 +93,7 @@ dmodule MLC is
 #include <tables.h>
 #include <mlced_scan.h>
 #include <mlced_nomen.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -794,17 +795,10 @@ rules:
  
 	  top->Description->text.value := "";
 
-	  cmd := "select _Marker_key, symbol, name, chromosome " +
-		 "from MRK_Marker where _Marker_key = " + currentMarkerKey + "\n" +
-		 "select _Class_key, name " +
-		 " from MRK_Classes_View where _Marker_key = " + currentMarkerKey + 
-		 " order by name\n" +
-		 "select b._Refs_key, r.tag, b.jnum, b.short_citation " +
-		 "from MLC_Reference r, BIB_View b " +
-		 "where r._Marker_key = " + currentMarkerKey + " and r._Refs_key = b._Refs_key " + 
-		 "order by r.tag\n" +
-		 "select mode, isDeleted, description, creation_date, modification_date, userID " +
-	         "from MLC_Text where _Marker_key = " + currentMarkerKey + "\n";
+	  cmd := mlc_sql_1 + currentMarkerKey +
+		 mlc_sql_2a + currentMarkerKey + mlc_sql_2b +
+		 mlc_sql_3a + currentMarkerKey + mlc_sql_3b +
+		 mlc_sql_4 + currentMarkerKey;
 
 	  table : widget;
 	  results : integer := 1;
@@ -1369,10 +1363,7 @@ rules:
 	    return;
 	  end if;
 
-	  cmd := "select description from " + mgi_DBtable(MLC_TEXT) +
-		 " where " + mgi_DBkey(MLC_TEXT) + " = " +
-		 top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value;
-	  newtext := mgi_sql1(cmd);
+	  newtext := mgi_sql1(mlc_sql_5 + top->ImportMLCTextDialog->mgiMarker->ObjectID->text.value);
 
 	  -- Append the text
 	  top->Description->text.value := top->Description->text.value + "\n\n" + newtext; 
