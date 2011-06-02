@@ -6,6 +6,8 @@
  * organized by module
  */
 
+/* MGD.d : no sql */
+
 /* Allele.d */
 
 #define allele_module_1 "select _Term_key from VOC_Term_ALLStatus_View where term = "
@@ -193,19 +195,99 @@ and e._Refs_key = r._Refs_key)  \
 order by r.jnum desc\n"
 
 /* MarkerNonMouse.d */
-/* MGD.d */
+
+#define nonmouse_sql_1 "select _Term_key from VOC_Term_CurationState_View where term = 'internal'"
+#define nonmouse_sql_2 "select _Marker_key, _Organism_key, symbol, name, chromosome, \
+cytogeneticOffset, organism, creation_date, modification_date \
+from MRK_Marker_View where _Marker_key = "
+#define nonmouse_sql_3a "\nselect rtrim(note) from MRK_Notes  where _Marker_key = "
+#define nonmouse_sql_3b "\norder by sequenceNum\n"
+
 /* MLC.d */
+
+#define mlc_sql_1 "select _Marker_key, symbol, name, chromosome from MRK_Marker where _Marker_key = "
+#define mlc_sql_2a "\nselect _Class_key, name from MRK_Classes_View where _Marker_key = "
+#define mlc_sql_2b "\norder by name\n"
+#define mlc_sql_3a "\nselect b._Refs_key, r.tag, b.jnum, b.short_citation \
+from MLC_Reference r, BIB_View b \
+where r._Refs_key = b._Refs_key and r._Marker_key = "
+#define mlc_sql_3b "\norder by r.tag\n"
+#define mlc_sql_4 "\nselect mode, isDeleted, description, creation_date, modification_date, userID \
+from MLC_Text where _Marker_key = "
+#define mlc_sql_5 "select description from MLC_Text where _Marker_key = "
+
 /* MLDP.d */
+
+#define mldp_sql_1 "select _Assay_Type_key from MLD_Assay_Types where description = ' '"
+#define mldp_sql_2a "select max(tag) from MLD_Expts where _Refs_key = "
+#define mldp_sql_2b "\nand exptType = "
+#define mldb_sql_3 "select _Expt_key, exptType, chromosome, creation_date, modification_date, _Refs_key, jnum, short_citation \
+from MLD_Expt_View where _Expt_key = "
+#define mldb_sql_4a "\nselect rtrim(note) from MLD_Expt_Notes where _Expt_key = "
+#define mldb_sql_4b "\norder by sequenceNum\n"
+#define mldp_sql_5a "select sequenceNum, _Marker_key, symbol, _Allele_key, _Assay_Type_key, allele, assay, description, matrixData \
+from MLD_Expt_Marker_View where _Expt_key = "
+#define mldp_sql_5b "\norder by sequenceNum\n"
+#define mldb_sql_6a "select rtrim(note) from MLD_Notes where _Refs_key = "
+#define mldb_sql_6b "\norder by sequenceNum\n"
+#define mldp_sql_7 "select * from MLD_Matrix_View where _Expt_key = "
+#define mldp_sql_8a "\nselect sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, numRecombinants, numParentals \
+from MLD_MC2point_View where _Expt_key = "
+#define mldp_sql_8b "\norder by sequenceNum\n"
+#define mldp_sql_9a "\nselect * from MLD_MCDataList where _Expt_key = "
+#define mldp_sql_9b "\norder by sequenceNum\n"
+#define mldp_sql_10 "select * from CRS_Cross_View where _Cross_key = "
+#define mldp_sql_11 "select _RISet_key from RI_RISet where designation = "
+#define mldp_sql_12 "select designation, origin, abbrev1, abbrev2, RI_IdList \
+from RI_RISet_View where _RISet_key = "
+#define mldp_sql_13 "select * from MLD_FISH_View where _Expt_key = "
+#define mldp_sql_14a "\nselect * from MLD_FISH_Region where _Expt_key = "
+#define mldp_sql_14b "\norder by sequenceNum\n"
+#define mldp_sql_15 "select chrsOrGenes, band from MLD_Hybrid_View where _Expt_key = "
+#define mldb_sql_16a "\nselect sequenceNum, _Marker_key, symbol, cpp, cpn, cnp, cnn, chromosome \
+from MLD_Concordance_View where _Expt_key = "
+#define mldp_sql_16b "\norder by sequenceNum\n"
+#define mldp_sql_17 "select * from MLD_InSitu_View where _Expt_key = "
+#define mldp_sql_18a "\nselect * from MLD_ISRegion where _Expt_key = "
+#define mldp_sql_18b "\norder by sequenceNum\n"
+#define mldp_sql19 "select * from MLD_PhysMap where _Expt_key = "
+#define mldp_sql_20a "\nselect * from MLD_Distance_View where _Expt_key = "
+#define mldp_sql_20b "\norder by sequenceNum\n"
+#define mldp_sql21 "select RI_IdList, _RISet_key, origin, designation, abbrev1, abbrev2 \
+from MLD_RI_VIew where _Expt_key = "
+#define mldp_sql22a "\nselect sequenceNum, _Marker_key, symbol, alleleLine \
+from MLD_RIData_View where _Expt_key = "
+#define mldp_sql_22b "\norder by sequenceNum\n"
+#define mldp_sql_23a "\nselect sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, numRecombinants, numTotal, RI_Lines \
+from MLD_RI2Point_View where _Expt_key = "
+#define mldp_sql_23b "\norder by sequenceNum\n"
+#define mldp_sql_24a "select sequenceNum, _Marker_key_1, _Marker_key_2, symbol1, symbol2, recomb, total, \
+str(pcntrecomb,6,2), str(stderr,6,2) \
+from MLD_Statistics_View where _Expt_key = "
+#define mldp_sql_24b "\norder by sequenceNum\n"
+#define mldp_sql_25 "select count(*) from MRK_Chromosome where _Organism_key = 1 and chromosome = "
+#define mldp_sql_26 "select _Assay_Type_key from MLD_Assay_Types where description = "
+
 /* Molecular.d */
+
 /* MolecularSource.d */
+
 /* MPVocAnnot.d */
+
 /* MutantCellLine.d */
+
 /* Nomen.d */
+
 /* NonMutantCellLine.d */
+
 /* OMIMVocAnnot.d */
+
 /* Orthology.d */
+
 /* Reference.d */
+
 /* RI.d */
+
 /* Sequence.d */
 
 #endif
