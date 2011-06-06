@@ -101,6 +101,7 @@ dmodule MolecularSegment is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -261,8 +262,8 @@ rules:
           -- Initialize global variables
 	   
           sourceKeyName := "maxSource";
-	  primerVector := mgi_sql1("select _Term_key from VOC_Term_SegVectorType_View where term = 'Not Applicable'");
-	  primerType := mgi_sql1("select _Term_key from VOC_Term_SegmentType_View where term = 'primer'");
+	  primerVector := mgi_sql1(molecular_sql_1);
+	  primerType := mgi_sql1(molecular_sql_2);
 
 	  sourceOptions.append(top->MolDetailForm->ProbeOrganismMenu);
 	  sourceOptions.append(top->MolDetailForm->AgeMenu);
@@ -435,8 +436,7 @@ rules:
 	  --   View the Reference form
 
 	  if (top->QueryList->List.sqlSuccessful) then
-	    top->ReportDialog.select := 
-	      "select _Probe_key from PRB_Probe where _Probe_key = " + top->MolMasterForm->ID->text.value;
+	    top->ReportDialog.select := molecular_sql_3 + top->MolMasterForm->ID->text.value;
 	    top->Control->References.set := true;
 	    ViewMolSegForm.source_widget := top->Control->References;
 	    send(ViewMolSegForm, 0);
@@ -707,7 +707,7 @@ rules:
 	  -- process Notes solo too
 
           if (top->MolMarkerForm->MolNote.sql.length > 0) then
-            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql + "\nexec PRB_reloadSequence " + currentMasterKey;
+            ModifySQL.cmd := top->MolMarkerForm->MolNote.sql + molecular_sql_4 + currentMasterKey;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;
             send(ModifySQL, 0);
@@ -715,7 +715,7 @@ rules:
 
           if (cmd.length > 0 or set.length > 0) then 
             cmd := cmd + mgi_DBupdate(PRB_PROBE, currentMasterKey, set);
-	    cmd := cmd + "\nexec PRB_reloadSequence " + currentMasterKey;
+	    cmd := cmd + molecular_sql_4 + currentMasterKey;
             ModifySQL.cmd := cmd;
 	    ModifySQL.list := top->QueryList;
 	    ModifySQL.reselect := false;
@@ -1106,14 +1106,6 @@ rules:
 
           if (top->MolMasterForm->Name->text.value.length > 0) then
 	    where := where + "\nand p.name like " + mgi_DBprstr(top->MolMasterForm->Name->text.value);
-
-	    -- union the probe alias-es
-            --unionalias := "\nunion\n" + select + from + 
-	--	"," + mgi_DBtable(PRB_REFERENCE) + " r," + mgi_DBtable(PRB_ALIAS) + " ra" +
-        --       "\nwhere ra.alias like " + mgi_DBprstr(top->MolMasterForm->Name->text.value) +
-	--	"\nand p." + mgi_DBkey(PRB_PROBE) + " = r." + mgi_DBkey(PRB_PROBE) +
-	--	"\nand r." + mgi_DBkey(PRB_REFERENCE) + " = ra." + mgi_DBkey(PRB_REFERENCE);
-
 	  end if;
 
           if (top->MolMasterForm->Region->text.value.length > 0) then
@@ -1417,7 +1409,7 @@ rules:
           top->MolReferenceForm->ReferenceID->text.value := "";
 	  QueryNoInterrupt.source_widget := top;
 	  QueryNoInterrupt.list_w := top->ReferenceList;
-	  QueryNoInterrupt.select := "select _Reference_key, short_citation\nfrom PRB_Reference_View\nwhere _Probe_key = " + top->QueryList->List.keys[top->QueryList->List.row] + "\n";
+	  QueryNoInterrupt.select := molecular_sql_5 + top->QueryList->List.keys[top->QueryList->List.row];
 	  QueryNoInterrupt.table := PRB_REFERENCE;
 	  send(QueryNoInterrupt, 0);
 	  (void) reset_cursor(top);
@@ -1481,11 +1473,10 @@ rules:
           table : widget := top->MolMarkerForm->Marker->Table;
 	  currentMasterKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from PRB_Probe_View where _Probe_key = " + currentMasterKey + "\n" +
-		 "select parentKey, parentClone, parentNumeric from PRB_Parent_View " +
-		 "where _Probe_key = " + currentMasterKey + "\n" +
-		 "select rtrim(note) from PRB_Notes where _Probe_key = " + currentMasterKey + " order by sequenceNum\n" +
-	         "select * from PRB_Marker_View where _Probe_key = " + currentMasterKey + " order by relationship, symbol";
+	  cmd := molecular_sql_6 + currentMasterKey +
+		 molecular_sql_7 + currentMasterKey +
+		 molecular_sql_8a + currentMasterKey + molecular_sql_8b +
+	         molecular_sql_9a + currentMasterKey + molecular_sql_9b;
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1615,12 +1606,10 @@ rules:
 
           currentReferenceKey := top->ReferenceList->List.keys[SelectReference.item_position];
  
-          cmd := "select * from PRB_Reference_View where _Reference_key = " + currentReferenceKey + "\n" +
-                 "select rtrim(note) from PRB_Ref_Notes where _Reference_key = " + currentReferenceKey +
-			" order by sequenceNum\n" +
-		 "select _Alias_key, alias from PRB_Alias where _Reference_key = " + currentReferenceKey + "\n" +
-		 "select * from PRB_RFLV_View where _Reference_key = " + currentReferenceKey +
-			" order by _RFLV_key, allele\n";
+          cmd := molecular_sql_10 + currentReferenceKey +
+                 molecular_sql_11a + currentReferenceKey + molecular_sql_11b +
+		 molecular_sql_12 + currentReferenceKey +
+		 molecular_sql_13a + currentReferenceKey + molecular_sql_13b;
  
           top->MolReferenceForm->Notes->text.value := "";
 	  table : widget;
@@ -1884,9 +1873,7 @@ rules:
           if (top->ParentClone->ObjectID->text.value.length = 0) then
             top->SourceForm->SourceID->text.value := "";
           else
-            cmd := "select _Source_key from " + mgi_DBtable(PRB_PROBE) +
-                    " where " + mgi_DBkey(PRB_PROBE) + " = " + 
-                    top->ParentClone->ObjectID->text.value;
+            cmd := molecular_sql_14 + top->ParentClone->ObjectID->text.value;
             top->SourceForm->SourceID->text.value := mgi_sql1(cmd);
           end if;
  
