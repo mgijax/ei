@@ -35,6 +35,7 @@ dmodule MolecularSource is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -377,11 +378,7 @@ rules:
 
 	  -- Select Clone Library Sets
 
-	  scmd :string := "select m._Set_key, m._SetMember_key, v.name " + 
-	      "from MGI_Set_CloneLibrary_View v, MGI_SetMember m " +
-	      "where v._Set_key = m._Set_key " +
-	      "and m._Object_key = " + currentRecordKey +
-	      " order by m.sequenceNum";
+	  scmd :string := molsource_sql_1a + currentRecordKey + molsource_sql_1b;
 
 	  table : widget := top->CloneLibrarySet->Table;
 	  row : integer := 0;
