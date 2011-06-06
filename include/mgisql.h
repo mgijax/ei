@@ -94,8 +94,8 @@ from MGI_AttrHistory_Source_View where _Object_key = "
 #define notelib_sql_1a "select _NoteType_key, noteType, private = -1, _MGIType_key from "
 #define notelib_sql_1b "\norder by _NoteType_key"
 
-#define notelib_sql_2a "select _NoteType_key, noteType, private from "
-#define notelib_sql_2b "\nwhere _NoteType_key > 0 \norder by _NoteType_key"
+#define notelib_sql_2a "\nselect _NoteType_key, noteType, private from "
+#define notelib_sql_2b "\nwhere _NoteType_key > 0 order by _NoteType_key"
 
 #define notelib_sql_3a "select _NoteType_key, note, sequenceNum, _Note_key from "
 #define notelib_sql_3b " where "
@@ -106,17 +106,17 @@ from MGI_AttrHistory_Source_View where _Object_key = "
 #define notelib_sql_4a "select _NoteType_key, note, sequenceNum from "
 #define notelib_sql_4b " where "
 #define notelib_sql_4c " = "
-#define notelib_sql_4d " order by _NoteType_key, sequenceNum"
+#define notelib_sql_4d " order by _NoteType_key, sequenceNum\n"
 
 /* NoteTypeTableLib.d */
 
 #define notetype_sql_1a "select _NoteType_key, _MGIType_key, noteType from "
 #define notetype_sql_1b "\norder by noteType"
 
-#define notetype_sql_2a "select _Note_key, _NoteType_key, noteType, note, sequenceNum from"
+#define notetype_sql_2a "select _Note_key, _NoteType_key, noteType, note, sequenceNum from "
 #define notetype_sql_2b " where "
 #define notetype_sql_2c " = "
-#define notetype_sql_2d " order by _Note_key, sequenceNum"
+#define notetype_sql_2d " order by _Note_key, sequenceNum\n"
 
 #define notetype_sql_3a "select _NoteType_key from "
 #define notetype_sql_3b " where noteType = "

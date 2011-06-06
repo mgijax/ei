@@ -270,9 +270,86 @@ from MLD_Statistics_View where _Expt_key = "
 
 /* Molecular.d */
 
+#define molecular_sql_1 "select _Term_key from VOC_Term_SegVectorType_View where term = 'Not Applicable'"
+#define molecular_sql_2 "select _Term_key from VOC_Term_SegmentType_View where term = 'primer'"
+#define molecular_sql_3 "select _Probe_key from PRB_Probe where _Probe_key = "
+#define molecular_sql_4 "\nexec PRB_reloadSequence "
+#define molecular_sql_5 "select _Reference_key, short_citation from PRB_Reference_View \
+where _Probe_key = "
+#define molecular_sql_6 "select * from PRB_Probe_View where _Probe_key = "
+#define molecular_sql_7 "\nselect parentKey, parentClone, parentNumeric from PRB_Parent_View \
+where _Probe_key = "
+#define molecular_sql_8a "\nselect rtrim(note) from PRB_Notes where _Probe_key = "
+#define molecular_sql_8b "\norder by sequenceNum\n"
+#define molecular_sql_9a "\nselect * from PRB_Marker_View where _Probe_key = "
+#define molecular_sql_9b "\norder by relationship, symbol\n"
+#define molecular_sql_10 "select * from PRB_Reference_View where _Reference_key = "
+#define molecular_sql_11a "select rtrim(note) from PRB_Ref_Notes where _Reference_key = "
+#define molecular_sql_11b "\norder by sequenceNum\n"
+#define molecular_sql_12 "select _Alias_key, alias from PRB_Alias where _Reference_key = "
+#define molecular_sql_13a "select * from PRB_RFLV_View where _Reference_key = "
+#define molecular_sql_13b "\norder by _RFLV_key, allele\n"
+#define molecular_sql_14 "select _Source_key from PRB_Probe where _Probe_key = "
+
 /* MolecularSource.d */
 
+#define molsource_sql_1a "select m._Set_key, m._SetMember_key, v.name  \
+from MGI_Set_CloneLibrary_View v, MGI_SetMember m \
+where v._Set_key = m._Set_key \
+and m._Object_key = "
+#define molsource_sql_1b "\norder by m.sequenceNum"
+
 /* MPVocAnnot.d */
+
+#define mpvoc_sql_0 "\nexec VOC_copyAnnotEvidenceNotes "
+#define mpvoc_sql_1 "\nexec VOC_processAnnotHeader "
+
+#define mpvoc_sql_2a "select _AnnotHeader_key, _Term_key, term, approvedBy, approval_date, sequenceNum \
+from VOC_AnnotHeader_View \
+where _AnnotType_key =  "
+#define mpvoc_sql_2b " and _Object_key = "
+#define mpvoc_sql_2c "\norder by sequenceNum\n"
+
+#define mpvoc_sql_3 "select dbView from ACC_MGIType where _MGIType_key = "
+
+#define mpvoc_sql_4a "select _Term_key, abbreviation from VOC_Term where _Vocab_key = "
+#define mpvoc_sql_4b "\norder by abbreviation\n"
+
+#define mpvoc_sql_5 "select _Term_key from VOC_Term where term is null and _Vocab_key = "
+
+#define mpvoc_sql_6a "select distinct _Object_key, description from "
+#define mpvoc_sql_6b " where _Object_key = "
+
+#define mpvoc_sql_7a "select _Object_key, accID, description, short_description from "
+#define mpvoc_sql_7b " where prefixPart = 'MGI:' and preferred = 1 and _Object_key = "
+#define mpvoc_sql_7c "\norder by description\n"
+
+#define mpvoc_sql_8a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
+from VOC_Annot_View a, VOC_Evidence_View e \
+where a._AnnotType_key = "
+#define mpvoc_sql_8b "\nand a._Annot_key = e._Annot_key and a._Object_key = "
+#define mpvoc_sql_8c "\norder by e.jnum, a.term\n"
+
+#define mpvoc_sql_9a "select a._Term_key, t.term, t.sequenceNum, ac.accID, a._Qualifier_key, qualifier = q.term, \
+e._EvidenceTerm_key, et.abbreviation, et.sequenceNum \
+from VOC_Annot a, ACC_Accession ac, VOC_Term t, VOC_Evidence e, VOC_Term et, VOC_Term q \
+where a._Term_key = ac._Object_key \
+and ac._MGIType_key = 13 \
+and ac.preferred = 1 \
+and a._Term_key = t._Term_key \
+and a._Annot_key = e._Annot_key \
+and e._EvidenceTerm_key = et._Term_key \
+and a._Qualifier_key = q._Term_key \
+and a._AnnotType_key = "
+#define mpvoc_sql_9b " and e._AnnotEvidence_key = "
+
+#define mpvoc_sql_10a "select g._Allele_key from GXD_AlleleGenotype g, ALL_Allele a \
+where g._Allele_key = a._Allele_key \
+and a.isWildType = 0 \
+and g._Genotype_key = "
+#define mpvoc_sql_10b "\nand not exists (select 1 from MGI_Reference_Assoc a where a._MGIType_key = 11 \
+and a._Object_key = g._Allele_key and a._Refs_key = "
+#define mpvoc_sql_10c ")"
 
 /* MutantCellLine.d */
 
