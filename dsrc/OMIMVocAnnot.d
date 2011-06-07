@@ -23,6 +23,7 @@ dmodule OMIMVocAnnot is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -633,27 +634,9 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd : string := "select _Object_key, accID, description, short_description" +
-			  " from " + dbView + 
-			  " where _Object_key = " + currentRecordKey + 
-			  " and prefixPart = 'MGI:' and preferred = 1 " + 
-			  " order by description\n" +
-	                  "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.*" +
-			  " from " + mgi_DBtable(VOC_ANNOT_VIEW) + " a," +
-			    mgi_DBtable(VOC_EVIDENCE_VIEW) + " e" +
-		          " where a._AnnotType_key = " + annotTypeKey +
-			  " and a._Object_key = " + currentRecordKey + 
-			  " and a._Annot_key = e._Annot_key " +
-			  " order by a.term\n" +
-			  "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum" + 
-			  " from " + 
-			    mgi_DBtable(VOC_ANNOT) + " a, " +
-			    mgi_DBtable(VOC_EVIDENCE) + " e, " +
-			    mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n" +
-			  " where a._Object_key = " + currentRecordKey +
-			  " and a._Annot_key = e._Annot_key" +
-			  " and e._AnnotEvidence_key = n._Object_key" +
-			  " order by n._Object_key, n.sequenceNum\n";
+	  cmd : string := omimvoc_sql_1a + dbView + omimvoc_sql_1b + currentRecordKey + omimvoc_sql_1c + 
+	                  omimvoc_sql_2a + annotTypeKey +  omimvoc_sql_2c + currentRecordKey + omimvoc_sql_2d +
+	                  omimvoc_sql_3a + currentRecordKey + omimvoc_sql_3b;
 
 	  row : integer := 0;
 	  i : integer;
@@ -758,23 +741,21 @@ rules:
 	  annotTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.defaultValue;
 	  annotType := top->VocAnnotTypeMenu.menuHistory.labelString;
 	  mgiTypeKey := (string) top->VocAnnotTypeMenu.menuHistory.mgiTypeKey;
-	  dbView := mgi_sql1("select dbView from ACC_MGIType where _MGIType_key = " + mgiTypeKey);
+	  dbView := mgi_sql1(omimvoc_sql_4 + mgiTypeKey);
 	  top->mgiAccession.mgiTypeKey := mgiTypeKey;
 	  annotTable.vocabKey := top->VocAnnotTypeMenu.menuHistory.vocabKey;
 	  annotTable.vocabEvidenceKey := top->VocAnnotTypeMenu.menuHistory.evidenceKey;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 
-	  top->EvidenceCodeList.cmd := "select _Term_key, abbreviation " +
-		"from VOC_Term where _Vocab_key = " + (string) evidenceKey + " order by abbreviation";
+	  top->EvidenceCodeList.cmd := omimvoc_sql_5a + (string) evidenceKey + omimvoc_sql_5b;
           LoadList.list := top->EvidenceCodeList;
 	  send(LoadList, 0);
 
           pos := XmListItemPos(top->EvidenceCodeList->List, xm_xmstring("TAS"));
 	  defaultEvidenceCodeKey := top->EvidenceCodeList->List.keys[pos];
 
-	  defaultQualifierKey := 
-	      mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = " + (string) annotTable.vocabQualifierKey + " and term is null");
+	  defaultQualifierKey := mgi_sql1(omimvoc_sql_6 + (string) annotTable.vocabQualifierKey);
 
 	  (void) reset_cursor(mgi);
 	end does;
