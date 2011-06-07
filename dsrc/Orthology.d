@@ -98,6 +98,7 @@ dmodule Orthology is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -731,9 +732,7 @@ rules:
 	  if (top->Inferred.set) then
 	    cmd := "select distinct h._Class_key\n" + from + "\n" + where + "\n";
 	    classKey := mgi_sql1(cmd);
-	    Query.select := "select distinct h.classRef, h.short_citation, h.jnum " +
-			    "from HMD_Homology_View h " +
-			    "where h._Class_key = " + classKey + "\norder by h.short_citation\n";
+	    Query.select := orthology_sql_2a + classKey + orthology_sql_2b;
 	  else
 	    Query.select := "select distinct h.classRef, h.short_citation, h.jnum\n" + 
 			    from + "\n" + where + "\norder by h.short_citation\n";
@@ -788,34 +787,10 @@ rules:
 	  -- Get Mouse Accession info
 	  -- Get non-Mouse Accession info
 
-	  cmd := "select distinct _Class_key, jnum, short_citation, _Refs_key, " +
-		 "creation_date, modification_date " +
-		 "from HMD_Homology_View" + classRefWhere +
-
-	         "select distinct _Marker_key, _Organism_key, organism, symbol, " +
-		 "chromosome, cytogeneticOffset, name " +
-		 "from HMD_Homology_View " + classRefWhere +
-		 " order by _Organism_key\n" +
-
-	         "select distinct hm._Marker_key, a.accID, a._Accession_key " +
-		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_Acc_View a" +
-		 classRefWhere +
-		 "and h._Homology_key = hm._Homology_key " +
-		 "and hm._Marker_key = a._Object_key " +
-		 "and a._LogicalDB_key = 1 " +
-		 "and a.prefixPart = 'MGI:' " +
-		 "and a.preferred = 1 " +
-		 " order by a._Organism_key\n" +
-
-		 "select distinct hm._Marker_key, a.accID, a._Accession_key " +
-		 "from HMD_Homology h, HMD_Homology_Marker hm, MRK_Marker m, MRK_Acc_View a" +
-		 classRefWhere +
-		 "and h._Homology_key = hm._Homology_key " +
-		 "and hm._Marker_key = m._Marker_key " +
-		 "and m._Organism_key != 1 " +
-		 "and hm._Marker_key = a._Object_key " +
-		 "and a._LogicalDB_key = 55 " +
-		 " order by a._Organism_key\n";
+	  cmd := orthology_sql_5 + orthology_sql_3 + classKey + orthology_sql_4 + refKey +
+		 orthology_sql_6a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_6b +
+	         orthology_sql_7a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_7b +
+		 orthology_sql_8a + orthology_sql_3 + classKey + orthology_sql_4 + refKey + orthology_sql_8b;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
