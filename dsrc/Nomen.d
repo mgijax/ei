@@ -138,6 +138,7 @@ dmodule Nomen is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -253,14 +254,11 @@ rules:
 	  -- Dynamically create Marker Event, Event Reason, Status, 
 	  -- Type and Chromosome Menus
 
-	  top->MarkerEventMenu.subMenuId.sql := 
-		"select * from " + mgi_DBtable(MRK_EVENT) + 
-		" where " + mgi_DBkey(MRK_EVENT) + " in (1,2) order by " + mgi_DBcvname(MRK_EVENT);
+	  top->MarkerEventMenu.subMenuId.sql := nomen_sql_1;
 	  InitOptionMenu.option := top->MarkerEventMenu;
 	  send(InitOptionMenu, 0);
 
-	  top->MarkerStatusMenu.subMenuId.sql := 
-		"select _Term_key, term from " + mgi_DBtable(NOM_STATUS) + " order by _Term_key";
+	  top->MarkerStatusMenu.subMenuId.sql := nomen_sql_2; 
 	  InitOptionMenu.option := top->MarkerStatusMenu;
 	  send(InitOptionMenu, 0);
 
@@ -320,7 +318,7 @@ rules:
 
 	  resettables.append(top->AccessionReference->Table);
 
-	  curationState := mgi_sql1("select _Term_key from VOC_Term_CurationState_View where term = " + mgi_DBprstr(INTERNALCURATIONSTATE));
+	  curationState := mgi_sql1(nomen_sql_3);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -902,8 +900,7 @@ rules:
 	  table : widget;
 	  currentNomenKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from NOM_Marker_View " +
-		 " where _Nomen_key = " + currentNomenKey + "\n";
+	  cmd := nomen_sql_4 + currentNomenKey;
 
 	  row : integer := 0;
 

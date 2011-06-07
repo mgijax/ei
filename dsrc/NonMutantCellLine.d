@@ -18,6 +18,7 @@ dmodule NonMutantCellLine is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -335,7 +336,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from " + mgi_DBtable(ALL_CELLLINE_VIEW) + " where _CellLine_key = " + currentRecordKey + "\n";
+	  cmd := nonmutant_sql_1 + currentRecordKey;
 	  
           results : integer := 1;
 
@@ -367,8 +368,7 @@ rules:
 	    end while;
 	  end while;
 
-	  cmd := "select count(_CellLine_key) from " + mgi_DBtable(ALL_CELLLINE_VIEW) + 
-			" where parentCellLine_key = " + currentRecordKey;
+	  cmd := nonmutant_sql_2 + currentRecordKey;
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
