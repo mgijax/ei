@@ -30,7 +30,7 @@
 
 #define actuallogical_sql_1a "\nselect * from ACC_LogicalDB_View where _LogicalDB_key = "
 #define actuallogical_sql_1b " order by name"
-#define actuallogical_sql_2a "\nselect * from ACC_ActualDB where _LogicalDB_key = ""
+#define actuallogical_sql_2a "\nselect * from ACC_ActualDB where _LogicalDB_key = "
 #define actuallogical_sql_2b " order by name"
 
 /* ControlledVocab.d */

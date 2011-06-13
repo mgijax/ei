@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue May 10 09:30:03 2011";
+      lastWritten = "Thu Jun  9 09:22:05 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -2314,6 +2314,9 @@ Module: MGD
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
@@ -9535,6 +9538,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     EUCOMMProject = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    Genentech = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9999,6 +10005,11 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                    Group: Widget
+                                                      managed = True;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                     Group: Widget
                                                       managed = True;
                                                   }
@@ -12845,6 +12856,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;

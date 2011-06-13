@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu May  5 08:10:30 2011";
+      lastWritten = "Thu Jun  9 09:21:28 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -3384,6 +3384,9 @@ Module: MGI
                                                   }
                                                   {
                                                     EUCOMMProject = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    Genentech = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     EUCOMMCellLine = AccToggle : mgiOption;
