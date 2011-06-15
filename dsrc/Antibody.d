@@ -98,7 +98,7 @@ locals:
 
 	cmd : string;
 	set : string;
-	select : string := antibody_module_1;
+	select : string := antibody_sql_1;
 	from : string;
 	where : string;
 	unionalias : string;
@@ -856,15 +856,15 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := antibody_module_2 + currentRecordKey + "\n" +
+	  cmd := antibody_sql_2 + currentRecordKey + "\n" +
 
-		 antibody_module_3 + currentRecordKey + "\n" +
+		 antibody_sql_3 + currentRecordKey + "\n" +
 
-		 antibody_module_4a + currentRecordKey + antibody_module_4b +
+		 antibody_sql_4a + currentRecordKey + antibody_sql_4b +
 
-		 antibody_module_5a + currentRecordKey + antibody_module_5b +
+		 antibody_sql_5a + currentRecordKey + antibody_sql_5b +
 
-		 antibody_module_6a + currentRecordKey + antibody_module_6b;
+		 antibody_sql_6a + currentRecordKey + antibody_sql_6b;
 
 	  table : widget;
 	  results : integer := 1;

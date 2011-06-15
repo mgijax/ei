@@ -241,11 +241,11 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1(derivation_module_1a + vectorKey +
-		derivation_module_1b + vectorTypeKey +
-		derivation_module_1c + parentCellLineKey +
-		derivation_module_1d + derivationTypeKey +
-		derivation_module_1e + creatorKey);
+	  derivationKey := mgi_sql1(derivation_sql_1a + vectorKey +
+		derivation_sql_1b + vectorTypeKey +
+		derivation_sql_1c + parentCellLineKey +
+		derivation_sql_1d + derivationTypeKey +
+		derivation_sql_1e + creatorKey);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -371,11 +371,11 @@ rules:
 	  --
 	  -- check duplicate
 	  --
-	  derivationKey := mgi_sql1(derivation_module_1a + vectorKey +
-		derivation_module_1b + vectorTypeKey +
-		derivation_module_1c + parentCellLineKey +
-		derivation_module_1d + derivationTypeKey +
-		derivation_module_1e + creatorKey);
+	  derivationKey := mgi_sql1(derivation_sql_1a + vectorKey +
+		derivation_sql_1b + vectorTypeKey +
+		derivation_sql_1c + parentCellLineKey +
+		derivation_sql_1d + derivationTypeKey +
+		derivation_sql_1e + creatorKey);
 
           if (derivationKey.length > 0) then
             StatusReport.source_widget := top.root;
@@ -556,7 +556,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := derivation_module_2 + currentRecordKey;
+	  cmd := derivation_sql_2 + currentRecordKey;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -604,7 +604,7 @@ rules:
 	    end while;
 	  end while;
 
-	  cmd := derivation_module_3 + top->ID->text.value;
+	  cmd := derivation_sql_3 + top->ID->text.value;
 
           (void) dbcmd(dbproc, cmd);
           (void) dbsqlexec(dbproc);
@@ -642,7 +642,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := derivation_module_4 + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := derivation_sql_4 + top->mgiParentCellLine->ObjectID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -694,7 +694,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := derivation_module_5 + mgi_DBprstr(value);
+	  select : string := derivation_sql_5 + mgi_DBprstr(value);
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);

@@ -68,6 +68,7 @@ dmodule Reference is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -237,10 +238,7 @@ rules:
 
 	  dbproc : opaque := mgi_dbopen();
 
-	  cmd := "select _DataSet_key, abbreviation, inMGIprocedure from BIB_DataSet " + 
-		"where inMGIprocedure is not null and isObsolete = 0 " +
-		"order by sequenceNum";
-
+	  cmd := ref_sql_1;
 	  (void) dbcmd(dbproc, cmd);
 	  (void) dbsqlexec(dbproc);
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -261,10 +259,7 @@ rules:
 	  labels := "";
 	  row := 0;
 
-	  cmd := "select _DataSet_key, abbreviation from BIB_DataSet " +
-		"where inMGIprocedure is null and isObsolete = 0 " +
-		"order by sequenceNum";
-
+	  cmd := ref_sql_2;
 	  (void) dbcmd(dbproc, cmd);
 	  (void) dbsqlexec(dbproc);
 	  while (dbresults(dbproc) != NO_MORE_RESULTS) do
@@ -879,9 +874,9 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from BIB_All2_View where _Refs_key = " + currentRecordKey + "\n" +
-	         "select * from BIB_Books where _Refs_key = " + currentRecordKey + "\n" +
-	         "select rtrim(note) from BIB_Notes where _Refs_key = " + currentRecordKey + " order by sequenceNum";
+	  cmd := ref_sql_3 + currentRecordKey +
+	         ref_sql_4 + currentRecordKey + "\n" +
+	         ref_sql_5a + currentRecordKey + ref_sql_5b;
 
 	  top->Notes->text.value := "";
 
@@ -1053,7 +1048,7 @@ rules:
 	  send(ClearTable, 0);
 	  send(InitDataSets, 0);
 
-	  cmd := "select _Assoc_key, _DataSet_key, isNeverUsed from BIB_DataSet_Assoc where _Refs_key = " + currentRecordKey;
+	  cmd := ref_sql_6 + currentRecordKey;
 
 	  dbproc : opaque := mgi_dbopen();
 	  (void) dbcmd(dbproc, cmd);

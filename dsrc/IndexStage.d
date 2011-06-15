@@ -182,7 +182,7 @@ rules:
 	  -- create a string list of row/assay key pairs
 	  assayKeys := create string_list();
 	  
-          (void) dbcmd(dbproc, index_module_1);
+          (void) dbcmd(dbproc, index_sql_1);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -209,7 +209,7 @@ rules:
 	  -- create a string list of column/term pairs
 	  stageTerms := create string_list();
 
-          (void) dbcmd(dbproc, index_module_2);
+          (void) dbcmd(dbproc, index_sql_2);
           (void) dbsqlexec(dbproc);
           while (dbresults(dbproc) != NO_MORE_RESULTS) do
             while (dbnextrow(dbproc) != NO_MORE_ROWS) do
@@ -639,8 +639,8 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := index_module_3 + currentRecordKey +
-		 index_module_4a + currentRecordKey + index_module_4b;
+	  cmd := index_sql_3 + currentRecordKey +
+		 index_sql_4a + currentRecordKey + index_sql_4b;
 
 	  table : widget;
 	  results : integer := 1;
@@ -705,7 +705,7 @@ rules:
 	  hasAssay : string;
 
           if top->mgiCitation->ObjectID->text.value != "154591" then
-	    hasAssay := mgi_sql1(index_module_5a + currentRecordKey + index_module_5b);
+	    hasAssay := mgi_sql1(index_sql_5a + currentRecordKey + index_sql_5b);
 
 	    if (hasAssay.length = 0) then
               SetOption.source_widget := top->CodedMenu;
@@ -744,7 +744,7 @@ rules:
 	    return;
 	  end if;
 
-	  priority := mgi_sql1(index_module_6 + top->mgiCitation->ObjectID->text.value);
+	  priority := mgi_sql1(index_sql_6 + top->mgiCitation->ObjectID->text.value);
 		
 	  if (priority.length > 0) then
             SetOption.source_widget := top->GXDIndexPriorityMenu;
@@ -768,7 +768,7 @@ rules:
 	    return;
 	  end if;
 
-	  mutants := mgi_sql1(index_module_7 + top->mgiCitation->ObjectID->text.value);
+	  mutants := mgi_sql1(index_sql_7 + top->mgiCitation->ObjectID->text.value);
 		
 	  -- default to 'not applicable'
 	  if (mutants.length = 0) then

@@ -310,7 +310,7 @@ rules:
           LoadList.list := top->TDCList;
           send(LoadList, 0);
 
-          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := marker_module_13;
+          top->WithdrawalDialog->MarkerEventReasonMenu.subMenuId.sql := marker_sql_13;
 	  InitOptionMenu.option := top->WithdrawalDialog->MarkerEventReasonMenu;
 	  send(InitOptionMenu, 0);
 
@@ -442,7 +442,7 @@ rules:
           if (top->markerAccession->ObjectID->text.value.length > 0) then
             top->mgiMarker->ObjectID->text.value := top->markerAccession->ObjectID->text.value;
             top->mgiMarker->Marker->text.value := 
-		mgi_sql1(marker_module_8 + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
+		mgi_sql1(marker_sql_8 + mgi_DBprstr(top->markerAccession->AccessionID->text.value));
 	    VerifyMarkerChromosome.source_widget := top->mgiMarker->Marker->text;
 	    send(VerifyMarkerChromosome, 0);
 	  else
@@ -579,7 +579,7 @@ rules:
 
 	  dialog->currentMarker->Marker->text.value := top->Symbol->text.value;
 	  alleleCount : string;
-	  alleleCount := mgi_sql1(marker_module_9 + currentRecordKey);
+	  alleleCount := mgi_sql1(marker_sql_9 + currentRecordKey);
 	  if ((integer) alleleCount > 0) then
 	    dialog->hasAlleles.set := true;
           else
@@ -1692,21 +1692,21 @@ rules:
 	  table : widget;
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := marker_module_1 + currentRecordKey +
+	  cmd := marker_sql_1 + currentRecordKey +
 
-	         marker_module_2a + currentRecordKey + marker_module_2b +
+	         marker_sql_2a + currentRecordKey + marker_sql_2b +
 
-	         marker_module_3a + currentRecordKey + marker_module_3b +
+	         marker_sql_3a + currentRecordKey + marker_sql_3b +
 
-	         marker_module_4a + currentRecordKey + marker_module_4b +
+	         marker_sql_4a + currentRecordKey + marker_sql_4b +
 
-	         marker_module_5a + currentRecordKey +
+	         marker_sql_5a + currentRecordKey +
 
-	         marker_module_6a + annotTypeKey +
-		 marker_module_6b + defaultLogicalDBKey +
-		 marker_module_6c + currentRecordKey +
+	         marker_sql_6a + annotTypeKey +
+		 marker_sql_6b + defaultLogicalDBKey +
+		 marker_sql_6c + currentRecordKey +
 
-	         marker_module_7a + currentRecordKey + "\n";
+	         marker_sql_7a + currentRecordKey + "\n";
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -1986,9 +1986,9 @@ rules:
 	  -- see ACC_Accession_Insert trigger
 	  -- This error must be fixed
 
-	  isInvalid := mgi_sql1(marker_module_10a + mgi_DBprstr(value) +
-		       marker_module_10b + mgi_DBprstr(value) + 
-		       marker_module_10c);
+	  isInvalid := mgi_sql1(marker_sql_10a + mgi_DBprstr(value) +
+		       marker_sql_10b + mgi_DBprstr(value) + 
+		       marker_sql_10c);
 
 	  if (isInvalid = "1") then
 	    VerifyMarkerAcc.doit := (integer) false;
@@ -2006,9 +2006,9 @@ rules:
 
 	  if (currentRecordKey.length > 0) then
 
-	    accID := mgi_sql1(marker_module_11a + logicalKey + 
-			marker_module_11b + currentRecordKey +
-			marker_module_11c + mgi_DBprstr(value));
+	    accID := mgi_sql1(marker_sql_11a + logicalKey + 
+			marker_sql_11b + currentRecordKey +
+			marker_sql_11c + mgi_DBprstr(value));
 
 	    if (accID.length > 0) then
 	      message := message + "This Accession ID is already associated with another marker.\n\n" + value + "\n\n";
@@ -2018,8 +2018,8 @@ rules:
 
 	  -- check if the sequence accession ID is associated with a problem clone (via its note)
 
-	  accID := mgi_sql1(marker_module_12a + logicalKey +
-		            marker_module_12b + mgi_DBprstr(value));
+	  accID := mgi_sql1(marker_sql_12a + logicalKey +
+		            marker_sql_12b + mgi_DBprstr(value));
 
 	  if (accID.length > 0) then
 	    message := message + "This Accession ID is curated as a problem sequence.\n" +

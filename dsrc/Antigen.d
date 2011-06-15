@@ -418,8 +418,8 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := antigen_module_1 + currentRecordKey + "\n" +
-		 antigen_module_2a + currentRecordKey + antigen_module_2b;
+	  cmd := antigen_sql_1 + currentRecordKey + "\n" +
+		 antigen_sql_2a + currentRecordKey + antigen_sql_2b;
 
 	  results : integer := 1;
 	  row : integer := 0;

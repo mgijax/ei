@@ -231,11 +231,11 @@ rules:
 	  if (global_application = "MGD") then
 	      defaultMGITypeKey := top->MGITypePulldown->Alleles.defaultValue;
 	      defaultImageClassKey := "6481782";
-	      orderBy := image_module_8;
+	      orderBy := image_sql_8;
 	  else
 	      defaultMGITypeKey := top->MGITypePulldown->Expression.defaultValue;
 	      defaultImageClassKey := "6481781";
-	      orderBy := image_module_9;
+	      orderBy := image_sql_9;
 	  end if;
 	end does;
 
@@ -267,7 +267,7 @@ rules:
 
 	  if (top->Copyright->text.value.length = 0) then
 	    top->Copyright->text.value := 
-		mgi_sql1(image_module_1a + top->mgiCitation->ObjectID->text.value + image_module_1b);
+		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
           end if;
 
 	  currentRecordKey := "@" + KEYNAME;
@@ -386,7 +386,7 @@ rules:
 	    -- we may want to attach the reference check (see Assay.d/python_image_cache)
 	    -- in order to skip this step, if it's taking too long
             QueryNoInterrupt.source_widget := top;
-	    QueryNoInterrupt.select := image_module_7 + refsKey + orderBy;
+	    QueryNoInterrupt.select := image_sql_7 + refsKey + orderBy;
 	    QueryNoInterrupt.table := IMG_IMAGE;
 	    QueryNoInterrupt.selectItem := false;
             send(QueryNoInterrupt, 0);
@@ -457,7 +457,7 @@ rules:
 
 	  if (top->Copyright->text.value.length = 0) then
 	    top->Copyright->text.value := 
-		mgi_sql1(image_module_1a + top->mgiCitation->ObjectID->text.value + image_module_1b);
+		mgi_sql1(image_sql_1a + top->mgiCitation->ObjectID->text.value + image_sql_1b);
           end if;
 
 	  cmd := "";
@@ -790,11 +790,11 @@ rules:
 	  -- Initialize global current record key
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := image_module_2 + currentRecordKey +
-		 image_module_3a + currentRecordKey + image_module_3b +
-		 image_module_4a + currentRecordKey + image_module_4b +
-		 image_module_5 + currentRecordKey +
-		 image_module_6a + currentRecordKey + image_module_6b;
+	  cmd := image_sql_2 + currentRecordKey +
+		 image_sql_3a + currentRecordKey + image_sql_3b +
+		 image_sql_4a + currentRecordKey + image_sql_4b +
+		 image_sql_5 + currentRecordKey +
+		 image_sql_6a + currentRecordKey + image_sql_6b;
 
 	  results : integer := 1;
 	  row : integer;

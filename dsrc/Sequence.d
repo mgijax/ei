@@ -33,6 +33,7 @@ dmodule Sequence is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -66,7 +67,7 @@ locals:
 	tables : list;
 
 	cmd : string;
-	select : string := "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID, ac.preferred\n";
+	select : string := sequence_sql_1;
 	from : string;
 	where : string;
 	union : string;
@@ -679,48 +680,17 @@ rules:
           table : widget;
 	  currentKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from SEQ_Sequence_View where _Sequence_key = " + currentKey + "\n" +
-
-		"select * from SEQ_Sequence_Raw where _Sequence_key = " + currentKey + "\n" +
-
-		"select s._Assoc_key, p._Source_key, p.name, p.age from SEQ_Source_Assoc s, PRB_Source p\n" +
-		"where s._Sequence_key = " + currentKey + "\n" +
-		"and s._Source_key = p._Source_key\n" +
-		"order by p._Organism_key\n" +
-
-		"select s._Assoc_key, p._Organism_key, t.commonName from SEQ_Source_Assoc s, PRB_Source p, MGI_Organism t " +
-		"where s._Sequence_key = " + currentKey + "\n" +
-		"and s._Source_key = p._Source_key\n" +
-		"and p._Organism_key = t._Organism_key " +
-		"order by p._Organism_key\n" +
-
-		"select s._Assoc_key, p._Strain_key, t.strain from SEQ_Source_Assoc s, PRB_Source p, PRB_Strain t " +
-		"where s._Sequence_key = " + currentKey + "\n" +
-		"and s._Source_key = p._Source_key\n" +
-		"and p._Strain_key = t._Strain_key " +
-		"order by p._Organism_key\n" +
-
-		"select s._Assoc_key, p._Tissue_key, t.tissue from SEQ_Source_Assoc s, PRB_Source p, PRB_Tissue t " +
-		"where s._Sequence_key = " + currentKey + "\n" +
-		"and s._Source_key = p._Source_key\n" +
-		"and p._Tissue_key = t._Tissue_key " +
-		"order by p._Organism_key\n" +
-
-		"select s._Assoc_key, p._Gender_key, t.term from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t " +
-		"where s._Sequence_key = " + currentKey + "\n" +
-		"and s._Source_key = p._Source_key\n" +
-		"and p._Gender_key = t._Term_key " +
-		"order by p._Organism_key\n" +
-
-		"select s._Assoc_key, p._CellLine_key, t.term from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t " +
-		"where s._Sequence_key = " + currentKey + "\n" +
-		"and s._Source_key = p._Source_key\n" +
-		"and p._CellLine_key = t._Term_key " +
-		"order by p._Organism_key\n" +
-
-		"select distinct mgiType, jnum, markerID, symbol from SEQ_Marker_Cache_View where _Sequence_key = " + currentKey + "\n" +
-		"select distinct mgiType, jnum, probeID, name from SEQ_Probe_Cache_View where _Sequence_key = " + currentKey + "\n" +
-		"select distinct mgiType, jnum, alleleID, symbol from SEQ_Allele_View where _Sequence_key = " + currentKey + "\n";
+	  cmd := sequence_sql_2 + currentKey +
+		 sequence_sql_3 + currentKey +
+		 sequence_sql_4a + currentKey + sequence_sql_4b +
+		 sequence_sql_5a + currentKey + sequence_sql_5b +
+		 sequence_sql_6a + currentKey + sequence_sql_6b +
+		 sequence_sql_7a + currentKey + sequence_sql_7b +
+		 sequence_sql_8a + currentKey + sequence_sql_8b +
+		 sequence_sql_9a + currentKey + sequence_sql_9b +
+		 sequence_sql_10 + currentKey +
+		 sequence_sql_11 + currentKey +
+		 sequence_sql_12 + currentKey;
 
 	  results : integer := 1;
 	  nonRawRow : integer := 1;

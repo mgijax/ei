@@ -278,7 +278,7 @@ rules:
 	  -- Copy the appropriate values to the target table
 
 	  count : string;
-          count := mgi_sql1(insitu_module_1 + specimenKey);
+          count := mgi_sql1(insitu_sql_1 + specimenKey);
 	  (void) mgi_tblSetCell(target, mgi_tblGetCurrentRow(target), top.targetColumn, count);
 
 	  if (InSituResultCommit.quit) then
@@ -498,7 +498,7 @@ rules:
 	  -- check image list
 	  -- if image cache count <= our configured value, then ok
 	  refKey : string := top.root->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1(insitu_module_2 + refKey);
+	  refCount : string := mgi_sql1(insitu_sql_2 + refKey);
 	  if (integer) refCount <= (integer) python_image_cache then
 	    PythonImageCache.objectKey := refKey;
 	    send(PythonImageCache, 0);
@@ -534,7 +534,7 @@ rules:
 	  newCmd := saveCmd + " " + key;
 	  top->ImagePaneList.cmd := newCmd + "\norder by paneLabel";
 
-	  refCount := mgi_sql1(insitu_module_2 + key);
+	  refCount := mgi_sql1(insitu_sql_2 + key);
 	  if (integer) refCount > (integer) assay_image_lookup then
 	    LoadList.loadsmall := true;
 	  end if;
@@ -578,9 +578,9 @@ rules:
 	  ClipboardLoad.source_widget := top->ADClipboard->Label;
 	  send(ClipboardLoad, 0);
 
-	  cmd := insitu_module_3a + specimenKey + insitu_module_3b +
-		 insitu_module_4a + specimenKey + insitu_module_4b +
-		 insitu_module_5a + specimenKey + insitu_module_5b;
+	  cmd := insitu_sql_3a + specimenKey + insitu_sql_3b +
+		 insitu_sql_4a + specimenKey + insitu_sql_4b +
+		 insitu_sql_5a + specimenKey + insitu_sql_5b;
 
           dbproc :opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

@@ -318,15 +318,15 @@ rules:
 
 	  -- Set defaults
 
-	  pendingStatusKey := mgi_sql1(allele_module_1 + mgi_DBprstr(ALL_STATUS_PENDING));
+	  pendingStatusKey := mgi_sql1(allele_sql_1 + mgi_DBprstr(ALL_STATUS_PENDING));
 
-	  defaultQualifierKey := mgi_sql1(allele_module_2);
+	  defaultQualifierKey := mgi_sql1(allele_sql_2);
 
-	  defaultStatusKey := mgi_sql1(allele_module_3);
+	  defaultStatusKey := mgi_sql1(allele_sql_3);
 
-	  defaultInheritanceKeyNA := mgi_sql1(allele_module_4);
+	  defaultInheritanceKeyNA := mgi_sql1(allele_sql_4);
 
-	  defaultInheritanceKeyNS := mgi_sql1(allele_module_5);
+	  defaultInheritanceKeyNS := mgi_sql1(allele_sql_5);
 
 	  defaultStrainKeyNS := NOTSPECIFIED;
 	  defaultStrainKeyNA := NOTAPPLICABLE;
@@ -1386,14 +1386,14 @@ rules:
 		--   cell line type
 		--
 
-	        derivationKey := mgi_sql1(allele_module_6a + alleleTypeKey +
-			allele_module_6b + defaultCreatorKeyNS +
-			allele_module_6c + defaultVectorKeyNS +
-			allele_module_6d + defaultParentCellLineKeyNS +
-			allele_module_6e +
-			allele_module_6f + defaultStrainKeyNS +
-			allele_module_6g + cellLineTypeKey +
-			allele_module_6h);
+	        derivationKey := mgi_sql1(allele_sql_6a + alleleTypeKey +
+			allele_sql_6b + defaultCreatorKeyNS +
+			allele_sql_6c + defaultVectorKeyNS +
+			allele_sql_6d + defaultParentCellLineKeyNS +
+			allele_sql_6e +
+			allele_sql_6f + defaultStrainKeyNS +
+			allele_sql_6g + cellLineTypeKey +
+			allele_sql_6h);
 
 	        if (derivationKey.length = 0) then
                    StatusReport.source_widget := top.root;
@@ -1429,14 +1429,14 @@ rules:
 	      --   cell line type
 	      --
 
-	        derivationKey := mgi_sql1(allele_module_6a + alleleTypeKey +
-			allele_module_6b + defaultCreatorKeyNS +
-			allele_module_6c + defaultVectorKeyNS +
-			allele_module_6d + parentKey +
-			allele_module_6e +
-			allele_module_6f + strainKey +
-			allele_module_6g + cellLineTypeKey +
-			allele_module_6h);
+	        derivationKey := mgi_sql1(allele_sql_6a + alleleTypeKey +
+			allele_sql_6b + defaultCreatorKeyNS +
+			allele_sql_6c + defaultVectorKeyNS +
+			allele_sql_6d + parentKey +
+			allele_sql_6e +
+			allele_sql_6f + strainKey +
+			allele_sql_6g + cellLineTypeKey +
+			allele_sql_6h);
 
 	      if (derivationKey.length = 0) then
                 StatusReport.source_widget := top.root;
@@ -1472,14 +1472,14 @@ rules:
 
 		if (getDerivation) then
 
-	          derivationKey := mgi_sql1(allele_module_6a + alleleTypeKey +
-			  allele_module_6b + creatorKey +
-			  allele_module_6c + vectorKey +
-			  allele_module_6d + parentKey +
-			  allele_module_6e +
-			  allele_module_6f + strainKey +
-			  allele_module_6g + cellLineTypeKey +
-			  allele_module_6h);
+	          derivationKey := mgi_sql1(allele_sql_6a + alleleTypeKey +
+			  allele_sql_6b + creatorKey +
+			  allele_sql_6c + vectorKey +
+			  allele_sql_6d + parentKey +
+			  allele_sql_6e +
+			  allele_sql_6f + strainKey +
+			  allele_sql_6g + cellLineTypeKey +
+			  allele_sql_6h);
 
 	          if (derivationKey.length = 0) then
                     StatusReport.source_widget := top.root;
@@ -1978,19 +1978,19 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := allele_module_7 + currentRecordKey +
+	  cmd := allele_sql_7 + currentRecordKey +
 
-	         allele_module_8 + currentRecordKey +
+	         allele_sql_8 + currentRecordKey +
 
-	         allele_module_9 + currentRecordKey +
+	         allele_sql_9 + currentRecordKey +
 
-	         allele_module_10a + currentRecordKey + allele_module_10b +
+	         allele_sql_10a + currentRecordKey + allele_sql_10b +
 
-	         allele_module_11a + currentRecordKey +
-		 allele_module_11b + mgiTypeKey +
-		 allele_module_11c +
+	         allele_sql_11a + currentRecordKey +
+		 allele_sql_11b + mgiTypeKey +
+		 allele_sql_11c +
 
-		 allele_module_12 + currentRecordKey;
+		 allele_sql_12 + currentRecordKey;
 
 	  results : integer := 1;
 	  row : integer := 0;
@@ -2208,7 +2208,7 @@ rules:
 	      return;
 	  end if;
 
-	  cmd := allele_module_13 + top->mgiParentCellLine->ObjectID->text.value;
+	  cmd := allele_sql_13 + top->mgiParentCellLine->ObjectID->text.value;
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -2322,7 +2322,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select := allele_module_14 + mgi_DBprstr(value) + "\n";
+	  select := allele_sql_14 + mgi_DBprstr(value) + "\n";
 
 	  (void) mgi_writeLog(select);
 
@@ -2436,7 +2436,7 @@ rules:
 
 	  -- Search for value in the database
 
-	  select : string := allele_module_15 + mgi_DBprstr(value);
+	  select : string := allele_sql_15 + mgi_DBprstr(value);
 
 	  dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);

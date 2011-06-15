@@ -25,6 +25,7 @@ dmodule RISet is
 
 #include <mgilib.h>
 #include <syblib.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -297,8 +298,7 @@ rules:
 
 	  currentRecordKey := top->QueryList->List.keys[Select.item_position];
 
-	  cmd := "select * from RI_RISet_View where _RISet_key = " + currentRecordKey + 
-		" order by designation\n";
+	  cmd := ri_sql_1a + currentRecordKey + ri_sql_1b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

@@ -545,7 +545,7 @@ rules:
           imageList.cmd := newCmd + "\norder by paneLabel";
 
 	  -- Load the Image list
-	  refCount := mgi_sql1(assay_module_1 + refKey);
+	  refCount := mgi_sql1(assay_sql_1 + refKey);
 	  if (integer) refCount > (integer) assay_image_lookup then
 	    LoadList.loadsmall := true;
           end if;
@@ -570,7 +570,7 @@ rules:
 
 	  imageKey : string;
 	  if (currentAssay.length > 0) then
-	    imageKey := mgi_sql1(assay_module_2 + currentAssay);
+	    imageKey := mgi_sql1(assay_sql_2 + currentAssay);
 	    currentPane := imageList->List.keys.find(imageKey);
 	  end if;
 
@@ -704,7 +704,7 @@ rules:
 	  -- check image list
 	  -- if image cache count <= our configured value, then ok
           refKey : string := top->mgiCitation->ObjectID->text.value;
-	  refCount : string := mgi_sql1(assay_module_1 + refKey);
+	  refCount : string := mgi_sql1(assay_sql_1 + refKey);
 	  if (integer) refCount <= (integer) python_image_cache then
 	    PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	    send(PythonImageCache, 0);
@@ -1231,7 +1231,7 @@ rules:
 	    -- check image list
 	    -- if image cache count <= our configured value, then ok
             refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_module_1 + refKey);
+	    refCount := mgi_sql1(assay_sql_1 + refKey);
 	    if (integer) refCount <= (integer) python_image_cache then
 	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	      send(PythonImageCache, 0);
@@ -1484,7 +1484,7 @@ rules:
 	    -- check image list
 	    -- if image cache count <= our configured value, then ok
             refKey := top->mgiCitation->ObjectID->text.value;
-	    refCount := mgi_sql1(assay_module_1 + refKey);
+	    refCount := mgi_sql1(assay_sql_1 + refKey);
 	    if (integer) refCount <= (integer) python_image_cache then
 	      PythonImageCache.objectKey := top->mgiCitation->ObjectID->text.value;
 	      send(PythonImageCache, 0);
@@ -2442,8 +2442,8 @@ rules:
 
 	  -- Select general Assay information
 
-	  select := assay_module_3 + currentAssay +
-		    assay_module_4a + currentAssay + assay_module_4b;
+	  select := assay_sql_3 + currentAssay +
+		    assay_sql_4a + currentAssay + assay_sql_4b;
 
 	  results : integer := 1;
 	  reporterGene : string;
@@ -2525,9 +2525,9 @@ rules:
           end while;
 
 	  if (antibodyPrep) then
-	    select := assay_module_5 + currentAssay + "\n";
+	    select := assay_sql_5 + currentAssay + "\n";
 	  elsif (probePrep) then
-	    select := assay_module_6 + currentAssay + "\n";
+	    select := assay_sql_6 + currentAssay + "\n";
 	  end if;
 
 	  if (antibodyPrep or probePrep) then
@@ -2643,8 +2643,8 @@ rules:
 	  row : integer := 0;
 	  numRows : integer := 0;
 
-	  select := assay_module_7 + currentAssay +
-		    assay_module_8a + currentAssay + assay_module_8b;
+	  select := assay_sql_7 + currentAssay +
+		    assay_sql_8a + currentAssay + assay_sql_8b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2701,7 +2701,7 @@ rules:
 	      break;
 	    end if;
 
-	    select :=  assay_module_9 + key;
+	    select :=  assay_sql_9 + key;
             (void) dbcmd(dbproc, select);
             (void) dbsqlexec(dbproc);
  
@@ -2738,9 +2738,9 @@ rules:
 	  structureGel : string := "";
 	  structureKeys : string := "";
 
-	  select := assay_module_10 + currentAssay +
-	            assay_module_11a + currentAssay + assay_module_11b +
-	            assay_module_12 + currentAssay;
+	  select := assay_sql_10 + currentAssay +
+	            assay_sql_11a + currentAssay + assay_sql_11b +
+	            assay_sql_12 + currentAssay;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2842,7 +2842,7 @@ rules:
 	  table : widget := assayDetailForm->GelRow->Table;
 	  row : integer := 0;
 
-	  select := assay_module_13a + currentAssay + assay_module_13b;
+	  select := assay_sql_13a + currentAssay + assay_sql_13b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -2890,7 +2890,7 @@ rules:
 	  -- Retrieve number of Gel Lanes for Assay
 
 	  if (currentAssay.length > 0) then
-	    numLanes := (integer) mgi_sql1(assay_module_14 + currentAssay);
+	    numLanes := (integer) mgi_sql1(assay_sql_14 + currentAssay);
 	  end if;
 
 	  -- Add/Delete columns to support needed number of Bands
@@ -2966,7 +2966,7 @@ rules:
 
 	  lanes := create string_list();
 
-	  select := assay_module_15a + currentAssay + assay_module_15b;
+	  select := assay_sql_15a + currentAssay + assay_sql_15b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -3023,7 +3023,7 @@ rules:
 
 	  send(CreateGelBandColumns, 0);
 
-	  select := assay_module_16a + currentAssay + assay_module_16b;
+	  select := assay_sql_16a + currentAssay + assay_sql_16b;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, select);
@@ -3199,7 +3199,7 @@ rules:
 	     return;
 	   end if;
 
-	   segmentType := mgi_sql1(assay_module_17 + objectKey);
+	   segmentType := mgi_sql1(assay_sql_17 + objectKey);
 
 	   -- if no Assay selected, don't do the verification
 

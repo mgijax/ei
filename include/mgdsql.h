@@ -10,136 +10,136 @@
 
 /* Allele.d */
 
-#define allele_module_1 "select _Term_key from VOC_Term_ALLStatus_View where term = "
-#define allele_module_2 "select _Term_key from VOC_Term where _Vocab_key = 70 \
+#define allele_sql_1 "select _Term_key from VOC_Term_ALLStatus_View where term = "
+#define allele_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 70 \
 and term = 'Not Specified'"
-#define allele_module_3 "select _Term_key from VOC_Term where _Vocab_key = 73 \
+#define allele_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 73 \
 and term = 'Curated'"
-#define allele_module_4 "select _Term_key from VOC_Term where _Vocab_key = 35 \
+#define allele_sql_4 "select _Term_key from VOC_Term where _Vocab_key = 35 \
 and term = 'Not Applicable'"
-#define allele_module_5 "select _Term_key from VOC_Term where _Vocab_key = 35 \
+#define allele_sql_5 "select _Term_key from VOC_Term where _Vocab_key = 35 \
 and term = 'Not Specified'"
 
-#define allele_module_6a "select d._Derivation_key from ALL_CellLine_Derivation d, ALL_CellLine c \
+#define allele_sql_6a "select d._Derivation_key from ALL_CellLine_Derivation d, ALL_CellLine c \
 where d._DerivationType_key = "
-#define allele_module_6b " and d._Creator_key = "
-#define allele_module_6c " and d._Vector_key = "
-#define allele_module_6d " and d._ParentCellLine_key = "
-#define allele_module_6e " and d._ParentCellLine_key = c._CellLine_key"
-#define allele_module_6f " and d._Strain_key = "
-#define allele_module_6g " and d._CellLine_Type_key = "
-#define allele_module_6h " and c.isMutant = 0 "
+#define allele_sql_6b " and d._Creator_key = "
+#define allele_sql_6c " and d._Vector_key = "
+#define allele_sql_6d " and d._ParentCellLine_key = "
+#define allele_sql_6e " and d._ParentCellLine_key = c._CellLine_key "
+#define allele_sql_6f " and d._Strain_key = "
+#define allele_sql_6g " and d._CellLine_Type_key = "
+#define allele_sql_6h " and c.isMutant = 0 "
 
-#define allele_module_7 "select * from  ALL_Allele_View where _Allele_key = "
-#define allele_module_8 "\nselect _Assoc_key, _Marker_key, symbol, _Refs_key, \
+#define allele_sql_7 "select * from  ALL_Allele_View where _Allele_key = "
+#define allele_sql_8 "\nselect _Assoc_key, _Marker_key, symbol, _Refs_key, \
 jnum, short_citation, _Status_key, status, modifiedBy, modification_date \
 from ALL_Marker_Assoc_View where _Allele_key = "
-#define allele_module_9 "\nselect _Mutation_key, mutation from ALL_Allele_Mutation_View where _Allele_key = "
+#define allele_sql_9 "\nselect _Mutation_key, mutation from ALL_Allele_Mutation_View where _Allele_key = "
 
-#define allele_module_10a "\nselect rtrim(m.note) from ALL_Allele a, MRK_Notes m \
+#define allele_sql_10a "\nselect rtrim(m.note) from ALL_Allele a, MRK_Notes m \
 where a._Marker_key = m._Marker_key and a._Allele_key = "
-#define allele_module_10b "\norder by m.sequenceNum"
+#define allele_sql_10b "\norder by m.sequenceNum"
 
-#define allele_module_11a "\nselect _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, \
+#define allele_sql_11a "\nselect _Assoc_key, _ImagePane_key, _ImageClass_key, figureLabel, \
 term, mgiID, pixID, isPrimary from IMG_ImagePane_Assoc_View where _Object_key = "
 
-#define allele_module_11b " and _MGIType_key = "
+#define allele_sql_11b " and _MGIType_key = "
 
-#define allele_module_11c " order by isPrimary desc, mgiID"
+#define allele_sql_11c " order by isPrimary desc, mgiID"
 
-#define allele_module_12 "\nselect * from ALL_Allele_CellLine_View where _Allele_key = "
+#define allele_sql_12 "\nselect * from ALL_Allele_CellLine_View where _Allele_key = "
 
-#define allele_module_13 "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
+#define allele_sql_13 "select distinct _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
 from ALL_CellLine_View where _CellLine_key = "
 
-#define allele_module_14 "select * from ALL_CellLine_View where isMutant = 1 and cellLine = "
+#define allele_sql_14 "select * from ALL_CellLine_View where isMutant = 1 and cellLine = "
 
-#define allele_module_15 "select _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
+#define allele_sql_15 "select _CellLine_key, cellLine, _Strain_key, cellLineStrain, _CellLine_Type_key \
 from ALL_CellLine_View where isMutant = 0 and cellLine = "
 
 /* AlleleDerivation.d */
 
-#define derivation_module_1a "select _Derivation_key from ALL_CellLine_Derivation \
+#define derivation_sql_1a "select _Derivation_key from ALL_CellLine_Derivation \
 where _Vector_key = "
-#define derivation_module_1b " and _VectorType_key = "
-#define derivation_module_1c " and _ParentCellLine_key = "
-#define derivation_module_1d " and _DerivationType_key = "
-#define derivation_module_1e " and _Creator_key = "
+#define derivation_sql_1b " and _VectorType_key = "
+#define derivation_sql_1c " and _ParentCellLine_key = "
+#define derivation_sql_1d " and _DerivationType_key = "
+#define derivation_sql_1e " and _Creator_key = "
 
-#define derivation_module_2 "select * from ALL_CellLine_Derivation_View where _Derivation_key = "
-#define derivation_module_3 "select count(_CellLine_key) \
+#define derivation_sql_2 "select * from ALL_CellLine_Derivation_View where _Derivation_key = "
+#define derivation_sql_3 "select count(_CellLine_key) \
 from ALL_CellLine_View where _Derivation_key = "
-#define derivation_module_4 "select distinct _CellLine_key, cellLine, _Strain_key, \
+#define derivation_sql_4 "select distinct _CellLine_key, cellLine, _Strain_key, \
 cellLineStrain, _CellLine_Type_key \
 from ALL_CellLine_View \
 where _CellLine_key = "
-#define derivation_module_5 "select distinct _CellLine_key, cellLine, _Strain_key, \
+#define derivation_sql_5 "select distinct _CellLine_key, cellLine, _Strain_key, \
 cellLineStrain, _CellLine_Type_key \
 from ALL_CellLine_View \
 where cellline = "
 
 /* Cross.d */
 
-#define cross_module_1a "select * from CRS_Cross_View where _Cross_key = "
-#define cross_module_1b "\norder by whoseCross\n"
+#define cross_sql_1a "select * from CRS_Cross_View where _Cross_key = "
+#define cross_sql_1b "\norder by whoseCross\n"
 
 /* Marker.d */
 
-#define marker_module_1	"\nselect _Marker_key, _Marker_Type_key, _Marker_Status_key, \
+#define marker_sql_1	"\nselect _Marker_key, _Marker_Type_key, _Marker_Status_key, \
 symbol, name, chromosome, cytogeneticOffset, \
 createdBy, creation_date, modifiedBy, modification_date \
 from MRK_Marker_View where _Marker_key = "
 
-#define marker_module_2a "\nselect source, str(offset,10,2) \
+#define marker_sql_2a "\nselect source, str(offset,10,2) \
 from MRK_Offset where _Marker_key = "
-#define marker_module_2b " order by source" 
+#define marker_sql_2b " order by source" 
 
-#define marker_module_3a "\nselect _Marker_Event_key, _Marker_EventReason_key, \
+#define marker_sql_3a "\nselect _Marker_Event_key, _Marker_EventReason_key, \
 _History_key, sequenceNum, name, event_display, event, eventReason, history, modifiedBy \
 from MRK_History_View where _Marker_key = "
-#define marker_module_3b " order by sequenceNum, _History_key"
+#define marker_sql_3b " order by sequenceNum, _History_key"
 
-#define marker_module_4a "\nselect h.sequenceNum, h._Refs_key, b.jnum, b.short_citation \
+#define marker_sql_4a "\nselect h.sequenceNum, h._Refs_key, b.jnum, b.short_citation \
 from MRK_History h, BIB_View b where h._Marker_key = "
-#define marker_module_4b " and h._Refs_key = b._Refs_key \
+#define marker_sql_4b " and h._Refs_key = b._Refs_key \
 order by h.sequenceNum, h._History_key"
 
-#define marker_module_5a "\nselect _Current_key, current_symbol \
+#define marker_sql_5a "\nselect _Current_key, current_symbol \
 from MRK_Current_View where _Marker_key = "
 
-#define marker_module_6a "\nselect tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term \
+#define marker_sql_6a "\nselect tdc._Annot_key, tdc._Term_key, tdc.accID, tdc.term \
 from VOC_Annot_View tdc where tdc._AnnotType_key = "
-#define marker_module_6b " and tdc._LogicalDB_key = "
-#define marker_module_6c " and tdc._Object_key = "
+#define marker_sql_6b " and tdc._LogicalDB_key = "
+#define marker_sql_6c " and tdc._Object_key = "
 
-#define marker_module_7a "\nselect _Alias_key, alias \
+#define marker_sql_7a "\nselect _Alias_key, alias \
 from MRK_Alias_View where _Marker_key = "
 
-#define marker_module_8	"\nselect symbol from MRK_Mouse_View where mgiID = "
+#define marker_sql_8	"\nselect symbol from MRK_Mouse_View where mgiID = "
 
-#define marker_module_9	"\nselect count(*) from ALL_Allele where _Marker_key = "
+#define marker_sql_9	"\nselect count(*) from ALL_Allele where _Marker_key = "
 
-#define marker_module_10a "declare @isInvalid integer \
+#define marker_sql_10a "declare @isInvalid integer \
 select @isInvalid = 0 \
 if (select "
-#define marker_module_10b ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and \
+#define marker_sql_10b ") not like '[A-Z][0-9][0-9][0-9][0-9][0-9]' and \
 (select "
-#define marker_module_10c ") not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' \
+#define marker_sql_10c ") not like '[A-Z][A-Z][0-9][0-9][0-9][0-9][0-9][0-9]' \
 begin select @isInvalid = 1 end select @isInvalid"
 
-#define marker_module_11a "select accID from ACC_Accession \
+#define marker_sql_11a "select accID from ACC_Accession \
 where _MGIType_key = 2 and _LogicalDB_key = "
-#define marker_module_11b " and _Object_key != "
-#define marker_module_11c " and accID = "
+#define marker_sql_11b " and _Object_key != "
+#define marker_sql_11c " and accID = "
 
-#define marker_module_12a "select a.accID from PRB_Notes p, ACC_Accession a \
+#define marker_sql_12a "select a.accID from PRB_Notes p, ACC_Accession a \
 where p.note like '%staff have found evidence of artifact in the sequence of this molecular%' \
 and p._Probe_key = a._Object_key \
 and a._MGIType_key = 3 \
 and a._LogicalDB_key = "
-#define marker_module_12b " and a.accID = "
+#define marker_sql_12b " and a.accID = "
 
-#define marker_module_13 "select * from MRK_EventReason where _Marker_EventReason_key >= -1 \
+#define marker_sql_13 "select * from MRK_EventReason where _Marker_EventReason_key >= -1 \
 order by eventReason"
 
 /* Genotype.d */
@@ -458,8 +458,77 @@ order by a._Organism_key\n"
 
 /* Reference.d */
 
+#define ref_sql_1 "select _DataSet_key, abbreviation, inMGIprocedure from BIB_DataSet \
+where inMGIprocedure is not null and isObsolete = 0 \
+order by sequenceNum"
+#define ref_sql_2 "select _DataSet_key, abbreviation from BIB_DataSet \
+where inMGIprocedure is null and isObsolete = 0 \
+order by sequenceNum"
+#define ref_sql_3 "select * from BIB_All2_View where _Refs_key = "
+#define ref_sql_4 "\nselect * from BIB_Books where _Refs_key = "
+#define ref_sql_5a "\nselect rtrim(note) from BIB_Notes where _Refs_key = "
+#define ref_sql_5b "\norder by sequenceNum"
+#define ref_sql_6 "select _Assoc_key, _DataSet_key, isNeverUsed from BIB_DataSet_Assoc where _Refs_key = "
+
 /* RI.d */
 
+#define ri_sql_1a "select * from RI_RISet_View where _RISet_key = "
+#define ri_sql_1b "\norder by designation\n"
+
 /* Sequence.d */
+
+#define sequence_sql_1 "select ac._Object_key, ac.accID + ',' + v1.term + ',' + v2.term, v1.term, ac.accID, ac.preferred\n"
+#define sequence_sql_2 "select * from SEQ_Sequence_View where _Sequence_key = "
+#define sequence_sql_3 "\nselect * from SEQ_Sequence_Raw where _Sequence_key = "
+
+#define sequence_sql_4a "\nselect s._Assoc_key, p._Source_key, p.name, p.age  \
+from SEQ_Source_Assoc s, PRB_Source p \
+where s._Source_key = p._Source_key \
+and s._Sequence_key = "
+#define sequence_sql_4b "\norder by p._Organism_key\n"
+
+#define sequence_sql_5a "\nselect s._Assoc_key, p._Organism_key, t.commonName \
+from SEQ_Source_Assoc s, PRB_Source p, MGI_Organism t \
+where s._Source_key = p._Source_key \
+and p._Organism_key = t._Organism_key \
+and s._Sequence_key = "
+#define sequence_sql_5b "\norder by p._Organism_key\n"
+
+#define sequence_sql_6a "\nselect s._Assoc_key, p._Strain_key, t.strain \
+from SEQ_Source_Assoc s, PRB_Source p, PRB_Strain t \
+where s._Source_key = p._Source_key \
+and p._Strain_key = t._Strain_key \
+and s._Sequence_key = "
+#define sequence_sql_6b "\norder by p._Organism_key\n"
+
+#define sequence_sql_7a "\nselect s._Assoc_key, p._Tissue_key, t.tissue \
+from SEQ_Source_Assoc s, PRB_Source p, PRB_Tissue t \
+where s._Source_key = p._Source_key \
+and p._Tissue_key = t._Tissue_key \
+and s._Sequence_key = "
+#define sequence_sql_7b "\norder by p._Organism_key\n"
+
+#define sequence_sql_8a "\nselect s._Assoc_key, p._Gender_key, t.term \
+from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t \
+where s._Source_key = p._Source_key \
+and p._Gender_key = t._Term_key \
+and s._Sequence_key = "
+#define sequence_sql_8b "\norder by p._Organism_key\n"
+
+#define sequence_sql_9a "\nselect s._Assoc_key, p._CellLine_key, t.term \
+from SEQ_Source_Assoc s, PRB_Source p, VOC_Term t \
+where s._Source_key = p._Source_key \
+and p._CellLine_key = t._Term_key \
+and s._Sequence_key = "
+#define sequence_sql_9b "\norder by p._Organism_key\n"
+
+#define sequence_sql_10 "\nselect distinct mgiType, jnum, markerID, symbol \
+from SEQ_Marker_Cache_View where _Sequence_key = "
+
+#define sequence_sql_11 "\nselect distinct mgiType, jnum, probeID, name \
+from SEQ_Probe_Cache_View where _Sequence_key = "
+
+#define sequence_sql_12 "\nselect distinct mgiType, jnum, alleleID, symbol \
+from SEQ_Allele_View where _Sequence_key = "
 
 #endif

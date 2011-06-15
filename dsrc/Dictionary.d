@@ -307,12 +307,12 @@ rules:
 
 	   -- set stage key
 	   defaultStageKey := 
-	     mgi_sql1(dictionary_module_1 + (string) current_stagenum );
+	     mgi_sql1(dictionary_sql_1 + (string) current_stagenum );
 
 	   -- set system key = user selection or TS default
 
 	   defaultSystemKey := 
-	     mgi_sql1(dictionary_module_2 + defaultStageKey);
+	     mgi_sql1(dictionary_sql_2 + defaultStageKey);
 
 	   if (not isADSystem) then
              InitOptionMenu.option := addDialog->ADSystemMenu;
