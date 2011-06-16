@@ -165,34 +165,56 @@ where _Object_key = "
 #define govoc_sql_2 "select _Marker_Type_key from  MRK_Marker where _Marker_key = "
 #define govoc_sql_3 "select dbView from ACC_MGIType where _MGIType_key = "
 #define govoc_sql_4 "select _Term_key from VOC_Term where term is null and _Vocab_key = "
+
 #define govoc_sql_5a "select distinct _Object_key, description from "
 #define govoc_sql_5b " where _Object_key = "
+
 #define govoc_sql_6a "select _Object_key, accID, description, short_description from "
 #define govoc_sql_6b " where prefixPart = 'MGI:' and preferred = 1 and _Object_key = "
 #define govoc_sql_6c " order by description\n"
-#define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, dagAbbrev = substring(v.dagAbbrev,1,3), e.* \
+
+#define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier,  \
+dagAbbrev = substring(v.dagAbbrev,1,3), e.* \
 from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
 where a._AnnotType_key = "
-#define govoc_sql_7b " and a._Object_key = "
-#define govoc_sql_7c " and a._Annot_key = e._Annot_key \
-and a._Vocab_key = v._Vocab_key \
-and a._Term_key = v._Object_key \
-order by v.dagAbbrev, e.modification_date desc, a.term\n"
+#define govoc_sql_7b "\nand a._Object_key = "
+#define govoc_sql_7c "\nand a._Annot_key = e._Annot_key \
+\nand a._Vocab_key = v._Vocab_key \
+\nand a._Term_key = v._Object_key \
+\norder by v.dagAbbrev, e.modification_date desc, a.term\n"
+
+#define govoc_sql_12a "\nselect distinct a._Annot_key, substring(v.dagAbbrev,1,3) \
+from VOC_Annot_View a, DAG_Node_View v \
+where a._AnnotType_key = "
+#define govoc_sql_12b "\nand a._Object_key = "
+#define govoc_sql_12c "\nand a._Vocab_key = v._Vocab_key \
+and a._Term_key = v._Object_key\n"
+
 #define govoc_sql_8a "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum \
 from VOC_Annot a, VOC_Evidence e, MGI_Note_VocEvidence_View n \
 where a._Annot_key = e._Annot_key \
 and e._AnnotEvidence_key = n._Object_key \
 and a._Object_key = "
 #define govoc_sql_8b "\norder by n._Object_key, n.sequenceNum\n"
+
 #define govoc_sql_9 "select isReferenceGene, completion_date \
 from GO_Tracking_View where _Marker_key = "
+
 #define govoc_sql_10a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r  \
 where r._Marker_key = "
 #define govoc_sql_10b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e \
 where _AnnotType_key = "
 #define govoc_sql_10c "\nand a._Annot_key = e._Annot_key  \
-and e._Refs_key = r._Refs_key)  \
+and e._Refs_key = r._Refs_key) \
 order by r.jnum desc\n"
+
+#define govoc_sql_11a "select r._Refs_key, jnum, short_citation from BIB_GOXRef_View r  \
+where r._Marker_key = "
+#define govoc_sql_11b "\nand not exists (select 1 from VOC_Annot a, VOC_Evidence e \
+where a._Annot_key = e._Annot_key \
+and e._Refs_key = r._Refs_key \
+and a._AnnotType_key = "
+#define govoc_sql_11c ")\norder by r.jnum desc\n"
 
 /* MarkerNonMouse.d */
 
