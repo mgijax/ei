@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun  9 09:21:28 2011";
+      lastWritten = "Tue Jun 21 09:19:09 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -3091,6 +3091,9 @@ Module: MGI
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle;

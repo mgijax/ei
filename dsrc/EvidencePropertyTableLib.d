@@ -131,6 +131,8 @@ rules:
 	  labelString : string := LoadEvidencePropertyTable.labelString;
 	  editMode : string := LoadEvidencePropertyTable.editMode;
 	  cmd : string;
+	  nextSeqNum : integer;
+	  lastRow : integer;
 
 	  ClearTable.table := table;
 	  send(ClearTable, 0);
@@ -163,10 +165,19 @@ rules:
 	      (void) mgi_tblSetCell(table, row, table.propertyValue, mgi_getstr(dbproc, 6));
 	      (void) mgi_tblSetCell(table, row, table.editMode, editMode);
               row := row + 1;
+	      nextSeqNum := (integer) mgi_getstr(dbproc, 5);
 
             end while;
           end while;
           (void) dbclose(dbproc);
+
+	  lastRow := mgi_tblNumRows(table);
+	  while (row <= lastRow) do
+	    nextSeqNum := nextSeqNum + 1;
+	    (void) mgi_tblSetCell(table, row, table.seqNum, (string) nextSeqNum);
+            row := row + 1;
+          end while;
+
 	end does;
 
 --
@@ -192,6 +203,7 @@ rules:
 	  set : string := "";
 	  keyName : string := "propertyKey";
 	  keyDefined : boolean := false;
+	  lastStanza : string := "0";
  
           if (objectKey.length = 0) then
             StatusReport.source_widget := table.top;
@@ -210,6 +222,14 @@ rules:
 	    propertyTermKey := mgi_tblGetCell(table, row, table.propertyTermKey);
 	    propertyValue := mgi_tblGetCell(table, row, table.propertyValue);
 	    seqNum := mgi_tblGetCell(table, row, table.seqNum);
+
+	    --if (lastStanza != propertyStanza) then
+	     --  seqNum := 1;
+	    --else
+	    --   seqNum := seqNum + 1;
+            --end if;
+
+	   -- lastStanza := propertyStanza;
 
             if (editMode = TBL_ROW_ADD) then
 

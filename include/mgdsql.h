@@ -173,15 +173,12 @@ where _Object_key = "
 #define govoc_sql_6b " where prefixPart = 'MGI:' and preferred = 1 and _Object_key = "
 #define govoc_sql_6c " order by description\n"
 
-#define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier,  \
-dagAbbrev = substring(v.dagAbbrev,1,3), e.* \
-from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
+#define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, e.* \
+from VOC_Annot_View a, VOC_Evidence_View e \
 where a._AnnotType_key = "
-#define govoc_sql_7b "\nand a._Object_key = "
-#define govoc_sql_7c "\nand a._Annot_key = e._Annot_key \
-\nand a._Vocab_key = v._Vocab_key \
-\nand a._Term_key = v._Object_key \
-\norder by v.dagAbbrev, e.modification_date desc, a.term\n"
+#define govoc_sql_7b " and a._Object_key = "
+#define govoc_sql_7c " and a._Annot_key = e._Annot_key \
+order by e.evidenceSeqNum, e.modification_date\n"
 
 #define govoc_sql_12a "\nselect distinct a._Annot_key, substring(v.dagAbbrev,1,3) \
 from VOC_Annot_View a, DAG_Node_View v \
@@ -189,13 +186,6 @@ where a._AnnotType_key = "
 #define govoc_sql_12b "\nand a._Object_key = "
 #define govoc_sql_12c "\nand a._Vocab_key = v._Vocab_key \
 and a._Term_key = v._Object_key\n"
-
-#define govoc_sql_8a "select distinct n._Note_key, n._Object_key, n.note, n.sequenceNum \
-from VOC_Annot a, VOC_Evidence e, MGI_Note_VocEvidence_View n \
-where a._Annot_key = e._Annot_key \
-and e._AnnotEvidence_key = n._Object_key \
-and a._Object_key = "
-#define govoc_sql_8b "\norder by n._Object_key, n.sequenceNum\n"
 
 #define govoc_sql_9 "select isReferenceGene, completion_date \
 from GO_Tracking_View where _Marker_key = "

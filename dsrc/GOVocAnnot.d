@@ -4,12 +4,15 @@
 -- GOVocAnnot.d 01/02/2002
 --
 -- TopLevelShell:		GOVocAnnotModule
--- Database Tables Affected:	Voc_Annot, VOC_Evidence
+-- Database Tables Affected:	Voc_Annot, VOC_Evidence, VOC_Evidence_Property
 -- Actions Allowed:		Add, Modify, Delete
 --
 -- To invoke an instance of this module, see MGI.d:CreateMGIModule.
 --
 -- History
+--
+-- 11/15/2010	lec
+--	TR 10044/GO-Notes/GO Properties
 --
 -- 08/26/2009
 --	TR 9247; change non-gene marker "cannot modify" message to "warning" message
@@ -61,6 +64,7 @@
 --
 -- 04/28/2004 lec
 --	- TR 5693; GO annotation note template (see GONoteInit, NotePreCancel)
+--	- obsoleted/removed as of TR10044/11/15/2011
 --
 -- 02/19/2004 lec
 --	- TR 5567; launch MP Annotations
@@ -116,12 +120,13 @@ devents:
 	Delete :local [];				-- Delete record
         ClearGO :local [reset : boolean := false;];
 	GOComplete :local [];				-- Append Completion Date to GO Note
-	GONoteInit :local [];				-- Pre-initialization of Note Dialog
 	GOTraverse :local [];
 	GOVocAnnotExit :local [];			-- Destroys D module instance & cleans up
 	Init :local [];					-- Initialize globals, etc.
+        LoadEvidenceProperty :local [reason : integer;  -- Load Evidence Properties
+                            row : integer := -1;];
 	Modify :local [];				-- Modify record
-	NotePreCancel :local [];			-- Pre-cancellation of Note Dialog
+	ModifyGOProperty : local [];
 	PrepareSearch :local [];			-- Construct SQL search clause
 	Search :translation [prepareSearch : boolean := true;];-- Execute SQL search clause
 	Select :local [item_position : integer;];	-- Select record
@@ -152,6 +157,7 @@ locals:
 	defaultQualifierKey : string;
 
 	annotTable : widget;		-- Annotation table
+	propertyTable : widget;
 
 	goNoteTemplate : string := "evidence:\nanatomy:\ncell type:\ngene product:\nmodification:\ntarget:\nexternal ref:\ntext:";
 
@@ -214,11 +220,15 @@ rules:
 
 	BuildDynamicComponents does
 	  annotTable := top->Annotation->Table;
+	  propertyTable := top->EvidenceProperty->Table;
 
 	  InitOptionMenu.option := top->AnnotQualifierMenu;
 	  send(InitOptionMenu, 0);
 
 	  InitOptionMenu.option := top->EvidenceCodeMenu;
+	  send(InitOptionMenu, 0);
+
+	  InitOptionMenu.option := top->EvidencePropertyMenu;
 	  send(InitOptionMenu, 0);
 
 	end does;
@@ -239,6 +249,9 @@ rules:
 	    ClearTable.table := top->Reference->Table;
 	    send(ClearTable, 0);
 	  end if;
+
+          propertyTable.propertyLoaded := false;
+
 	end does;
 
 --
@@ -260,6 +273,7 @@ rules:
 	  -- List of all Table widgets used in form
 
 	  tables.append(top->Annotation->Table);
+	  tables.append(top->EvidenceProperty->Table);
 	  tables.append(top->Reference->Table);
 
           -- Set Row Count
@@ -338,7 +352,6 @@ rules:
 	  refsKey : string;
           evidenceKey : string;
 	  inferredFrom : string;
-	  notes : string;
           set : string := "";
 	  keyDeclared : boolean := false;
 	  keyName : string := "annotEvidenceKey";
@@ -413,7 +426,6 @@ rules:
             refsKey := mgi_tblGetCell(annotTable, row, annotTable.refsKey);
             evidenceKey := mgi_tblGetCell(annotTable, row, annotTable.evidenceKey);
             inferredFrom := mgi_tblGetCell(annotTable, row, annotTable.inferredFrom);
-            notes := mgi_tblGetCell(annotTable, row, annotTable.notes);
  
 	    if (evidenceKey = "115" and
 	       (editMode = TBL_ROW_ADD or 
@@ -490,18 +502,6 @@ rules:
 		       mgi_DBprstr(inferredFrom) + "," +
 		       global_loginKey + "," + global_loginKey + ")\n";
 
-	      ModifyNotes.source_widget := annotTable;
-	      ModifyNotes.tableID := MGI_NOTE;
-	      ModifyNotes.key := "@" + keyName;
-	      ModifyNotes.row := row;
-	      ModifyNotes.column := annotTable.notes;
-	      ModifyNotes.keyDeclared := notesModified;
-	      send(ModifyNotes, 0);
-	      cmd := cmd + annotTable.sqlCmd;
-	      if (annotTable.sqlCmd.length > 0) then
-		notesModified := true;
-	      end if;
-
             elsif (editMode = TBL_ROW_MODIFY) then
 
 	      set := "_Qualifier_key = " + qualifierKey;
@@ -517,18 +517,6 @@ rules:
 		     "inferredFrom = " + mgi_DBprstr(inferredFrom);
 
               cmd := cmd + mgi_DBupdate(VOC_EVIDENCE, key, set);
-
-	      ModifyNotes.source_widget := annotTable;
-	      ModifyNotes.tableID := MGI_NOTE;
-	      ModifyNotes.key := key;
-	      ModifyNotes.row := row;
-	      ModifyNotes.column := annotTable.notes;
-	      ModifyNotes.keyDeclared := notesModified;
-	      send(ModifyNotes, 0);
-	      cmd := cmd + annotTable.sqlCmd;
-	      if (annotTable.sqlCmd.length > 0) then
-		notesModified := true;
-	      end if;
 
             elsif (editMode = TBL_ROW_DELETE) then
                cmd := cmd + mgi_DBdelete(VOC_EVIDENCE, key);
@@ -598,6 +586,94 @@ rules:
 	end does;
 
 --
+-- ModifyGOProperty
+--
+-- Activated from:	top->EvidenceProperty->Save
+--
+-- Construct and execute command for record modifcations for Properties
+--
+
+	ModifyGOProperty does
+	  row : integer;
+          annotEvidenceKey : string;
+
+          (void) busy_cursor(top);
+
+          row := mgi_tblGetCurrentRow(annotTable);
+          annotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
+
+          ProcessEvidencePropertyTable.table := propertyTable;
+          ProcessEvidencePropertyTable.objectKey := annotEvidenceKey;
+          ProcessEvidencePropertyTable.tableID := VOC_EVIDENCEPROPERTY_VIEW;
+          send(ProcessEvidencePropertyTable, 0);
+
+          ModifySQL.cmd := propertyTable.sqlCmd;
+	  ModifySQL.list := top->QueryList;
+	  ModifySQL.reselect := false;
+          send(ModifySQL, 0);
+
+	  propertyTable.propertyLoaded := false;
+	  LoadEvidenceProperty.reason := TBL_REASON_ENTER_CELL_END;
+	  send(LoadEvidenceProperty, 0);
+
+          (void) reset_cursor(top);
+	end does;
+
+--
+-- LoadEvidenceProperty
+--
+-- Activated from:      propertyTable.xrtTblEnterCellCallback
+--
+-- Load Evidence/Properties of current row into Property table only if we haven't yet loaded them
+--
+
+        LoadEvidenceProperty does
+          reason : integer := LoadEvidenceProperty.reason;
+          row : integer := LoadEvidenceProperty.row;
+          annotEvidenceKey : string;
+
+          if (reason != TBL_REASON_ENTER_CELL_END) then
+            return;
+          end if;
+
+          if (row < 0) then
+            row := mgi_tblGetCurrentRow(annotTable);
+          end if;
+
+          if (annotTable.row != row) then
+            propertyTable.propertyLoaded := false;
+          end if;
+
+          if (propertyTable.propertyLoaded) then
+            return;
+          end if;
+
+          annotEvidenceKey := mgi_tblGetCell(annotTable, row, annotTable.annotEvidenceKey);
+
+          if (annotEvidenceKey.length = 0) then
+            ClearTable.table := propertyTable;
+            send(ClearTable, 0);
+            propertyTable->label.labelString := "Properties";
+            return;
+          end if;
+
+          (void) busy_cursor(top);
+
+          termID : string := mgi_tblGetCell(annotTable, row, annotTable.termAccID);
+          jnum : string := "J:" + mgi_tblGetCell(annotTable, row, annotTable.jnum);
+
+          LoadEvidencePropertyTable.table := propertyTable;
+          LoadEvidencePropertyTable.tableID := VOC_EVIDENCEPROPERTY_VIEW;
+          LoadEvidencePropertyTable.objectKey := annotEvidenceKey;
+          LoadEvidencePropertyTable.labelString := termID + ", " + jnum;
+          send(LoadEvidencePropertyTable, 0);
+
+          propertyTable.propertyLoaded := true;
+
+          (void) reset_cursor(top);
+        end does;
+
+--
 -- PrepareSearch
 --
 -- Construct select statement based on values entered by user
@@ -607,7 +683,7 @@ rules:
 	  value : string;
 	  from_annot : boolean := false;
 	  from_evidence : boolean := false;
-	  from_notes : boolean := false;
+	  from_property : boolean := false;
 	  from_user1 : boolean := false;
 	  from_user2 : boolean := false;
 	  from_tracking : boolean := false;
@@ -690,6 +766,22 @@ rules:
 	    from_user2 := true;
 	  end if;
 
+	  -- Evidence Property
+
+	  value := mgi_tblGetCell(propertyTable, 0, propertyTable.propertyTermKey);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand p._PropertyTerm_key = " + value;
+	    from_evidence := true;
+	    from_property := true;
+	  end if;
+
+	  value := mgi_tblGetCell(propertyTable, 0, propertyTable.propertyValue);
+	  if (value.length > 0 and value != "NULL") then
+	    where := where + "\nand p.value like" + mgi_DBprstr(value);
+	    from_evidence := true;
+	    from_property := true;
+	  end if;
+
 	  -- Tracking
 
 	  if (top->ReferenceGeneMenu.menuHistory.modified and
@@ -746,14 +838,6 @@ rules:
 	    from_evidence := true;
 	  end if;
 
-	  value := mgi_tblGetCell(annotTable, 0, annotTable.notes);
-	  if (value.length > 0) then
-	    where := where + "\nand n.note like " + mgi_DBprstr(value);
-	    from_annot := true;
-	    from_evidence := true;
-	    from_notes := true;
-	  end if;
-
 	  if (from_evidence) then
 	    from_annot := true;
 	  end if;
@@ -771,6 +855,11 @@ rules:
 	    where := where + "\nand a._Annot_key = e._Annot_key";
 	  end if;
 
+	  if (from_property) then
+	    from := from + "," + mgi_DBtable(VOC_EVIDENCE_PROPERTY) + " p";
+	    where := where + "\nand e._AnnotEvidence_key = p._AnnotEvidence_key";
+	  end if;
+
 	  if (from_user1) then
 	    from := from + "," + mgi_DBtable(MGI_USER) + " u1";
 	    where := where + "\nand e._ModifiedBy_key = u1._User_key";
@@ -779,11 +868,6 @@ rules:
 	  if (from_user2) then
 	    from := from + "," + mgi_DBtable(MGI_USER) + " u2";
 	    where := where + "\nand e._CreatedBy_key = u2._User_key";
-	  end if;
-
-	  if (from_notes) then
-	    from := from + "," + mgi_DBtable(MGI_NOTE_VOCEVIDENCE_VIEW) + " n";
-	    where := where + "\nand e._AnnotEvidence_key = n._Object_key";
 	  end if;
 
 	  if (from_tracking) then
@@ -862,7 +946,7 @@ rules:
 
 	  cmd : string := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c +
 	                  govoc_sql_7a + annotTypeKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c +
-			  govoc_sql_8a + currentRecordKey + govoc_sql_8b +
+			  govoc_sql_12a + annotTypeKey + govoc_sql_12b + currentRecordKey + govoc_sql_12c +
 			  govoc_sql_9 + currentRecordKey;
 
 	  row : integer := 0;
@@ -885,44 +969,43 @@ rules:
 	          top->mgiAccession->AccessionName->text.value := 
 		    top->mgiAccession->AccessionName->text.value + ";" + mgi_getstr(dbproc, 4);
 		end if;
+
 	      elsif (results = 2) then
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 8));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotEvidenceKey, mgi_getstr(dbproc, 7));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.annotKey, mgi_getstr(dbproc, 8));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termKey, mgi_getstr(dbproc, 1));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.term, mgi_getstr(dbproc, 2));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.termAccID, mgi_getstr(dbproc, 4));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.dag, mgi_getstr(dbproc, 7));
-
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifierKey, mgi_getstr(dbproc, 5));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.qualifier, mgi_getstr(dbproc, 6));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 10));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 17));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidenceKey, mgi_getstr(dbproc, 9));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.evidence, mgi_getstr(dbproc, 16));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 11));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 20));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 21));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.refsKey, mgi_getstr(dbproc, 10));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.jnum, mgi_getstr(dbproc, 19));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.citation, mgi_getstr(dbproc, 20));
 
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 12));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 23));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 16));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 22));
-	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.inferredFrom, mgi_getstr(dbproc, 11));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.editor, mgi_getstr(dbproc, 22));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.modifiedDate, mgi_getstr(dbproc, 15));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
+
 	      elsif (results = 3) then
-                objectKey := mgi_getstr(dbproc, 2);
+                objectKey := mgi_getstr(dbproc, 1);
 		i := 0;
 		while (i < mgi_tblNumRows(annotTable)) do
-		  if (mgi_tblGetCell(annotTable, i, annotTable.annotEvidenceKey) = objectKey) then
-		    value := mgi_tblGetCell(annotTable, i, annotTable.notes) + mgi_getstr(dbproc, 3);
-	            (void) mgi_tblSetCell(annotTable, i, annotTable.notes, value);
-	            (void) mgi_tblSetCell(annotTable, i, annotTable.noteKey, mgi_getstr(dbproc, 1));
+		  if (mgi_tblGetCell(annotTable, i, annotTable.annotKey) = objectKey) then
+	            (void) mgi_tblSetCell(annotTable, i, annotTable.dag, mgi_getstr(dbproc, 2));
 		  end if;
 		  i := i + 1;
 		end while;
+
 	      elsif (results = 4) then
 
                 SetOption.source_widget := top->ReferenceGeneMenu;
@@ -947,6 +1030,9 @@ rules:
           end while;
  
 	  (void) dbclose(dbproc);
+
+	  -- Sort by DAG
+	  (void) mgi_tblSort(annotTable, annotTable.dag);
 
 	  -- Reset Background
 
@@ -992,10 +1078,15 @@ rules:
 	  -- End Reset Background
 
 	  send(SelectGOReferences, 0);
+
 	  LoadNoteForm.notew := top->mgiNoteForm;
 	  LoadNoteForm.tableID := MGI_NOTE_MRKGO_VIEW;
 	  LoadNoteForm.objectKey := currentRecordKey;
 	  send(LoadNoteForm, 0);
+
+          LoadEvidenceProperty.reason := TBL_REASON_ENTER_CELL_END;
+          LoadEvidenceProperty.row := 0;
+          send(LoadEvidenceProperty, 0);
 
           top->QueryList->List.row := Select.item_position;
 
@@ -1029,9 +1120,11 @@ rules:
 --	TR 6036; exclude any reference which has a GO annotation
 --			" where a._Object_key = r._Marker_key " +
 
-	  --(void) mgi_writeLog('selecting GO reference:begin\n');
 	  cmd : string;
-	  cmd := govoc_sql_10a + currentRecordKey +  govoc_sql_10b + annotTypeKey + govoc_sql_10c;
+	  cmd := govoc_sql_11a + currentRecordKey + 
+		 govoc_sql_11b + annotTypeKey +
+		 govoc_sql_11c;
+
 	  row : integer := 0;
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);
@@ -1077,8 +1170,7 @@ rules:
 	  annotTable.annotVocab := top->VocAnnotTypeMenu.menuHistory.annotVocab;
 	  annotTable.vocabQualifierKey := top->VocAnnotTypeMenu.menuHistory.qualifierKey;
 
-	  defaultQualifierKey := 
-	      mgi_sql1(govoc_sql_4 + (string) annotTable.vocabQualifierKey);
+	  defaultQualifierKey := mgi_sql1(govoc_sql_4 + (string) annotTable.vocabQualifierKey);
 
 	  (void) reset_cursor(mgi);
 	end does;
@@ -1108,25 +1200,9 @@ rules:
           SetOption.value := mgi_tblGetCell(table, row, table.evidenceKey);
           send(SetOption, 0);
 
+	  annotTable.row := row;
+
         end does;
-
---
--- NotePreCancel
--- (TR 5693)
---
--- Activated From:  NoteDialog->Cancel.activateCallback
--- Does:            If annotation is GO/Marker and row note = GO note template,
---		    then blank the note.  We don't want to save a note if
---		    it's just equal to the template.
---
-
-	NotePreCancel does
-	  row : integer := mgi_tblGetCurrentRow(annotTable);
-
-	  if (mgi_tblGetCell(annotTable, row, annotTable.notes) = goNoteTemplate) then
-	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, "");
-	  end if;
-	end does;
 
 --
 -- GOComplete
@@ -1140,26 +1216,6 @@ rules:
 	    GOComplete.source_widget.note := "<d>" + get_date("%m/%d/%Y") + "</d>";
 	    AppendNote.source_widget := GOComplete.source_widget;
 	    send(AppendNote, 0);
-	end does;
-
---
--- GONoteInit
--- (TR 5693)
---
--- Activated From:  NotePush.activateCallback
--- Does:            If current row note is blank,
---		    then initialize row note with GO note template.
---
-
-	GONoteInit does
-	  row : integer := mgi_tblGetCurrentRow(annotTable);
-
-	  if (mgi_tblGetCell(annotTable, row, annotTable.notes) = "") then
-	    (void) mgi_tblSetCell(annotTable, row, annotTable.notes, goNoteTemplate);
-	  end if;
-
-	  NoteInit.source_widget := top->Annotation->NotePush;
-	  send(NoteInit, 0);
 	end does;
 
 --
@@ -1181,11 +1237,7 @@ rules:
 	    return;
 	  end if;
 
---	  if (column = annotTable.inferredFrom) then
---	    send(GONoteInit, 0);
---	  end if;
-
-	  if (column = annotTable.notes or column = annotTable.editor) then
+	  if (column = annotTable.editor) then
 	    if ((row + 1) = mgi_tblNumRows(annotTable)) then
 	      AddTableRow.table := annotTable;
 	      send(AddTableRow, 0);

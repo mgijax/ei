@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun  9 09:21:27 2011";
+      lastWritten = "Tue Jun 21 09:19:10 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -385,6 +385,9 @@ Module: GXD
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
@@ -1386,6 +1389,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle;
@@ -3463,6 +3469,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;

@@ -50,6 +50,8 @@
 #	IP  - issue
 #	VI  - volume
 #	AB  - abstract
+#	AID - doi 
+#	  for example: 10.1016/j.brainres.2010.09.026 [doi]
 #	plus others...
 #
 # File Processing

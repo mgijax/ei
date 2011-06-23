@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun  9 09:21:18 2011";
+      lastWritten = "Tue Jun 21 09:19:06 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -116,6 +116,13 @@ Module: mgiOption
                         labelString = PubMed;
                       Group: User
                         defaultValue = 29;
+                    }
+                    {
+                      DXDOI = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = DOI;
+                      Group: User
+                        defaultValue = 65;
                     }
                     {
                       NSequence = AccToggle : mgiOption;

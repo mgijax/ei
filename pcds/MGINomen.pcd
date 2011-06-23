@@ -2,7 +2,7 @@ Module: MGINomen
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun  9 09:21:21 2011";
+      lastWritten = "Tue Jun 21 09:19:08 2011";
         {
           NomenModule = Module : MGI;
           Group: Control
@@ -414,6 +414,9 @@ Shift<Key>Tab: prev-tab-group()
                                                     PubMed = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    DXDOI = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     NSequence = AccToggle;
                                                     Group: Widget
                                                       managed = True;
@@ -699,6 +702,9 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     PubMed = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    DXDOI = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     NSequence = AccToggle : mgiOption;
