@@ -87,6 +87,9 @@
 #
 # History
 #
+#	lec	06/23/2011
+#	- TR 10725/add AID for [doi]
+#
 #	lec	05/04/2011
 #	- TR 10699 (remove TR1937); remove numeric stripping in AU
 #
@@ -548,12 +551,15 @@ def doUpdate(rec, rectags):
 
 	# If pubmed id already exists in database, allow update
 
-	cmd = 'select v._Refs_key, v.title, v.abstract, v.jnum, ac.accID ' + \
-	      'from BIB_All_View v, ACC_Accession ac ' + \
-	      'where ac._MGIType_key = 1 ' + \
+	cmd = 'select v._Refs_key, v.title, v.abstract, v.jnum, pmid = ac.accID, doiid = ac2.accID ' + \
+	      'from BIB_All_View v, ACC_Accession ac, ACC_Accession ac2 ' + \
+	      'where v._Refs_key = ac._Object_key ' + \
+	      'and ac._MGIType_key = 1 ' + \
 	      'and ac._LogicalDB_key = 29 ' + \
 	      'and ac.accID = "' + rec['PMID'] + '" ' + \
-	      'and ac._Object_key = v._Refs_key'
+	      'and v._Refs_key *= ac2._Object_key ' + \
+	      'and ac2._MGIType_key = 1 ' + \
+	      'and ac2._LogicalDB_key = 65 '
 
         results = db.sql(cmd, 'auto')
 
@@ -571,12 +577,20 @@ def doUpdate(rec, rectags):
 
 	# Else, we've got one record in 'results'
 
+	refKey = None
+	title = None
+	abstract = None
+	jnum = None
+	pmidKey = None
+	doiKey = None
+
 	for result in results:
 		refKey = result['_Refs_key']
 		title = result['title']
 		abstract = result['abstract']
 		jnum = result['jnum']
-	        pmidKey = result['accID']
+	        pmidKey = result['pmid']
+	        doiKey = result['doiid']
 
 	# Update existing entry if pubmed id or title or abstract is NULL
 	# or if the pubmed id is not NULL (exists)
@@ -620,6 +634,15 @@ def doUpdate(rec, rectags):
 		if rec.has_key('PMID') and pmidKey is None:
           		cmd.append('exec ACC_insert %d,%s,%d,%s' % (refKey, rec['PMID'], PUBMEDKEY, MGITYPE))
 			
+		# Add DOI ID (from AID)
+
+		if rec.has_key('AID') and doiKey is None:
+			aid = rec['AID']
+			if aid.find('[doi]') > 0:
+		    		aid = aid.replace(' [doi]', '')
+		    		cmd.append('exec ACC_insert %d,%s,%d,%s' \
+					% (refKey, aid, DOIKEY, MGITYPE))
+
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
 
@@ -672,11 +695,18 @@ def doAdd(rec, rectags):
 		rec['TI'], rec['TI2'], rec['TA'], rec['VI'], rec['IP'], \
 		rec['DP'], rec['YR'], rec['PG'], rec['AB'], userKey, userKey))
  
-	cmd.append('execute ACC_assignJ @nextRef, %s' % nextJnum)
+	cmd.append('execute ACC_assignJ @nextRef,%s' % nextJnum)
 
 	if rec.has_key('PMID'):
-		cmd.append('exec ACC_insert @nextRef, %s, %d, %s' \
+		cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
 			% (rec['PMID'], PUBMEDKEY, MGITYPE))
+
+	if rec.has_key('AID'):
+		aid = rec['AID']
+		if aid.find('[doi]') > 0:
+			aid = aid.replace(' [doi]', '')
+			cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
+				% (aid, DOIKEY, MGITYPE))
 
 	cmd.append('commit transaction')
 	db.sql(cmd, [None] * len(cmd))
@@ -885,6 +915,7 @@ def citationCache():
 
 PUBMEDSTR = 'PubMed'
 PUBMEDKEY = 29
+DOIKEY = 65
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
 
