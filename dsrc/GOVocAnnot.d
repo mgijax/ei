@@ -946,7 +946,6 @@ rules:
 
 	  cmd : string := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c +
 	                  govoc_sql_7a + annotTypeKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c +
-			  govoc_sql_12a + annotTypeKey + govoc_sql_12b + currentRecordKey + govoc_sql_12c +
 			  govoc_sql_9 + currentRecordKey;
 
 	  row : integer := 0;
@@ -994,19 +993,11 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdBy, mgi_getstr(dbproc, 21));
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.dag, mgi_getstr(dbproc, 23));
+
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 
 	      elsif (results = 3) then
-                objectKey := mgi_getstr(dbproc, 1);
-		i := 0;
-		while (i < mgi_tblNumRows(annotTable)) do
-		  if (mgi_tblGetCell(annotTable, i, annotTable.annotKey) = objectKey) then
-	            (void) mgi_tblSetCell(annotTable, i, annotTable.dag, mgi_getstr(dbproc, 2));
-		  end if;
-		  i := i + 1;
-		end while;
-
-	      elsif (results = 4) then
 
                 SetOption.source_widget := top->ReferenceGeneMenu;
                 SetOption.value := mgi_getstr(dbproc, 1);
@@ -1031,8 +1022,8 @@ rules:
  
 	  (void) dbclose(dbproc);
 
-	  -- Sort by DAG
-	  (void) mgi_tblSort(annotTable, annotTable.dag);
+	  -- Sort by DAG; not needed; sorting is handled in govoc_sql_7
+	  --(void) mgi_tblSort(annotTable, annotTable.dag);
 
 	  -- Reset Background
 
