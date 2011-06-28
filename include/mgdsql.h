@@ -174,13 +174,24 @@ where _Object_key = "
 #define govoc_sql_6c " order by description\n"
 
 #define govoc_sql_7a "select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
-e.*, dagAbbrev = substring(v.dagAbbrev,1,3) \
+e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'y', e.modification_date \
 from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
-where a._AnnotType_key = "
-#define govoc_sql_7b " and a._Object_key = "
-#define govoc_sql_7c " and a._Annot_key = e._Annot_key \
+where a._AnnotType_key = 1000 \
+and a._Annot_key = e._Annot_key \
 and a._Vocab_key = v._Vocab_key \
 and a._Term_key = v._Object_key \
+and a._Object_key = "
+#define govoc_sql_7b "\nand exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key) \
+union \
+select a._Term_key, a.term, a.sequenceNum, a.accID, a._Qualifier_key, a.qualifier, \
+e.*, substring(v.dagAbbrev,1,3) as dagAbbrev, hasProperty = 'n', e.modification_date \
+from VOC_Annot_View a, VOC_Evidence_View e, DAG_Node_View v \
+where a._AnnotType_key = 1000 \
+and a._Annot_key = e._Annot_key \
+and a._Vocab_key = v._Vocab_key \
+and a._Term_key = v._Object_key \
+and a._Object_key = "
+#define govoc_sql_7c "\nand not exists (select 1 from VOC_Evidence_Property p where e._AnnotEvidence_key = p._AnnotEvidence_key) \
 order by v.dagAbbrev, e.modification_date desc, a.term\n"
 
 #define govoc_sql_9 "select isReferenceGene, completion_date \

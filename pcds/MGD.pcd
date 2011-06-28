@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Wed Jun 22 08:40:14 2011";
+      lastWritten = "Tue Jun 28 12:09:56 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -17996,13 +17996,13 @@ Shift<Key>Tab: prev-tab-group()
                                         Group: Widget
                                           xrtTblNumRows = 20;
                                           xrtTblVisibleRows = 10;
-                                          xrtTblNumColumns = 19;
-                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Qualifier key,Refs key,Evidence key,Term Acc ID,DAG,Vocabulary Term,Qual,J:,Citation,Evi,Inferred From,Modified By,Date,Created By,Date";
+                                          xrtTblNumColumns = 20;
+                                          xrtTblColumnLabels = "Mode,AnnotEvidence key,Annot key,Term key,Qualifier key,Refs key,Evidence key,Term Acc ID,DAG,Vocabulary Term,Qual,J:,Citation,Evi,Inferred From,Modified By,Date,Created By,Date,P";
                                           xrtTblPixelWidthSeries = "(all 0-6 0)";
-                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 12)(all 8 3)(all 9 40)(all 10 4)(all 11 6)(all 12 10)(all 13 3)(all 14 20)(all 15 11)(all 16 10)(all 18 10)";
-                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nqualifierKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"6\"\ntermAccID:Int(Int)=\"7\"\ndag:Int(Int)=\"8\"\nterm:Int(Int)=\"9\"\nqualifier:Int(Int)=\"10\"\njnum:Int(Int)=\"11\"\ncitation:Int(Int)=\"12\"\nevidence:Int(Int)=\"13\"\ninferredFrom:Int(Int)=\"14\"\neditor:Int(Int)=\"15\"\nmodifiedDate:Int(Int)=\"16\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"17\"\ncreatedDate:Int(Int)=\"18\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nvocabQualifierKey:Int(Int)=\"0\"\n";
+                                          xrtTblCharWidthSeries = "(all 0 1)(all 1-6 10)(all 7 12)(all 8 3)(all 9 40)(all 10 4)(all 11 6)(all 12 10)(all 13 3)(all 14 20)(all 15 11)(all 16 10)(all 18 10)(all 19 1)";
+                                          userDefinedAttributes = "annotKey:Int(Int)=\"2\"\ntermKey:Int(Int)=\"3\"\nqualifierKey:Int(Int)=\"4\"\nrefsKey:Int(Int)=\"5\"\nevidenceKey:Int(Int)=\"6\"\ntermAccID:Int(Int)=\"7\"\ndag:Int(Int)=\"8\"\nterm:Int(Int)=\"9\"\nqualifier:Int(Int)=\"10\"\njnum:Int(Int)=\"11\"\ncitation:Int(Int)=\"12\"\nevidence:Int(Int)=\"13\"\ninferredFrom:Int(Int)=\"14\"\neditor:Int(Int)=\"15\"\nmodifiedDate:Int(Int)=\"16\"\nvocabKey:Int(Int)=\"0\"\nvocabEvidenceKey:Int(Int)=\"0\"\nannotVocab:String(String)\ncreatedBy:Int(Int)=\"17\"\ncreatedDate:Int(Int)=\"18\"\nannotEvidenceKey:Int(Int)=\"1\"\nmgiTypeKey:Int(Int)=\"25\"\nvocabQualifierKey:Int(Int)=\"0\"\nhasProperty:Int(Int)=\"19\"\n";
                                           xrtTblValidateCellCallback = "D:VerifyVocabTermAccID,\nD:VerifyReference,\nD:VerifyGOReference,\nD:VerifyVocabQualifier,\nD:VerifyVocabEvidenceCode,\nD:VerifyGOInferredFrom,\nD:CommitTableCellEdit";
-                                          xrtTblTraversableSeries = "(all 0-6 False)(all 8-10 False)(all 12 False)";
+                                          xrtTblTraversableSeries = "(all 0-6 False)(all 8-10 False)(all 12 False)(all 19 False)";
                                           xrtTblEnterCellCallback = "D:LoadEvidenceProperty\nD:SetOptions";
                                           xrtTblFrozenColumns = 15;
                                           xrtTblAllowCellResize = resize_all;
@@ -18016,7 +18016,7 @@ Shift<Key>Tab: prev-tab-group()
                                           resizable = true;
                                         Group: User
                                           requiredColumns = "3\n5\n6";
-                                          saveTraversableSeries = "(all 0-6 False)(all 8-10 False)(all 12 False)";
+                                          saveTraversableSeries = "(all 0-6 False)(all 8-10 False)(all 12 False)(all 19 False)";
                                       }
                                       {
                                         AddRow = TablePush : mgiTable;

@@ -945,7 +945,7 @@ rules:
 	  top->ReportDialog.select := govoc_sql_5a + dbView + govoc_sql_5b + currentRecordKey;
 
 	  cmd : string := govoc_sql_6a + dbView + govoc_sql_6b + currentRecordKey + govoc_sql_6c +
-	                  govoc_sql_7a + annotTypeKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c +
+	                  govoc_sql_7a + currentRecordKey + govoc_sql_7b + currentRecordKey + govoc_sql_7c +
 			  govoc_sql_9 + currentRecordKey;
 
 	  row : integer := 0;
@@ -994,6 +994,7 @@ rules:
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.createdDate, mgi_getstr(dbproc, 14));
 
 	        (void) mgi_tblSetCell(annotTable, row, annotTable.dag, mgi_getstr(dbproc, 23));
+	        (void) mgi_tblSetCell(annotTable, row, annotTable.hasProperty, mgi_getstr(dbproc, 24));
 
 		(void) mgi_tblSetCell(annotTable, row, annotTable.editMode, TBL_ROW_NOCHG);
 
