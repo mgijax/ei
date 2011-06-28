@@ -178,7 +178,7 @@ from VOC_Annot_View a, VOC_Evidence_View e \
 where a._AnnotType_key = "
 #define govoc_sql_7b " and a._Object_key = "
 #define govoc_sql_7c " and a._Annot_key = e._Annot_key \
-order by e.evidenceSeqNum, e.modification_date\n"
+order by e.evidenceSeqNum, e.modification_date desc\n"
 
 #define govoc_sql_12a "\nselect distinct a._Annot_key, substring(v.dagAbbrev,1,3) \
 from VOC_Annot_View a, DAG_Node_View v \
