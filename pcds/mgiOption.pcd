@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 21 09:19:06 2011";
+      lastWritten = "Thu Jun 30 06:38:11 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -392,6 +392,24 @@ Module: mgiOption
                         labelString = "MGI Image";
                       Group: User
                         defaultValue = 19;
+                        allowAdd = False;
+                        allowModify = False;
+                    }
+                    {
+                      BGEM = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = BGEM;
+                      Group: User
+                        defaultValue = 159;
+                        allowAdd = False;
+                        allowModify = False;
+                    }
+                    {
+                      GUDMAP = AccToggle : mgiOption;
+                      Group: Widget
+                        labelString = GUDMAP;
+                      Group: User
+                        defaultValue = 163;
                         allowAdd = False;
                         allowModify = False;
                     }

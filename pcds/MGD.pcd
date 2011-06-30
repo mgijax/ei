@@ -2,7 +2,7 @@ Module: MGD
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 28 12:09:56 2011";
+      lastWritten = "Thu Jun 30 06:38:13 2011";
       nodesUsed = MutantCellLineModule;
         {
           OrganismModule = Module : MGI;
@@ -430,6 +430,12 @@ Module: MGD
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -2142,6 +2148,12 @@ Module: MGD
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     CREX = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -3242,6 +3254,12 @@ Module: MGD
                                   MGIImage = AccToggle : mgiOption;
                                 }
                                 {
+                                  BGEM = AccToggle : mgiOption;
+                                }
+                                {
+                                  GUDMAP = AccToggle : mgiOption;
+                                }
+                                {
                                   CREX = AccToggle : mgiOption;
                                 }
                                 {
@@ -3901,6 +3919,12 @@ Module: MGD
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -7328,6 +7352,12 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     CREX = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9372,6 +9402,12 @@ Shift<Key>Tab: prev-tab-group()
                                                     MGIImage = AccToggle : mgiOption;
                                                   }
                                                   {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
+                                                  }
+                                                  {
                                                     CREX = AccToggle : mgiOption;
                                                   }
                                                   {
@@ -9848,6 +9884,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -10948,6 +10990,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -12690,6 +12738,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
@@ -14701,6 +14755,12 @@ Shift<Key>Tab: prev-tab-group()
                                                   }
                                                   {
                                                     MGIImage = AccToggle;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle;

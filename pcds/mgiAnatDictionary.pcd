@@ -2,7 +2,7 @@ Module: mgiAnatDictionary
 {
       autoCuil = False;
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jun 21 09:19:07 2011";
+      lastWritten = "Thu Jun 30 06:38:09 2011";
         {
           DictionaryModule = Module : MGI;
           Group: Widget
@@ -634,6 +634,12 @@ Module: mgiAnatDictionary
                                                   }
                                                   {
                                                     MGIImage = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    BGEM = AccToggle : mgiOption;
+                                                  }
+                                                  {
+                                                    GUDMAP = AccToggle : mgiOption;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
