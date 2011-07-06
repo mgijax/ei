@@ -197,7 +197,6 @@ extern char *global_version;
 #define TISSUE     		323
 #define BIB_REVIEW_STATUS	324
 #define MRK_EVENT		327
-#define NOM_STATUS		328
 #define GXD_GELCONTROL		329
 #define MRK_EVENTREASON		330
 #define MRK_STATUS		331

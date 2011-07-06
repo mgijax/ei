@@ -10,7 +10,7 @@
 
 /* Allele.d */
 
-#define allele_sql_1 "select _Term_key from VOC_Term_ALLStatus_View where term = "
+#define allele_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 37 and term = "
 #define allele_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 70 \
 and term = 'Not Specified'"
 #define allele_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 73 \
@@ -144,7 +144,6 @@ order by eventReason"
 
 /* Genotype.d */
 
-#define genotype_sql_1 "select _Term_key from VOC_Term_ALLCompound_View where term = 'Not Applicable'"
 #define genotype_sql_2 "exec MGI_searchGenotypeByRef "
 #define genotype_sql_3 "select * from GXD_Genotype_View where _Genotype_key = "
 #define genotype_sql_4a "\nselect * from GXD_AllelePair_View where _Genotype_key = "
@@ -215,7 +214,7 @@ and a._AnnotType_key = "
 
 /* MarkerNonMouse.d */
 
-#define nonmouse_sql_1 "select _Term_key from VOC_Term_CurationState_View where term = 'internal'"
+#define nonmouse_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'internal'"
 #define nonmouse_sql_2 "select _Marker_key, _Organism_key, symbol, name, chromosome, \
 cytogeneticOffset, organism, creation_date, modification_date \
 from MRK_Marker_View where _Marker_key = "
@@ -289,8 +288,8 @@ from MLD_Statistics_View where _Expt_key = "
 
 /* Molecular.d */
 
-#define molecular_sql_1 "select _Term_key from VOC_Term_SegVectorType_View where term = 'Not Applicable'"
-#define molecular_sql_2 "select _Term_key from VOC_Term_SegmentType_View where term = 'primer'"
+#define molecular_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 24 and term = 'Not Applicable'"
+#define molecular_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 10 and term = 'primer'"
 #define molecular_sql_3 "select _Probe_key from PRB_Probe where _Probe_key = "
 #define molecular_sql_4 "\nexec PRB_reloadSequence "
 #define molecular_sql_5 "select _Reference_key, short_citation from PRB_Reference_View \
@@ -404,8 +403,8 @@ and d._DerivationType_key = "
 /* Nomen.d */
 
 #define nomen_sql_1 "select * from MRK_Event where _Marker_Event_key in (1,2) order by event"
-#define nomen_sql_2 "select _Term_key, term from VOC_Term_NomenStatus_View order by _Term_key"
-#define nomen_sql_3 "select _Term_key from VOC_Term_CurationState_View where term = 'Internal'"
+#define nomen_sql_2 "select _Term_key, term from VOC_Term where _Vocab_key = 16 order by _Term_key"
+#define nomen_sql_3 "select _Term_key from VOC_Term where _Vocab_key = 15 and term = 'Internal'"
 #define nomen_sql_4 "select * from NOM_Marker_View where _Nomen_key = "
 
 /* NonMutantCellLine.d */
@@ -549,5 +548,17 @@ from SEQ_Probe_Cache_View where _Sequence_key = "
 
 #define sequence_sql_12 "\nselect distinct mgiType, jnum, alleleID, symbol \
 from SEQ_Allele_View where _Sequence_key = "
+
+/* Strain.d */
+
+#define strain_sql_1 "select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'Not Specified'"
+#define strain_sql_2 "select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'"
+
+#define strain_sql_3 "select * from PRB_Strain_View where _Strain_key = "
+#define strain_sql_4 "\nselect * from PRB_Strain_Attribute_View where _Strain_key = "
+#define strain_sql_5 "\nselect * from PRB_Strain_NeedsReview_View where _Strain_key = "
+#define strain_sql_6 "\nselect distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, \
+mgiID, description, modifiedBy, modification_date \
+from PRB_Strain_Genotype_View where _Strain_key = "
 
 #endif

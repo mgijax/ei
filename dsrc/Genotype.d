@@ -577,7 +577,8 @@ rules:
 	    end if;
 
             if (compoundKey.length = 0) then
-              compoundKey := mgi_sql1(genotype_sql_1);
+	      -- not specified key
+              compoundKey := "847167";
             end if;
 
             if (editMode = TBL_ROW_ADD) then

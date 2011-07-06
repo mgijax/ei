@@ -84,6 +84,7 @@ dmodule Strains is
 #include <mgilib.h>
 #include <syblib.h>
 #include <tables.h>
+#include <mgdsql.h>
 
 devents:
 
@@ -251,8 +252,8 @@ rules:
           LoadList.list := top->NeedsReviewList;
 	  send(LoadList, 0);
 
-	  speciesNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'Not Specified'");
-	  strainTypeNotSpecified := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
+	  speciesNotSpecified := mgi_sql1(strain_sql_1);
+	  strainTypeNotSpecified := mgi_sql1(strain_sql_2);
 
           -- Set Row Count
           SetRowCount.source_widget := top;
@@ -822,7 +823,7 @@ rules:
             value := mgi_tblGetCell(top->StrainAttribute->Table, row, top->StrainAttribute->Table.termKey);
 
             if (value.length > 0 and value != "NULL") then
-	      from := from + ",PRB_Strain_Attribute_View v";
+	      from := from + ",PRB_Strain_AttributeVOC_Term_StrainSpecies_View_View v";
 	      where := where + "\nand s._Strain_key = v._Strain_key";
 	      where := where + "\nand v._Term_key = " + value;
 	    end if;
@@ -966,19 +967,10 @@ rules:
 	  row : integer;
 	  table : widget;
 
-	  cmd := "select * from " + mgi_DBtable(STRAIN_VIEW) +
-		 " where " + mgi_DBkey(STRAIN) + " = " + currentRecordKey + "\n" +
-
-		 "select * from PRB_Strain_Attribute_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n" +
-
-		 "select * from PRB_Strain_NeedsReview_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n" +
-
-		 "select distinct _StrainGenotype_key, _Genotype_key, _Qualifier_key, qualifier, " +
-				  "mgiID, description, modifiedBy, modification_date " +
-		 "from PRB_Strain_Genotype_View " +
-		 "where _Strain_key = " + currentRecordKey + "\n";
+	  cmd := strain_sql_3 + currentRecordKey +
+	         strain_sql_4 + currentRecordKey +
+	         strain_sql_5 + currentRecordKey +
+	         strain_sql_6 + currentRecordKey;
 
           dbproc : opaque := mgi_dbopen();
           (void) dbcmd(dbproc, cmd);

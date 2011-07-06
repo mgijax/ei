@@ -879,9 +879,8 @@ rules:
 
 	  -- Search for CellLine in the database
 
-	  select : string := "select _Term_key, term " +
-			     "from VOC_Term_CellLine_View " +
-			     " where term = " + mgi_DBprstr(value) + "\n";
+	  select : string := 
+	      "select _Term_key, term from VOC_Term where _Vocab_key = 18 and term = " + mgi_DBprstr(value) + "\n";
 
 	  -- Insert results into string list for loading into CellLine selection list
 
@@ -1680,8 +1679,8 @@ rules:
 
 	  if (tableID = STRAIN) then
 	    select := "select _Strain_key, strain, standard, private from " + table + " where ";
-	    defaultSpecies := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'laboratory mouse'");
-	    defaultStrainType := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
+	    defaultSpecies := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'laboratory mouse'");
+	    defaultStrainType := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'");
 	  elsif (tableID = TISSUE) then
 	    select := "select _Tissue_key, tissue, standard, private = 0 from " + table + " where ";
 	  elsif (tableID = BIB_REFS) then
@@ -3248,9 +3247,8 @@ rules:
 
 	  -- Search for Species in the database
 
-	  select : string := "select _Term_key, term " +
-			     "from VOC_Term_StrainSpecies_View " +
-			     "where term = " + mgi_DBprstr(value) + "\n";
+	  select : string := 
+	      "select _Term_key, term from VOC_Term where _Vocab_key = 26 and term = " + mgi_DBprstr(value) + "\n";
 
 	  -- Insert results into string list for loading into Species selection list
 
@@ -3387,8 +3385,8 @@ rules:
 	  defaultStrainType : string;
           i : integer;
 
-	  defaultSpecies := mgi_sql1("select _Term_key from VOC_Term_StrainSpecies_View where term = 'laboratory mouse'");
-	  defaultStrainType := mgi_sql1("select _Term_key from VOC_Term_StrainType_View where term = 'Not Specified'");
+	  defaultSpecies := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 26 and term = 'laboratory mouse'");
+	  defaultStrainType := mgi_sql1("select _Term_key from VOC_Term where _Vocab_key = 55 and term = 'Not Specified'");
  
           -- Parse Strains
  

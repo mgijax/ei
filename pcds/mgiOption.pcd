@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 30 06:38:11 2011";
+      lastWritten = "Tue Jul  5 11:11:45 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -921,7 +921,7 @@ Module: mgiOption
               {
                 GenderPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_Gender_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 17 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -1968,7 +1968,7 @@ Module: mgiOption
               {
                 SegmentTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_SegmentType_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 21 order by _Term_key";
                   childTemplate = SegmentTypeToggle;
                     {
                       SearchAll = SearchAll : mgiOption;
@@ -1989,7 +1989,7 @@ Module: mgiOption
               {
                 VectorTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_SegVectorType_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 24 order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2368,7 +2368,7 @@ Module: mgiOption
               {
                 AlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_ALLType_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 38 order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2389,7 +2389,7 @@ Module: mgiOption
               {
                 InheritanceModePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_ALLInheritMode_View order by term";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 35 order by term";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2406,7 +2406,7 @@ Module: mgiOption
               {
                 MolecularMutationPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_ALLMolMutation_View order by term";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 36 order by term";
               }
         }
         {
@@ -2429,7 +2429,7 @@ Module: mgiOption
               {
                 AlleleStatusPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_ALLStatus_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 37 order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2479,7 +2479,7 @@ Module: mgiOption
               {
                 AllelePairStatePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_ALLPairState_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 39 order by sequenceNum";
               }
         }
         {
@@ -2610,7 +2610,7 @@ Module: mgiOption
               {
                 CurationStatePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_CurationState_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 15 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2630,7 +2630,7 @@ Module: mgiOption
               {
                 GXDIndexPriorityPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_GXDIndexPriority_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Vocab where _Vocab_key = 11 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2690,7 +2690,7 @@ Module: mgiOption
               {
                 GXDReporterGenePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_GXDReporterGene_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 14 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2793,7 +2793,7 @@ Module: mgiOption
               {
                 SequenceTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_SequenceType_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 10 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2811,7 +2811,7 @@ Module: mgiOption
               {
                 SequenceStatusPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_SequenceStatus_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 20 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2829,7 +2829,7 @@ Module: mgiOption
               {
                 SequenceProviderPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_SequenceProvider_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 25 order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2854,7 +2854,7 @@ Module: mgiOption
               {
                 SequenceQualityPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_SequenceQuality_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 19 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -2945,7 +2945,7 @@ Module: mgiOption
               {
                 StrainAlleleTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_StrainAllele_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 31 order by sequenceNum";
               }
         }
         {
@@ -2971,7 +2971,7 @@ Module: mgiOption
               {
                 StrainGenoQualPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_StrainGenoQual_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 32 order by sequenceNum";
               }
         }
         {
@@ -2986,7 +2986,7 @@ Module: mgiOption
               {
                 UserRolePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_UserRole_View order by term";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 33 order by term";
                   childTemplate = UserRoleToggle;
               }
         }
@@ -3011,7 +3011,7 @@ Module: mgiOption
               {
                 AlleleCompoundPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_ALLCompound_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 42 order by sequenceNum";
               }
         }
         {
@@ -3026,7 +3026,7 @@ Module: mgiOption
               {
                 ImageTypePulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_IMGType_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 47 order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -3248,7 +3248,7 @@ Module: mgiOption
               {
                 GXDIndexConditionalMutantsPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_GXDIndexCondMut_View order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 74 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }
@@ -3300,7 +3300,7 @@ Module: mgiOption
               {
                 ImageClassPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term_IMGClass_View order by sequenceNum";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 83 order by sequenceNum";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

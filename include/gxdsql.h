@@ -86,8 +86,8 @@ where _Refs_key = "
 
 /* IndexStage.d */
 
-#define index_sql_1 "select _Term_key, term from VOC_Term_GXDIndexAssay_View order by sequenceNum"
-#define index_sql_2 "select _Term_key, term from VOC_Term_GXDIndexStage_View order by sequenceNum"
+#define index_sql_1 "select _Term_key, term from VOC_Term where _Vocab_key = 12 order by sequenceNum"
+#define index_sql_2 "select _Term_key, term from VOC_Term where _Vocab_key = 13 order by sequenceNum"
 #define index_sql_3 "select * from GXD_Index_View where _Index_key = "
 #define index_sql_4a "\nselect * from GXD_Index_Stages where _Index_key = "
 #define index_sql_4b "\norder by _IndexAssay_key, _StageID_key\n"

@@ -913,7 +913,6 @@ rules:
 --
 
 	Select does
-          objectKey : string;
 	  value : string;
 
           (void) busy_cursor(top);
