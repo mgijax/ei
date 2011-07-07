@@ -3,7 +3,7 @@ Module: MGI
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 30 06:38:17 2011";
+      lastWritten = "Thu Jul  7 07:19:43 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -3216,7 +3216,7 @@ Module: MGI
                                                   {
                                                     GUDMAP = AccToggle : mgiOption;
                                                     Group: Widget
-                                                      managed = False;
+                                                      managed = True;
                                                   }
                                                   {
                                                     CREX = AccToggle : mgiOption;
