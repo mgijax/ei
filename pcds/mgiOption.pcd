@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Tue Jul  5 11:11:45 2011";
+      lastWritten = "Mon Jul 11 10:44:18 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -1968,7 +1968,7 @@ Module: mgiOption
               {
                 SegmentTypePulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 21 order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 10 order by _Term_key";
                   childTemplate = SegmentTypeToggle;
                     {
                       SearchAll = SearchAll : mgiOption;
@@ -2630,7 +2630,7 @@ Module: mgiOption
               {
                 GXDIndexPriorityPulldown : OptionPulldown = OptionPulldown : mgiOption;
                 Group: User
-                  sql = "select _Term_key, term from VOC_Vocab where _Vocab_key = 11 order by _Term_key";
+                  sql = "select _Term_key, term from VOC_Term where _Vocab_key = 11 order by _Term_key";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

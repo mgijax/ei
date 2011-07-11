@@ -1504,7 +1504,7 @@ rules:
 
 	    end if;
 
-	    (void) mgi_writeLog(derivationcmd);
+	    --(void) mgi_writeLog(derivationcmd);
 
 	    --
 	    -- end check isParent, isMutant

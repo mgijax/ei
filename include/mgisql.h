@@ -98,15 +98,13 @@ from MGI_AttrHistory_Source_View where _Object_key = "
 #define notelib_sql_2b "\nwhere _NoteType_key > 0 order by _NoteType_key"
 
 #define notelib_sql_3a "select _NoteType_key, note, sequenceNum, _Note_key from "
-#define notelib_sql_3b " where "
-#define notelib_sql_3c " = "
-#define notelib_sql_3d " and _NoteType_key = "
-#define notelib_sql_3e " order by _NoteType_key, _Note_key, sequenceNum"
+#define notelib_sql_3b " where _Object_key = "
+#define notelib_sql_3c "\nand _NoteType_key = "
+#define notelib_sql_3d "\norder by _NoteType_key, _Note_key, sequenceNum"
 
 #define notelib_sql_4a "select _NoteType_key, note, sequenceNum from "
-#define notelib_sql_4b " where "
-#define notelib_sql_4c " = "
-#define notelib_sql_4d " order by _NoteType_key, sequenceNum\n"
+#define notelib_sql_4b " where _Object_key = "
+#define notelib_sql_4c "\norder by _NoteType_key, sequenceNum\n"
 
 /* NoteTypeTableLib.d */
 

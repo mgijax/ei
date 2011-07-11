@@ -215,18 +215,16 @@ rules:
 	      tableID = MGI_NOTE_STRAIN_VIEW or 
 	      tableID = MGI_NOTE_VOCEVIDENCE_VIEW) then
             cmd := notelib_sql_3a + mgi_DBtable(tableID) +
-		   notelib_sql_3b + mgi_DBkey(tableID) + 
-		   notelib_sql_3c + objectKey;
+		   notelib_sql_3b + objectKey;
 
             if (noteTypeKey > 0) then
-	      cmd := cmd + notelib_sql_3d + (string) noteTypeKey;
+	      cmd := cmd + notelib_sql_3c + (string) noteTypeKey;
 	    end if;
 
-	    cmd := cmd + notelib_sql_3e;
+	    cmd := cmd + notelib_sql_3d;
 	  else
             cmd := notelib_sql_4a + mgi_DBtable(tableID) +
-		   notelib_sql_4b + mgi_DBkey(tableID) + 
-		   notelib_sql_4c + objectKey + notelib_sql_4d;
+		   notelib_sql_4b + objectKey + notelib_sql_4c;
 	  end if;
 
           dbproc : opaque := mgi_dbopen();
