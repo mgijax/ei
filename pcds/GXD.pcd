@@ -3,7 +3,7 @@ Module: GXD
       autoCuil = false;
       dDialogFile = "gxd_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Thu Jun 30 06:38:14 2011";
+      lastWritten = "Wed Jul 20 13:53:06 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -179,7 +179,7 @@ Module: GXD
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
                                       }
                                       {
@@ -1061,7 +1061,7 @@ Shift<Key>Tab: prev-tab-group()
                                             {
                                               ProbeOrganismPulldown = OptionPulldown;
                                               Group: User
-                                                sql = "select * from MGI_Organism_Antigen_View order by commonName";
+                                                sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 7\norder by s.commonName";
                                             }
                                       }
                                       {

@@ -131,7 +131,7 @@ rules:
 	  labelString : string := LoadEvidencePropertyTable.labelString;
 	  editMode : string := LoadEvidencePropertyTable.editMode;
 	  cmd : string;
-	  nextSeqNum : integer;
+	  nextSeqNum : integer := 0;
 	  lastRow : integer;
 
 	  ClearTable.table := table;

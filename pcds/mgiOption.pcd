@@ -3,7 +3,7 @@ Module: mgiOption
       autoCuil = false;
       dDialogFile = "mgiOptionList_dlg.d";
       release = "TeleUSE v3.2.3 / Solaris 8";
-      lastWritten = "Mon Jul 11 10:44:18 2011";
+      lastWritten = "Wed Jul 20 13:42:45 2011";
       copy = false;
       inCreateMenu = true;
         {
@@ -1622,7 +1622,7 @@ Module: mgiOption
               {
                 AntibodyOrganismPulldown : OptionPulldown = OptionPulldown;
                 Group: User
-                  sql = "select * from MGI_Organism_Antibody_View order by commonName";
+                  sql = "select s.*\nfrom MGI_Organism s, MGI_Organism_MGIType t\nwhere s._Organism_key = t._Organism_key\nand t._MGIType_key = 6\n";
                     {
                       SearchAll = SearchAll : mgiOption;
                     }

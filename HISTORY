@@ -1,5 +1,14 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-1-47
+DATE: 08/02/2011
+STAFF: lec
+CHANGES:
+1) TR10787/age notes/dsrc/Assay.d
+2) TR10725/nlm.py/DOI
+
+TAG: ei-psql-BP
+DATE: 05/23/2011
 TAG: ei-4-4-1-46
 TAG: ei-4-4-1-45
 TAG: ei-4-4-1-44

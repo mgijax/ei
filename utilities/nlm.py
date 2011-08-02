@@ -640,8 +640,9 @@ def doUpdate(rec, rectags):
 			aid = rec['AID']
 			if aid.find('[doi]') > 0:
 		    		aid = aid.replace(' [doi]', '')
-		    		cmd.append('exec ACC_insert %d,%s,%d,%s' \
-					% (refKey, aid, DOIKEY, MGITYPE))
+			        if len(aid) <= MAXDOIID:
+		    		    cmd.append('exec ACC_insert %d,%s,%d,%s' \
+					    % (refKey, aid, DOIKEY, MGITYPE))
 
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
@@ -705,8 +706,9 @@ def doAdd(rec, rectags):
 		aid = rec['AID']
 		if aid.find('[doi]') > 0:
 			aid = aid.replace(' [doi]', '')
-			cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
-				% (aid, DOIKEY, MGITYPE))
+			if len(aid) <= MAXDOIID:
+			    cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
+				    % (aid, DOIKEY, MGITYPE))
 
 	cmd.append('commit transaction')
 	db.sql(cmd, [None] * len(cmd))
@@ -918,6 +920,7 @@ PUBMEDKEY = 29
 DOIKEY = 65
 MGITYPE = '"Reference"'	# Need quotes because it's being sent to a stored procedure
 REVIEWSTATUS = 3	# Peer Reviewed Status
+MAXDOIID = 30
 
 INSERTBIB = 'insert BIB_Refs (_Refs_key, _ReviewStatus_key, refType, authors, authors2, _primary, title, title2, journal, vol, issue, date, year, pgs, NLMstatus, isReviewArticle, abstract, _CreatedBy_key, _ModifiedBy_key)\n'
 

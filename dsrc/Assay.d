@@ -836,6 +836,7 @@ rules:
 	  row : integer := 0;
 	  note : string;
 	  currentNote : string;
+	  agePrefix : string;
 
 	  if (assayDetailForm.name = "InSituForm") then
             table := top->InSituForm->Specimen->Table;
@@ -844,23 +845,32 @@ rules:
 	  end if;
 
           while (row < mgi_tblNumRows(table)) do
+
 	    -- current note
 	    currentNote := mgi_tblGetCell(table, row, table.ageNote);
 
-	    -- append new note to current note
-	    if (currentNote.length > 0 and currentNote != AppendToAgeNote.source_widget.note) then
-	      note := currentNote + " " + AppendToAgeNote.source_widget.note;
-	    else
-	      note := AppendToAgeNote.source_widget.note;
-	    end if;
+	    -- age prefix
+	    agePrefix := mgi_tblGetCell(table, row, table.agePrefix);
 
-	    (void) mgi_tblSetCell(table, row, table.ageNote, note);
+	    -- only attached note for 'embryonic day'
+	    if (agePrefix = "embryonic day") then
 
-            if (mgi_tblGetCell(table, row, table.editMode) != TBL_ROW_EMPTY) then
-	      CommitTableCellEdit.source_widget := table;
-	      CommitTableCellEdit.row := row;
-	      CommitTableCellEdit.value_changed := true;
-	      send(CommitTableCellEdit, 0);
+	      -- append new note to current note
+	      if (currentNote.length > 0 and currentNote != AppendToAgeNote.source_widget.note) then
+	        note := currentNote + " " + AppendToAgeNote.source_widget.note;
+	      else
+	        note := AppendToAgeNote.source_widget.note;
+	      end if;
+
+	      (void) mgi_tblSetCell(table, row, table.ageNote, note);
+
+              if (mgi_tblGetCell(table, row, table.editMode) != TBL_ROW_EMPTY) then
+	        CommitTableCellEdit.source_widget := table;
+	        CommitTableCellEdit.row := row;
+	        CommitTableCellEdit.value_changed := true;
+	        send(CommitTableCellEdit, 0);
+	      end if;
+
 	    end if;
 
 	    row := row + 1;

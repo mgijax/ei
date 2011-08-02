@@ -535,9 +535,11 @@ rules:
 	  end if;
 
 	  if (not (global_login = "mgd_dbo" or
-	           global_login = "ljm" or global_login = "lmm" or 
-		   global_login = "cml" or global_login = "rjc" or
-		   global_login = "bobs" or global_login = "tier4") and
+	           global_login = "mmh" or 
+	           global_login = "lmm" or 
+		   global_login = "cml" or 
+		   global_login = "rjc" or
+		   global_login = "tier4") and
               top->MarkerStatusMenu.menuHistory.modified and
 	      top->MarkerStatusMenu.menuHistory.labelString != STATUS_PENDING) then
             StatusReport.source_widget := top;
