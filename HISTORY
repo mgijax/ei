@@ -1,7 +1,7 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
-TAG: ei-4-4-1-?
-DATE: ?
+TAG: ei-4-4-1-49
+DATE: 08/08/2011
 STAFF: lec
 CHANGES:
 1) removed from */uxb.config
@@ -10,7 +10,7 @@ CHANGES:
 -- CSOURCE         ../csrc/workaround.c
 -- HSOURCE         ../include/workaround.h
 -- APPLINIT        dsreg_workaround_init
-
+2) mgddbschema-4-4-1-57/views
 
 TAG: ei-psql-BP
 DATE: 05/23/2011
