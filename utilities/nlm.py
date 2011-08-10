@@ -636,13 +636,13 @@ def doUpdate(rec, rectags):
 			
 		# Add DOI ID (from AID)
 
-		#if rec.has_key('AID') and doiKey is None:
-		#	aid = rec['AID']
-		#	if aid.find('[doi]') > 0:
-		#    		aid = aid.replace(' [doi]', '')
-		#	        if len(aid) <= MAXDOIID:
-		#    		    cmd.append('exec ACC_insert %d,%s,%d,%s' \
-		#			    % (refKey, aid, DOIKEY, MGITYPE))
+		if rec.has_key('AID') and doiKey is None:
+			aid = rec['AID']
+			if aid.find('[doi]') > 0:
+		    		aid = aid.replace(' [doi]', '')
+			        if len(aid) <= MAXDOIID:
+		    		    cmd.append('exec ACC_insert %d,%s,%d,%s' \
+					    % (refKey, aid, DOIKEY, MGITYPE))
 
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
@@ -702,13 +702,13 @@ def doAdd(rec, rectags):
 		cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
 			% (rec['PMID'], PUBMEDKEY, MGITYPE))
 
-	#if rec.has_key('AID'):
-	#	aid = rec['AID']
-	#	if aid.find('[doi]') > 0:
-	#		aid = aid.replace(' [doi]', '')
-	#		if len(aid) <= MAXDOIID:
-	#		    cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
-	#			    % (aid, DOIKEY, MGITYPE))
+	if rec.has_key('AID'):
+		aid = rec['AID']
+		if aid.find('[doi]') > 0:
+			aid = aid.replace(' [doi]', '')
+			if len(aid) <= MAXDOIID:
+			    cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
+				    % (aid, DOIKEY, MGITYPE))
 
 	cmd.append('commit transaction')
 	db.sql(cmd, [None] * len(cmd))

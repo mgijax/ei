@@ -1,5 +1,12 @@
 ### Remember to update Configuration:CVS_TAG with most recen tag
 
+TAG: ei-4-4-1-50
+DATE: 08/10/2011
+STAFF: lec
+CHANGES:
+1) TR10725/nlm.py/DOI
+2) TR10787/age notes/dsrc/Assay.d (removed)
+
 TAG: ei-4-4-1-49
 DATE: 08/08/2011
 STAFF: lec
@@ -12,8 +19,6 @@ CHANGES:
 -- APPLINIT        dsreg_workaround_init
 2) mgddbschema-4-4-1-57/views
 
-TAG: ei-psql-BP
-DATE: 05/23/2011
 TAG: ei-4-4-1-48
 TAG: ei-4-4-1-47
 DATE: 08/02/2011
@@ -22,8 +27,6 @@ CHANGES:
 1) TR10787/age notes/dsrc/Assay.d
 2) TR10725/nlm.py/DOI
 
-TAG: ei-psql-BP
-DATE: 05/23/2011
 TAG: ei-4-4-1-46
 TAG: ei-4-4-1-45
 TAG: ei-4-4-1-44
@@ -38,8 +41,6 @@ CHANGES:
 1) TR10044/GO Notes
 2) TR10725/ldb = 65
 
-TAG: ei-psql-BP
-DATE: 05/23/2011
 TAG: ei-4-4-1-38
 TAG: ei-4-4-1-37
 TAG: ei-4-4-1-36
