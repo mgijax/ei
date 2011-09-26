@@ -160,8 +160,8 @@ where _Object_key = "
 
 /* GOVocAnnot.d */
 
-#define govoc_sql_1 "select _Marker_Status_key from  MRK_Marker where _Marker_key = "
-#define govoc_sql_2 "select _Marker_Type_key from  MRK_Marker where _Marker_key = "
+#define govoc_sql_1 "select _Marker_Status_key from MRK_Marker where _Marker_key = "
+#define govoc_sql_2 "select _Marker_Type_key from MRK_Marker where _Marker_key = "
 #define govoc_sql_3 "select dbView from ACC_MGIType where _MGIType_key = "
 #define govoc_sql_4 "select _Term_key from VOC_Term where term is null and _Vocab_key = "
 
