@@ -19,5 +19,13 @@ if ( ! -d ${EIINSTALLDIR} ) then
 	mkdir ${EIINSTALLDIR}
 endif
 
+if ( ! -d ${EIWITHDRAWALDIR} ) then
+	mkdir ${EIWITHDRAWALDIR}
+endif
+
+if ( ! -d ${EINLMDIR} ) then
+	mkdir ${EINLMDIR}
+endif
+
 ./installall compiled
 

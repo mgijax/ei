@@ -18,7 +18,7 @@ source ${MGICONFIG}/master.config.csh
 setenv EIINSTALLDIR ${EI_USRLOCALMGI}/ei/prod
 
 # CVS tag; keep updated with current tag
-setenv CVS_TAG	ei-4-4-1-50
+setenv CVS_TAG	ei-4-4-1-51
 
 # build directory
 setenv EIBUILDDIR ${EI_USRLOCALMGI}/ei
@@ -42,7 +42,7 @@ setenv EIAPPS	"mgd gxd mgiadmin mgi"
 setenv EIREPORTDIR	${HOME}/mgireport
 setenv EIARCHIVEDIR	${EIDATADIR}
 setenv EIWITHDRAWALDIR	${EIDATADIR}/withdrawals
-setenv EIBREAKSPLITDIR	${EIDATADIR}/breakpointsplits
+setenv EINLMDIR ${EIDATADIR}/nlm
 
 # X Resource file
 setenv XRES	${EIBUILDDIR}/XRes.in
