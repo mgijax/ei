@@ -87,6 +87,9 @@
 #
 # History
 #
+#	lec	09/26/2011
+#	- TR 10859/fix AID
+#
 #	lec	08/01/2011
 #	- TR 10725/add AID for [doi]
 #
@@ -637,12 +640,7 @@ def doUpdate(rec, rectags):
 		# Add DOI ID (from AID)
 
 		if rec.has_key('AID') and doiKey is None:
-			aid = rec['AID']
-			if aid.find('[doi]') > 0:
-		    		aid = aid.replace(' [doi]', '')
-			        if len(aid) <= MAXDOIID:
-		    		    cmd.append('exec ACC_insert %d,%s,%d,%s' \
-					    % (refKey, aid, DOIKEY, MGITYPE))
+		    	cmd.append('exec ACC_insert %d,%s,%d,%s' % (refKey, rec['AID'], DOIKEY, MGITYPE))
 
 		cmd.append('commit transaction')
 		db.sql(cmd, None)
@@ -703,12 +701,7 @@ def doAdd(rec, rectags):
 			% (rec['PMID'], PUBMEDKEY, MGITYPE))
 
 	if rec.has_key('AID'):
-		aid = rec['AID']
-		if aid.find('[doi]') > 0:
-			aid = aid.replace(' [doi]', '')
-			if len(aid) <= MAXDOIID:
-			    cmd.append('exec ACC_insert @nextRef,%s,%d,%s' \
-				    % (aid, DOIKEY, MGITYPE))
+	        cmd.append('exec ACC_insert @nextRef,%s,%d,%s' % (rec['AID'], DOIKEY, MGITYPE))
 
 	cmd.append('commit transaction')
 	db.sql(cmd, [None] * len(cmd))
@@ -849,6 +842,8 @@ def processFile():
 		m = re.match('^[A-Z]*[ ]*- ', line)
 		if m != None:
 
+			addToRec = 1
+
 			[field, value] = string.split(line, '- ', 1)
 			field = string.strip(field)
 			value = string.strip(value)
@@ -863,15 +858,30 @@ def processFile():
 
 				rec['LAU'] = value	# Last Author
 
+			if field == 'AID':
+
+				# do not add to rec if AID is not a DOI id
+				# will only add the last DOI encountered
+
+				if value.find('[doi]') > 0:
+		    			value = value.replace(' [doi]', '')
+					if len(value) > MAXDOIID:
+						addToRec = 0
+				else:
+					addToRec = 0
+
 			if len(value) == 0:
 				value = 'NULL'
 
-			rec[field] = value
+			# if ok to add to rec, do so
+			if addToRec:
+				rec[field] = value
 
-			if field not in rectags:
-				rectags.append(field)
+				if field not in rectags:
+					rectags.append(field)
 
 		elif len(line) > 0:		# line continuation
+
 			value = string.strip(line)
 
 			try:
